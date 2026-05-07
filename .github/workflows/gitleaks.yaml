@@ -19,12 +19,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@a53b53a7cea10103c8091811e54a3952fbd1a733 # v2.3.1
+        uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
@@ -35,7 +35,7 @@ jobs:
 
       - name: Upload Gitleaks SARIF report
         if: always()
-        uses: github/codeql-action/upload-sarif@250f3813c415201c19f2a9d84c1b9b5963f25da4 # v3
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: gitleaks-report.sarif
           category: gitleaks
