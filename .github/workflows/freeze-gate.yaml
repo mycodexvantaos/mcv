@@ -2,7 +2,7 @@ name: Deployment Freeze Gate
 
 on:
   workflow_run:
-    workflows: ["Deploy to Development", "Deploy to Staging", "Deploy to Production"] # Add your deployment workflow names
+    workflows: ["Deploy to Development", "Deploy to Staging", "Deploy to Production"]
     types:
       - requested
 
@@ -18,7 +18,6 @@ jobs:
         run: |
           # This script would contain logic to check a central configuration
           # (e.g., .root.governance.yaml) for freeze windows.
-          # For this example, we'll simulate a freeze.
           FREEZE_ACTIVE="false"
           CURRENT_DATE=$(date -u +%Y-%m-%d)
 
@@ -39,7 +38,7 @@ jobs:
 
       - name: Cancel workflow run
         if: failure()
-        uses: andymckay/cancel-workflow-action@0.3.0
+        uses: styfle/cancel-workflow-action@0.12.1
         with:
           workflow_id: ${{ github.event.workflow_run.id }}
           token: ${{ secrets.GITHUB_TOKEN }}

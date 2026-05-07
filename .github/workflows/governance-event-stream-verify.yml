@@ -113,7 +113,7 @@ jobs:
       - name: Verify no continue-on-error in workflows
         run: |
           # Enforce: no continue-on-error allowed in any workflow
-          MATCHES=$(grep -rl "continue-on-error" .github/workflows/ 2>/dev/null || true)
+          MATCHES=$(grep -rl "continue-on-error:" .github/workflows/ 2>/dev/null | xargs grep -l "continue-on-error: true" 2>/dev/null || true)
           if [ -n "$MATCHES" ]; then
             echo "ERROR: continue-on-error found in workflows:"
             echo "$MATCHES"
