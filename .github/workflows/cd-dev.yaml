@@ -20,6 +20,8 @@ jobs:
     name: Deploy to Dev Environment
     runs-on: ubuntu-latest
     environment: dev
+    # Only run when GCP_PROJECT_ID secret is configured
+    if: ${{ secrets.GCP_PROJECT_ID != '' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1

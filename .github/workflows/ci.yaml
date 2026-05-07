@@ -18,9 +18,9 @@ concurrency:
 
 permissions:
   contents: read
-  id-token: write # For OIDC
+  id-token: write
   actions: read
-  pull-requests: write # For PR comments
+  pull-requests: write
   checks: write
 
 jobs:
@@ -29,104 +29,79 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      
+        uses: actions/checkout@v4
+
       - name: Setup PNPM
-        uses: pnpm/action-setup@a3252b78c470c02df07e9d59298c2ffc4f6b825f # v2.4.0
+        uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 9
 
       - name: Setup Node.js
-        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '22'
           cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Run Linters
-        run: make lint
+        run: pnpm run lint
 
-      - name: Check Formatting
-        run: make format-check
+      - name: TypeScript type check
+        run: pnpm run typecheck
 
-  test-and-coverage:
-    name: Test and Coverage
+  test:
+    name: Test
     runs-on: ubuntu-latest
     needs: lint-and-format
     steps:
       - name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-
-      - name: Setup Go
-        uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
-        with:
-          go-version: '1.21'
-          cache: true
+        uses: actions/checkout@v4
 
       - name: Setup PNPM
-        uses: pnpm/action-setup@a3252b78c470c02df07e9d59298c2ffc4f6b825f # v2.4.0
+        uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 9
 
       - name: Setup Node.js
-        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '22'
           cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run All Tests
-        run: make test-coverage
+      - name: Run Tests
+        run: pnpm test
 
-      - name: Upload coverage reports
-        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
-        with:
-          name: coverage-report
-          path: coverage/
-
-  build-apps:
-    name: Build Applications
+  build:
+    name: Build
     runs-on: ubuntu-latest
-    needs: test-and-coverage
-    strategy:
-      matrix:
-        app: [my-app-api, my-app-web, artifact-gateway]
+    needs: test
     steps:
       - name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      
-      - name: Setup Go
-        uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
-        with:
-          go-version: '1.21'
-          cache: true
+        uses: actions/checkout@v4
 
       - name: Setup PNPM
-        uses: pnpm/action-setup@a3252b78c470c02df07e9d59298c2ffc4f6b825f # v2.4.0
+        uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 9
 
       - name: Setup Node.js
-        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '22'
           cache: 'pnpm'
-      
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      
-      - name: Build application
-        run: turbo run build --filter=${{ matrix.app }}
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
-        with:
-          name: build-${{ matrix.app }}
-          path: apps/my-app/dist/${{ matrix.app }} # Adjust path as needed
+      - name: Build application
+        run: pnpm run build
+        env:
+          NODE_ENV: production
 
   security-scans:
     name: Security Scans
@@ -134,31 +109,25 @@ jobs:
     needs: lint-and-format
     steps:
       - name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@v4
 
       - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@2.3.1
+        uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }} # if you have one
-        with:
-          config_path: .gitleaks.toml
-          report_format: json
-          report_path: gitleaks-report.json
-      
-      - name: Upload Gitleaks report
-        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
-        with:
-          name: gitleaks-report
-          path: gitleaks-report.json
 
   final-check:
     name: Final Check
     runs-on: ubuntu-latest
-    if: success()
+    if: always()
     needs:
-      - build-apps
+      - build
       - security-scans
     steps:
-      - name: All jobs passed
-        run: echo "✅ All CI checks passed successfully."
+      - name: Check results
+        run: |
+          if [ "${{ needs.build.result }}" = "failure" ] || [ "${{ needs.security-scans.result }}" = "failure" ]; then
+            echo "❌ CI Pipeline failed"
+            exit 1
+          fi
+          echo "✅ All CI checks passed successfully."

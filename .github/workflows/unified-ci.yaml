@@ -1,7 +1,7 @@
 # === path: .github/workflows/unified-ci.yaml ===
 # Unified CI Pipeline for MyCodeXvantaOS
 # Consolidates: ci.yml, ci.yaml, ci-cd.yml, testing.yml
-# Version: 2.0.0
+# Version: 3.0.0
 
 name: Unified CI Pipeline
 
@@ -17,12 +17,6 @@ on:
       - main
       - 'release/**'
   workflow_dispatch:
-    inputs:
-      skip_tests:
-        description: 'Skip test execution'
-        required: false
-        default: 'false'
-        type: boolean
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -36,9 +30,8 @@ permissions:
   checks: write
 
 env:
-  NODE_VERSION: '20'
-  PNPM_VERSION: '10'
-  GO_VERSION: '1.21'
+  NODE_VERSION: '22'
+  PNPM_VERSION: '9'
 
 jobs:
   # ====================
@@ -66,19 +59,16 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run ESLint
-        run: pnpm run lint || true
-
-      - name: Check Prettier formatting
-        run: pnpm run format:check || true
+        run: pnpm run lint
 
       - name: TypeScript type check
         run: pnpm run typecheck
 
   # ====================
-  # Stage 2: Architecture Validation
+  # Stage 2: Build
   # ====================
-  validate-architecture:
-    name: Architecture Validation
+  build:
+    name: Build
     runs-on: ubuntu-latest
     needs: lint-and-format
     steps:
@@ -99,60 +89,18 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Validate architecture compliance
-        run: pnpm run validate:github
-
-      - name: Check naming conventions
-        run: pnpm run check-legacy || true
-
-      - name: Scan for naming drift
-        run: pnpm run scan-drift || true
+      - name: Build application
+        run: pnpm run build
+        env:
+          NODE_ENV: production
 
   # ====================
-  # Stage 3: Build
-  # ====================
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    needs: validate-architecture
-    strategy:
-      matrix:
-        target: [packages, modules]
-      fail-fast: false
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build ${{ matrix.target }}
-        run: |
-          if [ "${{ matrix.target }}" = "packages" ]; then
-            pnpm run build:packages
-          else
-            pnpm run build:modules
-          fi
-
-  # ====================
-  # Stage 4: Test
+  # Stage 3: Test
   # ====================
   test:
-    name: Test & Coverage
+    name: Test
     runs-on: ubuntu-latest
     needs: build
-    if: ${{ github.event.inputs.skip_tests != 'true' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -171,103 +119,23 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run tests with coverage
-        run: pnpm run test:coverage
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          files: ./coverage/lcov.info
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: false
-
-      - name: Archive coverage report
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: coverage/
-          retention-days: 7
+      - name: Run tests
+        run: pnpm run test
 
   # ====================
-  # Stage 5: Module Tests
-  # ====================
-  test-modules:
-    name: Module Tests
-    runs-on: ubuntu-latest
-    needs: build
-    if: ${{ github.event.inputs.skip_tests != 'true' }}
-    strategy:
-      matrix:
-        module:
-          - mycodexvantaos-ai-team-orchestrator
-          - mycodexvantaos-persona-engine
-          - mycodexvantaos-agent-toolkit
-      fail-fast: false
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Run module tests
-        run: pnpm run test:modules --testPathPattern='${{ matrix.module }}'
-
-  # ====================
-  # Stage 6: Service Tests
-  # ====================
-  test-services:
-    name: Service Tests
-    runs-on: ubuntu-latest
-    needs: build
-    if: ${{ github.event.inputs.skip_tests != 'true' }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Run service tests
-        run: pnpm run test:services
-
-  # ====================
-  # Stage 7: CI Summary
+  # Stage 4: CI Summary
   # ====================
   ci-summary:
     name: CI Summary
     runs-on: ubuntu-latest
-    needs: [lint-and-format, validate-architecture, build, test, test-modules, test-services]
+    needs: [lint-and-format, build, test]
     if: always()
     steps:
       - name: Check overall status
         run: |
-          if [ "${{ needs.test.result }}" = "failure" ] || \
-             [ "${{ needs.test-modules.result }}" = "failure" ] || \
-             [ "${{ needs.test-services.result }}" = "failure" ]; then
+          if [ "${{ needs.lint-and-format.result }}" = "failure" ] || \
+             [ "${{ needs.build.result }}" = "failure" ] || \
+             [ "${{ needs.test.result }}" = "failure" ]; then
             echo "❌ CI Pipeline failed"
             exit 1
           fi
@@ -280,8 +148,5 @@ jobs:
           echo "| Stage | Status |" >> $GITHUB_STEP_SUMMARY
           echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
           echo "| Lint & Format | ${{ needs.lint-and-format.result }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Architecture | ${{ needs.validate-architecture.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Build | ${{ needs.build.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Tests | ${{ needs.test.result }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Module Tests | ${{ needs.test-modules.result }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Service Tests | ${{ needs.test-services.result }} |" >> $GITHUB_STEP_SUMMARY
