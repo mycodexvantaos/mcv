@@ -10,9 +10,10 @@ on:
 permissions:
   contents: read
   pull-requests: write
+  id-token: write
 
 env:
-  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+  CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID || '2fead4a141ec2c677eb3bf0ac535f1d5' }}
   NODE_ENV: preview
 
 jobs:
@@ -24,6 +25,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          submodules: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -40,18 +43,14 @@ jobs:
           NEXT_PUBLIC_APP_URL: https://preview.autoecoops.io
           NODE_ENV: preview
 
-      - name: Install Wrangler CLI
-        run: npm install -g wrangler
-
       - name: Deploy to Cloudflare Pages (Preview)
-        run: |
-          wrangler pages deploy .next \
-            --project-name=mycodexvantaos-preview \
-            --branch=preview-${{ github.event.pull_request.number || 'manual' }} \
-            --commit-message="Preview: ${{ github.event.pull_request.title || 'Manual preview' }}" \
-            --commit-dirty=true
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: mycodexvantaos-preview
+          directory: .next
+          wranglerVersion: '3'
 
       - name: Comment PR with preview URL
         if: github.event_name == 'pull_request'

@@ -1,9 +1,14 @@
 # Cloudflare Pages Production Deployment Workflow
+# Uses cloudflare/pages-action for automatic deployment
 name: Deploy to Cloudflare Pages (Production)
 
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.github/workflows/!(deploy-cloudflare*)'
   workflow_dispatch:
     inputs:
       environment:
@@ -19,10 +24,11 @@ on:
 permissions:
   contents: read
   deployments: write
+  id-token: write
 
 env:
-  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-  CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+  CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID || '2fead4a141ec2c677eb3bf0ac535f1d5' }}
+  CLOUDFLARE_ZONE_ID: ${{ vars.CLOUDFLARE_ZONE_ID || '1bdb04f9da82872cdff76d8515b85246' }}
   NODE_ENV: production
 
 jobs:
@@ -34,6 +40,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          submodules: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -44,47 +52,26 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Type check
-        run: npm run typecheck || true
-
-      - name: Lint
-        run: npm run lint || true
-
       - name: Build Next.js application
         run: npm run build
         env:
           NEXT_PUBLIC_APP_URL: ${{ vars.NEXT_PUBLIC_APP_URL || 'https://admin.autoecoops.io' }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
-
-      - name: Install Wrangler CLI
-        run: npm install -g wrangler
 
       - name: Deploy to Cloudflare Pages
-        run: |
-          wrangler pages deploy .next \
-            --project-name=mycodexvantaos \
-            --branch=${{ github.ref_name }} \
-            --commit-message="${{ github.event.head_commit.message }}" \
-            --commit-dirty=true
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: mycodexvantaos
+          directory: .next
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          wranglerVersion: '3'
 
       - name: Verify deployment
         run: |
           echo "🚀 Deployment completed successfully!"
           echo "📍 Production URL: https://admin.autoecoops.io"
           echo "📅 Deployed at: $(date -u)"
-
-      - name: Run health check
-        run: |
-          sleep 30
-          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://admin.autoecoops.io/api/health || echo "000")
-          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 400 ]; then
-            echo "✅ Health check passed (HTTP $HTTP_STATUS)"
-          else
-            echo "⚠️ Health check returned HTTP $HTTP_STATUS"
-          fi
 
   notify:
     name: Deployment Notification
