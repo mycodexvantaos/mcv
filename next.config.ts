@@ -34,5 +34,11 @@ const nextConfig: NextConfig = {
 
 export default nextConfig;
 
-import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
-initOpenNextCloudflareForDev();
+// Only initialize OpenNext Cloudflare for local development
+if (process.env.NODE_ENV === 'development') {
+  import("@opennextjs/cloudflare").then(({ initOpenNextCloudflareForDev }) => {
+    initOpenNextCloudflareForDev();
+  }).catch(() => {
+    // Silently ignore if not available in production
+  });
+}
