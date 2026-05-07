@@ -32,17 +32,22 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build with OpenNext for Cloudflare
-        run: npx opennextjs-cloudflare build
+      - name: Build Next.js application
+        run: npm run build
         env:
           NEXT_PUBLIC_APP_URL: https://preview.autoecoops.io
           NODE_ENV: preview
+          NEXT_PRIVATE_STANDALONE: "true"
+
+      - name: Build with OpenNext for Cloudflare (skip next build)
+        run: npx opennextjs-cloudflare build --skipNextBuild
+        env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
 

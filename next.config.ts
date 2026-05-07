@@ -5,8 +5,6 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // Note: eslint config is no longer supported in next.config in Next.js 16+
-  // Use next lint CLI or eslint config file directly instead
   images: {
     unoptimized: true, // Required for Cloudflare Pages compatibility
     remotePatterns: [
@@ -32,6 +30,7 @@ const nextConfig: NextConfig = {
   },
 };
 
+export default nextConfig;
 export default nextConfig;
 
 // Only initialize OpenNext Cloudflare for local development
