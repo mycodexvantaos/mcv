@@ -1,23 +1,26 @@
-# MyCodeXvantaOS - Studio 合併任務
+# Cloudflare Pages 部署配置任務
 
-## Completed (Previous Sessions)
-- [x] Repository migration to GitHub
-- [x] Repository analysis (package.json, workflows, infrastructure)
-- [x] Build verification (Next.js production build)
-- [x] Deep structural analysis report (docs/analysis/REPOSITORY_STRUCTURE_ANALYSIS.md)
-- [x] Phase 5: Governance Compliance Tasks
-  - [x] Remove `continue-on-error` from all CI/CD workflows
-  - [x] Integrate AI ethics / blockchain expert capabilities into governance layer
-  - [x] Implement mandatory governance event stream closed loop
+## 階段 1：創建配置文件
+[x] 創建 .cloudflare/ 目錄結構
+[x] 創建 wrangler.toml 主配置
+[x] 創建 Cloudflare 部署工作流程
+[x] 創建中介軟體和適配器
+[x] 創建部署和健康檢查腳本
 
-## Phase 7: Studio.zip 合併
-- [x] 合併 Studio 新增的 AI tools (`src/ai/tools/`)
-- [x] 合併 Studio 新增的 services (`src/services/`)
-- [x] 合併 Studio 新增的 lib 檔案 (`architecture-engine.ts`, `connectivity-manager.ts`)
-- [x] 合併 Studio 新增的 dashboard 組件 (4 個新組件)
-- [x] 合併 Studio 新增的 API routes (`src/app/api/admin/`)
-- [x] 合併 governance 檔案 (需要策略性合併)
-- [x] 合併 GitHub workflows (需要策略性合併)
-- [x] 更新 package.json 依賴
-- [x] 執行 build 驗證
-- [ ] 推送到 GitHub
+## 階段 1.5：安裝工具
+[x] 安裝 Terraform v1.15.2
+
+## 階段 2：透過瀏覽器自動化取得 GitHub Token 並配置 Secrets
+[ ] 導航到 GitHub Token 設定頁面
+[ ] 生成 Personal Access Token (classic)
+[ ] 使用 Token 配置 CLOUDFLARE_API_TOKEN Secret
+[ ] 使用 Token 配置 CLOUDFLARE_ACCOUNT_ID Secret
+[ ] 使用 Token 配置 CLOUDFLARE_ZONE_ID Secret
+
+## 階段 3：提交並推送
+[ ] 提交所有 Cloudflare 配置文件
+[ ] 推送到 GitHub
+
+## 階段 4：驗證部署
+[ ] 檢查 GitHub Actions 部署狀態
+[ ] 驗證 Cloudflare Pages 部署成功

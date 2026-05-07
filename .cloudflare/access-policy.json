@@ -1,0 +1,57 @@
+{
+  "name": "MyCodeXvantaOS Access Policy",
+  "description": "Zero Trust access policy for MyCodeXvantaOS dashboard",
+  "decision": "allow",
+  "includes": [
+    {
+      "login_method": {
+        "include": [
+          "google",
+          "github",
+          "email"
+        ]
+      }
+    }
+  ],
+  "excludes": [
+    {
+      "ip": {
+        "in": [
+          "10.0.0.0/8",
+          "172.16.0.0/12",
+          "192.168.0.0/16"
+        ]
+      }
+    }
+  ],
+  "requires": [
+    {
+      "ip": {
+        "not_in": [
+          "0.0.0.0/0"
+        ]
+      }
+    }
+  ],
+  "approval_required": false,
+  "session_duration": "24h",
+  "application": {
+    "domain": "admin.autoecoops.io",
+    "type": "self_hosted",
+    "protocols": ["https"]
+  },
+  "roles": {
+    "admin": {
+      "permissions": ["read", "write", "delete", "manage"],
+      "session_duration": "8h"
+    },
+    "editor": {
+      "permissions": ["read", "write"],
+      "session_duration": "12h"
+    },
+    "viewer": {
+      "permissions": ["read"],
+      "session_duration": "24h"
+    }
+  }
+}
