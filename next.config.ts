@@ -5,10 +5,10 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  // Note: eslint config is no longer supported in next.config in Next.js 16+
+  // Use next lint CLI or eslint config file directly instead
   images: {
+    unoptimized: true, // Required for Cloudflare Pages compatibility
     remotePatterns: [
       {
         protocol: 'https',
@@ -33,3 +33,6 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
+initOpenNextCloudflareForDev();
