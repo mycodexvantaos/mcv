@@ -6,7 +6,7 @@ import { senseGlobalPulse, PulseSensingOutput } from "@/ai/flows/global-pulse-se
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Activity, Globe, Loader2, AlertCircle, Zap, Waves, Target, ShieldCheck, Terminal } from "lucide-react";
+import { Activity, Globe, Loader2, AlertCircle, Zap, Waves, Target, ShieldCheck, Terminal, Users } from "lucide-react";
 
 export default function PulseSensingPage() {
   const [loading, setLoading] = useState(false);

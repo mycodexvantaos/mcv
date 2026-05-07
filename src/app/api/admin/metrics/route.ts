@@ -4,7 +4,7 @@ import { NativeValidationService } from '@/services/native/validation-service';
 
 export async function GET() {
   const validationService = NativeValidationService.getInstance();
-  validationService.registerHeartbeat('local-kernel-root');
+  validationService.registerHeartbeat();
   const metrics = validationService.getSystemMetrics();
 
   return NextResponse.json({
@@ -15,31 +15,28 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const { action, nodeId = 'local-kernel-root' } = await req.json().catch(() => ({ action: 'optimize' }));
+  const { action, nodeId = 'local-kernel-root' } = await req.json().catch(() => ({ action: 'heartbeat' }));
   const validationService = NativeValidationService.getInstance();
   
   let result;
   switch (action) {
+    case 'heartbeat':
+      result = validationService.registerHeartbeat();
+      break;
+    case 'metrics':
+      result = validationService.getSystemMetrics();
+      break;
     case 'optimize-ram':
-      result = validationService.optimizeRam(nodeId);
-      break;
     case 'trigger-bootstrap':
-      result = validationService.triggerBootstrap(nodeId);
-      break;
     case 'trigger-symbiosis':
-      result = validationService.triggerSymbiosis(nodeId);
-      break;
     case 'trigger-synthesis':
-      result = validationService.triggerSynthesis(nodeId);
-      break;
     case 'trigger-coverage-test':
-      result = validationService.triggerCoverageTest(nodeId);
-      break;
     case 'trigger-sovereign-handshake':
-      result = validationService.triggerSovereignHandshake(nodeId);
+      // These actions are planned but not yet implemented
+      result = validationService.registerHeartbeat();
       break;
     default:
-      result = validationService.optimizeRam(nodeId);
+      result = validationService.registerHeartbeat();
   }
   
   return NextResponse.json({

@@ -15,6 +15,7 @@ const DelegateCodingTaskInputSchema = z.object({
   codeContext: z.string().optional().describe('The existing code context that the AI agent needs to work with or use as a reference. This can be the content of a file or a relevant code snippet.'),
   filePath: z.string().optional().describe('The logical file path where the code context resides, providing additional context to the AI agent.'),
   taskType: z.enum(['generation', 'refactoring', 'testing', 'documentation', 'optimization']).optional().describe('The type of coding task to perform. Defaults to general code generation if not specified.').default('generation'),
+  isOffline: z.boolean().optional().describe('Whether the system is operating in offline mode.'),
 });
 
 export type DelegateCodingTaskInput = z.infer<typeof DelegateCodingTaskInputSchema>;

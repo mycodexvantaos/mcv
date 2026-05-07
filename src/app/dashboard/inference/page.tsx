@@ -29,7 +29,7 @@ const mockModels: ModelInstance[] = [
 ];
 
 function generateMetricsData() {
-  const data = [];
+  const data: { time: string; requests: number; latencyP50: number; latencyP99: number; errors: number; tokensIn: number; tokensOut: number; }[] = [];
   const now = Date.now();
   for (let i = 60; i >= 0; i--) {
     const t = new Date(now - i * 60000);

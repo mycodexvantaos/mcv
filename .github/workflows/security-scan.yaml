@@ -95,7 +95,7 @@ jobs:
       security-events: write
     strategy:
       matrix:
-        language: [typescript, javascript, go]
+        language: [typescript, javascript]
       fail-fast: false
     steps:
       - name: Checkout repository

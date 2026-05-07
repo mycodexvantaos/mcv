@@ -19,11 +19,14 @@ const ConversationalAiAssistantInputSchema = z.object({
       content: z.string(),
     })
   ).optional().describe('An optional array of previous messages in the conversation for context.'),
+  isOffline: z.boolean().optional().describe('Whether the system is operating in offline mode.'),
 });
 export type ConversationalAiAssistantInput = z.infer<typeof ConversationalAiAssistantInputSchema>;
 
 const ConversationalAiAssistantOutputSchema = z.object({
   answer: z.string().describe('The AI assistant\'s detailed and helpful response.'),
+  internalLog: z.string().optional().describe('Internal processing log for debugging.'),
+  actionsTaken: z.array(z.string()).optional().describe('List of actions taken by the assistant.'),
 });
 export type ConversationalAiAssistantOutput = z.infer<typeof ConversationalAiAssistantOutputSchema>;
 
