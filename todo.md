@@ -10,12 +10,11 @@
 ## 階段 1.5：安裝工具
 [x] 安裝 Terraform v1.15.2
 
-## 階段 2：透過瀏覽器自動化取得 GitHub Token 並配置 Secrets
-[ ] 導航到 GitHub Token 設定頁面
-[ ] 生成 Personal Access Token (classic)
-[ ] 使用 Token 配置 CLOUDFLARE_API_TOKEN Secret
-[ ] 使用 Token 配置 CLOUDFLARE_ACCOUNT_ID Secret
-[ ] 使用 Token 配置 CLOUDFLARE_ZONE_ID Secret
+## 階段 2：GitHub Secrets 配置
+[x] 創建 PR #9 並推送 Cloudflare 配置文件
+[x] 創建完整的部署指導文檔
+[ ] 使用者配置 GitHub Secrets（見 CLOUDFLARE_DEPLOYMENT_GUIDE.md）
+[ ] 合併 PR #9 觸發自動部署
 
 ## 階段 3：提交並推送
 [ ] 提交所有 Cloudflare 配置文件
