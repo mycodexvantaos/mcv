@@ -217,7 +217,7 @@ const mockActivityFeed = [
 ];
 
 function generateSparklineData() {
-  const data = [];
+  const data: { time: string; value: number; }[] = [];
   const now = new Date();
   for (let i = 23; i >= 0; i--) {
     const hour = new Date(now.getTime() - i * 3600000);

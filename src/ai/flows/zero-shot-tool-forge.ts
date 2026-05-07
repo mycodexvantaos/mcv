@@ -26,18 +26,14 @@ export type ToolForgeOutput = z.infer<typeof ToolForgeOutputSchema>;
 
 export async function forgeDynamicTool(input: ToolForgeInput): Promise<ToolForgeOutput> {
   const {output} = await ai.generate({
-    model: 'googleai/gemini-2.5-flash',
-    input: input,
     output: {schema: ToolForgeOutputSchema},
     prompt: `You are the Zero-Shot Tool Forge (Month 2 Protocol).
     You have encountered a novel environment. 
     
     Input Parameters:
-    Environment: {{{environmentDescription}}}
-    Goal: {{{taskGoal}}}
-    {{#if previousErrors}}
-    Previous Error Context: {{{previousErrors}}}
-    {{/if}}
+    Environment: ${input.environmentDescription}
+    Goal: ${input.taskGoal}
+    ${input.previousErrors ? `Previous Error Context: ${input.previousErrors}` : ''}
 
     Task:
     1. Reverse engineer the provided specs.

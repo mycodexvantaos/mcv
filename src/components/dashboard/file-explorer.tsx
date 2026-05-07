@@ -2,7 +2,7 @@
 
 import { Folder, File, ChevronDown, ChevronRight } from 'lucide-react';
 
-const files = [
+const files: FileItem[] = [
   {
     name: 'app',
     type: 'folder',

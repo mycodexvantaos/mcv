@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 // Time-series metrics for LM inference monitoring
 
 function generateMetricPoints(hours: number, baseValue: number, variance: number, trend: number = 0) {
-  const points = [];
+  const points: { timestamp: string; value: number; }[] = [];
   const now = new Date();
   for (let i = hours * 12; i >= 0; i--) {
     const timestamp = new Date(now.getTime() - i * 5 * 60000); // 5-min intervals

@@ -13,13 +13,14 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [isRightPanelOpen, setIsRightPanelOpen] = useState(true);
+  const [activeView, setActiveView] = useState('files');
 
   return (
     <TooltipProvider delayDuration={0}>
       <div className="flex h-screen flex-col bg-background text-foreground font-body">
         <Header />
         <div className="flex flex-1 overflow-hidden">
-          <IconSidebar />
+          <IconSidebar activeView={activeView} setActiveView={setActiveView} />
           <div className="flex flex-1 flex-col overflow-hidden">
             <div className="flex h-full">
               <div className="flex-1 flex flex-col min-w-0 overflow-auto">

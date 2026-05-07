@@ -40,7 +40,7 @@ export function SecurityPanel() {
         isOffline: mode === 'native' 
       });
       setVulnerabilities(result.vulnerabilities);
-      setAuditMode(result.auditMode);
+      setAuditMode((result.auditMode as 'connected' | 'native') ?? null);
     } catch (error: any) {
       console.error('Error scanning for vulnerabilities:', error);
     } finally {

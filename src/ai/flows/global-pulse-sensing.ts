@@ -36,8 +36,6 @@ export type PulseSensingOutput = z.infer<typeof PulseSensingOutputSchema>;
 
 export async function senseGlobalPulse(input: PulseSensingInput): Promise<PulseSensingOutput> {
   const {output} = await ai.generate({
-    model: 'googleai/gemini-2.5-flash',
-    input: input,
     output: {schema: PulseSensingOutputSchema},
     prompt: `You are the Global Pulse Monitor (Month 3 Protocol). 
     Your goal is to detect foundational instabilities in the provided data streams.
@@ -46,8 +44,8 @@ export async function senseGlobalPulse(input: PulseSensingInput): Promise<PulseS
     2. If Score < 0.3, trigger an Autonomous Investigation Task.
     3. Generate Emergent Goals that the network should independently pursue.
 
-    Streams: {{#each dataStreams}}- {{{this}}} {{/each}}
-    Region: {{{region}}}`,
+    Streams: ${input.dataStreams.map(s => '- ' + s).join('\n')}
+    Region: ${input.region ?? 'Global'}`,
   });
   return output!;
 }
