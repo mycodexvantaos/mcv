@@ -1,103 +1,78 @@
-# 🛡️ SentinelCore v2.0 — Intelligent Monitoring Defense Platform
+# 守護核心 SentinelCore v3.0
 
-Enterprise-grade silent monitoring, behavioral analysis, and threat detection platform deployed to Cloudflare Pages.
+> 兒童螢幕監護系統 — 防範賭博、色情、暴力、藥物、有害聯絡
 
-## 🔗 Live Deployment
+## 金鑰配對系統
 
-**URL:** [https://sites.super.myninja.ai/dcd72c9c-d92b-4eed-93bd-b1f6eae493d1/136be2a8/index.html](https://sites.super.myninja.ai/dcd72c9c-d92b-4eed-93bd-b1f6eae493d1/136be2a8/index.html)
+v3.0 新增完整的金鑰配對生命週期管理，取代原本任意文字輸入的驗證方式。
 
-## 🎯 Core Capabilities
+### 流程
 
-### Silent Runtime Engine
-- **Stealth Mode**: Operates invisibly on target devices — no visible indicators, notifications, or tray icons
-- **Auto-Start on Boot**: Launches silently upon device startup without user interaction
-- **Persistent Service**: Automatically restarts if the process is killed or interrupted
-- **AES-256 Encrypted Upload**: All captured data is encrypted in transit using military-grade encryption
-- **Anti-Tamper Shield**: Detects and resists uninstallation attempts
+**被觀察方（子女）**
+1. 簽署責任協議
+2. 系統自動生成 `XXXX-XXXX` 格式配對金鑰
+3. 金鑰展示畫面：顯示金鑰、複製按鈕、使用說明
+4. 再次輸入金鑰確認 → 開始消失序列 → 遁入後台
 
-### AI-Powered Threat Detection
-Six specialized detection modules:
-1. 🎰 **Gambling Detector** — Online betting and casino site identification
-2. 🔞 **Adult Content Filter** — Explicit material detection and blocking
-3. 💥 **Violence Detector** — Graphic violence and gore classification
-4. 💊 **Substance Abuse** — Drug-related content and community detection
-5. 👥 **Contact Monitor** — Flagged contacts and unknown number alerts
-6. 🎣 **Phishing/Fraud Shield** — Social engineering and scam detection
+**觀察方（監護人）**
+1. 輸入被觀察方提供的配對金鑰
+2. 後端驗證金鑰有效性（格式、存在、未過期、未配對）
+3. 建立配對連線 → 進入監控主控台
 
-### Behavioral Analysis Engine
-- Baseline behavioral profiling per device
-- Anomaly score tracking with 7-day trend visualization
-- Risk indicator dashboard with real-time scoring
-- Behavioral drift detection and pattern deviation alerts
+### API 端點
 
-### Cryptographic Audit Ledger
-- SHA-256 hash-linked chain for tamper-proof logging
-- Every action, threat detection, and configuration change is recorded
-- Chain integrity verification endpoint
-- Cryptographic proof of audit trail completeness
+| 端點 | 方法 | 說明 |
+|------|------|------|
+| `/api/keys/generate` | POST | 生成配對金鑰 |
+| `/api/keys/validate` | POST | 驗證金鑰有效性 |
+| `/api/keys/pair` | POST | 建立配對連線 |
+| `/api/keys/confirm-subject` | POST | 被觀察方確認金鑰 |
+| `/api/keys/status` | GET | 查詢金鑰狀態 |
+| `/api/keys/revoke` | POST | 撤銷金鑰 |
+| `/api/keys/list` | GET | 列出所有金鑰 |
+| `/api/health` | GET | 健康檢查 |
+| `/api/devices` | GET | 裝置列表 |
+| `/api/threats` | GET | 威脅紀錄 |
+| `/api/audit` | GET | 審計紀錄 |
+| `/api/rules` | GET | 監控規則 |
 
-## 📱 Interface Screens
+### 金鑰特性
 
-| Screen | Description |
-|--------|-------------|
-| **Command Center** | Real-time monitoring overview, threat posture ring, live activity feed |
-| **Live Monitor** | Silent screen capture view, behavioral telemetry, activity heatmap |
-| **Threat Timeline** | All detected threats with severity filters and acknowledgment |
-| **Behavior Analysis** | AI pattern recognition, anomaly scores, risk indicators |
-| **Rule Engine** | Configurable detection rules with automated response actions |
-| **Audit Ledger** | Cryptographic hash chain with integrity verification |
-| **Configuration** | Stealth settings, detection modules, device enrollment |
+- 格式：`XXXX-XXXX`（8 字元，排除容易混淆的 0/O/1/I/L）
+- 有效期：24 小時
+- 狀態：`active` → `paired` | `expired` | `revoked`
+- 審計：SHA-256 加密雜湊審計日誌
 
-## 🛠 API Endpoints (Cloudflare Worker)
+### 無 KV 回退
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/health` | Service health check |
-| GET | `/api/engine/status` | Engine running status |
-| GET | `/api/devices` | List enrolled devices |
-| POST | `/api/devices` | Enroll new device |
-| GET | `/api/devices/:id` | Get device details |
-| DELETE | `/api/devices/:id` | Remove device |
-| GET | `/api/threats` | List recent threats |
-| POST | `/api/threats` | Record new threat |
-| GET | `/api/audit` | Get audit chain |
-| POST | `/api/audit` | Append audit entry |
-| GET | `/api/audit/verify` | Verify chain integrity |
-| GET | `/api/rules` | List detection rules |
-| POST | `/api/rules` | Create new rule |
+當 Cloudflare KV 未綁定時，API 會自動回退為本地模式：
+- 金鑰生成仍正常運作
+- 驗證僅檢查格式
+- 配對自動成功
+- 審計紀錄不持久化
 
-## 📁 Project Structure
+## 部署
 
-```
-web-deploy/
-├── index.html      # Main application interface (7 screens)
-├── styles.css      # Enterprise dark theme with threat visualization
-├── app.js          # Core application logic & state management
-├── worker.js       # Cloudflare Worker API backend
-├── wrangler.toml   # Cloudflare deployment configuration
-├── _redirects      # SPA routing rules
-├── _headers        # Security headers
-└── README.md       # This file
+```bash
+# 安裝 Wrangler CLI
+npm install -g wrangler
+
+# 登入 Cloudflare
+wrangler login
+
+# 建立 KV namespace
+wrangler kv:namespace create SCREEN_MONITOR_KV
+
+# 部署 Worker
+wrangler deploy
+
+# 部署 Pages
+wrangler pages deploy . --project-name lemon-screen-monitor-app
 ```
 
-## 🔧 Technology Stack
+## 技術架構
 
-- **Frontend**: Vanilla HTML5/CSS3/ES2023 with Tailwind CSS
-- **Backend**: Cloudflare Workers (serverless)
-- **Storage**: Cloudflare KV (key-value)
-- **Cryptography**: Web Crypto API (SHA-256)
-- **Deployment**: Cloudflare Pages
-
-## ⚡ Quick Start
-
-1. Open the deployed URL in any modern browser
-2. The Silent Runtime Engine auto-starts after 1.2 seconds
-3. Demo devices are enrolled automatically
-4. Monitor the live feed, threat timeline, and behavioral analysis
-5. Configure detection rules and settings as needed
-6. Enroll additional devices via Settings → Enroll New Device
-
----
-
-*SentinelCore v2.0 — Intelligent Monitoring Defense Platform*
-*Zero-Trust Architecture • Silent Runtime • AI Behavioral Analysis*
+- **前端**：純 HTML + CSS + JavaScript，零框架依賴
+- **後端**：Cloudflare Workers + KV 無伺服器架構
+- **加密**：AES-256 模擬加密傳輸 + SHA-256 審計雜湊
+- **語言**：繁體中文（zh-Hant）

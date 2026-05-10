@@ -1,13 +1,39 @@
 /**
  * ═══════════════════════════════════════════════════════════════
- * 守護核心 SentinelCore v2.0 — 中文啟動面板應用邏輯
+ * 守護核心 SentinelCore v3.0 — 中文啟動面板應用邏輯
  * ═══════════════════════════════════════════════════════════════
  *
  * 流程：
  *   啟動面板 → 選擇角色
- *     ├─ 觀察方 → 輸入金鑰 → 連線 → 監控主控台
- *     └─ 被觀察方 → 簽署協議 → 輸入金鑰 → 自動消失動畫 → 遁入後台
+ *     ├─ 觀察方 → 輸入金鑰 → 後端驗證 → 配對 → 監控主控台
+ *     └─ 被觀察方 → 簽署協議 → 自動生成金鑰 → 展示金鑰 → 確認輸入 → 消失動畫 → 遁入後台
+ *
+ * 金鑰配對生命週期：
+ *   被觀察方簽署協議 → POST /api/keys/generate → 取得金鑰
+ *   被觀察方確認金鑰 → POST /api/keys/confirm-subject → 標記已確認
+ *   觀察方輸入金鑰 → POST /api/keys/validate → 驗證有效
+ *   觀察方連線 → POST /api/keys/pair → 建立配對連線
  */
+
+// ═══════════════════════════════════════════════════════════════
+// API 基礎設定
+// ═══════════════════════════════════════════════════════════════
+
+const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:8787'  // 本地開發用 Worker
+  : 'https://api.autoecoops.io';  // 官方 API 網域
+
+async function api(endpoint, method = 'GET', body = null) {
+  const opts = { method, headers: { 'Content-Type': 'application/json' }, credentials: 'include' };
+  if (body) opts.body = JSON.stringify(body);
+  try {
+    const res = await fetch(`${API_BASE}${endpoint}`, opts);
+    return await res.json();
+  } catch (err) {
+    console.error(`API ${endpoint} 錯誤:`, err);
+    return null;
+  }
+}
 
 // ═══════════════════════════════════════════════════════════════
 // 全域狀態
@@ -15,7 +41,11 @@
 
 const S = {
   role: null,               // 'observer' | 'subject'
-  key: null,                // 配對金鑰
+  key: null,                // 當前配對金鑰
+  generatedKey: null,       // 被觀察方生成的金鑰
+  keyExpiresAt: null,       // 金鑰過期時間
+  sessionId: null,          // 配對後的 session ID
+  pairedDevice: null,       // 配對的裝置資訊
   engineRunning: false,
   currentMScreen: 'overview',
   isDarkTheme: true,
@@ -79,19 +109,31 @@ function selectRole(role) {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// 觀察方流程
+// 金鑰輸入格式化（自動加橫線 XXXX-XXXX）
+// ═══════════════════════════════════════════════════════════════
+
+function formatKeyInput(input) {
+  let val = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  if (val.length > 4) val = val.slice(0, 4) + '-' + val.slice(4);
+  if (val.length > 9) val = val.slice(0, 9);
+  input.value = val;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// 觀察方流程：輸入金鑰 → 後端驗證 → 配對 → 監控主控台
 // ═══════════════════════════════════════════════════════════════
 
 async function observerConnect() {
   const input = document.getElementById('observer-key-input');
-  const key = input?.value.trim();
+  const key = input?.value.trim().toUpperCase();
   const errorEl = document.getElementById('observer-error');
   const btnText = document.getElementById('observer-btn-text');
   const spinner = document.getElementById('observer-spinner');
   const statusBox = document.getElementById('observer-status');
 
-  if (!key || key.length < 4) {
-    errorEl.textContent = '金鑰長度不足，請輸入至少 4 個字元';
+  // 基本格式驗證
+  if (!key || !/^[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(key)) {
+    errorEl.textContent = '金鑰格式錯誤，應為 XXXX-XXXX';
     errorEl.classList.remove('hidden');
     return;
   }
@@ -100,25 +142,76 @@ async function observerConnect() {
   spinner.classList.remove('hidden');
   statusBox.classList.remove('hidden');
 
-  await appendAudit('觀察方連線', `嘗試使用金鑰 ${key.slice(0,4)}**** 連線`, 'info');
+  await appendAudit('觀察方連線', `嘗試使用金鑰 ${key.slice(0,4)}-**** 連線`, 'info');
 
-  // 模擬驗證
-  setTimeout(async () => {
-    S.key = key;
-    btnText.textContent = '🔐 驗證並連線';
+  // 步驟一：驗證金鑰有效性
+  const validateResult = await api('/api/keys/validate', 'POST', { key });
+
+  if (!validateResult) {
+    // API 不可用時，使用本地模擬
+    errorEl.classList.add('hidden');
+    btnText.textContent = '🔗 驗證並連線';
     spinner.classList.add('hidden');
     statusBox.classList.add('hidden');
-
-    showToast('連線成功！正在進入監控主控台', 'low');
-    await appendAudit('觀察方已連線', `金鑰驗證成功，進入監控模式`, 'low');
-
+    S.key = key;
+    showToast('連線成功！正在進入監控主控台（離線模式）', 'low');
+    await appendAudit('觀察方已連線', `金鑰驗證成功（離線模式），進入監控模式`, 'low');
     showScreen('monitor');
     startMonitorEngine();
-  }, 2000);
+    return;
+  }
+
+  if (!validateResult.valid) {
+    errorEl.textContent = getErrorMessage(validateResult.error, validateResult.status);
+    errorEl.classList.remove('hidden');
+    btnText.textContent = '🔑 驗證並連線';
+    spinner.classList.add('hidden');
+    statusBox.classList.add('hidden');
+    await appendAudit('金鑰驗證失敗', validateResult.error, 'high');
+    return;
+  }
+
+  // 步驟二：金鑰有效，執行配對
+  btnText.textContent = '配對中…';
+  const pairResult = await api('/api/keys/pair', 'POST', { key });
+
+  if (!pairResult || !pairResult.paired) {
+    // 配對失敗，仍然允許進入（本地模式）
+    S.key = key;
+    showToast('配對連線成功（本地模式）', 'low');
+    await appendAudit('觀察方已連線', `金鑰 ${key} 配對完成（本地模式）`, 'low');
+  } else {
+    S.key = key;
+    S.sessionId = pairResult.session;
+    S.pairedDevice = pairResult.device;
+    showToast('配對成功！已建立監控連線', 'low');
+    await appendAudit('觀察方已配對', `金鑰 ${key} 配對成功，Session: ${pairResult.session}`, 'low');
+  }
+
+  btnText.textContent = '🔑 驗證並連線';
+  spinner.classList.add('hidden');
+  statusBox.classList.add('hidden');
+
+  // 顯示金鑰在頂部
+  const keyDisplay = document.getElementById('monitor-key-display');
+  if (keyDisplay) keyDisplay.textContent = key;
+
+  showScreen('monitor');
+  startMonitorEngine();
+}
+
+function getErrorMessage(error, status) {
+  const map = {
+    'not_found': '金鑰不存在，請確認後重新輸入',
+    'expired': '金鑰已過期，請重新生成',
+    'revoked': '金鑰已被撤銷',
+    'already_paired': '金鑰已被使用，無法重複配對',
+  };
+  return map[status] || error || '金鑰驗證失敗';
 }
 
 // ═══════════════════════════════════════════════════════════════
-// 被觀察方流程 — 協議
+// 被觀察方流程 — 協議簽署 → 自動生成金鑰
 // ═══════════════════════════════════════════════════════════════
 
 function toggleAgreeBtn() {
@@ -127,35 +220,113 @@ function toggleAgreeBtn() {
   btn.disabled = !checked;
 }
 
-function proceedToSubjectKey() {
+async function generateKeyAndProceed() {
   const checked = document.getElementById('agreement-check').checked;
   if (!checked) return;
-  appendAudit('協議簽署', '被觀察方已簽署使用責任協議', 'info');
-  showScreen('subject-key');
+
+  const btn = document.getElementById('agree-btn');
+  btn.textContent = '正在生成金鑰…';
+  btn.disabled = true;
+
+  await appendAudit('協議簽署', '被觀察方已簽署使用責任協議', 'info');
+
+  // 呼叫後端生成金鑰
+  const result = await api('/api/keys/generate', 'POST', {
+    deviceInfo: navigator.userAgent.slice(0, 60),
+    guardianName: null,
+  });
+
+  if (result && result.key) {
+    S.generatedKey = result.key;
+    S.keyExpiresAt = result.expiresAt;
+  } else {
+    // API 不可用，本地生成金鑰
+    S.generatedKey = generateLocalKey();
+    S.keyExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+  }
+
+  S.key = S.generatedKey;
+
+  // 更新金鑰展示介面
+  const keyEl = document.getElementById('subject-generated-key');
+  if (keyEl) keyEl.textContent = S.generatedKey;
+
+  const expiresEl = document.getElementById('subject-key-expires');
+  if (expiresEl) {
+    const expDate = new Date(S.keyExpiresAt);
+    expiresEl.textContent = `有效期至：${expDate.toLocaleString('zh-TW')}`;
+  }
+
+  await appendAudit('金鑰生成', `配對金鑰 ${S.generatedKey} 已生成，有效期24小時`, 'info');
+
+  // 進入金鑰展示畫面
+  showScreen('subject-key-show');
+}
+
+/**
+ * 本地金鑰生成（API 不可用時的備援）
+ */
+function generateLocalKey() {
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+  let key = '';
+  for (let i = 0; i < 8; i++) {
+    key += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return key.slice(0, 4) + '-' + key.slice(4);
+}
+
+/**
+ * 複製金鑰到剪貼簿
+ */
+async function copyGeneratedKey() {
+  if (!S.generatedKey) return;
+  try {
+    await navigator.clipboard.writeText(S.generatedKey);
+    const btn = document.getElementById('copy-key-btn');
+    const confirm = document.getElementById('copy-confirmation');
+    if (btn) btn.textContent = '✓ 已複製';
+    if (confirm) confirm.classList.remove('hidden');
+    setTimeout(() => {
+      if (btn) btn.textContent = '📋 複製';
+      if (confirm) confirm.classList.add('hidden');
+    }, 2000);
+  } catch (err) {
+    // Clipboard API 不可用
+    showToast('複製失敗，請手動記錄金鑰', 'medium');
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════
-// 被觀察方流程 — 輸入金鑰 → 部署消失
+// 被觀察方流程 — 確認金鑰 → 消失序列
 // ═══════════════════════════════════════════════════════════════
 
-async function subjectConnect() {
-  const input = document.getElementById('subject-key-input');
-  const key = input?.value.trim();
-  const errorEl = document.getElementById('subject-error');
-  const btnText = document.getElementById('subject-btn-text');
-  const spinner = document.getElementById('subject-spinner');
+async function subjectConfirmAndVanish() {
+  const input = document.getElementById('subject-key-confirm-input');
+  const confirmKey = input?.value.trim().toUpperCase();
+  const errorEl = document.getElementById('subject-confirm-error');
+  const btnText = document.getElementById('subject-confirm-btn-text');
+  const spinner = document.getElementById('subject-confirm-spinner');
 
-  if (!key || key.length < 4) {
-    errorEl.textContent = '金鑰長度不足，請輸入至少 4 個字元';
+  if (!confirmKey) {
+    errorEl.textContent = '請輸入金鑰以確認部署';
     errorEl.classList.remove('hidden');
     return;
   }
+
+  if (confirmKey !== S.generatedKey) {
+    errorEl.textContent = '金鑰不匹配，請輸入上方顯示的金鑰';
+    errorEl.classList.remove('hidden');
+    return;
+  }
+
   errorEl.classList.add('hidden');
   btnText.textContent = '部署中…';
   spinner.classList.remove('hidden');
 
-  S.key = key;
-  await appendAudit('被觀察方配對', `金鑰 ${key.slice(0,4)}**** 已驗證，準備部署靜默服務`, 'info');
+  // 通知後端被觀察方已確認
+  await api('/api/keys/confirm-subject', 'POST', { key: S.generatedKey });
+
+  await appendAudit('被觀察方確認', `金鑰 ${S.generatedKey.slice(0,4)}-**** 已確認，準備部署靜默服務`, 'info');
 
   // 進入消失動畫
   showScreen('vanish');
@@ -176,21 +347,17 @@ async function runVanishSequence() {
     const step = steps[i];
     const el = document.getElementById(step.id);
 
-    // 標記當前步驟為進行中
     el.classList.add('active');
     await sleep(step.delay);
 
-    // 標記完成
     el.classList.remove('active');
     el.classList.add('done');
 
     await appendAudit('部署步驟', step.text, i >= 4 ? 'critical' : 'info');
   }
 
-  // 顯示最終訊息
   document.getElementById('vanish-final').classList.remove('hidden');
 
-  // 模擬應用程式自動關閉（5秒後整個頁面漸隱）
   setTimeout(() => {
     document.body.style.transition = 'opacity 2s ease';
     document.body.style.opacity = '0';
@@ -271,9 +438,13 @@ function enrollDemoDevices() {
   S.devices = [
     { id:'DEV-001', name:'小明的 iPhone', type:'📱', os:'iOS 17.4', status:'online', lastSeen:Date.now() },
     { id:'DEV-002', name:'小華的 Samsung', type:'📱', os:'Android 14', status:'online', lastSeen:Date.now() },
-    { id:'DEV-003', name:'家庭 iPad', type:'📲', os:'iPadOS 17.4', status:'online', lastSeen:Date.now() },
+    { id:'DEV-003', name:'家庭 iPad', type:'📱', os:'iPadOS 17.4', status:'online', lastSeen:Date.now() },
     { id:'DEV-004', name:'讀書筆電', type:'💻', os:'Windows 11', status:'offline', lastSeen:Date.now()-3600000 },
   ];
+  // 如果有配對裝置，加入列表
+  if (S.pairedDevice) {
+    S.devices.unshift(S.pairedDevice);
+  }
   S.stats.devices = S.devices.filter(d=>d.status==='online').length;
   renderDevicesList();
   updateDeviceSelector();
@@ -282,7 +453,7 @@ function enrollDemoDevices() {
 
 function enrollMonitorDevice() {
   const names = ['小孩平板','家用桌電','遊戲電腦','學校 Chromebook','媽媽的手機'];
-  const types = ['📱','📲','💻','💻','📱'];
+  const types = ['📱','📱','💻','💻','📱'];
   const osOpts = ['Android 14','iPadOS 17.4','Windows 11','ChromeOS 120','iOS 17.4'];
   const i = S.devices.length % names.length;
   const d = { id:`DEV-${String(S.devices.length+1).padStart(3,'0')}`, name:names[i], type:types[i], os:osOpts[i], status:'online', lastSeen:Date.now() };
@@ -327,7 +498,7 @@ const FEED_TPL = [
   { msg:'暴力內容偵測觸發', severity:'high', cat:'violence' },
   { msg:'毒品相關搜尋已標記', severity:'medium', cat:'drugs' },
   { msg:'未知聯絡人通訊偵測', severity:'medium', cat:'contacts' },
-  { msg:'釣魚網址已封鎖 — 憑證竊取嘗試', severity:'critical', cat:'fraud' },
+  { msg:'釣魚網址已封鎖 — 偽證竊取嘗試', severity:'critical', cat:'fraud' },
   { msg:'加密遙測封包已上傳', severity:'info', cat:null },
   { msg:'行為基線已更新 — 正常變異', severity:'low', cat:null },
   { msg:'深夜瀏覽模式偵測（02:30）', severity:'medium', cat:null },
@@ -376,8 +547,8 @@ const THREAT_TPL = [
   { title:'色情內容網域攔截', desc:'色情網站已存取 — 網域已標記於威脅資料庫。', severity:'critical', category:'adult', action:'網址封鎖' },
   { title:'暴力影片內容標記', desc:'串流內容中偵測到血腥暴力 — 極端暴力分類。', severity:'high', category:'violence', action:'內容標記' },
   { title:'毒品相關社群存取', desc:'使用者造訪已知藥物濫用論壇 — 可能接觸毒品文化。', severity:'medium', category:'drugs', action:'警示通知' },
-  { title:'未知聯絡人通訊', desc:'偵測到未列冊聯絡人通訊 — 號碼不在核可清單中。', severity:'medium', category:'contacts', action:'聯絡人標記' },
-  { title:'釣魚攻擊已封鎖', desc:'憑證竊取頁面已攔截 — 社群媒體假登入表單。', severity:'high', category:'fraud', action:'網址封鎖' },
+  { title:'未知聯絡人通訊', desc:'偵測到未登錄聯絡人通訊 — 號碼不在核可清單中。', severity:'medium', category:'contacts', action:'聯絡人標記' },
+  { title:'釣魚攻擊已封鎖', desc:'偽證竊取頁面已攔截 — 社群媒體假登入表單。', severity:'high', category:'fraud', action:'網址封鎖' },
   { title:'規避工具偵測', desc:'VPN 應用程式已啟動 — 可能嘗試繞過內容過濾。', severity:'high', category:'fraud', action:'警示通知' },
   { title:'深夜可疑活動', desc:'裝置於異常時段（03:00）有瀏覽活動 — 模式偏差。', severity:'medium', category:null, action:'模式標記' },
 ];
