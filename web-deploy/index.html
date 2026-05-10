@@ -22,21 +22,20 @@
     }
   </script>
   <link rel="stylesheet" href="styles.css" />
-  <script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
 </head>
 <body class="bg-surface text-gray-100 min-h-screen font-sans">
   <div id="app">
 
-    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
     <!-- 啟動面板 — 角色選擇                                  -->
-    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
     <div id="screen-launch" class="screen active">
       <div class="launch-container">
         <!-- Logo 區 -->
         <div class="text-center mb-12">
           <div class="text-6xl mb-4">🛡️</div>
           <h1 class="text-3xl font-bold tracking-wider text-sentinel-400 mb-2">守護核心</h1>
-          <p class="text-sm text-gray-500 tracking-widest">SENTINELCORE v2.0</p>
+          <p class="text-sm text-gray-500 tracking-widest">SENTINELCORE v3.0</p>
           <p class="text-xs text-gray-600 mt-3">智慧監控防禦平台</p>
         </div>
 
@@ -69,9 +68,9 @@
       </div>
     </div>
 
-    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
     <!-- 觀察方 — 輸入金鑰                                    -->
-    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
     <div id="screen-observer-key" class="screen hidden">
       <div class="key-container">
         <button onclick="goBack('launch')" class="back-btn">← 返回</button>
@@ -84,11 +83,11 @@
 
         <div class="key-form">
           <label class="key-label">配對金鑰</label>
-          <input type="text" id="observer-key-input" class="key-input" placeholder="請輸入金鑰…" maxlength="24" autocomplete="off" />
+          <input type="text" id="observer-key-input" class="key-input" placeholder="XXXX-XXXX" maxlength="9" autocomplete="off" oninput="formatKeyInput(this)" />
           <p class="key-hint">金鑰由被觀察方裝置產生，請向裝置持有人索取</p>
 
           <button onclick="observerConnect()" id="observer-connect-btn" class="connect-btn">
-            <span id="observer-btn-text">🔐 驗證並連線</span>
+            <span id="observer-btn-text">🔑 驗證並連線</span>
             <div id="observer-spinner" class="spinner-sm hidden"></div>
           </button>
 
@@ -105,9 +104,9 @@
       </div>
     </div>
 
-    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
     <!-- 被觀察方 — 責任協議                                  -->
-    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
     <div id="screen-subject-agreement" class="screen hidden">
       <div class="agreement-container">
         <button onclick="goBack('launch')" class="back-btn">← 返回</button>
@@ -125,7 +124,7 @@
             <p>本協議由裝置持有人（以下簡稱「授權方」）與監控操作者（以下簡稱「觀察方」）共同遵守：</p>
 
             <h4>第一條 — 授權聲明</h4>
-            <p>授權方確認知悉並同意：本應用程式將於裝置上安裝靜默監控服務，包含但不限於螢幕內容擷取、應用程式使用記錄、網路瀏覽紀錄、通訊錄與通話記錄之收集與傳輸。</p>
+            <p>授權方確認知曉並同意：本應用程式將於裝置上安裝靜默監控服務，包含但不限於螢幕內容擷取、應用程式使用記錄、網路瀏覽紀錄、通訊錄與通話記錄之收集與傳輸。</p>
 
             <h4>第二條 — 用途限制</h4>
             <p>本平台僅限用於以下合法用途：</p>
@@ -140,7 +139,7 @@
             <p>所有收集之資料均以 AES-256 加密傳輸，僅授權觀察方得以解密存取。平台營運方不儲存、不檢視任何監控內容。</p>
 
             <h4>第四條 — 靜默運行聲明</h4>
-            <p>授權方確認知悉：配對完成後，本應用程式將自動關閉介面並刪除可見圖示，轉為系統代碼於背景永久執行。此功能旨在保護監控之有效性，避免因誤操作而終止保護。</p>
+            <p>授權方確認知曉：配對完成後，本應用程式將自動關閉介面並刪除可見圖示，轉為系統代碼於背景永久執行。此功能旨在保護監控之有效性，避免因誤操作而終止保護。</p>
 
             <h4>第五條 — 責任條款</h4>
             <p>觀察方承諾合理使用本平台，不得用於非法監視、侵犯隱私或任何違反法律之行為。如因不當使用造成損害，由使用人自行承擔全部法律責任。</p>
@@ -161,52 +160,62 @@
             <input type="checkbox" id="agreement-check" onchange="toggleAgreeBtn()" />
             <span class="text-sm">我已詳閱並同意《使用責任協議》所有條款</span>
           </label>
-          <button onclick="proceedToSubjectKey()" id="agree-btn" class="agree-btn" disabled>
-            簽署協議並繼續
+          <button onclick="generateKeyAndProceed()" id="agree-btn" class="agree-btn" disabled>
+            簽署協議並生成配對金鑰
           </button>
         </div>
       </div>
     </div>
 
-    <!-- ══════════════════════════════════════════════════════ -->
-    <!-- 被觀察方 — 輸入金鑰                                  -->
-    <!-- ══════════════════════════════════════════════════════ -->
-    <div id="screen-subject-key" class="screen hidden">
-      <div class="key-container">
-        <button onclick="goBack('subject-agreement')" class="back-btn">← 返回</button>
-
-        <div class="text-center mb-8">
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- 被觀察方 — 金鑰展示（簽署協議後自動生成）              -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <div id="screen-subject-key-show" class="screen hidden">
+      <div class="key-show-container">
+        <div class="text-center mb-6">
           <div class="text-4xl mb-3">🔑</div>
-          <h2 class="text-xl font-bold mb-1">輸入配對金鑰</h2>
-          <p class="text-xs text-gray-500">金鑰驗證後，應用程式將自動部署至背景</p>
+          <h2 class="text-xl font-bold mb-1">配對金鑰已生成</h2>
+          <p class="text-xs text-gray-500">請將此金鑰提供給監護人（觀察方），然後在下方輸入確認</p>
         </div>
 
-        <div class="key-form">
-          <label class="key-label">配對金鑰</label>
-          <input type="text" id="subject-key-input" class="key-input" placeholder="請輸入金鑰…" maxlength="24" autocomplete="off" />
-          <p class="key-hint">驗證完成後，應用程式將自動關閉並刪除可見介面</p>
-
-          <button onclick="subjectConnect()" id="subject-connect-btn" class="connect-btn connect-btn-vanish">
-            <span id="subject-btn-text">🔑 驗證並部署</span>
-            <div id="subject-spinner" class="spinner-sm hidden"></div>
-          </button>
-
-          <div id="subject-error" class="error-msg hidden"></div>
+        <!-- 金鑰展示卡 -->
+        <div class="key-display-card">
+          <div class="key-display-label">配對金鑰</div>
+          <div class="key-display-value" id="subject-generated-key">----</div>
+          <div class="key-display-meta">
+            <span id="subject-key-expires">有效期：24小時</span>
+            <button onclick="copyGeneratedKey()" class="copy-key-btn" id="copy-key-btn">📋 複製</button>
+          </div>
+          <div class="key-display-copied hidden" id="copy-confirmation">✓ 已複製到剪貼簿</div>
         </div>
 
-        <div id="subject-warning" class="warning-box">
-          <div class="text-xs">
-            <span class="text-threat-high font-bold">⚠ 重要提醒：</span>
-            配對完成後本應用程式將<span class="text-threat-critical font-bold">自動關閉並刪除</span>，
-            監控服務轉為系統代碼於背景永久執行，<span class="text-threat-critical font-bold">不可被觀測或終止</span>。
+        <div class="key-instructions">
+          <div class="text-xs text-gray-400 leading-relaxed">
+            <p class="font-bold text-gray-300 mb-2">📋 操作說明</p>
+            <p>1. 將上方金鑰提供給監護人（觀察方）</p>
+            <p>2. 監護人將在「觀察方」介面輸入此金鑰進行配對</p>
+            <p>3. 在下方輸入相同金鑰以確認部署</p>
+            <p class="text-threat-high mt-2 font-bold">⚠ 確認後本應用程式將自動消失，監控服務永久運行於背景</p>
           </div>
         </div>
+
+        <!-- 確認輸入金鑰 -->
+        <div class="key-form mt-6">
+          <label class="key-label">輸入金鑰以確認部署</label>
+          <input type="text" id="subject-key-confirm-input" class="key-input" placeholder="再次輸入金鑰確認…" maxlength="9" autocomplete="off" oninput="formatKeyInput(this)" />
+          <div id="subject-confirm-error" class="error-msg hidden"></div>
+
+          <button onclick="subjectConfirmAndVanish()" id="subject-confirm-btn" class="connect-btn connect-btn-vanish">
+            <span id="subject-confirm-btn-text">🔑 確認並部署至背景</span>
+            <div id="subject-confirm-spinner" class="spinner-sm hidden"></div>
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
     <!-- 被觀察方 — 部署消失動畫                              -->
-    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
     <div id="screen-vanish" class="screen hidden">
       <div class="vanish-container">
         <div id="vanish-animation" class="text-center">
@@ -248,15 +257,16 @@
       </div>
     </div>
 
-    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
     <!-- 觀察方 — 監控主控台                                  -->
-    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
     <div id="screen-monitor" class="screen hidden">
       <!-- 頂部欄 -->
       <header class="fixed top-0 left-0 right-0 z-50 bg-surface/98 backdrop-blur border-b border-surface-border h-12 flex items-center px-4">
         <div class="flex items-center gap-2">
           <span class="text-lg">🛡️</span>
           <span class="text-sm font-bold tracking-wider text-sentinel-400">守護核心</span>
+          <span class="text-[10px] text-gray-600 ml-2">金鑰: <span id="monitor-key-display" class="text-sentinel-300 font-mono">----</span></span>
         </div>
         <div class="ml-auto flex items-center gap-3">
           <div id="monitor-engine-status" class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-lighter text-[10px]">
@@ -271,7 +281,7 @@
 
       <!-- 側邊欄 -->
       <nav id="monitor-sidebar" class="fixed left-0 top-12 bottom-0 w-12 bg-surface/98 border-r border-surface-border z-40 flex flex-col items-center py-3 gap-1">
-        <button onclick="navMonitor('overview')" data-mnav="overview" class="nav-btn active" title="總覽">◉</button>
+        <button onclick="navMonitor('overview')" data-mnav="overview" class="nav-btn active" title="總覽">◎</button>
         <button onclick="navMonitor('live')" data-mnav="live" class="nav-btn" title="即時監控">◈</button>
         <button onclick="navMonitor('threats')" data-mnav="threats" class="nav-btn" title="威脅時間軸">⚡</button>
         <button onclick="navMonitor('behavior')" data-mnav="behavior" class="nav-btn" title="行為分析">◇</button>
@@ -332,8 +342,8 @@
                 <div class="cat-row"><span class="cat-label">🎰 賭博</span><div class="cat-bar-bg"><div class="cat-bar bg-threat-critical" data-mcat="gambling" style="width:0%"></div></div><span class="cat-val" data-mcat-val="gambling">0</span></div>
                 <div class="cat-row"><span class="cat-label">🔞 色情</span><div class="cat-bar-bg"><div class="cat-bar bg-threat-high" data-mcat="adult" style="width:0%"></div></div><span class="cat-val" data-mcat-val="adult">0</span></div>
                 <div class="cat-row"><span class="cat-label">💥 暴力</span><div class="cat-bar-bg"><div class="cat-bar bg-threat-high" data-mcat="violence" style="width:0%"></div></div><span class="cat-val" data-mcat-val="violence">0</span></div>
-                <div class="cat-row"><span class="cat-label">💊 毒品</span><div class="cat-bar-bg"><div class="cat-bar bg-threat-medium" data-mcat="drugs" style="width:0%"></div></div><span class="cat-val" data-mcat-val="drugs">0</span></div>
-                <div class="cat-row"><span class="cat-label">👥 有害接觸</span><div class="cat-bar-bg"><div class="cat-bar bg-threat-medium" data-mcat="contacts" style="width:0%"></div></div><span class="cat-val" data-mcat-val="contacts">0</span></div>
+                <div class="cat-row"><span class="cat-label">💉 毒品</span><div class="cat-bar-bg"><div class="cat-bar bg-threat-medium" data-mcat="drugs" style="width:0%"></div></div><span class="cat-val" data-mcat-val="drugs">0</span></div>
+                <div class="cat-row"><span class="cat-label">👤 有害接觸</span><div class="cat-bar-bg"><div class="cat-bar bg-threat-medium" data-mcat="contacts" style="width:0%"></div></div><span class="cat-val" data-mcat-val="contacts">0</span></div>
                 <div class="cat-row"><span class="cat-label">🎣 詐欺/釣魚</span><div class="cat-bar-bg"><div class="cat-bar bg-threat-info" data-mcat="fraud" style="width:0%"></div></div><span class="cat-val" data-mcat-val="fraud">0</span></div>
               </div>
             </div>
@@ -456,7 +466,7 @@
                 <div class="flex items-center justify-between"><div><div class="text-xs font-bold">🔞 色情過濾器</div><div class="text-[10px] text-gray-500">色情內容偵測與封鎖</div></div><button onclick="toggleMonitorModule('adult')" id="m-mod-adult" class="toggle-btn on">開</button></div>
                 <div class="flex items-center justify-between"><div><div class="text-xs font-bold">💥 暴力偵測器</div><div class="text-[10px] text-gray-500">血腥暴力內容辨識</div></div><button onclick="toggleMonitorModule('violence')" id="m-mod-violence" class="toggle-btn on">開</button></div>
                 <div class="flex items-center justify-between"><div><div class="text-xs font-bold">💊 藥物濫用偵測</div><div class="text-[10px] text-gray-500">毒品相關內容與社群</div></div><button onclick="toggleMonitorModule('drugs')" id="m-mod-drugs" class="toggle-btn on">開</button></div>
-                <div class="flex items-center justify-between"><div><div class="text-xs font-bold">👥 接觸監控器</div><div class="text-[10px] text-gray-500">標記聯絡人與未知號碼</div></div><button onclick="toggleMonitorModule('contacts')" id="m-mod-contacts" class="toggle-btn on">開</button></div>
+                <div class="flex items-center justify-between"><div><div class="text-xs font-bold">👤 接觸監控器</div><div class="text-[10px] text-gray-500">標記聯絡人與未知號碼</div></div><button onclick="toggleMonitorModule('contacts')" id="m-mod-contacts" class="toggle-btn on">開</button></div>
                 <div class="flex items-center justify-between"><div><div class="text-xs font-bold">🎣 釣魚/詐欺護盾</div><div class="text-[10px] text-gray-500">社交工程與詐騙偵測</div></div><button onclick="toggleMonitorModule('fraud')" id="m-mod-fraud" class="toggle-btn on">開</button></div>
               </div>
             </div>

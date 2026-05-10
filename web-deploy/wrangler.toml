@@ -3,6 +3,17 @@ name = "lemon-screen-monitor-app"
 compatibility_date = "2025-05-07"
 compatibility_flags = ["nodejs_compat"]
 
+# 自訂網域路由 — api.autoecoops.io
+[[routes]]
+pattern = "api.autoecoops.io/*"
+custom_domain = true
+
+# KV namespace binding（金鑰配對系統必需）
+# 建立方式：wrangler kv:namespace create SCREEN_MONITOR_KV
+[[kv_namespaces]]
+binding = "SCREEN_MONITOR_KV"
+id = "SCREEN_MONITOR_KV_NAMESPACE_ID"
+
 # Pages project configuration
 [site]
 bucket = "."
@@ -10,12 +21,16 @@ bucket = "."
 # Environment variables
 [vars]
 APP_ENV = "production"
-APP_NAME = "ScreenMonitor"
-APP_VERSION = "1.0.0"
+APP_NAME = "SentinelCore"
+APP_VERSION = "3.0.0"
+ALLOWED_ORIGINS = "https://autoecoops.io,https://www.autoecoops.io,https://app.autoecoops.io"
 
 # Production environment
 [env.production]
 name = "lemon-screen-monitor-app"
+routes = [
+  { pattern = "api.autoecoops.io/*", custom_domain = true }
+]
 
 [env.production.vars]
 APP_ENV = "production"
