@@ -36,31 +36,38 @@ jobs:
     name: Build & Deploy to Cloudflare
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment || 'production' }}
-    
+    # Skip if CLOUDFLARE_API_TOKEN is not configured
+    if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           submodules: false
 
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Debug environment
         run: |
           echo "Node version: $(node --version)"
-          echo "npm version: $(npm --version)"
+          echo "pnpm version: $(pnpm --version)"
           echo "NODE_ENV: $NODE_ENV"
           ls -la .env* 2>/dev/null || echo "No .env files"
 
       - name: Build Next.js application
-        run: npm run build
+        run: pnpm run build
         env:
           NODE_ENV: production
           NEXT_PRIVATE_STANDALONE: "true"
@@ -74,10 +81,10 @@ jobs:
       - name: Verify build output
         run: |
           if [ -d ".open-next" ]; then
-            echo "✅ OpenNext build output exists at .open-next/"
+            echo "OpenNext build output exists at .open-next/"
             ls -la .open-next/ | head -15
           else
-            echo "❌ OpenNext build output not found at .open-next/"
+            echo "OpenNext build output not found at .open-next/"
             exit 1
           fi
 
@@ -89,21 +96,23 @@ jobs:
 
       - name: Verify deployment
         run: |
-          echo "🚀 Deployment completed successfully!"
-          echo "📍 Production URL: https://admin.autoecoops.io"
-          echo "📅 Deployed at: $(date -u)"
+          echo "Deployment completed successfully!"
+          echo "Production URL: https://admin.autoecoops.io"
+          echo "Deployed at: $(date -u)"
 
   notify:
     name: Deployment Notification
     needs: build-and-deploy
     runs-on: ubuntu-latest
     if: always()
-    
+
     steps:
       - name: Send deployment notification
         run: |
           if [ "${{ needs.build-and-deploy.result }}" = "success" ]; then
-            echo "✅ Deployment to Cloudflare succeeded!"
+            echo "Deployment to Cloudflare succeeded!"
+          elif [ "${{ needs.build-and-deploy.result }}" = "skipped" ]; then
+            echo "Deployment skipped (CLOUDFLARE_API_TOKEN not configured)."
           else
-            echo "❌ Deployment to Cloudflare failed!"
+            echo "Deployment to Cloudflare failed!"
           fi

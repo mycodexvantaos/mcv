@@ -1,15 +1,9 @@
 # === path: .github/workflows/ci.yaml ===
-name: Main CI Pipeline
+# NOTE: This workflow is superseded by unified-ci.yaml.
+# It is kept for reference and runs only on manual dispatch.
+name: Main CI Pipeline (Legacy)
 
 on:
-  push:
-    branches:
-      - main
-      - 'feature/**'
-      - 'fix/**'
-  pull_request:
-    branches:
-      - main
   workflow_dispatch:
 
 concurrency:
@@ -102,32 +96,3 @@ jobs:
         run: pnpm run build
         env:
           NODE_ENV: production
-
-  security-scans:
-    name: Security Scans
-    runs-on: ubuntu-latest
-    needs: lint-and-format
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  final-check:
-    name: Final Check
-    runs-on: ubuntu-latest
-    if: always()
-    needs:
-      - build
-      - security-scans
-    steps:
-      - name: Check results
-        run: |
-          if [ "${{ needs.build.result }}" = "failure" ] || [ "${{ needs.security-scans.result }}" = "failure" ]; then
-            echo "❌ CI Pipeline failed"
-            exit 1
-          fi
-          echo "✅ All CI checks passed successfully."

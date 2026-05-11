@@ -1,10 +1,9 @@
-name: MyCodeXvantaOS Testing
+# NOTE: This workflow is superseded by unified-ci.yaml.
+# It is kept for reference and runs only on manual dispatch.
+name: MyCodeXvantaOS Testing (Legacy)
 
 on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   unit-tests:
@@ -49,7 +48,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build packages
+      - name: Build application
         run: pnpm build
 
       - name: Run integration tests

@@ -23,24 +23,29 @@ jobs:
     runs-on: ubuntu-latest
     environment: preview
     if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           submodules: false
 
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Build Next.js application
-        run: npm run build
+        run: pnpm run build
         env:
           NEXT_PUBLIC_APP_URL: https://preview.autoecoops.io
           NODE_ENV: preview
@@ -68,11 +73,11 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: `🚀 **Preview deployment ready!**
-                
-                📍 **Preview URL**: https://preview.autoecoops.io
-                
-                ✅ Built from commit: \`${context.sha.substring(0, 7)}\`
-                📅 Deployed at: ${new Date().toISOString()}
-                
-                > This preview will be updated with new commits to this PR.`
+
+              📍 **Preview URL**: https://preview.autoecoops.io
+
+              ✅ Built from commit: \`${context.sha.substring(0, 7)}\`
+              📅 Deployed at: ${new Date().toISOString()}
+
+              > This preview will be updated with new commits to this PR.`
             })

@@ -8,17 +8,17 @@ on:
 
 jobs:
   warm-cache:
-    name: "🔥 Warm Cache"
+    name: "Warm Cache"
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [18, 20]
+        node-version: [20, 22]
 
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v3
+      - uses: pnpm/action-setup@v4
         with:
           version: 9
 
@@ -33,8 +33,8 @@ jobs:
       - name: Build
         run: pnpm run build
 
-      - name: Cache Turbo
+      - name: Cache Next.js build
         uses: actions/cache/save@v4
         with:
-          path: .turbo
-          key: turbo-${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ github.sha }}
+          path: .next/cache
+          key: nextjs-${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ github.sha }}

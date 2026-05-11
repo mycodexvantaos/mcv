@@ -1,7 +1,6 @@
 # === path: .github/workflows/security-scan.yaml ===
 # Unified Security Scanning Pipeline for MyCodeXvantaOS
-# Consolidates: checkov-scan.yaml, codeql-analysis.yml, gitleaks.yaml, semgrep.yaml, trivy-scan.yaml
-# Version: 2.0.0
+# Version: 2.1.0
 
 name: Security Scan
 
@@ -67,21 +66,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Semgrep
-        uses: returntocorp/semgrep-action@v1
+        uses: semgrep/semgrep-action@v1
         with:
           config: >-
             p/security-audit
             p/secrets
             p/typescript
             p/javascript
-          generateSarif: '1'
-          sarifOutputFile: semgrep.sarif
-
-      - name: Upload Semgrep SARIF
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: semgrep.sarif
-          category: semgrep
+        env:
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
 
   # ====================
   # CodeQL Analysis
@@ -189,4 +182,4 @@ jobs:
           echo "| Checkov (IaC) | ${{ needs.iac-scan.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Trivy (Container) | ${{ needs.container-scan.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "📅 Scan completed at: $(date -u)" >> $GITHUB_STEP_SUMMARY
+          echo "Scan completed at: $(date -u)" >> $GITHUB_STEP_SUMMARY
