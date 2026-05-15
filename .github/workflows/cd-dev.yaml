@@ -14,6 +14,7 @@ concurrency:
 permissions:
   contents: read
   id-token: write # for OIDC to cloud providers
+  workflows: write # for GitHub App to update workflow files
 
 jobs:
   deploy-dev:
