@@ -80,11 +80,13 @@ jobs:
 
       - name: Verify build output
         run: |
+          echo "Listing .open-next/ directory:"
           if [ -d ".open-next" ]; then
             echo "OpenNext build output exists at .open-next/"
             ls -la .open-next/ | head -15
           else
             echo "OpenNext build output not found at .open-next/"
+            ls -la
             exit 1
           fi
 
