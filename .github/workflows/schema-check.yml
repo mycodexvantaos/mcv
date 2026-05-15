@@ -1,0 +1,19 @@
+name: Schema Check
+
+on:
+  push:
+    paths:
+      - 'contracts/schemas/**'
+  pull_request:
+    paths:
+      - 'contracts/schemas/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate JSON Schemas
+        run: |
+          chmod +x tools/validators/validate-schemas.sh
+          ./tools/validators/validate-schemas.sh

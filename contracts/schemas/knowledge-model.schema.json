@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mycodexvantaos.com/schemas/knowledge-model.schema.json",
+  "title": "Knowledge Model",
+  "description": "Knowledge model types",
+  "type": "object",
+  "definitions": {
+    "Document": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "collectionId": {
+          "type": "string"
+        },
+        "filename": {
+          "type": "string"
+        },
+        "contentType": {
+          "type": "string"
+        },
+        "phase": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "collectionId",
+        "filename"
+      ]
+    },
+    "DocumentChunk": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "documentId": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "tokenCount": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "documentId",
+        "content"
+      ]
+    },
+    "KnowledgeCollection": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "embeddingModel": {
+          "type": "string"
+        },
+        "documentCount": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "displayName"
+      ]
+    }
+  }
+}

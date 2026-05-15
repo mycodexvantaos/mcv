@@ -1,0 +1,19 @@
+{
+  "name": "@mycodexvantaos/mycodexvantaos-memory-model",
+  "version": "0.1.0",
+  "description": "Memory model - memory item, candidate, relation, conflict, dream run, dream action, dream report",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/",
+    "test": "echo \"TODO: add tests\" && exit 0"
+  },
+  "keywords": ["mycodexvantaos", "memory-model"],
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/node": "^20.0.0"
+  }
+}

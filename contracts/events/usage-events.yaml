@@ -1,0 +1,9 @@
+category: usage
+description: Event contracts for usage domain
+events:
+  - usage.api-call-recorded
+  - usage.token-usage-recorded
+  - usage.storage-bytes-recorded
+  - usage.rate-limit-checked
+  - usage.quota-warning
+  - usage.quota-exceeded

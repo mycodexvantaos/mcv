@@ -1,0 +1,22 @@
+{
+  "name": "@mycodexvantaos/mycodexvantaos-resource-model",
+  "version": "0.1.0",
+  "description": "Resource model - resource kinds, metadata, spec, status, lifecycle, references",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/",
+    "test": "echo \"TODO: add tests\" && exit 0"
+  },
+  "keywords": ["mycodexvantaos", "resource-model"],
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/node": "^20.0.0"
+  },
+  "dependencies": {
+    "@mycodexvantaos/core": "workspace:*"
+  }
+}

@@ -1,0 +1,22 @@
+id: memory-store
+category: agent
+display_name: Memory Store
+description: Memory item CRUD and relation management
+resource_types: []
+permissions:
+  - action: read
+    roles: [workspace-viewer, workspace-member, workspace-owner, platform-admin]
+  - action: write
+    roles: [workspace-member, workspace-owner, platform-admin]
+  - action: admin
+    roles: [workspace-owner, platform-admin]
+events: []
+usage_metrics: []
+runtime:
+  portable: true
+  supported:
+    - cloudflare-workers
+    - node-server
+    - docker-container
+audit:
+  required: true

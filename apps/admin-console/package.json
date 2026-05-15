@@ -1,0 +1,11 @@
+{
+  "name": "@mycodexvantaos/admin-console",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Admin console for platform management",
+  "type": "module",
+  "scripts": {
+    "dev": "echo \"TODO: setup Next.js dev\" && exit 0"
+  },
+  "license": "UNLICENSED"
+}

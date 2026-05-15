@@ -1,0 +1,26 @@
+id: memory-dream-policy
+description: Policy for memory dream operations - architecture decisions require review
+rules:
+  - effect: require-review
+    subject:
+      service: memory-dream
+    action: memory-item-deprecate,memory-item-merge
+    resource: memory-item
+    condition:
+      memory_type: decision
+      tags_contains: ['architecture']
+
+  - effect: allow
+    subject:
+      roles: ['workspace-owner', 'platform-admin']
+    action: dream:run
+    resource: dream-run
+
+  - effect: allow
+    subject:
+      service: memory-dream
+    action: dream:execute
+    resource: dream-run
+    condition:
+      mode: proposal
+

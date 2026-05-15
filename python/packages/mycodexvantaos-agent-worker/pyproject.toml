@@ -1,0 +1,35 @@
+[project]
+name = "mycodexvantaos-agent-worker"
+version = "0.1.0"
+description = "Agent Worker - AI-powered agent execution for RAG, tool use, and multi-step reasoning"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+    {name = "NinjaTeam AI", email = "ai-team@ninjatech.ai"},
+]
+dependencies = [
+    "pydantic>=2.9.0",
+    "pydantic-settings>=2.5.0",
+]
+
+[project.optional-dependencies]
+llm = [
+    "openai>=1.30.0",
+    "anthropic>=0.25.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["mycodexvantaos_agent_worker"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.mypy]
+python_version = "3.11"
+strict = true

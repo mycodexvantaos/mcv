@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mycodexvantaos.com/schemas/runtime-adapter.schema.json",
+  "title": "Runtime Adapter",
+  "description": "Runtime and adapter definitions for multi-runtime support",
+  "type": "object",
+  "definitions": {
+    "RuntimeDefinition": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "supportedServices": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "selfHostable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "displayName"
+      ]
+    },
+    "ProviderDefinition": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "runtimeId": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "runtimeId",
+        "category"
+      ]
+    }
+  }
+}
