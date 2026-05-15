@@ -1,0 +1,27 @@
+{
+  "name": "@mycodexvantaos/api-worker",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cloudflare Worker API entry point for the MyCodeXvantaOS platform",
+  "type": "module",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "db:migrate": "wrangler d1 execute mycodexvantaos-db --file=../../migrations/d1/001_initial_schema.sql",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@mycodexvantaos/core": "workspace:*",
+    "@mycodexvantaos/ports": "workspace:*",
+    "@mycodexvantaos/application": "workspace:*",
+    "@mycodexvantaos/adapters": "workspace:*"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241205.0",
+    "typescript": "^5.4.0",
+    "wrangler": "^3.99.0"
+  },
+  "license": "UNLICENSED"
+}

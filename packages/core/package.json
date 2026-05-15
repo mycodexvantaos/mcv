@@ -1,0 +1,24 @@
+{
+  "name": "@mycodexvantaos/core",
+  "version": "1.0.0-constitution",
+  "description": "MyCodeXvantaOS platform constitution — five divine models that define what IS",
+  "type": "module",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./shared": "./shared/index.ts",
+    "./service-catalog": "./service-catalog/index.ts",
+    "./resource-model": "./resource-model/index.ts",
+    "./policy-model": "./policy-model/index.ts",
+    "./audit-model": "./audit-model/index.ts",
+    "./knowledge-model": "./knowledge-model/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/"
+  },
+  "keywords": ["platform", "constitution", "service-catalog", "resource-model", "policy-model", "audit-model", "knowledge-model"],
+  "license": "UNLICENSED",
+  "private": true
+}

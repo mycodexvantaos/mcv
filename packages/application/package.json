@@ -1,0 +1,26 @@
+{
+  "name": "@mycodexvantaos/application",
+  "version": "1.0.0-constitution",
+  "description": "MyCodeXvantaOS application services — 8 service categories with use-case facades",
+  "type": "module",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./identity": "./identity/index.ts",
+    "./workspace": "./workspace/index.ts",
+    "./knowledge": "./knowledge/index.ts",
+    "./agent": "./agent/index.ts",
+    "./model": "./model/index.ts",
+    "./audit": "./audit/index.ts",
+    "./usage": "./usage/index.ts",
+    "./automation": "./automation/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/"
+  },
+  "keywords": ["application", "services", "use-cases"],
+  "license": "UNLICENSED",
+  "private": true
+}

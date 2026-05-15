@@ -1,12 +1,23 @@
+# ⚠️ NON-MVP — This service definition is deferred to a future release.
+# It is kept for planning reference only. Do not implement in the MVP phase.
+# Rationale: Memory Dream (autonomous reinforcement & synthesis) depends on
+# mature knowledge-store + agent-chat services that are still in MVP development.
+# Revisit when knowledge pipeline and agent orchestration are production-ready.
+
 apiVersion: v1
 kind: ServiceDefinition
 metadata:
   name: memory-dream
   namespace: mycodexvantaos-system
+  annotations:
+    status: deferred
+    targetPhase: post-mvp
+    reason: "Depends on mature knowledge-store + agent-chat; revisit after MVP stabilization"
 spec:
   displayName: 'Memory Dream'
   description: 'Autonomous memory reinforcement and synthesis engine'
   version: '0.1.0'
+  category: knowledge
   capabilities:
     - capture
     - store

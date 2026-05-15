@@ -7,7 +7,7 @@ metadata:
   name: audit-log
   urn: urn:mycodexvantaos:governance:service:audit-log
   version: 1.0.0-constitution
-  category: governance
+  category: security
   display_name: Audit Log Service
   description: >
     Immutable, tamper-evident audit event logging with SHA-256 hash-linked
@@ -34,7 +34,7 @@ spec:
         required: [event_type, category, severity, subject_id, workspace_id, data]
         properties:
           event_type: { type: string }
-          category: { type: string, enum: [identity, workspace, knowledge, ai, model, governance] }
+          category: { type: string, enum: [knowledge, agent, workspace, developer, security, storage, model, automation] }
           severity: { type: string, enum: [debug, info, warning, error, critical] }
           subject_id: { type: string }
           workspace_id: { type: string }

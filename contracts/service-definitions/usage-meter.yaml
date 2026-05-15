@@ -7,7 +7,7 @@ metadata:
   name: usage-meter
   urn: urn:mycodexvantaos:governance:service:usage-meter
   version: 1.0.0-constitution
-  category: governance
+  category: security
   display_name: Usage Meter Service
   description: >
     Multi-dimensional usage tracking, metering, and rate-limit enforcement.

@@ -7,7 +7,7 @@ metadata:
   name: workspace
   urn: urn:mycodexvantaos:core:service:workspace
   version: 1.0.0-constitution
-  category: core
+  category: workspace
   display_name: Workspace Service
   description: >
     Multi-tenant workspace management with membership, quota enforcement,
