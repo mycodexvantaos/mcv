@@ -1,5 +1,5 @@
 #!/bin/bash
-# §11 - Resource Kind Contracts (16 YAML files)
+# Sec.11 - Resource Kind Contracts (16 YAML files)
 set -e
 BASE="/workspace/mycodexvantaos"
 CREATED=0
@@ -81,4 +81,4 @@ audit_events:
 ENDOFFILE
 done
 
-echo "✅ §11 - All 16 resource kind contracts (Created=$CREATED, Skipped=$SKIPPED)"
+echo "✅ Sec.11 - All 16 resource kind contracts (Created=$CREATED, Skipped=$SKIPPED)"

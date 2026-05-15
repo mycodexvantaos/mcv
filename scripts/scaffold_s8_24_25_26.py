@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate §8 doc, §24 documentation, §25 tools, §26 CI workflows"""
+"""Generate Sec.8 doc, Sec.24 documentation, Sec.25 tools, Sec.26 CI workflows"""
 import os
 
 BASE = "/workspace/mycodexvantaos"
@@ -21,7 +21,7 @@ def write(path, content):
 
 
 # ═══════════════════════════════════════════════════════════════
-# §8 - Existing Service Repositioning Doc
+# Sec.8 - Existing Service Repositioning Doc
 # ═══════════════════════════════════════════════════════════════
 write("docs/architecture/existing-service-repositioning.md", """# Existing Service Repositioning
 
@@ -110,7 +110,7 @@ TS API Gateway
 print(f"Section 8 done (created={created}, skipped={skipped})")
 
 # ═══════════════════════════════════════════════════════════════
-# §24 - Documentation
+# Sec.24 - Documentation
 # ═══════════════════════════════════════════════════════════════
 
 docs = {
@@ -799,7 +799,7 @@ for path, content in docs.items():
 print(f"Section 24 docs done (created={created}, skipped={skipped})")
 
 # ═══════════════════════════════════════════════════════════════
-# §25 - Tools
+# Sec.25 - Tools
 # ═══════════════════════════════════════════════════════════════
 
 # Validators
@@ -1089,7 +1089,7 @@ Tools for querying and analyzing audit logs.
 print(f"Section 25 tools done (created={created}, skipped={skipped})")
 
 # ═══════════════════════════════════════════════════════════════
-# §26 - CI/CD Workflows
+# Sec.26 - CI/CD Workflows
 # ═══════════════════════════════════════════════════════════════
 
 workflows = {

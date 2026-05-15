@@ -12,5 +12,5 @@ COPY --from=builder /app/node_modules ./node_modules
 EXPOSE 3000
 CMD ["node", "dist/index.js"]
 
-# OCI image ref (§7.3): <registry>/mycodexvantaos/mycodexvantaos-governance-policy:<semver-tag>
+# OCI image ref (Sec.7.3): <registry>/mycodexvantaos/mycodexvantaos-governance-policy:<semver-tag>
 # Production digest pinning: <registry>/mycodexvantaos/mycodexvantaos-governance-policy@sha256:<digest>

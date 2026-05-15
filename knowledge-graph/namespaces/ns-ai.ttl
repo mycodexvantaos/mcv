@@ -4,7 +4,7 @@
 @prefix :     <https://mycodexvantaos.org/ns/ai#> .
 
 # Namespace IRI: https://mycodexvantaos.org/ns/ai#
-# §10.1 — Domain: ai
+# Sec.10.1 — Domain: ai
 # Terms: EmbeddingModel, LLMModel, Agent, Memory
 
 <https://mycodexvantaos.org/ns/ai>

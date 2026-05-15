@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # scripts/expire-exceptions.sh
 # Check governance/exceptions.yaml for expired exception records.
-# Based on naming-spec-v1.md §15.2, Appendix B.8
+# Based on naming-spec-v1.md Sec.15.2, Appendix B.8
 #
 # Usage:
 #   ./scripts/expire-exceptions.sh [--dry-run] [--notify-only]
