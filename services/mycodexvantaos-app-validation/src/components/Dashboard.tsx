@@ -334,7 +334,7 @@ export default function ValidationDashboard() {
                             <AlertCircle className="w-5 h-5 text-red-600" />
                             <span className="text-sm text-red-600 font-medium">Failed</span>
                           </div>
-                          {val.errorMessage ? (
+                          { 'errorMessage' in val && val.errorMessage ? (
                             <span className="text-xs text-red-500 max-w-xs text-right whitespace-normal">
                               {val.errorMessage}
                             </span>
