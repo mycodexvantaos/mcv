@@ -12,5 +12,5 @@ COPY --from=builder /app/node_modules ./node_modules
 EXPOSE 3000
 CMD ["node", "dist/index.js"]
 
-# OCI image ref (§7.3): <registry>/mycodexvantaos/mycodexvantaos-ai-embedding:<semver-tag>
+# OCI image ref (Sec.7.3): <registry>/mycodexvantaos/mycodexvantaos-ai-embedding:<semver-tag>
 # Production digest pinning: <registry>/mycodexvantaos/mycodexvantaos-ai-embedding@sha256:<digest>

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # scripts/generate-service-scaffold.sh
 # Generate a complete service scaffold from a service-id.
-# Based on naming-spec-v1.md §5.1, §6.1, §6.2, §6.3, §7.1, §7.3
+# Based on naming-spec-v1.md Sec.5.1, Sec.6.1, Sec.6.2, Sec.6.3, Sec.7.1, Sec.7.3
 #
 # Creates:
 #   services/<service-id>/
@@ -139,12 +139,12 @@ EXPOSE 3000
 CMD [\"node\", \"dist/index.js\"]
 
 # OCI image: <registry>/mycodexvantaos/${SERVICE_ID}:<tag>
-# §7.3 — image repository name equals service-id
+# Sec.7.3 — image repository name equals service-id
 "
 
 create_file "services/${SERVICE_ID}/.env.example" \
 "# Environment variables for ${SERVICE_ID}
-# All variables MUST use MYCODEXVANTAOS_ prefix (§7.2)
+# All variables MUST use MYCODEXVANTAOS_ prefix (Sec.7.2)
 MYCODEXVANTAOS_$(echo "${SERVICE_ID//-/_}" | tr '[:lower:]' '[:upper:]')_PORT=3000
 MYCODEXVANTAOS_$(echo "${SERVICE_ID//-/_}" | tr '[:lower:]' '[:upper:]')_LOG_LEVEL=info
 MYCODEXVANTAOS_DATABASE_URL=postgres://localhost:5432/${SERVICE_ID//-/_}
@@ -159,18 +159,18 @@ if [ -n "${CAPABILITIES}" ]; then
     CAP_YAML="${CAP_YAML}    - ${CAP}"$'\n'
   done
 else
-  CAP_YAML="    [] # Add canonical capability-ids from §5.5"
+  CAP_YAML="    [] # Add canonical capability-ids from Sec.5.5"
 fi
 
 create_file "modules/${SERVICE_ID}/module-manifest.yaml" \
 "# modules/${SERVICE_ID}/module-manifest.yaml
-# Based on naming-spec-v1.md §6.3, schemas/service-manifest.schema.json
+# Based on naming-spec-v1.md Sec.6.3, schemas/service-manifest.schema.json
 
 apiVersion: mycodexvantaos.org/v1
 kind: Module
 metadata:
   name: ${SERVICE_ID}
-  # §6.4 — metadata.name MUST equal the service-id exactly
+  # Sec.6.4 — metadata.name MUST equal the service-id exactly
   labels:
     mycodexvantaos.org/domain: ${DOMAIN}
     mycodexvantaos.org/managed-by: naming-spec-v1
@@ -191,7 +191,7 @@ $([ -n "${CAP_YAML}" ] && echo "${CAP_YAML}" || echo "    []")
 create_file "modules/${SERVICE_ID}/capabilities.yaml" \
 "# modules/${SERVICE_ID}/capabilities.yaml
 # Declared capability dependencies for ${SERVICE_ID}
-# Based on naming-spec-v1.md §5.5
+# Based on naming-spec-v1.md Sec.5.5
 
 capabilities:
 $([ -n "${CAP_YAML}" ] && echo "${CAP_YAML}" || echo "  [] # Add canonical capability-ids")
@@ -223,12 +223,12 @@ export {};
 # ─── infra/kubernetes/base/<service-id>/ ─────────────────────────────────────
 create_file "infra/kubernetes/base/${SERVICE_ID}/deployment.yaml" \
 "# infra/kubernetes/base/${SERVICE_ID}/deployment.yaml
-# §5.4, §6.4 — metadata.name MUST equal the service-id
+# Sec.5.4, Sec.6.4 — metadata.name MUST equal the service-id
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ${SERVICE_ID}
-  # namespace is NOT set here — set by Kustomize overlay (§12.1)
+  # namespace is NOT set here — set by Kustomize overlay (Sec.12.1)
   labels:
     app.kubernetes.io/name: ${SERVICE_ID}
     app.kubernetes.io/managed-by: mycodexvantaos
@@ -245,7 +245,7 @@ spec:
       containers:
         - name: ${SERVICE_ID}
           image: ghcr.io/mycodexvantaos/${SERVICE_ID}:latest
-          # Production MUST use digest pinning (§7.3):
+          # Production MUST use digest pinning (Sec.7.3):
           # image: ghcr.io/mycodexvantaos/${SERVICE_ID}@sha256:<digest>
           ports:
             - containerPort: 3000

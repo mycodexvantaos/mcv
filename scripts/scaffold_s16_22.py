@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate §16 Python packages, §20 runtimes/local, §21 Cloudflare providers, §22 apps"""
+"""Generate Sec.16 Python packages, Sec.20 runtimes/local, Sec.21 Cloudflare providers, Sec.22 apps"""
 import os
 
 BASE = "/workspace/mycodexvantaos"
@@ -19,7 +19,7 @@ def write(path, content):
     print(f"  OK {path}")
 
 # ═══════════════════════════════════════════════
-# §16 - Python Intelligence Plane
+# Sec.16 - Python Intelligence Plane
 # ═══════════════════════════════════════════════
 
 # knowledge-pipeline
@@ -647,7 +647,7 @@ if __name__ == "__main__":
 print(f"\nSection 16 done (created={created}, skipped={skipped})")
 
 # ═══════════════════════════════════════════════
-# §20 - runtimes/local/
+# Sec.20 - runtimes/local/
 # ═══════════════════════════════════════════════
 
 write("runtimes/local/README.md", """# Local Runtime
@@ -712,7 +712,7 @@ self_hostable: true
 print(f"\nSection 20 done (created={created}, skipped={skipped})")
 
 # ═══════════════════════════════════════════════
-# §21 - Cloudflare Providers (5 providers)
+# Sec.21 - Cloudflare Providers (5 providers)
 # ═══════════════════════════════════════════════
 
 cf_providers = {
@@ -797,7 +797,7 @@ export {{}};
 print(f"\nSection 21 done (created={created}, skipped={skipped})")
 
 # ═══════════════════════════════════════════════
-# §22 - Missing Apps (api-node, admin-console)
+# Sec.22 - Missing Apps (api-node, admin-console)
 # ═══════════════════════════════════════════════
 
 write("apps/api-node/package.json", """{

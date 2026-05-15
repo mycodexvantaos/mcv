@@ -3,7 +3,7 @@
 @prefix owl:  <http://www.w3.org/2002/07/owl#> .
 @prefix rel:  <https://mycodexvantaos.org/ns/relations#> .
 
-# §10.2 — Relation types use UPPER_SNAKE_CASE (graph-internal only, must not leak to canonical ids)
+# Sec.10.2 — Relation types use UPPER_SNAKE_CASE (graph-internal only, must not leak to canonical ids)
 
 rel:DEPENDS_ON a owl:ObjectProperty ;
     rdfs:label "DEPENDS_ON" ;

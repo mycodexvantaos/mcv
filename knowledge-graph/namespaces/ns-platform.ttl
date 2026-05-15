@@ -4,7 +4,7 @@
 @prefix :     <https://mycodexvantaos.org/ns/platform#> .
 
 # Namespace IRI: https://mycodexvantaos.org/ns/platform#
-# §10.1 — Domain: platform
+# Sec.10.1 — Domain: platform
 # Terms: Notification, Scheduler, Observability
 
 <https://mycodexvantaos.org/ns/platform>

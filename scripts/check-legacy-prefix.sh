@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # scripts/check-legacy-prefix.sh
 # Scan the repository for forbidden legacy prefixes.
-# Based on naming-spec-v1.md §4, Appendix B.4
+# Based on naming-spec-v1.md Sec.4, Appendix B.4
 #
 # Forbidden prefixes:
 #   - mycodexvanta-os

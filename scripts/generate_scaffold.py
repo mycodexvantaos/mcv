@@ -15,7 +15,7 @@ def write(path, content):
     print(f"  ✅ {path}")
 
 # ═══════════════════════════════════════════════════════════════
-# §5 — TypeScript Control Plane Packages (8 packages)
+# Sec.5 — TypeScript Control Plane Packages (8 packages)
 # ═══════════════════════════════════════════════════════════════
 
 TS_PACKAGES = {
@@ -414,10 +414,10 @@ import {{ {", ".join(cfg["types"][:3])} }} from '@mycodexvantaos/mycodexvantaos-
 {cfg["extra"]}
 """)
 
-print("\n✅ §5 — All 8 TypeScript control plane packages created")
+print("\n✅ Sec.5 — All 8 TypeScript control plane packages created")
 
 # ═══════════════════════════════════════════════════════════════
-# §7 — Control Plane Services (12 missing services)
+# Sec.7 — Control Plane Services (12 missing services)
 # ═══════════════════════════════════════════════════════════════
 
 TS_SERVICES = {
@@ -508,10 +508,10 @@ export class {short.replace('-', '').title().replace('', '').replace('Workspace'
 }}
 """)
 
-print("\n✅ §7 — All 12 missing TypeScript services created")
+print("\n✅ Sec.7 — All 12 missing TypeScript services created")
 
 # ═══════════════════════════════════════════════════════════════
-# §9-10 — Missing Service Definition Contracts (5 YAML files)
+# Sec.9-10 — Missing Service Definition Contracts (5 YAML files)
 # ═══════════════════════════════════════════════════════════════
 
 MISSING_SERVICE_DEFS = {
@@ -547,10 +547,10 @@ audit:
   required: true
 """)
 
-print("\n✅ §10 — All 5 missing service definition contracts created")
+print("\n✅ Sec.10 — All 5 missing service definition contracts created")
 
 # ═══════════════════════════════════════════════════════════════
-# §11 — Resource Kind Contracts (16 YAML files)
+# Sec.11 — Resource Kind Contracts (16 YAML files)
 # ═══════════════════════════════════════════════════════════════
 
 RESOURCE_KINDS = {
@@ -619,10 +619,10 @@ audit_events:
   - {kind}.deleted
 """)
 
-print("\n✅ §11 — All 16 resource kind contracts created")
+print("\n✅ Sec.11 — All 16 resource kind contracts created")
 
 # ═══════════════════════════════════════════════════════════════
-# §12 — Event Contracts (6 separate YAML files)
+# Sec.12 — Event Contracts (6 separate YAML files)
 # ═══════════════════════════════════════════════════════════════
 
 EVENT_CONTRACTS = {
@@ -692,10 +692,10 @@ events:
 {events_yaml}
 """)
 
-print("\n✅ §12 — All 6 event contract files created")
+print("\n✅ Sec.12 — All 6 event contract files created")
 
 # ═══════════════════════════════════════════════════════════════
-# §13 — Policy Contracts (5 YAML files)
+# Sec.13 — Policy Contracts (5 YAML files)
 # ═══════════════════════════════════════════════════════════════
 
 POLICIES = {
@@ -761,10 +761,10 @@ description: {cfg['description']}
 rules:{rules_yaml}
 """)
 
-print("\n✅ §13 — All 5 policy contracts created")
+print("\n✅ Sec.13 — All 5 policy contracts created")
 
 # ═══════════════════════════════════════════════════════════════
-# §14 — Missing JSON Schemas
+# Sec.14 — Missing JSON Schemas
 # ═══════════════════════════════════════════════════════════════
 
 write("contracts/schemas/policy.schema.json", """{
@@ -907,10 +907,10 @@ write("contracts/schemas/runtime-adapter.schema.json", """{
   }
 }""")
 
-print("\n✅ §14 — All 4 missing JSON schemas created")
+print("\n✅ Sec.14 — All 4 missing JSON schemas created")
 
 # ═══════════════════════════════════════════════════════════════
-# §15 — D1 Migrations (8 new migration files)
+# Sec.15 — D1 Migrations (8 new migration files)
 # ═══════════════════════════════════════════════════════════════
 
 MIGRATIONS = {
@@ -1092,10 +1092,10 @@ for mig_name, sql in MIGRATIONS.items():
 INSERT INTO _migrations (name) VALUES ('{mig_name}');
 """)
 
-print("\n✅ §15 — All 8 D1 migration files created")
+print("\n✅ Sec.15 — All 8 D1 migration files created")
 
 # ═══════════════════════════════════════════════════════════════
-# §16 — Python Intelligence Plane (4 new packages + 2 new apps)
+# Sec.16 — Python Intelligence Plane (4 new packages + 2 new apps)
 # ═══════════════════════════════════════════════════════════════
 
 PYTHON_PACKAGES = {
@@ -1512,10 +1512,10 @@ if __name__ == "__main__":
 """)
 
 
-print("\n✅ §16 — All 4 new Python packages + 2 new Python apps created")
+print("\n✅ Sec.16 — All 4 new Python packages + 2 new Python apps created")
 
 # ═══════════════════════════════════════════════════════════════
-# §20 — runtimes/local/
+# Sec.20 — runtimes/local/
 # ═══════════════════════════════════════════════════════════════
 
 write("runtimes/local/README.md", """# Local Runtime
@@ -1577,10 +1577,10 @@ ai_provider_support:
 self_hostable: true
 """)
 
-print("\n✅ §20 — runtimes/local/ created")
+print("\n✅ Sec.20 — runtimes/local/ created")
 
 # ═══════════════════════════════════════════════════════════════
-# §21 — Cloudflare Providers (5 providers)
+# Sec.21 — Cloudflare Providers (5 providers)
 # ═══════════════════════════════════════════════════════════════
 
 CF_PROVIDERS = {
@@ -1662,10 +1662,10 @@ Part of the Cloudflare runtime provider set.
 export {{}};
 """)
 
-print("\n✅ §21 — All 5 Cloudflare providers created")
+print("\n✅ Sec.21 — All 5 Cloudflare providers created")
 
 # ═══════════════════════════════════════════════════════════════
-# §22 — Missing Apps (api-node, admin-console)
+# Sec.22 — Missing Apps (api-node, admin-console)
 # ═══════════════════════════════════════════════════════════════
 
 write("apps/api-node/package.json", """{
@@ -1743,7 +1743,7 @@ Admin console for platform management — user management, policy configuration,
 🚧 Placeholder — to be implemented.
 """)
 
-print("\n✅ §22 — apps/api-node + apps/admin-console created")
+print("\n✅ Sec.22 — apps/api-node + apps/admin-console created")
 
 print("\n" + "=" * 60)
 print("✅ ALL SCAFFOLD FILES GENERATED SUCCESSFULLY")

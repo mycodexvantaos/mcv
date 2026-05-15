@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate §12 Event Contracts, §13 Policy Contracts, §14 JSON Schemas, §15 Migrations"""
+"""Generate Sec.12 Event Contracts, Sec.13 Policy Contracts, Sec.14 JSON Schemas, Sec.15 Migrations"""
 import os, json
 
 BASE = "/workspace/mycodexvantaos"
@@ -19,7 +19,7 @@ def write(path, content):
     print(f"  OK {path}")
 
 # ═══════════════════════════════════════════════
-# §12 - Event Contracts
+# Sec.12 - Event Contracts
 # ═══════════════════════════════════════════════
 
 events = {
@@ -71,7 +71,7 @@ for filename, (category, event_list) in events.items():
 print(f"\nSection 12 done (created={created}, skipped={skipped})")
 
 # ═══════════════════════════════════════════════
-# §13 - Policy Contracts
+# Sec.13 - Policy Contracts
 # ═══════════════════════════════════════════════
 
 policies = {
@@ -153,7 +153,7 @@ for policy_id, cfg in policies.items():
 print(f"\nSection 13 done (created={created}, skipped={skipped})")
 
 # ═══════════════════════════════════════════════
-# §14 - Missing JSON Schemas
+# Sec.14 - Missing JSON Schemas
 # ═══════════════════════════════════════════════
 
 schemas = {
@@ -301,7 +301,7 @@ for schema_name, schema_data in schemas.items():
 print(f"\nSection 14 done (created={created}, skipped={skipped})")
 
 # ═══════════════════════════════════════════════
-# §15 - D1 Migrations
+# Sec.15 - D1 Migrations
 # ═══════════════════════════════════════════════
 
 migrations = {}

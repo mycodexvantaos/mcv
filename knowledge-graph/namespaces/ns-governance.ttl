@@ -4,7 +4,7 @@
 @prefix :     <https://mycodexvantaos.org/ns/governance#> .
 
 # Namespace IRI: https://mycodexvantaos.org/ns/governance#
-# §10.1 — Domain: governance
+# Sec.10.1 — Domain: governance
 # Terms: NamingPolicy, Exception, AuditLog
 
 <https://mycodexvantaos.org/ns/governance>

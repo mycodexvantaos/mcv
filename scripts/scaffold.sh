@@ -21,7 +21,7 @@ write() {
 }
 
 echo "═══════════════════════════════════════════════════════"
-echo "§5 - TypeScript Control Plane Packages (8 packages)"
+echo "Sec.5 - TypeScript Control Plane Packages (8 packages)"
 echo "═══════════════════════════════════════════════════════"
 
 # service-catalog
@@ -820,11 +820,11 @@ export async function validateContract(schemaPath: string, data: unknown): Promi
 ENDOFFILE
 
 echo ""
-echo "✅ §5 - All 8 TypeScript control plane packages (Created=$CREATED, Skipped=$SKIPPED)"
+echo "✅ Sec.5 - All 8 TypeScript control plane packages (Created=$CREATED, Skipped=$SKIPPED)"
 echo ""
 
 echo "═══════════════════════════════════════════════════════"
-echo "§7 - Control Plane Services (12 missing services)"
+echo "Sec.7 - Control Plane Services (12 missing services)"
 echo "═══════════════════════════════════════════════════════"
 
 # Create each service with proper class names
@@ -924,11 +924,11 @@ ENDOFFILE
 done
 
 echo ""
-echo "✅ §7 - All 12 missing TypeScript services (Created=$CREATED, Skipped=$SKIPPED)"
+echo "✅ Sec.7 - All 12 missing TypeScript services (Created=$CREATED, Skipped=$SKIPPED)"
 echo ""
 
 echo "═══════════════════════════════════════════════════════"
-echo "§9-10 - Missing Service Definition Contracts"
+echo "Sec.9-10 - Missing Service Definition Contracts"
 echo "═══════════════════════════════════════════════════════"
 
 write "contracts/service-definitions/resource-registry.yaml" << 'ENDOFFILE'
@@ -1056,4 +1056,4 @@ audit:
   required: true
 ENDOFFILE
 
-echo "✅ §10 - All 5 missing service definition contracts"
+echo "✅ Sec.10 - All 5 missing service definition contracts"

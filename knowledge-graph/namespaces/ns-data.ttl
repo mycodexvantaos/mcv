@@ -4,7 +4,7 @@
 @prefix :     <https://mycodexvantaos.org/ns/data#> .
 
 # Namespace IRI: https://mycodexvantaos.org/ns/data#
-# §10.1 — Domain: data
+# Sec.10.1 — Domain: data
 # Terms: Dataset, VectorCollection, Pipeline, Graph
 
 <https://mycodexvantaos.org/ns/data>

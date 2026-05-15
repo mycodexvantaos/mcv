@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # scripts/rename-mycodexvantaos.sh
 # Rename legacy org identity strings to the canonical mycodexvantaos form.
-# Based on naming-spec-v1.md §4, Appendix B.4
+# Based on naming-spec-v1.md Sec.4, Appendix B.4
 #
 # Replaces:
 #   mycodexvanta-os   → mycodexvantaos

@@ -6,7 +6,7 @@
 
 ---
 
-## §5 TypeScript 控制平面套件 (8 packages)
+## Sec.5 TypeScript 控制平面套件 (8 packages)
 
 - [x] packages/mycodexvantaos-service-catalog/
 - [x] packages/mycodexvantaos-resource-model/
@@ -17,7 +17,7 @@
 - [x] packages/mycodexvantaos-runtime-model/
 - [x] packages/mycodexvantaos-contracts-sdk/
 
-## §7 控制平面服務 (12 missing services)
+## Sec.7 控制平面服務 (12 missing services)
 
 - [x] services/mycodexvantaos-service-workspace/
 - [x] services/mycodexvantaos-service-resource-registry/
@@ -32,7 +32,7 @@
 - [x] services/mycodexvantaos-service-memory-store/
 - [x] services/mycodexvantaos-service-memory-capture/
 
-## §9-10 Contracts: Service Definitions (5 missing)
+## Sec.9-10 Contracts: Service Definitions (5 missing)
 
 - [x] contracts/service-definitions/resource-registry.yaml
 - [x] contracts/service-definitions/policy-engine.yaml
@@ -40,11 +40,11 @@
 - [x] contracts/service-definitions/memory-store.yaml
 - [x] contracts/service-definitions/memory-capture.yaml
 
-## §11 Resource Kind Contracts (16 files)
+## Sec.11 Resource Kind Contracts (16 files)
 
 - [x] contracts/resource-kinds/ (目錄 + 16 YAML files)
 
-## §12 Event Contracts (split into separate files)
+## Sec.12 Event Contracts (split into separate files)
 
 - [x] contracts/events/audit-events.yaml
 - [x] contracts/events/knowledge-events.yaml
@@ -53,22 +53,22 @@
 - [x] contracts/events/usage-events.yaml
 - [x] contracts/events/runtime-events.yaml
 
-## §13 Policy Contracts (5 files)
+## Sec.13 Policy Contracts (5 files)
 
 - [x] contracts/policies/ (目錄 + 5 YAML files)
 
-## §14 JSON Schemas (missing ones)
+## Sec.14 JSON Schemas (missing ones)
 
 - [x] contracts/schemas/policy.schema.json
 - [x] contracts/schemas/knowledge-model.schema.json
 - [x] contracts/schemas/memory-model.schema.json
 - [x] contracts/schemas/runtime-adapter.schema.json
 
-## §15 D1 Migrations (8 new migration files)
+## Sec.15 D1 Migrations (8 new migration files)
 
 - [x] migrations/d1/0002-service-catalog.sql ~ 0009-memory-dream.sql
 
-## §16 Python Intelligence Plane (4 new packages + 2 new apps)
+## Sec.16 Python Intelligence Plane (4 new packages + 2 new apps)
 
 - [x] python/packages/mycodexvantaos-knowledge-pipeline/
 - [x] python/packages/mycodexvantaos-agent-worker/
@@ -77,11 +77,11 @@
 - [x] python/apps/knowledge-worker/
 - [x] python/apps/agent-worker/
 
-## §20 Runtimes (1 missing)
+## Sec.20 Runtimes (1 missing)
 
 - [x] runtimes/local/
 
-## §21 Cloudflare Providers (5 missing)
+## Sec.21 Cloudflare Providers (5 missing)
 
 - [x] providers/mycodexvantaos-provider-cloudflare-d1/
 - [x] providers/mycodexvantaos-provider-cloudflare-kv/
@@ -89,12 +89,12 @@
 - [x] providers/mycodexvantaos-provider-cloudflare-workers-ai/
 - [x] providers/mycodexvantaos-provider-cloudflare-vectorize/
 
-## §22 Apps (2 missing)
+## Sec.22 Apps (2 missing)
 
 - [x] apps/api-node/
 - [x] apps/admin-console/
 
-## §24 Documentation
+## Sec.24 Documentation
 
 - [x] docs/architecture/platform-overview.md
 - [x] docs/architecture/dual-plane-architecture.md
@@ -110,13 +110,13 @@
 - [x] docs/self-hostable/self-hostable-overview.md
 - [x] docs/migration/current-audit-baseline.md
 
-## §25 Tools (validators + dream tools)
+## Sec.25 Tools (validators + dream tools)
 
 - [x] tools/validators/ (6 validator scripts)
 - [x] tools/dream/ (2 dream scripts)
 - [x] tools/generators/, tools/seed/, tools/migrations/, tools/audit/
 
-## §26 CI/CD Workflows (9 new workflows)
+## Sec.26 CI/CD Workflows (9 new workflows)
 
 - [x] .github/workflows/schema-check.yml
 - [x] .github/workflows/contract-check.yml
@@ -127,7 +127,7 @@
 - [x] .github/workflows/memory-dream-check.yml
 - [x] .github/workflows/cross-language-contract-check.yml
 
-## §29 驗證 & 合併
+## Sec.29 驗證 & 合併
 
 - [x] TypeScript 編譯通過 (377 tests still pass)
 - [x] Python CI 通過 (6/6 tests)
