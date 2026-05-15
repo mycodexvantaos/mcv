@@ -1,0 +1,137 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:mycodexvantaos:schema:service-definition",
+  "title": "ServiceDefinition",
+  "description": "Schema for individual MVP service definition files in the contracts layer",
+  "type": "object",
+  "properties": {
+    "apiVersion": {
+      "type": "string",
+      "pattern": "^platform\\.mycodexvantaos/v\\d+$"
+    },
+    "kind": {
+      "type": "string",
+      "const": "ServiceDefinition"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "enum": ["identity", "workspace", "knowledge-store", "knowledge-search", "agent-chat", "model-byok", "audit-log", "usage-meter"]
+        },
+        "urn": {
+          "type": "string",
+          "pattern": "^urn:mycodexvantaos:[a-z]+:service:[a-z-]+$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(-[a-z]+)?$"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["core", "knowledge", "ai", "governance"]
+        },
+        "display_name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": ["name", "urn", "version", "category", "display_name", "description"]
+    },
+    "spec": {
+      "type": "object",
+      "properties": {
+        "resource_type": {
+          "type": "string"
+        },
+        "runtime": {
+          "type": "object",
+          "properties": {
+            "provider": { "type": "string" },
+            "database": { "type": "string" },
+            "cache": { "type": "string" },
+            "storage": { "type": "string" },
+            "search": { "type": "string" },
+            "queue": { "type": "string" },
+            "limits": {
+              "type": "object",
+              "properties": {
+                "cpu_ms": { "type": "integer" },
+                "memory_mb": { "type": "integer" }
+              }
+            }
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "method": { "type": "string" },
+              "description": { "type": "string" },
+              "input": { "type": "object" },
+              "output": { "type": "object" }
+            },
+            "required": ["id", "method", "description", "input", "output"]
+          },
+          "minItems": 1
+        },
+        "events": {
+          "type": "object",
+          "properties": {
+            "emitted": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "subscribed": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        },
+        "audit": {
+          "type": "object",
+          "properties": {
+            "log_all_actions": { "type": "boolean" },
+            "integrity_chain": { "type": "boolean" },
+            "retention": { "type": "string" }
+          }
+        },
+        "dependencies": {
+          "type": "object",
+          "properties": {
+            "hard": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "soft": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        },
+        "ports": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "interface": { "type": "string" },
+              "methods": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            },
+            "required": ["interface", "methods"]
+          }
+        }
+      },
+      "required": ["resource_type", "runtime", "capabilities", "events", "audit", "dependencies", "ports"]
+    }
+  },
+  "required": ["apiVersion", "kind", "metadata", "spec"],
+  "additionalProperties": false
+}

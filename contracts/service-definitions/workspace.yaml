@@ -1,0 +1,151 @@
+# ═══════════════════════════════════════════════════════════════════
+# MyCodeXvantaOS — Workspace Service Definition
+# ═══════════════════════════════════════════════════════════════════
+apiVersion: platform.mycodexvantaos/v1
+kind: ServiceDefinition
+metadata:
+  name: workspace
+  urn: urn:mycodexvantaos:core:service:workspace
+  version: 1.0.0-constitution
+  category: core
+  display_name: Workspace Service
+  description: >
+    Multi-tenant workspace management with membership, quota enforcement,
+    and workspace-scoped isolation. Every resource on the platform belongs
+    to exactly one workspace. Level 1 service — depends on identity.
+
+spec:
+  resource_type: workspace
+  runtime:
+    provider: cloudflare-workers
+    database: d1
+    cache: kv
+    limits:
+      cpu_ms: 50
+      memory_mb: 128
+
+  capabilities:
+    - id: workspace.create
+      method: createWorkspace
+      description: Create a new workspace with tier-based quotas
+      input:
+        type: object
+        required: [owner_id, display_name, tier]
+        properties:
+          owner_id: { type: string }
+          display_name: { type: string, minLength: 1, maxLength: 256 }
+          tier: { type: string, enum: [free, pro, enterprise] }
+          settings:
+            type: object
+            properties:
+              data_residency: { type: string, enum: [us-east-1, eu-west-1, ap-northeast-1, ap-southeast-1] }
+              retention_policy:
+                type: object
+                properties:
+                  audit_retention_days: { type: integer, default: 2555 }
+                  document_retention_days: { type: integer, default: 90 }
+      output:
+        type: object
+        $ref: "urn:mycodexvantaos:core:resource:workspace"
+
+    - id: workspace.add-member
+      method: addMember
+      description: Add a member to a workspace with a specified role
+      input:
+        type: object
+        required: [workspace_id, subject_id, role, added_by]
+        properties:
+          workspace_id: { type: string }
+          subject_id: { type: string }
+          role: { type: string, enum: [workspace-owner, workspace-member, workspace-viewer] }
+          added_by: { type: string }
+      output:
+        type: object
+        properties:
+          membership:
+            type: object
+            properties:
+              id: { type: string }
+              workspace_id: { type: string }
+              subject_id: { type: string }
+              role: { type: string }
+
+    - id: workspace.remove-member
+      method: removeMember
+      description: Remove a member from a workspace
+      input:
+        type: object
+        required: [workspace_id, subject_id, removed_by]
+        properties:
+          workspace_id: { type: string }
+          subject_id: { type: string }
+          removed_by: { type: string }
+      output:
+        type: object
+        properties:
+          removed: { type: boolean }
+
+    - id: workspace.check-quota
+      method: checkQuota
+      description: Check if a workspace has remaining quota for a dimension
+      input:
+        type: object
+        required: [workspace_id, dimension]
+        properties:
+          workspace_id: { type: string }
+          dimension: { type: string }
+          quantity: { type: number, default: 1 }
+      output:
+        type: object
+        properties:
+          within_quota: { type: boolean }
+          current_usage: { type: number }
+          limit: { type: number }
+          remaining: { type: number }
+
+    - id: workspace.get-quota-usage
+      method: getQuotaUsage
+      description: Get current quota usage for all dimensions in a workspace
+      input:
+        type: object
+        required: [workspace_id]
+        properties:
+          workspace_id: { type: string }
+      output:
+        type: object
+        properties:
+          quotas:
+            type: array
+            items:
+              type: object
+              properties:
+                dimension: { type: string }
+                usage: { type: number }
+                limit: { type: number }
+
+  events:
+    emitted:
+      - workspace.created
+      - workspace.member-added
+      - workspace.member-removed
+      - workspace.quota-warning
+    subscribed:
+      - identity.subject.registered
+
+  audit:
+    log_all_actions: true
+    integrity_chain: true
+    retention: 2555d
+
+  dependencies:
+    hard: [identity]
+    soft: []
+
+  ports:
+    - interface: IWorkspacePort
+      methods:
+        - createWorkspace
+        - addMember
+        - removeMember
+        - checkQuota
+        - getQuotaUsage

@@ -1,0 +1,173 @@
+# ═══════════════════════════════════════════════════════════════════
+# MyCodeXvantaOS — Identity Service Definition
+# apiVersion: platform.mycodexvantaos/v1
+# kind: ServiceDefinition
+# ═══════════════════════════════════════════════════════════════════
+apiVersion: platform.mycodexvantaos/v1
+kind: ServiceDefinition
+metadata:
+  name: identity
+  urn: urn:mycodexvantaos:core:service:identity
+  version: 1.0.0-constitution
+  category: core
+  display_name: Identity Service
+  description: >
+    Platform-wide identity, authentication, and authorization service.
+    Manages subject lifecycle (registration → active → suspended → deactivated),
+    credential management, token issuance/validation, role resolution, and
+    permission checking. Zero hard dependencies — this is the Level 0 service
+    in the dependency graph.
+
+spec:
+  resource_type: identity-subject
+  runtime:
+    provider: cloudflare-workers
+    database: d1
+    cache: kv
+    limits:
+      cpu_ms: 50
+      memory_mb: 128
+
+  capabilities:
+    - id: auth.register
+      method: registerSubject
+      description: Register a new identity subject with email + password
+      input:
+        type: object
+        required: [email, password, display_name]
+        properties:
+          email:
+            type: string
+            format: email
+          password:
+            type: string
+            minLength: 8
+          display_name:
+            type: string
+            minLength: 1
+            maxLength: 128
+          metadata:
+            type: object
+      output:
+        type: object
+        properties:
+          subject:
+            $ref: "urn:mycodexvantaos:core:resource:identity-subject"
+          token_pair:
+            type: object
+            properties:
+              access_token: { type: string }
+              refresh_token: { type: string }
+              expires_in: { type: integer }
+
+    - id: auth.authenticate
+      method: authenticateSubject
+      description: Authenticate subject and issue token pair
+      input:
+        type: object
+        required: [email, password]
+        properties:
+          email: { type: string, format: email }
+          password: { type: string }
+          mfa_code: { type: string }
+      output:
+        type: object
+        properties:
+          token_pair:
+            type: object
+            properties:
+              access_token: { type: string }
+              refresh_token: { type: string }
+              expires_in: { type: integer }
+
+    - id: auth.validate-token
+      method: validateToken
+      description: Validate an access token and return claims
+      input:
+        type: object
+        required: [access_token]
+        properties:
+          access_token: { type: string }
+      output:
+        type: object
+        $ref: "urn:mycodexvantaos:core:type:TokenClaims"
+
+    - id: auth.revoke-session
+      method: revokeSession
+      description: Revoke a session by session ID
+      input:
+        type: object
+        required: [session_id]
+        properties:
+          session_id: { type: string }
+      output:
+        type: object
+        properties:
+          revoked: { type: boolean }
+
+    - id: auth.check-permission
+      method: checkPermission
+      description: Check if a subject has permission for an action on a resource
+      input:
+        type: object
+        required: [subject_id, action, resource_urn]
+        properties:
+          subject_id: { type: string }
+          action: { type: string }
+          resource_urn: { type: string }
+          workspace_id: { type: string }
+      output:
+        type: object
+        $ref: "urn:mycodexvantaos:core:type:PolicyDecision"
+
+    - id: auth.resolve-role
+      method: resolveRole
+      description: Resolve the effective role for a subject in a workspace
+      input:
+        type: object
+        required: [subject_id, workspace_id]
+        properties:
+          subject_id: { type: string }
+          workspace_id: { type: string }
+      output:
+        type: object
+        properties:
+          role: { type: string, enum: [platform-admin, workspace-owner, workspace-member, workspace-viewer, agent-service, auditor] }
+
+    - id: auth.get-subject
+      method: getSubject
+      description: Get subject details by ID
+      input:
+        type: object
+        required: [subject_id]
+        properties:
+          subject_id: { type: string }
+      output:
+        type: object
+        $ref: "urn:mycodexvantaos:core:resource:identity-subject"
+
+  events:
+    emitted:
+      - identity.subject.registered
+      - identity.subject.authenticated
+      - identity.subject.authentication-failed
+      - identity.session.created
+      - identity.session.revoked
+    subscribed: []
+
+  audit:
+    log_all_actions: true
+    integrity_chain: true
+    retention: 2555d  # 7 years
+
+  dependencies:
+    hard: []
+    soft: []
+
+  ports:
+    - interface: IIdentityPort
+      methods:
+        - validateToken
+        - checkPermission
+        - getSubject
+        - resolveRole

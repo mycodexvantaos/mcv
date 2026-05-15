@@ -1,0 +1,587 @@
+# ╔══════════════════════════════════════════════════════════════════════╗
+# ║  MyCodeXvantaOS — Policy Model (政策模型憲法)                        ║
+# ║  RBAC · Workspace-scoped isolation · Policy-as-code · Governance   ║
+# ║  Version: 1.0.0-constitution                                      ║
+# ╚══════════════════════════════════════════════════════════════════════╝
+
+apiVersion: platform.mycodevantaos/v1
+kind: PolicyModel
+metadata:
+  name: mycodexvantaos-policy-model
+  namespace: mycodexvantaos-system
+  labels:
+    tier: constitution
+    scope: platform
+  annotations:
+    description: |
+      Defines the platform's permission framework, role hierarchy, policy rules,
+      and governance constraints. Policy is code — every access decision is
+      evaluated against this model at runtime. Workspace-scoped isolation is
+      the fundamental security boundary.
+
+spec:
+  version: "1.0.0-constitution"
+
+  # ─── Policy Schema ───────────────────────────────────────────────────
+  # Every policy rule in the platform conforms to this structure.
+  policy_schema:
+    required: [id, priority, enabled, subject, action, resource, effect]
+    optional: [condition, description, tags]
+    fields:
+      id: { type: string, description: "Unique policy identifier" }
+      priority: { type: integer, description: "Evaluation order (lower = higher priority)" }
+      enabled: { type: boolean, description: "Whether the policy is active" }
+      description: { type: string, description: "Human-readable explanation" }
+      subject:
+        role: { type: string, description: "Required role for this policy" }
+        workspace_scope: { type: "enum(same-workspace|any-workspace|platform)", description: "Workspace boundary" }
+      action: { type: "array<string>", description: "List of permitted/denied actions" }
+      resource:
+        kind: { type: string, description: "Target resource kind" }
+        scope: { type: "enum(workspace|platform)", description: "Resource scope" }
+      condition: { type: map<string, any>, description: "Additional constraints" }
+      effect: { type: "enum(allow|deny)", description: "Policy decision" }
+      tags: { type: "array<string>", description: "Categorization labels" }
+
+  # ─── Role Hierarchy ──────────────────────────────────────────────────
+  roles:
+    - id: platform-admin
+      display_name: Platform Administrator
+      scope: platform
+      description: |
+        Full platform control. Can manage all workspaces, subjects, and
+        platform-level configuration. The only role that can suspend
+        workspaces and access cross-workspace audit data.
+      inherits: []
+      permissions:
+        - "platform:*"
+        - "workspace:*"
+        - "governance:*"
+      constraints:
+        mfa_required: true
+        session_timeout_minutes: 240
+        ip_allowlist: configurable
+
+    - id: workspace-owner
+      display_name: Workspace Owner
+      scope: workspace
+      description: |
+        Full control within a workspace. Can manage members, configure
+        settings, manage model endpoints, and access all workspace resources.
+        Cannot affect other workspaces or platform configuration.
+      inherits: [workspace-member]
+      permissions:
+        - "workspace:update"
+        - "workspace:delete"
+        - "workspace:member:manage"
+        - "workspace:settings:*"
+        - "workspace:quota:read"
+        - "model-endpoint:*"
+        - "knowledge-collection:*"
+        - "knowledge:*:admin"
+      constraints:
+        mfa_required: true
+        max_workspaces_per_owner: 10
+
+    - id: workspace-member
+      display_name: Workspace Member
+      scope: workspace
+      description: |
+        Standard workspace participant. Can create and manage knowledge
+        resources, use AI services, and read workspace settings. Cannot
+        manage members or delete the workspace.
+      inherits: [workspace-viewer]
+      permissions:
+        - "knowledge:document:create"
+        - "knowledge:document:update"
+        - "knowledge:document:read"
+        - "knowledge:collection:create"
+        - "knowledge:search:execute"
+        - "ai:chat-session:create"
+        - "ai:chat-session:update"
+        - "ai:chat-session:read"
+        - "model:invoke"
+      constraints:
+        mfa_required: false
+        rate_limit_tier: default
+
+    - id: workspace-viewer
+      display_name: Workspace Viewer
+      scope: workspace
+      description: |
+        Read-only access to workspace resources. Can view documents,
+        collections, and chat history but cannot create or modify anything.
+      inherits: []
+      permissions:
+        - "knowledge:document:read"
+        - "knowledge:collection:read"
+        - "ai:chat-session:read"
+        - "workspace:read"
+      constraints:
+        mfa_required: false
+
+    - id: agent-service
+      display_name: Agent Service Account
+      scope: workspace
+      description: |
+        Machine identity for inter-service communication. Services
+        authenticate as agent-service to invoke other services within
+        the boundaries defined by their dependency graph.
+      inherits: []
+      permissions:
+        - "knowledge:search:execute"
+        - "model:invoke"
+        - "audit:event:write"
+        - "usage:record:write"
+      constraints:
+        token_type: service-token
+        allowed_operations: "limited to declared service capabilities"
+        workspace_scope: "same-workspace only"
+
+    - id: auditor
+      display_name: Auditor
+      scope: platform
+      description: |
+        Read-only access to all audit data across workspaces. Can verify
+        integrity chains, run compliance reports, and query historical events.
+        Cannot modify any resources.
+      inherits: []
+      permissions:
+        - "governance:audit:read"
+        - "governance:audit:integrity:verify"
+        - "governance:audit:report:generate"
+        - "governance:usage:read"
+      constraints:
+        mfa_required: true
+        read_only: true
+
+  # ─── Policy Rules ─────────────────────────────────────────────────────
+  # Rules are evaluated in priority order. First match wins.
+  # Lower priority number = higher precedence.
+  policies:
+    # ── Deny Rules (highest priority — safety first) ───────────────────
+    - id: deny-cross-workspace-access
+      priority: 10
+      enabled: true
+      description: "No subject may access resources in a workspace they are not a member of"
+      subject:
+        role: "*"
+        workspace_scope: any-workspace
+      action:
+        - "*"
+      resource:
+        kind: "*"
+        scope: workspace
+      condition:
+        subject_not_member_of_workspace: true
+      effect: deny
+      tags: [security, cross-workspace, boundary]
+
+    - id: deny-deleted-workspace-access
+      priority: 11
+      enabled: true
+      description: "No access to resources in a deleted workspace"
+      subject:
+        role: "*"
+      action:
+        - "*"
+      resource:
+        kind: workspace
+      condition:
+        workspace_phase: deleted
+      effect: deny
+      tags: [security, workspace-lifecycle]
+
+    - id: deny-suspended-subject
+      priority: 12
+      enabled: true
+      description: "Suspended subjects cannot perform any action"
+      subject:
+        role: "*"
+      action:
+        - "*"
+      resource:
+        kind: "*"
+      condition:
+        subject_phase: suspended
+      effect: deny
+      tags: [security, subject-lifecycle]
+
+    # ── Platform Admin Rules ───────────────────────────────────────────
+    - id: allow-platform-admin-full-access
+      priority: 100
+      enabled: true
+      description: "Platform admins have full access to all platform resources"
+      subject:
+        role: platform-admin
+        workspace_scope: platform
+      action:
+        - "*"
+      resource:
+        kind: "*"
+        scope: platform
+      condition: {}
+      effect: allow
+      tags: [platform-admin, full-access]
+
+    - id: allow-platform-admin-workspace-access
+      priority: 101
+      enabled: true
+      description: "Platform admins can access any workspace"
+      subject:
+        role: platform-admin
+      action:
+        - "*"
+      resource:
+        kind: "*"
+        scope: workspace
+      condition: {}
+      effect: allow
+      tags: [platform-admin, workspace-access]
+
+    # ── Workspace Owner Rules ──────────────────────────────────────────
+    - id: allow-workspace-owner-manage-members
+      priority: 200
+      enabled: true
+      description: "Workspace owners can manage membership"
+      subject:
+        role: workspace-owner
+        workspace_scope: same-workspace
+      action:
+        - workspace:member:add
+        - workspace:member:remove
+        - workspace:member:update-role
+      resource:
+        kind: workspace
+      condition: {}
+      effect: allow
+      tags: [workspace-owner, membership]
+
+    - id: allow-workspace-owner-model-endpoints
+      priority: 201
+      enabled: true
+      description: "Workspace owners can fully manage model endpoints"
+      subject:
+        role: workspace-owner
+        workspace_scope: same-workspace
+      action:
+        - model-endpoint:create
+        - model-endpoint:update
+        - model-endpoint:delete
+        - model-endpoint:revoke
+      resource:
+        kind: model-endpoint
+      condition: {}
+      effect: allow
+      tags: [workspace-owner, model-endpoint]
+
+    - id: allow-workspace-owner-knowledge-admin
+      priority: 202
+      enabled: true
+      description: "Workspace owners can administer knowledge collections"
+      subject:
+        role: workspace-owner
+        workspace_scope: same-workspace
+      action:
+        - knowledge:collection:delete
+        - knowledge:collection:update
+        - knowledge:verification:trigger
+        - knowledge:repair:approve
+      resource:
+        kind: knowledge-collection
+      condition: {}
+      effect: allow
+      tags: [workspace-owner, knowledge-admin]
+
+    # ── Workspace Member Rules ─────────────────────────────────────────
+    - id: allow-workspace-member-knowledge-create
+      priority: 300
+      enabled: true
+      description: "Workspace members can create knowledge resources"
+      subject:
+        role: workspace-member
+        workspace_scope: same-workspace
+      action:
+        - knowledge:document:create
+        - knowledge:document:update
+        - knowledge:collection:create
+      resource:
+        kind: knowledge-collection
+      condition: {}
+      effect: allow
+      tags: [workspace-member, knowledge-create]
+
+    - id: allow-workspace-member-knowledge-search
+      priority: 301
+      enabled: true
+      description: "Workspace members can search knowledge"
+      subject:
+        role: workspace-member
+        workspace_scope: same-workspace
+      action:
+        - knowledge-search:execute
+        - knowledge-search:hybrid-search
+        - knowledge-search:suggest
+      resource:
+        kind: knowledge-index
+      condition: {}
+      effect: allow
+      tags: [workspace-member, knowledge-search]
+
+    - id: allow-workspace-member-ai-chat
+      priority: 302
+      enabled: true
+      description: "Workspace members can use AI chat services"
+      subject:
+        role: workspace-member
+        workspace_scope: same-workspace
+      action:
+        - ai:chat-session:create
+        - ai:chat-session:send-message
+        - ai:chat-session:read
+        - ai:chat-session:close
+      resource:
+        kind: chat-session
+      condition: {}
+      effect: allow
+      tags: [workspace-member, ai-chat]
+
+    - id: allow-workspace-member-model-invoke
+      priority: 303
+      enabled: true
+      description: "Workspace members can invoke model endpoints"
+      subject:
+        role: workspace-member
+        workspace_scope: same-workspace
+      action:
+        - model:invoke
+        - model:stream
+      resource:
+        kind: model-endpoint
+      condition: {}
+      effect: allow
+      tags: [workspace-member, model-invoke]
+
+    # ── Workspace Viewer Rules ─────────────────────────────────────────
+    - id: allow-workspace-viewer-read
+      priority: 400
+      enabled: true
+      description: "Workspace viewers can read resources"
+      subject:
+        role: workspace-viewer
+        workspace_scope: same-workspace
+      action:
+        - knowledge:document:read
+        - knowledge:collection:read
+        - ai:chat-session:read
+        - workspace:read
+      resource:
+        kind: "*"
+      condition: {}
+      effect: allow
+      tags: [workspace-viewer, read-only]
+
+    # ── Agent Service Rules ────────────────────────────────────────────
+    - id: allow-agent-service-search
+      priority: 500
+      enabled: true
+      description: "Agent services can search knowledge within their workspace scope"
+      subject:
+        role: agent-service
+        workspace_scope: same-workspace
+      action:
+        - knowledge-search:execute
+        - knowledge-search:hybrid-search
+      resource:
+        kind: knowledge-index
+      condition:
+        calling_service_in_dependency_graph: true
+      effect: allow
+      tags: [agent-service, knowledge-search]
+
+    - id: allow-agent-service-model-invoke
+      priority: 501
+      enabled: true
+      description: "Agent services can invoke models within their workspace scope"
+      subject:
+        role: agent-service
+        workspace_scope: same-workspace
+      action:
+        - model:invoke
+        - model:stream
+      resource:
+        kind: model-endpoint
+      condition:
+        calling_service_in_dependency_graph: true
+      effect: allow
+      tags: [agent-service, model-invoke]
+
+    - id: allow-agent-service-audit-write
+      priority: 502
+      enabled: true
+      description: "Agent services can emit audit events"
+      subject:
+        role: agent-service
+      action:
+        - audit:event:write
+        - usage:record:write
+      resource:
+        kind: audit-event
+      condition: {}
+      effect: allow
+      tags: [agent-service, audit-write]
+
+    # ── Auditor Rules ──────────────────────────────────────────────────
+    - id: allow-auditor-read-all-audit
+      priority: 600
+      enabled: true
+      description: "Auditors can read all audit data across workspaces"
+      subject:
+        role: auditor
+        workspace_scope: any-workspace
+      action:
+        - governance:audit:read
+        - governance:audit:integrity:verify
+        - governance:audit:report:generate
+        - governance:usage:read
+      resource:
+        kind: audit-event
+      condition: {}
+      effect: allow
+      tags: [auditor, audit-read]
+
+    # ── Default Deny ───────────────────────────────────────────────────
+    - id: default-deny
+      priority: 9999
+      enabled: true
+      description: "Default deny — any action not explicitly allowed is denied"
+      subject:
+        role: "*"
+      action:
+        - "*"
+      resource:
+        kind: "*"
+      condition: {}
+      effect: deny
+      tags: [default, deny-all]
+
+  # ─── Governance Constraints ──────────────────────────────────────────
+  governance_constraints:
+    data_residency:
+      description: "All workspace data must remain within the declared residency region"
+      enforcement: platform-config
+      default_region: auto
+      supported_regions: [us-east, us-west, eu-west, ap-east]
+      constraint: |
+        Resources created in a workspace with a declared residency region
+        MUST be stored and processed within that region. Cross-region
+        replication is prohibited unless explicitly configured by a
+        platform-admin.
+
+    retention:
+      description: "Minimum retention periods for governed resource types"
+      rules:
+        - kind: audit-event
+          minimum: 2555d  # 7 years
+          maximum: null   # indefinite
+          enforcement: automatic
+        - kind: usage-record
+          minimum: 365d
+          maximum: null
+          enforcement: automatic
+        - kind: document
+          minimum: 90d
+          maximum: workspace-config
+          enforcement: workspace-owner
+        - kind: chat-session
+          minimum: 90d
+          maximum: workspace-config
+          enforcement: workspace-owner
+        - kind: knowledge-collection
+          minimum: 30d
+          maximum: workspace-config
+          enforcement: workspace-owner
+
+    rate_limiting:
+      description: "Tiered rate limits enforced by usage-meter service"
+      tiers:
+        free:
+          requests_per_minute: 10
+          requests_per_day: 1000
+          tokens_per_day: 50000
+          storage_mb: 100
+          concurrent_sessions: 1
+          knowledge_collections: 5
+          model_endpoints: 1
+        pro:
+          requests_per_minute: 60
+          requests_per_day: 10000
+          tokens_per_day: 500000
+          storage_mb: 5000
+          concurrent_sessions: 5
+          knowledge_collections: 50
+          model_endpoints: 5
+        enterprise:
+          requests_per_minute: 300
+          requests_per_day: 100000
+          tokens_per_day: -1  # unlimited
+          storage_mb: 50000
+          concurrent_sessions: 20
+          knowledge_collections: 500
+          model_endpoints: 20
+      enforcement:
+        strategy: sliding-window
+        granularity: workspace
+        shared_limits: false  # each workspace has independent limits
+        burst_allowance: 1.5  # brief bursts up to 150% of limit
+
+    mfa_requirements:
+      description: "Multi-factor authentication requirements by role and action"
+      rules:
+        - role: platform-admin
+          mfa_required: true
+          for_all_actions: true
+        - role: workspace-owner
+          mfa_required: true
+          for_actions:
+            - workspace:member:manage
+            - model-endpoint:create
+            - model-endpoint:revoke
+            - knowledge:collection:delete
+        - role: workspace-member
+          mfa_required: false
+          for_actions: []
+        - role: workspace-viewer
+          mfa_required: false
+          for_actions: []
+        - role: auditor
+          mfa_required: true
+          for_all_actions: true
+        - action: identity.subject.deactivate
+          mfa_required: true
+          for_all_roles: true
+        - action: workspace.suspend
+          mfa_required: true
+          for_all_roles: true
+
+    credential_policy:
+      description: "Rules for credential management and encryption"
+      rules:
+        - type: api-key
+          storage: encrypted-at-rest
+          encryption: aes-256-gcm
+          key_management: cloudflare-kv-encrypted  # portable alternative: vault
+          rotation_policy: 90d recommended
+          never_logged: true
+          never_returned_plaintext: true
+        - type: password
+          hashing: argon2id
+          min_length: 12
+          complexity: "uppercase + lowercase + digit + special"
+          breach_check: hibp-api
+        - type: service-token
+          signing: rs256
+          issuer: mycodexvantaos-identity
+          audience: mycodexvantaos-services
+          ttl: 3600s
+          refresh_ttl: 30d

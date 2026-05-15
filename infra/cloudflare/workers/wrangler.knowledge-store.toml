@@ -1,0 +1,65 @@
+# ═══════════════════════════════════════════════════════════════════
+# MyCodeXvantaOS — Knowledge Store Service Worker
+# Level 2 — depends on identity; uses R2 + Vectorize + Queues
+# Runtime: Cloudflare Workers + D1 + R2 + Vectorize + Queues
+# ═══════════════════════════════════════════════════════════════════
+name = "mycodexvantaos-knowledge-store"
+main = "../../services/knowledge-store/src/index.ts"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+SERVICE_NAME = "knowledge-store"
+SERVICE_VERSION = "1.0.0-constitution"
+ENVIRONMENT = "production"
+LOG_LEVEL = "info"
+DEFAULT_CHUNK_SIZE = "512"
+DEFAULT_CHUNK_OVERLAP = "64"
+DEFAULT_EMBEDDING_MODEL = "text-embedding-3-small"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "mycodexvantaos-platform"
+database_id = "${CLOUDFLARE_D1_DATABASE_ID}"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "${CLOUDFLARE_KV_KNOWLEDGE_ID}"
+
+[[r2_buckets]]
+binding = "R2"
+bucket_name = "mycodexvantaos-documents"
+
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "mycodexvantaos-embeddings"
+
+[[services]]
+binding = "IDENTITY"
+service = "mycodexvantaos-identity"
+
+# Ingestion queue — this service is a producer
+[[queues.producers]]
+queue = "ingestion-queue"
+max_batch_size = 5
+max_retries = 5
+
+# Audit queue consumer
+[[queues.consumers]]
+queue = "audit-queue"
+max_batch_size = 10
+max_retries = 3
+
+# Ingestion queue consumer — processes its own ingestion jobs
+[[queues.consumers]]
+queue = "ingestion-queue"
+max_batch_size = 5
+max_retries = 5
+max_batch_timeout = 30
+
+[limits]
+cpu_ms = 200
+
+[[routes]]
+pattern = "/api/v1/knowledge/store/*"
+zone_name = "${CLOUDFLARE_ZONE_NAME}"

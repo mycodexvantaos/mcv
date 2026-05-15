@@ -1,0 +1,52 @@
+# ═══════════════════════════════════════════════════════════════════
+# MyCodeXvantaOS — Agent Chat Service Worker
+# Level 3 — depends on knowledge-search + model-byok
+# Runtime: Cloudflare Workers + D1 + KV + Queues
+# ═══════════════════════════════════════════════════════════════════
+name = "mycodexvantaos-agent-chat"
+main = "../../services/agent-chat/src/index.ts"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+SERVICE_NAME = "agent-chat"
+SERVICE_VERSION = "1.0.0-constitution"
+ENVIRONMENT = "production"
+LOG_LEVEL = "info"
+DEFAULT_EVIDENCE_LEVEL = "knowledge-assisted"
+SAFETY_CHECK_ENABLED = "true"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "mycodexvantaos-platform"
+database_id = "${CLOUDFLARE_D1_DATABASE_ID}"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "${CLOUDFLARE_KV_CHAT_ID}"
+
+# Service bindings (hard dependencies)
+[[services]]
+binding = "KNOWLEDGE_SEARCH"
+service = "mycodexvantaos-knowledge-search"
+
+[[services]]
+binding = "MODEL_BYOK"
+service = "mycodexvantaos-model-byok"
+
+# Soft dependencies
+[[services]]
+binding = "IDENTITY"
+service = "mycodexvantaos-identity"
+
+[[queues.consumers]]
+queue = "audit-queue"
+max_batch_size = 10
+max_retries = 3
+
+[limits]
+cpu_ms = 300
+
+[[routes]]
+pattern = "/api/v1/chat/*"
+zone_name = "${CLOUDFLARE_ZONE_NAME}"

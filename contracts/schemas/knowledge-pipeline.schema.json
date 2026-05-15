@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:mycodexvantaos:schema:knowledge-pipeline",
+  "title": "KnowledgePipeline",
+  "description": "Schema for knowledge pipeline stage results and configuration",
+  "definitions": {
+    "ChunkingStrategy": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": ["fixed", "semantic", "sentence"]
+        },
+        "chunk_size": {
+          "type": "integer",
+          "minimum": 64,
+          "maximum": 4096,
+          "default": 512
+        },
+        "overlap": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024,
+          "default": 64
+        },
+        "similarity_threshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0.85,
+          "description": "For semantic chunking — boundary similarity threshold"
+        },
+        "max_sentences_per_chunk": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20,
+          "default": 5,
+          "description": "For sentence chunking — max sentences per chunk"
+        }
+      },
+      "required": ["method"]
+    },
+    "EvidenceLevel": {
+      "type": "string",
+      "enum": ["knowledge-assisted", "knowledge-verified", "knowledge-grounded"],
+      "description": "knowledge-assisted (0-0.5 confidence), knowledge-verified (0.5-0.8), knowledge-grounded (0.8-1.0)"
+    },
+    "IngestionResult": {
+      "type": "object",
+      "properties": {
+        "document_id": { "type": "string" },
+        "phase": {
+          "type": "string",
+          "enum": ["validating", "extracting", "chunking", "embedding", "indexing", "verifying", "ingested", "failed"]
+        },
+        "chunks_created": { "type": "integer" },
+        "embeddings_generated": { "type": "integer" },
+        "verification_report": {
+          "type": "object",
+          "properties": {
+            "chunk_count": { "type": "integer" },
+            "embedding_dimensions": { "type": "integer" },
+            "index_status": { "type": "string" },
+            "completeness_score": { "type": "number" }
+          }
+        },
+        "error": { "type": "string" },
+        "duration_ms": { "type": "integer" }
+      },
+      "required": ["document_id", "phase"]
+    },
+    "SearchResult": {
+      "type": "object",
+      "properties": {
+        "chunk_id": { "type": "string" },
+        "document_id": { "type": "string" },
+        "content": { "type": "string" },
+        "relevance_score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "evidence_level": { "$ref": "#/definitions/EvidenceLevel" },
+        "source_trace": {
+          "type": "object",
+          "properties": {
+            "document_urn": { "type": "string" },
+            "chunk_index": { "type": "integer" },
+            "collection_id": { "type": "string" }
+          }
+        }
+      },
+      "required": ["chunk_id", "document_id", "content", "relevance_score"]
+    }
+  }
+}

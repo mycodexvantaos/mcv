@@ -1,224 +1,34 @@
-# ScreenMonitor App - Project TODO
-
-## 核心功能
-
-### 1. 應用架構與初始化
-
-- [ ] 建立廣播方與監控方的角色選擇流程
-- [ ] 設定應用的全局狀態管理（Context + useReducer）
-- [ ] 配置 WebSocket 連線管理
-
-### 2. 免責聲明與法律合規
-
-- [ ] 撰寫詳細的免責聲明文本
-- [ ] 建立免責聲明螢幕組件
-- [ ] 實作首次啟動時的強制確認流程
-- [ ] 儲存使用者的同意記錄（AsyncStorage）
-
-### 3. 廣播方（被監控方）功能
-
-#### 3.1 主介面
-
-- [ ] 建立 Broadcaster Home 螢幕
-- [ ] 設計「啟動廣播」按鈕與狀態指示
-- [ ] 實作房間 ID 生成邏輯
-- [ ] 生成 QR 碼（使用 qrcode 庫）
-
-#### 3.2 廣播控制
-
-- [ ] 整合 Broadcast Upload Extension 啟動邏輯
-- [ ] 建立 Broadcasting Active 螢幕
-- [ ] 實作「停止廣播」功能
-- [ ] 顯示連線人數統計
-
-#### 3.3 WebSocket 通訊（廣播端）
-
-- [ ] 實作廣播端的 WebSocket 客戶端
-- [ ] 發送房間 ID 與連線信息
-- [ ] 接收伺服器的連線確認
-- [ ] 處理連線中斷與重新連線
-
-### 4. 監控方（監控者）功能
-
-#### 4.1 主介面
-
-- [ ] 建立 Viewer Home 螢幕
-- [ ] 實作房間 ID 輸入框
-- [ ] 整合 QR 碼掃描功能（使用 expo-camera）
-- [ ] 建立「連線」按鈕
-
-#### 4.2 連線與觀看
-
-- [ ] 建立 Viewer Connecting 螢幕（加載狀態）
-- [ ] 建立 Viewer Screen 螢幕（全螢幕顯示）
-- [ ] 實作 WebRTC 視訊接收與顯示
-- [ ] 禁用所有觸控事件（Pressable 禁用）
-- [ ] 實作「返回」按鈕（返回 Viewer Home）
-
-#### 4.3 WebSocket 通訊（監控端）
-
-- [ ] 實作監控端的 WebSocket 客戶端
-- [ ] 發送房間 ID 進行連線
-- [ ] 接收 WebRTC 信令信息
-- [ ] 處理連線失敗與重試
-
-### 5. 伺服器端開發
-
-#### 5.1 房間管理
-
-- [ ] 建立房間管理邏輯（房間 ID、連線人數）
-- [ ] 實作房間的自動清理（超時未使用）
-
-#### 5.2 WebSocket 伺服器
-
-- [ ] 建立 WebSocket 伺服器（使用 ws 或 socket.io）
-- [ ] 實作廣播方的連線處理
-- [ ] 實作監控方的連線處理
-- [ ] 轉發連線信息與房間 ID
-
-#### 5.3 WebRTC SFU
-
-- [ ] 選擇 WebRTC SFU 庫（mediasoup 或 LiveKit）
-- [ ] 實作視訊流接收與轉發
-- [ ] 配置編碼器設定（H.264, 720p, 20-30 fps）
-
-### 6. 原生整合（Broadcast Upload Extension）
-
-#### 6.1 Extension 設定
-
-- [ ] 建立 Broadcast Upload Extension Target
-- [ ] 配置 App Group 共享容器
-- [ ] 設定 Info.plist 與簽名
-
-#### 6.2 螢幕捕獲
-
-- [ ] 實作 SampleHandler 接收系統螢幕幀
-- [ ] 實作 H.264 硬體編碼器
-- [ ] 實作解析度降採樣（1280×720）
-- [ ] 實作幀率控制（20-30 fps）
-- [ ] 實作記憶體優化（保持在 50 MB 以下）
-
-#### 6.3 IPC 通訊
-
-- [ ] 實作 Extension 與主應用的通訊
-- [ ] 通過 App Group 共享容器傳遞編碼幀
-- [ ] 實作 WebSocket 連線管理
-
-### 7. UI/UX 細節
-
-#### 7.1 廣播方 UI
-
-- [ ] 設計並實作 Broadcaster Home 螢幕樣式
-- [ ] 設計並實作 Broadcasting Active 螢幕樣式
-- [ ] 實作狀態指示動畫（例如：脈衝紅點）
-- [ ] 實作 QR 碼顯示與複製功能
-
-#### 7.2 監控方 UI
-
-- [ ] 設計並實作 Viewer Home 螢幕樣式
-- [ ] 設計並實作 Viewer Connecting 螢幕樣式
-- [ ] 設計並實作 Viewer Screen 螢幕樣式
-- [ ] 實作全螢幕顯示與返回按鈕
-
-#### 7.3 通用 UI
-
-- [ ] 實作免責聲明螢幕樣式
-- [ ] 實作錯誤提示與重試機制
-- [ ] 實作加載指示器
-- [ ] 實作連線狀態指示
-
-### 8. 測試與除錯
-
-#### 8.1 功能測試
-
-- [ ] 測試廣播方的啟動/停止廣播
-- [ ] 測試監控方的連線/斷開連線
-- [ ] 測試房間 ID 與 QR 碼的正確性
-- [ ] 測試視訊流的接收與顯示
-
-#### 8.2 邊界情況測試
-
-- [ ] 測試網路中斷時的重新連線
-- [ ] 測試多個監控方同時連線
-- [ ] 測試廣播方在廣播中切換應用
-- [ ] 測試監控方在監控中接收來電
-
-#### 8.3 效能測試
-
-- [ ] 測試 Extension 的記憶體使用（應 < 50 MB）
-- [ ] 測試視訊延遲（目標 < 1 秒）
-- [ ] 測試電池消耗
-
-### 9. 部署與發佈
-
-#### 9.1 應用簽名與配置
-
-- [ ] 配置 iOS Bundle ID 與簽名憑證
-- [ ] 配置 App Groups 與 Capabilities
-- [ ] 配置推送通知（如需要）
-
-#### 9.2 應用商店提交
-
-- [ ] 準備應用商店描述與截圖
-- [ ] 準備隱私政策與使用條款
-- [ ] 提交 App Review
-
-### 10. 文件與交付
-
-- [ ] 撰寫使用者指南
-- [ ] 撰寫開發者文件
-- [ ] 準備部署說明
-- [ ] 建立最終檢查清單
-
----
-
-## 已完成
-
-- [x] 技術調研：iOS 螢幕共享方案
-- [x] 初始化 Expo 專案
-- [x] 建立設計文件
-- [x] 建立 TODO 清單
-
----
-
-## 阻礙與注意事項
-
-1. **iOS 系統限制**：Broadcast Upload Extension 有 50 MB 硬性記憶體上限，需要嚴格的優化
-2. **知情同意**：被監控方必須手動啟動廣播，系統會顯示紅色錄製指示
-3. **App Store 審核**：此類應用可能面臨隱私與安全審核，需要清晰的免責聲明
-4. **WebRTC 複雜性**：信令與媒體流的整合需要謹慎的測試
-5. **原生代碼**：Broadcast Upload Extension 需要 Swift/Objective-C，超出 React Native 的範圍
-
----
-
-## 優先級
-
-**高優先級**（核心功能）：
-
-- 免責聲明與法律合規
-- 廣播方的啟動/停止邏輯
-- 監控方的連線與視訊顯示
-- 伺服器的房間管理與信令
-
-**中優先級**（增強功能）：
-
-- QR 碼掃描
-- 連線人數統計
-- 錯誤提示與重試
-
-**低優先級**（優化與波蘭）：
-
-- 動畫與過渡效果
-- 效能優化
-- 使用者指南
-
----
-
-## 時間估計
-
-- **第 1-2 週**：架構設計、免責聲明、基礎 UI
-- **第 3-4 週**：廣播方功能、Broadcast Upload Extension
-- **第 5-6 週**：監控方功能、WebRTC 整合
-- **第 7-8 週**：伺服器開發、信令實作
-- **第 9-10 週**：測試、除錯、優化
-- **第 11-12 週**：文件、部署、App Store 提交
+# MyCodeXvantaOS Platform Architecture — Execution Plan
+
+## Phase 1: Platform Constitution (五大核心模型) ✅ COMPLETE
+- [x] contracts/service-definitions/service-catalog.yaml — 8 MVP service registry
+- [x] contracts/resource-model.yaml — resource kinds, lifecycle, URN format
+- [x] contracts/policy-model.yaml — RBAC, governance constraints, rate limits
+- [x] contracts/audit-events.yaml — event catalog, closed-loop, integrity chain
+- [x] contracts/knowledge-model.yaml — knowledge types, pipeline, QA
+
+## Phase 2: Layered Architecture (六層架構核心) ✅ COMPLETE
+- [x] ports/ — platform-neutral interfaces (IStorage, IDatabase, ISearch, IModel, IQueue)
+- [x] adapters/cloudflare/ — Cloudflare runtime implementations
+- [x] core/ — platform core models (no cloud vendor dependency)
+- [x] application/ — application service logic (depends on ports)
+
+## Phase 3: Service Definitions & Schemas ✅ COMPLETE
+- [x] contracts/service-definitions/ — individual 8 MVP service YAML files
+- [x] contracts/schemas/ — JSON Schema validation files
+- [x] migrations/d1/ — D1 initial database schema SQL
+
+## Phase 4: Infrastructure & Runtime
+- [ ] infra/cloudflare/ — Cloudflare deployment configs (wrangler.toml per service)
+- [ ] infra/docker/ — Docker Compose self-deploy
+- [ ] runtimes/ — multi-runtime support updated
+
+## Phase 5: Tools, CI & Docs
+- [ ] tools/ — validation, generators, governance tools
+- [ ] .github/workflows/ — CI/CD workflows
+- [ ] docs/ — architecture documentation
+- [ ] PLATFORM_ARCHITECTURE.md — update to reflect completed design
+
+## Phase 6: Push & PR
+- [ ] Push branch to GitHub
+- [ ] Create Pull Request
