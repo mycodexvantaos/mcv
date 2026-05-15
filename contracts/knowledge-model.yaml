@@ -452,14 +452,14 @@ spec:
         input: "array<EmbeddedChunk>"
         output: IndexUpdateResult
         index_types:
-          - vector
-            description: "Approximate nearest neighbor search"
-            backend: cloudflare-vectorize
-            portable_alternatives: [qdrant, pgvector]
-          - fulltext
-            description: "Full-text search with BM25 ranking"
-            backend: cloudflare-d1-fts
-            portable_alternatives: [typesense, elasticsearch]
+          - vector:
+              description: "Approximate nearest neighbor search"
+              backend: cloudflare-vectorize
+              portable_alternatives: [qdrant, pgvector]
+          - fulltext:
+              description: "Full-text search with BM25 ranking"
+              backend: cloudflare-d1-fts
+              portable_alternatives: [typesense, elasticsearch]
         failure:
           action: retry_index_update
           audit_event: knowledge.index.update.failed
@@ -525,17 +525,17 @@ spec:
         input: AuthorizedQuery
         output: RawSearchResult
         strategies:
-          - semantic
+          - semantic:
             description: "Vector similarity search"
             parameters:
               top_k: 5
               min_score: 0.7
-          - fulltext
+          - fulltext:
             description: "BM25 full-text search"
             parameters:
               top_k: 5
               min_score: 0.3
-          - hybrid
+          - hybrid:
             description: "Reciprocal rank fusion of semantic + fulltext"
             parameters:
               semantic_weight: 0.7

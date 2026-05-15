@@ -160,14 +160,14 @@ spec:
           interface: IIdentityService
           protocol: http
           methods:
-            - registerSubject(input: RegisterSubjectInput): Subject
-            - authenticateSubject(input: AuthenticateInput): AuthenticationResult
-            - issueToken(subjectId: string, scopes: string[]): TokenPair
-            - validateToken(accessToken: string): TokenClaims
-            - revokeSession(sessionId: string): void
-            - assignRole(subjectId: string, workspaceId: string, role: Role): RoleAssignment
-            - challengeMfa(subjectId: string): MfaChallenge
-            - verifyMfa(challengeId: string, code: string): MfaVerification
+            - "registerSubject(input: RegisterSubjectInput): Subject"
+            - "authenticateSubject(input: AuthenticateInput): AuthenticationResult"
+            - "issueToken(subjectId: string, scopes: string[]): TokenPair"
+            - "validateToken(accessToken: string): TokenClaims"
+            - "revokeSession(sessionId: string): void"
+            - "assignRole(subjectId: string, workspaceId: string, role: Role): RoleAssignment"
+            - "challengeMfa(subjectId: string): MfaChallenge"
+            - "verifyMfa(challengeId: string, code: string): MfaVerification"
 
     # ──── Workspace Service ─────────────────────────────────────────────
     - id: workspace
@@ -221,14 +221,14 @@ spec:
           interface: IWorkspaceService
           protocol: http
           methods:
-            - createWorkspace(input: CreateWorkspaceInput): Workspace
-            - getWorkspace(workspaceId: string): Workspace
-            - updateWorkspace(workspaceId: string, patch: WorkspacePatch): Workspace
-            - suspendWorkspace(workspaceId: string, reason: string): Workspace
-            - addMember(workspaceId: string, subjectId: string, role: Role): Membership
-            - removeMember(workspaceId: string, subjectId: string): void
-            - checkQuota(workspaceId: string, resourceKind: string): QuotaStatus
-            - listWorkspaceResources(workspaceId: string, filter: ResourceFilter): ResourceList
+            - "createWorkspace(input: CreateWorkspaceInput): Workspace"
+            - "getWorkspace(workspaceId: string): Workspace"
+            - "updateWorkspace(workspaceId: string, patch: WorkspacePatch): Workspace"
+            - "suspendWorkspace(workspaceId: string, reason: string): Workspace"
+            - "addMember(workspaceId: string, subjectId: string, role: Role): Membership"
+            - "removeMember(workspaceId: string, subjectId: string): void"
+            - "checkQuota(workspaceId: string, resourceKind: string): QuotaStatus"
+            - "listWorkspaceResources(workspaceId: string, filter: ResourceFilter): ResourceList"
 
     # ──── Knowledge Store Service ───────────────────────────────────────
     - id: knowledge-store
@@ -292,15 +292,15 @@ spec:
           interface: IKnowledgeStoreService
           protocol: http
           methods:
-            - uploadDocument(workspaceId: string, input: DocumentUploadInput): Document
-            - ingestDocument(documentId: string): IngestionResult
-            - getDocument(documentId: string): Document
-            - listDocuments(workspaceId: string, filter: DocumentFilter): DocumentList
-            - deleteDocument(documentId: string): void
-            - createCollection(workspaceId: string, input: CollectionInput): KnowledgeCollection
-            - getCollection(collectionId: string): KnowledgeCollection
-            - getIngestionStatus(documentId: string): IngestionStatus
-            - verifyKnowledge(collectionId: string): VerificationReport
+            - "uploadDocument(workspaceId: string, input: DocumentUploadInput): Document"
+            - "ingestDocument(documentId: string): IngestionResult"
+            - "getDocument(documentId: string): Document"
+            - "listDocuments(workspaceId: string, filter: DocumentFilter): DocumentList"
+            - "deleteDocument(documentId: string): void"
+            - "createCollection(workspaceId: string, input: CollectionInput): KnowledgeCollection"
+            - "getCollection(collectionId: string): KnowledgeCollection"
+            - "getIngestionStatus(documentId: string): IngestionStatus"
+            - "verifyKnowledge(collectionId: string): VerificationReport"
 
     # ──── Knowledge Search Service ──────────────────────────────────────
     - id: knowledge-search
@@ -355,11 +355,11 @@ spec:
           interface: IKnowledgeSearchService
           protocol: http
           methods:
-            - search(workspaceId: string, query: string, options: SearchOptions): SearchResult
-            - hybridSearch(workspaceId: string, query: string, options: HybridSearchOptions): SearchResult
-            - traceSource(chunkId: string): SourceTrace
-            - getIndexStats(workspaceId: string): IndexStats
-            - suggestQueries(workspaceId: string, prefix: string): string[]
+            - "search(workspaceId: string, query: string, options: SearchOptions): SearchResult"
+            - "hybridSearch(workspaceId: string, query: string, options: HybridSearchOptions): SearchResult"
+            - "traceSource(chunkId: string): SourceTrace"
+            - "getIndexStats(workspaceId: string): IndexStats"
+            - "suggestQueries(workspaceId: string, prefix: string): string[]"
 
     # ──── Agent Chat Service ────────────────────────────────────────────
     - id: agent-chat
@@ -415,12 +415,12 @@ spec:
           interface: IAgentChatService
           protocol: http
           methods:
-            - createSession(workspaceId: string, input: SessionInput): ChatSession
-            - sendMessage(sessionId: string, content: string, options: MessageOptions): ChatResponse
-            - streamMessage(sessionId: string, content: string, options: MessageOptions): AsyncIterable<ChatChunk>
-            - getSessionHistory(sessionId: string, limit: int): MessageList
-            - closeSession(sessionId: string): void
-            - getSession(sessionId: string): ChatSession
+            - "createSession(workspaceId: string, input: SessionInput): ChatSession"
+            - "sendMessage(sessionId: string, content: string, options: MessageOptions): ChatResponse"
+            - "streamMessage(sessionId: string, content: string, options: MessageOptions): AsyncIterable<ChatChunk>"
+            - "getSessionHistory(sessionId: string, limit: int): MessageList"
+            - "closeSession(sessionId: string): void"
+            - "getSession(sessionId: string): ChatSession"
 
     # ──── Model BYOK Service ────────────────────────────────────────────
     - id: model-byok
@@ -474,13 +474,13 @@ spec:
           interface: IModelByokService
           protocol: http
           methods:
-            - registerEndpoint(workspaceId: string, input: EndpointInput): ModelEndpoint
-            - getEndpoint(endpointId: string): ModelEndpoint
-            - listEndpoints(workspaceId: string): EndpointList
-            - revokeEndpoint(endpointId: string): void
-            - invokeModel(endpointId: string, prompt: string, options: InvokeOptions): ModelResponse
-            - streamModel(endpointId: string, prompt: string, options: InvokeOptions): AsyncIterable<ModelChunk>
-            - getEndpointUsage(endpointId: string, period: UsagePeriod): UsageReport
+            - "registerEndpoint(workspaceId: string, input: EndpointInput): ModelEndpoint"
+            - "getEndpoint(endpointId: string): ModelEndpoint"
+            - "listEndpoints(workspaceId: string): EndpointList"
+            - "revokeEndpoint(endpointId: string): void"
+            - "invokeModel(endpointId: string, prompt: string, options: InvokeOptions): ModelResponse"
+            - "streamModel(endpointId: string, prompt: string, options: InvokeOptions): AsyncIterable<ModelChunk>"
+            - "getEndpointUsage(endpointId: string, period: UsagePeriod): UsageReport"
 
     # ──── Audit Log Service ─────────────────────────────────────────────
     - id: audit-log
@@ -533,12 +533,12 @@ spec:
           interface: IAuditLogService
           protocol: http
           methods:
-            - ingestEvent(event: AuditEvent): IngestionReceipt
-            - ingestBatch(events: AuditEvent[]): BatchIngestionReceipt
-            - queryEvents(filter: AuditFilter, pagination: Pagination): AuditEventPage
-            - verifyIntegrity(fromTimestamp: string, toTimestamp: string): IntegrityReport
-            - getClosedLoopStatus(eventType: string): ClosedLoopStatus
-            - exportAuditLog(filter: AuditFilter, format: ExportFormat): ExportResult
+            - "ingestEvent(event: AuditEvent): IngestionReceipt"
+            - "ingestBatch(events: AuditEvent[]): BatchIngestionReceipt"
+            - "queryEvents(filter: AuditFilter, pagination: Pagination): AuditEventPage"
+            - "verifyIntegrity(fromTimestamp: string, toTimestamp: string): IntegrityReport"
+            - "getClosedLoopStatus(eventType: string): ClosedLoopStatus"
+            - "exportAuditLog(filter: AuditFilter, format: ExportFormat): ExportResult"
 
     # ──── Usage Meter Service ───────────────────────────────────────────
     - id: usage-meter
@@ -603,12 +603,12 @@ spec:
           interface: IUsageMeterService
           protocol: http
           methods:
-            - recordUsage(workspaceId: string, metric: UsageMetric): void
-            - checkRateLimit(workspaceId: string, tier: Tier): RateLimitStatus
-            - getUsageReport(workspaceId: string, period: UsagePeriod): UsageReport
-            - getQuotaStatus(workspaceId: string): QuotaStatus
-            - setTier(workspaceId: string, tier: Tier): void
-            - getTierLimits(tier: Tier): TierLimits
+            - "recordUsage(workspaceId: string, metric: UsageMetric): void"
+            - "checkRateLimit(workspaceId: string, tier: Tier): RateLimitStatus"
+            - "getUsageReport(workspaceId: string, period: UsagePeriod): UsageReport"
+            - "getQuotaStatus(workspaceId: string): QuotaStatus"
+            - "setTier(workspaceId: string, tier: Tier): void"
+            - "getTierLimits(tier: Tier): TierLimits"
 
   # ─── Governance Overlay ──────────────────────────────────────────────
   governance:
