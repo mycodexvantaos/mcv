@@ -1,4 +1,4 @@
-import type { Startable } from "../lifecycle";
+import type { Startable } from '../lifecycle';
 
 export class BootstrapService implements Startable {
   private initialized = false;

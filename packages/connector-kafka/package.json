@@ -10,7 +10,12 @@
     "lint": "eslint src --ext .ts",
     "format": "prettier --write \"src/**/*.ts\""
   },
-  "keywords": ["connector-kafka", "connectorkafka", "Layer D擴展", "mycodexvantaos"],
+  "keywords": [
+    "connector-kafka",
+    "connectorkafka",
+    "Layer D擴展",
+    "mycodexvantaos"
+  ],
   "author": "MyCodeXvantaOS",
   "license": "MIT",
   "dependencies": {

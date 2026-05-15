@@ -10,7 +10,12 @@
     "lint": "eslint src --ext .ts",
     "format": "prettier --write \"src/**/*.ts\""
   },
-  "keywords": ["analytics", "analytics", "Layer C擴展", "mycodexvantaos"],
+  "keywords": [
+    "analytics",
+    "analytics",
+    "Layer C擴展",
+    "mycodexvantaos"
+  ],
   "author": "MyCodeXvantaOS",
   "license": "MIT",
   "dependencies": {

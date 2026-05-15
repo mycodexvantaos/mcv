@@ -38,7 +38,9 @@ export interface ComplianceReportOutput {
   aiProvider: string;
 }
 
-export async function complianceReportFlow(input: ComplianceReportInput): Promise<ComplianceReportOutput> {
+export async function complianceReportFlow(
+  input: ComplianceReportInput
+): Promise<ComplianceReportOutput> {
   const { framework, periodStart, periodEnd, includeEvidence = true } = input;
 
   const prompt = `You are the MyCodeXvantaOS Compliance Report Engine.
@@ -65,22 +67,59 @@ Generate an executive summary (3-4 sentences) covering:
   }
 
   const soc2Controls: ComplianceControl[] = [
-    { id: 'CC6.1', name: 'Logical Access Controls', status: 'passing', evidence: 'Keycloak OIDC + RBAC enforced on all API endpoints' },
-    { id: 'CC6.2', name: 'Authentication Mechanisms', status: 'passing', evidence: 'MFA enforced, JWT rotation every 1h' },
-    { id: 'CC7.1', name: 'Vulnerability Management', status: 'in-progress', evidence: 'Trivy scans active, 1 high CVE pending remediation', gap: 'CVE-2025-12345 in lodash@4.17.20 unpatched', remediationDue: '2026-05-15' },
-    { id: 'CC7.2', name: 'Incident Response', status: 'passing', evidence: 'Runbooks documented, RTO 15min verified in drill 2026-04-15' },
-    { id: 'CC8.1', name: 'Change Management', status: 'passing', evidence: 'GitOps + ArgoCD drift detection active, all changes via PR' },
-    { id: 'A1.1', name: 'Availability SLO', status: 'passing', evidence: '99.97% uptime in period, SLO target 99.99%' },
-    { id: 'PI1.1', name: 'Data Integrity', status: 'passing', evidence: 'Immutable audit log with Object Lock enabled' },
+    {
+      id: 'CC6.1',
+      name: 'Logical Access Controls',
+      status: 'passing',
+      evidence: 'Keycloak OIDC + RBAC enforced on all API endpoints',
+    },
+    {
+      id: 'CC6.2',
+      name: 'Authentication Mechanisms',
+      status: 'passing',
+      evidence: 'MFA enforced, JWT rotation every 1h',
+    },
+    {
+      id: 'CC7.1',
+      name: 'Vulnerability Management',
+      status: 'in-progress',
+      evidence: 'Trivy scans active, 1 high CVE pending remediation',
+      gap: 'CVE-2025-12345 in lodash@4.17.20 unpatched',
+      remediationDue: '2026-05-15',
+    },
+    {
+      id: 'CC7.2',
+      name: 'Incident Response',
+      status: 'passing',
+      evidence: 'Runbooks documented, RTO 15min verified in drill 2026-04-15',
+    },
+    {
+      id: 'CC8.1',
+      name: 'Change Management',
+      status: 'passing',
+      evidence: 'GitOps + ArgoCD drift detection active, all changes via PR',
+    },
+    {
+      id: 'A1.1',
+      name: 'Availability SLO',
+      status: 'passing',
+      evidence: '99.97% uptime in period, SLO target 99.99%',
+    },
+    {
+      id: 'PI1.1',
+      name: 'Data Integrity',
+      status: 'passing',
+      evidence: 'Immutable audit log with Object Lock enabled',
+    },
   ];
 
-  const passingCount = soc2Controls.filter(c => c.status === 'passing').length;
+  const passingCount = soc2Controls.filter((c) => c.status === 'passing').length;
   const score = Math.round((passingCount / soc2Controls.length) * 100);
   const overallStatus = score >= 95 ? 'compliant' : score >= 80 ? 'in-progress' : 'non-compliant';
 
   const gaps = soc2Controls
-    .filter(c => c.gap)
-    .map(c => ({
+    .filter((c) => c.gap)
+    .map((c) => ({
       controlId: c.id,
       gap: c.gap!,
       risk: 'medium',
@@ -97,9 +136,24 @@ Generate an executive summary (3-4 sentences) covering:
     executiveSummary,
     gaps,
     remediationRoadmap: [
-      { priority: 1, action: 'Upgrade lodash to >=4.17.21 to remediate CVE-2025-12345', dueDate: '2026-05-15', owner: 'security-team' },
-      { priority: 2, action: 'Update NetworkPolicy manifests to security baseline v2', dueDate: '2026-05-20', owner: 'platform-team' },
-      { priority: 3, action: 'Complete ISO27001 gap assessment for remaining 6 controls', dueDate: '2026-06-30', owner: 'compliance-team' },
+      {
+        priority: 1,
+        action: 'Upgrade lodash to >=4.17.21 to remediate CVE-2025-12345',
+        dueDate: '2026-05-15',
+        owner: 'security-team',
+      },
+      {
+        priority: 2,
+        action: 'Update NetworkPolicy manifests to security baseline v2',
+        dueDate: '2026-05-20',
+        owner: 'platform-team',
+      },
+      {
+        priority: 3,
+        action: 'Complete ISO27001 gap assessment for remaining 6 controls',
+        dueDate: '2026-06-30',
+        owner: 'compliance-team',
+      },
     ],
     generatedAt: new Date().toISOString(),
     aiProvider,

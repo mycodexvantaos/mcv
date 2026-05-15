@@ -43,7 +43,7 @@ export class PolicyEngine {
 
   async evaluate(context: PolicyContext): Promise<PolicyResult> {
     let lastDenyReason = '';
-    
+
     for (const policy of this.policies.values()) {
       const matches = this.matchesPolicy(policy, context);
       if (matches) {
@@ -56,7 +56,7 @@ export class PolicyEngine {
     // Default deny if no explicit allow
     return {
       allowed: lastDenyReason === '',
-      reason: lastDenyReason || 'Allowed by default'
+      reason: lastDenyReason || 'Allowed by default',
     };
   }
 

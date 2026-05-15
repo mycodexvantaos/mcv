@@ -52,21 +52,21 @@
 
 ## Provider Dependencies
 
-| Provider | Usage |
-|---|---|
-| DatabaseProvider | Persistent storage for processed data and pipeline state |
-| StorageProvider | File/blob storage for large payloads |
-| QueueProvider | Internal message buffering and backpressure |
-| ObservabilityProvider | Pipeline metrics, throughput, latency tracking |
-| StateStoreProvider | Pipeline checkpoint and cursor state |
+| Provider              | Usage                                                    |
+| --------------------- | -------------------------------------------------------- |
+| DatabaseProvider      | Persistent storage for processed data and pipeline state |
+| StorageProvider       | File/blob storage for large payloads                     |
+| QueueProvider         | Internal message buffering and backpressure              |
+| ObservabilityProvider | Pipeline metrics, throughput, latency tracking           |
+| StateStoreProvider    | Pipeline checkpoint and cursor state                     |
 
 ## Operational Modes
 
-| Mode | Behavior |
-|---|---|
-| **Native** | In-memory streams, SQLite storage, local file sinks |
-| **Connected** | Kafka/Redis streams, PostgreSQL storage, S3 sinks |
-| **Hybrid** | Mixed — e.g. Kafka ingestion with SQLite local cache |
+| Mode          | Behavior                                             |
+| ------------- | ---------------------------------------------------- |
+| **Native**    | In-memory streams, SQLite storage, local file sinks  |
+| **Connected** | Kafka/Redis streams, PostgreSQL storage, S3 sinks    |
+| **Hybrid**    | Mixed — e.g. Kafka ingestion with SQLite local cache |
 
 ## Directory Structure
 

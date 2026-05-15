@@ -3,6 +3,7 @@
 ## ⚠️ 重要安全提醒
 
 您已提供以下憑證資訊：
+
 - **CLOUDFLARE_API_TOKEN**: [已提供]
 - **CLOUDFLARE_ACCOUNT_ID**: 2fead4a141ec2c677eb3bf0ac535f1d5
 - **CLOUDFLARE_ZONE_ID**: 1bdb04f9da82872cdff76d8515b85246
@@ -16,6 +17,7 @@
 #### 方法 A：使用 GitHub 網頁介面（推薦）
 
 1. 前往 GitHub Secrets 設定頁面：
+
    ```
    https://github.com/mycodexvantaos/mycodexvantaos/settings/secrets/actions
    ```
@@ -64,6 +66,7 @@ gh secret list
 ```
 
 您應該看到三個 secrets：
+
 - CLOUDFLARE_API_TOKEN
 - CLOUDFLARE_ACCOUNT_ID
 - CLOUDFLARE_ZONE_ID
@@ -93,6 +96,7 @@ gh pr create --title "Add Cloudflare Pages Deployment" --body "Adds Cloudflare P
 ### 步驟 5：監控部署
 
 1. 前往 GitHub Actions 頁面：
+
    ```
    https://github.com/mycodexvantaos/mycodexvantaos/actions
    ```
@@ -113,18 +117,21 @@ gh pr create --title "Add Cloudflare Pages Deployment" --body "Adds Cloudflare P
 對於完整功能，您可能還需要配置：
 
 ### 資料庫配置
+
 ```bash
 gh secret set DATABASE_URL
 # 格式: postgresql://user:password@host:port/database
 ```
 
 ### Redis 配置
+
 ```bash
 gh secret set REDIS_URL
 # 格式: redis://user:password@host:port
 ```
 
 ### 身份驗證金鑰
+
 ```bash
 # 生成 NextAuth secret
 openssl rand -base64 32
@@ -133,6 +140,7 @@ gh secret set NEXTAUTH_SECRET
 ```
 
 ### AI 服務 API Keys
+
 ```bash
 gh secret set GENKIT_API_KEY
 gh secret set OPENAI_API_KEY
@@ -162,6 +170,7 @@ gh secret set GOOGLE_AI_API_KEY
 ## 📞 需要協助？
 
 如果遇到問題：
+
 1. 檢查 GitHub Actions 日誌
 2. 確認所有 Secrets 正確設置
 3. 驗證 Cloudflare 憑證權限

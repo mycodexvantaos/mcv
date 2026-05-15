@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/embedding/openai/config.schema.json",
   "title": "embedding-openai Configuration",
   "type": "object",
-  "required": [
-    "apiKey"
-  ],
+  "required": ["apiKey"],
   "properties": {
     "apiKey": {
       "type": "string",

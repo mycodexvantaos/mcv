@@ -1,6 +1,6 @@
 /**
  * Provider Abstraction Layer
- * 
+ *
  * High-level service that provides a unified interface for working with providers
  * across different capabilities and runtime modes. Implements the cloud-agnostic
  * provider selection and runtime mode switching logic.
@@ -55,7 +55,7 @@ export class ProviderAbstractionLayer {
 
     try {
       await this.adapterRegistry.performHealthChecks();
-      
+
       logger.info('Provider abstraction layer initialized successfully');
     } catch (error) {
       logger.error({ error }, 'Failed to initialize provider abstraction layer');
@@ -66,23 +66,21 @@ export class ProviderAbstractionLayer {
   /**
    * Resolve a provider for a specific capability
    */
-  async resolveProvider(
-    options: ProviderResolutionOptions
-  ): Promise<ProviderResolutionResult> {
-    logger.info({ 
-      capability: options.capability,
-      runtimeMode: options.runtimeMode 
-    }, 'Resolving provider');
+  async resolveProvider(options: ProviderResolutionOptions): Promise<ProviderResolutionResult> {
+    logger.info(
+      {
+        capability: options.capability,
+        runtimeMode: options.runtimeMode,
+      },
+      'Resolving provider'
+    );
 
     try {
       // Resolve adapters using adapter registry
-      const adapters = this.adapterRegistry.resolveAdapters(
-        options.capability,
-        {
-          runtimeMode: options.runtimeMode,
-          preferredAdapter: options.preferredProvider
-        }
-      );
+      const adapters = this.adapterRegistry.resolveAdapters(options.capability, {
+        runtimeMode: options.runtimeMode,
+        preferredAdapter: options.preferredProvider,
+      });
 
       if (adapters.length === 0) {
         throw new Error(`No adapters available for capability: ${options.capability}`);
@@ -94,12 +92,15 @@ export class ProviderAbstractionLayer {
 
       // Check if primary adapter is healthy
       const isHealthy = await selectedAdapter.healthCheck();
-      
+
       if (!isHealthy && options.fallbackEnabled !== false) {
-        logger.warn({ 
-          adapter: selectedAdapter.name,
-          capability: options.capability 
-        }, 'Primary adapter unhealthy, attempting fallback');
+        logger.warn(
+          {
+            adapter: selectedAdapter.name,
+            capability: options.capability,
+          },
+          'Primary adapter unhealthy, attempting fallback'
+        );
 
         // Try fallback adapters
         for (let i = 1; i < adapters.length; i++) {
@@ -109,22 +110,23 @@ export class ProviderAbstractionLayer {
           if (fallbackHealthy) {
             selectedAdapter = fallbackAdapter;
             fallbackUsed = true;
-            
-            logger.info({ 
-              primary: adapters[0].name,
-              fallback: selectedAdapter.name,
-              capability: options.capability 
-            }, 'Fallback adapter selected');
-            
+
+            logger.info(
+              {
+                primary: adapters[0].name,
+                fallback: selectedAdapter.name,
+                capability: options.capability,
+              },
+              'Fallback adapter selected'
+            );
+
             break;
           }
         }
 
         // If all adapters are unhealthy
         if (!fallbackUsed && !isHealthy) {
-          throw new Error(
-            `All adapters for capability ${options.capability} are unhealthy`
-          );
+          throw new Error(`All adapters for capability ${options.capability} are unhealthy`);
         }
       }
 
@@ -137,22 +139,28 @@ export class ProviderAbstractionLayer {
         metadata: {
           serviceName: options.context?.serviceName,
           environment: options.context?.environment,
-          tenantId: options.context?.tenantId
-        }
+          tenantId: options.context?.tenantId,
+        },
       };
 
-      logger.info({ 
-        adapter: selectedAdapter.name,
-        capability: options.capability,
-        fallbackUsed 
-      }, 'Provider resolved successfully');
+      logger.info(
+        {
+          adapter: selectedAdapter.name,
+          capability: options.capability,
+          fallbackUsed,
+        },
+        'Provider resolved successfully'
+      );
 
       return result;
     } catch (error) {
-      logger.error({ 
-        capability: options.capability,
-        error 
-      }, 'Provider resolution failed');
+      logger.error(
+        {
+          capability: options.capability,
+          error,
+        },
+        'Provider resolution failed'
+      );
       throw error;
     }
   }
@@ -161,25 +169,34 @@ export class ProviderAbstractionLayer {
    * Register a provider adapter
    */
   async registerProviderAdapter(config: AdapterConfiguration): Promise<ProviderAdapter> {
-    logger.info({ 
-      capability: config.capability,
-      implementation: config.implementation 
-    }, 'Registering provider adapter');
+    logger.info(
+      {
+        capability: config.capability,
+        implementation: config.implementation,
+      },
+      'Registering provider adapter'
+    );
 
     try {
       const adapter = await this.adapterRegistry.createAdapter(config);
-      
-      logger.info({ 
-        adapter: adapter.name,
-        capability: config.capability 
-      }, 'Provider adapter registered successfully');
+
+      logger.info(
+        {
+          adapter: adapter.name,
+          capability: config.capability,
+        },
+        'Provider adapter registered successfully'
+      );
 
       return adapter;
     } catch (error) {
-      logger.error({ 
-        capability: config.capability,
-        error 
-      }, 'Provider adapter registration failed');
+      logger.error(
+        {
+          capability: config.capability,
+          error,
+        },
+        'Provider adapter registration failed'
+      );
       throw error;
     }
   }
@@ -192,13 +209,16 @@ export class ProviderAbstractionLayer {
 
     try {
       await this.adapterRegistry.unregisterAdapter(adapterName);
-      
+
       logger.info({ adapter: adapterName }, 'Provider adapter unregistered successfully');
     } catch (error) {
-      logger.error({ 
-        adapter: adapterName,
-        error 
-      }, 'Provider adapter unregistration failed');
+      logger.error(
+        {
+          adapter: adapterName,
+          error,
+        },
+        'Provider adapter unregistration failed'
+      );
       throw error;
     }
   }
@@ -221,17 +241,18 @@ export class ProviderAbstractionLayer {
 
     const results = await this.adapterRegistry.performHealthChecks();
 
-    const healthy = Array.from(results.values()).filter(
-      r => r.status === 'healthy'
-    ).length;
+    const healthy = Array.from(results.values()).filter((r) => r.status === 'healthy').length;
 
     const unhealthy = results.size - healthy;
 
-    logger.info({ 
-      total: results.size,
-      healthy,
-      unhealthy 
-    }, 'Health checks completed');
+    logger.info(
+      {
+        total: results.size,
+        healthy,
+        unhealthy,
+      },
+      'Health checks completed'
+    );
 
     return results;
   }
@@ -251,17 +272,14 @@ export class ProviderAbstractionLayer {
       totalAdapters: stats.totalAdapters,
       activeAdapters: stats.activeAdapters,
       adaptersByCapability: stats.adaptersByCapability,
-      capabilitiesSupported: Object.keys(stats.adaptersByCapability)
+      capabilitiesSupported: Object.keys(stats.adaptersByCapability),
     };
   }
 
   /**
    * Reconfigure a provider
    */
-  async reconfigureProvider(
-    adapterName: string,
-    newConfig: Record<string, any>
-  ): Promise<void> {
+  async reconfigureProvider(adapterName: string, newConfig: Record<string, any>): Promise<void> {
     logger.info({ adapter: adapterName }, 'Reconfiguring provider');
 
     const adapter = this.adapterRegistry.getAdapter(adapterName);
@@ -275,13 +293,16 @@ export class ProviderAbstractionLayer {
 
     try {
       await adapter.reconfigure!(newConfig);
-      
+
       logger.info({ adapter: adapterName }, 'Provider reconfigured successfully');
     } catch (error) {
-      logger.error({ 
-        adapter: adapterName,
-        error 
-      }, 'Provider reconfiguration failed');
+      logger.error(
+        {
+          adapter: adapterName,
+          error,
+        },
+        'Provider reconfiguration failed'
+      );
       throw error;
     }
   }
@@ -294,7 +315,7 @@ export class ProviderAbstractionLayer {
 
     try {
       await this.adapterRegistry.clearAdapters();
-      
+
       logger.info('Provider abstraction layer shut down successfully');
     } catch (error) {
       logger.error({ error }, 'Failed to shutdown provider abstraction layer');

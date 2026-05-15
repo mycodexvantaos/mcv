@@ -1,7 +1,7 @@
 import { randomInt } from 'node:crypto';
-import type { ServiceInstance } from "./types";
+import type { ServiceInstance } from './types';
 
-export type BalancingStrategy = "round-robin" | "random" | "least-connections";
+export type BalancingStrategy = 'round-robin' | 'random' | 'least-connections';
 
 interface ConnectionCount {
   instanceId: string;
@@ -9,7 +9,7 @@ interface ConnectionCount {
 }
 
 export class LoadBalancerService {
-  private strategy: BalancingStrategy = "round-robin";
+  private strategy: BalancingStrategy = 'round-robin';
   private rrIndex = 0;
   private connections = new Map<string, number>();
 
@@ -27,11 +27,11 @@ export class LoadBalancerService {
     if (healthy.length === 0) return null;
 
     switch (this.strategy) {
-      case "round-robin":
+      case 'round-robin':
         return this.roundRobin(healthy);
-      case "random":
+      case 'random':
         return this.randomSelect(healthy);
-      case "least-connections":
+      case 'least-connections':
         return this.leastConnections(healthy);
       default:
         return healthy[0];
@@ -39,10 +39,7 @@ export class LoadBalancerService {
   }
 
   recordConnection(instanceId: string): void {
-    this.connections.set(
-      instanceId,
-      (this.connections.get(instanceId) ?? 0) + 1,
-    );
+    this.connections.set(instanceId, (this.connections.get(instanceId) ?? 0) + 1);
   }
 
   releaseConnection(instanceId: string): void {

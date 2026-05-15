@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/storage/s3/config.schema.json",
   "title": "storage-s3 Configuration",
   "type": "object",
-  "required": [
-    "bucket"
-  ],
+  "required": ["bucket"],
   "properties": {
     "bucket": {
       "type": "string",

@@ -1,9 +1,9 @@
 /**
  * MyCodeXvantaOS Persona Engine
- * 
+ *
  * Main entry point for the persona engine module.
  * URN: urn:mycodexvantaos:module:persona-engine
- * 
+ *
  * @version 1.0.0
  */
 
@@ -15,28 +15,32 @@ export { SemanticMaskDetector } from './core/semantic-mask-detector';
 export type { MaskDetectionResult, DetectedMask } from './core/semantic-mask-detector';
 
 export { RootCauseAnalyzer } from './core/root-cause-analyzer';
-export type { 
-  AnalysisContext, 
-  LayerAnalysis, 
+export type {
+  AnalysisContext,
+  LayerAnalysis,
   CompleteAnalysisResult,
 } from './core/root-cause-analyzer';
 
 export { SolutionGenerator } from './core/solution-generator';
-export type { 
-  SolutionContext, 
-  SolutionConstraints, 
+export type {
+  SolutionContext,
+  SolutionConstraints,
   SolutionPreferences,
   SolutionGenerationResult,
 } from './core/solution-generator';
 
 export { PersonaEngine } from './core/persona-engine';
-export type { 
-  PersonaEngineConfig, 
-  PersonaProcessingResult, 
+export type {
+  PersonaEngineConfig,
+  PersonaProcessingResult,
   PersonaResponse,
 } from './core/persona-engine';
 
-export { PersonaManager, getDefaultPersonaManager, resetDefaultPersonaManager } from './core/persona-manager';
+export {
+  PersonaManager,
+  getDefaultPersonaManager,
+  resetDefaultPersonaManager,
+} from './core/persona-manager';
 export type { PersonaManagerConfig } from './core/persona-manager';
 
 export { OrchestratorAdapter } from './core/orchestrator-adapter';
@@ -75,7 +79,10 @@ export type {
 } from './core/behavioral-adjuster';
 
 // Integration
-export { PersonaOrchestratorIntegration, createIntegration } from './integration/orchestrator-integration';
+export {
+  PersonaOrchestratorIntegration,
+  createIntegration,
+} from './integration/orchestrator-integration';
 export type {
   IntegrationConfig,
   AgentRegistration,

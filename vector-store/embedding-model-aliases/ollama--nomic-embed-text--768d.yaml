@@ -12,4 +12,4 @@ spec:
   dimension: 768
   providerInstance: embedding-ollama
   maxTokens: 8192
-  description: "Ollama nomic-embed-text. Open-source, local inference, 768 dimensions."
+  description: 'Ollama nomic-embed-text. Open-source, local inference, 768 dimensions.'

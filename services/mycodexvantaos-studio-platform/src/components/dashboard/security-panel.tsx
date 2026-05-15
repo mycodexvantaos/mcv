@@ -28,7 +28,7 @@ export function SecurityPanel() {
     setIsScanning(true);
     setScanCompleted(false);
     setVulnerabilities([]);
-    
+
     try {
       const result = await scanForVulnerabilities({ packageJsonContent });
       setVulnerabilities(result.vulnerabilities);
@@ -40,19 +40,27 @@ export function SecurityPanel() {
       setScanCompleted(true);
     }
   };
-  
+
   const getSeverityBadge = (severity: Vulnerability['severity']) => {
     switch (severity) {
       case 'Critical':
         return <Badge variant="destructive">Critical</Badge>;
       case 'High':
-        return <Badge variant="destructive" className="bg-red-700">High</Badge>;
+        return (
+          <Badge variant="destructive" className="bg-red-700">
+            High
+          </Badge>
+        );
       case 'Medium':
-        return <Badge variant="secondary" className="bg-yellow-500 text-black">Medium</Badge>;
+        return (
+          <Badge variant="secondary" className="bg-yellow-500 text-black">
+            Medium
+          </Badge>
+        );
       case 'Low':
         return <Badge variant="outline">Low</Badge>;
     }
-  }
+  };
 
   return (
     <div className="flex h-full flex-col">
@@ -73,38 +81,40 @@ export function SecurityPanel() {
 
         {scanCompleted && vulnerabilities.length === 0 && !isScanning && (
           <Alert>
-             <ShieldCheck className="h-4 w-4" />
-             <AlertTitle>Scan Complete</AlertTitle>
+            <ShieldCheck className="h-4 w-4" />
+            <AlertTitle>Scan Complete</AlertTitle>
             <AlertDescription>
               No vulnerabilities found. Your project looks secure.
             </AlertDescription>
           </Alert>
         )}
-        
-        {scanCompleted && vulnerabilities.length > 0 && !isScanning && (
-           <Card>
-              <CardHeader>
-                <CardTitle className="text-base font-medium flex items-center gap-2">
-                  <ShieldAlert className="h-5 w-5 text-destructive"/>
-                  {vulnerabilities.length} {vulnerabilities.length === 1 ? 'vulnerability' : 'vulnerabilities'} found
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {vulnerabilities.map(vuln => (
-                  <div key={vuln.id} className="p-3 border rounded-lg bg-card/50">
-                    <div className="flex justify-between items-center mb-2">
-                       <p className="font-semibold text-sm">{vuln.packageName}@{vuln.version}</p>
-                       {getSeverityBadge(vuln.severity)}
-                    </div>
-                    <p className="text-xs text-muted-foreground mb-1">{vuln.cve}</p>
-                    <p className="text-sm mb-2">{vuln.description}</p>
-                    <p className="text-sm text-accent">{vuln.remediation}</p>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-        )}
 
+        {scanCompleted && vulnerabilities.length > 0 && !isScanning && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base font-medium flex items-center gap-2">
+                <ShieldAlert className="h-5 w-5 text-destructive" />
+                {vulnerabilities.length}{' '}
+                {vulnerabilities.length === 1 ? 'vulnerability' : 'vulnerabilities'} found
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {vulnerabilities.map((vuln) => (
+                <div key={vuln.id} className="p-3 border rounded-lg bg-card/50">
+                  <div className="flex justify-between items-center mb-2">
+                    <p className="font-semibold text-sm">
+                      {vuln.packageName}@{vuln.version}
+                    </p>
+                    {getSeverityBadge(vuln.severity)}
+                  </div>
+                  <p className="text-xs text-muted-foreground mb-1">{vuln.cve}</p>
+                  <p className="text-sm mb-2">{vuln.description}</p>
+                  <p className="text-sm text-accent">{vuln.remediation}</p>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );

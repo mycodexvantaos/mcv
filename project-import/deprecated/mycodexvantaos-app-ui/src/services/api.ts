@@ -1,23 +1,25 @@
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3002";
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3002';
 
 export async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
-    // SSRF guard: reject absolute URLs and protocol-relative URLs
-    if (!path.startsWith('/') || path.startsWith('//')) {
-      throw new Error('apiFetch: path must be a relative path starting with "/" (got: ' + path.slice(0, 32) + ')');
-    }
+  // SSRF guard: reject absolute URLs and protocol-relative URLs
+  if (!path.startsWith('/') || path.startsWith('//')) {
+    throw new Error(
+      'apiFetch: path must be a relative path starting with "/" (got: ' + path.slice(0, 32) + ')'
+    );
+  }
   const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-    ...(init?.headers as Record<string, string> | undefined)
+    'Content-Type': 'application/json',
+    ...(init?.headers as Record<string, string> | undefined),
   };
 
-  const token = typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
+  const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
   if (token) {
-    headers.Authorization = "Bearer " + token;
+    headers.Authorization = 'Bearer ' + token;
   }
 
   const response = await fetch(BASE_URL + path, {
     ...init,
-    headers
+    headers,
   });
 
   if (!response.ok) {

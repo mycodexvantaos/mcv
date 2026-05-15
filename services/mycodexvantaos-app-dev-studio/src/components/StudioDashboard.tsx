@@ -10,7 +10,9 @@ export default function StudioDashboard() {
       <nav className="bg-gray-800 border-b border-gray-700 px-6 py-4 flex justify-between items-center">
         <div className="flex items-center space-x-3">
           <Terminal className="w-6 h-6 text-indigo-400" />
-          <span className="text-xl font-bold tracking-tight text-indigo-50">MyCodexVantaOS Dev Studio</span>
+          <span className="text-xl font-bold tracking-tight text-indigo-50">
+            MyCodexVantaOS Dev Studio
+          </span>
         </div>
         <div className="flex items-center space-x-4">
           <button className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-sm font-medium rounded-md transition-colors">
@@ -25,22 +27,24 @@ export default function StudioDashboard() {
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
         <aside className="w-64 bg-gray-800 border-r border-gray-700 flex flex-col p-4 space-y-2">
-          <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Capabilities</div>
-          <button 
+          <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+            Capabilities
+          </div>
+          <button
             onClick={() => setActiveTab('intelligence')}
             className={`flex items-center space-x-3 w-full px-3 py-2 rounded-md transition-colors ${activeTab === 'intelligence' ? 'bg-indigo-900/50 text-indigo-300' : 'hover:bg-gray-700 text-gray-300'}`}
           >
             <Code className="w-4 h-4" />
             <span className="text-sm font-medium">Code Intelligence</span>
           </button>
-          <button 
+          <button
             onClick={() => setActiveTab('analytics')}
             className={`flex items-center space-x-3 w-full px-3 py-2 rounded-md transition-colors ${activeTab === 'analytics' ? 'bg-indigo-900/50 text-indigo-300' : 'hover:bg-gray-700 text-gray-300'}`}
           >
             <BarChart className="w-4 h-4" />
             <span className="text-sm font-medium">Ecosystem Analytics</span>
           </button>
-          <button 
+          <button
             onClick={() => setActiveTab('extensions')}
             className={`flex items-center space-x-3 w-full px-3 py-2 rounded-md transition-colors ${activeTab === 'extensions' ? 'bg-indigo-900/50 text-indigo-300' : 'hover:bg-gray-700 text-gray-300'}`}
           >
@@ -56,7 +60,8 @@ export default function StudioDashboard() {
               The Next Evolution of Code Intelligence
             </h1>
             <p className="text-lg text-gray-400">
-              An open, extensible platform to build, analyze, and collaborate on the future of code editing.
+              An open, extensible platform to build, analyze, and collaborate on the future of code
+              editing.
             </p>
           </header>
 
@@ -68,7 +73,8 @@ export default function StudioDashboard() {
               </div>
               <h3 className="text-xl font-bold text-gray-100 mb-2">Unified Development</h3>
               <p className="text-sm text-gray-400 mb-4 h-16">
-                Enhance your workflow with AI-driven code completion, inline suggestions, and a conversational LLM assistant.
+                Enhance your workflow with AI-driven code completion, inline suggestions, and a
+                conversational LLM assistant.
               </p>
               <button className="flex items-center text-indigo-400 text-sm font-medium hover:text-indigo-300">
                 Launch Assistant <ChevronRight className="w-4 h-4 ml-1" />
@@ -82,7 +88,8 @@ export default function StudioDashboard() {
               </div>
               <h3 className="text-xl font-bold text-gray-100 mb-2">Market & Governance</h3>
               <p className="text-sm text-gray-400 mb-4 h-16">
-                Utilize powerful telemetry visualizations to analyze code editor ecosystems, market trends, and architecture drift.
+                Utilize powerful telemetry visualizations to analyze code editor ecosystems, market
+                trends, and architecture drift.
               </p>
               <button className="flex items-center text-green-400 text-sm font-medium hover:text-green-300">
                 View Analytics <ChevronRight className="w-4 h-4 ml-1" />
@@ -96,7 +103,8 @@ export default function StudioDashboard() {
               </div>
               <h3 className="text-xl font-bold text-gray-100 mb-2">Community Extensions</h3>
               <p className="text-sm text-gray-400 mb-4 h-16">
-                Customize your experience by browsing, installing, and managing a wide range of governed, community-built extensions.
+                Customize your experience by browsing, installing, and managing a wide range of
+                governed, community-built extensions.
               </p>
               <button className="flex items-center text-orange-400 text-sm font-medium hover:text-orange-300">
                 Browse Registry <ChevronRight className="w-4 h-4 ml-1" />

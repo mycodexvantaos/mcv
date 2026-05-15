@@ -8,7 +8,7 @@ metadata:
   capability: notification
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: "8.1"
+    mycodexvantaos.org/specRef: '8.1'
 spec:
   providerName: sendgrid
   isNative: false
@@ -16,4 +16,4 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_NOTIFICATION
   configSchemaRef: ./config.schema.json
-  description: "SendGrid email notification provider."
+  description: 'SendGrid email notification provider.'

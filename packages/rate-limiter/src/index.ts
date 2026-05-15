@@ -27,7 +27,7 @@ export class RateLimiter {
   async check(key: string): Promise<RateLimitResult> {
     const now = Date.now();
     const resetTime = now + this.config.windowMs;
-    
+
     let record = this.requests.get(key);
     if (!record || now > record.resetTime) {
       record = { count: 0, resetTime };
@@ -36,11 +36,11 @@ export class RateLimiter {
 
     record.count++;
     const remaining = Math.max(0, this.config.maxRequests - record.count);
-    
+
     return {
       allowed: record.count <= this.config.maxRequests,
       remaining,
-      resetTime: record.resetTime
+      resetTime: record.resetTime,
     };
   }
 

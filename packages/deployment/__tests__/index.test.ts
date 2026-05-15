@@ -166,7 +166,9 @@ describe('Deployment Package', () => {
           name: 'kubernetes',
           isNative: false,
           isAvailable: () => true,
-          healthCheck: jest.fn().mockResolvedValue({ healthy: false, message: 'Cluster unreachable' }),
+          healthCheck: jest
+            .fn()
+            .mockResolvedValue({ healthy: false, message: 'Cluster unreachable' }),
           getMetadata: jest.fn(),
           deploy: jest.fn(),
         };
@@ -258,10 +260,10 @@ describe('Deployment Package', () => {
       it('should generate unique job IDs', async () => {
         const application = { name: 'test-app' };
         const result1 = await provider.deploy(application);
-        
+
         // Wait a bit to ensure different timestamp
-        await new Promise(resolve => setTimeout(resolve, 10));
-        
+        await new Promise((resolve) => setTimeout(resolve, 10));
+
         const result2 = await provider.deploy(application);
 
         expect(result1.jobId).not.toBe(result2.jobId);

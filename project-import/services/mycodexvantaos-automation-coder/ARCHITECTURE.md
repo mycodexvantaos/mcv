@@ -42,10 +42,10 @@ Get Impact:
 
 ## Provider Usage Map
 
-| Service | storage | database | stateStore | observability |
-|---------|---------|----------|------------|---------------|
-| ASTAnalyzerService | read files | results | AST cache | log |
-| DependencyGraphService | — | graphs | graph cache | trace |
+| Service                | storage    | database | stateStore  | observability |
+| ---------------------- | ---------- | -------- | ----------- | ------------- |
+| ASTAnalyzerService     | read files | results  | AST cache   | log           |
+| DependencyGraphService | —          | graphs   | graph cache | trace         |
 
 ---
 

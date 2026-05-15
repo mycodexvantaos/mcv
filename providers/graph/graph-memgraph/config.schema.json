@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/graph/memgraph/config.schema.json",
   "title": "graph-memgraph Configuration",
   "type": "object",
-  "required": [
-    "host"
-  ],
+  "required": ["host"],
   "properties": {
     "host": {
       "type": "string",

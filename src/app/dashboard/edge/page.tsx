@@ -36,11 +36,71 @@ interface EdgeNodeData {
 }
 
 const mockNodes: EdgeNodeData[] = [
-  { id: 'n1', name: 'us-west-2-primary', region: 'US West (Oregon)', status: 'online', currentVersion: 'v2.4.1', cpu: 0.45, memory: 0.62, gpu: 0.38, models: ['gemini-2.5-flash', 'llama-3.1-70b'], rps: 1250, latencyMs: 28 },
-  { id: 'n2', name: 'us-east-1-primary', region: 'US East (Virginia)', status: 'online', currentVersion: 'v2.4.1', cpu: 0.32, memory: 0.48, gpu: 0.22, models: ['gpt-4o'], rps: 820, latencyMs: 35 },
-  { id: 'n3', name: 'eu-central-1-primary', region: 'EU (Frankfurt)', status: 'online', currentVersion: 'v2.4.0', cpu: 0.58, memory: 0.71, gpu: 0.45, models: ['gemini-2.5-flash', 'claude-sonnet-4'], rps: 950, latencyMs: 42 },
-  { id: 'n4', name: 'ap-southeast-1', region: 'Asia Pacific (Singapore)', status: 'deploying', currentVersion: 'v2.3.8', cpu: 0.0, memory: 0.0, gpu: 0.0, models: [], rps: 0, latencyMs: 0 },
-  { id: 'n5', name: 'eu-west-2-secondary', region: 'EU (London)', status: 'online', currentVersion: 'v2.4.0', cpu: 0.28, memory: 0.35, gpu: 0.18, models: ['llama-3.1-70b'], rps: 340, latencyMs: 55 },
+  {
+    id: 'n1',
+    name: 'us-west-2-primary',
+    region: 'US West (Oregon)',
+    status: 'online',
+    currentVersion: 'v2.4.1',
+    cpu: 0.45,
+    memory: 0.62,
+    gpu: 0.38,
+    models: ['gemini-2.5-flash', 'llama-3.1-70b'],
+    rps: 1250,
+    latencyMs: 28,
+  },
+  {
+    id: 'n2',
+    name: 'us-east-1-primary',
+    region: 'US East (Virginia)',
+    status: 'online',
+    currentVersion: 'v2.4.1',
+    cpu: 0.32,
+    memory: 0.48,
+    gpu: 0.22,
+    models: ['gpt-4o'],
+    rps: 820,
+    latencyMs: 35,
+  },
+  {
+    id: 'n3',
+    name: 'eu-central-1-primary',
+    region: 'EU (Frankfurt)',
+    status: 'online',
+    currentVersion: 'v2.4.0',
+    cpu: 0.58,
+    memory: 0.71,
+    gpu: 0.45,
+    models: ['gemini-2.5-flash', 'claude-sonnet-4'],
+    rps: 950,
+    latencyMs: 42,
+  },
+  {
+    id: 'n4',
+    name: 'ap-southeast-1',
+    region: 'Asia Pacific (Singapore)',
+    status: 'deploying',
+    currentVersion: 'v2.3.8',
+    cpu: 0.0,
+    memory: 0.0,
+    gpu: 0.0,
+    models: [],
+    rps: 0,
+    latencyMs: 0,
+  },
+  {
+    id: 'n5',
+    name: 'eu-west-2-secondary',
+    region: 'EU (London)',
+    status: 'online',
+    currentVersion: 'v2.4.0',
+    cpu: 0.28,
+    memory: 0.35,
+    gpu: 0.18,
+    models: ['llama-3.1-70b'],
+    rps: 340,
+    latencyMs: 55,
+  },
 ];
 
 const statusIcons: Record<EdgeNodeStatus, typeof CheckCircle2> = {
@@ -59,7 +119,10 @@ const statusColors: Record<EdgeNodeStatus, string> = {
   error: 'text-status-critical',
 };
 
-const statusBadgeVariant: Record<EdgeNodeStatus, 'default' | 'secondary' | 'destructive' | 'outline'> = {
+const statusBadgeVariant: Record<
+  EdgeNodeStatus,
+  'default' | 'secondary' | 'destructive' | 'outline'
+> = {
   online: 'default',
   offline: 'destructive',
   deploying: 'secondary',
@@ -110,7 +173,9 @@ export default function EdgePage() {
         <Card>
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground">Deploying</p>
-            <p className="text-2xl font-bold font-headline text-chart-1">{mockNodes.filter((n) => n.status === 'deploying').length}</p>
+            <p className="text-2xl font-bold font-headline text-chart-1">
+              {mockNodes.filter((n) => n.status === 'deploying').length}
+            </p>
           </CardContent>
         </Card>
         <Card>
@@ -144,10 +209,14 @@ export default function EdgePage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <Badge variant={statusBadgeVariant[node.status]} className="text-[10px] gap-1">
-                      <StatusIcon className={`h-3 w-3 ${node.status === 'deploying' ? 'animate-spin' : ''}`} />
+                      <StatusIcon
+                        className={`h-3 w-3 ${node.status === 'deploying' ? 'animate-spin' : ''}`}
+                      />
                       {node.status}
                     </Badge>
-                    <Badge variant="outline" className="text-[10px] font-mono">{node.currentVersion}</Badge>
+                    <Badge variant="outline" className="text-[10px] font-mono">
+                      {node.currentVersion}
+                    </Badge>
                   </div>
                 </div>
               </CardHeader>
@@ -169,7 +238,9 @@ export default function EdgePage() {
                           <span className="text-[10px] text-muted-foreground">Memory</span>
                         </div>
                         <Progress value={node.memory * 100} className="h-1.5" />
-                        <p className="text-xs font-mono mt-0.5">{(node.memory * 100).toFixed(0)}%</p>
+                        <p className="text-xs font-mono mt-0.5">
+                          {(node.memory * 100).toFixed(0)}%
+                        </p>
                       </div>
                       <div>
                         <div className="flex items-center gap-1 mb-1">
@@ -185,7 +256,9 @@ export default function EdgePage() {
                         <p className="text-xs text-muted-foreground">Models:</p>
                         <div className="flex gap-1">
                           {node.models.map((m) => (
-                            <Badge key={m} variant="secondary" className="text-[10px] h-5">{m}</Badge>
+                            <Badge key={m} variant="secondary" className="text-[10px] h-5">
+                              {m}
+                            </Badge>
                           ))}
                         </div>
                       </div>
@@ -201,7 +274,9 @@ export default function EdgePage() {
                     <Loader2 className="h-5 w-5 text-chart-1 animate-spin" />
                     <div>
                       <p className="text-sm font-medium">Deployment in progress...</p>
-                      <p className="text-xs text-muted-foreground">Building → Testing → Staging → Deploying → Verifying</p>
+                      <p className="text-xs text-muted-foreground">
+                        Building → Testing → Staging → Deploying → Verifying
+                      </p>
                     </div>
                   </div>
                 )}
@@ -214,7 +289,10 @@ export default function EdgePage() {
                       variant="outline"
                       size="sm"
                       className="gap-1.5"
-                      onClick={(e) => { e.stopPropagation(); handleRollback(node.id); }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRollback(node.id);
+                      }}
                       disabled={rollingBack === node.id}
                     >
                       {rollingBack === node.id ? (

@@ -12,5 +12,5 @@ spec:
         app: mycodexvantaos-core-auth
     spec:
       containers:
-      - name: mycodexvantaos-core-auth
-        image: registry.internal/mycodexvantaos/mycodexvantaos-core-auth:latest
+        - name: mycodexvantaos-core-auth
+          image: registry.internal/mycodexvantaos/mycodexvantaos-core-auth:latest

@@ -1,6 +1,6 @@
 /**
  * Deployment Manifest Generator Module
- * 
+ *
  * This module provides capabilities for generating deployment manifests
  * for Docker, Kubernetes, Terraform, and other orchestration platforms.
  */
@@ -132,10 +132,7 @@ export class DeploymentManifestGenerator {
   /**
    * Generate Kubernetes deployment
    */
-  generateKubernetesDeployment(
-    serviceName: string,
-    service: ServiceDefinition
-  ): string {
+  generateKubernetesDeployment(serviceName: string, service: ServiceDefinition): string {
     let yaml = `apiVersion: apps/v1\n`;
     yaml += `kind: Deployment\n`;
     yaml += `metadata:\n`;
@@ -292,10 +289,7 @@ export class DeploymentManifestGenerator {
   /**
    * Generate CI/CD pipeline configuration
    */
-  generateCICDPipeline(
-    platform: 'github' | 'gitlab' | 'azure',
-    stages: string[]
-  ): string {
+  generateCICDPipeline(platform: 'github' | 'gitlab' | 'azure', stages: string[]): string {
     if (platform === 'github') {
       return this.generateGitHubActions(stages);
     } else if (platform === 'gitlab') {
@@ -345,7 +339,7 @@ export class DeploymentManifestGenerator {
    */
   private generateGitLabCI(stages: string[]): string {
     let gitlabCI = `stages:\n`;
-    gitlabCI += stages.map(s => `  - ${s}`).join('\n');
+    gitlabCI += stages.map((s) => `  - ${s}`).join('\n');
     gitlabCI += `\n\n`;
 
     for (const stage of stages) {

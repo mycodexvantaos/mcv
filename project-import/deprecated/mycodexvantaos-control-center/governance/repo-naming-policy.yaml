@@ -1,11 +1,11 @@
-version: "1.1"
-policy_id: "codexvanta-os-repo-naming-policy"
-status: "active"
+version: '1.1'
+policy_id: 'codexvanta-os-repo-naming-policy'
+status: 'active'
 
-canonical_prefix: "codexvanta-os-"
+canonical_prefix: 'codexvanta-os-'
 
 validation:
-  regex: "^codexvanta-os-[a-z0-9]+(?:-[a-z0-9]+)*$"
+  regex: '^codexvanta-os-[a-z0-9]+(?:-[a-z0-9]+)*$'
   strict_mode_default: true
   reject_if_not_in_allowlist_when_strict: true
   enforcement_level: error
@@ -13,20 +13,20 @@ validation:
 character_rules:
   lowercase_only: true
   allow_digits: true
-  separator: "-"
+  separator: '-'
   forbid:
-    - "_"
-    - "."
-    - " "
-    - "--"
+    - '_'
+    - '.'
+    - ' '
+    - '--'
 
 forbidden_patterns:
-  - ".*_.*"
+  - '.*_.*'
   - ".*\\..*"
   - ".*\\s+.*"
-  - ".*--.*"
-  - ".*-(dev|prod|staging|test)$"
-  - ".*-v[0-9]+$"
+  - '.*--.*'
+  - '.*-(dev|prod|staging|test)$'
+  - '.*-v[0-9]+$'
 
 approved_planes:
   - control-plane

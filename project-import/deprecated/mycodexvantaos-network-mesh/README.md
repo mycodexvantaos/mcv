@@ -54,20 +54,20 @@
 
 ## Provider Dependencies
 
-| Provider | Usage |
-|---|---|
-| StateStoreProvider | Service registry state and routing tables |
-| ObservabilityProvider | Request metrics, latency, error rates |
-| AuthProvider | Service-to-service authentication |
-| DatabaseProvider | Routing configuration and rate limit state |
+| Provider              | Usage                                      |
+| --------------------- | ------------------------------------------ |
+| StateStoreProvider    | Service registry state and routing tables  |
+| ObservabilityProvider | Request metrics, latency, error rates      |
+| AuthProvider          | Service-to-service authentication          |
+| DatabaseProvider      | Routing configuration and rate limit state |
 
 ## Operational Modes
 
-| Mode | Behavior |
-|---|---|
-| **Native** | In-process routing, local function call transport |
-| **Connected** | Network-based routing, sidecar proxy, mTLS |
-| **Hybrid** | Local services via in-process, remote via network |
+| Mode          | Behavior                                          |
+| ------------- | ------------------------------------------------- |
+| **Native**    | In-process routing, local function call transport |
+| **Connected** | Network-based routing, sidecar proxy, mTLS        |
+| **Hybrid**    | Local services via in-process, remote via network |
 
 ## Directory Structure
 

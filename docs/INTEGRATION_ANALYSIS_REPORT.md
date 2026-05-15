@@ -20,12 +20,12 @@
 
 根據 `architecture_analysis.json`，工具包定義了四大核心原則：
 
-| 原則 | 描述 | 實作狀態 |
-|------|------|----------|
-| Local-First | 零外部依賴下完整運作 | ✅ 已實作 |
-| Cloud-Agnostic | 架構層無廠商鎖定 | ✅ 已實作 |
-| Contract-First | 介面先於實作定義 | ✅ 已實作 |
-| Governance-Enforced | 規則可機器強制執行 | ✅ 已實作 |
+| 原則                | 描述                 | 實作狀態  |
+| ------------------- | -------------------- | --------- |
+| Local-First         | 零外部依賴下完整運作 | ✅ 已實作 |
+| Cloud-Agnostic      | 架構層無廠商鎖定     | ✅ 已實作 |
+| Contract-First      | 介面先於實作定義     | ✅ 已實作 |
+| Governance-Enforced | 規則可機器強制執行   | ✅ 已實作 |
 
 ### 1.3 六層架構體系
 
@@ -66,6 +66,7 @@ interface BaseProvider {
 ```
 
 **標準能力清單**：
+
 - `database` - 結構化資料持久化
 - `storage` - 檔案與物件儲存
 - `auth` - 身份認證與會話管理
@@ -77,12 +78,12 @@ interface BaseProvider {
 
 ### 1.5 運行時模式系統
 
-| 模式 | 描述 | 適用場景 |
-|------|------|----------|
-| native | 100% 平台原生能力 | 開發、離線、災難恢復 |
-| connected | 100% 外部 Provider | 正式環境、團隊協作 |
-| hybrid | 混合 + fallback | 漸進遷移、韌性部署 |
-| auto | 解析策略 | 根據配置意圖自動決定 |
+| 模式      | 描述               | 適用場景             |
+| --------- | ------------------ | -------------------- |
+| native    | 100% 平台原生能力  | 開發、離線、災難恢復 |
+| connected | 100% 外部 Provider | 正式環境、團隊協作   |
+| hybrid    | 混合 + fallback    | 漸進遷移、韌性部署   |
+| auto      | 解析策略           | 根據配置意圖自動決定 |
 
 ---
 
@@ -105,14 +106,14 @@ mycodexvantaos/
 
 ### 2.2 已實作的套件清單
 
-| 類別 | 套件 | 狀態 |
-|------|------|------|
-| AI | ai-agent, ai-embedding, ai-llm, ai-memory | ✅ |
-| Core | core-auth, core-config, core-gateway, core-kernel | ✅ |
-| Data | data-graph, data-pipeline, data-vector-store, database | ✅ |
-| Platform | platform-notification, platform-observability, platform-scheduler | ✅ |
-| Security | security-secrets, security-validation | ✅ |
-| Infrastructure | builder, runtime, deployment, config-sync | ✅ |
+| 類別           | 套件                                                              | 狀態 |
+| -------------- | ----------------------------------------------------------------- | ---- |
+| AI             | ai-agent, ai-embedding, ai-llm, ai-memory                         | ✅   |
+| Core           | core-auth, core-config, core-gateway, core-kernel                 | ✅   |
+| Data           | data-graph, data-pipeline, data-vector-store, database            | ✅   |
+| Platform       | platform-notification, platform-observability, platform-scheduler | ✅   |
+| Security       | security-secrets, security-validation                             | ✅   |
+| Infrastructure | builder, runtime, deployment, config-sync                         | ✅   |
 
 ---
 
@@ -120,14 +121,14 @@ mycodexvantaos/
 
 ### 3.1 差異分析
 
-| 項目 | mycodexvantaos | integration-toolkit |
-|------|----------------|---------------------|
-| 套件數量 | 28 | 28 |
-| 服務數量 | 25 | 25 |
-| 治理檔案 | 相同 | 相同 |
-| CI 驗證 | 相同 | 相同 |
-| 額外測試 | ✅ 有 | ❌ 無 |
-| 分析報告 | ❌ 無 | ✅ 有 |
+| 項目     | mycodexvantaos | integration-toolkit |
+| -------- | -------------- | ------------------- |
+| 套件數量 | 28             | 28                  |
+| 服務數量 | 25             | 25                  |
+| 治理檔案 | 相同           | 相同                |
+| CI 驗證  | 相同           | 相同                |
+| 額外測試 | ✅ 有          | ❌ 無               |
+| 分析報告 | ❌ 無          | ✅ 有               |
 
 ### 3.2 整合工具包獨有資源
 
@@ -193,7 +194,7 @@ providers:
     capability: database
     source: native
     implementation: SQLite
-    
+
   - name: external-database
     capability: database
     source: external
@@ -231,13 +232,13 @@ jobs:
 
 ### 5.1 關鍵整合檔案
 
-| 檔案 | 路徑 | 整合優先級 |
-|------|------|------------|
-| 架構分析 | `outputs/architecture_analysis.json` | 高 |
-| 差距報告 | `outputs/implementation_gaps_report.json` | 高 |
-| 治理規範 | `governance/platform-governance-spec.yaml` | 高 |
-| CI 驗證 | `ci/enhanced-validation.ts` | 中 |
-| 環境範本 | `.env.*.example` | 中 |
+| 檔案     | 路徑                                       | 整合優先級 |
+| -------- | ------------------------------------------ | ---------- |
+| 架構分析 | `outputs/architecture_analysis.json`       | 高         |
+| 差距報告 | `outputs/implementation_gaps_report.json`  | 高         |
+| 治理規範 | `governance/platform-governance-spec.yaml` | 高         |
+| CI 驗證  | `ci/enhanced-validation.ts`                | 中         |
+| 環境範本 | `.env.*.example`                           | 中         |
 
 ### 5.2 不需整合的項目
 
@@ -253,11 +254,13 @@ jobs:
 ### 6.1 立即可執行的整合動作
 
 1. **複製分析文檔**
+
    ```bash
    cp -r integration-toolkit/outputs mycodexvantaos/docs/
    ```
 
 2. **同步環境配置**
+
    ```bash
    cp integration-toolkit/mycodexvantaos/.env.*.example mycodexvantaos/
    ```

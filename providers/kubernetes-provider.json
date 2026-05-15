@@ -9,11 +9,7 @@
     "urn:mycodexvantaos:capability:runtime"
   ],
   "config": {
-    "supportedModes": [
-      "native",
-      "connected",
-      "hybrid"
-    ],
+    "supportedModes": ["native", "connected", "hybrid"],
     "defaultNamespace": "mycodexvantaos"
   }
 }

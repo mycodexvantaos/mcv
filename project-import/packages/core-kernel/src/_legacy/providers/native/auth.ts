@@ -1,11 +1,11 @@
 /**
  * NativeAuthProvider — Local JWT + file-based user store
- * 
+ *
  * Zero external dependencies. Implements authentication using:
  *  - HMAC-SHA256 JWT tokens (Node.js crypto, no jsonwebtoken dep)
  *  - File-based user/session store (JSON)
  *  - bcrypt-compatible password hashing (via built-in scrypt)
- * 
+ *
  * No Auth0, no Supabase Auth, no Firebase Auth required.
  */
 
@@ -101,7 +101,7 @@ export class NativeAuthProvider implements AuthProvider {
 
   async signIn(input: SignInInput): Promise<SignInResult> {
     const users = this.loadUsers();
-    const user = users.find(u => u.email === input.email);
+    const user = users.find((u) => u.email === input.email);
 
     if (!user) {
       return { success: false, error: 'Invalid credentials' };
@@ -148,7 +148,7 @@ export class NativeAuthProvider implements AuthProvider {
   }
 
   async signOut(sessionId: string): Promise<void> {
-    const sessions = this.loadSessions().filter(s => s.id !== sessionId);
+    const sessions = this.loadSessions().filter((s) => s.id !== sessionId);
     this.saveSessions(sessions);
   }
 
@@ -158,11 +158,11 @@ export class NativeAuthProvider implements AuthProvider {
 
     const now = Date.now();
     const sessions = this.loadSessions();
-    const session = sessions.find(s => s.id === payload.sid && s.expiresAt > now);
+    const session = sessions.find((s) => s.id === payload.sid && s.expiresAt > now);
     if (!session) return null;
 
     const users = this.loadUsers();
-    const user = users.find(u => u.id === payload.sub);
+    const user = users.find((u) => u.id === payload.sub);
     if (!user || user.disabled) return null;
 
     // Update last activity
@@ -177,7 +177,7 @@ export class NativeAuthProvider implements AuthProvider {
 
   async getUser(userId: string): Promise<AuthUser | null> {
     const users = this.loadUsers();
-    const user = users.find(u => u.id === userId);
+    const user = users.find((u) => u.id === userId);
     return user ? this.toAuthUser(user) : null;
   }
 
@@ -189,7 +189,7 @@ export class NativeAuthProvider implements AuthProvider {
   }): Promise<AuthUser> {
     const users = this.loadUsers();
 
-    if (users.some(u => u.email === input.email)) {
+    if (users.some((u) => u.email === input.email)) {
       throw new Error(`User with email ${input.email} already exists`);
     }
 
@@ -219,7 +219,7 @@ export class NativeAuthProvider implements AuthProvider {
     try {
       const users = this.loadUsers();
       const sessions = this.loadSessions();
-      const activeSessions = sessions.filter(s => s.expiresAt > Date.now());
+      const activeSessions = sessions.filter((s) => s.expiresAt > Date.now());
 
       return {
         healthy: true,
@@ -245,7 +245,7 @@ export class NativeAuthProvider implements AuthProvider {
   async close(): Promise<void> {
     // Cleanup expired sessions on close
     const now = Date.now();
-    const sessions = this.loadSessions().filter(s => s.expiresAt > now);
+    const sessions = this.loadSessions().filter((s) => s.expiresAt > now);
     this.saveSessions(sessions);
   }
 
@@ -300,10 +300,7 @@ export class NativeAuthProvider implements AuthProvider {
   }
 
   private sign(data: string): string {
-    return crypto
-      .createHmac('sha256', this.config.jwtSecret)
-      .update(data)
-      .digest('base64url');
+    return crypto.createHmac('sha256', this.config.jwtSecret).update(data).digest('base64url');
   }
 
   private base64url(str: string): string {

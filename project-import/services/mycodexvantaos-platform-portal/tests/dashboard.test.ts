@@ -1,9 +1,9 @@
-import { DashboardController } from "../src/controllers/DashboardController";
+import { DashboardController } from '../src/controllers/DashboardController';
 
-describe("DashboardController", () => {
-  it("should return summary", async () => {
+describe('DashboardController', () => {
+  it('should return summary', async () => {
     const ctrl = new DashboardController();
     const data = await ctrl.summary();
-    expect(data).toHaveProperty("services");
+    expect(data).toHaveProperty('services');
   });
 });

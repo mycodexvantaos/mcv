@@ -1,9 +1,9 @@
 /**
  * NativeDatabaseProvider — SQLite / in-memory implementation
- * 
+ *
  * Zero external dependencies. Uses better-sqlite3 (embedded) or
  * falls back to a pure-JS implementation.
- * 
+ *
  * Features:
  *  - File-based persistence (SQLite) or in-memory mode
  *  - Full ACID transactions
@@ -35,7 +35,7 @@ export class NativeDatabaseProvider implements DatabaseProvider {
   readonly providerId = 'native-sqlite';
   readonly mode = 'native' as const;
 
-  private db: any = null;  // better-sqlite3 instance
+  private db: any = null; // better-sqlite3 instance
   private config: Required<NativeDatabaseConfig>;
   private initTime = 0;
 
@@ -94,16 +94,15 @@ export class NativeDatabaseProvider implements DatabaseProvider {
       return { applied, skipped, total: 0, success: true };
     }
 
-    const files = fs.readdirSync(migDir)
-      .filter(f => f.endsWith('.sql'))
+    const files = fs
+      .readdirSync(migDir)
+      .filter((f) => f.endsWith('.sql'))
       .sort();
 
     // Get already-applied migrations
     const existing = new Set<string>();
     try {
-      const rows = this.db.prepare
-        ? this.db.prepare('SELECT filename FROM _migrations').all()
-        : [];
+      const rows = this.db.prepare ? this.db.prepare('SELECT filename FROM _migrations').all() : [];
       for (const row of rows) existing.add((row as any).filename);
     } catch {
       // Table might not exist yet in fallback mode
@@ -122,10 +121,10 @@ export class NativeDatabaseProvider implements DatabaseProvider {
       }
 
       // Record migration
-      this.execute(
-        'INSERT INTO _migrations (filename, checksum) VALUES (?, ?)',
-        [file, this.simpleChecksum(sql)]
-      );
+      this.execute('INSERT INTO _migrations (filename, checksum) VALUES (?, ?)', [
+        file,
+        this.simpleChecksum(sql),
+      ]);
 
       applied.push(file);
     }
@@ -159,10 +158,7 @@ export class NativeDatabaseProvider implements DatabaseProvider {
     };
   }
 
-  async execute(
-    sql: string,
-    params?: unknown[]
-  ): Promise<{ affectedRows: number }> {
+  async execute(sql: string, params?: unknown[]): Promise<{ affectedRows: number }> {
     if (this.db.prepare) {
       const stmt = this.db.prepare(sql);
       const result = params ? stmt.run(...params) : stmt.run();
@@ -179,8 +175,7 @@ export class NativeDatabaseProvider implements DatabaseProvider {
         const tx: TransactionContext = {
           query: <R = Record<string, unknown>>(sql: string, params?: unknown[]) =>
             this.query<R>(sql, params),
-          execute: (sql: string, params?: unknown[]) =>
-            this.execute(sql, params),
+          execute: (sql: string, params?: unknown[]) => this.execute(sql, params),
         };
         return fn(tx);
       });
@@ -191,8 +186,7 @@ export class NativeDatabaseProvider implements DatabaseProvider {
     const tx: TransactionContext = {
       query: <R = Record<string, unknown>>(sql: string, params?: unknown[]) =>
         this.query<R>(sql, params),
-      execute: (sql: string, params?: unknown[]) =>
-        this.execute(sql, params),
+      execute: (sql: string, params?: unknown[]) => this.execute(sql, params),
     };
     return fn(tx);
   }
@@ -236,7 +230,7 @@ export class NativeDatabaseProvider implements DatabaseProvider {
     let hash = 0;
     for (let i = 0; i < content.length; i++) {
       const char = content.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
+      hash = (hash << 5) - hash + char;
       hash |= 0;
     }
     return hash.toString(16);
@@ -246,7 +240,9 @@ export class NativeDatabaseProvider implements DatabaseProvider {
     // Minimal in-memory fallback for environments without better-sqlite3
     const tables = new Map<string, any[]>();
     return {
-      exec: (sql: string) => { /* no-op for DDL in fallback */ },
+      exec: (sql: string) => {
+        /* no-op for DDL in fallback */
+      },
       prepare: null, // signals we're in fallback mode
       close: () => tables.clear(),
       _tables: tables,

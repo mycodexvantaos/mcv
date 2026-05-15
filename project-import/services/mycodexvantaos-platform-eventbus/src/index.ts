@@ -4,12 +4,12 @@
  *
  * Layer: B-Runtime | Tier: 1
  */
-import pino from "pino";
+import pino from 'pino';
 
-const logger = pino({ name: "event-bus" });
+const logger = pino({ name: 'event-bus' });
 
 // Re-export types
-export * from "./types";
+export * from './types';
 
 export interface EventEnvelope {
   id: string;
@@ -29,7 +29,7 @@ export class EventBusService {
   private subscriptions = new Map<string, Map<string, EventHandler>>();
   private counter = 0;
 
-  async publish(topic: string, payload: unknown, source = "unknown"): Promise<EventEnvelope> {
+  async publish(topic: string, payload: unknown, source = 'unknown'): Promise<EventEnvelope> {
     const event: EventEnvelope = {
       id: `evt-${Date.now()}-${++this.counter}`,
       topic,
@@ -44,7 +44,7 @@ export class EventBusService {
       await Promise.allSettled(promises);
     }
 
-    logger.debug({ topic, eventId: event.id }, "Event published");
+    logger.debug({ topic, eventId: event.id }, 'Event published');
     return event;
   }
 
@@ -54,7 +54,7 @@ export class EventBusService {
       this.subscriptions.set(topic, new Map());
     }
     this.subscriptions.get(topic)!.set(subId, handler);
-    logger.debug({ topic, subId }, "Subscription created");
+    logger.debug({ topic, subId }, 'Subscription created');
     return subId;
   }
 

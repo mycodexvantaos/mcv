@@ -30,12 +30,15 @@ const result = await configSync.execute(input);
 ## API Reference
 
 ### `initialize(): Promise<void>`
+
 Initialize the package.
 
 ### `execute<T>(input: any): Promise<T>`
+
 Execute package functionality.
 
 ### `cleanup(): Promise<void>`
+
 Cleanup package resources.
 
 ## License

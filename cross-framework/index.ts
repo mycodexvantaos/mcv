@@ -1,10 +1,10 @@
 /**
  * Cross-Framework Module Index
  * Platform-Independent Provider Pattern Implementation
- * 
+ *
  * This module provides a unified API for cross-framework functionality
  * that works in any runtime environment with zero external dependencies.
- * 
+ *
  * Runtime Modes:
  * - native: Zero external dependencies, full functionality via local providers
  * - hybrid: External services with fallback to native implementations
@@ -12,14 +12,29 @@
  */
 
 // Re-export types for backward compatibility
-export type { FrameworkType, AnalysisStatus, FileEntry, AnalysisResult, ZipItem, SynthesisResult } from './zip-synthesis.provider';
+export type {
+  FrameworkType,
+  AnalysisStatus,
+  FileEntry,
+  AnalysisResult,
+  ZipItem,
+  SynthesisResult,
+} from './zip-synthesis.provider';
 export type { CachedAnalysis } from './cache-manager.provider';
 export type { LogLevel, LogEntryLegacy } from './logger.provider';
 export type { MessageResponse, AnalysisResult as APIAnalysisResult } from './api-client.provider';
 
 // Re-export provider classes
 export { ZipSynthesis, createZipSynthesis, detectFrameworkType } from './zip-synthesis.provider';
-export { CacheManager, createCacheManager, saveAnalysisCache, getAnalysisCache, clearAnalysisCache, clearAllCache, getCacheStats } from './cache-manager.provider';
+export {
+  CacheManager,
+  createCacheManager,
+  saveAnalysisCache,
+  getAnalysisCache,
+  clearAnalysisCache,
+  clearAllCache,
+  getCacheStats,
+} from './cache-manager.provider';
 export { LoggerProvider, getLogger, createLogger, logger } from './logger.provider';
 export { APIClient, createAPIClient } from './api-client.provider';
 
@@ -27,7 +42,11 @@ export { APIClient, createAPIClient } from './api-client.provider';
 export { getProviderFactory, ProviderFactory } from '../packages/capabilities/src/provider-factory';
 
 // Runtime configuration
-export { getRuntimeConfig, RuntimeConfig, RuntimeMode } from '../packages/capabilities/src/runtime-config';
+export {
+  getRuntimeConfig,
+  RuntimeConfig,
+  RuntimeMode,
+} from '../packages/capabilities/src/runtime-config';
 
 /**
  * Initialize all cross-framework modules
@@ -110,5 +129,5 @@ export async function shutdownAll(): Promise<void> {
     factory.getCodeSynthesisProvider(),
   ]);
 
-  await Promise.all(providers.map(p => p.shutdown()));
+  await Promise.all(providers.map((p) => p.shutdown()));
 }

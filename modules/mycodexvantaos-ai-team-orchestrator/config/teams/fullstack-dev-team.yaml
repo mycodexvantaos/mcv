@@ -275,13 +275,13 @@ process:
 schedule:
   timezone: UTC
   working_hours:
-    start: "09:00"
-    end: "18:00"
+    start: '09:00'
+    end: '18:00'
   deployment_windows:
     production:
       days: [tuesday, wednesday, thursday]
-      start: "10:00"
-      end: "16:00"
+      start: '10:00'
+      end: '16:00'
 
 # Performance Metrics
 metrics:
@@ -298,8 +298,8 @@ metrics:
 channels:
   - type: slack
     channels:
-      - "#dev-team"
-      - "#dev-standup"
+      - '#dev-team'
+      - '#dev-standup'
     purpose: daily_communication
   - type: jira
     project: FULLSTACK

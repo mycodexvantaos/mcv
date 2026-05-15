@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/notification/sendgrid/config.schema.json",
   "title": "notification-sendgrid Configuration",
   "type": "object",
-  "required": [
-    "apiKey"
-  ],
+  "required": ["apiKey"],
   "properties": {
     "apiKey": {
       "type": "string",

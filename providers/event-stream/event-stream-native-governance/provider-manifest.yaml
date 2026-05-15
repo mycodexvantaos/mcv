@@ -8,7 +8,7 @@ metadata:
   capability: event-stream
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: "8.1"
+    mycodexvantaos.org/specRef: '8.1'
 spec:
   providerName: native-governance
   isNative: true
@@ -16,4 +16,4 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_EVENT_STREAM
   configSchemaRef: ./config.schema.json
-  description: "Native governance event stream provider for mandatory closed-loop compliance verification, audit trail propagation, and Merkle-anchored event integrity."
+  description: 'Native governance event stream provider for mandatory closed-loop compliance verification, audit trail propagation, and Merkle-anchored event integrity.'

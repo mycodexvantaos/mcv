@@ -5,22 +5,13 @@
     "scan_interval": "daily",
     "reporting": {
       "enabled": true,
-      "formats": [
-        "json",
-        "pdf"
-      ],
-      "recipients": [
-        "security@mycodexvantaos.com"
-      ]
+      "formats": ["json", "pdf"],
+      "recipients": ["security@mycodexvantaos.com"]
     }
   },
   "vulnerability_scan": {
     "enabled": true,
-    "tools": [
-      "snyk",
-      "npm audit",
-      "owasp"
-    ],
+    "tools": ["snyk", "npm audit", "owasp"],
     "severity_threshold": "medium",
     "auto_fix": true
   },

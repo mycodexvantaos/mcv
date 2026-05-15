@@ -3,13 +3,17 @@
  * In-memory module loading and lifecycle management
  */
 
-import type { Module } from "./types";
+import type { Module } from './types';
 
 export class ModuleLoaderService {
   private modules = new Map<string, Module>();
 
-  async load(name: string, version: string, exports: Record<string, unknown> = {}): Promise<Module> {
-    const mod: Module = { name, version, status: "loaded", exports };
+  async load(
+    name: string,
+    version: string,
+    exports: Record<string, unknown> = {}
+  ): Promise<Module> {
+    const mod: Module = { name, version, status: 'loaded', exports };
     this.modules.set(name, mod);
     return mod;
   }
@@ -17,7 +21,7 @@ export class ModuleLoaderService {
   async unload(name: string): Promise<boolean> {
     const mod = this.modules.get(name);
     if (!mod) return false;
-    mod.status = "unloaded";
+    mod.status = 'unloaded';
     return true;
   }
 
@@ -30,7 +34,7 @@ export class ModuleLoaderService {
   }
 
   listLoaded(): Module[] {
-    return this.list().filter((m) => m.status === "loaded");
+    return this.list().filter((m) => m.status === 'loaded');
   }
 
   has(name: string): boolean {

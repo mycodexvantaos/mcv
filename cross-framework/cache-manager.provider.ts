@@ -1,7 +1,7 @@
 /**
  * Cache Manager - Provider Pattern Version
  * Transformed to use StorageCapability for platform independence
- * 
+ *
  * Supports:
  * - Native: In-memory or localStorage storage (no dependencies)
  * - Hybrid: AsyncStorage with fallback to memory
@@ -55,11 +55,7 @@ export class CacheManager {
   /**
    * Save analysis result to cache
    */
-  async saveAnalysisCache(
-    zipName: string,
-    fileCount: number,
-    analysis: any
-  ): Promise<void> {
+  async saveAnalysisCache(zipName: string, fileCount: number, analysis: any): Promise<void> {
     this.ensureInitialized();
 
     try {
@@ -82,10 +78,7 @@ export class CacheManager {
   /**
    * Get analysis result from cache
    */
-  async getAnalysisCache(
-    zipName: string,
-    fileCount: number
-  ): Promise<any | null> {
+  async getAnalysisCache(zipName: string, fileCount: number): Promise<any | null> {
     this.ensureInitialized();
 
     try {
@@ -131,8 +124,8 @@ export class CacheManager {
 
     try {
       const keys = await this.storage!.keys();
-      const cacheKeys = keys.filter(k => k.startsWith(CACHE_PREFIX));
-      
+      const cacheKeys = keys.filter((k) => k.startsWith(CACHE_PREFIX));
+
       for (const key of cacheKeys) {
         await this.storage!.delete(key);
       }
@@ -149,7 +142,7 @@ export class CacheManager {
 
     try {
       const keys = await this.storage!.keys();
-      const cacheKeys = keys.filter(k => k.startsWith(CACHE_PREFIX));
+      const cacheKeys = keys.filter((k) => k.startsWith(CACHE_PREFIX));
 
       let totalSize = 0;
       for (const key of cacheKeys) {
@@ -174,7 +167,7 @@ export class CacheManager {
    */
   async healthCheck(): Promise<boolean> {
     if (!this.storage) return false;
-    
+
     try {
       const result = await this.storage.healthCheck();
       return result.healthy;
@@ -240,10 +233,7 @@ export async function saveAnalysisCache(
 /**
  * Legacy function: Get analysis cache
  */
-export async function getAnalysisCache(
-  zipName: string,
-  fileCount: number
-): Promise<any | null> {
+export async function getAnalysisCache(zipName: string, fileCount: number): Promise<any | null> {
   const manager = await getCacheManager();
   return manager.getAnalysisCache(zipName, fileCount);
 }

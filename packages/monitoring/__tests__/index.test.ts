@@ -95,9 +95,9 @@ describe('Monitoring Package', () => {
     });
 
     it('should throw error for unknown action', async () => {
-      await expect(
-        mon.execute({ action: 'unknown', data: {} })
-      ).rejects.toThrow('Unknown monitoring action: unknown');
+      await expect(mon.execute({ action: 'unknown', data: {} })).rejects.toThrow(
+        'Unknown monitoring action: unknown'
+      );
     });
   });
 

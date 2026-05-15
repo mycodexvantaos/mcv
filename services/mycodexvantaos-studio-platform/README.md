@@ -7,23 +7,25 @@ A Next.js 15 application following MyCodeXvantaOS Provider Architecture with nat
 This platform follows the **MyCodeXvantaOS Architecture Principles**:
 
 ### Native-First Design
+
 - **Zero Hard Dependencies**: Works without any external API keys or services
 - **Provider Abstraction**: All external integrations go through the Provider layer
 - **Graceful Degradation**: Falls back to native implementation when external providers are unavailable
 
 > "第三方服務是平台的擴充出口，不是平台成立的地基"
-> 
-> *Third-party services are expansion outlets, not the foundation*
+>
+> _Third-party services are expansion outlets, not the foundation_
 
 ### Key Principle Violations Fixed
+
 This service was refactored to comply with MyCodeXvantaOS architecture:
 
-| Before (Violation) | After (Compliant) |
-|-------------------|-------------------|
-| Direct Genkit dependency | Provider abstraction via `@mycodexvantaos/ai-llm` |
-| Required `GEMINI_API_KEY` | Native provider always available |
-| Firebase App Hosting bound | Deployment Provider abstraction |
-| No fallback | Native fallback for all capabilities |
+| Before (Violation)         | After (Compliant)                                 |
+| -------------------------- | ------------------------------------------------- |
+| Direct Genkit dependency   | Provider abstraction via `@mycodexvantaos/ai-llm` |
+| Required `GEMINI_API_KEY`  | Native provider always available                  |
+| Firebase App Hosting bound | Deployment Provider abstraction                   |
+| No fallback                | Native fallback for all capabilities              |
 
 ## Technology Stack
 
@@ -33,18 +35,20 @@ This service was refactored to comply with MyCodeXvantaOS architecture:
 - **Deployment**: Provider abstraction via `@mycodexvantaos/deployment`
 
 ### Optional External Providers
+
 Configure these for enhanced capabilities (all optional):
 
-| Provider | Environment Variables | Capability |
-|----------|----------------------|------------|
-| llm-gemini | `LLM_PROVIDER=gemini`, `GOOGLE_GENAI_API_KEY` | Advanced AI |
-| llm-openai | `LLM_PROVIDER=openai`, `OPENAI_API_KEY` | Advanced AI |
-| llm-ollama | `LLM_PROVIDER=ollama`, `OLLAMA_BASE_URL` | Local AI |
-| deploy-firebase | `FIREBASE_PROJECT_ID` | Cloud deployment |
+| Provider        | Environment Variables                         | Capability       |
+| --------------- | --------------------------------------------- | ---------------- |
+| llm-gemini      | `LLM_PROVIDER=gemini`, `GOOGLE_GENAI_API_KEY` | Advanced AI      |
+| llm-openai      | `LLM_PROVIDER=openai`, `OPENAI_API_KEY`       | Advanced AI      |
+| llm-ollama      | `LLM_PROVIDER=ollama`, `OLLAMA_BASE_URL`      | Local AI         |
+| deploy-firebase | `FIREBASE_PROJECT_ID`                         | Cloud deployment |
 
 ## Features
 
 ### AI Capabilities
+
 All AI features work in **native mode** by default. Configure external providers for enhanced capabilities.
 
 - **Code Generation & Refactoring** - AI agent for coding tasks
@@ -54,6 +58,7 @@ All AI features work in **native mode** by default. Configure external providers
 - **Package Vulnerability Scanner** - Security analysis
 
 ### Dashboard Components
+
 - AI Panel (Chat & Agent tabs)
 - API Explorer
 - Design Analyzer
@@ -145,13 +150,13 @@ src/
 
 This service integrates with MyCodeXvantaOS packages:
 
-| Package | Purpose |
-|---------|---------|
-| `@mycodexvantaos/ai-llm` | LLM Provider abstraction |
-| `@mycodexvantaos/deployment` | Deployment Provider abstraction |
-| `@mycodexvantaos/ai-agent` | Agent framework |
-| `@mycodexvantaos/ai-memory` | Memory management |
-| `@mycodexvantaos/core-gateway` | API gateway |
+| Package                        | Purpose                         |
+| ------------------------------ | ------------------------------- |
+| `@mycodexvantaos/ai-llm`       | LLM Provider abstraction        |
+| `@mycodexvantaos/deployment`   | Deployment Provider abstraction |
+| `@mycodexvantaos/ai-agent`     | Agent framework                 |
+| `@mycodexvantaos/ai-memory`    | Memory management               |
+| `@mycodexvantaos/core-gateway` | API gateway                     |
 
 ## Architecture Compliance
 

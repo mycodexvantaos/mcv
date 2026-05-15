@@ -20,7 +20,7 @@ export class MessageQueue {
     const fullMessage: Message = {
       ...message,
       id: `msg_${Date.now()}_${Math.random()}`,
-      attemptCount: 0
+      attemptCount: 0,
     };
 
     if (!this.queues.has(queue)) {

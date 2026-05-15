@@ -7,7 +7,10 @@ import { AgentToolkit, ToolDefinition, ToolkitConfig } from '../index';
 describe('AgentToolkit', () => {
   let toolkit: AgentToolkit;
 
-  const createMockTool = (name: string, executeFn?: (params: Record<string, unknown>) => Promise<unknown>): ToolDefinition => ({
+  const createMockTool = (
+    name: string,
+    executeFn?: (params: Record<string, unknown>) => Promise<unknown>
+  ): ToolDefinition => ({
     name,
     description: `Mock tool: ${name}`,
     parameters: { param1: { type: 'string' } },
@@ -124,7 +127,9 @@ describe('AgentToolkit', () => {
     });
 
     it('should throw error for non-existent tool', async () => {
-      await expect(toolkit.executeTool('missing-tool', {})).rejects.toThrow('Tool not found: missing-tool');
+      await expect(toolkit.executeTool('missing-tool', {})).rejects.toThrow(
+        'Tool not found: missing-tool'
+      );
     });
 
     it('should pass params to tool execute function', async () => {
@@ -150,7 +155,7 @@ describe('AgentToolkit', () => {
         description: 'Async test tool',
         parameters: {},
         execute: async (params) => {
-          await new Promise(resolve => setTimeout(resolve, 10));
+          await new Promise((resolve) => setTimeout(resolve, 10));
           return { async: true, params };
         },
       };
@@ -230,7 +235,7 @@ describe('AgentToolkit', () => {
         description: 'Tool with delay',
         parameters: {},
         execute: async (params) => {
-          await new Promise(resolve => setTimeout(resolve, 50));
+          await new Promise((resolve) => setTimeout(resolve, 50));
           return { done: true, input: params };
         },
       };

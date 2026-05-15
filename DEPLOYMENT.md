@@ -5,6 +5,7 @@ Comprehensive deployment guide for MyCodeXvantaOS - Enterprise-grade automated c
 ## 📋 Prerequisites
 
 ### System Requirements
+
 - **CPU**: Minimum 4 cores, recommended 8+ cores
 - **Memory**: Minimum 16GB RAM, recommended 32GB+
 - **Storage**: Minimum 100GB SSD, recommended 500GB+
@@ -12,6 +13,7 @@ Comprehensive deployment guide for MyCodeXvantaOS - Enterprise-grade automated c
 - **Network**: Stable internet connection
 
 ### Required Software
+
 - **Node.js**: 18.x or higher
 - **Docker**: 20.10.x or higher
 - **Docker Compose**: 2.0.x or higher
@@ -24,23 +26,27 @@ Comprehensive deployment guide for MyCodeXvantaOS - Enterprise-grade automated c
 ### Option 1: Docker Compose (Development)
 
 1. **Clone Repository**
+
 ```bash
 git clone https://github.com/mycodexvantaos/mycodexvantaos.git
 cd mycodexvantaos
 ```
 
 2. **Configure Environment**
+
 ```bash
 cp .env.docker.example .env
 # Edit .env with your configuration
 ```
 
 3. **Start Services**
+
 ```bash
 docker-compose up -d
 ```
 
 4. **Verify Deployment**
+
 ```bash
 docker-compose ps
 curl http://localhost:3000/health
@@ -49,6 +55,7 @@ curl http://localhost:3000/health
 ### Option 2: Kubernetes (Production)
 
 1. **Prepare Kubernetes Cluster**
+
 ```bash
 # Verify cluster connectivity
 kubectl cluster-info
@@ -56,12 +63,14 @@ kubectl get nodes
 ```
 
 2. **Configure Namespace**
+
 ```bash
 kubectl create namespace mycodexvantaos
 kubectl config set-context --current --namespace=mycodexvantaos
 ```
 
 3. **Deploy with Helm**
+
 ```bash
 # Add Helm repository
 helm repo add mycodexvantaos https://charts.mycodexvantaos.com
@@ -74,6 +83,7 @@ helm install mycodexvantaos ./charts/mycodexvantaos \
 ```
 
 4. **Verify Deployment**
+
 ```bash
 kubectl get pods -n mycodexvantaos
 kubectl get services -n mycodexvantaos
@@ -84,6 +94,7 @@ kubectl get services -n mycodexvantaos
 ### Environment Variables
 
 #### Core Configuration
+
 ```bash
 # Application
 NODE_ENV=production
@@ -117,6 +128,7 @@ FEATURE_AUDIT_LOGGING=true
 ### Configuration Files
 
 #### config/prod.yaml
+
 ```yaml
 server:
   port: 3000
@@ -155,6 +167,7 @@ monitoring:
 ### Layer-by-Layer Deployment
 
 #### Layer A: Builder Components
+
 ```yaml
 # Deploy builder services
 apiVersion: apps/v1
@@ -170,20 +183,21 @@ spec:
   template:
     spec:
       containers:
-      - name: api-generator
-        image: mycodexvantaos/api-generator:latest
-        ports:
-        - containerPort: 3001
-        resources:
-          requests:
-            cpu: 500m
-            memory: 512Mi
-          limits:
-            cpu: 2000m
-            memory: 2Gi
+        - name: api-generator
+          image: mycodexvantaos/api-generator:latest
+          ports:
+            - containerPort: 3001
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: 2000m
+              memory: 2Gi
 ```
 
 #### Layer B: Runtime Components
+
 ```yaml
 # Deploy runtime services
 apiVersion: apps/v1
@@ -196,19 +210,20 @@ spec:
   template:
     spec:
       containers:
-      - name: execution-engine
-        image: mycodexvantaos/execution:latest
-        ports:
-        - containerPort: 3002
-        volumeMounts:
-        - name: workspace
-          mountPath: /workspace
+        - name: execution-engine
+          image: mycodexvantaos/execution:latest
+          ports:
+            - containerPort: 3002
+          volumeMounts:
+            - name: workspace
+              mountPath: /workspace
       volumes:
-      - name: workspace
-        emptyDir: {}
+        - name: workspace
+          emptyDir: {}
 ```
 
 #### Layer C: Native Services
+
 ```yaml
 # Deploy native services
 apiVersion: apps/v1
@@ -222,13 +237,14 @@ spec:
   template:
     spec:
       containers:
-      - name: cache-manager
-        image: mycodexvantaos/cache-manager:latest
-        ports:
-        - containerPort: 3003
+        - name: cache-manager
+          image: mycodexvantaos/cache-manager:latest
+          ports:
+            - containerPort: 3003
 ```
 
 #### Layer D: Connectors
+
 ```yaml
 # Deploy connector services
 apiVersion: apps/v1
@@ -241,17 +257,18 @@ spec:
   template:
     spec:
       containers:
-      - name: github-connector
-        image: mycodexvantaos/connector-github:latest
-        env:
-        - name: GITHUB_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: github-credentials
-              key: token
+        - name: github-connector
+          image: mycodexvantaos/connector-github:latest
+          env:
+            - name: GITHUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: github-credentials
+                  key: token
 ```
 
 #### Layer E: Deployment Components
+
 ```yaml
 # Deploy auto-scaler
 apiVersion: apps/v1
@@ -265,15 +282,16 @@ spec:
     spec:
       serviceAccountName: auto-scaler
       containers:
-      - name: auto-scaler
-        image: mycodexvantaos/auto-scaler:latest
-        resources:
-          limits:
-            cpu: 1000m
-            memory: 1Gi
+        - name: auto-scaler
+          image: mycodexvantaos/auto-scaler:latest
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 1Gi
 ```
 
 #### Layer F: Governance Components
+
 ```yaml
 # Deploy governance services
 apiVersion: apps/v1
@@ -286,15 +304,15 @@ spec:
   template:
     spec:
       containers:
-      - name: policy-engine
-        image: mycodexvantaos/policy-engine:latest
-        volumeMounts:
-        - name: policies
-          mountPath: /policies
+        - name: policy-engine
+          image: mycodexvantaos/policy-engine:latest
+          volumeMounts:
+            - name: policies
+              mountPath: /policies
       volumes:
-      - name: policies
-        configMap:
-          name: policy-config
+        - name: policies
+          configMap:
+            name: policy-config
 ```
 
 ## 🔄 CI/CD Pipeline
@@ -317,36 +335,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          
+
       - name: Install dependencies
         run: |
           npm ci
-          
+
       - name: Run tests
         run: |
           npm test
           npm run test:coverage
-          
+
       - name: Build
         run: |
           npm run build
-          
+
       - name: Build Docker images
         run: |
           docker build -t mycodexvantaos/api-generator:${{ github.sha }} packages/api-generator
           docker tag mycodexvantaos/api-generator:${{ github.sha }} mycodexvantaos/api-generator:latest
-          
+
       - name: Push to Registry
         run: |
           echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
           docker push mycodexvantaos/api-generator:${{ github.sha }}
           docker push mycodexvantaos/api-generator:latest
-          
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -363,6 +381,7 @@ jobs:
 ### SSL/TLS Configuration
 
 #### Generate SSL Certificates
+
 ```bash
 # Using Let's Encrypt
 certbot certonly --standalone -d api.mycodexvantaos.com
@@ -374,6 +393,7 @@ kubectl create secret tls mycodex-ssl \
 ```
 
 #### Configure Ingress
+
 ```yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -384,20 +404,20 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   tls:
-  - hosts:
-    - api.mycodexvantaos.com
-    secretName: mycodex-ssl
+    - hosts:
+        - api.mycodexvantaos.com
+      secretName: mycodex-ssl
   rules:
-  - host: api.mycodexvantaos.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: api-gateway
-            port:
-              number: 80
+    - host: api.mycodexvantaos.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: api-gateway
+                port:
+                  number: 80
 ```
 
 ### Network Policies
@@ -411,8 +431,8 @@ metadata:
 spec:
   podSelector: {}
   policyTypes:
-  - Ingress
-  - Egress
+    - Ingress
+    - Egress
 
 ---
 apiVersion: networking.k8s.io/v1
@@ -425,15 +445,15 @@ spec:
     matchLabels:
       app: api-gateway
   policyTypes:
-  - Ingress
+    - Ingress
   ingress:
-  - from:
-    - namespaceSelector:
-        matchLabels:
-          name: ingress-nginx
-    ports:
-    - protocol: TCP
-      port: 80
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: ingress-nginx
+      ports:
+        - protocol: TCP
+          port: 80
 ```
 
 ## 📊 Monitoring & Logging
@@ -516,18 +536,18 @@ spec:
   minReplicas: 3
   maxReplicas: 10
   metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 70
-  - type: Resource
-    resource:
-      name: memory
-      target:
-        type: Utilization
-        averageUtilization: 80
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
 ```
 
 ### Pod Disruption Budget
@@ -550,6 +570,7 @@ spec:
 ### Common Issues
 
 #### Service Not Starting
+
 ```bash
 # Check pod logs
 kubectl logs -f deployment/api-generator -n mycodexvantaos
@@ -562,6 +583,7 @@ kubectl describe pod -l app=api-generator -n mycodexvantaos
 ```
 
 #### Database Connection Issues
+
 ```bash
 # Test database connectivity
 kubectl exec -itdeployment/postgres -n mycodexvantaos -- psql -U postgres
@@ -571,6 +593,7 @@ kubectl exec -it deployment/postgres -n mycodexvantaos -- psql -c "SELECT count(
 ```
 
 #### Memory Issues
+
 ```bash
 # Check memory usage
 kubectl top pods -n mycodexvantaos
@@ -638,38 +661,38 @@ metadata:
   namespace: mycodexvantaos
 spec:
   workloads:
-  - selector:
-      labels:
-        app: api-gateway
+    - selector:
+        labels:
+          app: api-gateway
   http:
-  - name: mycodex
-    virtualHost:
-      domains:
-      - api.mycodexvantaos.com
-      routes:
-      - matchers:
-        - prefix: /
-        routeAction:
-          multi:
-            destinations:
-            - destination:
-                port:
-                  number: 80
-                referral:
-                  host:
-                    name: api-gateway
-                    namespace: mycodexvantaos-us-east
-                  subset: us-east
-              weight: 50
-            - destination:
-                port:
-                  number: 80
-                referral:
-                  host:
-                    name: api-gateway
-                    namespace: mycodexvantaos-us-west
-                  subset: us-west
-              weight: 50
+    - name: mycodex
+      virtualHost:
+        domains:
+          - api.mycodexvantaos.com
+        routes:
+          - matchers:
+              - prefix: /
+            routeAction:
+              multi:
+                destinations:
+                  - destination:
+                      port:
+                        number: 80
+                      referral:
+                        host:
+                          name: api-gateway
+                          namespace: mycodexvantaos-us-east
+                        subset: us-east
+                    weight: 50
+                  - destination:
+                      port:
+                        number: 80
+                      referral:
+                        host:
+                          name: api-gateway
+                          namespace: mycodexvantaos-us-west
+                        subset: us-west
+                    weight: 50
 ```
 
 ---

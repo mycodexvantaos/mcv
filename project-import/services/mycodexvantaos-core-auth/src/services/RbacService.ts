@@ -1,4 +1,4 @@
-import type { Permission } from "../types/auth.types";
+import type { Permission } from '../types/auth.types';
 
 export class RbacService {
   private permissions = new Map<string, Permission[]>();

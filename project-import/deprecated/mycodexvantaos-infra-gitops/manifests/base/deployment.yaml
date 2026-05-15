@@ -28,9 +28,9 @@ spec:
               protocol: TCP
           env:
             - name: NODE_ENV
-              value: "production"
+              value: 'production'
             - name: RECONCILE_INTERVAL_MS
-              value: "60000"
+              value: '60000'
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
@@ -52,8 +52,8 @@ spec:
             periodSeconds: 30
           resources:
             requests:
-              cpu: "100m"
-              memory: "128Mi"
+              cpu: '100m'
+              memory: '128Mi'
             limits:
-              cpu: "500m"
-              memory: "512Mi"
+              cpu: '500m'
+              memory: '512Mi'

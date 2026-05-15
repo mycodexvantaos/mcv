@@ -1,6 +1,6 @@
 /**
  * NativeDeployProvider — Local process / Docker-based deployment
- * 
+ *
  * Zero CI/CD dependency. Deploys via:
  *  - Local process execution (npm start, python app.py, etc.)
  *  - Docker containers (if Docker is available)
@@ -110,7 +110,7 @@ export class NativeDeployProvider implements DeployProvider {
     }
 
     // Execute deployment asynchronously
-    this.executeDeployment(deployment, input, logFile).catch(err => {
+    this.executeDeployment(deployment, input, logFile).catch((err) => {
       deployment.status = 'failed';
       deployment.completedAt = Date.now();
       deployment.logs = String(err);
@@ -121,7 +121,7 @@ export class NativeDeployProvider implements DeployProvider {
   }
 
   async getDeployment(deploymentId: string): Promise<DeploymentInfo | null> {
-    const d = this.deployments.find(d => d.id === deploymentId);
+    const d = this.deployments.find((d) => d.id === deploymentId);
     if (!d) return null;
 
     // Attach logs if available
@@ -135,10 +135,11 @@ export class NativeDeployProvider implements DeployProvider {
   async listDeployments(options?: DeployListOptions): Promise<DeploymentInfo[]> {
     let filtered = [...this.deployments];
 
-    if (options?.repoName) filtered = filtered.filter(d => d.repoName === options.repoName);
-    if (options?.environment) filtered = filtered.filter(d => d.environment === options.environment);
-    if (options?.status) filtered = filtered.filter(d => d.status === options.status);
-    if (options?.since) filtered = filtered.filter(d => d.createdAt >= options.since!);
+    if (options?.repoName) filtered = filtered.filter((d) => d.repoName === options.repoName);
+    if (options?.environment)
+      filtered = filtered.filter((d) => d.environment === options.environment);
+    if (options?.status) filtered = filtered.filter((d) => d.status === options.status);
+    if (options?.since) filtered = filtered.filter((d) => d.createdAt >= options.since!);
 
     const sort = options?.sort ?? 'created';
     const dir = options?.direction ?? 'desc';
@@ -153,7 +154,7 @@ export class NativeDeployProvider implements DeployProvider {
   }
 
   async cancel(deploymentId: string, reason?: string): Promise<DeploymentInfo> {
-    const deployment = this.deployments.find(d => d.id === deploymentId);
+    const deployment = this.deployments.find((d) => d.id === deploymentId);
     if (!deployment) throw new Error(`Deployment not found: ${deploymentId}`);
 
     const running = this.running.get(deploymentId);
@@ -179,15 +180,24 @@ export class NativeDeployProvider implements DeployProvider {
     let targetDeploy: DeploymentInfo | undefined;
 
     if (options?.targetDeploymentId) {
-      targetDeploy = this.deployments.find(d => d.id === options.targetDeploymentId);
+      targetDeploy = this.deployments.find((d) => d.id === options.targetDeploymentId);
     } else if (options?.targetVersion) {
       targetDeploy = this.deployments
-        .filter(d => d.repoName === repoName && d.environment === environment && d.version === options.targetVersion && d.status === 'succeeded')
+        .filter(
+          (d) =>
+            d.repoName === repoName &&
+            d.environment === environment &&
+            d.version === options.targetVersion &&
+            d.status === 'succeeded'
+        )
         .pop();
     } else {
       // Roll back to previous successful deployment
       const successful = this.deployments
-        .filter(d => d.repoName === repoName && d.environment === environment && d.status === 'succeeded')
+        .filter(
+          (d) =>
+            d.repoName === repoName && d.environment === environment && d.status === 'succeeded'
+        )
         .sort((a, b) => b.createdAt - a.createdAt);
       targetDeploy = successful[1]; // second most recent
     }
@@ -203,8 +213,9 @@ export class NativeDeployProvider implements DeployProvider {
       environment,
       target: targetDeploy.target,
       metadata: {
-        rollbackFrom: this.deployments.find(d =>
-          d.repoName === repoName && d.environment === environment && d.status === 'succeeded'
+        rollbackFrom: this.deployments.find(
+          (d) =>
+            d.repoName === repoName && d.environment === environment && d.status === 'succeeded'
         )?.id,
         rollbackTo: targetDeploy.id,
         rollbackReason: options?.reason,
@@ -249,7 +260,10 @@ export class NativeDeployProvider implements DeployProvider {
       } else if (hasDockerfile) {
         logLines.push('[BUILD] Detected Dockerfile — running docker build');
         try {
-          execSync(`docker build -t ${input.repoName}:${input.ref} .`, { cwd: repoPath, timeout: 300000 });
+          execSync(`docker build -t ${input.repoName}:${input.ref} .`, {
+            cwd: repoPath,
+            timeout: 300000,
+          });
           logLines.push('[BUILD] docker build succeeded');
         } catch (e) {
           logLines.push(`[BUILD] docker build failed: ${e}`);
@@ -287,7 +301,7 @@ export class NativeDeployProvider implements DeployProvider {
     const buildDir = path.join(this.config.buildsDir, deploymentId);
     if (!fs.existsSync(buildDir)) return [];
 
-    return fs.readdirSync(buildDir).map(file => {
+    return fs.readdirSync(buildDir).map((file) => {
       const fullPath = path.join(buildDir, file);
       const stat = fs.statSync(fullPath);
       return { name: file, path: fullPath, size: stat.size };
@@ -305,14 +319,17 @@ export class NativeDeployProvider implements DeployProvider {
   // ── Lifecycle ───────────────────────────────────────────────────────────────
 
   async healthcheck(): Promise<DeployHealth> {
-    const active = this.deployments.filter(d =>
-      d.status === 'building' || d.status === 'deploying' || d.status === 'pending'
+    const active = this.deployments.filter(
+      (d) => d.status === 'building' || d.status === 'deploying' || d.status === 'pending'
     );
-    const queued = this.deployments.filter(d => d.status === 'queued');
+    const queued = this.deployments.filter((d) => d.status === 'queued');
 
     // Detect available targets
     const targets: DeployTarget[] = ['local'];
-    try { execSync('docker --version', { stdio: 'ignore' }); targets.push('docker'); } catch {}
+    try {
+      execSync('docker --version', { stdio: 'ignore' });
+      targets.push('docker');
+    } catch {}
 
     return {
       healthy: true,
@@ -332,7 +349,9 @@ export class NativeDeployProvider implements DeployProvider {
   async close(): Promise<void> {
     // Kill all running processes
     for (const [id, rp] of this.running) {
-      try { rp.process.kill('SIGTERM'); } catch {}
+      try {
+        rp.process.kill('SIGTERM');
+      } catch {}
     }
     this.running.clear();
     this.persist();
@@ -403,7 +422,7 @@ export class NativeDeployProvider implements DeployProvider {
         });
 
         // Wait briefly to check if process starts OK
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        await new Promise((resolve) => setTimeout(resolve, 3000));
 
         if (child.exitCode !== null && child.exitCode !== 0) {
           throw new Error(`Process exited with code ${child.exitCode}`);
@@ -414,7 +433,6 @@ export class NativeDeployProvider implements DeployProvider {
       deployment.completedAt = Date.now();
       deployment.duration = deployment.completedAt - deployment.startedAt!;
       log(`Deployment succeeded in ${deployment.duration}ms`);
-
     } catch (err) {
       deployment.status = 'failed';
       deployment.completedAt = Date.now();
@@ -430,6 +448,8 @@ export class NativeDeployProvider implements DeployProvider {
   private persist(): void {
     try {
       fs.writeFileSync(this.deploymentsFile, JSON.stringify(this.deployments, null, 2));
-    } catch { /* best-effort */ }
+    } catch {
+      /* best-effort */
+    }
   }
 }

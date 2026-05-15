@@ -16,19 +16,22 @@ export default function LandingPage() {
     {
       icon: <Bot className="h-8 w-8 text-accent" />,
       title: 'AI-Powered Code Editor',
-      description: 'Enhance your workflow with AI-driven code completion, inline suggestions, and a conversational assistant.',
+      description:
+        'Enhance your workflow with AI-driven code completion, inline suggestions, and a conversational assistant.',
       image: featureImage1,
     },
     {
       icon: <Search className="h-8 w-8 text-accent" />,
       title: 'Ecosystem Research Workbench',
-      description: 'Utilize powerful tools and visualizations to analyze code editor ecosystems, market trends, and platform governance.',
+      description:
+        'Utilize powerful tools and visualizations to analyze code editor ecosystems, market trends, and platform governance.',
       image: featureImage2,
     },
     {
       icon: <Combine className="h-8 w-8 text-accent" />,
       title: 'Extensible Plugin Marketplace',
-      description: 'Customize your experience by browsing, installing, and managing a wide range of community-built extensions.',
+      description:
+        'Customize your experience by browsing, installing, and managing a wide range of community-built extensions.',
       image: featureImage3,
     },
   ];
@@ -63,7 +66,8 @@ export default function LandingPage() {
               The Next Evolution of Code Intelligence
             </h1>
             <p className="mt-4 text-lg text-muted-foreground">
-              MyCodeXvantaOS Studio is an open, extensible platform for developers and researchers to build, analyze, and collaborate on the future of code editing.
+              MyCodeXvantaOS Studio is an open, extensible platform for developers and researchers
+              to build, analyze, and collaborate on the future of code editing.
             </p>
             <div className="mt-8 flex justify-center gap-4">
               <Button size="lg" asChild>
@@ -98,15 +102,19 @@ export default function LandingPage() {
               A Unified Development & Research Hub
             </h2>
             <p className="max-w-[700px] text-muted-foreground">
-              From writing production-grade code to conducting deep market analysis, our integrated toolset has you covered.
+              From writing production-grade code to conducting deep market analysis, our integrated
+              toolset has you covered.
             </p>
           </div>
           <div className="mx-auto grid justify-center gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {features.map((feature) => (
-              <Card key={feature.title} className="max-w-sm overflow-hidden transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
+              <Card
+                key={feature.title}
+                className="max-w-sm overflow-hidden transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10"
+              >
                 <CardHeader className="p-0">
                   {feature.image && (
-                     <Image
+                    <Image
                       src={feature.image.imageUrl}
                       alt={feature.image.description}
                       width={600}

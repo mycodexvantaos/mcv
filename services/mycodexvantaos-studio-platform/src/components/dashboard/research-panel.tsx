@@ -55,7 +55,11 @@ export function ResearchPanel({ title }: ResearchPanelProps) {
             </CardContent>
           </Card>
 
-          <Button onClick={handleSummarize} disabled={isLoading || !researchData} className="w-full">
+          <Button
+            onClick={handleSummarize}
+            disabled={isLoading || !researchData}
+            className="w-full"
+          >
             {isLoading ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : (
@@ -65,10 +69,10 @@ export function ResearchPanel({ title }: ResearchPanelProps) {
           </Button>
 
           {isLoading && (
-             <Card>
+            <Card>
               <CardHeader>
                 <CardTitle className="text-base font-medium flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-primary"/>
+                  <Sparkles className="h-5 w-5 text-primary" />
                   AI Generated Summary
                 </CardTitle>
               </CardHeader>
@@ -85,14 +89,12 @@ export function ResearchPanel({ title }: ResearchPanelProps) {
             <Card>
               <CardHeader>
                 <CardTitle className="text-base font-medium flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-primary"/>
+                  <Sparkles className="h-5 w-5 text-primary" />
                   AI Generated Summary
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-sm text-foreground whitespace-pre-wrap">
-                    {summary}
-                </div>
+                <div className="text-sm text-foreground whitespace-pre-wrap">{summary}</div>
               </CardContent>
             </Card>
           )}

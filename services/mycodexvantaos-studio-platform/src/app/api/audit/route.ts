@@ -18,7 +18,14 @@ export async function GET(req: NextRequest) {
     traceId: `trace-${Math.random().toString(36).slice(2, 10)}`,
     sessionId: `sess-${Math.random().toString(36).slice(2, 8)}`,
     actor: i % 5 === 0 ? 'system' : 'admin@mycodexvantaos.dev',
-    action: ['DEPLOY', 'POLICY_CHECK', 'CONNECTOR_UPDATE', 'SBOM_UPLOAD', 'DRIFT_DETECT', 'SECRET_SCAN'][i % 6],
+    action: [
+      'DEPLOY',
+      'POLICY_CHECK',
+      'CONNECTOR_UPDATE',
+      'SBOM_UPLOAD',
+      'DRIFT_DETECT',
+      'SECRET_SCAN',
+    ][i % 6],
     resource: `mycodexvantaos-${['ai-agent', 'core-gateway', 'ai-llm', 'core-auth', 'data-vector-store'][i % 5]}:v1.${i % 3}.0`,
     result: i % 10 === 0 ? 'failure' : 'success',
     policyVersion: 'v1.2.0',
@@ -28,8 +35,8 @@ export async function GET(req: NextRequest) {
   }));
 
   let filtered = [...entries];
-  if (actor) filtered = filtered.filter(e => e.actor === actor);
-  if (action) filtered = filtered.filter(e => e.action === action);
+  if (actor) filtered = filtered.filter((e) => e.actor === actor);
+  if (action) filtered = filtered.filter((e) => e.action === action);
 
   const start = (page - 1) * limit;
   const paginated = filtered.slice(start, start + limit);
@@ -37,6 +44,11 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({
     success: true,
     data: paginated,
-    pagination: { page, limit, total: filtered.length, totalPages: Math.ceil(filtered.length / limit) },
+    pagination: {
+      page,
+      limit,
+      total: filtered.length,
+      totalPages: Math.ceil(filtered.length / limit),
+    },
   });
 }

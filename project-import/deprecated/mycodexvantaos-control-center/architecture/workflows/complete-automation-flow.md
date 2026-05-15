@@ -23,27 +23,27 @@
 
 ### 1.2 關鍵指標
 
-| 指標 | Native Mode | Connected Mode | Hybrid Mode |
-|------|------------|----------------|-------------|
-| 端到端執行時間 | ≤ 15分鐘 | ≤ 30分鐘 | ≤ 20分鐘 |
-| 併發效率 | ≥ 80% | ≥ 85% | ≥ 85% |
-| 自動恢復成功率 | ≥ 95% | ≥ 95% | ≥ 98% |
-| 故障隔離度 | 100% | 100% | 100% |
-| 監控覆蓋率 | 100% | 100% | 100% |
-| 啟動時間 | < 5s | < 30s | < 10s |
-| Provider failover 時間 | N/A | < 5s | < 5s |
+| 指標                   | Native Mode | Connected Mode | Hybrid Mode |
+| ---------------------- | ----------- | -------------- | ----------- |
+| 端到端執行時間         | ≤ 15分鐘    | ≤ 30分鐘       | ≤ 20分鐘    |
+| 併發效率               | ≥ 80%       | ≥ 85%          | ≥ 85%       |
+| 自動恢復成功率         | ≥ 95%       | ≥ 95%          | ≥ 98%       |
+| 故障隔離度             | 100%        | 100%           | 100%        |
+| 監控覆蓋率             | 100%        | 100%           | 100%        |
+| 啟動時間               | < 5s        | < 30s          | < 10s       |
+| Provider failover 時間 | N/A         | < 5s           | < 5s        |
 
 ### 1.3 v1 vs v2 對比
 
-| 面向 | v1 (Third-party-first) | v2 (Native-first) |
-|------|----------------------|-------------------|
-| 狀態管理 | 硬綁定 Redis | StateStoreProvider（native/redis） |
-| 倉庫操作 | 硬綁定 GitHub API | RepoProvider（native/github） |
-| 通知 | 硬綁定 Slack | NotificationProvider（native/slack/webhook） |
-| 秘密管理 | 僅 GitHub Secrets | SecretsProvider（native vault/external） |
-| 啟動條件 | 所有 secrets 必須配置 | `git clone && npm start` |
-| 失敗行為 | Redis 不可用→工作流失敗 | 自動降級至 Native Provider |
-| 監控 | Prometheus + CloudWatch | ObservabilityProvider（native file/external） |
+| 面向     | v1 (Third-party-first)  | v2 (Native-first)                             |
+| -------- | ----------------------- | --------------------------------------------- |
+| 狀態管理 | 硬綁定 Redis            | StateStoreProvider（native/redis）            |
+| 倉庫操作 | 硬綁定 GitHub API       | RepoProvider（native/github）                 |
+| 通知     | 硬綁定 Slack            | NotificationProvider（native/slack/webhook）  |
+| 秘密管理 | 僅 GitHub Secrets       | SecretsProvider（native vault/external）      |
+| 啟動條件 | 所有 secrets 必須配置   | `git clone && npm start`                      |
+| 失敗行為 | Redis 不可用→工作流失敗 | 自動降級至 Native Provider                    |
+| 監控     | Prometheus + CloudWatch | ObservabilityProvider（native file/external） |
 
 ---
 
@@ -82,7 +82,7 @@ on:
 ```yaml
 on:
   schedule:
-    - cron: '0 2 * * *'   # UTC 02:00 每日同步
+    - cron: '0 2 * * *' # UTC 02:00 每日同步
 ```
 
 #### 2.1.3 事件觸發（Connected Mode）
@@ -100,12 +100,12 @@ on:
 
 #### 2.1.4 觸發模式對照
 
-| 觸發方式 | Native Mode | Connected Mode | Hybrid Mode |
-|----------|------------|----------------|-------------|
-| workflow_dispatch | ✅ | ✅ | ✅ |
-| schedule (cron) | ✅ | ✅ | ✅ |
-| repository_dispatch | ❌ | ✅ | ✅ (if github token) |
-| workflow_run | ❌ | ✅ | ✅ (if github token) |
+| 觸發方式            | Native Mode | Connected Mode | Hybrid Mode          |
+| ------------------- | ----------- | -------------- | -------------------- |
+| workflow_dispatch   | ✅          | ✅             | ✅                   |
+| schedule (cron)     | ✅          | ✅             | ✅                   |
+| repository_dispatch | ❌          | ✅             | ✅ (if github token) |
+| workflow_run        | ❌          | ✅             | ✅ (if github token) |
 
 ---
 
@@ -463,13 +463,13 @@ deploy_provider = "native"  # default
 
 ### 6.2 工作流錯誤隔離
 
-| 錯誤範圍 | 行為 | 影響 | 配置 |
-|----------|------|------|------|
-| 單倉庫 validate 失敗 | 標記失敗，同 Tier 其他倉庫繼續 | `fail-fast: false` | 矩陣策略 |
-| 整個 Tier 失敗 | 下一 Tier 仍然執行 | 最終狀態 `partial_failure` | `if: always()` |
-| State Provider 斷線 | 自動降級至 native file | 對工作流透明 | 內建 failover |
-| Notify Provider 失敗 | 降級至 stdout 日誌 | 非阻塞 | try/catch |
-| Repo checkout 失敗 | `continue-on-error: true` | 該倉庫標記不可達 | Git fallback |
+| 錯誤範圍             | 行為                           | 影響                       | 配置           |
+| -------------------- | ------------------------------ | -------------------------- | -------------- |
+| 單倉庫 validate 失敗 | 標記失敗，同 Tier 其他倉庫繼續 | `fail-fast: false`         | 矩陣策略       |
+| 整個 Tier 失敗       | 下一 Tier 仍然執行             | 最終狀態 `partial_failure` | `if: always()` |
+| State Provider 斷線  | 自動降級至 native file         | 對工作流透明               | 內建 failover  |
+| Notify Provider 失敗 | 降級至 stdout 日誌             | 非阻塞                     | try/catch      |
+| Repo checkout 失敗   | `continue-on-error: true`      | 該倉庫標記不可達           | Git fallback   |
 
 ### 6.3 回滾策略
 
@@ -530,20 +530,20 @@ deploy_provider = "native"  # default
 
 ### 7.2 報告系統
 
-| 報告類型 | 格式 | Native 存儲 | Connected 存儲 | 保留期 |
-|---------|------|------------|---------------|--------|
-| 執行報告 | JSON | $RUNNER_TEMP + artifact | Redis (604800s TTL) + artifact | 30 天 |
-| 倉庫狀態 | JSON | $RUNNER_TEMP/repos/ | Redis key per repo | 24 小時 |
-| 最終摘要 | Stdout | GitHub Actions log | GitHub Actions log | 永久 |
+| 報告類型 | 格式   | Native 存儲             | Connected 存儲                 | 保留期  |
+| -------- | ------ | ----------------------- | ------------------------------ | ------- |
+| 執行報告 | JSON   | $RUNNER_TEMP + artifact | Redis (604800s TTL) + artifact | 30 天   |
+| 倉庫狀態 | JSON   | $RUNNER_TEMP/repos/     | Redis key per repo             | 24 小時 |
+| 最終摘要 | Stdout | GitHub Actions log      | GitHub Actions log             | 永久    |
 
 ### 7.3 Provider-Agnostic 可觀測性矩陣
 
-| 支柱 | Native 實作 | External 選項 |
-|------|------------|---------------|
-| **日誌** | JSONL → file + console | ELK / CloudWatch / Datadog |
-| **指標** | 記憶體計數器 + 保留修剪 | Prometheus / CloudWatch / New Relic |
-| **追蹤** | Span 樹 → 記憶體 + file | Jaeger / Zipkin / Datadog APM |
-| **告警** | 閾值比對 → console + file | Slack / PagerDuty / Email |
+| 支柱     | Native 實作               | External 選項                       |
+| -------- | ------------------------- | ----------------------------------- |
+| **日誌** | JSONL → file + console    | ELK / CloudWatch / Datadog          |
+| **指標** | 記憶體計數器 + 保留修剪   | Prometheus / CloudWatch / New Relic |
+| **追蹤** | Span 樹 → 記憶體 + file   | Jaeger / Zipkin / Datadog APM       |
+| **告警** | 閾值比對 → console + file | Slack / PagerDuty / Email           |
 
 ---
 
@@ -551,11 +551,11 @@ deploy_provider = "native"  # default
 
 ### 8.1 Secrets 管理（Provider-Agnostic）
 
-| 模式 | 存儲 | 加密方式 | 旋轉 | 審計 |
-|------|------|---------|------|------|
-| Native | 本地 AES-256-GCM 加密金庫 | 自動生成 master key | 手動 | 加密審計日誌 |
-| Connected | GitHub Secrets / HashiCorp Vault | 平台託管 | 自動 | 外部審計系統 |
-| Hybrid | 敏感用 Vault，其餘用 Native | 混合 | 按需 | 混合日誌 |
+| 模式      | 存儲                             | 加密方式            | 旋轉 | 審計         |
+| --------- | -------------------------------- | ------------------- | ---- | ------------ |
+| Native    | 本地 AES-256-GCM 加密金庫        | 自動生成 master key | 手動 | 加密審計日誌 |
+| Connected | GitHub Secrets / HashiCorp Vault | 平台託管            | 自動 | 外部審計系統 |
+| Hybrid    | 敏感用 Vault，其餘用 Native      | 混合                | 按需 | 混合日誌     |
 
 ### 8.2 安全掃描（內建 13 模式）
 
@@ -593,14 +593,14 @@ Pattern Categories:
 
 ### 9.1 模式感知部署策略
 
-| 步驟 | Native Mode | Connected Mode | Hybrid Mode |
-|------|------------|----------------|-------------|
-| 1. 安裝依賴 | npm install | npm install | npm install |
-| 2. 構建 | npm run build | npm run build | npm run build |
-| 3. 測試 | npm test | npm test | npm test |
-| 4. 容器化 | ❌ (跳過) | Docker build + push | Docker build (if available) |
-| 5. 部署 | 本地進程啟動 | Platform deploy (CF/Vercel/GKE) | 按可用性選擇 |
-| 6. 驗證 | 本地 healthcheck | 平台 healthcheck | 混合 healthcheck |
+| 步驟        | Native Mode      | Connected Mode                  | Hybrid Mode                 |
+| ----------- | ---------------- | ------------------------------- | --------------------------- |
+| 1. 安裝依賴 | npm install      | npm install                     | npm install                 |
+| 2. 構建     | npm run build    | npm run build                   | npm run build               |
+| 3. 測試     | npm test         | npm test                        | npm test                    |
+| 4. 容器化   | ❌ (跳過)        | Docker build + push             | Docker build (if available) |
+| 5. 部署     | 本地進程啟動     | Platform deploy (CF/Vercel/GKE) | 按可用性選擇                |
+| 6. 驗證     | 本地 healthcheck | 平台 healthcheck                | 混合 healthcheck            |
 
 ### 9.2 零依賴啟動流程
 
@@ -633,16 +633,16 @@ npm start
 
 ### 10.1 遷移步驟
 
-| # | 步驟 | 操作 | 風險 |
-|---|------|------|------|
-| 1 | 重命名 Secrets | `REDIS_*` → `ORCH_STATE_*`, `GH_TOKEN` → `ORCH_GITHUB_TOKEN` | 低 |
-| 2 | 部署 MANIFEST | 推送 25 個 REPO_MANIFEST.yaml | 低 |
-| 3 | 更新 Orchestrator | 替換 orchestrator.yml 為 v2 | 中 |
-| 4 | 更新 Runner | 替換 repository-runner.yml 為 v2 | 中 |
-| 5 | 設置 Variables | 配置 `vars.ORCH_*_PROVIDER`（可選） | 低 |
-| 6 | 測試 Native | 暫時移除所有可選 secrets | 低 |
-| 7 | 啟用外部 | 逐一恢復外部服務 secrets | 低 |
-| 8 | 驗證混合 | 確認 Hybrid 模式 failover | 低 |
+| #   | 步驟              | 操作                                                         | 風險 |
+| --- | ----------------- | ------------------------------------------------------------ | ---- |
+| 1   | 重命名 Secrets    | `REDIS_*` → `ORCH_STATE_*`, `GH_TOKEN` → `ORCH_GITHUB_TOKEN` | 低   |
+| 2   | 部署 MANIFEST     | 推送 25 個 REPO_MANIFEST.yaml                                | 低   |
+| 3   | 更新 Orchestrator | 替換 orchestrator.yml 為 v2                                  | 中   |
+| 4   | 更新 Runner       | 替換 repository-runner.yml 為 v2                             | 中   |
+| 5   | 設置 Variables    | 配置 `vars.ORCH_*_PROVIDER`（可選）                          | 低   |
+| 6   | 測試 Native       | 暫時移除所有可選 secrets                                     | 低   |
+| 7   | 啟用外部          | 逐一恢復外部服務 secrets                                     | 低   |
+| 8   | 驗證混合          | 確認 Hybrid 模式 failover                                    | 低   |
 
 ### 10.2 向後兼容
 
@@ -655,7 +655,7 @@ npm start
 
 ## 11. 變更歷史
 
-| 版本 | 日期 | 變更 |
-|------|------|------|
-| 1.0.0 | 2024-03-12 | 初始版本：硬綁定 Redis + GitHub API + Slack + Prometheus |
+| 版本  | 日期       | 變更                                                                                                                                                                   |
+| ----- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.0.0 | 2024-03-12 | 初始版本：硬綁定 Redis + GitHub API + Slack + Prometheus                                                                                                               |
 | 2.0.0 | 2024-03-13 | **架構轉型**: Native-first / Provider-agnostic。移除所有硬綁定。新增 Phase 0 模式偵測、Provider failover、模式感知部署、Provider-agnostic 驗證、12 Provider 全套支持。 |

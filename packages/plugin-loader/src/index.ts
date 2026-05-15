@@ -1,6 +1,6 @@
 /**
  * Plugin Loader Module
- * 
+ *
  * This module provides plugin loading and management capabilities.
  */
 
@@ -24,7 +24,7 @@ export class PluginLoader {
   constructor(options: PluginLoaderOptions = {}) {
     this.options = {
       pluginDir: options.pluginDir || './plugins',
-      autoLoad: options.autoLoad !== false
+      autoLoad: options.autoLoad !== false,
     };
   }
 
@@ -101,7 +101,7 @@ export class PluginLoader {
 
     plugin.config = {
       ...plugin.config,
-      ...config
+      ...config,
     };
   }
 

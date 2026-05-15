@@ -1,7 +1,7 @@
 /**
  * CodexvantaOS — infra-base
  * 基礎設施層 — 環境佈建、基礎架構管理
- * 
+ *
  * Layer: E-DeployTarget | Plane: Control | Tier: 1
  * Philosophy: Native-first / Provider-agnostic
  * 「第三方服務是平台的擴充出口，不是平台成立的地基。」

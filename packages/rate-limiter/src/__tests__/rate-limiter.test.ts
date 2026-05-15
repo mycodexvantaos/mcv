@@ -6,7 +6,7 @@ describe('rate-limiter', () => {
   beforeEach(() => {
     instance = new RateLimiter({
       windowMs: 60000,
-      maxRequests: 100
+      maxRequests: 100,
     });
   });
 

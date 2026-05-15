@@ -13,6 +13,7 @@ The Config Manager centralizes all platform configuration into a layered, scope-
 ## Core Capabilities
 
 ### Config Service
+
 - Hierarchical configuration resolution (environment → service → global scope chain)
 - Key-value configuration CRUD operations
 - Scoped configuration listing and filtering
@@ -20,6 +21,7 @@ The Config Manager centralizes all platform configuration into a layered, scope-
 - Batch configuration retrieval
 
 ### Feature Flag Service
+
 - Boolean feature flag evaluation
 - Flag creation, update, and deletion
 - Flag listing with metadata
@@ -49,20 +51,20 @@ The Config Manager centralizes all platform configuration into a layered, scope-
 
 ## Provider Dependencies
 
-| Provider | Usage |
-|----------|-------|
-| database | Persist configuration values, feature flags |
-| stateStore | Configuration cache, flag evaluation cache |
-| observability | Log config changes, track flag evaluations |
+| Provider      | Usage                                       |
+| ------------- | ------------------------------------------- |
+| database      | Persist configuration values, feature flags |
+| stateStore    | Configuration cache, flag evaluation cache  |
+| observability | Log config changes, track flag evaluations  |
 
 ---
 
 ## Services
 
-| Service | Methods | Description |
-|---------|---------|-------------|
-| ConfigService | get, set, delete, list, resolve | Hierarchical configuration |
-| FeatureFlagService | isEnabled, getFlag, setFlag, listFlags | Feature flag management |
+| Service            | Methods                                | Description                |
+| ------------------ | -------------------------------------- | -------------------------- |
+| ConfigService      | get, set, delete, list, resolve        | Hierarchical configuration |
+| FeatureFlagService | isEnabled, getFlag, setFlag, listFlags | Feature flag management    |
 
 ---
 

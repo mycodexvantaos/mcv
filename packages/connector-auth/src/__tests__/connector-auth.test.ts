@@ -2,14 +2,7 @@
  * Auth Connector Tests
  */
 
-import {
-  AuthConnector,
-  AuthConfig,
-  User,
-  AuthTokens,
-  TokenPayload,
-  AuthResult
-} from '../index';
+import { AuthConnector, AuthConfig, User, AuthTokens, TokenPayload, AuthResult } from '../index';
 
 describe('AuthConnector', () => {
   let connector: AuthConnector;
@@ -21,9 +14,9 @@ describe('AuthConnector', () => {
       tokenExpiry: 3600,
       refreshTokenExpiry: 604800,
       issuer: 'test-issuer',
-      audience: 'test-audience'
+      audience: 'test-audience',
     };
-    
+
     connector = new AuthConnector(config);
     await connector.connect();
   });
@@ -50,7 +43,7 @@ describe('AuthConnector', () => {
         email: 'test@example.com',
         password: 'password123',
         roles: ['user'],
-        permissions: ['read']
+        permissions: ['read'],
       });
 
       expect(result.success).toBe(true);
@@ -66,13 +59,13 @@ describe('AuthConnector', () => {
       await connector.register({
         username: 'user1',
         email: 'test@example.com',
-        password: 'password123'
+        password: 'password123',
       });
 
       const result = await connector.register({
         username: 'user2',
         email: 'test@example.com',
-        password: 'password456'
+        password: 'password456',
       });
 
       expect(result.success).toBe(false);
@@ -83,13 +76,13 @@ describe('AuthConnector', () => {
       await connector.register({
         username: 'testuser',
         email: 'user1@example.com',
-        password: 'password123'
+        password: 'password123',
       });
 
       const result = await connector.register({
         username: 'testuser',
         email: 'user2@example.com',
-        password: 'password456'
+        password: 'password456',
       });
 
       expect(result.success).toBe(false);
@@ -104,14 +97,14 @@ describe('AuthConnector', () => {
         email: 'test@example.com',
         password: 'password123',
         roles: ['user'],
-        permissions: ['read', 'write']
+        permissions: ['read', 'write'],
       });
     });
 
     test('should login with correct credentials', async () => {
       const result = await connector.login({
         email: 'test@example.com',
-        password: 'password123'
+        password: 'password123',
       });
 
       expect(result.success).toBe(true);
@@ -122,7 +115,7 @@ describe('AuthConnector', () => {
     test('should not login with incorrect email', async () => {
       const result = await connector.login({
         email: 'wrong@example.com',
-        password: 'password123'
+        password: 'password123',
       });
 
       expect(result.success).toBe(false);
@@ -132,7 +125,7 @@ describe('AuthConnector', () => {
     test('should not login with incorrect password', async () => {
       const result = await connector.login({
         email: 'test@example.com',
-        password: 'wrongpassword'
+        password: 'wrongpassword',
       });
 
       expect(result.success).toBe(false);
@@ -147,12 +140,12 @@ describe('AuthConnector', () => {
       await connector.register({
         username: 'testuser',
         email: 'test@example.com',
-        password: 'password123'
+        password: 'password123',
       });
 
       const result = await connector.login({
         email: 'test@example.com',
-        password: 'password123'
+        password: 'password123',
       });
       refreshToken = result.tokens!.refreshToken;
     });
@@ -181,12 +174,12 @@ describe('AuthConnector', () => {
       await connector.register({
         username: 'testuser',
         email: 'test@example.com',
-        password: 'password123'
+        password: 'password123',
       });
 
       const result = await connector.login({
         email: 'test@example.com',
-        password: 'password123'
+        password: 'password123',
       });
       refreshToken = result.tokens!.refreshToken;
     });
@@ -199,7 +192,7 @@ describe('AuthConnector', () => {
 
     test('should not refresh after logout', async () => {
       await connector.logout(refreshToken);
-      
+
       const result = await connector.refresh(refreshToken);
       expect(result.success).toBe(false);
     });
@@ -214,12 +207,12 @@ describe('AuthConnector', () => {
         email: 'test@example.com',
         password: 'password123',
         roles: ['user'],
-        permissions: ['read']
+        permissions: ['read'],
       });
 
       const result = await connector.login({
         email: 'test@example.com',
-        password: 'password123'
+        password: 'password123',
       });
       accessToken = result.tokens!.accessToken;
     });
@@ -248,7 +241,7 @@ describe('AuthConnector', () => {
         username: 'testuser',
         email: 'test@example.com',
         password: 'password123',
-        roles: ['user']
+        roles: ['user'],
       });
       userId = result.user!.id;
     });
@@ -270,7 +263,7 @@ describe('AuthConnector', () => {
     test('should update user', async () => {
       const updated = await connector.updateUser(userId, {
         username: 'updateduser',
-        email: 'updated@example.com'
+        email: 'updated@example.com',
       });
 
       expect(updated).toBeDefined();
@@ -290,7 +283,7 @@ describe('AuthConnector', () => {
       await connector.register({
         username: 'user2',
         email: 'user2@example.com',
-        password: 'password123'
+        password: 'password123',
       });
 
       const users = await connector.listUsers();
@@ -305,34 +298,26 @@ describe('AuthConnector', () => {
       const result = await connector.register({
         username: 'testuser',
         email: 'test@example.com',
-        password: 'password123'
+        password: 'password123',
       });
       userId = result.user!.id;
     });
 
     test('should change password with correct current password', async () => {
-      const result = await connector.changePassword(
-        userId,
-        'password123',
-        'newpassword456'
-      );
+      const result = await connector.changePassword(userId, 'password123', 'newpassword456');
 
       expect(result.success).toBe(true);
 
       // Login with new password should work
       const loginResult = await connector.login({
         email: 'test@example.com',
-        password: 'newpassword456'
+        password: 'newpassword456',
       });
       expect(loginResult.success).toBe(true);
     });
 
     test('should not change password with incorrect current password', async () => {
-      const result = await connector.changePassword(
-        userId,
-        'wrongpassword',
-        'newpassword456'
-      );
+      const result = await connector.changePassword(userId, 'wrongpassword', 'newpassword456');
 
       expect(result.success).toBe(false);
       expect(result.error).toBe('Current password is incorrect');
@@ -348,7 +333,7 @@ describe('AuthConnector', () => {
         email: 'test@example.com',
         password: 'password123',
         roles: ['user', 'editor'],
-        permissions: ['read', 'write', 'delete']
+        permissions: ['read', 'write', 'delete'],
       });
       userId = result.user!.id;
     });
@@ -377,11 +362,11 @@ describe('AuthConnector', () => {
   describe('Error Handling', () => {
     test('should return error when not connected', async () => {
       const disconnectedConnector = new AuthConnector(config);
-      
+
       const result = await disconnectedConnector.register({
         username: 'test',
         email: 'test@example.com',
-        password: 'password'
+        password: 'password',
       });
 
       expect(result.success).toBe(false);

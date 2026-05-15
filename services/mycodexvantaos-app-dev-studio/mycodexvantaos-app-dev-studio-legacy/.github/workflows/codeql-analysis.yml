@@ -1,11 +1,11 @@
 # === path: .github/workflows/codeql-analysis.yml ===
-name: "CodeQL"
+name: 'CodeQL'
 
 on:
   push:
-    branches: [ "main", "feature/**", "fix/**" ]
+    branches: ['main', 'feature/**', 'fix/**']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
   schedule:
     - cron: '30 2 * * 1'
 
@@ -25,19 +25,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'go', 'javascript' ]
+        language: ['go', 'javascript']
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
-      with:
-        languages: ${{ matrix.language }}
-        queries: +security-and-quality
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          queries: +security-and-quality
 
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v3
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3

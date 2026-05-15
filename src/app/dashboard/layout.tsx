@@ -7,11 +7,7 @@ import { IconSidebar } from '@/components/dashboard/icon-sidebar';
 import { AiPanel } from '@/components/dashboard/ai-panel';
 import { StatusBar } from '@/components/dashboard/status-bar';
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [isRightPanelOpen, setIsRightPanelOpen] = useState(true);
   const [activeView, setActiveView] = useState('files');
 
@@ -23,9 +19,7 @@ export default function DashboardLayout({
           <IconSidebar activeView={activeView} setActiveView={setActiveView} />
           <div className="flex flex-1 flex-col overflow-hidden">
             <div className="flex h-full">
-              <div className="flex-1 flex flex-col min-w-0 overflow-auto">
-                {children}
-              </div>
+              <div className="flex-1 flex flex-col min-w-0 overflow-auto">{children}</div>
               {isRightPanelOpen && <AiPanel />}
             </div>
             <StatusBar

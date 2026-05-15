@@ -1,17 +1,17 @@
-import type { RepoEntry, SyncResult, GlobalState, RepoState } from "./types";
+import type { RepoEntry, SyncResult, GlobalState, RepoState } from './types';
 
 export class RegistryService {
   private entries = new Map<string, RepoEntry>();
   private states = new Map<string, RepoState>();
-  private mode = "normal";
-  private phase = "idle";
+  private mode = 'normal';
+  private phase = 'idle';
   private startedAt = new Date();
 
   add(entry: RepoEntry): void {
     this.entries.set(entry.name, { ...entry });
     this.states.set(entry.name, {
       name: entry.name,
-      lastAction: "registered",
+      lastAction: 'registered',
       status: entry.status,
       updatedAt: new Date(),
     });

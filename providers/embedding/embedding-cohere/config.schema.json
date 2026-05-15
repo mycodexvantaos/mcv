@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/embedding/cohere/config.schema.json",
   "title": "embedding-cohere Configuration",
   "type": "object",
-  "required": [
-    "apiKey"
-  ],
+  "required": ["apiKey"],
   "properties": {
     "apiKey": {
       "type": "string",
@@ -17,12 +15,7 @@
     },
     "inputType": {
       "type": "string",
-      "enum": [
-        "search_document",
-        "search_query",
-        "classification",
-        "clustering"
-      ],
+      "enum": ["search_document", "search_query", "classification", "clustering"],
       "default": "search_document"
     }
   }

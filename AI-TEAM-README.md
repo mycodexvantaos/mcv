@@ -12,6 +12,7 @@ MyCodeXvantaOS provides a robust framework for orchestrating AI teams with sophi
 ## Features
 
 ### AI Team Orchestrator
+
 - Multi-agent coordination and communication
 - Task decomposition and routing
 - Workflow engine with parallel and sequential execution
@@ -20,6 +21,7 @@ MyCodeXvantaOS provides a robust framework for orchestrating AI teams with sophi
 - Human-in-the-Loop (HITL) checkpoints
 
 ### Persona Engine
+
 - 9 persona archetypes (Disrupter, Analyst, Critic, Architect, Mediator, Creative Thinker, Facilitator, Mentor, Synthesizer)
 - Semantic mask detection (8 types)
 - Multi-layer root cause analysis
@@ -43,13 +45,13 @@ async function main() {
   const { orchestrator, personaIntegration } = await createMyCodeXvantaOSSystem({
     orchestrator: {
       defaultGovernanceTier: 1,
-      enableAuditLog: true
+      enableAuditLog: true,
     },
     persona: {
       defaultArchetype: 'disrupter',
       enableCache: true,
-      enableValidation: true
-    }
+      enableValidation: true,
+    },
   });
 
   // Register an agent
@@ -57,7 +59,7 @@ async function main() {
     urn: 'urn:mycodexvantaos:agent:analyst-01',
     name: 'Primary Analyst',
     capabilities: ['data_analysis', 'pattern_recognition'],
-    archetype: 'analyst'
+    archetype: 'analyst',
   });
 
   // Process a task with persona integration
@@ -68,8 +70,8 @@ async function main() {
     input: 'I need help analyzing why our team velocity has decreased.',
     metadata: {
       sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
-      timestamp: new Date().toISOString()
-    }
+      timestamp: new Date().toISOString(),
+    },
   });
 
   console.log(result.content);
@@ -160,13 +162,13 @@ import { Orchestrator, AgentManager, WorkflowEngine } from 'mycodexvantaos/orche
 
 const orchestrator = new Orchestrator({
   urn: 'urn:mycodexvantaos:orchestrator:main',
-  governanceTier: 1
+  governanceTier: 1,
 });
 
 // Start a workflow
 const workflow = await orchestrator.executeWorkflow('security-audit', {
   target: 'codebase',
-  depth: 'comprehensive'
+  depth: 'comprehensive',
 });
 ```
 
@@ -175,11 +177,11 @@ const workflow = await orchestrator.executeWorkflow('security-audit', {
 The persona engine provides intelligent analysis capabilities:
 
 ```typescript
-import { 
-  PersonaManager, 
+import {
+  PersonaManager,
   SemanticMaskDetector,
   RootCauseAnalyzer,
-  SolutionGenerator 
+  SolutionGenerator,
 } from 'mycodexvantaos/persona';
 
 // Detect semantic masks
@@ -197,27 +199,27 @@ const solutions = generator.generate({ diagnosis });
 
 ## Persona Archetypes
 
-| Archetype | Role | Key Traits |
-|-----------|------|------------|
-| **Disrupter** | Challenges assumptions | High directness, low empathy, critical |
-| **Analyst** | Data-driven analysis | High questioning, evidence-based |
-| **Critic** | Quality assurance | High critical tolerance, direct |
-| **Architect** | Solution design | High solution focus, systematic |
-| **Mediator** | Conflict resolution | High empathy, balanced |
-| **Creative Thinker** | Innovation | High abstraction, moderate contradiction |
-| **Facilitator** | Process guidance | High inclusivity, neutral |
-| **Mentor** | Support and guidance | High empathy, patient |
-| **Synthesizer** | Integration | High pattern recognition, bridging |
+| Archetype            | Role                   | Key Traits                               |
+| -------------------- | ---------------------- | ---------------------------------------- |
+| **Disrupter**        | Challenges assumptions | High directness, low empathy, critical   |
+| **Analyst**          | Data-driven analysis   | High questioning, evidence-based         |
+| **Critic**           | Quality assurance      | High critical tolerance, direct          |
+| **Architect**        | Solution design        | High solution focus, systematic          |
+| **Mediator**         | Conflict resolution    | High empathy, balanced                   |
+| **Creative Thinker** | Innovation             | High abstraction, moderate contradiction |
+| **Facilitator**      | Process guidance       | High inclusivity, neutral                |
+| **Mentor**           | Support and guidance   | High empathy, patient                    |
+| **Synthesizer**      | Integration            | High pattern recognition, bridging       |
 
 ## Governance Tiers
 
-| Tier | Level | Features |
-|------|-------|----------|
-| -1 | Unrestricted | No constraints |
-| 0 | Basic | Logging, input validation |
-| 1 | Standard | Full logging, I/O filtering |
-| 2 | Elevated | + Human review required |
-| 3 | Maximum | + Full audit trail |
+| Tier | Level        | Features                    |
+| ---- | ------------ | --------------------------- |
+| -1   | Unrestricted | No constraints              |
+| 0    | Basic        | Logging, input validation   |
+| 1    | Standard     | Full logging, I/O filtering |
+| 2    | Elevated     | + Human review required     |
+| 3    | Maximum      | + Full audit trail          |
 
 ## Workflows
 
@@ -236,9 +238,9 @@ MyCodeXvantaOS includes pre-built workflow patterns:
 ### Agent Configuration (YAML)
 
 ```yaml
-urn: "urn:mycodexvantaos:agent:analyst-01"
-name: "Primary Analyst"
-archetype: "analyst"
+urn: 'urn:mycodexvantaos:agent:analyst-01'
+name: 'Primary Analyst'
+archetype: 'analyst'
 capabilities:
   - data_analysis
   - pattern_recognition
@@ -254,9 +256,9 @@ governance:
 
 ```yaml
 metadata:
-  urn: "urn:mycodexvantaos:persona:disrupter-primary"
-  name: "Disrupter Primary"
-  archetype: "disrupter"
+  urn: 'urn:mycodexvantaos:persona:disrupter-primary'
+  name: 'Disrupter Primary'
+  archetype: 'disrupter'
 
 behavioral_parameters:
   critical_tolerance: 0.7

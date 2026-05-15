@@ -8,7 +8,7 @@ metadata:
   capability: database
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: "8.1"
+    mycodexvantaos.org/specRef: '8.1'
 spec:
   providerName: sqlite
   isNative: true
@@ -16,4 +16,4 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_DATABASE_SQLITE
   configSchemaRef: ./config.schema.json
-  description: "SQLite embedded database provider (native, no external dependency)."
+  description: 'SQLite embedded database provider (native, no external dependency).'

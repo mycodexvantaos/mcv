@@ -66,12 +66,7 @@ export type AgentRole =
 /**
  * Agent status values
  */
-export type AgentStatus =
-  | 'draft'
-  | 'experimental_controlled'
-  | 'active'
-  | 'deprecated'
-  | 'retired';
+export type AgentStatus = 'draft' | 'experimental_controlled' | 'active' | 'deprecated' | 'retired';
 
 /**
  * Governance tier levels

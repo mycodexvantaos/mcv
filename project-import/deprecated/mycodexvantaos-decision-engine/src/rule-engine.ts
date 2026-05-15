@@ -4,13 +4,13 @@ import { randomBytes } from 'node:crypto';
  * In-memory rule evaluation engine
  */
 
-import type { Rule, RuleResult } from "./types";
-import { matchCondition } from "./utils/match";
+import type { Rule, RuleResult } from './types';
+import { matchCondition } from './utils/match';
 
 export class RuleEngineService {
   private rules = new Map<string, Rule>();
 
-  addRule(rule: Omit<Rule, "id">): Rule {
+  addRule(rule: Omit<Rule, 'id'>): Rule {
     const id = `rule-${Date.now()}-${randomBytes(3).toString('hex').slice(0, 6)}`;
     const entry: Rule = { id, ...rule };
     this.rules.set(id, entry);
@@ -38,7 +38,7 @@ export class RuleEngineService {
       results.push({
         ruleId: rule.id,
         matched,
-        action: matched ? rule.action : "",
+        action: matched ? rule.action : '',
         context,
       });
     }

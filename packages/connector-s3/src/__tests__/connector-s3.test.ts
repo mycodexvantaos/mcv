@@ -8,7 +8,7 @@ import {
   S3Object,
   S3UploadOptions,
   S3DownloadOptions,
-  S3ListOptions
+  S3ListOptions,
 } from '../index';
 
 describe('S3Connector', () => {
@@ -21,9 +21,9 @@ describe('S3Connector', () => {
       secretAccessKey: 'test-secret',
       region: 'us-east-1',
       endpoint: 'https://s3.amazonaws.com',
-      timeout: 30000
+      timeout: 30000,
     };
-    
+
     connector = new S3Connector(config);
     await connector.connect();
   });
@@ -113,7 +113,7 @@ describe('S3Connector', () => {
       const options: S3UploadOptions = {
         contentType: 'text/plain',
         metadata: { author: 'test' },
-        acl: 'public-read'
+        acl: 'public-read',
       };
 
       const result = await connector.upload('test-bucket', 'file.txt', data, options);
@@ -148,16 +148,16 @@ describe('S3Connector', () => {
 
     test('should download with range', async () => {
       const options: S3DownloadOptions = {
-        range: { start: 0, end: 4 }
+        range: { start: 0, end: 4 },
       };
       const data = await connector.download('test-bucket', 'file.txt', options);
       expect(data.toString()).toBe('Hello');
     });
 
     test('should throw error for non-existent object', async () => {
-      await expect(
-        connector.download('test-bucket', 'nonexistent.txt')
-      ).rejects.toThrow('not found');
+      await expect(connector.download('test-bucket', 'nonexistent.txt')).rejects.toThrow(
+        'not found'
+      );
     });
   });
 
@@ -170,21 +170,19 @@ describe('S3Connector', () => {
 
     test('should delete object', async () => {
       await connector.delete('test-bucket', 'file1.txt');
-      
+
       const exists = await connector.exists('test-bucket', 'file1.txt');
       expect(exists).toBe(false);
     });
 
     test('should throw error when deleting non-existent object', async () => {
-      await expect(
-        connector.delete('test-bucket', 'nonexistent.txt')
-      ).rejects.toThrow('not found');
+      await expect(connector.delete('test-bucket', 'nonexistent.txt')).rejects.toThrow('not found');
     });
 
     test('should delete multiple objects', async () => {
       const count = await connector.deleteMultiple('test-bucket', ['file1.txt', 'file2.txt']);
       expect(count).toBe(2);
-      
+
       const exists1 = await connector.exists('test-bucket', 'file1.txt');
       const exists2 = await connector.exists('test-bucket', 'file2.txt');
       expect(exists1).toBe(false);
@@ -194,7 +192,7 @@ describe('S3Connector', () => {
     test('should empty bucket', async () => {
       const count = await connector.emptyBucket('test-bucket');
       expect(count).toBe(2);
-      
+
       const info = await connector.getBucketInfo('test-bucket');
       expect(info.objectCount).toBe(0);
     });
@@ -222,13 +220,13 @@ describe('S3Connector', () => {
       await connector.createBucket('test-bucket');
       await connector.upload('test-bucket', 'file.txt', Buffer.from('Hello'), {
         contentType: 'text/plain',
-        metadata: { author: 'test' }
+        metadata: { author: 'test' },
       });
     });
 
     test('should get object metadata', async () => {
       const metadata = await connector.head('test-bucket', 'file.txt');
-      
+
       expect(metadata.key).toBe('file.txt');
       expect(metadata.size).toBe(5);
       expect(metadata.contentType).toBe('text/plain');
@@ -236,9 +234,7 @@ describe('S3Connector', () => {
     });
 
     test('should throw error for non-existent object', async () => {
-      await expect(
-        connector.head('test-bucket', 'nonexistent.txt')
-      ).rejects.toThrow('not found');
+      await expect(connector.head('test-bucket', 'nonexistent.txt')).rejects.toThrow('not found');
     });
   });
 
@@ -257,7 +253,7 @@ describe('S3Connector', () => {
 
     test('should list objects with prefix', async () => {
       const options: S3ListOptions = {
-        prefix: 'files/'
+        prefix: 'files/',
       };
       const objects = await connector.list('test-bucket', options);
       expect(objects).toHaveLength(2);
@@ -266,7 +262,7 @@ describe('S3Connector', () => {
 
     test('should list objects with maxKeys', async () => {
       const options: S3ListOptions = {
-        maxKeys: 2
+        maxKeys: 2,
       };
       const objects = await connector.list('test-bucket', options);
       expect(objects.length).toBeLessThanOrEqual(2);
@@ -282,20 +278,20 @@ describe('S3Connector', () => {
 
     test('should copy object within same bucket', async () => {
       await connector.copy('source-bucket', 'source.txt', 'source-bucket', 'copy.txt');
-      
+
       const exists = await connector.exists('source-bucket', 'copy.txt');
       expect(exists).toBe(true);
-      
+
       const data = await connector.download('source-bucket', 'copy.txt');
       expect(data.toString()).toBe('Source Content');
     });
 
     test('should copy object between buckets', async () => {
       await connector.copy('source-bucket', 'source.txt', 'dest-bucket', 'dest.txt');
-      
+
       const exists = await connector.exists('dest-bucket', 'dest.txt');
       expect(exists).toBe(true);
-      
+
       const data = await connector.download('dest-bucket', 'dest.txt');
       expect(data.toString()).toBe('Source Content');
     });
@@ -329,7 +325,7 @@ describe('S3Connector', () => {
   describe('Error Handling', () => {
     test('should throw error when not connected', async () => {
       const disconnectedConnector = new S3Connector(config);
-      
+
       await expect(
         disconnectedConnector.upload('bucket', 'key', Buffer.from('data'))
       ).rejects.toThrow('Not connected to S3');

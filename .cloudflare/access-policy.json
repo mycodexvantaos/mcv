@@ -5,31 +5,21 @@
   "includes": [
     {
       "login_method": {
-        "include": [
-          "google",
-          "github",
-          "email"
-        ]
+        "include": ["google", "github", "email"]
       }
     }
   ],
   "excludes": [
     {
       "ip": {
-        "in": [
-          "10.0.0.0/8",
-          "172.16.0.0/12",
-          "192.168.0.0/16"
-        ]
+        "in": ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
       }
     }
   ],
   "requires": [
     {
       "ip": {
-        "not_in": [
-          "0.0.0.0/0"
-        ]
+        "not_in": ["0.0.0.0/0"]
       }
     }
   ],

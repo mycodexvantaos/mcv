@@ -10,7 +10,12 @@
     "lint": "eslint src --ext .ts",
     "format": "prettier --write \"src/**/*.ts\""
   },
-  "keywords": ["service-mesh", "servicemesh", "Layer A擴展", "mycodexvantaos"],
+  "keywords": [
+    "service-mesh",
+    "servicemesh",
+    "Layer A擴展",
+    "mycodexvantaos"
+  ],
   "author": "MyCodeXvantaOS",
   "license": "MIT",
   "dependencies": {

@@ -9,28 +9,28 @@ metadata:
   planeDescription: 控制面 — 平台核心控制與配置
   tier: 0
   tags:
-  - core
-  - interfaces
-  - providers
-  - registry
+    - core
+    - interfaces
+    - providers
+    - registry
 spec:
   architecture:
     philosophy: native-first / provider-agnostic
     principle: 第三方服務是擴充出口，不是平台地基
     mode: native | connected | hybrid
   capabilities:
-  - database
-  - storage
-  - auth
-  - queue
-  - stateStore
-  - secrets
-  - repo
-  - deploy
-  - validation
-  - security
-  - observability
-  - notification
+    - database
+    - storage
+    - auth
+    - queue
+    - stateStore
+    - secrets
+    - repo
+    - deploy
+    - validation
+    - security
+    - observability
+    - notification
   providerDependencies: []
   repoDependencies: []
   providesInterfaces: true

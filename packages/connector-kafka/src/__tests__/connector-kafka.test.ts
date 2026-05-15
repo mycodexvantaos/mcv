@@ -6,7 +6,7 @@ describe('connector-kafka', () => {
   beforeEach(() => {
     instance = new KafkaConnector({
       brokers: ['localhost:9092'],
-      clientId: 'test-client'
+      clientId: 'test-client',
     });
   });
 

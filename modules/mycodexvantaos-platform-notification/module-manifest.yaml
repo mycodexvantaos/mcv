@@ -19,7 +19,7 @@ spec:
     observability: observability-opentelemetry
   lifecycle:
     stage: stable
-    since: "v1.0.0"
-  urn: "urn:mycodexvantaos:manifest:service:mycodexvantaos-platform-notification"
-  packageName: "@mycodexvantaos/platform-notification"
-  description: "Outbound notification delivery (email, SMS, push)."
+    since: 'v1.0.0'
+  urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-platform-notification'
+  packageName: '@mycodexvantaos/platform-notification'
+  description: 'Outbound notification delivery (email, SMS, push).'

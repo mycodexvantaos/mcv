@@ -12,4 +12,4 @@ spec:
   dimension: 1024
   providerInstance: embedding-cohere
   maxTokens: 512
-  description: "Cohere embed-english-v3. Strong English retrieval, 1024 dimensions."
+  description: 'Cohere embed-english-v3. Strong English retrieval, 1024 dimensions.'

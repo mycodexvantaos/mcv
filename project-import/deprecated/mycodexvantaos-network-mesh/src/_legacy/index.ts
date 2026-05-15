@@ -1,7 +1,7 @@
 /**
  * CodexvantaOS — network-mesh
  * 服務網格 — 服務發現、負載均衡、API 閘道
- * 
+ *
  * Layer: B-Runtime | Plane: Integration | Tier: 2
  * Philosophy: Native-first / Provider-agnostic
  * 「第三方服務是平台的擴充出口，不是平台成立的地基。」
@@ -26,7 +26,10 @@ export { initProviders, getProviders, shutdownProviders } from './providers.js';
  * Bootstrap network-mesh
  */
 export async function bootstrap(): Promise<void> {
-  console.log('[network-mesh] Starting in %s mode...', process.env.CODEXVANTA_MODE || 'auto-detect');
+  console.log(
+    '[network-mesh] Starting in %s mode...',
+    process.env.CODEXVANTA_MODE || 'auto-detect'
+  );
 
   // Initialize providers (auto-detects Native/Connected/Hybrid)
   const providers = await initProviders();

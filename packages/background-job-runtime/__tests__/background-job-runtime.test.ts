@@ -6,7 +6,7 @@ describe('BackgroundJobRuntime', () => {
   beforeEach(() => {
     runtime = new BackgroundJobRuntime({
       concurrency: 2,
-      maxRetries: 3
+      maxRetries: 3,
     });
   });
 
@@ -19,7 +19,7 @@ describe('BackgroundJobRuntime', () => {
     it('should initialize with custom options', () => {
       const customRuntime = new BackgroundJobRuntime({
         concurrency: 5,
-        maxRetries: 5
+        maxRetries: 5,
       });
       expect(customRuntime).toBeInstanceOf(BackgroundJobRuntime);
     });
@@ -32,7 +32,7 @@ describe('BackgroundJobRuntime', () => {
       };
 
       runtime.register('test-job', handler);
-      
+
       expect(runtime.getJobs()).toHaveLength(0);
     });
   });
@@ -97,9 +97,9 @@ describe('BackgroundJobRuntime', () => {
   describe('removeJob', () => {
     it('should remove job from queue', async () => {
       const job = await runtime.add('test-job', {});
-      
+
       const removed = runtime.removeJob(job.id);
-      
+
       expect(removed).toBe(true);
       expect(runtime.getJob(job.id)).toBeUndefined();
     });

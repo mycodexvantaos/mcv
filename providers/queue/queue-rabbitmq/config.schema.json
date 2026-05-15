@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/queue/rabbitmq/config.schema.json",
   "title": "queue-rabbitmq Configuration",
   "type": "object",
-  "required": [
-    "url"
-  ],
+  "required": ["url"],
   "properties": {
     "url": {
       "type": "string",

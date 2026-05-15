@@ -1,11 +1,11 @@
 /**
  * CodexvantaOS — DeployProvider
- * 
+ *
  * Abstract interface for deployment orchestration.
  * Native mode: local Docker / process-based deployment (zero CI/CD dependency)
  * External mode: GitHub Actions, GitLab CI, AWS CodeDeploy, Vercel,
  *                Cloudflare Workers, Kubernetes, etc.
- * 
+ *
  * Covers: build triggering, deployment execution, rollback,
  *         environment management, deployment status tracking.
  */
@@ -35,18 +35,18 @@ export type DeployTarget =
 export interface DeploymentInfo {
   id: string;
   repoName: string;
-  ref: string;                 // branch, tag, or commit SHA
-  environment: string;         // e.g. 'production', 'staging', 'preview'
+  ref: string; // branch, tag, or commit SHA
+  environment: string; // e.g. 'production', 'staging', 'preview'
   target: DeployTarget;
   status: DeploymentStatus;
-  url?: string;                // deployed URL if applicable
+  url?: string; // deployed URL if applicable
   createdAt: number;
   startedAt?: number;
   completedAt?: number;
-  duration?: number;           // ms
-  version?: string;            // semantic version or build number
-  actor?: string;              // who triggered the deploy
-  logs?: string;               // log output or URL to logs
+  duration?: number; // ms
+  version?: string; // semantic version or build number
+  actor?: string; // who triggered the deploy
+  logs?: string; // log output or URL to logs
   metadata?: Record<string, unknown>;
 }
 
@@ -55,10 +55,10 @@ export interface DeployInput {
   ref: string;
   environment: string;
   target?: DeployTarget;
-  variables?: Record<string, string>;   // env vars for the build/deploy
-  secrets?: string[];                    // secret keys to inject (resolved via SecretsProvider)
+  variables?: Record<string, string>; // env vars for the build/deploy
+  secrets?: string[]; // secret keys to inject (resolved via SecretsProvider)
   dryRun?: boolean;
-  timeout?: number;                      // max deploy time in seconds
+  timeout?: number; // max deploy time in seconds
   metadata?: Record<string, unknown>;
 }
 
@@ -66,13 +66,13 @@ export interface BuildResult {
   success: boolean;
   artifacts: BuildArtifact[];
   logs: string;
-  duration: number;            // ms
+  duration: number; // ms
 }
 
 export interface BuildArtifact {
   name: string;
   path: string;
-  size: number;                // bytes
+  size: number; // bytes
   checksum?: string;
   contentType?: string;
 }
@@ -94,8 +94,8 @@ export interface ProtectionRule {
 }
 
 export interface RollbackOptions {
-  targetDeploymentId?: string;   // roll back to specific deployment
-  targetVersion?: string;        // roll back to specific version
+  targetDeploymentId?: string; // roll back to specific deployment
+  targetVersion?: string; // roll back to specific version
   reason?: string;
 }
 
@@ -143,7 +143,11 @@ export interface DeployProvider {
   cancel(deploymentId: string, reason?: string): Promise<DeploymentInfo>;
 
   /** Roll back to a previous deployment or version. */
-  rollback(repoName: string, environment: string, options?: RollbackOptions): Promise<DeploymentInfo>;
+  rollback(
+    repoName: string,
+    environment: string,
+    options?: RollbackOptions
+  ): Promise<DeploymentInfo>;
 
   // ── Build ───────────────────────────────────────────────────────────────
 

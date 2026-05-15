@@ -32,11 +32,11 @@ Examples:
 
 ## Subscription Patterns
 
-| Pattern | Example | Matches |
-|---|---|---|
-| Exact | `repository.scan.completed` | Only exact topic |
-| Wildcard | `repository.scan.*` | All scan actions |
-| Multi-wildcard | `repository.#` | All repository events |
+| Pattern        | Example                     | Matches               |
+| -------------- | --------------------------- | --------------------- |
+| Exact          | `repository.scan.completed` | Only exact topic      |
+| Wildcard       | `repository.scan.*`         | All scan actions      |
+| Multi-wildcard | `repository.#`              | All repository events |
 
 ## Consumer Groups
 
@@ -57,10 +57,10 @@ Topic ─── Group ─┤
 ```typescript
 interface PlatformEvent<T = unknown> {
   id: string;
-  type: string;          // Topic name
-  source: string;        // Producing service
+  type: string; // Topic name
+  source: string; // Producing service
   timestamp: Date;
-  version: string;       // Schema version
+  version: string; // Schema version
   correlationId: string; // Request tracing
   payload: T;
   metadata: Record<string, string>;
@@ -69,10 +69,10 @@ interface PlatformEvent<T = unknown> {
 
 ## Delivery Guarantees
 
-| Mode | Guarantee |
-|---|---|
-| Native | At-least-once (with persistence), at-most-once (without) |
-| Connected | Depends on external broker configuration |
+| Mode      | Guarantee                                                |
+| --------- | -------------------------------------------------------- |
+| Native    | At-least-once (with persistence), at-most-once (without) |
+| Connected | Depends on external broker configuration                 |
 
 ## Error Handling
 

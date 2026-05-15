@@ -1,5 +1,5 @@
-import jwt from "jsonwebtoken";
-import type { TokenPayload } from "../types/auth.types";
+import jwt from 'jsonwebtoken';
+import type { TokenPayload } from '../types/auth.types';
 
 export class TokenService {
   constructor(

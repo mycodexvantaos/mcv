@@ -3,6 +3,7 @@
 This reference contains minimal, reproducible examples (MREs) for common Genkit patterns.
 
 > **Disclaimer**: These examples use **Google AI** models (`googleAI`, `gemini-*`) for demonstration. The patterns apply to **any provider**. To use a different provider:
+>
 > 1. Search the docs for the correct plugin: `genkit docs:search "plugins"`.
 > 2. Install and configure the plugin.
 > 3. Swap the model reference in the code.
@@ -10,8 +11,8 @@ This reference contains minimal, reproducible examples (MREs) for common Genkit 
 ## Basic Text Generation
 
 ```ts
-import { genkit } from "genkit";
-import { googleAI } from "@genkit-ai/google-genai";
+import { genkit } from 'genkit';
+import { googleAI } from '@genkit-ai/google-genai';
 
 const ai = genkit({
   plugins: [googleAI()],
@@ -40,7 +41,7 @@ const response = await ai.generate({
 });
 
 // response.output is strongly typed
-const joke = response.output; 
+const joke = response.output;
 if (joke) {
   console.log(`${joke.setup} ... ${joke.punchline}`);
 }
@@ -113,7 +114,7 @@ if (groundingMetadata) {
 const { media } = await ai.generate({
   model: googleAI.model('gemini-2.5-flash-image'),
   config: { responseModalities: ['TEXT', 'IMAGE'] },
-  prompt: "generate a picture of a unicorn wearing a space suit on the moon",
+  prompt: 'generate a picture of a unicorn wearing a space suit on the moon',
 });
 // media.url contains the data URI
 ```
@@ -125,7 +126,7 @@ const { media } = await ai.generate({
   config: { responseModalities: ['TEXT', 'IMAGE'] },
   prompt: [
     { text: "change the person's outfit to a banana costume" },
-    { media: { url: "https://example.com/photo.jpg" } },
+    { media: { url: 'https://example.com/photo.jpg' } },
   ],
 });
 ```

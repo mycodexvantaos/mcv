@@ -43,13 +43,13 @@ Container Runtime
 
 ## Resource Management
 
-| Resource | Native Limit | Connected Limit |
-|---|---|---|
-| CPU | Process priority (nice) | Container CPU shares |
-| Memory | Node.js --max-old-space-size | Container memory limit |
-| Disk | Quota via cleanup threshold | Volume size limit |
-| Time | setTimeout-based watchdog | Container runtime timeout |
-| Network | None (process-level) | Container network policy |
+| Resource | Native Limit                 | Connected Limit           |
+| -------- | ---------------------------- | ------------------------- |
+| CPU      | Process priority (nice)      | Container CPU shares      |
+| Memory   | Node.js --max-old-space-size | Container memory limit    |
+| Disk     | Quota via cleanup threshold  | Volume size limit         |
+| Time     | setTimeout-based watchdog    | Container runtime timeout |
+| Network  | None (process-level)         | Container network policy  |
 
 ## Parallel Execution
 
@@ -71,6 +71,7 @@ Container Runtime
 ## Artifact Collection
 
 After execution completes, the Artifact Collector extracts:
+
 - Build outputs (dist/, build/)
 - Test results (junit.xml, coverage/)
 - Logs (stdout, stderr, execution timeline)

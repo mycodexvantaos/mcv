@@ -2,7 +2,7 @@ name: Deployment Freeze Gate
 
 on:
   workflow_run:
-    workflows: ["Deploy to Development", "Deploy to Staging", "Deploy to Production"] # Add your deployment workflow names
+    workflows: ['Deploy to Development', 'Deploy to Staging', 'Deploy to Production'] # Add your deployment workflow names
     types:
       - requested
 

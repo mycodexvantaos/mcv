@@ -199,12 +199,7 @@ class SpecTestRunner {
 
     // 測試閉環證明器
     const prover = model.closure_prover;
-    this.testAssertion(
-      'Naming',
-      'closure_prover_defined',
-      !!prover?.class,
-      `應定義閉環證明器類別`
-    );
+    this.testAssertion('Naming', 'closure_prover_defined', !!prover?.class, `應定義閉環證明器類別`);
   }
 
   // ========================================
@@ -249,7 +244,7 @@ class SpecTestRunner {
 
     // 測試 capability 包含核心能力
     const coreCapabilities = ['database', 'storage', 'auth', 'queue', 'secrets'];
-    const missingCore = coreCapabilities.filter(cap => !capabilities.includes(cap));
+    const missingCore = coreCapabilities.filter((cap) => !capabilities.includes(cap));
     this.testAssertion(
       'Canonical',
       'core_capabilities_present',
@@ -366,8 +361,8 @@ class SpecTestRunner {
 
     // 測試有效範例
     const validExamples = providerInstance?.valid_examples || [];
-    const allValidFormat = validExamples.every((ex: string) => 
-      ex.includes('-') && !ex.startsWith('postgres') && !ex.startsWith('openai')
+    const allValidFormat = validExamples.every(
+      (ex: string) => ex.includes('-') && !ex.startsWith('postgres') && !ex.startsWith('openai')
     );
     this.testAssertion(
       'Provider',
@@ -516,13 +511,14 @@ class SpecTestRunner {
       return;
     }
 
-    const packageDirs = fs.readdirSync(packagesPath, { withFileTypes: true })
-      .filter(dirent => dirent.isDirectory())
-      .map(dirent => dirent.name);
+    const packageDirs = fs
+      .readdirSync(packagesPath, { withFileTypes: true })
+      .filter((dirent) => dirent.isDirectory())
+      .map((dirent) => dirent.name);
 
     // 測試 Builder 層
-    const builderPackages = packageDirs.filter(dir => 
-      dir.includes('builder') || dir.includes('generator')
+    const builderPackages = packageDirs.filter(
+      (dir) => dir.includes('builder') || dir.includes('generator')
     );
     this.testAssertion(
       'Layer',
@@ -532,8 +528,8 @@ class SpecTestRunner {
     );
 
     // 測試 Runtime 層
-    const runtimePackages = packageDirs.filter(dir => 
-      dir.includes('runtime') || dir.includes('execution')
+    const runtimePackages = packageDirs.filter(
+      (dir) => dir.includes('runtime') || dir.includes('execution')
     );
     this.testAssertion(
       'Layer',
@@ -543,9 +539,12 @@ class SpecTestRunner {
     );
 
     // 測試 Native Services 層
-    const nativeServicePackages = packageDirs.filter(dir => 
-      dir.includes('database') || dir.includes('storage') || 
-      dir.includes('auth') || dir.includes('queue')
+    const nativeServicePackages = packageDirs.filter(
+      (dir) =>
+        dir.includes('database') ||
+        dir.includes('storage') ||
+        dir.includes('auth') ||
+        dir.includes('queue')
     );
     this.testAssertion(
       'Layer',
@@ -555,8 +554,8 @@ class SpecTestRunner {
     );
 
     // 測試 Deployment 層
-    const deploymentPackages = packageDirs.filter(dir => 
-      dir.includes('deployment') || dir.includes('kubernetes') || dir.includes('docker')
+    const deploymentPackages = packageDirs.filter(
+      (dir) => dir.includes('deployment') || dir.includes('kubernetes') || dir.includes('docker')
     );
     this.testAssertion(
       'Layer',
@@ -566,8 +565,8 @@ class SpecTestRunner {
     );
 
     // 測試 Connector 層
-    const connectorPackages = packageDirs.filter(dir => 
-      dir.includes('connector') || dir.includes('provider') || dir.includes('integration')
+    const connectorPackages = packageDirs.filter(
+      (dir) => dir.includes('connector') || dir.includes('provider') || dir.includes('integration')
     );
     this.testAssertion(
       'Layer',
@@ -593,7 +592,7 @@ class SpecTestRunner {
     console.log('📋 執行能力測試...');
 
     const capabilitiesPath = path.join(this.projectRoot, 'governance', 'capability-set.yaml');
-    
+
     if (!fs.existsSync(capabilitiesPath)) {
       this.addResult('Capability', '能力集合檔案', false, 'capability-set.yaml 不存在');
       return;
@@ -616,9 +615,9 @@ class SpecTestRunner {
       // 測試核心能力
       const coreCapabilities = ['database', 'storage', 'auth', 'queue', 'secrets', 'deploy'];
       const definedCapabilities = Object.keys(capabilities);
-      const missingCore = coreCapabilities.filter(cap => 
-        !definedCapabilities.includes(cap) && 
-        !definedCapabilities.some(c => c.includes(cap))
+      const missingCore = coreCapabilities.filter(
+        (cap) =>
+          !definedCapabilities.includes(cap) && !definedCapabilities.some((c) => c.includes(cap))
       );
       this.testAssertion(
         'Capability',
@@ -643,9 +642,10 @@ class SpecTestRunner {
       return;
     }
 
-    const packageDirs = fs.readdirSync(packagesPath, { withFileTypes: true })
-      .filter(dirent => dirent.isDirectory())
-      .map(dirent => dirent.name);
+    const packageDirs = fs
+      .readdirSync(packagesPath, { withFileTypes: true })
+      .filter((dirent) => dirent.isDirectory())
+      .map((dirent) => dirent.name);
 
     let validPackages = 0;
     let invalidPackages = 0;
@@ -656,7 +656,7 @@ class SpecTestRunner {
       if (fs.existsSync(packageJsonPath)) {
         try {
           const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
-          
+
           // 檢查命名慣例
           if (pkg.name?.startsWith('@mycodexvantaos/')) {
             validPackages++;
@@ -716,9 +716,10 @@ class SpecTestRunner {
     );
 
     if (fs.existsSync(servicesPath)) {
-      const serviceDirs = fs.readdirSync(servicesPath, { withFileTypes: true })
-        .filter(dirent => dirent.isDirectory())
-        .map(dirent => dirent.name);
+      const serviceDirs = fs
+        .readdirSync(servicesPath, { withFileTypes: true })
+        .filter((dirent) => dirent.isDirectory())
+        .map((dirent) => dirent.name);
 
       // 測試服務數量
       this.testAssertion(
@@ -729,9 +730,7 @@ class SpecTestRunner {
       );
 
       // 測試服務命名
-      const validServiceNames = serviceDirs.filter(name => 
-        name.startsWith('mycodexvantaos-')
-      );
+      const validServiceNames = serviceDirs.filter((name) => name.startsWith('mycodexvantaos-'));
       this.testAssertion(
         'Service',
         'service_naming_convention',
@@ -757,9 +756,8 @@ class SpecTestRunner {
     );
 
     if (fs.existsSync(ciRulesPath)) {
-      const ruleFiles = fs.readdirSync(ciRulesPath)
-        .filter(file => file.endsWith('.rule.ts'));
-      
+      const ruleFiles = fs.readdirSync(ciRulesPath).filter((file) => file.endsWith('.rule.ts'));
+
       this.testAssertion(
         'Governance',
         'rule_files_count',
@@ -773,10 +771,10 @@ class SpecTestRunner {
         'package-name.rule.ts',
         'env-var.rule.ts',
         'urn.rule.ts',
-        'capability-id.rule.ts'
+        'capability-id.rule.ts',
       ];
-      
-      const missingRules = requiredRules.filter(rule => !ruleFiles.includes(rule));
+
+      const missingRules = requiredRules.filter((rule) => !ruleFiles.includes(rule));
       this.testAssertion(
         'Governance',
         'required_rule_files',
@@ -786,7 +784,11 @@ class SpecTestRunner {
     }
 
     // 測試 Provider 註冊表
-    const providerRegistryPath = path.join(this.projectRoot, 'governance', 'provider-registry.yaml');
+    const providerRegistryPath = path.join(
+      this.projectRoot,
+      'governance',
+      'provider-registry.yaml'
+    );
     this.testAssertion(
       'Governance',
       'provider_registry_exists',
@@ -828,7 +830,7 @@ class SpecTestRunner {
       testName,
       passed,
       message,
-      details
+      details,
     });
 
     const icon = passed ? '✅' : '❌';
@@ -836,8 +838,8 @@ class SpecTestRunner {
   }
 
   private generateReport(): SpecTestReport {
-    const passed = this.results.filter(r => r.passed).length;
-    const failed = this.results.filter(r => !r.passed).length;
+    const passed = this.results.filter((r) => r.passed).length;
+    const failed = this.results.filter((r) => !r.passed).length;
     const total = this.results.length;
 
     // 按類別統計
@@ -856,13 +858,13 @@ class SpecTestRunner {
 
     // 關鍵失敗
     const criticalFailures = this.results
-      .filter(r => !r.passed && ['Identity', 'Canonical', 'Naming'].includes(r.category))
-      .map(r => `[${r.category}] ${r.testName}: ${r.message}`);
+      .filter((r) => !r.passed && ['Identity', 'Canonical', 'Naming'].includes(r.category))
+      .map((r) => `[${r.category}] ${r.testName}: ${r.message}`);
 
     // 警告
     const warnings = this.results
-      .filter(r => !r.passed && !['Identity', 'Canonical', 'Naming'].includes(r.category))
-      .map(r => `[${r.category}] ${r.testName}`);
+      .filter((r) => !r.passed && !['Identity', 'Canonical', 'Naming'].includes(r.category))
+      .map((r) => `[${r.category}] ${r.testName}`);
 
     return {
       timestamp: new Date().toISOString(),
@@ -875,8 +877,8 @@ class SpecTestRunner {
       summary: {
         byCategory,
         criticalFailures,
-        warnings
-      }
+        warnings,
+      },
     };
   }
 }
@@ -894,14 +896,14 @@ async function main() {
   console.log(`失敗: ${report.failed} ❌`);
   console.log(`覆蓋率: ${report.coverage}%`);
   console.log('\n按類別統計:');
-  
+
   for (const [category, stats] of Object.entries(report.summary.byCategory)) {
     console.log(`  ${category}: ${stats.passed}/${stats.total} 通過`);
   }
 
   if (report.summary.criticalFailures.length > 0) {
     console.log('\n🚨 關鍵失敗:');
-    report.summary.criticalFailures.forEach(f => console.log(`  - ${f}`));
+    report.summary.criticalFailures.forEach((f) => console.log(`  - ${f}`));
   }
 
   // 輸出 JSON 報告
@@ -913,7 +915,7 @@ async function main() {
   process.exit(report.failed > 0 ? 1 : 0);
 }
 
-main().catch(error => {
+main().catch((error) => {
   console.error('測試執行失敗:', error);
   process.exit(1);
 });

@@ -18,7 +18,7 @@ export function useConnectivity() {
   useEffect(() => {
     async function checkConnectivity() {
       setIsChecking(true);
-      
+
       // 1. 檢查瀏覽器網絡狀態
       const online = typeof navigator !== 'undefined' ? navigator.onLine : false;
       setIsOnline(online);
@@ -33,15 +33,15 @@ export function useConnectivity() {
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 3000);
-        
+
         const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models', {
           method: 'GET',
           signal: controller.signal,
-          mode: 'no-cors' // 僅測試連通性
+          mode: 'no-cors', // 僅測試連通性
         });
-        
+
         clearTimeout(timeoutId);
-        
+
         // 如果能連通且有配置 Key，進入 Connected 模式，否則維持 Native
         const hasKey = !!process.env.NEXT_PUBLIC_GEMINI_API_KEY;
         setMode(hasKey ? 'connected' : 'native');

@@ -55,13 +55,15 @@ git push origin main
 ### wrangler.toml
 
 Main Cloudflare Pages configuration file that defines:
+
 - Project name and compatibility date
 - Environment variables
 - Environment-specific settings (production, preview, development)
 
-### _middleware.ts
+### \_middleware.ts
 
 Security middleware that handles:
+
 - Security headers (CSP, HSTS, XSS protection)
 - CORS configuration for API routes
 - Request routing and filtering
@@ -69,6 +71,7 @@ Security middleware that handles:
 ### api-adapter.ts
 
 Adapts Next.js API routes to Cloudflare Workers runtime:
+
 - API route pattern matching
 - Request/response handling
 - Error handling and logging
@@ -76,6 +79,7 @@ Adapts Next.js API routes to Cloudflare Workers runtime:
 ### types.ts
 
 TypeScript type definitions for Cloudflare Workers:
+
 - Environment variables
 - D1 database bindings
 - Request/response types
@@ -83,6 +87,7 @@ TypeScript type definitions for Cloudflare Workers:
 ### access-policy.json
 
 Zero Trust access policy configuration:
+
 - Authentication methods (Google, GitHub, Email)
 - Role-based access control (Admin, Editor, Viewer)
 - IP restrictions and session management
@@ -105,6 +110,7 @@ Automated deployment script for Cloudflare Pages:
 ```
 
 **Features:**
+
 - Automatic dependency installation
 - Next.js build optimization
 - Wrangler CLI deployment
@@ -123,6 +129,7 @@ Comprehensive health check script:
 ```
 
 **Checks:**
+
 - HTTP endpoint availability
 - DNS resolution
 - SSL certificate validity
@@ -138,6 +145,7 @@ Automated DNS configuration script:
 ```
 
 **Creates:**
+
 - CNAME records for main domains
 - Wildcard records for preview deployments
 - API subdomain configuration
@@ -145,25 +153,30 @@ Automated DNS configuration script:
 ## 🌐 Deployment URLs
 
 ### Production Environment
+
 - **Admin Dashboard**: https://admin.autoecoops.io
 - **Main Dashboard**: https://dashboard.autoecoops.io
 - **API Endpoint**: https://api.autoecoops.io
 
 ### Preview Environment
+
 - **Preview URL**: https://preview.autoecoops.io
 
 ### Development Environment
+
 - **Development URL**: https://dev.autoecoops.io
 
 ## 🔐 Security Features
 
 ### Zero Trust Access
+
 - Multi-factor authentication support
 - Role-based access control
 - IP-based restrictions
 - Session management
 
 ### Security Headers
+
 - Content Security Policy (CSP)
 - HTTP Strict Transport Security (HSTS)
 - X-Frame-Options
@@ -171,6 +184,7 @@ Automated DNS configuration script:
 - Referrer Policy
 
 ### CORS Configuration
+
 - API route CORS handling
 - Environment-specific origins
 - Preflight request support
@@ -178,12 +192,14 @@ Automated DNS configuration script:
 ## 📊 Monitoring
 
 ### GitHub Actions
+
 - Automated deployment workflows
 - Build status notifications
 - Deployment verification
 - Health check integration
 
 ### Health Checks
+
 - Endpoint availability monitoring
 - DNS resolution checks
 - SSL certificate validation
@@ -192,16 +208,21 @@ Automated DNS configuration script:
 ## 🔄 CI/CD Pipeline
 
 ### Production Deployment
+
 Triggered by:
+
 - Push to `main` branch
 - Manual workflow dispatch
 
 ### Preview Deployment
+
 Triggered by:
+
 - Pull request creation/updates
 - Manual workflow dispatch
 
 ### Deployment Steps
+
 1. Checkout repository
 2. Setup Node.js environment
 3. Install dependencies
@@ -214,18 +235,21 @@ Triggered by:
 ## 🛠️ Troubleshooting
 
 ### Deployment Fails
+
 1. Check GitHub Actions logs
 2. Verify Cloudflare credentials
 3. Ensure build succeeds locally
 4. Check environment variables
 
 ### DNS Issues
+
 1. Verify DNS records in Cloudflare Dashboard
 2. Check DNS propagation status
 3. Confirm SSL certificates are valid
 4. Run health check script
 
 ### Access Denied
+
 1. Verify Zero Trust access policy
 2. Check authentication methods
 3. Confirm user roles and permissions
@@ -241,6 +265,7 @@ Triggered by:
 ## 🆘 Support
 
 For issues or questions:
+
 1. Check the troubleshooting section
 2. Review GitHub Actions logs
 3. Consult Cloudflare documentation

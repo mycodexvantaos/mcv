@@ -1,7 +1,7 @@
 'use server';
 /**
  * @fileOverview AI Research Data Summarization flow.
- * 
+ *
  * Refactored to follow MyCodeXvantaOS Provider Architecture:
  * - Uses Provider abstraction layer instead of direct Genkit dependency
  * - No hardcoded API key requirements
@@ -29,10 +29,11 @@ export interface ResearchDataSummarizationOutput {
 function buildPrompt(input: ResearchDataSummarizationInput): string {
   // Truncate very long research data for the prompt
   const maxLength = 32000;
-  const data = input.researchData.length > maxLength
-    ? input.researchData.slice(0, maxLength) + '\n...[truncated]'
-    : input.researchData;
-  
+  const data =
+    input.researchData.length > maxLength
+      ? input.researchData.slice(0, maxLength) + '\n...[truncated]'
+      : input.researchData;
+
   return `You are an expert researcher and market analyst specializing in code editor ecosystems.
 Your task is to analyze the provided research data, market trends, and editor ecosystem metrics to extract key insights and generate a comprehensive overview.
 The summary should be concise, highlight the most important findings, and be structured for quick understanding by other researchers.
@@ -63,31 +64,32 @@ Format your response as:
  * Summarize research data
  * Uses the Provider abstraction layer - no direct API key dependency
  */
-export async function summarizeResearchData(input: ResearchDataSummarizationInput): Promise<ResearchDataSummarizationOutput> {
+export async function summarizeResearchData(
+  input: ResearchDataSummarizationInput
+): Promise<ResearchDataSummarizationOutput> {
   // For native provider, provide a structured template response
   if (!hasAdvancedAI()) {
     return {
-      summary: generateNativeSummary(input.researchData)
+      summary: generateNativeSummary(input.researchData),
     };
   }
-  
+
   try {
     const prompt = buildPrompt(input);
     const response = await generateText(prompt, {
       maxTokens: 4096,
-      temperature: 0.5
+      temperature: 0.5,
     });
-    
+
     return {
-      summary: response.text
+      summary: response.text,
     };
-    
   } catch (error: any) {
     const provider = getActiveProvider();
-    const advancedHint = hasAdvancedAI() 
-      ? '' 
+    const advancedHint = hasAdvancedAI()
+      ? ''
       : ' Tip: Configure LLM_PROVIDER and corresponding API key for advanced summarization capabilities.';
-    
+
     throw new Error(`Research data summarization failed: ${error.message}.${advancedHint}`);
   }
 }
@@ -100,10 +102,10 @@ function generateNativeSummary(data: string): string {
   const lines = data.split('\n').length;
   const words = data.split(/\s+/).length;
   const chars = data.length;
-  
+
   // Try to extract key terms
   const terms = extractKeyTerms(data);
-  
+
   return `## Summary
 Research data has been processed using the native provider.
 
@@ -113,7 +115,7 @@ Research data has been processed using the native provider.
 - Characters: ${chars.toLocaleString()}
 
 ## Key Terms Detected
-${terms.map(t => `- ${t}`).join('\n')}
+${terms.map((t) => `- ${t}`).join('\n')}
 
 ## Note
 Configure an external LLM provider (LLM_PROVIDER + API key) for advanced AI-powered summarization and analysis.
@@ -131,26 +133,79 @@ Available providers:
 function extractKeyTerms(text: string, maxTerms: number = 10): string[] {
   // Remove common words
   const stopWords = new Set([
-    'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
-    'of', 'with', 'by', 'from', 'as', 'is', 'was', 'are', 'were', 'been',
-    'be', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could',
-    'should', 'may', 'might', 'must', 'shall', 'can', 'need', 'dare', 'ought',
-    'used', 'this', 'that', 'these', 'those', 'it', 'its', 'their', 'they',
-    'we', 'our', 'you', 'your', 'he', 'she', 'him', 'her', 'his'
+    'the',
+    'a',
+    'an',
+    'and',
+    'or',
+    'but',
+    'in',
+    'on',
+    'at',
+    'to',
+    'for',
+    'of',
+    'with',
+    'by',
+    'from',
+    'as',
+    'is',
+    'was',
+    'are',
+    'were',
+    'been',
+    'be',
+    'have',
+    'has',
+    'had',
+    'do',
+    'does',
+    'did',
+    'will',
+    'would',
+    'could',
+    'should',
+    'may',
+    'might',
+    'must',
+    'shall',
+    'can',
+    'need',
+    'dare',
+    'ought',
+    'used',
+    'this',
+    'that',
+    'these',
+    'those',
+    'it',
+    'its',
+    'their',
+    'they',
+    'we',
+    'our',
+    'you',
+    'your',
+    'he',
+    'she',
+    'him',
+    'her',
+    'his',
   ]);
-  
+
   // Extract words
-  const words = text.toLowerCase()
+  const words = text
+    .toLowerCase()
     .replace(/[^a-z0-9\s]/g, ' ')
     .split(/\s+/)
-    .filter(w => w.length > 3 && !stopWords.has(w));
-  
+    .filter((w) => w.length > 3 && !stopWords.has(w));
+
   // Count frequencies
   const freq: Record<string, number> = {};
   for (const word of words) {
     freq[word] = (freq[word] || 0) + 1;
   }
-  
+
   // Sort by frequency and return top terms
   return Object.entries(freq)
     .sort((a, b) => b[1] - a[1])

@@ -1,7 +1,7 @@
 /**
  * @mycodexvantaos/ai-team-orchestrator
  * Core orchestrator for multi-agent AI teams in MyCodeXvantaOS
- * 
+ *
  * @packageDocumentation
  */
 
@@ -73,9 +73,7 @@ export type {
 } from './types';
 
 // Export component-specific types
-export type {
-  AgentManagerConfig,
-} from './core/agent-manager';
+export type { AgentManagerConfig } from './core/agent-manager';
 
 export type {
   MessageBusConfig,

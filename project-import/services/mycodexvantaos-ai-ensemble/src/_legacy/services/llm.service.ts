@@ -5,15 +5,32 @@
 import { getProviders } from '../providers.js';
 import type * as T from '../types/index.js';
 
-export interface LLMRequest { model?: string; messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }>; temperature?: number; maxTokens?: number; stream?: boolean; }
-export interface LLMResponse { content: string; model: string; usage: { promptTokens: number; completionTokens: number; totalTokens: number }; finishReason: string; latency: number; }
+export interface LLMRequest {
+  model?: string;
+  messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }>;
+  temperature?: number;
+  maxTokens?: number;
+  stream?: boolean;
+}
+export interface LLMResponse {
+  content: string;
+  model: string;
+  usage: { promptTokens: number; completionTokens: number; totalTokens: number };
+  finishReason: string;
+  latency: number;
+}
 
 export class LLMService {
-  private get providers() { return getProviders(); }
+  private get providers() {
+    return getProviders();
+  }
 
   async complete(request: LLMRequest): Promise<LLMResponse> {
     const start = Date.now();
-    this.providers.observability.info('LLM request', { model: request.model ?? 'default', messageCount: request.messages.length });
+    this.providers.observability.info('LLM request', {
+      model: request.model ?? 'default',
+      messageCount: request.messages.length,
+    });
 
     // Store request in queue for async processing / audit
     await this.providers.queue.enqueue('ai:llm:requests', { ...request, timestamp: Date.now() });
@@ -23,18 +40,28 @@ export class LLMService {
     const response: LLMResponse = {
       content: await this.inference(request),
       model: request.model ?? 'native-template',
-      usage: { promptTokens: this.estimateTokens(request.messages), completionTokens: 0, totalTokens: 0 },
+      usage: {
+        promptTokens: this.estimateTokens(request.messages),
+        completionTokens: 0,
+        totalTokens: 0,
+      },
       finishReason: 'stop',
       latency: Date.now() - start,
     };
-    response.usage.completionTokens = this.estimateTokens([{ role: 'assistant', content: response.content }]);
+    response.usage.completionTokens = this.estimateTokens([
+      { role: 'assistant', content: response.content },
+    ]);
     response.usage.totalTokens = response.usage.promptTokens + response.usage.completionTokens;
 
     // Cache response
     const cacheKey = `ai:llm:cache:${this.hashRequest(request)}`;
     await this.providers.stateStore.set(cacheKey, response, { ttl: 3600 });
 
-    this.providers.observability.info('LLM response', { model: response.model, tokens: response.usage.totalTokens, latency: response.latency });
+    this.providers.observability.info('LLM response', {
+      model: response.model,
+      tokens: response.usage.totalTokens,
+      latency: response.latency,
+    });
     return response;
   }
 
@@ -58,7 +85,10 @@ export class LLMService {
   private hashRequest(request: LLMRequest): string {
     const str = JSON.stringify(request.messages);
     let hash = 0;
-    for (let i = 0; i < str.length; i++) { hash = ((hash << 5) - hash) + str.charCodeAt(i); hash |= 0; }
+    for (let i = 0; i < str.length; i++) {
+      hash = (hash << 5) - hash + str.charCodeAt(i);
+      hash |= 0;
+    }
     return Math.abs(hash).toString(36);
   }
 }

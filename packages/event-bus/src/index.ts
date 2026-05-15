@@ -30,7 +30,7 @@ export class EventBus {
   async publish(event: Event): Promise<void> {
     const handlers = this.handlers.get(event.type);
     if (handlers) {
-      await Promise.all(Array.from(handlers).map(handler => handler(event)));
+      await Promise.all(Array.from(handlers).map((handler) => handler(event)));
     }
   }
 

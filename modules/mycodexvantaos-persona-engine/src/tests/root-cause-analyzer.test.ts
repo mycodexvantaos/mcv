@@ -1,6 +1,6 @@
 /**
  * MyCodeXvantaOS Persona Engine - Root Cause Analyzer Tests
- * 
+ *
  * Unit tests for the RootCauseAnalyzer class.
  */
 
@@ -72,7 +72,7 @@ describe('RootCauseAnalyzer', () => {
 
       expect(questions.length).toBeLessThanOrEqual(2);
       expect(questions.length).toBeGreaterThan(0);
-      questions.forEach(q => {
+      questions.forEach((q) => {
         expect(typeof q).toBe('string');
         expect(q.length).toBeGreaterThan(0);
       });
@@ -89,7 +89,7 @@ describe('RootCauseAnalyzer', () => {
   describe('recordFindings', () => {
     it('should record findings for a layer', () => {
       const context = analyzer.initializeAnalysis('Test problem');
-      
+
       const updatedContext = analyzer.recordFindings(
         context,
         'surface_symptoms',
@@ -107,7 +107,7 @@ describe('RootCauseAnalyzer', () => {
 
     it('should update overall confidence', () => {
       const context = analyzer.initializeAnalysis('Test problem');
-      
+
       const updatedContext = analyzer.recordFindings(
         context,
         'surface_symptoms',
@@ -124,9 +124,9 @@ describe('RootCauseAnalyzer', () => {
   describe('advanceToNextLayer', () => {
     it('should advance to the next layer', () => {
       const context = analyzer.initializeAnalysis('Test problem');
-      
+
       expect(context.current_layer).toBe('surface_symptoms');
-      
+
       const nextLayer = analyzer.advanceToNextLayer(context);
       expect(nextLayer).toBe('behavioral_patterns');
       expect(context.current_layer).toBe('behavioral_patterns');
@@ -135,7 +135,7 @@ describe('RootCauseAnalyzer', () => {
     it('should return null when at the deepest layer', () => {
       const context = analyzer.initializeAnalysis('Test problem');
       context.current_layer = 'root_causes';
-      
+
       const nextLayer = analyzer.advanceToNextLayer(context);
       expect(nextLayer).toBeNull();
     });
@@ -144,14 +144,14 @@ describe('RootCauseAnalyzer', () => {
   describe('isReadyToAdvance', () => {
     it('should return false without recorded findings', () => {
       const context = analyzer.initializeAnalysis('Test problem');
-      
+
       const ready = analyzer.isReadyToAdvance(context);
       expect(ready).toBe(false);
     });
 
     it('should return true with sufficient confidence', () => {
       const context = analyzer.initializeAnalysis('Test problem');
-      
+
       analyzer.recordFindings(
         context,
         'surface_symptoms',
@@ -170,7 +170,7 @@ describe('RootCauseAnalyzer', () => {
   describe('generateResult', () => {
     it('should generate complete analysis result', () => {
       const context = analyzer.initializeAnalysis('I feel anxious about presentations');
-      
+
       analyzer.recordFindings(
         context,
         'surface_symptoms',
@@ -190,7 +190,7 @@ describe('RootCauseAnalyzer', () => {
 
     it('should include diagnosis for recorded layers', () => {
       const context = analyzer.initializeAnalysis('Test problem');
-      
+
       analyzer.recordFindings(
         context,
         'surface_symptoms',
@@ -201,8 +201,8 @@ describe('RootCauseAnalyzer', () => {
       );
 
       const result = analyzer.generateResult(context);
-      
-      const surfaceDiagnosis = result.diagnosis.find(d => d.layer === 'surface_symptoms');
+
+      const surfaceDiagnosis = result.diagnosis.find((d) => d.layer === 'surface_symptoms');
       expect(surfaceDiagnosis).toBeDefined();
     });
   });
@@ -238,7 +238,7 @@ describe('RootCauseAnalyzer', () => {
   describe('exportAnalysis', () => {
     it('should export analysis to JSON string', () => {
       const context = analyzer.initializeAnalysis('Test problem');
-      
+
       analyzer.recordFindings(
         context,
         'surface_symptoms',
@@ -249,9 +249,9 @@ describe('RootCauseAnalyzer', () => {
       );
 
       const exported = analyzer.exportAnalysis(context);
-      
+
       expect(typeof exported).toBe('string');
-      
+
       const parsed = JSON.parse(exported);
       expect(parsed.problem).toBe('Test problem');
       expect(parsed.layers).toBeDefined();
@@ -261,7 +261,7 @@ describe('RootCauseAnalyzer', () => {
   describe('importAnalysis', () => {
     it('should import analysis from JSON string', () => {
       const context = analyzer.initializeAnalysis('Original problem');
-      
+
       analyzer.recordFindings(
         context,
         'surface_symptoms',
@@ -287,7 +287,7 @@ describe('RootCauseAnalyzer', () => {
 
     it('should detect connections between related findings', () => {
       const context = analyzer.initializeAnalysis('I always procrastinate');
-      
+
       analyzer.recordFindings(
         context,
         'surface_symptoms',
@@ -296,7 +296,7 @@ describe('RootCauseAnalyzer', () => {
         ['What happens?'],
         ['I delay my work consistently']
       );
-      
+
       analyzer.recordFindings(
         context,
         'behavioral_patterns',
@@ -305,16 +305,23 @@ describe('RootCauseAnalyzer', () => {
         ['Why do you procrastinate?'],
         ['I delay my work consistently']
       );
-      
+
       const analysis = context.layers.get('behavioral_patterns');
       expect(analysis?.connections_to_other_layers.length).toBeGreaterThan(0);
     });
 
     it('should generate root causes from root_causes layer', () => {
       const context = analyzer.initializeAnalysis('Deep issue');
-      
-      analyzer.recordFindings(context, 'root_causes', ['Root cause 1', 'Root cause 2'], ['Evidence'], ['Q?'], ['Response']);
-      
+
+      analyzer.recordFindings(
+        context,
+        'root_causes',
+        ['Root cause 1', 'Root cause 2'],
+        ['Evidence'],
+        ['Q?'],
+        ['Response']
+      );
+
       const result = analyzer.generateResult(context);
       expect(result.root_causes).toContain('Root cause 1');
       expect(result.root_causes).toContain('Root cause 2');
@@ -322,21 +329,28 @@ describe('RootCauseAnalyzer', () => {
 
     it('should identify layers needing more attention', () => {
       const context = analyzer.initializeAnalysis('Complex issue');
-      
+
       // Low confidence finding
       analyzer.recordFindings(context, 'surface_symptoms', ['S1'], [], [], []);
-      
+
       const result = analyzer.generateResult(context);
       expect(result.recommended_focus.length).toBeGreaterThan(0);
     });
 
     it('should generate layer recommendations', () => {
       const context = analyzer.initializeAnalysis('Test problem');
-      
-      analyzer.recordFindings(context, 'surface_symptoms', ['Symptom'], ['Evidence'], ['Q?'], ['Response']);
-      
+
+      analyzer.recordFindings(
+        context,
+        'surface_symptoms',
+        ['Symptom'],
+        ['Evidence'],
+        ['Q?'],
+        ['Response']
+      );
+
       const result = analyzer.generateResult(context);
-      const surfaceDiagnosis = result.diagnosis.find(d => d.layer === 'surface_symptoms');
+      const surfaceDiagnosis = result.diagnosis.find((d) => d.layer === 'surface_symptoms');
       expect(surfaceDiagnosis?.recommended_actions?.length).toBeDefined();
     });
 
@@ -356,15 +370,17 @@ describe('RootCauseAnalyzer', () => {
     });
 
     it('should generate hypotheses for different layer combinations', () => {
-      const result = analyzer.quickAnalyze('I always procrastinate because I think I am not worth it and I feel anxious about my childhood experiences');
-      
+      const result = analyzer.quickAnalyze(
+        'I always procrastinate because I think I am not worth it and I feel anxious about my childhood experiences'
+      );
+
       expect(result.hypothesis.length).toBeGreaterThan(2);
     });
 
     it('should generate synthesis questions at deepest layer', () => {
       const context = analyzer.initializeAnalysis('Deep problem');
       context.current_layer = 'root_causes';
-      
+
       analyzer.recordFindings(
         context,
         'root_causes',
@@ -373,7 +389,7 @@ describe('RootCauseAnalyzer', () => {
         ['Question?'],
         ['This is a very detailed response that should count']
       );
-      
+
       // Generate next questions should return synthesis questions
       const result = analyzer.generateResult(context);
       expect(result.next_questions).toBeDefined();
@@ -382,7 +398,7 @@ describe('RootCauseAnalyzer', () => {
 
     it('should advance through all layers', () => {
       const context = analyzer.initializeAnalysis('Test problem');
-      
+
       const layers = [
         'surface_symptoms',
         'behavioral_patterns',
@@ -391,12 +407,12 @@ describe('RootCauseAnalyzer', () => {
         'core_beliefs',
         'root_causes',
       ];
-      
+
       for (const layer of layers.slice(0, -1)) {
         const nextLayer = analyzer.advanceToNextLayer(context);
         expect(nextLayer).not.toBeNull();
       }
-      
+
       // At root_causes, should return null
       context.current_layer = 'root_causes';
       const finalNext = analyzer.advanceToNextLayer(context);
@@ -405,7 +421,7 @@ describe('RootCauseAnalyzer', () => {
 
     it('should calculate confidence with detailed responses', () => {
       const context = analyzer.initializeAnalysis('Test problem');
-      
+
       analyzer.recordFindings(
         context,
         'surface_symptoms',
@@ -414,7 +430,7 @@ describe('RootCauseAnalyzer', () => {
         ['Question?'],
         ['This is a detailed response that exceeds twenty characters']
       );
-      
+
       const analysis = context.layers.get('surface_symptoms');
       expect(analysis?.confidence).toBeGreaterThan(0.5);
     });
@@ -422,9 +438,16 @@ describe('RootCauseAnalyzer', () => {
     it('should handle low confidence threshold', () => {
       const lowThresholdAnalyzer = new RootCauseAnalyzer(0.3);
       const context = lowThresholdAnalyzer.initializeAnalysis('Test problem');
-      
-      lowThresholdAnalyzer.recordFindings(context, 'surface_symptoms', ['F1'], ['E1'], ['Q?'], ['Response']);
-      
+
+      lowThresholdAnalyzer.recordFindings(
+        context,
+        'surface_symptoms',
+        ['F1'],
+        ['E1'],
+        ['Q?'],
+        ['Response']
+      );
+
       const ready = lowThresholdAnalyzer.isReadyToAdvance(context);
       expect(typeof ready).toBe('boolean');
     });
@@ -432,7 +455,7 @@ describe('RootCauseAnalyzer', () => {
     it('should handle high confidence threshold', () => {
       const highThresholdAnalyzer = new RootCauseAnalyzer(0.95);
       const context = highThresholdAnalyzer.initializeAnalysis('Test problem');
-      
+
       highThresholdAnalyzer.recordFindings(
         context,
         'surface_symptoms',
@@ -441,63 +464,77 @@ describe('RootCauseAnalyzer', () => {
         ['Q1', 'Q2'],
         ['Detailed response one', 'Detailed response two']
       );
-      
+
       const ready = highThresholdAnalyzer.isReadyToAdvance(context);
       expect(typeof ready).toBe('boolean');
     });
 
     it('should generate summary with multiple diagnosis layers', () => {
       const context = analyzer.initializeAnalysis('Complex issue');
-      
-      analyzer.recordFindings(context, 'surface_symptoms', ['Symptom 1'], ['Evidence'], ['Q1?'], ['Response']);
-      analyzer.recordFindings(context, 'behavioral_patterns', ['Pattern 1'], ['Evidence'], ['Q2?'], ['Response']);
-      
+
+      analyzer.recordFindings(
+        context,
+        'surface_symptoms',
+        ['Symptom 1'],
+        ['Evidence'],
+        ['Q1?'],
+        ['Response']
+      );
+      analyzer.recordFindings(
+        context,
+        'behavioral_patterns',
+        ['Pattern 1'],
+        ['Evidence'],
+        ['Q2?'],
+        ['Response']
+      );
+
       const result = analyzer.generateResult(context);
       expect(result.summary).toContain('Analysis Summary');
-        expect(result.summary).toContain('Pattern 1');
-      });
+      expect(result.summary).toContain('Pattern 1');
+    });
 
-      it('should skip already asked questions', () => {
-        const context = analyzer.initializeAnalysis('Test problem');
-        
-        // First call to get questions
-        const questions1 = analyzer.getProbingQuestions(context, 3);
-        expect(questions1.length).toBeGreaterThan(0);
-        
-        // Record findings with the questions
-        analyzer.recordFindings(
-          context,
-          'surface_symptoms',
-          ['Finding 1'],
-          ['Evidence'],
-          questions1,
-          ['Response 1', 'Response 2', 'Response 3']
-        );
-        
-        // Second call should skip already asked questions
-        const questions2 = analyzer.getProbingQuestions(context, 3);
-        expect(questions2).toBeDefined();
-      });
+    it('should skip already asked questions', () => {
+      const context = analyzer.initializeAnalysis('Test problem');
 
-      it('should get questions for next layer after advancing', () => {
-        const context = analyzer.initializeAnalysis('Test problem');
-        
-        analyzer.recordFindings(
-          context,
-          'surface_symptoms',
-          ['Finding 1', 'Finding 2', 'Finding 3'],
-          ['Evidence 1', 'Evidence 2'],
-          ['Question 1?', 'Question 2?'],
-          ['Detailed response']
-        );
-        
-        // Advance to next layer
-        const nextLayer = analyzer.advanceToNextLayer(context);
-        expect(nextLayer).toBe('behavioral_patterns');
-        
-        // Get questions for the new layer
-        const questions = analyzer.getProbingQuestions(context, 3);
-        expect(questions.length).toBeGreaterThan(0);
-      });
+      // First call to get questions
+      const questions1 = analyzer.getProbingQuestions(context, 3);
+      expect(questions1.length).toBeGreaterThan(0);
+
+      // Record findings with the questions
+      analyzer.recordFindings(
+        context,
+        'surface_symptoms',
+        ['Finding 1'],
+        ['Evidence'],
+        questions1,
+        ['Response 1', 'Response 2', 'Response 3']
+      );
+
+      // Second call should skip already asked questions
+      const questions2 = analyzer.getProbingQuestions(context, 3);
+      expect(questions2).toBeDefined();
+    });
+
+    it('should get questions for next layer after advancing', () => {
+      const context = analyzer.initializeAnalysis('Test problem');
+
+      analyzer.recordFindings(
+        context,
+        'surface_symptoms',
+        ['Finding 1', 'Finding 2', 'Finding 3'],
+        ['Evidence 1', 'Evidence 2'],
+        ['Question 1?', 'Question 2?'],
+        ['Detailed response']
+      );
+
+      // Advance to next layer
+      const nextLayer = analyzer.advanceToNextLayer(context);
+      expect(nextLayer).toBe('behavioral_patterns');
+
+      // Get questions for the new layer
+      const questions = analyzer.getProbingQuestions(context, 3);
+      expect(questions.length).toBeGreaterThan(0);
     });
   });
+});

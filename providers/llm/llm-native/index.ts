@@ -1,7 +1,7 @@
 /**
  * providers/llm/llm-native/index.ts
  * Native LLM Provider - Zero external dependency implementation
- * 
+ *
  * This provider serves as the fallback when no external LLM is available.
  * It provides basic text processing capabilities without requiring any API keys.
  */
@@ -46,7 +46,7 @@ const TEMPLATE_RESPONSES: Record<string, string> = {
 export function placeholder(): void {
   console.log('Native mode active. Configure an LLM provider for enhanced capabilities.');
 }`,
-  
+
   help: `I'm running in Native Mode with zero external dependencies.
 
 For enhanced AI capabilities, you can configure one of these providers:
@@ -67,21 +67,25 @@ Available providers in this ecosystem:
 - llm-ollama (native, local)
 - llm-openai (cloud)
 - llm-anthropic (cloud)
-- llm-gemini (cloud)`
+- llm-gemini (cloud)`,
 };
 
 // Rule-based response generator
 function generateRuleBasedResponse(prompt: string): string {
   const lowerPrompt = prompt.toLowerCase();
-  
-  if (lowerPrompt.includes('code') || lowerPrompt.includes('function') || lowerPrompt.includes('implement')) {
+
+  if (
+    lowerPrompt.includes('code') ||
+    lowerPrompt.includes('function') ||
+    lowerPrompt.includes('implement')
+  ) {
     return TEMPLATE_RESPONSES.code;
   }
-  
+
   if (lowerPrompt.includes('help') || lowerPrompt.includes('what can')) {
     return TEMPLATE_RESPONSES.help;
   }
-  
+
   return TEMPLATE_RESPONSES.default;
 }
 
@@ -90,26 +94,26 @@ function generateRuleBasedResponse(prompt: string): string {
  */
 export class NativeLLMProvider {
   private config: NativeLLMConfig;
-  
+
   constructor(config: NativeLLMConfig = {}) {
     this.config = {
       enabled: true,
       responseMode: 'rule-based',
       maxTokens: 2048,
-      ...config
+      ...config,
     };
   }
-  
+
   /**
    * Health check for the provider
    */
   async healthCheck(): Promise<{ healthy: boolean; message: string }> {
     return {
       healthy: true,
-      message: 'Native LLM Provider is operational (zero dependencies)'
+      message: 'Native LLM Provider is operational (zero dependencies)',
     };
   }
-  
+
   /**
    * Get provider metadata
    */
@@ -120,17 +124,17 @@ export class NativeLLMProvider {
       capabilities: ['text-generation', 'text-completion', 'code-assistance', 'summarization'],
       limitations: ['No advanced reasoning', 'Template-based responses only'],
       isNative: true,
-      requiresApiKey: false
+      requiresApiKey: false,
     };
   }
-  
+
   /**
    * Generate text completion
    */
   async generateCompletion(request: LLMRequest): Promise<LLMResponse> {
     const maxTokens = request.maxTokens || this.config.maxTokens || 2048;
     let text: string;
-    
+
     switch (this.config.responseMode) {
       case 'echo':
         text = request.prompt;
@@ -142,33 +146,33 @@ export class NativeLLMProvider {
       default:
         text = generateRuleBasedResponse(request.prompt);
     }
-    
+
     // Truncate if needed
     const truncatedText = text.slice(0, maxTokens * 4); // Rough char estimate
-    
+
     return {
       text: truncatedText,
       tokens: Math.ceil(truncatedText.length / 4),
       model: 'native-template-v1',
-      provider: 'llm-native'
+      provider: 'llm-native',
     };
   }
-  
+
   /**
    * Chat completion
    */
   async generateChatCompletion(request: ChatRequest): Promise<LLMResponse> {
     // Extract the last user message
-    const lastUserMessage = [...request.messages].reverse().find(m => m.role === 'user');
+    const lastUserMessage = [...request.messages].reverse().find((m) => m.role === 'user');
     const prompt = lastUserMessage?.content || '';
-    
+
     return this.generateCompletion({
       prompt,
       maxTokens: request.maxTokens,
-      temperature: request.temperature
+      temperature: request.temperature,
     });
   }
-  
+
   /**
    * Count tokens (approximate)
    */
@@ -202,5 +206,5 @@ export async function initialize(config: NativeLLMConfig = {}): Promise<NativeLL
 export default {
   initialize,
   getNativeLLMProvider,
-  NativeLLMProvider
+  NativeLLMProvider,
 };

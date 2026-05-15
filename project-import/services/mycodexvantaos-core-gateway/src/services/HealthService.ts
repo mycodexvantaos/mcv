@@ -1,7 +1,7 @@
-import type { Startable } from "../lifecycle";
+import type { Startable } from '../lifecycle';
 
 export interface HealthStatus {
-  status: "healthy" | "unhealthy";
+  status: 'healthy' | 'unhealthy';
   uptime: number;
   timestamp: string;
 }
@@ -19,9 +19,9 @@ export class HealthService implements Startable {
 
   check(): HealthStatus {
     return {
-      status: this.startTime > 0 ? "healthy" : "unhealthy",
+      status: this.startTime > 0 ? 'healthy' : 'unhealthy',
       uptime: this.startTime > 0 ? Date.now() - this.startTime : 0,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
   }
 }

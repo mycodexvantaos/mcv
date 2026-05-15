@@ -9,9 +9,11 @@ MyCodeXvantaOS provides a comprehensive API suite organized across six architect
 ## 🔌 Core API Layers
 
 ### Layer A: Builder APIs
+
 APIs for code generation and development automation.
 
 #### API Generator
+
 **Package:** `@mycodexvantaos/api-generator`
 
 ```typescript
@@ -35,17 +37,19 @@ class ApiGenerator {
 ```
 
 **Usage Example:**
+
 ```typescript
 const generator = new ApiGenerator({
   language: 'typescript',
   framework: 'express',
-  outputDir: './generated/api'
+  outputDir: './generated/api',
 });
 
 const apiCode = await generator.generate(config, apiSpec);
 ```
 
 #### Schema Generator
+
 **Package:** `@mycodexvantaos/schema-generator`
 
 ```typescript
@@ -62,6 +66,7 @@ class SchemaGenerator {
 ```
 
 #### Workflow Generator
+
 **Package:** `@mycodexvantaos/workflow-generator`
 
 ```typescript
@@ -79,9 +84,11 @@ class WorkflowGenerator {
 ```
 
 ### Layer B: Runtime APIs
+
 APIs for execution and runtime management.
 
 #### Execution Engine
+
 **Package:** `@mycodexvantaos/execution`
 
 ```typescript
@@ -100,6 +107,7 @@ class ExecutionEngine {
 ```
 
 #### Session Runtime
+
 **Package:** `@mycodexvantaos/session-runtime`
 
 ```typescript
@@ -118,9 +126,11 @@ class SessionRuntime {
 ```
 
 ### Layer C: Native Services APIs
+
 APIs for core system services.
 
 #### Cache Manager
+
 **Package:** `@mycodexvantaos/cache-manager`
 
 ```typescript
@@ -140,6 +150,7 @@ class CacheManager {
 ```
 
 #### Search Engine
+
 **Package:** `@mycodexvantaos/search-engine`
 
 ```typescript
@@ -159,6 +170,7 @@ class SearchEngine {
 ```
 
 #### Analytics Engine
+
 **Package:** `@mycodexvantaos/analytics`
 
 ```typescript
@@ -176,9 +188,11 @@ class Analytics {
 ```
 
 ### Layer D: Connector APIs
+
 APIs for external service integrations.
 
 #### GitHub Connector
+
 **Package:** `@mycodexvantaos/connector-github`
 
 ```typescript
@@ -198,6 +212,7 @@ class GitHubConnector {
 ```
 
 #### PostgreSQL Connector
+
 **Package:** `@mycodexvantaos/connector-postgresql`
 
 ```typescript
@@ -218,6 +233,7 @@ class PostgresConnector {
 ```
 
 #### Kafka Connector
+
 **Package:** `@mycodexvantaos/connector-kafka`
 
 ```typescript
@@ -236,9 +252,11 @@ class KafkaConnector {
 ```
 
 ### Layer E: Deployment APIs
+
 APIs for deployment and scaling.
 
 #### Auto Scaler
+
 **Package:** `@mycodexvantaos/auto-scaler`
 
 ```typescript
@@ -259,6 +277,7 @@ class AutoScaler {
 ```
 
 #### Load Balancer
+
 **Package:** `@mycodexvantaos/load-balancer`
 
 ```typescript
@@ -278,6 +297,7 @@ class LoadBalancer {
 ```
 
 #### SSL Manager
+
 **Package:** `@mycodexvantaos/ssl-manager`
 
 ```typescript
@@ -296,9 +316,11 @@ class SSLManager {
 ```
 
 ### Layer F: Governance APIs
+
 APIs for compliance and policy management.
 
 #### Audit Logger
+
 **Package:** `@mycodexvantaos/audit-logger`
 
 ```typescript
@@ -316,6 +338,7 @@ class AuditLogger {
 ```
 
 #### Compliance Checker
+
 **Package:** `@mycodexvantaos/compliance-checker`
 
 ```typescript
@@ -332,6 +355,7 @@ class ComplianceChecker {
 ```
 
 #### Policy Engine
+
 **Package:** `@mycodexvantaos/policy-engine`
 
 ```typescript
@@ -351,12 +375,14 @@ class PolicyEngine {
 ## 🌐 REST API Endpoints
 
 ### Base URL
+
 ```
 Production: https://api.mycodexvantaos.com/v1
 Development: http://localhost:3000/v1
 ```
 
 ### Authentication
+
 All API endpoints require authentication via Bearer token:
 
 ```http
@@ -366,6 +392,7 @@ Authorization: Bearer <your-api-token>
 ### Code Generation Endpoints
 
 #### Generate API Code
+
 ```http
 POST /api/generate
 Content-Type: application/json
@@ -377,7 +404,8 @@ Content-Type: application/json
 }
 ```
 
-#### Generate Schema  
+#### Generate Schema
+
 ```http
 POST /schema/generate
 Content-Type: application/json
@@ -391,6 +419,7 @@ Content-Type: application/json
 ### Execution Endpoints
 
 #### Execute Code
+
 ```http
 POST /execute
 Content-Type: application/json
@@ -403,6 +432,7 @@ Content-Type: application/json
 ```
 
 #### Get Execution Status
+
 ```http
 GET /execute/{executionId}
 ```
@@ -410,11 +440,13 @@ GET /execute/{executionId}
 ### Cache Endpoints
 
 #### Get Cached Value
+
 ```http
 GET /cache/{key}
 ```
 
 #### Set Cached Value
+
 ```http
 POST /cache
 Content-Type: application/json
@@ -429,6 +461,7 @@ Content-Type: application/json
 ### Analytics Endpoints
 
 #### Track Event
+
 ```http
 POST /analytics/track
 Content-Type: application/json
@@ -441,6 +474,7 @@ Content-Type: application/json
 ```
 
 #### Get Metrics
+
 ```http
 GET /analytics/metrics?from=2024-01-01&to=2024-01-31
 ```
@@ -448,6 +482,7 @@ GET /analytics/metrics?from=2024-01-01&to=2024-01-31
 ## 📊 Webhooks
 
 ### Event Types
+
 - `code.generated` - Code generation completed
 - `execution.completed` - Code execution finished
 - `deployment.succeeded` - Deployment successful
@@ -455,6 +490,7 @@ GET /analytics/metrics?from=2024-01-01&to=2024-01-31
 - `compliance.violation` - Compliance violation detected
 
 ### Webhook Configuration
+
 ```http
 POST /webhooks
 Content-Type: application/json
@@ -469,11 +505,13 @@ Content-Type: application/json
 ## 🔐 Rate Limiting
 
 API rate limits:
+
 - Free tier: 100 requests/minute
 - Pro tier: 1000 requests/minute
 - Enterprise: Unlimited
 
 Rate limit headers are included in responses:
+
 ```http
 X-RateLimit-Limit: 1000
 X-RateLimit-Remaining: 999
@@ -483,6 +521,7 @@ X-RateLimit-Reset: 1609459200
 ## 🚨 Error Handling
 
 ### Error Response Format
+
 ```json
 {
   "error": {
@@ -500,6 +539,7 @@ X-RateLimit-Reset: 1609459200
 ```
 
 ### Common Error Codes
+
 - `VALIDATION_ERROR` - Invalid request parameters
 - `AUTHENTICATION_ERROR` - Invalid or missing authentication
 - `AUTHORIZATION_ERROR` - Insufficient permissions
@@ -510,6 +550,7 @@ X-RateLimit-Reset: 1609459200
 ## 🧪 SDK Integration
 
 ### TypeScript/JavaScript SDK
+
 ```bash
 npm install @mycodexvantaos/sdk
 ```
@@ -519,24 +560,25 @@ import { MyCodeXvantaOS } from '@mycodexvantaos/sdk';
 
 const client = new MyCodeXvantaOS({
   apiKey: 'your-api-key',
-  environment: 'production'
+  environment: 'production',
 });
 
 // Generate code
 const code = await client.api.generate({
   type: 'api',
   language: 'typescript',
-  spec: apiSpec
+  spec: apiSpec,
 });
 
 // Execute code
 const result = await client.execution.run({
   code: 'console.log("Hello!")',
-  language: 'javascript'
+  language: 'javascript',
 });
 ```
 
 ### Python SDK
+
 ```bash
 pip install mycodexvantaos
 ```

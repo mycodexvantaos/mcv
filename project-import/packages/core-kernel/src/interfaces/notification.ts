@@ -1,11 +1,11 @@
 /**
  * CodexvantaOS — NotificationProvider
- * 
+ *
  * Abstract interface for notification delivery across channels.
  * Native mode: file-based logs, stdout, local webhook relay
  * External mode: Slack, Discord, Email (SendGrid/SES), SMS (Twilio),
  *                PagerDuty, Microsoft Teams, Telegram, etc.
- * 
+ *
  * Covers: multi-channel delivery, templating, scheduling,
  *         delivery tracking, preference management.
  */
@@ -13,9 +13,9 @@
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export type NotificationChannel =
-  | 'stdout'           // native: console output
-  | 'file'             // native: append to log file
-  | 'webhook'          // native/external: HTTP POST
+  | 'stdout' // native: console output
+  | 'file' // native: append to log file
+  | 'webhook' // native/external: HTTP POST
   | 'email'
   | 'slack'
   | 'discord'
@@ -77,7 +77,7 @@ export interface NotificationResult {
   sentAt?: number;
   deliveredAt?: number;
   failureReason?: string;
-  externalId?: string;       // provider's own message ID
+  externalId?: string; // provider's own message ID
 }
 
 export interface NotificationSendResult {
@@ -98,10 +98,10 @@ export interface NotificationTemplate {
   name: string;
   description?: string;
   channels: NotificationChannel[];
-  subjectTemplate: string;     // supports {{variable}} interpolation
+  subjectTemplate: string; // supports {{variable}} interpolation
   bodyTemplate: string;
   richBodyTemplate?: string;
-  variables: string[];          // expected variable names
+  variables: string[]; // expected variable names
   createdAt: number;
   updatedAt: number;
 }
@@ -115,7 +115,7 @@ export interface NotificationPreference {
   }[];
   quietHours?: {
     enabled: boolean;
-    startHour: number;   // 0-23
+    startHour: number; // 0-23
     endHour: number;
     timezone: string;
   };
@@ -158,11 +158,16 @@ export interface NotificationProvider {
   send(message: NotificationMessage): Promise<NotificationSendResult>;
 
   /** Send a notification using a template. */
-  sendTemplate(templateId: string, recipients: string[], variables: Record<string, unknown>, options?: {
-    channels?: NotificationChannel[];
-    priority?: NotificationPriority;
-    scheduledAt?: number;
-  }): Promise<NotificationSendResult>;
+  sendTemplate(
+    templateId: string,
+    recipients: string[],
+    variables: Record<string, unknown>,
+    options?: {
+      channels?: NotificationChannel[];
+      priority?: NotificationPriority;
+      scheduledAt?: number;
+    }
+  ): Promise<NotificationSendResult>;
 
   /** Send to multiple recipient groups in batch. */
   sendBatch?(messages: NotificationMessage[]): Promise<NotificationSendResult[]>;
@@ -184,7 +189,10 @@ export interface NotificationProvider {
   listChannels(): Promise<ChannelConfig[]>;
 
   /** Configure a notification channel. */
-  configureChannel?(channel: NotificationChannel, config: Record<string, unknown>): Promise<ChannelConfig>;
+  configureChannel?(
+    channel: NotificationChannel,
+    config: Record<string, unknown>
+  ): Promise<ChannelConfig>;
 
   /** Test a channel configuration by sending a test message. */
   testChannel?(channel: NotificationChannel): Promise<NotificationResult>;
@@ -198,7 +206,9 @@ export interface NotificationProvider {
   getTemplate?(templateId: string): Promise<NotificationTemplate | null>;
 
   /** Create or update a notification template. */
-  upsertTemplate?(template: Omit<NotificationTemplate, 'createdAt' | 'updatedAt'>): Promise<NotificationTemplate>;
+  upsertTemplate?(
+    template: Omit<NotificationTemplate, 'createdAt' | 'updatedAt'>
+  ): Promise<NotificationTemplate>;
 
   /** Delete a template. */
   deleteTemplate?(templateId: string): Promise<void>;

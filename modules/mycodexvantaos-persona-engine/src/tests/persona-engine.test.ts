@@ -1,14 +1,21 @@
 /**
  * Unit Tests for PersonaEngine
- * 
+ *
  * Tests the main persona engine integrating mask detection, analysis, and solution generation
  */
 
-import { PersonaEngine, PersonaEngineConfig, PersonaProcessingResult } from '../core/persona-engine';
+import {
+  PersonaEngine,
+  PersonaEngineConfig,
+  PersonaProcessingResult,
+} from '../core/persona-engine';
 import { PersonaProfile, PersonaArchetype, BehavioralParameters } from '../types';
 
 // Helper to create test persona profiles
-function createTestPersona(archetype: PersonaArchetype, params?: Partial<BehavioralParameters>): PersonaProfile {
+function createTestPersona(
+  archetype: PersonaArchetype,
+  params?: Partial<BehavioralParameters>
+): PersonaProfile {
   return {
     urn: `urn:mycodexvantaos:persona:${archetype}-test`,
     name: `${archetype} Test Persona`,
@@ -235,7 +242,9 @@ describe('PersonaEngine', () => {
     it('should throw error for non-existent session', () => {
       const persona = createTestPersona('architect');
       const engine = new PersonaEngine({ persona });
-      expect(() => engine.process('Test input', 'non-existent')).toThrow('Session non-existent not found');
+      expect(() => engine.process('Test input', 'non-existent')).toThrow(
+        'Session non-existent not found'
+      );
     });
 
     it('should record interaction in session history', () => {
@@ -337,7 +346,10 @@ describe('PersonaEngine', () => {
     });
 
     it('should handle high constructive orientation', () => {
-      const persona = createTestPersona('facilitator', { constructive_orientation: 0.9, critical_intensity: 0.3 });
+      const persona = createTestPersona('facilitator', {
+        constructive_orientation: 0.9,
+        critical_intensity: 0.3,
+      });
       const engine = new PersonaEngine({ persona });
       const result = engine.process('How can we improve this?');
       expect(result.response.style).toBe('constructive');
@@ -488,12 +500,12 @@ describe('PersonaEngine', () => {
       const persona = createTestPersona('mediator');
       const engine = new PersonaEngine({ persona });
       const sessionId = engine.createSession();
-      
+
       for (let i = 0; i < 5; i++) {
         const result = engine.process(`Input ${i}`, sessionId);
         expect(result).toBeDefined();
       }
-      
+
       const session = engine.getSession(sessionId);
       expect(session?.history.length).toBe(5);
     });
@@ -541,7 +553,9 @@ describe('PersonaEngine', () => {
       const persona = createTestPersona('analyst');
       const engine = new PersonaEngine({ persona });
       // Input that should trigger mask detection
-      const result = engine.process('I am totally fine and everything is perfect, no issues at all');
+      const result = engine.process(
+        'I am totally fine and everything is perfect, no issues at all'
+      );
       expect(result).toBeDefined();
     });
 
@@ -557,7 +571,9 @@ describe('PersonaEngine', () => {
     it('should generate diagnosis with high confidence findings', () => {
       const persona = createTestPersona('analyst', { analytical_depth: 0.9 });
       const engine = new PersonaEngine({ persona, minDiagnosisConfidence: 0.5 });
-      const result = engine.process('I have been feeling anxious about my work presentations for months');
+      const result = engine.process(
+        'I have been feeling anxious about my work presentations for months'
+      );
       expect(result).toBeDefined();
     });
 
@@ -565,12 +581,12 @@ describe('PersonaEngine', () => {
       const persona = createTestPersona('facilitator');
       const engine = new PersonaEngine({ persona });
       const sessionId = engine.createSession();
-      
+
       // Multiple interactions to build up analysis
       engine.process('I keep procrastinating on my tasks', sessionId);
       engine.process('I feel overwhelmed by the workload', sessionId);
       const result = engine.process('I think this started in my childhood', sessionId);
-      
+
       expect(result).toBeDefined();
     });
   });
@@ -579,7 +595,7 @@ describe('PersonaEngine', () => {
     it('should handle non-existent session gracefully', () => {
       const persona = createTestPersona('mentor');
       const engine = new PersonaEngine({ persona });
-      
+
       const session = engine.getSession('non-existent-session');
       expect(session).toBeUndefined();
     });
@@ -587,16 +603,16 @@ describe('PersonaEngine', () => {
     it('should handle multiple sessions independently', () => {
       const persona = createTestPersona('mentor');
       const engine = new PersonaEngine({ persona });
-      
+
       const id1 = engine.createSession();
       const id2 = engine.createSession();
-      
+
       engine.process('Session 1 input', id1);
       engine.process('Session 2 input', id2);
-      
+
       const session1 = engine.getSession(id1);
       const session2 = engine.getSession(id2);
-      
+
       expect(session1?.history.length).toBe(1);
       expect(session2?.history.length).toBe(1);
     });

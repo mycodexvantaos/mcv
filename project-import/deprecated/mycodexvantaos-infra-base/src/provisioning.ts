@@ -3,10 +3,16 @@
  * In-memory infrastructure resource provisioning
  */
 
-import type { ProvisionResult } from "./types";
+import type { ProvisionResult } from './types';
 
-export type ResourceType = "database" | "storage" | "queue" | "cache" | "compute" | "network";
-export type ResourceStatus = "provisioning" | "ready" | "degraded" | "destroying" | "destroyed" | "error";
+export type ResourceType = 'database' | 'storage' | 'queue' | 'cache' | 'compute' | 'network';
+export type ResourceStatus =
+  | 'provisioning'
+  | 'ready'
+  | 'degraded'
+  | 'destroying'
+  | 'destroyed'
+  | 'error';
 
 export interface Resource {
   id: string;
@@ -33,7 +39,7 @@ export class ProvisioningService {
       id,
       name: request.name,
       type: request.type,
-      status: "ready",
+      status: 'ready',
       config: request.config ?? {},
       endpoints,
       createdAt: Date.now(),
@@ -42,7 +48,7 @@ export class ProvisioningService {
     this.resources.set(id, resource);
     return {
       environmentId: id,
-      status: "ready",
+      status: 'ready',
       endpoints,
       createdAt: new Date(resource.createdAt),
     };
@@ -51,7 +57,7 @@ export class ProvisioningService {
   async destroy(resourceId: string): Promise<void> {
     const resource = this.resources.get(resourceId);
     if (!resource) throw new Error(`Resource not found: ${resourceId}`);
-    resource.status = "destroyed";
+    resource.status = 'destroyed';
     resource.updatedAt = Date.now();
   }
 
@@ -59,7 +65,10 @@ export class ProvisioningService {
     return this.resources.get(resourceId) ?? null;
   }
 
-  async listResources(filter?: { type?: ResourceType; status?: ResourceStatus }): Promise<Resource[]> {
+  async listResources(filter?: {
+    type?: ResourceType;
+    status?: ResourceStatus;
+  }): Promise<Resource[]> {
     let resources = Array.from(this.resources.values());
     if (filter?.type) resources = resources.filter((r) => r.type === filter.type);
     if (filter?.status) resources = resources.filter((r) => r.status === filter.status);
@@ -70,17 +79,21 @@ export class ProvisioningService {
     const all = Array.from(this.resources.values());
     return {
       total: all.length,
-      ready: all.filter((r) => r.status === "ready").length,
-      degraded: all.filter((r) => r.status === "degraded").length,
+      ready: all.filter((r) => r.status === 'ready').length,
+      degraded: all.filter((r) => r.status === 'degraded').length,
     };
   }
 
   private generateEndpoints(type: ResourceType): Record<string, string> {
     switch (type) {
-      case "database": return { primary: "sqlite:///data/platform.db" };
-      case "storage": return { local: "file:///data/storage" };
-      case "queue": return { internal: "memory://queue" };
-      default: return {};
+      case 'database':
+        return { primary: 'sqlite:///data/platform.db' };
+      case 'storage':
+        return { local: 'file:///data/storage' };
+      case 'queue':
+        return { internal: 'memory://queue' };
+      default:
+        return {};
     }
   }
 }

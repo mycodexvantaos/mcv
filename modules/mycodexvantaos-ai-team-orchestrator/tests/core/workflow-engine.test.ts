@@ -1,4 +1,10 @@
-import { WorkflowEngine, WorkflowState, WorkflowContext, NodeResult, WorkflowStatus } from '../../src/core/workflow-engine';
+import {
+  WorkflowEngine,
+  WorkflowState,
+  WorkflowContext,
+  NodeResult,
+  WorkflowStatus,
+} from '../../src/core/workflow-engine';
 import { MessageBus } from '../../src/core/message-bus';
 import type { TeamTopology, TeamURN, AgentURN, HITLConfig } from '../../src/types';
 
@@ -7,11 +13,14 @@ describe('WorkflowEngine', () => {
   let messageBus: MessageBus;
 
   // Helper function to create valid topology
-  const createTestTopology = (teamId: string, options?: {
-    workflowDefinition?: any;
-    hitlConfig?: HITLConfig;
-    topologyType?: 'sequential' | 'hierarchical' | 'broadcast' | 'mesh' | 'dag';
-  }): TeamTopology => ({
+  const createTestTopology = (
+    teamId: string,
+    options?: {
+      workflowDefinition?: any;
+      hitlConfig?: HITLConfig;
+      topologyType?: 'sequential' | 'hierarchical' | 'broadcast' | 'mesh' | 'dag';
+    }
+  ): TeamTopology => ({
     id: `urn:mycodexvantaos:team:${teamId}` as TeamURN,
     name: 'Test Team',
     version: '1.0.0',
@@ -20,11 +29,15 @@ describe('WorkflowEngine', () => {
     workflow_definition: options?.workflowDefinition ?? {
       type: 'dag',
       nodes: [
-        { id: 'node-1', agent_id: 'urn:mycodexvantaos:agent:test-agent' as AgentURN, action: 'process' }
+        {
+          id: 'node-1',
+          agent_id: 'urn:mycodexvantaos:agent:test-agent' as AgentURN,
+          action: 'process',
+        },
       ],
-      edges: []
+      edges: [],
     },
-    hitl_config: options?.hitlConfig
+    hitl_config: options?.hitlConfig,
   });
 
   // Helper to create multi-node workflow
@@ -38,16 +51,20 @@ describe('WorkflowEngine', () => {
       type: 'dag',
       nodes: [
         { id: 'node-1', agent_id: 'urn:mycodexvantaos:agent:agent-1' as AgentURN, action: 'start' },
-        { id: 'node-2', agent_id: 'urn:mycodexvantaos:agent:agent-2' as AgentURN, action: 'process' },
-        { id: 'node-3', agent_id: 'urn:mycodexvantaos:agent:agent-3' as AgentURN, action: 'end' }
+        {
+          id: 'node-2',
+          agent_id: 'urn:mycodexvantaos:agent:agent-2' as AgentURN,
+          action: 'process',
+        },
+        { id: 'node-3', agent_id: 'urn:mycodexvantaos:agent:agent-3' as AgentURN, action: 'end' },
       ],
       edges: [
         { from: 'node-1', to: 'node-2' },
-        { from: 'node-2', to: 'node-3' }
+        { from: 'node-2', to: 'node-3' },
       ],
       initial_state: 'node-1',
-      final_states: ['node-3']
-    }
+      final_states: ['node-3'],
+    },
   });
 
   beforeEach(() => {
@@ -84,11 +101,13 @@ describe('WorkflowEngine', () => {
         name: 'Test Team',
         version: '1.0.0',
         topology_type: 'sequential',
-        agents: []
+        agents: [],
         // No workflow_definition
       };
 
-      expect(() => workflowEngine.createWorkflow(topology)).toThrow('does not contain a workflow definition');
+      expect(() => workflowEngine.createWorkflow(topology)).toThrow(
+        'does not contain a workflow definition'
+      );
     });
 
     it('should throw when workflow has no nodes', () => {
@@ -96,8 +115,8 @@ describe('WorkflowEngine', () => {
         workflowDefinition: {
           type: 'dag',
           nodes: [],
-          edges: []
-        }
+          edges: [],
+        },
       });
 
       expect(() => workflowEngine.createWorkflow(topology)).toThrow('at least one node');
@@ -108,11 +127,19 @@ describe('WorkflowEngine', () => {
         workflowDefinition: {
           type: 'dag',
           nodes: [
-            { id: 'node-1', agent_id: 'urn:mycodexvantaos:agent:a1' as AgentURN, action: 'process' },
-            { id: 'node-1', agent_id: 'urn:mycodexvantaos:agent:a2' as AgentURN, action: 'process' }
+            {
+              id: 'node-1',
+              agent_id: 'urn:mycodexvantaos:agent:a1' as AgentURN,
+              action: 'process',
+            },
+            {
+              id: 'node-1',
+              agent_id: 'urn:mycodexvantaos:agent:a2' as AgentURN,
+              action: 'process',
+            },
           ],
-          edges: []
-        }
+          edges: [],
+        },
       });
 
       expect(() => workflowEngine.createWorkflow(topology)).toThrow('duplicate node IDs');
@@ -123,12 +150,14 @@ describe('WorkflowEngine', () => {
         workflowDefinition: {
           type: 'dag',
           nodes: [
-            { id: 'node-1', agent_id: 'urn:mycodexvantaos:agent:a1' as AgentURN, action: 'process' }
+            {
+              id: 'node-1',
+              agent_id: 'urn:mycodexvantaos:agent:a1' as AgentURN,
+              action: 'process',
+            },
           ],
-          edges: [
-            { from: 'non-existent', to: 'node-1' }
-          ]
-        }
+          edges: [{ from: 'non-existent', to: 'node-1' }],
+        },
       });
 
       expect(() => workflowEngine.createWorkflow(topology)).toThrow('non-existent source node');
@@ -139,12 +168,14 @@ describe('WorkflowEngine', () => {
         workflowDefinition: {
           type: 'dag',
           nodes: [
-            { id: 'node-1', agent_id: 'urn:mycodexvantaos:agent:a1' as AgentURN, action: 'process' }
+            {
+              id: 'node-1',
+              agent_id: 'urn:mycodexvantaos:agent:a1' as AgentURN,
+              action: 'process',
+            },
           ],
-          edges: [
-            { from: 'node-1', to: 'non-existent' }
-          ]
-        }
+          edges: [{ from: 'node-1', to: 'non-existent' }],
+        },
       });
 
       expect(() => workflowEngine.createWorkflow(topology)).toThrow('non-existent target node');
@@ -155,16 +186,28 @@ describe('WorkflowEngine', () => {
         workflowDefinition: {
           type: 'dag',
           nodes: [
-            { id: 'node-1', agent_id: 'urn:mycodexvantaos:agent:a1' as AgentURN, action: 'process' },
-            { id: 'node-2', agent_id: 'urn:mycodexvantaos:agent:a2' as AgentURN, action: 'process' },
-            { id: 'node-3', agent_id: 'urn:mycodexvantaos:agent:a3' as AgentURN, action: 'process' }
+            {
+              id: 'node-1',
+              agent_id: 'urn:mycodexvantaos:agent:a1' as AgentURN,
+              action: 'process',
+            },
+            {
+              id: 'node-2',
+              agent_id: 'urn:mycodexvantaos:agent:a2' as AgentURN,
+              action: 'process',
+            },
+            {
+              id: 'node-3',
+              agent_id: 'urn:mycodexvantaos:agent:a3' as AgentURN,
+              action: 'process',
+            },
           ],
           edges: [
             { from: 'node-1', to: 'node-2' },
             { from: 'node-2', to: 'node-3' },
-            { from: 'node-3', to: 'node-1' } // Creates a cycle
-          ]
-        }
+            { from: 'node-3', to: 'node-1' }, // Creates a cycle
+          ],
+        },
       });
 
       expect(() => workflowEngine.createWorkflow(topology)).toThrow('contains cycles');
@@ -183,9 +226,7 @@ describe('WorkflowEngine', () => {
     it('should create workflow with HITL config', () => {
       const hitlConfig: HITLConfig = {
         enabled: true,
-        checkpoints: [
-          { node_id: 'node-1', trigger_condition: 'always' as const }
-        ]
+        checkpoints: [{ node_id: 'node-1', trigger_condition: 'always' as const }],
       };
       const topology = createTestTopology('team-001', { hitlConfig });
 
@@ -208,8 +249,9 @@ describe('WorkflowEngine', () => {
     });
 
     it('should throw when starting non-existent workflow', async () => {
-      await expect(workflowEngine.startWorkflow('non-existent-id'))
-        .rejects.toThrow('Workflow not found');
+      await expect(workflowEngine.startWorkflow('non-existent-id')).rejects.toThrow(
+        'Workflow not found'
+      );
     });
 
     it('should throw when starting already running workflow', async () => {
@@ -218,8 +260,7 @@ describe('WorkflowEngine', () => {
 
       await workflowEngine.startWorkflow(workflowId);
 
-      await expect(workflowEngine.startWorkflow(workflowId))
-        .rejects.toThrow('cannot be started');
+      await expect(workflowEngine.startWorkflow(workflowId)).rejects.toThrow('cannot be started');
     });
 
     it('should cancel a pending workflow', () => {
@@ -250,7 +291,7 @@ describe('WorkflowEngine', () => {
       const topology = createTestTopology('team-001');
       const workflowId = workflowEngine.createWorkflow(topology);
       await workflowEngine.startWorkflow(workflowId);
-      
+
       // Manually set to completed
       const state = workflowEngine.getWorkflow(workflowId);
       if (state) {
@@ -390,9 +431,7 @@ describe('WorkflowEngine', () => {
     it('should pause workflow at HITL checkpoint', async () => {
       const hitlConfig: HITLConfig = {
         enabled: true,
-        checkpoints: [
-          { node_id: 'node-1', trigger_condition: 'always' as const }
-        ]
+        checkpoints: [{ node_id: 'node-1', trigger_condition: 'always' as const }],
       };
       const topology = createTestTopology('team-001', { hitlConfig });
       const workflowId = workflowEngine.createWorkflow(topology);
@@ -406,9 +445,7 @@ describe('WorkflowEngine', () => {
     it('should approve HITL checkpoint', async () => {
       const hitlConfig: HITLConfig = {
         enabled: true,
-        checkpoints: [
-          { node_id: 'node-1', trigger_condition: 'always' as const }
-        ]
+        checkpoints: [{ node_id: 'node-1', trigger_condition: 'always' as const }],
       };
       // Use multi-node topology so workflow continues after approval
       const topology = createTestTopology('team-001', {
@@ -416,20 +453,31 @@ describe('WorkflowEngine', () => {
         workflowDefinition: {
           type: 'dag',
           nodes: [
-            { id: 'node-1', agent_id: 'urn:mycodexvantaos:agent:a1' as AgentURN, action: 'start', on_success: 'node-2' },
-            { id: 'node-2', agent_id: 'urn:mycodexvantaos:agent:a2' as AgentURN, action: 'process' }
+            {
+              id: 'node-1',
+              agent_id: 'urn:mycodexvantaos:agent:a1' as AgentURN,
+              action: 'start',
+              on_success: 'node-2',
+            },
+            {
+              id: 'node-2',
+              agent_id: 'urn:mycodexvantaos:agent:a2' as AgentURN,
+              action: 'process',
+            },
           ],
-          edges: [
-            { from: 'node-1', to: 'node-2' }
-          ]
-        }
+          edges: [{ from: 'node-1', to: 'node-2' }],
+        },
       });
       const workflowId = workflowEngine.createWorkflow(topology);
 
       await workflowEngine.startWorkflow(workflowId);
 
       // Approve the checkpoint
-      workflowEngine.approveHITLCheckpoint(workflowId, 'node-1', 'urn:mycodexvantaos:user:admin' as any);
+      workflowEngine.approveHITLCheckpoint(
+        workflowId,
+        'node-1',
+        'urn:mycodexvantaos:user:admin' as any
+      );
 
       const state = workflowEngine.getWorkflow(workflowId);
       // After approval, workflow continues to next node (running) or completes
@@ -439,9 +487,7 @@ describe('WorkflowEngine', () => {
     it('should reject HITL checkpoint', async () => {
       const hitlConfig: HITLConfig = {
         enabled: true,
-        checkpoints: [
-          { node_id: 'node-1', trigger_condition: 'always' as const }
-        ]
+        checkpoints: [{ node_id: 'node-1', trigger_condition: 'always' as const }],
       };
       const topology = createTestTopology('team-001', { hitlConfig });
       const workflowId = workflowEngine.createWorkflow(topology);
@@ -460,17 +506,24 @@ describe('WorkflowEngine', () => {
         workflowDefinition: {
           type: 'dag',
           nodes: [
-            { id: 'node-1', agent_id: 'urn:mycodexvantaos:agent:a1' as AgentURN, action: 'start', on_failure: 'node-2' },
-            { id: 'node-2', agent_id: 'urn:mycodexvantaos:agent:a2' as AgentURN, action: 'fallback' }
+            {
+              id: 'node-1',
+              agent_id: 'urn:mycodexvantaos:agent:a1' as AgentURN,
+              action: 'start',
+              on_failure: 'node-2',
+            },
+            {
+              id: 'node-2',
+              agent_id: 'urn:mycodexvantaos:agent:a2' as AgentURN,
+              action: 'fallback',
+            },
           ],
-          edges: []
+          edges: [],
         },
         hitlConfig: {
           enabled: true,
-          checkpoints: [
-            { node_id: 'node-1', trigger_condition: 'always' as const }
-          ]
-        }
+          checkpoints: [{ node_id: 'node-1', trigger_condition: 'always' as const }],
+        },
       });
       const workflowId = workflowEngine.createWorkflow(topology);
 
@@ -591,32 +644,31 @@ describe('WorkflowEngine', () => {
         defaultNodeTimeoutMs: 30000,
         hitlDefaultTimeoutSeconds: 600,
         enableAutoRetry: false,
-        maxRetries: 5
+        maxRetries: 5,
       });
 
       expect(customEngine).toBeDefined();
     });
-  
 
-      it('should handle multiple concurrent workflows', () => {
-        const topology1 = createTestTopology('team-001');
-        const topology2 = createTestTopology('team-002');
-        
-        const workflowId1 = workflowEngine.createWorkflow(topology1);
-        const workflowId2 = workflowEngine.createWorkflow(topology2);
-        
-        expect(workflowId1).toBeDefined();
-        expect(workflowId2).toBeDefined();
-        expect(workflowEngine.getWorkflowIds()).toHaveLength(2);
-      });
+    it('should handle multiple concurrent workflows', () => {
+      const topology1 = createTestTopology('team-001');
+      const topology2 = createTestTopology('team-002');
 
-      it('should handle workflow with empty variables', async () => {
-        const topology = createTestTopology('team-001');
-        const workflowId = workflowEngine.createWorkflow(topology);
-        await workflowEngine.startWorkflow(workflowId);
-        
-        const state = workflowEngine.getWorkflow(workflowId);
-        expect(state).toBeDefined();
-      });
+      const workflowId1 = workflowEngine.createWorkflow(topology1);
+      const workflowId2 = workflowEngine.createWorkflow(topology2);
+
+      expect(workflowId1).toBeDefined();
+      expect(workflowId2).toBeDefined();
+      expect(workflowEngine.getWorkflowIds()).toHaveLength(2);
+    });
+
+    it('should handle workflow with empty variables', async () => {
+      const topology = createTestTopology('team-001');
+      const workflowId = workflowEngine.createWorkflow(topology);
+      await workflowEngine.startWorkflow(workflowId);
+
+      const state = workflowEngine.getWorkflow(workflowId);
+      expect(state).toBeDefined();
     });
   });
+});

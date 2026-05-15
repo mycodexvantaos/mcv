@@ -27,5 +27,5 @@ jobs:
         uses: slsa-framework/slsa-github-generator@v1.9.0
         with:
           base64-subject: $(base64 -w0 artifacts/my-app-api/my-app-api) # Example artifact
-          provenance-name: "my-app-api.provenance"
+          provenance-name: 'my-app-api.provenance'
           upload-assets: true

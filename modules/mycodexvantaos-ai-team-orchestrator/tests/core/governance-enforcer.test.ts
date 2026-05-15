@@ -1,9 +1,9 @@
-import { 
-  GovernanceEnforcer, 
-  GovernanceRule, 
-  GovernanceDecision, 
+import {
+  GovernanceEnforcer,
+  GovernanceRule,
+  GovernanceDecision,
   PermissionCheck,
-  PermissionType 
+  PermissionType,
 } from '../../src/core/governance-enforcer';
 import type { AgentURN, GovernanceTier } from '../../src/types';
 
@@ -12,7 +12,7 @@ describe('GovernanceEnforcer', () => {
 
   beforeEach(() => {
     governanceEnforcer = new GovernanceEnforcer();
-    
+
     // Register agent tiers
     governanceEnforcer.registerAgentTier('urn:mycodexvantaos:agent:admin-01' as AgentURN, 3);
     governanceEnforcer.registerAgentTier('urn:mycodexvantaos:agent:architect-01' as AgentURN, 2);
@@ -50,14 +50,14 @@ describe('GovernanceEnforcer', () => {
         permission: 'task:create',
         minTier: 0,
         requiresApproval: false,
-        approverTiers: []
+        approverTiers: [],
       };
       governanceEnforcer.addRule(rule);
 
       const check: PermissionCheck = {
         agent_urn: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN,
         resource: 'task',
-        action: 'create'
+        action: 'create',
       };
 
       const decision = governanceEnforcer.checkPermission(check);
@@ -69,7 +69,7 @@ describe('GovernanceEnforcer', () => {
       const check: PermissionCheck = {
         agent_urn: 'urn:mycodexvantaos:agent:intern-01' as AgentURN,
         resource: 'task',
-        action: 'delegate'
+        action: 'delegate',
       };
 
       const decision = governanceEnforcer.checkPermission(check);
@@ -82,7 +82,7 @@ describe('GovernanceEnforcer', () => {
       const check: PermissionCheck = {
         agent_urn: 'urn:mycodexvantaos:agent:restricted-01' as AgentURN,
         resource: 'sensitive_data',
-        action: 'view'
+        action: 'view',
       };
 
       const decision = governanceEnforcer.checkPermission(check);
@@ -94,7 +94,7 @@ describe('GovernanceEnforcer', () => {
       const check: PermissionCheck = {
         agent_urn: 'urn:mycodexvantaos:agent:admin-01' as AgentURN,
         resource: 'any_resource',
-        action: 'any_action'
+        action: 'any_action',
       };
 
       const decision = governanceEnforcer.checkPermission(check);
@@ -108,7 +108,7 @@ describe('GovernanceEnforcer', () => {
       const check: PermissionCheck = {
         agent_urn: 'urn:mycodexvantaos:agent:architect-01' as AgentURN,
         resource: 'team',
-        action: 'create'
+        action: 'create',
       };
 
       const decision = governanceEnforcer.checkPermission(check);
@@ -120,7 +120,7 @@ describe('GovernanceEnforcer', () => {
         'team:create' as PermissionType,
         'urn:mycodexvantaos:agent:architect-01' as AgentURN
       );
-      
+
       expect(requestId).toBeDefined();
       expect(requestId).toMatch(/^approval-/);
 
@@ -185,7 +185,7 @@ describe('GovernanceEnforcer', () => {
         description: 'A test policy',
         rules: [],
         effective_from: new Date().toISOString(),
-        status: 'active' as const
+        status: 'active' as const,
       };
 
       governanceEnforcer.addPolicy(policy);
@@ -200,7 +200,7 @@ describe('GovernanceEnforcer', () => {
         description: 'A test policy',
         rules: [],
         effective_from: new Date().toISOString(),
-        status: 'active' as const
+        status: 'active' as const,
       };
 
       governanceEnforcer.addPolicy(policy);
@@ -216,7 +216,7 @@ describe('GovernanceEnforcer', () => {
         permission: 'custom:action' as PermissionType,
         minTier: 1,
         requiresApproval: false,
-        approverTiers: []
+        approverTiers: [],
       };
 
       const result = governanceEnforcer.addRule(rule);
@@ -229,7 +229,7 @@ describe('GovernanceEnforcer', () => {
         permission: 'resource:access',
         minTier: 1,
         requiresApproval: false,
-        approverTiers: []
+        approverTiers: [],
       };
 
       governanceEnforcer.addRule(rule);
@@ -242,7 +242,7 @@ describe('GovernanceEnforcer', () => {
         permission: 'resource:access',
         minTier: 1,
         requiresApproval: false,
-        approverTiers: []
+        approverTiers: [],
       };
 
       governanceEnforcer.addRule(rule);
@@ -251,7 +251,7 @@ describe('GovernanceEnforcer', () => {
         permission: 'resource:access',
         minTier: 2,
         requiresApproval: true,
-        approverTiers: [3]
+        approverTiers: [3],
       };
 
       const result = governanceEnforcer.updateRule('resource:access', updatedRule);
@@ -263,7 +263,7 @@ describe('GovernanceEnforcer', () => {
         permission: 'resource:access',
         minTier: 1,
         requiresApproval: false,
-        approverTiers: []
+        approverTiers: [],
       };
 
       governanceEnforcer.addRule(rule);
@@ -281,9 +281,21 @@ describe('GovernanceEnforcer', () => {
   describe('Batch Permission Checks', () => {
     it('should process multiple permission checks in batch', () => {
       const checks: PermissionCheck[] = [
-        { agent_urn: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, resource: 'task', action: 'create' },
-        { agent_urn: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, resource: 'task', action: 'delegate' },
-        { agent_urn: 'urn:mycodexvantaos:agent:restricted-01' as AgentURN, resource: 'task', action: 'create' }
+        {
+          agent_urn: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN,
+          resource: 'task',
+          action: 'create',
+        },
+        {
+          agent_urn: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN,
+          resource: 'task',
+          action: 'delegate',
+        },
+        {
+          agent_urn: 'urn:mycodexvantaos:agent:restricted-01' as AgentURN,
+          resource: 'task',
+          action: 'create',
+        },
       ];
 
       const decisions = governanceEnforcer.batchCheckPermissions(checks);
@@ -296,9 +308,21 @@ describe('GovernanceEnforcer', () => {
 
     it('should provide summary of batch check results', () => {
       const checks: PermissionCheck[] = [
-        { agent_urn: 'urn:mycodexvantaos:agent:intern-01' as AgentURN, resource: 'task', action: 'create' },
-        { agent_urn: 'urn:mycodexvantaos:agent:intern-01' as AgentURN, resource: 'task', action: 'delegate' },
-        { agent_urn: 'urn:mycodexvantaos:agent:restricted-01' as AgentURN, resource: 'task', action: 'create' }
+        {
+          agent_urn: 'urn:mycodexvantaos:agent:intern-01' as AgentURN,
+          resource: 'task',
+          action: 'create',
+        },
+        {
+          agent_urn: 'urn:mycodexvantaos:agent:intern-01' as AgentURN,
+          resource: 'task',
+          action: 'delegate',
+        },
+        {
+          agent_urn: 'urn:mycodexvantaos:agent:restricted-01' as AgentURN,
+          resource: 'task',
+          action: 'create',
+        },
       ];
 
       const summary = governanceEnforcer.batchCheckSummary(checks);
@@ -315,7 +339,7 @@ describe('GovernanceEnforcer', () => {
       const check: PermissionCheck = {
         agent_urn: 'urn:mycodexvantaos:agent:unknown' as AgentURN,
         resource: 'any_resource',
-        action: 'any_action'
+        action: 'any_action',
       };
 
       const decision = governanceEnforcer.checkPermission(check);
@@ -327,7 +351,7 @@ describe('GovernanceEnforcer', () => {
       const check: PermissionCheck = {
         agent_urn: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN,
         resource: '',
-        action: ''
+        action: '',
       };
 
       const decision = governanceEnforcer.checkPermission(check);
@@ -394,9 +418,9 @@ describe('GovernanceEnforcer', () => {
         'team:create' as PermissionType,
         'urn:mycodexvantaos:agent:architect-01' as AgentURN
       );
-      
+
       governanceEnforcer.approveRequest(requestId, 3);
-      
+
       expect(() => {
         governanceEnforcer.approveRequest(requestId, 3);
       }).toThrow('Approval request is not pending');
@@ -407,9 +431,9 @@ describe('GovernanceEnforcer', () => {
         'team:create' as PermissionType,
         'urn:mycodexvantaos:agent:architect-01' as AgentURN
       );
-      
+
       governanceEnforcer.rejectRequest(requestId, 3);
-      
+
       expect(() => {
         governanceEnforcer.rejectRequest(requestId, 3);
       }).toThrow('Approval request is not pending');
@@ -426,7 +450,7 @@ describe('GovernanceEnforcer', () => {
         'team:create' as PermissionType,
         'urn:mycodexvantaos:agent:architect-01' as AgentURN
       );
-      
+
       // tier 0 is not in approverTiers [2, 3] for team:create
       expect(() => {
         governanceEnforcer.approveRequest(requestId, 0);
@@ -438,20 +462,22 @@ describe('GovernanceEnforcer', () => {
     it('should add policy with effective_until date', () => {
       const futureDate = new Date();
       futureDate.setDate(futureDate.getDate() + 1);
-      
+
       const policy = {
         id: 'test-policy-with-end',
         name: 'Test Policy With End',
         description: 'A test policy with end date',
-        rules: [{
-          permission: 'task:create' as PermissionType,
-          minTier: 2 as GovernanceTier,
-          requiresApproval: true,
-          approverTiers: [3] as GovernanceTier[]
-        }],
+        rules: [
+          {
+            permission: 'task:create' as PermissionType,
+            minTier: 2 as GovernanceTier,
+            requiresApproval: true,
+            approverTiers: [3] as GovernanceTier[],
+          },
+        ],
         effective_from: new Date().toISOString(),
         effective_until: futureDate.toISOString(),
-        status: 'active' as const
+        status: 'active' as const,
       };
 
       governanceEnforcer.addPolicy(policy);
@@ -462,20 +488,22 @@ describe('GovernanceEnforcer', () => {
     it('should add policy with past effective_until date (not active)', () => {
       const pastDate = new Date();
       pastDate.setDate(pastDate.getDate() - 1);
-      
+
       const policy = {
         id: 'test-policy-past',
         name: 'Test Policy Past',
         description: 'A test policy with past end date',
-        rules: [{
-          permission: 'task:create' as PermissionType,
-          minTier: 2 as GovernanceTier,
-          requiresApproval: true,
-          approverTiers: [3] as GovernanceTier[]
-        }],
+        rules: [
+          {
+            permission: 'task:create' as PermissionType,
+            minTier: 2 as GovernanceTier,
+            requiresApproval: true,
+            approverTiers: [3] as GovernanceTier[],
+          },
+        ],
         effective_from: new Date(Date.now() - 86400000 * 2).toISOString(),
         effective_until: pastDate.toISOString(),
-        status: 'active' as const
+        status: 'active' as const,
       };
 
       governanceEnforcer.addPolicy(policy);
@@ -491,7 +519,7 @@ describe('GovernanceEnforcer', () => {
         description: 'A draft policy',
         rules: [],
         effective_from: new Date().toISOString(),
-        status: 'draft' as const
+        status: 'draft' as const,
       };
 
       governanceEnforcer.addPolicy(policy);
@@ -502,19 +530,21 @@ describe('GovernanceEnforcer', () => {
     it('should add policy with future effective_from date (not active)', () => {
       const futureDate = new Date();
       futureDate.setDate(futureDate.getDate() + 1);
-      
+
       const policy = {
         id: 'test-future-policy',
         name: 'Future Policy',
         description: 'A policy with future start date',
-        rules: [{
-          permission: 'task:create' as PermissionType,
-          minTier: 3 as GovernanceTier,
-          requiresApproval: true,
-          approverTiers: [3] as GovernanceTier[]
-        }],
+        rules: [
+          {
+            permission: 'task:create' as PermissionType,
+            minTier: 3 as GovernanceTier,
+            requiresApproval: true,
+            approverTiers: [3] as GovernanceTier[],
+          },
+        ],
         effective_from: futureDate.toISOString(),
-        status: 'active' as const
+        status: 'active' as const,
       };
 
       governanceEnforcer.addPolicy(policy);
@@ -529,7 +559,7 @@ describe('GovernanceEnforcer', () => {
         permission: 'nonexistent:action' as PermissionType,
         minTier: 1,
         requiresApproval: false,
-        approverTiers: []
+        approverTiers: [],
       };
 
       const result = governanceEnforcer.updateRule('nonexistent:action', rule);
@@ -542,7 +572,7 @@ describe('GovernanceEnforcer', () => {
         minTier: 1,
         requiresApproval: false,
         approverTiers: [],
-        constraints: { task: { maxCount: 5 } }
+        constraints: { task: { maxCount: 5 } },
       };
 
       governanceEnforcer.addRule(rule);
@@ -556,7 +586,7 @@ describe('GovernanceEnforcer', () => {
         minTier: 1,
         requiresApproval: false,
         approverTiers: [],
-        constraints: { otherResource: { maxCount: 5 } }
+        constraints: { otherResource: { maxCount: 5 } },
       };
 
       governanceEnforcer.addRule(rule);
@@ -571,7 +601,7 @@ describe('GovernanceEnforcer', () => {
       const check: PermissionCheck = {
         agent_urn: 'urn:mycodexvantaos:agent:restricted-01' as AgentURN,
         resource: 'any_resource',
-        action: 'any_action'
+        action: 'any_action',
       };
 
       const decision = governanceEnforcer.checkPermission(check);
@@ -579,14 +609,13 @@ describe('GovernanceEnforcer', () => {
       expect(decision.tier).toBe(-1);
     });
 
-
     describe('Expired Approval Request Handling', () => {
       it('should throw error when approving an expired request', () => {
         const rule: GovernanceRule = {
           permission: 'task:delete' as PermissionType,
           minTier: 1 as GovernanceTier,
           requiresApproval: true,
-          approverTiers: [2 as GovernanceTier, 3 as GovernanceTier]
+          approverTiers: [2 as GovernanceTier, 3 as GovernanceTier],
         };
         governanceEnforcer.addRule(rule);
 
@@ -604,7 +633,7 @@ describe('GovernanceEnforcer', () => {
           permission: 'task:archive' as PermissionType,
           minTier: 1 as GovernanceTier,
           requiresApproval: true,
-          approverTiers: [3 as GovernanceTier]
+          approverTiers: [3 as GovernanceTier],
         };
         governanceEnforcer.addRule(rule);
 
@@ -619,4 +648,4 @@ describe('GovernanceEnforcer', () => {
       });
     });
   });
-  });
+});

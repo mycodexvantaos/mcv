@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/vector-store/pgvector/config.schema.json",
   "title": "vector-store-pgvector Configuration",
   "type": "object",
-  "required": [
-    "connectionUrl"
-  ],
+  "required": ["connectionUrl"],
   "properties": {
     "connectionUrl": {
       "type": "string",
@@ -17,10 +15,7 @@
     },
     "defaultIndexType": {
       "type": "string",
-      "enum": [
-        "hnsw",
-        "ivfflat"
-      ],
+      "enum": ["hnsw", "ivfflat"],
       "default": "hnsw"
     },
     "efConstruction": {

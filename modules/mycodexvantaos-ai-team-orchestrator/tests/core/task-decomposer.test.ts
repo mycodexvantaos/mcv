@@ -3,7 +3,11 @@
  * @module @mycodexvantaos/ai-team-orchestrator/tests
  */
 
-import { TaskDecomposer, DecompositionStrategy, DecompositionResult } from '../../src/core/task-decomposer';
+import {
+  TaskDecomposer,
+  DecompositionStrategy,
+  DecompositionResult,
+} from '../../src/core/task-decomposer';
 import { MessageBus } from '../../src/core/message-bus';
 import type { AgentTask, TaskURN } from '../../src/types';
 
@@ -248,44 +252,44 @@ describe('TaskDecomposer', () => {
       const result = taskDecomposer.decompose(task);
       expect(result).toBeDefined();
     });
-  
 
-      it('should handle bug task type', () => {
-        const task: AgentTask = {
-          id: 'urn:mycodexvantaos:task:bug-task' as TaskURN,
-          objective: 'Fix critical bug in authentication',
-          status: 'pending',
-          priority: 'high',
-          created_at: new Date().toISOString(),
-        };
+    it('should handle bug task type', () => {
+      const task: AgentTask = {
+        id: 'urn:mycodexvantaos:task:bug-task' as TaskURN,
+        objective: 'Fix critical bug in authentication',
+        status: 'pending',
+        priority: 'high',
+        created_at: new Date().toISOString(),
+      };
 
-        const result = taskDecomposer.decompose(task);
-        expect(result).toBeDefined();
-      });
+      const result = taskDecomposer.decompose(task);
+      expect(result).toBeDefined();
+    });
 
-      it('should handle security task type', () => {
-        const task: AgentTask = {
-          id: 'urn:mycodexvantaos:task:security-task' as TaskURN,
-          objective: 'Address security vulnerability',
-          status: 'pending',
-          priority: 'critical',
-          created_at: new Date().toISOString(),
-        };
+    it('should handle security task type', () => {
+      const task: AgentTask = {
+        id: 'urn:mycodexvantaos:task:security-task' as TaskURN,
+        objective: 'Address security vulnerability',
+        status: 'pending',
+        priority: 'critical',
+        created_at: new Date().toISOString(),
+      };
 
-        const result = taskDecomposer.decompose(task);
-        expect(result).toBeDefined();
-      });
+      const result = taskDecomposer.decompose(task);
+      expect(result).toBeDefined();
+    });
 
-      it('should handle deployment task type', () => {
-        const task: AgentTask = {
-          id: 'urn:mycodexvantaos:task:deploy-task' as TaskURN,
-          objective: 'Deploy to production',
-          status: 'pending',
-          priority: 'normal',
-          created_at: new Date().toISOString(),
-        };
+    it('should handle deployment task type', () => {
+      const task: AgentTask = {
+        id: 'urn:mycodexvantaos:task:deploy-task' as TaskURN,
+        objective: 'Deploy to production',
+        status: 'pending',
+        priority: 'normal',
+        created_at: new Date().toISOString(),
+      };
 
-        const result = taskDecomposer.decompose(task);
-        expect(result).toBeDefined();
-      });});
+      const result = taskDecomposer.decompose(task);
+      expect(result).toBeDefined();
+    });
+  });
 });

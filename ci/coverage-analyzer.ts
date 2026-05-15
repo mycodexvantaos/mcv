@@ -93,31 +93,52 @@ class CoverageAnalyzer {
         total: 0,
         covered: 0,
         percentage: 0,
-        details
+        details,
       });
       return;
     }
 
     const expectedPackages = [
-      'ai-agent', 'ai-embedding', 'ai-llm', 'ai-memory',
-      'builder', 'runtime', 'deployment', 'config-sync',
-      'core-auth', 'core-config', 'core-gateway', 'core-kernel',
-      'database', 'data-graph', 'data-pipeline', 'data-vector-store',
-      'events', 'monitoring', 'platform-notification', 'platform-observability', 
-      'platform-scheduler', 'security-secrets', 'security-validation',
-      'service-discovery', 'storage', 'providers', 'governance-policy'
+      'ai-agent',
+      'ai-embedding',
+      'ai-llm',
+      'ai-memory',
+      'builder',
+      'runtime',
+      'deployment',
+      'config-sync',
+      'core-auth',
+      'core-config',
+      'core-gateway',
+      'core-kernel',
+      'database',
+      'data-graph',
+      'data-pipeline',
+      'data-vector-store',
+      'events',
+      'monitoring',
+      'platform-notification',
+      'platform-observability',
+      'platform-scheduler',
+      'security-secrets',
+      'security-validation',
+      'service-discovery',
+      'storage',
+      'providers',
+      'governance-policy',
     ];
 
-    const existingDirs = fs.readdirSync(packagesPath, { withFileTypes: true })
-      .filter(dirent => dirent.isDirectory())
-      .map(dirent => dirent.name);
+    const existingDirs = fs
+      .readdirSync(packagesPath, { withFileTypes: true })
+      .filter((dirent) => dirent.isDirectory())
+      .map((dirent) => dirent.name);
 
     let covered = 0;
 
     for (const expected of expectedPackages) {
-      const exists = existingDirs.some(dir => dir.includes(expected));
+      const exists = existingDirs.some((dir) => dir.includes(expected));
       const packagePath = path.join(packagesPath, expected);
-      
+
       let issues: string[] = [];
       let coveragePercent = 0;
 
@@ -150,7 +171,7 @@ class CoverageAnalyzer {
         path: `packages/${expected}`,
         covered: exists && issues.length === 0,
         coveragePercent: exists ? coveragePercent : 0,
-        issues: issues.length > 0 ? issues : undefined
+        issues: issues.length > 0 ? issues : undefined,
       });
     }
 
@@ -160,7 +181,7 @@ class CoverageAnalyzer {
       total,
       covered,
       percentage: Math.round((covered / total) * 100),
-      details
+      details,
     });
 
     console.log(`  📦 套件覆蓋率: ${covered}/${total} (${Math.round((covered / total) * 100)}%)`);
@@ -200,13 +221,14 @@ class CoverageAnalyzer {
       'mycodexvantaos-builder',
       'mycodexvantaos-runtime',
       'mycodexvantaos-deployment',
-      'mycodexvantaos-discovery'
+      'mycodexvantaos-discovery',
     ];
 
-    const existingServices = fs.existsSync(servicesPath) 
-      ? fs.readdirSync(servicesPath, { withFileTypes: true })
-          .filter(dirent => dirent.isDirectory())
-          .map(dirent => dirent.name)
+    const existingServices = fs.existsSync(servicesPath)
+      ? fs
+          .readdirSync(servicesPath, { withFileTypes: true })
+          .filter((dirent) => dirent.isDirectory())
+          .map((dirent) => dirent.name)
       : [];
 
     let covered = 0;
@@ -214,7 +236,7 @@ class CoverageAnalyzer {
     for (const expected of expectedServices) {
       const exists = existingServices.includes(expected);
       const servicePath = path.join(servicesPath, expected);
-      
+
       let issues: string[] = [];
       let coveragePercent = 0;
 
@@ -243,7 +265,7 @@ class CoverageAnalyzer {
         path: `services/${expected}`,
         covered: exists && issues.length === 0,
         coveragePercent: exists ? coveragePercent : 0,
-        issues: issues.length > 0 ? issues : undefined
+        issues: issues.length > 0 ? issues : undefined,
       });
     }
 
@@ -253,7 +275,7 @@ class CoverageAnalyzer {
       total,
       covered,
       percentage: Math.round((covered / total) * 100),
-      details
+      details,
     });
 
     console.log(`  🔧 服務覆蓋率: ${covered}/${total} (${Math.round((covered / total) * 100)}%)`);
@@ -269,10 +291,25 @@ class CoverageAnalyzer {
     const details: CoverageDetail[] = [];
 
     const requiredCapabilities = [
-      'database', 'storage', 'auth', 'queue', 'state-store', 
-      'secrets', 'repo', 'deploy', 'validation', 'security',
-      'observability', 'notification', 'scheduler', 'vector-store',
-      'embedding', 'llm', 'graph', 'cache', 'search'
+      'database',
+      'storage',
+      'auth',
+      'queue',
+      'state-store',
+      'secrets',
+      'repo',
+      'deploy',
+      'validation',
+      'security',
+      'observability',
+      'notification',
+      'scheduler',
+      'vector-store',
+      'embedding',
+      'llm',
+      'graph',
+      'cache',
+      'search',
     ];
 
     let definedCapabilities: string[] = [];
@@ -290,7 +327,7 @@ class CoverageAnalyzer {
     let covered = 0;
 
     for (const capability of requiredCapabilities) {
-      const isDefined = definedCapabilities.some(c => 
+      const isDefined = definedCapabilities.some((c) =>
         c.toLowerCase().includes(capability.toLowerCase())
       );
 
@@ -308,7 +345,7 @@ class CoverageAnalyzer {
         path: `capabilities/${capability}`,
         covered: isDefined && hasImplementation,
         coveragePercent: (isDefined ? 50 : 0) + (hasImplementation ? 50 : 0),
-        issues: issues.length > 0 ? issues : undefined
+        issues: issues.length > 0 ? issues : undefined,
       });
     }
 
@@ -318,7 +355,7 @@ class CoverageAnalyzer {
       total,
       covered,
       percentage: Math.round((covered / total) * 100),
-      details
+      details,
     });
 
     console.log(`  ⚡ 能力覆蓋率: ${covered}/${total} (${Math.round((covered / total) * 100)}%)`);
@@ -327,17 +364,18 @@ class CoverageAnalyzer {
   private checkCapabilityImplementation(capability: string): boolean {
     const searchPaths = [
       path.join(this.projectRoot, 'packages'),
-      path.join(this.projectRoot, 'services')
+      path.join(this.projectRoot, 'services'),
     ];
 
     for (const searchPath of searchPaths) {
       if (!fs.existsSync(searchPath)) continue;
 
-      const dirs = fs.readdirSync(searchPath, { withFileTypes: true })
-        .filter(dirent => dirent.isDirectory())
-        .map(dirent => dirent.name);
+      const dirs = fs
+        .readdirSync(searchPath, { withFileTypes: true })
+        .filter((dirent) => dirent.isDirectory())
+        .map((dirent) => dirent.name);
 
-      if (dirs.some(dir => dir.toLowerCase().includes(capability.toLowerCase()))) {
+      if (dirs.some((dir) => dir.toLowerCase().includes(capability.toLowerCase()))) {
         return true;
       }
     }
@@ -362,7 +400,7 @@ class CoverageAnalyzer {
       { capability: 'queue', providers: ['redis', 'rabbitmq', 'sqs'] },
       { capability: 'vector-store', providers: ['pgvector', 'pinecone', 'weaviate'] },
       { capability: 'llm', providers: ['openai', 'anthropic', 'local'] },
-      { capability: 'embedding', providers: ['openai', 'huggingface', 'local'] }
+      { capability: 'embedding', providers: ['openai', 'huggingface', 'local'] },
     ];
 
     let totalProviders = 0;
@@ -390,7 +428,7 @@ class CoverageAnalyzer {
           name: `${capability}-${provider}`,
           path: `providers/${capability}/${capability}-${provider}`,
           covered: exists && issues.length === 0,
-          issues: issues.length > 0 ? issues : undefined
+          issues: issues.length > 0 ? issues : undefined,
         });
       }
     }
@@ -400,10 +438,12 @@ class CoverageAnalyzer {
       total: totalProviders,
       covered: coveredProviders,
       percentage: Math.round((coveredProviders / totalProviders) * 100),
-      details
+      details,
     });
 
-    console.log(`  🔌 Provider 覆蓋率: ${coveredProviders}/${totalProviders} (${Math.round((coveredProviders / totalProviders) * 100)}%)`);
+    console.log(
+      `  🔌 Provider 覆蓋率: ${coveredProviders}/${totalProviders} (${Math.round((coveredProviders / totalProviders) * 100)}%)`
+    );
   }
 
   // ========================================
@@ -418,33 +458,45 @@ class CoverageAnalyzer {
       {
         name: 'Layer A: Builder',
         components: ['ui-generator', 'api-generator', 'schema-generator', 'code-generator'],
-        path: 'packages/builder'
+        path: 'packages/builder',
       },
       {
         name: 'Layer B: Runtime',
         components: ['app-runtime', 'api-runtime', 'job-scheduler', 'execution-engine'],
-        path: 'packages/runtime'
+        path: 'packages/runtime',
       },
       {
         name: 'Layer C: Native Services',
-        components: ['native-db', 'native-storage', 'native-auth', 'native-queue', 'native-secrets'],
-        path: 'packages'
+        components: [
+          'native-db',
+          'native-storage',
+          'native-auth',
+          'native-queue',
+          'native-secrets',
+        ],
+        path: 'packages',
       },
       {
         name: 'Layer D: Connector',
-        components: ['github-connector', 'redis-connector', 'supabase-connector', 'oauth-connector', 's3-connector'],
-        path: 'packages'
+        components: [
+          'github-connector',
+          'redis-connector',
+          'supabase-connector',
+          'oauth-connector',
+          's3-connector',
+        ],
+        path: 'packages',
       },
       {
         name: 'Layer E: Deployment',
         components: ['docker', 'kubernetes', 'serverless', 'static'],
-        path: 'packages/deployment'
+        path: 'packages/deployment',
       },
       {
         name: 'Layer F: Governance',
         components: ['policy-engine', 'audit-logger', 'validation-rules', 'enforcement-engine'],
-        path: 'governance'
-      }
+        path: 'governance',
+      },
     ];
 
     let totalComponents = 0;
@@ -453,13 +505,13 @@ class CoverageAnalyzer {
     for (const layer of layers) {
       for (const component of layer.components) {
         totalComponents++;
-        
+
         const searchPath = path.join(this.projectRoot, layer.path);
         let found = false;
 
         if (fs.existsSync(searchPath)) {
           const items = fs.readdirSync(searchPath, { withFileTypes: true });
-          found = items.some(item => 
+          found = items.some((item) =>
             item.name.toLowerCase().includes(component.toLowerCase().replace('-', ''))
           );
         }
@@ -470,7 +522,7 @@ class CoverageAnalyzer {
           name: `${layer.name}/${component}`,
           path: `${layer.path}/${component}`,
           covered: found,
-          issues: found ? undefined : ['元件未實作']
+          issues: found ? undefined : ['元件未實作'],
         });
       }
     }
@@ -480,10 +532,12 @@ class CoverageAnalyzer {
       total: totalComponents,
       covered: coveredComponents,
       percentage: Math.round((coveredComponents / totalComponents) * 100),
-      details
+      details,
     });
 
-    console.log(`  🏛️ 層級覆蓋率: ${coveredComponents}/${totalComponents} (${Math.round((coveredComponents / totalComponents) * 100)}%)`);
+    console.log(
+      `  🏛️ 層級覆蓋率: ${coveredComponents}/${totalComponents} (${Math.round((coveredComponents / totalComponents) * 100)}%)`
+    );
   }
 
   // ========================================
@@ -497,16 +551,17 @@ class CoverageAnalyzer {
     // 計算測試檔案數量
     const testFiles = await this.countFiles(['**/*.test.ts', '**/*.spec.ts']);
     const totalFiles = await this.countFiles(['**/*.ts', '**/*.tsx']);
-    
+
     // 排除 node_modules
     const sourceFiles = totalFiles - (await this.countFiles(['**/node_modules/**']));
 
     // 檢查各套件的測試覆蓋
     const packagesPath = path.join(this.projectRoot, 'packages');
     if (fs.existsSync(packagesPath)) {
-      const packageDirs = fs.readdirSync(packagesPath, { withFileTypes: true })
-        .filter(dirent => dirent.isDirectory())
-        .map(dirent => dirent.name);
+      const packageDirs = fs
+        .readdirSync(packagesPath, { withFileTypes: true })
+        .filter((dirent) => dirent.isDirectory())
+        .map((dirent) => dirent.name);
 
       for (const pkg of packageDirs) {
         const pkgPath = path.join(packagesPath, pkg);
@@ -520,21 +575,19 @@ class CoverageAnalyzer {
           path: `packages/${pkg}`,
           covered: coverage >= 50,
           coveragePercent: coverage,
-          issues: coverage < 50 ? [`測試覆蓋率低: ${coverage}%`] : undefined
+          issues: coverage < 50 ? [`測試覆蓋率低: ${coverage}%`] : undefined,
         });
       }
     }
 
-    const testCoverageRatio = sourceFiles > 0 
-      ? Math.round((testFiles / sourceFiles) * 100) 
-      : 0;
+    const testCoverageRatio = sourceFiles > 0 ? Math.round((testFiles / sourceFiles) * 100) : 0;
 
     this.metrics.push({
       type: 'tests',
       total: sourceFiles,
       covered: testFiles,
       percentage: testCoverageRatio,
-      details
+      details,
     });
 
     console.log(`  🧪 測試覆蓋率: ${testFiles}/${sourceFiles} 檔案 (${testCoverageRatio}%)`);
@@ -554,7 +607,7 @@ class CoverageAnalyzer {
       { name: 'provider-registry.yaml', path: 'governance/provider-registry.yaml' },
       { name: 'namespace-policy.yaml', path: 'governance/namespace-policy.yaml' },
       { name: 'lifecycle-policy.yaml', path: 'governance/lifecycle-policy.yaml' },
-      { name: 'exceptions.yaml', path: 'governance/exceptions.yaml' }
+      { name: 'exceptions.yaml', path: 'governance/exceptions.yaml' },
     ];
 
     let covered = 0;
@@ -575,7 +628,7 @@ class CoverageAnalyzer {
               name: spec.name,
               path: spec.path,
               covered: false,
-              issues: ['檔案為空或無效']
+              issues: ['檔案為空或無效'],
             });
             continue;
           }
@@ -584,7 +637,7 @@ class CoverageAnalyzer {
             name: spec.name,
             path: spec.path,
             covered: false,
-            issues: ['解析失敗']
+            issues: ['解析失敗'],
           });
           continue;
         }
@@ -594,7 +647,7 @@ class CoverageAnalyzer {
         name: spec.name,
         path: spec.path,
         covered: exists,
-        issues: exists ? undefined : ['檔案不存在']
+        issues: exists ? undefined : ['檔案不存在'],
       });
     }
 
@@ -604,7 +657,7 @@ class CoverageAnalyzer {
       total,
       covered,
       percentage: Math.round((covered / total) * 100),
-      details
+      details,
     });
 
     console.log(`  📜 規範覆蓋率: ${covered}/${total} (${Math.round((covered / total) * 100)}%)`);
@@ -629,7 +682,7 @@ class CoverageAnalyzer {
       'CHANGELOG.md',
       'onboarding/',
       'architecture-decision-records/',
-      'analysis/'
+      'analysis/',
     ];
 
     let covered = 0;
@@ -644,7 +697,7 @@ class CoverageAnalyzer {
         name: doc,
         path: `docs/${doc}`,
         covered: exists,
-        issues: exists ? undefined : ['文檔不存在']
+        issues: exists ? undefined : ['文檔不存在'],
       });
     }
 
@@ -654,7 +707,7 @@ class CoverageAnalyzer {
       total,
       covered,
       percentage: Math.round((covered / total) * 100),
-      details
+      details,
     });
 
     console.log(`  📚 文檔覆蓋率: ${covered}/${total} (${Math.round((covered / total) * 100)}%)`);
@@ -679,7 +732,7 @@ class CoverageAnalyzer {
       'eslint.config.js',
       'prettier.config.js',
       '.github/workflows/ci.yml',
-      '.github/workflows/deploy.yml'
+      '.github/workflows/deploy.yml',
     ];
 
     let covered = 0;
@@ -694,7 +747,7 @@ class CoverageAnalyzer {
         name: config,
         path: config,
         covered: exists,
-        issues: exists ? undefined : ['配置檔案不存在']
+        issues: exists ? undefined : ['配置檔案不存在'],
       });
     }
 
@@ -704,7 +757,7 @@ class CoverageAnalyzer {
       total,
       covered,
       percentage: Math.round((covered / total) * 100),
-      details
+      details,
     });
 
     console.log(`  ⚙️ 配置覆蓋率: ${covered}/${total} (${Math.round((covered / total) * 100)}%)`);
@@ -725,14 +778,15 @@ class CoverageAnalyzer {
       'provider-manifest.schema.json',
       'capability.schema.json',
       'policy.schema.json',
-      'event.schema.json'
+      'event.schema.json',
     ];
 
     let covered = 0;
 
     if (fs.existsSync(schemasPath)) {
-      const schemaFiles = fs.readdirSync(schemasPath)
-        .filter(file => file.endsWith('.schema.json'));
+      const schemaFiles = fs
+        .readdirSync(schemasPath)
+        .filter((file) => file.endsWith('.schema.json'));
 
       for (const schema of expectedSchemas) {
         const exists = schemaFiles.includes(schema);
@@ -742,7 +796,7 @@ class CoverageAnalyzer {
           name: schema,
           path: `schemas/${schema}`,
           covered: exists,
-          issues: exists ? undefined : ['Schema 不存在']
+          issues: exists ? undefined : ['Schema 不存在'],
         });
       }
     } else {
@@ -751,7 +805,7 @@ class CoverageAnalyzer {
           name: schema,
           path: `schemas/${schema}`,
           covered: false,
-          issues: ['schemas 目錄不存在']
+          issues: ['schemas 目錄不存在'],
         });
       }
     }
@@ -762,7 +816,7 @@ class CoverageAnalyzer {
       total,
       covered,
       percentage: Math.round((covered / total) * 100),
-      details
+      details,
     });
 
     console.log(`  🔌 介面覆蓋率: ${covered}/${total} (${Math.round((covered / total) * 100)}%)`);
@@ -773,14 +827,14 @@ class CoverageAnalyzer {
   // ========================================
   private async countFiles(patterns: string[]): Promise<number> {
     let count = 0;
-    
+
     const scan = (dir: string) => {
       if (!fs.existsSync(dir)) return;
-      
+
       const items = fs.readdirSync(dir, { withFileTypes: true });
       for (const item of items) {
         if (item.name === 'node_modules' || item.name.startsWith('.')) continue;
-        
+
         const fullPath = path.join(dir, item.name);
         if (item.isDirectory()) {
           scan(fullPath);
@@ -836,29 +890,25 @@ class CoverageAnalyzer {
     for (const metric of this.metrics) {
       if (metric.percentage < 50) {
         criticalGaps.push(`${metric.type}: 覆蓋率僅 ${metric.percentage}%，需要立即改善`);
-        
+
         const uncoveredDetails = metric.details
-          .filter(d => !d.covered)
+          .filter((d) => !d.covered)
           .slice(0, 3)
-          .map(d => d.name);
-        
-        recommendations.push(
-          `改善 ${metric.type} 覆蓋率: 優先實作 ${uncoveredDetails.join(', ')}`
-        );
+          .map((d) => d.name);
+
+        recommendations.push(`改善 ${metric.type} 覆蓋率: 優先實作 ${uncoveredDetails.join(', ')}`);
       } else if (metric.percentage < 75) {
-        recommendations.push(
-          `提升 ${metric.type} 覆蓋率: 當前 ${metric.percentage}%，目標 75%+`
-        );
+        recommendations.push(`提升 ${metric.type} 覆蓋率: 當前 ${metric.percentage}%，目標 75%+`);
       }
     }
 
     // 計算測試統計
-    const testMetric = this.metrics.find(m => m.type === 'tests');
+    const testMetric = this.metrics.find((m) => m.type === 'tests');
     const testCoverage = {
       unitTests: testMetric?.covered || 0,
       integrationTests: Math.round((testMetric?.covered || 0) * 0.3),
-      specTests: this.metrics.find(m => m.type === 'specs')?.covered || 0,
-      total: testMetric?.total || 0
+      specTests: this.metrics.find((m) => m.type === 'specs')?.covered || 0,
+      total: testMetric?.total || 0,
     };
 
     return {
@@ -867,7 +917,7 @@ class CoverageAnalyzer {
       metrics: this.metrics,
       recommendations,
       criticalGaps,
-      testCoverage
+      testCoverage,
     };
   }
 }
@@ -884,19 +934,22 @@ async function main() {
   console.log('\n各類覆蓋率:');
 
   for (const metric of report.metrics) {
-    const bar = '█'.repeat(Math.round(metric.percentage / 10)) + 
-                '░'.repeat(10 - Math.round(metric.percentage / 10));
-    console.log(`  ${metric.type.padEnd(15)} [${bar}] ${metric.percentage}% (${metric.covered}/${metric.total})`);
+    const bar =
+      '█'.repeat(Math.round(metric.percentage / 10)) +
+      '░'.repeat(10 - Math.round(metric.percentage / 10));
+    console.log(
+      `  ${metric.type.padEnd(15)} [${bar}] ${metric.percentage}% (${metric.covered}/${metric.total})`
+    );
   }
 
   if (report.criticalGaps.length > 0) {
     console.log('\n🚨 關鍵缺口:');
-    report.criticalGaps.forEach(gap => console.log(`  - ${gap}`));
+    report.criticalGaps.forEach((gap) => console.log(`  - ${gap}`));
   }
 
   if (report.recommendations.length > 0) {
     console.log('\n💡 建議:');
-    report.recommendations.forEach(rec => console.log(`  - ${rec}`));
+    report.recommendations.forEach((rec) => console.log(`  - ${rec}`));
   }
 
   // 輸出 JSON 報告
@@ -908,7 +961,7 @@ async function main() {
   console.log(`\n📄 報告已輸出至: ${reportPath}`);
 }
 
-main().catch(error => {
+main().catch((error) => {
   console.error('分析失敗:', error);
   process.exit(1);
 });

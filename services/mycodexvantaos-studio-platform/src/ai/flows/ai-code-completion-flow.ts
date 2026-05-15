@@ -1,7 +1,7 @@
 'use server';
 /**
  * @fileOverview AI Code Completion flow for providing context-aware code completions.
- * 
+ *
  * Refactored to follow MyCodeXvantaOS Provider Architecture:
  * - Uses Provider abstraction layer instead of direct Genkit dependency
  * - No hardcoded API key requirements
@@ -36,7 +36,7 @@ function buildPrompt(input: AiCodeCompletionInput): string {
     input.currentCode.slice(0, input.cursorPosition) +
     CURSOR_MARKER +
     input.currentCode.slice(input.cursorPosition);
-  
+
   return `You are an expert code completion AI assistant. Your goal is to provide intelligent, context-aware code completions.
 
 Given the following ${input.language} code with a special marker '${CURSOR_MARKER}' indicating the cursor position, provide a concise and context-aware code completion that *starts immediately after the '${CURSOR_MARKER}' marker*.
@@ -58,47 +58,48 @@ Code completion:`;
  * AI Code Completion
  * Uses the Provider abstraction layer - no direct API key dependency
  */
-export async function aiCodeCompletion(input: AiCodeCompletionInput): Promise<AiCodeCompletionOutput> {
+export async function aiCodeCompletion(
+  input: AiCodeCompletionInput
+): Promise<AiCodeCompletionOutput> {
   // For native provider, return a simple hint
   if (!hasAdvancedAI()) {
     // Native provider - return contextual hint
     const lineStart = input.currentCode.lastIndexOf('\n', input.cursorPosition - 1) + 1;
     const currentLine = input.currentCode.slice(lineStart, input.cursorPosition);
-    
+
     return {
-      completion: getNativeCompletion(currentLine, input.language)
+      completion: getNativeCompletion(currentLine, input.language),
     };
   }
-  
+
   try {
     const prompt = buildPrompt(input);
     const response = await generateText(prompt, {
       maxTokens: 512,
-      temperature: 0.3
+      temperature: 0.3,
     });
-    
+
     // Clean up the completion - remove any markdown code blocks
     let completion = response.text.trim();
-    
+
     // Remove markdown code blocks if present
     const codeBlockMatch = completion.match(/```[\w]*\n?([\s\S]*?)```/);
     if (codeBlockMatch) {
       completion = codeBlockMatch[1].trim();
     }
-    
+
     // Remove any "completion:" prefix
     completion = completion.replace(/^completion:\s*/i, '').trim();
-    
+
     return {
-      completion
+      completion,
     };
-    
   } catch (error: any) {
     // Return empty completion on error rather than throwing
     // This allows the editor to continue functioning
     console.error('[AI Code Completion] Error:', error.message);
     return {
-      completion: ''
+      completion: '',
     };
   }
 }
@@ -108,7 +109,7 @@ export async function aiCodeCompletion(input: AiCodeCompletionInput): Promise<Ai
  */
 function getNativeCompletion(currentLine: string, language: string): string {
   const trimmedLine = currentLine.trim();
-  
+
   // Simple pattern matching for common cases
   const patterns: Record<string, Record<string, string>> = {
     typescript: {
@@ -139,18 +140,18 @@ function getNativeCompletion(currentLine: string, language: string): string {
       'while ': ':\n    ',
       'def ': '():\n    ',
       'class ': ':\n    ',
-      'print': '(',
+      print: '(',
       'import ': '',
-    }
+    },
   };
-  
+
   const langPatterns = patterns[language] || patterns.typescript;
-  
+
   for (const [prefix, suffix] of Object.entries(langPatterns)) {
     if (trimmedLine.endsWith(prefix)) {
       return suffix;
     }
   }
-  
+
   return '';
 }

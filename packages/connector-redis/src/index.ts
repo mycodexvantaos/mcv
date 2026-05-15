@@ -37,7 +37,7 @@ export class RedisConnector {
       db: config.db || 0,
       timeout: config.timeout || 5000,
       retryDelayOnFailover: config.retryDelayOnFailover || 50,
-      maxRetriesPerRequest: config.maxRetriesPerRequest || 3
+      maxRetriesPerRequest: config.maxRetriesPerRequest || 3,
     };
   }
 
@@ -82,12 +82,12 @@ export class RedisConnector {
    */
   async set(key: string, value: string | number, options?: RedisSetOptions): Promise<string> {
     this.cleanup();
-    
+
     const strValue = String(value);
-    const expiry = options?.ex 
-      ? Date.now() + options.ex * 1000 
-      : options?.px 
-        ? Date.now() + options.px 
+    const expiry = options?.ex
+      ? Date.now() + options.ex * 1000
+      : options?.px
+        ? Date.now() + options.px
         : undefined;
 
     // Check nx/xx conditions
@@ -108,12 +108,12 @@ export class RedisConnector {
    */
   async get(key: string): Promise<string | null> {
     this.cleanup();
-    
+
     const data = this.store.get(key);
     if (!data) {
       return null;
     }
-    
+
     return data.value;
   }
 
@@ -122,7 +122,7 @@ export class RedisConnector {
    */
   async del(...keys: string[]): Promise<number> {
     this.cleanup();
-    
+
     let count = 0;
     for (const key of keys) {
       if (this.store.delete(key)) {
@@ -137,7 +137,7 @@ export class RedisConnector {
    */
   async exists(...keys: string[]): Promise<number> {
     this.cleanup();
-    
+
     let count = 0;
     for (const key of keys) {
       if (this.store.has(key)) {
@@ -155,7 +155,7 @@ export class RedisConnector {
     if (!data) {
       return 0;
     }
-    
+
     data.expiry = Date.now() + seconds * 1000;
     return 1;
   }
@@ -168,11 +168,11 @@ export class RedisConnector {
     if (!data) {
       return -2;
     }
-    
+
     if (!data.expiry) {
       return -1;
     }
-    
+
     const remaining = Math.ceil((data.expiry - Date.now()) / 1000);
     return remaining > 0 ? remaining : -2;
   }
@@ -204,10 +204,10 @@ export class RedisConnector {
    */
   async zadd(key: string, score: number, member: string): Promise<number> {
     this.cleanup();
-    
+
     const zsetValue = this.store.get(key);
     let set: Map<string, number> = new Map();
-    
+
     if (zsetValue) {
       try {
         set = new Map(JSON.parse(zsetValue.value));
@@ -215,13 +215,13 @@ export class RedisConnector {
         set = new Map();
       }
     }
-    
+
     const isNew = !set.has(member);
     set.set(member, score);
-    
+
     const serialized = JSON.stringify([...set.entries()]);
     this.store.set(key, { value: serialized, expiry: zsetValue?.expiry });
-    
+
     return isNew ? 1 : 0;
   }
 
@@ -230,12 +230,12 @@ export class RedisConnector {
    */
   async zrange(key: string, start: number, stop: number): Promise<string[]> {
     this.cleanup();
-    
+
     const data = this.store.get(key);
     if (!data) {
       return [];
     }
-    
+
     try {
       const entries = JSON.parse(data.value) as [string, number][];
       const sorted = entries.sort((a, b) => a[1] - b[1]);
@@ -251,7 +251,7 @@ export class RedisConnector {
    */
   async keys(pattern: string): Promise<string[]> {
     this.cleanup();
-    
+
     const regex = new RegExp(pattern.replace(/\*/g, '.*'));
     const allKeys = Array.from(this.store.keys());
     return allKeys.filter((key) => regex.test(key));
@@ -285,7 +285,7 @@ export class RedisConnector {
    * Append to string
    */
   async append(key: string, value: string): Promise<number> {
-    const current = await this.get(key) || '';
+    const current = (await this.get(key)) || '';
     const newStr = current + value;
     await this.set(key, newStr);
     return newStr.length;
@@ -295,7 +295,7 @@ export class RedisConnector {
    * Get substring of string
    */
   async getrange(key: string, start: number, end: number): Promise<string> {
-    const value = await this.get(key) || '';
+    const value = (await this.get(key)) || '';
     const actualEnd = end === -1 ? undefined : end + 1;
     return value.substring(start, actualEnd);
   }
@@ -304,7 +304,7 @@ export class RedisConnector {
    * Set substring of string
    */
   async setrange(key: string, offset: number, value: string): Promise<number> {
-    const current = await this.get(key) || '';
+    const current = (await this.get(key)) || '';
     const padded = current.padStart(offset + value.length - current.length, '\0');
     const newStr = padded.substring(0, offset) + value + padded.substring(offset + value.length);
     await this.set(key, newStr);
@@ -376,7 +376,7 @@ used_cpu_user=0.3`;
       const lines = allInfo.split('\n');
       const result: string[] = [];
       let inSection = false;
-      
+
       for (const line of lines) {
         if (line.startsWith('# ')) {
           inSection = line.toLowerCase().includes(section.toLowerCase());

@@ -8,7 +8,7 @@ metadata:
   capability: database
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: "8.1"
+    mycodexvantaos.org/specRef: '8.1'
 spec:
   providerName: postgres
   isNative: false
@@ -16,4 +16,4 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_DATABASE
   configSchemaRef: ./config.schema.json
-  description: "PostgreSQL relational database provider."
+  description: 'PostgreSQL relational database provider.'

@@ -6,7 +6,7 @@ describe('PluginLoader', () => {
   beforeEach(() => {
     loader = new PluginLoader({
       pluginDir: './plugins',
-      autoLoad: false
+      autoLoad: false,
     });
   });
 
@@ -23,7 +23,7 @@ describe('PluginLoader', () => {
     it('should initialize with custom options', () => {
       const customLoader = new PluginLoader({
         pluginDir: './custom-plugins',
-        autoLoad: false
+        autoLoad: false,
       });
       expect(customLoader).toBeInstanceOf(PluginLoader);
     });
@@ -33,7 +33,7 @@ describe('PluginLoader', () => {
     it('should register a plugin', async () => {
       const plugin: Plugin = {
         name: 'test-plugin',
-        version: '1.0.0'
+        version: '1.0.0',
       };
 
       await loader.register(plugin);
@@ -49,7 +49,7 @@ describe('PluginLoader', () => {
         version: '1.0.0',
         initialize: async () => {
           initialized = true;
-        }
+        },
       };
 
       await loader.register(plugin);
@@ -60,7 +60,7 @@ describe('PluginLoader', () => {
     it('should throw error for duplicate plugin', async () => {
       const plugin: Plugin = {
         name: 'test-plugin',
-        version: '1.0.0'
+        version: '1.0.0',
       };
 
       await loader.register(plugin);
@@ -73,7 +73,7 @@ describe('PluginLoader', () => {
     it('should unregister a plugin', async () => {
       const plugin: Plugin = {
         name: 'test-plugin',
-        version: '1.0.0'
+        version: '1.0.0',
       };
 
       await loader.register(plugin);
@@ -89,7 +89,7 @@ describe('PluginLoader', () => {
         version: '1.0.0',
         shutdown: async () => {
           shutdown = true;
-        }
+        },
       };
 
       await loader.register(plugin);
@@ -108,7 +108,7 @@ describe('PluginLoader', () => {
       const plugin: Plugin = {
         name: 'test-plugin',
         version: '1.0.0',
-        config: { key: 'value' }
+        config: { key: 'value' },
       };
 
       await loader.register(plugin);
@@ -139,7 +139,7 @@ describe('PluginLoader', () => {
     it('should return true for registered plugin', async () => {
       const plugin: Plugin = {
         name: 'test-plugin',
-        version: '1.0.0'
+        version: '1.0.0',
       };
 
       await loader.register(plugin);
@@ -157,7 +157,7 @@ describe('PluginLoader', () => {
       const plugin: Plugin = {
         name: 'test-plugin',
         version: '1.0.0',
-        config: { key: 'value', nested: { prop: 'test' } }
+        config: { key: 'value', nested: { prop: 'test' } },
       };
 
       await loader.register(plugin);
@@ -184,7 +184,7 @@ describe('PluginLoader', () => {
       const plugin: Plugin = {
         name: 'test-plugin',
         version: '1.0.0',
-        config: { key: 'value' }
+        config: { key: 'value' },
       };
 
       await loader.register(plugin);
@@ -206,7 +206,7 @@ describe('PluginLoader', () => {
       const plugins: Plugin[] = [
         { name: 'plugin1', version: '1.0.0' },
         { name: 'plugin2', version: '1.0.0' },
-        { name: 'plugin3', version: '1.0.0' }
+        { name: 'plugin3', version: '1.0.0' },
       ];
 
       await loader.registerAll(plugins);
@@ -232,12 +232,16 @@ describe('PluginLoader', () => {
       await loader.register({
         name: 'plugin1',
         version: '1.0.0',
-        shutdown: async () => { shutdownCount++; }
+        shutdown: async () => {
+          shutdownCount++;
+        },
       });
       await loader.register({
         name: 'plugin2',
         version: '1.0.0',
-        shutdown: async () => { shutdownCount++; }
+        shutdown: async () => {
+          shutdownCount++;
+        },
       });
 
       await loader.shutdown();

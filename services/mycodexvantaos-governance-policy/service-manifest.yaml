@@ -22,15 +22,15 @@ spec:
   # Service identification
   serviceName: mycodexvantaos-governance-policy
   serviceVersion: v1.0.0
-  
+
   # Layer and capability mapping
   layer: Governance
   capability: validation
-  
+
   # Service configuration
   description: MyCodeXvantaOS mycodexvantaos-governance-policy service
   category: platform
-  
+
   # Health and availability
   healthCheck:
     enabled: true
@@ -38,43 +38,43 @@ spec:
     interval: 30s
     timeout: 5s
     failureThreshold: 3
-  
+
   # Resource requirements
   resources:
     requests:
-      memory: "128Mi"
-      cpu: "100m"
+      memory: '128Mi'
+      cpu: '100m'
     limits:
-      memory: "512Mi"
-      cpu: "500m"
-  
+      memory: '512Mi'
+      cpu: '500m'
+
   # Ports
   ports:
     - name: http
       port: 8080
       protocol: TCP
       targetPort: 8080
-  
+
   # Environment
   env:
     - name: NODE_ENV
-      value: "production"
+      value: 'production'
     - name: LOG_LEVEL
-      value: "info"
-  
+      value: 'info'
+
   # Dependencies
   dependencies:
     - name: mycodexvantaos-core-kernel
       required: true
     - name: mycodexvantaos-core-config
       required: true
-  
+
   # Security
   security:
     serviceAccountName: mycodexvantaos-governance-policy
     rbac:
       enabled: true
-  
+
   # Observability
   observability:
     metrics:

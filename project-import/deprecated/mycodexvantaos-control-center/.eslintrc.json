@@ -6,6 +6,9 @@
   "env": { "node": true, "es2022": true },
   "ignorePatterns": ["dist", "node_modules", "_legacy"],
   "rules": {
-    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }]
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
+    ]
   }
 }

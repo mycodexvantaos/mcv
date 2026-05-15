@@ -1,7 +1,7 @@
 /**
  * CodexvantaOS — event-bus Provider Initialization
  * Philosophy: Native-first / Provider-agnostic
- * 
+ *
  * This module initializes the required providers using ProviderRegistry.
  * In Native mode: all providers use built-in implementations.
  * In Connected mode: providers use external services.

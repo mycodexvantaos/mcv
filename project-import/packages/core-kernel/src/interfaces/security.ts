@@ -1,11 +1,11 @@
 /**
  * CodexvantaOS — SecurityScannerProvider
- * 
+ *
  * Abstract interface for security scanning and vulnerability management.
  * Native mode: built-in pattern matchers, secret detectors, SBOM generators
  * External mode: Snyk, Trivy, SonarQube, GitHub Advanced Security,
  *                Checkmarx, OWASP ZAP, etc.
- * 
+ *
  * Covers: SAST, DAST (optional), secret detection, container scanning,
  *         SBOM generation, compliance checks, vulnerability tracking.
  */
@@ -13,23 +13,29 @@
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export type ScanType =
-  | 'sast'            // Static Application Security Testing
-  | 'secret'          // Secret / credential detection
-  | 'dependency'      // Known CVE in dependencies
-  | 'container'       // Container image scanning
-  | 'iac'             // Infrastructure-as-Code scanning
-  | 'license'         // License compliance
-  | 'dast'            // Dynamic Application Security Testing
+  | 'sast' // Static Application Security Testing
+  | 'secret' // Secret / credential detection
+  | 'dependency' // Known CVE in dependencies
+  | 'container' // Container image scanning
+  | 'iac' // Infrastructure-as-Code scanning
+  | 'license' // License compliance
+  | 'dast' // Dynamic Application Security Testing
   | 'custom';
 
 export type VulnerabilitySeverity = 'critical' | 'high' | 'medium' | 'low' | 'informational';
 
-export type VulnerabilityState = 'open' | 'confirmed' | 'in_progress' | 'resolved' | 'dismissed' | 'false_positive';
+export type VulnerabilityState =
+  | 'open'
+  | 'confirmed'
+  | 'in_progress'
+  | 'resolved'
+  | 'dismissed'
+  | 'false_positive';
 
 export interface Vulnerability {
   id: string;
-  cve?: string;                 // CVE identifier if applicable
-  cwe?: string;                 // CWE category
+  cve?: string; // CVE identifier if applicable
+  cwe?: string; // CWE category
   title: string;
   description: string;
   severity: VulnerabilitySeverity;
@@ -38,32 +44,32 @@ export interface Vulnerability {
   file?: string;
   line?: number;
   column?: number;
-  package?: string;             // affected package name
+  package?: string; // affected package name
   installedVersion?: string;
-  fixedVersion?: string;        // version that fixes the issue
+  fixedVersion?: string; // version that fixes the issue
   exploitAvailable?: boolean;
-  cvssScore?: number;           // 0.0 – 10.0
-  references?: string[];        // URLs to advisories
-  remediation?: string;         // suggested fix
-  firstDetected: number;        // epoch ms
+  cvssScore?: number; // 0.0 – 10.0
+  references?: string[]; // URLs to advisories
+  remediation?: string; // suggested fix
+  firstDetected: number; // epoch ms
   lastSeen: number;
   metadata?: Record<string, unknown>;
 }
 
 export interface ScanTarget {
   type: 'directory' | 'repository' | 'image' | 'url' | 'file';
-  path: string;                 // local path, repo name, image ref, URL
-  ref?: string;                 // branch / tag for repos
+  path: string; // local path, repo name, image ref, URL
+  ref?: string; // branch / tag for repos
 }
 
 export interface ScanOptions {
   scanTypes?: ScanType[];
-  severityThreshold?: VulnerabilitySeverity;  // only report ≥ this level
+  severityThreshold?: VulnerabilitySeverity; // only report ≥ this level
   ignorePaths?: string[];
-  ignoreIds?: string[];          // suppress known false positives
-  failOnSeverity?: VulnerabilitySeverity;     // fail the scan if ≥ this found
-  timeout?: number;              // seconds
-  incremental?: boolean;         // only scan changed files if supported
+  ignoreIds?: string[]; // suppress known false positives
+  failOnSeverity?: VulnerabilitySeverity; // fail the scan if ≥ this found
+  timeout?: number; // seconds
+  incremental?: boolean; // only scan changed files if supported
 }
 
 export interface ScanResult {
@@ -80,8 +86,8 @@ export interface ScanResult {
     informational: number;
     total: number;
   };
-  passed: boolean;               // true if no vuln ≥ failOnSeverity
-  duration: number;              // ms
+  passed: boolean; // true if no vuln ≥ failOnSeverity
+  duration: number; // ms
   timestamp: number;
   metadata?: Record<string, unknown>;
 }
@@ -105,7 +111,7 @@ export interface SBOMResult {
 export interface ComplianceRule {
   id: string;
   name: string;
-  framework: string;            // e.g. 'SOC2', 'HIPAA', 'PCI-DSS', 'internal'
+  framework: string; // e.g. 'SOC2', 'HIPAA', 'PCI-DSS', 'internal'
   description: string;
   requirement: string;
   severity: VulnerabilitySeverity;
@@ -115,7 +121,7 @@ export interface ComplianceResult {
   framework: string;
   rules: Array<ComplianceRule & { passed: boolean; evidence?: string }>;
   overallPassed: boolean;
-  passRate: number;              // 0–100
+  passRate: number; // 0–100
   timestamp: number;
 }
 
@@ -144,7 +150,10 @@ export interface SecurityScannerProvider {
   scan(target: ScanTarget, options?: ScanOptions): Promise<ScanResult>;
 
   /** Run scans on multiple targets in parallel. */
-  scanBatch?(targets: ScanTarget[], options?: ScanOptions & { concurrency?: number }): Promise<ScanResult[]>;
+  scanBatch?(
+    targets: ScanTarget[],
+    options?: ScanOptions & { concurrency?: number }
+  ): Promise<ScanResult[]>;
 
   // ── Vulnerability Management ────────────────────────────────────────────
 
@@ -158,11 +167,14 @@ export interface SecurityScannerProvider {
   }): Promise<Vulnerability[]>;
 
   /** Update the state of a vulnerability (triage). */
-  updateVulnerability(vulnId: string, update: {
-    state?: VulnerabilityState;
-    notes?: string;
-    assignee?: string;
-  }): Promise<Vulnerability>;
+  updateVulnerability(
+    vulnId: string,
+    update: {
+      state?: VulnerabilityState;
+      notes?: string;
+      assignee?: string;
+    }
+  ): Promise<Vulnerability>;
 
   // ── SBOM ────────────────────────────────────────────────────────────────
 

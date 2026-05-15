@@ -1,12 +1,7 @@
 {
   "version": "1.0.0",
   "platform": "mycodexvantaos",
-  "principles": [
-    "local-first",
-    "cloud-agnostic",
-    "contract-first",
-    "governance-enforced"
-  ],
+  "principles": ["local-first", "cloud-agnostic", "contract-first", "governance-enforced"],
   "enforcement": {
     "ci_pipeline": "strict",
     "naming_conventions": "enforced",
@@ -16,27 +11,17 @@
   "layers": [
     {
       "name": "Builder",
-      "packages": [
-        "@mycodexvantaos/builder"
-      ],
-      "capabilities": [
-        "urn:mycodexvantaos:capability:builder"
-      ]
+      "packages": ["@mycodexvantaos/builder"],
+      "capabilities": ["urn:mycodexvantaos:capability:builder"]
     },
     {
       "name": "Runtime",
-      "packages": [
-        "@mycodexvantaos/runtime"
-      ],
-      "capabilities": [
-        "urn:mycodexvantaos:capability:runtime"
-      ]
+      "packages": ["@mycodexvantaos/runtime"],
+      "capabilities": ["urn:mycodexvantaos:capability:runtime"]
     },
     {
       "name": "Deployment",
-      "packages": [
-        "@mycodexvantaos/deployment"
-      ],
+      "packages": ["@mycodexvantaos/deployment"],
       "capabilities": []
     },
     {

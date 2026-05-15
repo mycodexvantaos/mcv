@@ -1,4 +1,4 @@
-import type { Workflow, WorkflowStep, WorkflowExecution, StepResult } from "./types";
+import type { Workflow, WorkflowStep, WorkflowExecution, StepResult } from './types';
 
 let counter = 0;
 
@@ -34,7 +34,7 @@ export class WorkflowEngineService {
     const execution: WorkflowExecution = {
       id: execId,
       workflowId,
-      status: "pending",
+      status: 'pending',
       currentStep: 0,
       startedAt: new Date(),
     };
@@ -48,7 +48,7 @@ export class WorkflowEngineService {
     const workflow = this.workflows.get(execution.workflowId);
     if (!workflow) throw new Error(`Workflow ${execution.workflowId} not found`);
 
-    execution.status = "running";
+    execution.status = 'running';
     const results: StepResult[] = [];
 
     for (let i = 0; i < workflow.steps.length; i++) {
@@ -57,13 +57,13 @@ export class WorkflowEngineService {
       const startTime = Date.now();
       results.push({
         stepName: step.name,
-        status: "success",
+        status: 'success',
         output: { action: step.action },
         duration: Date.now() - startTime,
       });
     }
 
-    execution.status = "completed";
+    execution.status = 'completed';
     return results;
   }
 

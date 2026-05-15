@@ -1,7 +1,22 @@
 'use client';
 
 import { useState } from 'react';
-import { Bot, User, Wand2, ShieldCheck, WifiOff, Loader2, Activity, ScrollText, ChevronDown, ChevronUp, Terminal, Wrench, Sparkles, Layout } from 'lucide-react';
+import {
+  Bot,
+  User,
+  Wand2,
+  ShieldCheck,
+  WifiOff,
+  Loader2,
+  Activity,
+  ScrollText,
+  ChevronDown,
+  ChevronUp,
+  Terminal,
+  Wrench,
+  Sparkles,
+  Layout,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -11,30 +26,66 @@ import { useToast } from '@/hooks/use-toast';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { cn } from '@/lib/utils';
 
-const ChatMessage = ({ role, children, internalLog, actions }: { role: 'user' | 'bot'; children: React.ReactNode; internalLog?: string; actions?: string[] }) => {
+const ChatMessage = ({
+  role,
+  children,
+  internalLog,
+  actions,
+}: {
+  role: 'user' | 'bot';
+  children: React.ReactNode;
+  internalLog?: string;
+  actions?: string[];
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className={cn("flex flex-col gap-3 group animate-in fade-in slide-in-from-bottom-2 duration-300", role === 'user' ? 'items-end' : 'items-start')}>
-      <div className={cn("flex items-start gap-4", role === 'user' ? 'justify-end flex-row-reverse' : '')}>
-        <div className={cn("flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border transition-all shadow-lg", 
-          role === 'bot' ? 'bg-primary/10 border-primary/20 text-primary group-hover:bg-primary/20' : 'bg-secondary border-border text-muted-foreground')}>
+    <div
+      className={cn(
+        'flex flex-col gap-3 group animate-in fade-in slide-in-from-bottom-2 duration-300',
+        role === 'user' ? 'items-end' : 'items-start'
+      )}
+    >
+      <div
+        className={cn(
+          'flex items-start gap-4',
+          role === 'user' ? 'justify-end flex-row-reverse' : ''
+        )}
+      >
+        <div
+          className={cn(
+            'flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border transition-all shadow-lg',
+            role === 'bot'
+              ? 'bg-primary/10 border-primary/20 text-primary group-hover:bg-primary/20'
+              : 'bg-secondary border-border text-muted-foreground'
+          )}
+        >
           {role === 'bot' ? <Bot className="h-5 w-5" /> : <User className="h-5 w-5" />}
         </div>
-        
-        <div className={cn("relative max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-2xl", 
-          role === 'bot' ? 'bg-card/40 border border-white/5 backdrop-blur-md' : 'bg-primary text-primary-foreground')}>
+
+        <div
+          className={cn(
+            'relative max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-2xl',
+            role === 'bot'
+              ? 'bg-card/40 border border-white/5 backdrop-blur-md'
+              : 'bg-primary text-primary-foreground'
+          )}
+        >
           {role === 'bot' && (
-             <div className="absolute -top-2 -left-2">
-                <Sparkles className="h-4 w-4 text-accent animate-pulse" />
-             </div>
+            <div className="absolute -top-2 -left-2">
+              <Sparkles className="h-4 w-4 text-accent animate-pulse" />
+            </div>
           )}
           <div className="whitespace-pre-wrap">{children}</div>
-          
+
           {actions && actions.length > 0 && (
             <div className="mt-4 pt-3 border-t border-white/5 flex flex-wrap gap-2">
-              {actions.map(action => (
-                <Badge key={action} variant="outline" className="text-[9px] font-bold uppercase tracking-widest bg-accent/10 border-accent/20 text-accent gap-1.5 py-0.5">
+              {actions.map((action) => (
+                <Badge
+                  key={action}
+                  variant="outline"
+                  className="text-[9px] font-bold uppercase tracking-widest bg-accent/10 border-accent/20 text-accent gap-1.5 py-0.5"
+                >
                   <Wrench className="h-2.5 w-2.5" /> {action}
                 </Badge>
               ))}
@@ -46,8 +97,12 @@ const ChatMessage = ({ role, children, internalLog, actions }: { role: 'user' | 
       {role === 'bot' && internalLog && (
         <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-[85%] ml-14">
           <CollapsibleTrigger asChild>
-            <Button variant="ghost" size="sm" className="h-7 text-[10px] uppercase font-black tracking-widest text-muted-foreground/60 hover:text-accent p-0 gap-2 transition-colors">
-              <Activity className={cn("h-3 w-3", isOpen ? "text-accent" : "")} />
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-7 text-[10px] uppercase font-black tracking-widest text-muted-foreground/60 hover:text-accent p-0 gap-2 transition-colors"
+            >
+              <Activity className={cn('h-3 w-3', isOpen ? 'text-accent' : '')} />
               {isOpen ? 'TERMINATE TRACE VIEW' : 'INSPECT RESONANCE PATH'}
             </Button>
           </CollapsibleTrigger>
@@ -69,40 +124,49 @@ const ChatMessage = ({ role, children, internalLog, actions }: { role: 'user' | 
 };
 
 export function AiPanel({ isSystemOffline = false }: { isSystemOffline?: boolean }) {
-  const [messages, setMessages] = useState<{ role: 'user' | 'bot'; content: string; internalLog?: string; actions?: string[] }[]>([
-    { 
-      role: 'bot', 
-      content: "SYSTEM ESTABLISHED: Era-2 P9 Swarm Orchestrator Active.\n\n我已完成全棧 Layer A-N 的深度掃描，並鎖定了專案語義奇點。當前環境監測狀態為 1.00 Resonance Stability。您可以下達任何架構維護或合成指令。" 
-    }
+  const [messages, setMessages] = useState<
+    { role: 'user' | 'bot'; content: string; internalLog?: string; actions?: string[] }[]
+  >([
+    {
+      role: 'bot',
+      content:
+        'SYSTEM ESTABLISHED: Era-2 P9 Swarm Orchestrator Active.\n\n我已完成全棧 Layer A-N 的深度掃描，並鎖定了專案語義奇點。當前環境監測狀態為 1.00 Resonance Stability。您可以下達任何架構維護或合成指令。',
+    },
   ]);
   const [input, setInput] = useState('');
   const [isSending, setIsSending] = useState(false);
 
   const handleSend = async () => {
     if (!input.trim() || isSending) return;
-    
+
     const userMsg = input;
     setInput('');
-    setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
+    setMessages((prev) => [...prev, { role: 'user', content: userMsg }]);
     setIsSending(true);
 
     try {
-      const response = await conversationalAiAssistant({ 
-        query: userMsg, 
-        isOffline: isSystemOffline 
+      const response = await conversationalAiAssistant({
+        query: userMsg,
+        isOffline: isSystemOffline,
       });
-      setMessages(prev => [...prev, { 
-        role: 'bot', 
-        content: response.answer, 
-        internalLog: response.internalLog,
-        actions: response.actionsTaken
-      }]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: 'bot',
+          content: response.answer,
+          internalLog: response.internalLog,
+          actions: response.actionsTaken,
+        },
+      ]);
     } catch (error: any) {
-      setMessages(prev => [...prev, { 
-        role: 'bot', 
-        content: `P9 CRITICAL FAULT: ${error.message}`,
-        internalLog: "[SYSTEM_FAILURE] Swarm synchronization lost at Singularity Gate." 
-      }]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: 'bot',
+          content: `P9 CRITICAL FAULT: ${error.message}`,
+          internalLog: '[SYSTEM_FAILURE] Swarm synchronization lost at Singularity Gate.',
+        },
+      ]);
     } finally {
       setIsSending(false);
     }
@@ -113,11 +177,18 @@ export function AiPanel({ isSystemOffline = false }: { isSystemOffline?: boolean
       <div className="flex h-14 items-center justify-between px-4 border-b border-white/5 bg-card/20 shrink-0">
         <div className="flex items-center gap-2.5">
           <div className="h-2 w-2 rounded-full bg-accent animate-pulse shadow-[0_0_8px_#52E0B0]"></div>
-          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/80">Orchestrator Core</span>
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/80">
+            Orchestrator Core
+          </span>
         </div>
-        <Badge variant="outline" className="text-[9px] font-bold bg-accent/5 text-accent border-accent/20 h-5 px-2">SINGULARITY</Badge>
+        <Badge
+          variant="outline"
+          className="text-[9px] font-bold bg-accent/5 text-accent border-accent/20 h-5 px-2"
+        >
+          SINGULARITY
+        </Badge>
       </div>
-      
+
       <ScrollArea className="flex-1">
         <div className="p-5 space-y-8 pb-10">
           {messages.map((m, i) => (
@@ -137,7 +208,7 @@ export function AiPanel({ isSystemOffline = false }: { isSystemOffline?: boolean
           )}
         </div>
       </ScrollArea>
-      
+
       <div className="p-5 bg-card/30 border-t border-white/5 shrink-0">
         <div className="relative group">
           <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/30 to-accent/30 rounded-2xl blur opacity-20 group-focus-within:opacity-50 transition duration-500"></div>
@@ -153,19 +224,21 @@ export function AiPanel({ isSystemOffline = false }: { isSystemOffline?: boolean
               }
             }}
           />
-          <Button 
-            size="sm" 
+          <Button
+            size="sm"
             className="absolute bottom-3 right-3 h-8 px-4 text-[10px] font-black uppercase tracking-widest bg-accent hover:bg-accent/90 text-accent-foreground shadow-2xl transition-all hover:scale-105 active:scale-95"
             onClick={handleSend}
             disabled={isSending || !input.trim()}
           >
-            {isSending ? <Loader2 className="h-4 w-4 animate-spin" /> : "EXECUTE"}
+            {isSending ? <Loader2 className="h-4 w-4 animate-spin" /> : 'EXECUTE'}
           </Button>
         </div>
         <div className="mt-3 flex items-center justify-center gap-2">
-           <div className="h-px flex-1 bg-white/5"></div>
-           <span className="text-[9px] text-muted-foreground/40 font-black uppercase tracking-widest">Era-2 P9 | Symbiotic OS</span>
-           <div className="h-px flex-1 bg-white/5"></div>
+          <div className="h-px flex-1 bg-white/5"></div>
+          <span className="text-[9px] text-muted-foreground/40 font-black uppercase tracking-widest">
+            Era-2 P9 | Symbiotic OS
+          </span>
+          <div className="h-px flex-1 bg-white/5"></div>
         </div>
       </div>
     </div>

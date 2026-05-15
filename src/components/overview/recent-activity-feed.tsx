@@ -13,14 +13,70 @@ interface ActivityItem {
 }
 
 const mockActivities: ActivityItem[] = [
-  { id: '1', action: 'connector.health_check', actor: 'system', resource: 'Primary PostgreSQL', timestamp: '2 min ago', type: 'scan' },
-  { id: '2', action: 'edge.deploy', actor: 'admin@autoecoops.io', resource: 'us-west-2 node', timestamp: '15 min ago', type: 'deploy' },
-  { id: '3', action: 'connector.update', actor: 'admin@autoecoops.io', resource: 'Redis Cache config', timestamp: '1h ago', type: 'update' },
-  { id: '4', action: 'scenario.create', actor: 'operator@autoecoops.io', resource: 'Healthcare AI Matrix', timestamp: '2h ago', type: 'create' },
-  { id: '5', action: 'security.scan', actor: 'system', resource: 'Full vulnerability scan', timestamp: '3h ago', type: 'scan' },
-  { id: '6', action: 'inference.routing_update', actor: 'admin@autoecoops.io', resource: 'Model routing weights', timestamp: '5h ago', type: 'update' },
-  { id: '7', action: 'edge.rollback', actor: 'operator@autoecoops.io', resource: 'eu-central-1 node', timestamp: '8h ago', type: 'deploy' },
-  { id: '8', action: 'connector.create', actor: 'admin@autoecoops.io', resource: 'S3 Storage connector', timestamp: '1d ago', type: 'create' },
+  {
+    id: '1',
+    action: 'connector.health_check',
+    actor: 'system',
+    resource: 'Primary PostgreSQL',
+    timestamp: '2 min ago',
+    type: 'scan',
+  },
+  {
+    id: '2',
+    action: 'edge.deploy',
+    actor: 'admin@autoecoops.io',
+    resource: 'us-west-2 node',
+    timestamp: '15 min ago',
+    type: 'deploy',
+  },
+  {
+    id: '3',
+    action: 'connector.update',
+    actor: 'admin@autoecoops.io',
+    resource: 'Redis Cache config',
+    timestamp: '1h ago',
+    type: 'update',
+  },
+  {
+    id: '4',
+    action: 'scenario.create',
+    actor: 'operator@autoecoops.io',
+    resource: 'Healthcare AI Matrix',
+    timestamp: '2h ago',
+    type: 'create',
+  },
+  {
+    id: '5',
+    action: 'security.scan',
+    actor: 'system',
+    resource: 'Full vulnerability scan',
+    timestamp: '3h ago',
+    type: 'scan',
+  },
+  {
+    id: '6',
+    action: 'inference.routing_update',
+    actor: 'admin@autoecoops.io',
+    resource: 'Model routing weights',
+    timestamp: '5h ago',
+    type: 'update',
+  },
+  {
+    id: '7',
+    action: 'edge.rollback',
+    actor: 'operator@autoecoops.io',
+    resource: 'eu-central-1 node',
+    timestamp: '8h ago',
+    type: 'deploy',
+  },
+  {
+    id: '8',
+    action: 'connector.create',
+    actor: 'admin@autoecoops.io',
+    resource: 'S3 Storage connector',
+    timestamp: '1d ago',
+    type: 'create',
+  },
 ];
 
 const typeColors: Record<ActivityItem['type'], string> = {
@@ -40,7 +96,10 @@ export function RecentActivityFeed() {
             key={activity.id}
             className="flex items-start gap-3 p-2 rounded-md hover:bg-secondary/50 transition-colors"
           >
-            <Badge variant="secondary" className={`shrink-0 text-[10px] h-5 ${typeColors[activity.type]}`}>
+            <Badge
+              variant="secondary"
+              className={`shrink-0 text-[10px] h-5 ${typeColors[activity.type]}`}
+            >
               {activity.type}
             </Badge>
             <div className="flex-1 min-w-0">

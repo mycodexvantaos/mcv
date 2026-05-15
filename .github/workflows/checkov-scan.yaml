@@ -2,12 +2,12 @@ name: Checkov IaC Scan
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
       - 'deploy/**'
       - '.config/checkov/**'
   pull_request:
-    branches: [ main ]
+    branches: [main]
     paths:
       - 'deploy/**'
       - '.config/checkov/**'

@@ -3,11 +3,22 @@
  * Transformed to use FrameworkDetectionCapability for platform independence
  */
 
-import type { FrameworkDetectionCapability, FrameworkInfo } from '../packages/capabilities/src/framework-detection';
+import type {
+  FrameworkDetectionCapability,
+  FrameworkInfo,
+} from '../packages/capabilities/src/framework-detection';
 
-export type FrameworkType = "TypeScript" | "TypeScript/Node" | "JavaScript/Node" | "Python" | "Go" | "Rust" | "Mixed" | "error";
+export type FrameworkType =
+  | 'TypeScript'
+  | 'TypeScript/Node'
+  | 'JavaScript/Node'
+  | 'Python'
+  | 'Go'
+  | 'Rust'
+  | 'Mixed'
+  | 'error';
 
-export type AnalysisStatus = "pending" | "analyzing" | "done" | "error";
+export type AnalysisStatus = 'pending' | 'analyzing' | 'done' | 'error';
 
 export interface FileEntry {
   name: string;
@@ -73,7 +84,7 @@ export class ZipSynthesis {
     try {
       // Use the framework detection capability
       const result = await this.frameworkDetector!.detect({
-        files: files.map(f => f.name),
+        files: files.map((f) => f.name),
         content: undefined, // Could be enhanced to pass file contents
       });
 
@@ -90,19 +101,19 @@ export class ZipSynthesis {
    */
   private mapToFrameworkType(framework: string): FrameworkType {
     const frameworkMap: Record<string, FrameworkType> = {
-      'react': 'TypeScript',
-      'vue': 'TypeScript',
-      'angular': 'TypeScript',
-      'nextjs': 'TypeScript',
-      'node': 'JavaScript/Node',
-      'typescript': 'TypeScript/Node',
-      'python': 'Python',
-      'django': 'Python',
-      'fastapi': 'Python',
-      'flask': 'Python',
-      'go': 'Go',
-      'rust': 'Rust',
-      'mixed': 'Mixed',
+      react: 'TypeScript',
+      vue: 'TypeScript',
+      angular: 'TypeScript',
+      nextjs: 'TypeScript',
+      node: 'JavaScript/Node',
+      typescript: 'TypeScript/Node',
+      python: 'Python',
+      django: 'Python',
+      fastapi: 'Python',
+      flask: 'Python',
+      go: 'Go',
+      rust: 'Rust',
+      mixed: 'Mixed',
     };
 
     const lower = framework.toLowerCase();
@@ -118,11 +129,7 @@ export class ZipSynthesis {
   /**
    * Create a ZIP item with detected framework
    */
-  async createZipItem(
-    id: number,
-    name: string,
-    files: FileEntry[]
-  ): Promise<ZipItem> {
+  async createZipItem(id: number, name: string, files: FileEntry[]): Promise<ZipItem> {
     const frameworkType = await this.detectFrameworkType(files);
 
     return {
@@ -139,10 +146,7 @@ export class ZipSynthesis {
   /**
    * Analyze ZIP content
    */
-  async analyzeZip(
-    zipItem: ZipItem,
-    analysisProvider?: any
-  ): Promise<AnalysisResult> {
+  async analyzeZip(zipItem: ZipItem, analysisProvider?: any): Promise<AnalysisResult> {
     this.ensureInitialized();
 
     try {
@@ -152,10 +156,10 @@ export class ZipSynthesis {
       // If we have an analysis provider, use it
       if (analysisProvider) {
         const result = await analysisProvider.analyze({
-          files: zipItem.files.map(f => f.name),
+          files: zipItem.files.map((f) => f.name),
           framework: zipItem.type,
         });
-        
+
         zipItem.analysis = result;
         zipItem.status = 'done';
         return result;
@@ -163,7 +167,7 @@ export class ZipSynthesis {
 
       // Fallback to basic analysis using framework detection
       const frameworkInfo = await this.frameworkDetector!.detect({
-        files: zipItem.files.map(f => f.name),
+        files: zipItem.files.map((f) => f.name),
       });
 
       const result: AnalysisResult = {
@@ -188,11 +192,11 @@ export class ZipSynthesis {
    */
   private extractTags(info: FrameworkInfo): string[] {
     const tags: string[] = [];
-    
+
     if (info.detected) {
       tags.push(info.detected.toLowerCase());
     }
-    
+
     if (info.confidence > 0.8) {
       tags.push('high-confidence');
     } else if (info.confidence > 0.5) {
@@ -216,7 +220,7 @@ export class ZipSynthesis {
    */
   private assessValue(zipItem: ZipItem): string {
     const fileCount = zipItem.files.length;
-    
+
     if (fileCount > 100) {
       return 'Large codebase with significant functionality';
     } else if (fileCount > 50) {
@@ -231,9 +235,7 @@ export class ZipSynthesis {
   /**
    * Generate synthesis result
    */
-  async generateSynthesis(
-    zipItems: ZipItem[]
-  ): Promise<SynthesisResult> {
+  async generateSynthesis(zipItems: ZipItem[]): Promise<SynthesisResult> {
     this.ensureInitialized();
 
     const conflicts: Array<{ issue: string; solution: string }> = [];
@@ -241,8 +243,8 @@ export class ZipSynthesis {
     const actionPlan: string[] = [];
 
     // Analyze conflicts and generate synthesis
-    const frameworks = new Set(zipItems.map(z => z.type));
-    
+    const frameworks = new Set(zipItems.map((z) => z.type));
+
     if (frameworks.size > 1) {
       conflicts.push({
         issue: 'Multiple framework types detected',
@@ -271,7 +273,7 @@ export class ZipSynthesis {
    */
   async healthCheck(): Promise<boolean> {
     if (!this.frameworkDetector) return false;
-    
+
     try {
       const result = await this.frameworkDetector.healthCheck();
       return result.healthy;

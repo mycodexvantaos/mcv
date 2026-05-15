@@ -101,17 +101,17 @@ describe('Builder Package', () => {
     it('should throw error when name is missing', async () => {
       await b.initialize();
 
-      await expect(
-        b.execute({ type: 'frontend' } as any)
-      ).rejects.toThrow('Invalid build configuration: name and type are required');
+      await expect(b.execute({ type: 'frontend' } as any)).rejects.toThrow(
+        'Invalid build configuration: name and type are required'
+      );
     });
 
     it('should throw error when type is missing', async () => {
       await b.initialize();
 
-      await expect(
-        b.execute({ name: 'test-app' } as any)
-      ).rejects.toThrow('Invalid build configuration: name and type are required');
+      await expect(b.execute({ name: 'test-app' } as any)).rejects.toThrow(
+        'Invalid build configuration: name and type are required'
+      );
     });
 
     it('should use default language when not specified', async () => {
@@ -241,7 +241,9 @@ describe('Builder Package', () => {
 
       expect(result.application.createdAt).toBeDefined();
       // Should be a valid ISO date string
-      expect(new Date(result.application.createdAt).toISOString()).toBe(result.application.createdAt);
+      expect(new Date(result.application.createdAt).toISOString()).toBe(
+        result.application.createdAt
+      );
     });
   });
 

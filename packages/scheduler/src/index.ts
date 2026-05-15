@@ -1,6 +1,6 @@
 /**
  * Scheduler Module
- * 
+ *
  * This module provides job scheduling capabilities including
  * interval-based and cron-based scheduling.
  */
@@ -32,7 +32,7 @@ export class Scheduler {
       interval,
       nextRun: new Date(Date.now() + interval),
       isActive: true,
-      runCount: 0
+      runCount: 0,
     };
 
     this.jobs.set(job.id, job);
@@ -52,7 +52,7 @@ export class Scheduler {
       cron: cronExpression,
       nextRun: this.calculateNextRun(cronExpression),
       isActive: true,
-      runCount: 0
+      runCount: 0,
     };
 
     this.jobs.set(job.id, job);
@@ -117,7 +117,7 @@ export class Scheduler {
    * Get active jobs
    */
   getActiveJobs(): ScheduledJob[] {
-    return Array.from(this.jobs.values()).filter(job => job.isActive);
+    return Array.from(this.jobs.values()).filter((job) => job.isActive);
   }
 
   /**
@@ -141,7 +141,7 @@ export class Scheduler {
 
     const timer = setTimeout(async () => {
       await this.executeJob(job);
-      
+
       if (job.isActive) {
         if (job.cron) {
           job.nextRun = this.calculateNextRun(job.cron);
@@ -177,7 +177,7 @@ export class Scheduler {
     const minute = parseInt(parts[0]);
     const now = new Date();
     const next = new Date(now);
-    
+
     if (!isNaN(minute)) {
       next.setMinutes(minute, 0, 0);
       if (next <= now) {
@@ -186,7 +186,7 @@ export class Scheduler {
     } else {
       next.setHours(now.getHours() + 1);
     }
-    
+
     return next;
   }
 

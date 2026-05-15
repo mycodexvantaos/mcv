@@ -48,15 +48,24 @@ export function EditorView() {
       <Tabs defaultValue="editor-view.tsx" className="flex h-full flex-col">
         <div className="border-b border-border">
           <TabsList className="h-10 justify-start rounded-none bg-transparent p-0">
-            <TabsTrigger value="page.tsx" className="h-10 rounded-none border-b-2 border-transparent bg-transparent px-4 py-2 text-muted-foreground shadow-none data-[state=active]:border-accent data-[state=active]:bg-secondary/30 data-[state=active]:text-foreground">
+            <TabsTrigger
+              value="page.tsx"
+              className="h-10 rounded-none border-b-2 border-transparent bg-transparent px-4 py-2 text-muted-foreground shadow-none data-[state=active]:border-accent data-[state=active]:bg-secondary/30 data-[state=active]:text-foreground"
+            >
               page.tsx
               <X className="ml-2 h-3.5 w-3.5 text-muted-foreground/50 hover:text-foreground" />
             </TabsTrigger>
-            <TabsTrigger value="editor-view.tsx" className="h-10 rounded-none border-b-2 border-transparent bg-transparent px-4 py-2 text-muted-foreground shadow-none data-[state=active]:border-accent data-[state=active]:bg-secondary/30 data-[state=active]:text-foreground">
+            <TabsTrigger
+              value="editor-view.tsx"
+              className="h-10 rounded-none border-b-2 border-transparent bg-transparent px-4 py-2 text-muted-foreground shadow-none data-[state=active]:border-accent data-[state=active]:bg-secondary/30 data-[state=active]:text-foreground"
+            >
               editor-view.tsx
               <X className="ml-2 h-3.5 w-3.5 text-muted-foreground/50 hover:text-foreground" />
             </TabsTrigger>
-             <TabsTrigger value="header.tsx" className="h-10 rounded-none border-b-2 border-transparent bg-transparent px-4 py-2 text-muted-foreground shadow-none data-[state=active]:border-accent data-[state=active]:bg-secondary/30 data-[state=active]:text-foreground">
+            <TabsTrigger
+              value="header.tsx"
+              className="h-10 rounded-none border-b-2 border-transparent bg-transparent px-4 py-2 text-muted-foreground shadow-none data-[state=active]:border-accent data-[state=active]:bg-secondary/30 data-[state=active]:text-foreground"
+            >
               header.tsx
               <X className="ml-2 h-3.5 w-3.5 text-muted-foreground/50 hover:text-foreground" />
             </TabsTrigger>
@@ -67,7 +76,9 @@ export function EditorView() {
             <div className="flex text-sm font-code">
               <div className="w-12 select-none py-4 text-right text-muted-foreground/50">
                 {Array.from({ length: 32 }, (_, i) => (
-                  <div key={i} className="px-4">{i + 1}</div>
+                  <div key={i} className="px-4">
+                    {i + 1}
+                  </div>
                 ))}
               </div>
               <pre className="flex-1 py-4">
@@ -76,8 +87,12 @@ export function EditorView() {
             </div>
           </ScrollArea>
         </TabsContent>
-        <TabsContent value="page.tsx" className="flex-1 p-4">Empty file: page.tsx</TabsContent>
-        <TabsContent value="header.tsx" className="flex-1 p-4">Empty file: header.tsx</TabsContent>
+        <TabsContent value="page.tsx" className="flex-1 p-4">
+          Empty file: page.tsx
+        </TabsContent>
+        <TabsContent value="header.tsx" className="flex-1 p-4">
+          Empty file: header.tsx
+        </TabsContent>
       </Tabs>
     </div>
   );

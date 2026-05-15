@@ -137,8 +137,8 @@ capabilities:
 schedule:
   timezone: UTC
   working_hours:
-    start: "09:00"
-    end: "18:00"
+    start: '09:00'
+    end: '18:00'
   on_call:
     enabled: true
     rotation: weekly
@@ -175,7 +175,7 @@ integrations:
 # Communication Channels
 channels:
   - type: slack
-    channel: "#security-audit"
+    channel: '#security-audit'
     purpose: team_communication
   - type: email
     distribution_list: security-team@example.com

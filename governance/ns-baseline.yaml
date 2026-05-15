@@ -1,9 +1,9 @@
 baseline:
-  id: "E1-P1-001"
-  name: "Era-1 P1: 命名空間治理基線"
-  namespace: "mycodexvantaos"
-  status: "active"
-  version: "1.0.0"
-  era: "Era-1"
-  phase: "P1"
-  description: "定義 Era-1 的初始命名空間與治理邊界，確保 L0 級別的語義一致性。"
+  id: 'E1-P1-001'
+  name: 'Era-1 P1: 命名空間治理基線'
+  namespace: 'mycodexvantaos'
+  status: 'active'
+  version: '1.0.0'
+  era: 'Era-1'
+  phase: 'P1'
+  description: '定義 Era-1 的初始命名空間與治理邊界，確保 L0 級別的語義一致性。'

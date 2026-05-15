@@ -3,9 +3,9 @@
  * In-memory metrics collection
  */
 
-import type { MetricResult } from "./types";
+import type { MetricResult } from './types';
 
-export type MetricType = "counter" | "gauge" | "histogram";
+export type MetricType = 'counter' | 'gauge' | 'histogram';
 
 interface MetricDef {
   name: string;
@@ -19,16 +19,21 @@ interface MetricDef {
 export class MetricsService {
   private metrics = new Map<string, MetricDef>();
 
-  register(name: string, type: MetricType, description = ""): void {
+  register(name: string, type: MetricType, description = ''): void {
     if (!this.metrics.has(name)) {
       this.metrics.set(name, {
-        name, type, description, value: 0, labels: {}, history: [],
+        name,
+        type,
+        description,
+        value: 0,
+        labels: {},
+        history: [],
       });
     }
   }
 
   increment(name: string, delta = 1, labels?: Record<string, string>): void {
-    this.ensureMetric(name, "counter");
+    this.ensureMetric(name, 'counter');
     const m = this.metrics.get(name)!;
     m.value += delta;
     m.labels = { ...m.labels, ...labels };
@@ -36,7 +41,7 @@ export class MetricsService {
   }
 
   setGauge(name: string, value: number, labels?: Record<string, string>): void {
-    this.ensureMetric(name, "gauge");
+    this.ensureMetric(name, 'gauge');
     const m = this.metrics.get(name)!;
     m.value = value;
     m.labels = { ...m.labels, ...labels };
@@ -44,7 +49,7 @@ export class MetricsService {
   }
 
   observe(name: string, value: number, labels?: Record<string, string>): void {
-    this.ensureMetric(name, "histogram");
+    this.ensureMetric(name, 'histogram');
     const m = this.metrics.get(name)!;
     m.value = value;
     this.recordHistory(m, labels);
@@ -53,7 +58,7 @@ export class MetricsService {
   record(name: string, value: number, labels?: Record<string, string>): void {
     const m = this.metrics.get(name);
     if (!m) {
-      this.register(name, "gauge");
+      this.register(name, 'gauge');
     }
     const metric = this.metrics.get(name)!;
     metric.value = value;

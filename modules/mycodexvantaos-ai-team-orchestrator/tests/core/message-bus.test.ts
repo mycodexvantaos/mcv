@@ -124,9 +124,7 @@ describe('MessageBus', () => {
 
       messageBus.emit('task:created', { task_id: 'test-task' });
 
-      expect(handler).toHaveBeenCalledWith(
-        { task_id: 'test-task' }
-      );
+      expect(handler).toHaveBeenCalledWith({ task_id: 'test-task' });
     });
 
     it('should register event handler', () => {
@@ -258,9 +256,9 @@ describe('MessageBus', () => {
     it('should handle queue size limit', () => {
       const smallBus = new MessageBus({ maxQueueSize: 2 });
       const handler = jest.fn();
-      
+
       smallBus.subscribe('urn:mycodexvantaos:agent:queue-test' as AgentURN, handler);
-      
+
       // Send messages to fill queue
       for (let i = 0; i < 5; i++) {
         smallBus.send({
@@ -270,7 +268,7 @@ describe('MessageBus', () => {
           priority: 'normal',
         });
       }
-      
+
       const stats = smallBus.getStats();
       expect(stats.queueSize).toBeLessThanOrEqual(2);
     });
@@ -278,9 +276,9 @@ describe('MessageBus', () => {
     it('should process queued messages', async () => {
       const handler = jest.fn().mockResolvedValue(undefined);
       const agentId = 'urn:mycodexvantaos:agent:queue-process' as AgentURN;
-      
+
       messageBus.subscribe(agentId, handler);
-      
+
       messageBus.send({
         sender_id: 'urn:mycodexvantaos:agent:sender' as AgentURN,
         recipient_id: agentId,
@@ -288,10 +286,10 @@ describe('MessageBus', () => {
         content: { type: 'text', data: 'Queued message' },
         priority: 'normal',
       });
-      
+
       // Allow async processing
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
       expect(handler).toHaveBeenCalled();
     });
 
@@ -308,13 +306,13 @@ describe('MessageBus', () => {
     it('should emit broadcast event', () => {
       const eventHandler = jest.fn();
       messageBus.on('message:sent', eventHandler);
-      
+
       messageBus.broadcast(
         'urn:mycodexvantaos:agent:broadcaster' as AgentURN,
         'notification' as any,
         { type: 'text', data: 'Broadcast message' }
       );
-      
+
       expect(eventHandler).toHaveBeenCalled();
       const call = eventHandler.mock.calls[0][0];
       expect(call.broadcast).toBe(true);
@@ -326,7 +324,7 @@ describe('MessageBus', () => {
         'notification' as any,
         { type: 'text', data: 'Broadcast message' }
       );
-      
+
       expect(urn).toMatch(/^urn:mycodexvantaos:message:/);
     });
   });
@@ -336,7 +334,7 @@ describe('MessageBus', () => {
   describe('processQueue - queued messages processed on subscribe', () => {
     it('should process queued messages when handler subscribes', async () => {
       const agentId = 'urn:mycodexvantaos:agent:queue-then-subscribe' as AgentURN;
-      
+
       // First send messages without subscription - they get queued
       messageBus.send({
         sender_id: 'urn:mycodexvantaos:agent:sender' as AgentURN,
@@ -345,14 +343,14 @@ describe('MessageBus', () => {
         content: { type: 'text', data: 'Queued message' },
         priority: 'normal',
       });
-      
+
       // Now subscribe - this triggers processQueue
       const handler = jest.fn().mockResolvedValue(undefined);
       messageBus.subscribe(agentId, handler);
-      
+
       // Wait for async processing
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
       // Handler should receive the queued message
       expect(handler).toHaveBeenCalled();
     });
@@ -361,7 +359,7 @@ describe('MessageBus', () => {
       const agentId = 'urn:mycodexvantaos:agent:queue-received' as AgentURN;
       const receivedHandler = jest.fn();
       messageBus.on('message:received', receivedHandler);
-      
+
       // Send without subscription
       messageBus.send({
         sender_id: 'urn:mycodexvantaos:agent:sender' as AgentURN,
@@ -370,13 +368,13 @@ describe('MessageBus', () => {
         content: { type: 'text', data: 'Test message' },
         priority: 'normal',
       });
-      
+
       // Subscribe to trigger processing
       const handler = jest.fn().mockResolvedValue(undefined);
       messageBus.subscribe(agentId, handler);
-      
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
+
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
       // message:received should be emitted after successful processing
       expect(receivedHandler).toHaveBeenCalled();
     });
@@ -388,9 +386,9 @@ describe('MessageBus', () => {
         retryDelayMs: 10,
         messageTimeoutMs: 30,
       });
-      
+
       const agentId = 'urn:mycodexvantaos:agent:timeout-queue' as AgentURN;
-      
+
       // Send message without subscription
       shortTimeoutBus.send({
         sender_id: 'urn:mycodexvantaos:agent:sender' as AgentURN,
@@ -399,21 +397,21 @@ describe('MessageBus', () => {
         content: { type: 'text', data: 'Will timeout' },
         priority: 'normal',
       });
-      
+
       // Wait for message to expire in queue
-      await new Promise(resolve => setTimeout(resolve, 60));
-      
+      await new Promise((resolve) => setTimeout(resolve, 60));
+
       // Now subscribe - message should be timed out
       const handler = jest.fn().mockResolvedValue(undefined);
       shortTimeoutBus.subscribe(agentId, handler);
-      
-      await new Promise(resolve => setTimeout(resolve, 50));
-      
+
+      await new Promise((resolve) => setTimeout(resolve, 50));
+
       // Handler should not be called since message timed out
       // or stats should show the timeout
       const stats = shortTimeoutBus.getStats();
       expect(stats.messagesFailed).toBeGreaterThanOrEqual(0);
-      
+
       shortTimeoutBus.clear();
     });
 
@@ -424,12 +422,12 @@ describe('MessageBus', () => {
         retryDelayMs: 5,
         messageTimeoutMs: 20,
       });
-      
+
       const timeoutHandler = jest.fn();
       shortTimeoutBus.on('message:timeout', timeoutHandler);
-      
+
       const agentId = 'urn:mycodexvantaos:agent:timeout-event' as AgentURN;
-      
+
       // Send message without subscription
       shortTimeoutBus.send({
         sender_id: 'urn:mycodexvantaos:agent:sender' as AgentURN,
@@ -438,19 +436,19 @@ describe('MessageBus', () => {
         content: { type: 'text', data: 'Timeout test' },
         priority: 'normal',
       });
-      
+
       // Wait for timeout
-      await new Promise(resolve => setTimeout(resolve, 50));
-      
+      await new Promise((resolve) => setTimeout(resolve, 50));
+
       // Subscribe to trigger processQueue which will find expired message
       const handler = jest.fn();
       shortTimeoutBus.subscribe(agentId, handler);
-      
-      await new Promise(resolve => setTimeout(resolve, 50));
-      
+
+      await new Promise((resolve) => setTimeout(resolve, 50));
+
       // Timeout event should have been emitted
       expect(timeoutHandler).toHaveBeenCalled();
-      
+
       shortTimeoutBus.clear();
     });
   });
@@ -458,7 +456,7 @@ describe('MessageBus', () => {
   describe('processQueue - retry on handler failure', () => {
     it('should retry when async handler throws', async () => {
       const agentId = 'urn:mycodexvantaos:agent:retry-async' as AgentURN;
-      
+
       // Send message without subscription
       messageBus.send({
         sender_id: 'urn:mycodexvantaos:agent:sender' as AgentURN,
@@ -467,16 +465,17 @@ describe('MessageBus', () => {
         content: { type: 'text', data: 'Retry test' },
         priority: 'normal',
       });
-      
+
       // Subscribe with failing handler
-      const handler = jest.fn()
+      const handler = jest
+        .fn()
         .mockRejectedValueOnce(new Error('First attempt failed'))
         .mockResolvedValueOnce(undefined);
-      
+
       messageBus.subscribe(agentId, handler);
-      
-      await new Promise(resolve => setTimeout(resolve, 150));
-      
+
+      await new Promise((resolve) => setTimeout(resolve, 150));
+
       // Handler should have been called at least once
       expect(handler).toHaveBeenCalled();
     });
@@ -488,12 +487,12 @@ describe('MessageBus', () => {
         retryDelayMs: 5,
         messageTimeoutMs: 5000,
       });
-      
+
       const failedHandler = jest.fn();
       lowRetryBus.on('message:failed', failedHandler);
-      
+
       const agentId = 'urn:mycodexvantaos:agent:fail-queued' as AgentURN;
-      
+
       // Send message without subscription
       lowRetryBus.send({
         sender_id: 'urn:mycodexvantaos:agent:sender' as AgentURN,
@@ -502,16 +501,16 @@ describe('MessageBus', () => {
         content: { type: 'text', data: 'Will fail' },
         priority: 'normal',
       });
-      
+
       // Subscribe with always-failing handler
       const handler = jest.fn().mockRejectedValue(new Error('Always fails'));
       lowRetryBus.subscribe(agentId, handler);
-      
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
+
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
       // Message should have failed after retries
       expect(failedHandler).toHaveBeenCalled();
-      
+
       lowRetryBus.clear();
     });
   });

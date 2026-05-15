@@ -4,23 +4,23 @@
  * Determines which providers are available and wires them
  * into the platform's service layer.
  */
-import pino from "pino";
+import pino from 'pino';
 
-const logger = pino({ name: "provider-registry" });
+const logger = pino({ name: 'provider-registry' });
 
 export type ProviderCapability =
-  | "database"
-  | "storage"
-  | "auth"
-  | "queue"
-  | "stateStore"
-  | "secrets"
-  | "repo"
-  | "deploy"
-  | "validation"
-  | "security"
-  | "observability"
-  | "notification";
+  | 'database'
+  | 'storage'
+  | 'auth'
+  | 'queue'
+  | 'stateStore'
+  | 'secrets'
+  | 'repo'
+  | 'deploy'
+  | 'validation'
+  | 'security'
+  | 'observability'
+  | 'notification';
 
 export interface Provider {
   name: string;
@@ -35,13 +35,13 @@ export class ProviderRegistry {
   async initialize(): Promise<void> {
     logger.info(
       { capabilities: Array.from(this.providers.keys()) },
-      "ProviderRegistry initialized"
+      'ProviderRegistry initialized'
     );
   }
 
   register(provider: Provider): void {
     this.providers.set(provider.capability, provider);
-    logger.debug({ capability: provider.capability, name: provider.name }, "Provider registered");
+    logger.debug({ capability: provider.capability, name: provider.name }, 'Provider registered');
   }
 
   resolve<T extends Provider>(capability: ProviderCapability): T {

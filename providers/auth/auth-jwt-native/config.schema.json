@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/auth/jwt-native/config.schema.json",
   "title": "auth-jwt-native Configuration",
   "type": "object",
-  "required": [
-    "jwtSecret"
-  ],
+  "required": ["jwtSecret"],
   "properties": {
     "jwtSecret": {
       "type": "string",
@@ -17,10 +15,7 @@
     },
     "algorithm": {
       "type": "string",
-      "enum": [
-        "HS256",
-        "RS256"
-      ],
+      "enum": ["HS256", "RS256"],
       "default": "HS256"
     }
   }

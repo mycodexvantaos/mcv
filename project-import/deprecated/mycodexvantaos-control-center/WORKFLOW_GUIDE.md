@@ -293,6 +293,7 @@ python3 scripts/orchestration/state-manager.py get \
 ### Viewing Reports
 
 Access execution reports:
+
 - HTML reports: Uploaded as artifacts
 - Metrics: Published to Prometheus/CloudWatch
 - Logs: Available in GitHub Actions logs
@@ -300,6 +301,7 @@ Access execution reports:
 ### Failure Detection
 
 Common failure scenarios:
+
 1. Circular dependencies
 2. Missing repositories
 3. Configuration errors
@@ -311,15 +313,19 @@ Common failure scenarios:
 ### Common Issues
 
 **Issue: Circular dependency detected**
+
 - Solution: Review dependencies.yaml and remove circular references
 
 **Issue: Repository not found in registry**
+
 - Solution: Add repository to repos.yaml in control-center
 
 **Issue: Execution timeout**
+
 - Solution: Increase timeout in queue-config.yaml or optimize repository workflow
 
 **Issue: Rollback failed**
+
 - Solution: Check rollback strategy in queue-config.yaml and verify repository capabilities
 
 ### Debug Mode
@@ -334,11 +340,13 @@ env:
 ### Rollback Procedures
 
 Automatic rollback triggers:
+
 - Execution failure in auto-rollback plane
 - Dependency chain breakage
 - SLA violation
 
 Manual rollback steps:
+
 1. Identify failed repository
 2. Calculate rollback order
 3. Execute rollback by plane
@@ -366,11 +374,13 @@ Manual rollback steps:
 ## Support and Maintenance
 
 ### Documentation Updates
+
 - Update this guide when adding new features
 - Document custom configurations
 - Maintain change log
 
 ### Regular Maintenance
+
 - Review and update dependencies quarterly
 - Validate configuration monthly
 - Test rollback procedures weekly

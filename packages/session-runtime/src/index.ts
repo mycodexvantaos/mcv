@@ -1,6 +1,6 @@
 /**
  * Session Runtime Module
- * 
+ *
  * This module provides session management capabilities including
  * session creation, storage, retrieval, and cleanup.
  */
@@ -83,7 +83,7 @@ export class SessionRuntime {
   async create(userId?: string, options: SessionOptions = {}): Promise<SessionData> {
     const sessionId = this.generateSessionId();
     const now = new Date();
-    
+
     const ttl = options.ttl || this.defaultTTL;
     const expiresAt = ttl ? new Date(now.getTime() + ttl * 1000) : undefined;
 
@@ -94,7 +94,7 @@ export class SessionRuntime {
       updatedAt: now,
       expiresAt,
       data: options.data || {},
-      metadata: options.metadata || {}
+      metadata: options.metadata || {},
     };
 
     await this.store.set(sessionId, session);
@@ -139,12 +139,12 @@ export class SessionRuntime {
       // Merge data by default
       data: {
         ...session.data,
-        ...(data.data || {})
+        ...(data.data || {}),
       },
       metadata: {
         ...session.metadata,
-        ...(data.metadata || {})
-      }
+        ...(data.metadata || {}),
+      },
     };
 
     await this.store.set(sessionId, updatedSession);
@@ -159,7 +159,7 @@ export class SessionRuntime {
     if (!session) {
       return false;
     }
-    
+
     await this.store.delete(sessionId);
     return true;
   }
@@ -195,7 +195,7 @@ export class SessionRuntime {
     const sessions = await this.store.getAll();
     const now = new Date();
 
-    return sessions.filter(session => {
+    return sessions.filter((session) => {
       if (session.expiresAt && now > session.expiresAt) {
         return false;
       }
@@ -208,7 +208,7 @@ export class SessionRuntime {
    */
   async getUserSessions(userId: string): Promise<SessionData[]> {
     const sessions = await this.store.getAll();
-    return sessions.filter(session => session.userId === userId);
+    return sessions.filter((session) => session.userId === userId);
   }
 
   /**
@@ -265,8 +265,8 @@ export class SessionRuntime {
     const updated = await this.update(sessionId, {
       data: {
         ...session.data,
-        [key]: value
-      }
+        [key]: value,
+      },
     });
 
     return updated !== null;
@@ -289,7 +289,7 @@ export class SessionRuntime {
     const updatedSession: SessionData = {
       ...session,
       data: newData,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
     // Directly update the store

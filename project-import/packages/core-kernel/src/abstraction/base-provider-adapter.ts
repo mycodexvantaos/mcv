@@ -1,22 +1,24 @@
 /**
  * Base Provider Adapter
- * 
+ *
  * Abstract base class for provider adapters that provides common functionality
  * and enforces the adapter contract. Concrete adapters should extend this base
  * class and implement the abstract methods.
  */
 
 import pino from 'pino';
-import { 
-  ProviderAdapter, 
-  ProviderContext, 
-  AdapterHealthStatus 
+import {
+  ProviderAdapter,
+  ProviderContext,
+  AdapterHealthStatus,
 } from './provider-adapter.interface';
 import { ProviderHealthStatus } from '../interfaces/runtime';
 
 const logger = pino({ name: 'base-provider-adapter' });
 
-export abstract class BaseProviderAdapter<TImplementation = any> implements ProviderAdapter<TImplementation> {
+export abstract class BaseProviderAdapter<
+  TImplementation = any,
+> implements ProviderAdapter<TImplementation> {
   protected implementation: TImplementation | null = null;
   protected config: Record<string, any> = {};
   protected initialized: boolean = false;
@@ -35,7 +37,10 @@ export abstract class BaseProviderAdapter<TImplementation = any> implements Prov
    * Initialize the adapter
    */
   async initialize(config?: Record<string, any>): Promise<void> {
-    logger.info({ adapter: this.name, capability: this.capability }, 'Initializing provider adapter');
+    logger.info(
+      { adapter: this.name, capability: this.capability },
+      'Initializing provider adapter'
+    );
 
     if (this.initialized) {
       logger.warn({ adapter: this.name }, 'Adapter already initialized');
@@ -63,9 +68,11 @@ export abstract class BaseProviderAdapter<TImplementation = any> implements Prov
     } catch (error) {
       this.healthStatus = ProviderHealthStatus.UNHEALTHY;
       this.lastHealthCheck = new Date();
-      
+
       logger.error({ adapter: this.name, error }, 'Provider adapter initialization failed');
-      throw new Error(`Adapter initialization failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Adapter initialization failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
@@ -94,20 +101,23 @@ export abstract class BaseProviderAdapter<TImplementation = any> implements Prov
 
       // Perform implementation-specific health check
       const isHealthy = await this.performHealthCheck(this.implementation!);
-      
+
       this.healthStatus = isHealthy ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.UNHEALTHY;
       this.lastHealthCheck = new Date();
 
-      logger.debug({ 
-        adapter: this.name, 
-        status: this.healthStatus 
-      }, 'Health check completed');
+      logger.debug(
+        {
+          adapter: this.name,
+          status: this.healthStatus,
+        },
+        'Health check completed'
+      );
 
       return isHealthy;
     } catch (error) {
       this.healthStatus = ProviderHealthStatus.UNHEALTHY;
       this.lastHealthCheck = new Date();
-      
+
       logger.error({ adapter: this.name, error }, 'Health check failed');
       return false;
     }
@@ -161,7 +171,7 @@ export abstract class BaseProviderAdapter<TImplementation = any> implements Prov
     } catch (error) {
       this.healthStatus = ProviderHealthStatus.UNHEALTHY;
       this.lastHealthCheck = new Date();
-      
+
       logger.error({ adapter: this.name, error }, 'Provider adapter reconfiguration failed');
       throw error;
     }
@@ -175,7 +185,7 @@ export abstract class BaseProviderAdapter<TImplementation = any> implements Prov
       adapterName: this.name,
       status: this.healthStatus,
       timestamp: this.lastHealthCheck || new Date(),
-      message: this.getStatusMessage()
+      message: this.getStatusMessage(),
     };
   }
 

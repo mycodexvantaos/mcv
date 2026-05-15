@@ -1,6 +1,6 @@
 /**
  * Test Generator Module
- * 
+ *
  * This module provides capabilities for generating unit tests, integration tests,
  * and E2E tests from code models and API specifications.
  */
@@ -51,49 +51,39 @@ export class TestGenerator {
       coverage: true,
       mocking: true,
       includeSnapshots: false,
-      ...options
+      ...options,
     };
   }
 
   /**
    * Generate unit tests for a class
    */
-  generateUnitTest(
-    className: string,
-    methods: string[],
-    imports: string[] = []
-  ): TestSuite {
+  generateUnitTest(className: string, methods: string[], imports: string[] = []): TestSuite {
     const testMethods: TestMethod[] = [];
 
     for (const methodName of methods) {
       testMethods.push({
         name: `should execute ${methodName} successfully`,
         type: 'unit',
-        assertions: [
-          `expect(result).toBeDefined()`,
-          `expect(result).not.toThrow()`
-        ],
+        assertions: [`expect(result).toBeDefined()`, `expect(result).not.toThrow()`],
         mocks: [
           {
             method: methodName,
-            returnValue: '{}'
-          }
-        ]
+            returnValue: '{}',
+          },
+        ],
       });
 
       testMethods.push({
         name: `should handle errors in ${methodName}`,
         type: 'unit',
-        assertions: [
-          `expect(error).toBeDefined()`,
-          `expect(spy).toHaveBeenCalled()`
-        ],
+        assertions: [`expect(error).toBeDefined()`, `expect(spy).toHaveBeenCalled()`],
         mocks: [
           {
             method: methodName,
-            throwError: 'new Error("Test error")'
-          }
-        ]
+            throwError: 'new Error("Test error")',
+          },
+        ],
       });
     }
 
@@ -103,21 +93,20 @@ export class TestGenerator {
       type: 'unit',
       methods: testMethods,
       imports: [
-        this.options.framework === 'jest' ? `import { describe, it, expect, jest } from '@jest/globals';` : '',
-        ...imports
+        this.options.framework === 'jest'
+          ? `import { describe, it, expect, jest } from '@jest/globals';`
+          : '',
+        ...imports,
       ],
       setup: 'let instance: ' + className + ';',
-      teardown: 'jest.clearAllMocks();'
+      teardown: 'jest.clearAllMocks();',
     };
   }
 
   /**
    * Generate integration tests for API endpoints
    */
-  generateIntegrationTests(
-    apiName: string,
-    endpoints: ApiEndpoint[]
-  ): TestSuite {
+  generateIntegrationTests(apiName: string, endpoints: ApiEndpoint[]): TestSuite {
     const testMethods: TestMethod[] = [];
 
     for (const endpoint of endpoints) {
@@ -126,14 +115,18 @@ export class TestGenerator {
         type: 'integration',
         assertions: [],
         setup: `const response = await request(app).${endpoint.method.toLowerCase()}('${endpoint.path}');`,
-        mocks: []
+        mocks: [],
       };
 
       // Add assertions based on responses
       if (endpoint.responses) {
-        const successResponse = endpoint.responses.find(r => r.statusCode >= 200 && r.statusCode < 300);
+        const successResponse = endpoint.responses.find(
+          (r) => r.statusCode >= 200 && r.statusCode < 300
+        );
         if (successResponse) {
-          testMethod.assertions.push('expect(response.status).toBe(' + successResponse.statusCode + ')');
+          testMethod.assertions.push(
+            'expect(response.status).toBe(' + successResponse.statusCode + ')'
+          );
           testMethod.assertions.push('expect(response.body).toBeDefined()');
         }
       }
@@ -146,33 +139,24 @@ export class TestGenerator {
       subject: apiName,
       type: 'integration',
       methods: testMethods,
-      imports: [
-        'import request from \'supertest\';',
-        'import { app } from \'../src/app\';'
-      ],
+      imports: ["import request from 'supertest';", "import { app } from '../src/app';"],
       setup: '',
-      teardown: ''
+      teardown: '',
     };
   }
 
   /**
    * Generate E2E test scenarios
    */
-  generateE2ETest(
-    scenarioName: string,
-    steps: string[]
-  ): TestSuite {
+  generateE2ETest(scenarioName: string, steps: string[]): TestSuite {
     const testMethods: TestMethod[] = [
       {
         name: `should complete ${scenarioName} scenario`,
         type: 'e2e',
-        assertions: [
-          'expect(finalState).toBeDefined()',
-          'expect(finalState).toBe(true)'
-        ],
+        assertions: ['expect(finalState).toBeDefined()', 'expect(finalState).toBe(true)'],
         setup: steps.join('\n  '),
-        teardown: 'await cleanupTestData();'
-      }
+        teardown: 'await cleanupTestData();',
+      },
     ];
 
     return {
@@ -180,11 +164,9 @@ export class TestGenerator {
       subject: scenarioName,
       type: 'e2e',
       methods: testMethods,
-      imports: [
-        'import { test, expect } from \'@playwright/test\';'
-      ],
+      imports: ["import { test, expect } from '@playwright/test';"],
       setup: '',
-      teardown: ''
+      teardown: '',
     };
   }
 
@@ -196,7 +178,7 @@ export class TestGenerator {
 
     // Add imports
     if (testSuite.imports && testSuite.imports.length > 0) {
-      content += testSuite.imports.filter(i => i).join('\n') + '\n\n';
+      content += testSuite.imports.filter((i) => i).join('\n') + '\n\n';
     }
 
     // Add describe block
@@ -220,7 +202,7 @@ export class TestGenerator {
     // Add test methods
     for (const method of testSuite.methods) {
       content += `  it('${method.name}', async () => {\n`;
-      
+
       // Add setup code
       if (method.setup) {
         content += `    ${method.setup}\n`;
@@ -252,29 +234,31 @@ export class TestGenerator {
   /**
    * Generate test coverage configuration
    */
-  generateCoverageConfig(thresholds: {
-    statements?: number;
-    branches?: number;
-    functions?: number;
-    lines?: number;
-  } = {}): string {
+  generateCoverageConfig(
+    thresholds: {
+      statements?: number;
+      branches?: number;
+      functions?: number;
+      lines?: number;
+    } = {}
+  ): string {
     const config = {
       collectCoverageFrom: [
         'src/**/*.ts',
         '!src/**/*.d.ts',
         '!src/**/*.interface.ts',
         '!src/types/**',
-        '!**/__tests__/**'
+        '!**/__tests__/**',
       ],
       coverageThreshold: {
         global: {
           statements: thresholds.statements || 80,
           branches: thresholds.branches || 80,
           functions: thresholds.functions || 80,
-          lines: thresholds.lines || 80
-        }
+          lines: thresholds.lines || 80,
+        },
       },
-      coverageReporters: ['text', 'lcov', 'html', 'json']
+      coverageReporters: ['text', 'lcov', 'html', 'json'],
     };
 
     if (this.options.framework === 'jest') {
@@ -289,14 +273,14 @@ export class TestGenerator {
    */
   generateMockData(schema: Record<string, any>): string {
     let mockData = '// Auto-generated mock data\n\n';
-    
+
     mockData += `const mock${this.formatTypeName(schema.name || 'Data')} = {\n`;
-    
+
     for (const [key, value] of Object.entries(schema.properties || {})) {
       const mockValue = this.generateMockValue(value);
       mockData += `  ${key}: ${mockValue},\n`;
     }
-    
+
     mockData += `};\n\n`;
     mockData += `export default mock${this.formatTypeName(schema.name || 'Data')};\n`;
 
@@ -336,11 +320,11 @@ export class TestGenerator {
    */
   private getTestAction(method: string): string {
     const actions: Record<string, string> = {
-      'GET': 'retrieve',
-      'POST': 'create',
-      'PUT': 'update',
-      'DELETE': 'delete',
-      'PATCH': 'partially update'
+      GET: 'retrieve',
+      POST: 'create',
+      PUT: 'update',
+      DELETE: 'delete',
+      PATCH: 'partially update',
     };
     return actions[method] || 'handle';
   }
@@ -355,13 +339,13 @@ export class TestGenerator {
 
     const type = typeInfo.type || 'string';
     const mockValues: Record<string, string> = {
-      'string': "'test string'",
-      'number': '123',
-      'integer': '123',
-      'boolean': 'true',
-      'object': '{}',
-      'array': '[]',
-      'date': "'2023-01-01T00:00:00.000Z'"
+      string: "'test string'",
+      number: '123',
+      integer: '123',
+      boolean: 'true',
+      object: '{}',
+      array: '[]',
+      date: "'2023-01-01T00:00:00.000Z'",
     };
 
     return mockValues[type] || "'test'";

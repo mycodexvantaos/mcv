@@ -1,6 +1,6 @@
 /**
  * 轉化示例：將 cross-framework/api-client.ts 轉化為使用 Provider 架構
- * 
+ *
  * 這個示例展示了如何將直接調用外部 API 的代碼轉化為使用統一的能力介面
  */
 
@@ -58,7 +58,7 @@ import {
 
 /**
  * 轉化後的 API 客戶端
- * 
+ *
  * 使用 Provider Factory 獲取代碼合成能力
  * 根據運行時模式自動選擇 Native/External/Hybrid Provider
  */
@@ -82,7 +82,7 @@ export class CodeSynthesisClient {
 
   /**
    * 調用代碼合成 API（轉化後版本）
-   * 
+   *
    * @param prompt - 提示詞
    * @param options - 可選參數
    * @returns 合成結果
@@ -219,7 +219,7 @@ async function example4() {
 
   try {
     const result = await client.callSynthesis('Create a component');
-    
+
     if (result.fallbackTriggered) {
       console.warn('Using native provider (external API unavailable)');
     }
@@ -241,7 +241,7 @@ async function example4() {
 
 /**
  * 根據環境變數自動選擇 Provider
- * 
+ *
  * .env.native: 使用 Native Provider（離線）
  * .env.hybrid: 使用 Hybrid Provider（優先外部，可降級）
  * .env.connected: 使用 External Provider（僅外部）
@@ -256,9 +256,9 @@ export async function createClient(): Promise<CodeSynthesisClient> {
 
 /**
  * 向後兼容的包裝函數
- * 
+ *
  * 保持原有 API 簽名，內部使用新架構
- * 
+ *
  * @deprecated 建議使用 CodeSynthesisClient 類
  */
 export async function callClaudeAPI(

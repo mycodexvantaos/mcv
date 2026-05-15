@@ -8,7 +8,9 @@ const write = (p: string, content: string) => {
 };
 
 // 1. Vector Store Logic
-write('/services/mycodexvantaos-data-vector-store/src/index.ts', `
+write(
+  '/services/mycodexvantaos-data-vector-store/src/index.ts',
+  `
 import { Kernel } from '@mycodexvantaos/core-kernel';
 
 export class VectorStoreService {
@@ -47,10 +49,13 @@ export function bootstrapVectorStore(kernel: Kernel) {
   vectorService.initialize();
   return vectorService;
 }
-`);
+`
+);
 
 // 2. Integration / Simulation Update
-write('/simulation.ts', `
+write(
+  '/simulation.ts',
+  `
 import { Kernel } from './services/mycodexvantaos-core-kernel/src/index';
 import { bootstrapAuthService } from './services/mycodexvantaos-core-auth/src/index';
 import { bootstrapVectorStore } from './services/mycodexvantaos-data-vector-store/src/index';
@@ -76,10 +81,13 @@ async function run() {
   }
 }
 run();
-`);
+`
+);
 
 // 3. Kubernetes Base additions
-write('/infra/kubernetes/base/mycodexvantaos-data-vector-store/deployment.yaml', `
+write(
+  '/infra/kubernetes/base/mycodexvantaos-data-vector-store/deployment.yaml',
+  `
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -96,20 +104,26 @@ spec:
       containers:
       - name: mycodexvantaos-data-vector-store
         image: registry.internal/mycodexvantaos/mycodexvantaos-data-vector-store:latest
-`);
+`
+);
 
-write('/infra/kubernetes/base/kustomization.yaml', `
+write(
+  '/infra/kubernetes/base/kustomization.yaml',
+  `
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
   - mycodexvantaos-core-auth/deployment.yaml
   - mycodexvantaos-data-vector-store/deployment.yaml
-`);
+`
+);
 
 // 4. Kubernetes Overlays (Kustomize)
 // Development Overlay
-write('/infra/kubernetes/overlays/development/kustomization.yaml', `
+write(
+  '/infra/kubernetes/overlays/development/kustomization.yaml',
+  `
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
@@ -121,18 +135,24 @@ patches:
   - path: replica-patch.yaml
     target:
       kind: Deployment
-`);
-write('/infra/kubernetes/overlays/development/replica-patch.yaml', `
+`
+);
+write(
+  '/infra/kubernetes/overlays/development/replica-patch.yaml',
+  `
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ".*"
 spec:
   replicas: 1 # Development instance saves cost
-`);
+`
+);
 
 // Production Overlay
-write('/infra/kubernetes/overlays/production/kustomization.yaml', `
+write(
+  '/infra/kubernetes/overlays/production/kustomization.yaml',
+  `
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
@@ -148,18 +168,24 @@ patches:
   - path: replica-patch.yaml
     target:
       kind: Deployment
-`);
-write('/infra/kubernetes/overlays/production/replica-patch.yaml', `
+`
+);
+write(
+  '/infra/kubernetes/overlays/production/replica-patch.yaml',
+  `
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ".*"
 spec:
   replicas: 3 # High availability setup for production
-`);
+`
+);
 
 // 5. ArgoCD ApplicationSet (GitOps)
-write('/infra/gitops/argocd/applicationset.yaml', `
+write(
+  '/infra/gitops/argocd/applicationset.yaml',
+  `
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
@@ -193,4 +219,5 @@ spec:
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
-`);
+`
+);

@@ -7,8 +7,8 @@ metadata:
     app: mycodexvantaos-infra-gitops
     part-of: mycodexvantaos
 data:
-  NODE_ENV: "production"
-  LOG_LEVEL: "info"
-  RECONCILE_INTERVAL_MS: "60000"
-  NAMESPACE: "mycodexvantaos"
-  GITOPS_FIELD_MANAGER: "mycodexvantaos-gitops"
+  NODE_ENV: 'production'
+  LOG_LEVEL: 'info'
+  RECONCILE_INTERVAL_MS: '60000'
+  NAMESPACE: 'mycodexvantaos'
+  GITOPS_FIELD_MANAGER: 'mycodexvantaos-gitops'

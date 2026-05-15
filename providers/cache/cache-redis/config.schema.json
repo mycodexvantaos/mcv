@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/cache/redis/config.schema.json",
   "title": "cache-redis Configuration",
   "type": "object",
-  "required": [
-    "url"
-  ],
+  "required": ["url"],
   "properties": {
     "url": {
       "type": "string",

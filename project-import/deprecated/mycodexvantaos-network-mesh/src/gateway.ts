@@ -1,4 +1,4 @@
-import type { GatewayRoute, GatewayResponse } from "./types";
+import type { GatewayRoute, GatewayResponse } from './types';
 
 let counter = 0;
 
@@ -31,10 +31,7 @@ export class GatewayService {
     }
     // Prefix match fallback
     for (const route of this.routes.values()) {
-      if (
-        path.startsWith(route.path) &&
-        route.method.toUpperCase() === method.toUpperCase()
-      ) {
+      if (path.startsWith(route.path) && route.method.toUpperCase() === method.toUpperCase()) {
         return route;
       }
     }
@@ -46,14 +43,14 @@ export class GatewayService {
     if (!route) {
       return {
         statusCode: 404,
-        body: { error: "Route not found" },
-        headers: { "content-type": "application/json" },
+        body: { error: 'Route not found' },
+        headers: { 'content-type': 'application/json' },
       };
     }
     return {
       statusCode: 200,
       body: { target: route.target, path, method, middleware: route.middleware },
-      headers: { "content-type": "application/json", "x-gateway-route": route.id },
+      headers: { 'content-type': 'application/json', 'x-gateway-route': route.id },
     };
   }
 }

@@ -7,19 +7,19 @@ declare global {
     // Cloudflare bindings
     CLOUDFLARE_ACCOUNT_ID: string;
     CLOUDFLARE_ZONE_ID: string;
-    
+
     // Environment
     ENVIRONMENT: 'production' | 'preview' | 'development';
     NEXT_PUBLIC_APP_URL: string;
-    
+
     // Database
     DATABASE_URL?: string;
     REDIS_URL?: string;
-    
+
     // Authentication
     NEXTAUTH_SECRET?: string;
     NEXTAUTH_URL?: string;
-    
+
     // AI Services
     GENKIT_API_KEY?: string;
     OPENAI_API_KEY?: string;

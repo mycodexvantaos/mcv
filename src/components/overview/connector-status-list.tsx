@@ -62,7 +62,9 @@ export function ConnectorStatusList() {
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-xs text-muted-foreground font-mono">{connector.latencyMs}ms</span>
+                <span className="text-xs text-muted-foreground font-mono">
+                  {connector.latencyMs}ms
+                </span>
                 <div className="flex items-center gap-1.5">
                   <Circle className={`h-2 w-2 fill-current ${statusColors[connector.status]}`} />
                   <span className={`text-xs ${statusColors[connector.status]}`}>

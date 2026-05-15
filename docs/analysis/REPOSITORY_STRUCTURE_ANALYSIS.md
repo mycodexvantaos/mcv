@@ -13,31 +13,33 @@ MyCodeXvantaOS 是一個量子感知（Quantum-Aware）的企業級平台作業�
 
 ### 核心身份
 
-| 屬性 | 值 |
-|------|-----|
-| 組織識別 | `mycodexvantaos` |
-| NPM Scope | `@mycodexvantaos` |
-| URN 命名空間 | `urn:mycodexvantaos` |
-| 內部協定 | `mycodexvantaos://` |
-| OCI Registry | `ghcr.io/mycodexvantaos` |
+| 屬性          | 值                       |
+| ------------- | ------------------------ |
+| 組織識別      | `mycodexvantaos`         |
+| NPM Scope     | `@mycodexvantaos`        |
+| URN 命名空間  | `urn:mycodexvantaos`     |
+| 內部協定      | `mycodexvantaos://`      |
+| OCI Registry  | `ghcr.io/mycodexvantaos` |
 | K8s API Group | `mycodexvantaos.quantum` |
-| CRD Group | `mycodexvantaos.quantum` |
+| CRD Group     | `mycodexvantaos.quantum` |
 
 ---
 
 ## 二、六層架構模型 (Six-Layer Architecture)
 
 ### Layer A: 建構層 (Builder Layer)
+
 **職責**: 應用開發、UI 生成、開發工作室
 
-| 套件 | 功能 |
-|------|------|
-| `packages/builder` | 核心建構框架 |
-| `packages/ui-generator` | UI/UX 生成能力 |
+| 套件                                      | 功能           |
+| ----------------------------------------- | -------------- |
+| `packages/builder`                        | 核心建構框架   |
+| `packages/ui-generator`                   | UI/UX 生成能力 |
 | `services/mycodexvantaos-studio-platform` | 開發工作室平台 |
-| `services/mycodexvantaos-app-dev-studio` | 應用開發工作室 |
+| `services/mycodexvantaos-app-dev-studio`  | 應用開發工作室 |
 
 **前端應用 (Next.js Admin Dashboard)**:
+
 - 主控台首頁 (`/dashboard`)
 - 架構定義 (`/dashboard/architecture`)
 - CI/CD 管線生成 (`/dashboard/pipeline`)
@@ -45,28 +47,30 @@ MyCodeXvantaOS 是一個量子感知（Quantum-Aware）的企業級平台作業�
 - 架構精煉建議 (`/dashboard/refinement`)
 - 檢查清單驗證 (`/dashboard/checklists`)
 - 全域脈搏感知 (`/dashboard/pulse`)
-| 零樣工具鍛造 (`/dashboard/forge`)
-| 共識引擎 (`/dashboard/consensus`)
-| 情報中心 (`/dashboard/intelligence`)
-| 協議管理 (`/dashboard/protocol`)
-| 蜂群編排 (`/dashboard/swarm`)
-| 歷史紀錄 (`/dashboard/history`)
-| 報表中心 (`/dashboard/reports`)
-| 管理後台 (`/admin`) — 含 architecture、scenarios、security、settings、trends
+  | 零樣工具鍛造 (`/dashboard/forge`)
+  | 共識引擎 (`/dashboard/consensus`)
+  | 情報中心 (`/dashboard/intelligence`)
+  | 協議管理 (`/dashboard/protocol`)
+  | 蜂群編排 (`/dashboard/swarm`)
+  | 歷史紀錄 (`/dashboard/history`)
+  | 報表中心 (`/dashboard/reports`)
+  | 管理後台 (`/admin`) — 含 architecture、scenarios、security、settings、trends
 
 ### Layer B: 執行層 (Runtime Layer)
+
 **職責**: 運行時管理、工作流編排、任務執行
 
-| 套件 | 功能 |
-|------|------|
-| `packages/runtime` | 運行時核心 |
-| `packages/execution` | 任務執行引擎 |
-| `packages/workflow-generator` | 工作流生成器 |
-| `packages/session-runtime` | 會話運行時 |
+| 套件                              | 功能           |
+| --------------------------------- | -------------- |
+| `packages/runtime`                | 運行時核心     |
+| `packages/execution`              | 任務執行引擎   |
+| `packages/workflow-generator`     | 工作流生成器   |
+| `packages/session-runtime`        | 會話運行時     |
 | `packages/background-job-runtime` | 背景作業運行時 |
-| `packages/plugin-loader` | 插件載入器 |
+| `packages/plugin-loader`          | 插件載入器     |
 
 ### Layer C: 原生服務層 (Native Services Layer)
+
 **職責**: 平台核心基礎服務，為上層提供穩定的基礎設施抽象
 
 **核心域 (Core Domain)**:
@@ -116,33 +120,35 @@ MyCodeXvantaOS 是一個量子感知（Quantum-Aware）的企業級平台作業�
 | `mycodexvantaos-docs-search` | 文件搜尋：Elasticsearch / Typesense |
 
 ### Layer D: 連接器層 (Connector Layer)
+
 **職責**: 外部系統整合、提供者註冊、服務發現
 
 **36 個已註冊提供者**，分佈於 19 個能力類別：
 
-| 能力 (Capability) | 提供者 |
-|-------------------|--------|
-| `database` | postgres (外部), sqlite (原生) |
-| `vector-store` | pgvector (外部), qdrant (外部) |
-| `llm` | openai (外部), gemini (外部), anthropic (beta), ollama (原生) |
-| `embedding` | openai (外部), cohere (外部), ollama (原生) |
-| `auth` | keycloak (外部), jwt-native (原生) |
-| `cache` | redis (外部) |
-| `queue` | kafka (外部), rabbitmq (外部) |
-| `search` | elasticsearch (外部), typesense (外部) |
-| `graph` | neo4j (外部), memgraph (外部) |
-| `observability` | prometheus (外部), opentelemetry (外部) |
-| `secrets` | vault (外部), k8s-native (原生) |
-| `security` | trivy (外部) |
-| `storage` | s3 (外部), minio (外部) |
-| `deploy` | firebase (外部), argocd (外部), native (原生) |
-| `notification` | sendgrid (外部) |
-| `scheduler` | temporal (外部) |
-| `state-store` | redis (外部) |
-| `validation` | zod (原生) |
-| `repo` | github (外部) |
+| 能力 (Capability) | 提供者                                                        |
+| ----------------- | ------------------------------------------------------------- |
+| `database`        | postgres (外部), sqlite (原生)                                |
+| `vector-store`    | pgvector (外部), qdrant (外部)                                |
+| `llm`             | openai (外部), gemini (外部), anthropic (beta), ollama (原生) |
+| `embedding`       | openai (外部), cohere (外部), ollama (原生)                   |
+| `auth`            | keycloak (外部), jwt-native (原生)                            |
+| `cache`           | redis (外部)                                                  |
+| `queue`           | kafka (外部), rabbitmq (外部)                                 |
+| `search`          | elasticsearch (外部), typesense (外部)                        |
+| `graph`           | neo4j (外部), memgraph (外部)                                 |
+| `observability`   | prometheus (外部), opentelemetry (外部)                       |
+| `secrets`         | vault (外部), k8s-native (原生)                               |
+| `security`        | trivy (外部)                                                  |
+| `storage`         | s3 (外部), minio (外部)                                       |
+| `deploy`          | firebase (外部), argocd (外部), native (原生)                 |
+| `notification`    | sendgrid (外部)                                               |
+| `scheduler`       | temporal (外部)                                               |
+| `state-store`     | redis (外部)                                                  |
+| `validation`      | zod (原生)                                                    |
+| `repo`            | github (外部)                                                 |
 
 ### Layer E: 部署層 (Deployment Layer)
+
 **職責**: 容器編排、GitOps、環境管理
 
 - **Kubernetes 基礎設施**:
@@ -160,6 +166,7 @@ MyCodeXvantaOS 是一個量子感知（Quantum-Aware）的企業級平台作業�
   - 來源倉庫: `https://github.com/mycodexvantaos/mycodexvantaos.git`
 
 ### Layer F: 治理層 (Governance Layer)
+
 **職責**: 平台規格強制執行、命名約束、審計追蹤
 
 - **全域治理規格** (`governance/platform-governance-spec.yaml`):
@@ -183,20 +190,20 @@ MyCodeXvantaOS 是一個量子感知（Quantum-Aware）的企業級平台作業�
 
 平台整合 Google Genkit AI 框架，使用 Gemini 2.5 Flash 模型，共實現 **11 個 AI 流程**：
 
-| 流程 | 用途 | 輸入 | 輸出 |
-|------|------|------|------|
-| `zero-shot-tool-forge` | 零樣本工具鍛造與自我修正 | 環境描述 + 任務目標 | 生成程式碼 + 逆向工程報告 |
-| `generate-ci-cd-pipeline` | CI/CD 管線自動生成 | 架構描述 + 部署策略 | GitLab CI/CD YAML 配置 |
-| `advanced-analysis-flow` | 高級分析與情報合成引擎 | 多維度模式選擇 | 語義搜尋 / OCR / 合規分析 |
-| `analyze-architecture-for-risks` | 架構風險與合規分析 | 架構定義 + CI/CD 配置 | 風險清單 + 單點故障識別 |
-| `validate-and-suggest-checklists` | 零故障檢查清單驗證 | 架構定義 + 管線配置 | 合規報告 + 新策略建議 |
-| `suggest-architecture-refinements` | 架構精煉建議 | 當前架構 + 目標 + 歷史事件 | 彈性模式建議 |
-| `global-pulse-sensing` | 全域脈搏感知與自主任務生成 | 地區 + 資料流 | 異常檢測 + 自主任務 |
-| `vulnerability-scanner-flow` | 漏洞掃描 | package.json 內容 | CVE 清單 + 修復建議 |
-| `conversational-ai-assistant` | 對話式 AI 助理 | 查詢 + 程式碼片段 | 解釋 + 偵錯建議 |
-| `ai-code-completion-flow` | AI 程式碼補全 | 程式碼 + 語言 + 游標位置 | 補全建議 |
-| `ai-research-data-summarization` | 研究資料摘要 | 研究資料區塊 | 結構化摘要 |
-| `ai-agent-code-generation-refactoring` | AI 代理程式碼生成/重構 | 任務描述 + 程式碼上下文 | 生成/重構/測試程式碼 |
+| 流程                                   | 用途                       | 輸入                       | 輸出                      |
+| -------------------------------------- | -------------------------- | -------------------------- | ------------------------- |
+| `zero-shot-tool-forge`                 | 零樣本工具鍛造與自我修正   | 環境描述 + 任務目標        | 生成程式碼 + 逆向工程報告 |
+| `generate-ci-cd-pipeline`              | CI/CD 管線自動生成         | 架構描述 + 部署策略        | GitLab CI/CD YAML 配置    |
+| `advanced-analysis-flow`               | 高級分析與情報合成引擎     | 多維度模式選擇             | 語義搜尋 / OCR / 合規分析 |
+| `analyze-architecture-for-risks`       | 架構風險與合規分析         | 架構定義 + CI/CD 配置      | 風險清單 + 單點故障識別   |
+| `validate-and-suggest-checklists`      | 零故障檢查清單驗證         | 架構定義 + 管線配置        | 合規報告 + 新策略建議     |
+| `suggest-architecture-refinements`     | 架構精煉建議               | 當前架構 + 目標 + 歷史事件 | 彈性模式建議              |
+| `global-pulse-sensing`                 | 全域脈搏感知與自主任務生成 | 地區 + 資料流              | 異常檢測 + 自主任務       |
+| `vulnerability-scanner-flow`           | 漏洞掃描                   | package.json 內容          | CVE 清單 + 修復建議       |
+| `conversational-ai-assistant`          | 對話式 AI 助理             | 查詢 + 程式碼片段          | 解釋 + 偵錯建議           |
+| `ai-code-completion-flow`              | AI 程式碼補全              | 程式碼 + 語言 + 游標位置   | 補全建議                  |
+| `ai-research-data-summarization`       | 研究資料摘要               | 研究資料區塊               | 結構化摘要                |
+| `ai-agent-code-generation-refactoring` | AI 代理程式碼生成/重構     | 任務描述 + 程式碼上下文    | 生成/重構/測試程式碼      |
 
 ---
 
@@ -263,47 +270,55 @@ vector-store/
 ## 五、CI/CD 與安全工作流 (37 個)
 
 ### 統一 CI 管線 (`unified-ci.yaml`)
+
 7 階段流水線: Lint & Format → Architecture Validation → Build → Test → Module Tests → Service Tests → CI Summary
 
 ### 統一 CD 管線 (`unified-cd.yaml`)
+
 5 階段部署: Prepare → Build Artifacts → Security Scan → Deploy → Verify
 
 ### 治理檢查 (`governance-check.yaml`)
+
 4 大驗證: Naming Convention → API Contract → Drift Detection → OPA Policy
 
 ### 安全掃描工作流
-| 工作流 | 用途 |
-|--------|------|
-| `codeql-analysis.yml` | CodeQL 程式碼安全分析 |
-| `gitleaks.yaml` | Git 密鑰洩漏檢測 |
-| `trivy-scan.yaml` | 容器漏洞掃描 |
-| `checkov-scan.yaml` | 基礎設施即程式碼掃描 |
-| `semgrep.yaml` | 語義程式碼分析 |
-| `security-scan.yaml` | 綜合安全掃描 |
-| `dependency-review.yaml` | 依賴審查 |
+
+| 工作流                   | 用途                  |
+| ------------------------ | --------------------- |
+| `codeql-analysis.yml`    | CodeQL 程式碼安全分析 |
+| `gitleaks.yaml`          | Git 密鑰洩漏檢測      |
+| `trivy-scan.yaml`        | 容器漏洞掃描          |
+| `checkov-scan.yaml`      | 基礎設施即程式碼掃描  |
+| `semgrep.yaml`           | 語義程式碼分析        |
+| `security-scan.yaml`     | 綜合安全掃描          |
+| `dependency-review.yaml` | 依賴審查              |
 
 ### 部署與發布
-| 工作流 | 用途 |
-|--------|------|
-| `release.yml` | 標準發布流程 |
+
+| 工作流                      | 用途         |
+| --------------------------- | ------------ |
+| `release.yml`               | 標準發布流程 |
 | `release-consolidated.yaml` | 統一發布流程 |
-| `provenance-attest.yaml` | 來源證明 |
-| `sbom-upload.yaml` | SBOM 上傳 |
+| `provenance-attest.yaml`    | 來源證明     |
+| `sbom-upload.yaml`          | SBOM 上傳    |
 
 ---
 
 ## 六、GitOps 控制平面
 
 ### 證據驗證器 (Evidence Verifier)
+
 - CI/CD 管線證據收集與驗證
 - Merkle Root 內容定址存儲計算
 - 三種運行模式: native / hybrid / connected
 
 ### ChatOps 整合
+
 - `auto-fix-bot.provider.ts` — 自動修復機器人
 - `gateway-ts.provider.ts` — TypeScript 閘道提供者
 
 ### 跨框架整合
+
 - `api-client.provider.ts` — API 客戶端
 - `cache-manager.provider.ts` — 快取管理器
 - `logger.provider.ts` — 日誌提供者
@@ -314,6 +329,7 @@ vector-store/
 ## 七、Schema 與目錄體系
 
 ### 標準化 Schema (15 個)
+
 ```
 schemas/
 ├── ai-team/
@@ -335,6 +351,7 @@ schemas/
 ```
 
 ### 目錄服務
+
 ```
 catalog/
 ├── capability-matrix.yaml     # 服務→能力映射矩陣
@@ -411,24 +428,24 @@ catalog/
 
 ## 十、技術棧摘要
 
-| 層級 | 技術 |
-|------|------|
-| 前端 | Next.js 15.5.9, React 19, Tailwind CSS, shadcn/ui, Radix UI, Recharts |
-| AI | Google Genkit, Gemini 2.5 Flash, Zod Schema |
-| 後端 | Node.js 20, TypeScript 5, pnpm 10 |
-| 資料庫 | PostgreSQL, SQLite, Redis, Neo4j/Memgraph |
-| 向量 | pgvector, Qdrant, OpenAI/Cohere/Ollama Embeddings |
-| 訊息 | Kafka, RabbitMQ |
-| 搜尋 | Elasticsearch, Typesense |
-| 容器 | Docker, Kubernetes, Helm, Kustomize |
-| GitOps | ArgoCD, Merkle Root, Evidence Verification |
-| CI/CD | GitHub Actions (37 workflows), PNPM |
-| 安全 | Trivy, Gitleaks, Semgrep, Checkov, CodeQL, OPA |
-| 部署 | Firebase App Hosting, ArgoCD, Native |
-| 可觀測性 | Prometheus, OpenTelemetry |
-| 密鑰 | HashiCorp Vault, K8s Native Secrets |
-| 認證 | Keycloak, JWT Native |
+| 層級     | 技術                                                                  |
+| -------- | --------------------------------------------------------------------- |
+| 前端     | Next.js 15.5.9, React 19, Tailwind CSS, shadcn/ui, Radix UI, Recharts |
+| AI       | Google Genkit, Gemini 2.5 Flash, Zod Schema                           |
+| 後端     | Node.js 20, TypeScript 5, pnpm 10                                     |
+| 資料庫   | PostgreSQL, SQLite, Redis, Neo4j/Memgraph                             |
+| 向量     | pgvector, Qdrant, OpenAI/Cohere/Ollama Embeddings                     |
+| 訊息     | Kafka, RabbitMQ                                                       |
+| 搜尋     | Elasticsearch, Typesense                                              |
+| 容器     | Docker, Kubernetes, Helm, Kustomize                                   |
+| GitOps   | ArgoCD, Merkle Root, Evidence Verification                            |
+| CI/CD    | GitHub Actions (37 workflows), PNPM                                   |
+| 安全     | Trivy, Gitleaks, Semgrep, Checkov, CodeQL, OPA                        |
+| 部署     | Firebase App Hosting, ArgoCD, Native                                  |
+| 可觀測性 | Prometheus, OpenTelemetry                                             |
+| 密鑰     | HashiCorp Vault, K8s Native Secrets                                   |
+| 認證     | Keycloak, JWT Native                                                  |
 
 ---
 
-*本報告由 SuperNinja 自動生成，基於 2026-05-05 倉庫快照分析*
+_本報告由 SuperNinja 自動生成，基於 2026-05-05 倉庫快照分析_

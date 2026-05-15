@@ -1,4 +1,10 @@
-import { SessionRuntime, MemorySessionStore, SessionStore, SessionData, SessionRuntimeOptions } from '../src/index';
+import {
+  SessionRuntime,
+  MemorySessionStore,
+  SessionStore,
+  SessionData,
+  SessionRuntimeOptions,
+} from '../src/index';
 
 describe('SessionRuntime', () => {
   let runtime: SessionRuntime;
@@ -7,7 +13,7 @@ describe('SessionRuntime', () => {
     runtime = new SessionRuntime({
       defaultTTL: 3600,
       cleanupInterval: 10000,
-      autoStartCleanup: false
+      autoStartCleanup: false,
     });
   });
 
@@ -26,7 +32,7 @@ describe('SessionRuntime', () => {
       const customRuntime = new SessionRuntime({
         defaultTTL: 7200,
         cleanupInterval: 5000,
-        store
+        store,
       });
       expect(customRuntime).toBeInstanceOf(SessionRuntime);
     });
@@ -45,7 +51,7 @@ describe('SessionRuntime', () => {
 
     it('should create session with custom data', async () => {
       const session = await runtime.create('user123', {
-        data: { role: 'admin', permissions: ['read', 'write'] }
+        data: { role: 'admin', permissions: ['read', 'write'] },
       });
 
       expect(session.data.role).toBe('admin');
@@ -64,10 +70,10 @@ describe('SessionRuntime', () => {
       const session = await runtime.create('user123', { ttl: shortTTL });
 
       expect(session.expiresAt).toBeDefined();
-      
+
       // Wait for expiration
-      await new Promise(resolve => setTimeout(resolve, 1100));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1100));
+
       const retrieved = await runtime.get(session.id);
       expect(retrieved).toBeNull();
     });
@@ -90,8 +96,7 @@ describe('SessionRuntime', () => {
 
     it('should return null for expired session', async () => {
       const session = await runtime.create('user123', { ttl: -1 });
-      
-      
+
       const retrieved = await runtime.get(session.id);
       expect(retrieved).toBeNull();
     });
@@ -100,9 +105,9 @@ describe('SessionRuntime', () => {
   describe('update', () => {
     it('should update session data', async () => {
       const session = await runtime.create('user123', { data: { role: 'user' } });
-      
+
       const updated = await runtime.update(session.id, {
-        data: { role: 'admin' }
+        data: { role: 'admin' },
       });
 
       expect(updated).toBeDefined();
@@ -117,9 +122,9 @@ describe('SessionRuntime', () => {
 
     it('should preserve session ID and creation time', async () => {
       const session = await runtime.create('user123');
-      
+
       const updated = await runtime.update(session.id, {
-        data: { newField: 'value' }
+        data: { newField: 'value' },
       });
 
       expect(updated?.id).toBe(session.id);
@@ -129,9 +134,9 @@ describe('SessionRuntime', () => {
 
     it('should merge data', async () => {
       const session = await runtime.create('user123', { data: { role: 'user', name: 'John' } });
-      
+
       const updated = await runtime.update(session.id, {
-        data: { role: 'admin' }
+        data: { role: 'admin' },
       });
 
       expect(updated?.data.role).toBe('admin');
@@ -142,11 +147,11 @@ describe('SessionRuntime', () => {
   describe('delete', () => {
     it('should delete existing session', async () => {
       const session = await runtime.create('user123');
-      
+
       const deleted = await runtime.delete(session.id);
-      
+
       expect(deleted).toBe(true);
-      
+
       const retrieved = await runtime.get(session.id);
       expect(retrieved).toBeNull();
     });
@@ -166,7 +171,7 @@ describe('SessionRuntime', () => {
       const deleted = await runtime.deleteUserSessions('user123');
 
       expect(deleted).toBe(2);
-      
+
       const user123Sessions = await runtime.getUserSessions('user123');
       const user456Sessions = await runtime.getUserSessions('user456');
 
@@ -200,7 +205,6 @@ describe('SessionRuntime', () => {
     it('should return only non-expired sessions', async () => {
       await runtime.create('user1', { ttl: 3600 });
       await runtime.create('user2', { ttl: -1 });
-
 
       const activeSessions = await runtime.getActiveSessions();
       expect(activeSessions).toHaveLength(1);
@@ -240,7 +244,7 @@ describe('SessionRuntime', () => {
       const session = await runtime.create('user123', { ttl: 1 });
       const originalExpiresAt = session.expiresAt;
 
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const extended = await runtime.extendSession(session.id, 3600);
 
@@ -278,7 +282,7 @@ describe('SessionRuntime', () => {
   describe('getData', () => {
     it('should get session data field', async () => {
       const session = await runtime.create('user123', {
-        data: { role: 'admin', name: 'John' }
+        data: { role: 'admin', name: 'John' },
       });
 
       const role = await runtime.getData(session.id, 'role');
@@ -319,7 +323,7 @@ describe('SessionRuntime', () => {
   describe('removeData', () => {
     it('should remove session data field', async () => {
       const session = await runtime.create('user123', {
-        data: { role: 'admin', name: 'John' }
+        data: { role: 'admin', name: 'John' },
       });
 
       const result = await runtime.removeData(session.id, 'role');
@@ -359,7 +363,7 @@ describe('SessionRuntime', () => {
       await runtime.shutdown();
 
       // Wait to see if cleanup runs (it shouldn't)
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       // If cleanup timer is stopped, this should not throw
       await runtime.shutdown();

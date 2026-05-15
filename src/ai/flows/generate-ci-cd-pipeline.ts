@@ -8,8 +8,8 @@
  * - GenerateCiCdPipelineOutput - The return type for the generateCiCdPipeline function.
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import { ai } from '@/ai/genkit';
+import { z } from 'genkit';
 
 const GenerateCiCdPipelineInputSchema = z.object({
   architectureDescription: z
@@ -29,9 +29,7 @@ const GenerateCiCdPipelineInputSchema = z.object({
       'Any additional requirements or specific considerations for the CI/CD pipeline, e.g., security scans, specific testing stages, or rollback procedures.'
     ),
 });
-export type GenerateCiCdPipelineInput = z.infer<
-  typeof GenerateCiCdPipelineInputSchema
->;
+export type GenerateCiCdPipelineInput = z.infer<typeof GenerateCiCdPipelineInputSchema>;
 
 const GenerateCiCdPipelineOutputSchema = z.object({
   gitlabCiCdYaml: z
@@ -43,9 +41,7 @@ const GenerateCiCdPipelineOutputSchema = z.object({
       'A report detailing how the generated pipeline adheres to best practices and "perfect pass" scenarios, identifying any potential areas for improvement or concerns regarding zero-failure deployments.'
     ),
 });
-export type GenerateCiCdPipelineOutput = z.infer<
-  typeof GenerateCiCdPipelineOutputSchema
->;
+export type GenerateCiCdPipelineOutput = z.infer<typeof GenerateCiCdPipelineOutputSchema>;
 
 export async function generateCiCdPipeline(
   input: GenerateCiCdPipelineInput
@@ -55,8 +51,8 @@ export async function generateCiCdPipeline(
 
 const prompt = ai.definePrompt({
   name: 'generateCiCdPipelinePrompt',
-  input: {schema: GenerateCiCdPipelineInputSchema},
-  output: {schema: GenerateCiCdPipelineOutputSchema},
+  input: { schema: GenerateCiCdPipelineInputSchema },
+  output: { schema: GenerateCiCdPipelineOutputSchema },
   prompt: `You are an expert in GitLab CI/CD pipeline configuration and architectural best practices, with a focus on achieving 'perfect pass' rates and 'zero-failure' deployments.
 
 Your task is to generate a comprehensive GitLab CI/CD pipeline configuration in YAML format based on the provided system architecture and deployment strategy. You must also provide a detailed validation report that highlights how the generated pipeline adheres to best practices, ensures robustness, and identifies any potential risks or areas for refinement.
@@ -86,7 +82,7 @@ const generateCiCdPipelineFlow = ai.defineFlow(
     outputSchema: GenerateCiCdPipelineOutputSchema,
   },
   async (input) => {
-    const {output} = await prompt(input);
+    const { output } = await prompt(input);
     if (!output) {
       throw new Error('Failed to generate GitLab CI/CD pipeline.');
     }

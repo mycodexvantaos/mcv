@@ -4,7 +4,7 @@ services:
   control-plane:
     image: mycodexvantaos/control-plane:latest
     ports:
-      - "8080:8080"
+      - '8080:8080'
     environment:
       - DATABASE_URL=postgres://user:pass@postgres:5432/db
     depends_on:

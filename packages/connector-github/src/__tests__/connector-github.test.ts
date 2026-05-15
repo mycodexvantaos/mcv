@@ -13,7 +13,7 @@ describe('GitHubConnector', () => {
     config = {
       token: 'test-token',
       baseUrl: 'https://api.github.com',
-      timeout: 30000
+      timeout: 30000,
     };
 
     // Mock fetch
@@ -51,12 +51,12 @@ describe('GitHubConnector', () => {
         public_repos: 10,
         followers: 5,
         following: 3,
-        created_at: '2020-01-01T00:00:00Z'
+        created_at: '2020-01-01T00:00:00Z',
       };
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => mockUser
+        json: async () => mockUser,
       });
 
       const user = await connector.getUser();
@@ -65,8 +65,8 @@ describe('GitHubConnector', () => {
         'https://api.github.com/user',
         expect.objectContaining({
           headers: expect.objectContaining({
-            'Authorization': 'token test-token'
-          })
+            Authorization: 'token test-token',
+          }),
         })
       );
     });
@@ -83,12 +83,12 @@ describe('GitHubConnector', () => {
         public_repos: 5,
         followers: 10,
         following: 2,
-        created_at: '2020-01-01T00:00:00Z'
+        created_at: '2020-01-01T00:00:00Z',
       };
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => mockUser
+        json: async () => mockUser,
       });
 
       const user = await connector.getUserByUsername('octocat');
@@ -116,13 +116,13 @@ describe('GitHubConnector', () => {
           stargazers_count: 5,
           watchers_count: 5,
           forks_count: 2,
-          open_issues_count: 1
-        }
+          open_issues_count: 1,
+        },
       ];
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => mockRepos
+        json: async () => mockRepos,
       });
 
       const repos = await connector.getUserRepositories('testuser');
@@ -135,7 +135,7 @@ describe('GitHubConnector', () => {
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => mockRepos
+        json: async () => mockRepos,
       });
 
       const repos = await connector.getMyRepositories();
@@ -160,12 +160,12 @@ describe('GitHubConnector', () => {
         stargazers_count: 10,
         watchers_count: 10,
         forks_count: 5,
-        open_issues_count: 2
+        open_issues_count: 2,
       };
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => mockRepo
+        json: async () => mockRepo,
       });
 
       const repo = await connector.getRepository('owner', 'test-repo');
@@ -190,18 +190,18 @@ describe('GitHubConnector', () => {
         stargazers_count: 0,
         watchers_count: 0,
         forks_count: 0,
-        open_issues_count: 0
+        open_issues_count: 0,
       };
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => mockRepo
+        json: async () => mockRepo,
       });
 
       const repo = await connector.createRepository({
         name: 'new-repo',
         description: 'New repository',
-        private: false
+        private: false,
       });
 
       expect(repo.name).toBe('new-repo');
@@ -214,7 +214,7 @@ describe('GitHubConnector', () => {
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => mockIssues
+        json: async () => mockIssues,
       });
 
       const issues = await connector.getIssues('owner', 'repo');
@@ -234,17 +234,17 @@ describe('GitHubConnector', () => {
         created_at: '2020-01-01T00:00:00Z',
         updated_at: '2020-01-01T00:00:00Z',
         closed_at: null,
-        comments: 0
+        comments: 0,
       };
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => mockIssue
+        json: async () => mockIssue,
       });
 
       const issue = await connector.createIssue('owner', 'repo', {
         title: 'Test issue',
-        body: 'Issue description'
+        body: 'Issue description',
       });
 
       expect(issue.title).toBe('Test issue');
@@ -263,17 +263,17 @@ describe('GitHubConnector', () => {
         created_at: '2020-01-01T00:00:00Z',
         updated_at: '2020-01-01T00:00:00Z',
         closed_at: '2020-01-02T00:00:00Z',
-        comments: 0
+        comments: 0,
       };
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => mockIssue
+        json: async () => mockIssue,
       });
 
       const issue = await connector.updateIssue('owner', 'repo', 1, {
         title: 'Updated issue',
-        state: 'closed'
+        state: 'closed',
       });
 
       expect(issue.title).toBe('Updated issue');
@@ -287,7 +287,7 @@ describe('GitHubConnector', () => {
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => mockPRs
+        json: async () => mockPRs,
       });
 
       const prs = await connector.getPullRequests('owner', 'repo');
@@ -309,19 +309,19 @@ describe('GitHubConnector', () => {
         merged_at: null,
         additions: 10,
         deletions: 5,
-        changed_files: 2
+        changed_files: 2,
       };
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => mockPR
+        json: async () => mockPR,
       });
 
       const pr = await connector.createPullRequest('owner', 'repo', {
         title: 'Test PR',
         body: 'PR description',
         head: 'feature',
-        base: 'main'
+        base: 'main',
       });
 
       expect(pr.title).toBe('Test PR');
@@ -334,7 +334,7 @@ describe('GitHubConnector', () => {
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => mockCommits
+        json: async () => mockCommits,
       });
 
       const commits = await connector.getCommits('owner', 'repo');
@@ -347,12 +347,12 @@ describe('GitHubConnector', () => {
         message: 'Test commit',
         author: null,
         committer: null,
-        created_at: '2020-01-01T00:00:00Z'
+        created_at: '2020-01-01T00:00:00Z',
       };
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => mockCommit
+        json: async () => mockCommit,
       });
 
       const commit = await connector.getCommit('owner', 'repo', 'abc123');
@@ -367,12 +367,12 @@ describe('GitHubConnector', () => {
         type: 'file' as const,
         size: 100,
         sha: 'abc123',
-        url: 'https://api.github.com/repos/owner/repo/contents/test.ts'
+        url: 'https://api.github.com/repos/owner/repo/contents/test.ts',
       };
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => mockContent
+        json: async () => mockContent,
       });
 
       const content = await connector.getContents('owner', 'repo', 'test.ts');
@@ -382,18 +382,18 @@ describe('GitHubConnector', () => {
     test('should create or update file', async () => {
       const mockResponse = {
         content: {
-          sha: 'def456'
-        }
+          sha: 'def456',
+        },
       };
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => mockResponse
+        json: async () => mockResponse,
       });
 
       const response = await connector.createOrUpdateFile('owner', 'repo', 'test.ts', {
         message: 'Create file',
-        content: 'content'
+        content: 'content',
       });
 
       expect(response).toBeDefined();
@@ -406,7 +406,7 @@ describe('GitHubConnector', () => {
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => mockBranches
+        json: async () => mockBranches,
       });
 
       const branches = await connector.getBranches('owner', 'repo');
@@ -416,12 +416,12 @@ describe('GitHubConnector', () => {
     test('should get branch', async () => {
       const mockBranch = {
         name: 'main',
-        commit: { sha: 'abc123' }
+        commit: { sha: 'abc123' },
       };
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => mockBranch
+        json: async () => mockBranch,
       });
 
       const branch = await connector.getBranch('owner', 'repo', 'main');
@@ -434,7 +434,7 @@ describe('GitHubConnector', () => {
       mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 404,
-        text: async () => 'Not Found'
+        text: async () => 'Not Found',
       });
 
       await expect(connector.getUser()).rejects.toThrow('GitHub API Error');
@@ -448,14 +448,14 @@ describe('GitHubConnector', () => {
           core: {
             limit: 5000,
             remaining: 4999,
-            reset: 1234567890
-          }
-        }
+            reset: 1234567890,
+          },
+        },
       };
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => mockRateLimit
+        json: async () => mockRateLimit,
       });
 
       const rateLimit = await connector.getRateLimit();

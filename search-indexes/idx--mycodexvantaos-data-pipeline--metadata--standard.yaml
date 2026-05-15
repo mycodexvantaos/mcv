@@ -10,4 +10,4 @@ spec:
   serviceId: mycodexvantaos-data-pipeline
   field: metadata
   analyzer: standard
-  description: "Standard index for pipeline artifact metadata."
+  description: 'Standard index for pipeline artifact metadata.'

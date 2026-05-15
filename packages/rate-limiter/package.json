@@ -10,7 +10,12 @@
     "lint": "eslint src --ext .ts",
     "format": "prettier --write \"src/**/*.ts\""
   },
-  "keywords": ["rate-limiter", "ratelimiter", "Layer A擴展", "mycodexvantaos"],
+  "keywords": [
+    "rate-limiter",
+    "ratelimiter",
+    "Layer A擴展",
+    "mycodexvantaos"
+  ],
   "author": "MyCodeXvantaOS",
   "license": "MIT",
   "dependencies": {

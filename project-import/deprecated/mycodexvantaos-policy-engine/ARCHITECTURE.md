@@ -8,26 +8,26 @@
 
 ```yaml
 policy:
-  name: "security-baseline"
-  version: "1.0.0"
-  category: "security"
-  severity: "high"
-  
+  name: 'security-baseline'
+  version: '1.0.0'
+  category: 'security'
+  severity: 'high'
+
   rules:
-    - id: "SEC-001"
-      description: "No secrets in source code"
+    - id: 'SEC-001'
+      description: 'No secrets in source code'
       check:
-        type: "file-content"
+        type: 'file-content'
         pattern: "(password|secret|api_key)\\s*=\\s*['&quot;][^'&quot;]+['&quot;]"
-        exclude: ["*.test.*", "*.example.*"]
-      remediation: "Use SecretsProvider instead of hardcoded values"
-    
-    - id: "SEC-002"
-      description: "Dependencies must be pinned"
+        exclude: ['*.test.*', '*.example.*']
+      remediation: 'Use SecretsProvider instead of hardcoded values'
+
+    - id: 'SEC-002'
+      description: 'Dependencies must be pinned'
       check:
-        type: "dependency-version"
-        constraint: "exact"
-      remediation: "Pin dependency versions in package.json"
+        type: 'dependency-version'
+        constraint: 'exact'
+      remediation: 'Pin dependency versions in package.json'
 ```
 
 ## Compilation Pipeline
@@ -92,23 +92,23 @@ Repository State
 
 ## Policy Categories
 
-| Category | Scope | Examples |
-|---|---|---|
-| Security | Code & infrastructure | Secret detection, dependency vulnerabilities |
-| Compliance | Organizational | License compliance, data handling |
-| Code Quality | Source code | Complexity limits, test coverage |
-| Infrastructure | Deployment | Resource limits, network policies |
-| Operational | Runtime | Logging requirements, health checks |
+| Category       | Scope                 | Examples                                     |
+| -------------- | --------------------- | -------------------------------------------- |
+| Security       | Code & infrastructure | Secret detection, dependency vulnerabilities |
+| Compliance     | Organizational        | License compliance, data handling            |
+| Code Quality   | Source code           | Complexity limits, test coverage             |
+| Infrastructure | Deployment            | Resource limits, network policies            |
+| Operational    | Runtime               | Logging requirements, health checks          |
 
 ## Violation Severity Levels
 
-| Level | Description | Governance Action |
-|---|---|---|
-| Critical | Immediate security risk | Block + escalate |
-| High | Significant policy breach | Block + approval gate |
-| Medium | Notable deviation | Warn + track |
-| Low | Minor improvement | Inform |
-| Info | Suggestion | Log only |
+| Level    | Description               | Governance Action     |
+| -------- | ------------------------- | --------------------- |
+| Critical | Immediate security risk   | Block + escalate      |
+| High     | Significant policy breach | Block + approval gate |
+| Medium   | Notable deviation         | Warn + track          |
+| Low      | Minor improvement         | Inform                |
+| Info     | Suggestion                | Log only              |
 
 ## Design Principles
 

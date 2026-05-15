@@ -226,18 +226,14 @@ describe('BehavioralAdjuster', () => {
       const disrupterPreset = adjuster.getArchetypePreset('disrupter');
       const mediatorPreset = adjuster.getArchetypePreset('mediator');
 
-      expect(disrupterPreset.directness).toBeGreaterThan(
-        mediatorPreset.directness ?? 0
-      );
-      expect(mediatorPreset.empathy_level).toBeGreaterThan(
-        disrupterPreset.empathy_level ?? 0
-      );
+      expect(disrupterPreset.directness).toBeGreaterThan(mediatorPreset.directness ?? 0);
+      expect(mediatorPreset.empathy_level).toBeGreaterThan(disrupterPreset.empathy_level ?? 0);
     });
 
     it('should return a copy of preset (not reference)', () => {
       const preset1 = adjuster.getArchetypePreset('analyst');
       const preset2 = adjuster.getArchetypePreset('analyst');
-      
+
       expect(preset1).not.toBe(preset2);
       expect(preset1).toEqual(preset2);
     });
@@ -316,9 +312,7 @@ describe('BehavioralAdjuster', () => {
       const removed = adjuster.removeRule('rule_to_remove');
 
       expect(removed).toBe(true);
-      expect(
-        adjuster.getRules().find((r) => r.name === 'rule_to_remove')
-      ).toBeUndefined();
+      expect(adjuster.getRules().find((r) => r.name === 'rule_to_remove')).toBeUndefined();
     });
 
     it('should return false for non-existent rule', () => {

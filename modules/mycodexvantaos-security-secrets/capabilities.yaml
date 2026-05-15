@@ -1,4 +1,4 @@
 # modules/mycodexvantaos-security-secrets/capabilities.yaml
 capabilities:
-    - secrets
-    - database
+  - secrets
+  - database

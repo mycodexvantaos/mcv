@@ -30,14 +30,14 @@
 
 ## Resource Types
 
-| Type | Native Implementation | Connected Implementation |
-|---|---|---|
-| Compute | Child processes | Containers / VMs |
-| Storage | Local filesystem | S3 / GCS / Blob Storage |
-| Database | SQLite files | PostgreSQL / MySQL |
-| Network | Local ports | Load balancers / Ingress |
-| Queue | In-memory | Redis / Kafka / SQS |
-| Cache | In-memory Map | Redis / Memcached |
+| Type     | Native Implementation | Connected Implementation |
+| -------- | --------------------- | ------------------------ |
+| Compute  | Child processes       | Containers / VMs         |
+| Storage  | Local filesystem      | S3 / GCS / Blob Storage  |
+| Database | SQLite files          | PostgreSQL / MySQL       |
+| Network  | Local ports           | Load balancers / Ingress |
+| Queue    | In-memory             | Redis / Kafka / SQS      |
+| Cache    | In-memory Map         | Redis / Memcached        |
 
 ## Environment Hierarchy
 

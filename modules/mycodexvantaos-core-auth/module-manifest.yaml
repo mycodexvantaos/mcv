@@ -21,7 +21,7 @@ spec:
     secrets: secrets-vault
   lifecycle:
     stage: stable
-    since: "v1.0.0"
-  urn: "urn:mycodexvantaos:manifest:service:mycodexvantaos-core-auth"
-  packageName: "@mycodexvantaos/core-auth"
-  description: "Core authentication and authorization service."
+    since: 'v1.0.0'
+  urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-core-auth'
+  packageName: '@mycodexvantaos/core-auth'
+  description: 'Core authentication and authorization service.'

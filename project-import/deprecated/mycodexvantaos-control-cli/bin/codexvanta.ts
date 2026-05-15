@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-require("../dist/bin/codexvanta.js");
+require('../dist/bin/codexvanta.js');

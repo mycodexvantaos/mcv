@@ -54,7 +54,7 @@ jobs:
               core.setFailed('Could not parse conftest results file.');
               return;
             }
-            
+
             let failures = [];
             if (results && Array.isArray(results)) {
               results.forEach(result => {
@@ -83,7 +83,7 @@ jobs:
             });
 
             const botComment = comments.find(comment => comment.user.login === 'github-actions[bot]' && comment.body.includes('OPA Policy Check Failed'));
-            
+
             if (botComment) {
               await github.rest.issues.updateComment({
                 owner: context.repo.owner,
@@ -99,5 +99,5 @@ jobs:
                 body: body,
               });
             }
-            
+
             core.setFailed(`OPA policy check failed with ${failures.length} violation(s).`);

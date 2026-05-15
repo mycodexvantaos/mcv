@@ -56,20 +56,20 @@
 
 ## Provider Dependencies
 
-| Provider | Usage |
-|---|---|
-| DatabaseProvider | Metrics storage, log persistence, trace spans |
-| StorageProvider | Log file archives, trace export files |
-| StateStoreProvider | Alert state, dashboard configurations |
-| NotificationProvider | Alert delivery to configured channels |
+| Provider             | Usage                                         |
+| -------------------- | --------------------------------------------- |
+| DatabaseProvider     | Metrics storage, log persistence, trace spans |
+| StorageProvider      | Log file archives, trace export files         |
+| StateStoreProvider   | Alert state, dashboard configurations         |
+| NotificationProvider | Alert delivery to configured channels         |
 
 ## Operational Modes
 
-| Mode | Behavior |
-|---|---|
-| **Native** | In-memory metrics, local JSON log files, SQLite trace store |
-| **Connected** | Prometheus/Grafana metrics, ELK logging, Jaeger tracing |
-| **Hybrid** | Local collection with external dashboard and alerting |
+| Mode          | Behavior                                                    |
+| ------------- | ----------------------------------------------------------- |
+| **Native**    | In-memory metrics, local JSON log files, SQLite trace store |
+| **Connected** | Prometheus/Grafana metrics, ELK logging, Jaeger tracing     |
+| **Hybrid**    | Local collection with external dashboard and alerting       |
 
 ## Directory Structure
 

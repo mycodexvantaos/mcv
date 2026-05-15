@@ -1,7 +1,7 @@
 /**
  * CodexvantaOS — policy-engine
  * 策略引擎 — 策略定義、驗證、執行
- * 
+ *
  * Layer: B-Runtime | Plane: Governance | Tier: 2
  * Philosophy: Native-first / Provider-agnostic
  * 「第三方服務是平台的擴充出口，不是平台成立的地基。」
@@ -24,7 +24,10 @@ export { initProviders, getProviders, shutdownProviders } from './providers.js';
  * Bootstrap policy-engine
  */
 export async function bootstrap(): Promise<void> {
-  console.log('[policy-engine] Starting in %s mode...', process.env.CODEXVANTA_MODE || 'auto-detect');
+  console.log(
+    '[policy-engine] Starting in %s mode...',
+    process.env.CODEXVANTA_MODE || 'auto-detect'
+  );
 
   // Initialize providers (auto-detects Native/Connected/Hybrid)
   const providers = await initProviders();

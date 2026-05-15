@@ -1,4 +1,4 @@
-import type { StateMachine, TransitionDef, StateTransition } from "./types";
+import type { StateMachine, TransitionDef, StateTransition } from './types';
 
 let counter = 0;
 
@@ -7,7 +7,12 @@ export class StateMachineService {
   private currentStates = new Map<string, string>();
   private history = new Map<string, StateTransition[]>();
 
-  create(name: string, states: string[], transitions: TransitionDef[], initialState: string): StateMachine {
+  create(
+    name: string,
+    states: string[],
+    transitions: TransitionDef[],
+    initialState: string
+  ): StateMachine {
     if (!states.includes(initialState)) {
       throw new Error(`Initial state "${initialState}" not in states list`);
     }
@@ -35,7 +40,7 @@ export class StateMachineService {
     if (!currentState) return null;
 
     const validTransition = machine.transitions.find(
-      (t) => t.from === currentState && t.event === event,
+      (t) => t.from === currentState && t.event === event
     );
     if (!validTransition) return null;
 

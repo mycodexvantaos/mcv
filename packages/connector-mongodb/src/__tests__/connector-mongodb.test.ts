@@ -6,7 +6,7 @@ describe('connector-mongodb', () => {
   beforeEach(() => {
     instance = new MongoConnector({
       connectionString: 'mongodb://localhost:27017',
-      database: 'test'
+      database: 'test',
     });
   });
 

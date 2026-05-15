@@ -10,14 +10,16 @@ export async function GET() {
   return NextResponse.json({
     timestamp: new Date().toISOString(),
     status: 'healthy',
-    data: metrics
+    data: metrics,
   });
 }
 
 export async function POST(req: Request) {
-  const { action, nodeId = 'local-kernel-root' } = await req.json().catch(() => ({ action: 'heartbeat' }));
+  const { action, nodeId = 'local-kernel-root' } = await req
+    .json()
+    .catch(() => ({ action: 'heartbeat' }));
   const validationService = NativeValidationService.getInstance();
-  
+
   let result;
   switch (action) {
     case 'heartbeat':
@@ -38,10 +40,10 @@ export async function POST(req: Request) {
     default:
       result = validationService.registerHeartbeat();
   }
-  
+
   return NextResponse.json({
     action,
     status: result ? 'success' : 'failed',
-    result
+    result,
   });
 }

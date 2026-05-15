@@ -16,7 +16,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import type { Role } from '@/types/dashboard';
 
 interface AuditLogEntry {
@@ -34,14 +40,110 @@ interface AuditLogEntry {
 }
 
 const mockAuditLog: AuditLogEntry[] = [
-  { id: 'a1', timestamp: '2025-05-04T22:15:00Z', actorEmail: 'admin@autoecoops.io', actorRole: 'super_admin', actorIp: '203.0.113.42', action: 'connector.update', resourceType: 'connector', resourceName: 'Redis Cache Cluster', changes: 'maxConnections: 50 → 100', governanceApproved: true, governanceApprovedBy: 'system' },
-  { id: 'a2', timestamp: '2025-05-04T21:45:00Z', actorEmail: 'operator@autoecoops.io', actorRole: 'operator', actorIp: '203.0.113.55', action: 'edge.deploy', resourceType: 'edge_node', resourceName: 'ap-southeast-1', changes: 'version: v2.3.8 → v2.4.1', governanceApproved: true, governanceApprovedBy: 'admin@autoecoops.io' },
-  { id: 'a3', timestamp: '2025-05-04T20:30:00Z', actorEmail: 'admin@autoecoops.io', actorRole: 'admin', actorIp: '203.0.113.42', action: 'scenario.create', resourceType: 'scenario_matrix', resourceName: 'Healthcare AI Diagnostics', changes: 'Created new scenario matrix', governanceApproved: true, governanceApprovedBy: 'system' },
-  { id: 'a4', timestamp: '2025-05-04T18:20:00Z', actorEmail: 'system', actorRole: 'operator', actorIp: '10.0.0.1', action: 'security.scan', resourceType: 'system', resourceName: 'Full Vulnerability Scan', changes: 'Scan completed — 0 vulnerabilities', governanceApproved: true, governanceApprovedBy: 'system' },
-  { id: 'a5', timestamp: '2025-05-04T16:10:00Z', actorEmail: 'admin@autoecoops.io', actorRole: 'admin', actorIp: '203.0.113.42', action: 'inference.routing_update', resourceType: 'model_routing', resourceName: 'gemini-2.5-flash', changes: 'weight: 0.4 → 0.5, priority: 1 → 1', governanceApproved: true, governanceApprovedBy: 'system' },
-  { id: 'a6', timestamp: '2025-05-04T14:05:00Z', actorEmail: 'operator@autoecoops.io', actorRole: 'operator', actorIp: '203.0.113.55', action: 'edge.rollback', resourceType: 'edge_node', resourceName: 'eu-central-1-primary', changes: 'version: v2.4.1 → v2.4.0', governanceApproved: true, governanceApprovedBy: 'admin@autoecoops.io' },
-  { id: 'a7', timestamp: '2025-05-04T10:30:00Z', actorEmail: 'admin@autoecoops.io', actorRole: 'super_admin', actorIp: '203.0.113.42', action: 'connector.create', resourceType: 'connector', resourceName: 'S3 Document Storage', changes: 'Created new connector', governanceApproved: true, governanceApprovedBy: 'system' },
-  { id: 'a8', timestamp: '2025-05-03T22:00:00Z', actorEmail: 'system', actorRole: 'operator', actorIp: '10.0.0.1', action: 'connector.health_check', resourceType: 'connector', resourceName: 'All Connectors', changes: 'Scheduled health check completed', governanceApproved: true, governanceApprovedBy: 'system' },
+  {
+    id: 'a1',
+    timestamp: '2025-05-04T22:15:00Z',
+    actorEmail: 'admin@autoecoops.io',
+    actorRole: 'super_admin',
+    actorIp: '203.0.113.42',
+    action: 'connector.update',
+    resourceType: 'connector',
+    resourceName: 'Redis Cache Cluster',
+    changes: 'maxConnections: 50 → 100',
+    governanceApproved: true,
+    governanceApprovedBy: 'system',
+  },
+  {
+    id: 'a2',
+    timestamp: '2025-05-04T21:45:00Z',
+    actorEmail: 'operator@autoecoops.io',
+    actorRole: 'operator',
+    actorIp: '203.0.113.55',
+    action: 'edge.deploy',
+    resourceType: 'edge_node',
+    resourceName: 'ap-southeast-1',
+    changes: 'version: v2.3.8 → v2.4.1',
+    governanceApproved: true,
+    governanceApprovedBy: 'admin@autoecoops.io',
+  },
+  {
+    id: 'a3',
+    timestamp: '2025-05-04T20:30:00Z',
+    actorEmail: 'admin@autoecoops.io',
+    actorRole: 'admin',
+    actorIp: '203.0.113.42',
+    action: 'scenario.create',
+    resourceType: 'scenario_matrix',
+    resourceName: 'Healthcare AI Diagnostics',
+    changes: 'Created new scenario matrix',
+    governanceApproved: true,
+    governanceApprovedBy: 'system',
+  },
+  {
+    id: 'a4',
+    timestamp: '2025-05-04T18:20:00Z',
+    actorEmail: 'system',
+    actorRole: 'operator',
+    actorIp: '10.0.0.1',
+    action: 'security.scan',
+    resourceType: 'system',
+    resourceName: 'Full Vulnerability Scan',
+    changes: 'Scan completed — 0 vulnerabilities',
+    governanceApproved: true,
+    governanceApprovedBy: 'system',
+  },
+  {
+    id: 'a5',
+    timestamp: '2025-05-04T16:10:00Z',
+    actorEmail: 'admin@autoecoops.io',
+    actorRole: 'admin',
+    actorIp: '203.0.113.42',
+    action: 'inference.routing_update',
+    resourceType: 'model_routing',
+    resourceName: 'gemini-2.5-flash',
+    changes: 'weight: 0.4 → 0.5, priority: 1 → 1',
+    governanceApproved: true,
+    governanceApprovedBy: 'system',
+  },
+  {
+    id: 'a6',
+    timestamp: '2025-05-04T14:05:00Z',
+    actorEmail: 'operator@autoecoops.io',
+    actorRole: 'operator',
+    actorIp: '203.0.113.55',
+    action: 'edge.rollback',
+    resourceType: 'edge_node',
+    resourceName: 'eu-central-1-primary',
+    changes: 'version: v2.4.1 → v2.4.0',
+    governanceApproved: true,
+    governanceApprovedBy: 'admin@autoecoops.io',
+  },
+  {
+    id: 'a7',
+    timestamp: '2025-05-04T10:30:00Z',
+    actorEmail: 'admin@autoecoops.io',
+    actorRole: 'super_admin',
+    actorIp: '203.0.113.42',
+    action: 'connector.create',
+    resourceType: 'connector',
+    resourceName: 'S3 Document Storage',
+    changes: 'Created new connector',
+    governanceApproved: true,
+    governanceApprovedBy: 'system',
+  },
+  {
+    id: 'a8',
+    timestamp: '2025-05-03T22:00:00Z',
+    actorEmail: 'system',
+    actorRole: 'operator',
+    actorIp: '10.0.0.1',
+    action: 'connector.health_check',
+    resourceType: 'connector',
+    resourceName: 'All Connectors',
+    changes: 'Scheduled health check completed',
+    governanceApproved: true,
+    governanceApprovedBy: 'system',
+  },
 ];
 
 const roleColors: Record<Role, string> = {
@@ -56,7 +158,13 @@ export default function AuditPage() {
   const [filterAction, setFilterAction] = useState<string>('all');
 
   const filteredLog = mockAuditLog.filter((entry) => {
-    if (searchQuery && !entry.action.includes(searchQuery) && !entry.resourceName.toLowerCase().includes(searchQuery.toLowerCase()) && !entry.actorEmail.includes(searchQuery)) return false;
+    if (
+      searchQuery &&
+      !entry.action.includes(searchQuery) &&
+      !entry.resourceName.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      !entry.actorEmail.includes(searchQuery)
+    )
+      return false;
     if (filterAction !== 'all' && !entry.action.startsWith(filterAction)) return false;
     return true;
   });
@@ -113,12 +221,24 @@ export default function AuditPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border bg-secondary/30">
-                  <th className="text-left py-3 px-4 text-xs text-muted-foreground font-medium">Timestamp</th>
-                  <th className="text-left py-3 px-4 text-xs text-muted-foreground font-medium">Actor</th>
-                  <th className="text-left py-3 px-4 text-xs text-muted-foreground font-medium">Action</th>
-                  <th className="text-left py-3 px-4 text-xs text-muted-foreground font-medium">Resource</th>
-                  <th className="text-left py-3 px-4 text-xs text-muted-foreground font-medium">Changes</th>
-                  <th className="text-left py-3 px-4 text-xs text-muted-foreground font-medium">Governance</th>
+                  <th className="text-left py-3 px-4 text-xs text-muted-foreground font-medium">
+                    Timestamp
+                  </th>
+                  <th className="text-left py-3 px-4 text-xs text-muted-foreground font-medium">
+                    Actor
+                  </th>
+                  <th className="text-left py-3 px-4 text-xs text-muted-foreground font-medium">
+                    Action
+                  </th>
+                  <th className="text-left py-3 px-4 text-xs text-muted-foreground font-medium">
+                    Resource
+                  </th>
+                  <th className="text-left py-3 px-4 text-xs text-muted-foreground font-medium">
+                    Changes
+                  </th>
+                  <th className="text-left py-3 px-4 text-xs text-muted-foreground font-medium">
+                    Governance
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -127,13 +247,18 @@ export default function AuditPage() {
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-1.5 text-xs">
                         <Clock className="h-3 w-3 text-muted-foreground" />
-                        <span className="font-mono">{new Date(entry.timestamp).toLocaleString()}</span>
+                        <span className="font-mono">
+                          {new Date(entry.timestamp).toLocaleString()}
+                        </span>
                       </div>
                     </td>
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-2">
                         <span className="text-xs">{entry.actorEmail}</span>
-                        <Badge variant="secondary" className={`text-[10px] h-4 ${roleColors[entry.actorRole]}`}>
+                        <Badge
+                          variant="secondary"
+                          className={`text-[10px] h-4 ${roleColors[entry.actorRole]}`}
+                        >
                           {entry.actorRole}
                         </Badge>
                       </div>
@@ -171,11 +296,17 @@ export default function AuditPage() {
             </table>
           </div>
           <div className="flex items-center justify-between p-4 border-t border-border">
-            <p className="text-xs text-muted-foreground">Showing {filteredLog.length} of {mockAuditLog.length} entries</p>
+            <p className="text-xs text-muted-foreground">
+              Showing {filteredLog.length} of {mockAuditLog.length} entries
+            </p>
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" disabled><ChevronLeft className="h-4 w-4" /></Button>
+              <Button variant="outline" size="sm" disabled>
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
               <span className="text-xs">Page 1 of 1</span>
-              <Button variant="outline" size="sm" disabled><ChevronRight className="h-4 w-4" /></Button>
+              <Button variant="outline" size="sm" disabled>
+                <ChevronRight className="h-4 w-4" />
+              </Button>
             </div>
           </div>
         </CardContent>

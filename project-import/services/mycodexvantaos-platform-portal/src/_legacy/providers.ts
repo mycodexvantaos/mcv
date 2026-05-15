@@ -4,6 +4,6 @@ export interface PortalProvider {
 
 export class DefaultPortalProvider implements PortalProvider {
   getAuthServiceUrl(): string {
-    return process.env.AUTH_SERVICE_URL || "http://localhost:3001";
+    return process.env.AUTH_SERVICE_URL || 'http://localhost:3001';
   }
 }

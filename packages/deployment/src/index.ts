@@ -1,6 +1,6 @@
 /**
  * MyCodeXvantaOS Deployment Package
- * 
+ *
  * Unified deployment abstraction following MyCodeXvantaOS Architecture:
  * - Native-first: Always has a working native provider as fallback
  * - Provider-agnostic: Switch between deployment targets without code changes
@@ -56,7 +56,7 @@ export class DeploymentProviderRegistry {
    */
   register(name: string, provider: DeploymentProviderInterface): void {
     this.providers.set(name, provider);
-    
+
     // Update preferred provider if this one is available and external
     if (provider.isAvailable() && !provider.isNative) {
       this.preferredProvider = name;
@@ -96,7 +96,9 @@ export class DeploymentProviderRegistry {
       return native;
     }
 
-    throw new Error('No deployment provider available. Native provider should always be registered.');
+    throw new Error(
+      'No deployment provider available. Native provider should always be registered.'
+    );
   }
 
   /**
@@ -154,7 +156,7 @@ export class NativeDeploymentProvider implements DeploymentProviderInterface {
       provider: 'native',
       capabilities: ['local-deployment', 'docker-deployment', 'static-site-hosting'],
       isNative: true,
-      requiresApiKey: false
+      requiresApiKey: false,
     };
   }
 
@@ -167,7 +169,7 @@ export class NativeDeploymentProvider implements DeploymentProviderInterface {
       status: 'deployed',
       url: `http://localhost:${config?.resources?.cpu ? 8080 : 3000}`,
       endpoints: [`/api/v1/${application.name || 'app'}`],
-      deploymentTime: Date.now() - startTime
+      deploymentTime: Date.now() - startTime,
     };
   }
 }
@@ -175,10 +177,12 @@ export class NativeDeploymentProvider implements DeploymentProviderInterface {
 /**
  * Initialize deployment with available providers
  */
-export async function initializeDeployment(config: {
-  preferredProvider?: 'native' | 'firebase' | 'kubernetes' | 'docker';
-  providers?: Record<string, any>;
-} = {}): Promise<DeploymentProviderRegistry> {
+export async function initializeDeployment(
+  config: {
+    preferredProvider?: 'native' | 'firebase' | 'kubernetes' | 'docker';
+    providers?: Record<string, any>;
+  } = {}
+): Promise<DeploymentProviderRegistry> {
   const reg = getDeploymentRegistry();
 
   // Always register native provider first (guaranteed fallback)
@@ -197,7 +201,7 @@ export async function initializeDeployment(config: {
  * Deploy using the best available provider
  */
 export async function deploy(
-  application: any, 
+  application: any,
   options?: { provider?: string; config?: DeploymentConfig }
 ): Promise<DeploymentResult> {
   const reg = getDeploymentRegistry();
@@ -405,5 +409,5 @@ export default {
   deploy,
   DeploymentProviderRegistry,
   NativeDeploymentProvider,
-  Deployment
+  Deployment,
 };

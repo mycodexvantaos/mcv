@@ -10,28 +10,28 @@ Every module declares its capabilities and requirements:
 
 ```yaml
 module:
-  name: "@codexvanta/example-module"
-  version: "1.0.0"
-  description: "Example module"
-  
+  name: '@codexvanta/example-module'
+  version: '1.0.0'
+  description: 'Example module'
+
   requires:
-    platform: ">=1.0.0"
+    platform: '>=1.0.0'
     providers:
       - DatabaseProvider
       - StorageProvider
     modules:
-      - "@codexvanta/config-manager@^1.0.0"
-  
+      - '@codexvanta/config-manager@^1.0.0'
+
   extends:
-    - point: "repository.scan.post"
-      handler: "./handlers/post-scan.js"
-    - point: "dashboard.widget"
-      handler: "./widgets/status.js"
-  
+    - point: 'repository.scan.post'
+      handler: './handlers/post-scan.js'
+    - point: 'dashboard.widget'
+      handler: './widgets/status.js'
+
   permissions:
-    - "database:read"
-    - "storage:read:write"
-    - "notification:send"
+    - 'database:read'
+    - 'storage:read:write'
+    - 'notification:send'
 ```
 
 ## Extension Point Model
@@ -80,6 +80,7 @@ Resolution order: D → B → C → A
 ```
 
 Conflict detection handles:
+
 - Version incompatibilities
 - Circular dependencies
 - Missing required providers
@@ -89,13 +90,13 @@ Conflict detection handles:
 
 Modules execute with restricted access:
 
-| Permission | Description |
-|---|---|
-| `provider:read` | Read-only access to named Provider |
-| `provider:read:write` | Full access to named Provider |
-| `extension:hook` | Can register extension point handlers |
-| `notification:send` | Can send notifications |
-| `event:publish` | Can publish events to event-bus |
+| Permission            | Description                           |
+| --------------------- | ------------------------------------- |
+| `provider:read`       | Read-only access to named Provider    |
+| `provider:read:write` | Full access to named Provider         |
+| `extension:hook`      | Can register extension point handlers |
+| `notification:send`   | Can send notifications                |
+| `event:publish`       | Can publish events to event-bus       |
 
 ## Design Principles
 

@@ -16,7 +16,10 @@ export async function GET(req: NextRequest) {
       };
 
       // Initial connection event
-      send('connected', { message: 'MyCodeXvantaOS SSE stream connected', ts: new Date().toISOString() });
+      send('connected', {
+        message: 'MyCodeXvantaOS SSE stream connected',
+        ts: new Date().toISOString(),
+      });
 
       // Simulate periodic events
       let tick = 0;
@@ -69,7 +72,7 @@ export async function GET(req: NextRequest) {
     headers: {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache, no-transform',
-      'Connection': 'keep-alive',
+      Connection: 'keep-alive',
       'X-Accel-Buffering': 'no',
     },
   });

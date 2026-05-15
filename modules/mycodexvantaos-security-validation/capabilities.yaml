@@ -1,4 +1,4 @@
 # modules/mycodexvantaos-security-validation/capabilities.yaml
 capabilities:
-    - validation
-    - observability
+  - validation
+  - observability

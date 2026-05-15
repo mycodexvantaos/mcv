@@ -10,7 +10,12 @@
     "lint": "eslint src --ext .ts",
     "format": "prettier --write \"src/**/*.ts\""
   },
-  "keywords": ["message-queue", "messagequeue", "Layer B擴展", "mycodexvantaos"],
+  "keywords": [
+    "message-queue",
+    "messagequeue",
+    "Layer B擴展",
+    "mycodexvantaos"
+  ],
   "author": "MyCodeXvantaOS",
   "license": "MIT",
   "dependencies": {

@@ -16,7 +16,11 @@
     "@types/jest": "^29.5.0",
     "ts-jest": "^29.1.0"
   },
-  "keywords": ["agent", "toolkit", "mycodexvantaos"],
+  "keywords": [
+    "agent",
+    "toolkit",
+    "mycodexvantaos"
+  ],
   "author": "MyCodeXvantaOS Team",
   "license": "MIT"
 }

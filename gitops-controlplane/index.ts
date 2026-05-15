@@ -1,17 +1,17 @@
 /**
  * GitOps Control Plane Module Index
  * Platform-Independent Provider Pattern Implementation
- * 
+ *
  * This module provides GitOps control plane functionality
  * that works in any runtime environment with zero external dependencies.
- * 
+ *
  * Features:
  * - Evidence verification for CI/CD pipelines
  * - Merkle root calculation for content-addressable storage
  * - Schema validation
  * - Digest computation
  * - Toolchain collection
- * 
+ *
  * Runtime Modes:
  * - native: Local file system operations, no external services
  * - hybrid: Remote storage with fallback to local
@@ -23,21 +23,19 @@ export type { EvidenceFile, VerificationReport } from './evidence-verifier.provi
 export type { MerkleNode, MerkleRootResult } from './merkle-root.provider';
 
 // Re-export classes
-export { 
-  EvidenceVerifier, 
-  createEvidenceVerifier,
-} from './evidence-verifier.provider';
+export { EvidenceVerifier, createEvidenceVerifier } from './evidence-verifier.provider';
 
-export { 
-  MerkleRootCalculator, 
-  createMerkleRootCalculator,
-} from './merkle-root.provider';
+export { MerkleRootCalculator, createMerkleRootCalculator } from './merkle-root.provider';
 
 // Provider factory for dependency injection
 export { getProviderFactory, ProviderFactory } from '../packages/capabilities/src/provider-factory';
 
 // Runtime configuration
-export { getRuntimeConfig, RuntimeConfig, RuntimeMode } from '../packages/capabilities/src/runtime-config';
+export {
+  getRuntimeConfig,
+  RuntimeConfig,
+  RuntimeMode,
+} from '../packages/capabilities/src/runtime-config';
 
 /**
  * Initialize all GitOps modules
@@ -147,5 +145,5 @@ export async function shutdownAll(): Promise<void> {
     factory.getLoggingProvider(),
   ]);
 
-  await Promise.all(providers.filter(p => p).map(p => p.shutdown()));
+  await Promise.all(providers.filter((p) => p).map((p) => p.shutdown()));
 }

@@ -1,13 +1,13 @@
 'use client';
 
 import type { Dispatch, SetStateAction } from 'react';
-import { 
-  Terminal, 
-  Database, 
-  ShieldCheck, 
-  Cpu, 
-  Settings, 
-  Share2, 
+import {
+  Terminal,
+  Database,
+  ShieldCheck,
+  Cpu,
+  Settings,
+  Share2,
   LayoutDashboard,
   Code2,
   BarChart3,
@@ -16,7 +16,7 @@ import {
   Braces,
   Zap,
   Globe,
-  Orbit
+  Orbit,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
@@ -49,8 +49,8 @@ export function IconSidebar({ activeView, setActiveView }: IconSidebarProps) {
                 variant={activeView === item.id ? 'secondary' : 'ghost'}
                 size="icon"
                 className={`h-10 w-10 transition-all ${
-                  activeView === item.id 
-                    ? 'bg-primary/10 text-primary border border-primary/20 scale-110 shadow-lg shadow-primary/5' 
+                  activeView === item.id
+                    ? 'bg-primary/10 text-primary border border-primary/20 scale-110 shadow-lg shadow-primary/5'
                     : 'text-muted-foreground hover:text-accent hover:bg-accent/5'
                 }`}
                 onClick={() => setActiveView(item.id)}
@@ -58,17 +58,24 @@ export function IconSidebar({ activeView, setActiveView }: IconSidebarProps) {
                 <item.icon className="h-5 w-5" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent side="right" className="bg-popover text-popover-foreground border-border">
+            <TooltipContent
+              side="right"
+              className="bg-popover text-popover-foreground border-border"
+            >
               <p className="text-[10px] font-bold uppercase tracking-widest">{item.label}</p>
             </TooltipContent>
           </Tooltip>
         ))}
       </div>
-      
+
       <div className="flex flex-col items-center gap-4">
-         <Tooltip>
+        <Tooltip>
           <TooltipTrigger asChild>
-            <Button variant="ghost" size="icon" className="h-10 w-10 text-muted-foreground hover:text-accent">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-10 w-10 text-muted-foreground hover:text-accent"
+            >
               <Terminal className="h-5 w-5" />
             </Button>
           </TooltipTrigger>
@@ -76,14 +83,16 @@ export function IconSidebar({ activeView, setActiveView }: IconSidebarProps) {
             <p className="text-[10px] uppercase tracking-widest">系統終端</p>
           </TooltipContent>
         </Tooltip>
-        
+
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
               variant={activeView === 'settings' ? 'secondary' : 'ghost'}
               size="icon"
               className={`h-10 w-10 transition-all ${
-                activeView === 'settings' ? 'text-accent bg-accent/5' : 'text-muted-foreground hover:text-accent'
+                activeView === 'settings'
+                  ? 'text-accent bg-accent/5'
+                  : 'text-muted-foreground hover:text-accent'
               }`}
               onClick={() => setActiveView('settings')}
             >

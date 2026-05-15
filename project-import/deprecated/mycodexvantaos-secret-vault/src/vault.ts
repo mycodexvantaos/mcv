@@ -3,7 +3,7 @@
  * In-memory secret storage with scope support
  */
 
-import type { SecretEntry } from "./types";
+import type { SecretEntry } from './types';
 
 export interface StoredSecret {
   value: string;
@@ -18,16 +18,16 @@ export interface StoredSecret {
 export class VaultService {
   private secrets = new Map<string, StoredSecret>();
 
-  private makeKey(key: string, scope = "global", namespace?: string): string {
+  private makeKey(key: string, scope = 'global', namespace?: string): string {
     return namespace ? `${scope}:${namespace}:${key}` : `${scope}:${key}`;
   }
 
   async setSecret(
     key: string,
     value: string,
-    options?: { scope?: string; namespace?: string; tags?: string[] },
+    options?: { scope?: string; namespace?: string; tags?: string[] }
   ): Promise<void> {
-    const scope = options?.scope ?? "global";
+    const scope = options?.scope ?? 'global';
     const compositeKey = this.makeKey(key, scope, options?.namespace);
     const existing = this.secrets.get(compositeKey);
     this.secrets.set(compositeKey, {
@@ -41,12 +41,12 @@ export class VaultService {
     });
   }
 
-  async getSecret(key: string, scope = "global", namespace?: string): Promise<string | null> {
+  async getSecret(key: string, scope = 'global', namespace?: string): Promise<string | null> {
     const compositeKey = this.makeKey(key, scope, namespace);
     return this.secrets.get(compositeKey)?.value ?? null;
   }
 
-  async deleteSecret(key: string, scope = "global", namespace?: string): Promise<boolean> {
+  async deleteSecret(key: string, scope = 'global', namespace?: string): Promise<boolean> {
     const compositeKey = this.makeKey(key, scope, namespace);
     return this.secrets.delete(compositeKey);
   }
@@ -55,8 +55,9 @@ export class VaultService {
     const entries: SecretEntry[] = [];
     for (const [compositeKey, stored] of this.secrets) {
       if (options?.scope && stored.scope !== options.scope) continue;
-      const parts = compositeKey.split(":");
-      const rawKey = parts.length > 1 ? parts.slice(stored.namespace ? 2 : 1).join(":") : compositeKey;
+      const parts = compositeKey.split(':');
+      const rawKey =
+        parts.length > 1 ? parts.slice(stored.namespace ? 2 : 1).join(':') : compositeKey;
       if (options?.prefix && !rawKey.startsWith(options.prefix)) continue;
       entries.push({
         key: rawKey,
@@ -72,8 +73,8 @@ export class VaultService {
   async rotateSecret(
     key: string,
     newValue: string,
-    scope = "global",
-    namespace?: string,
+    scope = 'global',
+    namespace?: string
   ): Promise<{ previousVersion: number; newVersion: number }> {
     const compositeKey = this.makeKey(key, scope, namespace);
     const existing = this.secrets.get(compositeKey);

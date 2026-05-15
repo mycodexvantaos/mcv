@@ -4,14 +4,9 @@
   "type": "storage",
   "description": "Redis provider for caching and data storage",
   "version": "1.0.0",
-  "capabilities": [
-    "urn:mycodexvantaos:capability:storage"
-  ],
+  "capabilities": ["urn:mycodexvantaos:capability:storage"],
   "config": {
-    "supportedModes": [
-      "native",
-      "connected"
-    ],
+    "supportedModes": ["native", "connected"],
     "defaultPort": 6379
   }
 }

@@ -19,7 +19,7 @@ export class StateManager {
       key,
       value,
       version: existing ? existing.version + 1 : 1,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
   }
 

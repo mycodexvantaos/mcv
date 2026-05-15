@@ -28,23 +28,23 @@ describe('ContractEngine', () => {
     });
 
     it('should generate unique execution IDs', async () => {
-      const result1 = await engine.executeContract(
-        'contract-001',
-        { userId: 'user-123', intent: 'Deploy application' }
-      );
-      const result2 = await engine.executeContract(
-        'contract-002',
-        { userId: 'user-123', intent: 'Deploy application' }
-      );
+      const result1 = await engine.executeContract('contract-001', {
+        userId: 'user-123',
+        intent: 'Deploy application',
+      });
+      const result2 = await engine.executeContract('contract-002', {
+        userId: 'user-123',
+        intent: 'Deploy application',
+      });
 
       expect(result1.executionId).not.toBe(result2.executionId);
     });
 
     it('should set status to completed on successful validation', async () => {
-      const result = await engine.executeContract(
-        'contract-001',
-        { userId: 'user-123', intent: 'Deploy application to production environment' }
-      );
+      const result = await engine.executeContract('contract-001', {
+        userId: 'user-123',
+        intent: 'Deploy application to production environment',
+      });
 
       expect(result.status).toBe('completed');
     });
@@ -60,10 +60,10 @@ describe('ContractEngine', () => {
     });
 
     it('should include validation results', async () => {
-      const result = await engine.executeContract(
-        'contract-001',
-        { userId: 'user-123', intent: 'Deploy application to production' }
-      );
+      const result = await engine.executeContract('contract-001', {
+        userId: 'user-123',
+        intent: 'Deploy application to production',
+      });
 
       expect(result.validationResults).toBeDefined();
       expect(Array.isArray(result.validationResults)).toBe(true);
@@ -80,19 +80,19 @@ describe('ContractEngine', () => {
     });
 
     it('should use empty system context when not provided', async () => {
-      const result = await engine.executeContract(
-        'contract-001',
-        { userId: 'user-123', intent: 'Deploy application' }
-      );
+      const result = await engine.executeContract('contract-001', {
+        userId: 'user-123',
+        intent: 'Deploy application',
+      });
 
       expect(result.systemContext).toEqual({});
     });
 
     it('should create contract with correct ID', async () => {
-      const result = await engine.executeContract(
-        'my-contract-id',
-        { userId: 'user-123', intent: 'Deploy application' }
-      );
+      const result = await engine.executeContract('my-contract-id', {
+        userId: 'user-123',
+        intent: 'Deploy application',
+      });
 
       expect(result.contract.id).toBe('my-contract-id');
       expect(result.contract.name).toBe('Contract-my-contract-id');
@@ -104,7 +104,7 @@ describe('ContractEngine', () => {
       // Pass context that will fail validation
       const result = await engine.executeContract(
         'contract-001',
-        { } // Missing required fields
+        {} // Missing required fields
       );
 
       expect(result.status).toBe('failed');
@@ -112,19 +112,17 @@ describe('ContractEngine', () => {
     });
 
     it('should not throw on validation failure', async () => {
-      await expect(
-        engine.executeContract('contract-001', { intent: '' })
-      ).resolves.toBeDefined();
+      await expect(engine.executeContract('contract-001', { intent: '' })).resolves.toBeDefined();
     });
   });
 
   describe('Status Transitions', () => {
     it('should transition through correct statuses on success', async () => {
       // We can't observe intermediate statuses directly, but we can verify final status
-      const result = await engine.executeContract(
-        'contract-001',
-        { userId: 'user-123', intent: 'Deploy application to production' }
-      );
+      const result = await engine.executeContract('contract-001', {
+        userId: 'user-123',
+        intent: 'Deploy application to production',
+      });
 
       expect(result.status).toBe('completed');
     });
@@ -143,17 +141,17 @@ describe('ContractEngine', () => {
     it('should run all validation layers for valid context', async () => {
       const result = await engine.executeContract(
         'contract-001',
-        { 
-          userId: 'user-123', 
+        {
+          userId: 'user-123',
           intent: 'Deploy application to production environment',
-          piiClearance: true
+          piiClearance: true,
         },
-        { 
-          quotaLimit: 100, 
+        {
+          quotaLimit: 100,
           quotaUsed: 50,
           requestFrequency: 10,
           generatedDataSize: 1024,
-          historicalP95Ms: 100
+          historicalP95Ms: 100,
         }
       );
 
@@ -163,12 +161,12 @@ describe('ContractEngine', () => {
     });
 
     it('should collect gate results from all layers', async () => {
-      const result = await engine.executeContract(
-        'contract-001',
-        { userId: 'user-123', intent: 'Deploy application' }
-      );
+      const result = await engine.executeContract('contract-001', {
+        userId: 'user-123',
+        intent: 'Deploy application',
+      });
 
-      const gateIds = result.validationResults?.map(r => r.gateId);
+      const gateIds = result.validationResults?.map((r) => r.gateId);
       expect(gateIds).toContain('intent-clarity');
       expect(gateIds).toContain('goal-alignment');
       expect(gateIds).toContain('user-authorization');

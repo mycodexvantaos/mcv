@@ -9,7 +9,11 @@ interface Scenario {
   domain: string;
   description: string;
   requirements: { id: string; text: string; priority: 'must' | 'should' | 'could' | 'wont' }[];
-  constraints: { id: string; type: 'technical' | 'business' | 'regulatory' | 'resource'; text: string }[];
+  constraints: {
+    id: string;
+    type: 'technical' | 'business' | 'regulatory' | 'resource';
+    text: string;
+  }[];
   solutions: {
     id: string;
     name: string;
@@ -29,7 +33,8 @@ const scenarios: Scenario[] = [
     id: 'scenario-001',
     name: 'Real-time Content Moderation',
     domain: 'Content Safety',
-    description: 'Deploy LM-powered content moderation for user-generated content across all edge regions with sub-100ms latency.',
+    description:
+      'Deploy LM-powered content moderation for user-generated content across all edge regions with sub-100ms latency.',
     requirements: [
       { id: 'r1', text: 'Process 10K+ requests/second across all regions', priority: 'must' },
       { id: 'r2', text: 'Sub-100ms inference latency at edge', priority: 'must' },
@@ -38,7 +43,11 @@ const scenarios: Scenario[] = [
       { id: 'r5', text: 'Audit trail for all moderation decisions', priority: 'must' },
     ],
     constraints: [
-      { id: 'c1', type: 'technical', text: 'Must use models under 7B parameters for edge deployment' },
+      {
+        id: 'c1',
+        type: 'technical',
+        text: 'Must use models under 7B parameters for edge deployment',
+      },
       { id: 'c2', type: 'regulatory', text: 'EU AI Act compliance required for EU regions' },
       { id: 'c3', type: 'business', text: 'Budget cap of $50K/month for inference costs' },
     ],
@@ -55,7 +64,8 @@ const scenarios: Scenario[] = [
       {
         id: 'sol-2',
         name: 'Hybrid Cloud-Edge with Gemini Flash',
-        description: 'Use Gemini Flash for initial screening at edge, escalate to cloud for complex cases',
+        description:
+          'Use Gemini Flash for initial screening at edge, escalate to cloud for complex cases',
         coverage: 85,
         effort: 'medium',
         risk: 'low',
@@ -70,7 +80,8 @@ const scenarios: Scenario[] = [
     id: 'scenario-002',
     name: 'Multi-Model API Gateway',
     domain: 'Developer Platform',
-    description: 'Build a unified API gateway that routes requests to optimal LM providers based on cost, latency, and capability requirements.',
+    description:
+      'Build a unified API gateway that routes requests to optimal LM providers based on cost, latency, and capability requirements.',
     requirements: [
       { id: 'r1', text: 'Single API endpoint for all LM providers', priority: 'must' },
       { id: 'r2', text: 'Automatic failover between providers', priority: 'must' },
@@ -85,7 +96,8 @@ const scenarios: Scenario[] = [
       {
         id: 'sol-1',
         name: 'Weighted Priority Routing',
-        description: 'Implement priority-based routing with configurable weights and automatic failover',
+        description:
+          'Implement priority-based routing with configurable weights and automatic failover',
         coverage: 95,
         effort: 'medium',
         risk: 'low',

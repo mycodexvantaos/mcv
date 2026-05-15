@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/search/elasticsearch/config.schema.json",
   "title": "search-elasticsearch Configuration",
   "type": "object",
-  "required": [
-    "node"
-  ],
+  "required": ["node"],
   "properties": {
     "node": {
       "type": "string",

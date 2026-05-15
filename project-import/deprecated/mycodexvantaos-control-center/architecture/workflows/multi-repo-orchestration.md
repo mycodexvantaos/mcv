@@ -23,15 +23,15 @@ This document defines the comprehensive workflow orchestration strategy for mana
 
 ### Architecture Comparison: v1 vs v2
 
-| Aspect | v1 (Third-party-first) | v2 (Native-first) |
-|--------|----------------------|-------------------|
-| State Management | Hard Redis dependency | StateStoreProvider (native: memory+file / external: Redis) |
-| Repo Operations | Hard GitHub API dependency | RepoProvider (native: local git / external: GitHub API) |
-| Notifications | Hardcoded Slack | NotificationProvider (native: console+file / external: Slack/Teams) |
-| Secrets | GitHub Secrets only | SecretsProvider (native: AES-256-GCM vault / external: GitHub/Vault) |
-| Startup | Requires all secrets configured | `git clone && npm start` with zero config |
-| Failure Mode | Workflow fails if Redis/GitHub unavailable | Auto-failover to native providers |
-| Secret Names | `REDIS_HOST`, `GH_TOKEN` | `ORCH_STATE_HOST`, `ORCH_GITHUB_TOKEN` |
+| Aspect           | v1 (Third-party-first)                     | v2 (Native-first)                                                    |
+| ---------------- | ------------------------------------------ | -------------------------------------------------------------------- |
+| State Management | Hard Redis dependency                      | StateStoreProvider (native: memory+file / external: Redis)           |
+| Repo Operations  | Hard GitHub API dependency                 | RepoProvider (native: local git / external: GitHub API)              |
+| Notifications    | Hardcoded Slack                            | NotificationProvider (native: console+file / external: Slack/Teams)  |
+| Secrets          | GitHub Secrets only                        | SecretsProvider (native: AES-256-GCM vault / external: GitHub/Vault) |
+| Startup          | Requires all secrets configured            | `git clone && npm start` with zero config                            |
+| Failure Mode     | Workflow fails if Redis/GitHub unavailable | Auto-failover to native providers                                    |
+| Secret Names     | `REDIS_HOST`, `GH_TOKEN`                   | `ORCH_STATE_HOST`, `ORCH_GITHUB_TOKEN`                               |
 
 ---
 
@@ -106,22 +106,22 @@ This document defines the comprehensive workflow orchestration strategy for mana
 
 ### 2.2 Repository Classification by Layer & Plane
 
-| Layer | Plane | Repositories | Tier | Priority |
-|-------|-------|-------------|------|----------|
-| B-Runtime | Control | core-main, workflows | 0-1 | P0 |
-| C-NativeServices | Control | control-center | 0 | P0 |
-| B-Runtime | Execution | core-kernel, scheduler, automation-core | 0-2 | P1 |
-| A-Builder | Execution | cli, core-code-deconstructor | 3 | P1 |
-| E-DeployTarget | Execution | infra-base | 4 | P1 |
-| C-NativeServices | Governance | secret-vault, config-manager, auth-service, policy-engine, governance-autonomy | 1-2 | P0 |
-| D-Connector | Integration | network-mesh | 2 | P1 |
-| B-Runtime | Integration | event-bus | 1 | P1 |
-| E-DeployTarget | Integration | infra-gitops | 4 | P1 |
-| B-Runtime | Data | data-pipeline | 2 | P2 |
-| B-Runtime | Decision | ai-engine, decision-engine | 2 | P2 |
-| B-Runtime | Experience | app-portal, app-ui, module-suite | 3 | P1 |
-| C-NativeServices | Observability | observability-stack | 2 | P1 |
-| B-Runtime | Sandbox | fleet-sandbox | 3 | P3 |
+| Layer            | Plane         | Repositories                                                                   | Tier | Priority |
+| ---------------- | ------------- | ------------------------------------------------------------------------------ | ---- | -------- |
+| B-Runtime        | Control       | core-main, workflows                                                           | 0-1  | P0       |
+| C-NativeServices | Control       | control-center                                                                 | 0    | P0       |
+| B-Runtime        | Execution     | core-kernel, scheduler, automation-core                                        | 0-2  | P1       |
+| A-Builder        | Execution     | cli, core-code-deconstructor                                                   | 3    | P1       |
+| E-DeployTarget   | Execution     | infra-base                                                                     | 4    | P1       |
+| C-NativeServices | Governance    | secret-vault, config-manager, auth-service, policy-engine, governance-autonomy | 1-2  | P0       |
+| D-Connector      | Integration   | network-mesh                                                                   | 2    | P1       |
+| B-Runtime        | Integration   | event-bus                                                                      | 1    | P1       |
+| E-DeployTarget   | Integration   | infra-gitops                                                                   | 4    | P1       |
+| B-Runtime        | Data          | data-pipeline                                                                  | 2    | P2       |
+| B-Runtime        | Decision      | ai-engine, decision-engine                                                     | 2    | P2       |
+| B-Runtime        | Experience    | app-portal, app-ui, module-suite                                               | 3    | P1       |
+| C-NativeServices | Observability | observability-stack                                                            | 2    | P1       |
+| B-Runtime        | Sandbox       | fleet-sandbox                                                                  | 3    | P3       |
 
 ---
 
@@ -225,13 +225,13 @@ Phase 4: Finalization
 
 ### 3.3 Parallelism Configuration
 
-| Tier | Max Parallel | Rationale |
-|------|-------------|-----------|
-| 0 | 5 | Foundation layer — small set, critical path |
-| 1 | 8 | Core services — need fast parallel validation |
-| 2 | 8 | Engines — largest tier, max throughput |
-| 3 | 8 | Applications — independent from each other |
-| 4 | 5 | Infrastructure — small set, final validation |
+| Tier | Max Parallel | Rationale                                     |
+| ---- | ------------ | --------------------------------------------- |
+| 0    | 5            | Foundation layer — small set, critical path   |
+| 1    | 8            | Core services — need fast parallel validation |
+| 2    | 8            | Engines — largest tier, max throughput        |
+| 3    | 8            | Applications — independent from each other    |
+| 4    | 5            | Infrastructure — small set, final validation  |
 
 ---
 
@@ -315,23 +315,23 @@ Priority (highest to lowest):
 
 ### 5.2 GitHub Repository Variables
 
-| Variable | Values | Default | Description |
-|----------|--------|---------|-------------|
-| `ORCH_STATE_PROVIDER` | auto, native, redis | auto | State management backend |
-| `ORCH_REPO_PROVIDER` | auto, native, github, gitlab | auto | Repository operations backend |
-| `ORCH_NOTIFY_PROVIDER` | auto, native, slack, webhook, teams | auto | Notification delivery backend |
-| `ORCH_DEPLOY_PROVIDER` | auto, native, github-actions, docker, k8s | auto | Deployment execution backend |
+| Variable               | Values                                    | Default | Description                   |
+| ---------------------- | ----------------------------------------- | ------- | ----------------------------- |
+| `ORCH_STATE_PROVIDER`  | auto, native, redis                       | auto    | State management backend      |
+| `ORCH_REPO_PROVIDER`   | auto, native, github, gitlab              | auto    | Repository operations backend |
+| `ORCH_NOTIFY_PROVIDER` | auto, native, slack, webhook, teams       | auto    | Notification delivery backend |
+| `ORCH_DEPLOY_PROVIDER` | auto, native, github-actions, docker, k8s | auto    | Deployment execution backend  |
 
 ### 5.3 GitHub Repository Secrets (all optional)
 
-| Secret | Purpose | Enables |
-|--------|---------|---------|
-| `ORCH_GITHUB_TOKEN` | GitHub API access | github repo provider |
-| `ORCH_STATE_HOST` | Redis host | redis state provider |
-| `ORCH_STATE_PORT` | Redis port | redis state provider |
-| `ORCH_STATE_PASSWORD` | Redis password | redis state provider |
-| `ORCH_SLACK_WEBHOOK` | Slack webhook URL | slack notify provider |
-| `ORCH_SLACK_TOKEN` | Slack bot token | slack notify provider |
+| Secret                | Purpose           | Enables               |
+| --------------------- | ----------------- | --------------------- |
+| `ORCH_GITHUB_TOKEN`   | GitHub API access | github repo provider  |
+| `ORCH_STATE_HOST`     | Redis host        | redis state provider  |
+| `ORCH_STATE_PORT`     | Redis port        | redis state provider  |
+| `ORCH_STATE_PASSWORD` | Redis password    | redis state provider  |
+| `ORCH_SLACK_WEBHOOK`  | Slack webhook URL | slack notify provider |
+| `ORCH_SLACK_TOKEN`    | Slack bot token   | slack notify provider |
 
 ### 5.4 Mode Auto-Detection Logic
 
@@ -421,22 +421,22 @@ External Provider Init
 
 ### 7.2 Workflow Error Isolation
 
-| Scope | Failure Behavior | Impact |
-|-------|-----------------|--------|
-| Single repo in tier | Marked as failed, others continue | `fail-fast: false` |
-| Entire tier | Next tier still runs | Results in `partial_failure` |
-| State provider | Auto-failover to native | Transparent to workflow |
-| Notification provider | Log to stdout as fallback | Non-blocking |
-| Repo provider | Checkout uses `github.token` | Continue with GITHUB_TOKEN |
+| Scope                 | Failure Behavior                  | Impact                       |
+| --------------------- | --------------------------------- | ---------------------------- |
+| Single repo in tier   | Marked as failed, others continue | `fail-fast: false`           |
+| Entire tier           | Next tier still runs              | Results in `partial_failure` |
+| State provider        | Auto-failover to native           | Transparent to workflow      |
+| Notification provider | Log to stdout as fallback         | Non-blocking                 |
+| Repo provider         | Checkout uses `github.token`      | Continue with GITHUB_TOKEN   |
 
 ### 7.3 Retry Strategy
 
-| Operation | Max Retries | Backoff | Fallback |
-|-----------|------------|---------|----------|
-| Redis connect | 1 | N/A | Native state |
-| Slack notify | 1 | N/A | Stdout log |
-| Repo checkout | 1 (built-in) | N/A | continue-on-error |
-| Validation | 0 | N/A | Mark as failed |
+| Operation     | Max Retries  | Backoff | Fallback          |
+| ------------- | ------------ | ------- | ----------------- |
+| Redis connect | 1            | N/A     | Native state      |
+| Slack notify  | 1            | N/A     | Stdout log        |
+| Repo checkout | 1 (built-in) | N/A     | continue-on-error |
+| Validation    | 0            | N/A     | Mark as failed    |
 
 ---
 
@@ -476,12 +476,12 @@ Planned metrics for ObservabilityProvider integration:
 
 ### 9.1 Breaking Changes
 
-| Change | v1 | v2 | Migration |
-|--------|----|----|-----------|
-| Secrets naming | `REDIS_HOST`, `GH_TOKEN` | `ORCH_STATE_HOST`, `ORCH_GITHUB_TOKEN` | Rename in GitHub Secrets |
-| Required secrets | All mandatory | All optional | Remove mandatory checks |
-| Workflow inputs | action, target_planes, repos | + mode, dry_run | Update dispatch callers |
-| Runner inputs | tier, plane, dependencies | + mode, state_provider, repo_provider | Internal (auto-propagated) |
+| Change           | v1                           | v2                                     | Migration                  |
+| ---------------- | ---------------------------- | -------------------------------------- | -------------------------- |
+| Secrets naming   | `REDIS_HOST`, `GH_TOKEN`     | `ORCH_STATE_HOST`, `ORCH_GITHUB_TOKEN` | Rename in GitHub Secrets   |
+| Required secrets | All mandatory                | All optional                           | Remove mandatory checks    |
+| Workflow inputs  | action, target_planes, repos | + mode, dry_run                        | Update dispatch callers    |
+| Runner inputs    | tier, plane, dependencies    | + mode, state_provider, repo_provider  | Internal (auto-propagated) |
 
 ### 9.2 Step-by-Step Migration
 
@@ -518,7 +518,7 @@ Planned metrics for ObservabilityProvider integration:
 
 ## 10. Change History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0.0 | 2024-03-12 | Initial design (GitHub Actions + Redis + Slack hard dependencies) |
-| 2.0.0 | 2024-03-13 | **Architecture Pivot**: Native-first / Provider-agnostic redesign. Added Phase 0 mode detection, 12 Provider interfaces, automatic failover, provider-agnostic state management, mode-aware deployment, REPO_MANIFEST.yaml standard, provider-agnostic validation checks. Removed all hard external service dependencies. |
+| Version | Date       | Changes                                                                                                                                                                                                                                                                                                                   |
+| ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.0.0   | 2024-03-12 | Initial design (GitHub Actions + Redis + Slack hard dependencies)                                                                                                                                                                                                                                                         |
+| 2.0.0   | 2024-03-13 | **Architecture Pivot**: Native-first / Provider-agnostic redesign. Added Phase 0 mode detection, 12 Provider interfaces, automatic failover, provider-agnostic state management, mode-aware deployment, REPO_MANIFEST.yaml standard, provider-agnostic validation checks. Removed all hard external service dependencies. |

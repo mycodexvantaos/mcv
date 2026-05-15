@@ -19,7 +19,7 @@ spec:
     cache: cache-redis
   lifecycle:
     stage: stable
-    since: "v1.0.0"
-  urn: "urn:mycodexvantaos:manifest:service:mycodexvantaos-core-gateway"
-  packageName: "@mycodexvantaos/core-gateway"
-  description: "API gateway. Routing, rate-limiting, and auth middleware."
+    since: 'v1.0.0'
+  urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-core-gateway'
+  packageName: '@mycodexvantaos/core-gateway'
+  description: 'API gateway. Routing, rate-limiting, and auth middleware.'

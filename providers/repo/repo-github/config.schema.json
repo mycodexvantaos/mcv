@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/repo/github/config.schema.json",
   "title": "repo-github Configuration",
   "type": "object",
-  "required": [
-    "token"
-  ],
+  "required": ["token"],
   "properties": {
     "token": {
       "type": "string",

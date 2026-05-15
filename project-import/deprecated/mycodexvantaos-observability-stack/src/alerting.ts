@@ -3,13 +3,13 @@
  * In-memory alert rule management
  */
 
-import type { AlertRule } from "./types";
+import type { AlertRule } from './types';
 
 export interface Alert {
   id: string;
   ruleId: string;
   ruleName: string;
-  severity: AlertRule["severity"];
+  severity: AlertRule['severity'];
   message: string;
   firedAt: Date;
   acknowledged: boolean;
@@ -60,10 +60,11 @@ export class AlertingService {
     alert.acknowledgedBy = acknowledgedBy;
   }
 
-  listAlerts(options?: { severity?: AlertRule["severity"]; acknowledged?: boolean }): Alert[] {
+  listAlerts(options?: { severity?: AlertRule['severity']; acknowledged?: boolean }): Alert[] {
     let result = [...this.alerts];
     if (options?.severity) result = result.filter((a) => a.severity === options.severity);
-    if (options?.acknowledged !== undefined) result = result.filter((a) => a.acknowledged === options.acknowledged);
+    if (options?.acknowledged !== undefined)
+      result = result.filter((a) => a.acknowledged === options.acknowledged);
     return result;
   }
 
@@ -74,7 +75,10 @@ export class AlertingService {
       // Simple keyword match evaluation
       const condKey = rule.condition;
       if (condKey in context) {
-        const alert = this.fireAlert(rule.id, `Condition "${condKey}" triggered with value: ${context[condKey]}`);
+        const alert = this.fireAlert(
+          rule.id,
+          `Condition "${condKey}" triggered with value: ${context[condKey]}`
+        );
         fired.push(alert);
       }
     }

@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/llm/anthropic/config.schema.json",
   "title": "llm-anthropic Configuration",
   "type": "object",
-  "required": [
-    "apiKey"
-  ],
+  "required": ["apiKey"],
   "properties": {
     "apiKey": {
       "type": "string",

@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/llm/openai/config.schema.json",
   "title": "llm-openai Configuration",
   "type": "object",
-  "required": [
-    "apiKey"
-  ],
+  "required": ["apiKey"],
   "properties": {
     "apiKey": {
       "type": "string",

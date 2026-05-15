@@ -56,12 +56,12 @@ feature-branch ──▶ dev ──▶ staging ──▶ production
 
 ## Drift Categories
 
-| Category | Detection | Response |
-|---|---|---|
-| Configuration | Hash comparison | Auto-correct |
-| Resource Count | Inventory diff | Alert + auto-correct |
-| Version | Semantic comparison | Alert + gate |
-| State | Health check | Escalate |
+| Category       | Detection           | Response             |
+| -------------- | ------------------- | -------------------- |
+| Configuration  | Hash comparison     | Auto-correct         |
+| Resource Count | Inventory diff      | Alert + auto-correct |
+| Version        | Semantic comparison | Alert + gate         |
+| State          | Health check        | Escalate             |
 
 ## Design Principles
 

@@ -13,4 +13,4 @@ spec:
   # no embeddingModelAlias for sparse pipelines
   topK: 10
   rerankEnabled: false
-  description: "Sparse BM25 keyword retrieval, in-memory index."
+  description: 'Sparse BM25 keyword retrieval, in-memory index.'

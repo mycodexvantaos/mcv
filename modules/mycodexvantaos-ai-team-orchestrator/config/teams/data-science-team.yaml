@@ -364,8 +364,8 @@ data_governance:
 schedule:
   timezone: UTC
   working_hours:
-    start: "09:00"
-    end: "18:00"
+    start: '09:00'
+    end: '18:00'
   training_windows:
     allowed_days: [saturday, sunday]
     max_duration_hours: 48
@@ -394,8 +394,8 @@ metrics:
 channels:
   - type: slack
     channels:
-      - "#data-science"
-      - "#ml-ops"
+      - '#data-science'
+      - '#ml-ops'
     purpose: daily_communication
   - type: jupyter
     purpose: notebook_collaboration

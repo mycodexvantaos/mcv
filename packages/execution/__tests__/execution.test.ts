@@ -12,7 +12,7 @@ describe('ExecutionEngine', () => {
       const task: Task = {
         id: 'test-task',
         name: 'Test Task',
-        handler: async () => 'result'
+        handler: async () => 'result',
       };
 
       engine.registerTask(task);
@@ -26,7 +26,7 @@ describe('ExecutionEngine', () => {
       const task: Task = {
         id: 'task-1',
         name: 'Task 1',
-        handler: async () => 'success'
+        handler: async () => 'success',
       };
 
       engine.registerTask(task);
@@ -43,7 +43,7 @@ describe('ExecutionEngine', () => {
         name: 'Task 2',
         handler: async () => {
           throw new Error('Task failed');
-        }
+        },
       };
 
       engine.registerTask(task);
@@ -64,7 +64,7 @@ describe('ExecutionEngine', () => {
             throw new Error('Retry needed');
           }
           return 'success after retry';
-        }
+        },
       };
 
       engine.registerTask(task);
@@ -80,45 +80,45 @@ describe('ExecutionEngine', () => {
     it('should execute parallel workflow', async () => {
       const tasks: Task[] = [
         { id: 'task-a', name: 'A', handler: async () => 'a-result' },
-        { id: 'task-b', name: 'B', handler: async () => 'b-result' }
+        { id: 'task-b', name: 'B', handler: async () => 'b-result' },
       ];
 
-      tasks.forEach(task => engine.registerTask(task));
+      tasks.forEach((task) => engine.registerTask(task));
 
       const workflow: WorkflowConfig = {
         name: 'Parallel Workflow',
         tasks,
-        parallel: true
+        parallel: true,
       };
 
       const results = await engine.executeWorkflow(workflow);
 
       expect(results).toHaveLength(2);
-      expect(results.every(r => r.status === 'completed')).toBe(true);
+      expect(results.every((r) => r.status === 'completed')).toBe(true);
     });
 
     it('should execute sequential workflow', async () => {
       const tasks: Task[] = [
-        { 
-          id: 'task-1', 
-          name: 'Task 1', 
+        {
+          id: 'task-1',
+          name: 'Task 1',
           handler: async () => 'result-1',
-          dependencies: []
+          dependencies: [],
         },
-        { 
-          id: 'task-2', 
-          name: 'Task 2', 
+        {
+          id: 'task-2',
+          name: 'Task 2',
           handler: async () => 'result-2',
-          dependencies: ['task-1']
-        }
+          dependencies: ['task-1'],
+        },
       ];
 
-      tasks.forEach(task => engine.registerTask(task));
+      tasks.forEach((task) => engine.registerTask(task));
 
       const workflow: WorkflowConfig = {
         name: 'Sequential Workflow',
         tasks,
-        parallel: false
+        parallel: false,
       };
 
       const results = await engine.executeWorkflow(workflow);
@@ -133,10 +133,16 @@ describe('ExecutionEngine', () => {
     it('should provide accurate statistics', async () => {
       const tasks: Task[] = [
         { id: 'task-success', name: 'Success', handler: async () => 'ok' },
-        { id: 'task-fail', name: 'Fail', handler: async () => { throw new Error('error'); } }
+        {
+          id: 'task-fail',
+          name: 'Fail',
+          handler: async () => {
+            throw new Error('error');
+          },
+        },
       ];
 
-      tasks.forEach(task => engine.registerTask(task));
+      tasks.forEach((task) => engine.registerTask(task));
 
       await engine.executeTask('task-success');
       await engine.executeTask('task-fail', { continueOnError: true });

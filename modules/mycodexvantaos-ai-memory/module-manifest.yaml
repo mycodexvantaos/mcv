@@ -19,7 +19,7 @@ spec:
     state-store: state-store-redis
   lifecycle:
     stage: stable
-    since: "v1.0.0"
-  urn: "urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-memory"
-  packageName: "@mycodexvantaos/ai-memory"
-  description: "AI memory service. Stores and retrieves semantic memories."
+    since: 'v1.0.0'
+  urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-memory'
+  packageName: '@mycodexvantaos/ai-memory'
+  description: 'AI memory service. Stores and retrieves semantic memories.'

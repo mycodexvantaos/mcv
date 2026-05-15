@@ -12,26 +12,38 @@ import { z } from 'genkit';
 
 // Define the input schema for the research data summarization flow.
 const ResearchDataSummarizationInputSchema = z.object({
-  researchData: z.string().describe('Large volumes of research data, market trends, and editor ecosystem metrics as a single text block.'),
+  researchData: z
+    .string()
+    .describe(
+      'Large volumes of research data, market trends, and editor ecosystem metrics as a single text block.'
+    ),
 });
 export type ResearchDataSummarizationInput = z.infer<typeof ResearchDataSummarizationInputSchema>;
 
 // Define the output schema for the research data summarization flow.
 const ResearchDataSummarizationOutputSchema = z.object({
-  summary: z.string().describe('A comprehensive summary of the provided research data, highlighting key insights.'),
+  summary: z
+    .string()
+    .describe('A comprehensive summary of the provided research data, highlighting key insights.'),
 });
 export type ResearchDataSummarizationOutput = z.infer<typeof ResearchDataSummarizationOutputSchema>;
 
 // Exported wrapper function to call the Genkit flow.
-export async function summarizeResearchData(input: ResearchDataSummarizationInput): Promise<ResearchDataSummarizationOutput> {
+export async function summarizeResearchData(
+  input: ResearchDataSummarizationInput
+): Promise<ResearchDataSummarizationOutput> {
   if (!process.env.GEMINI_API_KEY) {
-    throw new Error('The GEMINI_API_KEY environment variable is not set. Please add it to your .env file to use AI features.');
+    throw new Error(
+      'The GEMINI_API_KEY environment variable is not set. Please add it to your .env file to use AI features.'
+    );
   }
   try {
     return await summarizeResearchDataFlow(input);
   } catch (e: any) {
     if (e.message.includes('API key not valid')) {
-      throw new Error('The provided GEMINI_API_KEY is invalid. Please check your .env file and provide a valid key from Google AI Studio.');
+      throw new Error(
+        'The provided GEMINI_API_KEY is invalid. Please check your .env file and provide a valid key from Google AI Studio.'
+      );
     }
     // Re-throw other errors
     throw e;

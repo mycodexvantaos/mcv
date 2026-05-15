@@ -21,14 +21,7 @@ interface WSClient {
 /**
  * Message types
  */
-type WSMessageType =
-  | 'subscribe'
-  | 'unsubscribe'
-  | 'event'
-  | 'ping'
-  | 'pong'
-  | 'error'
-  | 'message';
+type WSMessageType = 'subscribe' | 'unsubscribe' | 'event' | 'ping' | 'pong' | 'error' | 'message';
 
 /**
  * WebSocket message structure
@@ -118,11 +111,7 @@ export function setupWebSocket(wss: WebSocketServer, orchestrator: Orchestrator)
 /**
  * Handle incoming WebSocket message
  */
-function handleMessage(
-  client: WSClient,
-  message: WSMessage,
-  orchestrator: Orchestrator
-): void {
+function handleMessage(client: WSClient, message: WSMessage, orchestrator: Orchestrator): void {
   switch (message.type) {
     case 'subscribe':
       handleSubscribe(client, message);
@@ -326,11 +315,13 @@ function broadcastToSubscribers(
  */
 function sendMessage(ws: WebSocket, type: WSMessageType, payload: unknown): void {
   if (ws.readyState === WebSocket.OPEN) {
-    ws.send(JSON.stringify({
-      type,
-      payload,
-      timestamp: new Date().toISOString(),
-    }));
+    ws.send(
+      JSON.stringify({
+        type,
+        payload,
+        timestamp: new Date().toISOString(),
+      })
+    );
   }
 }
 

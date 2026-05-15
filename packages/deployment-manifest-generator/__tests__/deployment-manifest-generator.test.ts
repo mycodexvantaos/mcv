@@ -1,8 +1,4 @@
-import {
-  DeploymentManifestGenerator,
-  ServiceDefinition,
-  InfrastructureConfig
-} from '../src/index';
+import { DeploymentManifestGenerator, ServiceDefinition, InfrastructureConfig } from '../src/index';
 
 describe('DeploymentManifestGenerator', () => {
   let generator: DeploymentManifestGenerator;
@@ -12,7 +8,7 @@ describe('DeploymentManifestGenerator', () => {
       platform: 'docker',
       namespace: 'default',
       includeIngress: true,
-      includeMonitoring: true
+      includeMonitoring: true,
     });
   });
 
@@ -57,13 +53,13 @@ describe('DeploymentManifestGenerator', () => {
         {
           name: 'web',
           image: 'nginx:latest',
-          ports: [{ container: 80, host: 8080 }]
-        }
+          ports: [{ container: 80, host: 8080 }],
+        },
       ];
 
       const compose = generator.generateDockerCompose(services);
 
-      expect(compose).toContain('version: \'3.8\'');
+      expect(compose).toContain("version: '3.8'");
       expect(compose).toContain('web:');
       expect(compose).toContain('image: nginx:latest');
       expect(compose).toContain('8080:80');
@@ -72,7 +68,7 @@ describe('DeploymentManifestGenerator', () => {
     it('should handle multiple services', () => {
       const services: ServiceDefinition[] = [
         { name: 'web', image: 'nginx', ports: [{ container: 80 }] },
-        { name: 'api', image: 'node', ports: [{ container: 3000 }] }
+        { name: 'api', image: 'node', ports: [{ container: 3000 }] },
       ];
 
       const compose = generator.generateDockerCompose(services);
@@ -87,8 +83,8 @@ describe('DeploymentManifestGenerator', () => {
           name: 'app',
           image: 'node',
           ports: [{ container: 3000 }],
-          environment: { NODE_ENV: 'production', PORT: '3000' }
-        }
+          environment: { NODE_ENV: 'production', PORT: '3000' },
+        },
       ];
 
       const compose = generator.generateDockerCompose(services);
@@ -103,8 +99,8 @@ describe('DeploymentManifestGenerator', () => {
           name: 'app',
           image: 'node',
           ports: [{ container: 3000 }],
-          volumes: [{ host: './data', container: '/app/data' }]
-        }
+          volumes: [{ host: './data', container: '/app/data' }],
+        },
       ];
 
       const compose = generator.generateDockerCompose(services);
@@ -122,9 +118,9 @@ describe('DeploymentManifestGenerator', () => {
             path: '/health',
             interval: 30,
             timeout: 10,
-            retries: 3
-          }
-        }
+            retries: 3,
+          },
+        },
       ];
 
       const compose = generator.generateDockerCompose(services);
@@ -143,7 +139,7 @@ describe('DeploymentManifestGenerator', () => {
         name: 'backend',
         image: 'myapp:latest',
         ports: [{ container: 3000 }],
-        replicas: 3
+        replicas: 3,
       };
 
       const yaml = generator.generateKubernetesDeployment('backend', service);
@@ -160,7 +156,7 @@ describe('DeploymentManifestGenerator', () => {
         name: 'app',
         image: 'app:latest',
         ports: [{ container: 3000 }],
-        environment: { DATABASE_URL: 'postgres://localhost' }
+        environment: { DATABASE_URL: 'postgres://localhost' },
       };
 
       const yaml = generator.generateKubernetesDeployment('app', service);
@@ -176,8 +172,8 @@ describe('DeploymentManifestGenerator', () => {
         ports: [{ container: 3000 }],
         resources: {
           cpu: '500m',
-          memory: '512Mi'
-        }
+          memory: '512Mi',
+        },
       };
 
       const yaml = generator.generateKubernetesDeployment('app', service);
@@ -196,8 +192,8 @@ describe('DeploymentManifestGenerator', () => {
           path: '/health',
           interval: 30,
           timeout: 10,
-          retries: 3
-        }
+          retries: 3,
+        },
       };
 
       const yaml = generator.generateKubernetesDeployment('app', service);
@@ -210,7 +206,7 @@ describe('DeploymentManifestGenerator', () => {
   describe('generateKubernetesConfigMap', () => {
     it('should generate valid ConfigMap', () => {
       const config = generator.generateKubernetesConfigMap('app-config', {
-        'config.yaml': 'key: value'
+        'config.yaml': 'key: value',
       });
 
       expect(config).toContain('apiVersion: v1');
@@ -223,7 +219,7 @@ describe('DeploymentManifestGenerator', () => {
   describe('generateKubernetesSecret', () => {
     it('should generate valid Secret', () => {
       const secret = generator.generateKubernetesSecret('app-secret', {
-        'password': 'secret123'
+        password: 'secret123',
       });
 
       expect(secret).toContain('apiVersion: v1');
@@ -234,7 +230,7 @@ describe('DeploymentManifestGenerator', () => {
 
     it('should base64 encode values', () => {
       const secret = generator.generateKubernetesSecret('app-secret', {
-        'password': 'test'
+        password: 'test',
       });
 
       expect(secret).toContain('dGVzdA=='); // base64 of 'test'
@@ -246,14 +242,14 @@ describe('DeploymentManifestGenerator', () => {
       const infrastructure: InfrastructureConfig = {
         provider: 'aws',
         region: 'us-east-1',
-        resources: {}
+        resources: {},
       };
       const services: ServiceDefinition[] = [
         {
           name: 'app',
           image: 'app:latest',
-          ports: [{ container: 3000 }]
-        }
+          ports: [{ container: 3000 }],
+        },
       ];
 
       const tf = generator.generateTerraformConfig(infrastructure, services);
@@ -314,7 +310,7 @@ describe('DeploymentManifestGenerator', () => {
       const healthCheck = generator.generateHealthCheck('/health');
 
       expect(healthCheck).toContain('health');
-      expect(healthCheck).toContain('status: \'healthy\'');
+      expect(healthCheck).toContain("status: 'healthy'");
       expect(healthCheck).toContain('timestamp');
       expect(healthCheck).toContain('uptime');
     });

@@ -1,6 +1,6 @@
 /**
  * Workflow Generator Module
- * 
+ *
  * This module provides capabilities for generating workflow definitions,
  * orchestration pipelines, and automation scripts from business requirements.
  */
@@ -53,19 +53,16 @@ export class WorkflowGenerator {
       includeErrorHandling: true,
       includeLogging: true,
       retryStrategy: 'exponential',
-      ...options
+      ...options,
     };
   }
 
   /**
    * Generate a linear workflow from tasks
    */
-  generateLinearWorkflow(
-    name: string,
-    tasks: TaskDefinition[]
-  ): WorkflowDefinition {
+  generateLinearWorkflow(name: string, tasks: TaskDefinition[]): WorkflowDefinition {
     const steps: WorkflowStep[] = [];
-    
+
     for (let i = 0; i < tasks.length; i++) {
       const task = tasks[i];
       const step: WorkflowStep = {
@@ -74,8 +71,8 @@ export class WorkflowGenerator {
         type: 'action',
         config: {
           ...task.config,
-          type: task.type
-        }
+          type: task.type,
+        },
       };
 
       // Add next step reference
@@ -88,7 +85,7 @@ export class WorkflowGenerator {
         step.retryPolicy = {
           maxAttempts: 3,
           backoff: this.options.retryStrategy,
-          delay: 1000
+          delay: 1000,
         };
       }
 
@@ -99,7 +96,7 @@ export class WorkflowGenerator {
       id: this.formatId(name),
       name,
       version: '1.0.0',
-      steps
+      steps,
     };
   }
 
@@ -124,18 +121,18 @@ export class WorkflowGenerator {
           id: `branch_${branchIndex}`,
           name: `Branch ${branchIndex + 1}`,
           type: 'action',
-          steps: branch.map(task => ({
+          steps: branch.map((task) => ({
             id: task.id,
             name: task.name,
             type: 'action',
             config: {
               ...task.config,
-              type: task.type
-            }
-          }))
-        }))
+              type: task.type,
+            },
+          })),
+        })),
       },
-      next: finalStepId
+      next: finalStepId,
     };
 
     steps.push(parallelStep);
@@ -148,8 +145,8 @@ export class WorkflowGenerator {
         type: 'action',
         config: {
           ...finalTask.config,
-          type: finalTask.type
-        }
+          type: finalTask.type,
+        },
       };
       steps.push(finalStep);
     }
@@ -158,7 +155,7 @@ export class WorkflowGenerator {
       id: this.formatId(name),
       name,
       version: '1.0.0',
-      steps
+      steps,
     };
   }
 
@@ -184,9 +181,9 @@ export class WorkflowGenerator {
       name: 'Evaluate condition',
       type: 'condition',
       config: {
-        expression: condition
+        expression: condition,
       },
-      next: [trueBranchId, falseBranchId]
+      next: [trueBranchId, falseBranchId],
     };
     steps.push(conditionStep);
 
@@ -196,17 +193,17 @@ export class WorkflowGenerator {
       name: 'True branch',
       type: 'sequence',
       config: {
-        steps: trueBranch.map(task => ({
+        steps: trueBranch.map((task) => ({
           id: task.id,
           name: task.name,
           type: 'action',
           config: {
             ...task.config,
-            type: task.type
-          }
-        }))
+            type: task.type,
+          },
+        })),
       },
-      next: finalStepId
+      next: finalStepId,
     };
     steps.push(trueBranchStep);
 
@@ -216,17 +213,17 @@ export class WorkflowGenerator {
       name: 'False branch',
       type: 'sequence',
       config: {
-        steps: falseBranch.map(task => ({
+        steps: falseBranch.map((task) => ({
           id: task.id,
           name: task.name,
           type: 'action',
           config: {
             ...task.config,
-            type: task.type
-          }
-        }))
+            type: task.type,
+          },
+        })),
       },
-      next: finalStepId
+      next: finalStepId,
     };
     steps.push(falseBranchStep);
 
@@ -238,8 +235,8 @@ export class WorkflowGenerator {
         type: 'action',
         config: {
           ...finalTask.config,
-          type: finalTask.type
-        }
+          type: finalTask.type,
+        },
       };
       steps.push(finalStep);
     }
@@ -248,7 +245,7 @@ export class WorkflowGenerator {
       id: this.formatId(name),
       name,
       version: '1.0.0',
-      steps
+      steps,
     };
   }
 
@@ -280,8 +277,8 @@ export class WorkflowGenerator {
         config: {
           type: 'pipeline_stage',
           stage,
-          commands: this.getStageCommands(stage)
-        }
+          commands: this.getStageCommands(stage),
+        },
       };
 
       if (i < stages.length - 1) {
@@ -295,7 +292,7 @@ export class WorkflowGenerator {
       id: this.formatId(name),
       name: `${name} Pipeline`,
       version: '1.0.0',
-      steps
+      steps,
     };
   }
 
@@ -323,8 +320,8 @@ export class WorkflowGenerator {
         type: 'action',
         config: {
           type: 'data_source',
-          source: sources[i]
-        }
+          source: sources[i],
+        },
       });
     }
 
@@ -337,8 +334,8 @@ export class WorkflowGenerator {
         type: 'action',
         config: {
           type: 'data_merge',
-          sources: sourceIds
-        }
+          sources: sourceIds,
+        },
       });
     }
 
@@ -351,12 +348,12 @@ export class WorkflowGenerator {
         type: 'action',
         config: {
           type: 'data_transform',
-          transformation: transformations[i]
-        }
+          transformation: transformations[i],
+        },
       });
-      
+
       // Link previous step to this one
-      const previousStepObj = steps.find(s => s.id === previousStep);
+      const previousStepObj = steps.find((s) => s.id === previousStep);
       if (previousStepObj) {
         previousStepObj.next = stepId;
       }
@@ -373,12 +370,12 @@ export class WorkflowGenerator {
         type: 'action',
         config: {
           type: 'data_destination',
-          destination: destinations[0]
-        }
+          destination: destinations[0],
+        },
       });
-      
+
       // Link previous step
-      const previousStepObj = steps.find(s => s.id === previousStep);
+      const previousStepObj = steps.find((s) => s.id === previousStep);
       if (previousStepObj) {
         previousStepObj.next = stepId;
       }
@@ -396,14 +393,14 @@ export class WorkflowGenerator {
             type: 'action',
             config: {
               type: 'data_destination',
-              destination: dest
-            }
-          }))
-        }
+              destination: dest,
+            },
+          })),
+        },
       });
-      
+
       // Link previous step
-      const previousStepObj = steps.find(s => s.id === previousStep);
+      const previousStepObj = steps.find((s) => s.id === previousStep);
       if (previousStepObj) {
         previousStepObj.next = parallelStepId;
       }
@@ -414,7 +411,7 @@ export class WorkflowGenerator {
       name: `${name} Data Pipeline`,
       description: 'ETL pipeline for data processing',
       version: '1.0.0',
-      steps
+      steps,
     };
   }
 
@@ -425,11 +422,11 @@ export class WorkflowGenerator {
     let yaml = `id: ${workflow.id}\n`;
     yaml += `name: ${workflow.name}\n`;
     yaml += `version: ${workflow.version}\n`;
-    
+
     if (workflow.description) {
       yaml += `description: ${workflow.description}\n`;
     }
-    
+
     if (workflow.variables) {
       yaml += `\nvariables:\n`;
       for (const [key, value] of Object.entries(workflow.variables)) {
@@ -443,7 +440,7 @@ export class WorkflowGenerator {
       yaml += `    name: ${step.name}\n`;
       yaml += `    type: ${step.type}\n`;
       yaml += `    config:\n`;
-      
+
       for (const [key, value] of Object.entries(step.config)) {
         if (typeof value === 'object') {
           yaml += `      ${key}:\n`;
@@ -456,7 +453,7 @@ export class WorkflowGenerator {
       if (step.next) {
         yaml += `    next: ${JSON.stringify(step.next)}\n`;
       }
-      
+
       if (step.onFail) {
         yaml += `    onFail: ${step.onFail}\n`;
       }
@@ -500,11 +497,11 @@ export class WorkflowGenerator {
       ts += `      name: '${step.name}',\n`;
       ts += `      type: '${step.type}',\n`;
       ts += `      config: ${JSON.stringify(step.config, null, 6)},\n`;
-      
+
       if (step.next) {
         ts += `      next: ${JSON.stringify(step.next)},\n`;
       }
-      
+
       if (step.onFail) {
         ts += `      onFail: '${step.onFail}',\n`;
       }
@@ -525,7 +522,10 @@ export class WorkflowGenerator {
    * Format workflow ID
    */
   private formatId(name: string): string {
-    return name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+    return name
+      .toLowerCase()
+      .replace(/\s+/g, '_')
+      .replace(/[^a-z0-9_]/g, '');
   }
 
   /**
@@ -540,11 +540,11 @@ export class WorkflowGenerator {
    */
   private getStageCommands(stage: string): string[] {
     const stageCommands: Record<string, string[]> = {
-      'build': ['npm install', 'npm run build'],
-      'test': ['npm test'],
-      'lint': ['npm run lint'],
-      'deploy': ['npm run deploy'],
-      'release': ['npm version patch', 'npm publish']
+      build: ['npm install', 'npm run build'],
+      test: ['npm test'],
+      lint: ['npm run lint'],
+      deploy: ['npm run deploy'],
+      release: ['npm version patch', 'npm publish'],
     };
 
     return stageCommands[stage] || ['echo "Running stage: ' + stage + '"'];
@@ -555,7 +555,12 @@ export class WorkflowGenerator {
    */
   private indentYaml(yaml: string, spaces: number): string {
     const indent = ' '.repeat(spaces);
-    return yaml.split('\n').map(line => indent + line).join('\n') + '\n';
+    return (
+      yaml
+        .split('\n')
+        .map((line) => indent + line)
+        .join('\n') + '\n'
+    );
   }
 }
 

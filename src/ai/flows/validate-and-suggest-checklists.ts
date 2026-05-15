@@ -7,8 +7,8 @@
  * - ValidateAndSuggestChecklistsOutput - The return type for the validateAndSuggestChecklists function.
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import { ai } from '@/ai/genkit';
+import { z } from 'genkit';
 
 const ValidateAndSuggestChecklistsInputSchema = z.object({
   architectureDefinition: z
@@ -21,9 +21,7 @@ const ValidateAndSuggestChecklistsInputSchema = z.object({
     .describe('The GitLab CI/CD pipeline configuration in YAML format.'),
   customChecklist: z
     .array(z.string())
-    .describe(
-      "A list of existing 'zero-failure' checklist items or policies to validate against."
-    ),
+    .describe("A list of existing 'zero-failure' checklist items or policies to validate against."),
 });
 export type ValidateAndSuggestChecklistsInput = z.infer<
   typeof ValidateAndSuggestChecklistsInputSchema
@@ -38,7 +36,9 @@ const ValidationFindingSchema = z.object({
     ),
   details: z
     .string()
-    .describe('Explanation for the status, including specific reasons for violation if applicable.'),
+    .describe(
+      'Explanation for the status, including specific reasons for violation if applicable.'
+    ),
 });
 
 const SuggestedPolicySchema = z.object({
@@ -70,8 +70,8 @@ export async function validateAndSuggestChecklists(
 
 const prompt = ai.definePrompt({
   name: 'validateAndSuggestChecklistsPrompt',
-  input: {schema: ValidateAndSuggestChecklistsInputSchema},
-  output: {schema: ValidateAndSuggestChecklistsOutputSchema},
+  input: { schema: ValidateAndSuggestChecklistsInputSchema },
+  output: { schema: ValidateAndSuggestChecklistsOutputSchema },
   prompt: `You are an expert in 'zero-failure' architecture and GitLab CI/CD, dedicated to meticulous refinement and ensuring perfect pass rates.
 Your task is to analyze an architecture definition and its corresponding GitLab CI/CD pipeline configuration against a set of 'zero-failure' policies.
 After validation, you must also suggest new policy items to further enhance the system's reliability and security within the GitLab ecosystem.
@@ -114,8 +114,8 @@ const validateAndSuggestChecklistsFlow = ai.defineFlow(
     inputSchema: ValidateAndSuggestChecklistsInputSchema,
     outputSchema: ValidateAndSuggestChecklistsOutputSchema,
   },
-  async input => {
-    const {output} = await prompt(input);
+  async (input) => {
+    const { output } = await prompt(input);
     return output!;
   }
 );

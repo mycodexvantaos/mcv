@@ -10,4 +10,4 @@ spec:
   serviceId: mycodexvantaos-core-auth
   field: username
   analyzer: standard
-  description: "Standard index for user search by username."
+  description: 'Standard index for user search by username.'

@@ -14,7 +14,7 @@ export interface ProviderRegistry {
 export function createNativeProviders(): ProviderRegistry {
   const nativeHealth = async (): Promise<ProviderHealth> => ({
     healthy: true,
-    mode: "native",
+    mode: 'native',
   });
   return {
     database: { healthcheck: nativeHealth },

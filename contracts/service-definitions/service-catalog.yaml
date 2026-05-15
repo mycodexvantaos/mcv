@@ -4,9 +4,9 @@ metadata:
   name: service-catalog
   namespace: mycodexvantaos-system
 spec:
-  displayName: "Service Catalog"
-  description: "Central registry for all MyCodeXvantaOS services"
-  version: "0.1.0"
+  displayName: 'Service Catalog'
+  description: 'Central registry for all MyCodeXvantaOS services'
+  version: '0.1.0'
   capabilities:
     - registration
     - discovery

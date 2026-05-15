@@ -1,9 +1,7 @@
 {
   "action": "sync",
   "orchestration_id": null,
-  "target_planes": [
-    "all"
-  ],
+  "target_planes": ["all"],
   "total_repositories": 0,
   "tiers": 0,
   "execution_order": [],

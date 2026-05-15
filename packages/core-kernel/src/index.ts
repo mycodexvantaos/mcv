@@ -18,8 +18,14 @@ export interface BaseProvider {
 }
 
 // -- Capabilities --
-export interface LlmCompletionRequest { prompt: string; maxTokens?: number; }
-export interface LlmCompletionResponse { content: string; providerUsed: string; }
+export interface LlmCompletionRequest {
+  prompt: string;
+  maxTokens?: number;
+}
+export interface LlmCompletionResponse {
+  content: string;
+  providerUsed: string;
+}
 export interface LlmProvider extends BaseProvider {
   generate(request: LlmCompletionRequest): Promise<LlmCompletionResponse>;
 }
@@ -35,7 +41,7 @@ export interface VectorStoreProvider extends BaseProvider {
 }
 
 export interface ObservabilityProvider extends BaseProvider {
-  log(level: 'info'|'warn'|'error', message: string, context?: any): void;
+  log(level: 'info' | 'warn' | 'error', message: string, context?: any): void;
   publishMetrics(executionId: string, metrics: any): Promise<void>;
 }
 
@@ -49,9 +55,9 @@ export class ProviderRegistry {
   register(provider: BaseProvider) {
     const { capability, provider: providerName } = provider.manifest;
     const registrationKey = `${capability}-${providerName}`;
-    
+
     this.providers.set(registrationKey, provider);
-    
+
     if (!this.defaultCapabilityMap.has(capability) || provider.manifest.mode === this.globalMode) {
       this.defaultCapabilityMap.set(capability, registrationKey);
     }
@@ -65,32 +71,35 @@ export class ProviderRegistry {
 
   async resolve<T extends BaseProvider>(capability: string): Promise<T> {
     const primaryKey = this.defaultCapabilityMap.get(capability);
-    if (!primaryKey) throw new Error(`[Fatal] No provider registered for capability: ${capability}`);
+    if (!primaryKey)
+      throw new Error(`[Fatal] No provider registered for capability: ${capability}`);
 
     const primaryProvider = this.providers.get(primaryKey);
 
     if (this.globalMode === 'native' && primaryProvider?.manifest.mode !== 'native') {
-       return this.seekFallback<T>(capability, 'native');
+      return this.seekFallback<T>(capability, 'native');
     }
 
     try {
-       const health = await primaryProvider?.healthCheck();
-       if (health?.status === 'down') throw new Error('Primary provider is down');
-       return primaryProvider as T;
+      const health = await primaryProvider?.healthCheck();
+      if (health?.status === 'down') throw new Error('Primary provider is down');
+      return primaryProvider as T;
     } catch (error) {
-       console.warn(`[Registry] Primary '${primaryKey}' failed. Initiating fallback to Native...`);
-       return this.seekFallback<T>(capability, 'native');
+      console.warn(`[Registry] Primary '${primaryKey}' failed. Initiating fallback to Native...`);
+      return this.seekFallback<T>(capability, 'native');
     }
   }
 
   private seekFallback<T extends BaseProvider>(capability: string, requiredMode: string): T {
     for (const [key, provider] of this.providers.entries()) {
-       if (provider.manifest.capability === capability && provider.manifest.mode === requiredMode) {
-          console.warn(`[Registry] Fallback Resolved: Routed to ${key}`);
-          return provider as T;
-       }
+      if (provider.manifest.capability === capability && provider.manifest.mode === requiredMode) {
+        console.warn(`[Registry] Fallback Resolved: Routed to ${key}`);
+        return provider as T;
+      }
     }
-    throw new Error(`[Fatal] Architecture violation: No '${requiredMode}' mode fallback provider for '${capability}'.`);
+    throw new Error(
+      `[Fatal] Architecture violation: No '${requiredMode}' mode fallback provider for '${capability}'.`
+    );
   }
 }
 
@@ -102,13 +111,17 @@ export class EventBus {
   }
   publish(event: string, payload: any) {
     const callbacks = this.listeners.get(event);
-    if (callbacks) callbacks.forEach(cb => cb(payload));
+    if (callbacks) callbacks.forEach((cb) => cb(payload));
   }
 }
 
 export class Kernel {
   public readonly events = new EventBus();
-  public readonly defaultMode = (process.env.MYCODEXVANTAOS_CORE_RUNTIME_MODE || 'hybrid') as 'native' | 'hybrid' | 'connected' | 'auto';
+  public readonly defaultMode = (process.env.MYCODEXVANTAOS_CORE_RUNTIME_MODE || 'hybrid') as
+    | 'native'
+    | 'hybrid'
+    | 'connected'
+    | 'auto';
   public readonly registry = new ProviderRegistry(this.defaultMode);
 
   start() {

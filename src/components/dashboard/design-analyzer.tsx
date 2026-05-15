@@ -18,7 +18,7 @@ export function DesignAnalyzer() {
   const [aiAnalysis, setAiAnalysis] = useState('');
   const [nativeAnalysis, setNativeAnalysis] = useState<NativeAnalysisResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const { mode } = useConnectivity();
   const isOffline = mode === 'native';
 
@@ -29,7 +29,7 @@ export function DesignAnalyzer() {
 
     // 始終執行原生分析作為基礎
     const localResult = performNativeAnalysis(docsContent);
-    
+
     if (isOffline) {
       // 離線模式：僅使用原生引擎
       setTimeout(() => {
@@ -58,8 +58,13 @@ export function DesignAnalyzer() {
           <Cpu className="h-4 w-4 text-primary" />
           架構設計分析儀
         </h2>
-        <Badge variant="outline" className={isOffline ? "text-yellow-500 border-yellow-500/20" : "text-accent border-accent/20"}>
-          {isOffline ? "NATIVE ENGINE ACTIVE" : "AI HYBRID MODE"}
+        <Badge
+          variant="outline"
+          className={
+            isOffline ? 'text-yellow-500 border-yellow-500/20' : 'text-accent border-accent/20'
+          }
+        >
+          {isOffline ? 'NATIVE ENGINE ACTIVE' : 'AI HYBRID MODE'}
         </Badge>
       </div>
 
@@ -81,9 +86,9 @@ export function DesignAnalyzer() {
             </CardContent>
           </Card>
 
-          <Button 
-            onClick={handleAnalyze} 
-            disabled={isLoading || !docsContent} 
+          <Button
+            onClick={handleAnalyze}
+            disabled={isLoading || !docsContent}
             className="w-full h-10 gap-2 font-bold text-[10px] uppercase primary-glow"
           >
             {isLoading ? (
@@ -113,7 +118,9 @@ export function DesignAnalyzer() {
                       <ShieldCheck className="h-4 w-4 text-primary" />
                       架構健康評分: {nativeAnalysis.score}/100
                     </CardTitle>
-                    <Badge className="text-[8px] bg-primary/20 text-primary border-none">NATIVE EXPERT</Badge>
+                    <Badge className="text-[8px] bg-primary/20 text-primary border-none">
+                      NATIVE EXPERT
+                    </Badge>
                   </div>
                 </CardHeader>
                 <CardContent className="p-4 pt-0">
@@ -126,21 +133,30 @@ export function DesignAnalyzer() {
               {/* 結構化區塊 */}
               {nativeAnalysis.sections.map((section, i) => (
                 <Card key={i} className="bg-card/50 border-border/50 overflow-hidden">
-                  <div className={`h-1 w-full ${
-                    section.status === 'pass' ? 'bg-accent' : 
-                    section.status === 'warning' ? 'bg-yellow-500' : 'bg-blue-500'
-                  }`} />
+                  <div
+                    className={`h-1 w-full ${
+                      section.status === 'pass'
+                        ? 'bg-accent'
+                        : section.status === 'warning'
+                          ? 'bg-yellow-500'
+                          : 'bg-blue-500'
+                    }`}
+                  />
                   <CardHeader className="p-3">
                     <CardTitle className="text-[10px] font-bold uppercase flex items-center gap-2">
                       {section.status === 'pass' && <ShieldCheck className="h-3 w-3 text-accent" />}
-                      {section.status === 'warning' && <AlertCircle className="h-3 w-3 text-yellow-500" />}
+                      {section.status === 'warning' && (
+                        <AlertCircle className="h-3 w-3 text-yellow-500" />
+                      )}
                       {section.status === 'info' && <Info className="h-3 w-3 text-blue-500" />}
                       {section.title}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-3 pt-0 space-y-1">
                     {section.content.map((line, j) => (
-                      <p key={j} className="text-[10px] text-muted-foreground">{line}</p>
+                      <p key={j} className="text-[10px] text-muted-foreground">
+                        {line}
+                      </p>
                     ))}
                   </CardContent>
                 </Card>

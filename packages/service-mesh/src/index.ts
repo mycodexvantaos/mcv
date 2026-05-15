@@ -29,7 +29,7 @@ export class ServiceMesh {
   getHealthyInstances(serviceName: string): ServiceInstance[] {
     const service = this.services.get(serviceName);
     if (!service) return [];
-    return service.instances.filter(instance => instance.healthy);
+    return service.instances.filter((instance) => instance.healthy);
   }
 
   deregisterService(serviceName: string): boolean {

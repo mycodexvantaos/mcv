@@ -3,15 +3,19 @@
  * In-memory data source registration and ingestion
  */
 
-import type { DataSource, IngestionResult } from "./types";
+import type { DataSource, IngestionResult } from './types';
 
 export class IngestionService {
   private sources = new Map<string, DataSource>();
   private records = new Map<string, unknown[]>();
 
-  async registerSource(name: string, type: string, config: Record<string, unknown> = {}): Promise<DataSource> {
+  async registerSource(
+    name: string,
+    type: string,
+    config: Record<string, unknown> = {}
+  ): Promise<DataSource> {
     const id = `src-${name}-${Date.now()}`;
-    const source: DataSource = { id, name, type, config, status: "active" };
+    const source: DataSource = { id, name, type, config, status: 'active' };
     this.sources.set(id, source);
     this.records.set(id, []);
     return source;

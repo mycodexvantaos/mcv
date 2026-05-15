@@ -1,5 +1,5 @@
 import { randomInt } from 'node:crypto';
-import type { Sandbox, ResourceLimits, ResourceUsage } from "./types";
+import type { Sandbox, ResourceLimits, ResourceUsage } from './types';
 
 let counter = 0;
 
@@ -7,7 +7,7 @@ const DEFAULT_LIMITS: ResourceLimits = {
   cpuCores: 2,
   memoryMB: 2048,
   diskMB: 10240,
-  networkBandwidth: "100Mbps",
+  networkBandwidth: '100Mbps',
 };
 
 export class SandboxManagerService {
@@ -18,13 +18,13 @@ export class SandboxManagerService {
     const sandbox: Sandbox = {
       id,
       name,
-      status: "creating",
+      status: 'creating',
       image,
       createdAt: new Date(),
       resources: { ...DEFAULT_LIMITS, ...limits },
     };
     this.sandboxes.set(id, sandbox);
-    sandbox.status = "running";
+    sandbox.status = 'running';
     return sandbox;
   }
 
@@ -36,34 +36,34 @@ export class SandboxManagerService {
     return Array.from(this.sandboxes.values());
   }
 
-  listByStatus(status: Sandbox["status"]): Sandbox[] {
+  listByStatus(status: Sandbox['status']): Sandbox[] {
     return this.list().filter((s) => s.status === status);
   }
 
   pause(sandboxId: string): boolean {
     const sbx = this.sandboxes.get(sandboxId);
-    if (!sbx || sbx.status !== "running") return false;
-    sbx.status = "paused";
+    if (!sbx || sbx.status !== 'running') return false;
+    sbx.status = 'paused';
     return true;
   }
 
   resume(sandboxId: string): boolean {
     const sbx = this.sandboxes.get(sandboxId);
-    if (!sbx || sbx.status !== "paused") return false;
-    sbx.status = "running";
+    if (!sbx || sbx.status !== 'paused') return false;
+    sbx.status = 'running';
     return true;
   }
 
   terminate(sandboxId: string): boolean {
     const sbx = this.sandboxes.get(sandboxId);
-    if (!sbx || sbx.status === "terminated") return false;
-    sbx.status = "terminated";
+    if (!sbx || sbx.status === 'terminated') return false;
+    sbx.status = 'terminated';
     return true;
   }
 
   getUsage(sandboxId: string): ResourceUsage | null {
     const sbx = this.sandboxes.get(sandboxId);
-    if (!sbx || sbx.status !== "running") return null;
+    if (!sbx || sbx.status !== 'running') return null;
     return {
       cpuPercent: randomInt(5, 86),
       memoryUsedMB: Math.round(sbx.resources.memoryMB * 0.4),

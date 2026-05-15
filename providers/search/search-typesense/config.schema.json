@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/search/typesense/config.schema.json",
   "title": "search-typesense Configuration",
   "type": "object",
-  "required": [
-    "host"
-  ],
+  "required": ["host"],
   "properties": {
     "host": {
       "type": "string",
@@ -21,10 +19,7 @@
     },
     "protocol": {
       "type": "string",
-      "enum": [
-        "http",
-        "https"
-      ],
+      "enum": ["http", "https"],
       "default": "http"
     }
   }

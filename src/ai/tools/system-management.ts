@@ -32,7 +32,7 @@ export const listProjectStructure = ai.defineTool(
       'src/lib/architecture-engine.ts',
       'src/components/dashboard/reality-mesh-explorer.tsx',
       'src/lib/design-docs.ts',
-      'src/services/native/validation-service.ts'
+      'src/services/native/validation-service.ts',
     ];
   }
 );
@@ -51,7 +51,8 @@ export const readFileContent = ai.defineTool(
   },
   async (input) => {
     if (input.filePath === 'package.json') return packageJsonContent;
-    if (input.filePath.includes('ARCHITECTURE.md') || input.filePath.includes('design-docs')) return designDocsContent;
+    if (input.filePath.includes('ARCHITECTURE.md') || input.filePath.includes('design-docs'))
+      return designDocsContent;
     return `/**\n * @MyCodeXvantaOS Layer P (Reality Synthesis)\n * Content of ${input.filePath} (Era-3 P2 Protected Content)\n */\n// System resonance mapping active. Content is stable.`;
   }
 );
@@ -75,8 +76,9 @@ export const runSecurityAudit = ai.defineTool(
     return {
       vulnerabilitiesFound: 0,
       status: 'Sovereign Stability Confirmed',
-      report: 'All extensions within the Marketplace bounds are compliant with Era-3 security standards.',
-      realityAnchorStatus: 'LOCKED_AND_ENCRYPTED'
+      report:
+        'All extensions within the Marketplace bounds are compliant with Era-3 security standards.',
+      realityAnchorStatus: 'LOCKED_AND_ENCRYPTED',
     };
   }
 );
@@ -91,25 +93,27 @@ export const scanRealityContext = ai.defineTool(
     inputSchema: z.object({}),
     outputSchema: z.object({
       alignmentScore: z.number(),
-      mappedNodes: z.array(z.object({
-        id: z.string(),
-        name: z.string(),
-        status: z.string(),
-        alignment: z.number()
-      })),
+      mappedNodes: z.array(
+        z.object({
+          id: z.string(),
+          name: z.string(),
+          status: z.string(),
+          alignment: z.number(),
+        })
+      ),
       recommendation: z.string(),
     }),
   },
   async () => {
     return {
-      alignmentScore: 0.120,
+      alignmentScore: 0.12,
       mappedNodes: [
         { id: 'node-1', name: 'VS Code Marketplace', status: 'SYNCHRONIZED', alignment: 0.98 },
         { id: 'node-2', name: 'GitHub Ecosystem', status: 'MAPPING', alignment: 0.85 },
         { id: 'node-3', name: 'Google Cloud Nodes', status: 'ESTABLISHED', alignment: 0.92 },
-        { id: 'node-4', name: 'NPM Registry', status: 'SYNCING', alignment: 0.78 }
+        { id: 'node-4', name: 'NPM Registry', status: 'SYNCING', alignment: 0.78 },
       ],
-      recommendation: 'Reality alignment is stable. Proceed with Synthesis Handshake via Layer P.'
+      recommendation: 'Reality alignment is stable. Proceed with Synthesis Handshake via Layer P.',
     };
   }
 );

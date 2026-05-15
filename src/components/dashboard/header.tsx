@@ -56,7 +56,9 @@ export function Header() {
           <Logo className="h-8 w-8 text-primary group-hover:scale-110 transition-transform" />
           <div className="flex flex-col">
             <span className="font-bold text-sm font-headline leading-none">MyCodeXvantaOS</span>
-            <span className="text-[8px] uppercase tracking-widest text-primary font-bold">Era-3 Sovereign Core (P3)</span>
+            <span className="text-[8px] uppercase tracking-widest text-primary font-bold">
+              Era-3 Sovereign Core (P3)
+            </span>
           </div>
         </Link>
         <Menubar className="border-none bg-transparent p-0 hidden md:flex">
@@ -73,7 +75,9 @@ export function Header() {
           <MenubarMenu>
             <MenubarTrigger className="text-xs font-medium cursor-pointer">核心</MenubarTrigger>
             <MenubarContent>
-              <MenubarItem>新建 Reality 節點 <MenubarShortcut>⌘N</MenubarShortcut></MenubarItem>
+              <MenubarItem>
+                新建 Reality 節點 <MenubarShortcut>⌘N</MenubarShortcut>
+              </MenubarItem>
               <MenubarItem>主權協作面板</MenubarItem>
               <MenubarSeparator />
               <MenubarItem>同步到 Reality Mesh</MenubarItem>
@@ -82,29 +86,38 @@ export function Header() {
           <MenubarMenu>
             <MenubarTrigger className="text-xs font-medium cursor-pointer">治理</MenubarTrigger>
             <MenubarContent>
-                <MenubarItem>Era-3 P3 合成擴張</MenubarItem>
-                <MenubarItem>跨節點主權協同</MenubarItem>
-                <MenubarSeparator />
-                <MenubarItem>查看 Synthesis 報告</MenubarItem>
+              <MenubarItem>Era-3 P3 合成擴張</MenubarItem>
+              <MenubarItem>跨節點主權協同</MenubarItem>
+              <MenubarSeparator />
+              <MenubarItem>查看 Synthesis 報告</MenubarItem>
             </MenubarContent>
           </MenubarMenu>
         </Menubar>
       </div>
-      
+
       <div className="flex items-center gap-4">
         <div className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-full bg-primary/5 border border-primary/20">
           <div className="h-2 w-2 rounded-full bg-primary animate-pulse shadow-[0_0_10px_#2663D9]"></div>
-          <span className="text-[10px] font-code text-primary uppercase tracking-wider">Era-3 P3 Synthesis Expansion Active</span>
+          <span className="text-[10px] font-code text-primary uppercase tracking-wider">
+            Era-3 P3 Synthesis Expansion Active
+          </span>
         </div>
-        
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-9 w-9 rounded-full ring-offset-background transition-all hover:ring-2 hover:ring-primary">
+            <Button
+              variant="ghost"
+              className="relative h-9 w-9 rounded-full ring-offset-background transition-all hover:ring-2 hover:ring-primary"
+            >
               <Avatar className="h-9 w-9 border border-border">
                 {userProfile ? (
-                  <AvatarImage src={userProfile.avatarUrl} alt="User Avatar" data-ai-hint={userProfile.avatarHint} />
+                  <AvatarImage
+                    src={userProfile.avatarUrl}
+                    alt="User Avatar"
+                    data-ai-hint={userProfile.avatarHint}
+                  />
                 ) : (
-                   <div className="h-full w-full bg-muted animate-pulse" />
+                  <div className="h-full w-full bg-muted animate-pulse" />
                 )}
                 <AvatarFallback className="bg-secondary text-xs">
                   {userProfile ? userProfile.name.charAt(0).toUpperCase() : 'OS'}
@@ -115,16 +128,23 @@ export function Header() {
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel className="flex flex-col">
               <span className="font-bold">{userProfile ? userProfile.name : '主權管理員'}</span>
-              <span className="text-xs text-muted-foreground font-normal">{userProfile ? userProfile.email : 'sovereign@mycodexvantaos.local'}</span>
+              <span className="text-xs text-muted-foreground font-normal">
+                {userProfile ? userProfile.email : 'sovereign@mycodexvantaos.local'}
+              </span>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="text-xs">
               帳戶角色
-              <Badge variant="outline" className="ml-auto text-[10px] h-4 bg-primary/10 text-primary border-primary/20">Sovereign Architect</Badge>
+              <Badge
+                variant="outline"
+                className="ml-auto text-[10px] h-4 bg-primary/10 text-primary border-primary/20"
+              >
+                Sovereign Architect
+              </Badge>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild className="text-xs text-destructive focus:text-destructive">
-               <Link href="/">登出主權智能</Link>
+              <Link href="/">登出主權智能</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

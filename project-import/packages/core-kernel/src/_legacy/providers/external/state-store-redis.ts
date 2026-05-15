@@ -1,12 +1,12 @@
 import { randomUUID } from 'node:crypto';
 /**
  * RedisStateStoreProvider — External Redis-based state store
- * 
+ *
  * Example external provider showing how Redis plugs into
  * the StateStoreProvider interface as an OPTIONAL connector.
- * 
+ *
  * The platform works without this via NativeStateStoreProvider (in-memory).
- * 
+ *
  * Install dependencies:
  *   npm install ioredis
  */
@@ -143,7 +143,9 @@ export class RedisStateStoreProvider implements StateStoreProvider {
             updatedAt: stored.updatedAt,
             version: stored.version,
           });
-        } catch { /* skip invalid */ }
+        } catch {
+          /* skip invalid */
+        }
       }
     }
     return result;
@@ -175,9 +177,7 @@ export class RedisStateStoreProvider implements StateStoreProvider {
     const count = options?.count ?? 100;
     const cursor = options?.cursor ?? '0';
 
-    const [nextCursor, keys] = await this.client.scan(
-      cursor, 'MATCH', pattern, 'COUNT', count
-    );
+    const [nextCursor, keys] = await this.client.scan(cursor, 'MATCH', pattern, 'COUNT', count);
 
     const entries: StateEntry<T>[] = [];
     if (keys.length > 0) {
@@ -188,7 +188,8 @@ export class RedisStateStoreProvider implements StateStoreProvider {
             const stored = JSON.parse(values[i]);
             // Remove prefix from key for display
             const cleanKey = keys[i].startsWith(this.prefix)
-              ? keys[i].slice(this.prefix.length) : keys[i];
+              ? keys[i].slice(this.prefix.length)
+              : keys[i];
             entries.push({
               key: cleanKey,
               value: stored.value as T,
@@ -196,7 +197,9 @@ export class RedisStateStoreProvider implements StateStoreProvider {
               updatedAt: stored.updatedAt,
               version: stored.version,
             });
-          } catch { /* skip */ }
+          } catch {
+            /* skip */
+          }
         }
       }
     }
@@ -250,7 +253,7 @@ export class RedisStateStoreProvider implements StateStoreProvider {
         };
       }
 
-      await new Promise(r => setTimeout(r, 50));
+      await new Promise((r) => setTimeout(r, 50));
     }
 
     return null;
@@ -275,8 +278,11 @@ export class RedisStateStoreProvider implements StateStoreProvider {
 
     sub.subscribe(channel);
     sub.on('message', (_ch: string, msg: string) => {
-      try { handler(JSON.parse(msg)); }
-      catch { handler(msg); }
+      try {
+        handler(JSON.parse(msg));
+      } catch {
+        handler(msg);
+      }
     });
 
     return {

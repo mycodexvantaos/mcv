@@ -9,7 +9,7 @@ describe('TestGenerator', () => {
       language: 'typescript',
       coverage: true,
       mocking: true,
-      includeSnapshots: false
+      includeSnapshots: false,
     });
   });
 
@@ -23,7 +23,7 @@ describe('TestGenerator', () => {
       const customGen = new TestGenerator({
         framework: 'mocha',
         language: 'javascript',
-        coverage: false
+        coverage: false,
       });
       expect(customGen).toBeInstanceOf(TestGenerator);
     });
@@ -51,10 +51,10 @@ describe('TestGenerator', () => {
       const testSuite = generator.generateUnitTest(
         'UserService',
         ['getUser'],
-        ['import { User } from \'./models\';']
+        ["import { User } from './models';"]
       );
 
-      expect(testSuite.imports).toContain('import { User } from \'./models\';');
+      expect(testSuite.imports).toContain("import { User } from './models';");
     });
   });
 
@@ -64,13 +64,13 @@ describe('TestGenerator', () => {
         {
           method: 'GET',
           path: '/api/users',
-          responses: [{ statusCode: 200 }]
+          responses: [{ statusCode: 200 }],
         },
         {
           method: 'POST',
           path: '/api/users',
-          responses: [{ statusCode: 201 }]
-        }
+          responses: [{ statusCode: 201 }],
+        },
       ];
 
       const testSuite = generator.generateIntegrationTests('UserAPI', endpoints);
@@ -85,8 +85,8 @@ describe('TestGenerator', () => {
         {
           method: 'GET',
           path: '/api/users',
-          responses: [{ statusCode: 200 }]
-        }
+          responses: [{ statusCode: 200 }],
+        },
       ];
 
       const testSuite = generator.generateIntegrationTests('UserAPI', endpoints);
@@ -99,8 +99,8 @@ describe('TestGenerator', () => {
         {
           method: 'POST',
           path: '/api/users',
-          responses: [{ statusCode: 201 }]
-        }
+          responses: [{ statusCode: 201 }],
+        },
       ];
 
       const testSuite = generator.generateIntegrationTests('UserAPI', endpoints);
@@ -113,8 +113,8 @@ describe('TestGenerator', () => {
         {
           method: 'GET',
           path: '/api/users',
-          responses: [{ statusCode: 200 }]
-        }
+          responses: [{ statusCode: 200 }],
+        },
       ];
 
       const testSuite = generator.generateIntegrationTests('UserAPI', endpoints);
@@ -126,9 +126,9 @@ describe('TestGenerator', () => {
   describe('generateE2ETest', () => {
     it('should generate E2E test for a scenario', () => {
       const steps = [
-        'await page.goto(\'https://example.com\')',
-        'await page.click(\'#login-button\')',
-        'await page.fill(\'#username\', \'testuser\')'
+        "await page.goto('https://example.com')",
+        "await page.click('#login-button')",
+        "await page.fill('#username', 'testuser')",
       ];
 
       const testSuite = generator.generateE2ETest('User Login', steps);
@@ -142,14 +142,14 @@ describe('TestGenerator', () => {
     it('should include Playwright imports', () => {
       const testSuite = generator.generateE2ETest('Test', []);
 
-      expect(testSuite.imports?.some(i => i.includes('@playwright/test'))).toBe(true);
+      expect(testSuite.imports?.some((i) => i.includes('@playwright/test'))).toBe(true);
     });
 
     it('should include step execution in test method', () => {
-      const steps = ['await page.click(\'#button\')'];
+      const steps = ["await page.click('#button')"];
       const testSuite = generator.generateE2ETest('Click Test', steps);
 
-      expect(testSuite.methods[0].setup).toContain('await page.click(\'#button\')');
+      expect(testSuite.methods[0].setup).toContain("await page.click('#button')");
     });
   });
 
@@ -169,11 +169,11 @@ describe('TestGenerator', () => {
         subject: 'TestClass',
         type: 'unit',
         methods: [],
-        imports: ['import { something } from \'./module\';']
+        imports: ["import { something } from './module';"],
       };
       const content = generator.generateTestFile(testSuite);
 
-      expect(content).toContain('import { something } from \'./module\';');
+      expect(content).toContain("import { something } from './module';");
     });
 
     it('should include setup code in test methods', () => {
@@ -208,7 +208,7 @@ describe('TestGenerator', () => {
         statements: 90,
         branches: 85,
         functions: 95,
-        lines: 90
+        lines: 90,
       });
       const parsed = JSON.parse(config.replace('export default ', '').replace(/;$/, ''));
 
@@ -235,8 +235,8 @@ describe('TestGenerator', () => {
           id: 'string',
           name: 'string',
           age: 'number',
-          active: 'boolean'
-        }
+          active: 'boolean',
+        },
       };
 
       const mockData = generator.generateMockData(schema);
@@ -251,8 +251,8 @@ describe('TestGenerator', () => {
     it('should generate default name if not provided', () => {
       const schema = {
         properties: {
-          id: 'string'
-        }
+          id: 'string',
+        },
       };
 
       const mockData = generator.generateMockData(schema);

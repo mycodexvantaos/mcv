@@ -5,7 +5,7 @@ describe('connector-elastic', () => {
 
   beforeEach(() => {
     instance = new ElasticConnector({
-      nodes: ['http://localhost:9200']
+      nodes: ['http://localhost:9200'],
     });
   });
 

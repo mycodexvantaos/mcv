@@ -2,7 +2,7 @@
 # Environment-specific overrides for prod.
 # 12.2 — 'dev'/'staging'/'prod' appears ONLY in this file and namespace names.
 global:
-  imageTag: "latest"
+  imageTag: 'latest'
 
 services:
   mycodexvantaos-core-kernel:

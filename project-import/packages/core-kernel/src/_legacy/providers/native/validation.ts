@@ -1,6 +1,6 @@
 /**
  * NativeValidationProvider — Built-in validation engine
- * 
+ *
  * Zero external dependencies. Provides:
  *  - JSON Schema validation (Ajv-compatible subset, native impl)
  *  - YAML / JSON config validation
@@ -66,18 +66,23 @@ export class NativeValidationProvider implements ValidationProvider {
       try {
         const custom = JSON.parse(fs.readFileSync(rulesFile, 'utf-8'));
         this.ruleSets.push(...custom);
-      } catch { /* ignore corrupted rules */ }
+      } catch {
+        /* ignore corrupted rules */
+      }
     }
   }
 
   // ── Core Validation ─────────────────────────────────────────────────────────
 
-  async validate(target: ValidationTarget, options?: {
-    categories?: ValidationCategory[];
-    severityThreshold?: ValidationSeverity;
-    ruleSetIds?: string[];
-    failFast?: boolean;
-  }): Promise<ValidationResult> {
+  async validate(
+    target: ValidationTarget,
+    options?: {
+      categories?: ValidationCategory[];
+      severityThreshold?: ValidationSeverity;
+      ruleSetIds?: string[];
+      failFast?: boolean;
+    }
+  ): Promise<ValidationResult> {
     const startTime = Date.now();
     const issues: ValidationIssue[] = [];
     const categories = options?.categories;
@@ -156,18 +161,18 @@ export class NativeValidationProvider implements ValidationProvider {
     // Filter by severity threshold
     const severityOrder: ValidationSeverity[] = ['error', 'warning', 'info', 'hint'];
     const thresholdIdx = severityOrder.indexOf(threshold);
-    const filteredIssues = issues.filter(i => severityOrder.indexOf(i.severity) <= thresholdIdx);
+    const filteredIssues = issues.filter((i) => severityOrder.indexOf(i.severity) <= thresholdIdx);
 
     // Filter by categories
     const finalIssues = categories
-      ? filteredIssues.filter(i => categories.includes(i.category))
+      ? filteredIssues.filter((i) => categories.includes(i.category))
       : filteredIssues;
 
     const summary = {
-      errors: finalIssues.filter(i => i.severity === 'error').length,
-      warnings: finalIssues.filter(i => i.severity === 'warning').length,
-      infos: finalIssues.filter(i => i.severity === 'info').length,
-      hints: finalIssues.filter(i => i.severity === 'hint').length,
+      errors: finalIssues.filter((i) => i.severity === 'error').length,
+      warnings: finalIssues.filter((i) => i.severity === 'warning').length,
+      infos: finalIssues.filter((i) => i.severity === 'info').length,
+      hints: finalIssues.filter((i) => i.severity === 'hint').length,
     };
 
     return {
@@ -195,10 +200,10 @@ export class NativeValidationProvider implements ValidationProvider {
     }
 
     const summary = {
-      errors: issues.filter(i => i.severity === 'error').length,
-      warnings: issues.filter(i => i.severity === 'warning').length,
-      infos: issues.filter(i => i.severity === 'info').length,
-      hints: issues.filter(i => i.severity === 'hint').length,
+      errors: issues.filter((i) => i.severity === 'error').length,
+      warnings: issues.filter((i) => i.severity === 'warning').length,
+      infos: issues.filter((i) => i.severity === 'info').length,
+      hints: issues.filter((i) => i.severity === 'hint').length,
     };
 
     return {
@@ -219,9 +224,8 @@ export class NativeValidationProvider implements ValidationProvider {
     let outdated = 0;
 
     const targetPath = path.resolve(target.path);
-    const pkgPath = target.type === 'directory'
-      ? path.join(targetPath, 'package.json')
-      : targetPath;
+    const pkgPath =
+      target.type === 'directory' ? path.join(targetPath, 'package.json') : targetPath;
 
     if (fs.existsSync(pkgPath)) {
       try {
@@ -288,7 +292,7 @@ export class NativeValidationProvider implements ValidationProvider {
         critical: 0,
         high: 0,
         medium: 0,
-        low: issues.filter(i => i.severity === 'warning').length,
+        low: issues.filter((i) => i.severity === 'warning').length,
       },
       outdated,
       deprecated,
@@ -303,11 +307,11 @@ export class NativeValidationProvider implements ValidationProvider {
   }
 
   async getRuleSet(ruleSetId: string): Promise<ValidationRuleSet | null> {
-    return this.ruleSets.find(rs => rs.id === ruleSetId) ?? null;
+    return this.ruleSets.find((rs) => rs.id === ruleSetId) ?? null;
   }
 
   async upsertRuleSet(ruleSet: ValidationRuleSet): Promise<ValidationRuleSet> {
-    const idx = this.ruleSets.findIndex(rs => rs.id === ruleSet.id);
+    const idx = this.ruleSets.findIndex((rs) => rs.id === ruleSet.id);
     if (idx >= 0) {
       this.ruleSets[idx] = ruleSet;
     } else {
@@ -318,10 +322,10 @@ export class NativeValidationProvider implements ValidationProvider {
   }
 
   async toggleRule(ruleSetId: string, ruleId: string, enabled: boolean): Promise<void> {
-    const ruleSet = this.ruleSets.find(rs => rs.id === ruleSetId);
+    const ruleSet = this.ruleSets.find((rs) => rs.id === ruleSetId);
     if (!ruleSet) throw new Error(`RuleSet not found: ${ruleSetId}`);
 
-    const rule = ruleSet.rules.find(r => r.id === ruleId);
+    const rule = ruleSet.rules.find((r) => r.id === ruleId);
     if (!rule) throw new Error(`Rule not found: ${ruleId}`);
 
     rule.enabled = enabled;
@@ -330,11 +334,14 @@ export class NativeValidationProvider implements ValidationProvider {
 
   // ── Batch Validation ────────────────────────────────────────────────────────
 
-  async validateBatch(targets: ValidationTarget[], options?: {
-    categories?: ValidationCategory[];
-    concurrency?: number;
-    stopOnFirstFailure?: boolean;
-  }): Promise<Map<string, ValidationResult>> {
+  async validateBatch(
+    targets: ValidationTarget[],
+    options?: {
+      categories?: ValidationCategory[];
+      concurrency?: number;
+      stopOnFirstFailure?: boolean;
+    }
+  ): Promise<Map<string, ValidationResult>> {
     const results = new Map<string, ValidationResult>();
 
     for (const target of targets) {
@@ -373,45 +380,111 @@ export class NativeValidationProvider implements ValidationProvider {
 
   private createSchemaRuleSet(): ValidationRuleSet {
     return {
-      id: 'native-schema', name: 'Schema Validation', description: 'JSON/YAML schema checks',
-      categories: ['schema'], enabled: true,
+      id: 'native-schema',
+      name: 'Schema Validation',
+      description: 'JSON/YAML schema checks',
+      categories: ['schema'],
+      enabled: true,
       rules: [
-        { id: 'json-valid', name: 'Valid JSON', severity: 'error', category: 'schema', enabled: true },
-        { id: 'yaml-valid', name: 'Valid YAML', severity: 'error', category: 'schema', enabled: true },
+        {
+          id: 'json-valid',
+          name: 'Valid JSON',
+          severity: 'error',
+          category: 'schema',
+          enabled: true,
+        },
+        {
+          id: 'yaml-valid',
+          name: 'Valid YAML',
+          severity: 'error',
+          category: 'schema',
+          enabled: true,
+        },
       ],
     };
   }
 
   private createConfigRuleSet(): ValidationRuleSet {
     return {
-      id: 'native-config', name: 'Config Validation', description: 'Configuration file checks',
-      categories: ['config'], enabled: true,
+      id: 'native-config',
+      name: 'Config Validation',
+      description: 'Configuration file checks',
+      categories: ['config'],
+      enabled: true,
       rules: [
-        { id: 'required-fields', name: 'Required Fields', severity: 'error', category: 'config', enabled: true },
-        { id: 'no-empty-values', name: 'No Empty Values', severity: 'warning', category: 'config', enabled: true },
+        {
+          id: 'required-fields',
+          name: 'Required Fields',
+          severity: 'error',
+          category: 'config',
+          enabled: true,
+        },
+        {
+          id: 'no-empty-values',
+          name: 'No Empty Values',
+          severity: 'warning',
+          category: 'config',
+          enabled: true,
+        },
       ],
     };
   }
 
   private createConventionRuleSet(): ValidationRuleSet {
     return {
-      id: 'native-convention', name: 'Convention Checks', description: 'Code/file conventions',
-      categories: ['convention'], enabled: true,
+      id: 'native-convention',
+      name: 'Convention Checks',
+      description: 'Code/file conventions',
+      categories: ['convention'],
+      enabled: true,
       rules: [
-        { id: 'no-tab-indent', name: 'No Tab Indentation', severity: 'warning', category: 'convention', enabled: true },
-        { id: 'trailing-newline', name: 'Trailing Newline', severity: 'hint', category: 'convention', enabled: true },
-        { id: 'no-trailing-whitespace', name: 'No Trailing Whitespace', severity: 'hint', category: 'convention', enabled: true },
+        {
+          id: 'no-tab-indent',
+          name: 'No Tab Indentation',
+          severity: 'warning',
+          category: 'convention',
+          enabled: true,
+        },
+        {
+          id: 'trailing-newline',
+          name: 'Trailing Newline',
+          severity: 'hint',
+          category: 'convention',
+          enabled: true,
+        },
+        {
+          id: 'no-trailing-whitespace',
+          name: 'No Trailing Whitespace',
+          severity: 'hint',
+          category: 'convention',
+          enabled: true,
+        },
       ],
     };
   }
 
   private createDependencyRuleSet(): ValidationRuleSet {
     return {
-      id: 'native-dependency', name: 'Dependency Checks', description: 'Dependency validation',
-      categories: ['dependency'], enabled: true,
+      id: 'native-dependency',
+      name: 'Dependency Checks',
+      description: 'Dependency validation',
+      categories: ['dependency'],
+      enabled: true,
       rules: [
-        { id: 'no-wildcard-version', name: 'No Wildcard Versions', severity: 'warning', category: 'dependency', enabled: true },
-        { id: 'prefer-registry', name: 'Prefer Registry', severity: 'info', category: 'dependency', enabled: true },
+        {
+          id: 'no-wildcard-version',
+          name: 'No Wildcard Versions',
+          severity: 'warning',
+          category: 'dependency',
+          enabled: true,
+        },
+        {
+          id: 'prefer-registry',
+          name: 'Prefer Registry',
+          severity: 'info',
+          category: 'dependency',
+          enabled: true,
+        },
       ],
     };
   }
@@ -424,7 +497,9 @@ export class NativeValidationProvider implements ValidationProvider {
 
     if (!fs.existsSync(resolved)) {
       issues.push({
-        id: 'dir-not-found', severity: 'error', category: 'config',
+        id: 'dir-not-found',
+        severity: 'error',
+        category: 'config',
         message: `Directory not found: ${dirPath}`,
       });
       return issues;
@@ -435,8 +510,11 @@ export class NativeValidationProvider implements ValidationProvider {
     for (const file of essentials) {
       if (!fs.existsSync(path.join(resolved, file))) {
         issues.push({
-          id: `missing-${file}`, severity: 'warning', category: 'convention',
-          message: `Missing recommended file: ${file}`, file: dirPath,
+          id: `missing-${file}`,
+          severity: 'warning',
+          category: 'convention',
+          message: `Missing recommended file: ${file}`,
+          file: dirPath,
         });
       }
     }
@@ -449,11 +527,41 @@ export class NativeValidationProvider implements ValidationProvider {
     try {
       const pkg = JSON.parse(content);
 
-      if (!pkg.name) issues.push({ id: 'pkg-no-name', severity: 'error', category: 'config', message: 'package.json missing "name" field', file: filePath });
-      if (!pkg.version) issues.push({ id: 'pkg-no-version', severity: 'error', category: 'config', message: 'package.json missing "version" field', file: filePath });
-      if (!pkg.description) issues.push({ id: 'pkg-no-desc', severity: 'hint', category: 'convention', message: 'package.json missing "description" field', file: filePath });
-      if (!pkg.license) issues.push({ id: 'pkg-no-license', severity: 'warning', category: 'convention', message: 'package.json missing "license" field', file: filePath });
-    } catch { /* already caught in main validate */ }
+      if (!pkg.name)
+        issues.push({
+          id: 'pkg-no-name',
+          severity: 'error',
+          category: 'config',
+          message: 'package.json missing "name" field',
+          file: filePath,
+        });
+      if (!pkg.version)
+        issues.push({
+          id: 'pkg-no-version',
+          severity: 'error',
+          category: 'config',
+          message: 'package.json missing "version" field',
+          file: filePath,
+        });
+      if (!pkg.description)
+        issues.push({
+          id: 'pkg-no-desc',
+          severity: 'hint',
+          category: 'convention',
+          message: 'package.json missing "description" field',
+          file: filePath,
+        });
+      if (!pkg.license)
+        issues.push({
+          id: 'pkg-no-license',
+          severity: 'warning',
+          category: 'convention',
+          message: 'package.json missing "license" field',
+          file: filePath,
+        });
+    } catch {
+      /* already caught in main validate */
+    }
 
     return issues;
   }
@@ -463,8 +571,12 @@ export class NativeValidationProvider implements ValidationProvider {
 
     if (!content.endsWith('\n')) {
       issues.push({
-        id: 'no-trailing-newline', severity: 'hint', category: 'convention',
-        message: 'File should end with a newline', file: filePath, rule: 'trailing-newline',
+        id: 'no-trailing-newline',
+        severity: 'hint',
+        category: 'convention',
+        message: 'File should end with a newline',
+        file: filePath,
+        rule: 'trailing-newline',
       });
     }
 
@@ -472,8 +584,12 @@ export class NativeValidationProvider implements ValidationProvider {
     for (let i = 0; i < lines.length; i++) {
       if (lines[i].endsWith(' ') || lines[i].endsWith('\t')) {
         issues.push({
-          id: `trailing-ws-${i + 1}`, severity: 'hint', category: 'convention',
-          message: 'Line has trailing whitespace', file: filePath, line: i + 1,
+          id: `trailing-ws-${i + 1}`,
+          severity: 'hint',
+          category: 'convention',
+          message: 'Line has trailing whitespace',
+          file: filePath,
+          line: i + 1,
           rule: 'no-trailing-whitespace',
         });
         break; // Only report once
@@ -484,7 +600,10 @@ export class NativeValidationProvider implements ValidationProvider {
   }
 
   private validateJsonSchema(
-    data: unknown, schema: Record<string, unknown>, path: string, issues: ValidationIssue[]
+    data: unknown,
+    schema: Record<string, unknown>,
+    path: string,
+    issues: ValidationIssue[]
   ): void {
     if (schema.type) {
       const expectedType = schema.type as string;
@@ -493,13 +612,17 @@ export class NativeValidationProvider implements ValidationProvider {
       if (expectedType === 'integer') {
         if (typeof data !== 'number' || !Number.isInteger(data)) {
           issues.push({
-            id: `schema-type-${path || 'root'}`, severity: 'error', category: 'schema',
+            id: `schema-type-${path || 'root'}`,
+            severity: 'error',
+            category: 'schema',
             message: `Expected integer at ${path || 'root'}, got ${actualType}`,
           });
         }
       } else if (actualType !== expectedType) {
         issues.push({
-          id: `schema-type-${path || 'root'}`, severity: 'error', category: 'schema',
+          id: `schema-type-${path || 'root'}`,
+          severity: 'error',
+          category: 'schema',
           message: `Expected ${expectedType} at ${path || 'root'}, got ${actualType}`,
         });
       }
@@ -509,7 +632,9 @@ export class NativeValidationProvider implements ValidationProvider {
       for (const field of schema.required as string[]) {
         if (!(field in data)) {
           issues.push({
-            id: `schema-required-${path}.${field}`, severity: 'error', category: 'schema',
+            id: `schema-required-${path}.${field}`,
+            severity: 'error',
+            category: 'schema',
             message: `Missing required field "${field}" at ${path || 'root'}`,
           });
         }
@@ -526,8 +651,10 @@ export class NativeValidationProvider implements ValidationProvider {
   }
 
   private persistRuleSets(): void {
-    const custom = this.ruleSets.filter(rs => !rs.id.startsWith('native-'));
+    const custom = this.ruleSets.filter((rs) => !rs.id.startsWith('native-'));
     const rulesFile = path.join(this.config.rulesDir, 'custom-rules.json');
-    try { fs.writeFileSync(rulesFile, JSON.stringify(custom, null, 2)); } catch {}
+    try {
+      fs.writeFileSync(rulesFile, JSON.stringify(custom, null, 2));
+    } catch {}
   }
 }

@@ -2,21 +2,21 @@
 # URN: urn:mycodexvantaos:workflow:solution-design
 # Version: 1.0.0
 
-urn: "urn:mycodexvantaos:workflow:solution-design"
-name: "Solution Design Workflow"
-version: "1.0.0"
-description: "Comprehensive solution design from problem analysis to implementation planning"
+urn: 'urn:mycodexvantaos:workflow:solution-design'
+name: 'Solution Design Workflow'
+version: '1.0.0'
+description: 'Comprehensive solution design from problem analysis to implementation planning'
 
 # Workflow metadata
 metadata:
-  created_at: "2024-01-15T00:00:00Z"
-  updated_at: "2024-01-15T00:00:00Z"
-  author: "MyCodeXvantaOS Team"
+  created_at: '2024-01-15T00:00:00Z'
+  updated_at: '2024-01-15T00:00:00Z'
+  author: 'MyCodeXvantaOS Team'
   tags:
-    - "solution-design"
-    - "implementation-planning"
-    - "architecture"
-    - "actionable"
+    - 'solution-design'
+    - 'implementation-planning'
+    - 'architecture'
+    - 'actionable'
 
 # Workflow configuration
 config:
@@ -27,142 +27,142 @@ config:
 
 # Trigger configuration
 triggers:
-  - type: "manual"
-    description: "Manually triggered solution design session"
-  - type: "workflow_continuation"
-    from_workflow: "urn:mycodexvantaos:workflow:problem-decomposition"
-  - type: "api"
-    endpoint: "/api/v1/solution-design"
-    method: "POST"
+  - type: 'manual'
+    description: 'Manually triggered solution design session'
+  - type: 'workflow_continuation'
+    from_workflow: 'urn:mycodexvantaos:workflow:problem-decomposition'
+  - type: 'api'
+    endpoint: '/api/v1/solution-design'
+    method: 'POST'
 
 # Input schema
 input_schema:
-  type: "object"
+  type: 'object'
   required:
-    - "problem_context"
+    - 'problem_context'
   properties:
     problem_context:
-      type: "object"
-      description: "Problem context from analysis"
+      type: 'object'
+      description: 'Problem context from analysis'
       properties:
         statement:
-          type: "string"
+          type: 'string'
         root_causes:
-          type: "array"
+          type: 'array'
         components:
-          type: "array"
+          type: 'array'
     constraints:
-      type: "object"
-      description: "Design constraints"
+      type: 'object'
+      description: 'Design constraints'
       properties:
         time_frame:
-          type: "string"
+          type: 'string'
         resources:
-          type: "array"
+          type: 'array'
         budget:
-          type: "string"
+          type: 'string'
         technical:
-          type: "array"
+          type: 'array'
     success_criteria:
-      type: "array"
-      description: "Success criteria for solutions"
+      type: 'array'
+      description: 'Success criteria for solutions'
       items:
-        type: "string"
+        type: 'string'
     stakeholders:
-      type: "array"
-      description: "Stakeholders involved"
+      type: 'array'
+      description: 'Stakeholders involved'
       items:
-        type: "object"
+        type: 'object'
         properties:
           role:
-            type: "string"
+            type: 'string'
           interest:
-            type: "string"
+            type: 'string'
           influence:
-            type: "string"
+            type: 'string'
 
 # Workflow steps
 steps:
   # Step 1: Context Validation
-  - id: "context-validation"
-    name: "Context Validation"
-    description: "Validate and enrich problem context"
-    type: "validation"
-    
+  - id: 'context-validation'
+    name: 'Context Validation'
+    description: 'Validate and enrich problem context'
+    type: 'validation'
+
     action:
-      type: "context_validation"
+      type: 'context_validation'
       config:
         required_fields:
-          - "problem_context.statement"
+          - 'problem_context.statement'
         enrich_from_analysis: true
         validate_root_causes: true
-    
+
     outputs:
-      - name: "validated_context"
-        type: "object"
-        description: "Validated problem context"
-      - name: "context_gaps"
-        type: "array"
-        description: "Identified gaps requiring clarification"
-      - name: "enrichment_data"
-        type: "object"
-        description: "Additional context data"
+      - name: 'validated_context'
+        type: 'object'
+        description: 'Validated problem context'
+      - name: 'context_gaps'
+        type: 'array'
+        description: 'Identified gaps requiring clarification'
+      - name: 'enrichment_data'
+        type: 'object'
+        description: 'Additional context data'
 
   # Step 2: Solution Ideation
-  - id: "solution-ideation"
-    name: "Solution Ideation"
-    description: "Generate multiple solution alternatives"
-    type: "ideation"
-    
+  - id: 'solution-ideation'
+    name: 'Solution Ideation'
+    description: 'Generate multiple solution alternatives'
+    type: 'ideation'
+
     depends_on:
-      - "context-validation"
-    
+      - 'context-validation'
+
     action:
-      type: "multi_persona_ideation"
+      type: 'multi_persona_ideation'
       config:
         personas:
-          - urn: "urn:mycodexvantaos:persona:creative-thinker-primary"
-            focus: "innovative_approaches"
-          - urn: "urn:mycodexvantaos:persona:solution-architect-primary"
-            focus: "structural_solutions"
-          - urn: "urn:mycodexvantaos:persona:analyst-primary"
-            focus: "evidence_based_solutions"
+          - urn: 'urn:mycodexvantaos:persona:creative-thinker-primary'
+            focus: 'innovative_approaches'
+          - urn: 'urn:mycodexvantaos:persona:solution-architect-primary'
+            focus: 'structural_solutions'
+          - urn: 'urn:mycodexvantaos:persona:analyst-primary'
+            focus: 'evidence_based_solutions'
         min_ideas_per_persona: 3
         max_total_ideas: 15
         techniques:
-          - "brainstorming"
-          - "reverse_thinking"
-          - "analogy_mapping"
-    
+          - 'brainstorming'
+          - 'reverse_thinking'
+          - 'analogy_mapping'
+
     outputs:
-      - name: "raw_ideas"
-        type: "array"
-        description: "Raw idea collection from all personas"
-      - name: "ideas_by_persona"
-        type: "object"
-        description: "Ideas organized by source persona"
-      - name: "idea_metadata"
-        type: "object"
-        description: "Metadata for ideation process"
+      - name: 'raw_ideas'
+        type: 'array'
+        description: 'Raw idea collection from all personas'
+      - name: 'ideas_by_persona'
+        type: 'object'
+        description: 'Ideas organized by source persona'
+      - name: 'idea_metadata'
+        type: 'object'
+        description: 'Metadata for ideation process'
 
   # Step 3: Solution Filtering
-  - id: "solution-filtering"
-    name: "Solution Filtering"
-    description: "Filter and consolidate solution ideas"
-    type: "filtering"
-    
+  - id: 'solution-filtering'
+    name: 'Solution Filtering'
+    description: 'Filter and consolidate solution ideas'
+    type: 'filtering'
+
     depends_on:
-      - "solution-ideation"
-    
+      - 'solution-ideation'
+
     action:
-      type: "criteria_based_filtering"
+      type: 'criteria_based_filtering'
       config:
         filter_criteria:
-          - name: "feasibility"
+          - name: 'feasibility'
             threshold: 0.5
-          - name: "alignment_with_constraints"
+          - name: 'alignment_with_constraints'
             threshold: 0.6
-          - name: "impact_potential"
+          - name: 'impact_potential'
             threshold: 0.5
         deduplication:
           enabled: true
@@ -170,209 +170,209 @@ steps:
         consolidation:
           enabled: true
           merge_similar: true
-    
+
     outputs:
-      - name: "filtered_solutions"
-        type: "array"
-        description: "Filtered solution candidates"
-      - name: "filter_statistics"
-        type: "object"
-        description: "Statistics about filtering process"
-      - name: "rejected_ideas"
-        type: "array"
-        description: "Rejected ideas with reasons"
+      - name: 'filtered_solutions'
+        type: 'array'
+        description: 'Filtered solution candidates'
+      - name: 'filter_statistics'
+        type: 'object'
+        description: 'Statistics about filtering process'
+      - name: 'rejected_ideas'
+        type: 'array'
+        description: 'Rejected ideas with reasons'
 
   # Step 4: Solution Elaboration
-  - id: "solution-elaboration"
-    name: "Solution Elaboration"
-    description: "Develop detailed solution proposals"
-    type: "elaboration"
-    
+  - id: 'solution-elaboration'
+    name: 'Solution Elaboration'
+    description: 'Develop detailed solution proposals'
+    type: 'elaboration'
+
     depends_on:
-      - "solution-filtering"
-    
+      - 'solution-filtering'
+
     action:
-      type: "detailed_elaboration"
+      type: 'detailed_elaboration'
       config:
         max_solutions: 5
         include_components:
-          - "description"
-          - "implementation_steps"
-          - "resource_requirements"
-          - "timeline"
-          - "risk_assessment"
-          - "success_metrics"
-        detail_level: "comprehensive"
-    
+          - 'description'
+          - 'implementation_steps'
+          - 'resource_requirements'
+          - 'timeline'
+          - 'risk_assessment'
+          - 'success_metrics'
+        detail_level: 'comprehensive'
+
     outputs:
-      - name: "elaborated_solutions"
-        type: "array"
-        description: "Fully elaborated solution proposals"
+      - name: 'elaborated_solutions'
+        type: 'array'
+        description: 'Fully elaborated solution proposals'
         items:
-          type: "object"
+          type: 'object'
           properties:
             id:
-              type: "string"
+              type: 'string'
             title:
-              type: "string"
+              type: 'string'
             description:
-              type: "string"
+              type: 'string'
             category:
-              type: "string"
+              type: 'string'
             action_steps:
-              type: "array"
+              type: 'array'
             resources:
-              type: "array"
+              type: 'array'
             timeline:
-              type: "object"
+              type: 'object'
             risks:
-              type: "array"
+              type: 'array'
             success_metrics:
-              type: "array"
+              type: 'array'
 
   # Step 5: Solution Evaluation
-  - id: "solution-evaluation"
-    name: "Solution Evaluation"
-    description: "Evaluate solutions against criteria"
-    type: "evaluation"
-    
+  - id: 'solution-evaluation'
+    name: 'Solution Evaluation'
+    description: 'Evaluate solutions against criteria'
+    type: 'evaluation'
+
     depends_on:
-      - "solution-elaboration"
-    
+      - 'solution-elaboration'
+
     action:
-      type: "multi_criteria_evaluation"
+      type: 'multi_criteria_evaluation'
       config:
         evaluation_criteria:
-          - name: "effectiveness"
+          - name: 'effectiveness'
             weight: 0.3
-            scale: "1-10"
-          - name: "feasibility"
+            scale: '1-10'
+          - name: 'feasibility'
             weight: 0.25
-            scale: "1-10"
-          - name: "cost_efficiency"
+            scale: '1-10'
+          - name: 'cost_efficiency'
             weight: 0.15
-            scale: "1-10"
-          - name: "time_to_implement"
+            scale: '1-10'
+          - name: 'time_to_implement'
             weight: 0.15
-            scale: "1-10"
-          - name: "sustainability"
+            scale: '1-10'
+          - name: 'sustainability'
             weight: 0.15
-            scale: "1-10"
-        evaluation_method: "weighted_score"
-    
+            scale: '1-10'
+        evaluation_method: 'weighted_score'
+
     outputs:
-      - name: "evaluation_results"
-        type: "object"
-        description: "Evaluation results for all solutions"
-      - name: "score_matrix"
-        type: "object"
-        description: "Score matrix by solution and criterion"
-      - name: "ranking"
-        type: "array"
-        description: "Ranked solution IDs"
+      - name: 'evaluation_results'
+        type: 'object'
+        description: 'Evaluation results for all solutions'
+      - name: 'score_matrix'
+        type: 'object'
+        description: 'Score matrix by solution and criterion'
+      - name: 'ranking'
+        type: 'array'
+        description: 'Ranked solution IDs'
 
   # Step 6: Implementation Planning
-  - id: "implementation-planning"
-    name: "Implementation Planning"
-    description: "Create implementation plan for top solutions"
-    type: "planning"
-    
+  - id: 'implementation-planning'
+    name: 'Implementation Planning'
+    description: 'Create implementation plan for top solutions'
+    type: 'planning'
+
     depends_on:
-      - "solution-evaluation"
-    
+      - 'solution-evaluation'
+
     action:
-      type: "implementation_planning"
+      type: 'implementation_planning'
       config:
         top_n_plans: 3
         include_components:
-          - "milestones"
-          - "resource_allocation"
-          - "risk_mitigation"
-          - "contingency_plans"
-          - "success_checkpoints"
-        time_frame_format: "weeks"
-    
+          - 'milestones'
+          - 'resource_allocation'
+          - 'risk_mitigation'
+          - 'contingency_plans'
+          - 'success_checkpoints'
+        time_frame_format: 'weeks'
+
     outputs:
-      - name: "implementation_plans"
-        type: "array"
-        description: "Detailed implementation plans"
-      - name: "resource_plans"
-        type: "object"
-        description: "Resource allocation plans"
-      - name: "risk_registers"
-        type: "array"
-        description: "Risk registers for each plan"
+      - name: 'implementation_plans'
+        type: 'array'
+        description: 'Detailed implementation plans'
+      - name: 'resource_plans'
+        type: 'object'
+        description: 'Resource allocation plans'
+      - name: 'risk_registers'
+        type: 'array'
+        description: 'Risk registers for each plan'
 
   # Step 7: HITL Review
-  - id: "hitl-review"
-    name: "Human-in-the-Loop Review"
-    description: "Human review of proposed solutions"
-    type: "checkpoint"
-    
+  - id: 'hitl-review'
+    name: 'Human-in-the-Loop Review'
+    description: 'Human review of proposed solutions'
+    type: 'checkpoint'
+
     depends_on:
-      - "implementation-planning"
-    
+      - 'implementation-planning'
+
     condition:
-      type: "config_flag"
-      flag: "hitl_enabled"
-    
+      type: 'config_flag'
+      flag: 'hitl_enabled'
+
     action:
-      type: "human_review"
+      type: 'human_review'
       config:
-        review_type: "solution_selection"
+        review_type: 'solution_selection'
         timeout_seconds: 900
         allow_modifications: true
         present_top_n: 3
         allow_custom_input: true
-    
+
     outputs:
-      - name: "selected_solution"
-        type: "object"
-        description: "Human-selected solution"
-      - name: "modifications"
-        type: "array"
-        description: "Human modifications to solution"
-      - name: "approval_status"
-        type: "string"
-        enum: ["approved", "modified", "rejected", "needs_revision"]
+      - name: 'selected_solution'
+        type: 'object'
+        description: 'Human-selected solution'
+      - name: 'modifications'
+        type: 'array'
+        description: 'Human modifications to solution'
+      - name: 'approval_status'
+        type: 'string'
+        enum: ['approved', 'modified', 'rejected', 'needs_revision']
 
 # Output schema
 output_schema:
-  type: "object"
+  type: 'object'
   properties:
     design_session_id:
-      type: "string"
+      type: 'string'
     problem_context:
-      type: "object"
+      type: 'object'
     generated_solutions:
-      type: "array"
+      type: 'array'
     evaluation_results:
-      type: "object"
+      type: 'object'
     recommended_solution:
-      type: "object"
+      type: 'object'
     implementation_plan:
-      type: "object"
+      type: 'object'
     alternatives:
-      type: "array"
+      type: 'array'
     metadata:
-      type: "object"
+      type: 'object'
 
 # Error handling
 error_handling:
   retry_policy:
     max_retries: 2
     backoff_seconds: 10
-  fallback_behavior: "Provide best available solution design"
+  fallback_behavior: 'Provide best available solution design'
   error_responses:
-    ideation_failed: "Using analytical approach for solution generation"
-    evaluation_failed: "Providing solutions without formal evaluation"
-    planning_failed: "Providing solutions with basic implementation guidance"
+    ideation_failed: 'Using analytical approach for solution generation'
+    evaluation_failed: 'Providing solutions without formal evaluation'
+    planning_failed: 'Providing solutions with basic implementation guidance'
 
 # Governance
 governance:
   tier: 1
   required_approvals:
-    - type: "human"
-      condition: "high_impact"
+    - type: 'human'
+      condition: 'high_impact'
   audit_logging: true
   data_retention_days: 90

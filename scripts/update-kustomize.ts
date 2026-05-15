@@ -3,15 +3,23 @@ import * as path from 'path';
 
 function updateKustomization() {
   const servicesDir = path.join(process.cwd(), 'services');
-  const baseKustomizationPath = path.join(process.cwd(), 'infra/kubernetes/base/kustomization.yaml');
+  const baseKustomizationPath = path.join(
+    process.cwd(),
+    'infra/kubernetes/base/kustomization.yaml'
+  );
 
   if (!fs.existsSync(servicesDir)) {
     console.error('Services directory not found');
     return;
   }
 
-  const services = fs.readdirSync(servicesDir)
-    .filter(file => fs.statSync(path.join(servicesDir, file)).isDirectory() && file.startsWith('mycodexvantaos-'));
+  const services = fs
+    .readdirSync(servicesDir)
+    .filter(
+      (file) =>
+        fs.statSync(path.join(servicesDir, file)).isDirectory() &&
+        file.startsWith('mycodexvantaos-')
+    );
 
   let kustomizationContent = `apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -19,7 +27,7 @@ kind: Kustomization
 resources:
   `;
 
-  services.forEach(service => {
+  services.forEach((service) => {
     // Check if deployment.yaml exists for this service in base
     const serviceBasePath = path.join(process.cwd(), 'infra/kubernetes/base/' + service);
     const deploymentPath = path.join(serviceBasePath, 'deployment.yaml');

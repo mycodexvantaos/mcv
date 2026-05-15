@@ -17,7 +17,7 @@ spec:
     observability: observability-opentelemetry
   lifecycle:
     stage: stable
-    since: "v1.0.0"
-  urn: "urn:mycodexvantaos:manifest:service:mycodexvantaos-security-validation"
-  packageName: "@mycodexvantaos/security-validation"
-  description: "Data schema validation and enforcement service."
+    since: 'v1.0.0'
+  urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-security-validation'
+  packageName: '@mycodexvantaos/security-validation'
+  description: 'Data schema validation and enforcement service.'

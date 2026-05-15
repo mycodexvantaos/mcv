@@ -48,7 +48,7 @@ export class NativeQueue<T = any> {
       maxConcurrent: options.maxConcurrent || 10,
       maxRetries: options.maxRetries || 3,
       timeout: options.timeout || 30000,
-      autoStart: options.autoStart ?? true
+      autoStart: options.autoStart ?? true,
     };
 
     if (this.options.autoStart) {
@@ -59,10 +59,7 @@ export class NativeQueue<T = any> {
   /**
    * Add a task to the queue
    */
-  enqueue(
-    data: T,
-    options: { priority?: number; maxAttempts?: number } = {}
-  ): string {
+  enqueue(data: T, options: { priority?: number; maxAttempts?: number } = {}): string {
     const taskId = `task-${++this.taskIdCounter}`;
     const task: QueueTask<T> = {
       id: taskId,
@@ -71,7 +68,7 @@ export class NativeQueue<T = any> {
       status: 'pending',
       createdAt: new Date(),
       attempts: 0,
-      maxAttempts: options.maxAttempts || this.options.maxRetries
+      maxAttempts: options.maxAttempts || this.options.maxRetries,
     };
 
     this.queue.set(taskId, task);
@@ -112,7 +109,7 @@ export class NativeQueue<T = any> {
       task.completedAt = new Date();
     } catch (error) {
       task.error = error as Error;
-      
+
       if (task.attempts < task.maxAttempts) {
         task.status = 'pending';
         this.priorityQueue.push(task);
@@ -157,9 +154,7 @@ export class NativeQueue<T = any> {
     if (this.processingTasks.size >= this.options.maxConcurrent) return;
 
     // Find next pending task
-    const taskIndex = this.priorityQueue.findIndex(
-      (task) => task.status === 'pending'
-    );
+    const taskIndex = this.priorityQueue.findIndex((task) => task.status === 'pending');
 
     if (taskIndex === -1) return;
 
@@ -198,7 +193,7 @@ export class NativeQueue<T = any> {
       pending: tasks.filter((t) => t.status === 'pending').length,
       processing: tasks.filter((t) => t.status === 'processing').length,
       completed: tasks.filter((t) => t.status === 'completed').length,
-      failed: tasks.filter((t) => t.status === 'failed').length
+      failed: tasks.filter((t) => t.status === 'failed').length,
     };
   }
 
@@ -211,9 +206,7 @@ export class NativeQueue<T = any> {
         this.queue.delete(id);
       }
     });
-    this.priorityQueue = this.priorityQueue.filter(
-      (task) => task.status === 'pending'
-    );
+    this.priorityQueue = this.priorityQueue.filter((task) => task.status === 'pending');
   }
 
   /**

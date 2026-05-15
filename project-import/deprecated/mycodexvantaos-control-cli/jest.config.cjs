@@ -1,11 +1,11 @@
 /** @type {import('jest').Config} */
 module.exports = {
-  preset: "ts-jest",
-  testEnvironment: "node",
-  roots: ["<rootDir>/tests"],
-  testMatch: ["**/*.test.ts"],
-  collectCoverageFrom: ["src/**/*.ts", "!src/bin/**"],
-  
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  roots: ['<rootDir>/tests'],
+  testMatch: ['**/*.test.ts'],
+  collectCoverageFrom: ['src/**/*.ts', '!src/bin/**'],
+
   // Coverage configuration for GitLab CI/CD
   collectCoverage: true,
   coverageDirectory: '<rootDir>/coverage',
@@ -13,17 +13,17 @@ module.exports = {
     'json',
     'lcov',
     'text',
-    'cobertura'  // Required for GitLab coverage reports
+    'cobertura', // Required for GitLab coverage reports
   ],
   coverageThreshold: {
     global: {
       branches: 0,
       functions: 0,
       lines: 0,
-      statements: 0
-    }
+      statements: 0,
+    },
   },
-  
+
   // JUnit reporter for GitLab test reports
   reporters: [
     'default',
@@ -35,11 +35,11 @@ module.exports = {
         classNameTemplate: '{classname}',
         titleTemplate: '{title}',
         ancestorSeparator: ' › ',
-        usePathForSuiteName: true
-      }
-    ]
+        usePathForSuiteName: true,
+      },
+    ],
   ],
-  
+
   // Ignore patterns
   coveragePathIgnorePatterns: [
     '/node_modules/',
@@ -47,6 +47,6 @@ module.exports = {
     '/build/',
     '/*.config.ts',
     '/*.config.js',
-    '/*.config.cjs'
-  ]
+    '/*.config.cjs',
+  ],
 };

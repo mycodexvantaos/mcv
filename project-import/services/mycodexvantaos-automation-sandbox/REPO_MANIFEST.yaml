@@ -9,21 +9,21 @@ metadata:
   planeDescription: 沙箱面 — 隔離執行環境
   tier: 3
   tags:
-  - sandbox
-  - isolation
-  - containers
+    - sandbox
+    - isolation
+    - containers
 spec:
   architecture:
     philosophy: native-first / provider-agnostic
     principle: 第三方服務是擴充出口，不是平台地基
     mode: native | connected | hybrid
   capabilities:
-  - sandbox-creation
-  - isolation
-  - container-management
+    - sandbox-creation
+    - isolation
+    - container-management
   providerDependencies:
-  - deploy
-  - stateStore
+    - deploy
+    - stateStore
   repoDependencies:
-  - codexvanta-os-core-kernel
-  - codexvanta-os-scheduler
+    - codexvanta-os-core-kernel
+    - codexvanta-os-scheduler

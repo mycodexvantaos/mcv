@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/queue/kafka/config.schema.json",
   "title": "queue-kafka Configuration",
   "type": "object",
-  "required": [
-    "brokers"
-  ],
+  "required": ["brokers"],
   "properties": {
     "brokers": {
       "type": "array",

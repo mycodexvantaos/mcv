@@ -1,6 +1,6 @@
 # === path: .github/workflows/governance-check.yaml ===
 # Unified Governance Check Pipeline for MyCodeXvantaOS
-# Consolidates: check-legacy-prefix.yml, contract-diff.yaml, drift-detection.yaml, 
+# Consolidates: check-legacy-prefix.yml, contract-diff.yaml, drift-detection.yaml,
 #               validate-naming.yml, expire-exceptions.yml, openapi-spectral.yaml, opa-policy-check.yaml
 # Version: 2.0.0
 

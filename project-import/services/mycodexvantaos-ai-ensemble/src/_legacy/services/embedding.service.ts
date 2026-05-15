@@ -5,10 +5,17 @@
 import { getProviders } from '../providers.js';
 import type * as T from '../types/index.js';
 
-export interface EmbeddingResult { text: string; vector: number[]; model: string; dimensions: number; }
+export interface EmbeddingResult {
+  text: string;
+  vector: number[];
+  model: string;
+  dimensions: number;
+}
 
 export class EmbeddingService {
-  private get providers() { return getProviders(); }
+  private get providers() {
+    return getProviders();
+  }
   private readonly DIMENSIONS = 128; // Native mode: simple hash-based embeddings
 
   async embed(texts: string[]): Promise<EmbeddingResult[]> {
@@ -26,9 +33,15 @@ export class EmbeddingService {
     return results;
   }
 
-  async similarity(queryVector: number[], topK: number = 5): Promise<Array<{ text: string; score: number }>> {
-    const result = await this.providers.stateStore.scan<EmbeddingResult>({ pattern: 'ai:embedding:*', count: 100 });
-    const scored = result.entries.map(entry => ({
+  async similarity(
+    queryVector: number[],
+    topK: number = 5
+  ): Promise<Array<{ text: string; score: number }>> {
+    const result = await this.providers.stateStore.scan<EmbeddingResult>({
+      pattern: 'ai:embedding:*',
+      count: 100,
+    });
+    const scored = result.entries.map((entry) => ({
       text: entry.value.text,
       score: this.cosineSimilarity(queryVector, entry.value.vector),
     }));
@@ -48,18 +61,27 @@ export class EmbeddingService {
     }
     // Normalize
     const magnitude = Math.sqrt(vector.reduce((sum, v) => sum + v * v, 0)) || 1;
-    return vector.map(v => v / magnitude);
+    return vector.map((v) => v / magnitude);
   }
 
   private cosineSimilarity(a: number[], b: number[]): number {
-    let dot = 0, magA = 0, magB = 0;
-    for (let i = 0; i < Math.min(a.length, b.length); i++) { dot += a[i] * b[i]; magA += a[i] * a[i]; magB += b[i] * b[i]; }
+    let dot = 0,
+      magA = 0,
+      magB = 0;
+    for (let i = 0; i < Math.min(a.length, b.length); i++) {
+      dot += a[i] * b[i];
+      magA += a[i] * a[i];
+      magB += b[i] * b[i];
+    }
     return dot / (Math.sqrt(magA) * Math.sqrt(magB) || 1);
   }
 
   private hashText(text: string): string {
     let hash = 0;
-    for (let i = 0; i < text.length; i++) { hash = ((hash << 5) - hash) + text.charCodeAt(i); hash |= 0; }
+    for (let i = 0; i < text.length; i++) {
+      hash = (hash << 5) - hash + text.charCodeAt(i);
+      hash |= 0;
+    }
     return Math.abs(hash).toString(36);
   }
 }

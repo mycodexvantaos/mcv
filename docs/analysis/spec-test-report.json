@@ -5,35 +5,185 @@
   "failed": 0,
   "coverage": 100,
   "results": [
-    {"category":"Identity","testName":"governance_spec_exists","passed":true,"message":"治理規範檔案存在"},
-    {"category":"Identity","testName":"org_identity_correct","passed":true,"message":"組織身份為 mycodexvantaos"},
-    {"category":"Identity","testName":"root_prefix_correct","passed":true,"message":"根前綴為 mycodexvantaos"},
-    {"category":"Identity","testName":"npm_scope_correct","passed":true,"message":"NPM Scope 為 @mycodexvantaos"},
-    {"category":"Package","testName":"packages_dir_exists","passed":true,"message":"packages 目錄存在"},
-    {"category":"Package","testName":"package_count_sufficient","passed":true,"message":"套件數量足夠 (28 >= 20)"},
-    {"category":"Package","testName":"naming_convention","passed":true,"message":"所有套件遵循命名慣例"},
-    {"category":"Service","testName":"services_dir_exists","passed":true,"message":"services 目錄存在"},
-    {"category":"Service","testName":"service_count_sufficient","passed":true,"message":"服務數量足夠 (25 >= 15)"},
-    {"category":"Service","testName":"service_naming","passed":true,"message":"服務遵循命名慣例 (25 個)"},
-    {"category":"Layer","testName":"builder_layer","passed":true,"message":"Builder 層存在"},
-    {"category":"Layer","testName":"runtime_layer","passed":true,"message":"Runtime 層存在"},
-    {"category":"Layer","testName":"deployment_layer","passed":true,"message":"Deployment 層存在"},
-    {"category":"Layer","testName":"governance_layer","passed":true,"message":"Governance 層存在"},
-    {"category":"Governance","testName":"ci_rules_dir_exists","passed":true,"message":"CI 規則目錄存在"},
-    {"category":"Governance","testName":"rule_files_sufficient","passed":true,"message":"規則檔案數量足夠 (20 >= 15)"},
-    {"category":"Governance","testName":"provider_registry_exists","passed":true,"message":"Provider 註冊表存在"},
-    {"category":"Governance","testName":"exceptions_file_exists","passed":true,"message":"例外檔案存在"},
-    {"category":"Capability","testName":"capability_set_exists","passed":true,"message":"能力集合檔案存在"},
-    {"category":"Capability","testName":"capability_count","passed":true,"message":"能力定義數量足夠 (19 >= 15)"},
-    {"category":"Test","testName":"test_files_exist","passed":true,"message":"測試檔案存在 (109 個)"},
-    {"category":"Test","testName":"jest_config_exists","passed":true,"message":"Jest 配置存在"},
-    {"category":"Config","testName":"env_native_exists","passed":true,"message":"原生模式配置範本存在"},
-    {"category":"Config","testName":"env_connected_exists","passed":true,"message":"連接模式配置範本存在"},
-    {"category":"Config","testName":"env_hybrid_exists","passed":true,"message":"混合模式配置範本存在"},
-    {"category":"Config","testName":"tsconfig_exists","passed":true,"message":"TypeScript 配置存在"},
-    {"category":"Docs","testName":"docs_dir_exists","passed":true,"message":"docs 目錄存在"},
-    {"category":"Docs","testName":"readme_exists","passed":true,"message":"README.md 存在"},
-    {"category":"Docs","testName":"architecture_doc_exists","passed":true,"message":"架構文檔存在"},
-    {"category":"Provider","testName":"providers_dir_optional","passed":true,"message":"Provider 目錄存在"}
+    {
+      "category": "Identity",
+      "testName": "governance_spec_exists",
+      "passed": true,
+      "message": "治理規範檔案存在"
+    },
+    {
+      "category": "Identity",
+      "testName": "org_identity_correct",
+      "passed": true,
+      "message": "組織身份為 mycodexvantaos"
+    },
+    {
+      "category": "Identity",
+      "testName": "root_prefix_correct",
+      "passed": true,
+      "message": "根前綴為 mycodexvantaos"
+    },
+    {
+      "category": "Identity",
+      "testName": "npm_scope_correct",
+      "passed": true,
+      "message": "NPM Scope 為 @mycodexvantaos"
+    },
+    {
+      "category": "Package",
+      "testName": "packages_dir_exists",
+      "passed": true,
+      "message": "packages 目錄存在"
+    },
+    {
+      "category": "Package",
+      "testName": "package_count_sufficient",
+      "passed": true,
+      "message": "套件數量足夠 (28 >= 20)"
+    },
+    {
+      "category": "Package",
+      "testName": "naming_convention",
+      "passed": true,
+      "message": "所有套件遵循命名慣例"
+    },
+    {
+      "category": "Service",
+      "testName": "services_dir_exists",
+      "passed": true,
+      "message": "services 目錄存在"
+    },
+    {
+      "category": "Service",
+      "testName": "service_count_sufficient",
+      "passed": true,
+      "message": "服務數量足夠 (25 >= 15)"
+    },
+    {
+      "category": "Service",
+      "testName": "service_naming",
+      "passed": true,
+      "message": "服務遵循命名慣例 (25 個)"
+    },
+    {
+      "category": "Layer",
+      "testName": "builder_layer",
+      "passed": true,
+      "message": "Builder 層存在"
+    },
+    {
+      "category": "Layer",
+      "testName": "runtime_layer",
+      "passed": true,
+      "message": "Runtime 層存在"
+    },
+    {
+      "category": "Layer",
+      "testName": "deployment_layer",
+      "passed": true,
+      "message": "Deployment 層存在"
+    },
+    {
+      "category": "Layer",
+      "testName": "governance_layer",
+      "passed": true,
+      "message": "Governance 層存在"
+    },
+    {
+      "category": "Governance",
+      "testName": "ci_rules_dir_exists",
+      "passed": true,
+      "message": "CI 規則目錄存在"
+    },
+    {
+      "category": "Governance",
+      "testName": "rule_files_sufficient",
+      "passed": true,
+      "message": "規則檔案數量足夠 (20 >= 15)"
+    },
+    {
+      "category": "Governance",
+      "testName": "provider_registry_exists",
+      "passed": true,
+      "message": "Provider 註冊表存在"
+    },
+    {
+      "category": "Governance",
+      "testName": "exceptions_file_exists",
+      "passed": true,
+      "message": "例外檔案存在"
+    },
+    {
+      "category": "Capability",
+      "testName": "capability_set_exists",
+      "passed": true,
+      "message": "能力集合檔案存在"
+    },
+    {
+      "category": "Capability",
+      "testName": "capability_count",
+      "passed": true,
+      "message": "能力定義數量足夠 (19 >= 15)"
+    },
+    {
+      "category": "Test",
+      "testName": "test_files_exist",
+      "passed": true,
+      "message": "測試檔案存在 (109 個)"
+    },
+    {
+      "category": "Test",
+      "testName": "jest_config_exists",
+      "passed": true,
+      "message": "Jest 配置存在"
+    },
+    {
+      "category": "Config",
+      "testName": "env_native_exists",
+      "passed": true,
+      "message": "原生模式配置範本存在"
+    },
+    {
+      "category": "Config",
+      "testName": "env_connected_exists",
+      "passed": true,
+      "message": "連接模式配置範本存在"
+    },
+    {
+      "category": "Config",
+      "testName": "env_hybrid_exists",
+      "passed": true,
+      "message": "混合模式配置範本存在"
+    },
+    {
+      "category": "Config",
+      "testName": "tsconfig_exists",
+      "passed": true,
+      "message": "TypeScript 配置存在"
+    },
+    {
+      "category": "Docs",
+      "testName": "docs_dir_exists",
+      "passed": true,
+      "message": "docs 目錄存在"
+    },
+    {
+      "category": "Docs",
+      "testName": "readme_exists",
+      "passed": true,
+      "message": "README.md 存在"
+    },
+    {
+      "category": "Docs",
+      "testName": "architecture_doc_exists",
+      "passed": true,
+      "message": "架構文檔存在"
+    },
+    {
+      "category": "Provider",
+      "testName": "providers_dir_optional",
+      "passed": true,
+      "message": "Provider 目錄存在"
+    }
   ]
 }

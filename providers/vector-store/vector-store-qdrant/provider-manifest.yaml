@@ -8,7 +8,7 @@ metadata:
   capability: vector-store
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: "8.1"
+    mycodexvantaos.org/specRef: '8.1'
 spec:
   providerName: qdrant
   isNative: false
@@ -16,4 +16,4 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_VECTOR_STORE_QDRANT
   configSchemaRef: ./config.schema.json
-  description: "Qdrant vector database provider."
+  description: 'Qdrant vector database provider.'

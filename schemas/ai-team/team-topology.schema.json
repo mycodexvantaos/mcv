@@ -24,14 +24,7 @@
     },
     "topology_type": {
       "type": "string",
-      "enum": [
-        "sequential",
-        "hierarchical",
-        "broadcast",
-        "mesh",
-        "dag",
-        "state_machine"
-      ],
+      "enum": ["sequential", "hierarchical", "broadcast", "mesh", "dag", "state_machine"],
       "description": "Communication pattern type"
     },
     "agents": {

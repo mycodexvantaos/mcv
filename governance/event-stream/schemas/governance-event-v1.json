@@ -61,7 +61,17 @@
     },
     "mycodexvantaosorgclosedloopstate": {
       "type": "string",
-      "enum": ["emitted", "acknowledged", "processing", "verified", "remediated", "anchored", "closed", "failed", "escalated"],
+      "enum": [
+        "emitted",
+        "acknowledged",
+        "processing",
+        "verified",
+        "remediated",
+        "anchored",
+        "closed",
+        "failed",
+        "escalated"
+      ],
       "description": "Current closed-loop state of the event."
     },
     "mycodexvantaosorgcorrelationid": {
@@ -71,10 +81,28 @@
     "mycodexvantaosorgcapability": {
       "type": "string",
       "enum": [
-        "database", "storage", "auth", "queue", "state-store", "secrets",
-        "repo", "deploy", "validation", "security", "observability",
-        "notification", "scheduler", "vector-store", "embedding", "llm",
-        "graph", "cache", "search", "ai-ethics", "blockchain", "event-stream"
+        "database",
+        "storage",
+        "auth",
+        "queue",
+        "state-store",
+        "secrets",
+        "repo",
+        "deploy",
+        "validation",
+        "security",
+        "observability",
+        "notification",
+        "scheduler",
+        "vector-store",
+        "embedding",
+        "llm",
+        "graph",
+        "cache",
+        "search",
+        "ai-ethics",
+        "blockchain",
+        "event-stream"
       ],
       "description": "Capability that emitted this event."
     },

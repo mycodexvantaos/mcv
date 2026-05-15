@@ -69,23 +69,23 @@ Request
 
 ## Load Balancing Strategies
 
-| Strategy | Description |
-|---|---|
-| Round-Robin | Sequential distribution across instances |
-| Least-Connections | Route to instance with fewest active connections |
-| Weighted | Proportional distribution based on instance weights |
-| Random | Random instance selection |
-| Sticky | Same client always routes to same instance |
+| Strategy          | Description                                         |
+| ----------------- | --------------------------------------------------- |
+| Round-Robin       | Sequential distribution across instances            |
+| Least-Connections | Route to instance with fewest active connections    |
+| Weighted          | Proportional distribution based on instance weights |
+| Random            | Random instance selection                           |
+| Sticky            | Same client always routes to same instance          |
 
 ## Native vs Connected Transport
 
-| Feature | Native | Connected |
-|---|---|---|
-| Transport | In-process function call | HTTP/gRPC |
-| Latency | ~0ms (same process) | Network RTT |
-| Serialization | None (object reference) | JSON/Protobuf |
-| Authentication | Process-level trust | mTLS certificates |
-| Load Balancing | Round-robin | Full strategy support |
+| Feature        | Native                   | Connected             |
+| -------------- | ------------------------ | --------------------- |
+| Transport      | In-process function call | HTTP/gRPC             |
+| Latency        | ~0ms (same process)      | Network RTT           |
+| Serialization  | None (object reference)  | JSON/Protobuf         |
+| Authentication | Process-level trust      | mTLS certificates     |
+| Load Balancing | Round-robin              | Full strategy support |
 
 ## Design Principles
 

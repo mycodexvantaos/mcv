@@ -1,6 +1,6 @@
 # modules/mycodexvantaos-core-auth/capabilities.yaml
 capabilities:
-    - auth
-    - database
-    - cache
-    - secrets
+  - auth
+  - database
+  - cache
+  - secrets

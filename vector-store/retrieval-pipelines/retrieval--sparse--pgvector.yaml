@@ -13,4 +13,4 @@ spec:
   # no embeddingModelAlias for sparse pipelines
   topK: 10
   rerankEnabled: false
-  description: "Sparse keyword retrieval backed by pgvector."
+  description: 'Sparse keyword retrieval backed by pgvector.'

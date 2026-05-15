@@ -1,6 +1,6 @@
 /**
  * Policy Registry Service
- * 
+ *
  * Central registry for managing governance policies across the platform.
  * Handles policy loading, registration, updates, and distribution to enforcement engines.
  */
@@ -50,9 +50,12 @@ export class PolicyRegistryService extends EventEmitter {
       // Load policies from governance directory
       await this.loadPoliciesFromDirectory();
 
-      logger.info({ 
-        policiesLoaded: this.policies.size 
-      }, 'Policy registry initialized successfully');
+      logger.info(
+        {
+          policiesLoaded: this.policies.size,
+        },
+        'Policy registry initialized successfully'
+      );
     } catch (error) {
       logger.error({ error }, 'Failed to initialize policy registry');
       throw error;
@@ -66,15 +69,18 @@ export class PolicyRegistryService extends EventEmitter {
     logger.info({ path: this.policyPath }, 'Loading policies from directory');
 
     try {
-      const exists = await fs.access(this.policyPath).then(() => true).catch(() => false);
+      const exists = await fs
+        .access(this.policyPath)
+        .then(() => true)
+        .catch(() => false);
       if (!exists) {
         logger.warn({ path: this.policyPath }, 'Policy directory not found');
         return;
       }
 
       const entries = await fs.readdir(this.policyPath, { withFileTypes: true });
-      const policyFiles = entries.filter(entry => 
-        entry.isFile() && (entry.name.endsWith('.yaml') || entry.name.endsWith('.yml'))
+      const policyFiles = entries.filter(
+        (entry) => entry.isFile() && (entry.name.endsWith('.yaml') || entry.name.endsWith('.yml'))
       );
 
       for (const file of policyFiles) {
@@ -86,10 +92,13 @@ export class PolicyRegistryService extends EventEmitter {
         }
       }
 
-      logger.info({ 
-        loaded: policyFiles.length,
-        registered: this.policies.size 
-      }, 'Policies loaded from directory');
+      logger.info(
+        {
+          loaded: policyFiles.length,
+          registered: this.policies.size,
+        },
+        'Policies loaded from directory'
+      );
     } catch (error) {
       logger.error({ error }, 'Failed to load policies from directory');
       throw error;
@@ -122,7 +131,7 @@ export class PolicyRegistryService extends EventEmitter {
         updatedAt: new Date(),
         source: filePath,
         version: policy.version,
-        enabled: true
+        enabled: true,
       };
 
       // Check if policy already exists
@@ -138,17 +147,20 @@ export class PolicyRegistryService extends EventEmitter {
       await this.notifySubscribers(policy);
 
       // Emit registration event
-      this.emit('policy:registered', { 
-        policyName: policy.name, 
-        version: policy.version,
-        source: filePath 
-      });
-
-      logger.info({ 
+      this.emit('policy:registered', {
         policyName: policy.name,
         version: policy.version,
-        source: filePath 
-      }, 'Policy loaded and registered');
+        source: filePath,
+      });
+
+      logger.info(
+        {
+          policyName: policy.name,
+          version: policy.version,
+          source: filePath,
+        },
+        'Policy loaded and registered'
+      );
     } catch (error) {
       logger.error({ filePath, error }, 'Failed to load policy');
       throw error;
@@ -169,28 +181,31 @@ export class PolicyRegistryService extends EventEmitter {
       updatedAt: new Date(),
       source,
       version: policy.version,
-      enabled: true
+      enabled: true,
     };
 
     this.policies.set(policy.name, registration);
 
     // Notify subscribers asynchronously
-    this.notifySubscribers(policy).catch(error => {
+    this.notifySubscribers(policy).catch((error) => {
       logger.error({ policyName: policy.name, error }, 'Failed to notify subscribers');
     });
 
     // Emit registration event
-    this.emit('policy:registered', { 
-      policyName: policy.name, 
-      version: policy.version,
-      source 
-    });
-
-    logger.info({ 
+    this.emit('policy:registered', {
       policyName: policy.name,
       version: policy.version,
-      source 
-    }, 'Policy registered programmatically');
+      source,
+    });
+
+    logger.info(
+      {
+        policyName: policy.name,
+        version: policy.version,
+        source,
+      },
+      'Policy registered programmatically'
+    );
   }
 
   /**
@@ -208,20 +223,23 @@ export class PolicyRegistryService extends EventEmitter {
     registration.version = updates.version || registration.version;
 
     // Notify subscribers
-    this.notifySubscribers(registration.policy).catch(error => {
+    this.notifySubscribers(registration.policy).catch((error) => {
       logger.error({ policyName, error }, 'Failed to notify subscribers of update');
     });
 
     // Emit update event
-    this.emit('policy:updated', { 
-      policyName, 
-      version: registration.version 
+    this.emit('policy:updated', {
+      policyName,
+      version: registration.version,
     });
 
-    logger.info({ 
-      policyName, 
-      version: registration.version 
-    }, 'Policy updated');
+    logger.info(
+      {
+        policyName,
+        version: registration.version,
+      },
+      'Policy updated'
+    );
   }
 
   /**
@@ -236,14 +254,12 @@ export class PolicyRegistryService extends EventEmitter {
     this.policies.delete(policyName);
 
     // Remove subscriptions for this policy
-    this.subscriptions = this.subscriptions.filter(
-      sub => sub.policyName !== policyName
-    );
+    this.subscriptions = this.subscriptions.filter((sub) => sub.policyName !== policyName);
 
     // Emit unregistration event
-    this.emit('policy:unregistered', { 
+    this.emit('policy:unregistered', {
       policyName,
-      version: registration.version 
+      version: registration.version,
     });
 
     logger.info({ policyName }, 'Policy unregistered');
@@ -270,8 +286,8 @@ export class PolicyRegistryService extends EventEmitter {
    */
   getAllPolicies(): GovernancePolicy[] {
     return Array.from(this.policies.values())
-      .filter(reg => reg.enabled)
-      .map(reg => reg.policy);
+      .filter((reg) => reg.enabled)
+      .map((reg) => reg.policy);
   }
 
   /**
@@ -279,8 +295,8 @@ export class PolicyRegistryService extends EventEmitter {
    */
   getEnabledPolicies(): GovernancePolicy[] {
     return Array.from(this.policies.values())
-      .filter(reg => reg.enabled)
-      .map(reg => reg.policy);
+      .filter((reg) => reg.enabled)
+      .map((reg) => reg.policy);
   }
 
   /**
@@ -316,19 +332,26 @@ export class PolicyRegistryService extends EventEmitter {
   /**
    * Subscribe to policy updates
    */
-  subscribeToPolicy(subscriberId: string, policyName: string, callback: (policy: GovernancePolicy) => void): void {
+  subscribeToPolicy(
+    subscriberId: string,
+    policyName: string,
+    callback: (policy: GovernancePolicy) => void
+  ): void {
     const subscription: PolicySubscription = {
       subscriberId,
       policyName,
-      callback
+      callback,
     };
 
     this.subscriptions.push(subscription);
 
-    logger.info({ 
-      subscriberId, 
-      policyName 
-    }, 'Subscribed to policy updates');
+    logger.info(
+      {
+        subscriberId,
+        policyName,
+      },
+      'Subscribed to policy updates'
+    );
   }
 
   /**
@@ -337,14 +360,17 @@ export class PolicyRegistryService extends EventEmitter {
   unsubscribeFromPolicy(subscriberId: string, policyName: string): void {
     const initialLength = this.subscriptions.length;
     this.subscriptions = this.subscriptions.filter(
-      sub => !(sub.subscriberId === subscriberId && sub.policyName === policyName)
+      (sub) => !(sub.subscriberId === subscriberId && sub.policyName === policyName)
     );
 
     if (this.subscriptions.length < initialLength) {
-      logger.info({ 
-        subscriberId, 
-        policyName 
-      }, 'Unsubscribed from policy updates');
+      logger.info(
+        {
+          subscriberId,
+          policyName,
+        },
+        'Unsubscribed from policy updates'
+      );
     }
   }
 
@@ -352,19 +378,20 @@ export class PolicyRegistryService extends EventEmitter {
    * Notify subscribers of a policy change
    */
   private async notifySubscribers(policy: GovernancePolicy): Promise<void> {
-    const subscriptions = this.subscriptions.filter(
-      sub => sub.policyName === policy.name
-    );
+    const subscriptions = this.subscriptions.filter((sub) => sub.policyName === policy.name);
 
     for (const subscription of subscriptions) {
       try {
         subscription.callback(policy);
       } catch (error) {
-        logger.error({ 
-          subscriberId: subscription.subscriberId,
-          policyName: policy.name,
-          error 
-        }, 'Failed to notify subscriber');
+        logger.error(
+          {
+            subscriberId: subscription.subscriberId,
+            policyName: policy.name,
+            error,
+          },
+          'Failed to notify subscriber'
+        );
       }
     }
   }
@@ -377,14 +404,17 @@ export class PolicyRegistryService extends EventEmitter {
 
     try {
       await this.loadPoliciesFromDirectory();
-      
-      this.emit('policies:reloaded', { 
-        count: this.policies.size 
+
+      this.emit('policies:reloaded', {
+        count: this.policies.size,
       });
-      
-      logger.info({ 
-        count: this.policies.size 
-      }, 'Policies reloaded successfully');
+
+      logger.info(
+        {
+          count: this.policies.size,
+        },
+        'Policies reloaded successfully'
+      );
     } catch (error) {
       logger.error({ error }, 'Failed to reload policies');
       throw error;
@@ -400,14 +430,14 @@ export class PolicyRegistryService extends EventEmitter {
     disabledPolicies: number;
     subscriptions: number;
   } {
-    const enabled = Array.from(this.policies.values()).filter(reg => reg.enabled).length;
+    const enabled = Array.from(this.policies.values()).filter((reg) => reg.enabled).length;
     const disabled = this.policies.size - enabled;
 
     return {
       totalPolicies: this.policies.size,
       enabledPolicies: enabled,
       disabledPolicies: disabled,
-      subscriptions: this.subscriptions.length
+      subscriptions: this.subscriptions.length,
     };
   }
 
@@ -426,15 +456,18 @@ export class PolicyRegistryService extends EventEmitter {
         const filePath = path.join(directory, `${registration.policy.name}.yaml`);
         const content = yaml.dump(registration.policy, {
           indent: 2,
-          lineWidth: -1
+          lineWidth: -1,
         });
         await fs.writeFile(filePath, content, 'utf-8');
       }
 
-      logger.info({ 
-        directory,
-        count: this.policies.size 
-      }, 'Policies exported successfully');
+      logger.info(
+        {
+          directory,
+          count: this.policies.size,
+        },
+        'Policies exported successfully'
+      );
     } catch (error) {
       logger.error({ directory, error }, 'Failed to export policies');
       throw error;

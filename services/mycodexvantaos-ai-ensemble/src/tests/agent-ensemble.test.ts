@@ -3,7 +3,13 @@
  */
 
 import { AgentEnsemble } from '../index';
-import { Kernel, AuthProvider, VectorStoreProvider, LlmProvider, ObservabilityProvider } from '@mycodexvantaos/core-kernel';
+import {
+  Kernel,
+  AuthProvider,
+  VectorStoreProvider,
+  LlmProvider,
+  ObservabilityProvider,
+} from '@mycodexvantaos/core-kernel';
 
 // Mock the kernel and providers
 jest.mock('@mycodexvantaos/core-kernel');
@@ -88,8 +94,9 @@ describe('AgentEnsemble', () => {
     it('should reject unauthorized access', async () => {
       mockAuth.verifyToken.mockResolvedValue(false);
 
-      await expect(ensemble.processQuery('invalid-token', 'test query'))
-        .rejects.toThrow('Unauthorized');
+      await expect(ensemble.processQuery('invalid-token', 'test query')).rejects.toThrow(
+        'Unauthorized'
+      );
 
       expect(mockAuth.verifyToken).toHaveBeenCalledWith('invalid-token');
       expect(mockObs.log).toHaveBeenCalledWith('error', 'Unauthorized access attempt.');
@@ -102,7 +109,10 @@ describe('AgentEnsemble', () => {
 
       await ensemble.processQuery('token', 'hello world');
 
-      expect(mockObs.log).toHaveBeenCalledWith('info', '🧠 AgentEnsemble receiving query: "hello world"');
+      expect(mockObs.log).toHaveBeenCalledWith(
+        'info',
+        '🧠 AgentEnsemble receiving query: "hello world"'
+      );
     });
 
     it('should log vector store retrieval', async () => {
@@ -134,14 +144,16 @@ describe('AgentEnsemble', () => {
     it('should publish metrics', async () => {
       mockAuth.verifyToken.mockResolvedValue(true);
       mockVectorStore.searchSimilar.mockResolvedValue([{ text: 'context' }]);
-      mockLlm.generate.mockResolvedValue({ content: 'test response with length', providerUsed: 'mock-llm' });
+      mockLlm.generate.mockResolvedValue({
+        content: 'test response with length',
+        providerUsed: 'mock-llm',
+      });
 
       await ensemble.processQuery('token', 'test');
 
-      expect(mockObs.publishMetrics).toHaveBeenCalledWith(
-        'run-888',
-        { length: expect.any(Number) }
-      );
+      expect(mockObs.publishMetrics).toHaveBeenCalledWith('run-888', {
+        length: expect.any(Number),
+      });
     });
 
     it('should include context in LLM prompt', async () => {
@@ -152,10 +164,10 @@ describe('AgentEnsemble', () => {
       await ensemble.processQuery('token', 'What is AI?');
 
       expect(mockLlm.generate).toHaveBeenCalledWith({
-        prompt: expect.stringContaining('What is AI?')
+        prompt: expect.stringContaining('What is AI?'),
       });
       expect(mockLlm.generate).toHaveBeenCalledWith({
-        prompt: expect.stringContaining('relevant context info')
+        prompt: expect.stringContaining('relevant context info'),
       });
     });
 
@@ -164,8 +176,7 @@ describe('AgentEnsemble', () => {
       mockVectorStore.searchSimilar.mockResolvedValue([]);
       mockLlm.generate.mockResolvedValue({ content: 'response', providerUsed: 'mock-llm' });
 
-      await expect(ensemble.processQuery('token', 'test'))
-        .rejects.toThrow();
+      await expect(ensemble.processQuery('token', 'test')).rejects.toThrow();
 
       // The code expects context[0].text, so empty array will cause error
     });
@@ -173,16 +184,14 @@ describe('AgentEnsemble', () => {
     it('should propagate auth errors', async () => {
       mockAuth.verifyToken.mockRejectedValue(new Error('Auth service error'));
 
-      await expect(ensemble.processQuery('token', 'test'))
-        .rejects.toThrow('Auth service error');
+      await expect(ensemble.processQuery('token', 'test')).rejects.toThrow('Auth service error');
     });
 
     it('should propagate vector store errors', async () => {
       mockAuth.verifyToken.mockResolvedValue(true);
       mockVectorStore.searchSimilar.mockRejectedValue(new Error('Vector store error'));
 
-      await expect(ensemble.processQuery('token', 'test'))
-        .rejects.toThrow('Vector store error');
+      await expect(ensemble.processQuery('token', 'test')).rejects.toThrow('Vector store error');
     });
 
     it('should propagate LLM errors', async () => {
@@ -190,8 +199,7 @@ describe('AgentEnsemble', () => {
       mockVectorStore.searchSimilar.mockResolvedValue([{ text: 'context' }]);
       mockLlm.generate.mockRejectedValue(new Error('LLM error'));
 
-      await expect(ensemble.processQuery('token', 'test'))
-        .rejects.toThrow('LLM error');
+      await expect(ensemble.processQuery('token', 'test')).rejects.toThrow('LLM error');
     });
 
     it('should handle observability resolve errors', async () => {
@@ -202,8 +210,9 @@ describe('AgentEnsemble', () => {
         return mockAuth;
       });
 
-      await expect(ensemble.processQuery('token', 'test'))
-        .rejects.toThrow('Observability not available');
+      await expect(ensemble.processQuery('token', 'test')).rejects.toThrow(
+        'Observability not available'
+      );
     });
   });
 
@@ -214,7 +223,10 @@ describe('AgentEnsemble', () => {
         { text: 'Document 1 content' },
         { text: 'Document 2 content' },
       ]);
-      mockLlm.generate.mockResolvedValue({ content: 'Generated response based on context', providerUsed: 'mock-llm' });
+      mockLlm.generate.mockResolvedValue({
+        content: 'Generated response based on context',
+        providerUsed: 'mock-llm',
+      });
 
       const result = await ensemble.processQuery('user-token', 'Summarize documents');
 

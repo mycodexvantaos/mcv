@@ -1,11 +1,8 @@
-import type { FastifyRequest, FastifyReply } from "fastify";
+import type { FastifyRequest, FastifyReply } from 'fastify';
 
 const requestCounts = new Map<string, { count: number; resetAt: number }>();
 
-export async function rateLimiter(
-  request: FastifyRequest,
-  reply: FastifyReply
-): Promise<void> {
+export async function rateLimiter(request: FastifyRequest, reply: FastifyReply): Promise<void> {
   const ip = request.ip;
   const now = Date.now();
   const entry = requestCounts.get(ip);
@@ -15,6 +12,6 @@ export async function rateLimiter(
   }
   entry.count += 1;
   if (entry.count > 100) {
-    reply.status(429).send({ error: "Too many requests" });
+    reply.status(429).send({ error: 'Too many requests' });
   }
 }

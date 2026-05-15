@@ -70,7 +70,7 @@ jobs:
         run: pnpm run build
         env:
           NODE_ENV: production
-          NEXT_PRIVATE_STANDALONE: "true"
+          NEXT_PRIVATE_STANDALONE: 'true'
 
       - name: Build with OpenNext for Cloudflare (skip next build)
         run: npx opennextjs-cloudflare build --skipNextBuild

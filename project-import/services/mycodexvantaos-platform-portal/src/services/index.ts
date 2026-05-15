@@ -1,2 +1,2 @@
-export { AppPortalService } from "./AppPortalService";
-export { AggregationService } from "./AggregationService";
+export { AppPortalService } from './AppPortalService';
+export { AggregationService } from './AggregationService';

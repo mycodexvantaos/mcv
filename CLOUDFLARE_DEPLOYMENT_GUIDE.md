@@ -3,6 +3,7 @@
 ## 當前狀態
 
 ✅ 已完成：
+
 - Cloudflare 配置文件已創建並推送到分支 `cloudflare-deployment-config`
 - Pull Request #9 已創建並可以合併
 - 所有必要的配置文件已在倉庫中
@@ -20,6 +21,7 @@
 點擊「New repository secret」並添加以下三個 secrets：
 
 #### Secret 1: CLOUDFLARE_API_TOKEN
+
 - **Name:** `CLOUDFLARE_API_TOKEN`
 - **Value:** 您的 Cloudflare API Token
 - **獲取方式：**
@@ -32,11 +34,13 @@
   5. 創建並複製 token
 
 #### Secret 2: CLOUDFLARE_ACCOUNT_ID
+
 - **Name:** `CLOUDFLARE_ACCOUNT_ID`
 - **Value:** `2fead4a141ec2c677eb3bf0ac535f1d5`
 - **說明：** 您的 Cloudflare Account ID
 
 #### Secret 3: CLOUDFLARE_ZONE_ID
+
 - **Name:** `CLOUDFLARE_ZONE_ID`
 - **Value:** `1bdb04f9da82872cdff76d8515b85246`
 - **說明：** 您的 Cloudflare Zone ID
@@ -67,6 +71,7 @@
 此次部署包括：
 
 ### 配置文件
+
 - `.cloudflare/wrangler.toml` - Cloudflare Pages 主配置
 - `.cloudflare/_middleware.ts` - 安全中介軟體
 - `.cloudflare/api-adapter.ts` - API 路由適配器
@@ -74,15 +79,18 @@
 - `.cloudflare/access-policy.json` - Zero Trust 訪問策略
 
 ### GitHub 工作流程
+
 - `.github/workflows/deploy-cloudflare.yaml` - 生產環境部署
 - `.github/workflows/deploy-cloudflare-preview.yaml` - 預覽環境部署
 
 ### 腳本工具
+
 - `.cloudflare/deploy.sh` - 自動部署腳本
 - `.cloudflare/health-check.sh` - 健康檢查腳本
 - `.cloudflare/dns-config.sh` - DNS 配置腳本
 
 ### 文檔
+
 - `.cloudflare/README.md` - Cloudflare 配置說明
 - `CLOUDFLARE_CREDENTIALS_CONFIG.md` - 憑證配置詳解
 - `QUICK_DEPLOY_STEPS.md` - 快速部署步驟
@@ -105,19 +113,25 @@ gh workflow run deploy-cloudflare.yaml --repo mycodexvantaos/mycodexvantaos
 ## 故障排除
 
 ### Secrets 錯誤
+
 如果工作流程失敗並顯示 Secrets 錯誤：
+
 1. 再次確認所有三個 Secrets 已正確設置
 2. 檢查 Cloudflare API Token 權限
 3. 驗證 Account ID 和 Zone ID
 
 ### 構建錯誤
+
 如果構建失敗：
+
 1. 檢查 Actions 日志
 2. 確認依賴是否正確安裝
 3. 驗證構建命令
 
 ### 部署失敗
+
 如果部署到 Cloudflare Pages 失敗：
+
 1. 檢查 Cloudflare 儀表板
 2. 驗證 API Token 權限
 3. 檢查網域設置
@@ -132,6 +146,7 @@ gh workflow run deploy-cloudflare.yaml --repo mycodexvantaos/mycodexvantaos
 ## 支持聯繫
 
 如遇到問題：
+
 - GitHub Actions 日志：https://github.com/mycodexvantaos/mycodexvantaos/actions
 - Cloudflare Docs：https://developers.cloudflare.com/pages
 - GitHub Actions Docs：https://docs.github.com/en/actions

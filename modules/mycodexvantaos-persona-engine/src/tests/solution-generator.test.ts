@@ -1,6 +1,6 @@
 /**
  * MyCodeXvantaOS Persona Engine - Solution Generator Tests
- * 
+ *
  * Unit tests for the SolutionGenerator class.
  */
 
@@ -32,7 +32,7 @@ describe('SolutionGenerator', () => {
 
       const customGenerator = new SolutionGenerator([customTemplate]);
       const templates = customGenerator.getTemplates();
-      
+
       expect(templates.length).toBe(1);
       expect(templates[0].name).toBe('Custom Test Template');
     });
@@ -47,7 +47,7 @@ describe('SolutionGenerator', () => {
     it('should return copies, not references', () => {
       const templates1 = generator.getTemplates();
       const templates2 = generator.getTemplates();
-      
+
       expect(templates1).not.toBe(templates2);
     });
   });
@@ -55,9 +55,9 @@ describe('SolutionGenerator', () => {
   describe('getTemplatesByCategory', () => {
     it('should return templates for specific category', () => {
       const cognitiveTemplates = generator.getTemplatesByCategory('cognitive_restructuring');
-      
+
       expect(cognitiveTemplates.length).toBeGreaterThan(0);
-      cognitiveTemplates.forEach(t => {
+      cognitiveTemplates.forEach((t) => {
         expect(t.category).toBe('cognitive_restructuring');
       });
     });
@@ -228,8 +228,8 @@ describe('SolutionGenerator', () => {
       const result = generator.generate({
         problem: 'Test problem',
         diagnosis,
-        constraints: { 
-          available_resources: ['Time', 'Commitment', 'Journal']
+        constraints: {
+          available_resources: ['Time', 'Commitment', 'Journal'],
         },
         preferences: {},
       });

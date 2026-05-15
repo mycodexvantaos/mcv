@@ -1,7 +1,7 @@
 /**
  * CodexvantaOS — governance-autonomy
  * 自治治理 — 合規監控、自動修復、自主治理
- * 
+ *
  * Layer: B-Runtime | Plane: Governance | Tier: 4
  * Philosophy: Native-first / Provider-agnostic
  * 「第三方服務是平台的擴充出口，不是平台成立的地基。」
@@ -24,7 +24,10 @@ export { initProviders, getProviders, shutdownProviders } from './providers.js';
  * Bootstrap governance-autonomy
  */
 export async function bootstrap(): Promise<void> {
-  console.log('[governance-autonomy] Starting in %s mode...', process.env.CODEXVANTA_MODE || 'auto-detect');
+  console.log(
+    '[governance-autonomy] Starting in %s mode...',
+    process.env.CODEXVANTA_MODE || 'auto-detect'
+  );
 
   // Initialize providers (auto-detects Native/Connected/Hybrid)
   const providers = await initProviders();

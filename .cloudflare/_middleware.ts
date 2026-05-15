@@ -32,9 +32,8 @@ export const onRequest: PagesFunction = async (context) => {
       return new Response(null, {
         status: 204,
         headers: {
-          'Access-Control-Allow-Origin': env.ENVIRONMENT === 'production' 
-            ? 'https://admin.autoecoops.io' 
-            : '*',
+          'Access-Control-Allow-Origin':
+            env.ENVIRONMENT === 'production' ? 'https://admin.autoecoops.io' : '*',
           'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type, Authorization',
           'Access-Control-Max-Age': '86400',
@@ -45,11 +44,11 @@ export const onRequest: PagesFunction = async (context) => {
 
     const response = await next();
     const newResponse = new Response(response.body, response);
-    
+
     Object.entries(securityHeaders).forEach(([key, value]) => {
       newResponse.headers.set(key, value);
     });
-    
+
     newResponse.headers.set(
       'Access-Control-Allow-Origin',
       env.ENVIRONMENT === 'production' ? 'https://admin.autoecoops.io' : '*'
@@ -61,7 +60,7 @@ export const onRequest: PagesFunction = async (context) => {
   // Apply security headers to all responses
   const response = await next();
   const newResponse = new Response(response.body, response);
-  
+
   Object.entries(securityHeaders).forEach(([key, value]) => {
     newResponse.headers.set(key, value);
   });

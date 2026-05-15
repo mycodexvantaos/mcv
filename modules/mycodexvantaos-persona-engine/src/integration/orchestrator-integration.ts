@@ -1,9 +1,9 @@
 /**
  * AI Team Orchestrator Integration Example
- * 
+ *
  * Demonstrates how to integrate the Persona Engine with the
  * MyCodeXvantaOS AI Team Orchestrator for seamless multi-agent collaboration.
- * 
+ *
  * @module mycodexvantaos-persona-engine/integration/orchestrator-integration
  */
 
@@ -16,7 +16,7 @@ import {
   PersonaArchetype,
   BehavioralAdjuster,
   PersonaCacheManager,
-  PersonaValidator
+  PersonaValidator,
 } from '../index';
 
 // ============================================
@@ -118,12 +118,12 @@ export interface TaskResult {
 /**
  * PersonaOrchestratorIntegration provides a complete integration layer
  * between the Persona Engine and AI Team Orchestrator
- * 
+ *
  * @example
  * ```typescript
  * const integration = new PersonaOrchestratorIntegration(config);
  * await integration.initialize();
- * 
+ *
  * const result = await integration.processTask({
  *   taskId: 'task-001',
  *   type: 'consultation',
@@ -216,7 +216,7 @@ export class PersonaOrchestratorIntegration {
       'critic',
       'architect',
       'mediator',
-      'creative_thinker'
+      'creative_thinker',
     ];
 
     for (const archetype of defaultArchetypes) {
@@ -227,7 +227,7 @@ export class PersonaOrchestratorIntegration {
 
       // Create default profile
       const profile = this.createDefaultProfile(archetype);
-      
+
       // Validate if enabled
       if (this.validator && !this.validator.isValid(profile)) {
         console.warn(`[Integration] Default profile for ${archetype} failed validation`);
@@ -249,7 +249,7 @@ export class PersonaOrchestratorIntegration {
       solution_focus: 0.5,
       abstraction_preference: 0.5,
       questioning_depth: 0.5,
-      contradiction_frequency: 0.3
+      contradiction_frequency: 0.3,
     };
 
     return {
@@ -265,19 +265,19 @@ export class PersonaOrchestratorIntegration {
         solution_focus: behavioralPresets.solution_focus ?? 0.5,
         abstraction_preference: behavioralPresets.abstraction_preference ?? 0.5,
         questioning_depth: behavioralPresets.questioning_depth ?? 0.5,
-        contradiction_frequency: behavioralPresets.contradiction_frequency ?? 0.3
+        contradiction_frequency: behavioralPresets.contradiction_frequency ?? 0.3,
       },
       response_patterns: {
         opening_style: 'direct',
         analytical_framework: 'first_principles',
-        conclusion_style: 'action_oriented'
+        conclusion_style: 'action_oriented',
       },
       governance: {
         tier: 1,
         hitl_checkpoint: true,
         audit_required: false,
-        constraints: {}
-      }
+        constraints: {},
+      },
     };
   }
 
@@ -310,7 +310,10 @@ export class PersonaOrchestratorIntegration {
     try {
       // Check cache first
       if (this.cache) {
-        const cached = this.cache.getResponse<TaskResult>(task.metadata.sessionId ?? 'default', task.taskId);
+        const cached = this.cache.getResponse<TaskResult>(
+          task.metadata.sessionId ?? 'default',
+          task.taskId
+        );
         if (cached) {
           return cached;
         }
@@ -328,8 +331,8 @@ export class PersonaOrchestratorIntegration {
         context: {
           sessionId: task.metadata.sessionId,
           userId: task.metadata.userId,
-          timestamp: task.metadata.timestamp
-        }
+          timestamp: task.metadata.timestamp,
+        },
       });
 
       // Build result
@@ -342,13 +345,15 @@ export class PersonaOrchestratorIntegration {
         qualityMetrics: {
           confidence: response.response.rootCauseDiagnosis?.confidence ?? 0.5,
           completeness: 0.8,
-          relevance: 0.9
+          relevance: 0.9,
         },
         insights: {
-          semanticMasks: response.response.semanticMasks?.map(m => m.type),
-          rootCauses: response.response.rootCauseDiagnosis ? [response.response.rootCauseDiagnosis.primaryRootCause] : undefined,
-          suggestions: response.response.solutions?.map(s => s.description)
-        }
+          semanticMasks: response.response.semanticMasks?.map((m) => m.type),
+          rootCauses: response.response.rootCauseDiagnosis
+            ? [response.response.rootCauseDiagnosis.primaryRootCause]
+            : undefined,
+          suggestions: response.response.solutions?.map((s) => s.description),
+        },
       };
 
       // Cache the result
@@ -362,14 +367,13 @@ export class PersonaOrchestratorIntegration {
       }
 
       return result;
-
     } catch (error) {
       return {
         taskId: task.taskId,
         success: false,
         content: error instanceof Error ? error.message : 'Unknown error',
         personaArchetype: task.preferredArchetype ?? 'disrupter',
-        processingTime: Date.now() - startTime
+        processingTime: Date.now() - startTime,
       };
     }
   }
@@ -429,13 +433,15 @@ export class PersonaOrchestratorIntegration {
       details: {
         ...adapterHealth.details,
         cacheEnabled: !!this.cache,
-        cacheStats: cacheStats ? {
-          entries: cacheStats.totalEntries,
-          hitRatio: cacheStats.hitRatio
-        } : null,
+        cacheStats: cacheStats
+          ? {
+              entries: cacheStats.totalEntries,
+              hitRatio: cacheStats.hitRatio,
+            }
+          : null,
         registeredAgents: this.registeredAgents.size,
-        availablePersonas: this.personaManager.getAvailableArchetypes().length
-      }
+        availablePersonas: this.personaManager.getAvailableArchetypes().length,
+      },
     };
   }
 
@@ -455,14 +461,16 @@ export class PersonaOrchestratorIntegration {
 /**
  * Creates a configured integration instance
  */
-export function createIntegration(config?: Partial<IntegrationConfig>): PersonaOrchestratorIntegration {
+export function createIntegration(
+  config?: Partial<IntegrationConfig>
+): PersonaOrchestratorIntegration {
   const defaultConfig: IntegrationConfig = {
     personaManager: {
       urn: 'urn:mycodexvantaos:persona-manager:integration',
       configPath: './config/personas',
       autoLoad: false,
       enableCache: true,
-      cacheTTL: 300000
+      cacheTTL: 300000,
     },
     orchestratorAdapter: {
       urn: 'urn:mycodexvantaos:adapter:persona-orchestrator',
@@ -472,22 +480,22 @@ export function createIntegration(config?: Partial<IntegrationConfig>): PersonaO
       enableRootCauseAnalysis: true,
       hitlThreshold: 0.8,
       governanceTier: 1,
-      maxSessionDuration: 3600000
+      maxSessionDuration: 3600000,
     },
     enableCache: true,
     cacheConfig: {
       maxEntries: 1000,
-      defaultTTL: 300000
+      defaultTTL: 300000,
     },
     enableValidation: true,
-    enableBehavioralAdjustment: true
+    enableBehavioralAdjustment: true,
   };
 
   return new PersonaOrchestratorIntegration({
     ...defaultConfig,
     ...config,
     personaManager: { ...defaultConfig.personaManager, ...config?.personaManager },
-    orchestratorAdapter: { ...defaultConfig.orchestratorAdapter, ...config?.orchestratorAdapter }
+    orchestratorAdapter: { ...defaultConfig.orchestratorAdapter, ...config?.orchestratorAdapter },
   });
 }
 

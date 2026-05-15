@@ -15,7 +15,9 @@ const IV_LENGTH = 16;
 
 export class EncryptionService {
   private masterKey: Buffer | null = null;
-  private get providers() { return getProviders(); }
+  private get providers() {
+    return getProviders();
+  }
 
   async initialize(): Promise<void> {
     const masterKeyStr = await this.providers.secrets.get('MASTER_ENCRYPTION_KEY', 'global');
@@ -23,7 +25,10 @@ export class EncryptionService {
       this.masterKey = Buffer.from(masterKeyStr.value, 'hex');
     } else {
       this.masterKey = crypto.randomBytes(KEY_LENGTH);
-      await this.providers.secrets.set('MASTER_ENCRYPTION_KEY', this.masterKey.toString('hex'), { scope: 'global', tags: { purpose: 'master-encryption' } });
+      await this.providers.secrets.set('MASTER_ENCRYPTION_KEY', this.masterKey.toString('hex'), {
+        scope: 'global',
+        tags: { purpose: 'master-encryption' },
+      });
       this.providers.observability.info('Master encryption key generated');
     }
   }
@@ -51,8 +56,12 @@ export class EncryptionService {
     return decrypted;
   }
 
-  hash(data: string, algorithm: string = 'sha256'): string { return crypto.createHash(algorithm).update(data).digest('hex'); }
-  generateToken(length: number = 32): string { return crypto.randomBytes(length).toString('hex'); }
+  hash(data: string, algorithm: string = 'sha256'): string {
+    return crypto.createHash(algorithm).update(data).digest('hex');
+  }
+  generateToken(length: number = 32): string {
+    return crypto.randomBytes(length).toString('hex');
+  }
 
   deriveKey(password: string, salt?: string): { key: string; salt: string } {
     const actualSalt = salt ?? crypto.randomBytes(16).toString('hex');

@@ -43,9 +43,7 @@ describe('AgentManager', () => {
 
     it('should throw error when registering duplicate agent', () => {
       agentManager.registerAgent(mockAgentProfile);
-      expect(() => agentManager.registerAgent(mockAgentProfile)).toThrow(
-        'already registered'
-      );
+      expect(() => agentManager.registerAgent(mockAgentProfile)).toThrow('already registered');
     });
 
     it('should throw error when max agents limit reached', () => {
@@ -101,14 +99,9 @@ describe('AgentManager', () => {
 
     it('should throw error when unregistering busy agent', () => {
       agentManager.registerAgent(mockAgentProfile);
-      agentManager.assignTask(
-        mockAgentProfile.id,
-        'urn:mycodexvantaos:task:test-task-01'
-      );
+      agentManager.assignTask(mockAgentProfile.id, 'urn:mycodexvantaos:task:test-task-01');
 
-      expect(() => agentManager.unregisterAgent(mockAgentProfile.id)).toThrow(
-        'agent is busy'
-      );
+      expect(() => agentManager.unregisterAgent(mockAgentProfile.id)).toThrow('agent is busy');
     });
   });
 
@@ -120,9 +113,7 @@ describe('AgentManager', () => {
     });
 
     it('should return undefined for non-existent agent', () => {
-      const profile = agentManager.getAgent(
-        'urn:mycodexvantaos:agent:non-existent' as AgentURN
-      );
+      const profile = agentManager.getAgent('urn:mycodexvantaos:agent:non-existent' as AgentURN);
       expect(profile).toBeUndefined();
     });
   });
@@ -174,16 +165,10 @@ describe('AgentManager', () => {
 
     it('should throw error when assigning task to busy agent', () => {
       agentManager.registerAgent(mockAgentProfile);
-      agentManager.assignTask(
-        mockAgentProfile.id,
-        'urn:mycodexvantaos:task:task-01'
-      );
+      agentManager.assignTask(mockAgentProfile.id, 'urn:mycodexvantaos:task:task-01');
 
       expect(() =>
-        agentManager.assignTask(
-          mockAgentProfile.id,
-          'urn:mycodexvantaos:task:task-02'
-        )
+        agentManager.assignTask(mockAgentProfile.id, 'urn:mycodexvantaos:task:task-02')
       ).toThrow('not available');
     });
   });
@@ -191,10 +176,7 @@ describe('AgentManager', () => {
   describe('releaseAgent', () => {
     it('should release agent and set status to idle', () => {
       agentManager.registerAgent(mockAgentProfile);
-      agentManager.assignTask(
-        mockAgentProfile.id,
-        'urn:mycodexvantaos:task:test-task'
-      );
+      agentManager.assignTask(mockAgentProfile.id, 'urn:mycodexvantaos:task:test-task');
 
       const result = agentManager.releaseAgent(mockAgentProfile.id);
       expect(result).toBe(true);
@@ -216,10 +198,9 @@ describe('AgentManager', () => {
 
     it('should throw error for non-existent agent', () => {
       expect(() =>
-        agentManager.updateContext(
-          'urn:mycodexvantaos:agent:non-existent' as AgentURN,
-          { data: 'test' }
-        )
+        agentManager.updateContext('urn:mycodexvantaos:agent:non-existent' as AgentURN, {
+          data: 'test',
+        })
       ).toThrow('not found');
     });
   });
@@ -238,7 +219,10 @@ describe('AgentManager', () => {
   describe('getAllAgents', () => {
     it('should return all registered agents', () => {
       agentManager.registerAgent(mockAgentProfile);
-      agentManager.registerAgent({ ...mockAgentProfile, id: 'urn:mycodexvantaos:agent:agent-02' as AgentURN });
+      agentManager.registerAgent({
+        ...mockAgentProfile,
+        id: 'urn:mycodexvantaos:agent:agent-02' as AgentURN,
+      });
 
       const agents = agentManager.getAllAgents();
       expect(agents).toHaveLength(2);
@@ -253,7 +237,11 @@ describe('AgentManager', () => {
   describe('getAgentsByRole', () => {
     it('should return agents filtered by role', () => {
       agentManager.registerAgent({ ...mockAgentProfile, role: 'analyst' });
-      agentManager.registerAgent({ ...mockAgentProfile, id: 'urn:mycodexvantaos:agent:agent-02' as AgentURN, role: 'engineer' });
+      agentManager.registerAgent({
+        ...mockAgentProfile,
+        id: 'urn:mycodexvantaos:agent:agent-02' as AgentURN,
+        role: 'engineer',
+      });
 
       const analysts = agentManager.getAgentsByRole('analyst');
       expect(analysts).toHaveLength(1);
@@ -296,15 +284,15 @@ describe('AgentManager', () => {
   describe('updateContext with compression', () => {
     it('should handle context update with compression enabled', () => {
       agentManager.registerAgent(mockAgentProfile);
-      
+
       // Add multiple context items
       for (let i = 0; i < 10; i++) {
         agentManager.updateContext(mockAgentProfile.id, { data: 'test'.repeat(100) });
       }
-      
+
       // Add one more with compression
       agentManager.updateContext(mockAgentProfile.id, { data: 'final' }, true);
-      
+
       const state = agentManager.getAgentState(mockAgentProfile.id);
       expect(state?.context_window.length).toBeGreaterThan(0);
     });
@@ -340,10 +328,10 @@ describe('AgentManager', () => {
       agentManager.registerAgent(mockAgentProfile);
       const taskId = 'urn:mycodexvantaos:task:test-task' as any;
       agentManager.assignTask(mockAgentProfile.id, taskId);
-      
+
       const result = agentManager.releaseAgent(mockAgentProfile.id);
       expect(result).toBe(true);
-      
+
       const state = agentManager.getAgentState(mockAgentProfile.id);
       expect(state?.status).toBe('idle');
       expect(state?.current_task_id).toBeNull();
@@ -366,14 +354,18 @@ describe('AgentManager', () => {
   describe('getAvailableAgents', () => {
     it('should return only idle agents', () => {
       agentManager.registerAgent(mockAgentProfile);
-      agentManager.registerAgent({ ...mockAgentProfile, id: 'urn:mycodexvantaos:agent:agent2' as any, name: 'Agent 2' });
-      
+      agentManager.registerAgent({
+        ...mockAgentProfile,
+        id: 'urn:mycodexvantaos:agent:agent2' as any,
+        name: 'Agent 2',
+      });
+
       const available = agentManager.getAvailableAgents();
       expect(available.length).toBe(2);
-      
+
       // Assign task to one agent
       agentManager.assignTask(mockAgentProfile.id, 'urn:mycodexvantaos:task:task1' as any);
-      
+
       const availableAfter = agentManager.getAvailableAgents();
       expect(availableAfter.length).toBe(1);
     });
@@ -382,17 +374,19 @@ describe('AgentManager', () => {
   describe('updateContext extended', () => {
     it('should throw error for non-existent agent', () => {
       expect(() =>
-        agentManager.updateContext('urn:mycodexvantaos:agent:non-existent' as AgentURN, { data: 'test' })
+        agentManager.updateContext('urn:mycodexvantaos:agent:non-existent' as AgentURN, {
+          data: 'test',
+        })
       ).toThrow('not found');
     });
 
     it('should add multiple context items', () => {
       agentManager.registerAgent(mockAgentProfile);
-      
+
       agentManager.updateContext(mockAgentProfile.id, 'item1');
       agentManager.updateContext(mockAgentProfile.id, 'item2');
       agentManager.updateContext(mockAgentProfile.id, { complex: 'object' });
-      
+
       const state = agentManager.getAgentState(mockAgentProfile.id);
       expect(state?.context_window.length).toBe(3);
     });
@@ -401,19 +395,19 @@ describe('AgentManager', () => {
   describe('agent status transitions', () => {
     it('should track status changes', () => {
       agentManager.registerAgent(mockAgentProfile);
-      
+
       const state1 = agentManager.getAgentState(mockAgentProfile.id);
       expect(state1?.status).toBe('idle');
-      
+
       const taskId = 'urn:mycodexvantaos:task:status-test' as any;
       agentManager.assignTask(mockAgentProfile.id, taskId);
-      
+
       const state2 = agentManager.getAgentState(mockAgentProfile.id);
       expect(state2?.status).toBe('busy');
       expect(state2?.current_task_id).toBe(taskId);
-      
+
       agentManager.releaseAgent(mockAgentProfile.id);
-      
+
       const state3 = agentManager.getAgentState(mockAgentProfile.id);
       expect(state3?.status).toBe('idle');
     });
@@ -430,14 +424,14 @@ describe('AgentManager', () => {
           memory_compression_threshold: 0.5,
         },
       };
-      
+
       agentManager.registerAgent(smallContextAgent);
-      
+
       // Add large context items
       for (let i = 0; i < 20; i++) {
         agentManager.updateContext(smallContextAgent.id, 'x'.repeat(50), true);
       }
-      
+
       const state = agentManager.getAgentState(smallContextAgent.id);
       // Context should be compressed
       expect(state?.context_window.length).toBeLessThan(20);
@@ -452,18 +446,18 @@ describe('AgentManager', () => {
           memory_compression_threshold: 0.5,
         },
       };
-      
+
       agentManager.registerAgent(smallContextAgent);
-      
+
       // Add many items
       for (let i = 0; i < 30; i++) {
         agentManager.updateContext(smallContextAgent.id, 'x'.repeat(30), true);
       }
-      
+
       const state = agentManager.getAgentState(smallContextAgent.id);
       // Should have compression notice
       const hasNotice = state?.context_window.some(
-        item => typeof item === 'object' && (item as any)._compressed === true
+        (item) => typeof item === 'object' && (item as any)._compressed === true
       );
       expect(hasNotice).toBe(true);
     });

@@ -1,6 +1,6 @@
 /**
  * @fileOverview MyCodeXvantaOS Layer G-Q: Sovereign Validation Service
- * 
+ *
  * 交付物對齊: Phase 4: 生產就緒達標標準 (v1.0.0)
  * 指標: 延遲 < 150ms, 意圖準確度 92%+, 代碼有效性 95%+, 誠信鎖定 1.00
  */
@@ -15,7 +15,7 @@ export interface SystemMetrics {
   sovereigntyIndex: number;
   semanticCoverage: number;
   diagnosticScores: any;
-  history: { timestamp: string, sovereignty: number, resonance: number }[];
+  history: { timestamp: string; sovereignty: number; resonance: number }[];
   nluMetrics: {
     latency: number;
     avgConfidence: number;
@@ -30,15 +30,15 @@ export interface SystemMetrics {
 
 export class NativeValidationService {
   private static instance: NativeValidationService;
-  private history: { timestamp: string, sovereignty: number, resonance: number }[] = [];
+  private history: { timestamp: string; sovereignty: number; resonance: number }[] = [];
 
   private constructor() {
     const startTime = Date.now() - 40 * 5000;
     for (let i = 0; i < 40; i++) {
       this.history.push({
         timestamp: new Date(startTime + i * 5000).toLocaleTimeString(),
-        sovereignty: 0.345 + (i * 0.000125),
-        resonance: 1.00
+        sovereignty: 0.345 + i * 0.000125,
+        resonance: 1.0,
       });
     }
   }
@@ -52,13 +52,13 @@ export class NativeValidationService {
 
   public getSystemMetrics(): SystemMetrics {
     const analysis = performNativeAnalysis(designDocsContent);
-    
+
     return {
       eraStatus: 'Era-3 P3 Phase 4: Production Ready [x]',
-      resonanceIndex: 1.00,
+      resonanceIndex: 1.0,
       recursiveDepth: 32,
-      sovereigntyIndex: 0.350,
-      semanticCoverage: 1.00,
+      sovereigntyIndex: 0.35,
+      semanticCoverage: 1.0,
       diagnosticScores: analysis.diagnosticScores,
       history: this.history,
       nluMetrics: {
@@ -69,8 +69,8 @@ export class NativeValidationService {
         satisfaction: 4.8,
         deliveryStatus: 'v1.0.0_PRODUCTION_READY',
         localLlmReady: true,
-        productionReady: true
-      }
+        productionReady: true,
+      },
     };
   }
 
@@ -79,7 +79,7 @@ export class NativeValidationService {
     this.history.push({
       timestamp: new Date().toLocaleTimeString(),
       sovereignty: metrics.sovereigntyIndex,
-      resonance: metrics.resonanceIndex
+      resonance: metrics.resonanceIndex,
     });
     if (this.history.length > 50) this.history.shift();
     return metrics;

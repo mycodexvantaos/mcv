@@ -9,21 +9,36 @@ import { randomBytes } from 'node:crypto';
 import { getProviders } from '../providers.js';
 import type * as T from '../types/index.js';
 
-export interface Subscription { id: string; topic: string; createdAt: number; }
+export interface Subscription {
+  id: string;
+  topic: string;
+  createdAt: number;
+}
 
 export class EventBusService {
-  private subscriptions = new Map<string, Map<string, { id: string; handler: (event: any) => Promise<void> }>>();
+  private subscriptions = new Map<
+    string,
+    Map<string, { id: string; handler: (event: any) => Promise<void> }>
+  >();
   private subCounter = 0;
-  private get providers() { return getProviders(); }
+  private get providers() {
+    return getProviders();
+  }
 
   async publish(topic: string, payload: unknown, metadata?: Record<string, string>): Promise<void> {
-    const event = { id: `evt-${Date.now()}-${randomBytes(4).toString('hex').slice(0, 8)}`, topic, payload, metadata, publishedAt: Date.now() };
+    const event = {
+      id: `evt-${Date.now()}-${randomBytes(4).toString('hex').slice(0, 8)}`,
+      topic,
+      payload,
+      metadata,
+      publishedAt: Date.now(),
+    };
     await this.providers.queue.enqueue(topic, event, { metadata });
     await this.providers.stateStore.increment(`eventbus:count:${topic}`);
     const topicSubs = this.subscriptions.get(topic);
     if (topicSubs) {
       const handlers = Array.from(topicSubs.values());
-      await Promise.allSettled(handlers.map(sub => sub.handler(event)));
+      await Promise.allSettled(handlers.map((sub) => sub.handler(event)));
     }
     this.providers.observability.debug('Event published', { topic, eventId: event.id });
   }
@@ -33,7 +48,9 @@ export class EventBusService {
     if (!this.subscriptions.has(topic)) this.subscriptions.set(topic, new Map());
     this.subscriptions.get(topic)!.set(subId, { id: subId, handler });
     if (this.providers.queue.subscribe) {
-      await this.providers.queue.subscribe(topic, async (msg) => { await handler(msg.payload); });
+      await this.providers.queue.subscribe(topic, async (msg) => {
+        await handler(msg.payload);
+      });
     }
     this.providers.observability.debug('Subscription created', { topic, subId });
     return { id: subId, topic, createdAt: Date.now() };
@@ -52,7 +69,9 @@ export class EventBusService {
 
   async listTopics(): Promise<string[]> {
     const inProcess = Array.from(this.subscriptions.keys());
-    const queueTopics = this.providers.queue.listTopics ? await this.providers.queue.listTopics() : [];
+    const queueTopics = this.providers.queue.listTopics
+      ? await this.providers.queue.listTopics()
+      : [];
     return [...new Set([...inProcess, ...queueTopics])];
   }
 }

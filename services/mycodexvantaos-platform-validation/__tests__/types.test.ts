@@ -1,10 +1,10 @@
-import { 
-  ValidationLayer, 
-  ValidationStatus, 
+import {
+  ValidationLayer,
+  ValidationStatus,
   ValidationSeverity,
   ValidationResult,
   LayerValidationResult,
-  ExecutionContext
+  ExecutionContext,
 } from '../src/types';
 
 describe('Types Module', () => {
@@ -63,7 +63,7 @@ describe('Types Module', () => {
         status: ValidationStatus.PASSED,
         severity: ValidationSeverity.HIGH,
         message: 'Intent clarity verification passed',
-        durationMs: 5
+        durationMs: 5,
       };
 
       expect(result.layerId).toBe('L-A');
@@ -86,10 +86,10 @@ describe('Types Module', () => {
             status: ValidationStatus.PASSED,
             severity: ValidationSeverity.HIGH,
             message: 'Passed',
-            durationMs: 5
-          }
+            durationMs: 5,
+          },
         ],
-        totalDurationMs: 15
+        totalDurationMs: 15,
       };
 
       expect(result.layerId).toBe('L-A');
@@ -104,7 +104,7 @@ describe('Types Module', () => {
         executionId: 'test-001',
         contract: { targetState: 'running' },
         userContext: { userId: 'user-123', intent: 'Deploy' },
-        systemContext: { availableCpu: 100 }
+        systemContext: { availableCpu: 100 },
       };
 
       expect(context.executionId).toBe('test-001');
@@ -120,7 +120,7 @@ describe('Types Module', () => {
         systemContext: {},
         validationResults: [],
         status: 'pending',
-        error: undefined
+        error: undefined,
       };
 
       expect(context.validationResults).toEqual([]);

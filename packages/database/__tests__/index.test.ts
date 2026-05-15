@@ -102,9 +102,7 @@ describe('Database Package', () => {
 
       await db.query('SELECT * FROM users WHERE id = ?', [1]);
 
-      expect(consoleSpy).toHaveBeenCalledWith(
-        'Executing query: SELECT * FROM users WHERE id = ?'
-      );
+      expect(consoleSpy).toHaveBeenCalledWith('Executing query: SELECT * FROM users WHERE id = ?');
       consoleSpy.mockRestore();
     });
   });

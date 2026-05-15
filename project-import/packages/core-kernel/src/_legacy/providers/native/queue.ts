@@ -1,6 +1,6 @@
 /**
  * NativeQueueProvider — In-memory + file-persisted job queue
- * 
+ *
  * Zero external dependencies. Implements async task queuing using:
  *  - In-memory priority queue for hot processing
  *  - File-based persistence for crash recovery
@@ -23,8 +23,8 @@ import * as crypto from 'crypto';
 interface NativeQueueConfig {
   dataDir?: string;
   maxRetries?: number;
-  defaultVisibilityTimeout?: number;  // seconds
-  persistInterval?: number;           // ms — how often to flush to disk
+  defaultVisibilityTimeout?: number; // seconds
+  persistInterval?: number; // ms — how often to flush to disk
 }
 
 interface InternalMessage<T = unknown> {
@@ -64,7 +64,7 @@ export class NativeQueueProvider implements QueueProvider {
     }
 
     // Restore persisted queues
-    const files = fs.readdirSync(this.config.dataDir).filter(f => f.endsWith('.json'));
+    const files = fs.readdirSync(this.config.dataDir).filter((f) => f.endsWith('.json'));
     for (const file of files) {
       const topic = path.basename(file, '.json');
       try {
@@ -89,11 +89,7 @@ export class NativeQueueProvider implements QueueProvider {
     this.persistTimer = setInterval(() => this.persistAll(), this.config.persistInterval);
   }
 
-  async enqueue<T = unknown>(
-    topic: string,
-    payload: T,
-    options?: EnqueueOptions
-  ): Promise<string> {
+  async enqueue<T = unknown>(topic: string, payload: T, options?: EnqueueOptions): Promise<string> {
     const queue = this.getOrCreateQueue(topic);
     const now = Date.now();
 
@@ -124,7 +120,7 @@ export class NativeQueueProvider implements QueueProvider {
     if (!queue || queue.length === 0) return null;
 
     const now = Date.now();
-    const idx = queue.findIndex(m => m.status === 'pending' && m.visibleAfter <= now);
+    const idx = queue.findIndex((m) => m.status === 'pending' && m.visibleAfter <= now);
     if (idx === -1) return null;
 
     const msg = queue[idx];
@@ -146,7 +142,7 @@ export class NativeQueueProvider implements QueueProvider {
     const queue = this.queues.get(topic);
     if (!queue) return;
 
-    const idx = queue.findIndex(m => m.id === messageId);
+    const idx = queue.findIndex((m) => m.id === messageId);
     if (idx !== -1) {
       queue[idx].status = 'completed';
       // Remove completed messages
@@ -158,7 +154,7 @@ export class NativeQueueProvider implements QueueProvider {
     const queue = this.queues.get(topic);
     if (!queue) return;
 
-    const msg = queue.find(m => m.id === messageId);
+    const msg = queue.find((m) => m.id === messageId);
     if (!msg) return;
 
     if (msg.attempts >= msg.maxRetries) {
@@ -175,7 +171,7 @@ export class NativeQueueProvider implements QueueProvider {
     const queue = this.queues.get(topic);
     if (!queue) return;
 
-    const msg = queue.find(m => m.id === messageId);
+    const msg = queue.find((m) => m.id === messageId);
     if (msg) {
       msg.status = 'failed';
       msg.lastError = reason;
@@ -185,17 +181,17 @@ export class NativeQueueProvider implements QueueProvider {
   async size(topic: string): Promise<number> {
     const queue = this.queues.get(topic);
     if (!queue) return 0;
-    return queue.filter(m => m.status === 'pending' || m.status === 'processing').length;
+    return queue.filter((m) => m.status === 'pending' || m.status === 'processing').length;
   }
 
   async stats(topic: string): Promise<QueueStats> {
     const queue = this.queues.get(topic) ?? [];
     const now = Date.now();
 
-    const pending = queue.filter(m => m.status === 'pending' && m.visibleAfter <= now).length;
-    const delayed = queue.filter(m => m.status === 'pending' && m.visibleAfter > now).length;
-    const processing = queue.filter(m => m.status === 'processing').length;
-    const failed = queue.filter(m => m.status === 'failed').length;
+    const pending = queue.filter((m) => m.status === 'pending' && m.visibleAfter <= now).length;
+    const delayed = queue.filter((m) => m.status === 'pending' && m.visibleAfter > now).length;
+    const processing = queue.filter((m) => m.status === 'processing').length;
+    const failed = queue.filter((m) => m.status === 'failed').length;
 
     return {
       topic,
@@ -258,7 +254,7 @@ export class NativeQueueProvider implements QueueProvider {
       const topicStats: Record<string, number> = {};
 
       for (const [topic, queue] of this.queues) {
-        const active = queue.filter(m => m.status !== 'completed').length;
+        const active = queue.filter((m) => m.status !== 'completed').length;
         topicStats[topic] = active;
         totalMessages += active;
       }
@@ -323,6 +319,6 @@ export class NativeQueueProvider implements QueueProvider {
   }
 
   private sleep(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }

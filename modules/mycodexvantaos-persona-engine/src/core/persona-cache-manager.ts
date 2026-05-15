@@ -1,9 +1,9 @@
 /**
  * Persona Cache Manager for MyCodeXvantaOS Persona Engine
- * 
+ *
  * Provides intelligent caching for persona profiles, processed responses,
  * and analysis results to improve performance and reduce redundant computation.
- * 
+ *
  * @module mycodexvantaos-persona-engine/core/persona-cache-manager
  */
 
@@ -80,14 +80,14 @@ export type CacheEventListener = (event: CacheEvent) => void;
 
 /**
  * PersonaCacheManager provides intelligent caching for the persona engine
- * 
+ *
  * @example
  * ```typescript
  * const cache = new PersonaCacheManager({
  *   maxEntries: 1000,
  *   defaultTTL: 300000 // 5 minutes
  * });
- * 
+ *
  * cache.setProfile('disrupter', profile);
  * const cached = cache.getProfile('disrupter');
  * ```
@@ -106,7 +106,7 @@ export class PersonaCacheManager {
       defaultTTL: config.defaultTTL ?? 300000, // 5 minutes default
       enableLRU: config.enableLRU ?? true,
       enableStats: config.enableStats ?? true,
-      cleanupInterval: config.cleanupInterval ?? 60000 // 1 minute
+      cleanupInterval: config.cleanupInterval ?? 60000, // 1 minute
     };
 
     this.startCleanupTimer();
@@ -124,15 +124,19 @@ export class PersonaCacheManager {
   /**
    * Emits a cache event to all listeners
    */
-  private emitEvent(type: CacheEvent['type'], key: string, details?: Record<string, unknown>): void {
+  private emitEvent(
+    type: CacheEvent['type'],
+    key: string,
+    details?: Record<string, unknown>
+  ): void {
     const event: CacheEvent = {
       type,
       key,
       timestamp: Date.now(),
-      details
+      details,
     };
 
-    this.eventListeners.forEach(listener => {
+    this.eventListeners.forEach((listener) => {
       try {
         listener(event);
       } catch (error) {
@@ -199,7 +203,7 @@ export class PersonaCacheManager {
       ttl,
       accessCount: 0,
       lastAccessed: Date.now(),
-      tags
+      tags,
     };
 
     this.cache.set(key, entry);
@@ -300,7 +304,7 @@ export class PersonaCacheManager {
       ttl: ttl ?? this.config.defaultTTL,
       accessCount: 0,
       lastAccessed: Date.now(),
-      tags: ['profile', archetype]
+      tags: ['profile', archetype],
     };
 
     this.profileCache.set(archetype, entry);
@@ -410,7 +414,7 @@ export class PersonaCacheManager {
    */
   getStatistics(): CacheStatistics {
     const entries = Array.from(this.cache.values());
-    const timestamps = entries.map(e => e.cachedAt);
+    const timestamps = entries.map((e) => e.cachedAt);
 
     let memoryUsage = 0;
     try {
@@ -423,12 +427,13 @@ export class PersonaCacheManager {
       totalEntries: this.cache.size + this.profileCache.size,
       hits: this.stats.hits,
       misses: this.stats.misses,
-      hitRatio: this.stats.hits + this.stats.misses > 0 
-        ? this.stats.hits / (this.stats.hits + this.stats.misses) 
-        : 0,
+      hitRatio:
+        this.stats.hits + this.stats.misses > 0
+          ? this.stats.hits / (this.stats.hits + this.stats.misses)
+          : 0,
       memoryUsage,
       oldestEntry: timestamps.length > 0 ? Math.min(...timestamps) : null,
-      newestEntry: timestamps.length > 0 ? Math.max(...timestamps) : null
+      newestEntry: timestamps.length > 0 ? Math.max(...timestamps) : null,
     };
   }
 

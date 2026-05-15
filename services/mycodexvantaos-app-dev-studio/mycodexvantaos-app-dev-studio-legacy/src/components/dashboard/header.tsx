@@ -57,7 +57,9 @@ export function Header() {
         </Link>
         <Menubar className="border-none bg-transparent p-0">
           <MenubarMenu>
-            <MenubarTrigger className="font-semibold text-base font-headline">MyCodeXvantaOS Studio</MenubarTrigger>
+            <MenubarTrigger className="font-semibold text-base font-headline">
+              MyCodeXvantaOS Studio
+            </MenubarTrigger>
             <MenubarContent>
               <MenubarItem>About MyCodeXvantaOS Studio</MenubarItem>
               <MenubarSeparator />
@@ -69,7 +71,9 @@ export function Header() {
           <MenubarMenu>
             <MenubarTrigger>File</MenubarTrigger>
             <MenubarContent>
-              <MenubarItem>New File <MenubarShortcut>⌘N</MenubarShortcut></MenubarItem>
+              <MenubarItem>
+                New File <MenubarShortcut>⌘N</MenubarShortcut>
+              </MenubarItem>
               <MenubarItem>New Window</MenubarItem>
               <MenubarSeparator />
               <MenubarItem>Open File...</MenubarItem>
@@ -82,26 +86,26 @@ export function Header() {
           <MenubarMenu>
             <MenubarTrigger>Edit</MenubarTrigger>
             <MenubarContent>
-                <MenubarItem>Undo</MenubarItem>
-                <MenubarItem>Redo</MenubarItem>
-                <MenubarSeparator />
-                <MenubarItem>Cut</MenubarItem>
-                <MenubarItem>Copy</MenubarItem>
-                <MenubarItem>Paste</MenubarItem>
+              <MenubarItem>Undo</MenubarItem>
+              <MenubarItem>Redo</MenubarItem>
+              <MenubarSeparator />
+              <MenubarItem>Cut</MenubarItem>
+              <MenubarItem>Copy</MenubarItem>
+              <MenubarItem>Paste</MenubarItem>
             </MenubarContent>
           </MenubarMenu>
           <MenubarMenu>
             <MenubarTrigger>View</MenubarTrigger>
-             <MenubarContent>
-                <MenubarItem>Appearance</MenubarItem>
-                <MenubarItem>Editor Layout</MenubarItem>
+            <MenubarContent>
+              <MenubarItem>Appearance</MenubarItem>
+              <MenubarItem>Editor Layout</MenubarItem>
             </MenubarContent>
           </MenubarMenu>
-           <MenubarMenu>
+          <MenubarMenu>
             <MenubarTrigger>Help</MenubarTrigger>
-             <MenubarContent>
-                <MenubarItem>Documentation</MenubarItem>
-                <MenubarItem>Show Release Notes</MenubarItem>
+            <MenubarContent>
+              <MenubarItem>Documentation</MenubarItem>
+              <MenubarItem>Show Release Notes</MenubarItem>
             </MenubarContent>
           </MenubarMenu>
         </Menubar>
@@ -112,9 +116,13 @@ export function Header() {
             <Button variant="ghost" className="relative h-8 w-8 rounded-full">
               <Avatar className="h-8 w-8">
                 {userProfile ? (
-                  <AvatarImage src={userProfile.avatarUrl} alt="User Avatar" data-ai-hint={userProfile.avatarHint} />
+                  <AvatarImage
+                    src={userProfile.avatarUrl}
+                    alt="User Avatar"
+                    data-ai-hint={userProfile.avatarHint}
+                  />
                 ) : (
-                   <div className="h-8 w-8 rounded-full bg-muted animate-pulse" />
+                  <div className="h-8 w-8 rounded-full bg-muted animate-pulse" />
                 )}
                 <AvatarFallback>
                   {userProfile ? userProfile.name.charAt(0).toUpperCase() : ''}
@@ -125,13 +133,19 @@ export function Header() {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>{userProfile ? userProfile.name : 'My Account'}</DropdownMenuLabel>
             {userProfile && <DropdownMenuSeparator />}
-            {userProfile && <DropdownMenuItem disabled className="text-xs text-muted-foreground">{userProfile.email}</DropdownMenuItem>}
+            {userProfile && (
+              <DropdownMenuItem disabled className="text-xs text-muted-foreground">
+                {userProfile.email}
+              </DropdownMenuItem>
+            )}
             <DropdownMenuSeparator />
             <DropdownMenuItem>Profile</DropdownMenuItem>
             <DropdownMenuItem>Settings</DropdownMenuItem>
             <DropdownMenuItem>Subscription</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem asChild><Link href="/">Log out</Link></DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/">Log out</Link>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

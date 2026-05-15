@@ -8,7 +8,7 @@ metadata:
   capability: observability
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: "8.1"
+    mycodexvantaos.org/specRef: '8.1'
 spec:
   providerName: opentelemetry
   isNative: false
@@ -16,4 +16,4 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_OBSERVABILITY
   configSchemaRef: ./config.schema.json
-  description: "OpenTelemetry distributed tracing, metrics, and logging provider."
+  description: 'OpenTelemetry distributed tracing, metrics, and logging provider.'

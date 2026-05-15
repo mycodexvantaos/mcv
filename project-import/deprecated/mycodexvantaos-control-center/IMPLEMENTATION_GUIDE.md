@@ -15,19 +15,20 @@
    - GitHub Personal Access Token (PAT) 或 App Token
 
 2. **Redis 實例**
-   - Redis 6.0+ 
+   - Redis 6.0+
    - 網絡連接（Docker 本地或雲服務）
 
 3. **工具安裝**
+
    ```bash
    # GitHub CLI
    brew install gh  # macOS
    # 或
    sudo apt install gh  # Ubuntu
-   
+
    # Python 3.11+
    python3 --version
-   
+
    # Redis 客戶端
    redis-cli --version
    ```
@@ -71,6 +72,7 @@ redis-cli -h localhost -p 6379 -a your-secure-password ping
 **選項 B：雲服務（生產環境）**
 
 **AWS ElastiCache:**
+
 ```bash
 # 使用 AWS CLI
 aws elasticache create-replication-group \
@@ -82,6 +84,7 @@ aws elasticache create-replication-group \
 ```
 
 **Google Cloud Memorystore:**
+
 ```bash
 # 使用 gcloud CLI
 gcloud redis instances create codexvanta-orchestration \
@@ -163,11 +166,11 @@ python3 codexvanta-os-control-center/scripts/orchestration/monitoring-dashboard.
 on:
   schedule:
     # 每日凌晨 2 點執行同步
-    - cron: '0 2 * * *'  # UTC 02:00
+    - cron: '0 2 * * *' # UTC 02:00
     # 每週日 4 點執行完整部署
-    - cron: '0 4 * * 0'  # UTC 04:00 Sunday
+    - cron: '0 4 * * 0' # UTC 04:00 Sunday
     # 每月 1 號 6 點執行健康檢查
-    - cron: '0 6 1 * *'  # UTC 06:00 1st of month
+    - cron: '0 6 1 * *' # UTC 06:00 1st of month
 ```
 
 #### 治理策略觸發
@@ -194,17 +197,17 @@ curl -X POST \
 # 在 queue-config.yaml 中調整
 queues:
   control-plane:
-    max_concurrent: 2  # 可以根據資源調整
-  
+    max_concurrent: 2 # 可以根據資源調整
+
   execution-plane:
-    max_concurrent: 6  # 可以增加到 8-10 如果資源允許
-  
+    max_concurrent: 6 # 可以增加到 8-10 如果資源允許
+
   governance-plane:
-    max_concurrent: 5  # 可以增加到 7-8
+    max_concurrent: 5 # 可以增加到 7-8
 
 global_settings:
-  max_global_concurrent: 20  # 全局最大併發度
-  enable_adaptive_concurrency: true  # 啟用自適應併發
+  max_global_concurrent: 20 # 全局最大併發度
+  enable_adaptive_concurrency: true # 啟用自適應併發
 ```
 
 ### 錯誤處理配置
@@ -212,15 +215,15 @@ global_settings:
 ```yaml
 # 在 queue-config.yaml 中配置
 retry_policy:
-  max_retries: 3  # 最大重試次數
-  initial_delay: 5  # 初始延遲（秒）
-  backoff: exponential  # 退避策略
-  max_delay: 300  # 最大延遲（秒）
+  max_retries: 3 # 最大重試次數
+  initial_delay: 5 # 初始延遲（秒）
+  backoff: exponential # 退避策略
+  max_delay: 300 # 最大延遲（秒）
 
 rollback_strategy:
   enabled: true
-  automatic: true  # 自動回滾
-  timeout: 1800  # 回滾超時（秒）
+  automatic: true # 自動回滾
+  timeout: 1800 # 回滾超時（秒）
 ```
 
 ---

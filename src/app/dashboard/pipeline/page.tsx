@@ -1,17 +1,20 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { generateCiCdPipeline, GenerateCiCdPipelineOutput } from "@/ai/flows/generate-ci-cd-pipeline";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
-import { FileCode, Loader2, Sparkles, CheckCircle2 } from "lucide-react";
+import { useState } from 'react';
+import {
+  generateCiCdPipeline,
+  GenerateCiCdPipelineOutput,
+} from '@/ai/flows/generate-ci-cd-pipeline';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
+import { FileCode, Loader2, Sparkles, CheckCircle2 } from 'lucide-react';
 
 export default function PipelineGeneratorPage() {
   const [loading, setLoading] = useState(false);
-  const [arch, setArch] = useState("");
-  const [strategy, setStrategy] = useState("Kubernetes Blue/Green Deployment");
+  const [arch, setArch] = useState('');
+  const [strategy, setStrategy] = useState('Kubernetes Blue/Green Deployment');
   const [result, setResult] = useState<GenerateCiCdPipelineOutput | null>(null);
 
   const handleGenerate = async () => {
@@ -40,12 +43,16 @@ export default function PipelineGeneratorPage() {
         <Card className="border-border/40 bg-card/50">
           <CardHeader>
             <CardTitle className="text-lg">Project Configuration</CardTitle>
-            <CardDescription>Specify architecture and strategy for the meticulous generator.</CardDescription>
+            <CardDescription>
+              Specify architecture and strategy for the meticulous generator.
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Target Architecture</label>
-              <Textarea 
+              <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                Target Architecture
+              </label>
+              <Textarea
                 placeholder="Describe your components (e.g. Next.js frontend, PostgreSQL DB, Redis cache)..."
                 className="bg-background/50 border-border/40"
                 value={arch}
@@ -53,14 +60,16 @@ export default function PipelineGeneratorPage() {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Deployment Strategy</label>
-              <Input 
+              <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                Deployment Strategy
+              </label>
+              <Input
                 value={strategy}
                 onChange={(e) => setStrategy(e.target.value)}
                 className="bg-background/50 border-border/40"
               />
             </div>
-            <Button 
+            <Button
               className="w-full bg-primary hover:bg-primary/90 text-primary-foreground h-11"
               onClick={handleGenerate}
               disabled={loading || !arch}
@@ -85,7 +94,9 @@ export default function PipelineGeneratorPage() {
                 </CardTitle>
                 <CardDescription>Validated for perfect pass scenario.</CardDescription>
               </div>
-              <Button size="sm" variant="outline" onClick={() => setResult(null)}>Reset</Button>
+              <Button size="sm" variant="outline" onClick={() => setResult(null)}>
+                Reset
+              </Button>
             </CardHeader>
             <CardContent>
               <pre className="p-4 rounded-lg bg-background text-xs font-mono overflow-auto max-h-[500px] border border-border/40">
@@ -104,7 +115,9 @@ export default function PipelineGeneratorPage() {
             </CardHeader>
             <CardContent className="prose prose-invert max-w-none text-sm text-muted-foreground">
               {result.validationReport.split('\n').map((line, i) => (
-                <p key={i} className="mb-2 leading-relaxed">{line}</p>
+                <p key={i} className="mb-2 leading-relaxed">
+                  {line}
+                </p>
               ))}
             </CardContent>
           </Card>

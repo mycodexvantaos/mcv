@@ -10,10 +10,25 @@
     "id": {
       "type": "string",
       "enum": [
-        "database", "storage", "auth", "queue", "state-store",
-        "secrets", "repo", "deploy", "validation", "security",
-        "observability", "notification", "scheduler", "vector-store",
-        "embedding", "llm", "graph", "cache", "search"
+        "database",
+        "storage",
+        "auth",
+        "queue",
+        "state-store",
+        "secrets",
+        "repo",
+        "deploy",
+        "validation",
+        "security",
+        "observability",
+        "notification",
+        "scheduler",
+        "vector-store",
+        "embedding",
+        "llm",
+        "graph",
+        "cache",
+        "search"
       ],
       "description": "5.5 — Canonical capability-id. Vendor names are forbidden."
     },
@@ -26,6 +41,9 @@
       "type": "string",
       "description": "Regex pattern that provider names for this capability must match."
     },
-    "stable": { "type": "boolean", "description": "Whether this capability is stable in the canonical set." }
+    "stable": {
+      "type": "boolean",
+      "description": "Whether this capability is stable in the canonical set."
+    }
   }
 }

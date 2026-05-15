@@ -100,10 +100,10 @@ describe('Storage Package', () => {
 
     it('should throw error for unknown action', async () => {
       await st.initialize();
-      
-      await expect(
-        st.execute({ action: 'unknown', data: {} })
-      ).rejects.toThrow('Unknown storage action: unknown');
+
+      await expect(st.execute({ action: 'unknown', data: {} })).rejects.toThrow(
+        'Unknown storage action: unknown'
+      );
     });
   });
 

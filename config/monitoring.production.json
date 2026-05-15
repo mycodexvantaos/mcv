@@ -8,10 +8,7 @@
   "logging": {
     "level": "info",
     "format": "json",
-    "outputs": [
-      "console",
-      "file"
-    ],
+    "outputs": ["console", "file"],
     "file_path": "/var/log/mycodexvantaos/app.log"
   },
   "tracing": {
@@ -21,10 +18,7 @@
   },
   "alerts": {
     "enabled": true,
-    "channels": [
-      "email",
-      "slack"
-    ],
+    "channels": ["email", "slack"],
     "thresholds": {
       "error_rate": 0.01,
       "latency_ms": 5000,

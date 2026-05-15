@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/graph/neo4j/config.schema.json",
   "title": "graph-neo4j Configuration",
   "type": "object",
-  "required": [
-    "uri"
-  ],
+  "required": ["uri"],
   "properties": {
     "uri": {
       "type": "string",

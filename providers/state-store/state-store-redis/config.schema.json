@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/state-store/redis/config.schema.json",
   "title": "state-store-redis Configuration",
   "type": "object",
-  "required": [
-    "url"
-  ],
+  "required": ["url"],
   "properties": {
     "url": {
       "type": "string",

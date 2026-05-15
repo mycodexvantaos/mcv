@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/storage/minio/config.schema.json",
   "title": "storage-minio Configuration",
   "type": "object",
-  "required": [
-    "endpoint"
-  ],
+  "required": ["endpoint"],
   "properties": {
     "endpoint": {
       "type": "string",

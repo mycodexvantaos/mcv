@@ -56,10 +56,25 @@
           "items": {
             "type": "string",
             "enum": [
-              "database", "storage", "auth", "queue", "state-store",
-              "secrets", "repo", "deploy", "validation", "security",
-              "observability", "notification", "scheduler", "vector-store",
-              "embedding", "llm", "graph", "cache", "search"
+              "database",
+              "storage",
+              "auth",
+              "queue",
+              "state-store",
+              "secrets",
+              "repo",
+              "deploy",
+              "validation",
+              "security",
+              "observability",
+              "notification",
+              "scheduler",
+              "vector-store",
+              "embedding",
+              "llm",
+              "graph",
+              "cache",
+              "search"
             ]
           }
         },

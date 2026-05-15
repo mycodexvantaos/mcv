@@ -15,26 +15,28 @@
 **確認結果**：✅ 正確，補充手動觸發選項
 
 **實現方案**：
+
 ```yaml
 # reusable-sync-gitlab.yml 和 reusable-sync-bitbucket.yml 中增加：
 on:
   workflow_call:
     inputs:
       trigger_mode:
-        description: "Sync trigger mode: auto (on main push) or manual"
+        description: 'Sync trigger mode: auto (on main push) or manual'
         required: false
         type: string
-        default: "auto"
-  
-  workflow_dispatch:  # 手動觸發備份
+        default: 'auto'
+
+  workflow_dispatch: # 手動觸發備份
     inputs:
       branch:
-        description: "Branch to sync"
+        description: 'Branch to sync'
         required: true
-        default: "main"
+        default: 'main'
 ```
 
 **自動演化進程對應**：
+
 - Level 0: 基礎自動同步（當前）
 - Level 1: 智慧同步（僅同步變動部分）
 - Level 2: 同步觸發自動升遷（GitHub → GitLab → 自動 GitLab CI）
@@ -51,14 +53,14 @@ on:
 
 **各平台回滾策略表**：
 
-| 平台 | 回滾策略 | SLA 目標 | 實現機制 | 備註 |
-|------|---------|---------|---------|------|
-| **GKE Helm** | 自動回滾 | 99.9% | `--atomic --timeout 10m` | Helm 原生支援 |
-| **GKE Kustomize** | 手動干預 | 99.5% | GitOps 還原（git revert） | Kustomize 無原生回滾 |
-| **Cloudflare Workers** | 自動回滾 | 99.9% | 版本管理 + 即時切換 | 秒級切換 |
-| **Cloudflare Pages** | 自動回滾 | 99.9% | 部署歷史 + 一鍵回滾 | 分鐘級恢復 |
-| **Vercel** | 自動回滾 | 99.9% | 內建即時回滾功能 | 秒級操作 |
-| **Supabase** | 手動遷移還原 | 99.5% | Migration revert（新增逆向遷移） | 資料庫變更不可逆 |
+| 平台                   | 回滾策略     | SLA 目標 | 實現機制                         | 備註                 |
+| ---------------------- | ------------ | -------- | -------------------------------- | -------------------- |
+| **GKE Helm**           | 自動回滾     | 99.9%    | `--atomic --timeout 10m`         | Helm 原生支援        |
+| **GKE Kustomize**      | 手動干預     | 99.5%    | GitOps 還原（git revert）        | Kustomize 無原生回滾 |
+| **Cloudflare Workers** | 自動回滾     | 99.9%    | 版本管理 + 即時切換              | 秒級切換             |
+| **Cloudflare Pages**   | 自動回滾     | 99.9%    | 部署歷史 + 一鍵回滾              | 分鐘級恢復           |
+| **Vercel**             | 自動回滾     | 99.9%    | 內建即時回滾功能                 | 秒級操作             |
+| **Supabase**           | 手動遷移還原 | 99.5%    | Migration revert（新增逆向遷移） | 資料庫變更不可逆     |
 
 **統一回滾 API**（可選）：
 
@@ -72,17 +74,24 @@ on:
   workflow_call:
     inputs:
       platform:
-        description: "Platform to rollback"
+        description: 'Platform to rollback'
         type: string
         required: true
-        enum: ["gke_helm", "gke_kustomize", "cloudflare_workers", 
-               "cloudflare_pages", "vercel", "supabase"]
+        enum:
+          [
+            'gke_helm',
+            'gke_kustomize',
+            'cloudflare_workers',
+            'cloudflare_pages',
+            'vercel',
+            'supabase',
+          ]
       deployment_id:
-        description: "Deployment ID or version"
+        description: 'Deployment ID or version'
         type: string
         required: true
       namespace:
-        description: "K8s namespace (for GKE)"
+        description: 'K8s namespace (for GKE)'
         type: string
         required: false
 
@@ -105,6 +114,7 @@ jobs:
 ```
 
 **自動演化進程對應**：
+
 - Level 0: 平台各自回滾（當前）
 - Level 1: 統一回滾 API（中期）
 - Level 2: 智慧回滾（根據錯誤類型自動選擇策略）
@@ -160,6 +170,7 @@ deprecation:
 ```
 
 **自動演化進程對應**：
+
 - Level 0: 靜態版本管理（當前）
 - Level 1: 自動不相容檢測（警告不相容的 workflow 呼叫）
 - Level 2: 自動策略遷移（自動更新舊規則）
@@ -181,39 +192,39 @@ deprecation:
 # engineering.spec.yaml 中增加
 multi_tenant:
   enabled: true
-  isolation_level: "soft"  # soft, hard, none
-  
+  isolation_level: 'soft' # soft, hard, none
+
   # 團隊標識機制
   team_identification:
-    method: "repository_name_prefix"  # codexvanta-os-{team}-{service}
-    fallback: "github_team"           # 若無前綴，檢查 GitHub team 成員
-    
+    method: 'repository_name_prefix' # codexvanta-os-{team}-{service}
+    fallback: 'github_team' # 若無前綴，檢查 GitHub team 成員
+
   # 工作流使用範圍
   workflow_scope:
-    - scope: "global"        # 所有團隊可用
-      workflows: ["reusable-sync-*", "reusable-deploy-cloudflare-*"]
-      rationale: "基礎功能，無敏感資源"
-      
-    - scope: "team_opt_in"   # 團隊明確啟用
-      workflows: ["reusable-deploy-gke-*", "reusable-deploy-vercel"]
-      rationale: "需消耗計算資源，應按需啟用"
-      
-    - scope: "restricted"    # 僅特定團隊
-      workflows: ["reusable-supabase-migrate"]
-      allowed_teams: ["platform-team", "data-engineering-team"]
-      rationale: "資料庫變更高風險，需特殊授權"
-      
+    - scope: 'global' # 所有團隊可用
+      workflows: ['reusable-sync-*', 'reusable-deploy-cloudflare-*']
+      rationale: '基礎功能，無敏感資源'
+
+    - scope: 'team_opt_in' # 團隊明確啟用
+      workflows: ['reusable-deploy-gke-*', 'reusable-deploy-vercel']
+      rationale: '需消耗計算資源，應按需啟用'
+
+    - scope: 'restricted' # 僅特定團隊
+      workflows: ['reusable-supabase-migrate']
+      allowed_teams: ['platform-team', 'data-engineering-team']
+      rationale: '資料庫變更高風險，需特殊授權'
+
   # 團隊隔離檢查
   access_control:
     enabled: true
-    enforcement: "warn"  # warn or block
-    
+    enforcement: 'warn' # warn or block
+
   # 未來演化路徑
   evolution_roadmap:
-    phase1: "soft isolation with team prefix"
-    phase2: "team-specific secret scopes"
-    phase3: "separate workflow runners per team"
-    phase4: "full RBAC with audit logging"
+    phase1: 'soft isolation with team prefix'
+    phase2: 'team-specific secret scopes'
+    phase3: 'separate workflow runners per team'
+    phase4: 'full RBAC with audit logging'
 ```
 
 **軟隔離實現**：
@@ -225,18 +236,18 @@ multi_tenant:
   run: |
     #!/bin/bash
     set -euo pipefail
-    
+
     # 獲取倉庫資訊
     REPO_OWNER="${{ github.repository_owner }}"
     REPO_NAME="${{ github.repository }}"
     FULL_REPO="${REPO_OWNER}/${REPO_NAME}"
-    
+
     # 提取團隊前綴
     TEAM_PREFIX=$(echo "$REPO_NAME" | cut -d'-' -f4 2>/dev/null || echo "unknown")
-    
+
     echo "Repository: $FULL_REPO"
     echo "Detected Team: $TEAM_PREFIX"
-    
+
     # 檢查是否在允許名單中
     ALLOWED_TEAMS="${{ inputs.allowed_teams }}"
     if [[ "$ALLOWED_TEAMS" != *"$TEAM_PREFIX"* ]]; then
@@ -246,11 +257,12 @@ multi_tenant:
       # 未來可升級為 block（當前 warn）
       # exit 1
     fi
-    
+
     echo "✅ Team access check passed"
 ```
 
 **自動演化進程對應**：
+
 - Level 0: 軟隔離 + 命名前綴（當前）
 - Level 1: 硬隔離 + 團隊祕密作用域
 - Level 2: 專用 Runner + RBAC
@@ -262,20 +274,21 @@ multi_tenant:
 
 ## ✅ 10 項檢查清單驗證結果
 
-| # | 檢查項目 | 狀態 | 驗證內容 | 備註 |
-|---|---------|------|---------|------|
-| 1 | 倉庫命名符合 codexvanta-os-* | ✅ | codexvanta-os-workflows | 完整 |
-| 2 | engineering.spec.yaml 包含完整契約 | ✅ | 已修正 OPA/rollback 引用 | 需補充 rollback_strategy |
-| 3 | IDENTITY.md 與 spec 一致 | ✅ | 已更新機器治理主題 | 完整 |
-| 4 | 所有 reusable workflow 在正確目錄 | ✅ | .github/workflows/reusable-*.yml | 完整 |
-| 5 | OPA 策略獨立為 .rego 檔案 | ✅ | .governance/policies/workflow-security.rego | 完整 |
-| 6 | 同步腳本無安全漏洞 | ✅ | 使用 git credential helper | 完整 |
-| 7 | CI 包含 lint、opa、schema 檢查 | ✅ | ci.yml 三項檢查齐全 | 完整 |
-| 8 | 版本發布流程自動化 | ✅ | release.yml + version.txt | 完整 |
-| 9 | 文件齊全（README + docs/） | ✅ | sync.md / cloudflare.md / gke.md 等 | 完整 |
-| 10 | **回滾策略明確定義** | ⚠️ | **SLA 表已確定** | **需在 spec 中補充** |
+| #   | 檢查項目                           | 狀態 | 驗證內容                                    | 備註                     |
+| --- | ---------------------------------- | ---- | ------------------------------------------- | ------------------------ |
+| 1   | 倉庫命名符合 codexvanta-os-\*      | ✅   | codexvanta-os-workflows                     | 完整                     |
+| 2   | engineering.spec.yaml 包含完整契約 | ✅   | 已修正 OPA/rollback 引用                    | 需補充 rollback_strategy |
+| 3   | IDENTITY.md 與 spec 一致           | ✅   | 已更新機器治理主題                          | 完整                     |
+| 4   | 所有 reusable workflow 在正確目錄  | ✅   | .github/workflows/reusable-\*.yml           | 完整                     |
+| 5   | OPA 策略獨立為 .rego 檔案          | ✅   | .governance/policies/workflow-security.rego | 完整                     |
+| 6   | 同步腳本無安全漏洞                 | ✅   | 使用 git credential helper                  | 完整                     |
+| 7   | CI 包含 lint、opa、schema 檢查     | ✅   | ci.yml 三項檢查齐全                         | 完整                     |
+| 8   | 版本發布流程自動化                 | ✅   | release.yml + version.txt                   | 完整                     |
+| 9   | 文件齊全（README + docs/）         | ✅   | sync.md / cloudflare.md / gke.md 等         | 完整                     |
+| 10  | **回滾策略明確定義**               | ⚠️   | **SLA 表已確定**                            | **需在 spec 中補充**     |
 
 **待補充項：**
+
 - engineering.spec.yaml → 增加 `rollback_strategy` 區塊（見下文）
 - .governance/VERSION → 建立 OPA 策略版本檔案
 
@@ -286,6 +299,7 @@ multi_tenant:
 ### 步驟 1：補充 engineering.spec.yaml
 
 **新增內容**：
+
 ```yaml
 # engineering.spec.yaml 中增加
 
@@ -294,68 +308,69 @@ deployment:
     strategy:
       gke_helm:
         enabled: true
-        method: "helm_rollback"
+        method: 'helm_rollback'
         atomic_mode: true
         timeout_minutes: 10
-        sla_target: "99.9%"
-        
+        sla_target: '99.9%'
+
       gke_kustomize:
-        enabled: false  # 需手動干預
-        method: "gitops_revert"
-        sla_target: "99.5%"
-        
+        enabled: false # 需手動干預
+        method: 'gitops_revert'
+        sla_target: '99.5%'
+
       cloudflare_workers:
         enabled: true
-        method: "version_switch"
-        sla_target: "99.9%"
-        
+        method: 'version_switch'
+        sla_target: '99.9%'
+
       cloudflare_pages:
         enabled: true
-        method: "deployment_history"
-        sla_target: "99.9%"
-        
+        method: 'deployment_history'
+        sla_target: '99.9%'
+
       vercel:
         enabled: true
-        method: "instant_rollback"
-        sla_target: "99.9%"
-        
+        method: 'instant_rollback'
+        sla_target: '99.9%'
+
       supabase:
-        enabled: false  # 資料庫變更不可逆
-        method: "migration_revert"
-        sla_target: "99.5%"
+        enabled: false # 資料庫變更不可逆
+        method: 'migration_revert'
+        sla_target: '99.5%'
         requires_manual_review: true
 
 multi_tenant:
   enabled: true
-  isolation_level: "soft"
+  isolation_level: 'soft'
   team_identification:
-    method: "repository_name_prefix"
-    fallback: "github_team"
-  
+    method: 'repository_name_prefix'
+    fallback: 'github_team'
+
   workflow_scope:
-    global: ["sync-*", "deploy-cloudflare-*"]
-    opt_in: ["deploy-gke-*", "deploy-vercel"]
-    restricted: ["supabase-migrate"]
-  
+    global: ['sync-*', 'deploy-cloudflare-*']
+    opt_in: ['deploy-gke-*', 'deploy-vercel']
+    restricted: ['supabase-migrate']
+
   evolution_roadmap:
-    phase1: "soft_isolation"
-    phase2: "team_secrets"
-    phase3: "dedicated_runners"
+    phase1: 'soft_isolation'
+    phase2: 'team_secrets'
+    phase3: 'dedicated_runners'
 
 sync:
   strategy:
-    trigger_mode: "auto"  # auto or manual
+    trigger_mode: 'auto' # auto or manual
     auto_trigger:
-      branch: "main"
-      event: "push"
+      branch: 'main'
+      event: 'push'
     manual_trigger:
       enabled: true
-      branches: "*"
+      branches: '*'
 ```
 
 ### 步驟 2：建立 .governance/VERSION
 
 **新檔案**：
+
 ```
 OPA_POLICY_VERSION=v1.0
 OPA_POLICY_NAME="Core Workflow Security Policies"
@@ -372,6 +387,7 @@ DEPRECATION_SCHEDULE="none"
 ### 步驟 3：更新 CODEOWNERS（軟隔離準備）
 
 **調整內容**：
+
 ```
 # 全組織範圍
 * @codexvanta-os/platform-team
@@ -463,19 +479,20 @@ DEPRECATION_SCHEDULE="none"
 
 ## 👥 實現團隊分工
 
-| 角色 | 負責項 | 優先級 |
-|------|--------|--------|
-| **Platform Lead** | 倉庫架構、同步引擎、總體協調 | P0 |
-| **Platform Engineer** | CI 檢查、Script、Makefile | P0 |
-| **DevOps Engineer** | 部署工作流（GKE、Vercel、Cloudflare） | P0 |
-| **Security Engineer** | OPA 策略、CODEOWNERS、版本控制 | P1 |
-| **Documentation Lead** | README、API 文檔、故障排除 | P2 |
+| 角色                   | 負責項                                | 優先級 |
+| ---------------------- | ------------------------------------- | ------ |
+| **Platform Lead**      | 倉庫架構、同步引擎、總體協調          | P0     |
+| **Platform Engineer**  | CI 檢查、Script、Makefile             | P0     |
+| **DevOps Engineer**    | 部署工作流（GKE、Vercel、Cloudflare） | P0     |
+| **Security Engineer**  | OPA 策略、CODEOWNERS、版本控制        | P1     |
+| **Documentation Lead** | README、API 文檔、故障排除            | P2     |
 
 ---
 
 ## 📅 實現 Timeline
 
 ### 📍 D+1-3：環境準備
+
 ```
 □ 補充 engineering.spec.yaml
 □ 建立 .governance/VERSION
@@ -484,6 +501,7 @@ DEPRECATION_SCHEDULE="none"
 ```
 
 ### 📍 D+4-10：倉庫搭建（MVP Sprint 1）
+
 ```
 □ 倉庫結構和目錄創建
 □ CODEOWNERS、README、documentation
@@ -493,6 +511,7 @@ DEPRECATION_SCHEDULE="none"
 ```
 
 ### 📍 D+11-17：同步引擎實現（MVP Sprint 2）
+
 ```
 □ reusable-sync-gitlab.yml 完成
 □ reusable-sync-bitbucket.yml 完成
@@ -501,6 +520,7 @@ DEPRECATION_SCHEDULE="none"
 ```
 
 ### 📍 D+18-24：部署引擎實現（MVP Sprint 3）
+
 ```
 □ reusable-deploy-cloudflare-workers.yml
 □ reusable-deploy-cloudflare-pages.yml
@@ -508,6 +528,7 @@ DEPRECATION_SCHEDULE="none"
 ```
 
 ### 📍 D+25-31：後續迭代（Phase 2）
+
 ```
 □ Vercel 部署工作流
 □ GKE 部署工作流（Helm + Kustomize）

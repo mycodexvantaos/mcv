@@ -4,9 +4,9 @@ metadata:
   name: memory-dream
   namespace: mycodexvantaos-system
 spec:
-  displayName: "Memory Dream"
-  description: "Autonomous memory reinforcement and synthesis engine"
-  version: "0.1.0"
+  displayName: 'Memory Dream'
+  description: 'Autonomous memory reinforcement and synthesis engine'
+  version: '0.1.0'
   capabilities:
     - capture
     - store

@@ -3,21 +3,24 @@
  * In-memory distributed tracing
  */
 
-import type { Span, Trace } from "./types";
-import * as crypto from "crypto";
+import type { Span, Trace } from './types';
+import * as crypto from 'crypto';
 
 export class TracingService {
   private spans = new Map<string, Span>();
   private serviceName: string;
 
-  constructor(serviceName = "codexvanta") {
+  constructor(serviceName = 'codexvanta') {
     this.serviceName = serviceName;
   }
 
-  startSpan(operationName: string, options?: {
-    parentContext?: { traceId: string; spanId: string };
-    attributes?: Record<string, unknown>;
-  }): Span {
+  startSpan(
+    operationName: string,
+    options?: {
+      parentContext?: { traceId: string; spanId: string };
+      attributes?: Record<string, unknown>;
+    }
+  ): Span {
     const span: Span = {
       id: crypto.randomUUID(),
       traceId: options?.parentContext?.traceId ?? crypto.randomUUID(),
@@ -30,12 +33,12 @@ export class TracingService {
     return span;
   }
 
-  endSpan(spanId: string, status: "ok" | "error" = "ok", errorMessage?: string): void {
+  endSpan(spanId: string, status: 'ok' | 'error' = 'ok', errorMessage?: string): void {
     const span = this.spans.get(spanId);
     if (!span) return;
     span.endTime = new Date();
-    span.attributes["status"] = status;
-    if (errorMessage) span.attributes["error"] = errorMessage;
+    span.attributes['status'] = status;
+    if (errorMessage) span.attributes['error'] = errorMessage;
   }
 
   getSpan(spanId: string): Span | null {
@@ -56,7 +59,7 @@ export class TracingService {
       id: traceId,
       spans: traceSpans,
       duration: endTime.getTime() - first.startTime.getTime(),
-      status: traceSpans.every((s) => s.attributes["status"] !== "error") ? "ok" : "error",
+      status: traceSpans.every((s) => s.attributes['status'] !== 'error') ? 'ok' : 'error',
     };
   }
 
@@ -76,10 +79,10 @@ export class TracingService {
     const span = this.startSpan(operationName);
     try {
       const result = await fn(span);
-      this.endSpan(span.id, "ok");
+      this.endSpan(span.id, 'ok');
       return result;
     } catch (err) {
-      this.endSpan(span.id, "error", String(err));
+      this.endSpan(span.id, 'error', String(err));
       throw err;
     }
   }

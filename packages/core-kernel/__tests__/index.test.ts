@@ -2,13 +2,7 @@
  * @jest-environment node
  */
 
-import {
-  ProviderRegistry,
-  EventBus,
-  Kernel,
-  BaseProvider,
-  ProviderManifest,
-} from '../src/index';
+import { ProviderRegistry, EventBus, Kernel, BaseProvider, ProviderManifest } from '../src/index';
 
 // Mock provider for testing
 const createMockProvider = (

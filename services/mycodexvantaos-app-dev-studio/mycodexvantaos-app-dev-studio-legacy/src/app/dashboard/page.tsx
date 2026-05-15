@@ -1,7 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { PanelLeftClose, PanelLeftOpen, PanelRightClose, PanelRightOpen, PanelBottomClose, PanelBottomOpen } from 'lucide-react';
+import {
+  PanelLeftClose,
+  PanelLeftOpen,
+  PanelRightClose,
+  PanelRightOpen,
+  PanelBottomClose,
+  PanelBottomOpen,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -22,7 +29,7 @@ export default function DashboardPage() {
         <Header />
         <div className="flex flex-1 overflow-hidden">
           <IconSidebar activeView={activeView} setActiveView={setActiveView} />
-          
+
           {isLeftPanelOpen && <LeftPanel activeView={activeView} />}
 
           <div className="flex flex-1 flex-col overflow-hidden">
@@ -30,23 +37,32 @@ export default function DashboardPage() {
               <div className="flex-1 flex flex-col min-w-0">
                 <MainView />
               </div>
-              
+
               {isRightPanelOpen && <AiPanel />}
             </div>
-            
+
             <footer className="flex items-center justify-between border-t border-border px-4 py-1 text-xs text-muted-foreground">
               <div className="flex items-center gap-4">
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => setIsLeftPanelOpen(!isLeftPanelOpen)}>
-                      {isLeftPanelOpen ? <PanelLeftClose className="h-4 w-4" /> : <PanelLeftOpen className="h-4 w-4" />}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-6 w-6"
+                      onClick={() => setIsLeftPanelOpen(!isLeftPanelOpen)}
+                    >
+                      {isLeftPanelOpen ? (
+                        <PanelLeftClose className="h-4 w-4" />
+                      ) : (
+                        <PanelLeftOpen className="h-4 w-4" />
+                      )}
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent side="top">
                     <p>Toggle Left Panel</p>
                   </TooltipContent>
                 </Tooltip>
-                 <Tooltip>
+                <Tooltip>
                   <TooltipTrigger asChild>
                     <Button variant="ghost" size="icon" className="h-6 w-6">
                       <PanelBottomClose className="h-4 w-4" />
@@ -61,11 +77,20 @@ export default function DashboardPage() {
                 <p>Ln 42, Col 18 | TypeScript React | UTF-8</p>
               </div>
               <div className="flex items-center gap-4">
-                 <Tooltip>
+                <Tooltip>
                   <TooltipTrigger asChild>
-                     <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => setIsRightPanelOpen(!isRightPanelOpen)}>
-                        {isRightPanelOpen ? <PanelRightClose className="h-4 w-4" /> : <PanelRightOpen className="h-4 w-4" />}
-                      </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-6 w-6"
+                      onClick={() => setIsRightPanelOpen(!isRightPanelOpen)}
+                    >
+                      {isRightPanelOpen ? (
+                        <PanelRightClose className="h-4 w-4" />
+                      ) : (
+                        <PanelRightOpen className="h-4 w-4" />
+                      )}
+                    </Button>
                   </TooltipTrigger>
                   <TooltipContent side="top">
                     <p>Toggle Right Panel</p>

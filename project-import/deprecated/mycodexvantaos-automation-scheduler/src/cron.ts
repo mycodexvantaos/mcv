@@ -3,7 +3,7 @@
  * In-memory cron job management
  */
 
-import type { CronJob } from "./types";
+import type { CronJob } from './types';
 
 export class CronService {
   private jobs = new Map<string, CronJob>();

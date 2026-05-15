@@ -1,9 +1,9 @@
 /**
  * Behavioral Adjuster for MyCodeXvantaOS Persona Engine
- * 
+ *
  * Provides dynamic adjustment of behavioral parameters based on context,
  * user feedback, and interaction patterns to optimize persona effectiveness.
- * 
+ *
  * @module mycodexvantaos-persona-engine/core/behavioral-adjuster
  */
 
@@ -88,7 +88,7 @@ const ARCHETYPE_PRESETS: Record<PersonaArchetype, Partial<BehavioralParameters>>
     solution_focus: 0.6,
     abstraction_preference: 0.4,
     questioning_depth: 0.8,
-    contradiction_frequency: 0.7
+    contradiction_frequency: 0.7,
   },
   analyst: {
     critical_tolerance: 0.5,
@@ -97,7 +97,7 @@ const ARCHETYPE_PRESETS: Record<PersonaArchetype, Partial<BehavioralParameters>>
     solution_focus: 0.7,
     abstraction_preference: 0.3,
     questioning_depth: 0.9,
-    contradiction_frequency: 0.3
+    contradiction_frequency: 0.3,
   },
   mediator: {
     critical_tolerance: 0.4,
@@ -106,7 +106,7 @@ const ARCHETYPE_PRESETS: Record<PersonaArchetype, Partial<BehavioralParameters>>
     solution_focus: 0.8,
     abstraction_preference: 0.5,
     questioning_depth: 0.6,
-    contradiction_frequency: 0.2
+    contradiction_frequency: 0.2,
   },
   architect: {
     critical_tolerance: 0.6,
@@ -115,7 +115,7 @@ const ARCHETYPE_PRESETS: Record<PersonaArchetype, Partial<BehavioralParameters>>
     solution_focus: 0.9,
     abstraction_preference: 0.6,
     questioning_depth: 0.7,
-    contradiction_frequency: 0.4
+    contradiction_frequency: 0.4,
   },
   critic: {
     critical_tolerance: 0.8,
@@ -124,7 +124,7 @@ const ARCHETYPE_PRESETS: Record<PersonaArchetype, Partial<BehavioralParameters>>
     solution_focus: 0.5,
     abstraction_preference: 0.5,
     questioning_depth: 0.9,
-    contradiction_frequency: 0.6
+    contradiction_frequency: 0.6,
   },
   creative_thinker: {
     critical_tolerance: 0.4,
@@ -133,7 +133,7 @@ const ARCHETYPE_PRESETS: Record<PersonaArchetype, Partial<BehavioralParameters>>
     solution_focus: 0.6,
     abstraction_preference: 0.8,
     questioning_depth: 0.7,
-    contradiction_frequency: 0.4
+    contradiction_frequency: 0.4,
   },
   facilitator: {
     critical_tolerance: 0.5,
@@ -142,7 +142,7 @@ const ARCHETYPE_PRESETS: Record<PersonaArchetype, Partial<BehavioralParameters>>
     solution_focus: 0.6,
     abstraction_preference: 0.4,
     questioning_depth: 0.6,
-    contradiction_frequency: 0.3
+    contradiction_frequency: 0.3,
   },
   mentor: {
     critical_tolerance: 0.4,
@@ -151,7 +151,7 @@ const ARCHETYPE_PRESETS: Record<PersonaArchetype, Partial<BehavioralParameters>>
     solution_focus: 0.7,
     abstraction_preference: 0.5,
     questioning_depth: 0.7,
-    contradiction_frequency: 0.2
+    contradiction_frequency: 0.2,
   },
   synthesizer: {
     critical_tolerance: 0.6,
@@ -160,22 +160,22 @@ const ARCHETYPE_PRESETS: Record<PersonaArchetype, Partial<BehavioralParameters>>
     solution_focus: 0.7,
     abstraction_preference: 0.8,
     questioning_depth: 0.8,
-    contradiction_frequency: 0.4
-  }
+    contradiction_frequency: 0.4,
+  },
 };
 
 /**
  * BehavioralAdjuster dynamically adjusts persona behavioral parameters
- * 
+ *
  * @example
  * ```typescript
  * const adjuster = new BehavioralAdjuster();
- * 
+ *
  * const result = adjuster.adjust(baseParams, {
  *   engagementLevel: 0.3,
  *   feedbackScore: -0.2
  * });
- * 
+ *
  * console.log(result.adjusted);
  * ```
  */
@@ -193,7 +193,7 @@ export class BehavioralAdjuster {
       maxAdjustment: config.maxAdjustment ?? 0.3,
       smoothingFactor: config.smoothingFactor ?? 0.5,
       enableAdaptiveLearning: config.enableAdaptiveLearning ?? true,
-      minConfidence: config.minConfidence ?? 0.5
+      minConfidence: config.minConfidence ?? 0.5,
     };
 
     this.initializeDefaultRules();
@@ -211,10 +211,10 @@ export class BehavioralAdjuster {
         adjustments: {
           empathy_level: 0.15,
           directness: -0.1,
-          questioning_depth: -0.1
+          questioning_depth: -0.1,
         },
         priority: 10,
-        description: 'Increase empathy and soften approach when engagement is low'
+        description: 'Increase empathy and soften approach when engagement is low',
       },
 
       // High topic sensitivity - increase empathy, reduce directness
@@ -224,10 +224,10 @@ export class BehavioralAdjuster {
         adjustments: {
           empathy_level: 0.2,
           directness: -0.15,
-          critical_tolerance: -0.1
+          critical_tolerance: -0.1,
         },
         priority: 15,
-        description: 'Handle sensitive topics with more care'
+        description: 'Handle sensitive topics with more care',
       },
 
       // High time pressure - increase directness and solution focus
@@ -237,10 +237,10 @@ export class BehavioralAdjuster {
         adjustments: {
           directness: 0.15,
           solution_focus: 0.2,
-          questioning_depth: -0.2
+          questioning_depth: -0.2,
         },
         priority: 12,
-        description: 'Be more direct and solution-oriented under time pressure'
+        description: 'Be more direct and solution-oriented under time pressure',
       },
 
       // Complex topic - increase abstraction preference and questioning
@@ -250,10 +250,10 @@ export class BehavioralAdjuster {
         adjustments: {
           abstraction_preference: 0.15,
           questioning_depth: 0.1,
-          solution_focus: -0.1
+          solution_focus: -0.1,
         },
         priority: 8,
-        description: 'Allow more abstract thinking for complex topics'
+        description: 'Allow more abstract thinking for complex topics',
       },
 
       // Negative feedback - reduce intensity across the board
@@ -264,10 +264,10 @@ export class BehavioralAdjuster {
           critical_tolerance: -0.15,
           directness: -0.1,
           contradiction_frequency: -0.2,
-          empathy_level: 0.1
+          empathy_level: 0.1,
         },
         priority: 20,
-        description: 'Soften approach after negative feedback'
+        description: 'Soften approach after negative feedback',
       },
 
       // Positive feedback - can be more challenging
@@ -276,10 +276,10 @@ export class BehavioralAdjuster {
         condition: (ctx) => (ctx.feedbackScore ?? 0) > 0.5,
         adjustments: {
           questioning_depth: 0.1,
-          contradiction_frequency: 0.1
+          contradiction_frequency: 0.1,
         },
         priority: 5,
-        description: 'Can push deeper after positive feedback'
+        description: 'Can push deeper after positive feedback',
       },
 
       // Preferred direct style
@@ -288,10 +288,10 @@ export class BehavioralAdjuster {
         condition: (ctx) => ctx.preferredStyle === 'direct',
         adjustments: {
           directness: 0.15,
-          empathy_level: -0.05
+          empathy_level: -0.05,
         },
         priority: 7,
-        description: 'Adapt to user preference for direct communication'
+        description: 'Adapt to user preference for direct communication',
       },
 
       // Preferred gentle style
@@ -301,10 +301,10 @@ export class BehavioralAdjuster {
         adjustments: {
           empathy_level: 0.15,
           directness: -0.1,
-          critical_tolerance: -0.05
+          critical_tolerance: -0.05,
         },
         priority: 7,
-        description: 'Adapt to user preference for gentle communication'
+        description: 'Adapt to user preference for gentle communication',
       },
 
       // Deep conversation achieved - can go deeper
@@ -313,10 +313,10 @@ export class BehavioralAdjuster {
         condition: (ctx) => (ctx.conversationDepth ?? 0) > 0.7,
         adjustments: {
           questioning_depth: 0.15,
-          abstraction_preference: 0.1
+          abstraction_preference: 0.1,
         },
         priority: 6,
-        description: 'Deepen exploration in established conversations'
+        description: 'Deepen exploration in established conversations',
       },
 
       // First interaction - start moderate
@@ -326,11 +326,11 @@ export class BehavioralAdjuster {
         adjustments: {
           critical_tolerance: -0.1,
           contradiction_frequency: -0.2,
-          empathy_level: 0.1
+          empathy_level: 0.1,
         },
         priority: 11,
-        description: 'Start with a more moderate approach in first interactions'
-      }
+        description: 'Start with a more moderate approach in first interactions',
+      },
     ];
 
     // Sort by priority (highest first)
@@ -349,17 +349,20 @@ export class BehavioralAdjuster {
       solution_focus: 0,
       abstraction_preference: 0,
       questioning_depth: 0,
-      contradiction_frequency: 0
+      contradiction_frequency: 0,
     };
 
     // Find applicable rules
-    const applicableRules = this.rules.filter(rule => rule.condition(context));
+    const applicableRules = this.rules.filter((rule) => rule.condition(context));
 
     // Apply adjustments from rules
     for (const rule of applicableRules) {
       appliedRules.push(rule.name);
 
-      for (const [param, adjustment] of Object.entries(rule.adjustments) as [keyof BehavioralParameters, number][]) {
+      for (const [param, adjustment] of Object.entries(rule.adjustments) as [
+        keyof BehavioralParameters,
+        number,
+      ][]) {
         // Apply with smoothing
         const smoothedAdjustment = adjustment * (1 - this.config.smoothingFactor);
         delta[param] = (delta[param] ?? 0) + smoothedAdjustment;
@@ -368,18 +371,33 @@ export class BehavioralAdjuster {
 
     // Clamp adjustments
     for (const param of Object.keys(delta) as (keyof BehavioralParameters)[]) {
-      if (delta[param] !== undefined) { delta[param] = Math.max(-this.config.maxAdjustment, Math.min(this.config.maxAdjustment, delta[param]!)); }
+      if (delta[param] !== undefined) {
+        delta[param] = Math.max(
+          -this.config.maxAdjustment,
+          Math.min(this.config.maxAdjustment, delta[param]!)
+        );
+      }
     }
 
     // Calculate adjusted parameters
     const adjusted: BehavioralParameters = {
-      critical_tolerance: this.clampValue((baseParams.critical_tolerance ?? 0) + (delta.critical_tolerance ?? 0)),
+      critical_tolerance: this.clampValue(
+        (baseParams.critical_tolerance ?? 0) + (delta.critical_tolerance ?? 0)
+      ),
       empathy_level: this.clampValue((baseParams.empathy_level ?? 0) + (delta.empathy_level ?? 0)),
       directness: this.clampValue((baseParams.directness ?? 0) + (delta.directness ?? 0)),
-      solution_focus: this.clampValue((baseParams.solution_focus ?? 0) + (delta.solution_focus ?? 0)),
-      abstraction_preference: this.clampValue((baseParams.abstraction_preference ?? 0) + (delta.abstraction_preference ?? 0)),
-      questioning_depth: this.clampValue((baseParams.questioning_depth ?? 0) + (delta.questioning_depth ?? 0)),
-      contradiction_frequency: this.clampValue((baseParams.contradiction_frequency ?? 0) + (delta.contradiction_frequency ?? 0))
+      solution_focus: this.clampValue(
+        (baseParams.solution_focus ?? 0) + (delta.solution_focus ?? 0)
+      ),
+      abstraction_preference: this.clampValue(
+        (baseParams.abstraction_preference ?? 0) + (delta.abstraction_preference ?? 0)
+      ),
+      questioning_depth: this.clampValue(
+        (baseParams.questioning_depth ?? 0) + (delta.questioning_depth ?? 0)
+      ),
+      contradiction_frequency: this.clampValue(
+        (baseParams.contradiction_frequency ?? 0) + (delta.contradiction_frequency ?? 0)
+      ),
     };
 
     // Calculate confidence based on number of rules applied and their consistency
@@ -390,7 +408,7 @@ export class BehavioralAdjuster {
       adjusted,
       appliedRules,
       delta,
-      confidence
+      confidence,
     };
 
     // Store in history for learning
@@ -398,7 +416,7 @@ export class BehavioralAdjuster {
       this.adjustmentHistory.push({
         timestamp: Date.now(),
         context,
-        result
+        result,
       });
 
       // Keep history bounded
@@ -420,7 +438,10 @@ export class BehavioralAdjuster {
   /**
    * Calculates confidence in the adjustment
    */
-  private calculateConfidence(rules: AdjustmentRule[], delta: Partial<Record<keyof BehavioralParameters, number>>): number {
+  private calculateConfidence(
+    rules: AdjustmentRule[],
+    delta: Partial<Record<keyof BehavioralParameters, number>>
+  ): number {
     if (rules.length === 0) {
       return 0.5; // Neutral confidence when no rules apply
     }
@@ -451,7 +472,7 @@ export class BehavioralAdjuster {
    * Removes an adjustment rule by name
    */
   removeRule(name: string): boolean {
-    const index = this.rules.findIndex(r => r.name === name);
+    const index = this.rules.findIndex((r) => r.name === name);
     if (index > -1) {
       this.rules.splice(index, 1);
       return true;
@@ -499,7 +520,7 @@ export class BehavioralAdjuster {
       solution_focus: preset.solution_focus ?? 0.5,
       abstraction_preference: preset.abstraction_preference ?? 0.5,
       questioning_depth: preset.questioning_depth ?? 0.5,
-      contradiction_frequency: preset.contradiction_frequency ?? 0.5
+      contradiction_frequency: preset.contradiction_frequency ?? 0.5,
     };
 
     if (!this.config.enableAdaptiveLearning || this.adjustmentHistory.length < 10) {
@@ -508,8 +529,8 @@ export class BehavioralAdjuster {
 
     // Analyze history for successful adjustments
     const successfulAdjustments = this.adjustmentHistory
-      .filter(h => (h.context.feedbackScore ?? 0) > 0.3)
-      .map(h => h.result.adjusted);
+      .filter((h) => (h.context.feedbackScore ?? 0) > 0.3)
+      .map((h) => h.result.adjusted);
 
     if (successfulAdjustments.length === 0) {
       return baseParams;
@@ -523,17 +544,21 @@ export class BehavioralAdjuster {
       solution_focus: 0,
       abstraction_preference: 0,
       questioning_depth: 0,
-      contradiction_frequency: 0
+      contradiction_frequency: 0,
     };
 
     for (const params of successfulAdjustments) {
       for (const key of Object.keys(avgParams) as (keyof BehavioralParameters)[]) {
-        if (avgParams[key] !== undefined && params[key] !== undefined) { avgParams[key]! += params[key]!; }
+        if (avgParams[key] !== undefined && params[key] !== undefined) {
+          avgParams[key]! += params[key]!;
+        }
       }
     }
 
     for (const key of Object.keys(avgParams) as (keyof BehavioralParameters)[]) {
-      if (avgParams[key] !== undefined) { avgParams[key]! /= successfulAdjustments.length; }
+      if (avgParams[key] !== undefined) {
+        avgParams[key]! /= successfulAdjustments.length;
+      }
     }
 
     return avgParams;

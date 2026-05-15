@@ -21,7 +21,7 @@ spec:
     scheduler: scheduler-temporal
   lifecycle:
     stage: stable
-    since: "v1.0.0"
-  urn: "urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-agent"
-  packageName: "@mycodexvantaos/ai-agent"
-  description: "AI agent orchestration. Multi-step reasoning and tool use."
+    since: 'v1.0.0'
+  urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-agent'
+  packageName: '@mycodexvantaos/ai-agent'
+  description: 'AI agent orchestration. Multi-step reasoning and tool use.'

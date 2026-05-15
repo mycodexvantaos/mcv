@@ -19,7 +19,7 @@ spec:
     observability: observability-opentelemetry
   lifecycle:
     stage: stable
-    since: "v1.0.0"
-  urn: "urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-llm"
-  packageName: "@mycodexvantaos/ai-llm"
-  description: "Large language model inference and completion service."
+    since: 'v1.0.0'
+  urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-llm'
+  packageName: '@mycodexvantaos/ai-llm'
+  description: 'Large language model inference and completion service.'

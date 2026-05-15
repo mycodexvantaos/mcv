@@ -1,489 +1,909 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>守護核心 — 智慧監控防禦平台</title>
-  <meta name="description" content="企業級靜默監控、行為分析與威脅偵測平台" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            sentinel: { 50:'#eef2ff',100:'#e0e7ff',200:'#c7d2fe',300:'#a5b4fc',400:'#818cf8',500:'#6366f1',600:'#4f46e5',700:'#4338ca',800:'#3730a3',900:'#312e81' },
-            threat: { critical:'#ef4444',high:'#f97316',medium:'#eab308',low:'#22c55e',info:'#6366f1' },
-            surface: { DEFAULT:'#0a0d17',light:'#12162a',lighter:'#1a1f3a',border:'#252b4a' },
-          }
-        }
-      }
-    }
-  </script>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body class="bg-surface text-gray-100 min-h-screen font-sans">
-  <div id="app">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>守護核心 — 智慧監控防禦平台</title>
+    <meta name="description" content="企業級靜默監控、行為分析與威脅偵測平台" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              sentinel: {
+                50: '#eef2ff',
+                100: '#e0e7ff',
+                200: '#c7d2fe',
+                300: '#a5b4fc',
+                400: '#818cf8',
+                500: '#6366f1',
+                600: '#4f46e5',
+                700: '#4338ca',
+                800: '#3730a3',
+                900: '#312e81',
+              },
+              threat: {
+                critical: '#ef4444',
+                high: '#f97316',
+                medium: '#eab308',
+                low: '#22c55e',
+                info: '#6366f1',
+              },
+              surface: {
+                DEFAULT: '#0a0d17',
+                light: '#12162a',
+                lighter: '#1a1f3a',
+                border: '#252b4a',
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="bg-surface text-gray-100 min-h-screen font-sans">
+    <div id="app">
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <!-- 啟動面板 — 角色選擇                                  -->
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <div id="screen-launch" class="screen active">
+        <div class="launch-container">
+          <!-- Logo 區 -->
+          <div class="text-center mb-12">
+            <div class="text-6xl mb-4">🛡️</div>
+            <h1 class="text-3xl font-bold tracking-wider text-sentinel-400 mb-2">守護核心</h1>
+            <p class="text-sm text-gray-500 tracking-widest">SENTINELCORE v3.0</p>
+            <p class="text-xs text-gray-600 mt-3">智慧監控防禦平台</p>
+          </div>
 
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- 啟動面板 — 角色選擇                                  -->
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <div id="screen-launch" class="screen active">
-      <div class="launch-container">
-        <!-- Logo 區 -->
-        <div class="text-center mb-12">
-          <div class="text-6xl mb-4">🛡️</div>
-          <h1 class="text-3xl font-bold tracking-wider text-sentinel-400 mb-2">守護核心</h1>
-          <p class="text-sm text-gray-500 tracking-widest">SENTINELCORE v3.0</p>
-          <p class="text-xs text-gray-600 mt-3">智慧監控防禦平台</p>
-        </div>
+          <!-- 角色選擇 -->
+          <div class="role-grid">
+            <!-- 觀察方 -->
+            <button onclick="selectRole('observer')" class="role-card group">
+              <div class="role-icon">👁️</div>
+              <div class="role-title">觀察方</div>
+              <div class="role-subtitle">Observer</div>
+              <div class="role-desc">輸入配對金鑰，開始即時監控已授權的裝置</div>
+              <div class="role-arrow">→</div>
+            </button>
 
-        <!-- 角色選擇 -->
-        <div class="role-grid">
-          <!-- 觀察方 -->
-          <button onclick="selectRole('observer')" class="role-card group">
-            <div class="role-icon">👁️</div>
-            <div class="role-title">觀察方</div>
-            <div class="role-subtitle">Observer</div>
-            <div class="role-desc">輸入配對金鑰，開始即時監控已授權的裝置</div>
-            <div class="role-arrow">→</div>
-          </button>
+            <!-- 被觀察方 -->
+            <button onclick="selectRole('subject')" class="role-card group">
+              <div class="role-icon">📱</div>
+              <div class="role-title">被觀察方</div>
+              <div class="role-subtitle">Subject</div>
+              <div class="role-desc">授權裝置監控，簽署協議後配對即自動運行</div>
+              <div class="role-arrow">→</div>
+            </button>
+          </div>
 
-          <!-- 被觀察方 -->
-          <button onclick="selectRole('subject')" class="role-card group">
-            <div class="role-icon">📱</div>
-            <div class="role-title">被觀察方</div>
-            <div class="role-subtitle">Subject</div>
-            <div class="role-desc">授權裝置監控，簽署協議後配對即自動運行</div>
-            <div class="role-arrow">→</div>
-          </button>
-        </div>
-
-        <!-- 底部說明 -->
-        <div class="text-center mt-10 text-xs text-gray-600">
-          <p>首次使用需配對金鑰 · 所有數據均經 AES-256 加密傳輸</p>
-          <p class="mt-1">本平台僅供合法監護用途 · 詳閱《使用責任協議》</p>
+          <!-- 底部說明 -->
+          <div class="text-center mt-10 text-xs text-gray-600">
+            <p>首次使用需配對金鑰 · 所有數據均經 AES-256 加密傳輸</p>
+            <p class="mt-1">本平台僅供合法監護用途 · 詳閱《使用責任協議》</p>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- 觀察方 — 輸入金鑰                                    -->
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <div id="screen-observer-key" class="screen hidden">
-      <div class="key-container">
-        <button onclick="goBack('launch')" class="back-btn">← 返回</button>
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <!-- 觀察方 — 輸入金鑰                                    -->
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <div id="screen-observer-key" class="screen hidden">
+        <div class="key-container">
+          <button onclick="goBack('launch')" class="back-btn">← 返回</button>
 
-        <div class="text-center mb-8">
-          <div class="text-4xl mb-3">👁️</div>
-          <h2 class="text-xl font-bold mb-1">觀察方登入</h2>
-          <p class="text-xs text-gray-500">輸入配對金鑰以連線至目標裝置</p>
+          <div class="text-center mb-8">
+            <div class="text-4xl mb-3">👁️</div>
+            <h2 class="text-xl font-bold mb-1">觀察方登入</h2>
+            <p class="text-xs text-gray-500">輸入配對金鑰以連線至目標裝置</p>
+          </div>
+
+          <div class="key-form">
+            <label class="key-label">配對金鑰</label>
+            <input
+              type="text"
+              id="observer-key-input"
+              class="key-input"
+              placeholder="XXXX-XXXX"
+              maxlength="9"
+              autocomplete="off"
+              oninput="formatKeyInput(this)"
+            />
+            <p class="key-hint">金鑰由被觀察方裝置產生，請向裝置持有人索取</p>
+
+            <button onclick="observerConnect()" id="observer-connect-btn" class="connect-btn">
+              <span id="observer-btn-text">🔑 驗證並連線</span>
+              <div id="observer-spinner" class="spinner-sm hidden"></div>
+            </button>
+
+            <div id="observer-error" class="error-msg hidden"></div>
+          </div>
+
+          <!-- 連線狀態 -->
+          <div id="observer-status" class="status-box hidden">
+            <div class="flex items-center gap-2">
+              <div class="w-2 h-2 rounded-full bg-threat-low animate-pulse"></div>
+              <span class="text-xs text-threat-low">連線中…正在驗證金鑰</span>
+            </div>
+          </div>
         </div>
+      </div>
 
-        <div class="key-form">
-          <label class="key-label">配對金鑰</label>
-          <input type="text" id="observer-key-input" class="key-input" placeholder="XXXX-XXXX" maxlength="9" autocomplete="off" oninput="formatKeyInput(this)" />
-          <p class="key-hint">金鑰由被觀察方裝置產生，請向裝置持有人索取</p>
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <!-- 被觀察方 — 責任協議                                  -->
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <div id="screen-subject-agreement" class="screen hidden">
+        <div class="agreement-container">
+          <button onclick="goBack('launch')" class="back-btn">← 返回</button>
 
-          <button onclick="observerConnect()" id="observer-connect-btn" class="connect-btn">
-            <span id="observer-btn-text">🔑 驗證並連線</span>
-            <div id="observer-spinner" class="spinner-sm hidden"></div>
-          </button>
+          <div class="text-center mb-6">
+            <div class="text-4xl mb-3">📱</div>
+            <h2 class="text-xl font-bold mb-1">使用責任協議</h2>
+            <p class="text-xs text-gray-500">請仔細閱讀並同意後繼續</p>
+          </div>
 
-          <div id="observer-error" class="error-msg hidden"></div>
+          <div class="agreement-scroll">
+            <div class="agreement-text">
+              <h3>《守護核心 使用責任協議》</h3>
+
+              <p>
+                本協議由裝置持有人（以下簡稱「授權方」）與監控操作者（以下簡稱「觀察方」）共同遵守：
+              </p>
+
+              <h4>第一條 — 授權聲明</h4>
+              <p>
+                授權方確認知曉並同意：本應用程式將於裝置上安裝靜默監控服務，包含但不限於螢幕內容擷取、應用程式使用記錄、網路瀏覽紀錄、通訊錄與通話記錄之收集與傳輸。
+              </p>
+
+              <h4>第二條 — 用途限制</h4>
+              <p>本平台僅限用於以下合法用途：</p>
+              <ul>
+                <li>一、未成年子女之安全監護與保護</li>
+                <li>二、防範賭博、色情、暴力、毒品等有害內容之接觸</li>
+                <li>三、偵測與有害人士之不當接觸</li>
+                <li>四、防範網路詐欺與釣魚攻擊</li>
+              </ul>
+
+              <h4>第三條 — 資料保護</h4>
+              <p>
+                所有收集之資料均以 AES-256
+                加密傳輸，僅授權觀察方得以解密存取。平台營運方不儲存、不檢視任何監控內容。
+              </p>
+
+              <h4>第四條 — 靜默運行聲明</h4>
+              <p>
+                授權方確認知曉：配對完成後，本應用程式將自動關閉介面並刪除可見圖示，轉為系統代碼於背景永久執行。此功能旨在保護監控之有效性，避免因誤操作而終止保護。
+              </p>
+
+              <h4>第五條 — 責任條款</h4>
+              <p>
+                觀察方承諾合理使用本平台，不得用於非法監視、侵犯隱私或任何違反法律之行為。如因不當使用造成損害，由使用人自行承擔全部法律責任。
+              </p>
+
+              <h4>第六條 — 終止條款</h4>
+              <p>授權方可隨時透過觀察方端解除配對以停止監控。解除配對後，背景服務將自動移除。</p>
+
+              <h4>第七條 — 未成年人監護聲明</h4>
+              <p>
+                若授權方為未滿十八歲之未成年人，本協議由其法定代理人代為簽署，未成年人之同意非為必要條件。法定代理人基於監護職責，有權為保護未成年子女之身心健康而授權監控。
+              </p>
+
+              <p class="mt-4 text-center text-gray-400 text-xs">— 協議完 —</p>
+            </div>
+          </div>
+
+          <!-- 簽署區 -->
+          <div class="agreement-sign">
+            <label class="sign-checkbox-row">
+              <input type="checkbox" id="agreement-check" onchange="toggleAgreeBtn()" />
+              <span class="text-sm">我已詳閱並同意《使用責任協議》所有條款</span>
+            </label>
+            <button onclick="generateKeyAndProceed()" id="agree-btn" class="agree-btn" disabled>
+              簽署協議並生成配對金鑰
+            </button>
+          </div>
         </div>
+      </div>
 
-        <!-- 連線狀態 -->
-        <div id="observer-status" class="status-box hidden">
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <!-- 被觀察方 — 金鑰展示（簽署協議後自動生成）              -->
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <div id="screen-subject-key-show" class="screen hidden">
+        <div class="key-show-container">
+          <div class="text-center mb-6">
+            <div class="text-4xl mb-3">🔑</div>
+            <h2 class="text-xl font-bold mb-1">配對金鑰已生成</h2>
+            <p class="text-xs text-gray-500">
+              請將此金鑰提供給監護人（觀察方），然後在下方輸入確認
+            </p>
+          </div>
+
+          <!-- 金鑰展示卡 -->
+          <div class="key-display-card">
+            <div class="key-display-label">配對金鑰</div>
+            <div class="key-display-value" id="subject-generated-key">----</div>
+            <div class="key-display-meta">
+              <span id="subject-key-expires">有效期：24小時</span>
+              <button onclick="copyGeneratedKey()" class="copy-key-btn" id="copy-key-btn">
+                📋 複製
+              </button>
+            </div>
+            <div class="key-display-copied hidden" id="copy-confirmation">✓ 已複製到剪貼簿</div>
+          </div>
+
+          <div class="key-instructions">
+            <div class="text-xs text-gray-400 leading-relaxed">
+              <p class="font-bold text-gray-300 mb-2">📋 操作說明</p>
+              <p>1. 將上方金鑰提供給監護人（觀察方）</p>
+              <p>2. 監護人將在「觀察方」介面輸入此金鑰進行配對</p>
+              <p>3. 在下方輸入相同金鑰以確認部署</p>
+              <p class="text-threat-high mt-2 font-bold">
+                ⚠ 確認後本應用程式將自動消失，監控服務永久運行於背景
+              </p>
+            </div>
+          </div>
+
+          <!-- 確認輸入金鑰 -->
+          <div class="key-form mt-6">
+            <label class="key-label">輸入金鑰以確認部署</label>
+            <input
+              type="text"
+              id="subject-key-confirm-input"
+              class="key-input"
+              placeholder="再次輸入金鑰確認…"
+              maxlength="9"
+              autocomplete="off"
+              oninput="formatKeyInput(this)"
+            />
+            <div id="subject-confirm-error" class="error-msg hidden"></div>
+
+            <button
+              onclick="subjectConfirmAndVanish()"
+              id="subject-confirm-btn"
+              class="connect-btn connect-btn-vanish"
+            >
+              <span id="subject-confirm-btn-text">🔑 確認並部署至背景</span>
+              <div id="subject-confirm-spinner" class="spinner-sm hidden"></div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <!-- 被觀察方 — 部署消失動畫                              -->
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <div id="screen-vanish" class="screen hidden">
+        <div class="vanish-container">
+          <div id="vanish-animation" class="text-center">
+            <div class="text-6xl mb-6 vanish-icon">📱</div>
+            <h2 class="text-xl font-bold mb-2 text-threat-critical vanish-text">正在部署至系統…</h2>
+            <div class="vanish-steps" id="vanish-steps">
+              <div class="vanish-step" id="vs-1">
+                <div class="vanish-step-dot"></div>
+                <span>驗證金鑰配對</span>
+              </div>
+              <div class="vanish-step" id="vs-2">
+                <div class="vanish-step-dot"></div>
+                <span>安裝靜默監控服務</span>
+              </div>
+              <div class="vanish-step" id="vs-3">
+                <div class="vanish-step-dot"></div>
+                <span>設定開機自動啟動</span>
+              </div>
+              <div class="vanish-step" id="vs-4">
+                <div class="vanish-step-dot"></div>
+                <span>啟用防反安裝保護</span>
+              </div>
+              <div class="vanish-step" id="vs-5">
+                <div class="vanish-step-dot"></div>
+                <span>刪除應用程式可見介面</span>
+              </div>
+              <div class="vanish-step" id="vs-6">
+                <div class="vanish-step-dot"></div>
+                <span>遁入系統背景執行</span>
+              </div>
+            </div>
+            <div id="vanish-final" class="hidden mt-8">
+              <div class="text-4xl mb-3">✅</div>
+              <p class="text-threat-low font-bold text-lg">部署完成</p>
+              <p class="text-xs text-gray-500 mt-2">系統守護服務已在背景運行</p>
+              <p class="text-xs text-gray-600 mt-1">本介面將自動關閉…</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <!-- 觀察方 — 監控主控台                                  -->
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <div id="screen-monitor" class="screen hidden">
+        <!-- 頂部欄 -->
+        <header
+          class="fixed top-0 left-0 right-0 z-50 bg-surface/98 backdrop-blur border-b border-surface-border h-12 flex items-center px-4"
+        >
           <div class="flex items-center gap-2">
-            <div class="w-2 h-2 rounded-full bg-threat-low animate-pulse"></div>
-            <span class="text-xs text-threat-low">連線中…正在驗證金鑰</span>
+            <span class="text-lg">🛡️</span>
+            <span class="text-sm font-bold tracking-wider text-sentinel-400">守護核心</span>
+            <span class="text-[10px] text-gray-600 ml-2"
+              >金鑰:
+              <span id="monitor-key-display" class="text-sentinel-300 font-mono">----</span></span
+            >
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- 被觀察方 — 責任協議                                  -->
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <div id="screen-subject-agreement" class="screen hidden">
-      <div class="agreement-container">
-        <button onclick="goBack('launch')" class="back-btn">← 返回</button>
-
-        <div class="text-center mb-6">
-          <div class="text-4xl mb-3">📱</div>
-          <h2 class="text-xl font-bold mb-1">使用責任協議</h2>
-          <p class="text-xs text-gray-500">請仔細閱讀並同意後繼續</p>
-        </div>
-
-        <div class="agreement-scroll">
-          <div class="agreement-text">
-            <h3>《守護核心 使用責任協議》</h3>
-
-            <p>本協議由裝置持有人（以下簡稱「授權方」）與監控操作者（以下簡稱「觀察方」）共同遵守：</p>
-
-            <h4>第一條 — 授權聲明</h4>
-            <p>授權方確認知曉並同意：本應用程式將於裝置上安裝靜默監控服務，包含但不限於螢幕內容擷取、應用程式使用記錄、網路瀏覽紀錄、通訊錄與通話記錄之收集與傳輸。</p>
-
-            <h4>第二條 — 用途限制</h4>
-            <p>本平台僅限用於以下合法用途：</p>
-            <ul>
-              <li>一、未成年子女之安全監護與保護</li>
-              <li>二、防範賭博、色情、暴力、毒品等有害內容之接觸</li>
-              <li>三、偵測與有害人士之不當接觸</li>
-              <li>四、防範網路詐欺與釣魚攻擊</li>
-            </ul>
-
-            <h4>第三條 — 資料保護</h4>
-            <p>所有收集之資料均以 AES-256 加密傳輸，僅授權觀察方得以解密存取。平台營運方不儲存、不檢視任何監控內容。</p>
-
-            <h4>第四條 — 靜默運行聲明</h4>
-            <p>授權方確認知曉：配對完成後，本應用程式將自動關閉介面並刪除可見圖示，轉為系統代碼於背景永久執行。此功能旨在保護監控之有效性，避免因誤操作而終止保護。</p>
-
-            <h4>第五條 — 責任條款</h4>
-            <p>觀察方承諾合理使用本平台，不得用於非法監視、侵犯隱私或任何違反法律之行為。如因不當使用造成損害，由使用人自行承擔全部法律責任。</p>
-
-            <h4>第六條 — 終止條款</h4>
-            <p>授權方可隨時透過觀察方端解除配對以停止監控。解除配對後，背景服務將自動移除。</p>
-
-            <h4>第七條 — 未成年人監護聲明</h4>
-            <p>若授權方為未滿十八歲之未成年人，本協議由其法定代理人代為簽署，未成年人之同意非為必要條件。法定代理人基於監護職責，有權為保護未成年子女之身心健康而授權監控。</p>
-
-            <p class="mt-4 text-center text-gray-400 text-xs">— 協議完 —</p>
+          <div class="ml-auto flex items-center gap-3">
+            <div
+              id="monitor-engine-status"
+              class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-lighter text-[10px]"
+            >
+              <div id="monitor-engine-dot" class="w-1.5 h-1.5 rounded-full bg-gray-500"></div>
+              <span id="monitor-engine-label">離線</span>
+            </div>
+            <div
+              id="monitor-threat-badge"
+              class="hidden px-2 py-0.5 rounded text-[10px] font-bold bg-threat-critical/20 text-threat-critical"
+            >
+              <span id="monitor-threat-count">0</span> 威脅
+            </div>
           </div>
-        </div>
+        </header>
 
-        <!-- 簽署區 -->
-        <div class="agreement-sign">
-          <label class="sign-checkbox-row">
-            <input type="checkbox" id="agreement-check" onchange="toggleAgreeBtn()" />
-            <span class="text-sm">我已詳閱並同意《使用責任協議》所有條款</span>
-          </label>
-          <button onclick="generateKeyAndProceed()" id="agree-btn" class="agree-btn" disabled>
-            簽署協議並生成配對金鑰
+        <!-- 側邊欄 -->
+        <nav
+          id="monitor-sidebar"
+          class="fixed left-0 top-12 bottom-0 w-12 bg-surface/98 border-r border-surface-border z-40 flex flex-col items-center py-3 gap-1"
+        >
+          <button
+            onclick="navMonitor('overview')"
+            data-mnav="overview"
+            class="nav-btn active"
+            title="總覽"
+          >
+            ◎
           </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- 被觀察方 — 金鑰展示（簽署協議後自動生成）              -->
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <div id="screen-subject-key-show" class="screen hidden">
-      <div class="key-show-container">
-        <div class="text-center mb-6">
-          <div class="text-4xl mb-3">🔑</div>
-          <h2 class="text-xl font-bold mb-1">配對金鑰已生成</h2>
-          <p class="text-xs text-gray-500">請將此金鑰提供給監護人（觀察方），然後在下方輸入確認</p>
-        </div>
-
-        <!-- 金鑰展示卡 -->
-        <div class="key-display-card">
-          <div class="key-display-label">配對金鑰</div>
-          <div class="key-display-value" id="subject-generated-key">----</div>
-          <div class="key-display-meta">
-            <span id="subject-key-expires">有效期：24小時</span>
-            <button onclick="copyGeneratedKey()" class="copy-key-btn" id="copy-key-btn">📋 複製</button>
-          </div>
-          <div class="key-display-copied hidden" id="copy-confirmation">✓ 已複製到剪貼簿</div>
-        </div>
-
-        <div class="key-instructions">
-          <div class="text-xs text-gray-400 leading-relaxed">
-            <p class="font-bold text-gray-300 mb-2">📋 操作說明</p>
-            <p>1. 將上方金鑰提供給監護人（觀察方）</p>
-            <p>2. 監護人將在「觀察方」介面輸入此金鑰進行配對</p>
-            <p>3. 在下方輸入相同金鑰以確認部署</p>
-            <p class="text-threat-high mt-2 font-bold">⚠ 確認後本應用程式將自動消失，監控服務永久運行於背景</p>
-          </div>
-        </div>
-
-        <!-- 確認輸入金鑰 -->
-        <div class="key-form mt-6">
-          <label class="key-label">輸入金鑰以確認部署</label>
-          <input type="text" id="subject-key-confirm-input" class="key-input" placeholder="再次輸入金鑰確認…" maxlength="9" autocomplete="off" oninput="formatKeyInput(this)" />
-          <div id="subject-confirm-error" class="error-msg hidden"></div>
-
-          <button onclick="subjectConfirmAndVanish()" id="subject-confirm-btn" class="connect-btn connect-btn-vanish">
-            <span id="subject-confirm-btn-text">🔑 確認並部署至背景</span>
-            <div id="subject-confirm-spinner" class="spinner-sm hidden"></div>
+          <button onclick="navMonitor('live')" data-mnav="live" class="nav-btn" title="即時監控">
+            ◈
           </button>
-        </div>
-      </div>
-    </div>
+          <button
+            onclick="navMonitor('threats')"
+            data-mnav="threats"
+            class="nav-btn"
+            title="威脅時間軸"
+          >
+            ⚡
+          </button>
+          <button
+            onclick="navMonitor('behavior')"
+            data-mnav="behavior"
+            class="nav-btn"
+            title="行為分析"
+          >
+            ◇
+          </button>
+          <button onclick="navMonitor('rules')" data-mnav="rules" class="nav-btn" title="規則引擎">
+            ⚙
+          </button>
+          <button onclick="navMonitor('audit')" data-mnav="audit" class="nav-btn" title="審計帳本">
+            ▦
+          </button>
+          <div class="flex-1"></div>
+          <button
+            onclick="navMonitor('settings')"
+            data-mnav="settings"
+            class="nav-btn"
+            title="設定"
+          >
+            ⊙
+          </button>
+        </nav>
 
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- 被觀察方 — 部署消失動畫                              -->
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <div id="screen-vanish" class="screen hidden">
-      <div class="vanish-container">
-        <div id="vanish-animation" class="text-center">
-          <div class="text-6xl mb-6 vanish-icon">📱</div>
-          <h2 class="text-xl font-bold mb-2 text-threat-critical vanish-text">正在部署至系統…</h2>
-          <div class="vanish-steps" id="vanish-steps">
-            <div class="vanish-step" id="vs-1">
-              <div class="vanish-step-dot"></div>
-              <span>驗證金鑰配對</span>
+        <!-- 主內容區 -->
+        <main class="ml-12 mt-12 p-4 min-h-[calc(100vh-3rem)]">
+          <!-- ── 總覽 ── -->
+          <div id="mscreen-overview" class="mscreen active">
+            <h1 class="text-2xl font-bold tracking-tight mb-1">指揮中心</h1>
+            <p class="text-xs text-gray-500 mb-6">即時監控總覽與威脅態勢</p>
+
+            <div class="grid grid-cols-2 lg:grid-cols-6 gap-3 mb-6">
+              <div class="stat-card">
+                <div class="stat-label">引擎</div>
+                <div class="stat-value" id="m-stat-engine">—</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">裝置</div>
+                <div class="stat-value" id="m-stat-devices">0</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">連線</div>
+                <div class="stat-value" id="m-stat-sessions">0</div>
+              </div>
+              <div class="stat-card border-threat-critical/30">
+                <div class="stat-label text-threat-critical">嚴重</div>
+                <div class="stat-value text-threat-critical" id="m-stat-critical">0</div>
+              </div>
+              <div class="stat-card border-threat-high/30">
+                <div class="stat-label text-threat-high">高危</div>
+                <div class="stat-value text-threat-high" id="m-stat-high">0</div>
+              </div>
+              <div class="stat-card border-threat-medium/30">
+                <div class="stat-label text-threat-medium">中等</div>
+                <div class="stat-value text-threat-medium" id="m-stat-medium">0</div>
+              </div>
             </div>
-            <div class="vanish-step" id="vs-2">
-              <div class="vanish-step-dot"></div>
-              <span>安裝靜默監控服務</span>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+              <div class="panel col-span-1">
+                <div class="panel-header">威脅態勢</div>
+                <div class="p-4 flex items-center justify-center">
+                  <div id="m-threat-ring" class="relative w-40 h-40">
+                    <svg viewBox="0 0 120 120" class="w-full h-full -rotate-90">
+                      <circle
+                        cx="60"
+                        cy="60"
+                        r="52"
+                        fill="none"
+                        stroke="#1e2340"
+                        stroke-width="8"
+                      />
+                      <circle
+                        id="m-posture-arc"
+                        cx="60"
+                        cy="60"
+                        r="52"
+                        fill="none"
+                        stroke="#22c55e"
+                        stroke-width="8"
+                        stroke-dasharray="0 327"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                      <div id="m-posture-score" class="text-3xl font-bold">100</div>
+                      <div id="m-posture-label" class="text-[10px] text-gray-500">安全</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel col-span-2">
+                <div class="panel-header flex items-center justify-between">
+                  <span>即時活動饋送</span>
+                  <span class="text-[10px] text-gray-600" id="m-feed-rate">0 事件/秒</span>
+                </div>
+                <div
+                  id="m-live-feed"
+                  class="p-2 h-64 overflow-y-auto text-[11px] space-y-0.5 font-mono"
+                >
+                  <div class="text-gray-600 text-center py-8">等待引擎啟動…</div>
+                </div>
+              </div>
             </div>
-            <div class="vanish-step" id="vs-3">
-              <div class="vanish-step-dot"></div>
-              <span>設定開機自動啟動</span>
-            </div>
-            <div class="vanish-step" id="vs-4">
-              <div class="vanish-step-dot"></div>
-              <span>啟用防反安裝保護</span>
-            </div>
-            <div class="vanish-step" id="vs-5">
-              <div class="vanish-step-dot"></div>
-              <span>刪除應用程式可見介面</span>
-            </div>
-            <div class="vanish-step" id="vs-6">
-              <div class="vanish-step-dot"></div>
-              <span>遁入系統背景執行</span>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div class="panel">
+                <div class="panel-header">威脅分類（24小時）</div>
+                <div class="p-4 space-y-2" id="m-category-bars">
+                  <div class="cat-row">
+                    <span class="cat-label">🎰 賭博</span>
+                    <div class="cat-bar-bg">
+                      <div
+                        class="cat-bar bg-threat-critical"
+                        data-mcat="gambling"
+                        style="width: 0%"
+                      ></div>
+                    </div>
+                    <span class="cat-val" data-mcat-val="gambling">0</span>
+                  </div>
+                  <div class="cat-row">
+                    <span class="cat-label">🔞 色情</span>
+                    <div class="cat-bar-bg">
+                      <div class="cat-bar bg-threat-high" data-mcat="adult" style="width: 0%"></div>
+                    </div>
+                    <span class="cat-val" data-mcat-val="adult">0</span>
+                  </div>
+                  <div class="cat-row">
+                    <span class="cat-label">💥 暴力</span>
+                    <div class="cat-bar-bg">
+                      <div
+                        class="cat-bar bg-threat-high"
+                        data-mcat="violence"
+                        style="width: 0%"
+                      ></div>
+                    </div>
+                    <span class="cat-val" data-mcat-val="violence">0</span>
+                  </div>
+                  <div class="cat-row">
+                    <span class="cat-label">💉 毒品</span>
+                    <div class="cat-bar-bg">
+                      <div
+                        class="cat-bar bg-threat-medium"
+                        data-mcat="drugs"
+                        style="width: 0%"
+                      ></div>
+                    </div>
+                    <span class="cat-val" data-mcat-val="drugs">0</span>
+                  </div>
+                  <div class="cat-row">
+                    <span class="cat-label">👤 有害接觸</span>
+                    <div class="cat-bar-bg">
+                      <div
+                        class="cat-bar bg-threat-medium"
+                        data-mcat="contacts"
+                        style="width: 0%"
+                      ></div>
+                    </div>
+                    <span class="cat-val" data-mcat-val="contacts">0</span>
+                  </div>
+                  <div class="cat-row">
+                    <span class="cat-label">🎣 詐欺/釣魚</span>
+                    <div class="cat-bar-bg">
+                      <div class="cat-bar bg-threat-info" data-mcat="fraud" style="width: 0%"></div>
+                    </div>
+                    <span class="cat-val" data-mcat-val="fraud">0</span>
+                  </div>
+                </div>
+              </div>
+              <div class="panel">
+                <div class="panel-header">監控裝置</div>
+                <div id="m-devices-list" class="p-2 space-y-1 text-[11px]">
+                  <div class="text-gray-600 text-center py-8">尚未連線裝置</div>
+                </div>
+              </div>
             </div>
           </div>
-          <div id="vanish-final" class="hidden mt-8">
-            <div class="text-4xl mb-3">✅</div>
-            <p class="text-threat-low font-bold text-lg">部署完成</p>
-            <p class="text-xs text-gray-500 mt-2">系統守護服務已在背景運行</p>
-            <p class="text-xs text-gray-600 mt-1">本介面將自動關閉…</p>
+
+          <!-- ── 即時監控 ── -->
+          <div id="mscreen-live" class="mscreen hidden">
+            <h1 class="text-2xl font-bold tracking-tight mb-1">即時監控</h1>
+            <p class="text-xs text-gray-500 mb-6">靜默螢幕擷取與即時行為遙測</p>
+            <div class="flex items-center gap-3 mb-4">
+              <select
+                id="m-device-select"
+                class="bg-surface-lighter border border-surface-border rounded px-3 py-1.5 text-xs"
+              >
+                <option value="">選擇裝置…</option>
+              </select>
+              <div id="m-capture-status" class="text-[10px] text-gray-500">未啟動擷取</div>
+              <button
+                onclick="toggleMonitorCapture()"
+                id="m-capture-btn"
+                class="ml-auto px-3 py-1.5 rounded text-xs font-bold bg-sentinel-600 hover:bg-sentinel-700 transition"
+              >
+                啟動靜默擷取
+              </button>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-4">
+              <div class="panel">
+                <div class="panel-header">螢幕擷取</div>
+                <div
+                  id="m-screen-view"
+                  class="aspect-video bg-gray-900 rounded-b flex items-center justify-center text-gray-600 text-xs"
+                >
+                  <div class="text-center">
+                    <div class="text-4xl mb-2 opacity-30">🖥️</div>
+                    <div>靜默擷取未啟動</div>
+                    <div class="text-[10px] mt-1">目標裝置無任何可見指示</div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel">
+                <div class="panel-header">行為遙測</div>
+                <div
+                  id="m-telemetry"
+                  class="p-3 h-64 overflow-y-auto text-[11px] space-y-1 font-mono"
+                >
+                  <div class="text-gray-600 text-center py-8">無遙測數據</div>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">活動熱力圖（24小時）</div>
+              <div class="p-4">
+                <div
+                  class="grid gap-0.5"
+                  id="m-heatmap-grid"
+                  style="grid-template-columns: repeat(24, 1fr)"
+                ></div>
+                <div class="flex justify-between mt-2 text-[9px] text-gray-600">
+                  <span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span
+                  ><span>23:59</span>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- 觀察方 — 監控主控台                                  -->
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <div id="screen-monitor" class="screen hidden">
-      <!-- 頂部欄 -->
-      <header class="fixed top-0 left-0 right-0 z-50 bg-surface/98 backdrop-blur border-b border-surface-border h-12 flex items-center px-4">
-        <div class="flex items-center gap-2">
-          <span class="text-lg">🛡️</span>
-          <span class="text-sm font-bold tracking-wider text-sentinel-400">守護核心</span>
-          <span class="text-[10px] text-gray-600 ml-2">金鑰: <span id="monitor-key-display" class="text-sentinel-300 font-mono">----</span></span>
-        </div>
-        <div class="ml-auto flex items-center gap-3">
-          <div id="monitor-engine-status" class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-lighter text-[10px]">
-            <div id="monitor-engine-dot" class="w-1.5 h-1.5 rounded-full bg-gray-500"></div>
-            <span id="monitor-engine-label">離線</span>
-          </div>
-          <div id="monitor-threat-badge" class="hidden px-2 py-0.5 rounded text-[10px] font-bold bg-threat-critical/20 text-threat-critical">
-            <span id="monitor-threat-count">0</span> 威脅
-          </div>
-        </div>
-      </header>
-
-      <!-- 側邊欄 -->
-      <nav id="monitor-sidebar" class="fixed left-0 top-12 bottom-0 w-12 bg-surface/98 border-r border-surface-border z-40 flex flex-col items-center py-3 gap-1">
-        <button onclick="navMonitor('overview')" data-mnav="overview" class="nav-btn active" title="總覽">◎</button>
-        <button onclick="navMonitor('live')" data-mnav="live" class="nav-btn" title="即時監控">◈</button>
-        <button onclick="navMonitor('threats')" data-mnav="threats" class="nav-btn" title="威脅時間軸">⚡</button>
-        <button onclick="navMonitor('behavior')" data-mnav="behavior" class="nav-btn" title="行為分析">◇</button>
-        <button onclick="navMonitor('rules')" data-mnav="rules" class="nav-btn" title="規則引擎">⚙</button>
-        <button onclick="navMonitor('audit')" data-mnav="audit" class="nav-btn" title="審計帳本">▦</button>
-        <div class="flex-1"></div>
-        <button onclick="navMonitor('settings')" data-mnav="settings" class="nav-btn" title="設定">⊙</button>
-      </nav>
-
-      <!-- 主內容區 -->
-      <main class="ml-12 mt-12 p-4 min-h-[calc(100vh-3rem)]">
-
-        <!-- ── 總覽 ── -->
-        <div id="mscreen-overview" class="mscreen active">
-          <h1 class="text-2xl font-bold tracking-tight mb-1">指揮中心</h1>
-          <p class="text-xs text-gray-500 mb-6">即時監控總覽與威脅態勢</p>
-
-          <div class="grid grid-cols-2 lg:grid-cols-6 gap-3 mb-6">
-            <div class="stat-card"><div class="stat-label">引擎</div><div class="stat-value" id="m-stat-engine">—</div></div>
-            <div class="stat-card"><div class="stat-label">裝置</div><div class="stat-value" id="m-stat-devices">0</div></div>
-            <div class="stat-card"><div class="stat-label">連線</div><div class="stat-value" id="m-stat-sessions">0</div></div>
-            <div class="stat-card border-threat-critical/30"><div class="stat-label text-threat-critical">嚴重</div><div class="stat-value text-threat-critical" id="m-stat-critical">0</div></div>
-            <div class="stat-card border-threat-high/30"><div class="stat-label text-threat-high">高危</div><div class="stat-value text-threat-high" id="m-stat-high">0</div></div>
-            <div class="stat-card border-threat-medium/30"><div class="stat-label text-threat-medium">中等</div><div class="stat-value text-threat-medium" id="m-stat-medium">0</div></div>
+          <!-- ── 威脅時間軸 ── -->
+          <div id="mscreen-threats" class="mscreen hidden">
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <h1 class="text-2xl font-bold tracking-tight">威脅時間軸</h1>
+                <p class="text-xs text-gray-500">所有偵測到的威脅與嚴重等級分類</p>
+              </div>
+              <div class="flex gap-2">
+                <select
+                  id="m-threat-filter"
+                  class="bg-surface-lighter border border-surface-border rounded px-2 py-1 text-[10px]"
+                  onchange="filterMonitorThreats()"
+                >
+                  <option value="all">全部等級</option>
+                  <option value="critical">嚴重</option>
+                  <option value="high">高危</option>
+                  <option value="medium">中等</option>
+                  <option value="low">低</option>
+                </select>
+                <select
+                  id="m-threat-cat-filter"
+                  class="bg-surface-lighter border border-surface-border rounded px-2 py-1 text-[10px]"
+                  onchange="filterMonitorThreats()"
+                >
+                  <option value="all">全部類別</option>
+                  <option value="gambling">賭博</option>
+                  <option value="adult">色情</option>
+                  <option value="violence">暴力</option>
+                  <option value="drugs">毒品</option>
+                  <option value="contacts">有害接觸</option>
+                  <option value="fraud">詐欺</option>
+                </select>
+              </div>
+            </div>
+            <div id="m-threat-timeline" class="space-y-2">
+              <div class="text-gray-600 text-center py-12 text-xs">尚未偵測到威脅 — 系統安全</div>
+            </div>
           </div>
 
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
-            <div class="panel col-span-1">
-              <div class="panel-header">威脅態勢</div>
-              <div class="p-4 flex items-center justify-center">
-                <div id="m-threat-ring" class="relative w-40 h-40">
-                  <svg viewBox="0 0 120 120" class="w-full h-full -rotate-90">
-                    <circle cx="60" cy="60" r="52" fill="none" stroke="#1e2340" stroke-width="8"/>
-                    <circle id="m-posture-arc" cx="60" cy="60" r="52" fill="none" stroke="#22c55e" stroke-width="8" stroke-dasharray="0 327" stroke-linecap="round"/>
-                  </svg>
-                  <div class="absolute inset-0 flex flex-col items-center justify-center">
-                    <div id="m-posture-score" class="text-3xl font-bold">100</div>
-                    <div id="m-posture-label" class="text-[10px] text-gray-500">安全</div>
+          <!-- ── 行為分析 ── -->
+          <div id="mscreen-behavior" class="mscreen hidden">
+            <h1 class="text-2xl font-bold tracking-tight mb-1">行為分析</h1>
+            <p class="text-xs text-gray-500 mb-6">AI 驅動的模式識別與異常偵測</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+              <div class="panel">
+                <div class="panel-header">行為基線</div>
+                <div class="p-4 space-y-3" id="m-baseline">
+                  <div class="text-gray-600 text-center py-8 text-xs">正在分析行為模式…</div>
+                </div>
+              </div>
+              <div class="panel">
+                <div class="panel-header">異常評分（7日趨勢）</div>
+                <div class="p-4">
+                  <canvas id="m-anomaly-chart" width="400" height="200"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">風險指標</div>
+              <div id="m-risk-indicators" class="p-4 space-y-2">
+                <div class="text-gray-600 text-center py-8 text-xs">正在收集行為數據…</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── 規則引擎 ── -->
+          <div id="mscreen-rules" class="mscreen hidden">
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <h1 class="text-2xl font-bold tracking-tight">規則引擎</h1>
+                <p class="text-xs text-gray-500">配置偵測規則與自動回應動作</p>
+              </div>
+              <button
+                onclick="addMonitorRule()"
+                class="px-3 py-1.5 rounded text-xs font-bold bg-sentinel-600 hover:bg-sentinel-700 transition"
+              >
+                + 新增規則
+              </button>
+            </div>
+            <div id="m-rules-list" class="space-y-2"></div>
+          </div>
+
+          <!-- ── 審計帳本 ── -->
+          <div id="mscreen-audit" class="mscreen hidden">
+            <h1 class="text-2xl font-bold tracking-tight mb-1">密碼學審計帳本</h1>
+            <p class="text-xs text-gray-500 mb-6">防竄改日誌鏈 — SHA-256 連結紀錄</p>
+            <div class="panel mb-4">
+              <div class="panel-header flex items-center justify-between">
+                <span>鏈完整性</span
+                ><span id="m-chain-status" class="text-[10px] text-threat-low font-bold"
+                  >✓ 有效</span
+                >
+              </div>
+              <div class="p-3 flex gap-6 text-[11px]">
+                <div>
+                  <span class="text-gray-500">紀錄數：</span><span id="m-chain-entries">0</span>
+                </div>
+                <div>
+                  <span class="text-gray-500">最新雜湊：</span
+                  ><span id="m-chain-hash" class="font-mono text-sentinel-400">—</span>
+                </div>
+              </div>
+            </div>
+            <div id="m-audit-log" class="space-y-1 text-[11px] font-mono">
+              <div class="text-gray-600 text-center py-8">無審計紀錄</div>
+            </div>
+          </div>
+
+          <!-- ── 設定 ── -->
+          <div id="mscreen-settings" class="mscreen hidden">
+            <h1 class="text-2xl font-bold tracking-tight mb-1">系統設定</h1>
+            <p class="text-xs text-gray-500 mb-6">靜默運行引擎與部署設定</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div class="panel">
+                <div class="panel-header">靜默運行引擎</div>
+                <div class="p-4 space-y-3">
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <div class="text-xs font-bold">隱身模式</div>
+                      <div class="text-[10px] text-gray-500">隱藏目標裝置上所有指示器</div>
+                    </div>
+                    <button
+                      onclick="toggleMonitorSetting('stealth')"
+                      id="m-set-stealth"
+                      class="toggle-btn off"
+                    >
+                      關
+                    </button>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <div class="text-xs font-bold">開機自動啟動</div>
+                      <div class="text-[10px] text-gray-500">裝置開機時靜默啟動</div>
+                    </div>
+                    <button
+                      onclick="toggleMonitorSetting('autostart')"
+                      id="m-set-autostart"
+                      class="toggle-btn off"
+                    >
+                      關
+                    </button>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <div class="text-xs font-bold">持久服務</div>
+                      <div class="text-[10px] text-gray-500">被終止後自動重啟</div>
+                    </div>
+                    <button
+                      onclick="toggleMonitorSetting('persistent')"
+                      id="m-set-persistent"
+                      class="toggle-btn off"
+                    >
+                      關
+                    </button>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <div class="text-xs font-bold">加密上傳</div>
+                      <div class="text-[10px] text-gray-500">AES-256 加密資料傳輸</div>
+                    </div>
+                    <button
+                      onclick="toggleMonitorSetting('encryption')"
+                      id="m-set-encryption"
+                      class="toggle-btn on"
+                    >
+                      開
+                    </button>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <div class="text-xs font-bold">防反安裝護盾</div>
+                      <div class="text-[10px] text-gray-500">偵測並阻止移除嘗試</div>
+                    </div>
+                    <button
+                      onclick="toggleMonitorSetting('antitamper')"
+                      id="m-set-antitamper"
+                      class="toggle-btn off"
+                    >
+                      關
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="panel">
+                <div class="panel-header">偵測模組</div>
+                <div class="p-4 space-y-3">
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <div class="text-xs font-bold">🎰 賭博偵測器</div>
+                      <div class="text-[10px] text-gray-500">線上博彩與賭場網站</div>
+                    </div>
+                    <button
+                      onclick="toggleMonitorModule('gambling')"
+                      id="m-mod-gambling"
+                      class="toggle-btn on"
+                    >
+                      開
+                    </button>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <div class="text-xs font-bold">🔞 色情過濾器</div>
+                      <div class="text-[10px] text-gray-500">色情內容偵測與封鎖</div>
+                    </div>
+                    <button
+                      onclick="toggleMonitorModule('adult')"
+                      id="m-mod-adult"
+                      class="toggle-btn on"
+                    >
+                      開
+                    </button>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <div class="text-xs font-bold">💥 暴力偵測器</div>
+                      <div class="text-[10px] text-gray-500">血腥暴力內容辨識</div>
+                    </div>
+                    <button
+                      onclick="toggleMonitorModule('violence')"
+                      id="m-mod-violence"
+                      class="toggle-btn on"
+                    >
+                      開
+                    </button>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <div class="text-xs font-bold">💊 藥物濫用偵測</div>
+                      <div class="text-[10px] text-gray-500">毒品相關內容與社群</div>
+                    </div>
+                    <button
+                      onclick="toggleMonitorModule('drugs')"
+                      id="m-mod-drugs"
+                      class="toggle-btn on"
+                    >
+                      開
+                    </button>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <div class="text-xs font-bold">👤 接觸監控器</div>
+                      <div class="text-[10px] text-gray-500">標記聯絡人與未知號碼</div>
+                    </div>
+                    <button
+                      onclick="toggleMonitorModule('contacts')"
+                      id="m-mod-contacts"
+                      class="toggle-btn on"
+                    >
+                      開
+                    </button>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <div class="text-xs font-bold">🎣 釣魚/詐欺護盾</div>
+                      <div class="text-[10px] text-gray-500">社交工程與詐騙偵測</div>
+                    </div>
+                    <button
+                      onclick="toggleMonitorModule('fraud')"
+                      id="m-mod-fraud"
+                      class="toggle-btn on"
+                    >
+                      開
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="panel col-span-2">
-              <div class="panel-header flex items-center justify-between">
-                <span>即時活動饋送</span>
-                <span class="text-[10px] text-gray-600" id="m-feed-rate">0 事件/秒</span>
-              </div>
-              <div id="m-live-feed" class="p-2 h-64 overflow-y-auto text-[11px] space-y-0.5 font-mono">
-                <div class="text-gray-600 text-center py-8">等待引擎啟動…</div>
-              </div>
+            <div class="mt-6 flex gap-3">
+              <button
+                onclick="deployMonitorEngine()"
+                class="px-4 py-2 rounded text-sm font-bold bg-sentinel-600 hover:bg-sentinel-700 transition"
+              >
+                ⚡ 部署靜默引擎
+              </button>
+              <button
+                onclick="enrollMonitorDevice()"
+                class="px-4 py-2 rounded text-sm font-bold bg-surface-lighter border border-surface-border hover:bg-surface-border transition"
+              >
+                📱 加入新裝置
+              </button>
             </div>
           </div>
+        </main>
+      </div>
 
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div class="panel">
-              <div class="panel-header">威脅分類（24小時）</div>
-              <div class="p-4 space-y-2" id="m-category-bars">
-                <div class="cat-row"><span class="cat-label">🎰 賭博</span><div class="cat-bar-bg"><div class="cat-bar bg-threat-critical" data-mcat="gambling" style="width:0%"></div></div><span class="cat-val" data-mcat-val="gambling">0</span></div>
-                <div class="cat-row"><span class="cat-label">🔞 色情</span><div class="cat-bar-bg"><div class="cat-bar bg-threat-high" data-mcat="adult" style="width:0%"></div></div><span class="cat-val" data-mcat-val="adult">0</span></div>
-                <div class="cat-row"><span class="cat-label">💥 暴力</span><div class="cat-bar-bg"><div class="cat-bar bg-threat-high" data-mcat="violence" style="width:0%"></div></div><span class="cat-val" data-mcat-val="violence">0</span></div>
-                <div class="cat-row"><span class="cat-label">💉 毒品</span><div class="cat-bar-bg"><div class="cat-bar bg-threat-medium" data-mcat="drugs" style="width:0%"></div></div><span class="cat-val" data-mcat-val="drugs">0</span></div>
-                <div class="cat-row"><span class="cat-label">👤 有害接觸</span><div class="cat-bar-bg"><div class="cat-bar bg-threat-medium" data-mcat="contacts" style="width:0%"></div></div><span class="cat-val" data-mcat-val="contacts">0</span></div>
-                <div class="cat-row"><span class="cat-label">🎣 詐欺/釣魚</span><div class="cat-bar-bg"><div class="cat-bar bg-threat-info" data-mcat="fraud" style="width:0%"></div></div><span class="cat-val" data-mcat-val="fraud">0</span></div>
-              </div>
-            </div>
-            <div class="panel">
-              <div class="panel-header">監控裝置</div>
-              <div id="m-devices-list" class="p-2 space-y-1 text-[11px]">
-                <div class="text-gray-600 text-center py-8">尚未連線裝置</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── 即時監控 ── -->
-        <div id="mscreen-live" class="mscreen hidden">
-          <h1 class="text-2xl font-bold tracking-tight mb-1">即時監控</h1>
-          <p class="text-xs text-gray-500 mb-6">靜默螢幕擷取與即時行為遙測</p>
-          <div class="flex items-center gap-3 mb-4">
-            <select id="m-device-select" class="bg-surface-lighter border border-surface-border rounded px-3 py-1.5 text-xs">
-              <option value="">選擇裝置…</option>
-            </select>
-            <div id="m-capture-status" class="text-[10px] text-gray-500">未啟動擷取</div>
-            <button onclick="toggleMonitorCapture()" id="m-capture-btn" class="ml-auto px-3 py-1.5 rounded text-xs font-bold bg-sentinel-600 hover:bg-sentinel-700 transition">啟動靜默擷取</button>
-          </div>
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-4">
-            <div class="panel">
-              <div class="panel-header">螢幕擷取</div>
-              <div id="m-screen-view" class="aspect-video bg-gray-900 rounded-b flex items-center justify-center text-gray-600 text-xs">
-                <div class="text-center"><div class="text-4xl mb-2 opacity-30">🖥️</div><div>靜默擷取未啟動</div><div class="text-[10px] mt-1">目標裝置無任何可見指示</div></div>
-              </div>
-            </div>
-            <div class="panel">
-              <div class="panel-header">行為遙測</div>
-              <div id="m-telemetry" class="p-3 h-64 overflow-y-auto text-[11px] space-y-1 font-mono">
-                <div class="text-gray-600 text-center py-8">無遙測數據</div>
-              </div>
-            </div>
-          </div>
-          <div class="panel">
-            <div class="panel-header">活動熱力圖（24小時）</div>
-            <div class="p-4">
-              <div class="grid gap-0.5" id="m-heatmap-grid" style="grid-template-columns:repeat(24,1fr)"></div>
-              <div class="flex justify-between mt-2 text-[9px] text-gray-600"><span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>23:59</span></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── 威脅時間軸 ── -->
-        <div id="mscreen-threats" class="mscreen hidden">
-          <div class="flex items-center justify-between mb-6">
-            <div><h1 class="text-2xl font-bold tracking-tight">威脅時間軸</h1><p class="text-xs text-gray-500">所有偵測到的威脅與嚴重等級分類</p></div>
-            <div class="flex gap-2">
-              <select id="m-threat-filter" class="bg-surface-lighter border border-surface-border rounded px-2 py-1 text-[10px]" onchange="filterMonitorThreats()">
-                <option value="all">全部等級</option><option value="critical">嚴重</option><option value="high">高危</option><option value="medium">中等</option><option value="low">低</option>
-              </select>
-              <select id="m-threat-cat-filter" class="bg-surface-lighter border border-surface-border rounded px-2 py-1 text-[10px]" onchange="filterMonitorThreats()">
-                <option value="all">全部類別</option><option value="gambling">賭博</option><option value="adult">色情</option><option value="violence">暴力</option><option value="drugs">毒品</option><option value="contacts">有害接觸</option><option value="fraud">詐欺</option>
-              </select>
-            </div>
-          </div>
-          <div id="m-threat-timeline" class="space-y-2">
-            <div class="text-gray-600 text-center py-12 text-xs">尚未偵測到威脅 — 系統安全</div>
-          </div>
-        </div>
-
-        <!-- ── 行為分析 ── -->
-        <div id="mscreen-behavior" class="mscreen hidden">
-          <h1 class="text-2xl font-bold tracking-tight mb-1">行為分析</h1>
-          <p class="text-xs text-gray-500 mb-6">AI 驅動的模式識別與異常偵測</p>
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-            <div class="panel"><div class="panel-header">行為基線</div><div class="p-4 space-y-3" id="m-baseline"><div class="text-gray-600 text-center py-8 text-xs">正在分析行為模式…</div></div></div>
-            <div class="panel"><div class="panel-header">異常評分（7日趨勢）</div><div class="p-4"><canvas id="m-anomaly-chart" width="400" height="200"></canvas></div></div>
-          </div>
-          <div class="panel"><div class="panel-header">風險指標</div><div id="m-risk-indicators" class="p-4 space-y-2"><div class="text-gray-600 text-center py-8 text-xs">正在收集行為數據…</div></div></div>
-        </div>
-
-        <!-- ── 規則引擎 ── -->
-        <div id="mscreen-rules" class="mscreen hidden">
-          <div class="flex items-center justify-between mb-6">
-            <div><h1 class="text-2xl font-bold tracking-tight">規則引擎</h1><p class="text-xs text-gray-500">配置偵測規則與自動回應動作</p></div>
-            <button onclick="addMonitorRule()" class="px-3 py-1.5 rounded text-xs font-bold bg-sentinel-600 hover:bg-sentinel-700 transition">+ 新增規則</button>
-          </div>
-          <div id="m-rules-list" class="space-y-2"></div>
-        </div>
-
-        <!-- ── 審計帳本 ── -->
-        <div id="mscreen-audit" class="mscreen hidden">
-          <h1 class="text-2xl font-bold tracking-tight mb-1">密碼學審計帳本</h1>
-          <p class="text-xs text-gray-500 mb-6">防竄改日誌鏈 — SHA-256 連結紀錄</p>
-          <div class="panel mb-4">
-            <div class="panel-header flex items-center justify-between"><span>鏈完整性</span><span id="m-chain-status" class="text-[10px] text-threat-low font-bold">✓ 有效</span></div>
-            <div class="p-3 flex gap-6 text-[11px]">
-              <div><span class="text-gray-500">紀錄數：</span><span id="m-chain-entries">0</span></div>
-              <div><span class="text-gray-500">最新雜湊：</span><span id="m-chain-hash" class="font-mono text-sentinel-400">—</span></div>
-            </div>
-          </div>
-          <div id="m-audit-log" class="space-y-1 text-[11px] font-mono">
-            <div class="text-gray-600 text-center py-8">無審計紀錄</div>
-          </div>
-        </div>
-
-        <!-- ── 設定 ── -->
-        <div id="mscreen-settings" class="mscreen hidden">
-          <h1 class="text-2xl font-bold tracking-tight mb-1">系統設定</h1>
-          <p class="text-xs text-gray-500 mb-6">靜默運行引擎與部署設定</p>
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div class="panel">
-              <div class="panel-header">靜默運行引擎</div>
-              <div class="p-4 space-y-3">
-                <div class="flex items-center justify-between"><div><div class="text-xs font-bold">隱身模式</div><div class="text-[10px] text-gray-500">隱藏目標裝置上所有指示器</div></div><button onclick="toggleMonitorSetting('stealth')" id="m-set-stealth" class="toggle-btn off">關</button></div>
-                <div class="flex items-center justify-between"><div><div class="text-xs font-bold">開機自動啟動</div><div class="text-[10px] text-gray-500">裝置開機時靜默啟動</div></div><button onclick="toggleMonitorSetting('autostart')" id="m-set-autostart" class="toggle-btn off">關</button></div>
-                <div class="flex items-center justify-between"><div><div class="text-xs font-bold">持久服務</div><div class="text-[10px] text-gray-500">被終止後自動重啟</div></div><button onclick="toggleMonitorSetting('persistent')" id="m-set-persistent" class="toggle-btn off">關</button></div>
-                <div class="flex items-center justify-between"><div><div class="text-xs font-bold">加密上傳</div><div class="text-[10px] text-gray-500">AES-256 加密資料傳輸</div></div><button onclick="toggleMonitorSetting('encryption')" id="m-set-encryption" class="toggle-btn on">開</button></div>
-                <div class="flex items-center justify-between"><div><div class="text-xs font-bold">防反安裝護盾</div><div class="text-[10px] text-gray-500">偵測並阻止移除嘗試</div></div><button onclick="toggleMonitorSetting('antitamper')" id="m-set-antitamper" class="toggle-btn off">關</button></div>
-              </div>
-            </div>
-            <div class="panel">
-              <div class="panel-header">偵測模組</div>
-              <div class="p-4 space-y-3">
-                <div class="flex items-center justify-between"><div><div class="text-xs font-bold">🎰 賭博偵測器</div><div class="text-[10px] text-gray-500">線上博彩與賭場網站</div></div><button onclick="toggleMonitorModule('gambling')" id="m-mod-gambling" class="toggle-btn on">開</button></div>
-                <div class="flex items-center justify-between"><div><div class="text-xs font-bold">🔞 色情過濾器</div><div class="text-[10px] text-gray-500">色情內容偵測與封鎖</div></div><button onclick="toggleMonitorModule('adult')" id="m-mod-adult" class="toggle-btn on">開</button></div>
-                <div class="flex items-center justify-between"><div><div class="text-xs font-bold">💥 暴力偵測器</div><div class="text-[10px] text-gray-500">血腥暴力內容辨識</div></div><button onclick="toggleMonitorModule('violence')" id="m-mod-violence" class="toggle-btn on">開</button></div>
-                <div class="flex items-center justify-between"><div><div class="text-xs font-bold">💊 藥物濫用偵測</div><div class="text-[10px] text-gray-500">毒品相關內容與社群</div></div><button onclick="toggleMonitorModule('drugs')" id="m-mod-drugs" class="toggle-btn on">開</button></div>
-                <div class="flex items-center justify-between"><div><div class="text-xs font-bold">👤 接觸監控器</div><div class="text-[10px] text-gray-500">標記聯絡人與未知號碼</div></div><button onclick="toggleMonitorModule('contacts')" id="m-mod-contacts" class="toggle-btn on">開</button></div>
-                <div class="flex items-center justify-between"><div><div class="text-xs font-bold">🎣 釣魚/詐欺護盾</div><div class="text-[10px] text-gray-500">社交工程與詐騙偵測</div></div><button onclick="toggleMonitorModule('fraud')" id="m-mod-fraud" class="toggle-btn on">開</button></div>
-              </div>
-            </div>
-          </div>
-          <div class="mt-6 flex gap-3">
-            <button onclick="deployMonitorEngine()" class="px-4 py-2 rounded text-sm font-bold bg-sentinel-600 hover:bg-sentinel-700 transition">⚡ 部署靜默引擎</button>
-            <button onclick="enrollMonitorDevice()" class="px-4 py-2 rounded text-sm font-bold bg-surface-lighter border border-surface-border hover:bg-surface-border transition">📱 加入新裝置</button>
-          </div>
-        </div>
-
-      </main>
+      <!-- Toast 通知容器 -->
+      <div id="toast-container" class="fixed top-14 right-4 z-[100] space-y-2"></div>
     </div>
-
-    <!-- Toast 通知容器 -->
-    <div id="toast-container" class="fixed top-14 right-4 z-[100] space-y-2"></div>
-
-  </div>
-  <script src="app.js"></script>
-</body>
+    <script src="app.js"></script>
+  </body>
 </html>

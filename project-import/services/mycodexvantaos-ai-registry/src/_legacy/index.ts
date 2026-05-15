@@ -1,7 +1,7 @@
 /**
  * CodexvantaOS — module-suite
  * 模組套件 — 模組載入、外掛管理、擴充註冊
- * 
+ *
  * Layer: A-Builder | Plane: Execution | Tier: 2
  * Philosophy: Native-first / Provider-agnostic
  * 「第三方服務是平台的擴充出口，不是平台成立的地基。」
@@ -24,7 +24,10 @@ export { initProviders, getProviders, shutdownProviders } from './providers.js';
  * Bootstrap module-suite
  */
 export async function bootstrap(): Promise<void> {
-  console.log('[module-suite] Starting in %s mode...', process.env.CODEXVANTA_MODE || 'auto-detect');
+  console.log(
+    '[module-suite] Starting in %s mode...',
+    process.env.CODEXVANTA_MODE || 'auto-detect'
+  );
 
   // Initialize providers (auto-detects Native/Connected/Hybrid)
   const providers = await initProviders();

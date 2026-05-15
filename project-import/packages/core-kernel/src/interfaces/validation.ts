@@ -1,10 +1,10 @@
 /**
  * CodexvantaOS — ValidationProvider
- * 
+ *
  * Abstract interface for code / configuration / artifact validation.
  * Native mode: built-in linters, schema validators, checksum verifiers
  * External mode: SonarQube, CodeClimate, Snyk, custom CI checks, etc.
- * 
+ *
  * Covers: schema validation, code quality checks, dependency audits,
  *         configuration validation, artifact integrity verification.
  */
@@ -31,14 +31,14 @@ export interface ValidationIssue {
   file?: string;
   line?: number;
   column?: number;
-  rule?: string;               // e.g. "no-unused-vars", "CVE-2024-XXXXX"
-  suggestion?: string;         // auto-fix suggestion
+  rule?: string; // e.g. "no-unused-vars", "CVE-2024-XXXXX"
+  suggestion?: string; // auto-fix suggestion
   documentationUrl?: string;
 }
 
 export interface ValidationResult {
   valid: boolean;
-  score?: number;              // 0–100 quality score if applicable
+  score?: number; // 0–100 quality score if applicable
   issues: ValidationIssue[];
   summary: {
     errors: number;
@@ -46,16 +46,16 @@ export interface ValidationResult {
     infos: number;
     hints: number;
   };
-  duration: number;            // ms
+  duration: number; // ms
   timestamp: number;
   metadata?: Record<string, unknown>;
 }
 
 export interface ValidationTarget {
   type: 'file' | 'directory' | 'repo' | 'config' | 'artifact' | 'schema' | 'url';
-  path: string;               // file path, repo name, URL, etc.
-  ref?: string;               // branch/tag for repo targets
-  content?: string;           // inline content to validate (alternative to path)
+  path: string; // file path, repo name, URL, etc.
+  ref?: string; // branch/tag for repo targets
+  content?: string; // inline content to validate (alternative to path)
 }
 
 export interface ValidationRuleSet {
@@ -78,7 +78,7 @@ export interface ValidationRule {
 
 export interface SchemaValidationInput {
   data: unknown;
-  schema: Record<string, unknown>;   // JSON Schema, YAML schema, etc.
+  schema: Record<string, unknown>; // JSON Schema, YAML schema, etc.
   format?: 'json-schema' | 'yaml-schema' | 'openapi' | 'custom';
 }
 
@@ -116,12 +116,15 @@ export interface ValidationProvider {
   // ── Core Validation ─────────────────────────────────────────────────────
 
   /** Run all applicable validations against a target. */
-  validate(target: ValidationTarget, options?: {
-    categories?: ValidationCategory[];
-    severityThreshold?: ValidationSeverity;
-    ruleSetIds?: string[];
-    failFast?: boolean;
-  }): Promise<ValidationResult>;
+  validate(
+    target: ValidationTarget,
+    options?: {
+      categories?: ValidationCategory[];
+      severityThreshold?: ValidationSeverity;
+      ruleSetIds?: string[];
+      failFast?: boolean;
+    }
+  ): Promise<ValidationResult>;
 
   /** Validate data against a schema definition. */
   validateSchema(input: SchemaValidationInput): Promise<ValidationResult>;
@@ -148,11 +151,14 @@ export interface ValidationProvider {
   // ── Batch Validation ────────────────────────────────────────────────────
 
   /** Validate multiple targets in parallel. */
-  validateBatch?(targets: ValidationTarget[], options?: {
-    categories?: ValidationCategory[];
-    concurrency?: number;
-    stopOnFirstFailure?: boolean;
-  }): Promise<Map<string, ValidationResult>>;
+  validateBatch?(
+    targets: ValidationTarget[],
+    options?: {
+      categories?: ValidationCategory[];
+      concurrency?: number;
+      stopOnFirstFailure?: boolean;
+    }
+  ): Promise<Map<string, ValidationResult>>;
 
   // ── Lifecycle ───────────────────────────────────────────────────────────
 

@@ -10,4 +10,4 @@ spec:
   serviceId: mycodexvantaos-governance-policy
   field: name
   analyzer: keyword
-  description: "Keyword exact-match index for policy names."
+  description: 'Keyword exact-match index for policy names.'

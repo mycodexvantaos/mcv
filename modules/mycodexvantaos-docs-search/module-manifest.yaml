@@ -19,7 +19,7 @@ spec:
     embedding: embedding-openai
   lifecycle:
     stage: stable
-    since: "v1.0.0"
-  urn: "urn:mycodexvantaos:manifest:service:mycodexvantaos-docs-search"
-  packageName: "@mycodexvantaos/docs-search"
-  description: "Full-text and semantic search for platform documentation."
+    since: 'v1.0.0'
+  urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-docs-search'
+  packageName: '@mycodexvantaos/docs-search'
+  description: 'Full-text and semantic search for platform documentation.'

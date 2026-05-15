@@ -10,7 +10,12 @@
     "lint": "eslint src --ext .ts",
     "format": "prettier --write \"src/**/*.ts\""
   },
-  "keywords": ["audit-logger", "auditlogger", "Layer F擴展", "mycodexvantaos"],
+  "keywords": [
+    "audit-logger",
+    "auditlogger",
+    "Layer F擴展",
+    "mycodexvantaos"
+  ],
   "author": "MyCodeXvantaOS",
   "license": "MIT",
   "dependencies": {

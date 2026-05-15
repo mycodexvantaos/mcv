@@ -7,8 +7,8 @@
  * - AnalyzeArchitectureForRisksOutput - The return type for the analyzeArchitectureForRisks function.
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import { ai } from '@/ai/genkit';
+import { z } from 'genkit';
 
 const AnalyzeArchitectureForRisksInputSchema = z.object({
   architectureDefinition: z
@@ -32,25 +32,19 @@ const AnalyzeArchitectureForRisksOutputSchema = z.object({
       z.object({
         type: z
           .string()
-          .describe(
-            'The type of risk (e.g., security, performance, reliability, operational).'
-          ),
+          .describe('The type of risk (e.g., security, performance, reliability, operational).'),
         description: z.string().describe('A detailed description of the risk.'),
         severity: z
           .enum(['Critical', 'High', 'Medium', 'Low', 'Informational'])
           .describe('The severity level of the risk.'),
-        recommendation: z
-          .string()
-          .describe('Suggested actions to mitigate the risk.'),
+        recommendation: z.string().describe('Suggested actions to mitigate the risk.'),
       })
     )
     .describe('A list of identified architectural risks.'),
   vulnerabilities: z
     .array(
       z.object({
-        description: z
-          .string()
-          .describe('A detailed description of the vulnerability.'),
+        description: z.string().describe('A detailed description of the vulnerability.'),
         cvssScore: z
           .number()
           .optional()
@@ -64,20 +58,12 @@ const AnalyzeArchitectureForRisksOutputSchema = z.object({
   complianceIssues: z
     .array(
       z.object({
-        ruleId: z
-          .string()
-          .describe('The identifier for the compliance rule or standard violated.'),
-        description: z
-          .string()
-          .describe('A detailed description of the compliance issue.'),
+        ruleId: z.string().describe('The identifier for the compliance rule or standard violated.'),
+        description: z.string().describe('A detailed description of the compliance issue.'),
         complianceStandard: z
           .string()
-          .describe(
-            'The compliance standard affected (e.g., ISO 27001, SOC 2, GDPR).'
-          ),
-        impact: z
-          .string()
-          .describe('The potential impact of the compliance deviation.'),
+          .describe('The compliance standard affected (e.g., ISO 27001, SOC 2, GDPR).'),
+        impact: z.string().describe('The potential impact of the compliance deviation.'),
       })
     )
     .describe('A list of identified compliance deviations.'),
@@ -99,8 +85,8 @@ export async function analyzeArchitectureForRisks(
 
 const prompt = ai.definePrompt({
   name: 'analyzeArchitectureForRisksPrompt',
-  input: {schema: AnalyzeArchitectureForRisksInputSchema},
-  output: {schema: AnalyzeArchitectureForRisksOutputSchema},
+  input: { schema: AnalyzeArchitectureForRisksInputSchema },
+  output: { schema: AnalyzeArchitectureForRisksOutputSchema },
   prompt: `You are an expert architect and CI/CD specialist with extreme meticulousness, focused on zero-failure architecture refinement.
 Your task is to meticulously analyze the provided system architecture definition and GitLab CI/CD pipeline configuration.
 Identify all potential risks, security vulnerabilities, and compliance issues.
@@ -120,8 +106,8 @@ const analyzeArchitectureForRisksFlow = ai.defineFlow(
     inputSchema: AnalyzeArchitectureForRisksInputSchema,
     outputSchema: AnalyzeArchitectureForRisksOutputSchema,
   },
-  async input => {
-    const {output} = await prompt(input);
+  async (input) => {
+    const { output } = await prompt(input);
     return output!;
   }
 );

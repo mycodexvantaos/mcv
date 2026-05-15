@@ -17,7 +17,7 @@ spec:
     database: database-postgres
   lifecycle:
     stage: stable
-    since: "v1.0.0"
-  urn: "urn:mycodexvantaos:manifest:service:mycodexvantaos-security-secrets"
-  packageName: "@mycodexvantaos/security-secrets"
-  description: "Secret and credential management service."
+    since: 'v1.0.0'
+  urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-security-secrets'
+  packageName: '@mycodexvantaos/security-secrets'
+  description: 'Secret and credential management service.'

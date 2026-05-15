@@ -1,15 +1,11 @@
 /**
  * MyCodeXvantaOS Persona Engine - Semantic Mask Detector
- * 
+ *
  * Detects semantic masks in text - language patterns that conceal, avoid, or distort reality.
  * URN: urn:mycodexvantaos:core:semantic-mask-detector
  */
 
-import type {
-  SemanticMask,
-  SemanticMaskType,
-  TruthReframe,
-} from '../types';
+import type { SemanticMask, SemanticMaskType, TruthReframe } from '../types';
 
 /**
  * Default semantic masks with detection patterns and truth reframes
@@ -36,7 +32,8 @@ const DEFAULT_SEMANTIC_MASKS: SemanticMask[] = [
     truth_reframe: {
       pattern_name: 'comforting_platitude',
       truth_exposure: 'This phrase avoids facing the actual difficulty of the situation',
-      constructive_alternative: 'Let\'s identify what specific aspects of this situation we can address',
+      constructive_alternative:
+        "Let's identify what specific aspects of this situation we can address",
       follow_up_question: 'What concrete step could you take today to improve this situation?',
     },
     precision: 0.95,
@@ -60,7 +57,8 @@ const DEFAULT_SEMANTIC_MASKS: SemanticMask[] = [
     truth_reframe: {
       pattern_name: 'vague_healing_language',
       truth_exposure: 'This language sounds meaningful but lacks actionable content',
-      constructive_alternative: 'Let\'s translate this into specific behaviors or thoughts we can work on',
+      constructive_alternative:
+        "Let's translate this into specific behaviors or thoughts we can work on",
       follow_up_question: 'What specific behavior or thought pattern would you like to change?',
     },
     precision: 0.92,
@@ -78,14 +76,14 @@ const DEFAULT_SEMANTIC_MASKS: SemanticMask[] = [
       '我的原生家庭問題',
       '這是強迫症',
       '我是 ADHD',
-      'that\'s my defense mechanism',
+      "that's my defense mechanism",
       'I have attachment issues',
-      'it\'s a trauma response',
+      "it's a trauma response",
     ],
     truth_reframe: {
       pattern_name: 'psychological_jargon_misuse',
       truth_exposure: 'Using clinical terms without proper context can obscure rather than clarify',
-      constructive_alternative: 'Let\'s describe the specific behavior or feeling without the label',
+      constructive_alternative: "Let's describe the specific behavior or feeling without the label",
       follow_up_question: 'What specifically happens when you experience this?',
     },
     precision: 0.88,
@@ -102,10 +100,10 @@ const DEFAULT_SEMANTIC_MASKS: SemanticMask[] = [
       '我已經放下了',
       '我不在乎了',
       '都過去了',
-      'I don\'t want to talk about it',
-      'it\'s fine',
-      'I\'m over it',
-      'it doesn\'t matter',
+      "I don't want to talk about it",
+      "it's fine",
+      "I'm over it",
+      "it doesn't matter",
     ],
     truth_reframe: {
       pattern_name: 'emotional_avoidance',
@@ -113,7 +111,7 @@ const DEFAULT_SEMANTIC_MASKS: SemanticMask[] = [
       constructive_alternative: 'Acknowledging discomfort is the first step to resolution',
       follow_up_question: 'What would happen if you allowed yourself to feel this fully?',
     },
-    precision: 0.90,
+    precision: 0.9,
     severity: 'high',
   },
   {
@@ -128,14 +126,14 @@ const DEFAULT_SEMANTIC_MASKS: SemanticMask[] = [
       '我別無選擇',
       '是他們的問題',
       'they made me',
-      'it\'s because of them',
+      "it's because of them",
       'I had no choice',
-      'it\'s not my fault',
+      "it's not my fault",
     ],
     truth_reframe: {
       pattern_name: 'responsibility_transfer',
-      truth_exposure: 'While others may contribute, you have more agency than you\'re acknowledging',
-      constructive_alternative: 'Let\'s identify what aspects you can control',
+      truth_exposure: "While others may contribute, you have more agency than you're acknowledging",
+      constructive_alternative: "Let's identify what aspects you can control",
       follow_up_question: 'What part of this situation could you influence, even slightly?',
     },
     precision: 0.85,
@@ -152,14 +150,14 @@ const DEFAULT_SEMANTIC_MASKS: SemanticMask[] = [
       '他不是那種人',
       '這不是真的',
       '我想太多了',
-      'it\'s not that bad',
+      "it's not that bad",
       'they would never',
-      'that\'s not true',
-      'I\'m just overthinking',
+      "that's not true",
+      "I'm just overthinking",
     ],
     truth_reframe: {
       pattern_name: 'reality_denial',
-      truth_exposure: 'Minimizing reality doesn\'t change it - it only delays dealing with it',
+      truth_exposure: "Minimizing reality doesn't change it - it only delays dealing with it",
       constructive_alternative: 'Facing reality, however painful, enables real solutions',
       follow_up_question: 'If this situation were exactly as you fear, what would you need to do?',
     },
@@ -177,15 +175,15 @@ const DEFAULT_SEMANTIC_MASKS: SemanticMask[] = [
       '這次不一樣',
       '我能控制',
       '這是最後一次',
-      'I\'ll definitely do it next time',
-      'I\'ve changed',
+      "I'll definitely do it next time",
+      "I've changed",
       'this time is different',
       'I can control it',
     ],
     truth_reframe: {
       pattern_name: 'self_deception',
       truth_exposure: 'Patterns repeat until we honestly examine them',
-      constructive_alternative: 'Let\'s look at the track record and design concrete safeguards',
+      constructive_alternative: "Let's look at the track record and design concrete safeguards",
       follow_up_question: 'What has happened the last five times you said this?',
     },
     precision: 0.82,
@@ -202,9 +200,9 @@ const DEFAULT_SEMANTIC_MASKS: SemanticMask[] = [
       '這樣更自由',
       '反正也不重要',
       '這是最好的安排',
-      'it\'s actually better this way',
-      'I didn\'t really want it anyway',
-      'it\'s for the best',
+      "it's actually better this way",
+      "I didn't really want it anyway",
+      "it's for the best",
     ],
     truth_reframe: {
       pattern_name: 'cognitive_dissonance_mask',
@@ -212,7 +210,7 @@ const DEFAULT_SEMANTIC_MASKS: SemanticMask[] = [
       constructive_alternative: 'Acknowledging disappointment allows authentic growth',
       follow_up_question: 'If you could have this turn out differently, would you want it to?',
     },
-    precision: 0.80,
+    precision: 0.8,
     severity: 'medium',
   },
 ];
@@ -252,13 +250,13 @@ export class SemanticMaskDetector {
   constructor(customMasks?: SemanticMask[]) {
     this.masks = new Map();
     this.patternCache = new Map();
-    
+
     // Load default masks
     for (const mask of DEFAULT_SEMANTIC_MASKS) {
       this.masks.set(mask.urn, mask);
       this.compilePatterns(mask);
     }
-    
+
     // Add custom masks if provided
     if (customMasks) {
       for (const mask of customMasks) {
@@ -272,7 +270,7 @@ export class SemanticMaskDetector {
    * Compile regex patterns for a mask
    */
   private compilePatterns(mask: SemanticMask): void {
-    const patterns: RegExp[] = mask.patterns.map(pattern => {
+    const patterns: RegExp[] = mask.patterns.map((pattern) => {
       // Escape special regex characters and create case-insensitive pattern
       const escaped = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       return new RegExp(escaped, 'gi');
@@ -317,7 +315,7 @@ export class SemanticMaskDetector {
    * Get masks by type
    */
   getMasksByType(type: SemanticMaskType): SemanticMask[] {
-    return Array.from(this.masks.values()).filter(m => m.mask_type === type);
+    return Array.from(this.masks.values()).filter((m) => m.mask_type === type);
   }
 
   /**
@@ -329,19 +327,19 @@ export class SemanticMaskDetector {
 
     for (const [urn, mask] of this.masks) {
       const patterns = this.patternCache.get(urn) || [];
-      
+
       for (const pattern of patterns) {
         let match: RegExpExecArray | null;
-        
+
         while ((match = pattern.exec(text)) !== null) {
           const start = match.index;
           const end = start + match[0].length;
-          
+
           // Get context around the match
           const contextStart = Math.max(0, start - 30);
           const contextEnd = Math.min(text.length, end + 30);
           const context = text.substring(contextStart, contextEnd);
-          
+
           detectedMasks.push({
             mask,
             matched_pattern: match[0],
@@ -349,7 +347,7 @@ export class SemanticMaskDetector {
             context: `...${context}...`,
             truth_reframe: mask.truth_reframe,
           });
-          
+
           // Add to severity score
           const severityValue = mask.severity === 'high' ? 3 : mask.severity === 'medium' ? 2 : 1;
           totalSeverity += severityValue;
@@ -376,14 +374,14 @@ export class SemanticMaskDetector {
    */
   private removeDuplicates(masks: DetectedMask[]): DetectedMask[] {
     const seen = new Map<string, DetectedMask>();
-    
+
     for (const m of masks) {
       const key = `${m.position.start}-${m.position.end}`;
       if (!seen.has(key)) {
         seen.set(key, m);
       }
     }
-    
+
     return Array.from(seen.values());
   }
 
@@ -430,14 +428,14 @@ export class SemanticMaskDetector {
     }
 
     const responses: string[] = [];
-    
+
     for (const detected of detection.masks) {
       const reframe = detected.truth_reframe;
       responses.push(
         `**Detected pattern: ${detected.mask.name}**\n` +
-        `Observation: ${reframe.truth_exposure}\n` +
-        `Alternative approach: ${reframe.constructive_alternative}\n` +
-        (reframe.follow_up_question ? `Question: ${reframe.follow_up_question}` : '')
+          `Observation: ${reframe.truth_exposure}\n` +
+          `Alternative approach: ${reframe.constructive_alternative}\n` +
+          (reframe.follow_up_question ? `Question: ${reframe.follow_up_question}` : '')
       );
     }
 

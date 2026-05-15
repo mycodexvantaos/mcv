@@ -3,12 +3,16 @@
  * In-memory structured logging
  */
 
-import type { LogEntry } from "./types";
+import type { LogEntry } from './types';
 
-export type LogLevel = "debug" | "info" | "warn" | "error" | "fatal";
+export type LogLevel = 'debug' | 'info' | 'warn' | 'error' | 'fatal';
 
 const LEVEL_ORDER: Record<LogLevel, number> = {
-  debug: 0, info: 1, warn: 2, error: 3, fatal: 4,
+  debug: 0,
+  info: 1,
+  warn: 2,
+  error: 3,
+  fatal: 4,
 };
 
 export class LoggingService {
@@ -16,16 +20,26 @@ export class LoggingService {
   private serviceName: string;
   private minLevel: LogLevel;
 
-  constructor(serviceName = "codexvanta", minLevel: LogLevel = "debug") {
+  constructor(serviceName = 'codexvanta', minLevel: LogLevel = 'debug') {
     this.serviceName = serviceName;
     this.minLevel = minLevel;
   }
 
-  debug(message: string, context?: Record<string, unknown>): void { this.log("debug", message, context); }
-  info(message: string, context?: Record<string, unknown>): void { this.log("info", message, context); }
-  warn(message: string, context?: Record<string, unknown>): void { this.log("warn", message, context); }
-  error(message: string, context?: Record<string, unknown>): void { this.log("error", message, context); }
-  fatal(message: string, context?: Record<string, unknown>): void { this.log("fatal", message, context); }
+  debug(message: string, context?: Record<string, unknown>): void {
+    this.log('debug', message, context);
+  }
+  info(message: string, context?: Record<string, unknown>): void {
+    this.log('info', message, context);
+  }
+  warn(message: string, context?: Record<string, unknown>): void {
+    this.log('warn', message, context);
+  }
+  error(message: string, context?: Record<string, unknown>): void {
+    this.log('error', message, context);
+  }
+  fatal(message: string, context?: Record<string, unknown>): void {
+    this.log('fatal', message, context);
+  }
 
   private log(level: LogLevel, message: string, context?: Record<string, unknown>): void {
     if (LEVEL_ORDER[level] < LEVEL_ORDER[this.minLevel]) return;
@@ -51,5 +65,7 @@ export class LoggingService {
     return new LoggingService(serviceName, this.minLevel);
   }
 
-  clear(): void { this.logs = []; }
+  clear(): void {
+    this.logs = [];
+  }
 }

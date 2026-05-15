@@ -7,6 +7,7 @@
 **Initial release** of mycodexvantaos naming spec v1.
 
 ### Introduced
+
 - Three-layer naming model (Canonical, Composite, Protocol-Specific)
 - 19 canonical capability identifiers
 - Double-hyphen `--` as composite separator

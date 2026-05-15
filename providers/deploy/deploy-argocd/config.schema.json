@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/deploy/argocd/config.schema.json",
   "title": "deploy-argocd Configuration",
   "type": "object",
-  "required": [
-    "serverUrl"
-  ],
+  "required": ["serverUrl"],
   "properties": {
     "serverUrl": {
       "type": "string",

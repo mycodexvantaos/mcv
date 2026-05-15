@@ -1,6 +1,6 @@
 /**
  * Service Manifest Type Definitions
- * 
+ *
  * Type definitions corresponding to the service-manifest-policy.yaml governance specification.
  * These types ensure type safety and provide compile-time validation for service manifests.
  */

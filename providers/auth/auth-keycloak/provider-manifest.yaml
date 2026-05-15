@@ -8,7 +8,7 @@ metadata:
   capability: auth
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: "8.1"
+    mycodexvantaos.org/specRef: '8.1'
 spec:
   providerName: keycloak
   isNative: false
@@ -16,4 +16,4 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_AUTH
   configSchemaRef: ./config.schema.json
-  description: "Keycloak identity and access management provider."
+  description: 'Keycloak identity and access management provider.'

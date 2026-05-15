@@ -1,7 +1,7 @@
 /**
  * CodexvantaOS — control-center
  * 控制中心 — 多倉庫協調、Registry 管理、狀態追蹤
- * 
+ *
  * Layer: B-Runtime | Plane: Control | Tier: 1
  * Philosophy: Native-first / Provider-agnostic
  * 「第三方服務是平台的擴充出口，不是平台成立的地基。」
@@ -26,7 +26,10 @@ export { initProviders, getProviders, shutdownProviders } from './providers.js';
  * Bootstrap control-center
  */
 export async function bootstrap(): Promise<void> {
-  console.log('[control-center] Starting in %s mode...', process.env.CODEXVANTA_MODE || 'auto-detect');
+  console.log(
+    '[control-center] Starting in %s mode...',
+    process.env.CODEXVANTA_MODE || 'auto-detect'
+  );
 
   // Initialize providers (auto-detects Native/Connected/Hybrid)
   const providers = await initProviders();

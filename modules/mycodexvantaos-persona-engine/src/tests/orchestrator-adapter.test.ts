@@ -1,10 +1,16 @@
 /**
  * Unit Tests for OrchestratorAdapter
- * 
+ *
  * Tests the integration adapter between Persona Engine and AI Team Orchestrator
  */
 
-import { OrchestratorAdapter, OrchestratorAdapterConfig, OrchestratorRequest, AdapterEvent, AdapterEventListener } from '../core/orchestrator-adapter';
+import {
+  OrchestratorAdapter,
+  OrchestratorAdapterConfig,
+  OrchestratorRequest,
+  AdapterEvent,
+  AdapterEventListener,
+} from '../core/orchestrator-adapter';
 import { PersonaManager, PersonaManagerConfig } from '../core/persona-manager';
 
 // Test configuration
@@ -16,7 +22,7 @@ const testAdapterConfig: OrchestratorAdapterConfig = {
   enableRootCauseAnalysis: true,
   hitlThreshold: 0.8,
   governanceTier: 1,
-  maxSessionDuration: 3600000
+  maxSessionDuration: 3600000,
 };
 
 const testManagerConfig: PersonaManagerConfig = {
@@ -24,13 +30,13 @@ const testManagerConfig: PersonaManagerConfig = {
   configPath: './config/personas',
   autoLoad: false,
   enableCache: true,
-  cacheTTL: 300000
+  cacheTTL: 300000,
 };
 
 // Test helper to create a basic persona manager with mock personas
 function createTestPersonaManager(): PersonaManager {
   const manager = new PersonaManager(testManagerConfig);
-  
+
   // Register test personas with correct properties
   manager.registerPersona({
     urn: 'urn:mycodexvantaos:persona:disrupter-primary',
@@ -45,10 +51,10 @@ function createTestPersonaManager(): PersonaManager {
       solution_focus: 0.6,
       abstraction_preference: 0.4,
       questioning_depth: 0.8,
-      contradiction_frequency: 0.7
-    }
+      contradiction_frequency: 0.7,
+    },
   });
-  
+
   return manager;
 }
 
@@ -126,7 +132,7 @@ describe('OrchestratorAdapter', () => {
         requestId: 'req-test-001',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test input',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       const response = await adapter.processRequest(request);
@@ -139,7 +145,7 @@ describe('OrchestratorAdapter', () => {
         requestId: 'req-test-002',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test structured response',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       const response = await adapter.processRequest(request);
@@ -152,7 +158,7 @@ describe('OrchestratorAdapter', () => {
         requestId: 'req-test-003',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test default archetype',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       const response = await adapter.processRequest(request);
@@ -164,7 +170,7 @@ describe('OrchestratorAdapter', () => {
         requestId: 'req-test-004',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test new session',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       const response = await adapter.processRequest(request);
@@ -179,7 +185,7 @@ describe('OrchestratorAdapter', () => {
         requestId: 'req-test-005a',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'First request',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       const response1 = await adapter.processRequest(request1);
@@ -201,11 +207,11 @@ describe('OrchestratorAdapter', () => {
         requestId: 'req-event-001',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test event listener',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       await adapter.processRequest(request);
-      
+
       // Should have received at least one event (session_created)
       expect(events.length).toBeGreaterThan(0);
     });
@@ -223,11 +229,11 @@ describe('OrchestratorAdapter', () => {
         requestId: 'req-event-002',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test remove listener',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       await adapter.processRequest(request);
-      
+
       // No events should have been recorded
       expect(events.length).toBe(0);
     });
@@ -243,33 +249,35 @@ describe('OrchestratorAdapter', () => {
         requestId: 'req-event-003',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test multiple listeners',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       await adapter.processRequest(request);
-      
+
       expect(events1.length).toBeGreaterThan(0);
       expect(events2.length).toBeGreaterThan(0);
     });
 
     it('should handle listener that throws error', async () => {
       const events: AdapterEvent[] = [];
-      
+
       // First listener throws, second should still receive events
-      adapter.addEventListener(() => { throw new Error('Listener error'); });
+      adapter.addEventListener(() => {
+        throw new Error('Listener error');
+      });
       adapter.addEventListener((event) => events.push(event));
 
       const request: OrchestratorRequest = {
         requestId: 'req-event-004',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test error in listener',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       // Should not throw
       const response = await adapter.processRequest(request);
       expect(response).toBeDefined();
-      
+
       // Second listener should still have received events
       expect(events.length).toBeGreaterThan(0);
     });
@@ -281,7 +289,7 @@ describe('OrchestratorAdapter', () => {
         requestId: 'req-session-001',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test session close',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       const response = await adapter.processRequest(request);
@@ -307,23 +315,23 @@ describe('OrchestratorAdapter', () => {
         requestId: 'req-session-002',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test session close event',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       await adapter.processRequest(request);
-      
+
       // Note: closeSession requires the actual sessionId from the engine
       // Since we can't easily get it, we just verify the mechanism exists
     });
 
     it('should track active session count', async () => {
       const initialCount = adapter.getActiveSessionCount();
-      
+
       const request: OrchestratorRequest = {
         requestId: 'req-session-003',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test session count',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       const response = await adapter.processRequest(request);
@@ -343,7 +351,7 @@ describe('OrchestratorAdapter', () => {
         requestId: 'req-gov-001',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test unrestricted governance',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       const response = await unrestrictedAdapter.processRequest(request);
@@ -361,7 +369,7 @@ describe('OrchestratorAdapter', () => {
         requestId: 'req-gov-002',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test tier 0 governance',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       const response = await tier0Adapter.processRequest(request);
@@ -374,7 +382,7 @@ describe('OrchestratorAdapter', () => {
         requestId: 'req-gov-003',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test tier 1 governance',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       const response = await adapter.processRequest(request);
@@ -392,7 +400,7 @@ describe('OrchestratorAdapter', () => {
         requestId: 'req-gov-004',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test tier 2 governance',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       const response = await tier2Adapter.processRequest(request);
@@ -409,7 +417,7 @@ describe('OrchestratorAdapter', () => {
         requestId: 'req-gov-005',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test tier 3 governance',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       const response = await tier3Adapter.processRequest(request);
@@ -476,11 +484,11 @@ describe('OrchestratorAdapter', () => {
         requestId: 'req-audit-001',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test audit log',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       await adapter.processRequest(request);
-      
+
       const auditLog = adapter.getAuditLog();
       expect(auditLog.length).toBeGreaterThan(0);
     });
@@ -490,12 +498,12 @@ describe('OrchestratorAdapter', () => {
         requestId: 'req-audit-002',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test clear audit log',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       await adapter.processRequest(request);
       expect(adapter.getAuditLog().length).toBeGreaterThan(0);
-      
+
       adapter.clearAuditLog();
       expect(adapter.getAuditLog().length).toBe(1); // 1 because clearAuditLog logs itself
     });
@@ -505,7 +513,7 @@ describe('OrchestratorAdapter', () => {
         requestId: 'req-audit-003',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test audit trail in response',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       const response = await adapter.processRequest(request);
@@ -524,7 +532,7 @@ describe('OrchestratorAdapter', () => {
       const config1 = adapter.getConfig();
       const config2 = adapter.getConfig();
       expect(config1).not.toBe(config2); // Different references
-      expect(config1).toEqual(config2);  // Same values
+      expect(config1).toEqual(config2); // Same values
     });
   });
 
@@ -541,7 +549,7 @@ describe('OrchestratorAdapter', () => {
         requestId: '',
         sourceAgentUrn: '',
         input: '',
-        context: {}
+        context: {},
       } as OrchestratorRequest;
 
       // Should not throw, may return error status
@@ -553,14 +561,14 @@ describe('OrchestratorAdapter', () => {
       // Create adapter with persona manager that has no engine for a specific archetype
       const manager = new PersonaManager(testManagerConfig);
       // Don't register any personas
-      
+
       const adapterWithEmptyManager = new OrchestratorAdapter(testAdapterConfig, manager);
 
       const request: OrchestratorRequest = {
         requestId: 'req-error-001',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test error',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       const response = await adapterWithEmptyManager.processRequest(request);
@@ -572,7 +580,7 @@ describe('OrchestratorAdapter', () => {
       const events: AdapterEvent[] = [];
       const manager = new PersonaManager(testManagerConfig);
       const adapterWithEmptyManager = new OrchestratorAdapter(testAdapterConfig, manager);
-      
+
       adapterWithEmptyManager.addEventListener((event) => {
         if (event.type === 'error') {
           events.push(event);
@@ -583,7 +591,7 @@ describe('OrchestratorAdapter', () => {
         requestId: 'req-error-002',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test error event',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       await adapterWithEmptyManager.processRequest(request);
@@ -603,11 +611,11 @@ describe('OrchestratorAdapter', () => {
         requestId: 'req-hitl-001',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test HITL triggers',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       const response = await lowThresholdAdapter.processRequest(request);
-      
+
       // If HITL triggers are present, verify structure
       if (response.hitlTriggers && response.hitlTriggers.length > 0) {
         expect(response.hitlTriggers[0].type).toBeDefined();
@@ -622,7 +630,7 @@ describe('OrchestratorAdapter', () => {
         { ...testAdapterConfig, hitlThreshold: 0.99 },
         personaManager
       );
-      
+
       lowThresholdAdapter.addEventListener((event) => {
         if (event.type === 'hitl_triggered') {
           events.push(event);
@@ -633,52 +641,51 @@ describe('OrchestratorAdapter', () => {
         requestId: 'req-hitl-002',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test HITL event',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
 
       await lowThresholdAdapter.processRequest(request);
-      
+
       // HITL event may or may not be emitted depending on processing results
       // This test verifies the event listener mechanism works
     });
-  
 
-      it('should handle high confidence mask detection', async () => {
-        const lowThresholdAdapter = new OrchestratorAdapter(
-          { ...testAdapterConfig, hitlThreshold: 0.1 },
-          personaManager
-        );
+    it('should handle high confidence mask detection', async () => {
+      const lowThresholdAdapter = new OrchestratorAdapter(
+        { ...testAdapterConfig, hitlThreshold: 0.1 },
+        personaManager
+      );
 
-        const request: OrchestratorRequest = {
-          requestId: 'req-mask-001',
-          sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
-          input: 'I feel like everything is fine when it is clearly not',
-          context: { timestamp: new Date().toISOString() }
-        };
+      const request: OrchestratorRequest = {
+        requestId: 'req-mask-001',
+        sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
+        input: 'I feel like everything is fine when it is clearly not',
+        context: { timestamp: new Date().toISOString() },
+      };
 
-        const response = await lowThresholdAdapter.processRequest(request);
-        // Response may or may not be successful depending on persona engine state
-          expect(response).toBeDefined();
+      const response = await lowThresholdAdapter.processRequest(request);
+      // Response may or may not be successful depending on persona engine state
+      expect(response).toBeDefined();
+    });
+
+    it('should handle multiple event types', async () => {
+      const events: AdapterEvent[] = [];
+      adapter.addEventListener((event) => {
+        events.push(event);
       });
 
-      it('should handle multiple event types', async () => {
-        const events: AdapterEvent[] = [];
-        adapter.addEventListener((event) => {
-          events.push(event);
-        });
+      // Make multiple requests to generate various events
+      for (let i = 0; i < 3; i++) {
+        const request: OrchestratorRequest = {
+          requestId: `req-multi-${i}`,
+          sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
+          input: `Test input ${i}`,
+          context: { timestamp: new Date().toISOString() },
+        };
+        await adapter.processRequest(request);
+      }
 
-        // Make multiple requests to generate various events
-        for (let i = 0; i < 3; i++) {
-          const request: OrchestratorRequest = {
-            requestId: `req-multi-${i}`,
-            sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
-            input: `Test input ${i}`,
-            context: { timestamp: new Date().toISOString() }
-          };
-          await adapter.processRequest(request);
-        }
-
-        expect(events.length).toBeGreaterThan(0);
+      expect(events.length).toBeGreaterThan(0);
     });
   });
 });
@@ -696,7 +703,7 @@ describe('OrchestratorAdapter Extended Coverage', () => {
     enableRootCauseAnalysis: true,
     hitlThreshold: 0.8,
     governanceTier: 1,
-    maxSessionDuration: 3600000
+    maxSessionDuration: 3600000,
   };
 
   const testManagerConfig: PersonaManagerConfig = {
@@ -704,7 +711,7 @@ describe('OrchestratorAdapter Extended Coverage', () => {
     configPath: './config/personas',
     autoLoad: false,
     enableCache: true,
-    cacheTTL: 300000
+    cacheTTL: 300000,
   };
 
   beforeEach(() => {
@@ -722,8 +729,8 @@ describe('OrchestratorAdapter Extended Coverage', () => {
         solution_focus: 0.6,
         abstraction_preference: 0.4,
         questioning_depth: 0.8,
-        contradiction_frequency: 0.7
-      }
+        contradiction_frequency: 0.7,
+      },
     });
     adapter = new OrchestratorAdapter(testAdapterConfig, personaManager);
   });
@@ -742,10 +749,10 @@ describe('OrchestratorAdapter Extended Coverage', () => {
         requestId: 'req-close-test',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test for session close',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
       await adapter.processRequest(request);
-      
+
       // Get session count
       const sessionCount = adapter.getActiveSessionCount();
       if (sessionCount > 0) {
@@ -785,7 +792,7 @@ describe('OrchestratorAdapter Extended Coverage', () => {
       const config = adapter.getConfig();
       expect(config.urn).toBe(testAdapterConfig.urn);
       expect(config.governanceTier).toBe(testAdapterConfig.governanceTier);
-      
+
       // Verify it's a copy
       config.governanceTier = 99;
       const originalConfig = adapter.getConfig();
@@ -799,13 +806,13 @@ describe('OrchestratorAdapter Extended Coverage', () => {
         requestId: 'req-audit-test',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test audit log',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
       await adapter.processRequest(request);
-      
+
       const log = adapter.getAuditLog();
       expect(Array.isArray(log)).toBe(true);
-      
+
       // Verify it's a copy
       if (log.length > 0) {
         log.pop();
@@ -821,10 +828,10 @@ describe('OrchestratorAdapter Extended Coverage', () => {
         requestId: 'req-clear-test',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test clear audit log',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
       await adapter.processRequest(request);
-      
+
       adapter.clearAuditLog();
       const log = adapter.getAuditLog();
       expect(log.length).toBe(1); // clearAuditLog adds an entry for the clear action
@@ -834,32 +841,32 @@ describe('OrchestratorAdapter Extended Coverage', () => {
   describe('processRequest with session context', () => {
     it('should reuse existing session when sessionId provided', async () => {
       const sessionId = 'existing-session-123';
-      
+
       // First request with session
       const request1: OrchestratorRequest = {
         requestId: 'req-session-reuse-1',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'First request',
-        context: { 
+        context: {
           timestamp: new Date().toISOString(),
-          sessionId 
-        }
+          sessionId,
+        },
       };
-      
+
       const response1 = await adapter.processRequest(request1);
       expect(response1).toBeDefined();
-      
+
       // Second request with same session
       const request2: OrchestratorRequest = {
         requestId: 'req-session-reuse-2',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Second request',
-        context: { 
+        context: {
           timestamp: new Date().toISOString(),
-          sessionId 
-        }
+          sessionId,
+        },
       };
-      
+
       const response2 = await adapter.processRequest(request2);
       expect(response2).toBeDefined();
     });
@@ -871,14 +878,14 @@ describe('OrchestratorAdapter Extended Coverage', () => {
         { ...testAdapterConfig, defaultPersonaArchetype: 'invalid_archetype' as any },
         personaManager
       );
-      
+
       const request: OrchestratorRequest = {
         requestId: 'req-invalid-archetype',
         sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
         input: 'Test invalid archetype',
-        context: { timestamp: new Date().toISOString() }
+        context: { timestamp: new Date().toISOString() },
       };
-      
+
       // Should throw or return error response
       try {
         const response = await invalidArchetypeAdapter.processRequest(request);
@@ -896,7 +903,7 @@ describe('OrchestratorAdapter Extended Coverage', () => {
         { ...testAdapterConfig, governanceTier: 1 },
         personaManager
       );
-      
+
       const health = tier1Adapter.healthCheck();
       expect(health.details.governanceTier).toBe(1);
     });
@@ -906,7 +913,7 @@ describe('OrchestratorAdapter Extended Coverage', () => {
         { ...testAdapterConfig, governanceTier: 2 },
         personaManager
       );
-      
+
       const health = tier2Adapter.healthCheck();
       expect(health.details.governanceTier).toBe(2);
     });
@@ -916,7 +923,7 @@ describe('OrchestratorAdapter Extended Coverage', () => {
         { ...testAdapterConfig, governanceTier: 3 },
         personaManager
       );
-      
+
       const health = tier3Adapter.healthCheck();
       expect(health.details.governanceTier).toBe(3);
     });
@@ -926,7 +933,7 @@ describe('OrchestratorAdapter Extended Coverage', () => {
         { ...testAdapterConfig, governanceTier: -1 },
         personaManager
       );
-      
+
       const health = unrestrictedAdapter.healthCheck();
       expect(health.details.governanceTier).toBe(-1);
     });

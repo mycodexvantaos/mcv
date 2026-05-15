@@ -1,6 +1,6 @@
 /**
  * MyCodeXvantaOS Persona Engine - Main Engine
- * 
+ *
  * Integrates all persona components for comprehensive analysis and solution generation.
  * URN: urn:mycodexvantaos:core:persona-engine
  */
@@ -45,12 +45,12 @@ export interface PersonaProcessingResult {
   response: PersonaResponse;
   follow_up_questions: string[];
   session_id: string;
-   /** Detected semantic masks */
-   masks?: SemanticMask[];
-   /** Root cause diagnosis */
-   diagnosis?: RootCauseDiagnosis;
-   /** Generated solutions array */
-   solutionsArray?: SolutionProposal[];
+  /** Detected semantic masks */
+  masks?: SemanticMask[];
+  /** Root cause diagnosis */
+  diagnosis?: RootCauseDiagnosis;
+  /** Generated solutions array */
+  solutionsArray?: SolutionProposal[];
 }
 
 /**
@@ -64,10 +64,10 @@ export interface PersonaResponse {
   action_steps?: string[];
   tone: string;
   confidence: number;
-   /** Critical track content */
-   criticalTrack?: string;
-   /** Constructive track content */
-   constructiveTrack?: string;
+  /** Critical track content */
+  criticalTrack?: string;
+  /** Constructive track content */
+  constructiveTrack?: string;
 }
 
 /**
@@ -165,30 +165,28 @@ export class PersonaEngine {
     const timestamp = new Date().toISOString();
 
     // Step 1: Detect semantic masks
-    const maskDetection = this.shouldDetectMasks() 
-      ? this.maskDetector.detect(input) 
-      : undefined;
+    const maskDetection = this.shouldDetectMasks() ? this.maskDetector.detect(input) : undefined;
 
     // Step 2: Analyze root causes (if persona is analytical)
     let analysis: CompleteAnalysisResult | undefined;
     if (this.shouldAnalyzeRootCauses()) {
       const context = this.rootCauseAnalyzer.initializeAnalysis(input);
-      
+
       // Use detected masks to inform analysis
       if (maskDetection?.detected) {
-        const initialFindings = maskDetection.masks.map(m => 
-          `Detected ${m.mask.name}: ${m.truth_reframe.truth_exposure}`
+        const initialFindings = maskDetection.masks.map(
+          (m) => `Detected ${m.mask.name}: ${m.truth_reframe.truth_exposure}`
         );
         this.rootCauseAnalyzer.recordFindings(
           context,
           'surface_symptoms',
           initialFindings,
-          maskDetection.masks.map(m => m.matched_pattern),
+          maskDetection.masks.map((m) => m.matched_pattern),
           [],
           []
         );
       }
-      
+
       analysis = this.rootCauseAnalyzer.generateResult(context);
     }
 
@@ -213,17 +211,13 @@ export class PersonaEngine {
     const response = this.generateResponse(input, maskDetection, analysis, solutions);
 
     // Step 5: Generate follow-up questions
-    const followUpQuestions = this.generateFollowUpQuestions(
-      maskDetection,
-      analysis,
-      solutions
-    );
+    const followUpQuestions = this.generateFollowUpQuestions(maskDetection, analysis, solutions);
 
     // Record interaction in session
     const interaction: PersonaInteraction = {
       timestamp,
       input,
-      detected_masks: maskDetection?.masks.map(m => m.mask),
+      detected_masks: maskDetection?.masks.map((m) => m.mask),
       diagnosis: analysis?.diagnosis,
       solutions: solutions?.solutions,
       response: response.content,
@@ -249,8 +243,7 @@ export class PersonaEngine {
    */
   private shouldDetectMasks(): boolean {
     const params = this.persona.behavioral_parameters;
-    return (params.truth_commitment ?? 0.5) > 0.3 ||
-           (params.critical_intensity ?? 0.5) > 0.3;
+    return (params.truth_commitment ?? 0.5) > 0.3 || (params.critical_intensity ?? 0.5) > 0.3;
   }
 
   /**
@@ -266,8 +259,7 @@ export class PersonaEngine {
    */
   private shouldGenerateSolutions(): boolean {
     const params = this.persona.behavioral_parameters;
-    return (params.constructive_orientation ?? 0.5) > 0.3 ||
-           (params.solution_focus ?? 0.5) > 0.3;
+    return (params.constructive_orientation ?? 0.5) > 0.3 || (params.solution_focus ?? 0.5) > 0.3;
   }
 
   /**
@@ -276,7 +268,7 @@ export class PersonaEngine {
   private getPreferredApproach(): 'structured' | 'flexible' | 'intensive' {
     const params = this.persona.behavioral_parameters;
     const depth = params.analytical_depth ?? 0.5;
-    
+
     if (depth > 0.7) return 'intensive';
     if (depth > 0.4) return 'structured';
     return 'flexible';
@@ -297,37 +289,29 @@ export class PersonaEngine {
 
     // Determine response style based on archetype and detected content
     const style = this.determineResponseStyle(archetype, maskDetection);
-    
+
     // Build response content
-    const content = this.buildResponseContent(
-      input,
-      maskDetection,
-      analysis,
-      solutions,
-      style
-    );
+    const content = this.buildResponseContent(input, maskDetection, analysis, solutions, style);
 
     // Extract action steps if solutions available
     const actionSteps = solutions?.solutions
-      .flatMap(s => s.action_steps.map(a => a.action))
+      .flatMap((s) => s.action_steps.map((a) => a.action))
       .slice(0, 5);
 
     // Calculate confidence
-    const confidence = this.calculateResponseConfidence(
-      maskDetection,
-      analysis,
-      solutions
-    );
+    const confidence = this.calculateResponseConfidence(maskDetection, analysis, solutions);
 
     return {
       style,
       content,
-      critique_section: style === 'critical' || style === 'integrated' 
-        ? this.buildCritiqueSection(maskDetection, analysis)
-        : undefined,
-      solution_section: style === 'constructive' || style === 'integrated'
-        ? this.buildSolutionSection(solutions)
-        : undefined,
+      critique_section:
+        style === 'critical' || style === 'integrated'
+          ? this.buildCritiqueSection(maskDetection, analysis)
+          : undefined,
+      solution_section:
+        style === 'constructive' || style === 'integrated'
+          ? this.buildSolutionSection(solutions)
+          : undefined,
       action_steps: actionSteps,
       tone: this.determineTone(params),
       confidence,
@@ -391,7 +375,7 @@ export class PersonaEngine {
     // Closing
     sections.push(this.getClosingStatement());
 
-    return sections.filter(s => s.length > 0).join('\n\n');
+    return sections.filter((s) => s.length > 0).join('\n\n');
   }
 
   /**
@@ -419,16 +403,16 @@ export class PersonaEngine {
    */
   private getClosingStatement(): string {
     const params = this.persona.behavioral_parameters;
-    
+
     if ((params.solution_focus ?? 0) > 0.6) {
       return 'What would you like to explore first?';
     }
-    
+
     if ((params.critical_intensity ?? 0) > 0.6) {
       return 'Consider what resonates with you from this analysis.';
     }
-    
-    return 'Let me know if you\'d like to explore any aspect further.';
+
+    return "Let me know if you'd like to explore any aspect further.";
   }
 
   /**
@@ -468,13 +452,13 @@ export class PersonaEngine {
     for (const diagnosis of analysis.diagnosis) {
       if (diagnosis.confidence > 0.5 && diagnosis.findings.length > 0) {
         parts.push(`**${diagnosis.layer.replace(/_/g, ' ')}**:`);
-        parts.push(diagnosis.findings.map(f => `  - ${f}`).join('\n'));
+        parts.push(diagnosis.findings.map((f) => `  - ${f}`).join('\n'));
       }
     }
 
     if (analysis.root_causes && analysis.root_causes.length > 0) {
       parts.push('\n**Potential root causes**:');
-      parts.push(analysis.root_causes.map(r => `  - ${r}`).join('\n'));
+      parts.push(analysis.root_causes.map((r) => `  - ${r}`).join('\n'));
     }
 
     return parts.join('\n');
@@ -494,7 +478,7 @@ export class PersonaEngine {
       const solution = solutions.solutions[i];
       parts.push(`\n**${i + 1}. ${solution.title}** (${solution.category.replace(/_/g, ' ')})`);
       parts.push(solution.description);
-      
+
       if (solution.action_steps.length > 0) {
         parts.push('\nFirst steps:');
         for (const step of solution.action_steps.slice(0, 2)) {
@@ -573,9 +557,7 @@ export class PersonaEngine {
     if (solutions && solutions.solutions.length > 0) {
       const firstSolution = solutions.solutions[0];
       if (firstSolution.action_steps.length > 0) {
-        questions.push(
-          `How ready do you feel to try "${firstSolution.action_steps[0].action}"?`
-        );
+        questions.push(`How ready do you feel to try "${firstSolution.action_steps[0].action}"?`);
       }
     }
 
@@ -614,18 +596,16 @@ export class PersonaEngine {
     if (!session) return 'Session not found';
 
     const interactionCount = session.history.length;
-    const masksDetected = session.history
-      .flatMap(h => h.detected_masks || [])
-      .length;
-    const solutionsProposed = session.history
-      .flatMap(h => h.solutions || [])
-      .length;
+    const masksDetected = session.history.flatMap((h) => h.detected_masks || []).length;
+    const solutionsProposed = session.history.flatMap((h) => h.solutions || []).length;
 
-    return `Session ${sessionId}\n` +
-           `Persona: ${this.persona.name}\n` +
-           `Interactions: ${interactionCount}\n` +
-           `Masks detected: ${masksDetected}\n` +
-           `Solutions proposed: ${solutionsProposed}`;
+    return (
+      `Session ${sessionId}\n` +
+      `Persona: ${this.persona.name}\n` +
+      `Interactions: ${interactionCount}\n` +
+      `Masks detected: ${masksDetected}\n` +
+      `Solutions proposed: ${solutionsProposed}`
+    );
   }
 
   /**
@@ -635,14 +615,18 @@ export class PersonaEngine {
     const session = this.sessions.get(sessionId);
     if (!session) return '';
 
-    return JSON.stringify({
-      session,
-      persona: {
-        urn: this.persona.urn,
-        name: this.persona.name,
-        archetype: this.persona.archetype,
+    return JSON.stringify(
+      {
+        session,
+        persona: {
+          urn: this.persona.urn,
+          name: this.persona.name,
+          archetype: this.persona.archetype,
+        },
       },
-    }, null, 2);
+      null,
+      2
+    );
   }
 }
 

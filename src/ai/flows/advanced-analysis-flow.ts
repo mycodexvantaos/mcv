@@ -4,8 +4,8 @@
  * 處理跨維度文件索引、OCR 提取、法律/學術分析及多源數據清洗。
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import { ai } from '@/ai/genkit';
+import { z } from 'genkit';
 
 const AnalysisModeSchema = z.enum([
   'SEMANTIC_SEARCH',
@@ -14,7 +14,7 @@ const AnalysisModeSchema = z.enum([
   'PRODUCT_COMPARISON',
   'DATA_QUALITY_AUDIT',
   'LEGAL_CONTRACT_REVIEW',
-  'COMPLIANCE_GAP_ANALYSIS'
+  'COMPLIANCE_GAP_ANALYSIS',
 ]);
 
 const AdvancedAnalysisInputSchema = z.object({
@@ -27,26 +27,30 @@ export type AdvancedAnalysisInput = z.infer<typeof AdvancedAnalysisInputSchema>;
 
 const AdvancedAnalysisOutputSchema = z.object({
   summary: z.string().describe('分析結果摘要'),
-  findings: z.array(z.object({
-    source: z.string().describe('來源標籤或文件名'),
-    content: z.any().describe('發現的具體內容（文本、表格或結構化數據）'),
-    relevance: z.number().optional().describe('相關性評分 (0-1)'),
-    pageReference: z.string().optional().describe('頁碼或引用參考'),
-  })),
+  findings: z.array(
+    z.object({
+      source: z.string().describe('來源標籤或文件名'),
+      content: z.any().describe('發現的具體內容（文本、表格或結構化數據）'),
+      relevance: z.number().optional().describe('相關性評分 (0-1)'),
+      pageReference: z.string().optional().describe('頁碼或引用參考'),
+    })
+  ),
   recommendations: z.array(z.string()).describe('基於分析的行動建議'),
   metadata: z.record(z.any()).optional().describe('額外的元數據（如 OCR 信心分數、統計指標）'),
 });
 
 export type AdvancedAnalysisOutput = z.infer<typeof AdvancedAnalysisOutputSchema>;
 
-export async function runAdvancedAnalysis(input: AdvancedAnalysisInput): Promise<AdvancedAnalysisOutput> {
+export async function runAdvancedAnalysis(
+  input: AdvancedAnalysisInput
+): Promise<AdvancedAnalysisOutput> {
   return advancedAnalysisFlow(input);
 }
 
 const prompt = ai.definePrompt({
   name: 'advancedAnalysisPrompt',
-  input: {schema: AdvancedAnalysisInputSchema},
-  output: {schema: AdvancedAnalysisOutputSchema},
+  input: { schema: AdvancedAnalysisInputSchema },
+  output: { schema: AdvancedAnalysisOutputSchema },
   prompt: `你現在是 Sentinel 的「全知分析引擎」。你的任務是執行跨維度、多格式的文件分析。
 
 當前模式: {{{mode}}}
@@ -71,7 +75,7 @@ const advancedAnalysisFlow = ai.defineFlow(
     outputSchema: AdvancedAnalysisOutputSchema,
   },
   async (input) => {
-    const {output} = await prompt(input);
+    const { output } = await prompt(input);
     return output!;
   }
 );

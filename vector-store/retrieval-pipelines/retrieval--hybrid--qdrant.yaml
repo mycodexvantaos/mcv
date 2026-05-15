@@ -13,4 +13,4 @@ spec:
   embeddingModelAlias: openai--text-embedding-3-small--1536d
   topK: 10
   rerankEnabled: true
-  description: "Hybrid dense+sparse retrieval with Qdrant."
+  description: 'Hybrid dense+sparse retrieval with Qdrant.'

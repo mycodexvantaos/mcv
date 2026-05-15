@@ -5,12 +5,14 @@ Thank you for your interest in contributing to MyCodeXvantaOS! This document pro
 ## 🚀 Quick Start
 
 1. **Fork and Clone**
+
    ```bash
    git clone https://github.com/your-username/mycodexvantaos.git
    cd mycodexvantaos
    ```
 
 2. **Install Dependencies**
+
    ```bash
    npm install
    # or
@@ -27,6 +29,7 @@ Thank you for your interest in contributing to MyCodeXvantaOS! This document pro
 MyCodeXvantaOS follows a sophisticated six-layer architecture:
 
 ### Layer A: Builder Layer (6 components)
+
 - `api-generator` - REST API code generation
 - `schema-generator` - Database schema generation
 - `workflow-generator` - Workflow automation generation
@@ -35,6 +38,7 @@ MyCodeXvantaOS follows a sophisticated six-layer architecture:
 - `ui-generator` - User interface generation
 
 ### Layer B: Runtime Layer (5 components)
+
 - `execution` - Core execution engine
 - `session-runtime` - Session management
 - `background-job-runtime` - Background job processing
@@ -42,6 +46,7 @@ MyCodeXvantaOS follows a sophisticated six-layer architecture:
 - `plugin-loader` - Dynamic plugin system
 
 ### Layer C: Native Services Layer (7 components)
+
 - `native-queue` - Queue management
 - `native-logging` - Logging infrastructure
 - `native-validation` - Input validation
@@ -51,6 +56,7 @@ MyCodeXvantaOS follows a sophisticated six-layer architecture:
 - `advanced-monitoring` - System monitoring
 
 ### Layer D: Connector Layer (8 components)
+
 - `connector-github` - GitHub integration
 - `connector-redis` - Redis caching
 - `connector-postgresql` - PostgreSQL database
@@ -61,11 +67,13 @@ MyCodeXvantaOS follows a sophisticated six-layer architecture:
 - `connector-mongodb` - MongoDB database
 
 ### Layer E: Deployment Layer (3 components)
+
 - `auto-scaler` - Auto-scaling capabilities
 - `load-balancer` - Load balancing
 - `ssl-manager` - SSL certificate management
 
 ### Layer F: Governance Layer (3 components)
+
 - `audit-logger` - Audit logging
 - `compliance-checker` - Compliance verification
 - `policy-engine` - Policy enforcement
@@ -143,6 +151,7 @@ footer
 ```
 
 **Types:**
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -152,6 +161,7 @@ footer
 - `chore`: Build process changes
 
 **Examples:**
+
 ```
 feat(api-generator): add OpenAPI support
 
@@ -169,16 +179,19 @@ Improve error handling and connection recovery.
 ## 🧪 Testing Strategy
 
 ### Unit Tests
+
 - Test individual functions and components
 - Mock external dependencies
 - Focus on business logic
 
 ### Integration Tests
+
 - Test component interactions
 - Use real dependencies where possible
 - Focus on data flow
 
 ### E2E Tests
+
 - Test complete workflows
 - Use real infrastructure
 - Focus on user scenarios
@@ -238,6 +251,7 @@ npm run type-check
 ## 🎯 Quality Standards
 
 ### Code Quality
+
 - [ ] All tests pass
 - [ ] No linting errors
 - [ ] Code complexity within limits
@@ -245,12 +259,14 @@ npm run type-check
 - [ ] Meaningful variable names
 
 ### Testing Quality
+
 - [ ] Unit tests for new code
 - [ ] Integration tests for new features
 - [ ] Test coverage maintained >80%
 - [ ] Tests follow best practices
 
 ### Documentation Quality
+
 - [ ] API documentation updated
 - [ ] README files updated
 - [ ] CHANGELOG.md updated
@@ -259,6 +275,7 @@ npm run type-check
 ## 🚦 Pull Request Process
 
 ### Before Submitting
+
 - [ ] Code follows project style guidelines
 - [ ] All tests pass locally
 - [ ] Documentation is updated
@@ -266,22 +283,27 @@ npm run type-check
 - [ ] PR description is clear and comprehensive
 
 ### PR Template
+
 ```markdown
 ## Description
+
 Brief description of changes
 
 ## Type of Change
+
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Breaking change
 - [ ] Documentation update
 
 ## Testing
+
 - [ ] Unit tests added/updated
 - [ ] Integration tests added/updated
 - [ ] All tests passing
 
 ## Checklist
+
 - [ ] Code follows style guidelines
 - [ ] Self-review completed
 - [ ] Documentation updated
@@ -293,6 +315,7 @@ Brief description of changes
 ## 🌐 Environment Setup
 
 ### Local Development
+
 ```bash
 # Copy environment file
 cp .env.local.example .env.local
@@ -302,6 +325,7 @@ npm run dev
 ```
 
 ### Docker Development
+
 ```bash
 # Build Docker image
 docker build -t mycodexvantaos .
@@ -324,6 +348,7 @@ By contributing to MyCodeXvantaOS, you agree that your contributions will be lic
 ## 🏆 Recognition
 
 Contributors will be:
+
 - Listed in CONTRIBUTORS.md
 - Mentioned in release notes
 - Invited to contributor meetings

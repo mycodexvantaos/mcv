@@ -13,11 +13,11 @@ updated_at: 2024-01-15T10:00:00Z
 
 # Workflow Configuration
 config:
-  timeout_seconds: 14400  # 4 hours max
+  timeout_seconds: 14400 # 4 hours max
   retry_policy:
     max_retries: 2
     backoff_seconds: 60
-  error_handling: continue_and_collect  # Collect all issues before reporting
+  error_handling: continue_and_collect # Collect all issues before reporting
   priority: high
   notification:
     on_critical_finding: immediate
@@ -30,7 +30,7 @@ nodes:
     type: task
     action: initialize_security_audit
     config:
-      scope: full  # full, targeted, incremental
+      scope: full # full, targeted, incremental
       include_third_party: true
       compliance_frameworks:
         - OWASP-Top-10
@@ -60,7 +60,7 @@ nodes:
         - name: IaC
           enabled: true
           tools: [checkov, terrascan]
-      severity_threshold: medium  # critical, high, medium, low
+      severity_threshold: medium # critical, high, medium, low
       fail_on_finding: false
     dependencies:
       - init_audit
@@ -98,7 +98,7 @@ nodes:
     config:
       scanners: [gitleaks, trufflehog, detect-secrets]
       scan_history: true
-      history_depth: 100  # commits
+      history_depth: 100 # commits
       patterns:
         - api_key
         - password
@@ -172,8 +172,8 @@ nodes:
         - field: critical_count
           operator: gt
           value: 0
-      on_pass: escalate_critical  # Has critical findings
-      on_fail: check_high  # No critical, check high
+      on_pass: escalate_critical # Has critical findings
+      on_fail: check_high # No critical, check high
     dependencies:
       - classify_findings
     handler: gatewayHandler
@@ -213,7 +213,7 @@ nodes:
     type: hitl
     action: security_team_review
     config:
-      timeout_seconds: 28800  # 8 hours
+      timeout_seconds: 28800 # 8 hours
       approvers_required: 1
       approver_roles:
         - security_engineer

@@ -8,7 +8,7 @@ export enum LogLevel {
   INFO = 1,
   WARN = 2,
   ERROR = 3,
-  FATAL = 4
+  FATAL = 4,
 }
 
 export interface LogEntry {
@@ -44,7 +44,7 @@ class ConsoleTransport implements LogTransport {
       [LogLevel.INFO]: '\x1b[32m', // green
       [LogLevel.WARN]: '\x1b[33m', // yellow
       [LogLevel.ERROR]: '\x1b[31m', // red
-      [LogLevel.FATAL]: '\x1b[35m' // magenta
+      [LogLevel.FATAL]: '\x1b[35m', // magenta
     };
 
     const color = levelColors[entry.level] || '\x1b[0m';
@@ -53,7 +53,7 @@ class ConsoleTransport implements LogTransport {
     const context = entry.context ? `\nContext: ${JSON.stringify(entry.context, null, 2)}` : '';
 
     const message = `${color}[${entry.levelName}]${'\x1b[0m'} ${timestamp ? `[${timestamp}]` : ''} ${entry.message}${error}${context}`;
-    
+
     switch (entry.level) {
       case LogLevel.DEBUG:
       case LogLevel.INFO:
@@ -165,8 +165,8 @@ export class NativeLogger {
       error: error && this.includeStackTrace ? error : error,
       metadata: {
         loggerName: this.name,
-        includeTimestamp: this.includeTimestamp
-      }
+        includeTimestamp: this.includeTimestamp,
+      },
     };
 
     for (const transport of this.transports) {
@@ -212,7 +212,7 @@ export class NativeLogger {
       level: this.level,
       includeTimestamp: this.includeTimestamp,
       includeStackTrace: this.includeStackTrace,
-      format: this.format
+      format: this.format,
     });
     childLogger.transports = [...this.transports];
     return childLogger;

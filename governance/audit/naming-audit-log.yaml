@@ -9,11 +9,11 @@ metadata:
   name: naming-audit-log
   labels:
     managed-by: naming-spec-v1
-    specRef: "15"
+    specRef: '15'
 
 entries:
-  - date: "2026-04-18"
+  - date: '2026-04-18'
     action: spec-adopted
-    description: "naming-spec-v1.md v1.0.0 formally adopted as platform naming authority."
+    description: 'naming-spec-v1.md v1.0.0 formally adopted as platform naming authority.'
     actor: arch-committee-lead
     result: pass

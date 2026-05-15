@@ -36,4 +36,4 @@ patches:
         value: 2
     target:
       kind: Deployment
-      labelSelector: "app.kubernetes.io/managed-by=mycodexvantaos"
+      labelSelector: 'app.kubernetes.io/managed-by=mycodexvantaos'

@@ -4,7 +4,12 @@
  */
 
 import { Router, Request, Response, NextFunction } from 'express';
-import { Orchestrator, AgentProfile, TeamTopology, AgentTask } from '@mycodexvantaos/ai-team-orchestrator';
+import {
+  Orchestrator,
+  AgentProfile,
+  TeamTopology,
+  AgentTask,
+} from '@mycodexvantaos/ai-team-orchestrator';
 
 /**
  * Create API router
@@ -217,11 +222,7 @@ export function setupRoutes(orchestrator: Orchestrator): Router {
   router.post('/teams/:id/agents', (req: Request, res: Response) => {
     try {
       const { agent_id, position } = req.body;
-      const success = orchestrator.addAgentToTeam(
-        req.params.id as any,
-        agent_id,
-        position
-      );
+      const success = orchestrator.addAgentToTeam(req.params.id as any, agent_id, position);
       return res.json({
         success,
         message: 'Agent added to team successfully',

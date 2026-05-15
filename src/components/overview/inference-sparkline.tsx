@@ -5,7 +5,7 @@ import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'rec
 
 // Simulated 24h inference data
 function generateSparklineData() {
-  const data: { time: string; requests: number; errors: number; }[] = [];
+  const data: { time: string; requests: number; errors: number }[] = [];
   const now = new Date();
   for (let i = 24; i >= 0; i--) {
     const time = new Date(now.getTime() - i * 3600000);

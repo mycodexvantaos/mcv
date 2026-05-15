@@ -64,14 +64,14 @@
 
 ### 實現順序（MVP）
 
-| 優先級 | 模組 | 預計時間 | 狀態 |
-|--------|------|---------|------|
-| P0 | CI 本地檢查 | 2-3 天 | ⏳ 待實現 |
-| P0 | 同步引擎 | 3-4 天 | ⏳ 待實現 |
-| P0 | 部署引擎（Cloudflare） | 2-3 天 | ⏳ 待實現 |
-| P1 | OPA 策略引擎 | 2-3 天 | ⏳ 待實現 |
-| P1 | 其他部署平台 | 4-5 天 | ⏳ 待實現 |
-| P2 | 文檔和測試 | 3-4 天 | ⏳ 待實現 |
+| 優先級 | 模組                   | 預計時間 | 狀態      |
+| ------ | ---------------------- | -------- | --------- |
+| P0     | CI 本地檢查            | 2-3 天   | ⏳ 待實現 |
+| P0     | 同步引擎               | 3-4 天   | ⏳ 待實現 |
+| P0     | 部署引擎（Cloudflare） | 2-3 天   | ⏳ 待實現 |
+| P1     | OPA 策略引擎           | 2-3 天   | ⏳ 待實現 |
+| P1     | 其他部署平台           | 4-5 天   | ⏳ 待實現 |
+| P2     | 文檔和測試             | 3-4 天   | ⏳ 待實現 |
 
 **合計**：2-3 周（14-21 天）
 
@@ -197,17 +197,20 @@ git push origin main
 ### 第 2-3 天：CI 本地檢查
 
 **實現檔案**：
+
 - `.github/workflows/ci.yml`
 - `scripts/test-workflows.sh`
 - `scripts/validate-schemas.sh`
 - `.governance/schemas/workflow-input.schema.json`
 
 **驗收標準**：
+
 - [ ] AC-CI-001: YAML 檢查 (yamllint)
 - [ ] AC-CI-002: Shell 檢查 (shellcheck)
 - [ ] AC-CI-003: Workflow 結構驗證
 
 **測試**：
+
 ```bash
 # 提交包含錯誤的 YAML
 git commit -m "test: invalid yaml"
@@ -220,15 +223,18 @@ git commit -m "test: invalid yaml"
 ### 第 4-5 天：OPA 策略引擎
 
 **實現檔案**：
+
 - `.governance/policies/workflow-security.rego`
 - `.governance/VERSION`
 - `.github/workflows/ci.yml` → opa-check 作業
 
 **策略**：
+
 - Secret 直接引用禁止 (deny)
 - Sudo 命令禁止 (deny)
 
 **測試**：
+
 ```bash
 # 測試策略 1：提交包含 secrets. 直接引用的工作流
 opa eval --format pretty --data .governance/policies 'data.workflows.deny'
@@ -241,15 +247,18 @@ opa eval --format pretty --data .governance/policies 'data.workflows.deny'
 ### 第 6-7 天：同步引擎
 
 **實現檔案**：
+
 - `.github/workflows/reusable-sync-gitlab.yml`
 - `.github/workflows/reusable-sync-bitbucket.yml`
 - `scripts/sync-mirror.sh`
 
 **驗收標準**：
+
 - [ ] AC-SYNC-001: GitHub → GitLab 全量同步
 - [ ] AC-SYNC-002: GitHub → Bitbucket 全量同步
 
 **測試環境**：
+
 1. 建立測試倉庫在 GitHub、GitLab、Bitbucket
 2. 配置 API 令牌到 GitHub Secrets
 3. 手動觸發同步工作流
@@ -270,15 +279,18 @@ git clone --mirror https://gitlab.com/test-org/test-repo.git
 ### 第 8-9 天：部署引擎 (Cloudflare)
 
 **實現檔案**：
+
 - `.github/workflows/reusable-deploy-cloudflare-workers.yml`
 - `.github/workflows/reusable-deploy-cloudflare-pages.yml`
 - `scripts/cloudflare-auth.sh`
 
 **驗收標準**：
+
 - [ ] AC-DEPLOY-001: Workers 部署
 - [ ] AC-DEPLOY-002: Pages 部署
 
 **測試應用**：
+
 1. 建立簡單的 Worker 應用 (src/worker.js)
 2. 配置 wrangler.toml
 3. 部署到 Cloudflare Preview
@@ -302,24 +314,28 @@ gh workflow run reusable-deploy-cloudflare-workers.yml \
 ### 第 10-11 天：其他部署平台
 
 **實現檔案**：
+
 - `.github/workflows/reusable-deploy-vercel.yml`
 - `.github/workflows/reusable-deploy-gke-helm.yml`
 - `.github/workflows/reusable-deploy-gke-kustomize.yml`
 - `.github/workflows/reusable-supabase-migrate.yml`
 
 **驗收標準**：
+
 - [ ] AC-DEPLOY-003: GKE Helm 部署
 - [ ] AC-DEPLOY-004: Supabase 遷移
 
 ### 第 12-14 天：統一回滾 + 文檔
 
 **實現檔案**：
+
 - `.github/workflows/reusable-rollback-unified.yml`
 - `README.md`
 - `docs/sync.md`, `docs/cloudflare.md`, `docs/vercel.md`, `docs/gke.md`, `docs/supabase.md`
 - `IDENTITY.md`
 
 **驗收標準**：
+
 - [ ] 所有 12 個工作流已實現
 - [ ] 文檔齊全，示例可執行
 - [ ] README 包含快速開始指南
@@ -451,12 +467,12 @@ Week 3 (可選):
 
 ### 品質指標
 
-| 指標 | 目標 | 當前 | 狀態 |
-|------|------|------|------|
-| 工作流完成度 | 12/12 | 0/12 | ⏳ |
-| 測試覆蓋度 | ≥90% | 0% | ⏳ |
-| 文檔完整度 | 100% | 0% | ⏳ |
-| 代碼質量 | CC≤10 | N/A | ⏳ |
+| 指標         | 目標  | 當前 | 狀態 |
+| ------------ | ----- | ---- | ---- |
+| 工作流完成度 | 12/12 | 0/12 | ⏳   |
+| 測試覆蓋度   | ≥90%  | 0%   | ⏳   |
+| 文檔完整度   | 100%  | 0%   | ⏳   |
+| 代碼質量     | CC≤10 | N/A  | ⏳   |
 
 ---
 
@@ -465,6 +481,7 @@ Week 3 (可選):
 ### 風險 R-001：外部 API 不可用
 
 **應對**：
+
 - 使用 mock server 進行本地測試
 - 部署到測試環境先驗證
 - 設置重試邏輯和超時
@@ -472,6 +489,7 @@ Week 3 (可選):
 ### 風險 R-002：工作流語法複雜
 
 **應對**：
+
 - 使用 GitHub 官方工作流驗證工具
 - 在本地測試環境中驗證
 - 參考官方文檔和最佳實踐
@@ -479,6 +497,7 @@ Week 3 (可選):
 ### 風險 R-003：團隊協作障礙
 
 **應對**：
+
 - 每日站會同步進度
 - 清晰的接口和依賴定義
 - 即時溝通和問題解決
@@ -574,7 +593,7 @@ Week 3 (可選):
 ✅ 100% 的 AC 驗收標準滿足  
 ✅ 所有性能指標達成  
 ✅ 安全審計通過  
-✅ 三層簽署完成  
+✅ 三層簽署完成
 
 ---
 
@@ -612,13 +631,13 @@ Week 3 (可選):
 
 ## 📚 參考文檔
 
-| 文檔 | 用途 | 長度 |
-|------|------|------|
-| **RSD** | 完整需求規格 | 652 行 |
-| **澄清確認** | 4 個問題的答覆 | 500+ 行 |
-| **TSD** | 技術方案設計 | 600+ 行 |
-| **架構師提示詞** | 實現指導 | 774 行 |
-| **此文檔** | 實現啟動清單 | 此文 |
+| 文檔             | 用途           | 長度    |
+| ---------------- | -------------- | ------- |
+| **RSD**          | 完整需求規格   | 652 行  |
+| **澄清確認**     | 4 個問題的答覆 | 500+ 行 |
+| **TSD**          | 技術方案設計   | 600+ 行 |
+| **架構師提示詞** | 實現指導       | 774 行  |
+| **此文檔**       | 實現啟動清單   | 此文    |
 
 **所有文檔位置**：`/mnt/user-data/outputs/`
 
@@ -650,7 +669,7 @@ Week 3 (可選):
 
 **實現狀態**：✅ 準備就緒  
 **預計交付**：2-3 周  
-**下一步**：確認此檢查清單，啟動 kick-off 會議  
+**下一步**：確認此檢查清單，啟動 kick-off 會議
 
 **聯絡**：Platform Team Lead
 
@@ -658,6 +677,6 @@ Week 3 (可選):
 
 **文檔版本歷史**
 
-| 版本 | 日期 | 狀態 |
-|------|------|------|
+| 版本  | 日期       | 狀態     |
+| ----- | ---------- | -------- |
 | 1.0.0 | 2024-03-12 | 初稿完成 |

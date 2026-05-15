@@ -52,21 +52,21 @@
 
 ## Provider Dependencies
 
-| Provider | Usage |
-|---|---|
-| StorageProvider | Workspace provisioning and artifact storage |
-| RepoProvider | Repository cloning into sandboxes |
-| StateStoreProvider | Sandbox state tracking and queue management |
+| Provider              | Usage                                        |
+| --------------------- | -------------------------------------------- |
+| StorageProvider       | Workspace provisioning and artifact storage  |
+| RepoProvider          | Repository cloning into sandboxes            |
+| StateStoreProvider    | Sandbox state tracking and queue management  |
 | ObservabilityProvider | Sandbox execution metrics and resource usage |
-| DatabaseProvider | Sandbox history and execution logs |
+| DatabaseProvider      | Sandbox history and execution logs           |
 
 ## Operational Modes
 
-| Mode | Behavior |
-|---|---|
-| **Native** | tmpdir-based filesystem isolation, process-level resource limits |
+| Mode          | Behavior                                                                |
+| ------------- | ----------------------------------------------------------------------- |
+| **Native**    | tmpdir-based filesystem isolation, process-level resource limits        |
 | **Connected** | Container-based isolation (Docker/Podman), cloud ephemeral environments |
-| **Hybrid** | Local filesystem with external artifact storage |
+| **Hybrid**    | Local filesystem with external artifact storage                         |
 
 ## Directory Structure
 

@@ -1,11 +1,11 @@
-import type { RemediationAction, RemediationResult, ComplianceViolation } from "./types";
+import type { RemediationAction, RemediationResult, ComplianceViolation } from './types';
 
 let counter = 0;
 
 export class RemediationService {
   private actions = new Map<string, RemediationAction>();
 
-  registerAction(input: Omit<RemediationAction, "id">): RemediationAction {
+  registerAction(input: Omit<RemediationAction, 'id'>): RemediationAction {
     const id = `rem-${++counter}`;
     const action: RemediationAction = { id, ...input };
     this.actions.set(id, action);
@@ -24,7 +24,7 @@ export class RemediationService {
     return Array.from(this.actions.values());
   }
 
-  listByRisk(risk: RemediationAction["risk"]): RemediationAction[] {
+  listByRisk(risk: RemediationAction['risk']): RemediationAction[] {
     return this.listActions().filter((a) => a.risk === risk);
   }
 
@@ -33,7 +33,7 @@ export class RemediationService {
     if (dryRun) {
       return {
         id,
-        status: "dry-run",
+        status: 'dry-run',
         actionsExecuted: 0,
         errors: [],
       };
@@ -44,7 +44,7 @@ export class RemediationService {
 
     for (const violation of violations) {
       const matchingAction = this.listActions().find(
-        (a) => a.name === violation.rule || a.description.includes(violation.rule),
+        (a) => a.name === violation.rule || a.description.includes(violation.rule)
       );
       if (matchingAction) {
         if (matchingAction.automatic) {
@@ -57,9 +57,8 @@ export class RemediationService {
       }
     }
 
-    const status: RemediationResult["status"] =
-      errors.length === 0 ? "success" :
-      actionsExecuted > 0 ? "partial" : "failure";
+    const status: RemediationResult['status'] =
+      errors.length === 0 ? 'success' : actionsExecuted > 0 ? 'partial' : 'failure';
 
     return { id, status, actionsExecuted, errors };
   }

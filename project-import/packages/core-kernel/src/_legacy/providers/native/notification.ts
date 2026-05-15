@@ -1,6 +1,6 @@
 /**
  * NativeNotificationProvider — Console + file + webhook notification
- * 
+ *
  * Zero external dependencies. Delivers notifications via:
  *  - stdout/console (always available)
  *  - File-based log (append to notifications.jsonl)
@@ -68,14 +68,20 @@ export class NativeNotificationProvider implements NotificationProvider {
 
     // Load templates
     if (fs.existsSync(this.templatesFile)) {
-      try { this.templates = JSON.parse(fs.readFileSync(this.templatesFile, 'utf-8')); }
-      catch { this.templates = []; }
+      try {
+        this.templates = JSON.parse(fs.readFileSync(this.templatesFile, 'utf-8'));
+      } catch {
+        this.templates = [];
+      }
     }
 
     // Load history
     if (fs.existsSync(this.historyFile)) {
-      try { this.history = JSON.parse(fs.readFileSync(this.historyFile, 'utf-8')); }
-      catch { this.history = []; }
+      try {
+        this.history = JSON.parse(fs.readFileSync(this.historyFile, 'utf-8'));
+      } catch {
+        this.history = [];
+      }
     }
 
     // Set up channel configs
@@ -99,8 +105,8 @@ export class NativeNotificationProvider implements NotificationProvider {
 
     // Check deduplication
     if (message.deduplicationKey) {
-      const existing = this.history.find(h =>
-        h.externalId === message.deduplicationKey && h.status === 'delivered'
+      const existing = this.history.find(
+        (h) => h.externalId === message.deduplicationKey && h.status === 'delivered'
       );
       if (existing) {
         return { messageId, results: [existing], allSucceeded: true };
@@ -113,7 +119,7 @@ export class NativeNotificationProvider implements NotificationProvider {
     let richBody = message.richBody;
 
     if (message.templateId) {
-      const template = this.templates.find(t => t.id === message.templateId);
+      const template = this.templates.find((t) => t.id === message.templateId);
       if (template) {
         const vars = { ...message.data, ...message.templateVars };
         subject = this.interpolate(template.subjectTemplate, vars ?? {});
@@ -127,7 +133,12 @@ export class NativeNotificationProvider implements NotificationProvider {
     // Deliver to each channel
     for (const channel of channels) {
       const result = await this.deliverToChannel(
-        channel, messageId, subject, body, richBody, message
+        channel,
+        messageId,
+        subject,
+        body,
+        richBody,
+        message
       );
       results.push(result);
     }
@@ -140,7 +151,7 @@ export class NativeNotificationProvider implements NotificationProvider {
     return {
       messageId,
       results,
-      allSucceeded: results.every(r => r.status === 'delivered' || r.status === 'sent'),
+      allSucceeded: results.every((r) => r.status === 'delivered' || r.status === 'sent'),
     };
   }
 
@@ -177,23 +188,25 @@ export class NativeNotificationProvider implements NotificationProvider {
   // ── Delivery Tracking ───────────────────────────────────────────────────────
 
   async getStatus(messageId: string): Promise<NotificationResult[]> {
-    return this.history.filter(h => h.messageId === messageId);
+    return this.history.filter((h) => h.messageId === messageId);
   }
 
   async queryHistory(query: NotificationQuery): Promise<NotificationResult[]> {
     let results = [...this.history];
 
-    if (query.channel) results = results.filter(r => r.channel === query.channel);
-    if (query.status) results = results.filter(r => r.status === query.status);
-    if (query.since) results = results.filter(r => (r.sentAt ?? 0) >= query.since!);
-    if (query.until) results = results.filter(r => (r.sentAt ?? 0) <= query.until!);
+    if (query.channel) results = results.filter((r) => r.channel === query.channel);
+    if (query.status) results = results.filter((r) => r.status === query.status);
+    if (query.since) results = results.filter((r) => (r.sentAt ?? 0) >= query.since!);
+    if (query.until) results = results.filter((r) => (r.sentAt ?? 0) <= query.until!);
 
     results.sort((a, b) => (b.sentAt ?? 0) - (a.sentAt ?? 0));
     return results.slice(0, query.limit ?? 100);
   }
 
   async retry(messageId: string, channel?: NotificationChannel): Promise<NotificationSendResult> {
-    const originals = this.history.filter(h => h.messageId === messageId && h.status === 'failed');
+    const originals = this.history.filter(
+      (h) => h.messageId === messageId && h.status === 'failed'
+    );
     if (originals.length === 0) {
       throw new Error(`No failed deliveries found for message: ${messageId}`);
     }
@@ -223,7 +236,7 @@ export class NativeNotificationProvider implements NotificationProvider {
     channel: NotificationChannel,
     config: Record<string, unknown>
   ): Promise<ChannelConfig> {
-    const existing = this.channelConfigs.find(c => c.channel === channel);
+    const existing = this.channelConfigs.find((c) => c.channel === channel);
     if (existing) {
       existing.config = { ...existing.config, ...config };
       return existing;
@@ -259,14 +272,14 @@ export class NativeNotificationProvider implements NotificationProvider {
   }
 
   async getTemplate(templateId: string): Promise<NotificationTemplate | null> {
-    return this.templates.find(t => t.id === templateId) ?? null;
+    return this.templates.find((t) => t.id === templateId) ?? null;
   }
 
   async upsertTemplate(
     template: Omit<NotificationTemplate, 'createdAt' | 'updatedAt'>
   ): Promise<NotificationTemplate> {
     const now = Date.now();
-    const idx = this.templates.findIndex(t => t.id === template.id);
+    const idx = this.templates.findIndex((t) => t.id === template.id);
 
     const full: NotificationTemplate = {
       ...template,
@@ -274,31 +287,34 @@ export class NativeNotificationProvider implements NotificationProvider {
       updatedAt: now,
     };
 
-    if (idx >= 0) { this.templates[idx] = full; }
-    else { this.templates.push(full); }
+    if (idx >= 0) {
+      this.templates[idx] = full;
+    } else {
+      this.templates.push(full);
+    }
 
     this.persistTemplates();
     return full;
   }
 
   async deleteTemplate(templateId: string): Promise<void> {
-    this.templates = this.templates.filter(t => t.id !== templateId);
+    this.templates = this.templates.filter((t) => t.id !== templateId);
     this.persistTemplates();
   }
 
   // ── Lifecycle ───────────────────────────────────────────────────────────────
 
   async healthcheck(): Promise<NotificationHealth> {
-    const configured = this.channelConfigs.filter(c => c.enabled).map(c => c.channel);
+    const configured = this.channelConfigs.filter((c) => c.enabled).map((c) => c.channel);
     const failed24h = this.history.filter(
-      h => h.status === 'failed' && (h.sentAt ?? 0) > Date.now() - 86400000
+      (h) => h.status === 'failed' && (h.sentAt ?? 0) > Date.now() - 86400000
     ).length;
 
     return {
       healthy: true,
       mode: 'native',
       provider: this.providerId,
-      configuredChannels: this.channelConfigs.map(c => c.channel),
+      configuredChannels: this.channelConfigs.map((c) => c.channel),
       activeChannels: configured,
       pendingCount: 0,
       failedLast24h: failed24h,
@@ -356,11 +372,25 @@ export class NativeNotificationProvider implements NotificationProvider {
         case 'webhook': {
           const urls = this.config.webhookUrls;
           if (urls.length === 0) {
-            return { messageId, channel, status: 'failed', sentAt: now, failureReason: 'No webhook URLs configured' };
+            return {
+              messageId,
+              channel,
+              status: 'failed',
+              sentAt: now,
+              failureReason: 'No webhook URLs configured',
+            };
           }
 
           for (const url of urls) {
-            await this.postWebhook(url, { messageId, subject, body, richBody, priority: message.priority, recipients: message.recipients, metadata: message.metadata });
+            await this.postWebhook(url, {
+              messageId,
+              subject,
+              body,
+              richBody,
+              priority: message.priority,
+              recipients: message.recipients,
+              metadata: message.metadata,
+            });
           }
           return { messageId, channel, status: 'delivered', sentAt: now, deliveredAt: now };
         }
@@ -377,7 +407,10 @@ export class NativeNotificationProvider implements NotificationProvider {
           };
           fs.appendFileSync(this.notificationsFile, JSON.stringify(fallbackEntry) + '\n');
           return {
-            messageId, channel, status: 'sent', sentAt: now,
+            messageId,
+            channel,
+            status: 'sent',
+            sentAt: now,
             failureReason: `Channel "${channel}" not natively supported, logged to file`,
           };
         }
@@ -417,7 +450,10 @@ export class NativeNotificationProvider implements NotificationProvider {
       });
 
       req.on('error', reject);
-      req.on('timeout', () => { req.destroy(); reject(new Error('Webhook timeout')); });
+      req.on('timeout', () => {
+        req.destroy();
+        reject(new Error('Webhook timeout'));
+      });
       req.write(data);
       req.end();
     });
@@ -433,11 +469,16 @@ export class NativeNotificationProvider implements NotificationProvider {
 
   private priorityIcon(priority: NotificationPriority): string {
     switch (priority) {
-      case 'critical': return '🔴';
-      case 'high': return '🟠';
-      case 'normal': return '🔵';
-      case 'low': return '⚪';
-      default: return '📌';
+      case 'critical':
+        return '🔴';
+      case 'high':
+        return '🟠';
+      case 'normal':
+        return '🔵';
+      case 'low':
+        return '⚪';
+      default:
+        return '📌';
     }
   }
 
@@ -448,10 +489,14 @@ export class NativeNotificationProvider implements NotificationProvider {
   }
 
   private persistHistory(): void {
-    try { fs.writeFileSync(this.historyFile, JSON.stringify(this.history, null, 2)); } catch {}
+    try {
+      fs.writeFileSync(this.historyFile, JSON.stringify(this.history, null, 2));
+    } catch {}
   }
 
   private persistTemplates(): void {
-    try { fs.writeFileSync(this.templatesFile, JSON.stringify(this.templates, null, 2)); } catch {}
+    try {
+      fs.writeFileSync(this.templatesFile, JSON.stringify(this.templates, null, 2));
+    } catch {}
   }
 }

@@ -15,6 +15,7 @@ In **Native mode**, workflow definitions are stored in SQLite, step execution us
 ## Core Capabilities
 
 ### Workflow Engine Service
+
 - Workflow definition with multi-step DAG support
 - Step types: action, condition, parallel, wait
 - Workflow execution with per-step status tracking
@@ -23,6 +24,7 @@ In **Native mode**, workflow definitions are stored in SQLite, step execution us
 - Database-persisted workflow definitions and run logs
 
 ### Step Runner Service
+
 - Individual step execution with typed input/output
 - Step result collection and persistence
 - Retry logic with configurable attempts and backoff
@@ -30,6 +32,7 @@ In **Native mode**, workflow definitions are stored in SQLite, step execution us
 - Observability-integrated execution tracing
 
 ### State Machine Service
+
 - Finite state machine definition (states + transitions)
 - Instance creation from machine definitions
 - Event-driven state transitions with guard conditions
@@ -62,45 +65,47 @@ In **Native mode**, workflow definitions are stored in SQLite, step execution us
 
 ## Provider Dependencies
 
-| Provider | Usage |
-|----------|-------|
-| database | Persist workflow definitions, executions, state machines |
-| queue | Asynchronous step dispatch and event handling |
-| stateStore | Workflow execution state, state machine instances |
+| Provider      | Usage                                                    |
+| ------------- | -------------------------------------------------------- |
+| database      | Persist workflow definitions, executions, state machines |
+| queue         | Asynchronous step dispatch and event handling            |
+| stateStore    | Workflow execution state, state machine instances        |
 | observability | Trace workflow runs, log step results, metric collection |
 
 ---
 
 ## Services
 
-| Service | Methods | Description |
-|---------|---------|-------------|
-| WorkflowEngineService | define, execute, getExecution, listExecutions, cancel | Workflow lifecycle |
-| StepRunnerService | runStep, getStepResult, retry, listSteps | Individual step execution |
-| StateMachineService | define, createInstance, transition, getState, getHistory | FSM management |
+| Service               | Methods                                                  | Description               |
+| --------------------- | -------------------------------------------------------- | ------------------------- |
+| WorkflowEngineService | define, execute, getExecution, listExecutions, cancel    | Workflow lifecycle        |
+| StepRunnerService     | runStep, getStepResult, retry, listSteps                 | Individual step execution |
+| StateMachineService   | define, createInstance, transition, getState, getHistory | FSM management            |
 
 ---
 
 ## Workflow Step Types
 
-| Type | Description |
-|------|-------------|
-| action | Execute a function or service call |
-| condition | Branch based on expression evaluation |
-| parallel | Execute multiple steps concurrently |
-| wait | Pause execution for a duration or external signal |
+| Type      | Description                                       |
+| --------- | ------------------------------------------------- |
+| action    | Execute a function or service call                |
+| condition | Branch based on expression evaluation             |
+| parallel  | Execute multiple steps concurrently               |
+| wait      | Pause execution for a duration or external signal |
 
 ---
 
 ## Operational Modes
 
 ### Native Mode
+
 - SQLite-persisted workflow definitions
 - In-process async step execution
 - Memory-backed state machine instances
 - Console-based execution tracing
 
 ### Connected Mode
+
 - PostgreSQL workflow storage
 - Redis/RabbitMQ-backed step queues
 - Distributed state machine instances

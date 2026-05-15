@@ -9,21 +9,21 @@ metadata:
   planeDescription: 決策面 — AI、規則、條件路由
   tier: 3
   tags:
-  - decision
-  - rules
-  - routing
+    - decision
+    - rules
+    - routing
 spec:
   architecture:
     philosophy: native-first / provider-agnostic
     principle: 第三方服務是擴充出口，不是平台地基
     mode: native | connected | hybrid
   capabilities:
-  - rule-evaluation
-  - conditional-routing
-  - policy-execution
+    - rule-evaluation
+    - conditional-routing
+    - policy-execution
   providerDependencies:
-  - database
-  - stateStore
+    - database
+    - stateStore
   repoDependencies:
-  - codexvanta-os-core-kernel
-  - codexvanta-os-policy-engine
+    - codexvanta-os-core-kernel
+    - codexvanta-os-policy-engine

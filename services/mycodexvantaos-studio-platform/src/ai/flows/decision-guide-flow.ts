@@ -37,7 +37,13 @@ export interface DecisionGuideOutput {
  * Produces structured recommendations with tradeoff matrix and compliance notes.
  */
 export async function decisionGuideFlow(input: DecisionGuideInput): Promise<DecisionGuideOutput> {
-  const { domain, context, requirements, constraints = [], complianceTags = ['SOC2', 'SLSA-L3'] } = input;
+  const {
+    domain,
+    context,
+    requirements,
+    constraints = [],
+    complianceTags = ['SOC2', 'SLSA-L3'],
+  } = input;
 
   const prompt = `You are the MyCodeXvantaOS Architecture Decision Engine.
 
@@ -82,8 +88,12 @@ Format as structured JSON.`;
     flowId: `decision-guide-${Date.now()}`,
     domain,
     recommendation: {
-      primary: primaryRec || `Adopt mycodexvantaos-native ${domain} stack with provider abstraction layer.`,
-      rationale: rationale || `Aligns with MyCodeXvantaOS Provider Architecture: native-first, zero vendor lock-in, SLSA-L3 compliant.`,
+      primary:
+        primaryRec ||
+        `Adopt mycodexvantaos-native ${domain} stack with provider abstraction layer.`,
+      rationale:
+        rationale ||
+        `Aligns with MyCodeXvantaOS Provider Architecture: native-first, zero vendor lock-in, SLSA-L3 compliant.`,
       alternatives: [
         {
           option: 'External Provider (OpenAI/Anthropic)',
@@ -98,9 +108,21 @@ Format as structured JSON.`;
       ],
       tradeoffMatrix: [
         { criterion: 'Cost', weight: 0.25, scores: { native: 9, external: 5, self_hosted: 7 } },
-        { criterion: 'Capability', weight: 0.30, scores: { native: 6, external: 10, self_hosted: 7 } },
-        { criterion: 'Data Control', weight: 0.25, scores: { native: 10, external: 4, self_hosted: 9 } },
-        { criterion: 'Ops Complexity', weight: 0.20, scores: { native: 9, external: 8, self_hosted: 4 } },
+        {
+          criterion: 'Capability',
+          weight: 0.3,
+          scores: { native: 6, external: 10, self_hosted: 7 },
+        },
+        {
+          criterion: 'Data Control',
+          weight: 0.25,
+          scores: { native: 10, external: 4, self_hosted: 9 },
+        },
+        {
+          criterion: 'Ops Complexity',
+          weight: 0.2,
+          scores: { native: 9, external: 8, self_hosted: 4 },
+        },
       ],
     },
     complianceNotes: [

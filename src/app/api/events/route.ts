@@ -34,14 +34,23 @@ export async function GET(request: Request) {
 
       // Simulate periodic connector health updates
       const healthInterval = setInterval(() => {
-        const connectors = ['pg-primary', 'pg-replica', 'redis-cache', 'github-scm', 's3-storage', 'custom-webhook'];
+        const connectors = [
+          'pg-primary',
+          'pg-replica',
+          'redis-cache',
+          'github-scm',
+          's3-storage',
+          'custom-webhook',
+        ];
         const connectorId = connectors[Math.floor(Math.random() * connectors.length)];
         const isHealthy = Math.random() > 0.15;
 
         sendEvent('connector_health', {
           connectorId,
           status: isHealthy ? 'healthy' : 'degraded',
-          latency: isHealthy ? Math.floor(5 + Math.random() * 80) : Math.floor(150 + Math.random() * 200),
+          latency: isHealthy
+            ? Math.floor(5 + Math.random() * 80)
+            : Math.floor(150 + Math.random() * 200),
           timestamp: new Date().toISOString(),
         });
       }, 8000);

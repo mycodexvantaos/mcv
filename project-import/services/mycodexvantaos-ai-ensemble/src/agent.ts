@@ -1,4 +1,4 @@
-import type { Agent, AgentResult, AgentStep, AgentStatus } from "./types";
+import type { Agent, AgentResult, AgentStep, AgentStatus } from './types';
 
 let counter = 0;
 
@@ -10,7 +10,7 @@ export class AgentService {
     const id = `agent-${++counter}`;
     const agent: Agent = { id, name, model, tools, systemPrompt };
     this.agents.set(id, agent);
-    this.statuses.set(id, { agentId: id, state: "idle" });
+    this.statuses.set(id, { agentId: id, state: 'idle' });
     return agent;
   }
 
@@ -35,15 +35,25 @@ export class AgentService {
     const agent = this.agents.get(agentId);
     if (!agent) throw new Error(`Agent ${agentId} not found`);
 
-    this.statuses.set(agentId, { agentId, state: "running", currentStep: "thinking" });
+    this.statuses.set(agentId, { agentId, state: 'running', currentStep: 'thinking' });
 
     const steps: AgentStep[] = [
-      { action: "think", input, output: "Analyzing input...", reasoning: "Understanding the request" },
-      { action: "respond", input: "analysis", output: `[stub output for "${input}"]`, reasoning: "Generating response" },
+      {
+        action: 'think',
+        input,
+        output: 'Analyzing input...',
+        reasoning: 'Understanding the request',
+      },
+      {
+        action: 'respond',
+        input: 'analysis',
+        output: `[stub output for "${input}"]`,
+        reasoning: 'Generating response',
+      },
     ];
 
     const tokensUsed = Math.ceil(input.length / 4) + 50;
-    this.statuses.set(agentId, { agentId, state: "completed" });
+    this.statuses.set(agentId, { agentId, state: 'completed' });
 
     return {
       agentId,

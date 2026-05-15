@@ -57,21 +57,21 @@
 
 ## Provider Dependencies
 
-| Provider | Usage |
-|---|---|
-| StorageProvider | Module package storage and distribution |
-| DatabaseProvider | Module registry, installed module inventory |
-| ValidationProvider | Module manifest and code validation |
-| ObservabilityProvider | Module execution metrics and health |
-| StateStoreProvider | Module state and configuration |
+| Provider              | Usage                                       |
+| --------------------- | ------------------------------------------- |
+| StorageProvider       | Module package storage and distribution     |
+| DatabaseProvider      | Module registry, installed module inventory |
+| ValidationProvider    | Module manifest and code validation         |
+| ObservabilityProvider | Module execution metrics and health         |
+| StateStoreProvider    | Module state and configuration              |
 
 ## Operational Modes
 
-| Mode | Behavior |
-|---|---|
-| **Native** | Filesystem-based module loading, in-process execution |
+| Mode          | Behavior                                                        |
+| ------------- | --------------------------------------------------------------- |
+| **Native**    | Filesystem-based module loading, in-process execution           |
 | **Connected** | Remote module registry (npm-like), container-isolated execution |
-| **Hybrid** | Local modules with remote registry for discovery |
+| **Hybrid**    | Local modules with remote registry for discovery                |
 
 ## Directory Structure
 

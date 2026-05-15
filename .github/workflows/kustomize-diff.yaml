@@ -33,9 +33,9 @@ jobs:
           set -e
           git fetch origin ${{ steps.base_branch.outputs.ref }}
           BASE_COMMIT="origin/${{ steps.base_branch.outputs.ref }}"
-          
+
           mkdir -p ./.tmp/base ./.tmp/head
-          
+
           find deploy/kustomize/overlays/* -maxdepth 0 -type d | while read overlay; do
             OVERLAY_NAME=$(basename "$overlay")
             echo "Building HEAD for overlay $OVERLAY_NAME"
@@ -47,9 +47,9 @@ jobs:
             
             git checkout HEAD -- "$overlay"
           done
-          
+
           DIFF_BODY=$(diff -u ./.tmp/base ./.tmp/head || true)
-          
+
           if [[ -z "$DIFF_BODY" ]]; then
             echo "body=No Kustomize changes detected." >> "$GITHUB_OUTPUT"
           else
@@ -74,7 +74,7 @@ jobs:
 
             const botComment = comments.find(comment => comment.user.login === 'github-actions[bot]' && comment.body.includes('### Kustomize Diff'));
             const body = `${{ steps.kustomize_diff.outputs.body }}`;
-            
+
             if (botComment) {
               await github.rest.issues.updateComment({
                 owner: context.repo.owner,

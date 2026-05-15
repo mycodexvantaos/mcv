@@ -13,12 +13,14 @@ The Core Code Deconstructor enables CodexVanta OS to understand its own codebase
 ## Core Capabilities
 
 ### AST Analyzer Service
+
 - Source file parsing to abstract syntax trees
 - Pattern detection (imports, exports, class hierarchies)
 - Code quality analysis and reporting
 - Multi-language AST support (TypeScript primary)
 
 ### Dependency Graph Service
+
 - Cross-package dependency graph construction from package.json
 - Circular dependency detection via depth-first search
 - Change impact analysis (what breaks if X changes)
@@ -47,21 +49,21 @@ The Core Code Deconstructor enables CodexVanta OS to understand its own codebase
 
 ## Provider Dependencies
 
-| Provider | Usage |
-|----------|-------|
-| storage | Read source files for analysis |
-| database | Persist dependency graphs and analysis results |
-| stateStore | Cache parsed ASTs and graph computations |
-| observability | Log analysis operations, trace graph builds |
+| Provider      | Usage                                          |
+| ------------- | ---------------------------------------------- |
+| storage       | Read source files for analysis                 |
+| database      | Persist dependency graphs and analysis results |
+| stateStore    | Cache parsed ASTs and graph computations       |
+| observability | Log analysis operations, trace graph builds    |
 
 ---
 
 ## Services
 
-| Service | Methods | Description |
-|---------|---------|-------------|
-| ASTAnalyzerService | analyze, getAST, findPatterns, getReport | Static code analysis |
-| DependencyGraphService | build, getGraph, findCycles, getImpact | Dependency analysis |
+| Service                | Methods                                  | Description          |
+| ---------------------- | ---------------------------------------- | -------------------- |
+| ASTAnalyzerService     | analyze, getAST, findPatterns, getReport | Static code analysis |
+| DependencyGraphService | build, getGraph, findCycles, getImpact   | Dependency analysis  |
 
 ---
 

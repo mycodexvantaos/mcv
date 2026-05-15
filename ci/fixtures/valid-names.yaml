@@ -23,9 +23,9 @@ serviceIds:
   - mycodexvantaos-governance-policy
 
 packageNames:
-  - "@mycodexvantaos/core-kernel"
-  - "@mycodexvantaos/ai-embedding"
-  - "@mycodexvantaos/data-vector-store"
+  - '@mycodexvantaos/core-kernel'
+  - '@mycodexvantaos/ai-embedding'
+  - '@mycodexvantaos/data-vector-store'
 
 capabilityIds:
   - database
@@ -78,42 +78,42 @@ envVars:
   - MYCODEXVANTAOS_REDIS_URL
 
 urns:
-  - "urn:mycodexvantaos:capability:vector-store:pgvector"
-  - "urn:mycodexvantaos:manifest:service:mycodexvantaos-core-kernel"
-  - "urn:mycodexvantaos:policy:naming:naming-spec"
-  - "urn:mycodexvantaos:provider:llm:openai"
-  - "urn:mycodexvantaos:exception:no-version-in-canonical:migration-2026"
+  - 'urn:mycodexvantaos:capability:vector-store:pgvector'
+  - 'urn:mycodexvantaos:manifest:service:mycodexvantaos-core-kernel'
+  - 'urn:mycodexvantaos:policy:naming:naming-spec'
+  - 'urn:mycodexvantaos:provider:llm:openai'
+  - 'urn:mycodexvantaos:exception:no-version-in-canonical:migration-2026'
 
 vectorCollectionIds:
-  - "mycodexvantaos-ai-memory--memories--bge-small-384"
-  - "mycodexvantaos-docs-search--docs--openai-text-embedding-3-small-1536d"
+  - 'mycodexvantaos-ai-memory--memories--bge-small-384'
+  - 'mycodexvantaos-docs-search--docs--openai-text-embedding-3-small-1536d'
 
 embeddingModelAliases:
-  - "openai--text-embedding-3-small--1536d"
-  - "openai--text-embedding-3-large--3072d"
-  - "cohere--embed-english-v3--1024d"
-  - "ollama--nomic-embed-text--768d"
+  - 'openai--text-embedding-3-small--1536d'
+  - 'openai--text-embedding-3-large--3072d'
+  - 'cohere--embed-english-v3--1024d'
+  - 'ollama--nomic-embed-text--768d'
 
 retrievalPipelineIds:
-  - "retrieval--dense--pgvector"
-  - "retrieval--hybrid--qdrant"
-  - "retrieval--sparse--memory"
+  - 'retrieval--dense--pgvector'
+  - 'retrieval--hybrid--qdrant'
+  - 'retrieval--sparse--memory'
 
 searchIndexIds:
-  - "idx--mycodexvantaos-docs-search--content--cjk"
-  - "idx--mycodexvantaos-docs-search--title--standard"
+  - 'idx--mycodexvantaos-docs-search--content--cjk'
+  - 'idx--mycodexvantaos-docs-search--title--standard'
 
 graphDbIndexIds:
-  - "graph-idx--mycodexvantaos-governance--policy--name"
-  - "graph-idx--mycodexvantaos-core-kernel--service--id"
+  - 'graph-idx--mycodexvantaos-governance--policy--name'
+  - 'graph-idx--mycodexvantaos-core-kernel--service--id'
 
 timestampedIds:
-  - "job--20260418--a1b2c3"
-  - "exception--20260418--zx9k1m"
+  - 'job--20260418--a1b2c3'
+  - 'exception--20260418--zx9k1m'
 
 contentAddressedIds:
-  - "dataset--sha256-3f4a8b9c1d2e"
-  - "artifact--sha256-abcdef012345"
+  - 'dataset--sha256-3f4a8b9c1d2e'
+  - 'artifact--sha256-abcdef012345'
 
 uuidBasedIds:
-  - "session--550e8400e29b41d4a716446655440000"
+  - 'session--550e8400e29b41d4a716446655440000'

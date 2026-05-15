@@ -3,15 +3,20 @@ import { NextResponse } from 'next/server';
 // MyCodeXvantaOS Admin Dashboard - Inference Metrics API
 // Time-series metrics for LM inference monitoring
 
-function generateMetricPoints(hours: number, baseValue: number, variance: number, trend: number = 0) {
-  const points: { timestamp: string; value: number; }[] = [];
+function generateMetricPoints(
+  hours: number,
+  baseValue: number,
+  variance: number,
+  trend: number = 0
+) {
+  const points: { timestamp: string; value: number }[] = [];
   const now = new Date();
   for (let i = hours * 12; i >= 0; i--) {
     const timestamp = new Date(now.getTime() - i * 5 * 60000); // 5-min intervals
     const noise = (Math.random() - 0.5) * variance;
     const trendOffset = (hours * 12 - i) * trend;
     const hourOfDay = timestamp.getHours();
-    const dayPattern = Math.sin((hourOfDay - 6) * Math.PI / 12) * variance * 0.3;
+    const dayPattern = Math.sin(((hourOfDay - 6) * Math.PI) / 12) * variance * 0.3;
     points.push({
       timestamp: timestamp.toISOString(),
       value: Math.max(0, baseValue + noise + dayPattern + trendOffset),

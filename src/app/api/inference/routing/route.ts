@@ -56,9 +56,7 @@ const routingRules: RoutingRule[] = [
     weight: 20,
     priority: 2,
     enabled: true,
-    conditions: [
-      { type: 'token_count', operator: 'lt', value: 200000 },
-    ],
+    conditions: [{ type: 'token_count', operator: 'lt', value: 200000 }],
     fallbackModel: 'gpt-4o',
   },
   {
@@ -97,9 +95,7 @@ const routingRules: RoutingRule[] = [
     weight: 5,
     priority: 4,
     enabled: true,
-    conditions: [
-      { type: 'token_count', operator: 'gt', value: 128000 },
-    ],
+    conditions: [{ type: 'token_count', operator: 'gt', value: 128000 }],
     fallbackModel: 'claude-3.5-sonnet',
   },
 ];

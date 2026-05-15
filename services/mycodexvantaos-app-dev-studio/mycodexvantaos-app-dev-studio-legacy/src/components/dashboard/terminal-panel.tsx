@@ -6,16 +6,28 @@ export function TerminalPanel() {
     <div className="flex h-full flex-col">
       <Tabs defaultValue="terminal" className="flex h-full flex-col">
         <TabsList className="h-10 justify-start rounded-none bg-transparent p-0 px-2 border-b">
-          <TabsTrigger value="terminal" className="h-10 rounded-none border-b-2 border-transparent bg-transparent px-4 py-2 text-sm text-muted-foreground shadow-none data-[state=active]:border-accent data-[state=active]:text-foreground">
+          <TabsTrigger
+            value="terminal"
+            className="h-10 rounded-none border-b-2 border-transparent bg-transparent px-4 py-2 text-sm text-muted-foreground shadow-none data-[state=active]:border-accent data-[state=active]:text-foreground"
+          >
             Terminal
           </TabsTrigger>
-          <TabsTrigger value="problems" className="h-10 rounded-none border-b-2 border-transparent bg-transparent px-4 py-2 text-sm text-muted-foreground shadow-none data-[state=active]:border-accent data-[state=active]:text-foreground">
+          <TabsTrigger
+            value="problems"
+            className="h-10 rounded-none border-b-2 border-transparent bg-transparent px-4 py-2 text-sm text-muted-foreground shadow-none data-[state=active]:border-accent data-[state=active]:text-foreground"
+          >
             Problems
           </TabsTrigger>
-          <TabsTrigger value="output" className="h-10 rounded-none border-b-2 border-transparent bg-transparent px-4 py-2 text-sm text-muted-foreground shadow-none data-[state=active]:border-accent data-[state=active]:text-foreground">
+          <TabsTrigger
+            value="output"
+            className="h-10 rounded-none border-b-2 border-transparent bg-transparent px-4 py-2 text-sm text-muted-foreground shadow-none data-[state=active]:border-accent data-[state=active]:text-foreground"
+          >
             Output
           </TabsTrigger>
-           <TabsTrigger value="debug" className="h-10 rounded-none border-b-2 border-transparent bg-transparent px-4 py-2 text-sm text-muted-foreground shadow-none data-[state=active]:border-accent data-[state=active]:text-foreground">
+          <TabsTrigger
+            value="debug"
+            className="h-10 rounded-none border-b-2 border-transparent bg-transparent px-4 py-2 text-sm text-muted-foreground shadow-none data-[state=active]:border-accent data-[state=active]:text-foreground"
+          >
             Debug Console
           </TabsTrigger>
         </TabsList>
@@ -32,7 +44,7 @@ export function TerminalPanel() {
               </p>
               <p>up to date, audited 1590 packages in 5s</p>
               <p>210 packages are looking for funding</p>
-              <p>  run `npm fund` for details</p>
+              <p> run `npm fund` for details</p>
               <p>
                 <span className="text-accent">user@mycodexvantaos</span>
                 <span className="text-primary">:</span>

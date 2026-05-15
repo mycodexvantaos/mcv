@@ -9,7 +9,7 @@ import {
   ValidationField,
   ValidationResult,
   ValidationError,
-  ValidatorFn
+  ValidatorFn,
 } from '../index';
 
 describe('NativeValidator', () => {
@@ -23,26 +23,26 @@ describe('NativeValidator', () => {
           type: 'string',
           required: true,
           min: 2,
-          max: 50
+          max: 50,
         },
         email: {
           type: 'email',
-          required: true
+          required: true,
         },
         age: {
           type: 'number',
           required: false,
           min: 0,
-          max: 150
+          max: 150,
         },
         active: {
           type: 'boolean',
-          required: false
+          required: false,
         },
         tags: {
           type: 'array',
           required: false,
-          min: 1
+          min: 1,
         },
         profile: {
           type: 'object',
@@ -51,13 +51,13 @@ describe('NativeValidator', () => {
             fields: {
               bio: {
                 type: 'string',
-                required: false
-              }
-            }
-          }
-        }
+                required: false,
+              },
+            },
+          },
+        },
       },
-      strict: false
+      strict: false,
     };
     validator = new NativeValidator(schema);
   });
@@ -69,7 +69,7 @@ describe('NativeValidator', () => {
         email: 'john@example.com',
         age: 30,
         active: true,
-        tags: ['developer', 'engineer']
+        tags: ['developer', 'engineer'],
       };
 
       const result: ValidationResult = await validator.validate(data);
@@ -80,7 +80,7 @@ describe('NativeValidator', () => {
 
     test('should fail validation for missing required field', async () => {
       const data = {
-        email: 'john@example.com'
+        email: 'john@example.com',
       };
 
       const result: ValidationResult = await validator.validate(data);
@@ -93,7 +93,7 @@ describe('NativeValidator', () => {
       const data = {
         name: 'John Doe',
         email: 'not-an-email',
-        age: 'thirty'
+        age: 'thirty',
       };
 
       const result: ValidationResult = await validator.validate(data);
@@ -109,37 +109,37 @@ describe('NativeValidator', () => {
     });
 
     test('should validate number type', async () => {
-      const result = await validator.validate({ 
-        name: 'John', 
+      const result = await validator.validate({
+        name: 'John',
         email: 'john@example.com',
-        age: 30 
+        age: 30,
       });
       expect(result.valid).toBe(true);
     });
 
     test('should validate boolean type', async () => {
-      const result = await validator.validate({ 
-        name: 'John', 
+      const result = await validator.validate({
+        name: 'John',
         email: 'john@example.com',
-        active: true 
+        active: true,
       });
       expect(result.valid).toBe(true);
     });
 
     test('should validate array type', async () => {
-      const result = await validator.validate({ 
-        name: 'John', 
+      const result = await validator.validate({
+        name: 'John',
         email: 'john@example.com',
-        tags: ['tag1', 'tag2'] 
+        tags: ['tag1', 'tag2'],
       });
       expect(result.valid).toBe(true);
     });
 
     test('should validate object type', async () => {
-      const result = await validator.validate({ 
-        name: 'John', 
+      const result = await validator.validate({
+        name: 'John',
         email: 'john@example.com',
-        profile: { bio: 'A developer' }
+        profile: { bio: 'A developer' },
       });
       expect(result.valid).toBe(true);
     });
@@ -147,38 +147,38 @@ describe('NativeValidator', () => {
 
   describe('Min/Max Validation', () => {
     test('should enforce string length min', async () => {
-      const result = await validator.validate({ 
-        name: 'J', 
-        email: 'john@example.com' 
+      const result = await validator.validate({
+        name: 'J',
+        email: 'john@example.com',
       });
       expect(result.valid).toBe(false);
       expect(result.errors[0].message).toContain('at least 2');
     });
 
     test('should enforce string length max', async () => {
-      const result = await validator.validate({ 
-        name: 'A'.repeat(51), 
-        email: 'john@example.com' 
+      const result = await validator.validate({
+        name: 'A'.repeat(51),
+        email: 'john@example.com',
       });
       expect(result.valid).toBe(false);
       expect(result.errors[0].message).toContain('at most 50');
     });
 
     test('should enforce number min', async () => {
-      const result = await validator.validate({ 
-        name: 'John', 
+      const result = await validator.validate({
+        name: 'John',
         email: 'john@example.com',
-        age: -1 
+        age: -1,
       });
       expect(result.valid).toBe(false);
       expect(result.errors[0].message).toContain('at least 0');
     });
 
     test('should enforce number max', async () => {
-      const result = await validator.validate({ 
-        name: 'John', 
+      const result = await validator.validate({
+        name: 'John',
         email: 'john@example.com',
-        age: 200 
+        age: 200,
       });
       expect(result.valid).toBe(false);
       expect(result.errors[0].message).toContain('at most 150');
@@ -193,14 +193,17 @@ describe('NativeValidator', () => {
             type: 'string',
             required: true,
             customValidator: (value: any) => {
-              return /^[a-zA-Z0-9_]+$/.test(value) || 'Username can only contain letters, numbers, and underscores';
-            }
-          }
-        }
+              return (
+                /^[a-zA-Z0-9_]+$/.test(value) ||
+                'Username can only contain letters, numbers, and underscores'
+              );
+            },
+          },
+        },
       };
 
       const customValidator = new NativeValidator(customSchema);
-      
+
       const validResult = await customValidator.validate({ username: 'john_doe123' });
       expect(validResult.valid).toBe(true);
 
@@ -211,7 +214,7 @@ describe('NativeValidator', () => {
 
     test('should support async validators', async () => {
       const asyncValidatorFn: ValidatorFn = async (value: string) => {
-        await new Promise(resolve => setTimeout(resolve, 10));
+        await new Promise((resolve) => setTimeout(resolve, 10));
         return value.length > 5 || 'Must be longer than 5 characters';
       };
 
@@ -220,13 +223,13 @@ describe('NativeValidator', () => {
           password: {
             type: 'string',
             required: true,
-            customValidator: asyncValidatorFn
-          }
-        }
+            customValidator: asyncValidatorFn,
+          },
+        },
       };
 
       const customValidator = new NativeValidator(customSchema);
-      
+
       const validResult = await customValidator.validate({ password: 'password123' });
       expect(validResult.valid).toBe(true);
 
@@ -243,13 +246,13 @@ describe('NativeValidator', () => {
           phone: {
             type: 'string',
             required: true,
-            pattern: /^\+?\d{10,15}$/
-          }
-        }
+            pattern: /^\+?\d{10,15}$/,
+          },
+        },
       };
 
       const patternValidator = new NativeValidator(patternSchema);
-      
+
       const validResult = await patternValidator.validate({ phone: '+1234567890' });
       expect(validResult.valid).toBe(true);
 
@@ -265,13 +268,13 @@ describe('NativeValidator', () => {
           status: {
             type: 'string',
             required: true,
-            enum: ['active', 'inactive', 'pending']
-          }
-        }
+            enum: ['active', 'inactive', 'pending'],
+          },
+        },
       };
 
       const enumValidator = new NativeValidator(enumSchema);
-      
+
       const validResult = await enumValidator.validate({ status: 'active' });
       expect(validResult.valid).toBe(true);
 
@@ -291,23 +294,23 @@ describe('NativeValidator', () => {
             rules: [
               {
                 validator: (value: string) => value.length >= 8,
-                message: 'Password must be at least 8 characters'
+                message: 'Password must be at least 8 characters',
               },
               {
                 validator: (value: string) => /[A-Z]/.test(value),
-                message: 'Password must contain uppercase letter'
+                message: 'Password must contain uppercase letter',
               },
               {
                 validator: (value: string) => /[0-9]/.test(value),
-                message: 'Password must contain number'
-              }
-            ]
-          }
-        }
+                message: 'Password must contain number',
+              },
+            ],
+          },
+        },
       };
 
       const rulesValidator = new NativeValidator(rulesSchema);
-      
+
       const validResult = await rulesValidator.validate({ password: 'Password123' });
       expect(validResult.valid).toBe(true);
 
@@ -319,10 +322,10 @@ describe('NativeValidator', () => {
 
   describe('Nested Schema Validation', () => {
     test('should validate nested objects', async () => {
-      const result = await validator.validate({ 
-        name: 'John', 
+      const result = await validator.validate({
+        name: 'John',
         email: 'john@example.com',
-        profile: { bio: 'A developer' }
+        profile: { bio: 'A developer' },
       });
       expect(result.valid).toBe(true);
     });
@@ -337,19 +340,19 @@ describe('NativeValidator', () => {
               fields: {
                 email: {
                   type: 'email',
-                  required: true
-                }
-              }
-            }
-          }
-        }
+                  required: true,
+                },
+              },
+            },
+          },
+        },
       };
 
       const nestedValidator = new NativeValidator(nestedSchema);
-      const result = await nestedValidator.validate({ 
-        user: { email: 'invalid-email' }
+      const result = await nestedValidator.validate({
+        user: { email: 'invalid-email' },
       });
-      
+
       expect(result.valid).toBe(false);
       expect(result.errors[0].field).toContain('email');
     });
@@ -361,29 +364,29 @@ describe('NativeValidator', () => {
         fields: {
           name: {
             type: 'string',
-            required: true
-          }
+            required: true,
+          },
         },
-        strict: true
+        strict: true,
       };
 
       const strictValidator = new NativeValidator(strictSchema);
-      const result = await strictValidator.validate({ 
+      const result = await strictValidator.validate({
         name: 'John',
-        extraField: 'not allowed'
+        extraField: 'not allowed',
       });
-      
+
       expect(result.valid).toBe(false);
-      expect(result.errors.some(e => e.field === 'extraField')).toBe(true);
+      expect(result.errors.some((e) => e.field === 'extraField')).toBe(true);
     });
 
     test('should allow extra fields in non-strict mode', async () => {
-      const result = await validator.validate({ 
+      const result = await validator.validate({
         name: 'John',
         email: 'john@example.com',
-        extraField: 'allowed'
+        extraField: 'allowed',
       });
-      
+
       expect(result.valid).toBe(true);
     });
   });
@@ -412,19 +415,19 @@ describe('NativeValidator', () => {
     });
 
     test('should update schema', async () => {
-      const result1 = await validator.validate({ 
+      const result1 = await validator.validate({
         name: 'John',
         email: 'john@example.com',
-        username: 'johndoe'
+        username: 'johndoe',
       });
       expect(result1.valid).toBe(true); // Extra field allowed in non-strict mode
 
       validator.updateSchema({ strict: true });
 
-      const result2 = await validator.validate({ 
+      const result2 = await validator.validate({
         name: 'John',
         email: 'john@example.com',
-        username: 'johndoe'
+        username: 'johndoe',
       });
       expect(result2.valid).toBe(false); // Extra field rejected in strict mode
     });

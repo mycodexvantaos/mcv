@@ -270,10 +270,10 @@ describe('NativeQueue', () => {
       queue.registerHandler(handler);
       const taskId = queue.enqueue('task1');
 
-      const queueWithTimeout = new NativeQueue<string>({ 
+      const queueWithTimeout = new NativeQueue<string>({
         timeout: 50,
         maxRetries: 1,
-        autoStart: false
+        autoStart: false,
       });
       queueWithTimeout.registerHandler(handler);
       queueWithTimeout.enqueue('task1');

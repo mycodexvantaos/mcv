@@ -1,7 +1,7 @@
 'use server';
 /**
  * @fileOverview AI Agent for code generation and refactoring tasks.
- * 
+ *
  * Refactored to follow MyCodeXvantaOS Provider Architecture:
  * - Uses Provider abstraction layer instead of direct Genkit dependency
  * - No hardcoded API key requirements
@@ -33,7 +33,7 @@ export interface DelegateCodingTaskOutput {
  */
 function buildPrompt(input: DelegateCodingTaskInput): string {
   const taskType = input.taskType || 'generation';
-  
+
   return `You are a highly specialized AI coding agent, tasked with assisting a developer with various programming tasks. Your current role is to act as a ${taskType} agent.
 
 Your goal is to understand the provided task, utilize the code context (if any), and produce high-quality, clean, and efficient code according to the instructions.
@@ -60,15 +60,17 @@ Please respond in the following JSON format:
  * Delegate a coding task to the AI agent
  * Uses the Provider abstraction layer - no direct API key dependency
  */
-export async function delegateCodingTask(input: DelegateCodingTaskInput): Promise<DelegateCodingTaskOutput> {
+export async function delegateCodingTask(
+  input: DelegateCodingTaskInput
+): Promise<DelegateCodingTaskOutput> {
   const prompt = buildPrompt(input);
-  
+
   try {
     const response = await generateText(prompt, {
       maxTokens: 4096,
-      temperature: 0.7
+      temperature: 0.7,
     });
-    
+
     // Try to parse JSON response
     try {
       // Look for JSON in the response
@@ -79,23 +81,24 @@ export async function delegateCodingTask(input: DelegateCodingTaskInput): Promis
     } catch {
       // JSON parsing failed, construct a default response
     }
-    
+
     // Fallback: construct response from text
     const agentRole = getAgentRole(input.taskType || 'generation');
-    
+
     return {
-      generatedCode: extractCodeBlock(response.text) || `// AI Provider: ${response.provider}\n// Configure an external LLM provider for advanced code generation`,
+      generatedCode:
+        extractCodeBlock(response.text) ||
+        `// AI Provider: ${response.provider}\n// Configure an external LLM provider for advanced code generation`,
       explanation: response.text,
-      agentRole: `${agentRole} (via ${response.provider})`
+      agentRole: `${agentRole} (via ${response.provider})`,
     };
-    
   } catch (error: any) {
     // Provide helpful error message
     const provider = getActiveProvider();
-    const advancedHint = hasAdvancedAI() 
-      ? '' 
+    const advancedHint = hasAdvancedAI()
+      ? ''
       : ' Tip: Configure LLM_PROVIDER and corresponding API key for advanced capabilities.';
-    
+
     throw new Error(`AI task delegation failed: ${error.message}.${advancedHint}`);
   }
 }
@@ -109,7 +112,7 @@ function getAgentRole(taskType: string): string {
     refactoring: 'Refactoring Assistant',
     testing: 'Test Writer',
     documentation: 'Documentation Specialist',
-    optimization: 'Performance Optimizer'
+    optimization: 'Performance Optimizer',
   };
   return roles[taskType] || 'Coding Agent';
 }

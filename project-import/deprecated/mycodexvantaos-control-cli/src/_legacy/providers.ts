@@ -4,6 +4,6 @@ export interface CLIProvider {
 
 export class DefaultCLIProvider implements CLIProvider {
   getApiUrl(): string {
-    return process.env.CODEXVANTA_API_URL || "http://localhost:3002";
+    return process.env.CODEXVANTA_API_URL || 'http://localhost:3002';
   }
 }

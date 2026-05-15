@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/vector-store/qdrant/config.schema.json",
   "title": "vector-store-qdrant Configuration",
   "type": "object",
-  "required": [
-    "url"
-  ],
+  "required": ["url"],
   "properties": {
     "url": {
       "type": "string",

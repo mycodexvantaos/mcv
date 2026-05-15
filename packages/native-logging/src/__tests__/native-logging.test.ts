@@ -14,7 +14,7 @@ import {
   info,
   warn,
   error,
-  fatal
+  fatal,
 } from '../index';
 
 describe('NativeLogger', () => {
@@ -23,12 +23,12 @@ describe('NativeLogger', () => {
 
   beforeEach(() => {
     mockTransport = {
-      write: jest.fn().mockResolvedValue(undefined)
+      write: jest.fn().mockResolvedValue(undefined),
     };
     logger = new NativeLogger({
       name: 'test-logger',
       level: LogLevel.DEBUG,
-      enableConsole: false
+      enableConsole: false,
     });
     logger.addTransport(mockTransport);
   });
@@ -76,14 +76,14 @@ describe('NativeLogger', () => {
   describe('Log Levels', () => {
     test('should respect log level threshold', async () => {
       logger.setLevel(LogLevel.WARN);
-      
+
       logger.debug('Should not log');
       logger.info('Should not log');
       logger.warn('Should log');
       logger.error('Should log');
-      
+
       await new Promise((resolve) => setTimeout(resolve, 10));
-      
+
       expect(mockTransport.write).toHaveBeenCalledTimes(2);
     });
 
@@ -95,7 +95,7 @@ describe('NativeLogger', () => {
     test('should format level names correctly', async () => {
       logger.debug('Debug');
       await new Promise((resolve) => setTimeout(resolve, 10));
-      
+
       const call = mockTransport.write.mock.calls[0][0] as LogEntry;
       expect(call.levelName).toBe('DEBUG');
     });
@@ -105,9 +105,9 @@ describe('NativeLogger', () => {
     test('should include context in log entries', async () => {
       const context = { userId: '123', action: 'login' };
       logger.info('User logged in', context);
-      
+
       await new Promise((resolve) => setTimeout(resolve, 10));
-      
+
       const call = mockTransport.write.mock.calls[0][0] as LogEntry;
       expect(call.context).toEqual(context);
     });
@@ -115,11 +115,11 @@ describe('NativeLogger', () => {
     test('should handle error objects correctly', async () => {
       const err = new Error('Test error');
       err.stack = 'Error: Test error\n    at test.js:10:5';
-      
+
       logger.error('Error occurred', err);
-      
+
       await new Promise((resolve) => setTimeout(resolve, 10));
-      
+
       const call = mockTransport.write.mock.calls[0][0] as LogEntry;
       expect(call.error).toBe(err);
     });
@@ -128,11 +128,11 @@ describe('NativeLogger', () => {
   describe('Transports', () => {
     test('should add custom transport', () => {
       const customTransport: LogTransport = {
-        write: jest.fn()
+        write: jest.fn(),
       };
       logger.addTransport(customTransport);
       logger.info('Test message');
-      
+
       // Give it time to process
       return new Promise((resolve) => {
         setTimeout(() => {
@@ -164,7 +164,7 @@ describe('NativeLogger', () => {
     test('should respect includeTimestamp option', async () => {
       logger.info('Test message');
       await new Promise((resolve) => setTimeout(resolve, 10));
-      
+
       const call = mockTransport.write.mock.calls[0][0] as LogEntry;
       expect(call.timestamp).toBeInstanceOf(Date);
     });
@@ -193,14 +193,14 @@ describe('NativeLogger', () => {
     });
 
     test('should use global functions correctly', async () => {
-      const logger = new NativeLogger({ 
+      const logger = new NativeLogger({
         name: 'global',
-        enableConsole: false 
+        enableConsole: false,
       });
       setDefaultLogger(logger);
-      
+
       info('Global info message');
-      
+
       await new Promise((resolve) => setTimeout(resolve, 10));
     });
   });
@@ -209,13 +209,13 @@ describe('NativeLogger', () => {
     test('should create valid log entry', async () => {
       const context = { key: 'value' };
       const err = new Error('Test error');
-      
+
       logger.error('Test message', err, context);
-      
+
       await new Promise((resolve) => setTimeout(resolve, 10));
-      
+
       const call = mockTransport.write.mock.calls[0][0] as LogEntry;
-      
+
       expect(call.timestamp).toBeInstanceOf(Date);
       expect(call.level).toBe(LogLevel.ERROR);
       expect(call.levelName).toBe('ERROR');
@@ -232,7 +232,7 @@ describe('NativeLogger', () => {
       logger.setLevel(LogLevel.INFO);
       logger.debug('Debug');
       await new Promise((resolve) => setTimeout(resolve, 10));
-      
+
       expect(mockTransport.write).not.toHaveBeenCalled();
     });
 
@@ -240,7 +240,7 @@ describe('NativeLogger', () => {
       logger.setLevel(LogLevel.WARN);
       logger.info('Info');
       await new Promise((resolve) => setTimeout(resolve, 10));
-      
+
       expect(mockTransport.write).not.toHaveBeenCalled();
     });
 
@@ -248,7 +248,7 @@ describe('NativeLogger', () => {
       logger.setLevel(LogLevel.WARN);
       logger.warn('Warn');
       await new Promise((resolve) => setTimeout(resolve, 10));
-      
+
       expect(mockTransport.write).toHaveBeenCalled();
     });
   });

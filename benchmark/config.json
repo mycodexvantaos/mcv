@@ -14,13 +14,7 @@
       "iterations": 50,
       "max_duration_ms": 1000,
       "warmup_iterations": 5,
-      "concurrency": [
-        1,
-        5,
-        10,
-        20,
-        50
-      ]
+      "concurrency": [1, 5, 10, 20, 50]
     },
     {
       "name": "memory_usage",

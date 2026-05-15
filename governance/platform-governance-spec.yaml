@@ -6,561 +6,565 @@
 # 狀態     : immutable (sealed 2026-01-01T00:00:00Z)
 # =============================================================================
 
-id: "mycodexvantaos-platform-governance"
-spec_version: "v1.0.0"
-effective_date: "2026-04-23T00:00:00Z"
-immutable_after: "2026-01-01T00:00:00Z"
-status: "stable"
-enforce_level: "mandatory"
+id: 'mycodexvantaos-platform-governance'
+spec_version: 'v1.0.0'
+effective_date: '2026-04-23T00:00:00Z'
+immutable_after: '2026-01-01T00:00:00Z'
+status: 'stable'
+enforce_level: 'mandatory'
 
 # =============================================================================
 # A. 平台身份錨點
 # =============================================================================
 identity:
-  org_identity: "mycodexvantaos"
-  root_prefix: "mycodexvantaos"
-  backend_prefix: "mycodexvantaos-quantum"
-  npm_scope: "@mycodexvantaos"
-  urn_namespace: "urn:mycodexvantaos"
-  internal_scheme: "mycodexvantaos://"
-  oci_registry_org: "mycodexvantaos"
-  k8s_api_group: "mycodexvantaos.quantum"
-  crd_group: "mycodexvantaos.quantum"
+  org_identity: 'mycodexvantaos'
+  root_prefix: 'mycodexvantaos'
+  backend_prefix: 'mycodexvantaos-quantum'
+  npm_scope: '@mycodexvantaos'
+  urn_namespace: 'urn:mycodexvantaos'
+  internal_scheme: 'mycodexvantaos://'
+  oci_registry_org: 'mycodexvantaos'
+  k8s_api_group: 'mycodexvantaos.quantum'
+  crd_group: 'mycodexvantaos.quantum'
 
   namespace_lexicon:
     mycodexvantaos:
-      role: "核心基礎設施 / 共享服務 / 控制平面"
-      scope: "底層平台組件，為上層業務平台提供支撐"
+      role: '核心基礎設施 / 共享服務 / 控制平面'
+      scope: '底層平台組件，為上層業務平台提供支撐'
       examples:
-        - "mycodexvantaos-auth"
-        - "mycodexvantaos-policy"
-        - "mycodexvantaos-quantum-controller"
+        - 'mycodexvantaos-auth'
+        - 'mycodexvantaos-policy'
+        - 'mycodexvantaos-quantum-controller'
     softwareos:
-      role: "業務平台命名空間"
-      scope: "上層業務應用，依賴 mycodexvantaos 提供的基礎服務"
-      note: "保留為業務平台獨立分層，不得與 mycodexvantaos 混用"
+      role: '業務平台命名空間'
+      scope: '上層業務應用，依賴 mycodexvantaos 提供的基礎服務'
+      note: '保留為業務平台獨立分層，不得與 mycodexvantaos 混用'
 
   forbidden_legacy_prefixes:
-    - "mycodexvanta-os"
-    - "codexvanta-os"
-    - "codexvanta"
-    - "KUBO"
-    - "kubo"
-    - "codevantaos"
-  forbidden_legacy_regex: "^(mycodexvanta-os|codexvanta|codexvanta-os|[Kk][Uu][Bb][Oo]|codevantaos)"
-  migration_script: "scripts/rename-mycodexvantaos.sh"
-  scan_script: "scripts/check-legacy-prefix.sh"
+    - 'mycodexvanta-os'
+    - 'codexvanta-os'
+    - 'codexvanta'
+    - 'KUBO'
+    - 'kubo'
+    - 'codevantaos'
+  forbidden_legacy_regex: '^(mycodexvanta-os|codexvanta|codexvanta-os|[Kk][Uu][Bb][Oo]|codevantaos)'
+  migration_script: 'scripts/rename-mycodexvantaos.sh'
+  scan_script: 'scripts/check-legacy-prefix.sh'
 
 # =============================================================================
 # B. 三層命名閉環模型
 # =============================================================================
 naming_closure_model:
-  name: "mycodexvantaos Naming Closure Model"
-  version: "v3.0"
+  name: 'mycodexvantaos Naming Closure Model'
+  version: 'v3.0'
   termination_layers: 3
-  recursion_prevention: "有限層級終止 + L2 物理多簽變更鎖"
+  recursion_prevention: '有限層級終止 + L2 物理多簽變更鎖'
 
   L0_atomic:
-    layer_id: "L0"
-    label: "原子命名層"
-    mutability: "immutable"
-    change_mechanism: "系統重生事件（非常規流程不可觸發）"
-    source_doc: "governance/naming-closure/L0-atomic-categories.yaml"
+    layer_id: 'L0'
+    label: '原子命名層'
+    mutability: 'immutable'
+    change_mechanism: '系統重生事件（非常規流程不可觸發）'
+    source_doc: 'governance/naming-closure/L0-atomic-categories.yaml'
     atomic_category_count: 32
     atomic_categories:
       infrastructure:
-        - "platform"
-        - "service"
-        - "api"
-        - "component"
-        - "port"
-        - "dns"
+        - 'platform'
+        - 'service'
+        - 'api'
+        - 'component'
+        - 'port'
+        - 'dns'
       development:
-        - "module"
-        - "directory"
-        - "file"
-        - "dependency"
-        - "branch"
-        - "tag"
+        - 'module'
+        - 'directory'
+        - 'file'
+        - 'dependency'
+        - 'branch'
+        - 'tag'
       organization:
-        - "team"
-        - "org"
-        - "enterprise"
+        - 'team'
+        - 'org'
+        - 'enterprise'
       semantic_governance:
-        - "semantic-anchor"
-        - "governance-rule"
-        - "event-stream"
-        - "archive-evidence"
-        - "spec-doc"
-        - "path"
-        - "mapping"
-        - "reference"
-        - "metadata"
-        - "annotation"
+        - 'semantic-anchor'
+        - 'governance-rule'
+        - 'event-stream'
+        - 'archive-evidence'
+        - 'spec-doc'
+        - 'path'
+        - 'mapping'
+        - 'reference'
+        - 'metadata'
+        - 'annotation'
       technical_closure:
-        - "error"
-        - "state"
-        - "transition"
-        - "policy"
-        - "metric"
-        - "contract"
+        - 'error'
+        - 'state'
+        - 'transition'
+        - 'policy'
+        - 'metric'
+        - 'contract'
       meta:
-        - "meta-naming"     # 終止遞歸的自指涉類別
+        - 'meta-naming' # 終止遞歸的自指涉類別
 
   L1_normative:
-    layer_id: "L1"
-    label: "規範命名層"
-    mutability: "requires_L2_reference"
-    source_doc: "governance/naming-closure/L1-specs/"
-    spec_file_pattern: "mycodexvantaos_spec_{category}_v{semver}.yaml"
+    layer_id: 'L1'
+    label: '規範命名層'
+    mutability: 'requires_L2_reference'
+    source_doc: 'governance/naming-closure/L1-specs/'
+    spec_file_pattern: 'mycodexvantaos_spec_{category}_v{semver}.yaml'
     spec_count: 32
     canonical_identifier_rules:
-      spec_key: "canonical_identifiers"
+      spec_key: 'canonical_identifiers'
     composite_identifier_rules:
-      spec_key: "composite_identifiers"
+      spec_key: 'composite_identifiers'
     protocol_specific_rules:
-      spec_key: "protocol_specific_identifiers"
+      spec_key: 'protocol_specific_identifiers'
 
   L2_meta:
-    layer_id: "L2"
-    label: "元命名層（終止點）"
-    mutability: "requires_physical_multisig"
-    multisig_threshold: "3/5"
-    multisig_method: "hardware_security_module"
-    source_doc: "governance/naming-closure/L2-meta/meta_naming_spec_v1.yaml"
+    layer_id: 'L2'
+    label: '元命名層（終止點）'
+    mutability: 'requires_physical_multisig'
+    multisig_threshold: '3/5'
+    multisig_method: 'hardware_security_module'
+    source_doc: 'governance/naming-closure/L2-meta/meta_naming_spec_v1.yaml'
     defines:
-      - "規範文件命名規則"
-      - "規範版本策略（強制 SemVer 2.0.0）"
-      - "L2 自身變更的權限閉環"
+      - '規範文件命名規則'
+      - '規範版本策略（強制 SemVer 2.0.0）'
+      - 'L2 自身變更的權限閉環'
 
   closure_prover:
-    class: "NamingClosureProver"
-    source_file: "ci/utils/naming-closure-prover.ts"
+    class: 'NamingClosureProver'
+    source_file: 'ci/utils/naming-closure-prover.ts'
     assertions:
-      completeness: "has_category_for_all_names()"
-      consistency: "naming_spec_is_named()"
-      termination: "no_undefined_dependencies() && has_termination_layer()"
-      self_reference: "L2_change_mechanism_is_defined()"
+      completeness: 'has_category_for_all_names()'
+      consistency: 'naming_spec_is_named()'
+      termination: 'no_undefined_dependencies() && has_termination_layer()'
+      self_reference: 'L2_change_mechanism_is_defined()'
     output:
-      type: "formal_proof"
-      archive_namespace: "archive-evidence"   # L0 atomic category
+      type: 'formal_proof'
+      archive_namespace: 'archive-evidence' # L0 atomic category
       replay_enabled: true
 
 # =============================================================================
 # C. 命名空間治理編碼體系（Era 層級）
 # =============================================================================
 namespace_governance_coding:
-  version: "3.0"
-  source_doc: "governance/ns-coding-system.yaml"
+  version: '3.0'
+  source_doc: 'governance/ns-coding-system.yaml'
 
   code_structure:
-    format: "mycodexvantaos {層級:00-99}{領域:0-9}{子類:0-9}{序列:00-99}"
+    format: 'mycodexvantaos {層級:00-99}{領域:0-9}{子類:0-9}{序列:00-99}'
     fields:
-      tier_range: "00~99"
-      domain: "0~9"
-      sub_domain: "0~9"
-      sequence: "00~99"
+      tier_range: '00~99'
+      domain: '0~9'
+      sub_domain: '0~9'
+      sequence: '00~99'
 
   era_mapping:
     era_1:
-      label: "代碼層（靜態結構化）"
-      code_range: "mycodexvantaos 100~299"
-      governance_focus: "代碼組織、模塊劃分、部署拓撲"
-      user_need_mapping: "程式碼生成、代碼架構部署"
+      label: '代碼層（靜態結構化）'
+      code_range: 'mycodexvantaos 100~299'
+      governance_focus: '代碼組織、模塊劃分、部署拓撲'
+      user_need_mapping: '程式碼生成、代碼架構部署'
     era_2:
-      label: "微碼層（動態分佈式）"
-      code_range: "mycodexvantaos 300~599"
-      governance_focus: "服務網格、數據流、權重分發"
-      user_need_mapping: "數碼化架構、權重化參數配置（運行態）"
+      label: '微碼層（動態分佈式）'
+      code_range: 'mycodexvantaos 300~599'
+      governance_focus: '服務網格、數據流、權重分發'
+      user_need_mapping: '數碼化架構、權重化參數配置（運行態）'
     era_3:
-      label: "意圖與演算層（意圖驅動）"
-      code_range: "mycodexvantaos 600~799"
-      governance_focus: "語義意圖、AI 代理、演算法意圖"
-      user_need_mapping: "演算法生成、神經網路推論"
+      label: '意圖與演算層（意圖驅動）'
+      code_range: 'mycodexvantaos 600~799'
+      governance_focus: '語義意圖、AI 代理、演算法意圖'
+      user_need_mapping: '演算法生成、神經網路推論'
     era_q:
-      label: "量子擴展層"
-      code_range: "mycodexvantaos 800~899"
-      governance_focus: "量子疊加、糾纏、量子門、混合架構"
-      user_need_mapping: "量子運算、量子-經典混合架構"
+      label: '量子擴展層'
+      code_range: 'mycodexvantaos 800~899'
+      governance_focus: '量子疊加、糾纏、量子門、混合架構'
+      user_need_mapping: '量子運算、量子-經典混合架構'
     cross_era:
-      label: "跨層治理（統一閉環）"
-      code_range: "mycodexvantaos 900~999"
-      governance_focus: "跨 Era 一致性映射"
-      user_need_mapping: "全棧數字化架構一致性"
+      label: '跨層治理（統一閉環）'
+      code_range: 'mycodexvantaos 900~999'
+      governance_focus: '跨 Era 一致性映射'
+      user_need_mapping: '全棧數字化架構一致性'
 
   domain_registry:
-    meta_framework:                     # 000~099
-      "00000": { name: "命名空間治理基線規範", en: "Namespace Governance Baseline Specification", enforce_level: "mandatory", source_doc: "governance/ns-baseline.yaml" }
-      "00100": { name: "命名空間標識規範" }
-      "00200": { name: "命名空間生命周期" }
-      "00300": { name: "命名空間繼承體系" }
-      "00400": { name: "跨命名空間引用規範" }
-      "00500": { name: "命名空間版本控制" }
-      "00600": { name: "命名空間權限模型" }
-      "00700": { name: "命名空間審計追蹤" }
-      "00800": { name: "命名空間衝突解決" }
-      "00900": { name: "命名空間遷移規範" }
+    meta_framework: # 000~099
+      '00000':
+        {
+          name: '命名空間治理基線規範',
+          en: 'Namespace Governance Baseline Specification',
+          enforce_level: 'mandatory',
+          source_doc: 'governance/ns-baseline.yaml',
+        }
+      '00100': { name: '命名空間標識規範' }
+      '00200': { name: '命名空間生命周期' }
+      '00300': { name: '命名空間繼承體系' }
+      '00400': { name: '跨命名空間引用規範' }
+      '00500': { name: '命名空間版本控制' }
+      '00600': { name: '命名空間權限模型' }
+      '00700': { name: '命名空間審計追蹤' }
+      '00800': { name: '命名空間衝突解決' }
+      '00900': { name: '命名空間遷移規範' }
 
-    era1_code:                          # 100~199
-      "10100": { name: "代碼包命名空間" }
-      "10200": { name: "類/接口命名空間" }
-      "10300": { name: "方法/函數命名空間" }
-      "10400": { name: "變量命名空間" }
-      "10500": { name: "常量命名空間" }
-      "10600": { name: "註解命名空間" }
-      "10700": { name: "配置命名空間" }
-      "10800": { name: "資源文件命名空間" }
-      "10900": { name: "測試命名空間" }
-      "11000": { name: "構建命名空間" }
-      "11100": { name: "程式碼生成器模板空間",   user_need: "程式碼生成" }
-      "11200": { name: "部署拓撲描述空間",       user_need: "代碼架構部署" }
+    era1_code: # 100~199
+      '10100': { name: '代碼包命名空間' }
+      '10200': { name: '類/接口命名空間' }
+      '10300': { name: '方法/函數命名空間' }
+      '10400': { name: '變量命名空間' }
+      '10500': { name: '常量命名空間' }
+      '10600': { name: '註解命名空間' }
+      '10700': { name: '配置命名空間' }
+      '10800': { name: '資源文件命名空間' }
+      '10900': { name: '測試命名空間' }
+      '11000': { name: '構建命名空間' }
+      '11100': { name: '程式碼生成器模板空間', user_need: '程式碼生成' }
+      '11200': { name: '部署拓撲描述空間', user_need: '代碼架構部署' }
 
-    era1_arch:                          # 200~299
-      "20100": { name: "模塊命名空間" }
-      "20200": { name: "組件命名空間" }
-      "20300": { name: "層級命名空間" }
-      "20400": { name: "服務命名空間" }
-      "20500": { name: "API端點命名空間" }
-      "20600": { name: "數據庫表命名空間" }
-      "20700": { name: "消息隊列命名空間" }
-      "20800": { name: "緩存鍵命名空間" }
-      "20900": { name: "文件系統命名空間" }
-      "21000": { name: "網絡端點命名空間" }
-      "21100": { name: "模塊化架構約束空間",     user_need: "代碼架構部署" }
-      "21200": { name: "構建流水線工件空間",     user_need: "CI/CD 工件治理" }
+    era1_arch: # 200~299
+      '20100': { name: '模塊命名空間' }
+      '20200': { name: '組件命名空間' }
+      '20300': { name: '層級命名空間' }
+      '20400': { name: '服務命名空間' }
+      '20500': { name: 'API端點命名空間' }
+      '20600': { name: '數據庫表命名空間' }
+      '20700': { name: '消息隊列命名空間' }
+      '20800': { name: '緩存鍵命名空間' }
+      '20900': { name: '文件系統命名空間' }
+      '21000': { name: '網絡端點命名空間' }
+      '21100': { name: '模塊化架構約束空間', user_need: '代碼架構部署' }
+      '21200': { name: '構建流水線工件空間', user_need: 'CI/CD 工件治理' }
 
-    era2_microservice:                  # 300~399
-      "30100": { name: "微服務邊界命名空間" }
-      "30200": { name: "服務網格命名空間" }
-      "30300": { name: "事件流命名空間" }
-      "30400": { name: "數據管道命名空間" }
-      "30500": { name: "狀態機命名空間" }
-      "30600": { name: "工作流命名空間" }
-      "30700": { name: "分佈式鎖命名空間" }
-      "30800": { name: "配置中心命名空間" }
-      "30900": { name: "註冊中心命名空間" }
-      "31000": { name: "熔斷器命名空間" }
-      "31100": { name: "參數權重矩陣空間",       user_need: "權重化參數配置" }
-      "31200": { name: "數位孿生數據流空間",     user_need: "數碼化架構" }
+    era2_microservice: # 300~399
+      '30100': { name: '微服務邊界命名空間' }
+      '30200': { name: '服務網格命名空間' }
+      '30300': { name: '事件流命名空間' }
+      '30400': { name: '數據管道命名空間' }
+      '30500': { name: '狀態機命名空間' }
+      '30600': { name: '工作流命名空間' }
+      '30700': { name: '分佈式鎖命名空間' }
+      '30800': { name: '配置中心命名空間' }
+      '30900': { name: '註冊中心命名空間' }
+      '31000': { name: '熔斷器命名空間' }
+      '31100': { name: '參數權重矩陣空間', user_need: '權重化參數配置' }
+      '31200': { name: '數位孿生數據流空間', user_need: '數碼化架構' }
 
-    era2_data:                          # 400~499
-      "40100": { name: "數據庫命名空間" }
-      "40200": { name: "數據表命名空間" }
-      "40300": { name: "數據分片命名空間" }
-      "40400": { name: "數據索引命名空間" }
-      "40500": { name: "數據視圖命名空間" }
-      "40600": { name: "數據備份命名空間" }
-      "40700": { name: "數據遷移命名空間" }
-      "40800": { name: "數據緩存命名空間" }
-      "40900": { name: "數據倉庫命名空間" }
-      "41000": { name: "數據湖命名空間" }
-      "41100": { name: "向量存儲與索引空間",     user_need: "向量 RAG 治理" }
-      "41200": { name: "動態權重熱加載空間",     user_need: "A/B 測試 / 演算法開關" }
+    era2_data: # 400~499
+      '40100': { name: '數據庫命名空間' }
+      '40200': { name: '數據表命名空間' }
+      '40300': { name: '數據分片命名空間' }
+      '40400': { name: '數據索引命名空間' }
+      '40500': { name: '數據視圖命名空間' }
+      '40600': { name: '數據備份命名空間' }
+      '40700': { name: '數據遷移命名空間' }
+      '40800': { name: '數據緩存命名空間' }
+      '40900': { name: '數據倉庫命名空間' }
+      '41000': { name: '數據湖命名空間' }
+      '41100': { name: '向量存儲與索引空間', user_need: '向量 RAG 治理' }
+      '41200': { name: '動態權重熱加載空間', user_need: 'A/B 測試 / 演算法開關' }
 
-    era2_security:                      # 500~599
-      "50100": { name: "認證命名空間" }
-      "50200": { name: "授權命名空間" }
-      "50300": { name: "憑證命名空間" }
-      "50400": { name: "密鑰命名空間" }
-      "50500": { name: "權限策略命名空間" }
-      "50600": { name: "審計日誌命名空間" }
-      "50700": { name: "防火牆規則命名空間" }
-      "50800": { name: "網絡策略命名空間" }
-      "50900": { name: "安全組命名空間" }
-      "51000": { name: "合規檢查命名空間" }
+    era2_security: # 500~599
+      '50100': { name: '認證命名空間' }
+      '50200': { name: '授權命名空間' }
+      '50300': { name: '憑證命名空間' }
+      '50400': { name: '密鑰命名空間' }
+      '50500': { name: '權限策略命名空間' }
+      '50600': { name: '審計日誌命名空間' }
+      '50700': { name: '防火牆規則命名空間' }
+      '50800': { name: '網絡策略命名空間' }
+      '50900': { name: '安全組命名空間' }
+      '51000': { name: '合規檢查命名空間' }
 
-    era3_intent:                        # 600~699
-      "60100": { name: "業務意圖命名空間" }
-      "60200": { name: "用戶意圖命名空間" }
-      "60300": { name: "系統意圖命名空間" }
-      "60400": { name: "語義意圖命名空間" }
-      "60500": { name: "神經網絡意圖命名空間" }
-      "60600": { name: "機器學習模型命名空間" }
-      "60700": { name: "AI代理命名空間" }
-      "60800": { name: "自動化策略命名空間" }
-      "60900": { name: "自適應規則命名空間" }
-      "61000": { name: "認知計算命名空間" }
-      "61100": { name: "核心演算法圖譜空間",     user_need: "演算法唯一標識" }
-      "61200": { name: "提示詞工程模板空間",     user_need: "程式碼生成 System Prompt" }
+    era3_intent: # 600~699
+      '60100': { name: '業務意圖命名空間' }
+      '60200': { name: '用戶意圖命名空間' }
+      '60300': { name: '系統意圖命名空間' }
+      '60400': { name: '語義意圖命名空間' }
+      '60500': { name: '神經網絡意圖命名空間' }
+      '60600': { name: '機器學習模型命名空間' }
+      '60700': { name: 'AI代理命名空間' }
+      '60800': { name: '自動化策略命名空間' }
+      '60900': { name: '自適應規則命名空間' }
+      '61000': { name: '認知計算命名空間' }
+      '61100': { name: '核心演算法圖譜空間', user_need: '演算法唯一標識' }
+      '61200': { name: '提示詞工程模板空間', user_need: '程式碼生成 System Prompt' }
 
-    era3_semantic:                      # 700~799
-      "70100": { name: "語義實體命名空間" }
-      "70200": { name: "語義關係命名空間" }
-      "70300": { name: "語義屬性命名空間" }
-      "70400": { name: "語義上下文命名空間" }
-      "70500": { name: "語義錨點命名空間" }
-      "70600": { name: "語義圖譜命名空間" }
-      "70700": { name: "語義向量命名空間" }
-      "70800": { name: "語義嵌入命名空間" }
-      "70900": { name: "語義索引命名空間" }
-      "71000": { name: "語義查詢命名空間" }
-      "71100": { name: "邏輯推理鏈空間",         user_need: "CoT / ToT 中間態緩存" }
+    era3_semantic: # 700~799
+      '70100': { name: '語義實體命名空間' }
+      '70200': { name: '語義關係命名空間' }
+      '70300': { name: '語義屬性命名空間' }
+      '70400': { name: '語義上下文命名空間' }
+      '70500': { name: '語義錨點命名空間' }
+      '70600': { name: '語義圖譜命名空間' }
+      '70700': { name: '語義向量命名空間' }
+      '70800': { name: '語義嵌入命名空間' }
+      '70900': { name: '語義索引命名空間' }
+      '71000': { name: '語義查詢命名空間' }
+      '71100': { name: '邏輯推理鏈空間', user_need: 'CoT / ToT 中間態緩存' }
 
-    era_q_quantum:                      # 800~899  ← Era-Q 新增
-      "80100": { name: "量子位元暫存器空間",     user_need: "物理/邏輯 Qubit 拓撲映射" }
-      "80200": { name: "量子電路模板空間",       user_need: "Shor/Grover 標準化電路復用" }
-      "80300": { name: "量子-經典混合變分空間",  user_need: "VQE/QAOA 變量映射" }
-      "80400": { name: "量子糾錯碼空間",         user_need: "Surface Code 校驗子定義" }
-      "80500": { name: "疊加態權重空間",         user_need: "量子態振幅參數化配置" }
-      "80600": { name: "自主代理命名空間" }
-      "80700": { name: "多代理系統命名空間" }
-      "80800": { name: "群體智能命名空間" }
-      "80900": { name: "進化算法命名空間" }
-      "81000": { name: "元學習命名空間" }
+    era_q_quantum: # 800~899  ← Era-Q 新增
+      '80100': { name: '量子位元暫存器空間', user_need: '物理/邏輯 Qubit 拓撲映射' }
+      '80200': { name: '量子電路模板空間', user_need: 'Shor/Grover 標準化電路復用' }
+      '80300': { name: '量子-經典混合變分空間', user_need: 'VQE/QAOA 變量映射' }
+      '80400': { name: '量子糾錯碼空間', user_need: 'Surface Code 校驗子定義' }
+      '80500': { name: '疊加態權重空間', user_need: '量子態振幅參數化配置' }
+      '80600': { name: '自主代理命名空間' }
+      '80700': { name: '多代理系統命名空間' }
+      '80800': { name: '群體智能命名空間' }
+      '80900': { name: '進化算法命名空間' }
+      '81000': { name: '元學習命名空間' }
 
-    cross_era:                          # 900~999
-      "90100": { name: "跨 Era 命名空間映射" }
-      "90200": { name: "命名空間轉換引擎" }
-      "90300": { name: "命名空間兼容性檢查" }
-      "90400": { name: "命名空間遷移路徑" }
-      "90500": { name: "命名空間性能監控" }
-      "90600": { name: "命名空間成本優化" }
-      "90700": { name: "命名空間容量規劃" }
-      "90800": { name: "命名空間災難恢復" }
-      "90900": { name: "命名空間歸檔管理" }
-      "91000": { name: "命名空間銷毀協議" }
+    cross_era: # 900~999
+      '90100': { name: '跨 Era 命名空間映射' }
+      '90200': { name: '命名空間轉換引擎' }
+      '90300': { name: '命名空間兼容性檢查' }
+      '90400': { name: '命名空間遷移路徑' }
+      '90500': { name: '命名空間性能監控' }
+      '90600': { name: '命名空間成本優化' }
+      '90700': { name: '命名空間容量規劃' }
+      '90800': { name: '命名空間災難恢復' }
+      '90900': { name: '命名空間歸檔管理' }
+      '91000': { name: '命名空間銷毀協議' }
 
 # =============================================================================
 # D. Canonical Identifiers
 # =============================================================================
 canonical_identifiers:
-
   service_id:
-    format: "mycodexvantaos-<domain>-<capability>[-<sub_capability>]"
-    regex: "^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)+$"
-    ci_rule_file: "ci/rules/service-id.rule.ts"
-    enforcement: "hard"
+    format: 'mycodexvantaos-<domain>-<capability>[-<sub_capability>]'
+    regex: '^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)+$'
+    ci_rule_file: 'ci/rules/service-id.rule.ts'
+    enforcement: 'hard'
     constraints:
-      - "必須以 mycodexvantaos- 為前綴"
-      - "domain + capability 至少兩段"
-      - "不含版本號"
-      - "不含環境標記"
+      - '必須以 mycodexvantaos- 為前綴'
+      - 'domain + capability 至少兩段'
+      - '不含版本號'
+      - '不含環境標記'
     valid_examples:
-      - "mycodexvantaos-ai-embedding"
-      - "mycodexvantaos-core-auth"
-      - "mycodexvantaos-quantum-controller"
+      - 'mycodexvantaos-ai-embedding'
+      - 'mycodexvantaos-core-auth'
+      - 'mycodexvantaos-quantum-controller'
     invalid_examples:
-      - { value: "mycodexvantaos-ai",              reason: "僅一段 domain" }
-      - { value: "mycodexvantaos-ai-embedding-v2", reason: "含版本號" }
-      - { value: "mycodexvantaos-ai-embedding-prod", reason: "含環境標記" }
-      - { value: "mycodexvantaos_ai_embedding",    reason: "底線不允許" }
+      - { value: 'mycodexvantaos-ai', reason: '僅一段 domain' }
+      - { value: 'mycodexvantaos-ai-embedding-v2', reason: '含版本號' }
+      - { value: 'mycodexvantaos-ai-embedding-prod', reason: '含環境標記' }
+      - { value: 'mycodexvantaos_ai_embedding', reason: '底線不允許' }
 
   package_short_id:
-    format: "<domain>-<capability>[-<sub_capability>]"
+    format: '<domain>-<capability>[-<sub_capability>]'
     derivation: "service_id.removePrefix('mycodexvantaos-')"
-    regex: "^[a-z0-9]+(?:-[a-z0-9]+)+$"
+    regex: '^[a-z0-9]+(?:-[a-z0-9]+)+$'
 
   k8s_resource_name:
-    derivation: "service_id"
-    note: "所有 base manifest 的 metadata.name 嚴格等於 service_id"
-    ci_rule_file: "ci/rules/manifest-name.rule.ts"
-    enforcement: "hard"
+    derivation: 'service_id'
+    note: '所有 base manifest 的 metadata.name 嚴格等於 service_id'
+    ci_rule_file: 'ci/rules/manifest-name.rule.ts'
+    enforcement: 'hard'
 
   canonical_capability_set:
-    source_of_truth: "governance/capability-set.yaml"
-    ci_rule_file: "ci/rules/capability-id.rule.ts"
-    enforcement: "hard"
+    source_of_truth: 'governance/capability-set.yaml'
+    ci_rule_file: 'ci/rules/capability-id.rule.ts'
+    enforcement: 'hard'
     regex: >
       ^(database|storage|auth|queue|state-store|secrets|repo|deploy|
       validation|security|observability|notification|scheduler|vector-store|
       embedding|llm|graph|cache|search|ai-ethics|blockchain|event-stream)$
     values:
-      - "database"
-      - "storage"
-      - "auth"
-      - "queue"
-      - "state-store"
-      - "secrets"
-      - "repo"
-      - "deploy"
-      - "validation"
-      - "security"
-      - "observability"
-      - "notification"
-      - "scheduler"
-      - "vector-store"
-      - "embedding"
-      - "llm"
-      - "graph"
-      - "cache"
-      - "search"
-      - "ai-ethics"
-      - "blockchain"
-      - "event-stream"
+      - 'database'
+      - 'storage'
+      - 'auth'
+      - 'queue'
+      - 'state-store'
+      - 'secrets'
+      - 'repo'
+      - 'deploy'
+      - 'validation'
+      - 'security'
+      - 'observability'
+      - 'notification'
+      - 'scheduler'
+      - 'vector-store'
+      - 'embedding'
+      - 'llm'
+      - 'graph'
+      - 'cache'
+      - 'search'
+      - 'ai-ethics'
+      - 'blockchain'
+      - 'event-stream'
 
 # =============================================================================
 # E. Protocol-Specific Identifiers
 # =============================================================================
 protocol_specific_identifiers:
-
   package_name:
-    format: "@mycodexvantaos/<package_short_id>"
-    regex: "^@mycodexvantaos/[a-z0-9]+(?:-[a-z0-9]+)+$"
-    ci_rule_file: "ci/rules/package-name.rule.ts"
-    enforcement: "hard"
+    format: '@mycodexvantaos/<package_short_id>'
+    regex: '^@mycodexvantaos/[a-z0-9]+(?:-[a-z0-9]+)+$'
+    ci_rule_file: 'ci/rules/package-name.rule.ts'
+    enforcement: 'hard'
 
   env_var:
-    format: "MYCODEXVANTAOS_<SUBSYSTEM>_<KEY>"
-    regex: "^MYCODEXVANTAOS_[A-Z0-9_]+$"
-    forbidden_prefix: "ORCH_"
-    ci_rule_file: "ci/rules/env-var.rule.ts"
-    enforcement: "hard"
+    format: 'MYCODEXVANTAOS_<SUBSYSTEM>_<KEY>'
+    regex: '^MYCODEXVANTAOS_[A-Z0-9_]+$'
+    forbidden_prefix: 'ORCH_'
+    ci_rule_file: 'ci/rules/env-var.rule.ts'
+    enforcement: 'hard'
     valid_examples:
-      - "MYCODEXVANTAOS_DATABASE_URL"
-      - "MYCODEXVANTAOS_AUTH_JWT_SECRET"
-      - "MYCODEXVANTAOS_QUANTUM_MODE"
+      - 'MYCODEXVANTAOS_DATABASE_URL'
+      - 'MYCODEXVANTAOS_AUTH_JWT_SECRET'
+      - 'MYCODEXVANTAOS_QUANTUM_MODE'
     invalid_examples:
-      - { value: "DATABASE_URL",           reason: "缺少 MYCODEXVANTAOS_ 前綴" }
-      - { value: "ORCH_DATABASE_URL",      reason: "舊前綴禁用" }
-      - { value: "KUBO_MODE",              reason: "遺留前綴禁用" }
-      - { value: "MYCODEXVANTAOS_MODE",    note: "MYCODEXVANTAOS_MODE 為合法替代 KUBO_MODE" }
+      - { value: 'DATABASE_URL', reason: '缺少 MYCODEXVANTAOS_ 前綴' }
+      - { value: 'ORCH_DATABASE_URL', reason: '舊前綴禁用' }
+      - { value: 'KUBO_MODE', reason: '遺留前綴禁用' }
+      - { value: 'MYCODEXVANTAOS_MODE', note: 'MYCODEXVANTAOS_MODE 為合法替代 KUBO_MODE' }
 
   urn:
-    format: "urn:mycodexvantaos:<type>:<subtype>:<identifier>"
-    regex: "^urn:mycodexvantaos:[a-z-]+:[a-z-]+:[a-z0-9-]+$"
-    ci_rule_file: "ci/rules/urn.rule.ts"
-    enforcement: "hard"
+    format: 'urn:mycodexvantaos:<type>:<subtype>:<identifier>'
+    regex: '^urn:mycodexvantaos:[a-z-]+:[a-z-]+:[a-z0-9-]+$'
+    ci_rule_file: 'ci/rules/urn.rule.ts'
+    enforcement: 'hard'
     examples:
-      - "urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-embedding"
-      - "urn:mycodexvantaos:capability:vector-store:pgvector"
+      - 'urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-embedding'
+      - 'urn:mycodexvantaos:capability:vector-store:pgvector'
 
   internal_uri:
-    format: "mycodexvantaos://<namespace>/<type>/<id>"
+    format: 'mycodexvantaos://<namespace>/<type>/<id>'
     examples:
-      - "mycodexvantaos://platform/service/mycodexvantaos-core-kernel"
+      - 'mycodexvantaos://platform/service/mycodexvantaos-core-kernel'
 
 # =============================================================================
 # F. Provider Identifiers
 # =============================================================================
 provider_identifiers:
   provider_instance:
-    format: "<capability>-<provider>"
-    order: "capability FIRST, provider SECOND — never inverted"
+    format: '<capability>-<provider>'
+    order: 'capability FIRST, provider SECOND — never inverted'
     regex: >
       ^(database|storage|auth|queue|state-store|secrets|repo|deploy|
       validation|security|observability|notification|scheduler|vector-store|
       embedding|llm|graph|cache|search|ai-ethics|blockchain|event-stream)-[a-z0-9-]+$
-    ci_rule_file: "ci/rules/provider-instance.rule.ts"
-    enforcement: "hard"
-    source_of_truth: "governance/provider-registry.yaml"
-    directory_pattern: "providers/<capability>/<capability>-<provider>/provider-manifest.yaml"
+    ci_rule_file: 'ci/rules/provider-instance.rule.ts'
+    enforcement: 'hard'
+    source_of_truth: 'governance/provider-registry.yaml'
+    directory_pattern: 'providers/<capability>/<capability>-<provider>/provider-manifest.yaml'
     valid_examples:
-      - "vector-store-pgvector"
-      - "database-postgres"
-      - "llm-openai"
+      - 'vector-store-pgvector'
+      - 'database-postgres'
+      - 'llm-openai'
     invalid_examples:
-      - { value: "postgres-database", reason: "順序倒置" }
-      - { value: "openai-llm",        reason: "順序倒置" }
+      - { value: 'postgres-database', reason: '順序倒置' }
+      - { value: 'openai-llm', reason: '順序倒置' }
 
 # =============================================================================
 # G. Composite Identifiers
 # =============================================================================
 composite_identifiers:
-  separator: "--"
-  rule: "雙連字號僅用於 composite；不得出現在 canonical identifier 中"
+  separator: '--'
+  rule: '雙連字號僅用於 composite；不得出現在 canonical identifier 中'
 
   definitions:
     vector_collection:
-      format: "<service-id>--<purpose>--<model-alias>"
-      regex: "^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)+--[a-z0-9-]+--[a-z0-9-]+$"
-      directory: "vector-store/collections/<id>.yaml"
-      ci_rule_file: "ci/rules/vector-collection.rule.ts"
-      enforcement: "soft"
-      example: "mycodexvantaos-memory--docs--bge-small-384"
+      format: '<service-id>--<purpose>--<model-alias>'
+      regex: '^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)+--[a-z0-9-]+--[a-z0-9-]+$'
+      directory: 'vector-store/collections/<id>.yaml'
+      ci_rule_file: 'ci/rules/vector-collection.rule.ts'
+      enforcement: 'soft'
+      example: 'mycodexvantaos-memory--docs--bge-small-384'
 
     embedding_model_alias:
-      format: "<provider>--<model>--<dim>d"
-      regex: "^[a-z0-9-]+--[a-z0-9-]+--[0-9]+d$"
-      directory: "vector-store/embedding-model-aliases/<alias>.yaml"
-      ci_rule_file: "ci/rules/embedding-model-alias.rule.ts"
-      enforcement: "soft"
-      example: "openai--text-embedding-3-small--1536d"
+      format: '<provider>--<model>--<dim>d'
+      regex: '^[a-z0-9-]+--[a-z0-9-]+--[0-9]+d$'
+      directory: 'vector-store/embedding-model-aliases/<alias>.yaml'
+      ci_rule_file: 'ci/rules/embedding-model-alias.rule.ts'
+      enforcement: 'soft'
+      example: 'openai--text-embedding-3-small--1536d'
 
     retrieval_pipeline_id:
-      format: "retrieval--<strategy>--<store>"
-      regex: "^retrieval--[a-z0-9-]+--[a-z0-9-]+$"
-      directory: "vector-store/retrieval-pipelines/<id>.yaml"
-      ci_rule_file: "ci/rules/retrieval-pipeline-id.rule.ts"
-      enforcement: "soft"
-      example: "retrieval--hybrid--pgvector"
+      format: 'retrieval--<strategy>--<store>'
+      regex: '^retrieval--[a-z0-9-]+--[a-z0-9-]+$'
+      directory: 'vector-store/retrieval-pipelines/<id>.yaml'
+      ci_rule_file: 'ci/rules/retrieval-pipeline-id.rule.ts'
+      enforcement: 'soft'
+      example: 'retrieval--hybrid--pgvector'
 
     search_index_id:
-      format: "idx--<service-id>--<field>--<analyzer>"
-      regex: "^idx--mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)+--[a-z0-9-]+--[a-z0-9-]+$"
-      directory: "search-indexes/<id>.yaml"
-      ci_rule_file: "ci/rules/search-index-id.rule.ts"
-      enforcement: "soft"
-      example: "idx--mycodexvantaos-docs-search--content--cjk"
+      format: 'idx--<service-id>--<field>--<analyzer>'
+      regex: '^idx--mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)+--[a-z0-9-]+--[a-z0-9-]+$'
+      directory: 'search-indexes/<id>.yaml'
+      ci_rule_file: 'ci/rules/search-index-id.rule.ts'
+      enforcement: 'soft'
+      example: 'idx--mycodexvantaos-docs-search--content--cjk'
 
     graph_node_id:
-      format: "<service-id>--<entity>--<natural-key>"
-      regex: "^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)+--[a-z0-9-]+--[a-z0-9-]+$"
-      ci_rule_file: "ci/rules/graph-node-id.rule.ts"
-      enforcement: "soft"
-      example: "mycodexvantaos-core-kernel--user--alice"
+      format: '<service-id>--<entity>--<natural-key>'
+      regex: '^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)+--[a-z0-9-]+--[a-z0-9-]+$'
+      ci_rule_file: 'ci/rules/graph-node-id.rule.ts'
+      enforcement: 'soft'
+      example: 'mycodexvantaos-core-kernel--user--alice'
 
     graph_db_index_id:
-      format: "graph-idx--<service-id>--<label>--<property>"
-      regex: "^graph-idx--mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)+--[a-z0-9-]+--[a-z0-9-]+$"
-      directory: "knowledge-graph/indexes/<id>.yaml"
-      ci_rule_file: "ci/rules/graph-db-index-id.rule.ts"
-      enforcement: "soft"
-      example: "graph-idx--mycodexvantaos-governance--policy--name"
+      format: 'graph-idx--<service-id>--<label>--<property>'
+      regex: '^graph-idx--mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)+--[a-z0-9-]+--[a-z0-9-]+$'
+      directory: 'knowledge-graph/indexes/<id>.yaml'
+      ci_rule_file: 'ci/rules/graph-db-index-id.rule.ts'
+      enforcement: 'soft'
+      example: 'graph-idx--mycodexvantaos-governance--policy--name'
 
     timestamped_id:
-      format: "<prefix>--<YYYYMMDD>--<random6>"
-      regex: "^[a-z0-9-]+--[0-9]{8}--[a-z0-9]{6}$"
-      ci_rule_file: "ci/rules/timestamped-id.rule.ts"
-      enforcement: "soft"
-      example: "job--20260423--a1b2c3"
+      format: '<prefix>--<YYYYMMDD>--<random6>'
+      regex: '^[a-z0-9-]+--[0-9]{8}--[a-z0-9]{6}$'
+      ci_rule_file: 'ci/rules/timestamped-id.rule.ts'
+      enforcement: 'soft'
+      example: 'job--20260423--a1b2c3'
 
     content_addressed_id:
-      format: "<prefix>--sha256-<first12hex>"
-      regex: "^[a-z0-9-]+--sha256-[a-f0-9]{12}$"
-      ci_rule_file: "ci/rules/content-addressed-id.rule.ts"
-      enforcement: "soft"
-      example: "dataset--sha256-3f4a8b9c1d2e"
+      format: '<prefix>--sha256-<first12hex>'
+      regex: '^[a-z0-9-]+--sha256-[a-f0-9]{12}$'
+      ci_rule_file: 'ci/rules/content-addressed-id.rule.ts'
+      enforcement: 'soft'
+      example: 'dataset--sha256-3f4a8b9c1d2e'
 
     uuid_based_id:
-      format: "<prefix>--<uuid-nodash>"
-      regex: "^[a-z0-9-]+--[a-f0-9]{32}$"
-      ci_rule_file: "ci/rules/uuid-based-id.rule.ts"
-      enforcement: "soft"
-      example: "session--550e8400e29b41d4a716446655440000"
+      format: '<prefix>--<uuid-nodash>'
+      regex: '^[a-z0-9-]+--[a-f0-9]{32}$'
+      ci_rule_file: 'ci/rules/uuid-based-id.rule.ts'
+      enforcement: 'soft'
+      example: 'session--550e8400e29b41d4a716446655440000'
 
     exception_record_id:
-      format: "exception--<YYYYMMDD>--<random6>"
-      regex: "^exception--[0-9]{8}--[a-z0-9]{6}$"
-      directory: "governance/exceptions.yaml"
-      note: "例外登錄記錄的唯一識別符"
+      format: 'exception--<YYYYMMDD>--<random6>'
+      regex: '^exception--[0-9]{8}--[a-z0-9]{6}$'
+      directory: 'governance/exceptions.yaml'
+      note: '例外登錄記錄的唯一識別符'
 
 # =============================================================================
 # H. 路徑推導規則（機械推導，禁止手動別名）
 # =============================================================================
 path_derivation:
-  rule: "所有路徑由 service_id 機械推導；禁止手動自訂別名"
-  source_of_truth: "ci/utils/service-id-parser.ts"
-  ci_rule_file: "ci/rules/module-path.rule.ts"
-  enforcement: "hard"
+  rule: '所有路徑由 service_id 機械推導；禁止手動自訂別名'
+  source_of_truth: 'ci/utils/service-id-parser.ts'
+  ci_rule_file: 'ci/rules/module-path.rule.ts'
+  enforcement: 'hard'
 
   derivations:
     service_path:
-      formula: "services/{service_id}/"
-      example: "services/mycodexvantaos-ai-embedding/"
+      formula: 'services/{service_id}/'
+      example: 'services/mycodexvantaos-ai-embedding/'
     module_path:
-      formula: "modules/{service_id}/"
-      example: "modules/mycodexvantaos-ai-embedding/"
+      formula: 'modules/{service_id}/'
+      example: 'modules/mycodexvantaos-ai-embedding/'
     manifest_path:
-      formula: "modules/{service_id}/module-manifest.yaml"
-      example: "modules/mycodexvantaos-ai-embedding/module-manifest.yaml"
+      formula: 'modules/{service_id}/module-manifest.yaml'
+      example: 'modules/mycodexvantaos-ai-embedding/module-manifest.yaml'
     package_short_id:
       formula: "service_id.removePrefix('mycodexvantaos-')"
-      example: "ai-embedding"
+      example: 'ai-embedding'
     package_name:
-      formula: "@mycodexvantaos/{package_short_id}"
-      example: "@mycodexvantaos/ai-embedding"
+      formula: '@mycodexvantaos/{package_short_id}'
+      example: '@mycodexvantaos/ai-embedding'
     k8s_logical_name:
-      formula: "{service_id}"
-      example: "mycodexvantaos-ai-embedding"
+      formula: '{service_id}'
+      example: 'mycodexvantaos-ai-embedding'
     k8s_base_path:
-      formula: "infra/kubernetes/base/{service_id}/"
+      formula: 'infra/kubernetes/base/{service_id}/'

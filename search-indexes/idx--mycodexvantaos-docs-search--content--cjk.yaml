@@ -10,4 +10,4 @@ spec:
   serviceId: mycodexvantaos-docs-search
   field: content
   analyzer: cjk
-  description: "CJK-aware full-text index for documentation content."
+  description: 'CJK-aware full-text index for documentation content.'

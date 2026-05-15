@@ -10,7 +10,12 @@
     "lint": "eslint src --ext .ts",
     "format": "prettier --write \"src/**/*.ts\""
   },
-  "keywords": ["policy-engine", "policyengine", "Layer F擴展", "mycodexvantaos"],
+  "keywords": [
+    "policy-engine",
+    "policyengine",
+    "Layer F擴展",
+    "mycodexvantaos"
+  ],
   "author": "MyCodeXvantaOS",
   "license": "MIT",
   "dependencies": {

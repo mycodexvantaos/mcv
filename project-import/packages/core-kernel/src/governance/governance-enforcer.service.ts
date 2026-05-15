@@ -1,6 +1,6 @@
 /**
  * Governance Enforcement Engine
- * 
+ *
  * Runtime policy enforcement engine that validates and enforces governance policies
  * across service manifests, provider configurations, and runtime operations.
  * Integrates with governance policies defined in the governance/ directory.
@@ -13,7 +13,7 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import {
   ServiceManifest,
-  ServiceManifestValidationResult
+  ServiceManifestValidationResult,
 } from '../manifest/service-manifest.types';
 import { ServiceManifestValidator } from '../manifest/service-manifest.validator';
 
@@ -99,9 +99,12 @@ export class GovernanceEnforcerService extends EventEmitter {
       // Load governance policies
       await this.loadPolicies();
 
-      logger.info({ 
-        policiesLoaded: this.policies.size 
-      }, 'Governance enforcer initialized successfully');
+      logger.info(
+        {
+          policiesLoaded: this.policies.size,
+        },
+        'Governance enforcer initialized successfully'
+      );
     } catch (error) {
       logger.error({ error }, 'Failed to initialize governance enforcer');
       throw error;
@@ -116,7 +119,10 @@ export class GovernanceEnforcerService extends EventEmitter {
 
     try {
       // Check if governance directory exists
-      const exists = await fs.access(this.governancePath).then(() => true).catch(() => false);
+      const exists = await fs
+        .access(this.governancePath)
+        .then(() => true)
+        .catch(() => false);
       if (!exists) {
         logger.warn({ path: this.governancePath }, 'Governance directory not found');
         return;
@@ -124,8 +130,8 @@ export class GovernanceEnforcerService extends EventEmitter {
 
       // Load policy files
       const entries = await fs.readdir(this.governancePath, { withFileTypes: true });
-      const policyFiles = entries.filter(entry => 
-        entry.isFile() && (entry.name.endsWith('.yaml') || entry.name.endsWith('.yml'))
+      const policyFiles = entries.filter(
+        (entry) => entry.isFile() && (entry.name.endsWith('.yaml') || entry.name.endsWith('.yml'))
       );
 
       for (const file of policyFiles) {
@@ -133,10 +139,13 @@ export class GovernanceEnforcerService extends EventEmitter {
         await this.loadPolicyFile(filePath);
       }
 
-      logger.info({ 
-        count: policyFiles.length,
-        policiesLoaded: this.policies.size 
-      }, 'Governance policies loaded');
+      logger.info(
+        {
+          count: policyFiles.length,
+          policiesLoaded: this.policies.size,
+        },
+        'Governance policies loaded'
+      );
     } catch (error) {
       logger.error({ error }, 'Failed to load governance policies');
       throw error;
@@ -168,16 +177,19 @@ export class GovernanceEnforcerService extends EventEmitter {
     manifest: ServiceManifest,
     options: EnforcementOptions = {}
   ): Promise<EnforcementResult> {
-    logger.info({ 
-      service: manifest.metadata.name,
-      options 
-    }, 'Enforcing governance policies on service manifest');
+    logger.info(
+      {
+        service: manifest.metadata.name,
+        options,
+      },
+      'Enforcing governance policies on service manifest'
+    );
 
     const result: EnforcementResult = {
       compliant: true,
       violations: [],
       warnings: [],
-      auditLog: []
+      auditLog: [],
     };
 
     try {
@@ -192,14 +204,14 @@ export class GovernanceEnforcerService extends EventEmitter {
           scope: 'service-manifest',
           severity: 'error',
           timestamp: new Date(),
-          affectedResource: manifest.metadata.name
+          affectedResource: manifest.metadata.name,
         });
       }
 
       // Apply governance policies
       for (const [policyName, policy] of this.policies) {
         const policyResult = await this.enforcePolicy(manifest, policy, options);
-        
+
         if (!policyResult.compliant) {
           result.compliant = false;
         }
@@ -217,8 +229,8 @@ export class GovernanceEnforcerService extends EventEmitter {
         result: result.compliant ? 'compliant' : 'non-compliant',
         details: {
           violations: result.violations.length,
-          warnings: result.warnings.length
-        }
+          warnings: result.warnings.length,
+        },
       };
 
       result.auditLog.push(auditLog);
@@ -229,7 +241,7 @@ export class GovernanceEnforcerService extends EventEmitter {
         resource: manifest.metadata.name,
         result: result.compliant ? 'compliant' : 'non-compliant',
         violations: result.violations.length,
-        warnings: result.warnings.length
+        warnings: result.warnings.length,
       });
 
       // Block if configured and violations found
@@ -239,19 +251,25 @@ export class GovernanceEnforcerService extends EventEmitter {
         );
       }
 
-      logger.info({ 
-        service: manifest.metadata.name,
-        compliant: result.compliant,
-        violations: result.violations.length,
-        warnings: result.warnings.length 
-      }, 'Governance enforcement completed');
+      logger.info(
+        {
+          service: manifest.metadata.name,
+          compliant: result.compliant,
+          violations: result.violations.length,
+          warnings: result.warnings.length,
+        },
+        'Governance enforcement completed'
+      );
 
       return result;
     } catch (error) {
-      logger.error({ 
-        service: manifest.metadata.name,
-        error 
-      }, 'Governance enforcement failed');
+      logger.error(
+        {
+          service: manifest.metadata.name,
+          error,
+        },
+        'Governance enforcement failed'
+      );
 
       const auditLog: AuditLog = {
         id: this.generateAuditId(),
@@ -260,8 +278,8 @@ export class GovernanceEnforcerService extends EventEmitter {
         resource: manifest.metadata.name,
         result: 'non-compliant',
         details: {
-          error: error instanceof Error ? error.message : 'Unknown error'
-        }
+          error: error instanceof Error ? error.message : 'Unknown error',
+        },
       };
 
       result.auditLog.push(auditLog);
@@ -287,7 +305,7 @@ export class GovernanceEnforcerService extends EventEmitter {
       compliant: true,
       violations: [],
       warnings: [],
-      auditLog: []
+      auditLog: [],
     };
 
     for (const rule of policy.rules) {
@@ -296,8 +314,14 @@ export class GovernanceEnforcerService extends EventEmitter {
       }
 
       if (rule.scope === 'service-manifest') {
-        const ruleResult = await this.evaluateRule(manifest, rule, policy.name, policy.severity, options);
-        
+        const ruleResult = await this.evaluateRule(
+          manifest,
+          rule,
+          policy.name,
+          policy.severity,
+          options
+        );
+
         if (!ruleResult.compliant) {
           result.compliant = false;
         }
@@ -324,7 +348,7 @@ export class GovernanceEnforcerService extends EventEmitter {
       compliant: true,
       violations: [],
       warnings: [],
-      auditLog: []
+      auditLog: [],
     };
 
     try {
@@ -344,7 +368,7 @@ export class GovernanceEnforcerService extends EventEmitter {
             scope: rule.scope,
             severity: policySeverity,
             timestamp,
-            affectedResource
+            affectedResource,
           });
         } else if (rule.action === 'warn' && options.logWarnings !== false) {
           result.warnings.push({
@@ -353,7 +377,7 @@ export class GovernanceEnforcerService extends EventEmitter {
             description: rule.description,
             scope: rule.scope,
             timestamp,
-            affectedResource
+            affectedResource,
           });
         } else if (rule.action === 'audit') {
           // Just audit, no action needed
@@ -369,7 +393,7 @@ export class GovernanceEnforcerService extends EventEmitter {
         scope: rule.scope,
         severity: 'error',
         timestamp: new Date(),
-        affectedResource: manifest.metadata.name
+        affectedResource: manifest.metadata.name,
       });
     }
 
@@ -382,13 +406,13 @@ export class GovernanceEnforcerService extends EventEmitter {
   private async evaluateCondition(condition: string, manifest: ServiceManifest): Promise<boolean> {
     // This is a simplified implementation
     // In a real implementation, this would use a rule engine like JSONata or similar
-    
+
     try {
       // Simple string-based condition evaluation
       if (condition.includes('runtimeMode === "native"')) {
         return manifest.spec.runtimeMode === 'native';
       }
-      
+
       if (condition.includes('runtimeMode === "connected"')) {
         return manifest.spec.runtimeMode === 'connected';
       }
@@ -398,7 +422,7 @@ export class GovernanceEnforcerService extends EventEmitter {
       }
 
       if (condition.includes('fallbackEnabled')) {
-        return manifest.spec.capabilities.some(cap => cap.fallbackEnabled);
+        return manifest.spec.capabilities.some((cap) => cap.fallbackEnabled);
       }
 
       // Default to false for unsupported conditions
@@ -477,19 +501,20 @@ export class GovernanceEnforcerService extends EventEmitter {
     totalAuditLogs: number;
     complianceRate: number;
   } {
-    const enabledRules = Array.from(this.policies.values())
-      .reduce((sum, policy) => sum + policy.rules.filter(r => r.enabled).length, 0);
+    const enabledRules = Array.from(this.policies.values()).reduce(
+      (sum, policy) => sum + policy.rules.filter((r) => r.enabled).length,
+      0
+    );
 
-    const compliantAudits = this.auditLogs.filter(log => log.result === 'compliant').length;
-    const complianceRate = this.auditLogs.length > 0 
-      ? (compliantAudits / this.auditLogs.length) * 100 
-      : 100;
+    const compliantAudits = this.auditLogs.filter((log) => log.result === 'compliant').length;
+    const complianceRate =
+      this.auditLogs.length > 0 ? (compliantAudits / this.auditLogs.length) * 100 : 100;
 
     return {
       totalPolicies: this.policies.size,
       enabledRules,
       totalAuditLogs: this.auditLogs.length,
-      complianceRate: Math.round(complianceRate * 100) / 100
+      complianceRate: Math.round(complianceRate * 100) / 100,
     };
   }
 }

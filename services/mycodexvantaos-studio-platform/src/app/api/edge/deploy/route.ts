@@ -10,7 +10,10 @@ export async function POST(req: NextRequest) {
   const { serviceId, version, targetNodes, strategy = 'rolling' } = body;
 
   if (!serviceId || !version) {
-    return NextResponse.json({ success: false, error: 'serviceId and version are required' }, { status: 400 });
+    return NextResponse.json(
+      { success: false, error: 'serviceId and version are required' },
+      { status: 400 }
+    );
   }
 
   const deploymentId = `deploy-${Date.now()}`;
@@ -52,7 +55,10 @@ export async function GET(req: NextRequest) {
   const deploymentId = searchParams.get('deploymentId');
 
   if (!deploymentId) {
-    return NextResponse.json({ success: false, error: 'deploymentId query param is required' }, { status: 400 });
+    return NextResponse.json(
+      { success: false, error: 'deploymentId query param is required' },
+      { status: 400 }
+    );
   }
 
   return NextResponse.json({

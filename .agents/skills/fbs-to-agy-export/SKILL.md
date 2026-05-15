@@ -5,7 +5,6 @@ description: >
   Make sure to use this skill whenever the user mentions "Antigravity export", "Firebase Studio export", or wants to finalize, finish, or set up a Firebase Studio project. Even if they just say "get me started with this export" or "export to AGY", this is the skill to use.
 ---
 
-
 # Preparing Firebase Studio Projects for Antigravity
 
 Prepare a Firebase Studio exported project for use with Antigravity. You must execute these steps sequentially because later steps depend on the environment and dependencies set up in earlier steps. Do not skip steps unless explicitly instructed by a conditional evaluation.
@@ -14,20 +13,20 @@ Prepare a Firebase Studio exported project for use with Antigravity. You must ex
 
 ### Prerequisites: Context Gathering
 
-Determine the following variables before executing any commands. If automatic determination fails, ask the user. 
+Determine the following variables before executing any commands. If automatic determination fails, ask the user.
 
 > [!IMPORTANT]
 > **Maintain State**: These variables define the **Current Project State**. You MUST refer to these values before every conditional step.
 
 1.  **Determine Target Folder (`<TARGET_FOLDER>`)**:
-    *   The folder is valid only if it contains an `.idx/` subdirectory.
-    *   Check if the current working directory contains `.idx/`. If so, set `<TARGET_FOLDER>` to the current directory.
-    *   If not, stop and ask the user to provide the correct absolute path to the project folder.
+    - The folder is valid only if it contains an `.idx/` subdirectory.
+    - Check if the current working directory contains `.idx/`. If so, set `<TARGET_FOLDER>` to the current directory.
+    - If not, stop and ask the user to provide the correct absolute path to the project folder.
 2.  **Determine the type of project (`<FBS_PROJECT_TYPE>`)**:
-    *   If the project contains `next.config.ts`, set `<FBS_PROJECT_TYPE>` to "NextJS".
-    *   If the project contains `pubspec.yaml`, set `<FBS_PROJECT_TYPE>` to "Flutter".
-    *   If the project contains `angular.json`, set `<FBS_PROJECT_TYPE>` to "Angular".
-    *   Otherwise, attempt to determine the project type by checking the project's primary language.
+    - If the project contains `next.config.ts`, set `<FBS_PROJECT_TYPE>` to "NextJS".
+    - If the project contains `pubspec.yaml`, set `<FBS_PROJECT_TYPE>` to "Flutter".
+    - If the project contains `angular.json`, set `<FBS_PROJECT_TYPE>` to "Angular".
+    - Otherwise, attempt to determine the project type by checking the project's primary language.
 
 ### Step 1: Verify Node.js Environment (>= 20)
 
@@ -35,8 +34,8 @@ Firebase Studio exports require a modern Node.js environment (>= v20) to run bui
 
 1.  **Check Version**: Execute `node --version` in the terminal.
 2.  **Evaluate Result**:
-    *   If the version is `>= v20.x.x`, validation passes. Proceed immediately to **Step 2**.
-    *   If the version is `< v20.x.x`, or if Node.js is not found, perform one of the remediation paths below based on the OS.
+    - If the version is `>= v20.x.x`, validation passes. Proceed immediately to **Step 2**.
+    - If the version is `< v20.x.x`, or if Node.js is not found, perform one of the remediation paths below based on the OS.
 
 #### Remediation Path: macOS / Linux
 
@@ -81,7 +80,7 @@ Use this path if automated tools fail or the OS is unsupported.
     ```bash
     npx -y firebase-tools@latest login
     ```
-    *(Timeout Warning: If this command hangs waiting for browser interaction, check the terminal output, extract the login URL, provide it to the user, and stop waiting. Do not block indefinitely.)*
+    _(Timeout Warning: If this command hangs waiting for browser interaction, check the terminal output, extract the login URL, provide it to the user, and stop waiting. Do not block indefinitely.)_
 2.  **Export Project**: Execute the export command using the information gathered in the Prerequisites.
     ```bash
     npx -y firebase-tools@latest studio:export <TARGET_FOLDER> --no-start-antigravity
@@ -92,32 +91,32 @@ Use this path if automated tools fail or the OS is unsupported.
 After the `studio:export` command finishes, you MUST perform a multiple-point validation:
 
 1.  **Verify CLI Availability**:
-    *   Collect a list of CLIs you need to build and run this project. The potential CLIs can be found in 
-        *   In the Antigravity global MCP configuration file, inspect its `command` property (e.g., if `"command": "dart"` is specified). Note its platform-dependent location:
-            *   **macOS / Linux**: `~/.gemini/antigravity/mcp_config.json`
-            *   **Windows**: `%APPDATA%geminiantigravitymcp_config.json` (or `~AppDataRoaminggeminiantigravitymcp_config.json`)
-        *   In `.idx/dev.nix` file, inspect its `command` property (e.g., if `command = ["foo" "bar" "baz"];` is specified).
-        *   Inspect `README.md` file for any additional information.
-        *   Check the value of `<FBS_PROJECT_TYPE>` for more information:
-            *   **If `<FBS_PROJECT_TYPE>` is "NextJS"**, check CLI used in [nextjs.md](references/nextjs.md).
-            *   **If `<FBS_PROJECT_TYPE>` is "Flutter"**, check CLI used in [flutter.md](references/flutter.md).
-            *   **If `<FBS_PROJECT_TYPE>` is anything else**, use your best knowledge base on `<FBS_PROJECT_TYPE>` to determine the CLI used to build and run the project.
-    *   Check if that specific CLI command is currently installed and available in the system PATH (e.g., by executing `which <command>` on Mac/Linux or `where <command>` on Windows).
-    *   If the required CLI is **not** available:
-        *   Since Node.js is already installed, prioritize using `npx` to trigger the CLI if it's available as an npm package (e.g., you can modify the MCP config to use `"command": "npx", "args": ["-y", "<package>", ...]`).
-        *   If it cannot be run via `npx` (e.g., `dart`), proactively attempt to install the CLI yourself using the OS-appropriate package manager (e.g., `brew install dart` on macOS, `apt-get` on Linux).
-        *   If the automated installation fails or is not possible, explicitly ask the user to install the specific CLI and stop to wait for them to confirm completion.
-    *   For macOS / Linux, source the configuration file for the active shell (e.g., `source ~/.bash_profile`, `source ~/.bashrc`, `source ~/.zprofile`, `source ~/.zshrc`, or `source ~/.profile`).
+    - Collect a list of CLIs you need to build and run this project. The potential CLIs can be found in
+      - In the Antigravity global MCP configuration file, inspect its `command` property (e.g., if `"command": "dart"` is specified). Note its platform-dependent location:
+        - **macOS / Linux**: `~/.gemini/antigravity/mcp_config.json`
+        - **Windows**: `%APPDATA%geminiantigravitymcp_config.json` (or `~AppDataRoaminggeminiantigravitymcp_config.json`)
+      - In `.idx/dev.nix` file, inspect its `command` property (e.g., if `command = ["foo" "bar" "baz"];` is specified).
+      - Inspect `README.md` file for any additional information.
+      - Check the value of `<FBS_PROJECT_TYPE>` for more information:
+        - **If `<FBS_PROJECT_TYPE>` is "NextJS"**, check CLI used in [nextjs.md](references/nextjs.md).
+        - **If `<FBS_PROJECT_TYPE>` is "Flutter"**, check CLI used in [flutter.md](references/flutter.md).
+        - **If `<FBS_PROJECT_TYPE>` is anything else**, use your best knowledge base on `<FBS_PROJECT_TYPE>` to determine the CLI used to build and run the project.
+    - Check if that specific CLI command is currently installed and available in the system PATH (e.g., by executing `which <command>` on Mac/Linux or `where <command>` on Windows).
+    - If the required CLI is **not** available:
+      - Since Node.js is already installed, prioritize using `npx` to trigger the CLI if it's available as an npm package (e.g., you can modify the MCP config to use `"command": "npx", "args": ["-y", "<package>", ...]`).
+      - If it cannot be run via `npx` (e.g., `dart`), proactively attempt to install the CLI yourself using the OS-appropriate package manager (e.g., `brew install dart` on macOS, `apt-get` on Linux).
+      - If the automated installation fails or is not possible, explicitly ask the user to install the specific CLI and stop to wait for them to confirm completion.
+    - For macOS / Linux, source the configuration file for the active shell (e.g., `source ~/.bash_profile`, `source ~/.bashrc`, `source ~/.zprofile`, `source ~/.zshrc`, or `source ~/.profile`).
 2.  **Verify Project Health** by trying to compile and build the project.
-    *   Check the value of `<FBS_PROJECT_TYPE>` for more information:
-        *   **If `<FBS_PROJECT_TYPE>` is "NextJS"**, follow instructions in [nextjs.md](references/nextjs.md).
-        *   **If `<FBS_PROJECT_TYPE>` is "Flutter"**, follow instructions in [flutter.md](references/flutter.md).
-        *   **If `<FBS_PROJECT_TYPE>` is anything else**, follow instructions in [other.md](references/other.md).
-
+    - Check the value of `<FBS_PROJECT_TYPE>` for more information:
+      - **If `<FBS_PROJECT_TYPE>` is "NextJS"**, follow instructions in [nextjs.md](references/nextjs.md).
+      - **If `<FBS_PROJECT_TYPE>` is "Flutter"**, follow instructions in [flutter.md](references/flutter.md).
+      - **If `<FBS_PROJECT_TYPE>` is anything else**, follow instructions in [other.md](references/other.md).
 
 ### Step 4: Preview
 
-Validate that the exported project can be previewed. The command can usually be found in `.idx/dev.nix` file, ex. 
+Validate that the exported project can be previewed. The command can usually be found in `.idx/dev.nix` file, ex.
+
 ```
     previews = {
       enable = true;
@@ -132,18 +131,19 @@ Validate that the exported project can be previewed. The command can usually be 
 
 Focus on web preview for now. You can evaluate project health by checking:
 
-*   If the preview server starts successfully, wait for the URL to be displayed.
-*   Open the URL in the browser.
-*   Ask the user if the app is running correctly.
-*   If any command fails (install, typecheck, build, start), analyze the error output and attempt to fix the code automatically. If you cannot fix it, **stop and consult** the user.
-*   If the app is not running correctly, stop the preview server and ask the user for more information.
-*   **Functional Verification**: If applicable and the project has a web UI, use your browser tools or a browser subagent to navigate to the preview URL. Verify the page renders without critical console errors, and perform basic interaction testing (e.g., clicking primary buttons).
+- If the preview server starts successfully, wait for the URL to be displayed.
+- Open the URL in the browser.
+- Ask the user if the app is running correctly.
+- If any command fails (install, typecheck, build, start), analyze the error output and attempt to fix the code automatically. If you cannot fix it, **stop and consult** the user.
+- If the app is not running correctly, stop the preview server and ask the user for more information.
+- **Functional Verification**: If applicable and the project has a web UI, use your browser tools or a browser subagent to navigate to the preview URL. Verify the page renders without critical console errors, and perform basic interaction testing (e.g., clicking primary buttons).
 
 ### Step 5: Build Local Knowledge
 
-To minimize repeating investigation work in future sessions, you must codify the build and preview commands that you have discovered into reusable Antigravity workflows. 
+To minimize repeating investigation work in future sessions, you must codify the build and preview commands that you have discovered into reusable Antigravity workflows.
 
 Create the following two workflow files in the target project folder:
+
 - `<TARGET_FOLDER>/.agents/workflows/build_project.md`: Write a step-by-step workflow detailing every command required to install dependencies, compile, and build the project.
 - `<TARGET_FOLDER>/.agents/workflows/preview_project.md`: Write a step-by-step workflow detailing the exact commands needed to start the preview server and test the project.
 
@@ -155,14 +155,17 @@ Instruct the user to restart their Antigravity IDE environment so that all confi
 2.  **Wait**: **Stop and wait** for the user to confirm they have restarted their IDE.
 
 ---
+
 **Completion:** Once all steps above (including Step 6) have been successfully handled, notify the user that the Firebase Studio project export and Antigravity preparation are complete.
 
 ---
+
 ## Examples
 
 **Example 1: User requests export**
 Input: Can you help me finish this Firebase Studio export?
-Output: 
+Output:
+
 - Invokes `fbs-to-agy-export` skill.
 - Checks for `.idx/` in current folder.
 - Discovers `.idx/` exists. Sets `<TARGET_FOLDER>` to `.`.
@@ -172,6 +175,7 @@ Output:
 **Example 2: Target folder unclear**
 Input: Export to Antigravity.
 Output:
+
 - Invokes `fbs-to-agy-export` skill.
 - Checks for `.idx/` in current folder. Not found.
 - Asks user: "Please provide the absolute path to the project folder containing the `.idx/` subdirectory."

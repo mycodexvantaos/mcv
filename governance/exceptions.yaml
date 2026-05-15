@@ -18,21 +18,21 @@ metadata:
   name: platform-exception-register
   labels:
     managed-by: naming-spec-v1
-    specRef: "15"
+    specRef: '15'
 
 exceptions:
   # Example — REPLACE with real exceptions as needed.
   # Kept as documentation template only; status: revoked means it is inactive.
   - id: exception--20260418--example
     rule: no-version-in-canonical
-    scope: "services/mycodexvantaos-core-kernel"
+    scope: 'services/mycodexvantaos-core-kernel'
     reason: >
       Temporary migration period: legacy deployment pipeline still references
       a versioned directory name. Migration to naming-spec-v1 path derivation
       is tracked in backlog item CORE-142 and scheduled for completion by 2026-06-01.
     approver: arch-committee-lead
-    createdAt: "2026-04-18"
-    expiresAt: "2026-06-01"
+    createdAt: '2026-04-18'
+    expiresAt: '2026-06-01'
     status: revoked
     mitigationPlan: >
       Update deployment pipeline configuration to use canonical service-id path.

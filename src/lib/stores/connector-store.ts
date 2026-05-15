@@ -9,7 +9,9 @@ interface ConnectorState {
 
   fetchConnectors: () => Promise<void>;
   selectConnector: (connector: ConnectorInstance | null) => void;
-  addConnector: (connector: Omit<ConnectorInstance, 'id' | 'metrics' | 'governance'>) => Promise<void>;
+  addConnector: (
+    connector: Omit<ConnectorInstance, 'id' | 'metrics' | 'governance'>
+  ) => Promise<void>;
   updateConnector: (id: string, updates: Partial<ConnectorInstance>) => Promise<void>;
   removeConnector: (id: string) => Promise<void>;
   healthCheck: (id: string) => Promise<void>;
@@ -93,7 +95,9 @@ export const useConnectorStore = create<ConnectorState>((set, get) => ({
       const result = await response.json();
       set((state) => ({
         connectors: state.connectors.map((c) =>
-          c.id === id ? { ...c, status: result.status, metrics: { ...c.metrics, ...result.metrics } } : c
+          c.id === id
+            ? { ...c, status: result.status, metrics: { ...c.metrics, ...result.metrics } }
+            : c
         ),
       }));
     } catch (error) {

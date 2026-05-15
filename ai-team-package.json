@@ -57,10 +57,7 @@
     "ts-node": "^10.9.0",
     "typescript": "^5.0.0"
   },
-  "workspaces": [
-    "modules/*",
-    "services/*"
-  ],
+  "workspaces": ["modules/*", "services/*"],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -78,12 +75,5 @@
       "import": "./dist/modules/mycodexvantaos-persona-engine/src/index.js"
     }
   },
-  "files": [
-    "dist",
-    "schemas",
-    "config",
-    "README.md",
-    "LICENSE",
-    "CHANGELOG.md"
-  ]
+  "files": ["dist", "schemas", "config", "README.md", "LICENSE", "CHANGELOG.md"]
 }

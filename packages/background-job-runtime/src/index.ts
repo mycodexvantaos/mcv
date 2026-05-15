@@ -1,6 +1,6 @@
 /**
  * Background Job Runtime Module
- * 
+ *
  * This module provides background job processing capabilities including
  * job queuing, scheduling, and execution.
  */
@@ -59,7 +59,7 @@ export class BackgroundJobRuntime {
       priority,
       retries: 0,
       maxRetries: this.maxRetries,
-      createdAt: new Date()
+      createdAt: new Date(),
     };
 
     this.queue.set(job.id, job);
@@ -98,7 +98,7 @@ export class BackgroundJobRuntime {
    * Get jobs by status
    */
   getJobsByStatus(status: Job['status']): Job[] {
-    return Array.from(this.queue.values()).filter(job => job.status === status);
+    return Array.from(this.queue.values()).filter((job) => job.status === status);
   }
 
   /**
@@ -122,13 +122,13 @@ export class BackgroundJobRuntime {
   private async processQueue(): Promise<void> {
     while (true) {
       if (this.running.size >= this.concurrency) {
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
         continue;
       }
 
       const nextJob = this.getNextJob();
       if (!nextJob) {
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
         continue;
       }
 
@@ -142,7 +142,7 @@ export class BackgroundJobRuntime {
    */
   private getNextJob(): Job | undefined {
     const pendingJobs = Array.from(this.queue.values())
-      .filter(job => job.status === 'pending')
+      .filter((job) => job.status === 'pending')
       .sort((a, b) => b.priority - a.priority);
 
     return pendingJobs[0];

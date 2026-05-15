@@ -1,8 +1,8 @@
 /**
  * NativeStorageProvider — Filesystem-based implementation
- * 
+ *
  * Zero external dependencies. Stores objects as files on the local filesystem.
- * 
+ *
  * Features:
  *  - Local directory-based object storage
  *  - Metadata stored as sidecar JSON files
@@ -128,7 +128,7 @@ export class NativeStorageProvider implements StorageProvider {
     const startAfter = options?.cursor;
 
     const allKeys = this.walkKeys(this.config.basePath, '')
-      .filter(k => k.startsWith(prefix) && !k.startsWith('.meta/'))
+      .filter((k) => k.startsWith(prefix) && !k.startsWith('.meta/'))
       .sort();
 
     let startIdx = 0;
@@ -138,7 +138,7 @@ export class NativeStorageProvider implements StorageProvider {
     }
 
     const pageKeys = allKeys.slice(startIdx, startIdx + limit);
-    const objects: StorageObjectMeta[] = pageKeys.map(key => {
+    const objects: StorageObjectMeta[] = pageKeys.map((key) => {
       const meta = this.readMetadata(key);
       if (meta) return meta;
       const filePath = this.keyToPath(key);
@@ -185,8 +185,9 @@ export class NativeStorageProvider implements StorageProvider {
       await this.delete(testKey);
 
       // Count total objects
-      const allKeys = this.walkKeys(this.config.basePath, '')
-        .filter(k => !k.startsWith('.meta/') && !k.startsWith('.healthcheck'));
+      const allKeys = this.walkKeys(this.config.basePath, '').filter(
+        (k) => !k.startsWith('.meta/') && !k.startsWith('.healthcheck')
+      );
 
       return {
         healthy: true,

@@ -10,4 +10,4 @@ spec:
   serviceId: mycodexvantaos-docs-search
   field: title
   analyzer: standard
-  description: "Standard tokenizer index for documentation titles."
+  description: 'Standard tokenizer index for documentation titles.'

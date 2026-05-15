@@ -58,7 +58,7 @@ export class AuthConnector {
       tokenExpiry: config.tokenExpiry || 3600, // 1 hour
       refreshTokenExpiry: config.refreshTokenExpiry || 604800, // 7 days
       issuer: config.issuer || 'mycodexvantaos',
-      audience: config.audience
+      audience: config.audience,
     };
   }
 
@@ -117,7 +117,7 @@ export class AuthConnector {
       email: userData.email,
       password: this.hashPassword(userData.password),
       roles: userData.roles || [],
-      permissions: userData.permissions || []
+      permissions: userData.permissions || [],
     };
 
     this.users.set(user.id, user);
@@ -127,7 +127,7 @@ export class AuthConnector {
     return {
       success: true,
       user: this.sanitizeUser(user),
-      tokens
+      tokens,
     };
   }
 
@@ -140,9 +140,7 @@ export class AuthConnector {
     }
 
     const usersArray = Array.from(this.users.values());
-    const user = usersArray.find(
-      (u) => u.email === credentials.email
-    );
+    const user = usersArray.find((u) => u.email === credentials.email);
 
     if (!user) {
       return { success: false, error: 'Invalid credentials' };
@@ -157,7 +155,7 @@ export class AuthConnector {
     return {
       success: true,
       user: this.sanitizeUser(user),
-      tokens
+      tokens,
     };
   }
 
@@ -193,7 +191,7 @@ export class AuthConnector {
     return {
       success: true,
       user: this.sanitizeUser(user),
-      tokens
+      tokens,
     };
   }
 
@@ -219,7 +217,7 @@ export class AuthConnector {
 
     try {
       const payload = this.decodeToken(token);
-      
+
       if (Date.now() > payload.exp * 1000) {
         return null;
       }
@@ -260,7 +258,7 @@ export class AuthConnector {
 
     const updatedUser = {
       ...user,
-      ...updates
+      ...updates,
     };
 
     this.users.set(userId, updatedUser);
@@ -368,7 +366,7 @@ export class AuthConnector {
       iat: now,
       exp: now + this.config.tokenExpiry,
       iss: this.config.issuer,
-      aud: this.config.audience
+      aud: this.config.audience,
     };
 
     const accessToken = this.encodeToken(payload);
@@ -377,13 +375,13 @@ export class AuthConnector {
     // Store refresh token
     this.refreshTokenStore.set(refreshToken, {
       userId: user.id,
-      expiresAt: Date.now() + (this.config.refreshTokenExpiry * 1000)
+      expiresAt: Date.now() + this.config.refreshTokenExpiry * 1000,
     });
 
     return {
       accessToken,
       refreshToken,
-      expiresIn: this.config.tokenExpiry
+      expiresIn: this.config.tokenExpiry,
     };
   }
 
@@ -418,7 +416,10 @@ export class AuthConnector {
   private hashPassword(password: string): string {
     // In production, use bcrypt or argon2
     const crypto = require('crypto');
-    return crypto.createHash('sha256').update(password + this.config.secret).digest('hex');
+    return crypto
+      .createHash('sha256')
+      .update(password + this.config.secret)
+      .digest('hex');
   }
 
   /**
@@ -426,7 +427,10 @@ export class AuthConnector {
    */
   private verifyPassword(password: string, hash: string): boolean {
     const crypto = require('crypto');
-    const computedHash = crypto.createHash('sha256').update(password + this.config.secret).digest('hex');
+    const computedHash = crypto
+      .createHash('sha256')
+      .update(password + this.config.secret)
+      .digest('hex');
     return computedHash === hash;
   }
 

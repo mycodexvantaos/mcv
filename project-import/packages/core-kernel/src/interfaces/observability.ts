@@ -1,11 +1,11 @@
 /**
  * CodexvantaOS — ObservabilityProvider
- * 
+ *
  * Abstract interface for logging, metrics, tracing, and alerting.
  * Native mode: file-based logs, in-memory metrics, console tracing
  * External mode: Prometheus, Grafana, Datadog, New Relic, OpenTelemetry,
  *                ELK Stack, CloudWatch, etc.
- * 
+ *
  * Follows the three pillars of observability: Logs, Metrics, Traces.
  * Plus alerting as a fourth operational concern.
  */
@@ -15,7 +15,7 @@
 export type LogLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal';
 
 export interface LogEntry {
-  timestamp: number;           // epoch ms
+  timestamp: number; // epoch ms
   level: LogLevel;
   message: string;
   service?: string;
@@ -26,10 +26,10 @@ export interface LogEntry {
 
 export interface LogQuery {
   service?: string;
-  level?: LogLevel;            // minimum level
+  level?: LogLevel; // minimum level
   since?: number;
   until?: number;
-  search?: string;             // full-text search
+  search?: string; // full-text search
   traceId?: string;
   limit?: number;
   offset?: number;
@@ -43,8 +43,8 @@ export interface MetricDefinition {
   name: string;
   type: MetricType;
   description: string;
-  unit?: string;               // e.g. 'ms', 'bytes', 'requests'
-  labels?: string[];           // allowed label names
+  unit?: string; // e.g. 'ms', 'bytes', 'requests'
+  labels?: string[]; // allowed label names
 }
 
 export interface MetricDataPoint {
@@ -59,7 +59,7 @@ export interface MetricQuery {
   labels?: Record<string, string>;
   since?: number;
   until?: number;
-  step?: number;               // aggregation step in seconds
+  step?: number; // aggregation step in seconds
   aggregation?: 'sum' | 'avg' | 'min' | 'max' | 'count' | 'p50' | 'p90' | 'p95' | 'p99';
 }
 
@@ -81,9 +81,9 @@ export interface Span {
   context: SpanContext;
   operationName: string;
   service: string;
-  startTime: number;           // epoch ms
+  startTime: number; // epoch ms
   endTime?: number;
-  duration?: number;           // ms
+  duration?: number; // ms
   status: 'ok' | 'error' | 'unset';
   attributes?: Record<string, unknown>;
   events?: SpanEvent[];
@@ -101,7 +101,7 @@ export interface TraceQuery {
   operationName?: string;
   since?: number;
   until?: number;
-  minDuration?: number;        // ms
+  minDuration?: number; // ms
   status?: 'ok' | 'error';
   limit?: number;
 }
@@ -115,7 +115,7 @@ export interface AlertRule {
   id: string;
   name: string;
   description?: string;
-  condition: string;           // provider-specific expression or DSL
+  condition: string; // provider-specific expression or DSL
   severity: AlertSeverity;
   enabled: boolean;
   cooldownSec?: number;
@@ -203,11 +203,14 @@ export interface ObservabilityProvider {
   // ── Tracing ─────────────────────────────────────────────────────────────
 
   /** Start a new span (creates trace if no parent). Returns span context. */
-  startSpan(operationName: string, options?: {
-    parentContext?: SpanContext;
-    service?: string;
-    attributes?: Record<string, unknown>;
-  }): SpanContext;
+  startSpan(
+    operationName: string,
+    options?: {
+      parentContext?: SpanContext;
+      service?: string;
+      attributes?: Record<string, unknown>;
+    }
+  ): SpanContext;
 
   /** Add an event to an active span. */
   addSpanEvent(spanId: string, event: SpanEvent): void;

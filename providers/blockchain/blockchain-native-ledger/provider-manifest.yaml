@@ -8,7 +8,7 @@ metadata:
   capability: blockchain
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: "8.1"
+    mycodexvantaos.org/specRef: '8.1'
 spec:
   providerName: native-ledger
   isNative: true
@@ -16,4 +16,4 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_BLOCKCHAIN
   configSchemaRef: ./config.schema.json
-  description: "Native immutable ledger provider for platform-internal governance event anchoring, Merkle proof generation, and compliance audit trails."
+  description: 'Native immutable ledger provider for platform-internal governance event anchoring, Merkle proof generation, and compliance audit trails.'

@@ -25,7 +25,7 @@ export class AgentToolkit {
       tools: [],
       maxConcurrentExecutions: 5,
       timeout: 30000,
-      ...config
+      ...config,
     };
   }
 

@@ -1,4 +1,4 @@
-import type { ComplianceReport, ComplianceViolation, Standard } from "./types";
+import type { ComplianceReport, ComplianceViolation, Standard } from './types';
 
 let counter = 0;
 
@@ -36,28 +36,35 @@ export class ComplianceService {
     // TODO: Replace with configurable rule engine (external config or database).
     // Current rules: resource-ownership, resource-tagging
     for (const resource of resources) {
-      const name = String(resource["name"] ?? "unknown");
-      if (!resource["owner"]) {
+      const name = String(resource['name'] ?? 'unknown');
+      if (!resource['owner']) {
         violations.push({
-          rule: "resource-ownership",
-          severity: "high",
+          rule: 'resource-ownership',
+          severity: 'high',
           resource: name,
           message: `Resource "${name}" has no owner assigned`,
         });
       }
-      if (!resource["tags"] || !Array.isArray(resource["tags"]) || (resource["tags"] as unknown[]).length === 0) {
+      if (
+        !resource['tags'] ||
+        !Array.isArray(resource['tags']) ||
+        (resource['tags'] as unknown[]).length === 0
+      ) {
         violations.push({
-          rule: "resource-tagging",
-          severity: "medium",
+          rule: 'resource-tagging',
+          severity: 'medium',
           resource: name,
           message: `Resource "${name}" missing required tags`,
         });
       }
     }
 
-    const status: ComplianceReport["status"] =
-      violations.length === 0 ? "compliant" :
-      violations.some((v) => v.severity === "high") ? "non-compliant" : "partial";
+    const status: ComplianceReport['status'] =
+      violations.length === 0
+        ? 'compliant'
+        : violations.some((v) => v.severity === 'high')
+          ? 'non-compliant'
+          : 'partial';
 
     return {
       id: `report-${++counter}`,

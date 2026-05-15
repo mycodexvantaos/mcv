@@ -10,14 +10,14 @@
 
 ### 1.1 测试覆盖率状态
 
-| 指标 | 当前值 | 目标值 | 差距 |
-|------|--------|--------|------|
-| Statements | 62.46% | 80% | -17.54% |
-| Branches | 54.60% | 80% | -25.40% |
-| Functions | 62.33% | 80% | -17.67% |
-| Lines | 63.04% | 80% | -16.96% |
-| Test Suites | 54 | 70+ | -16 |
-| Tests | 1033+ | 1500+ | -467 |
+| 指标        | 当前值 | 目标值 | 差距    |
+| ----------- | ------ | ------ | ------- |
+| Statements  | 62.46% | 80%    | -17.54% |
+| Branches    | 54.60% | 80%    | -25.40% |
+| Functions   | 62.33% | 80%    | -17.67% |
+| Lines       | 63.04% | 80%    | -16.96% |
+| Test Suites | 54     | 70+    | -16     |
+| Tests       | 1033+  | 1500+  | -467    |
 
 ### 1.2 架构层次状态
 
@@ -65,16 +65,19 @@
 ### 1.3 已完成的集成工作
 
 #### 第一阶段: 工作流整合 ✅
+
 - 从 30 个工作流整合为 20 个
 - GitOps 管道配置完成
 - ArgoCD 配置创建完成
 
 #### 第二阶段: 核心包实现 ✅
+
 - 27/27 包实现 (100%)
 - Provider 抽象层实现
 - Native fallback 机制
 
 #### 第三阶段: 引擎服务集成 ✅
+
 - 8 个引擎服务已集成
 - 6 个 Provider 已集成
 - 4 个核心系统已集成
@@ -85,16 +88,16 @@
 
 ### 2.1 优先级矩阵
 
-| 集成项目 | 影响范围 | 技术复杂度 | 业务价值 | 优先级 |
-|----------|----------|------------|----------|--------|
-| 测试覆盖率提升到80% | 全项目 | 中 | 高 | P0 |
-| Launch Pad ↔ Studio Platform 整合 | 前端 | 高 | 高 | P1 |
-| Provider 测试补全 | 核心基础设施 | 中 | 高 | P1 |
-| AI Team Orchestrator 模块测试 | AI 核心 | 中 | 高 | P1 |
-| Services 层测试覆盖 | 服务层 | 低 | 中 | P2 |
-| Persona Engine 完整实现 | AI 功能 | 高 | 中 | P2 |
-| Agent Toolkit 开发 | 开发者工具 | 高 | 中 | P3 |
-| E2E 集成测试 | 全项目 | 高 | 高 | P2 |
+| 集成项目                          | 影响范围     | 技术复杂度 | 业务价值 | 优先级 |
+| --------------------------------- | ------------ | ---------- | -------- | ------ |
+| 测试覆盖率提升到80%               | 全项目       | 中         | 高       | P0     |
+| Launch Pad ↔ Studio Platform 整合 | 前端         | 高         | 高       | P1     |
+| Provider 测试补全                 | 核心基础设施 | 中         | 高       | P1     |
+| AI Team Orchestrator 模块测试     | AI 核心      | 中         | 高       | P1     |
+| Services 层测试覆盖               | 服务层       | 低         | 中       | P2     |
+| Persona Engine 完整实现           | AI 功能      | 高         | 中       | P2     |
+| Agent Toolkit 开发                | 开发者工具   | 高         | 中       | P3     |
+| E2E 集成测试                      | 全项目       | 高         | 高       | P2     |
 
 ### 2.2 集成依赖关系图
 
@@ -134,10 +137,13 @@
 ### 3.1 方案一: 测试覆盖率提升策略
 
 #### 目标
+
 将整体测试覆盖率从 62.46% 提升至 80%
 
 #### 分析
+
 当前覆盖率分析显示:
+
 - **高覆盖率区域 (>90%)**: builder, config-sync, core-kernel, database, events, monitoring, runtime, storage
 - **中等覆盖率区域 (50-90%)**: ai-llm, deployment, service-discovery, providers
 - **零覆盖率区域 (0%)**: 大部分 services 层、modules 层部分组件
@@ -205,21 +211,23 @@ services/
 
 #### 测试覆盖率目标分解
 
-| 阶段 | 当前 | 目标 | 提升 | 时间 |
-|------|------|------|------|------|
-| 现状 | 62.46% | - | - | - |
-| Phase 1: Providers | 62.46% | 67% | +4.54% | 2天 |
-| Phase 2: Modules | 67% | 72% | +5% | 3天 |
-| Phase 3: Services 实现 | 72% | 77% | +5% | 4天 |
-| Phase 4: 集成测试 | 77% | 80% | +3% | 2天 |
-| **总计** | 62.46% | 80% | +17.54% | 11天 |
+| 阶段                   | 当前   | 目标 | 提升    | 时间 |
+| ---------------------- | ------ | ---- | ------- | ---- |
+| 现状                   | 62.46% | -    | -       | -    |
+| Phase 1: Providers     | 62.46% | 67%  | +4.54%  | 2天  |
+| Phase 2: Modules       | 67%    | 72%  | +5%     | 3天  |
+| Phase 3: Services 实现 | 72%    | 77%  | +5%     | 4天  |
+| Phase 4: 集成测试      | 77%    | 80%  | +3%     | 2天  |
+| **总计**               | 62.46% | 80%  | +17.54% | 11天 |
 
 ---
 
 ### 3.2 方案二: Launch Pad 与 Studio Platform 整合
 
 #### 背景
+
 两个前端应用具有相似的技术栈和功能需求:
+
 - Launch Pad: 用户入门引导平台
 - Studio Platform: 开发者工作台
 
@@ -310,16 +318,16 @@ Provider Architecture
 
 #### 需要增强的 Provider
 
-| Provider | 状态 | 需要的工作 |
-|----------|------|-----------|
-| NativeLLMProvider | ✅ 完成 | 增加 semantic dictionary 测试 |
-| NativeAuthProvider | ✅ 完成 | 增加 token 过期测试 |
-| NativeDeployProvider | ✅ 完成 | 增加回滚场景测试 |
-| ExternalDeployProvider | ✅ 完成 | 增加错误处理测试 |
-| NativeVectorStoreProvider | ✅ 完成 | 增加大规模向量测试 |
-| ConnectedPgVectorProvider | ✅ 完成 | 需要真实 PostgreSQL 测试 |
-| NativeObservabilityProvider | ✅ 完成 | 增加指标发布测试 |
-| ConnectedGeminiProvider | ✅ 完成 | 增加错误重试测试 |
+| Provider                    | 状态    | 需要的工作                    |
+| --------------------------- | ------- | ----------------------------- |
+| NativeLLMProvider           | ✅ 完成 | 增加 semantic dictionary 测试 |
+| NativeAuthProvider          | ✅ 完成 | 增加 token 过期测试           |
+| NativeDeployProvider        | ✅ 完成 | 增加回滚场景测试              |
+| ExternalDeployProvider      | ✅ 完成 | 增加错误处理测试              |
+| NativeVectorStoreProvider   | ✅ 完成 | 增加大规模向量测试            |
+| ConnectedPgVectorProvider   | ✅ 完成 | 需要真实 PostgreSQL 测试      |
+| NativeObservabilityProvider | ✅ 完成 | 增加指标发布测试              |
+| ConnectedGeminiProvider     | ✅ 完成 | 增加错误重试测试              |
 
 #### 新 Provider 建议
 
@@ -365,6 +373,7 @@ class RedisCacheProvider implements CacheProvider {
 ### 3.4 方案四: 服务层功能实现
 
 #### 问题识别
+
 当前大部分服务类是空的占位符:
 
 ```typescript
@@ -399,17 +408,20 @@ export class PlatformNotificationService {
     this.eventBus = eventBus;
   }
 
-  async notify(userId: string, notification: Omit<Notification, 'id' | 'timestamp' | 'read'>): Promise<Notification> {
+  async notify(
+    userId: string,
+    notification: Omit<Notification, 'id' | 'timestamp' | 'read'>
+  ): Promise<Notification> {
     const fullNotification: Notification = {
       ...notification,
       id: `notif-${Date.now()}`,
       timestamp: new Date(),
       read: false,
     };
-    
+
     this.notifications.set(fullNotification.id, fullNotification);
     await this.eventBus.emit('notification.created', { userId, notification: fullNotification });
-    
+
     return fullNotification;
   }
 
@@ -448,7 +460,7 @@ export class SecuritySecretsService {
   private algorithm = 'aes-256-gcm';
 
   constructor(masterKey?: string) {
-    this.encryptionKey = masterKey 
+    this.encryptionKey = masterKey
       ? createHash('sha256').update(masterKey).digest()
       : randomBytes(32);
   }
@@ -498,13 +510,13 @@ export class SecuritySecretsService {
 
 ### 4.1 技术债务清单
 
-| 债务类型 | 描述 | 影响 | 优先级 |
-|----------|------|------|--------|
-| 空服务类 | 大部分服务类没有实现 | 高 | P0 |
-| 测试覆盖不足 | 低于80%目标 | 高 | P0 |
-| 重复代码 | Launch Pad 与 Studio 重复 | 中 | P1 |
-| 文档缺失 | API 文档不完整 | 中 | P2 |
-| 类型安全 | 部分使用 any 类型 | 低 | P3 |
+| 债务类型     | 描述                      | 影响 | 优先级 |
+| ------------ | ------------------------- | ---- | ------ |
+| 空服务类     | 大部分服务类没有实现      | 高   | P0     |
+| 测试覆盖不足 | 低于80%目标               | 高   | P0     |
+| 重复代码     | Launch Pad 与 Studio 重复 | 中   | P1     |
+| 文档缺失     | API 文档不完整            | 中   | P2     |
+| 类型安全     | 部分使用 any 类型         | 低   | P3     |
 
 ### 4.2 风险矩阵
 
@@ -529,30 +541,30 @@ export class SecuritySecretsService {
 
 ### 5.1 短期目标 (1-2 周)
 
-| 任务 | 预计时间 | 负责模块 | 交付物 |
-|------|----------|----------|--------|
-| Providers 测试补全 | 2 天 | packages/providers | 85%+ 覆盖率 |
-| Services 功能实现 | 3 天 | services/* | 5+ 服务实现 |
-| Modules 测试补全 | 3 天 | modules/* | 75%+ 覆盖率 |
-| 集成测试框架 | 2 天 | __tests__ | E2E 测试套件 |
+| 任务               | 预计时间 | 负责模块           | 交付物       |
+| ------------------ | -------- | ------------------ | ------------ |
+| Providers 测试补全 | 2 天     | packages/providers | 85%+ 覆盖率  |
+| Services 功能实现  | 3 天     | services/\*        | 5+ 服务实现  |
+| Modules 测试补全   | 3 天     | modules/\*         | 75%+ 覆盖率  |
+| 集成测试框架       | 2 天     | **tests**          | E2E 测试套件 |
 
 ### 5.2 中期目标 (3-4 周)
 
-| 任务 | 预计时间 | 负责模块 | 交付物 |
-|------|----------|----------|--------|
-| 共享组件提取 | 3 天 | shared/ | 组件库 |
-| Launch Pad 整合 | 4 天 | app-dev-studio | 统一入口 |
-| API 文档生成 | 2 天 | docs/ | OpenAPI 规格 |
-| 性能基准测试 | 2 天 | benchmark/ | 性能报告 |
+| 任务            | 预计时间 | 负责模块       | 交付物       |
+| --------------- | -------- | -------------- | ------------ |
+| 共享组件提取    | 3 天     | shared/        | 组件库       |
+| Launch Pad 整合 | 4 天     | app-dev-studio | 统一入口     |
+| API 文档生成    | 2 天     | docs/          | OpenAPI 规格 |
+| 性能基准测试    | 2 天     | benchmark/     | 性能报告     |
 
 ### 5.3 长期目标 (5-8 周)
 
-| 任务 | 预计时间 | 负责模块 | 交付物 |
-|------|----------|----------|--------|
-| 完整服务实现 | 2 周 | services/* | 全部服务 |
-| 生产环境配置 | 1 周 | config/ | 生产就绪 |
-| 安全审计 | 3 天 | security/ | 审计报告 |
-| 文档完善 | 1 周 | docs/ | 完整文档 |
+| 任务         | 预计时间 | 负责模块    | 交付物   |
+| ------------ | -------- | ----------- | -------- |
+| 完整服务实现 | 2 周     | services/\* | 全部服务 |
+| 生产环境配置 | 1 周     | config/     | 生产就绪 |
+| 安全审计     | 3 天     | security/   | 审计报告 |
+| 文档完善     | 1 周     | docs/       | 完整文档 |
 
 ---
 
@@ -567,12 +579,12 @@ export class SecuritySecretsService {
 
 ### 6.2 关键成功指标
 
-| 指标 | 当前值 | 目标值 | 检查频率 |
-|------|--------|--------|----------|
-| 测试覆盖率 | 62.46% | 80%+ | 每日 |
-| 服务实现率 | 30% | 100% | 每周 |
-| 文档完整度 | 40% | 90%+ | 每周 |
-| 安全漏洞 | 未知 | 0 critical | 每月 |
+| 指标       | 当前值 | 目标值     | 检查频率 |
+| ---------- | ------ | ---------- | -------- |
+| 测试覆盖率 | 62.46% | 80%+       | 每日     |
+| 服务实现率 | 30%    | 100%       | 每周     |
+| 文档完整度 | 40%    | 90%+       | 每周     |
+| 安全漏洞   | 未知   | 0 critical | 每月     |
 
 ### 6.3 下一步行动
 
@@ -583,6 +595,6 @@ export class SecuritySecretsService {
 
 ---
 
-*文档版本: 1.0*
-*创建日期: 2024-04-27*
-*最后更新: 2024-04-27*
+_文档版本: 1.0_
+_创建日期: 2024-04-27_
+_最后更新: 2024-04-27_

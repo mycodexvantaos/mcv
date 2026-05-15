@@ -25,7 +25,7 @@ pnpm build
 MyCodeXvantaOS is organized into 6 architecture layers:
 
 1. **Builder** - Application generation and synthesis
-2. **Runtime** - Application execution environment  
+2. **Runtime** - Application execution environment
 3. **Native Services** - Core platform services
 4. **Provider** - External service adapters
 5. **Deployment Target** - Deployment infrastructure
@@ -48,7 +48,7 @@ import { builder } from '@mycodexvantaos/builder';
 const app = await builder.generate({
   name: 'my-app',
   type: 'fullstack',
-  features: ['api', 'database', 'auth']
+  features: ['api', 'database', 'auth'],
 });
 ```
 
@@ -60,7 +60,7 @@ import { runtime } from '@mycodexvantaos/runtime';
 const result = await runtime.execute({
   application: 'my-app',
   environment: 'local',
-  validation: true
+  validation: true,
 });
 ```
 
@@ -76,9 +76,9 @@ await deployment.deploy({
     replicas: 3,
     resources: {
       cpu: '1',
-      memory: '512Mi'
-    }
-  }
+      memory: '512Mi',
+    },
+  },
 });
 ```
 
@@ -90,7 +90,7 @@ import { monitoring } from '@mycodexvantaos/monitoring';
 const metrics = await monitoring.getMetrics({
   services: ['my-app'],
   timeframe: '1h',
-  metrics: ['cpu', 'memory', 'requests']
+  metrics: ['cpu', 'memory', 'requests'],
 });
 ```
 
@@ -238,6 +238,7 @@ Configure providers in `providers/` directory:
 ### Common Issues
 
 **Build fails with TypeScript errors:**
+
 ```bash
 # Clear cache and rebuild
 rm -rf node_modules dist
@@ -246,10 +247,12 @@ pnpm build
 ```
 
 **Validation fails for naming conventions:**
+
 - Ensure package names start with `@mycodexvantaos/`
 - Check URN format: `urn:mycodexvantaos:category:item:version`
 
 **Runtime errors in native mode:**
+
 - Verify `MYCODEXVANTAOS_RUNTIME_MODE=native`
 - Check local dependencies are installed
 - Review capability declarations

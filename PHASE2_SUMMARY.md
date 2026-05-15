@@ -20,46 +20,46 @@
 
 在 `packages/capabilities/src/` 下創建了以下介面：
 
-| 檔案 | 說明 |
-|------|------|
-| `base.ts` | 基礎介面、運行時模式、健康檢查 |
-| `code-synthesis.ts` | 代碼合成能力介面 |
-| `framework-detection.ts` | 框架檢測能力介面（含內建框架規則）|
-| `truth-history.ts` | 真相歷史能力介面 |
-| `storage.ts` | 存儲能力介面 |
-| `auth.ts` | 認證能力介面 |
-| `metrics.ts` | 指標能力介面 |
-| `logging.ts` | 日誌能力介面 |
-| `provider-factory.ts` | Provider 工廠和服務定位器 |
-| `runtime-config.ts` | 環境變數驅動的配置系統 |
-| `index.ts` | 統一導出 |
+| 檔案                     | 說明                               |
+| ------------------------ | ---------------------------------- |
+| `base.ts`                | 基礎介面、運行時模式、健康檢查     |
+| `code-synthesis.ts`      | 代碼合成能力介面                   |
+| `framework-detection.ts` | 框架檢測能力介面（含內建框架規則） |
+| `truth-history.ts`       | 真相歷史能力介面                   |
+| `storage.ts`             | 存儲能力介面                       |
+| `auth.ts`                | 認證能力介面                       |
+| `metrics.ts`             | 指標能力介面                       |
+| `logging.ts`             | 日誌能力介面                       |
+| `provider-factory.ts`    | Provider 工廠和服務定位器          |
+| `runtime-config.ts`      | 環境變數驅動的配置系統             |
+| `index.ts`               | 統一導出                           |
 
 ### 2. Native Provider 實現
 
 在 `providers/native/src/` 下創建了以下實現：
 
-| Provider | 說明 | 特點 |
-|----------|------|------|
-| `framework-detection.ts` | 框架檢測 | 零外部依賴，完全本地文件解析 |
-| `code-synthesis.ts` | 代碼合成 | 模板匹配 + AST 變換，支持 10+ 模板 |
-| `truth-history.ts` | 真相歷史 | 支持 IndexedDB/SQLite/內存存儲 |
+| Provider                 | 說明     | 特點                               |
+| ------------------------ | -------- | ---------------------------------- |
+| `framework-detection.ts` | 框架檢測 | 零外部依賴，完全本地文件解析       |
+| `code-synthesis.ts`      | 代碼合成 | 模板匹配 + AST 變換，支持 10+ 模板 |
+| `truth-history.ts`       | 真相歷史 | 支持 IndexedDB/SQLite/內存存儲     |
 
 ### 3. 環境配置系統
 
 創建了三種運行時模式的配置範例：
 
-| 配置文件 | 模式 | 說明 |
-|----------|------|------|
-| `.env.native.example` | Native | 零外部依賴，完全離線運行 |
-| `.env.hybrid.example` | Hybrid | 優先外部，可降級到本地 |
-| `.env.connected.example` | Connected | 僅使用外部服務 |
+| 配置文件                 | 模式      | 說明                     |
+| ------------------------ | --------- | ------------------------ |
+| `.env.native.example`    | Native    | 零外部依賴，完全離線運行 |
+| `.env.hybrid.example`    | Hybrid    | 優先外部，可降級到本地   |
+| `.env.connected.example` | Connected | 僅使用外部服務           |
 
 ### 4. 文檔與指南
 
-| 文檔 | 說明 |
-|------|------|
-| `TRANSFORMATION_GUIDE.md` | 統一轉化指南，詳細說明架構設計和遷移步驟 |
-| `examples/transformation-example.ts` | 實際轉化示例代碼 |
+| 文檔                                 | 說明                                     |
+| ------------------------------------ | ---------------------------------------- |
+| `TRANSFORMATION_GUIDE.md`            | 統一轉化指南，詳細說明架構設計和遷移步驟 |
+| `examples/transformation-example.ts` | 實際轉化示例代碼                         |
 
 ---
 

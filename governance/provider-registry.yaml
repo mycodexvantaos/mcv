@@ -10,7 +10,7 @@ metadata:
   name: platform-provider-registry
   labels:
     managed-by: naming-spec-v1
-    specRef: "8"
+    specRef: '8'
 
 providers:
   # capability: database

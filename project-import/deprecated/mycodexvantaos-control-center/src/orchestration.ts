@@ -1,8 +1,8 @@
-import type { OrchestrationResult, OrchestrationStatus, RepoEntry } from "./types";
+import type { OrchestrationResult, OrchestrationStatus, RepoEntry } from './types';
 
 export class OrchestrationService {
   private repos = new Map<string, RepoEntry>();
-  private phase = "idle";
+  private phase = 'idle';
   private currentTier = 0;
 
   registerRepo(entry: RepoEntry): void {
@@ -28,19 +28,19 @@ export class OrchestrationService {
   orchestrate(): OrchestrationResult {
     const startTime = Date.now();
     const failures: string[] = [];
-    this.phase = "running";
+    this.phase = 'running';
 
     const maxTier = Math.max(...Array.from(this.repos.values()).map((r) => r.tier), 0);
     for (let tier = 0; tier <= maxTier; tier++) {
       this.currentTier = tier;
       const tierRepos = this.listByTier(tier);
       for (const repo of tierRepos) {
-        repo.status = "processed";
+        repo.status = 'processed';
         this.repos.set(repo.name, repo);
       }
     }
 
-    this.phase = "completed";
+    this.phase = 'completed';
     return {
       success: failures.length === 0,
       reposProcessed: this.repos.size,
@@ -56,7 +56,7 @@ export class OrchestrationService {
     }
     return {
       phase: this.phase,
-      progress: this.phase === "completed" ? 100 : 0,
+      progress: this.phase === 'completed' ? 100 : 0,
       currentTier: this.currentTier,
       repoStatuses,
     };

@@ -1,7 +1,7 @@
 /**
  * CodexvantaOS — data-pipeline
  * 資料管線 — 資料攝取、轉換、匯出
- * 
+ *
  * Layer: B-Runtime | Plane: Data | Tier: 2
  * Philosophy: Native-first / Provider-agnostic
  * 「第三方服務是平台的擴充出口，不是平台成立的地基。」
@@ -26,7 +26,10 @@ export { initProviders, getProviders, shutdownProviders } from './providers.js';
  * Bootstrap data-pipeline
  */
 export async function bootstrap(): Promise<void> {
-  console.log('[data-pipeline] Starting in %s mode...', process.env.CODEXVANTA_MODE || 'auto-detect');
+  console.log(
+    '[data-pipeline] Starting in %s mode...',
+    process.env.CODEXVANTA_MODE || 'auto-detect'
+  );
 
   // Initialize providers (auto-detects Native/Connected/Hybrid)
   const providers = await initProviders();

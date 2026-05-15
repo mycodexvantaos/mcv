@@ -113,28 +113,25 @@ export class GitHubConnector {
     this.config = {
       token: config.token,
       baseUrl: config.baseUrl || 'https://api.github.com',
-      timeout: config.timeout || 30000
+      timeout: config.timeout || 30000,
     };
 
     this.headers = {
-      'Authorization': `token ${this.config.token}`,
-      'Accept': 'application/vnd.github.v3+json',
-      'User-Agent': 'MyCodeXvantaOS-GitHub-Connector'
+      Authorization: `token ${this.config.token}`,
+      Accept: 'application/vnd.github.v3+json',
+      'User-Agent': 'MyCodeXvantaOS-GitHub-Connector',
     };
   }
 
-  private async request<T>(
-    endpoint: string,
-    options: RequestInit = {}
-  ): Promise<T> {
+  private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const url = `${this.config.baseUrl}${endpoint}`;
-    
+
     const response = await fetch(url, {
       ...options,
       headers: {
         ...this.headers,
-        ...options.headers
-      }
+        ...options.headers,
+      },
     });
 
     if (!response.ok) {
@@ -145,48 +142,39 @@ export class GitHubConnector {
     return response.json() as Promise<T>;
   }
 
-  private async post<T>(
-    endpoint: string,
-    data: any
-  ): Promise<T> {
+  private async post<T>(endpoint: string, data: any): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
   }
 
-  private async put<T>(
-    endpoint: string,
-    data: any
-  ): Promise<T> {
+  private async put<T>(endpoint: string, data: any): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
   }
 
-  private async patch<T>(
-    endpoint: string,
-    data: any
-  ): Promise<T> {
+  private async patch<T>(endpoint: string, data: any): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'PATCH',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
   }
 
   private async delete<T>(endpoint: string): Promise<T> {
     return this.request<T>(endpoint, {
-      method: 'DELETE'
+      method: 'DELETE',
     });
   }
 
@@ -209,12 +197,16 @@ export class GitHubConnector {
    */
   async getUserRepositories(
     username: string,
-    options: { type?: 'all' | 'owner' | 'member'; sort?: 'updated' | 'created' | 'pushed'; per_page?: number } = {}
+    options: {
+      type?: 'all' | 'owner' | 'member';
+      sort?: 'updated' | 'created' | 'pushed';
+      per_page?: number;
+    } = {}
   ): Promise<GitHubRepository[]> {
     const params = new URLSearchParams({
       type: options.type || 'all',
       sort: options.sort || 'updated',
-      per_page: String(options.per_page || 30)
+      per_page: String(options.per_page || 30),
     });
     return this.request<GitHubRepository[]>(`/users/${username}/repos?${params}`);
   }
@@ -223,7 +215,10 @@ export class GitHubConnector {
    * List authenticated user's repositories
    */
   async getMyRepositories(
-    options: { type?: 'all' | 'owner' | 'public' | 'private'; visibility?: 'all' | 'public' | 'private' } = {}
+    options: {
+      type?: 'all' | 'owner' | 'public' | 'private';
+      visibility?: 'all' | 'public' | 'private';
+    } = {}
   ): Promise<GitHubRepository[]> {
     const params = new URLSearchParams();
     if (options.type) params.set('type', options.type);
@@ -244,11 +239,15 @@ export class GitHubConnector {
   async getIssues(
     owner: string,
     repo: string,
-    options: { state?: 'open' | 'closed' | 'all'; labels?: string; sort?: 'created' | 'updated' | 'comments' } = {}
+    options: {
+      state?: 'open' | 'closed' | 'all';
+      labels?: string;
+      sort?: 'created' | 'updated' | 'comments';
+    } = {}
   ): Promise<GitHubIssue[]> {
     const params = new URLSearchParams({
       state: options.state || 'open',
-      sort: options.sort || 'created'
+      sort: options.sort || 'created',
     });
     if (options.labels) params.set('labels', options.labels);
     return this.request<GitHubIssue[]>(`/repos/${owner}/${repo}/issues?${params}`);
@@ -287,7 +286,7 @@ export class GitHubConnector {
   ): Promise<GitHubPullRequest[]> {
     const params = new URLSearchParams({
       state: options.state || 'open',
-      sort: options.sort || 'created'
+      sort: options.sort || 'created',
     });
     return this.request<GitHubPullRequest[]>(`/repos/${owner}/${repo}/pulls?${params}`);
   }
@@ -324,7 +323,7 @@ export class GitHubConnector {
     options: { sha?: string; path?: string; per_page?: number } = {}
   ): Promise<GitHubCommit[]> {
     const params = new URLSearchParams({
-      per_page: String(options.per_page || 30)
+      per_page: String(options.per_page || 30),
     });
     if (options.sha) params.set('sha', options.sha);
     if (options.path) params.set('path', options.path);
@@ -370,7 +369,9 @@ export class GitHubConnector {
     path: string,
     data: { message: string; sha: string; branch?: string }
   ): Promise<any> {
-    return this.delete(`/repos/${owner}/${repo}/contents/${path}?message=${encodeURIComponent(data.message)}&sha=${data.sha}`);
+    return this.delete(
+      `/repos/${owner}/${repo}/contents/${path}?message=${encodeURIComponent(data.message)}&sha=${data.sha}`
+    );
   }
 
   /**
@@ -396,9 +397,12 @@ export class GitHubConnector {
   /**
    * Create repository
    */
-  async createRepository(
-    data: { name: string; description?: string; private?: boolean; auto_init?: boolean }
-  ): Promise<GitHubRepository> {
+  async createRepository(data: {
+    name: string;
+    description?: string;
+    private?: boolean;
+    auto_init?: boolean;
+  }): Promise<GitHubRepository> {
     return this.post<GitHubRepository>('/user/repos', data);
   }
 

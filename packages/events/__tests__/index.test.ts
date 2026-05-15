@@ -48,10 +48,10 @@ describe('Events Package', () => {
       await ev.initialize();
 
       const callback = jest.fn();
-      const result = await ev.execute({
+      const result = (await ev.execute({
         action: 'subscribe',
         data: { eventPattern: 'test.event', callback },
-      }) as any;
+      })) as any;
 
       expect(result.eventPattern).toBe('test.event');
     });
@@ -81,9 +81,9 @@ describe('Events Package', () => {
     });
 
     it('should throw error for unknown action', async () => {
-      await expect(
-        ev.execute({ action: 'unknown', data: {} })
-      ).rejects.toThrow('Unknown event action: unknown');
+      await expect(ev.execute({ action: 'unknown', data: {} })).rejects.toThrow(
+        'Unknown event action: unknown'
+      );
     });
   });
 

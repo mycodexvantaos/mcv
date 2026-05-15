@@ -1,6 +1,6 @@
 /**
  * NativeObservabilityProvider — File + console + in-memory observability
- * 
+ *
  * Zero external dependencies. Implements the three pillars:
  *  - Logs: structured JSON logs to file + console
  *  - Metrics: in-memory counters/gauges/histograms with file snapshots
@@ -95,8 +95,11 @@ export class NativeObservabilityProvider implements ObservabilityProvider {
     // Load persisted alert rules
     const rulesFile = path.join(this.config.dataDir, 'alert-rules.json');
     if (fs.existsSync(rulesFile)) {
-      try { this.alertRules = JSON.parse(fs.readFileSync(rulesFile, 'utf-8')); }
-      catch { /* start fresh */ }
+      try {
+        this.alertRules = JSON.parse(fs.readFileSync(rulesFile, 'utf-8'));
+      } catch {
+        /* start fresh */
+      }
     }
 
     // Start flush timer
@@ -131,10 +134,19 @@ export class NativeObservabilityProvider implements ObservabilityProvider {
       const msg = `${prefix} ${enriched.message}${ctx}`;
 
       switch (enriched.level) {
-        case 'error': case 'fatal': console.error(msg); break;
-        case 'warn': console.warn(msg); break;
-        case 'debug': case 'trace': console.debug(msg); break;
-        default: console.log(msg);
+        case 'error':
+        case 'fatal':
+          console.error(msg);
+          break;
+        case 'warn':
+          console.warn(msg);
+          break;
+        case 'debug':
+        case 'trace':
+          console.debug(msg);
+          break;
+        default:
+          console.log(msg);
       }
     }
 
@@ -166,17 +178,17 @@ export class NativeObservabilityProvider implements ObservabilityProvider {
   async queryLogs(query: LogQuery): Promise<LogEntry[]> {
     let results = [...this.logBuffer];
 
-    if (query.service) results = results.filter(e => e.service === query.service);
+    if (query.service) results = results.filter((e) => e.service === query.service);
     if (query.level) {
       const minIdx = LOG_LEVEL_ORDER.indexOf(query.level);
-      results = results.filter(e => LOG_LEVEL_ORDER.indexOf(e.level) >= minIdx);
+      results = results.filter((e) => LOG_LEVEL_ORDER.indexOf(e.level) >= minIdx);
     }
-    if (query.since) results = results.filter(e => e.timestamp >= query.since!);
-    if (query.until) results = results.filter(e => e.timestamp <= query.until!);
-    if (query.traceId) results = results.filter(e => e.traceId === query.traceId);
+    if (query.since) results = results.filter((e) => e.timestamp >= query.since!);
+    if (query.until) results = results.filter((e) => e.timestamp <= query.until!);
+    if (query.traceId) results = results.filter((e) => e.traceId === query.traceId);
     if (query.search) {
       const lower = query.search.toLowerCase();
-      results = results.filter(e => e.message.toLowerCase().includes(lower));
+      results = results.filter((e) => e.message.toLowerCase().includes(lower));
     }
 
     results.sort((a, b) => b.timestamp - a.timestamp);
@@ -204,7 +216,7 @@ export class NativeObservabilityProvider implements ObservabilityProvider {
 
   incrementCounter(name: string, delta: number = 1, labels?: Record<string, string>): void {
     const points = this.metricData.get(name) ?? [];
-    const last = points.filter(p => this.labelsMatch(p.labels, labels)).pop();
+    const last = points.filter((p) => this.labelsMatch(p.labels, labels)).pop();
     const newValue = (last?.value ?? 0) + delta;
     this.recordMetric(name, newValue, labels);
   }
@@ -222,12 +234,12 @@ export class NativeObservabilityProvider implements ObservabilityProvider {
     let filtered = points;
 
     if (query.labels) {
-      filtered = filtered.filter(p => this.labelsMatch(p.labels, query.labels));
+      filtered = filtered.filter((p) => this.labelsMatch(p.labels, query.labels));
     }
-    if (query.since) filtered = filtered.filter(p => p.timestamp >= query.since!);
-    if (query.until) filtered = filtered.filter(p => p.timestamp <= query.until!);
+    if (query.since) filtered = filtered.filter((p) => p.timestamp >= query.since!);
+    if (query.until) filtered = filtered.filter((p) => p.timestamp <= query.until!);
 
-    const dataPoints = filtered.map(p => ({ timestamp: p.timestamp, value: p.value }));
+    const dataPoints = filtered.map((p) => ({ timestamp: p.timestamp, value: p.value }));
     dataPoints.sort((a, b) => a.timestamp - b.timestamp);
 
     return Promise.resolve({
@@ -239,11 +251,14 @@ export class NativeObservabilityProvider implements ObservabilityProvider {
 
   // ── Tracing ─────────────────────────────────────────────────────────────────
 
-  startSpan(operationName: string, options?: {
-    parentContext?: SpanContext;
-    service?: string;
-    attributes?: Record<string, unknown>;
-  }): SpanContext {
+  startSpan(
+    operationName: string,
+    options?: {
+      parentContext?: SpanContext;
+      service?: string;
+      attributes?: Record<string, unknown>;
+    }
+  ): SpanContext {
     const traceId = options?.parentContext?.traceId ?? crypto.randomUUID().replace(/-/g, '');
     const spanId = crypto.randomBytes(8).toString('hex');
 
@@ -306,13 +321,14 @@ export class NativeObservabilityProvider implements ObservabilityProvider {
   async queryTraces(query: TraceQuery): Promise<Span[]> {
     let results = [...this.completedSpans];
 
-    if (query.traceId) results = results.filter(s => s.context.traceId === query.traceId);
-    if (query.service) results = results.filter(s => s.service === query.service);
-    if (query.operationName) results = results.filter(s => s.operationName === query.operationName);
-    if (query.since) results = results.filter(s => s.startTime >= query.since!);
-    if (query.until) results = results.filter(s => s.startTime <= query.until!);
-    if (query.minDuration) results = results.filter(s => (s.duration ?? 0) >= query.minDuration!);
-    if (query.status) results = results.filter(s => s.status === query.status);
+    if (query.traceId) results = results.filter((s) => s.context.traceId === query.traceId);
+    if (query.service) results = results.filter((s) => s.service === query.service);
+    if (query.operationName)
+      results = results.filter((s) => s.operationName === query.operationName);
+    if (query.since) results = results.filter((s) => s.startTime >= query.since!);
+    if (query.until) results = results.filter((s) => s.startTime <= query.until!);
+    if (query.minDuration) results = results.filter((s) => (s.duration ?? 0) >= query.minDuration!);
+    if (query.status) results = results.filter((s) => s.status === query.status);
 
     results.sort((a, b) => b.startTime - a.startTime);
     return results.slice(0, query.limit ?? 100);
@@ -321,9 +337,12 @@ export class NativeObservabilityProvider implements ObservabilityProvider {
   // ── Alerting ────────────────────────────────────────────────────────────────
 
   async upsertAlertRule(rule: AlertRule): Promise<AlertRule> {
-    const idx = this.alertRules.findIndex(r => r.id === rule.id);
-    if (idx >= 0) { this.alertRules[idx] = rule; }
-    else { this.alertRules.push(rule); }
+    const idx = this.alertRules.findIndex((r) => r.id === rule.id);
+    if (idx >= 0) {
+      this.alertRules[idx] = rule;
+    } else {
+      this.alertRules.push(rule);
+    }
     this.persistAlertRules();
     return rule;
   }
@@ -333,7 +352,7 @@ export class NativeObservabilityProvider implements ObservabilityProvider {
   }
 
   async deleteAlertRule(ruleId: string): Promise<void> {
-    this.alertRules = this.alertRules.filter(r => r.id !== ruleId);
+    this.alertRules = this.alertRules.filter((r) => r.id !== ruleId);
     this.persistAlertRules();
   }
 
@@ -344,15 +363,15 @@ export class NativeObservabilityProvider implements ObservabilityProvider {
     limit?: number;
   }): Promise<Alert[]> {
     let results = [...this.alerts];
-    if (options?.state) results = results.filter(a => a.state === options.state);
-    if (options?.severity) results = results.filter(a => a.severity === options.severity);
-    if (options?.since) results = results.filter(a => a.firedAt >= options.since!);
+    if (options?.state) results = results.filter((a) => a.state === options.state);
+    if (options?.severity) results = results.filter((a) => a.severity === options.severity);
+    if (options?.since) results = results.filter((a) => a.firedAt >= options.since!);
     results.sort((a, b) => b.firedAt - a.firedAt);
     return results.slice(0, options?.limit ?? 100);
   }
 
   async acknowledgeAlert(alertId: string, acknowledgedBy: string): Promise<void> {
-    const alert = this.alerts.find(a => a.id === alertId);
+    const alert = this.alerts.find((a) => a.id === alertId);
     if (alert) {
       alert.state = 'acknowledged';
       alert.acknowledgedBy = acknowledgedBy;
@@ -360,10 +379,12 @@ export class NativeObservabilityProvider implements ObservabilityProvider {
   }
 
   async silenceAlertRule(ruleId: string, durationSec: number, _reason?: string): Promise<void> {
-    const rule = this.alertRules.find(r => r.id === ruleId);
+    const rule = this.alertRules.find((r) => r.id === ruleId);
     if (rule) {
       rule.enabled = false;
-      setTimeout(() => { rule.enabled = true; }, durationSec * 1000);
+      setTimeout(() => {
+        rule.enabled = true;
+      }, durationSec * 1000);
     }
   }
 
@@ -376,11 +397,15 @@ export class NativeObservabilityProvider implements ObservabilityProvider {
     for (const [name, points] of this.metricData) {
       metricsObj[name] = points.slice(-100); // last 100 per metric
     }
-    try { fs.writeFileSync(metricsFile, JSON.stringify(metricsObj, null, 2)); } catch {}
+    try {
+      fs.writeFileSync(metricsFile, JSON.stringify(metricsObj, null, 2));
+    } catch {}
 
     // Persist traces snapshot
     const tracesFile = path.join(this.config.dataDir, 'traces-snapshot.json');
-    try { fs.writeFileSync(tracesFile, JSON.stringify(this.completedSpans.slice(-500), null, 2)); } catch {}
+    try {
+      fs.writeFileSync(tracesFile, JSON.stringify(this.completedSpans.slice(-500), null, 2));
+    } catch {}
   }
 
   async healthcheck(): Promise<ObservabilityHealth> {
@@ -391,7 +416,7 @@ export class NativeObservabilityProvider implements ObservabilityProvider {
       capabilities: { logging: true, metrics: true, tracing: true, alerting: true },
       logCount: this.logBuffer.length,
       metricCount: this.metricDefs.size,
-      activeAlerts: this.alerts.filter(a => a.state === 'firing').length,
+      activeAlerts: this.alerts.filter((a) => a.state === 'firing').length,
       details: {
         activeSpans: this.activeSpans.size,
         completedSpans: this.completedSpans.length,
@@ -402,9 +427,15 @@ export class NativeObservabilityProvider implements ObservabilityProvider {
   }
 
   async close(): Promise<void> {
-    if (this.flushTimer) { clearInterval(this.flushTimer); this.flushTimer = null; }
+    if (this.flushTimer) {
+      clearInterval(this.flushTimer);
+      this.flushTimer = null;
+    }
     await this.flush();
-    if (this.logStream) { this.logStream.end(); this.logStream = null; }
+    if (this.logStream) {
+      this.logStream.end();
+      this.logStream = null;
+    }
   }
 
   // ── Private ───────────────────────────────────────────────────────────────
@@ -413,7 +444,7 @@ export class NativeObservabilityProvider implements ObservabilityProvider {
     const points = this.metricData.get(name);
     if (!points) return;
     const cutoff = Date.now() - this.config.metricsRetentionMs;
-    const pruned = points.filter(p => p.timestamp >= cutoff);
+    const pruned = points.filter((p) => p.timestamp >= cutoff);
     this.metricData.set(name, pruned);
   }
 
@@ -425,6 +456,8 @@ export class NativeObservabilityProvider implements ObservabilityProvider {
 
   private persistAlertRules(): void {
     const rulesFile = path.join(this.config.dataDir, 'alert-rules.json');
-    try { fs.writeFileSync(rulesFile, JSON.stringify(this.alertRules, null, 2)); } catch {}
+    try {
+      fs.writeFileSync(rulesFile, JSON.stringify(this.alertRules, null, 2));
+    } catch {}
   }
 }

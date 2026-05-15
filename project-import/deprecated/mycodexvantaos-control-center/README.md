@@ -9,10 +9,12 @@
 > This module is in early scaffold phase with in-memory stub implementations.
 >
 > **Currently Implemented:**
+>
 > - `OrchestrationService` — basic in-memory repo tracking and action dispatch
 > - `RegistryService` — simple service registration with sync stubs
 >
 > **Planned (Not Yet Implemented):**
+>
 > - State Tracking Service — real-time state observation, history, notifications
 > - Database-backed persistence
 > - Queue-based asynchronous dispatch
@@ -31,6 +33,7 @@ The Control Center is the central nervous system of CodexVanta OS. It coordinate
 ## Core Capabilities
 
 ### Orchestration Service
+
 - Multi-repository action execution (build, test, deploy, validate)
 - Execution status tracking per repository
 - Run cancellation and history
@@ -38,12 +41,14 @@ The Control Center is the central nervous system of CodexVanta OS. It coordinate
 - Queue-backed asynchronous dispatch
 
 ### Registry Service
+
 - Service registration and discovery
 - Service metadata management
 - Service listing and filtering
 - Heartbeat-based availability tracking
 
 ### State Tracking Service
+
 - Platform-wide state observation
 - State change notifications
 - State history and audit trail
@@ -75,22 +80,22 @@ The Control Center is the central nervous system of CodexVanta OS. It coordinate
 
 ## Provider Dependencies
 
-| Provider | Usage |
-|----------|-------|
-| database | Persist orchestration runs, service registry, state history |
-| stateStore | Real-time state tracking, service heartbeats |
-| queue | Asynchronous action dispatch across repositories |
-| observability | Trace orchestration runs, log state changes |
+| Provider      | Usage                                                       |
+| ------------- | ----------------------------------------------------------- |
+| database      | Persist orchestration runs, service registry, state history |
+| stateStore    | Real-time state tracking, service heartbeats                |
+| queue         | Asynchronous action dispatch across repositories            |
+| observability | Trace orchestration runs, log state changes                 |
 
 ---
 
 ## Services
 
-| Service | Methods | Description |
-|---------|---------|-------------|
-| OrchestrationService | executeAction, getRunStatus, cancelRun | Multi-repo orchestration |
-| RegistryService | register, unregister, discover, listAll | Service registry |
-| StateTrackingService | getState, setState, watchState, getHistory | State observation |
+| Service              | Methods                                    | Description              |
+| -------------------- | ------------------------------------------ | ------------------------ |
+| OrchestrationService | executeAction, getRunStatus, cancelRun     | Multi-repo orchestration |
+| RegistryService      | register, unregister, discover, listAll    | Service registry         |
+| StateTrackingService | getState, setState, watchState, getHistory | State observation        |
 
 ---
 

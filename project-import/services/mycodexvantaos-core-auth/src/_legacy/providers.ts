@@ -9,6 +9,6 @@ export class NativeAuthProvider implements AuthProvider {
   }
 
   async getUserRoles(_userId: string): Promise<string[]> {
-    return ["user"];
+    return ['user'];
   }
 }

@@ -1,6 +1,6 @@
 /**
  * ProviderRegistryService — Centralized Provider Management
- * 
+ *
  * This service serves as the central runtime component for managing all providers
  * within the MyCodexvantaOS platform. It implements the provider discovery,
  * lifecycle management, capability resolution, and fallback mechanisms defined
@@ -13,7 +13,7 @@ import {
   Provider,
   ProviderCapability,
   ProviderHealthStatus,
-  ProviderMetadata
+  ProviderMetadata,
 } from '../interfaces';
 
 const logger = pino({ name: 'provider-registry-service' });
@@ -64,7 +64,7 @@ export class ProviderRegistryService extends EventEmitter {
       version: '1.0.0',
       priority: config.priority,
       runtimeModes: config.runtimeModes,
-      registeredAt: new Date()
+      registeredAt: new Date(),
     };
 
     // Create provider wrapper
@@ -82,7 +82,7 @@ export class ProviderRegistryService extends EventEmitter {
           return await config.implementation.healthCheck();
         }
         return true;
-      }
+      },
     };
 
     // Create registration
@@ -91,7 +91,7 @@ export class ProviderRegistryService extends EventEmitter {
       metadata,
       healthStatus: ProviderHealthStatus.UNKNOWN,
       lastHealthCheck: new Date(),
-      isActive: false
+      isActive: false,
     };
 
     // Store registration
@@ -108,10 +108,13 @@ export class ProviderRegistryService extends EventEmitter {
   /**
    * Resolve a provider for a specific capability
    */
-  async resolveProvider(capability: ProviderCapability, options?: {
-    preferredProvider?: string;
-    runtimeMode?: 'native' | 'connected' | 'hybrid' | 'auto';
-  }): Promise<Provider> {
+  async resolveProvider(
+    capability: ProviderCapability,
+    options?: {
+      preferredProvider?: string;
+      runtimeMode?: 'native' | 'connected' | 'hybrid' | 'auto';
+    }
+  ): Promise<Provider> {
     logger.debug({ capability, options }, 'Resolving provider');
 
     const candidates = this.getProvidersForCapability(capability, options);
@@ -122,14 +125,14 @@ export class ProviderRegistryService extends EventEmitter {
 
     // Filter by preferred provider if specified
     if (options?.preferredProvider) {
-      const preferred = candidates.find(r => r.metadata.name === options.preferredProvider);
+      const preferred = candidates.find((r) => r.metadata.name === options.preferredProvider);
       if (preferred && this.isProviderAvailable(preferred)) {
         return preferred.provider;
       }
     }
 
     // Find first available provider by priority
-    const available = candidates.filter(r => this.isProviderAvailable(r));
+    const available = candidates.filter((r) => this.isProviderAvailable(r));
     if (available.length === 0) {
       throw new Error(`No healthy providers available for capability: ${capability}`);
     }
@@ -173,7 +176,10 @@ export class ProviderRegistryService extends EventEmitter {
   /**
    * Get fallback provider for a specific capability
    */
-  async getFallbackProvider(capability: ProviderCapability, failedProvider: string): Promise<Provider | null> {
+  async getFallbackProvider(
+    capability: ProviderCapability,
+    failedProvider: string
+  ): Promise<Provider | null> {
     logger.info({ capability, failedProvider }, 'Getting fallback provider');
 
     const fallbackChain = this.fallbackChains.get(capability);
@@ -184,18 +190,19 @@ export class ProviderRegistryService extends EventEmitter {
 
     // Find next available provider in the fallback chain
     const failedIndex = fallbackChain.indexOf(failedProvider);
-    const candidates = failedIndex >= 0 
-      ? fallbackChain.slice(failedIndex + 1)
-      : fallbackChain;
+    const candidates = failedIndex >= 0 ? fallbackChain.slice(failedIndex + 1) : fallbackChain;
 
     for (const candidateName of candidates) {
       const registration = this.providers.get(candidateName);
       if (registration && this.isProviderAvailable(registration)) {
-        logger.info({ 
-          capability, 
-          failedProvider, 
-          fallbackProvider: candidateName 
-        }, 'Found fallback provider');
+        logger.info(
+          {
+            capability,
+            failedProvider,
+            fallbackProvider: candidateName,
+          },
+          'Found fallback provider'
+        );
         return registration.provider;
       }
     }
@@ -214,23 +221,23 @@ export class ProviderRegistryService extends EventEmitter {
       try {
         const isHealthy = await registration.provider.healthCheck();
         const status = isHealthy ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.UNHEALTHY;
-        
+
         registration.healthStatus = status;
         registration.lastHealthCheck = new Date();
         registration.isActive = isHealthy;
-        
+
         results.set(name, status);
-        
+
         logger.debug({ provider: name, status }, 'Health check completed');
       } catch (error) {
         registration.healthStatus = ProviderHealthStatus.UNHEALTHY;
         registration.lastHealthCheck = new Date();
         registration.isActive = false;
-        
+
         results.set(name, ProviderHealthStatus.UNHEALTHY);
-        
+
         logger.error({ provider: name, error }, 'Health check failed');
-        
+
         // Emit health check failure event
         this.emit('provider:health-failed', { provider: name, error });
       }
@@ -251,14 +258,17 @@ export class ProviderRegistryService extends EventEmitter {
         registration.isActive = true;
         logger.info({ provider: registration.metadata.name }, 'Provider initialized');
       } catch (error) {
-        logger.error({ provider: registration.metadata.name, error }, 'Provider initialization failed');
+        logger.error(
+          { provider: registration.metadata.name, error },
+          'Provider initialization failed'
+        );
         registration.isActive = false;
         throw error;
       }
     });
 
     await Promise.all(initPromises);
-    
+
     // Perform initial health checks
     await this.performHealthChecks();
   }

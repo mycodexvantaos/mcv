@@ -26,9 +26,9 @@ jobs:
       - name: Generate SBOM for my-app-api
         uses: anchore/sbom-action@646b9c97b593a12a32c256032d6c6e1844b36c4b # v0.15.9
         with:
-          image: "my-app-api:${{ github.sha }}"
-          format: "cyclonedx-json"
-          output-file: "sbom-my-app-api.json"
+          image: 'my-app-api:${{ github.sha }}'
+          format: 'cyclonedx-json'
+          output-file: 'sbom-my-app-api.json'
 
       - name: Upload SBOM as release asset
         uses: softprops/action-gh-release@v2.0.8

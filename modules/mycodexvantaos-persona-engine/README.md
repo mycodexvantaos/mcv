@@ -27,7 +27,7 @@ import { PersonaManager, PersonaEngine, OrchestratorAdapter } from '@mycodexvant
 const manager = new PersonaManager({
   urn: 'urn:mycodexvantaos:persona-manager:main',
   configPath: './config/personas',
-  autoLoad: true
+  autoLoad: true,
 });
 
 // Get a persona engine for a specific archetype
@@ -69,17 +69,17 @@ src/
 
 The engine supports multiple persona archetypes:
 
-| Archetype | Description | Key Traits |
-|-----------|-------------|------------|
-| **Disrupter** | Challenges assumptions and surface thinking | High directness, low empathy, high questioning depth |
-| **Analyst** | Data-driven analytical approach | High questioning depth, moderate empathy |
-| **Critic** | Quality assurance and critical review | High critical tolerance, high directness |
-| **Architect** | System design and solutions | High solution focus, high abstraction |
-| **Mediator** | Conflict resolution and balance | High empathy, low contradiction |
-| **Creative Thinker** | Innovation and ideation | High abstraction, moderate contradiction |
-| **Facilitator** | Process and group dynamics | High inclusivity, high neutrality |
-| **Mentor** | Guidance and support | High empathy, high patience |
-| **Synthesizer** | Integration and patterns | High integrative thinking, high pattern recognition |
+| Archetype            | Description                                 | Key Traits                                           |
+| -------------------- | ------------------------------------------- | ---------------------------------------------------- |
+| **Disrupter**        | Challenges assumptions and surface thinking | High directness, low empathy, high questioning depth |
+| **Analyst**          | Data-driven analytical approach             | High questioning depth, moderate empathy             |
+| **Critic**           | Quality assurance and critical review       | High critical tolerance, high directness             |
+| **Architect**        | System design and solutions                 | High solution focus, high abstraction                |
+| **Mediator**         | Conflict resolution and balance             | High empathy, low contradiction                      |
+| **Creative Thinker** | Innovation and ideation                     | High abstraction, moderate contradiction             |
+| **Facilitator**      | Process and group dynamics                  | High inclusivity, high neutrality                    |
+| **Mentor**           | Guidance and support                        | High empathy, high patience                          |
+| **Synthesizer**      | Integration and patterns                    | High integrative thinking, high pattern recognition  |
 
 ## Usage Examples
 
@@ -90,14 +90,12 @@ import { SemanticMaskDetector } from '@mycodexvantaos/persona-engine';
 
 const detector = new SemanticMaskDetector();
 
-const result = detector.detect(
-  'Everything happens for a reason. The universe has a plan.'
-);
+const result = detector.detect('Everything happens for a reason. The universe has a plan.');
 
 if (result.detected) {
   console.log('Mask type:', result.masks[0].type);
   // Output: 'spiritual_bypass'
-  
+
   console.log('Truth reframe:', result.masks[0].truth_reframe);
   // Output: A grounded alternative perspective
 }
@@ -114,12 +112,12 @@ const context = analyzer.initializeAnalysis('I keep procrastinating on important
 // Record findings at each layer
 analyzer.recordFindings('surface_symptoms', {
   observed_behaviors: ['procrastination', 'avoidance'],
-  reported_feelings: ['anxiety', 'guilt']
+  reported_feelings: ['anxiety', 'guilt'],
 });
 
 analyzer.recordFindings('behavioral_patterns', {
   recurring_patterns: ['task avoidance', 'last-minute rushes'],
-  triggers: ['complex tasks', 'fear of failure']
+  triggers: ['complex tasks', 'fear of failure'],
 });
 
 const result = analyzer.generateResult();
@@ -137,15 +135,15 @@ const solutions = generator.generate({
   diagnosis: diagnosisResult,
   constraints: {
     timeAvailable: '2 hours per week',
-    resources: ['journaling', 'meditation app']
+    resources: ['journaling', 'meditation app'],
   },
   preferences: {
     preferredCategories: ['behavioral_action', 'skill_development'],
-    avoidCategories: []
-  }
+    avoidCategories: [],
+  },
 });
 
-solutions.forEach(solution => {
+solutions.forEach((solution) => {
   console.log(`${solution.category}: ${solution.description}`);
   console.log(`Priority: ${solution.priority}, Feasibility: ${solution.feasibility_score}`);
 });
@@ -165,13 +163,13 @@ const baseParams = {
   solution_focus: 0.5,
   abstraction_preference: 0.5,
   questioning_depth: 0.5,
-  contradiction_frequency: 0.3
+  contradiction_frequency: 0.3,
 };
 
 const result = adjuster.adjust(baseParams, {
   engagementLevel: 0.3,
   feedbackScore: -0.2,
-  topicSensitivity: 0.6
+  topicSensitivity: 0.6,
 });
 
 console.log('Adjusted parameters:', result.adjusted);
@@ -183,16 +181,21 @@ console.log('Applied rules:', result.appliedRules);
 ```typescript
 import { OrchestratorAdapter, PersonaManager } from '@mycodexvantaos/persona-engine';
 
-const manager = new PersonaManager({ /* config */ });
-const adapter = new OrchestratorAdapter({
-  urn: 'urn:mycodexvantaos:adapter:persona-orchestrator',
-  orchestratorUrn: 'urn:mycodexvantaos:module:ai-team-orchestrator',
-  defaultPersonaArchetype: 'disrupter',
-  enableSemanticMaskDetection: true,
-  enableRootCauseAnalysis: true,
-  hitlThreshold: 0.8,
-  governanceTier: 1
-}, manager);
+const manager = new PersonaManager({
+  /* config */
+});
+const adapter = new OrchestratorAdapter(
+  {
+    urn: 'urn:mycodexvantaos:adapter:persona-orchestrator',
+    orchestratorUrn: 'urn:mycodexvantaos:module:ai-team-orchestrator',
+    defaultPersonaArchetype: 'disrupter',
+    enableSemanticMaskDetection: true,
+    enableRootCauseAnalysis: true,
+    hitlThreshold: 0.8,
+    governanceTier: 1,
+  },
+  manager
+);
 
 // Process request from orchestrator
 const response = await adapter.processRequest({
@@ -200,8 +203,8 @@ const response = await adapter.processRequest({
   sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
   input: 'User input here',
   context: {
-    timestamp: new Date().toISOString()
-  }
+    timestamp: new Date().toISOString(),
+  },
 });
 ```
 
@@ -213,42 +216,42 @@ Each persona is configured with a YAML file following this structure:
 
 ```yaml
 metadata:
-  urn: "urn:mycodexvantaos:persona:disrupter-primary"
-  name: "Disrupter Primary"
-  version: "1.0.0"
-  archetype: "disrupter"
+  urn: 'urn:mycodexvantaos:persona:disrupter-primary'
+  name: 'Disrupter Primary'
+  version: '1.0.0'
+  archetype: 'disrupter'
 
 behavioral_parameters:
-  critical_tolerance: 0.7     # 0-1: tolerance for accepting surface explanations
-  empathy_level: 0.3          # 0-1: emotional attunement in responses
-  directness: 0.9             # 0-1: how directly challenging to be
-  solution_focus: 0.6         # 0-1: orientation toward actionable solutions
+  critical_tolerance: 0.7 # 0-1: tolerance for accepting surface explanations
+  empathy_level: 0.3 # 0-1: emotional attunement in responses
+  directness: 0.9 # 0-1: how directly challenging to be
+  solution_focus: 0.6 # 0-1: orientation toward actionable solutions
   abstraction_preference: 0.4 # 0-1: tendency toward abstract vs concrete
-  questioning_depth: 0.8      # 0-1: depth of probing questions
+  questioning_depth: 0.8 # 0-1: depth of probing questions
   contradiction_frequency: 0.7 # 0-1: how often to challenge assumptions
 
 response_patterns:
-  opening_style: "challenging"
-  analytical_framework: "first_principles"
-  conclusion_style: "action_oriented"
+  opening_style: 'challenging'
+  analytical_framework: 'first_principles'
+  conclusion_style: 'action_oriented'
 
 governance:
   tier: 1
   hitl_checkpoint: true
   constraints:
-    - "no_harmful_content"
-    - "respect_boundaries"
+    - 'no_harmful_content'
+    - 'respect_boundaries'
 ```
 
 ### Governance Tiers
 
-| Tier | Description | Constraints |
-|------|-------------|-------------|
-| -1 | Unrestricted | No constraints |
-| 0 | Basic | Logging, input validation |
-| 1 | Standard | Full logging, input/output filtering |
-| 2 | Elevated | + Human review required |
-| 3 | Maximum | + Full audit trail |
+| Tier | Description  | Constraints                          |
+| ---- | ------------ | ------------------------------------ |
+| -1   | Unrestricted | No constraints                       |
+| 0    | Basic        | Logging, input validation            |
+| 1    | Standard     | Full logging, input/output filtering |
+| 2    | Elevated     | + Human review required              |
+| 3    | Maximum      | + Full audit trail                   |
 
 ## Semantic Mask Types
 

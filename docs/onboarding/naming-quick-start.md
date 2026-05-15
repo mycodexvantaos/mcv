@@ -4,10 +4,10 @@
 
 ## The Three Layers
 
-| Layer | Separator | Example |
-|---|---|---|
-| Canonical | `-` | `mycodexvantaos-ai-embedding` |
-| Composite | `--` | `mycodexvantaos-ai-memory--memories--bge-small-384` |
+| Layer             | Separator    | Example                                                      |
+| ----------------- | ------------ | ------------------------------------------------------------ |
+| Canonical         | `-`          | `mycodexvantaos-ai-embedding`                                |
+| Composite         | `--`         | `mycodexvantaos-ai-memory--memories--bge-small-384`          |
 | Protocol-specific | per-protocol | `@mycodexvantaos/ai-embedding`, `MYCODEXVANTAOS_LLM_API_KEY` |
 
 ## Creating a New Service
@@ -25,9 +25,9 @@
 
 ## Common Mistakes
 
-| Wrong | Right | Rule |
-|---|---|---|
-| `mycodexvantaos-ai-embedding-v2` | `mycodexvantaos-ai-embedding` (version in metadata) | 3.6 |
-| `mycodexvantaos-ai-embedding-prod` | namespace: mycodexvantaos-prod | 3.7 |
-| `postgres-database` | `database-postgres` | 8.2 |
-| `ORCH_DATABASE_URL` | `MYCODEXVANTAOS_DATABASE_URL` | 7.2 |
+| Wrong                              | Right                                               | Rule |
+| ---------------------------------- | --------------------------------------------------- | ---- |
+| `mycodexvantaos-ai-embedding-v2`   | `mycodexvantaos-ai-embedding` (version in metadata) | 3.6  |
+| `mycodexvantaos-ai-embedding-prod` | namespace: mycodexvantaos-prod                      | 3.7  |
+| `postgres-database`                | `database-postgres`                                 | 8.2  |
+| `ORCH_DATABASE_URL`                | `MYCODEXVANTAOS_DATABASE_URL`                       | 7.2  |

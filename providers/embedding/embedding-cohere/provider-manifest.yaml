@@ -8,7 +8,7 @@ metadata:
   capability: embedding
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: "8.1"
+    mycodexvantaos.org/specRef: '8.1'
 spec:
   providerName: cohere
   isNative: false
@@ -16,4 +16,4 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_EMBEDDING_COHERE
   configSchemaRef: ./config.schema.json
-  description: "Cohere embedding provider."
+  description: 'Cohere embedding provider.'

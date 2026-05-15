@@ -1,9 +1,9 @@
 /**
  * mycodexvantaos/providers/deploy/deploy-firebase/index.ts
- * 
+ *
  * Firebase Deployment Provider
  * Optional connector for Firebase App Hosting and Firebase Hosting
- * 
+ *
  * Following MyCodeXvantaOS Architecture:
  * - Falls back to deploy-native when credentials are not configured
  * - External service is an expansion outlet, not the foundation
@@ -42,10 +42,13 @@ export class FirebaseDeploymentProvider implements DeploymentProviderInterface {
   private config: FirebaseDeploymentConfig;
   private fallbackProvider: DeploymentProviderInterface | null = null;
 
-  constructor(config: FirebaseDeploymentConfig = {}, fallbackProvider?: DeploymentProviderInterface) {
+  constructor(
+    config: FirebaseDeploymentConfig = {},
+    fallbackProvider?: DeploymentProviderInterface
+  ) {
     this.config = {
       region: 'us-central1',
-      ...config
+      ...config,
     };
     this.fallbackProvider = fallbackProvider || null;
   }
@@ -57,10 +60,10 @@ export class FirebaseDeploymentProvider implements DeploymentProviderInterface {
     // Requires project ID and either credentials or API key
     return !!(
       this.config.projectId &&
-      (this.config.credentials?.applicationCredentials || 
-       this.config.credentials?.apiKey ||
-       process.env.FIREBASE_PROJECT_ID ||
-       process.env.GOOGLE_APPLICATION_CREDENTIALS)
+      (this.config.credentials?.applicationCredentials ||
+        this.config.credentials?.apiKey ||
+        process.env.FIREBASE_PROJECT_ID ||
+        process.env.GOOGLE_APPLICATION_CREDENTIALS)
     );
   }
 
@@ -69,16 +72,16 @@ export class FirebaseDeploymentProvider implements DeploymentProviderInterface {
    */
   async healthCheck(): Promise<{ healthy: boolean; message: string }> {
     if (!this.isAvailable()) {
-      return { 
-        healthy: false, 
-        message: 'Firebase provider not configured. Set FIREBASE_PROJECT_ID and credentials.' 
+      return {
+        healthy: false,
+        message: 'Firebase provider not configured. Set FIREBASE_PROJECT_ID and credentials.',
       };
     }
 
     // Would perform actual Firebase health check here
-    return { 
-      healthy: true, 
-      message: `Firebase provider configured for project: ${this.config.projectId}` 
+    return {
+      healthy: true,
+      message: `Firebase provider configured for project: ${this.config.projectId}`,
     };
   }
 
@@ -93,12 +96,12 @@ export class FirebaseDeploymentProvider implements DeploymentProviderInterface {
         'firebase-app-hosting',
         'firebase-hosting',
         'cloud-functions',
-        'gcp-integration'
+        'gcp-integration',
       ],
       isNative: false,
       requiresApiKey: true,
       projectId: this.config.projectId,
-      region: this.config.region
+      region: this.config.region,
     };
   }
 
@@ -112,7 +115,9 @@ export class FirebaseDeploymentProvider implements DeploymentProviderInterface {
         console.log('[Firebase Provider] Not configured, falling back to native provider');
         return this.fallbackProvider.deploy(application, config);
       }
-      throw new Error('Firebase provider not configured and no fallback available. Set FIREBASE_PROJECT_ID and credentials.');
+      throw new Error(
+        'Firebase provider not configured and no fallback available. Set FIREBASE_PROJECT_ID and credentials.'
+      );
     }
 
     const startTime = Date.now();
@@ -122,7 +127,7 @@ export class FirebaseDeploymentProvider implements DeploymentProviderInterface {
     try {
       // Firebase App Hosting deployment would be implemented here
       // For now, return the expected deployment structure
-      const url = this.config.hosting?.site 
+      const url = this.config.hosting?.site
         ? `https://${this.config.hosting.site}.web.app`
         : `https://${projectId}.web.app`;
 
@@ -131,7 +136,7 @@ export class FirebaseDeploymentProvider implements DeploymentProviderInterface {
         status: 'deployed',
         url,
         endpoints: [`/api/v1/${application.name || 'app'}`],
-        deploymentTime: Date.now() - startTime
+        deploymentTime: Date.now() - startTime,
       };
     } catch (error: any) {
       // Attempt fallback on failure
@@ -143,7 +148,7 @@ export class FirebaseDeploymentProvider implements DeploymentProviderInterface {
       return {
         jobId,
         status: 'failed',
-        deploymentTime: Date.now() - startTime
+        deploymentTime: Date.now() - startTime,
       };
     }
   }
@@ -166,7 +171,7 @@ export class FirebaseDeploymentProvider implements DeploymentProviderInterface {
       status: 'deployed',
       url: `https://${projectId}.web.app`,
       endpoints: ['/'],
-      deploymentTime: Date.now() - startTime
+      deploymentTime: Date.now() - startTime,
     };
   }
 
@@ -182,17 +187,17 @@ export class FirebaseDeploymentProvider implements DeploymentProviderInterface {
    */
   getProjectConfig(): { projectId: string; region: string } | null {
     if (!this.isAvailable()) return null;
-    
+
     return {
       projectId: this.config.projectId || process.env.FIREBASE_PROJECT_ID || '',
-      region: this.config.region || 'us-central1'
+      region: this.config.region || 'us-central1',
     };
   }
 }
 
 // Factory function
 export function createFirebaseDeploymentProvider(
-  config?: FirebaseDeploymentConfig, 
+  config?: FirebaseDeploymentConfig,
   fallbackProvider?: DeploymentProviderInterface
 ): FirebaseDeploymentProvider {
   return new FirebaseDeploymentProvider(config, fallbackProvider);

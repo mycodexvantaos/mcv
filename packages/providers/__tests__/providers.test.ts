@@ -69,15 +69,15 @@ terms:
 `;
         mockFs.existsSync.mockReturnValue(true);
         mockFs.readFileSync.mockReturnValue(dictionaryYaml);
-        
+
         await provider.initialize();
-        
+
         // Test semantic fallback by generating a prompt that matches dictionary term
         const response = await provider.generate({ prompt: 'What is authentication?' });
         expect(response.providerUsed).toBe('native-rules');
         expect(response.content).toContain('語意降級');
         expect(response.content).toContain('authentication');
-        
+
         logSpy.mockRestore();
       });
     });
@@ -99,7 +99,9 @@ terms:
 
       it('should return summary response for summary prompts', async () => {
         await provider.initialize();
-        const response = await provider.generate({ prompt: 'Please provide a summary of this text' });
+        const response = await provider.generate({
+          prompt: 'Please provide a summary of this text',
+        });
         expect(response.providerUsed).toBe('native-rules');
         expect(response.content).toContain('摘要');
       });
@@ -137,7 +139,7 @@ terms:
 `;
         mockFs.existsSync.mockReturnValue(true);
         mockFs.readFileSync.mockReturnValue(dictionaryYaml);
-        
+
         await provider.initialize();
         // Prompt containing the traditional Chinese term
         const response = await provider.generate({ prompt: '什麼是認證？' });
@@ -145,7 +147,7 @@ terms:
         // Should match the term and return semantic fallback response
         expect(response.content).toContain('authentication');
         expect(response.content).toContain('認證');
-        
+
         logSpy.mockRestore();
       });
 
@@ -158,7 +160,7 @@ terms:
 `;
         mockFs.existsSync.mockReturnValue(true);
         mockFs.readFileSync.mockReturnValue(dictionaryYaml);
-        
+
         await provider.initialize();
         // Prompt containing the simplified Chinese term
         const response = await provider.generate({ prompt: '什么是部署？' });
@@ -166,7 +168,7 @@ terms:
         // The matching works via simplified_chinese, but output only shows traditional_chinese
         expect(response.content).toContain('deployment');
         expect(response.content).toContain('定義');
-        
+
         logSpy.mockRestore();
       });
 
@@ -180,13 +182,13 @@ terms:
 `;
         mockFs.existsSync.mockReturnValue(true);
         mockFs.readFileSync.mockReturnValue(dictionaryYaml);
-        
+
         await provider.initialize();
         const response = await provider.generate({ prompt: 'Tell me about docker container' });
         expect(response.providerUsed).toBe('native-rules');
         expect(response.content).toContain('語意降級');
         expect(response.content).toContain('docker container');
-        
+
         logSpy.mockRestore();
       });
     });
@@ -277,7 +279,7 @@ terms:
         const logSpy = jest.spyOn(console, 'log').mockImplementation();
         const artifact = { name: 'test-app', version: '1.0.0' };
         const result = await provider.deploy(artifact);
-        
+
         expect(result.status).toBe('success');
         expect(result.provider).toBe('native');
         expect(result.url).toBe('http://localhost:3000');
@@ -321,7 +323,7 @@ terms:
         const logSpy = jest.spyOn(console, 'log').mockImplementation();
         const artifact = { name: 'test-app', version: '1.0.0' };
         const result = await provider.deploy(artifact);
-        
+
         expect(result.status).toBe('success');
         expect(result.provider).toBe('external');
         expect(result.target).toBe('kubernetes-cluster');
@@ -355,54 +357,54 @@ terms:
     it('should return native provider when mode is native', () => {
       process.env.MYCODEXVANTAOS_CORE_RUNTIME_MODE = 'native';
       delete process.env.ARGOCD_AUTH_TOKEN;
-      
+
       jest.resetModules();
       const { getDeployProvider } = require('../src/index');
       const provider = getDeployProvider();
-      
+
       expect(provider.source).toBe('native');
     });
 
     it('should throw error for connected mode without token', () => {
       process.env.MYCODEXVANTAOS_CORE_RUNTIME_MODE = 'connected';
       delete process.env.ARGOCD_AUTH_TOKEN;
-      
+
       jest.resetModules();
       const { getDeployProvider } = require('../src/index');
-      
+
       expect(() => getDeployProvider()).toThrow('Connected mode requires ARGOCD_AUTH_TOKEN');
     });
 
     it('should return external provider for connected mode with token', () => {
       process.env.MYCODEXVANTAOS_CORE_RUNTIME_MODE = 'connected';
       process.env.ARGOCD_AUTH_TOKEN = 'test-token';
-      
+
       jest.resetModules();
       const { getDeployProvider } = require('../src/index');
       const provider = getDeployProvider();
-      
+
       expect(provider.source).toBe('external');
     });
 
     it('should return native provider for hybrid mode without token', () => {
       process.env.MYCODEXVANTAOS_CORE_RUNTIME_MODE = 'hybrid';
       delete process.env.ARGOCD_AUTH_TOKEN;
-      
+
       jest.resetModules();
       const { getDeployProvider } = require('../src/index');
       const provider = getDeployProvider();
-      
+
       expect(provider.source).toBe('native');
     });
 
     it('should return external provider for hybrid mode with token', () => {
       process.env.MYCODEXVANTAOS_CORE_RUNTIME_MODE = 'hybrid';
       process.env.ARGOCD_AUTH_TOKEN = 'test-token';
-      
+
       jest.resetModules();
       const { getDeployProvider } = require('../src/index');
       const provider = getDeployProvider();
-      
+
       expect(provider.source).toBe('external');
     });
   });
@@ -465,7 +467,7 @@ terms:
         await provider.storeEmbedding('doc1', 'First document', [1, 0, 0]);
         await provider.storeEmbedding('doc2', 'Second document', [0, 1, 0]);
         await provider.storeEmbedding('doc3', 'Third document', [0, 0, 1]);
-        
+
         const results = await provider.searchSimilar([1, 0, 0], 2);
         expect(results).toHaveLength(2);
         expect(results[0].id).toBe('doc1');
@@ -477,7 +479,7 @@ terms:
         await provider.storeEmbedding('doc1', 'First', [1, 0, 0]);
         await provider.storeEmbedding('doc2', 'Second', [0.9, 0.1, 0]);
         await provider.storeEmbedding('doc3', 'Third', [0, 1, 0]);
-        
+
         const results = await provider.searchSimilar([1, 0, 0], 2);
         expect(results).toHaveLength(2);
       });
@@ -487,7 +489,7 @@ terms:
         await provider.storeEmbedding('doc1', 'Most similar', [1, 0, 0]);
         await provider.storeEmbedding('doc2', 'Medium similar', [0.8, 0.2, 0]);
         await provider.storeEmbedding('doc3', 'Least similar', [0.3, 0.7, 0]);
-        
+
         const results = await provider.searchSimilar([1, 0, 0], 3);
         expect(results).toHaveLength(3);
         expect(results[0].id).toBe('doc1');
@@ -498,7 +500,7 @@ terms:
       it('should handle topK greater than available documents', async () => {
         await provider.initialize();
         await provider.storeEmbedding('doc1', 'First', [1, 0, 0]);
-        
+
         const results = await provider.searchSimilar([1, 0, 0], 10);
         expect(results).toHaveLength(1);
       });
@@ -506,7 +508,7 @@ terms:
       it('should return documents with correct structure', async () => {
         await provider.initialize();
         await provider.storeEmbedding('doc1', 'Test document', [1, 0, 0]);
-        
+
         const results = await provider.searchSimilar([1, 0, 0], 1);
         expect(results[0]).toHaveProperty('id');
         expect(results[0]).toHaveProperty('text');
@@ -517,7 +519,7 @@ terms:
       it('should handle empty embedding vector search', async () => {
         await provider.initialize();
         await provider.storeEmbedding('doc1', 'Test', [1, 0, 0]);
-        
+
         const results = await provider.searchSimilar([], 1);
         // Empty vector should still work (returns all with same score)
         expect(results.length).toBeGreaterThanOrEqual(0);
@@ -568,7 +570,8 @@ terms:
       // The callback is always the last argument
       mockExec.mockImplementation((cmd: string, optionsOrCallback: any, maybeCallback?: any) => {
         // Determine which argument is the callback
-        const callback = typeof optionsOrCallback === 'function' ? optionsOrCallback : maybeCallback;
+        const callback =
+          typeof optionsOrCallback === 'function' ? optionsOrCallback : maybeCallback;
         if (typeof callback === 'function') {
           callback(null, 'success', '');
         }
@@ -602,14 +605,14 @@ terms:
       it('should write metrics to temp file and execute script', async () => {
         const logSpy = jest.spyOn(console, 'log').mockImplementation();
         const errorSpy = jest.spyOn(console, 'error').mockImplementation();
-        
+
         await provider.publishMetrics('test-id', { metric1: 100 });
-        
+
         // Should have logged the delegation message
         expect(logSpy).toHaveBeenCalledWith(
           expect.stringContaining('[Metrics] Delegating publication for test-id')
         );
-        
+
         logSpy.mockRestore();
         errorSpy.mockRestore();
       });
@@ -617,21 +620,24 @@ terms:
       it('should handle exec callback with error', async () => {
         const logSpy = jest.spyOn(console, 'log').mockImplementation();
         const errorSpy = jest.spyOn(console, 'error').mockImplementation();
-        
+
         // Mock exec to call callback with error for this specific test
-        mockExec.mockImplementationOnce((cmd: string, optionsOrCallback: any, maybeCallback?: any) => {
-          const callback = typeof optionsOrCallback === 'function' ? optionsOrCallback : maybeCallback;
-          if (typeof callback === 'function') {
-            callback(new Error('exec error'), '', 'stderr');
+        mockExec.mockImplementationOnce(
+          (cmd: string, optionsOrCallback: any, maybeCallback?: any) => {
+            const callback =
+              typeof optionsOrCallback === 'function' ? optionsOrCallback : maybeCallback;
+            if (typeof callback === 'function') {
+              callback(new Error('exec error'), '', 'stderr');
+            }
+            return {} as any;
           }
-          return {} as any;
-        });
-        
+        );
+
         await provider.publishMetrics('test-id', { metric1: 100 });
-        
+
         // The error should be logged
         expect(errorSpy).toHaveBeenCalled();
-        
+
         logSpy.mockRestore();
         errorSpy.mockRestore();
       });
@@ -639,18 +645,21 @@ terms:
       it('should handle exec with stderr', async () => {
         const logSpy = jest.spyOn(console, 'log').mockImplementation();
         const errorSpy = jest.spyOn(console, 'error').mockImplementation();
-        
+
         // Mock exec to call callback with stderr for this specific test
-        mockExec.mockImplementationOnce((cmd: string, optionsOrCallback: any, maybeCallback?: any) => {
-          const callback = typeof optionsOrCallback === 'function' ? optionsOrCallback : maybeCallback;
-          if (typeof callback === 'function') {
-            callback(null, 'stdout', 'some stderr output');
+        mockExec.mockImplementationOnce(
+          (cmd: string, optionsOrCallback: any, maybeCallback?: any) => {
+            const callback =
+              typeof optionsOrCallback === 'function' ? optionsOrCallback : maybeCallback;
+            if (typeof callback === 'function') {
+              callback(null, 'stdout', 'some stderr output');
+            }
+            return {} as any;
           }
-          return {} as any;
-        });
-        
+        );
+
         await provider.publishMetrics('test-id', { metric1: 100 });
-        
+
         logSpy.mockRestore();
         errorSpy.mockRestore();
       });
@@ -709,9 +718,9 @@ terms:
       it('should warn when API key is missing', async () => {
         delete process.env.MYCODEXVANTAOS_LLM_GEMINI_API_KEY;
         const warnSpy = jest.spyOn(console, 'warn').mockImplementation();
-        
+
         await provider.initialize();
-        
+
         expect(warnSpy).toHaveBeenCalledWith(
           '[Provider: llm-gemini] Missing API Key. Provider will mark itself down.'
         );
@@ -721,9 +730,9 @@ terms:
       it('should log when API key is present', async () => {
         process.env.MYCODEXVANTAOS_LLM_GEMINI_API_KEY = 'test-api-key';
         const logSpy = jest.spyOn(console, 'log').mockImplementation();
-        
+
         await provider.initialize();
-        
+
         expect(logSpy).toHaveBeenCalledWith(
           '[Provider: llm-gemini] Connected to Google Gemini API'
         );
@@ -735,7 +744,7 @@ terms:
       it('should return down status when not configured', async () => {
         delete process.env.MYCODEXVANTAOS_LLM_GEMINI_API_KEY;
         await provider.initialize();
-        
+
         const result = await provider.healthCheck();
         expect(result.status).toBe('down');
         expect(result.reason).toBe('Missing API Key or Network offline');
@@ -746,7 +755,7 @@ terms:
       it('should throw error when offline', async () => {
         delete process.env.MYCODEXVANTAOS_LLM_GEMINI_API_KEY;
         await provider.initialize();
-        
+
         await expect(provider.generate({ prompt: 'test' })).rejects.toThrow(
           'Gemini API is down or not configured.'
         );

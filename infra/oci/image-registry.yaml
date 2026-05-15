@@ -8,10 +8,10 @@ spec:
   registry: ghcr.io
   namespace: mycodexvantaos
   # Image repository name MUST equal service-id (7.3)
-  namingRule: "<registry>/<namespace>/<service-id>:<semver-tag>"
-  productionRule: "<registry>/<namespace>/<service-id>@sha256:<digest>"
+  namingRule: '<registry>/<namespace>/<service-id>:<semver-tag>'
+  productionRule: '<registry>/<namespace>/<service-id>@sha256:<digest>'
   digestPinningRequired: true
   environments:
-    prod: true    # digest pinning required
+    prod: true # digest pinning required
     staging: true
-    dev: false    # tag-based allowed in dev
+    dev: false # tag-based allowed in dev

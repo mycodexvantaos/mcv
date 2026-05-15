@@ -11,10 +11,7 @@
     },
     "errorFormat": {
       "type": "string",
-      "enum": [
-        "flat",
-        "nested"
-      ],
+      "enum": ["flat", "nested"],
       "default": "flat"
     }
   }

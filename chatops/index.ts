@@ -1,10 +1,10 @@
 /**
  * ChatOps Module Index
  * Platform-Independent Provider Pattern Implementation
- * 
+ *
  * This module provides ChatOps functionality (GitHub automation, gateway services)
  * that works in any runtime environment with zero external dependencies.
- * 
+ *
  * Runtime Modes:
  * - native: Local file system operations, no GitHub API required
  * - hybrid: GitHub API with fallback to local operations
@@ -16,25 +16,26 @@ export type { FixerContext, FixResult } from './auto-fix-bot.provider';
 export type { GatewayConfig, GatewayResponse } from './gateway-ts.provider';
 
 // Re-export classes
-export { 
-  BaseFixer, 
-  NamingFixer, 
-  SecurityFixer, 
-  DependencyFixer, 
+export {
+  BaseFixer,
+  NamingFixer,
+  SecurityFixer,
+  DependencyFixer,
   AutoFixBot,
   createAutoFixBot,
 } from './auto-fix-bot.provider';
 
-export { 
-  GatewayProvider, 
-  createGateway,
-} from './gateway-ts.provider';
+export { GatewayProvider, createGateway } from './gateway-ts.provider';
 
 // Provider factory for dependency injection
 export { getProviderFactory, ProviderFactory } from '../packages/capabilities/src/provider-factory';
 
 // Runtime configuration
-export { getRuntimeConfig, RuntimeConfig, RuntimeMode } from '../packages/capabilities/src/runtime-config';
+export {
+  getRuntimeConfig,
+  RuntimeConfig,
+  RuntimeMode,
+} from '../packages/capabilities/src/runtime-config';
 
 /**
  * Initialize all ChatOps modules
@@ -84,10 +85,14 @@ export async function healthCheckAll(): Promise<{
     (await factory.getMetricsProvider()).healthCheck(),
   ]);
 
-  const autoFixBot = autoFixBotHealth.status === 'fulfilled' && 
-    'healthy' in autoFixBotHealth.value && autoFixBotHealth.value.healthy;
-  const gateway = gatewayHealth.status === 'fulfilled' && 
-    'healthy' in gatewayHealth.value && gatewayHealth.value.healthy;
+  const autoFixBot =
+    autoFixBotHealth.status === 'fulfilled' &&
+    'healthy' in autoFixBotHealth.value &&
+    autoFixBotHealth.value.healthy;
+  const gateway =
+    gatewayHealth.status === 'fulfilled' &&
+    'healthy' in gatewayHealth.value &&
+    gatewayHealth.value.healthy;
 
   return {
     autoFixBot,
@@ -109,5 +114,5 @@ export async function shutdownAll(): Promise<void> {
     factory.getLoggingProvider(),
   ]);
 
-  await Promise.all(providers.map(p => p.shutdown()));
+  await Promise.all(providers.map((p) => p.shutdown()));
 }

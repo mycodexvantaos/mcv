@@ -1,9 +1,9 @@
 /**
  * Orchestrator Adapter for MyCodeXvantaOS Persona Engine
- * 
+ *
  * This module provides integration between the Persona Engine and the
  * AI Team Orchestrator, enabling persona-aware agent interactions.
- * 
+ *
  * @module mycodexvantaos-persona-engine/core/orchestrator-adapter
  */
 
@@ -15,7 +15,7 @@ import {
   RootCauseDiagnosis,
   SolutionProposal,
   SemanticMask,
-  PersonaArchetype
+  PersonaArchetype,
 } from '../types';
 
 /**
@@ -141,7 +141,14 @@ export interface OrchestratorResponse {
  */
 export interface AdapterEvent {
   /** Event type */
-  type: 'session_created' | 'session_closed' | 'mask_detected' | 'root_cause_found' | 'solution_generated' | 'hitl_triggered' | 'error';
+  type:
+    | 'session_created'
+    | 'session_closed'
+    | 'mask_detected'
+    | 'root_cause_found'
+    | 'solution_generated'
+    | 'hitl_triggered'
+    | 'error';
   /** Event timestamp */
   timestamp: string;
   /** Event data */
@@ -157,11 +164,11 @@ export type AdapterEventListener = (event: AdapterEvent) => void;
 
 /**
  * OrchestratorAdapter provides integration between Persona Engine and AI Team Orchestrator
- * 
+ *
  * @example
  * ```typescript
  * const adapter = new OrchestratorAdapter(config, personaManager);
- * 
+ *
  * const response = await adapter.processRequest({
  *   requestId: 'req-001',
  *   sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
@@ -176,7 +183,8 @@ export class OrchestratorAdapter {
   private activeSessions: Map<string, PersonaSession> = new Map();
   private eventListeners: AdapterEventListener[] = [];
   private requestCount: number = 0;
-  private auditLog: Array<{ timestamp: string; action: string; details: Record<string, unknown> }> = [];
+  private auditLog: Array<{ timestamp: string; action: string; details: Record<string, unknown> }> =
+    [];
 
   constructor(config: OrchestratorAdapterConfig, personaManager: PersonaManager) {
     this.config = config;
@@ -221,15 +229,19 @@ export class OrchestratorAdapter {
   /**
    * Emits an event to all listeners
    */
-  private emitEvent(type: AdapterEvent['type'], data: Record<string, unknown>, severity: AdapterEvent['severity'] = 'info'): void {
+  private emitEvent(
+    type: AdapterEvent['type'],
+    data: Record<string, unknown>,
+    severity: AdapterEvent['severity'] = 'info'
+  ): void {
     const event: AdapterEvent = {
       type,
       timestamp: new Date().toISOString(),
       data,
-      severity
+      severity,
     };
 
-    this.eventListeners.forEach(listener => {
+    this.eventListeners.forEach((listener) => {
       try {
         listener(event);
       } catch (error) {
@@ -245,7 +257,7 @@ export class OrchestratorAdapter {
     this.auditLog.push({
       timestamp: new Date().toISOString(),
       action,
-      details
+      details,
     });
   }
 
@@ -256,7 +268,10 @@ export class OrchestratorAdapter {
     const startTime = Date.now();
     const responseId = `resp-${++this.requestCount}`;
 
-    this.logAction('process_request', { requestId: request.requestId, sourceAgentUrn: request.sourceAgentUrn });
+    this.logAction('process_request', {
+      requestId: request.requestId,
+      sourceAgentUrn: request.sourceAgentUrn,
+    });
 
     try {
       // Determine which persona archetype to use
@@ -298,34 +313,38 @@ export class OrchestratorAdapter {
         response: {
           content: result.response.content,
           criticalTrack: result.response.criticalTrack,
-          constructiveTrack: result.response.constructiveTrack
+          constructiveTrack: result.response.constructiveTrack,
         },
         appliedBehavioralParams: {
           criticalTolerance: profile.behavioral_parameters.critical_tolerance ?? 0,
           empathyLevel: profile.behavioral_parameters.empathy_level ?? 0,
           directness: profile.behavioral_parameters.directness ?? 0,
-          solutionFocus: profile.behavioral_parameters.solution_focus ?? 0
+          solutionFocus: profile.behavioral_parameters.solution_focus ?? 0,
         },
         governance: {
           tier: this.config.governanceTier,
           constraints: this.getGovernanceConstraints(),
-          auditTrail: this.auditLog.slice(-10).map(log => `[${log.timestamp}] ${log.action}`)
-        }
+          auditTrail: this.auditLog.slice(-10).map((log) => `[${log.timestamp}] ${log.action}`),
+        },
       };
 
       // Add semantic masks if detected
       if (result.masks && result.masks.length > 0) {
-        response.response.semanticMasks = result.masks!.map(mask => ({
+        response.response.semanticMasks = result.masks!.map((mask) => ({
           type: mask.mask_type,
           detected: true,
           confidence: mask.precision ?? 0,
-          truth_reframe: mask.truth_reframe?.constructive_alternative ?? ''
+          truth_reframe: mask.truth_reframe?.constructive_alternative ?? '',
         }));
 
-        this.emitEvent('mask_detected', { 
-          requestId: request.requestId, 
-          masks: result.masks!.map(m => m.mask_type) 
-        }, 'warning');
+        this.emitEvent(
+          'mask_detected',
+          {
+            requestId: request.requestId,
+            masks: result.masks!.map((m) => m.mask_type),
+          },
+          'warning'
+        );
       }
 
       // Add root cause diagnosis if available
@@ -334,27 +353,27 @@ export class OrchestratorAdapter {
           layer: result.diagnosis.layer,
           findings: result.diagnosis.findings,
           confidence: result.diagnosis.confidence,
-          primaryRootCause: result.diagnosis.findings[0] || 'Unknown'
+          primaryRootCause: result.diagnosis.findings[0] || 'Unknown',
         };
 
-        this.emitEvent('root_cause_found', { 
-          requestId: request.requestId, 
-          confidence: result.diagnosis.confidence 
+        this.emitEvent('root_cause_found', {
+          requestId: request.requestId,
+          confidence: result.diagnosis.confidence,
         });
       }
 
       // Add solutions if available
       if (result.solutionsArray && result.solutionsArray.length > 0) {
-        response.response.solutions = result.solutionsArray.map(sol => ({
+        response.response.solutions = result.solutionsArray.map((sol) => ({
           category: sol.category,
           description: sol.description,
           title: sol.title,
-          expected_outcome: sol.expected_outcome
+          expected_outcome: sol.expected_outcome,
         }));
 
-        this.emitEvent('solution_generated', { 
-          requestId: request.requestId, 
-          count: result.solutionsArray.length 
+        this.emitEvent('solution_generated', {
+          requestId: request.requestId,
+          count: result.solutionsArray.length,
         });
       }
 
@@ -362,31 +381,38 @@ export class OrchestratorAdapter {
       const hitlTriggers = this.checkHITLTriggers(result);
       if (hitlTriggers && hitlTriggers.length > 0) {
         response.hitlTriggers = hitlTriggers;
-        this.emitEvent('hitl_triggered', { 
-          requestId: request.requestId, 
-          triggers: hitlTriggers 
-        }, 'warning');
+        this.emitEvent(
+          'hitl_triggered',
+          {
+            requestId: request.requestId,
+            triggers: hitlTriggers,
+          },
+          'warning'
+        );
       }
 
-      this.logAction('request_completed', { 
-        requestId: request.requestId, 
+      this.logAction('request_completed', {
+        requestId: request.requestId,
         responseId,
-        duration: Date.now() - startTime 
+        duration: Date.now() - startTime,
       });
 
       return response;
-
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      
-      this.emitEvent('error', { 
-        requestId: request.requestId, 
-        error: errorMessage 
-      }, 'error');
 
-      this.logAction('request_failed', { 
-        requestId: request.requestId, 
-        error: errorMessage 
+      this.emitEvent(
+        'error',
+        {
+          requestId: request.requestId,
+          error: errorMessage,
+        },
+        'error'
+      );
+
+      this.logAction('request_failed', {
+        requestId: request.requestId,
+        error: errorMessage,
       });
 
       // Return error response
@@ -398,19 +424,19 @@ export class OrchestratorAdapter {
         timestamp: new Date().toISOString(),
         success: false,
         response: {
-          content: `Error processing request: ${errorMessage}`
+          content: `Error processing request: ${errorMessage}`,
         },
         appliedBehavioralParams: {
           criticalTolerance: 0.5,
           empathyLevel: 0.5,
           directness: 0.5,
-          solutionFocus: 0.5
+          solutionFocus: 0.5,
         },
         governance: {
           tier: this.config.governanceTier,
           constraints: this.getGovernanceConstraints(),
-          auditTrail: this.auditLog.slice(-10).map(log => `[${log.timestamp}] ${log.action}`)
-        }
+          auditTrail: this.auditLog.slice(-10).map((log) => `[${log.timestamp}] ${log.action}`),
+        },
       };
     }
   }
@@ -418,17 +444,23 @@ export class OrchestratorAdapter {
   /**
    * Checks for HITL (Human-in-the-Loop) triggers
    */
-  private checkHITLTriggers(result: { masks?: SemanticMask[]; diagnosis?: RootCauseDiagnosis; solutionsArray?: SolutionProposal[] }): OrchestratorResponse['hitlTriggers'] {
+  private checkHITLTriggers(result: {
+    masks?: SemanticMask[];
+    diagnosis?: RootCauseDiagnosis;
+    solutionsArray?: SolutionProposal[];
+  }): OrchestratorResponse['hitlTriggers'] {
     const triggers: NonNullable<OrchestratorResponse['hitlTriggers']> = [];
 
     // Check for high confidence semantic masks
     const masks = result.masks || [];
-    const highConfidenceMasks = masks.filter(m => (m.precision ?? 0) >= this.config.hitlThreshold);
+    const highConfidenceMasks = masks.filter(
+      (m) => (m.precision ?? 0) >= this.config.hitlThreshold
+    );
     if (highConfidenceMasks.length > 0) {
       triggers.push({
         type: 'high_confidence_mask',
         reason: `Detected ${highConfidenceMasks.length} semantic masks above threshold`,
-        severity: 'medium'
+        severity: 'medium',
       });
     }
 
@@ -437,7 +469,7 @@ export class OrchestratorAdapter {
       triggers.push({
         type: 'low_confidence_diagnosis',
         reason: 'Root cause diagnosis confidence below threshold',
-        severity: 'high'
+        severity: 'high',
       });
     }
 
@@ -446,7 +478,7 @@ export class OrchestratorAdapter {
       triggers.push({
         type: 'no_solutions',
         reason: 'No viable solutions generated for the problem',
-        severity: 'medium'
+        severity: 'medium',
       });
     }
 
@@ -470,10 +502,21 @@ export class OrchestratorAdapter {
         constraints.push('full_logging', 'input_validation', 'output_filtering');
         break;
       case 2:
-        constraints.push('full_logging', 'input_validation', 'output_filtering', 'human_review_required');
+        constraints.push(
+          'full_logging',
+          'input_validation',
+          'output_filtering',
+          'human_review_required'
+        );
         break;
       case 3:
-        constraints.push('full_logging', 'input_validation', 'output_filtering', 'human_review_required', 'audit_trail');
+        constraints.push(
+          'full_logging',
+          'input_validation',
+          'output_filtering',
+          'human_review_required',
+          'audit_trail'
+        );
         break;
     }
 
@@ -555,8 +598,8 @@ export class OrchestratorAdapter {
         activeSessions,
         totalRequests: this.requestCount,
         auditLogEntries: this.auditLog.length,
-        governanceTier: this.config.governanceTier
-      }
+        governanceTier: this.config.governanceTier,
+      },
     };
   }
 }

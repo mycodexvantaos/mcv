@@ -13,7 +13,7 @@ contract:
     - execute
     - cleanup
     - validate
-  
+
   requirements:
     - local-first: true
     - cloud-agnostic: true

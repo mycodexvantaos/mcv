@@ -62,10 +62,10 @@ export function DesignAnalyzer() {
           </Button>
 
           {isLoading && (
-             <Card>
+            <Card>
               <CardHeader>
                 <CardTitle className="text-base font-medium flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-primary"/>
+                  <Sparkles className="h-5 w-5 text-primary" />
                   AI Generated Analysis
                 </CardTitle>
               </CardHeader>
@@ -82,14 +82,12 @@ export function DesignAnalyzer() {
             <Card>
               <CardHeader>
                 <CardTitle className="text-base font-medium flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-primary"/>
+                  <Sparkles className="h-5 w-5 text-primary" />
                   AI Generated Analysis
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-sm text-foreground whitespace-pre-wrap">
-                    {analysis}
-                </div>
+                <div className="text-sm text-foreground whitespace-pre-wrap">{analysis}</div>
               </CardContent>
             </Card>
           )}

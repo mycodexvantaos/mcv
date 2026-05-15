@@ -1,10 +1,10 @@
 /**
  * CodexvantaOS — StateStoreProvider
- * 
+ *
  * Abstract interface for key-value state management.
  * Native mode: in-memory / file-based store (zero dependencies)
  * External mode: Redis, Memcached, DynamoDB, etc.
- * 
+ *
  * This interface replaces ALL hard Redis dependencies across the platform.
  */
 
@@ -13,28 +13,28 @@
 export interface StateEntry<T = unknown> {
   key: string;
   value: T;
-  ttl?: number;           // remaining TTL in seconds, undefined = no expiry
-  createdAt: number;       // epoch ms
-  updatedAt: number;       // epoch ms
-  version: number;         // optimistic concurrency control
+  ttl?: number; // remaining TTL in seconds, undefined = no expiry
+  createdAt: number; // epoch ms
+  updatedAt: number; // epoch ms
+  version: number; // optimistic concurrency control
 }
 
 export interface SetOptions {
-  ttl?: number;            // time-to-live in seconds
-  ifNotExists?: boolean;   // SET NX semantics
-  ifExists?: boolean;      // SET XX semantics
-  version?: number;        // optimistic lock — fail if current version ≠ this
+  ttl?: number; // time-to-live in seconds
+  ifNotExists?: boolean; // SET NX semantics
+  ifExists?: boolean; // SET XX semantics
+  version?: number; // optimistic lock — fail if current version ≠ this
 }
 
 export interface ScanOptions {
-  pattern?: string;        // glob-style pattern, e.g. "orchestrator:*"
-  cursor?: string;         // pagination cursor
-  count?: number;          // hint for batch size
+  pattern?: string; // glob-style pattern, e.g. "orchestrator:*"
+  cursor?: string; // pagination cursor
+  count?: number; // hint for batch size
 }
 
 export interface ScanResult<T = unknown> {
   entries: StateEntry<T>[];
-  nextCursor?: string;     // undefined = no more results
+  nextCursor?: string; // undefined = no more results
 }
 
 export interface LockHandle {
@@ -116,7 +116,10 @@ export interface StateStoreProvider {
   publish?(channel: string, message: unknown): Promise<number>;
 
   /** Subscribe to a channel. Returns an unsubscribe handle. */
-  subscribe?(channel: string, handler: (message: unknown) => void): Promise<{ unsubscribe(): Promise<void> }>;
+  subscribe?(
+    channel: string,
+    handler: (message: unknown) => void
+  ): Promise<{ unsubscribe(): Promise<void> }>;
 
   // ── Lifecycle ───────────────────────────────────────────────────────────
 

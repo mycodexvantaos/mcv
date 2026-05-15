@@ -30,12 +30,7 @@ export type WorkflowStatus =
 /**
  * Node execution status
  */
-export type NodeStatus =
-  | 'pending'
-  | 'running'
-  | 'completed'
-  | 'failed'
-  | 'skipped';
+export type NodeStatus = 'pending' | 'running' | 'completed' | 'failed' | 'skipped';
 
 /**
  * Workflow execution context
@@ -137,10 +132,7 @@ export class WorkflowEngine {
    * @param variables - Initial variables for the workflow
    * @returns The workflow ID
    */
-  public createWorkflow(
-    topology: TeamTopology,
-    variables?: Record<string, unknown>
-  ): string {
+  public createWorkflow(topology: TeamTopology, variables?: Record<string, unknown>): string {
     if (!topology.workflow_definition) {
       throw new Error('Team topology does not contain a workflow definition');
     }
@@ -286,9 +278,8 @@ export class WorkflowEngine {
     state.updated_at = new Date().toISOString();
 
     // Set initial node
-    state.context.current_node = state.workflow_definition.initial_state
-      ?? state.workflow_definition.nodes[0]?.id
-      ?? null;
+    state.context.current_node =
+      state.workflow_definition.initial_state ?? state.workflow_definition.nodes[0]?.id ?? null;
 
     this.messageBus.emit('workflow:started', {
       workflow_id: workflowId,
@@ -368,9 +359,7 @@ export class WorkflowEngine {
   private shouldPauseForHITL(state: WorkflowState, nodeId: string): boolean {
     if (!state.hitl_config?.enabled) return false;
 
-    const checkpoint = state.hitl_config.checkpoints?.find(
-      (cp) => cp.node_id === nodeId
-    );
+    const checkpoint = state.hitl_config.checkpoints?.find((cp) => cp.node_id === nodeId);
     return checkpoint !== undefined;
   }
 
@@ -385,9 +374,7 @@ export class WorkflowEngine {
     const state = this.workflows.get(workflowId);
     if (!state || !state.hitl_config) return;
 
-    const checkpoint = state.hitl_config.checkpoints?.find(
-      (cp) => cp.node_id === nodeId
-    );
+    const checkpoint = state.hitl_config.checkpoints?.find((cp) => cp.node_id === nodeId);
     if (!checkpoint) return;
 
     state.status = 'paused';
@@ -410,17 +397,11 @@ export class WorkflowEngine {
   /**
    * Handle HITL approval
    */
-  public approveHITLCheckpoint(
-    workflowId: string,
-    nodeId: string,
-    approver?: string
-  ): void {
+  public approveHITLCheckpoint(workflowId: string, nodeId: string, approver?: string): void {
     const state = this.workflows.get(workflowId);
     if (!state || state.status !== 'paused') return;
 
-    const checkpoint = state.hitl_config?.checkpoints?.find(
-      (cp) => cp.node_id === nodeId
-    );
+    const checkpoint = state.hitl_config?.checkpoints?.find((cp) => cp.node_id === nodeId);
     if (!checkpoint) return;
 
     // Update node result
@@ -443,11 +424,7 @@ export class WorkflowEngine {
   /**
    * Handle HITL rejection
    */
-  public rejectHITLCheckpoint(
-    workflowId: string,
-    nodeId: string,
-    reason?: string
-  ): void {
+  public rejectHITLCheckpoint(workflowId: string, nodeId: string, reason?: string): void {
     const state = this.workflows.get(workflowId);
     if (!state || state.status !== 'paused') return;
 
@@ -549,10 +526,7 @@ export class WorkflowEngine {
   /**
    * Evaluate a condition against context
    */
-  private evaluateCondition(
-    condition: string,
-    context: WorkflowContext
-  ): boolean {
+  private evaluateCondition(condition: string, context: WorkflowContext): boolean {
     // Simple condition evaluation
     // In production, this would use a proper expression evaluator
     try {
@@ -572,7 +546,9 @@ export class WorkflowEngine {
    * Handle task completion event
    */
   private handleTaskCompletion(event: unknown): void {
-      const typedEvent = event as { payload: { task_id: TaskURN; workflow_id?: string; node_id?: string } };
+    const typedEvent = event as {
+      payload: { task_id: TaskURN; workflow_id?: string; node_id?: string };
+    };
     const { workflow_id, node_id } = typedEvent.payload;
     if (!workflow_id || !node_id) return;
 
@@ -583,7 +559,9 @@ export class WorkflowEngine {
    * Handle task failure event
    */
   private handleTaskFailure(event: unknown): void {
-      const typedEvent = event as { payload: { task_id: TaskURN; workflow_id?: string; node_id?: string; error?: string } };
+    const typedEvent = event as {
+      payload: { task_id: TaskURN; workflow_id?: string; node_id?: string; error?: string };
+    };
     const { workflow_id, node_id } = typedEvent.payload;
     if (!workflow_id || !node_id) return;
 

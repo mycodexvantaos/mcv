@@ -22,9 +22,7 @@ describe('Orchestrator', () => {
 
   const mockWorkflowDefinition: WorkflowDefinition = {
     type: 'dag',
-    nodes: [
-      { id: 'node-1', agent_id: 'urn:mycodexvantaos:agent:test-agent-01' as any }
-    ],
+    nodes: [{ id: 'node-1', agent_id: 'urn:mycodexvantaos:agent:test-agent-01' as any }],
     edges: [],
   };
 
@@ -306,7 +304,9 @@ describe('Orchestrator', () => {
       orchestrator.activateTeam(teamId);
       const workflowId = orchestrator.startWorkflow(teamId);
       // Approve checkpoint - may or may not exist
-      expect(() => orchestrator.approveHITLCheckpoint(workflowId, 'node-1', 'approver')).not.toThrow();
+      expect(() =>
+        orchestrator.approveHITLCheckpoint(workflowId, 'node-1', 'approver')
+      ).not.toThrow();
     });
 
     it('should reject HITL checkpoint', async () => {
@@ -337,11 +337,10 @@ describe('Orchestrator', () => {
     it('should broadcast a message', async () => {
       await orchestrator.initialize();
       orchestrator.registerAgent(mockAgentProfile);
-      const messageId = orchestrator.broadcastMessage(
-        mockAgentProfile.id,
-        'status_update',
-        { type: 'text', data: 'Status update' }
-      );
+      const messageId = orchestrator.broadcastMessage(mockAgentProfile.id, 'status_update', {
+        type: 'text',
+        data: 'Status update',
+      });
       expect(messageId).toBeDefined();
     });
 
@@ -357,7 +356,9 @@ describe('Orchestrator', () => {
       orchestrator.registerAgent(mockAgentProfile);
       const handler = () => {};
       orchestrator.subscribeToMessages(mockAgentProfile.id, handler);
-      expect(() => orchestrator.unsubscribeFromMessages(mockAgentProfile.id, handler)).not.toThrow();
+      expect(() =>
+        orchestrator.unsubscribeFromMessages(mockAgentProfile.id, handler)
+      ).not.toThrow();
     });
   });
 
@@ -372,7 +373,9 @@ describe('Orchestrator', () => {
     it('should request approval with context', async () => {
       await orchestrator.initialize();
       orchestrator.registerAgent(mockAgentProfile);
-      const requestId = orchestrator.requestApproval('agent:activate', mockAgentProfile.id, { context: 'test' });
+      const requestId = orchestrator.requestApproval('agent:activate', mockAgentProfile.id, {
+        context: 'test',
+      });
       expect(requestId).toBeDefined();
     });
 

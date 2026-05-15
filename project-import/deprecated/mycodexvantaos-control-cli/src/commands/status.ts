@@ -1,10 +1,10 @@
-import type { Command } from "commander";
+import type { Command } from 'commander';
 
 export function registerStatusCommand(program: Command): void {
   program
-    .command("status")
-    .description("Show platform status")
+    .command('status')
+    .description('Show platform status')
     .action(() => {
-      console.log("CodexvantaOS status: operational");
+      console.log('CodexvantaOS status: operational');
     });
 }

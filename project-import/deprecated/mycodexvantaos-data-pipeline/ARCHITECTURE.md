@@ -20,14 +20,14 @@ Source → Ingestion → [Stage 1] → [Stage 2] → ... → [Stage N] → Sink
 
 ## Stage Types
 
-| Stage | Description |
-|---|---|
-| **Filter** | Drops records not matching predicate |
-| **Map** | Transforms record shape |
-| **Enrich** | Adds data from external lookups |
-| **Aggregate** | Windows and aggregates records |
-| **Deduplicate** | Removes duplicate records by key |
-| **Branch** | Splits stream into multiple paths |
+| Stage           | Description                          |
+| --------------- | ------------------------------------ |
+| **Filter**      | Drops records not matching predicate |
+| **Map**         | Transforms record shape              |
+| **Enrich**      | Adds data from external lookups      |
+| **Aggregate**   | Windows and aggregates records       |
+| **Deduplicate** | Removes duplicate records by key     |
+| **Branch**      | Splits stream into multiple paths    |
 
 ## Backpressure Strategy
 

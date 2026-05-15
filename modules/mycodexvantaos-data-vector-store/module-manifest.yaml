@@ -19,7 +19,7 @@ spec:
     search: search-elasticsearch
   lifecycle:
     stage: stable
-    since: "v1.0.0"
-  urn: "urn:mycodexvantaos:manifest:service:mycodexvantaos-data-vector-store"
-  packageName: "@mycodexvantaos/data-vector-store"
-  description: "Data domain vector storage and retrieval service. Manages vector collections, retrieval pipelines, and embedding model aliases."
+    since: 'v1.0.0'
+  urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-data-vector-store'
+  packageName: '@mycodexvantaos/data-vector-store'
+  description: 'Data domain vector storage and retrieval service. Manages vector collections, retrieval pipelines, and embedding model aliases.'

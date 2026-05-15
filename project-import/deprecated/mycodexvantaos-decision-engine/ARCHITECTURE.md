@@ -34,13 +34,13 @@ Input Event
 
 ### Rule Types
 
-| Type | Description |
-|---|---|
-| **Threshold** | Numeric comparison (e.g., vulnerability count > 10) |
-| **Pattern** | Regex or glob matching (e.g., file path matches `*.secret*`) |
-| **Temporal** | Time-based rules (e.g., no deploy on Friday after 5pm) |
-| **Composite** | AND/OR/NOT combinations of other rules |
-| **Stateful** | Rules that consider historical state (e.g., 3 failures in 24h) |
+| Type          | Description                                                    |
+| ------------- | -------------------------------------------------------------- |
+| **Threshold** | Numeric comparison (e.g., vulnerability count > 10)            |
+| **Pattern**   | Regex or glob matching (e.g., file path matches `*.secret*`)   |
+| **Temporal**  | Time-based rules (e.g., no deploy on Friday after 5pm)         |
+| **Composite** | AND/OR/NOT combinations of other rules                         |
+| **Stateful**  | Rules that consider historical state (e.g., 3 failures in 24h) |
 
 ### Evaluation Context
 

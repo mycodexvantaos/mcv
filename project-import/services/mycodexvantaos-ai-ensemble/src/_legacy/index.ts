@@ -1,7 +1,7 @@
 /**
  * CodexvantaOS — ai-engine
  * AI 引擎 — LLM 推理、Agent 執行、Embedding、RAG
- * 
+ *
  * Layer: B-Runtime | Plane: Decision | Tier: 3
  * Philosophy: Native-first / Provider-agnostic
  * 「第三方服務是平台的擴充出口，不是平台成立的地基。」

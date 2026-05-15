@@ -13,7 +13,7 @@ updated_at: 2024-01-15T10:00:00Z
 
 # Workflow Configuration
 config:
-  timeout_seconds: 1800  # 30 minutes max
+  timeout_seconds: 1800 # 30 minutes max
   retry_policy:
     max_retries: 1
     backoff_seconds: 30
@@ -57,7 +57,7 @@ nodes:
     type: task
     action: setup_build_environment
     config:
-      runtime: ${RUNTIME}  # node, python, java, go, etc.
+      runtime: ${RUNTIME} # node, python, java, go, etc.
       version: ${RUNTIME_VERSION}
       cache_dependencies: true
     dependencies:
@@ -365,7 +365,7 @@ nodes:
     type: hitl
     action: request_production_approval
     config:
-      timeout_seconds: 3600  # 1 hour
+      timeout_seconds: 3600 # 1 hour
       approvers_required: 1
       approver_roles:
         - release_manager
@@ -410,7 +410,7 @@ nodes:
     action: deploy_application
     config:
       environment: production
-      strategy: blue_green  # blue_green, canary, rolling
+      strategy: blue_green # blue_green, canary, rolling
       replicas: 3
       health_check:
         endpoint: /health
@@ -601,11 +601,11 @@ examples:
       REPO_URL: https://github.com/org/repo.git
       BRANCH: main
       RUNTIME: node
-      RUNTIME_VERSION: "20"
+      RUNTIME_VERSION: '20'
       PACKAGE_MANAGER: npm
       TEST_FRAMEWORK: jest
       IMAGE_NAME: org/app
-      VERSION: "1.2.3"
+      VERSION: '1.2.3'
       REGISTRY_URL: registry.example.com
     expected_output:
       status: deployed

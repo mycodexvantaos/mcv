@@ -8,7 +8,7 @@ metadata:
   capability: embedding
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: "8.1"
+    mycodexvantaos.org/specRef: '8.1'
 spec:
   providerName: ollama
   isNative: true
@@ -16,4 +16,4 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_EMBEDDING_OLLAMA
   configSchemaRef: ./config.schema.json
-  description: "Ollama local embedding provider (native, no cloud dependency)."
+  description: 'Ollama local embedding provider (native, no cloud dependency).'

@@ -4,9 +4,9 @@ import { randomBytes } from 'node:crypto';
  * In-memory task scheduling and execution
  */
 
-import type { ScheduledTask } from "./types";
+import type { ScheduledTask } from './types';
 
-export type TaskStatus = ScheduledTask["status"];
+export type TaskStatus = ScheduledTask['status'];
 
 interface InternalTask extends ScheduledTask {
   executeAt: number;
@@ -23,14 +23,14 @@ export class SchedulerService {
     name: string,
     payload: unknown,
     executeAt: number,
-    options?: { maxAttempts?: number },
+    options?: { maxAttempts?: number }
   ): Promise<ScheduledTask> {
     const task: InternalTask = {
       id: `task-${Date.now()}-${randomBytes(3).toString('hex').slice(0, 6)}`,
       name,
       payload,
       scheduledAt: new Date(),
-      status: "pending",
+      status: 'pending',
       createdAt: new Date(),
       executeAt,
       attempts: 0,
@@ -43,7 +43,7 @@ export class SchedulerService {
   async cancel(taskId: string): Promise<ScheduledTask> {
     const task = this.tasks.get(taskId);
     if (!task) throw new Error(`Task not found: ${taskId}`);
-    task.status = "cancelled";
+    task.status = 'cancelled';
     return this.toPublic(task);
   }
 
@@ -63,11 +63,11 @@ export class SchedulerService {
     const now = Date.now();
     let processed = 0;
     for (const task of this.tasks.values()) {
-      if (task.status === "pending" && task.executeAt <= now) {
-        task.status = "running";
+      if (task.status === 'pending' && task.executeAt <= now) {
+        task.status = 'running';
         task.attempts++;
         // Simulate instant completion for in-memory stub
-        task.status = "completed";
+        task.status = 'completed';
         processed++;
       }
     }

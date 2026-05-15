@@ -70,7 +70,7 @@ export class NativeValidator {
         errors.push({
           field: fieldName,
           message: `Field '${fieldName}' is required`,
-          value
+          value,
         });
         continue;
       }
@@ -93,14 +93,14 @@ export class NativeValidator {
           fieldErrors.push({
             field: fieldName,
             message: `Field '${fieldName}' must be at least ${fieldConfig.min}`,
-            value
+            value,
           });
         }
         if (fieldConfig.max !== undefined && value > fieldConfig.max) {
           fieldErrors.push({
             field: fieldName,
             message: `Field '${fieldName}' must be at most ${fieldConfig.max}`,
-            value
+            value,
           });
         }
       }
@@ -111,14 +111,14 @@ export class NativeValidator {
           fieldErrors.push({
             field: fieldName,
             message: `Field '${fieldName}' must be at least ${fieldConfig.min} characters`,
-            value
+            value,
           });
         }
         if (fieldConfig.max !== undefined && value.length > fieldConfig.max) {
           fieldErrors.push({
             field: fieldName,
             message: `Field '${fieldName}' must be at most ${fieldConfig.max} characters`,
-            value
+            value,
           });
         }
       }
@@ -129,14 +129,14 @@ export class NativeValidator {
           fieldErrors.push({
             field: fieldName,
             message: `Field '${fieldName}' must have at least ${fieldConfig.min} items`,
-            value
+            value,
           });
         }
         if (fieldConfig.max !== undefined && value.length > fieldConfig.max) {
           fieldErrors.push({
             field: fieldName,
             message: `Field '${fieldName}' must have at most ${fieldConfig.max} items`,
-            value
+            value,
           });
         }
       }
@@ -147,7 +147,7 @@ export class NativeValidator {
           fieldErrors.push({
             field: fieldName,
             message: `Field '${fieldName}' does not match required pattern`,
-            value
+            value,
           });
         }
       }
@@ -157,7 +157,7 @@ export class NativeValidator {
         fieldErrors.push({
           field: fieldName,
           message: `Field '${fieldName}' must be one of: ${fieldConfig.enum.join(', ')}`,
-          value
+          value,
         });
       }
 
@@ -169,7 +169,7 @@ export class NativeValidator {
             fieldErrors.push({
               field: fieldName,
               message: rule.message || ruleResult.toString(),
-              value
+              value,
             });
           }
         }
@@ -181,8 +181,9 @@ export class NativeValidator {
         if (customResult === false || typeof customResult === 'string') {
           fieldErrors.push({
             field: fieldName,
-            message: customResult === false ? `Field '${fieldName}' validation failed` : customResult,
-            value
+            message:
+              customResult === false ? `Field '${fieldName}' validation failed` : customResult,
+            value,
           });
         }
       }
@@ -196,7 +197,7 @@ export class NativeValidator {
             errors.push({
               field: `${fieldName}.${nestedError.field}`,
               message: nestedError.message,
-              value: nestedError.value
+              value: nestedError.value,
             });
           });
         } else {
@@ -219,7 +220,7 @@ export class NativeValidator {
           errors.push({
             field: fieldName,
             message: `Field '${fieldName}' is not allowed`,
-            value: data[fieldName]
+            value: data[fieldName],
           });
         }
       }
@@ -228,7 +229,7 @@ export class NativeValidator {
     return {
       valid: errors.length === 0,
       errors,
-      data: errors.length === 0 ? result : undefined
+      data: errors.length === 0 ? result : undefined,
     };
   }
 
@@ -272,7 +273,7 @@ export class NativeValidator {
       return {
         field: fieldName,
         message: `Field '${fieldName}' must be of type ${config.type}`,
-        value
+        value,
       };
     }
 
@@ -291,16 +292,16 @@ export class NativeValidator {
           {
             field: fieldName,
             message: `Field '${fieldName}' is not defined in schema`,
-            value
-          }
-        ]
+            value,
+          },
+        ],
       };
     }
 
     const tempSchema: ValidationSchema = {
       fields: {
-        [fieldName]: fieldConfig
-      }
+        [fieldName]: fieldConfig,
+      },
     };
 
     const tempValidator = new NativeValidator(tempSchema);
@@ -323,8 +324,8 @@ export class NativeValidator {
       ...schema,
       fields: {
         ...this.schema.fields,
-        ...schema.fields
-      }
+        ...schema.fields,
+      },
     };
   }
 }
@@ -332,51 +333,65 @@ export class NativeValidator {
 // Built-in validators
 export const Validators = {
   required: (value: any): boolean => value !== undefined && value !== null && value !== '',
-  
-  minLength: (min: number) => (value: string): boolean | string => {
-    return value.length >= min || `Must be at least ${min} characters`;
-  },
-  
-  maxLength: (max: number) => (value: string): boolean | string => {
-    return value.length <= max || `Must be at most ${max} characters`;
-  },
-  
-  min: (min: number) => (value: number): boolean | string => {
-    return value >= min || `Must be at least ${min}`;
-  },
-  
-  max: (max: number) => (value: number): boolean | string => {
-    return value <= max || `Must be at most ${max}`;
-  },
-  
-  pattern: (pattern: RegExp, message?: string) => (value: string): boolean | string => {
-    return pattern.test(value) || message || `Must match pattern ${pattern}`;
-  },
-  
+
+  minLength:
+    (min: number) =>
+    (value: string): boolean | string => {
+      return value.length >= min || `Must be at least ${min} characters`;
+    },
+
+  maxLength:
+    (max: number) =>
+    (value: string): boolean | string => {
+      return value.length <= max || `Must be at most ${max} characters`;
+    },
+
+  min:
+    (min: number) =>
+    (value: number): boolean | string => {
+      return value >= min || `Must be at least ${min}`;
+    },
+
+  max:
+    (max: number) =>
+    (value: number): boolean | string => {
+      return value <= max || `Must be at most ${max}`;
+    },
+
+  pattern:
+    (pattern: RegExp, message?: string) =>
+    (value: string): boolean | string => {
+      return pattern.test(value) || message || `Must match pattern ${pattern}`;
+    },
+
   email: (value: string): boolean => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
-  
+
   url: (value: string): boolean => /^https?:\/\/.+\..+/.test(value),
-  
+
   custom: (validator: ValidatorFn) => validator,
-  
-  oneOf: (...allowed: any[]) => (value: any): boolean | string => {
-    return allowed.includes(value) || `Must be one of: ${allowed.join(', ')}`;
-  },
-  
+
+  oneOf:
+    (...allowed: any[]) =>
+    (value: any): boolean | string => {
+      return allowed.includes(value) || `Must be one of: ${allowed.join(', ')}`;
+    },
+
   // Async validators
-  asyncEmail: (checkDomain?: boolean) => async (value: string): Promise<boolean | string> => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(value)) return 'Invalid email format';
-    
-    if (checkDomain) {
-      const domain = value.split('@')[1];
-      // Simulate async domain check
-      await new Promise(resolve => setTimeout(resolve, 10));
+  asyncEmail:
+    (checkDomain?: boolean) =>
+    async (value: string): Promise<boolean | string> => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(value)) return 'Invalid email format';
+
+      if (checkDomain) {
+        const domain = value.split('@')[1];
+        // Simulate async domain check
+        await new Promise((resolve) => setTimeout(resolve, 10));
+        return true;
+      }
+
       return true;
-    }
-    
-    return true;
-  }
+    },
 };
 
 export default NativeValidator;

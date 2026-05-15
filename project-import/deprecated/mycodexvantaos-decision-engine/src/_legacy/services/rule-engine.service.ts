@@ -6,13 +6,34 @@ import { randomBytes } from 'node:crypto';
 import { getProviders } from '../providers.js';
 import type * as T from '../types/index.js';
 
-export interface DecisionRule { id: string; name: string; priority: number; conditions: RuleCondition[]; actions: RuleAction[]; enabled: boolean; }
-export interface RuleCondition { field: string; operator: 'eq' | 'neq' | 'gt' | 'lt' | 'gte' | 'lte' | 'in' | 'contains' | 'regex'; value: unknown; }
-export interface RuleAction { type: 'set' | 'notify' | 'route' | 'block' | 'log'; config: Record<string, unknown>; }
-export interface DecisionResult { matched: string[]; actions: RuleAction[]; evaluatedCount: number; duration: number; }
+export interface DecisionRule {
+  id: string;
+  name: string;
+  priority: number;
+  conditions: RuleCondition[];
+  actions: RuleAction[];
+  enabled: boolean;
+}
+export interface RuleCondition {
+  field: string;
+  operator: 'eq' | 'neq' | 'gt' | 'lt' | 'gte' | 'lte' | 'in' | 'contains' | 'regex';
+  value: unknown;
+}
+export interface RuleAction {
+  type: 'set' | 'notify' | 'route' | 'block' | 'log';
+  config: Record<string, unknown>;
+}
+export interface DecisionResult {
+  matched: string[];
+  actions: RuleAction[];
+  evaluatedCount: number;
+  duration: number;
+}
 
 export class RuleEngineService {
-  private get providers() { return getProviders(); }
+  private get providers() {
+    return getProviders();
+  }
 
   async evaluate(facts: Record<string, unknown>): Promise<DecisionResult> {
     const start = Date.now();
@@ -26,8 +47,16 @@ export class RuleEngineService {
         actions.push(...rule.actions);
       }
     }
-    const result: DecisionResult = { matched, actions, evaluatedCount: rules.length, duration: Date.now() - start };
-    this.providers.observability.debug('Rules evaluated', { matched: matched.length, total: rules.length });
+    const result: DecisionResult = {
+      matched,
+      actions,
+      evaluatedCount: rules.length,
+      duration: Date.now() - start,
+    };
+    this.providers.observability.debug('Rules evaluated', {
+      matched: matched.length,
+      total: rules.length,
+    });
     return result;
   }
 
@@ -38,30 +67,54 @@ export class RuleEngineService {
     return entry;
   }
 
-  async getRule(id: string): Promise<DecisionRule | null> { return (await this.providers.stateStore.get<DecisionRule>(`decision:rule:${id}`))?.value ?? null; }
-  async deleteRule(id: string): Promise<boolean> { return this.providers.stateStore.delete(`decision:rule:${id}`); }
+  async getRule(id: string): Promise<DecisionRule | null> {
+    return (
+      (await this.providers.stateStore.get<DecisionRule>(`decision:rule:${id}`))?.value ?? null
+    );
+  }
+  async deleteRule(id: string): Promise<boolean> {
+    return this.providers.stateStore.delete(`decision:rule:${id}`);
+  }
 
-  async listRules(): Promise<DecisionRule[]> { return this.loadRules(); }
+  async listRules(): Promise<DecisionRule[]> {
+    return this.loadRules();
+  }
 
   private async loadRules(): Promise<DecisionRule[]> {
-    const result = await this.providers.stateStore.scan<DecisionRule>({ pattern: 'decision:rule:*', count: 200 });
-    return result.entries.map(e => e.value).filter(r => r.conditions).sort((a, b) => b.priority - a.priority);
+    const result = await this.providers.stateStore.scan<DecisionRule>({
+      pattern: 'decision:rule:*',
+      count: 200,
+    });
+    return result.entries
+      .map((e) => e.value)
+      .filter((r) => r.conditions)
+      .sort((a, b) => b.priority - a.priority);
   }
 
   private evaluateConditions(conditions: RuleCondition[], facts: Record<string, unknown>): boolean {
-    return conditions.every(c => {
+    return conditions.every((c) => {
       const value = facts[c.field];
       switch (c.operator) {
-        case 'eq': return value === c.value;
-        case 'neq': return value !== c.value;
-        case 'gt': return Number(value) > Number(c.value);
-        case 'lt': return Number(value) < Number(c.value);
-        case 'gte': return Number(value) >= Number(c.value);
-        case 'lte': return Number(value) <= Number(c.value);
-        case 'in': return Array.isArray(c.value) && c.value.includes(value);
-        case 'contains': return String(value).includes(String(c.value));
-        case 'regex': return new RegExp(String(c.value)).test(String(value));
-        default: return false;
+        case 'eq':
+          return value === c.value;
+        case 'neq':
+          return value !== c.value;
+        case 'gt':
+          return Number(value) > Number(c.value);
+        case 'lt':
+          return Number(value) < Number(c.value);
+        case 'gte':
+          return Number(value) >= Number(c.value);
+        case 'lte':
+          return Number(value) <= Number(c.value);
+        case 'in':
+          return Array.isArray(c.value) && c.value.includes(value);
+        case 'contains':
+          return String(value).includes(String(c.value));
+        case 'regex':
+          return new RegExp(String(c.value)).test(String(value));
+        default:
+          return false;
       }
     });
   }

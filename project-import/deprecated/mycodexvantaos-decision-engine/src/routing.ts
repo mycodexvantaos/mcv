@@ -1,12 +1,12 @@
-import type { RouteRule, RouteDecision } from "./types";
-import { matchCondition } from "./utils/match";
+import type { RouteRule, RouteDecision } from './types';
+import { matchCondition } from './utils/match';
 
 let counter = 0;
 
 export class RoutingService {
   private routes = new Map<string, RouteRule>();
 
-  addRoute(route: Omit<RouteRule, "id">): RouteRule {
+  addRoute(route: Omit<RouteRule, 'id'>): RouteRule {
     const id = `route-${++counter}`;
     const full: RouteRule = { id, ...route };
     this.routes.set(id, full);
@@ -22,9 +22,7 @@ export class RoutingService {
   }
 
   listRoutes(): RouteRule[] {
-    return Array.from(this.routes.values()).sort(
-      (a, b) => b.priority - a.priority,
-    );
+    return Array.from(this.routes.values()).sort((a, b) => b.priority - a.priority);
   }
 
   resolve(context: Record<string, unknown>): RouteDecision | null {

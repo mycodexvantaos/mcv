@@ -18,7 +18,7 @@ config:
   retry_policy:
     max_retries: 3
     backoff_seconds: 10
-  error_handling: fail_fast  # fail_fast, continue_on_error, collect_errors
+  error_handling: fail_fast # fail_fast, continue_on_error, collect_errors
 
 # DAG Nodes Definition
 nodes:
@@ -168,7 +168,7 @@ edges:
 
 # HITL Configuration
 hitl_config:
-  enabled: false  # No human intervention needed for pure parallel processing
+  enabled: false # No human intervention needed for pure parallel processing
 
 # Metrics and Monitoring
 metrics:

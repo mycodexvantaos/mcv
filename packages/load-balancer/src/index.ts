@@ -20,10 +20,12 @@ export class LoadBalancer {
   private backends: Map<string, Backend> = new Map();
   private strategy: LoadBalancingStrategy;
 
-  constructor(strategy: LoadBalancingStrategy = {
-    name: 'round-robin',
-    select: (backends) => backends[Math.floor(Math.random() * backends.length)]
-  }) {
+  constructor(
+    strategy: LoadBalancingStrategy = {
+      name: 'round-robin',
+      select: (backends) => backends[Math.floor(Math.random() * backends.length)],
+    }
+  ) {
     this.strategy = strategy;
   }
 
@@ -36,7 +38,7 @@ export class LoadBalancer {
   }
 
   getBackend(): Backend | null {
-    const healthyBackends = Array.from(this.backends.values()).filter(b => b.healthy);
+    const healthyBackends = Array.from(this.backends.values()).filter((b) => b.healthy);
     if (healthyBackends.length === 0) return null;
     return this.strategy.select(healthyBackends);
   }
@@ -46,7 +48,7 @@ export class LoadBalancer {
   }
 
   getHealthyBackends(): Backend[] {
-    return Array.from(this.backends.values()).filter(b => b.healthy);
+    return Array.from(this.backends.values()).filter((b) => b.healthy);
   }
 }
 

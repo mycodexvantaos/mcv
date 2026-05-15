@@ -8,7 +8,7 @@ metadata:
   capability: llm
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: "8.1"
+    mycodexvantaos.org/specRef: '8.1'
 spec:
   providerName: native
   isNative: true
@@ -16,7 +16,7 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_LLM_NATIVE
   configSchemaRef: ./config.schema.json
-  description: "Native LLM provider with zero external dependencies. Provides basic text processing and template-based responses as fallback."
+  description: 'Native LLM provider with zero external dependencies. Provides basic text processing and template-based responses as fallback.'
   capabilities:
     - text-generation
     - text-completion
@@ -25,4 +25,4 @@ spec:
   limitations:
     - No advanced reasoning without external model
     - Template-based responses only
-  priority: 100  # Highest priority as fallback
+  priority: 100 # Highest priority as fallback

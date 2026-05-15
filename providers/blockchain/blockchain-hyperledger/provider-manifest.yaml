@@ -8,7 +8,7 @@ metadata:
   capability: blockchain
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: "8.1"
+    mycodexvantaos.org/specRef: '8.1'
 spec:
   providerName: hyperledger
   isNative: false
@@ -16,4 +16,4 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_BLOCKCHAIN
   configSchemaRef: ./config.schema.json
-  description: "Hyperledger Fabric distributed ledger provider for enterprise smart contract execution and immutable audit trails."
+  description: 'Hyperledger Fabric distributed ledger provider for enterprise smart contract execution and immutable audit trails.'

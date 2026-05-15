@@ -1,7 +1,7 @@
-import pino from "pino";
-import { LifecycleManager, Startable } from "../src/lifecycle";
+import pino from 'pino';
+import { LifecycleManager, Startable } from '../src/lifecycle';
 
-const logger = pino({ level: "silent" });
+const logger = pino({ level: 'silent' });
 
 function mockService(): Startable & { started: boolean } {
   return {
@@ -11,18 +11,18 @@ function mockService(): Startable & { started: boolean } {
     },
     async stop() {
       this.started = false;
-    }
+    },
   };
 }
 
-describe("LifecycleManager", () => {
-  it("should start and stop services", async () => {
+describe('LifecycleManager', () => {
+  it('should start and stop services', async () => {
     const manager = new LifecycleManager(logger);
     const a = mockService();
     const b = mockService();
 
-    manager.register("a", a);
-    manager.register("b", b);
+    manager.register('a', a);
+    manager.register('b', b);
 
     await manager.startAll();
     expect(a.started).toBe(true);

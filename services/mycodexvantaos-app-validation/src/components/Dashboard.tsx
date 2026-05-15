@@ -46,9 +46,9 @@ export default function ValidationDashboard() {
   const [isUploading, setIsUploading] = useState(false);
   const [globalError, setGlobalError] = useState<string | null>(null);
 
-  const completedValidations = validations.filter(v => v.status === 'COMPLETED').length;
+  const completedValidations = validations.filter((v) => v.status === 'COMPLETED').length;
   const remainingQuota = user.monthlyQuota - user.usedQuota;
-  const estimatedTimeSaved = completedValidations * 2.17; 
+  const estimatedTimeSaved = completedValidations * 2.17;
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setGlobalError(null);
@@ -56,20 +56,22 @@ export default function ValidationDashboard() {
     if (!files || files.length === 0) return;
 
     const file = files[0];
-    
+
     // Simulate File Size Check
     if (file.size > 50 * 1024 * 1024) {
-       setGlobalError(`File size for "${file.name}" exceeds the 50MB limit.`);
-       return;
+      setGlobalError(`File size for "${file.name}" exceeds the 50MB limit.`);
+      return;
     }
 
     if (remainingQuota <= 0) {
-       setGlobalError("Monthly quota exceeded. Please upgrade your subscription plan to validate more documents.");
-       return;
+      setGlobalError(
+        'Monthly quota exceeded. Please upgrade your subscription plan to validate more documents.'
+      );
+      return;
     }
 
     setIsUploading(true);
-    
+
     // 模拟 Provider 呼叫
     setTimeout(() => {
       const newValidation = {
@@ -78,56 +80,74 @@ export default function ValidationDashboard() {
         status: 'PROCESSING' as const,
         createdAt: new Date().toISOString(),
       };
-      
-      setValidations(prev => [newValidation, ...prev]);
-      setUser(prev => ({ ...prev, usedQuota: prev.usedQuota + 1 }));
+
+      setValidations((prev) => [newValidation, ...prev]);
+      setUser((prev) => ({ ...prev, usedQuota: prev.usedQuota + 1 }));
       setIsUploading(false);
 
       setTimeout(() => {
         // Simulate specific processing failures (e.g. if filename contains 'corrupt' or 'error')
-        const isCorrupt = file.name.toLowerCase().includes('corrupt') || file.name.toLowerCase().includes('error');
-        
+        const isCorrupt =
+          file.name.toLowerCase().includes('corrupt') || file.name.toLowerCase().includes('error');
+
         if (isCorrupt) {
-           setValidations(prev => prev.map(v => 
+          setValidations((prev) =>
+            prev.map((v) =>
               v.id === newValidation.id
-                ? { ...v, status: 'FAILED' as const, errorMessage: 'Processing Failed [ER-001]: The document appears to be corrupted, unreadable, or password protected.' }
+                ? {
+                    ...v,
+                    status: 'FAILED' as const,
+                    errorMessage:
+                      'Processing Failed [ER-001]: The document appears to be corrupted, unreadable, or password protected.',
+                  }
                 : v
-           ));
-           return;
+            )
+          );
+          return;
         }
 
-        setValidations(prev => prev.map(v =>
-          v.id === newValidation.id
-            ? {
-                ...v,
-                status: 'COMPLETED' as const,
-                analysis: {
-                  overallRiskLevel: 'MEDIUM' as const,
-                  confidence: 85,
-                  createdAt: new Date().toISOString(),
-                },
-              }
-            : v
-        ));
+        setValidations((prev) =>
+          prev.map((v) =>
+            v.id === newValidation.id
+              ? {
+                  ...v,
+                  status: 'COMPLETED' as const,
+                  analysis: {
+                    overallRiskLevel: 'MEDIUM' as const,
+                    confidence: 85,
+                    createdAt: new Date().toISOString(),
+                  },
+                }
+              : v
+          )
+        );
       }, 3000);
     }, 1000);
   };
 
   const getRiskColor = (level: string) => {
     switch (level) {
-      case 'LOW': return 'text-green-600 bg-green-50';
-      case 'MEDIUM': return 'text-yellow-600 bg-yellow-50';
-      case 'HIGH': return 'text-red-600 bg-red-50';
-      default: return 'text-gray-600 bg-gray-50';
+      case 'LOW':
+        return 'text-green-600 bg-green-50';
+      case 'MEDIUM':
+        return 'text-yellow-600 bg-yellow-50';
+      case 'HIGH':
+        return 'text-red-600 bg-red-50';
+      default:
+        return 'text-gray-600 bg-gray-50';
     }
   };
 
   const getRiskText = (level: string) => {
     switch (level) {
-      case 'LOW': return 'LOW RISK';
-      case 'MEDIUM': return 'MEDIUM RISK';
-      case 'HIGH': return 'HIGH RISK';
-      default: return 'UNKNOWN';
+      case 'LOW':
+        return 'LOW RISK';
+      case 'MEDIUM':
+        return 'MEDIUM RISK';
+      case 'HIGH':
+        return 'HIGH RISK';
+      default:
+        return 'UNKNOWN';
     }
   };
 
@@ -162,7 +182,6 @@ export default function ValidationDashboard() {
       </nav>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
         {globalError && (
           <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-md flex items-start shadow-sm">
             <AlertCircle className="w-5 h-5 text-red-600 mr-2 flex-shrink-0 mt-0.5" />
@@ -191,7 +210,7 @@ export default function ValidationDashboard() {
             </div>
             <div className="mt-2">
               <div className="bg-gray-200 rounded-full h-2">
-                <div 
+                <div
                   className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                   style={{ width: `${(user.usedQuota / user.monthlyQuota) * 100}%` }}
                 />
@@ -256,9 +275,7 @@ export default function ValidationDashboard() {
                 <>
                   <Upload className="w-12 h-12 text-blue-600 mb-4" />
                   <p className="text-lg font-medium text-gray-900">Upload to Validate</p>
-                  <p className="text-sm text-gray-600 mt-2">
-                    PDF, Word up to 50 MB
-                  </p>
+                  <p className="text-sm text-gray-600 mt-2">PDF, Word up to 50 MB</p>
                   <button className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
                     Browse Files
                   </button>
@@ -274,19 +291,15 @@ export default function ValidationDashboard() {
           </div>
           <div className="divide-y divide-gray-200">
             {validations.length === 0 ? (
-              <div className="px-6 py-12 text-center text-gray-500">
-                No validations found
-              </div>
+              <div className="px-6 py-12 text-center text-gray-500">No validations found</div>
             ) : (
-              validations.map(val => (
+              validations.map((val) => (
                 <div key={val.id} className="px-6 py-4 hover:bg-gray-50 transition-colors">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4 flex-1">
                       <FileText className="w-10 h-10 text-gray-400" />
                       <div className="flex-1">
-                        <p className="text-sm font-medium text-gray-900">
-                          {val.originalFileName}
-                        </p>
+                        <p className="text-sm font-medium text-gray-900">{val.originalFileName}</p>
                         <p className="text-xs text-gray-500 mt-1">
                           Uploaded {formatDate(val.createdAt)}
                         </p>
@@ -302,7 +315,9 @@ export default function ValidationDashboard() {
                       ) : val.status === 'COMPLETED' && val.analysis ? (
                         <>
                           <div className="flex items-center space-x-2">
-                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${getRiskColor(val.analysis.overallRiskLevel)}`}>
+                            <span
+                              className={`px-3 py-1 rounded-full text-xs font-medium ${getRiskColor(val.analysis.overallRiskLevel)}`}
+                            >
                               {getRiskText(val.analysis.overallRiskLevel)}
                             </span>
                             <span className="text-xs text-gray-500">
@@ -319,7 +334,7 @@ export default function ValidationDashboard() {
                             <AlertCircle className="w-5 h-5 text-red-600" />
                             <span className="text-sm text-red-600 font-medium">Failed</span>
                           </div>
-                          {('errorMessage' in val) && val.errorMessage && (
+                          {'errorMessage' in val && val.errorMessage && (
                             <span className="text-xs text-red-500 max-w-xs text-right whitespace-normal">
                               {val.errorMessage as string}
                             </span>

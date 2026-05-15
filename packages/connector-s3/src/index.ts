@@ -50,7 +50,7 @@ export class S3Connector {
       region: config.region || 'us-east-1',
       endpoint: config.endpoint || 'https://s3.amazonaws.com',
       bucket: config.bucket,
-      timeout: config.timeout || 30000
+      timeout: config.timeout || 30000,
     };
   }
 
@@ -103,19 +103,19 @@ export class S3Connector {
 
     const buffer = typeof data === 'string' ? Buffer.from(data) : data;
     const bucketStorage = this.getBucket(bucket);
-    
+
     const object: S3Object = {
       key,
       size: buffer.length,
       lastModified: new Date(),
       etag: this.generateETag(buffer),
       contentType: options?.contentType || 'application/octet-stream',
-      metadata: options?.metadata || {}
+      metadata: options?.metadata || {},
     };
 
     bucketStorage.set(key, {
       data: buffer,
-      metadata: object
+      metadata: object,
     });
 
     return object;
@@ -124,11 +124,7 @@ export class S3Connector {
   /**
    * Download object from S3
    */
-  async download(
-    bucket: string,
-    key: string,
-    options?: S3DownloadOptions
-  ): Promise<Buffer> {
+  async download(bucket: string, key: string, options?: S3DownloadOptions): Promise<Buffer> {
     if (!this.connected) {
       throw new Error('Not connected to S3');
     }
@@ -249,19 +245,19 @@ export class S3Connector {
     }
 
     const destStorage = this.getBucket(destBucket);
-    
+
     const metadata: S3Object = {
       key: destKey,
       size: sourceObject.data.length,
       lastModified: new Date(),
       etag: this.generateETag(sourceObject.data),
       contentType: sourceObject.metadata.contentType,
-      metadata: { ...sourceObject.metadata.metadata }
+      metadata: { ...sourceObject.metadata.metadata },
     };
 
     destStorage.set(destKey, {
       data: Buffer.from(sourceObject.data),
-      metadata
+      metadata,
     });
 
     return metadata;
@@ -333,7 +329,9 @@ export class S3Connector {
   /**
    * Get bucket info
    */
-  async getBucketInfo(bucket: string): Promise<{ name: string; objectCount: number; size: number }> {
+  async getBucketInfo(
+    bucket: string
+  ): Promise<{ name: string; objectCount: number; size: number }> {
     if (!this.connected) {
       throw new Error('Not connected to S3');
     }
@@ -350,7 +348,7 @@ export class S3Connector {
     return {
       name: bucket,
       objectCount,
-      size: totalSize
+      size: totalSize,
     };
   }
 

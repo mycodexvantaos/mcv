@@ -22,9 +22,9 @@ export class SSLManager {
       cert: 'mock-certificate',
       key: 'mock-private-key',
       expiresAt: Date.now() + 90 * 24 * 60 * 60 * 1000, // 90 days
-      autoRenew: true
+      autoRenew: true,
     };
-    
+
     this.certificates.set(cert.id, cert);
     return cert;
   }
@@ -42,7 +42,8 @@ export class SSLManager {
     const expiringSoon: Certificate[] = [];
 
     for (const cert of this.certificates.values()) {
-      if (cert.expiresAt - now < 7 * 24 * 60 * 60 * 1000) { // 7 days
+      if (cert.expiresAt - now < 7 * 24 * 60 * 60 * 1000) {
+        // 7 days
         expiringSoon.push(cert);
       }
     }
@@ -51,7 +52,7 @@ export class SSLManager {
   }
 
   getCerificate(domain: string): Certificate | undefined {
-    return Array.from(this.certificates.values()).find(c => c.domain === domain);
+    return Array.from(this.certificates.values()).find((c) => c.domain === domain);
   }
 }
 

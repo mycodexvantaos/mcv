@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { GitBranch, Save, RefreshCw, Layers } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { GitBranch, Save, RefreshCw, Layers } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 export default function ArchitecturePage() {
   const { toast } = useToast();
@@ -22,8 +22,8 @@ database "Arch Store" {
 
   const handleSync = () => {
     toast({
-      title: "Sync Initiated",
-      description: "Pushing architecture as code to GitLab repository...",
+      title: 'Sync Initiated',
+      description: 'Pushing architecture as code to GitLab repository...',
     });
   };
 
@@ -32,7 +32,9 @@ database "Arch Store" {
       <div className="flex items-center justify-between">
         <div className="flex flex-col space-y-1">
           <h1 className="text-3xl font-bold font-headline">Architecture Definition</h1>
-          <p className="text-muted-foreground">Define your system as code for meticulous version control.</p>
+          <p className="text-muted-foreground">
+            Define your system as code for meticulous version control.
+          </p>
         </div>
         <div className="flex items-center gap-3">
           <Button variant="outline" className="border-primary/40" onClick={handleSync}>
@@ -73,9 +75,11 @@ database "Arch Store" {
           <CardContent className="flex-1 flex items-center justify-center p-0">
             <div className="w-full h-full bg-sidebar-background rounded-b-lg flex flex-col items-center justify-center text-muted-foreground p-8 text-center space-y-4">
               <div className="w-full max-w-md aspect-video border-2 border-dashed border-border/60 rounded-xl flex items-center justify-center">
-                 <p className="text-xs uppercase tracking-tighter">Rendering Engine Active</p>
+                <p className="text-xs uppercase tracking-tighter">Rendering Engine Active</p>
               </div>
-              <p className="text-sm max-w-xs">Visualization updates automatically as you define components and data flows.</p>
+              <p className="text-sm max-w-xs">
+                Visualization updates automatically as you define components and data flows.
+              </p>
             </div>
           </CardContent>
         </Card>

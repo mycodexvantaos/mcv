@@ -59,22 +59,22 @@
 
 ## Provider Dependencies
 
-| Provider | Usage |
-|---|---|
-| DatabaseProvider | Workflow definitions, execution history, state |
-| StateStoreProvider | Active workflow state and step progress |
-| QueueProvider | Step execution queue and event triggers |
-| ObservabilityProvider | Workflow metrics, step duration, success rates |
-| NotificationProvider | Workflow completion/failure notifications |
-| All other Providers | Individual steps may invoke any platform capability |
+| Provider              | Usage                                               |
+| --------------------- | --------------------------------------------------- |
+| DatabaseProvider      | Workflow definitions, execution history, state      |
+| StateStoreProvider    | Active workflow state and step progress             |
+| QueueProvider         | Step execution queue and event triggers             |
+| ObservabilityProvider | Workflow metrics, step duration, success rates      |
+| NotificationProvider  | Workflow completion/failure notifications           |
+| All other Providers   | Individual steps may invoke any platform capability |
 
 ## Operational Modes
 
-| Mode | Behavior |
-|---|---|
-| **Native** | In-process step execution, SQLite state, local event triggers |
+| Mode          | Behavior                                                        |
+| ------------- | --------------------------------------------------------------- |
+| **Native**    | In-process step execution, SQLite state, local event triggers   |
 | **Connected** | Distributed step execution, PostgreSQL state, external triggers |
-| **Hybrid** | Local orchestration with external step execution (sandboxes) |
+| **Hybrid**    | Local orchestration with external step execution (sandboxes)    |
 
 ## Directory Structure
 

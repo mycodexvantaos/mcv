@@ -57,11 +57,11 @@ Unregister Service → Remove from database + clear heartbeat
 
 ## Provider Usage Map
 
-| Service | database | stateStore | queue | observability |
-|---------|----------|------------|-------|---------------|
-| OrchestrationService | runs | status | dispatch | trace |
-| RegistryService | registry | heartbeats | — | log |
-| StateTrackingService | history | state | — | log |
+| Service              | database | stateStore | queue    | observability |
+| -------------------- | -------- | ---------- | -------- | ------------- |
+| OrchestrationService | runs     | status     | dispatch | trace         |
+| RegistryService      | registry | heartbeats | —        | log           |
+| StateTrackingService | history  | state      | —        | log           |
 
 ---
 

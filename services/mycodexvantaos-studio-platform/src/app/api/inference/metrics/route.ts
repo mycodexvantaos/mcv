@@ -30,10 +30,15 @@ export async function GET(req: NextRequest) {
   const summary = {
     totalRequests: series.reduce((s, r) => s + r.requestsPerMin * 60, 0),
     avgLatencyP95Ms: Math.round(series.reduce((s, r) => s + r.latencyP95Ms, 0) / series.length),
-    avgErrorRate: parseFloat((series.reduce((s, r) => s + r.errorRate, 0) / series.length).toFixed(4)),
+    avgErrorRate: parseFloat(
+      (series.reduce((s, r) => s + r.errorRate, 0) / series.length).toFixed(4)
+    ),
     totalCostUsd: parseFloat(series.reduce((s, r) => s + r.costUsd, 0).toFixed(2)),
-    sloBreaches: series.filter(r => r.latencyP95Ms > 200).length,
+    sloBreaches: series.filter((r) => r.latencyP95Ms > 200).length,
   };
 
-  return NextResponse.json({ success: true, data: { series, summary, modelId: modelId ?? 'all', hours } });
+  return NextResponse.json({
+    success: true,
+    data: { series, summary, modelId: modelId ?? 'all', hours },
+  });
 }

@@ -1,4 +1,4 @@
-import type { Startable } from "../lifecycle";
+import type { Startable } from '../lifecycle';
 
 export interface RuntimeInfo {
   nodeVersion: string;
@@ -21,7 +21,7 @@ export class RuntimeService implements Startable {
     return {
       nodeVersion: process.version,
       platform: process.platform,
-      pid: process.pid
+      pid: process.pid,
     };
   }
 

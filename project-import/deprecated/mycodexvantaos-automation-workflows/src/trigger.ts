@@ -1,11 +1,11 @@
-import type { Trigger } from "./types";
+import type { Trigger } from './types';
 
 let counter = 0;
 
 export class TriggerService {
   private triggers = new Map<string, Trigger>();
 
-  register(type: Trigger["type"], config: Record<string, unknown>, pipelineId: string): Trigger {
+  register(type: Trigger['type'], config: Record<string, unknown>, pipelineId: string): Trigger {
     const id = `trig-${++counter}`;
     const trigger: Trigger = { id, type, config, pipelineId, enabled: true };
     this.triggers.set(id, trigger);
@@ -28,7 +28,7 @@ export class TriggerService {
     return this.listTriggers().filter((t) => t.pipelineId === pipelineId);
   }
 
-  listByType(type: Trigger["type"]): Trigger[] {
+  listByType(type: Trigger['type']): Trigger[] {
     return this.listTriggers().filter((t) => t.type === type);
   }
 
@@ -47,8 +47,6 @@ export class TriggerService {
   }
 
   evaluate(event: { type: string; payload: Record<string, unknown> }): Trigger[] {
-    return this.listTriggers().filter(
-      (t) => t.enabled && t.type === event.type,
-    );
+    return this.listTriggers().filter((t) => t.enabled && t.type === event.type);
   }
 }

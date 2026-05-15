@@ -29,14 +29,28 @@ export interface ScenarioAnalysisOutput {
     dataLossRisk: boolean;
     complianceImpact: string[];
   };
-  remediationPlan: Array<{ step: number; action: string; owner: string; estimatedDurationMin: number }>;
+  remediationPlan: Array<{
+    step: number;
+    action: string;
+    owner: string;
+    estimatedDurationMin: number;
+  }>;
   preventionMeasures: string[];
   generatedAt: string;
   aiProvider: string;
 }
 
-export async function scenarioAnalysisFlow(input: ScenarioAnalysisInput): Promise<ScenarioAnalysisOutput> {
-  const { scenarioId, scenarioName, category, severity, observedBehavior, affectedServices = [] } = input;
+export async function scenarioAnalysisFlow(
+  input: ScenarioAnalysisInput
+): Promise<ScenarioAnalysisOutput> {
+  const {
+    scenarioId,
+    scenarioName,
+    category,
+    severity,
+    observedBehavior,
+    affectedServices = [],
+  } = input;
 
   const prompt = `You are the MyCodeXvantaOS Scenario Analysis Engine.
 
@@ -63,24 +77,45 @@ Provide:
   }
 
   const riskMap: Record<string, 'critical' | 'high' | 'medium' | 'low'> = {
-    critical: 'critical', high: 'high', medium: 'medium', low: 'low',
+    critical: 'critical',
+    high: 'high',
+    medium: 'medium',
+    low: 'low',
   };
 
   return {
     flowId: `scenario-analysis-${Date.now()}`,
     scenarioId,
     riskLevel: riskMap[severity] ?? 'medium',
-    rootCause: rootCause || `Root cause analysis pending — ${category} scenario requires manual investigation.`,
+    rootCause:
+      rootCause ||
+      `Root cause analysis pending — ${category} scenario requires manual investigation.`,
     impactAssessment: {
-      affectedServices: affectedServices.length > 0 ? affectedServices : ['mycodexvantaos-core-gateway'],
+      affectedServices:
+        affectedServices.length > 0 ? affectedServices : ['mycodexvantaos-core-gateway'],
       estimatedDowntimeMin: severity === 'critical' ? 15 : severity === 'high' ? 5 : 1,
       dataLossRisk: severity === 'critical',
       complianceImpact: severity === 'critical' ? ['SOC2-CC7.2', 'ISO27001-A.17'] : [],
     },
     remediationPlan: [
-      { step: 1, action: 'Isolate affected service and enable circuit breaker', owner: 'on-call-sre', estimatedDurationMin: 2 },
-      { step: 2, action: 'Trigger ArgoCD rollback to last known-good revision', owner: 'platform-team', estimatedDurationMin: 5 },
-      { step: 3, action: 'Validate health checks and re-enable traffic routing', owner: 'on-call-sre', estimatedDurationMin: 3 },
+      {
+        step: 1,
+        action: 'Isolate affected service and enable circuit breaker',
+        owner: 'on-call-sre',
+        estimatedDurationMin: 2,
+      },
+      {
+        step: 2,
+        action: 'Trigger ArgoCD rollback to last known-good revision',
+        owner: 'platform-team',
+        estimatedDurationMin: 5,
+      },
+      {
+        step: 3,
+        action: 'Validate health checks and re-enable traffic routing',
+        owner: 'on-call-sre',
+        estimatedDurationMin: 3,
+      },
     ],
     preventionMeasures: [
       `Add ${category} scenario to pre-deployment gate in CI/CD pipeline`,

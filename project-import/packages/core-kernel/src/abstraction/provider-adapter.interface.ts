@@ -1,6 +1,6 @@
 /**
  * Provider Adapter Interface
- * 
+ *
  * Defines the contract for provider adapters that bridge concrete provider
  * implementations with the standardized provider abstraction layer. This enables
  * cloud-agnostic provider selection and runtime mode switching.

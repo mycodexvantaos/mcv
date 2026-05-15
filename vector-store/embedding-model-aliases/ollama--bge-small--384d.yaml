@@ -12,4 +12,4 @@ spec:
   dimension: 384
   providerInstance: embedding-ollama
   maxTokens: 512
-  description: "Ollama BGE-small. Lightweight, fast, 384 dimensions."
+  description: 'Ollama BGE-small. Lightweight, fast, 384 dimensions.'

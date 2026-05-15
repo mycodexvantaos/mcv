@@ -1,1 +1,1 @@
-export type { ApiResponse, PaginatedResponse } from "./api.types";
+export type { ApiResponse, PaginatedResponse } from './api.types';

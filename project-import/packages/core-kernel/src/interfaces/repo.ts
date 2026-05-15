@@ -1,10 +1,10 @@
 /**
  * CodexvantaOS — RepoProvider
- * 
+ *
  * Abstract interface for source code repository operations.
  * Native mode: local Git operations via CLI (zero API dependencies)
  * External mode: GitHub API, GitLab API, Bitbucket API, Gitea, etc.
- * 
+ *
  * Covers: repo CRUD, branch management, commit inspection,
  *         PR/MR workflows, webhook management, file operations.
  */
@@ -13,7 +13,7 @@
 
 export interface RepoInfo {
   name: string;
-  fullName: string;          // e.g. "org/repo-name"
+  fullName: string; // e.g. "org/repo-name"
   description?: string;
   defaultBranch: string;
   visibility: 'public' | 'private' | 'internal';
@@ -21,7 +21,7 @@ export interface RepoInfo {
   sshUrl?: string;
   createdAt: number;
   updatedAt: number;
-  size?: number;             // KB
+  size?: number; // KB
   language?: string;
   topics?: string[];
 }
@@ -46,7 +46,7 @@ export interface CommitInfo {
 
 export interface FileContent {
   path: string;
-  content: string;           // UTF-8 decoded
+  content: string; // UTF-8 decoded
   encoding: 'utf-8' | 'base64';
   sha: string;
   size: number;
@@ -84,7 +84,7 @@ export interface CreatePullRequestInput {
 export interface WebhookConfig {
   id?: string;
   url: string;
-  events: string[];          // e.g. ['push', 'pull_request']
+  events: string[]; // e.g. ['push', 'pull_request']
   active: boolean;
   secret?: string;
 }
@@ -109,8 +109,8 @@ export interface RepoHealth {
   mode: 'native' | 'external';
   provider: string;
   repoCount?: number;
-  rateLimitRemaining?: number;   // for API-based providers
-  rateLimitReset?: number;       // epoch sec
+  rateLimitRemaining?: number; // for API-based providers
+  rateLimitReset?: number; // epoch sec
   details?: Record<string, unknown>;
 }
 
@@ -127,7 +127,10 @@ export interface RepoProvider {
 
   getRepo(repoName: string): Promise<RepoInfo | null>;
   listRepos(options?: RepoListOptions): Promise<RepoInfo[]>;
-  createRepo?(name: string, options?: { description?: string; visibility?: 'public' | 'private'; autoInit?: boolean }): Promise<RepoInfo>;
+  createRepo?(
+    name: string,
+    options?: { description?: string; visibility?: 'public' | 'private'; autoInit?: boolean }
+  ): Promise<RepoInfo>;
   deleteRepo?(repoName: string): Promise<void>;
 
   // ── Branch Management ───────────────────────────────────────────────────
@@ -140,20 +143,41 @@ export interface RepoProvider {
   // ── Commit Inspection ───────────────────────────────────────────────────
 
   getCommit(repoName: string, sha: string): Promise<CommitInfo | null>;
-  listCommits(repoName: string, options?: { branch?: string; since?: number; until?: number; limit?: number }): Promise<CommitInfo[]>;
+  listCommits(
+    repoName: string,
+    options?: { branch?: string; since?: number; until?: number; limit?: number }
+  ): Promise<CommitInfo[]>;
 
   // ── File Operations ─────────────────────────────────────────────────────
 
   getFile(repoName: string, path: string, ref?: string): Promise<FileContent | null>;
-  putFile(repoName: string, path: string, content: string, message: string, options?: { branch?: string; sha?: string }): Promise<CommitInfo>;
-  deleteFile(repoName: string, path: string, message: string, options?: { branch?: string; sha?: string }): Promise<CommitInfo>;
+  putFile(
+    repoName: string,
+    path: string,
+    content: string,
+    message: string,
+    options?: { branch?: string; sha?: string }
+  ): Promise<CommitInfo>;
+  deleteFile(
+    repoName: string,
+    path: string,
+    message: string,
+    options?: { branch?: string; sha?: string }
+  ): Promise<CommitInfo>;
 
   // ── Pull Requests / Merge Requests ──────────────────────────────────────
 
-  listPullRequests(repoName: string, options?: { state?: PullRequestState; limit?: number }): Promise<PullRequest[]>;
+  listPullRequests(
+    repoName: string,
+    options?: { state?: PullRequestState; limit?: number }
+  ): Promise<PullRequest[]>;
   getPullRequest(repoName: string, prNumber: number): Promise<PullRequest | null>;
   createPullRequest(repoName: string, input: CreatePullRequestInput): Promise<PullRequest>;
-  mergePullRequest(repoName: string, prNumber: number, options?: { method?: 'merge' | 'squash' | 'rebase'; message?: string }): Promise<CommitInfo>;
+  mergePullRequest(
+    repoName: string,
+    prNumber: number,
+    options?: { method?: 'merge' | 'squash' | 'rebase'; message?: string }
+  ): Promise<CommitInfo>;
   closePullRequest?(repoName: string, prNumber: number): Promise<void>;
 
   // ── Tags ────────────────────────────────────────────────────────────────

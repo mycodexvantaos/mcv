@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/auth/keycloak/config.schema.json",
   "title": "auth-keycloak Configuration",
   "type": "object",
-  "required": [
-    "serverUrl"
-  ],
+  "required": ["serverUrl"],
   "properties": {
     "serverUrl": {
       "type": "string",

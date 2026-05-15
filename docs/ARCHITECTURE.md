@@ -111,17 +111,20 @@ MyCodeXvantaOS implements a six-layer architecture model that provides clear sep
 **Purpose:** Application development and UI generation tools
 
 **Components:**
+
 - `packages/builder` - Core builder framework
 - `packages/ui-generator` - UI/UX generation capabilities
 - `packages/studio-platform` - Development studio platform
 
 **Responsibilities:**
+
 - Application scaffolding and code generation
 - UI component generation and templating
 - Development tooling and IDE integration
 - Build pipeline orchestration
 
 **Key Services:**
+
 - mycodexvantaos-app-dev-studio - Development studio service
 - mycodexvantaos-studio-platform - Platform studio interface
 
@@ -130,16 +133,19 @@ MyCodeXvantaOS implements a six-layer architecture model that provides clear sep
 **Purpose:** Application runtime and execution environment
 
 **Components:**
+
 - `packages/runtime` - Runtime framework and execution engine
 - `packages/execution` - Task execution and workflow orchestration
 
 **Responsibilities:**
+
 - Application lifecycle management
 - Request handling and routing
 - Workflow execution and coordination
 - Runtime configuration and environment management
 
 **Key Services:**
+
 - mycodexvantaos-core-kernel - Core runtime kernel
 - mycodexvantaos-core-gateway - API gateway and routing
 
@@ -148,6 +154,7 @@ MyCodeXvantaOS implements a six-layer architecture model that provides clear sep
 **Purpose:** Core platform services providing essential capabilities
 
 **Components:**
+
 - Database services (relational, NoSQL)
 - Storage services (object, file)
 - Authentication and authorization
@@ -158,6 +165,7 @@ MyCodeXvantaOS implements a six-layer architecture model that provides clear sep
 - Observability services
 
 **Responsibilities:**
+
 - Provide foundational platform capabilities
 - Implement core business logic
 - Handle data persistence and retrieval
@@ -165,6 +173,7 @@ MyCodeXvantaOS implements a six-layer architecture model that provides clear sep
 - Enable observability and monitoring
 
 **Key Services:**
+
 - mycodexvantaos-core-auth - Authentication and authorization
 - mycodexvantaos-core-config - Configuration management
 - mycodexvantaos-data-graph - Graph database service
@@ -182,16 +191,19 @@ MyCodeXvantaOS implements a six-layer architecture model that provides clear sep
 **Purpose:** Integration with external systems and providers
 
 **Components:**
+
 - `packages/providers` - Provider registry and integration
 - `packages/service-discovery` - Service discovery mechanism
 
 **Responsibilities:**
+
 - Manage provider integrations
 - Abstract external service access
 - Enable service discovery and registration
 - Handle multi-cloud and hybrid deployments
 
 **Key Capabilities:**
+
 - Database providers (PostgreSQL, SQLite, etc.)
 - Vector store providers (PGVector, Qdrant, etc.)
 - LLM providers (OpenAI, Ollama, etc.)
@@ -202,16 +214,19 @@ MyCodeXvantaOS implements a six-layer architecture model that provides clear sep
 **Purpose:** Application deployment and orchestration
 
 **Components:**
+
 - `packages/deployment` - Deployment engine and orchestration
 - `services/` - Deployable microservices (25+ services)
 
 **Responsibilities:**
+
 - Deploy and manage applications
 - Handle service scaling and load balancing
 - Manage deployment pipelines
 - Coordinate service updates and rollbacks
 
 **Key Services:**
+
 - mycodexvantaos-app-dev-studio - Launch and deployment service
 - mycodexvantaos-app-validation - Application validation
 - mycodexvantaos-platform-validation - Platform validation
@@ -222,10 +237,12 @@ MyCodeXvantaOS implements a six-layer architecture model that provides clear sep
 **Purpose:** Platform governance, compliance, and policy management
 
 **Components:**
+
 - `governance/` - Governance specifications and policies
 - `ci/` - CI/CD rules and validation
 
 **Governance Components:**
+
 - `platform-governance-spec.yaml` - Platform specification
 - `provider-registry.yaml` - Provider registry
 - `capability-set.yaml` - Capability definitions
@@ -234,6 +251,7 @@ MyCodeXvantaOS implements a six-layer architecture model that provides clear sep
 - `exceptions.yaml` - Exception handling
 
 **Responsibilities:**
+
 - Define and enforce platform standards
 - Manage compliance and audit trails
 - Control naming conventions and identity
@@ -545,6 +563,7 @@ The CI pipeline enforces:
 MyCodeXvantaOS provides a comprehensive, well-architected platform for building modern applications with strong governance, security, and scalability. The six-layer architecture ensures clear separation of concerns while maintaining flexibility and extensibility.
 
 For more information, refer to:
+
 - Platform Governance Specification: `governance/platform-governance-spec.yaml`
 - Capability Set: `governance/capability-set.yaml`
 - Provider Registry: `governance/provider-registry.yaml`

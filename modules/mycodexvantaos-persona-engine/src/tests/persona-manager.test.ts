@@ -1,13 +1,13 @@
 /**
  * MyCodeXvantaOS Persona Engine - Persona Manager Tests
- * 
+ *
  * Unit tests for the PersonaManager class.
  */
 
-import { 
-  PersonaManager, 
-  getDefaultPersonaManager, 
-  resetDefaultPersonaManager 
+import {
+  PersonaManager,
+  getDefaultPersonaManager,
+  resetDefaultPersonaManager,
 } from '../core/persona-manager';
 import type { PersonaProfile, PersonaArchetype } from '../types';
 
@@ -43,7 +43,7 @@ describe('PersonaManager', () => {
     it('should register a persona profile', () => {
       const profile = createTestProfile('test-persona-1', 'disrupter');
       manager.registerPersona(profile);
-      
+
       const retrieved = manager.getPersona(profile.urn);
       expect(retrieved).toBeDefined();
       expect(retrieved?.name).toBe(profile.name);
@@ -52,7 +52,7 @@ describe('PersonaManager', () => {
     it('should throw error for duplicate URN', () => {
       const profile = createTestProfile('duplicate-test', 'disrupter');
       manager.registerPersona(profile);
-      
+
       expect(() => {
         manager.registerPersona(profile);
       }).toThrow();
@@ -63,10 +63,10 @@ describe('PersonaManager', () => {
     it('should remove a registered persona', () => {
       const profile = createTestProfile('to-remove', 'analyst');
       manager.registerPersona(profile);
-      
+
       const removed = manager.unregisterPersona(profile.urn);
       expect(removed).toBe(true);
-      
+
       const retrieved = manager.getPersona(profile.urn);
       expect(retrieved).toBeUndefined();
     });
@@ -81,7 +81,7 @@ describe('PersonaManager', () => {
     it('should return registered persona', () => {
       const profile = createTestProfile('get-test', 'critic');
       manager.registerPersona(profile);
-      
+
       const retrieved = manager.getPersona(profile.urn);
       expect(retrieved).toEqual(profile);
     });
@@ -97,7 +97,7 @@ describe('PersonaManager', () => {
       manager.registerPersona(createTestProfile('all-1', 'disrupter'));
       manager.registerPersona(createTestProfile('all-2', 'analyst'));
       manager.registerPersona(createTestProfile('all-3', 'critic'));
-      
+
       const all = manager.getAllPersonas();
       expect(all.length).toBe(3);
     });
@@ -113,11 +113,11 @@ describe('PersonaManager', () => {
       manager.registerPersona(createTestProfile('arch-1', 'disrupter'));
       manager.registerPersona(createTestProfile('arch-2', 'disrupter'));
       manager.registerPersona(createTestProfile('arch-3', 'analyst'));
-      
+
       const disrupters = manager.getPersonasByArchetype('disrupter');
       expect(disrupters.length).toBe(2);
-      
-      disrupters.forEach(p => {
+
+      disrupters.forEach((p) => {
         expect(p.archetype).toBe('disrupter');
       });
     });
@@ -127,7 +127,7 @@ describe('PersonaManager', () => {
     it('should create and return engine for persona', () => {
       const profile = createTestProfile('engine-test', 'disrupter');
       manager.registerPersona(profile);
-      
+
       const engine = manager.getEngine(profile.urn);
       expect(engine).toBeDefined();
       expect(engine?.getPersona().urn).toBe(profile.urn);
@@ -141,10 +141,10 @@ describe('PersonaManager', () => {
     it('should track usage statistics', () => {
       const profile = createTestProfile('usage-test', 'analyst');
       manager.registerPersona(profile);
-      
+
       manager.getEngine(profile.urn);
       manager.getEngine(profile.urn);
-      
+
       const stats = manager.getStats();
       expect(stats.mostUsed).toContain(profile.urn);
     });
@@ -200,7 +200,7 @@ describe('PersonaManager', () => {
       });
 
       expect(profile.urn).toBe('urn:mycodexvantaos:persona:quick-create');
-      
+
       const retrieved = manager.getPersona(profile.urn);
       expect(retrieved).toBeDefined();
     });
@@ -210,7 +210,7 @@ describe('PersonaManager', () => {
     it('should update existing persona', () => {
       const profile = createTestProfile('update-test', 'disrupter');
       manager.registerPersona(profile);
-      
+
       const updated = manager.updatePersona(profile.urn, {
         description: 'Updated description',
       });
@@ -230,7 +230,7 @@ describe('PersonaManager', () => {
   describe('processWithPersona', () => {
     it('should process input with persona', () => {
       manager.registerPersona(createTestProfile('process-test', 'disrupter'));
-      
+
       const result = manager.processWithPersona(
         'urn:mycodexvantaos:persona:process-test',
         'I feel like everything will be fine'
@@ -294,7 +294,7 @@ describe('PersonaManager', () => {
 
     it('should report errors for invalid JSON', () => {
       const result = manager.importProfiles('invalid json');
-      
+
       expect(result.imported).toBe(0);
       expect(result.errors.length).toBeGreaterThan(0);
     });
@@ -348,24 +348,27 @@ describe('PersonaManager', () => {
       const stats = smallCacheManager.getStats();
       expect(stats.activeEngines).toBeLessThanOrEqual(2);
     });
-  
 
-      it('should handle processing error gracefully', () => {
-        const profile = createTestProfile('error-test', 'analyst');
-        manager.registerPersona(profile);
-        
-        // Process with valid persona should succeed
-        const result = manager.processWithPersona('urn:mycodexvantaos:persona:error-test', 'test input');
-        expect(result.success).toBe(true);
-      });
+    it('should handle processing error gracefully', () => {
+      const profile = createTestProfile('error-test', 'analyst');
+      manager.registerPersona(profile);
 
-      it('should get available archetypes', () => {
-        const archetypes = manager.getAvailableArchetypes();
-        expect(archetypes).toContain('disrupter');
-        expect(archetypes).toContain('analyst');
-        expect(archetypes).toContain('mediator');
-        expect(archetypes.length).toBeGreaterThan(5);
-      });});
+      // Process with valid persona should succeed
+      const result = manager.processWithPersona(
+        'urn:mycodexvantaos:persona:error-test',
+        'test input'
+      );
+      expect(result.success).toBe(true);
+    });
+
+    it('should get available archetypes', () => {
+      const archetypes = manager.getAvailableArchetypes();
+      expect(archetypes).toContain('disrupter');
+      expect(archetypes).toContain('analyst');
+      expect(archetypes).toContain('mediator');
+      expect(archetypes.length).toBeGreaterThan(5);
+    });
+  });
 });
 
 // Helper function to create test profiles

@@ -34,7 +34,7 @@ describe('Scheduler', () => {
 
       scheduler.schedule('test-job', 10, handler);
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(executed).toBe(true);
     });
@@ -62,13 +62,13 @@ describe('Scheduler', () => {
 
       const job = scheduler.schedule('test-job', 10, handler);
 
-      await new Promise(resolve => setTimeout(resolve, 30));
+      await new Promise((resolve) => setTimeout(resolve, 30));
 
       scheduler.stop(job.id);
 
       const initialCount = executionCount;
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       expect(executionCount).toBe(initialCount);
     });

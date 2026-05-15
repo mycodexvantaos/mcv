@@ -7,7 +7,7 @@ metadata:
     app: mycodexvantaos-core-main
     part-of: mycodexvantaos
 data:
-  NODE_ENV: "production"
-  SERVICE_NAME: "mycodexvantaos-core-main"
-  PORT: "3000"
-  LOG_LEVEL: "info"
+  NODE_ENV: 'production'
+  SERVICE_NAME: 'mycodexvantaos-core-main'
+  PORT: '3000'
+  LOG_LEVEL: 'info'

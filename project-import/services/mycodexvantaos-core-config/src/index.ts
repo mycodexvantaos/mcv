@@ -4,14 +4,14 @@
  *
  * Layer: B-Runtime | Tier: 1
  */
-import pino from "pino";
+import pino from 'pino';
 
-const logger = pino({ name: "config-manager" });
+const logger = pino({ name: 'config-manager' });
 
 // Re-export types
-export * from "./types";
+export * from './types';
 
-export type ConfigScope = "global" | "service" | "environment";
+export type ConfigScope = 'global' | 'service' | 'environment';
 
 export interface ConfigEntry {
   key: string;
@@ -39,8 +39,8 @@ export class ConfigService {
   ): Promise<T | undefined> {
     const scopes: ConfigScope[] = options?.scope
       ? [options.scope]
-      : ["environment", "service", "global"];
-    const ns = options?.namespace ?? "default";
+      : ['environment', 'service', 'global'];
+    const ns = options?.namespace ?? 'default';
 
     for (const scope of scopes) {
       const entry = this.store.get(this.buildKey(key, scope, ns));
@@ -54,8 +54,8 @@ export class ConfigService {
     value: unknown,
     options?: { scope?: ConfigScope; namespace?: string }
   ): Promise<ConfigEntry> {
-    const scope = options?.scope ?? "global";
-    const ns = options?.namespace ?? "default";
+    const scope = options?.scope ?? 'global';
+    const ns = options?.namespace ?? 'default';
     const storeKey = this.buildKey(key, scope, ns);
 
     const entry: ConfigEntry = {
@@ -67,13 +67,16 @@ export class ConfigService {
       updatedAt: Date.now(),
     };
     this.store.set(storeKey, entry);
-    logger.debug({ key, scope, namespace: ns }, "Config set");
+    logger.debug({ key, scope, namespace: ns }, 'Config set');
     return entry;
   }
 
-  async delete(key: string, options?: { scope?: ConfigScope; namespace?: string }): Promise<boolean> {
-    const scope = options?.scope ?? "global";
-    const ns = options?.namespace ?? "default";
+  async delete(
+    key: string,
+    options?: { scope?: ConfigScope; namespace?: string }
+  ): Promise<boolean> {
+    const scope = options?.scope ?? 'global';
+    const ns = options?.namespace ?? 'default';
     return this.store.delete(this.buildKey(key, scope, ns));
   }
 
@@ -95,7 +98,7 @@ export class FeatureFlagService {
 
   setFlag(flag: string, enabled: boolean): void {
     this.flags.set(flag, enabled);
-    logger.debug({ flag, enabled }, "Feature flag updated");
+    logger.debug({ flag, enabled }, 'Feature flag updated');
   }
 
   listFlags(): Record<string, boolean> {

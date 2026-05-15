@@ -95,9 +95,7 @@ export class TeamManager {
 
     // Validate agent count
     if (options.agents.length > this.config.maxAgentsPerTeam) {
-      throw new Error(
-        `Team exceeds maximum agents (${this.config.maxAgentsPerTeam})`
-      );
+      throw new Error(`Team exceeds maximum agents (${this.config.maxAgentsPerTeam})`);
     }
 
     // Validate all agents exist
@@ -315,9 +313,7 @@ export class TeamManager {
    */
   public getTeamsByAgent(agentId: AgentURN): TeamTopology[] {
     return Array.from(this.teams.values())
-      .filter((state) =>
-        state.topology.agents.some((a) => a.agent_id === agentId)
-      )
+      .filter((state) => state.topology.agents.some((a) => a.agent_id === agentId))
       .map((state) => state.topology);
   }
 
@@ -341,11 +337,7 @@ export class TeamManager {
    * @param position - Position in the team
    * @returns true if successful
    */
-  public addAgentToTeam(
-    teamId: TeamURN,
-    agentId: AgentURN,
-    position?: number
-  ): boolean {
+  public addAgentToTeam(teamId: TeamURN, agentId: AgentURN, position?: number): boolean {
     const state = this.teams.get(teamId);
     if (!state) {
       throw new Error(`Team not found: ${teamId}`);
@@ -362,9 +354,7 @@ export class TeamManager {
 
     // Check max agents
     if (state.topology.agents.length >= this.config.maxAgentsPerTeam) {
-      throw new Error(
-        `Team has reached maximum agents (${this.config.maxAgentsPerTeam})`
-      );
+      throw new Error(`Team has reached maximum agents (${this.config.maxAgentsPerTeam})`);
     }
 
     const assignment: TeamAgentAssignment = {
@@ -424,10 +414,7 @@ export class TeamManager {
    * @param topologyType - The new topology type
    * @returns true if successful
    */
-  public updateTopologyType(
-    teamId: TeamURN,
-    topologyType: TopologyType
-  ): boolean {
+  public updateTopologyType(teamId: TeamURN, topologyType: TopologyType): boolean {
     const state = this.teams.get(teamId);
     if (!state) {
       throw new Error(`Team not found: ${teamId}`);
@@ -436,9 +423,7 @@ export class TeamManager {
     // Validate workflow definition for certain types
     if (['dag', 'state_machine'].includes(topologyType)) {
       if (!state.topology.workflow_definition) {
-        throw new Error(
-          `Cannot set topology to ${topologyType} without workflow definition`
-        );
+        throw new Error(`Cannot set topology to ${topologyType} without workflow definition`);
       }
     }
 
@@ -460,10 +445,7 @@ export class TeamManager {
    * @param hitlConfig - The new HITL configuration
    * @returns true if successful
    */
-  public updateHITLConfig(
-    teamId: TeamURN,
-    hitlConfig: TeamTopology['hitl_config']
-  ): boolean {
+  public updateHITLConfig(teamId: TeamURN, hitlConfig: TeamTopology['hitl_config']): boolean {
     const state = this.teams.get(teamId);
     if (!state) {
       throw new Error(`Team not found: ${teamId}`);
@@ -490,10 +472,7 @@ export class TeamManager {
    * @param variables - Initial workflow variables
    * @returns The workflow ID
    */
-  public startWorkflow(
-    teamId: TeamURN,
-    variables?: Record<string, unknown>
-  ): string {
+  public startWorkflow(teamId: TeamURN, variables?: Record<string, unknown>): string {
     const state = this.teams.get(teamId);
     if (!state) {
       throw new Error(`Team not found: ${teamId}`);

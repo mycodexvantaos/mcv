@@ -9,21 +9,21 @@ metadata:
   planeDescription: 執行面 — 任務、工作流、自動化
   tier: 4
   tags:
-  - builder
-  - ast
-  - code-analysis
+    - builder
+    - ast
+    - code-analysis
 spec:
   architecture:
     philosophy: native-first / provider-agnostic
     principle: 第三方服務是擴充出口，不是平台地基
     mode: native | connected | hybrid
   capabilities:
-  - ast-analysis
-  - dependency-graph
-  - code-understanding
+    - ast-analysis
+    - dependency-graph
+    - code-understanding
   providerDependencies:
-  - database
-  - storage
+    - database
+    - storage
   repoDependencies:
-  - codexvanta-os-core-kernel
-  - codexvanta-os-ai-engine
+    - codexvanta-os-core-kernel
+    - codexvanta-os-ai-engine

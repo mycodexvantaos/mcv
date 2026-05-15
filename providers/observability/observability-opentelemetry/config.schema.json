@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/observability/opentelemetry/config.schema.json",
   "title": "observability-opentelemetry Configuration",
   "type": "object",
-  "required": [
-    "endpoint"
-  ],
+  "required": ["endpoint"],
   "properties": {
     "endpoint": {
       "type": "string",
@@ -23,10 +21,7 @@
     },
     "exporterProtocol": {
       "type": "string",
-      "enum": [
-        "grpc",
-        "http/protobuf"
-      ],
+      "enum": ["grpc", "http/protobuf"],
       "default": "grpc"
     }
   }

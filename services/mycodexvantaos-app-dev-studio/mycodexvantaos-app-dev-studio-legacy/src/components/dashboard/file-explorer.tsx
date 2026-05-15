@@ -14,50 +14,52 @@ const files: FileItem[] = [
     name: 'app',
     type: 'folder',
     children: [
-      { name: 'dashboard', type: 'folder', children: [
-        { name: 'page.tsx', type: 'file' },
-      ] },
+      { name: 'dashboard', type: 'folder', children: [{ name: 'page.tsx', type: 'file' }] },
       { name: 'page.tsx', type: 'file' },
       { name: 'layout.tsx', type: 'file' },
-    ]
+    ],
   },
-  { 
+  {
     name: 'components',
-    type: 'folder', 
+    type: 'folder',
     children: [
-      { name: 'dashboard', type: 'folder', children: [
-        { name: 'header.tsx', type: 'file' },
-        { name: 'editor-view.tsx', type: 'file', active: true },
-      ] }
-    ]
+      {
+        name: 'dashboard',
+        type: 'folder',
+        children: [
+          { name: 'header.tsx', type: 'file' },
+          { name: 'editor-view.tsx', type: 'file', active: true },
+        ],
+      },
+    ],
   },
-  { 
+  {
     name: 'docs',
     type: 'folder',
     children: [
-      { 
+      {
         name: 'architecture',
         type: 'folder',
         children: [
           { name: 'component-interaction.md', type: 'file' },
           { name: 'naming-convention.md', type: 'file' },
-        ]
+        ],
       },
       { name: 'ARCHITECTURE.md', type: 'file' },
       { name: 'api-draft.md', type: 'file' },
-    ]
+    ],
   },
   { name: 'package.json', type: 'file' },
   { name: 'next.config.ts', type: 'file' },
 ];
 
-const FileTree = ({ items, level = 0 }: { items: FileItem[], level?: number }) => (
+const FileTree = ({ items, level = 0 }: { items: FileItem[]; level?: number }) => (
   <>
     {items.map((item) => (
       <div key={item.name}>
-        <div 
+        <div
           className={`flex items-center py-1.5 cursor-pointer rounded-md text-sm ${item.active ? 'bg-primary/20 text-accent' : 'hover:bg-primary/10'}`}
-          style={{ paddingLeft: `${level * 1 + 0.75}rem`}}
+          style={{ paddingLeft: `${level * 1 + 0.75}rem` }}
         >
           {item.type === 'folder' ? (
             <>
@@ -85,7 +87,7 @@ export function FileExplorer() {
       </div>
       <div className="flex-1 overflow-y-auto px-2">
         <h3 className="flex items-center px-2 py-1 text-sm font-medium cursor-pointer">
-          <ChevronDown className="mr-1 h-4 w-4"/>
+          <ChevronDown className="mr-1 h-4 w-4" />
           AI-CODE-EDITOR-RESEARCH-PLATFORM
         </h3>
         <div className="mt-2">

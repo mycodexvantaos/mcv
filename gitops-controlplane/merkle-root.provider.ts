@@ -71,22 +71,22 @@ export class MerkleRootCalculator {
     }
 
     // Hash all leaves
-    const hashedLeaves = leaves.map(l => this.hash(l));
-    
+    const hashedLeaves = leaves.map((l) => this.hash(l));
+
     // Build tree
     let currentLevel = [...hashedLeaves];
     let height = 1;
 
     while (currentLevel.length > 1) {
       const nextLevel: string[] = [];
-      
+
       for (let i = 0; i < currentLevel.length; i += 2) {
         const left = currentLevel[i];
         const right = currentLevel[i + 1] || currentLevel[i]; // Duplicate last if odd
         const combined = this.hash(left + right);
         nextLevel.push(combined);
       }
-      
+
       currentLevel = nextLevel;
       height++;
     }
@@ -109,7 +109,7 @@ export class MerkleRootCalculator {
     await this.log('info', `Building Merkle root from: ${directory}`);
 
     const keys = await this.storage!.keys();
-    const filesInDir = keys.filter(k => k.startsWith(directory)).sort();
+    const filesInDir = keys.filter((k) => k.startsWith(directory)).sort();
 
     const leaves: string[] = [];
 
@@ -162,10 +162,7 @@ export class MerkleRootCalculator {
   async healthCheck(): Promise<boolean> {
     if (!this.storage || !this.logger) return false;
     try {
-      const [s, l] = await Promise.all([
-        this.storage.healthCheck(),
-        this.logger.healthCheck(),
-      ]);
+      const [s, l] = await Promise.all([this.storage.healthCheck(), this.logger.healthCheck()]);
       return s.healthy && l.healthy;
     } catch {
       return false;
@@ -191,7 +188,9 @@ export class MerkleRootCalculator {
   }
 }
 
-export async function createMerkleRootCalculator(providerFactory: any): Promise<MerkleRootCalculator> {
+export async function createMerkleRootCalculator(
+  providerFactory: any
+): Promise<MerkleRootCalculator> {
   const calc = new MerkleRootCalculator(providerFactory);
   await calc.initialize();
   return calc;

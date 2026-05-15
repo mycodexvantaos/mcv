@@ -26,8 +26,10 @@ Repository renaming is a controlled architectural change.
    - `kb.manifest.yaml`
    - `vectors.manifest.json`
 10. Validate mirror sync targets:
-   - GitLab
-   - Bitbucket
+
+- GitLab
+- Bitbucket
+
 11. Re-run naming validation CI.
 12. Re-run policy validation CI.
 13. Require governance approval before merge.

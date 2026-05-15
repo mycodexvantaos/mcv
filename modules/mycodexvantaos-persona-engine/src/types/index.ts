@@ -1,6 +1,6 @@
 /**
  * MyCodeXvantaOS Persona Engine - Type Definitions
- * 
+ *
  * Core type definitions for the persona system aligned with MyCodeXvantaOS specifications.
  * URN Format: urn:mycodexvantaos:persona:{identifier}
  */
@@ -12,16 +12,16 @@
 /**
  * Persona archetype defines the fundamental approach and behavior pattern
  */
-export type PersonaArchetype = 
-  | 'disrupter'      // Challenging assumptions, provocative analysis
-  | 'analyst'        // Deep analytical thinking, data-driven insights
-  | 'mediator'       // Balance-seeking, conflict resolution
-  | 'architect'      // System design, structural thinking
-  | 'critic'         // Critical evaluation, quality assurance
+export type PersonaArchetype =
+  | 'disrupter' // Challenging assumptions, provocative analysis
+  | 'analyst' // Deep analytical thinking, data-driven insights
+  | 'mediator' // Balance-seeking, conflict resolution
+  | 'architect' // System design, structural thinking
+  | 'critic' // Critical evaluation, quality assurance
   | 'creative_thinker' // Innovative solutions, out-of-box thinking
-  | 'facilitator'    // Process guidance, collaboration enablement
-  | 'mentor'         // Teaching, guidance, knowledge transfer
-  | 'synthesizer';   // Integration, pattern recognition, holistic view
+  | 'facilitator' // Process guidance, collaboration enablement
+  | 'mentor' // Teaching, guidance, knowledge transfer
+  | 'synthesizer'; // Integration, pattern recognition, holistic view
 
 /**
  * Response style for interaction patterns
@@ -72,8 +72,8 @@ export interface GovernanceConfig {
   compliance_rules?: Record<string, boolean>;
   /** Governance tier level */
   tier?: number;
-    hitl_checkpoint?: boolean;
-    audit_required?: boolean;
+  hitl_checkpoint?: boolean;
+  audit_required?: boolean;
   /** Governance constraints */
   constraints?: Record<string, boolean>;
 }
@@ -400,14 +400,14 @@ export interface SolutionType {
 /**
  * Semantic mask type enumeration
  */
-export type SemanticMaskType = 
-  | 'comforting_platitude'      // 正念安慰句式
-  | 'vague_healing_language'    // 模糊療癒語言
+export type SemanticMaskType =
+  | 'comforting_platitude' // 正念安慰句式
+  | 'vague_healing_language' // 模糊療癒語言
   | 'psychological_jargon_misuse' // 心理學術語誤用
-  | 'emotional_avoidance'       // 情緒迴避語句
-  | 'responsibility_transfer'   // 責任轉移表達
-  | 'reality_denial'            // 現實否認結構
-  | 'self_deception'            // 自我欺騙模式
+  | 'emotional_avoidance' // 情緒迴避語句
+  | 'responsibility_transfer' // 責任轉移表達
+  | 'reality_denial' // 現實否認結構
+  | 'self_deception' // 自我欺騙模式
   | 'cognitive_dissonance_mask'; // 認知失調掩飾
 
 /**
@@ -449,13 +449,13 @@ export interface SemanticMask {
 /**
  * Root cause analysis layer
  */
-export type AnalysisLayer = 
-  | 'surface_symptoms'        // 表面症狀識別
-  | 'behavioral_patterns'     // 行為模式分析
-  | 'cognitive_structures'    // 認知結構檢查
-  | 'emotional_drivers'       // 情感驅動探索
-  | 'core_beliefs'            // 核心信念挖掘
-  | 'root_causes';            // 創傷根源定位
+export type AnalysisLayer =
+  | 'surface_symptoms' // 表面症狀識別
+  | 'behavioral_patterns' // 行為模式分析
+  | 'cognitive_structures' // 認知結構檢查
+  | 'emotional_drivers' // 情感驅動探索
+  | 'core_beliefs' // 核心信念挖掘
+  | 'root_causes'; // 創傷根源定位
 
 /**
  * Root cause diagnosis result
@@ -475,12 +475,12 @@ export interface RootCauseDiagnosis {
 /**
  * Solution category
  */
-export type SolutionCategory = 
-  | 'cognitive_restructuring'  // 認知重構方案
-  | 'behavioral_action'        // 行動方案
-  | 'skill_development'        // 技能培養方案
-  | 'environment_adjustment'   // 環境調整方案
-  | 'emotional_processing';    // 情感處理方案
+export type SolutionCategory =
+  | 'cognitive_restructuring' // 認知重構方案
+  | 'behavioral_action' // 行動方案
+  | 'skill_development' // 技能培養方案
+  | 'environment_adjustment' // 環境調整方案
+  | 'emotional_processing'; // 情感處理方案
 
 /**
  * Solution proposal
@@ -560,7 +560,7 @@ export interface PersonaInteraction {
 /**
  * Persona event types
  */
-export type PersonaEventType = 
+export type PersonaEventType =
   | 'mask_detected'
   | 'diagnosis_completed'
   | 'solution_generated'

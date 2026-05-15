@@ -14,17 +14,17 @@ urn:mycodexvantaos:<entity-type>:<identifier>
 
 ### Entity Types and Patterns
 
-| Entity Type | Pattern | Example |
-|-------------|---------|---------|
-| Agent | `urn:mycodexvantaos:agent:<name>` | `urn:mycodexvantaos:agent:architect-primary` |
-| Team | `urn:mycodexvantaos:team:<name>` | `urn:mycodexvantaos:team:devops-pipeline` |
-| Task | `urn:mycodexvantaos:task:<id>` | `urn:mycodexvantaos:task:deploy-service-001` |
-| Message | `urn:mycodexvantaos:message:<id>` | `urn:mycodexvantaos:message:msg-20240101-001` |
-| Tool | `urn:mycodexvantaos:tool:<name>` | `urn:mycodexvantaos:tool:code-analyzer` |
-| Capability | `urn:mycodexvantaos:capability:<name>` | `urn:mycodexvantaos:capability:code-generation` |
-| Service | `urn:mycodexvantaos:service:<name>` | `urn:mycodexvantaos:service:ai-engine` |
-| Module | `urn:mycodexvantaos:module:<name>` | `urn:mycodexvantaos:module:orchestrator` |
-| Schema | `urn:mycodexvantaos:schema:<name>` | `urn:mycodexvantaos:schema:agent-profile` |
+| Entity Type | Pattern                                | Example                                         |
+| ----------- | -------------------------------------- | ----------------------------------------------- |
+| Agent       | `urn:mycodexvantaos:agent:<name>`      | `urn:mycodexvantaos:agent:architect-primary`    |
+| Team        | `urn:mycodexvantaos:team:<name>`       | `urn:mycodexvantaos:team:devops-pipeline`       |
+| Task        | `urn:mycodexvantaos:task:<id>`         | `urn:mycodexvantaos:task:deploy-service-001`    |
+| Message     | `urn:mycodexvantaos:message:<id>`      | `urn:mycodexvantaos:message:msg-20240101-001`   |
+| Tool        | `urn:mycodexvantaos:tool:<name>`       | `urn:mycodexvantaos:tool:code-analyzer`         |
+| Capability  | `urn:mycodexvantaos:capability:<name>` | `urn:mycodexvantaos:capability:code-generation` |
+| Service     | `urn:mycodexvantaos:service:<name>`    | `urn:mycodexvantaos:service:ai-engine`          |
+| Module      | `urn:mycodexvantaos:module:<name>`     | `urn:mycodexvantaos:module:orchestrator`        |
+| Schema      | `urn:mycodexvantaos:schema:<name>`     | `urn:mycodexvantaos:schema:agent-profile`       |
 
 ## Identifier Naming Rules
 
@@ -46,6 +46,7 @@ Agent identifiers should follow the pattern:
 ```
 
 Examples:
+
 - `architect-primary`
 - `engineer-backend-01`
 - `tester-security-02`
@@ -61,6 +62,7 @@ Team identifiers should follow the pattern:
 ```
 
 Examples:
+
 - `devops-pipeline-primary`
 - `security-audit-team-01`
 - `development-fullstack-primary`
@@ -74,6 +76,7 @@ Task identifiers should follow the pattern:
 ```
 
 Examples:
+
 - `deploy-service-001`
 - `review-code-042`
 - `analyze-security-007`
@@ -82,16 +85,16 @@ Examples:
 
 All agent prompt templates must use the following standardized variables:
 
-| Variable | Description | Usage |
-|----------|-------------|-------|
-| `{{CONTEXT}}` | Current execution context | Required for all prompts |
-| `{{OBJECTIVE}}` | The goal to accomplish | Required for task prompts |
-| `{{CONSTRAINTS}}` | Limitations and rules | Optional |
-| `{{BACKSTORY}}` | Agent's background | Required for system prompts |
-| `{{TOOLS_AVAILABLE}}` | List of available tools | Optional |
-| `{{OUTPUT_FORMAT}}` | Expected output schema | Required |
-| `{{LANGUAGE}}` | Programming or natural language | Optional, default: auto-detect |
-| `{{MAX_ITERATIONS}}` | Self-correction limit | Optional, default: 5 |
+| Variable              | Description                     | Usage                          |
+| --------------------- | ------------------------------- | ------------------------------ |
+| `{{CONTEXT}}`         | Current execution context       | Required for all prompts       |
+| `{{OBJECTIVE}}`       | The goal to accomplish          | Required for task prompts      |
+| `{{CONSTRAINTS}}`     | Limitations and rules           | Optional                       |
+| `{{BACKSTORY}}`       | Agent's background              | Required for system prompts    |
+| `{{TOOLS_AVAILABLE}}` | List of available tools         | Optional                       |
+| `{{OUTPUT_FORMAT}}`   | Expected output schema          | Required                       |
+| `{{LANGUAGE}}`        | Programming or natural language | Optional, default: auto-detect |
+| `{{MAX_ITERATIONS}}`  | Self-correction limit           | Optional, default: 5           |
 
 ### Example Prompt Template
 
@@ -99,21 +102,27 @@ All agent prompt templates must use the following standardized variables:
 # System Prompt for {{AGENT_NAME}}
 
 ## Identity
+
 {{BACKSTORY}}
 
 ## Current Context
+
 {{CONTEXT}}
 
 ## Objective
+
 {{OBJECTIVE}}
 
 ## Constraints
+
 {{CONSTRAINTS}}
 
 ## Available Tools
+
 {{TOOLS_AVAILABLE}}
 
 ## Output Requirements
+
 Please respond in the following format:
 {{OUTPUT_FORMAT}}
 ```
@@ -141,19 +150,20 @@ NPM package names follow the pattern:
 ```
 
 Examples:
+
 - `@mycodexvantaos/ai-team-orchestrator`
 - `@mycodexvantaos/agent-toolkit`
 - `@mycodexvantaos/ai-team-service`
 
 ## Governance Tier Classification
 
-| Tier | Level | Description | Example Agents |
-|------|-------|-------------|----------------|
-| -1 | Experimental | Sandbox only, requires approval | `disruptor-l1` |
-| 0 | Standard | Normal operations | `engineer-backend-01` |
-| 1 | Elevated | Cross-module access | `architect-primary` |
-| 2 | High | Sensitive operations | `security-specialist-01` |
-| 3 | Critical | Core system operations | `governance-enforcer-01` |
+| Tier | Level        | Description                     | Example Agents           |
+| ---- | ------------ | ------------------------------- | ------------------------ |
+| -1   | Experimental | Sandbox only, requires approval | `disruptor-l1`           |
+| 0    | Standard     | Normal operations               | `engineer-backend-01`    |
+| 1    | Elevated     | Cross-module access             | `architect-primary`      |
+| 2    | High         | Sensitive operations            | `security-specialist-01` |
+| 3    | Critical     | Core system operations          | `governance-enforcer-01` |
 
 ## Validation Rules
 

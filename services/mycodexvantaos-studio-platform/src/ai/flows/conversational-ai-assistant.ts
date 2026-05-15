@@ -1,7 +1,7 @@
 'use server';
 /**
  * @fileOverview Conversational AI Assistant for developers.
- * 
+ *
  * Refactored to follow MyCodeXvantaOS Provider Architecture:
  * - Uses Provider abstraction layer instead of direct Genkit dependency
  * - No hardcoded API key requirements
@@ -45,20 +45,20 @@ Instructions:
 - If a programming concept is asked, explain it clearly, concisely, and provide examples if it helps understanding.
 - If a general question is asked, provide an accurate and helpful answer.
 - Always be polite, encouraging, and easy to understand.
-- Use markdown for code blocks, explanations, and any formatting that improves readability.`
-    }
+- Use markdown for code blocks, explanations, and any formatting that improves readability.`,
+    },
   ];
-  
+
   // Add conversation history
   if (input.conversationHistory) {
     for (const msg of input.conversationHistory) {
       messages.push({
         role: msg.role === 'model' ? 'assistant' : 'user',
-        content: msg.content
+        content: msg.content,
       });
     }
   }
-  
+
   // Add current query with optional code snippet
   let userContent = input.query;
   if (input.codeSnippet) {
@@ -66,9 +66,9 @@ Instructions:
   }
   messages.push({
     role: 'user',
-    content: userContent
+    content: userContent,
   });
-  
+
   return messages;
 }
 
@@ -76,25 +76,26 @@ Instructions:
  * Conversational AI Assistant
  * Uses the Provider abstraction layer - no direct API key dependency
  */
-export async function conversationalAiAssistant(input: ConversationalAiAssistantInput): Promise<ConversationalAiAssistantOutput> {
+export async function conversationalAiAssistant(
+  input: ConversationalAiAssistantInput
+): Promise<ConversationalAiAssistantOutput> {
   try {
     // Use chat completion for conversation context
     const messages = buildMessages(input);
     const response = await generateChat(messages, {
       maxTokens: 4096,
-      temperature: 0.7
+      temperature: 0.7,
     });
-    
+
     return {
-      answer: response.text
+      answer: response.text,
     };
-    
   } catch (error: any) {
     const provider = getActiveProvider();
-    const advancedHint = hasAdvancedAI() 
-      ? '' 
+    const advancedHint = hasAdvancedAI()
+      ? ''
       : ' Tip: Configure LLM_PROVIDER and corresponding API key for advanced capabilities.';
-    
+
     throw new Error(`AI assistant failed to respond: ${error.message}.${advancedHint}`);
   }
 }

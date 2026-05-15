@@ -62,7 +62,8 @@ export function SystemOverview() {
           value: `${overview.governance.complianceScore}%`,
           subtitle: `${overview.governance.pendingReviews} pending reviews`,
           change: -2.1,
-          status: overview.governance.complianceScore >= 90 ? ('healthy' as const) : ('warning' as const),
+          status:
+            overview.governance.complianceScore >= 90 ? ('healthy' as const) : ('warning' as const),
           icon: ShieldCheck,
         },
       ]

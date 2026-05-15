@@ -18,33 +18,33 @@
  *   2 — --fail-on-soft flag set and soft warnings exist
  */
 
-import fs from "fs";
-import path from "path";
-import { parseArgs } from "util";
-import * as serviceIdRule from "./rules/service-id.rule";
-import * as modulePathRule from "./rules/module-path.rule";
-import * as packageNameRule from "./rules/package-name.rule";
-import * as manifestNameRule from "./rules/manifest-name.rule";
-import * as capabilityIdRule from "./rules/capability-id.rule";
-import * as providerInstanceRule from "./rules/provider-instance.rule";
-import * as envVarRule from "./rules/env-var.rule";
-import * as urnRule from "./rules/urn.rule";
-import * as forbiddenLegacyPrefixRule from "./rules/forbidden-legacy-prefix.rule";
-import * as noVersionInCanonicalRule from "./rules/no-version-in-canonical.rule";
-import * as noEnvironmentInCanonicalRule from "./rules/no-environment-in-canonical.rule";
-import * as vectorCollectionRule from "./rules/vector-collection.rule";
-import * as embeddingModelAliasRule from "./rules/embedding-model-alias.rule";
-import * as retrievalPipelineIdRule from "./rules/retrieval-pipeline-id.rule";
-import * as searchIndexIdRule from "./rules/search-index-id.rule";
-import * as graphNodeIdRule from "./rules/graph-node-id.rule";
-import * as graphDbIndexIdRule from "./rules/graph-db-index-id.rule";
-import * as timestampedIdRule from "./rules/timestamped-id.rule";
-import * as contentAddressedIdRule from "./rules/content-addressed-id.rule";
-import * as uuidBasedIdRule from "./rules/uuid-based-id.rule";
+import fs from 'fs';
+import path from 'path';
+import { parseArgs } from 'util';
+import * as serviceIdRule from './rules/service-id.rule';
+import * as modulePathRule from './rules/module-path.rule';
+import * as packageNameRule from './rules/package-name.rule';
+import * as manifestNameRule from './rules/manifest-name.rule';
+import * as capabilityIdRule from './rules/capability-id.rule';
+import * as providerInstanceRule from './rules/provider-instance.rule';
+import * as envVarRule from './rules/env-var.rule';
+import * as urnRule from './rules/urn.rule';
+import * as forbiddenLegacyPrefixRule from './rules/forbidden-legacy-prefix.rule';
+import * as noVersionInCanonicalRule from './rules/no-version-in-canonical.rule';
+import * as noEnvironmentInCanonicalRule from './rules/no-environment-in-canonical.rule';
+import * as vectorCollectionRule from './rules/vector-collection.rule';
+import * as embeddingModelAliasRule from './rules/embedding-model-alias.rule';
+import * as retrievalPipelineIdRule from './rules/retrieval-pipeline-id.rule';
+import * as searchIndexIdRule from './rules/search-index-id.rule';
+import * as graphNodeIdRule from './rules/graph-node-id.rule';
+import * as graphDbIndexIdRule from './rules/graph-db-index-id.rule';
+import * as timestampedIdRule from './rules/timestamped-id.rule';
+import * as contentAddressedIdRule from './rules/content-addressed-id.rule';
+import * as uuidBasedIdRule from './rules/uuid-based-id.rule';
 
 // ─── Public Types ─────────────────────────────────────────────────────────────
 
-export type EnforcementLevel = "hard" | "soft";
+export type EnforcementLevel = 'hard' | 'soft';
 
 export interface RuleResult {
   ruleId: string;
@@ -110,7 +110,7 @@ export interface ValidationReport {
  * Build a ValidationContext by scanning the repository filesystem.
  * Call this when running as a CLI tool.
  */
-export function discoverContext(rootDir: string = "."): ValidationContext {
+export function discoverContext(rootDir: string = '.'): ValidationContext {
   const ctx: ValidationContext = {
     serviceIds: [],
     moduleFolderPaths: [],
@@ -134,7 +134,7 @@ export function discoverContext(rootDir: string = "."): ValidationContext {
   const abs = (p: string) => path.resolve(rootDir, p);
 
   // Discover service-ids from services/ folder names
-  const servicesDir = abs("services");
+  const servicesDir = abs('services');
   if (fs.existsSync(servicesDir)) {
     const entries = fs.readdirSync(servicesDir, { withFileTypes: true });
     for (const e of entries) {
@@ -143,21 +143,21 @@ export function discoverContext(rootDir: string = "."): ValidationContext {
   }
 
   // Discover module folder paths
-  const modulesDir = abs("modules");
+  const modulesDir = abs('modules');
   if (fs.existsSync(modulesDir)) {
     const entries = fs.readdirSync(modulesDir, { withFileTypes: true });
     for (const e of entries) {
       if (e.isDirectory()) {
-        ctx.moduleFolderPaths.push(path.join("modules", e.name));
+        ctx.moduleFolderPaths.push(path.join('modules', e.name));
 
         // Check manifest metadata.name
-        const manifestPath = path.join(modulesDir, e.name, "module-manifest.yaml");
+        const manifestPath = path.join(modulesDir, e.name, 'module-manifest.yaml');
         if (fs.existsSync(manifestPath)) {
-          const content = fs.readFileSync(manifestPath, "utf-8");
+          const content = fs.readFileSync(manifestPath, 'utf-8');
           const nameMatch = content.match(/^\s+name:\s+(.+)$/m);
           if (nameMatch) {
             ctx.manifestEntries.push({
-              manifestPath: path.join("modules", e.name, "module-manifest.yaml"),
+              manifestPath: path.join('modules', e.name, 'module-manifest.yaml'),
               metadataName: nameMatch[1].trim(),
               expectedServiceId: e.name,
             });
@@ -168,17 +168,17 @@ export function discoverContext(rootDir: string = "."): ValidationContext {
   }
 
   // Discover package entries from packages/ folder
-  const packagesDir = abs("packages");
+  const packagesDir = abs('packages');
   if (fs.existsSync(packagesDir)) {
     const entries = fs.readdirSync(packagesDir, { withFileTypes: true });
     for (const e of entries) {
       if (e.isDirectory()) {
-        const pkgJson = path.join(packagesDir, e.name, "package.json");
+        const pkgJson = path.join(packagesDir, e.name, 'package.json');
         if (fs.existsSync(pkgJson)) {
-          const pkg = JSON.parse(fs.readFileSync(pkgJson, "utf-8"));
+          const pkg = JSON.parse(fs.readFileSync(pkgJson, 'utf-8'));
           ctx.packageEntries.push({
             serviceId: `mycodexvantaos-${e.name}`,
-            packageName: pkg.name ?? "",
+            packageName: pkg.name ?? '',
           });
         }
       }
@@ -186,7 +186,7 @@ export function discoverContext(rootDir: string = "."): ValidationContext {
   }
 
   // Discover provider instances from providers/ folder (two-level deep)
-  const providersDir = abs("providers");
+  const providersDir = abs('providers');
   if (fs.existsSync(providersDir)) {
     const caps = fs.readdirSync(providersDir, { withFileTypes: true });
     for (const cap of caps) {
@@ -201,59 +201,59 @@ export function discoverContext(rootDir: string = "."): ValidationContext {
   }
 
   // Discover vector collections
-  const vcDir = abs("vector-store/collections");
+  const vcDir = abs('vector-store/collections');
   if (fs.existsSync(vcDir)) {
     ctx.vectorCollectionIds = fs
       .readdirSync(vcDir)
-      .filter((f) => f.endsWith(".yaml"))
-      .map((f) => f.replace(/\.yaml$/, ""));
+      .filter((f) => f.endsWith('.yaml'))
+      .map((f) => f.replace(/\.yaml$/, ''));
   }
 
   // Discover embedding model aliases
-  const emaDir = abs("vector-store/embedding-model-aliases");
+  const emaDir = abs('vector-store/embedding-model-aliases');
   if (fs.existsSync(emaDir)) {
     ctx.embeddingModelAliases = fs
       .readdirSync(emaDir)
-      .filter((f) => f.endsWith(".yaml"))
-      .map((f) => f.replace(/\.yaml$/, ""));
+      .filter((f) => f.endsWith('.yaml'))
+      .map((f) => f.replace(/\.yaml$/, ''));
   }
 
   // Discover retrieval pipelines
-  const rpDir = abs("vector-store/retrieval-pipelines");
+  const rpDir = abs('vector-store/retrieval-pipelines');
   if (fs.existsSync(rpDir)) {
     ctx.retrievalPipelineIds = fs
       .readdirSync(rpDir)
-      .filter((f) => f.endsWith(".yaml"))
-      .map((f) => f.replace(/\.yaml$/, ""));
+      .filter((f) => f.endsWith('.yaml'))
+      .map((f) => f.replace(/\.yaml$/, ''));
   }
 
   // Discover search indexes
-  const siDir = abs("search-indexes");
+  const siDir = abs('search-indexes');
   if (fs.existsSync(siDir)) {
     ctx.searchIndexIds = fs
       .readdirSync(siDir)
-      .filter((f) => f.endsWith(".yaml"))
-      .map((f) => f.replace(/\.yaml$/, ""));
+      .filter((f) => f.endsWith('.yaml'))
+      .map((f) => f.replace(/\.yaml$/, ''));
   }
 
   // Discover graph db indexes
-  const giDir = abs("knowledge-graph/indexes");
+  const giDir = abs('knowledge-graph/indexes');
   if (fs.existsSync(giDir)) {
     ctx.graphDbIndexIds = fs
       .readdirSync(giDir)
-      .filter((f) => f.endsWith(".yaml"))
-      .map((f) => f.replace(/\.yaml$/, ""));
+      .filter((f) => f.endsWith('.yaml'))
+      .map((f) => f.replace(/\.yaml$/, ''));
   }
 
   // Scan .env.example files for env vars
   for (const svcId of ctx.serviceIds) {
     const envFile = abs(`services/${svcId}/.env.example`);
     if (fs.existsSync(envFile)) {
-      const lines = fs.readFileSync(envFile, "utf-8").split("\n");
+      const lines = fs.readFileSync(envFile, 'utf-8').split('\n');
       for (const line of lines) {
         const trimmed = line.trim();
-        if (trimmed && !trimmed.startsWith("#")) {
-          const varName = trimmed.split("=")[0].trim();
+        if (trimmed && !trimmed.startsWith('#')) {
+          const varName = trimmed.split('=')[0].trim();
           if (varName) ctx.envVars.push(varName);
         }
       }
@@ -289,8 +289,8 @@ export function runValidation(ctx: ValidationContext): ValidationReport {
     ...uuidBasedIdRule.run(ctx),
   ];
 
-  const hardFailures = allResults.filter((r) => !r.passed && r.enforcement === "hard");
-  const softWarnings = allResults.filter((r) => !r.passed && r.enforcement === "soft");
+  const hardFailures = allResults.filter((r) => !r.passed && r.enforcement === 'hard');
+  const softWarnings = allResults.filter((r) => !r.passed && r.enforcement === 'soft');
   const passed = allResults.filter((r) => r.passed);
 
   let exitCode = 0;
@@ -320,7 +320,7 @@ function reportConsole(report: ValidationReport): void {
   console.log(`╚═════════════════════════════════════════════════════════════╝\n`);
 
   if (hardFailures.length > 0) {
-    console.error("HARD FAILURES (will block merge):");
+    console.error('HARD FAILURES (will block merge):');
     for (const r of hardFailures) {
       console.error(`  [FAIL][${r.ruleId}] ${r.message}`);
     }
@@ -328,7 +328,7 @@ function reportConsole(report: ValidationReport): void {
   }
 
   if (softWarnings.length > 0) {
-    console.warn("SOFT WARNINGS:");
+    console.warn('SOFT WARNINGS:');
     for (const r of softWarnings) {
       console.warn(`  [WARN][${r.ruleId}] ${r.message}`);
     }
@@ -336,7 +336,7 @@ function reportConsole(report: ValidationReport): void {
   }
 
   if (hardFailures.length === 0 && softWarnings.length === 0) {
-    console.log("  All checks passed.");
+    console.log('  All checks passed.');
   }
 }
 
@@ -358,10 +358,10 @@ function reportGitHub(report: ValidationReport): void {
 function main(): void {
   const { values } = parseArgs({
     options: {
-      reporter: { type: "string", default: "console" },
-      "fail-on-soft": { type: "boolean", default: false },
-      root: { type: "string", default: "." },
-      help: { type: "boolean", default: false },
+      reporter: { type: 'string', default: 'console' },
+      'fail-on-soft': { type: 'boolean', default: false },
+      root: { type: 'string', default: '.' },
+      help: { type: 'boolean', default: false },
     },
   });
 
@@ -390,12 +390,12 @@ Exit codes:
   const report = runValidation(ctx);
 
   const reporter = values.reporter as string;
-  if (reporter === "json") reportJson(report);
-  else if (reporter === "github") reportGitHub(report);
+  if (reporter === 'json') reportJson(report);
+  else if (reporter === 'github') reportGitHub(report);
   else reportConsole(report);
 
   if (report.exitCode !== 0) process.exit(report.exitCode);
-  if (values["fail-on-soft"] && report.softWarnings.length > 0) process.exit(2);
+  if (values['fail-on-soft'] && report.softWarnings.length > 0) process.exit(2);
   process.exit(0);
 }
 

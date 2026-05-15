@@ -52,20 +52,20 @@
 
 ## Provider Dependencies
 
-| Provider | Usage |
-|---|---|
-| DatabaseProvider | Encrypted secret storage and version history |
-| StateStoreProvider | Rotation state and lease tracking |
+| Provider              | Usage                                            |
+| --------------------- | ------------------------------------------------ |
+| DatabaseProvider      | Encrypted secret storage and version history     |
+| StateStoreProvider    | Rotation state and lease tracking                |
 | ObservabilityProvider | Access metrics, rotation status, security events |
-| AuthProvider | Service identity verification for access control |
+| AuthProvider          | Service identity verification for access control |
 
 ## Operational Modes
 
-| Mode | Behavior |
-|---|---|
-| **Native** | Local encrypted file/SQLite storage, AES-256-GCM, local master key |
-| **Connected** | HashiCorp Vault, AWS Secrets Manager, Azure Key Vault |
-| **Hybrid** | External vault for production secrets, local for development |
+| Mode          | Behavior                                                           |
+| ------------- | ------------------------------------------------------------------ |
+| **Native**    | Local encrypted file/SQLite storage, AES-256-GCM, local master key |
+| **Connected** | HashiCorp Vault, AWS Secrets Manager, Azure Key Vault              |
+| **Hybrid**    | External vault for production secrets, local for development       |
 
 ## Directory Structure
 

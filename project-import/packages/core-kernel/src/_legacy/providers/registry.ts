@@ -1,15 +1,15 @@
 /**
  * CodexvantaOS — ProviderRegistry
- * 
+ *
  * The central runtime capability detector and provider manager.
  * Determines at startup which providers are available and
  * wires them into the platform's service layer.
- * 
+ *
  * Operational Modes:
  *  - Native Mode: All 12 native providers (zero third-party deps)
  *  - Connected Mode: All providers are external (full cloud integration)
  *  - Hybrid Mode: Mix of native and external per capability
- * 
+ *
  * Startup Sequence:
  *  1. Register all available providers (native + external)
  *  2. Detect environment capabilities (env vars, connectivity)
@@ -76,11 +76,14 @@ export interface ProviderSlot<T extends AnyProvider = AnyProvider> {
 export interface RegistryStatus {
   mode: OperationalMode;
   initialized: boolean;
-  capabilities: Record<ProviderCapability, {
-    providerId: string;
-    mode: 'native' | 'external';
-    healthy: boolean;
-  }>;
+  capabilities: Record<
+    ProviderCapability,
+    {
+      providerId: string;
+      mode: 'native' | 'external';
+      healthy: boolean;
+    }
+  >;
   healthySummary: { total: number; healthy: number; unhealthy: number };
 }
 

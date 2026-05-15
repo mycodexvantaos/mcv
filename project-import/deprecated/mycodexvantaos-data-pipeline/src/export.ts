@@ -3,13 +3,17 @@
  * In-memory data export target management
  */
 
-import type { ExportTarget, ExportResult } from "./types";
+import type { ExportTarget, ExportResult } from './types';
 
 export class ExportService {
   private targets = new Map<string, ExportTarget>();
   private exported = new Map<string, unknown[]>();
 
-  async registerTarget(name: string, type: string, config: Record<string, unknown> = {}): Promise<ExportTarget> {
+  async registerTarget(
+    name: string,
+    type: string,
+    config: Record<string, unknown> = {}
+  ): Promise<ExportTarget> {
     const id = `target-${name}-${Date.now()}`;
     const target: ExportTarget = { id, name, type, config };
     this.targets.set(id, target);

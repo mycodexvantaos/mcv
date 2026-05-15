@@ -1,6 +1,6 @@
 /**
  * NativeRepoProvider — Local Git CLI implementation
- * 
+ *
  * Zero API dependencies. All operations via local git commands.
  *  - Clone / fetch / pull via git CLI
  *  - Branch, commit, tag operations via git plumbing
@@ -72,10 +72,11 @@ export class NativeRepoProvider implements RepoProvider {
   async listRepos(options?: RepoListOptions): Promise<RepoInfo[]> {
     if (!fs.existsSync(this.config.reposDir)) return [];
 
-    const dirs = fs.readdirSync(this.config.reposDir, { withFileTypes: true })
-      .filter(d => d.isDirectory())
-      .filter(d => fs.existsSync(path.join(this.config.reposDir, d.name, '.git')))
-      .map(d => d.name);
+    const dirs = fs
+      .readdirSync(this.config.reposDir, { withFileTypes: true })
+      .filter((d) => d.isDirectory())
+      .filter((d) => fs.existsSync(path.join(this.config.reposDir, d.name, '.git')))
+      .map((d) => d.name);
 
     const repos: RepoInfo[] = [];
     for (const dir of dirs) {
@@ -131,17 +132,25 @@ export class NativeRepoProvider implements RepoProvider {
 
   async listBranches(repoName: string): Promise<BranchInfo[]> {
     const repoPath = this.repoPath(repoName);
-    const output = this.gitIn(repoPath, ['branch', '--format=%(refname:short) %(objectname:short)', '-a']);
+    const output = this.gitIn(repoPath, [
+      'branch',
+      '--format=%(refname:short) %(objectname:short)',
+      '-a',
+    ]);
 
-    return output.trim().split('\n').filter(Boolean).map(line => {
-      const [name, sha] = line.trim().split(' ');
-      return { name, sha, protected: name === 'main' || name === 'master' };
-    });
+    return output
+      .trim()
+      .split('\n')
+      .filter(Boolean)
+      .map((line) => {
+        const [name, sha] = line.trim().split(' ');
+        return { name, sha, protected: name === 'main' || name === 'master' };
+      });
   }
 
   async getBranch(repoName: string, branch: string): Promise<BranchInfo | null> {
     const branches = await this.listBranches(repoName);
-    return branches.find(b => b.name === branch) ?? null;
+    return branches.find((b) => b.name === branch) ?? null;
   }
 
   async createBranch(repoName: string, branch: string, fromRef: string): Promise<BranchInfo> {
@@ -192,16 +201,20 @@ export class NativeRepoProvider implements RepoProvider {
 
     try {
       const output = this.gitIn(repoPath, args);
-      return output.trim().split('\n').filter(Boolean).map(line => {
-        const parts = line.split('|');
-        return {
-          sha: parts[0],
-          message: parts[1],
-          author: { name: parts[2], email: parts[3], date: parseInt(parts[4]) * 1000 },
-          committer: { name: parts[5], email: parts[6], date: parseInt(parts[7]) * 1000 },
-          parents: parts[8] ? parts[8].split(' ') : [],
-        };
-      });
+      return output
+        .trim()
+        .split('\n')
+        .filter(Boolean)
+        .map((line) => {
+          const parts = line.split('|');
+          return {
+            sha: parts[0],
+            message: parts[1],
+            author: { name: parts[2], email: parts[3], date: parseInt(parts[4]) * 1000 },
+            committer: { name: parts[5], email: parts[6], date: parseInt(parts[7]) * 1000 },
+            parents: parts[8] ? parts[8].split(' ') : [],
+          };
+        });
     } catch {
       return [];
     }
@@ -283,14 +296,14 @@ export class NativeRepoProvider implements RepoProvider {
     const prs: PullRequest[] = this.loadJson(prFile) ?? [];
 
     let filtered = prs;
-    if (options?.state) filtered = filtered.filter(p => p.state === options.state);
+    if (options?.state) filtered = filtered.filter((p) => p.state === options.state);
     if (options?.limit) filtered = filtered.slice(0, options.limit);
     return filtered;
   }
 
   async getPullRequest(repoName: string, prNumber: number): Promise<PullRequest | null> {
     const prs = await this.listPullRequests(repoName);
-    return prs.find(p => p.number === prNumber) ?? null;
+    return prs.find((p) => p.number === prNumber) ?? null;
   }
 
   async createPullRequest(repoName: string, input: CreatePullRequestInput): Promise<PullRequest> {
@@ -332,17 +345,26 @@ export class NativeRepoProvider implements RepoProvider {
     const method = options?.method ?? 'merge';
     if (method === 'squash') {
       this.gitIn(repoPath, ['merge', '--squash', pr.sourceBranch]);
-      this.gitIn(repoPath, ['commit', '-m', options?.message ?? `Merge PR #${prNumber}: ${pr.title}`]);
+      this.gitIn(repoPath, [
+        'commit',
+        '-m',
+        options?.message ?? `Merge PR #${prNumber}: ${pr.title}`,
+      ]);
     } else if (method === 'rebase') {
       this.gitIn(repoPath, ['rebase', pr.sourceBranch]);
     } else {
-      this.gitIn(repoPath, ['merge', pr.sourceBranch, '-m', options?.message ?? `Merge PR #${prNumber}`]);
+      this.gitIn(repoPath, [
+        'merge',
+        pr.sourceBranch,
+        '-m',
+        options?.message ?? `Merge PR #${prNumber}`,
+      ]);
     }
 
     // Update PR state
     const prFile = path.join(repoPath, '.git', 'local-prs.json');
     const prs: PullRequest[] = this.loadJson(prFile) ?? [];
-    const prIdx = prs.findIndex(p => p.number === prNumber);
+    const prIdx = prs.findIndex((p) => p.number === prNumber);
     if (prIdx >= 0) {
       prs[prIdx].state = 'merged';
       prs[prIdx].mergedAt = Date.now();
@@ -358,11 +380,19 @@ export class NativeRepoProvider implements RepoProvider {
   async listTags(repoName: string): Promise<TagInfo[]> {
     const repoPath = this.repoPath(repoName);
     try {
-      const output = this.gitIn(repoPath, ['tag', '-l', '--format=%(refname:short) %(objectname:short)']);
-      return output.trim().split('\n').filter(Boolean).map(line => {
-        const [name, sha] = line.trim().split(' ');
-        return { name, sha };
-      });
+      const output = this.gitIn(repoPath, [
+        'tag',
+        '-l',
+        '--format=%(refname:short) %(objectname:short)',
+      ]);
+      return output
+        .trim()
+        .split('\n')
+        .filter(Boolean)
+        .map((line) => {
+          const [name, sha] = line.trim().split(' ');
+          return { name, sha };
+        });
     } catch {
       return [];
     }
@@ -406,10 +436,10 @@ export class NativeRepoProvider implements RepoProvider {
     try {
       const version = this.git(['--version']).trim();
       const repos = fs.existsSync(this.config.reposDir)
-        ? fs.readdirSync(this.config.reposDir, { withFileTypes: true })
-            .filter(d => d.isDirectory())
-            .filter(d => fs.existsSync(path.join(this.config.reposDir, d.name, '.git')))
-            .length
+        ? fs
+            .readdirSync(this.config.reposDir, { withFileTypes: true })
+            .filter((d) => d.isDirectory())
+            .filter((d) => fs.existsSync(path.join(this.config.reposDir, d.name, '.git'))).length
         : 0;
 
       return {
@@ -456,12 +486,16 @@ export class NativeRepoProvider implements RepoProvider {
     let defaultBranch = 'main';
     try {
       defaultBranch = this.gitIn(repoPath, ['symbolic-ref', '--short', 'HEAD']).trim();
-    } catch { /* fallback to main */ }
+    } catch {
+      /* fallback to main */
+    }
 
     let cloneUrl = '';
     try {
       cloneUrl = this.gitIn(repoPath, ['remote', 'get-url', this.config.defaultRemote]).trim();
-    } catch { /* no remote */ }
+    } catch {
+      /* no remote */
+    }
 
     const stat = fs.statSync(repoPath);
 
@@ -480,6 +514,8 @@ export class NativeRepoProvider implements RepoProvider {
     try {
       if (!fs.existsSync(filePath)) return null;
       return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-    } catch { return null; }
+    } catch {
+      return null;
+    }
   }
 }

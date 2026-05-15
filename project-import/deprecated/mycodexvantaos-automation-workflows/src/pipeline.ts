@@ -1,4 +1,4 @@
-import type { CIPipeline, PipelineStage, PipelineRun } from "./types";
+import type { CIPipeline, PipelineStage, PipelineRun } from './types';
 
 let counter = 0;
 
@@ -36,7 +36,7 @@ export class PipelineService {
     const run: PipelineRun = {
       id: runId,
       pipelineId,
-      status: "pending",
+      status: 'pending',
       startedAt: new Date(),
     };
     this.runs.set(runId, run);
@@ -49,20 +49,21 @@ export class PipelineService {
     const pipeline = this.pipelines.get(run.pipelineId);
     if (!pipeline) throw new Error(`Pipeline ${run.pipelineId} not found`);
 
-    run.status = "running";
+    run.status = 'running';
     // Simulate execution of all stages
     for (const _stage of pipeline.stages) {
       // Each stage processed in-memory
     }
-    run.status = "success";
+    run.status = 'success';
     run.completedAt = new Date();
     return run;
   }
 
   cancelRun(runId: string): boolean {
     const run = this.runs.get(runId);
-    if (!run || run.status === "success" || run.status === "failure" || run.status === "cancelled") return false;
-    run.status = "cancelled";
+    if (!run || run.status === 'success' || run.status === 'failure' || run.status === 'cancelled')
+      return false;
+    run.status = 'cancelled';
     run.completedAt = new Date();
     return true;
   }

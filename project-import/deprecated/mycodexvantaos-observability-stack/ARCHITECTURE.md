@@ -29,23 +29,23 @@
 
 ```typescript
 interface MetricDefinition {
-  name: string;           // e.g., "http_requests_total"
+  name: string; // e.g., "http_requests_total"
   type: 'counter' | 'gauge' | 'histogram';
-  labels: string[];       // Dimensional labels
+  labels: string[]; // Dimensional labels
   description: string;
-  unit: string;           // e.g., "ms", "bytes", "requests"
+  unit: string; // e.g., "ms", "bytes", "requests"
 }
 ```
 
 ### Built-in Platform Metrics
 
-| Metric | Type | Description |
-|---|---|---|
-| `provider_init_duration_ms` | Histogram | Provider initialization time |
-| `service_health_status` | Gauge | 1=healthy, 0=unhealthy |
-| `event_bus_messages_total` | Counter | Events published per topic |
-| `pipeline_records_processed` | Counter | Records per pipeline stage |
-| `sandbox_execution_duration_ms` | Histogram | Sandbox run time |
+| Metric                          | Type      | Description                  |
+| ------------------------------- | --------- | ---------------------------- |
+| `provider_init_duration_ms`     | Histogram | Provider initialization time |
+| `service_health_status`         | Gauge     | 1=healthy, 0=unhealthy       |
+| `event_bus_messages_total`      | Counter   | Events published per topic   |
+| `pipeline_records_processed`    | Counter   | Records per pipeline stage   |
+| `sandbox_execution_duration_ms` | Histogram | Sandbox run time             |
 
 ## Logging Pipeline
 
@@ -102,10 +102,10 @@ Metric Stream
 
 ## Storage Strategy
 
-| Mode | Metrics | Logs | Traces |
-|---|---|---|---|
-| Native | In-memory + SQLite | JSON files | SQLite spans |
-| Connected | Prometheus | Elasticsearch | Jaeger |
+| Mode      | Metrics            | Logs          | Traces       |
+| --------- | ------------------ | ------------- | ------------ |
+| Native    | In-memory + SQLite | JSON files    | SQLite spans |
+| Connected | Prometheus         | Elasticsearch | Jaeger       |
 
 ## Design Principles
 

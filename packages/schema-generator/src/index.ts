@@ -1,6 +1,6 @@
 /**
  * Schema Generator Module
- * 
+ *
  * This module provides capabilities for generating database schemas,
  * validation schemas, and migration files from model definitions.
  */
@@ -53,7 +53,7 @@ export class SchemaGenerator {
       namingConvention: 'snake_case',
       enableTimestamps: true,
       enableSoftDelete: false,
-      ...options
+      ...options,
     };
   }
 
@@ -130,7 +130,7 @@ export class SchemaGenerator {
       version,
       description,
       up,
-      down
+      down,
     };
   }
 
@@ -146,8 +146,10 @@ export class SchemaGenerator {
       for (const field of schema.fields) {
         const tsType = this.toTypeScriptType(field.type);
         const optional = !field.required ? '?' : '';
-        const comment = field.foreignKey ? `  // Foreign key to ${field.foreignKey.table}.${field.foreignKey.field}\n` : '';
-        
+        const comment = field.foreignKey
+          ? `  // Foreign key to ${field.foreignKey.table}.${field.foreignKey.field}\n`
+          : '';
+
         ts += `${comment}  ${field.name}${optional}: ${tsType};\n`;
       }
 
@@ -175,7 +177,7 @@ export class SchemaGenerator {
       title: schema.name,
       type: 'object',
       properties: {},
-      required: []
+      required: [],
     };
 
     for (const field of schema.fields) {
@@ -188,18 +190,18 @@ export class SchemaGenerator {
     if (this.options.enableTimestamps) {
       jsonSchema.properties.createdAt = {
         type: 'string',
-        format: 'date-time'
+        format: 'date-time',
       };
       jsonSchema.properties.updatedAt = {
         type: 'string',
-        format: 'date-time'
+        format: 'date-time',
       };
     }
 
     if (this.options.enableSoftDelete) {
       jsonSchema.properties.deletedAt = {
         type: ['string', 'null'],
-        format: 'date-time'
+        format: 'date-time',
       };
     }
 
@@ -226,10 +228,10 @@ export class SchemaGenerator {
 
       for (const field of schema.fields) {
         prisma += `  ${field.name}`;
-        
+
         // Add type
         prisma += ` ${this.toPrismaType(field.type)}`;
-        
+
         // Add modifiers
         if (field.primaryKey) {
           prisma += ` @id`;
@@ -243,7 +245,7 @@ export class SchemaGenerator {
         if (field.foreignKey) {
           prisma += ` @relation(fields: [${field.name}], references: [${field.foreignKey.field}])`;
         }
-        
+
         prisma += '\n';
       }
 
@@ -310,14 +312,14 @@ export class SchemaGenerator {
    */
   private toSqlType(type: string): string {
     const typeMap: Record<string, string> = {
-      'string': 'VARCHAR(255)',
-      'number': 'DECIMAL(10,2)',
-      'integer': 'INTEGER',
-      'boolean': 'BOOLEAN',
-      'date': 'TIMESTAMP',
-      'text': 'TEXT',
-      'json': 'JSONB',
-      'array': 'TEXT[]'
+      string: 'VARCHAR(255)',
+      number: 'DECIMAL(10,2)',
+      integer: 'INTEGER',
+      boolean: 'BOOLEAN',
+      date: 'TIMESTAMP',
+      text: 'TEXT',
+      json: 'JSONB',
+      array: 'TEXT[]',
     };
 
     if (this.options.database === 'mysql') {
@@ -338,14 +340,14 @@ export class SchemaGenerator {
    */
   private toTypeScriptType(type: string): string {
     const typeMap: Record<string, string> = {
-      'string': 'string',
-      'number': 'number',
-      'integer': 'number',
-      'boolean': 'boolean',
-      'date': 'Date',
-      'text': 'string',
-      'json': 'any',
-      'array': 'any[]'
+      string: 'string',
+      number: 'number',
+      integer: 'number',
+      boolean: 'boolean',
+      date: 'Date',
+      text: 'string',
+      json: 'any',
+      array: 'any[]',
     };
     return typeMap[type] || 'any';
   }
@@ -355,18 +357,18 @@ export class SchemaGenerator {
    */
   private toJsonSchemaProperty(field: SchemaField): any {
     const property: any = {
-      description: field.name
+      description: field.name,
     };
 
     const typeMap: Record<string, string> = {
-      'string': 'string',
-      'number': 'number',
-      'integer': 'integer',
-      'boolean': 'boolean',
-      'date': 'string',
-      'text': 'string',
-      'json': 'object',
-      'array': 'array'
+      string: 'string',
+      number: 'number',
+      integer: 'integer',
+      boolean: 'boolean',
+      date: 'string',
+      text: 'string',
+      json: 'object',
+      array: 'array',
     };
 
     property.type = typeMap[field.type] || 'string';
@@ -387,14 +389,14 @@ export class SchemaGenerator {
    */
   private toPrismaType(type: string): string {
     const typeMap: Record<string, string> = {
-      'string': 'String',
-      'number': 'Decimal',
-      'integer': 'Int',
-      'boolean': 'Boolean',
-      'date': 'DateTime',
-      'text': 'String',
-      'json': 'Json',
-      'array': 'String[]'
+      string: 'String',
+      number: 'Decimal',
+      integer: 'Int',
+      boolean: 'Boolean',
+      date: 'DateTime',
+      text: 'String',
+      json: 'Json',
+      array: 'String[]',
     };
     return typeMap[type] || 'String';
   }
@@ -404,7 +406,10 @@ export class SchemaGenerator {
    */
   private formatTableName(name: string): string {
     if (this.options.namingConvention === 'snake_case') {
-      return name.toLowerCase().replace(/([A-Z])/g, '_$1').replace(/^_/, '');
+      return name
+        .toLowerCase()
+        .replace(/([A-Z])/g, '_$1')
+        .replace(/^_/, '');
     } else if (this.options.namingConvention === 'camelCase') {
       return name.charAt(0).toLowerCase() + name.slice(1);
     } else {
@@ -417,7 +422,10 @@ export class SchemaGenerator {
    */
   private formatFieldName(name: string): string {
     if (this.options.namingConvention === 'snake_case') {
-      return name.toLowerCase().replace(/([A-Z])/g, '_$1').replace(/^_/, '');
+      return name
+        .toLowerCase()
+        .replace(/([A-Z])/g, '_$1')
+        .replace(/^_/, '');
     } else if (this.options.namingConvention === 'camelCase') {
       return name.charAt(0).toLowerCase() + name.slice(1);
     } else {

@@ -491,7 +491,11 @@ const resolvers = {
     availableAgents: (_: unknown, __: unknown, context: { orchestrator: Orchestrator }) => {
       return context.orchestrator.getAvailableAgents();
     },
-    agentsByRole: (_: unknown, { role }: { role: string }, context: { orchestrator: Orchestrator }) => {
+    agentsByRole: (
+      _: unknown,
+      { role }: { role: string },
+      context: { orchestrator: Orchestrator }
+    ) => {
       return context.orchestrator.getAgentsByRole(role);
     },
     teams: (_: unknown, __: unknown, context: { orchestrator: Orchestrator }) => {
@@ -509,13 +513,25 @@ const resolvers = {
   },
 
   Mutation: {
-    registerAgent: (_: unknown, { profile }: { profile: any }, context: { orchestrator: Orchestrator }) => {
+    registerAgent: (
+      _: unknown,
+      { profile }: { profile: any },
+      context: { orchestrator: Orchestrator }
+    ) => {
       return context.orchestrator.registerAgent(profile);
     },
-    unregisterAgent: (_: unknown, { id }: { id: string }, context: { orchestrator: Orchestrator }) => {
+    unregisterAgent: (
+      _: unknown,
+      { id }: { id: string },
+      context: { orchestrator: Orchestrator }
+    ) => {
       return context.orchestrator.unregisterAgent(id as any);
     },
-    createTeam: (_: unknown, { input }: { input: any }, context: { orchestrator: Orchestrator }) => {
+    createTeam: (
+      _: unknown,
+      { input }: { input: any },
+      context: { orchestrator: Orchestrator }
+    ) => {
       return context.orchestrator.createTeam({
         name: input.name,
         topology_type: input.topologyType?.toLowerCase(),
@@ -534,7 +550,11 @@ const resolvers = {
     activateTeam: (_: unknown, { id }: { id: string }, context: { orchestrator: Orchestrator }) => {
       return context.orchestrator.activateTeam(id as any);
     },
-    deactivateTeam: (_: unknown, { id }: { id: string }, context: { orchestrator: Orchestrator }) => {
+    deactivateTeam: (
+      _: unknown,
+      { id }: { id: string },
+      context: { orchestrator: Orchestrator }
+    ) => {
       return context.orchestrator.deactivateTeam(id as any);
     },
     destroyTeam: (_: unknown, { id }: { id: string }, context: { orchestrator: Orchestrator }) => {
@@ -554,7 +574,11 @@ const resolvers = {
     ) => {
       return context.orchestrator.removeAgentFromTeam(teamId as any, agentId as any);
     },
-    createTask: (_: unknown, { input }: { input: any }, context: { orchestrator: Orchestrator }) => {
+    createTask: (
+      _: unknown,
+      { input }: { input: any },
+      context: { orchestrator: Orchestrator }
+    ) => {
       return context.orchestrator.createTask(input.objective, {
         context: input.context,
         priority: input.priority?.toLowerCase(),
@@ -576,13 +600,25 @@ const resolvers = {
     ) => {
       return context.orchestrator.startWorkflow(teamId as any, variables);
     },
-    pauseWorkflow: (_: unknown, { id }: { id: string }, context: { orchestrator: Orchestrator }) => {
+    pauseWorkflow: (
+      _: unknown,
+      { id }: { id: string },
+      context: { orchestrator: Orchestrator }
+    ) => {
       return context.orchestrator.pauseWorkflow(id);
     },
-    resumeWorkflow: (_: unknown, { id }: { id: string }, context: { orchestrator: Orchestrator }) => {
+    resumeWorkflow: (
+      _: unknown,
+      { id }: { id: string },
+      context: { orchestrator: Orchestrator }
+    ) => {
       return context.orchestrator.resumeWorkflow(id);
     },
-    cancelWorkflow: (_: unknown, { id }: { id: string }, context: { orchestrator: Orchestrator }) => {
+    cancelWorkflow: (
+      _: unknown,
+      { id }: { id: string },
+      context: { orchestrator: Orchestrator }
+    ) => {
       return context.orchestrator.cancelWorkflow(id);
     },
     approveCheckpoint: (

@@ -3,200 +3,200 @@
 # 路徑: engineering-templates/semantic-root/semantic-dictionary.yaml
 # 用途: 平台所有工程、治理、AI 交互的術語唯一真相來源
 # =============================================================================
-id: "urn:mycodexvantaos:dictionary:v2"
-name: "MyCodeXvantaOS Multilingual Engineering Dictionary"
-version: "1.0.0"
-status: "active"
+id: 'urn:mycodexvantaos:dictionary:v2'
+name: 'MyCodeXvantaOS Multilingual Engineering Dictionary'
+version: '1.0.0'
+status: 'active'
 description: >
   本字典定義了 MyCodeXvantaOS 生態中所有核心術語的精確含義及其多語系映射。
   它是 CI 文件檢查、日誌輸出、文件自動生成、知識圖譜構建及 AI Agent
   交互時的術語基準。所有貢獻者必須遵循此字典的定義。
-  
+
 terms:
   # =========================================================================
   # 領域：DevOps / CI/CD
   # =========================================================================
-  - id: "term-continuous-integration"
-    english: "Continuous Integration"
-    definition: "一種軟體開發實踐，團隊成員頻繁地將他們的工作整合到主干上，每次整合都通過自動化構建來驗證，以盡早發現整合錯誤。"
+  - id: 'term-continuous-integration'
+    english: 'Continuous Integration'
+    definition: '一種軟體開發實踐，團隊成員頻繁地將他們的工作整合到主干上，每次整合都通過自動化構建來驗證，以盡早發現整合錯誤。'
     translations:
-      simplified_chinese: "持续集成"
-      traditional_chinese: "持續整合"
-    domain: "DevOps / CI/CD"
+      simplified_chinese: '持续集成'
+      traditional_chinese: '持續整合'
+    domain: 'DevOps / CI/CD'
 
-  - id: "term-continuous-delivery"
-    english: "Continuous Delivery"
-    definition: "一種軟體工程方法，讓軟體產品的產出在一個短週期內完成，以確保軟體可以隨時可靠地釋出。"
+  - id: 'term-continuous-delivery'
+    english: 'Continuous Delivery'
+    definition: '一種軟體工程方法，讓軟體產品的產出在一個短週期內完成，以確保軟體可以隨時可靠地釋出。'
     translations:
-      simplified_chinese: "持续交付"
-      traditional_chinese: "持續交付"
-    domain: "DevOps / CI/CD"
+      simplified_chinese: '持续交付'
+      traditional_chinese: '持續交付'
+    domain: 'DevOps / CI/CD'
 
-  - id: "term-continuous-deployment"
-    english: "Continuous Deployment"
-    definition: "Continuous Delivery 的延伸，其中對生產環境的部署是完全自動化的，無需人工干預。"
+  - id: 'term-continuous-deployment'
+    english: 'Continuous Deployment'
+    definition: 'Continuous Delivery 的延伸，其中對生產環境的部署是完全自動化的，無需人工干預。'
     translations:
-      simplified_chinese: "持续部署"
-      traditional_chinese: "持續部署"
-    domain: "DevOps / CI/CD"
+      simplified_chinese: '持续部署'
+      traditional_chinese: '持續部署'
+    domain: 'DevOps / CI/CD'
 
-  - id: "term-integration"
-    english: "Integration"
-    definition: "將不同的軟體組件或子系統組合成為一個整體系統的過程。"
+  - id: 'term-integration'
+    english: 'Integration'
+    definition: '將不同的軟體組件或子系統組合成為一個整體系統的過程。'
     translations:
-      simplified_chinese: "集成"
-      traditional_chinese: "整合"
-    domain: "DevOps / CI/CD"
+      simplified_chinese: '集成'
+      traditional_chinese: '整合'
+    domain: 'DevOps / CI/CD'
 
-  - id: "term-system-integration"
-    english: "System Integration"
-    definition: "將不同的運算系統與軟體應用程式在物理或功能上連結在一起的過程，以作為一個協調的整體。"
+  - id: 'term-system-integration'
+    english: 'System Integration'
+    definition: '將不同的運算系統與軟體應用程式在物理或功能上連結在一起的過程，以作為一個協調的整體。'
     translations:
-      simplified_chinese: "系统集成"
-      traditional_chinese: "系統整合"
-    domain: "DevOps / CI/CD"
+      simplified_chinese: '系统集成'
+      traditional_chinese: '系統整合'
+    domain: 'DevOps / CI/CD'
 
-  - id: "term-configuration-management"
-    english: "Configuration Management"
-    definition: "一個系統工程過程，用於建立和維護產品的性能、功能與物理屬性在整個生命週期中的一致性。"
+  - id: 'term-configuration-management'
+    english: 'Configuration Management'
+    definition: '一個系統工程過程，用於建立和維護產品的性能、功能與物理屬性在整個生命週期中的一致性。'
     translations:
-      simplified_chinese: "配置管理"
-      traditional_chinese: "組態管理 / 設定管理"
-    domain: "DevOps / CI/CD"
+      simplified_chinese: '配置管理'
+      traditional_chinese: '組態管理 / 設定管理'
+    domain: 'DevOps / CI/CD'
 
-  - id: "term-configuration-drift"
-    english: "Configuration Drift"
-    definition: "一個基礎設施的實際配置隨時間偏離其預期定義的狀態。"
+  - id: 'term-configuration-drift'
+    english: 'Configuration Drift'
+    definition: '一個基礎設施的實際配置隨時間偏離其預期定義的狀態。'
     translations:
-      simplified_chinese: "配置漂移"
-      traditional_chinese: "組態漂移 / 設定漂移"
-    domain: "DevOps / CI/CD"
+      simplified_chinese: '配置漂移'
+      traditional_chinese: '組態漂移 / 設定漂移'
+    domain: 'DevOps / CI/CD'
 
-  - id: "term-devops"
-    english: "DevOps"
-    definition: "Development 與 Operations 的組合詞，代表一種重視軟體開發人員與 IT 運維人員之間溝通合作的文化、運動或實踐。"
+  - id: 'term-devops'
+    english: 'DevOps'
+    definition: 'Development 與 Operations 的組合詞，代表一種重視軟體開發人員與 IT 運維人員之間溝通合作的文化、運動或實踐。'
     translations:
-      simplified_chinese: "DevOps"
-      traditional_chinese: "DevOps"
-    domain: "DevOps / CI/CD"
+      simplified_chinese: 'DevOps'
+      traditional_chinese: 'DevOps'
+    domain: 'DevOps / CI/CD'
 
-  - id: "term-cicd"
-    english: "CI/CD"
-    definition: "持續整合與持續交付/部署的統稱，是現代軟體開發的核心實踐。"
+  - id: 'term-cicd'
+    english: 'CI/CD'
+    definition: '持續整合與持續交付/部署的統稱，是現代軟體開發的核心實踐。'
     translations:
-      simplified_chinese: "CI/CD"
-      traditional_chinese: "CI/CD"
-    domain: "DevOps / CI/CD"
+      simplified_chinese: 'CI/CD'
+      traditional_chinese: 'CI/CD'
+    domain: 'DevOps / CI/CD'
 
-  - id: "term-pipeline"
-    english: "Pipeline"
-    definition: "一組自動化的、依序執行的處理步驟，用於將程式碼從開發階段轉移到生產環境。"
+  - id: 'term-pipeline'
+    english: 'Pipeline'
+    definition: '一組自動化的、依序執行的處理步驟，用於將程式碼從開發階段轉移到生產環境。'
     translations:
-      simplified_chinese: "流水线"
-      traditional_chinese: "管線 / 流水線"
-    domain: "DevOps / CI/CD"
+      simplified_chinese: '流水线'
+      traditional_chinese: '管線 / 流水線'
+    domain: 'DevOps / CI/CD'
 
-  - id: "term-artifact"
-    english: "Artifact"
-    definition: "在軟體開發過程中產生的任何可管理的產物，例如編譯後的二進位檔、文件、容器映像等。"
+  - id: 'term-artifact'
+    english: 'Artifact'
+    definition: '在軟體開發過程中產生的任何可管理的產物，例如編譯後的二進位檔、文件、容器映像等。'
     translations:
-      simplified_chinese: "制品"
-      traditional_chinese: "成品 / 工件"
-    domain: "DevOps / CI/CD"
+      simplified_chinese: '制品'
+      traditional_chinese: '成品 / 工件'
+    domain: 'DevOps / CI/CD'
 
   # =========================================================================
   # 領域：版本控制 (Version Control)
   # =========================================================================
-  - id: "term-repository"
-    english: "Repository (Repo)"
-    definition: "用於存儲和管理特定專案的所有檔案與修訂歷史記錄的資料庫。"
+  - id: 'term-repository'
+    english: 'Repository (Repo)'
+    definition: '用於存儲和管理特定專案的所有檔案與修訂歷史記錄的資料庫。'
     translations:
-      simplified_chinese: "仓库 / 代码库"
-      traditional_chinese: "儲存庫 / 版本庫"
-    domain: "Version Control"
+      simplified_chinese: '仓库 / 代码库'
+      traditional_chinese: '儲存庫 / 版本庫'
+    domain: 'Version Control'
 
-  - id: "term-commit"
-    english: "Commit"
-    definition: "將對程式碼的變更正式提交到版本控制系統的儲存庫中的動作。"
+  - id: 'term-commit'
+    english: 'Commit'
+    definition: '將對程式碼的變更正式提交到版本控制系統的儲存庫中的動作。'
     translations:
-      simplified_chinese: "提交"
-      traditional_chinese: "提交"
-    domain: "Version Control"
+      simplified_chinese: '提交'
+      traditional_chinese: '提交'
+    domain: 'Version Control'
 
-  - id: "term-branch"
-    english: "Branch"
-    definition: "從主開發線上分離出來的一條獨立的開發路徑，允許在不影響主幹的情況下進行功能開發或錯誤修正。"
+  - id: 'term-branch'
+    english: 'Branch'
+    definition: '從主開發線上分離出來的一條獨立的開發路徑，允許在不影響主幹的情況下進行功能開發或錯誤修正。'
     translations:
-      simplified_chinese: "分支"
-      traditional_chinese: "分支"
-    domain: "Version Control"
+      simplified_chinese: '分支'
+      traditional_chinese: '分支'
+    domain: 'Version Control'
 
-  - id: "term-merge"
-    english: "Merge"
-    definition: "將一個分支上的變更整合到另一個分支（通常是主分支）的過程。"
+  - id: 'term-merge'
+    english: 'Merge'
+    definition: '將一個分支上的變更整合到另一個分支（通常是主分支）的過程。'
     translations:
-      simplified_chinese: "合并"
-      traditional_chinese: "合併"
-    domain: "Version Control"
+      simplified_chinese: '合并'
+      traditional_chinese: '合併'
+    domain: 'Version Control'
 
-  - id: "term-pull-request"
-    english: "Pull Request (PR)"
-    definition: "一種通知團隊成員你已完成某個功能的開發，並請求他們檢閱和合併你的程式碼的機制。"
+  - id: 'term-pull-request'
+    english: 'Pull Request (PR)'
+    definition: '一種通知團隊成員你已完成某個功能的開發，並請求他們檢閱和合併你的程式碼的機制。'
     translations:
-      simplified_chinese: "拉取请求"
-      traditional_chinese: "提取請求 / 拉取請求"
-    domain: "Version Control"
+      simplified_chinese: '拉取请求'
+      traditional_chinese: '提取請求 / 拉取請求'
+    domain: 'Version Control'
 
-  - id: "term-merge-request"
-    english: "Merge Request (MR)"
-    definition: "GitLab 中與 Pull Request 功能等同的術語。"
+  - id: 'term-merge-request'
+    english: 'Merge Request (MR)'
+    definition: 'GitLab 中與 Pull Request 功能等同的術語。'
     translations:
-      simplified_chinese: "合并请求"
-      traditional_chinese: "合併請求"
-    domain: "Version Control"
+      simplified_chinese: '合并请求'
+      traditional_chinese: '合併請求'
+    domain: 'Version Control'
 
-  - id: "term-conflict-resolution"
-    english: "Conflict Resolution"
-    definition: "當兩個分支對同一部分程式碼進行了不同的修改時，手動或自動解決這些衝突的過程。"
+  - id: 'term-conflict-resolution'
+    english: 'Conflict Resolution'
+    definition: '當兩個分支對同一部分程式碼進行了不同的修改時，手動或自動解決這些衝突的過程。'
     translations:
-      simplified_chinese: "冲突解决"
-      traditional_chinese: "衝突解決"
-    domain: "Version Control"
+      simplified_chinese: '冲突解决'
+      traditional_chinese: '衝突解決'
+    domain: 'Version Control'
 
   # =========================================================================
   # 領域：MyCodeXvantaOS 平台專有術語 (Platform-Specific Terms)
   # =========================================================================
-  - id: "term-mycodexvantaos"
-    english: "MyCodeXvantaOS"
-    definition: "一個全棧應用操作系統，能在零外依賴下完成建立、生成、執行、驗證、發布與回滾。"
+  - id: 'term-mycodexvantaos'
+    english: 'MyCodeXvantaOS'
+    definition: '一個全棧應用操作系統，能在零外依賴下完成建立、生成、執行、驗證、發布與回滾。'
     translations:
-      simplified_chinese: "MyCodeXvantaOS"
-      traditional_chinese: "MyCodeXvantaOS"
-    domain: "MyCodeXvantaOS Platform"
+      simplified_chinese: 'MyCodeXvantaOS'
+      traditional_chinese: 'MyCodeXvantaOS'
+    domain: 'MyCodeXvantaOS Platform'
 
-  - id: "term-minimum-closed-loop"
-    english: "Minimum Closed Loop"
-    definition: "平台在零外依賴下，完成建立、生成、執行、預覽、發布、回滾的完整流程。這是平台成立的最高基準。"
+  - id: 'term-minimum-closed-loop'
+    english: 'Minimum Closed Loop'
+    definition: '平台在零外依賴下，完成建立、生成、執行、預覽、發布、回滾的完整流程。這是平台成立的最高基準。'
     translations:
-      simplified_chinese: "最小闭环"
-      traditional_chinese: "最小閉環"
-    domain: "MyCodeXvantaOS Platform"
+      simplified_chinese: '最小闭环'
+      traditional_chinese: '最小閉環'
+    domain: 'MyCodeXvantaOS Platform'
 
-  - id: "term-provider"
-    english: "Provider"
-    definition: "MyCodeXvantaOS 中對外部能力的抽象介面，必須實作 initialize、healthCheck、shutdown 標準方法。"
+  - id: 'term-provider'
+    english: 'Provider'
+    definition: 'MyCodeXvantaOS 中對外部能力的抽象介面，必須實作 initialize、healthCheck、shutdown 標準方法。'
     translations:
-      simplified_chinese: "提供者"
-      traditional_chinese: "提供者"
-    domain: "MyCodeXvantaOS Platform"
+      simplified_chinese: '提供者'
+      traditional_chinese: '提供者'
+    domain: 'MyCodeXvantaOS Platform'
 
-  - id: "term-runtime-mode"
-    english: "Runtime Mode"
-    definition: "MyCodeXvantaOS 的執行模式，分為 native（純本機）、connected（全外部連接）和 hybrid（混合）三種。"
+  - id: 'term-runtime-mode'
+    english: 'Runtime Mode'
+    definition: 'MyCodeXvantaOS 的執行模式，分為 native（純本機）、connected（全外部連接）和 hybrid（混合）三種。'
     translations:
-      simplified_chinese: "运行时模式"
-      traditional_chinese: "執行階段模式"
-    domain: "MyCodeXvantaOS Platform"
+      simplified_chinese: '运行时模式'
+      traditional_chinese: '執行階段模式'
+    domain: 'MyCodeXvantaOS Platform'
 
   # =============================================================================
   # 統計資訊 (Statistics)
@@ -205,9 +205,9 @@ statistics:
   total_terms: 331
   total_domains: 33
   languages:
-    - "english"
-    - "simplified_chinese"
-    - "traditional_chinese"
-  generated_by: "MyCodeXvantaOS Semantic-Root Engineering Team"
-  last_updated: "2026-04-24"
-  compliance: "urn:mycodexvantaos:governance:naming-policy:v2"
+    - 'english'
+    - 'simplified_chinese'
+    - 'traditional_chinese'
+  generated_by: 'MyCodeXvantaOS Semantic-Root Engineering Team'
+  last_updated: '2026-04-24'
+  compliance: 'urn:mycodexvantaos:governance:naming-policy:v2'

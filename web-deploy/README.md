@@ -9,32 +9,34 @@ v3.0 新增完整的金鑰配對生命週期管理，取代原本任意文字輸
 ### 流程
 
 **被觀察方（子女）**
+
 1. 簽署責任協議
 2. 系統自動生成 `XXXX-XXXX` 格式配對金鑰
 3. 金鑰展示畫面：顯示金鑰、複製按鈕、使用說明
 4. 再次輸入金鑰確認 → 開始消失序列 → 遁入後台
 
 **觀察方（監護人）**
+
 1. 輸入被觀察方提供的配對金鑰
 2. 後端驗證金鑰有效性（格式、存在、未過期、未配對）
 3. 建立配對連線 → 進入監控主控台
 
 ### API 端點
 
-| 端點 | 方法 | 說明 |
-|------|------|------|
-| `/api/keys/generate` | POST | 生成配對金鑰 |
-| `/api/keys/validate` | POST | 驗證金鑰有效性 |
-| `/api/keys/pair` | POST | 建立配對連線 |
+| 端點                        | 方法 | 說明             |
+| --------------------------- | ---- | ---------------- |
+| `/api/keys/generate`        | POST | 生成配對金鑰     |
+| `/api/keys/validate`        | POST | 驗證金鑰有效性   |
+| `/api/keys/pair`            | POST | 建立配對連線     |
 | `/api/keys/confirm-subject` | POST | 被觀察方確認金鑰 |
-| `/api/keys/status` | GET | 查詢金鑰狀態 |
-| `/api/keys/revoke` | POST | 撤銷金鑰 |
-| `/api/keys/list` | GET | 列出所有金鑰 |
-| `/api/health` | GET | 健康檢查 |
-| `/api/devices` | GET | 裝置列表 |
-| `/api/threats` | GET | 威脅紀錄 |
-| `/api/audit` | GET | 審計紀錄 |
-| `/api/rules` | GET | 監控規則 |
+| `/api/keys/status`          | GET  | 查詢金鑰狀態     |
+| `/api/keys/revoke`          | POST | 撤銷金鑰         |
+| `/api/keys/list`            | GET  | 列出所有金鑰     |
+| `/api/health`               | GET  | 健康檢查         |
+| `/api/devices`              | GET  | 裝置列表         |
+| `/api/threats`              | GET  | 威脅紀錄         |
+| `/api/audit`                | GET  | 審計紀錄         |
+| `/api/rules`                | GET  | 監控規則         |
 
 ### 金鑰特性
 
@@ -46,6 +48,7 @@ v3.0 新增完整的金鑰配對生命週期管理，取代原本任意文字輸
 ### 無 KV 回退
 
 當 Cloudflare KV 未綁定時，API 會自動回退為本地模式：
+
 - 金鑰生成仍正常運作
 - 驗證僅檢查格式
 - 配對自動成功

@@ -1,4 +1,4 @@
-import type { LLMModel, LLMResponse } from "./types";
+import type { LLMModel, LLMResponse } from './types';
 
 let counter = 0;
 
@@ -48,7 +48,7 @@ export class ModelRegistryService {
         completion: completionTokens,
         total: promptTokens + completionTokens,
       },
-      finishReason: "stop",
+      finishReason: 'stop',
     };
   }
 }

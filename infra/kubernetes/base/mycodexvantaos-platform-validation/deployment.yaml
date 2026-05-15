@@ -15,7 +15,7 @@ spec:
         app: mycodexvantaos-platform-validation
     spec:
       containers:
-      - name: mycodexvantaos-platform-validation
-        image: registry.internal/mycodexvantaos/mycodexvantaos-platform-validation:latest
-        ports:
-        - containerPort: 8080
+        - name: mycodexvantaos-platform-validation
+          image: registry.internal/mycodexvantaos/mycodexvantaos-platform-validation:latest
+          ports:
+            - containerPort: 8080

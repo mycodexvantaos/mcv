@@ -1,9 +1,9 @@
 /**
  * CodexvantaOS — Native Provider Barrel Export
- * 
+ *
  * All 12 native (zero-dependency) provider implementations.
  * These ensure the platform operates fully without ANY third-party service.
- * 
+ *
  * ┌──────────────────────────────────────────────────────────────────────────┐
  * │  Native Mode — Platform Minimum Closed Loop                            │
  * ├──────────────────────────────────────────────────────────────────────────┤

@@ -5,7 +5,7 @@ metadata:
   name: deploy-native
   capability: deployment
   description: Native deployment provider for local and Docker deployments
-  version: "1.0.0"
+  version: '1.0.0'
   author: MyCodeXvantaOS Team
   tags:
     - deployment
@@ -17,19 +17,19 @@ metadata:
 spec:
   providerName: native
   isNative: true
-  priority: 100  # Highest priority - always available as fallback
-  
+  priority: 100 # Highest priority - always available as fallback
+
   capabilities:
     - local-deployment
     - docker-deployment
     - static-site-hosting
     - process-management
-  
+
   requirements:
-    external: []  # No external dependencies
+    external: [] # No external dependencies
     runtime:
       - nodejs >= 18.0.0
-  
+
   configuration:
     type: object
     properties:
@@ -39,7 +39,7 @@ spec:
         description: Default port for local deployments
       host:
         type: string
-        default: "localhost"
+        default: 'localhost'
         description: Host address for local deployments
       dockerEnabled:
         type: boolean
@@ -49,8 +49,8 @@ spec:
         type: boolean
         default: true
         description: Enable auto-reload for development
-  
+
   # Native provider is always available
   availability:
     always: true
-    healthCheck: "internal"
+    healthCheck: 'internal'

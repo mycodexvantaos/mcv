@@ -52,21 +52,21 @@
 
 ## Provider Dependencies
 
-| Provider | Usage |
-|---|---|
-| DatabaseProvider | Policy definitions, evaluation history, violation records |
-| ValidationProvider | Policy syntax and schema validation |
-| StateStoreProvider | Cached evaluation results and policy compilation cache |
-| ObservabilityProvider | Evaluation metrics, violation trends |
-| RepoProvider | Repository state access for evaluation |
+| Provider              | Usage                                                     |
+| --------------------- | --------------------------------------------------------- |
+| DatabaseProvider      | Policy definitions, evaluation history, violation records |
+| ValidationProvider    | Policy syntax and schema validation                       |
+| StateStoreProvider    | Cached evaluation results and policy compilation cache    |
+| ObservabilityProvider | Evaluation metrics, violation trends                      |
+| RepoProvider          | Repository state access for evaluation                    |
 
 ## Operational Modes
 
-| Mode | Behavior |
-|---|---|
-| **Native** | Built-in rule engine, SQLite policy store, local evaluation |
+| Mode          | Behavior                                                          |
+| ------------- | ----------------------------------------------------------------- |
+| **Native**    | Built-in rule engine, SQLite policy store, local evaluation       |
 | **Connected** | External policy store, PostgreSQL history, distributed evaluation |
-| **Hybrid** | Native evaluation engine with external policy distribution |
+| **Hybrid**    | Native evaluation engine with external policy distribution        |
 
 ## Directory Structure
 

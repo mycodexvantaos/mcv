@@ -34,7 +34,7 @@ export class SearchEngine {
     for (const doc of this.documents.values()) {
       let score = 0;
       const content = doc.content.toLowerCase();
-      
+
       for (const term of searchTerms) {
         if (content.includes(term)) {
           score += content.split(term).length - 1;
@@ -46,9 +46,7 @@ export class SearchEngine {
       }
     }
 
-    return results
-      .sort((a, b) => b.score - a.score)
-      .slice(0, query.limit || 10);
+    return results.sort((a, b) => b.score - a.score).slice(0, query.limit || 10);
   }
 
   async delete(documentId: string): Promise<boolean> {

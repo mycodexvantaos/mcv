@@ -9,17 +9,17 @@ metadata:
   planeDescription: 控制面 — 平台核心控制與配置
   tier: 1
   tags:
-  - core
-  - bootstrap
-  - entrypoint
+    - core
+    - bootstrap
+    - entrypoint
 spec:
   architecture:
     philosophy: native-first / provider-agnostic
     principle: 第三方服務是擴充出口，不是平台地基
     mode: native | connected | hybrid
   capabilities:
-  - bootstrap
-  - lifecycle
+    - bootstrap
+    - lifecycle
   providerDependencies: []
   repoDependencies:
-  - codexvanta-os-core-kernel
+    - codexvanta-os-core-kernel

@@ -1,5 +1,5 @@
-import React from "react";
-import { useAuth } from "../hooks/useAuth";
+import React from 'react';
+import { useAuth } from '../hooks/useAuth';
 
 export function Dashboard(): React.ReactElement {
   const { logout } = useAuth();

@@ -9,22 +9,22 @@ metadata:
   planeDescription: 體驗面 — UI、CLI、使用者介面
   tier: 4
   tags:
-  - portal
-  - multi-tenant
-  - marketplace
+    - portal
+    - multi-tenant
+    - marketplace
 spec:
   architecture:
     philosophy: native-first / provider-agnostic
     principle: 第三方服務是擴充出口，不是平台地基
     mode: native | connected | hybrid
   capabilities:
-  - user-portal
-  - multi-tenancy
-  - marketplace
+    - user-portal
+    - multi-tenancy
+    - marketplace
   providerDependencies:
-  - auth
-  - database
+    - auth
+    - database
   repoDependencies:
-  - codexvanta-os-core-kernel
-  - codexvanta-os-auth-service
-  - codexvanta-os-app-ui
+    - codexvanta-os-core-kernel
+    - codexvanta-os-auth-service
+    - codexvanta-os-app-ui

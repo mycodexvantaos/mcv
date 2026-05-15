@@ -3,18 +3,18 @@
  * In-memory environment configuration management
  */
 
-import type { Environment, EnvironmentConfig } from "./types";
+import type { Environment, EnvironmentConfig } from './types';
 
 export class EnvironmentService {
   private environments = new Map<string, Environment>();
   private configs = new Map<string, EnvironmentConfig>();
 
-  async create(name: string, type: Environment["type"] = "development"): Promise<Environment> {
+  async create(name: string, type: Environment['type'] = 'development'): Promise<Environment> {
     const env: Environment = {
       id: `env-${name}-${Date.now()}`,
       name,
       type,
-      status: "active",
+      status: 'active',
       createdAt: new Date(),
     };
     this.environments.set(env.id, env);
@@ -22,7 +22,7 @@ export class EnvironmentService {
       envId: env.id,
       variables: {},
       secrets: [],
-      resources: { cpu: "0", memory: "0", storage: "0", network: "0" },
+      resources: { cpu: '0', memory: '0', storage: '0', network: '0' },
     });
     return env;
   }
@@ -68,13 +68,13 @@ export class EnvironmentService {
     return newEnv;
   }
 
-  async detectMode(): Promise<"native" | "connected" | "hybrid"> {
-    const hasRedis = !!process.env["ORCH_STATE_HOST"];
-    const hasGithub = !!process.env["ORCH_GITHUB_TOKEN"];
-    const hasSlack = !!process.env["SLACK_WEBHOOK_URL"];
+  async detectMode(): Promise<'native' | 'connected' | 'hybrid'> {
+    const hasRedis = !!process.env['ORCH_STATE_HOST'];
+    const hasGithub = !!process.env['ORCH_GITHUB_TOKEN'];
+    const hasSlack = !!process.env['SLACK_WEBHOOK_URL'];
     const count = [hasRedis, hasGithub, hasSlack].filter(Boolean).length;
-    if (count === 0) return "native";
-    if (count >= 3) return "connected";
-    return "hybrid";
+    if (count === 0) return 'native';
+    if (count >= 3) return 'connected';
+    return 'hybrid';
   }
 }

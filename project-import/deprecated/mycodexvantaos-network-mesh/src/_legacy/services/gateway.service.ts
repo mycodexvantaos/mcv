@@ -5,11 +5,20 @@
 import { getProviders } from '../providers.js';
 import type * as T from '../types/index.js';
 
-export interface Route { path: string; service: string; methods: string[]; middlewares: string[]; rateLimit?: number; authRequired: boolean; }
+export interface Route {
+  path: string;
+  service: string;
+  methods: string[];
+  middlewares: string[];
+  rateLimit?: number;
+  authRequired: boolean;
+}
 
 export class GatewayService {
   private routes = new Map<string, Route>();
-  private get providers() { return getProviders(); }
+  private get providers() {
+    return getProviders();
+  }
 
   async addRoute(route: Route): Promise<void> {
     this.routes.set(route.path, route);
@@ -24,7 +33,11 @@ export class GatewayService {
 
   async resolve(path: string, method: string): Promise<Route | null> {
     for (const [routePath, route] of this.routes) {
-      if (this.matchPath(path, routePath) && (route.methods.includes('*') || route.methods.includes(method.toUpperCase()))) return route;
+      if (
+        this.matchPath(path, routePath) &&
+        (route.methods.includes('*') || route.methods.includes(method.toUpperCase()))
+      )
+        return route;
     }
     return null;
   }
@@ -48,7 +61,8 @@ export class GatewayService {
 
   private matchPath(actual: string, pattern: string): boolean {
     if (pattern === actual) return true;
-    const patternParts = pattern.split('/'); const actualParts = actual.split('/');
+    const patternParts = pattern.split('/');
+    const actualParts = actual.split('/');
     if (patternParts.length !== actualParts.length) return false;
     return patternParts.every((part, i) => part.startsWith(':') || part === actualParts[i]);
   }

@@ -1,7 +1,7 @@
 /**
  * Evidence Verifier - Provider Pattern Version
  * Transformed to use StorageCapability and ValidationCapability for platform independence
- * 
+ *
  * Supports:
  * - Native: Local file system verification (no external dependencies)
  * - Hybrid: Remote evidence with fallback to local
@@ -9,7 +9,10 @@
  */
 
 import type { StorageCapability } from '../packages/capabilities/src/storage';
-import type { ValidationCapability, ValidationResult } from '../packages/capabilities/src/validation';
+import type {
+  ValidationCapability,
+  ValidationResult,
+} from '../packages/capabilities/src/validation';
 import type { LoggingCapability } from '../packages/capabilities/src/logging';
 
 export interface EvidenceFile {
@@ -41,7 +44,7 @@ const REQUIRED_EVIDENCE_FILES = [
   'merkle-root.json',
   'repo-fingerprint.json',
   'toolchain.json',
-  'gate-report.json'
+  'gate-report.json',
 ];
 
 /**
@@ -85,19 +88,19 @@ export class EvidenceVerifier {
   /**
    * Verify JSON file
    */
-  private async verifyJsonFile(path: string): Promise<{ valid: boolean; error?: string; content?: any }> {
+  private async verifyJsonFile(
+    path: string
+  ): Promise<{ valid: boolean; error?: string; content?: any }> {
     try {
       const item = await this.storage!.get(path);
-      
+
       if (!item || !item.value) {
         return { valid: false, error: 'File not found' };
       }
 
       try {
-        const content = typeof item.value === 'string' 
-          ? JSON.parse(item.value)
-          : item.value;
-        
+        const content = typeof item.value === 'string' ? JSON.parse(item.value) : item.value;
+
         return { valid: true, content };
       } catch (e: any) {
         return { valid: false, error: `Invalid JSON: ${e.message}` };
@@ -131,7 +134,7 @@ export class EvidenceVerifier {
     // Check if directory exists
     try {
       const keys = await this.storage!.keys();
-      report.dirExists = keys.some(k => k.startsWith(evidenceDir));
+      report.dirExists = keys.some((k) => k.startsWith(evidenceDir));
     } catch (error: any) {
       await this.log('error', `Failed to check directory: ${error.message}`);
       report.files.push({
@@ -147,7 +150,7 @@ export class EvidenceVerifier {
     // Verify each required file
     for (const filename of this.requiredFiles) {
       const filePath = `${evidenceDir}/${filename}`;
-      
+
       const fileResult: EvidenceFile = {
         name: filename,
         path: filePath,
@@ -156,7 +159,7 @@ export class EvidenceVerifier {
       };
 
       const verification = await this.verifyJsonFile(filePath);
-      
+
       fileResult.exists = verification.valid || verification.error !== 'File not found';
       fileResult.validJson = verification.valid;
       fileResult.error = verification.error;
@@ -177,11 +180,7 @@ export class EvidenceVerifier {
     }
 
     // Calculate overall validity
-    report.valid = (
-      report.missing === 0 &&
-      report.invalidJson === 0 &&
-      report.dirExists
-    );
+    report.valid = report.missing === 0 && report.invalidJson === 0 && report.dirExists;
 
     await this.log('info', `Evidence verification ${report.valid ? 'PASSED' : 'FAILED'}`, {
       found: report.found,

@@ -1,7 +1,7 @@
-import { PrismaClient } from "@prisma/client";
-import * as bcrypt from "bcrypt";
-import { TokenService } from "./TokenService";
-import type { LoginResult, User } from "../types/auth.types";
+import { PrismaClient } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
+import { TokenService } from './TokenService';
+import type { LoginResult, User } from '../types/auth.types';
 
 const prisma = new PrismaClient();
 
@@ -15,7 +15,7 @@ export class AuthService {
 
     // 1. 尋找使用者
     const dbUser = await prisma.user.findUnique({
-      where: { email }
+      where: { email },
     });
 
     if (!dbUser) {
@@ -32,24 +32,28 @@ export class AuthService {
     const user: User = {
       id: dbUser.id,
       email: dbUser.email,
-      roles: dbUser.roles
+      roles: dbUser.roles,
     };
 
     return {
       token: this.tokenService.sign({
         sub: user.id,
         email: user.email,
-        roles: user.roles
+        roles: user.roles,
       }),
-      expiresIn: this.tokenService.getTtl()
+      expiresIn: this.tokenService.getTtl(),
     };
   }
 
-  async register(email: string, password: string, roles: string[] = ["user"]): Promise<User | null> {
+  async register(
+    email: string,
+    password: string,
+    roles: string[] = ['user']
+  ): Promise<User | null> {
     // 檢查是否已存在
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
-      throw new Error("User already exists");
+      throw new Error('User already exists');
     }
 
     // 加密密碼
@@ -60,14 +64,14 @@ export class AuthService {
       data: {
         email,
         password: hashedPassword,
-        roles
-      }
+        roles,
+      },
     });
 
     return {
       id: newUser.id,
       email: newUser.email,
-      roles: newUser.roles
+      roles: newUser.roles,
     };
   }
 }

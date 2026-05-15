@@ -82,12 +82,12 @@ Instance A                    Instance B
 
 ## Failure Handling
 
-| Strategy | Description |
-|---|---|
-| Immediate Retry | Retry once immediately |
-| Exponential Backoff | 1s, 2s, 4s, 8s, ... up to max |
-| Fixed Delay | Constant delay between retries |
-| Dead Letter | After max retries, move to DLQ |
+| Strategy            | Description                    |
+| ------------------- | ------------------------------ |
+| Immediate Retry     | Retry once immediately         |
+| Exponential Backoff | 1s, 2s, 4s, 8s, ... up to max  |
+| Fixed Delay         | Constant delay between retries |
+| Dead Letter         | After max retries, move to DLQ |
 
 ## Design Principles
 

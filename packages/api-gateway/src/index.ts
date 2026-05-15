@@ -24,7 +24,7 @@ export interface Middleware {
 
 export class ApiGateway {
   private config: GatewayConfig;
-  
+
   constructor(config: GatewayConfig) {
     this.config = config;
   }

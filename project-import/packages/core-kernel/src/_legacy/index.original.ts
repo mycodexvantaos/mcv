@@ -1,7 +1,7 @@
 /**
  * CodexvantaOS — core-kernel
  * 核心內核 — Provider 介面、Native/External 實作、ProviderRegistry
- * 
+ *
  * Layer: B-Runtime | Plane: Control | Tier: 0
  * Philosophy: Native-first / Provider-agnostic
  * 「第三方服務是平台的擴充出口，不是平台成立的地基。」
@@ -25,7 +25,7 @@ export { ProviderRegistry } from './providers/registry.js';
  */
 export async function bootstrapKernel(): Promise<void> {
   const { ProviderRegistry } = await import('./providers/registry.js');
-  
+
   const registry = new ProviderRegistry();
   await registry.initialize();
 

@@ -17,6 +17,7 @@ echo "mycodexvantaos-ai-reasoning" | grep -E '^mycodexvantaos-[a-z0-9]+(-[a-z0-9
 ```
 
 This creates:
+
 - `services/mycodexvantaos-ai-reasoning/`
 - `modules/mycodexvantaos-ai-reasoning/module-manifest.yaml`
 - `packages/ai-reasoning/package.json`
@@ -25,6 +26,7 @@ This creates:
 ## Step 3: Set lifecycle stage
 
 Edit `modules/mycodexvantaos-ai-reasoning/module-manifest.yaml`:
+
 - Start at `experimental`, advance through `alpha → beta → stable`
 
 ## Step 4: Validate

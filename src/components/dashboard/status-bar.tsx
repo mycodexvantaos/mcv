@@ -55,10 +55,16 @@ export function StatusBar({
         <Tooltip>
           <TooltipTrigger asChild>
             <Button variant="ghost" size="icon" className="h-6 w-6" onClick={onToggleLeftPanel}>
-              {isLeftPanelOpen ? <PanelLeftClose className="h-3.5 w-3.5" /> : <PanelLeftOpen className="h-3.5 w-3.5" />}
+              {isLeftPanelOpen ? (
+                <PanelLeftClose className="h-3.5 w-3.5" />
+              ) : (
+                <PanelLeftOpen className="h-3.5 w-3.5" />
+              )}
             </Button>
           </TooltipTrigger>
-          <TooltipContent side="top"><p>Toggle Navigation</p></TooltipContent>
+          <TooltipContent side="top">
+            <p>Toggle Navigation</p>
+          </TooltipContent>
         </Tooltip>
 
         <div className="flex items-center gap-1.5">
@@ -76,7 +82,9 @@ export function StatusBar({
 
         <div className="flex items-center gap-1">
           <Database className="h-3 w-3" />
-          <span>{healthyConnectors}/{totalConnectors} connectors</span>
+          <span>
+            {healthyConnectors}/{totalConnectors} connectors
+          </span>
         </div>
 
         <div className="h-3 w-px bg-border" />
@@ -95,10 +103,16 @@ export function StatusBar({
         <Tooltip>
           <TooltipTrigger asChild>
             <Button variant="ghost" size="icon" className="h-6 w-6" onClick={onToggleRightPanel}>
-              {isRightPanelOpen ? <PanelRightClose className="h-3.5 w-3.5" /> : <PanelRightOpen className="h-3.5 w-3.5" />}
+              {isRightPanelOpen ? (
+                <PanelRightClose className="h-3.5 w-3.5" />
+              ) : (
+                <PanelRightOpen className="h-3.5 w-3.5" />
+              )}
             </Button>
           </TooltipTrigger>
-          <TooltipContent side="top"><p>Toggle AI Assistant</p></TooltipContent>
+          <TooltipContent side="top">
+            <p>Toggle AI Assistant</p>
+          </TooltipContent>
         </Tooltip>
       </div>
     </footer>

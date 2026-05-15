@@ -8,7 +8,7 @@ metadata:
   capability: validation
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: "8.1"
+    mycodexvantaos.org/specRef: '8.1'
 spec:
   providerName: zod
   isNative: true
@@ -16,4 +16,4 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_VALIDATION
   configSchemaRef: ./config.schema.json
-  description: "Zod TypeScript-first schema validation provider (native)."
+  description: 'Zod TypeScript-first schema validation provider (native).'

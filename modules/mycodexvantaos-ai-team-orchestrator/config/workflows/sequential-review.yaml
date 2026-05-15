@@ -13,7 +13,7 @@ updated_at: 2024-01-15T10:00:00Z
 
 # Workflow Configuration
 config:
-  timeout_seconds: 7200  # 2 hours max
+  timeout_seconds: 7200 # 2 hours max
   retry_policy:
     max_retries: 2
     backoff_seconds: 30
@@ -47,7 +47,7 @@ nodes:
         - formatting
         - static_analysis
         - unit_tests
-      fail_threshold: error  # error, warning, info
+      fail_threshold: error # error, warning, info
       generate_report: true
     dependencies:
       - submit
@@ -87,13 +87,13 @@ nodes:
     type: wait
     action: wait_for_resubmission
     config:
-      timeout_seconds: 86400  # 24 hours
+      timeout_seconds: 86400 # 24 hours
       notify_on_timeout: true
     dependencies:
       - return_for_fixes
     handler: waitHandler
     next:
-      - initial_checks  # Loop back to re-check
+      - initial_checks # Loop back to re-check
 
   # Stage 3: Assign Reviewer
   - id: assign_reviewer
@@ -114,7 +114,7 @@ nodes:
     type: hitl
     action: wait_for_review
     config:
-      timeout_seconds: 172800  # 48 hours
+      timeout_seconds: 172800 # 48 hours
       approvers_required: 1
       allow_rejection: true
       notification:
@@ -160,12 +160,12 @@ nodes:
     type: wait
     action: wait_for_revision
     config:
-      timeout_seconds: 86400  # 24 hours
+      timeout_seconds: 86400 # 24 hours
     dependencies:
       - request_changes
     handler: waitHandler
     next:
-      - hitl_code_review  # Loop back for re-review
+      - hitl_code_review # Loop back for re-review
 
   # Stage 4: Final Approval
   - id: final_approval

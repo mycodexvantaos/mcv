@@ -51,7 +51,7 @@ export class PostgreSQLConnector {
       password: config.password,
       ssl: config.ssl || false,
       maxConnections: config.maxConnections || 10,
-      idleTimeoutMs: config.idleTimeoutMs || 10000
+      idleTimeoutMs: config.idleTimeoutMs || 10000,
     };
   }
 
@@ -89,32 +89,32 @@ export class PostgreSQLConnector {
     }
 
     const trimmedSql = sql.trim().toLowerCase();
-    
+
     // Handle SELECT queries
     if (trimmedSql.startsWith('select')) {
       return this.executeSelect<T>(sql, values);
     }
-    
+
     // Handle INSERT queries
     if (trimmedSql.startsWith('insert')) {
       return this.executeInsert<T>(sql, values);
     }
-    
+
     // Handle UPDATE queries
     if (trimmedSql.startsWith('update')) {
       return this.executeUpdate<T>(sql, values);
     }
-    
+
     // Handle DELETE queries
     if (trimmedSql.startsWith('delete')) {
       return this.executeDelete<T>(sql, values);
     }
-    
+
     // Handle CREATE TABLE
     if (trimmedSql.startsWith('create table')) {
       return this.executeCreateTable<T>(sql);
     }
-    
+
     // Handle DROP TABLE
     if (trimmedSql.startsWith('drop table')) {
       return this.executeDropTable<T>(sql);
@@ -134,9 +134,9 @@ export class PostgreSQLConnector {
 
     const tableName = tableMatch[1];
     const rows = this.tables.get(tableName) || [];
-    
+
     let filteredRows = [...rows];
-    
+
     // Apply WHERE clause (simplified)
     const whereMatch = sql.match(/WHERE\s+(.+?)(?:\s+(?:GROUP|ORDER|LIMIT)|$)/i);
     if (whereMatch && values) {
@@ -146,11 +146,11 @@ export class PostgreSQLConnector {
         if (match) {
           const column = match[1];
           const valueIndex = parseInt(condition.match(/\$(\d+)/)?.[1] || '0') - 1;
-          filteredRows = filteredRows.filter(row => row[column] === values[valueIndex]);
+          filteredRows = filteredRows.filter((row) => row[column] === values[valueIndex]);
         }
       }
     }
-    
+
     // Apply ORDER BY (simplified)
     const orderByMatch = sql.match(/ORDER\s+BY\s+(\w+)(?:\s+(ASC|DESC))?/i);
     if (orderByMatch) {
@@ -164,7 +164,7 @@ export class PostgreSQLConnector {
         return 0;
       });
     }
-    
+
     // Apply LIMIT (simplified)
     const limitMatch = sql.match(/LIMIT\s+(\d+)/i);
     if (limitMatch) {
@@ -175,7 +175,7 @@ export class PostgreSQLConnector {
       rows: filteredRows as T[],
       rowCount: filteredRows.length,
       command: 'SELECT',
-      fields: []
+      fields: [],
     };
   }
 
@@ -191,7 +191,7 @@ export class PostgreSQLConnector {
     const tableName = tableMatch[1];
     const columnsMatch = sql.match(/\(([^)]+)\)/i);
     const columns = columnsMatch ? columnsMatch[1].split(',').map((c) => c.trim()) : [];
-    
+
     const table = this.tables.get(tableName);
     if (!table) {
       this.tables.set(tableName, []);
@@ -224,7 +224,7 @@ export class PostgreSQLConnector {
         rows: [row as T],
         rowCount: 1,
         command: 'INSERT',
-        fields: []
+        fields: [],
       };
     }
 
@@ -232,7 +232,7 @@ export class PostgreSQLConnector {
       rows: [] as T[],
       rowCount: 1,
       command: 'INSERT',
-      fields: []
+      fields: [],
     };
   }
 
@@ -252,7 +252,7 @@ export class PostgreSQLConnector {
         rows: [] as T[],
         rowCount: 0,
         command: 'UPDATE',
-        fields: []
+        fields: [],
       };
     }
 
@@ -263,19 +263,19 @@ export class PostgreSQLConnector {
 
     const setClause = setMatch[1];
     const assignments = setClause.split(',');
-    
+
     let rowCount = 0;
-    
+
     for (const row of table) {
       let shouldUpdate = true;
       let valueIndex = 0;
-      
+
       // Apply WHERE clause
       const whereMatch = sql.match(/WHERE\s+(.+)$/i);
       if (whereMatch && values) {
         const conditions = whereMatch[1].split(/\s+AND\s+/i);
         valueIndex = 0;
-        
+
         // First process SET values
         for (const assignment of assignments) {
           const setMatch = assignment.match(/(\w+)\s*=\s*\$?\d+/i);
@@ -283,7 +283,7 @@ export class PostgreSQLConnector {
             valueIndex++;
           }
         }
-        
+
         // Then process WHERE values
         for (const condition of conditions) {
           const match = condition.match(/(\w+)\s*=\s*\$?\d+/i);
@@ -296,7 +296,7 @@ export class PostgreSQLConnector {
           }
         }
       }
-      
+
       if (shouldUpdate) {
         valueIndex = 0;
         for (const assignment of assignments) {
@@ -315,7 +315,7 @@ export class PostgreSQLConnector {
       rows: [] as T[],
       rowCount,
       command: 'UPDATE',
-      fields: []
+      fields: [],
     };
   }
 
@@ -335,7 +335,7 @@ export class PostgreSQLConnector {
         rows: [] as T[],
         rowCount: 0,
         command: 'DELETE',
-        fields: []
+        fields: [],
       };
     }
 
@@ -348,18 +348,18 @@ export class PostgreSQLConnector {
         rows: [] as T[],
         rowCount,
         command: 'DELETE',
-        fields: []
+        fields: [],
       };
     }
 
     // Apply WHERE clause
     let rowCount = 0;
     const conditions = whereMatch[1].split(/\s+AND\s+/i);
-    
+
     for (let i = table.length - 1; i >= 0; i--) {
       const row = table[i];
       let shouldDelete = true;
-      
+
       for (let j = 0; j < conditions.length; j++) {
         const match = conditions[j].match(/(\w+)\s*=\s*\$?\d+/i);
         if (match && values && values[j] !== undefined) {
@@ -370,7 +370,7 @@ export class PostgreSQLConnector {
           }
         }
       }
-      
+
       if (shouldDelete) {
         table.splice(i, 1);
         rowCount++;
@@ -381,7 +381,7 @@ export class PostgreSQLConnector {
       rows: [] as T[],
       rowCount,
       command: 'DELETE',
-      fields: []
+      fields: [],
     };
   }
 
@@ -404,7 +404,7 @@ export class PostgreSQLConnector {
       rows: [] as T[],
       rowCount: 0,
       command: 'CREATE',
-      fields: []
+      fields: [],
     };
   }
 
@@ -425,7 +425,7 @@ export class PostgreSQLConnector {
       rows: [] as T[],
       rowCount: 0,
       command: 'DROP',
-      fields: []
+      fields: [],
     };
   }
 
@@ -451,7 +451,7 @@ export class PostgreSQLConnector {
         for (const [key, value] of tablesBackup.entries()) {
           this.tables.set(key, JSON.parse(JSON.stringify(value)));
         }
-      }
+      },
     };
   }
 
@@ -483,7 +483,7 @@ export class PostgreSQLConnector {
   async getStatistics(): Promise<any> {
     return {
       tables: this.tables.size,
-      totalRows: Array.from(this.tables.values()).reduce((sum, rows) => sum + rows.length, 0)
+      totalRows: Array.from(this.tables.values()).reduce((sum, rows) => sum + rows.length, 0),
     };
   }
 }

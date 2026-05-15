@@ -10,7 +10,12 @@
     "lint": "eslint src --ext .ts",
     "format": "prettier --write \"src/**/*.ts\""
   },
-  "keywords": ["auto-scaler", "autoscaler", "Layer E擴展", "mycodexvantaos"],
+  "keywords": [
+    "auto-scaler",
+    "autoscaler",
+    "Layer E擴展",
+    "mycodexvantaos"
+  ],
   "author": "MyCodeXvantaOS",
   "license": "MIT",
   "dependencies": {

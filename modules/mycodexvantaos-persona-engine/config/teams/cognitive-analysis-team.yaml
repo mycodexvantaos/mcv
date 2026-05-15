@@ -2,301 +2,301 @@
 # URN: urn:mycodexvantaos:team:cognitive-analysis
 # Version: 1.0.0
 
-urn: "urn:mycodexvantaos:team:cognitive-analysis"
-name: "Cognitive Analysis Team"
-version: "1.0.0"
-description: "Specialized team for deep cognitive analysis and behavioral pattern investigation"
+urn: 'urn:mycodexvantaos:team:cognitive-analysis'
+name: 'Cognitive Analysis Team'
+version: '1.0.0'
+description: 'Specialized team for deep cognitive analysis and behavioral pattern investigation'
 
 # Team metadata
 metadata:
-  created_at: "2024-01-15T00:00:00Z"
-  updated_at: "2024-01-15T00:00:00Z"
-  author: "MyCodeXvantaOS Team"
+  created_at: '2024-01-15T00:00:00Z'
+  updated_at: '2024-01-15T00:00:00Z'
+  author: 'MyCodeXvantaOS Team'
   tags:
-    - "cognitive-analysis"
-    - "behavioral-patterns"
-    - "deep-analysis"
-    - "psychological"
+    - 'cognitive-analysis'
+    - 'behavioral-patterns'
+    - 'deep-analysis'
+    - 'psychological'
 
 # Team configuration
 config:
   max_concurrent_tasks: 3
   task_timeout_seconds: 600
-  coordination_mode: "sequential_with_review"
+  coordination_mode: 'sequential_with_review'
   consensus_threshold: 0.7
 
 # Team composition
 members:
   # Primary Analyst
-  - agent_urn: "urn:mycodexvantaos:persona:analyst-primary"
-    role: "primary_analyst"
+  - agent_urn: 'urn:mycodexvantaos:persona:analyst-primary'
+    role: 'primary_analyst'
     responsibilities:
-      - "Coordinate analysis workflow"
-      - "Synthesize findings across layers"
-      - "Ensure analytical rigor"
-      - "Document analysis methodology"
+      - 'Coordinate analysis workflow'
+      - 'Synthesize findings across layers'
+      - 'Ensure analytical rigor'
+      - 'Document analysis methodology'
     capabilities:
-      - "multi_layer_analysis"
-      - "pattern_synthesis"
-      - "methodology_design"
-    participation_mode: "mandatory"
+      - 'multi_layer_analysis'
+      - 'pattern_synthesis'
+      - 'methodology_design'
+    participation_mode: 'mandatory'
     max_tasks: 2
     governance_tier: 1
 
   # Cognitive Specialist (Disrupter)
-  - agent_urn: "urn:mycodexvantaos:persona:disrupter-primary"
-    role: "cognitive_challenger"
+  - agent_urn: 'urn:mycodexvantaos:persona:disrupter-primary'
+    role: 'cognitive_challenger'
     responsibilities:
-      - "Identify cognitive distortions"
-      - "Challenge thinking patterns"
-      - "Expose logical fallacies"
-      - "Detect semantic masks"
+      - 'Identify cognitive distortions'
+      - 'Challenge thinking patterns'
+      - 'Expose logical fallacies'
+      - 'Detect semantic masks'
     capabilities:
-      - "cognitive_distortion_detection"
-      - "semantic_mask_analysis"
-      - "assumption_deconstruction"
-    participation_mode: "mandatory"
+      - 'cognitive_distortion_detection'
+      - 'semantic_mask_analysis'
+      - 'assumption_deconstruction'
+    participation_mode: 'mandatory'
     max_tasks: 2
 
   # Pattern Recognition Specialist
-  - agent_urn: "urn:mycodexvantaos:persona:analyst-primary"
-    role: "pattern_analyst"
+  - agent_urn: 'urn:mycodexvantaos:persona:analyst-primary'
+    role: 'pattern_analyst'
     responsibilities:
-      - "Identify behavioral patterns"
-      - "Map pattern relationships"
-      - "Track pattern evolution"
-      - "Predict pattern trajectories"
+      - 'Identify behavioral patterns'
+      - 'Map pattern relationships'
+      - 'Track pattern evolution'
+      - 'Predict pattern trajectories'
     capabilities:
-      - "behavioral_pattern_recognition"
-      - "temporal_analysis"
-      - "correlation_mapping"
-    participation_mode: "mandatory"
+      - 'behavioral_pattern_recognition'
+      - 'temporal_analysis'
+      - 'correlation_mapping'
+    participation_mode: 'mandatory'
     max_tasks: 2
-    specialization: "pattern_recognition"
+    specialization: 'pattern_recognition'
 
   # Root Cause Specialist
-  - agent_urn: "urn:mycodexvantaos:persona:analyst-primary"
-    role: "root_cause_investigator"
+  - agent_urn: 'urn:mycodexvantaos:persona:analyst-primary'
+    role: 'root_cause_investigator'
     responsibilities:
-      - "Conduct root cause analysis"
-      - "Trace causal chains"
-      - "Identify underlying drivers"
-      - "Map cause-effect relationships"
+      - 'Conduct root cause analysis'
+      - 'Trace causal chains'
+      - 'Identify underlying drivers'
+      - 'Map cause-effect relationships'
     capabilities:
-      - "root_cause_analysis"
-      - "causal_chain_tracing"
-      - "driver_identification"
-    participation_mode: "mandatory"
+      - 'root_cause_analysis'
+      - 'causal_chain_tracing'
+      - 'driver_identification'
+    participation_mode: 'mandatory'
     max_tasks: 2
-    specialization: "root_cause"
+    specialization: 'root_cause'
 
   # Solution Synthesizer
-  - agent_urn: "urn:mycodexvantaos:persona:solution-architect-primary"
-    role: "intervention_designer"
+  - agent_urn: 'urn:mycodexvantaos:persona:solution-architect-primary'
+    role: 'intervention_designer'
     responsibilities:
-      - "Design intervention strategies"
-      - "Create behavior modification plans"
-      - "Develop cognitive restructuring approaches"
-      - "Plan implementation steps"
+      - 'Design intervention strategies'
+      - 'Create behavior modification plans'
+      - 'Develop cognitive restructuring approaches'
+      - 'Plan implementation steps'
     capabilities:
-      - "intervention_design"
-      - "behavioral_planning"
-      - "solution_architecture"
-    participation_mode: "conditional"
+      - 'intervention_design'
+      - 'behavioral_planning'
+      - 'solution_architecture'
+    participation_mode: 'conditional'
     max_tasks: 1
     activation_condition:
-      type: "analysis_complete"
-      trigger: "after_root_cause_identified"
+      type: 'analysis_complete'
+      trigger: 'after_root_cause_identified'
 
 # Analysis workflow
 analysis_workflow:
   phases:
-    - phase: "surface_analysis"
-      lead: "primary_analyst"
+    - phase: 'surface_analysis'
+      lead: 'primary_analyst'
       participants:
-        - "pattern_analyst"
+        - 'pattern_analyst'
       outputs:
-        - "symptom_identification"
-        - "pattern_initial_mapping"
+        - 'symptom_identification'
+        - 'pattern_initial_mapping'
       duration_estimate_seconds: 120
 
-    - phase: "cognitive_investigation"
-      lead: "cognitive_challenger"
+    - phase: 'cognitive_investigation'
+      lead: 'cognitive_challenger'
       participants:
-        - "primary_analyst"
+        - 'primary_analyst'
       outputs:
-        - "cognitive_distortion_map"
-        - "thinking_pattern_analysis"
-        - "semantic_mask_report"
+        - 'cognitive_distortion_map'
+        - 'thinking_pattern_analysis'
+        - 'semantic_mask_report'
       duration_estimate_seconds: 180
 
-    - phase: "root_cause_exploration"
-      lead: "root_cause_investigator"
+    - phase: 'root_cause_exploration'
+      lead: 'root_cause_investigator'
       participants:
-        - "cognitive_challenger"
-        - "pattern_analyst"
+        - 'cognitive_challenger'
+        - 'pattern_analyst'
       outputs:
-        - "causal_chain_map"
-        - "root_cause_hypotheses"
-        - "driver_identification"
+        - 'causal_chain_map'
+        - 'root_cause_hypotheses'
+        - 'driver_identification'
       duration_estimate_seconds: 240
 
-    - phase: "synthesis"
-      lead: "primary_analyst"
+    - phase: 'synthesis'
+      lead: 'primary_analyst'
       participants:
-        - "cognitive_challenger"
-        - "pattern_analyst"
-        - "root_cause_investigator"
+        - 'cognitive_challenger'
+        - 'pattern_analyst'
+        - 'root_cause_investigator'
       outputs:
-        - "integrated_analysis"
-        - "key_findings_summary"
-        - "confidence_assessment"
+        - 'integrated_analysis'
+        - 'key_findings_summary'
+        - 'confidence_assessment'
       duration_estimate_seconds: 120
 
-    - phase: "intervention_planning"
-      lead: "intervention_designer"
-      condition: "solution_required"
+    - phase: 'intervention_planning'
+      lead: 'intervention_designer'
+      condition: 'solution_required'
       participants:
-        - "primary_analyst"
+        - 'primary_analyst'
       outputs:
-        - "intervention_strategies"
-        - "implementation_plan"
-        - "success_metrics"
+        - 'intervention_strategies'
+        - 'implementation_plan'
+        - 'success_metrics'
       duration_estimate_seconds: 180
 
 # Communication patterns
 communication:
-  message_bus: "urn:mycodexvantaos:bus:cognitive-analysis"
-  
+  message_bus: 'urn:mycodexvantaos:bus:cognitive-analysis'
+
   interaction_protocols:
-    - name: "layer_handoff"
-      description: "Structured handoff between analysis layers"
+    - name: 'layer_handoff'
+      description: 'Structured handoff between analysis layers'
       format:
-        - from: "surface_analysis"
-          to: "cognitive_investigation"
-          data: ["symptoms", "initial_patterns"]
-        - from: "cognitive_investigation"
-          to: "root_cause_exploration"
-          data: ["cognitive_findings", "distortion_map"]
-        - from: "root_cause_exploration"
-          to: "synthesis"
-          data: ["causal_chains", "hypotheses"]
+        - from: 'surface_analysis'
+          to: 'cognitive_investigation'
+          data: ['symptoms', 'initial_patterns']
+        - from: 'cognitive_investigation'
+          to: 'root_cause_exploration'
+          data: ['cognitive_findings', 'distortion_map']
+        - from: 'root_cause_exploration'
+          to: 'synthesis'
+          data: ['causal_chains', 'hypotheses']
 
-    - name: "challenge_protocol"
-      description: "Protocol for challenging findings"
+    - name: 'challenge_protocol'
+      description: 'Protocol for challenging findings'
       format:
-        challenger: "cognitive_challenger"
+        challenger: 'cognitive_challenger'
         response_required: true
-        escalation_after: "2_unresolved_challenges"
+        escalation_after: '2_unresolved_challenges'
 
-    - name: "consensus_building"
-      description: "Build consensus on key findings"
+    - name: 'consensus_building'
+      description: 'Build consensus on key findings'
       format:
-        initiator: "primary_analyst"
+        initiator: 'primary_analyst'
         voting_members:
-          - "cognitive_challenger"
-          - "pattern_analyst"
-          - "root_cause_investigator"
+          - 'cognitive_challenger'
+          - 'pattern_analyst'
+          - 'root_cause_investigator'
         threshold: 0.7
 
 # Quality assurance
 quality_assurance:
   checks:
-    - id: "completeness_check"
-      phase: "after_synthesis"
+    - id: 'completeness_check'
+      phase: 'after_synthesis'
       criteria:
-        - "all_layers_analyzed"
-        - "findings_documented"
-        - "confidence_levels_assigned"
-      reviewer: "primary_analyst"
+        - 'all_layers_analyzed'
+        - 'findings_documented'
+        - 'confidence_levels_assigned'
+      reviewer: 'primary_analyst'
 
-    - id: "validity_check"
-      phase: "after_cognitive_investigation"
+    - id: 'validity_check'
+      phase: 'after_cognitive_investigation'
       criteria:
-        - "assumptions_explicit"
-        - "evidence_cited"
-        - "biases_acknowledged"
-      reviewer: "cognitive_challenger"
+        - 'assumptions_explicit'
+        - 'evidence_cited'
+        - 'biases_acknowledged'
+      reviewer: 'cognitive_challenger'
 
-    - id: "coherence_check"
-      phase: "after_root_cause_exploration"
+    - id: 'coherence_check'
+      phase: 'after_root_cause_exploration'
       criteria:
-        - "causal_chains_logical"
-        - "no_circular_reasoning"
-        - "evidence_supports_conclusions"
-      reviewer: "root_cause_investigator"
+        - 'causal_chains_logical'
+        - 'no_circular_reasoning'
+        - 'evidence_supports_conclusions'
+      reviewer: 'root_cause_investigator'
 
 # Output templates
 output_templates:
   analysis_report:
     sections:
-      - name: "executive_summary"
-        content: ["key_findings", "confidence_level", "recommended_actions"]
-      - name: "surface_symptoms"
-        content: ["identified_symptoms", "patterns", "triggers"]
-      - name: "cognitive_analysis"
-        content: ["thinking_patterns", "distortions", "semantic_masks"]
-      - name: "root_cause_analysis"
-        content: ["causal_chains", "underlying_drivers", "core_beliefs"]
-      - name: "recommendations"
-        content: ["intervention_points", "implementation_steps", "metrics"]
-      - name: "methodology"
-        content: ["approach_used", "limitations", "confidence_assessment"]
+      - name: 'executive_summary'
+        content: ['key_findings', 'confidence_level', 'recommended_actions']
+      - name: 'surface_symptoms'
+        content: ['identified_symptoms', 'patterns', 'triggers']
+      - name: 'cognitive_analysis'
+        content: ['thinking_patterns', 'distortions', 'semantic_masks']
+      - name: 'root_cause_analysis'
+        content: ['causal_chains', 'underlying_drivers', 'core_beliefs']
+      - name: 'recommendations'
+        content: ['intervention_points', 'implementation_steps', 'metrics']
+      - name: 'methodology'
+        content: ['approach_used', 'limitations', 'confidence_assessment']
 
 # Performance metrics
 metrics:
-  - name: "analysis_depth_score"
+  - name: 'analysis_depth_score'
     target: 0.8
-    measurement: "average_layer_confidence"
-  
-  - name: "root_cause_identification_rate"
+    measurement: 'average_layer_confidence'
+
+  - name: 'root_cause_identification_rate'
     target: 0.85
-    measurement: "confirmed_root_causes / hypothesized_root_causes"
-  
-  - name: "intervention_effectiveness"
+    measurement: 'confirmed_root_causes / hypothesized_root_causes'
+
+  - name: 'intervention_effectiveness'
     target: 0.7
-    measurement: "successful_interventions / total_interventions"
+    measurement: 'successful_interventions / total_interventions'
 
 # Specialized capabilities
 specialized_tools:
-  - tool_id: "semantic_mask_detector"
-    assigned_to: "cognitive_challenger"
-    priority: "high"
-  
-  - tool_id: "root_cause_analyzer"
-    assigned_to: "root_cause_investigator"
-    priority: "high"
-  
-  - tool_id: "pattern_mapper"
-    assigned_to: "pattern_analyst"
-    priority: "medium"
-  
-  - tool_id: "solution_generator"
-    assigned_to: "intervention_designer"
-    priority: "medium"
+  - tool_id: 'semantic_mask_detector'
+    assigned_to: 'cognitive_challenger'
+    priority: 'high'
+
+  - tool_id: 'root_cause_analyzer'
+    assigned_to: 'root_cause_investigator'
+    priority: 'high'
+
+  - tool_id: 'pattern_mapper'
+    assigned_to: 'pattern_analyst'
+    priority: 'medium'
+
+  - tool_id: 'solution_generator'
+    assigned_to: 'intervention_designer'
+    priority: 'medium'
 
 # Governance
 governance:
   tier: 1
   required_approvals:
-    - type: "peer_review"
-      approvers: ["primary_analyst", "cognitive_challenger"]
-      condition: "high_impact_findings"
-  
+    - type: 'peer_review'
+      approvers: ['primary_analyst', 'cognitive_challenger']
+      condition: 'high_impact_findings'
+
   audit_logging: true
   data_retention_days: 90
-  privacy_level: "confidential"
+  privacy_level: 'confidential'
 
 # Escalation
 escalation:
-  - condition: "analysis_deadlock"
-    action: "request_human_arbitration"
+  - condition: 'analysis_deadlock'
+    action: 'request_human_arbitration'
     timeout_seconds: 300
-  
-  - condition: "critical_finding"
-    action: "immediate_human_notification"
+
+  - condition: 'critical_finding'
+    action: 'immediate_human_notification'
     immediate: true
-  
-  - condition: "confidence_below_threshold"
-    action: "request_additional_data"
+
+  - condition: 'confidence_below_threshold'
+    action: 'request_additional_data'
     threshold: 0.5

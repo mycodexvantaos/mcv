@@ -13,7 +13,9 @@ const ChatMessage = ({ role, children }: { role: 'user' | 'bot'; children: React
           <Bot className="h-5 w-5 text-primary" />
         </div>
       )}
-      <div className={`max-w-[80%] rounded-lg p-3 text-sm ${role === 'bot' ? 'bg-secondary' : 'bg-primary text-primary-foreground'}`}>
+      <div
+        className={`max-w-[80%] rounded-lg p-3 text-sm ${role === 'bot' ? 'bg-secondary' : 'bg-primary text-primary-foreground'}`}
+      >
         {children}
       </div>
       {role === 'user' && (
@@ -43,13 +45,17 @@ export function AiPanel() {
           <ScrollArea className="flex-1 p-4">
             <div className="space-y-4">
               <ChatMessage role="bot">
-                Hello! I'm your AI assistant. How can I help you refactor, debug, or explain this code?
+                Hello! I'm your AI assistant. How can I help you refactor, debug, or explain this
+                code?
               </ChatMessage>
               <ChatMessage role="user">
                 Can you explain what this `Greeter` component does?
               </ChatMessage>
               <ChatMessage role="bot">
-                Of course! The `Greeter` component is a React functional component written in TypeScript. It takes a `name` as a prop and displays a greeting. It also maintains a `count` in its state, which is incremented and displayed each time you click the "Click me" button.
+                Of course! The `Greeter` component is a React functional component written in
+                TypeScript. It takes a `name` as a prop and displays a greeting. It also maintains a
+                `count` in its state, which is incremented and displayed each time you click the
+                "Click me" button.
               </ChatMessage>
             </div>
           </ScrollArea>
@@ -68,10 +74,10 @@ export function AiPanel() {
         </TabsContent>
         <TabsContent value="agent" className="flex-1 overflow-y-auto p-4 m-0">
           <div className="space-y-4">
-             <Card>
+            <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base font-medium">
-                  <Wand2 className="h-5 w-5 text-primary"/>
+                  <Wand2 className="h-5 w-5 text-primary" />
                   Intelligent Agent Workflow
                 </CardTitle>
               </CardHeader>
@@ -80,11 +86,15 @@ export function AiPanel() {
                   Orchestrate complex tasks using specialized AI agents.
                 </p>
                 <Button className="w-full">Run Builder Agent</Button>
-                <Button variant="secondary" className="w-full">Run Reviewer Agent</Button>
-                <Button variant="secondary" className="w-full">Run Security Agent</Button>
+                <Button variant="secondary" className="w-full">
+                  Run Reviewer Agent
+                </Button>
+                <Button variant="secondary" className="w-full">
+                  Run Security Agent
+                </Button>
               </CardContent>
             </Card>
-             <Card>
+            <Card>
               <CardHeader>
                 <CardTitle className="text-base font-medium">Last Run</CardTitle>
               </CardHeader>

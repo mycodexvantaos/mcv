@@ -8,7 +8,7 @@ describe('WorkflowGenerator', () => {
       format: 'yaml',
       includeErrorHandling: true,
       includeLogging: true,
-      retryStrategy: 'exponential'
+      retryStrategy: 'exponential',
     });
   });
 
@@ -22,7 +22,7 @@ describe('WorkflowGenerator', () => {
       const customGen = new WorkflowGenerator({
         format: 'json',
         includeErrorHandling: false,
-        retryStrategy: 'linear'
+        retryStrategy: 'linear',
       });
       expect(customGen).toBeInstanceOf(WorkflowGenerator);
     });
@@ -32,7 +32,12 @@ describe('WorkflowGenerator', () => {
     it('should generate linear workflow from tasks', () => {
       const tasks: TaskDefinition[] = [
         { id: 'task1', name: 'First Task', type: 'http', config: { url: 'http://example.com' } },
-        { id: 'task2', name: 'Second Task', type: 'database', config: { query: 'SELECT * FROM users' } }
+        {
+          id: 'task2',
+          name: 'Second Task',
+          type: 'database',
+          config: { query: 'SELECT * FROM users' },
+        },
       ];
 
       const workflow = generator.generateLinearWorkflow('Test Workflow', tasks);
@@ -47,7 +52,7 @@ describe('WorkflowGenerator', () => {
     it('should include retry policy when enabled', () => {
       const retryGen = new WorkflowGenerator({ retryStrategy: 'exponential' });
       const tasks: TaskDefinition[] = [
-        { id: 'task1', name: 'First Task', type: 'http', config: {} }
+        { id: 'task1', name: 'First Task', type: 'http', config: {} },
       ];
 
       const workflow = retryGen.generateLinearWorkflow('Test Workflow', tasks);
@@ -60,7 +65,7 @@ describe('WorkflowGenerator', () => {
     it('should not include retry policy when disabled', () => {
       const noRetryGen = new WorkflowGenerator({ retryStrategy: 'none' });
       const tasks: TaskDefinition[] = [
-        { id: 'task1', name: 'First Task', type: 'http', config: {} }
+        { id: 'task1', name: 'First Task', type: 'http', config: {} },
       ];
 
       const workflow = noRetryGen.generateLinearWorkflow('Test Workflow', tasks);
@@ -73,7 +78,7 @@ describe('WorkflowGenerator', () => {
     it('should generate parallel workflow', () => {
       const parallelTasks: TaskDefinition[][] = [
         [{ id: 'task1', name: 'Task 1', type: 'http', config: {} }],
-        [{ id: 'task2', name: 'Task 2', type: 'database', config: {} }]
+        [{ id: 'task2', name: 'Task 2', type: 'database', config: {} }],
       ];
 
       const workflow = generator.generateParallelWorkflow('Parallel Workflow', parallelTasks);
@@ -85,11 +90,15 @@ describe('WorkflowGenerator', () => {
 
     it('should include final task when provided', () => {
       const parallelTasks: TaskDefinition[][] = [
-        [{ id: 'task1', name: 'Task 1', type: 'http', config: {} }]
+        [{ id: 'task1', name: 'Task 1', type: 'http', config: {} }],
       ];
       const finalTask: TaskDefinition = { id: 'final', name: 'Final', type: 'merge', config: {} };
 
-      const workflow = generator.generateParallelWorkflow('Parallel Workflow', parallelTasks, finalTask);
+      const workflow = generator.generateParallelWorkflow(
+        'Parallel Workflow',
+        parallelTasks,
+        finalTask
+      );
 
       expect(workflow.steps).toHaveLength(2);
       expect(workflow.steps[0].type).toBe('parallel');
@@ -101,9 +110,9 @@ describe('WorkflowGenerator', () => {
       const parallelTasks: TaskDefinition[][] = [
         [
           { id: 'task1', name: 'Task 1', type: 'http', config: {} },
-          { id: 'task2', name: 'Task 2', type: 'http', config: {} }
+          { id: 'task2', name: 'Task 2', type: 'http', config: {} },
         ],
-        [{ id: 'task3', name: 'Task 3', type: 'database', config: {} }]
+        [{ id: 'task3', name: 'Task 3', type: 'database', config: {} }],
       ];
 
       const workflow = generator.generateParallelWorkflow('Parallel Workflow', parallelTasks);
@@ -116,10 +125,10 @@ describe('WorkflowGenerator', () => {
   describe('generateConditionalWorkflow', () => {
     it('should generate conditional workflow with both branches', () => {
       const trueBranch: TaskDefinition[] = [
-        { id: 'task1', name: 'Task 1', type: 'http', config: {} }
+        { id: 'task1', name: 'Task 1', type: 'http', config: {} },
       ];
       const falseBranch: TaskDefinition[] = [
-        { id: 'task2', name: 'Task 2', type: 'database', config: {} }
+        { id: 'task2', name: 'Task 2', type: 'database', config: {} },
       ];
 
       const workflow = generator.generateConditionalWorkflow(
@@ -138,10 +147,10 @@ describe('WorkflowGenerator', () => {
 
     it('should include final task when provided', () => {
       const trueBranch: TaskDefinition[] = [
-        { id: 'task1', name: 'Task 1', type: 'http', config: {} }
+        { id: 'task1', name: 'Task 1', type: 'http', config: {} },
       ];
       const falseBranch: TaskDefinition[] = [
-        { id: 'task2', name: 'Task 2', type: 'database', config: {} }
+        { id: 'task2', name: 'Task 2', type: 'database', config: {} },
       ];
       const finalTask: TaskDefinition = { id: 'final', name: 'Final', type: 'merge', config: {} };
 
@@ -161,9 +170,7 @@ describe('WorkflowGenerator', () => {
   describe('generateWorkflowFile', () => {
     it('should generate JSON format', () => {
       const jsonGen = new WorkflowGenerator({ format: 'json' });
-      const tasks: TaskDefinition[] = [
-        { id: 'task1', name: 'Task 1', type: 'http', config: {} }
-      ];
+      const tasks: TaskDefinition[] = [{ id: 'task1', name: 'Task 1', type: 'http', config: {} }];
       const workflow = jsonGen.generateLinearWorkflow('Test', tasks);
       const content = jsonGen.generateWorkflowFile(workflow);
 
@@ -174,9 +181,7 @@ describe('WorkflowGenerator', () => {
 
     it('should generate YAML format', () => {
       const yamlGen = new WorkflowGenerator({ format: 'yaml' });
-      const tasks: TaskDefinition[] = [
-        { id: 'task1', name: 'Task 1', type: 'http', config: {} }
-      ];
+      const tasks: TaskDefinition[] = [{ id: 'task1', name: 'Task 1', type: 'http', config: {} }];
       const workflow = yamlGen.generateLinearWorkflow('Test', tasks);
       const content = yamlGen.generateWorkflowFile(workflow);
 
@@ -187,9 +192,7 @@ describe('WorkflowGenerator', () => {
 
     it('should generate TypeScript format', () => {
       const tsGen = new WorkflowGenerator({ format: 'typescript' });
-      const tasks: TaskDefinition[] = [
-        { id: 'task1', name: 'Task 1', type: 'http', config: {} }
-      ];
+      const tasks: TaskDefinition[] = [{ id: 'task1', name: 'Task 1', type: 'http', config: {} }];
       const workflow = tsGen.generateLinearWorkflow('Test', tasks);
       const content = tsGen.generateWorkflowFile(workflow);
 
@@ -246,7 +249,7 @@ describe('WorkflowGenerator', () => {
       );
 
       expect(workflow.steps).toHaveLength(5); // 2 sources + merge + transform + dest
-      const mergeStep = workflow.steps.find(s => s.name.includes('Merge'));
+      const mergeStep = workflow.steps.find((s) => s.name.includes('Merge'));
       expect(mergeStep).toBeDefined();
       expect(mergeStep?.type).toBe('action');
     });
@@ -268,18 +271,14 @@ describe('WorkflowGenerator', () => {
 
   describe('ID and name formatting', () => {
     it('should format workflow IDs correctly', () => {
-      const tasks: TaskDefinition[] = [
-        { id: 'task1', name: 'Task', type: 'http', config: {} }
-      ];
+      const tasks: TaskDefinition[] = [{ id: 'task1', name: 'Task', type: 'http', config: {} }];
       const workflow = generator.generateLinearWorkflow('My Test Workflow', tasks);
 
       expect(workflow.id).toBe('my_test_workflow');
     });
 
     it('should format variable names correctly', () => {
-      const tasks: TaskDefinition[] = [
-        { id: 'task1', name: 'Task', type: 'http', config: {} }
-      ];
+      const tasks: TaskDefinition[] = [{ id: 'task1', name: 'Task', type: 'http', config: {} }];
       const workflow = generator.generateLinearWorkflow('Test Workflow 123', tasks);
 
       // Test through TypeScript generation

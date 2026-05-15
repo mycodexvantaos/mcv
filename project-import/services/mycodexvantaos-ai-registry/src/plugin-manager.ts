@@ -3,12 +3,12 @@
  * In-memory plugin registration and lifecycle
  */
 
-import type { Plugin } from "./types";
+import type { Plugin } from './types';
 
 export class PluginManagerService {
   private plugins = new Map<string, Plugin>();
 
-  register(plugin: Omit<Plugin, "id">): Plugin {
+  register(plugin: Omit<Plugin, 'id'>): Plugin {
     const id = `plugin-${plugin.name}-${Date.now()}`;
     const entry: Plugin = { id, ...plugin };
     this.plugins.set(id, entry);

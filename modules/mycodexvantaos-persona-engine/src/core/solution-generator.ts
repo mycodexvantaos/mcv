@@ -1,6 +1,6 @@
 /**
  * MyCodeXvantaOS Persona Engine - Solution Generator
- * 
+ *
  * Generates actionable solutions based on root cause analysis.
  * URN: urn:mycodexvantaos:core:solution-generator
  */
@@ -227,7 +227,7 @@ export class SolutionGenerator {
    * Get templates by category
    */
   getTemplatesByCategory(category: SolutionCategory): SolutionTemplate[] {
-    return this.templates.filter(t => t.category === category);
+    return this.templates.filter((t) => t.category === category);
   }
 
   /**
@@ -237,7 +237,7 @@ export class SolutionGenerator {
     const applicableSolutions = this.findApplicableSolutions(context);
     const scoredSolutions = this.scoreSolutions(applicableSolutions, context);
     const rankedSolutions = this.rankSolutions(scoredSolutions);
-    
+
     const maxSolutions = context.constraints.maximum_solutions || 5;
     const topSolutions = rankedSolutions.slice(0, maxSolutions);
 
@@ -259,10 +259,7 @@ export class SolutionGenerator {
     const excludedCategories = context.constraints.excluded_categories || [];
 
     for (const diagnosis of context.diagnosis) {
-      const relevantTemplates = this.findRelevantTemplates(
-        diagnosis,
-        excludedCategories
-      );
+      const relevantTemplates = this.findRelevantTemplates(diagnosis, excludedCategories);
 
       for (const template of relevantTemplates) {
         const solution = this.createSolutionFromTemplate(template, diagnosis, context);
@@ -281,7 +278,7 @@ export class SolutionGenerator {
     excludedCategories: SolutionCategory[]
   ): SolutionTemplate[] {
     const relevantTemplates: SolutionTemplate[] = [];
-    
+
     // Map layers to likely applicable solution categories
     const layerCategoryMap: Record<AnalysisLayer, SolutionCategory[]> = {
       surface_symptoms: ['behavioral_action', 'environment_adjustment'],
@@ -293,20 +290,21 @@ export class SolutionGenerator {
     };
 
     const relevantCategories = layerCategoryMap[diagnosis.layer] || [];
-    
+
     for (const template of this.templates) {
       if (excludedCategories.includes(template.category)) continue;
-      
+
       // Check if template is relevant to the layer
       if (relevantCategories.includes(template.category)) {
         // Check if applicability criteria match findings
-        const matchesFinding = template.applicability_criteria.some(criteria =>
-          diagnosis.findings.some(finding => 
-            finding.toLowerCase().replace(/_/g, ' ').includes(criteria.replace(/_/g, ' ')) ||
-            criteria.replace(/_/g, ' ').includes(finding.toLowerCase().replace(/_/g, ' '))
+        const matchesFinding = template.applicability_criteria.some((criteria) =>
+          diagnosis.findings.some(
+            (finding) =>
+              finding.toLowerCase().replace(/_/g, ' ').includes(criteria.replace(/_/g, ' ')) ||
+              criteria.replace(/_/g, ' ').includes(finding.toLowerCase().replace(/_/g, ' '))
           )
         );
-        
+
         if (matchesFinding || template.applicability_criteria.length === 0) {
           relevantTemplates.push(template);
         }
@@ -343,12 +341,9 @@ export class SolutionGenerator {
   /**
    * Calculate appropriate time frame
    */
-  private calculateTimeFrame(
-    template: SolutionTemplate,
-    context: SolutionContext
-  ): string {
+  private calculateTimeFrame(template: SolutionTemplate, context: SolutionContext): string {
     const { min_days, max_days } = template.time_frame_range;
-    
+
     if (context.constraints.time_limit_days) {
       const limit = context.constraints.time_limit_days;
       if (limit < min_days) {
@@ -364,7 +359,7 @@ export class SolutionGenerator {
     };
 
     const multiplier = urgencyMultiplier[context.preferences.urgency || 'medium'];
-    const adjustedDays = Math.round((min_days + max_days) / 2 * multiplier);
+    const adjustedDays = Math.round(((min_days + max_days) / 2) * multiplier);
 
     return `${adjustedDays} days`;
   }
@@ -398,7 +393,8 @@ export class SolutionGenerator {
    */
   private toolToAction(tool: string): string {
     const toolActions: Record<string, string> = {
-      thought_record: 'Complete daily thought records identifying trigger situations, emotions, and thoughts',
+      thought_record:
+        'Complete daily thought records identifying trigger situations, emotions, and thoughts',
       evidence_examination: 'List evidence for and against identified thoughts',
       alternative_thinking: 'Generate at least 3 alternative interpretations for each situation',
       behavioral_experiment: 'Design and conduct experiments to test beliefs',
@@ -549,7 +545,7 @@ export class SolutionGenerator {
     solutions: SolutionProposal[],
     context: SolutionContext
   ): SolutionProposal[] {
-    return solutions.map(solution => {
+    return solutions.map((solution) => {
       let score = 50; // Base score
 
       // Preferred category bonus
@@ -566,17 +562,17 @@ export class SolutionGenerator {
       }
 
       // Urgency alignment
-      if (context.preferences.urgency === 'high' && 
-          parseInt(solution.time_frame || '30') <= 30) {
+      if (context.preferences.urgency === 'high' && parseInt(solution.time_frame || '30') <= 30) {
         score += 10;
       }
 
       // Resource availability
       if (context.constraints.available_resources) {
-        const hasResources = solution.action_steps.every(step =>
-          step.resources_needed?.every(r =>
-            context.constraints.available_resources?.includes(r) ||
-            ['Time', 'Commitment'].includes(r)
+        const hasResources = solution.action_steps.every((step) =>
+          step.resources_needed?.every(
+            (r) =>
+              context.constraints.available_resources?.includes(r) ||
+              ['Time', 'Commitment'].includes(r)
           )
         );
         if (hasResources) score += 10;
@@ -598,7 +594,7 @@ export class SolutionGenerator {
    */
   private deduplicateSolutions(solutions: SolutionProposal[]): SolutionProposal[] {
     const seen = new Set<string>();
-    return solutions.filter(solution => {
+    return solutions.filter((solution) => {
       const key = `${solution.category}-${solution.title}`;
       if (seen.has(key)) return false;
       seen.add(key);
@@ -609,15 +605,14 @@ export class SolutionGenerator {
   /**
    * Generate rationale for solution selection
    */
-  private generateRationale(
-    solutions: SolutionProposal[],
-    context: SolutionContext
-  ): string {
-    const categories = [...new Set(solutions.map(s => s.category))];
-    
-    return `Selected ${solutions.length} solutions targeting ${categories.length} area(s): ` +
-           `${categories.join(', ')}. Solutions were chosen based on diagnosis findings, ` +
-           `time constraints, and preference alignment.`;
+  private generateRationale(solutions: SolutionProposal[], context: SolutionContext): string {
+    const categories = [...new Set(solutions.map((s) => s.category))];
+
+    return (
+      `Selected ${solutions.length} solutions targeting ${categories.length} area(s): ` +
+      `${categories.join(', ')}. Solutions were chosen based on diagnosis findings, ` +
+      `time constraints, and preference alignment.`
+    );
   }
 
   /**
@@ -625,15 +620,15 @@ export class SolutionGenerator {
    */
   private estimateTotalTimeFrame(solutions: SolutionProposal[]): string {
     if (solutions.length === 0) return 'No solutions proposed';
-    
-    const days = solutions.map(s => parseInt(s.time_frame || '30'));
+
+    const days = solutions.map((s) => parseInt(s.time_frame || '30'));
     const minDays = Math.min(...days);
     const maxDays = Math.max(...days);
-    
+
     if (solutions.length === 1) {
       return `${minDays} days`;
     }
-    
+
     return `${minDays}-${maxDays} days depending on solution selection`;
   }
 
@@ -653,7 +648,7 @@ export class SolutionGenerator {
       factors.push('Regular sessions with qualified professional');
     }
 
-    if (solutions.some(s => s.category === 'environment_adjustment')) {
+    if (solutions.some((s) => s.category === 'environment_adjustment')) {
       factors.push('Supportive environment for change');
     }
 
@@ -663,26 +658,22 @@ export class SolutionGenerator {
   /**
    * Identify potential obstacles
    */
-  private identifyObstacles(
-    solutions: SolutionProposal[],
-    context: SolutionContext
-  ): string[] {
+  private identifyObstacles(solutions: SolutionProposal[], context: SolutionContext): string[] {
     const obstacles: string[] = [];
 
     if (context.preferences.urgency === 'high') {
       obstacles.push('Time pressure may limit depth of work');
     }
 
-    if (context.constraints.time_limit_days && 
-        context.constraints.time_limit_days < 30) {
+    if (context.constraints.time_limit_days && context.constraints.time_limit_days < 30) {
       obstacles.push('Short time frame may require prioritization');
     }
 
-    if (solutions.some(s => s.category === 'behavioral_action')) {
+    if (solutions.some((s) => s.category === 'behavioral_action')) {
       obstacles.push('Avoidance may interfere with exposure-based approaches');
     }
 
-    if (solutions.some(s => s.category === 'cognitive_restructuring')) {
+    if (solutions.some((s) => s.category === 'cognitive_restructuring')) {
       obstacles.push('Strongly held beliefs may resist change initially');
     }
 

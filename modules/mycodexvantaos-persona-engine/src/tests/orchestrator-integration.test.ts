@@ -10,7 +10,7 @@ import { PersonaArchetype } from '../types';
 
 describe('PersonaOrchestratorIntegration', () => {
   let integration: PersonaOrchestratorIntegration;
-  
+
   const defaultConfig: IntegrationConfig = {
     personaManager: {
       urn: 'urn:mycodexvantaos:persona-manager:test',
@@ -111,11 +111,11 @@ describe('PersonaOrchestratorIntegration', () => {
         name: 'Test Agent',
         capabilities: ['analysis', 'review'],
       };
-      
+
       integration.registerAgent(agent);
       const agents = integration.getRegisteredAgents();
-      
-      expect(agents.find(a => a.urn === agent.urn)).toBeDefined();
+
+      expect(agents.find((a) => a.urn === agent.urn)).toBeDefined();
     });
 
     it('should register agent with persona archetype', () => {
@@ -125,11 +125,11 @@ describe('PersonaOrchestratorIntegration', () => {
         capabilities: ['analysis'],
         personaArchetype: 'analyst',
       };
-      
+
       integration.registerAgent(agent);
       const agents = integration.getRegisteredAgents();
-      
-      expect(agents.find(a => a.urn === agent.urn)).toBeDefined();
+
+      expect(agents.find((a) => a.urn === agent.urn)).toBeDefined();
     });
 
     it('should create default profile for agent persona if not exists', () => {
@@ -139,10 +139,10 @@ describe('PersonaOrchestratorIntegration', () => {
         capabilities: ['guidance'],
         personaArchetype: 'mentor', // Not in default loaded personas
       };
-      
+
       integration.registerAgent(agent);
       const personas = integration.getAvailablePersonas();
-      
+
       expect(personas).toContain('mentor');
     });
   });
@@ -158,13 +158,13 @@ describe('PersonaOrchestratorIntegration', () => {
         name: 'Test Agent',
         capabilities: ['analysis'],
       };
-      
+
       integration.registerAgent(agent);
       const removed = integration.unregisterAgent(agent.urn);
-      
+
       expect(removed).toBe(true);
       const agents = integration.getRegisteredAgents();
-      expect(agents.find(a => a.urn === agent.urn)).toBeUndefined();
+      expect(agents.find((a) => a.urn === agent.urn)).toBeUndefined();
     });
 
     it('should return false for non-existent agent', () => {
@@ -189,9 +189,9 @@ describe('PersonaOrchestratorIntegration', () => {
           timestamp: new Date().toISOString(),
         },
       };
-      
+
       const result = await integration.processTask(task);
-      
+
       expect(result.taskId).toBe(task.taskId);
       expect(result.success).toBeDefined();
       expect(result.processingTime).toBeGreaterThanOrEqual(0);
@@ -208,9 +208,9 @@ describe('PersonaOrchestratorIntegration', () => {
           timestamp: new Date().toISOString(),
         },
       };
-      
+
       const result = await integration.processTask(task);
-      
+
       expect(result.taskId).toBe(task.taskId);
       expect(['architect', 'disrupter']).toContain(result.personaArchetype);
     });
@@ -226,9 +226,9 @@ describe('PersonaOrchestratorIntegration', () => {
           timestamp: new Date().toISOString(),
         },
       };
-      
+
       const result = await integration.processTask(task);
-      
+
       expect(result.taskId).toBe(task.taskId);
     });
 
@@ -243,9 +243,9 @@ describe('PersonaOrchestratorIntegration', () => {
           timestamp: new Date().toISOString(),
         },
       };
-      
+
       const result = await integration.processTask(task);
-      
+
       expect(result.taskId).toBe(task.taskId);
     });
 
@@ -260,9 +260,9 @@ describe('PersonaOrchestratorIntegration', () => {
           timestamp: new Date().toISOString(),
         },
       };
-      
+
       const result = await integration.processTask(task);
-      
+
       expect(result.taskId).toBe(task.taskId);
     });
 
@@ -278,9 +278,9 @@ describe('PersonaOrchestratorIntegration', () => {
           timestamp: new Date().toISOString(),
         },
       };
-      
+
       const result = await integration.processTask(task);
-      
+
       expect(result.personaArchetype).toBe('critic');
     });
 
@@ -296,9 +296,9 @@ describe('PersonaOrchestratorIntegration', () => {
           timestamp: new Date().toISOString(),
         },
       };
-      
+
       const result = await integration.processTask(task);
-      
+
       expect(result.taskId).toBe(task.taskId);
     });
 
@@ -314,9 +314,9 @@ describe('PersonaOrchestratorIntegration', () => {
           timestamp: new Date().toISOString(),
         },
       };
-      
+
       const result = await integration.processTask(task);
-      
+
       expect(result.taskId).toBe(task.taskId);
     });
 
@@ -332,9 +332,9 @@ describe('PersonaOrchestratorIntegration', () => {
           timestamp: new Date().toISOString(),
         },
       };
-      
+
       const result = await integration.processTask(task);
-      
+
       expect(result.taskId).toBe(task.taskId);
     });
   });
@@ -372,10 +372,10 @@ describe('PersonaOrchestratorIntegration', () => {
         name: 'Test Agent',
         capabilities: ['analysis'],
       };
-      
+
       integration.registerAgent(agent);
       const agents = integration.getRegisteredAgents();
-      
+
       expect(agents.length).toBe(1);
       expect(agents[0].urn).toBe(agent.urn);
     });
@@ -388,32 +388,32 @@ describe('PersonaOrchestratorIntegration', () => {
 
     it('should return health status', () => {
       const health = integration.getHealthStatus();
-      
+
       expect(health).toHaveProperty('status');
       expect(health).toHaveProperty('details');
     });
 
     it('should include cache stats when cache enabled', () => {
       const health = integration.getHealthStatus();
-      
+
       expect(health.details.cacheStats).toBeDefined();
     });
 
     it('should include registered agents count', () => {
       const health = integration.getHealthStatus();
-      
+
       expect(health.details.registeredAgents).toBe(0);
     });
 
     it('should include available personas count', () => {
       const health = integration.getHealthStatus();
-      
+
       expect(health.details.availablePersonas).toBeGreaterThan(0);
     });
 
     it('should return healthy status initially', () => {
       const health = integration.getHealthStatus();
-      
+
       expect(['healthy', 'degraded', 'unhealthy']).toContain(health.status);
     });
   });
@@ -422,7 +422,7 @@ describe('PersonaOrchestratorIntegration', () => {
     it('should shutdown gracefully', async () => {
       await integration.initialize();
       integration.shutdown();
-      
+
       // Should not throw
       expect(true).toBe(true);
     });
@@ -430,7 +430,7 @@ describe('PersonaOrchestratorIntegration', () => {
     it('should clear initialized state', async () => {
       await integration.initialize();
       integration.shutdown();
-      
+
       // Can initialize again
       await integration.initialize();
       expect(integration).toBeDefined();
@@ -449,10 +449,10 @@ describe('PersonaOrchestratorIntegration', () => {
         enableCache: false,
         enableValidation: false,
       });
-      
+
       const health = customIntegration.getHealthStatus();
       expect(health.details.cacheEnabled).toBe(false);
-      
+
       customIntegration.shutdown();
     });
 
@@ -466,7 +466,7 @@ describe('PersonaOrchestratorIntegration', () => {
           cacheTTL: 10000,
         },
       });
-      
+
       expect(customIntegration).toBeDefined();
       customIntegration.shutdown();
     });
@@ -488,7 +488,7 @@ describe('PersonaOrchestratorIntegration', () => {
           timestamp: new Date().toISOString(),
         },
       };
-      
+
       const result = await integration.processTask(task);
       expect(result.personaArchetype).toBe('analyst');
     });
@@ -504,7 +504,7 @@ describe('PersonaOrchestratorIntegration', () => {
           timestamp: new Date().toISOString(),
         },
       };
-      
+
       const result = await integration.processTask(task);
       expect(result.personaArchetype).toBe('architect');
     });
@@ -520,7 +520,7 @@ describe('PersonaOrchestratorIntegration', () => {
           timestamp: new Date().toISOString(),
         },
       };
-      
+
       const result = await integration.processTask(task);
       expect(result.personaArchetype).toBe('critic');
     });
@@ -536,7 +536,7 @@ describe('PersonaOrchestratorIntegration', () => {
           timestamp: new Date().toISOString(),
         },
       };
-      
+
       const result = await integration.processTask(task);
       expect(result.personaArchetype).toBe('mediator');
     });
@@ -552,7 +552,7 @@ describe('PersonaOrchestratorIntegration', () => {
           timestamp: new Date().toISOString(),
         },
       };
-      
+
       const result = await integration.processTask(task);
       expect(result.personaArchetype).toBe('disrupter');
     });
@@ -574,7 +574,7 @@ describe('PersonaOrchestratorIntegration', () => {
           timestamp: new Date().toISOString(),
         },
       };
-      
+
       const result = await integration.processTask(task);
       expect(result.taskId).toBe('task-low');
     });
@@ -590,7 +590,7 @@ describe('PersonaOrchestratorIntegration', () => {
           timestamp: new Date().toISOString(),
         },
       };
-      
+
       const result = await integration.processTask(task);
       expect(result.taskId).toBe('task-critical');
     });
@@ -612,7 +612,7 @@ describe('PersonaOrchestratorIntegration', () => {
           timestamp: new Date().toISOString(),
         },
       };
-      
+
       const result = await integration.processTask(task);
       expect(result).toBeDefined();
       expect(result.taskId).toBe('task-empty');
@@ -629,7 +629,7 @@ describe('PersonaOrchestratorIntegration', () => {
           timestamp: new Date().toISOString(),
         },
       };
-      
+
       const result = await integration.processTask(task);
       expect(typeof result.success).toBe('boolean');
     });

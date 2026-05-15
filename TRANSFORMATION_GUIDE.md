@@ -5,6 +5,7 @@
 ### 1.1 平台獨立性（Platform Independence）
 
 **基本要求：**
+
 - 第三方平台服務、環境、AI API、KEY、TOKEN，是擴充出口，非成立地基
 - 平台必須能在零外部依賴下存活（可降級，不可崩潰）
 - 所有核心能力須具備 native 實作或明確禁止降級策略
@@ -13,6 +14,7 @@
 ### 1.2 轉化目標
 
 所有模組、元件、插件、工具、skill、adk、mcp、sdk 必須實現：
+
 - **可獨立**：每個模組可單獨運行
 - **可分離**：模組間解耦，可單獨部署
 - **可組合**：模組可按需組合
@@ -53,7 +55,7 @@ interface CapabilityBase {
   readonly capabilityName: string;
   readonly source: 'native' | 'external' | 'hybrid';
   readonly supportedModes: RuntimeMode[];
-  
+
   initialize(): Promise<void>;
   healthCheck(): Promise<HealthCheckResult>;
   shutdown(): Promise<void>;
@@ -62,12 +64,12 @@ interface CapabilityBase {
 
 ### 2.3 運行時模式
 
-| 模式 | 說明 | 配置文件 |
-|------|------|----------|
-| `native` | 僅使用本地實現，零外部依賴 | `.env.native` |
-| `connected` | 僅使用外部服務，需要網路 | `.env.connected` |
-| `hybrid` | 優先外部，可降級到本地 | `.env.hybrid` |
-| `auto` | 根據環境自動選擇 | `.env.local` |
+| 模式        | 說明                       | 配置文件         |
+| ----------- | -------------------------- | ---------------- |
+| `native`    | 僅使用本地實現，零外部依賴 | `.env.native`    |
+| `connected` | 僅使用外部服務，需要網路   | `.env.connected` |
+| `hybrid`    | 優先外部，可降級到本地     | `.env.hybrid`    |
+| `auto`      | 根據環境自動選擇           | `.env.local`     |
 
 ---
 
@@ -76,6 +78,7 @@ interface CapabilityBase {
 ### 3.1 Native Provider
 
 **特點：**
+
 - 零外部依賴
 - 可完全離線運行
 - 使用本地資源（文件系統、內存、SQLite、IndexedDB）
@@ -100,6 +103,7 @@ export class NativeCodeSynthesis implements CodeSynthesisCapability {
 ### 3.2 External Provider
 
 **特點：**
+
 - 調用第三方 API/服務
 - 需要 API Key / Token
 - 需要網路連接
@@ -110,7 +114,7 @@ export class NativeCodeSynthesis implements CodeSynthesisCapability {
 // providers/external/src/code-synthesis.ts
 export class ExternalCodeSynthesis implements CodeSynthesisCapability {
   readonly source = 'external';
-  
+
   constructor(private apiKey: string) {}
 
   async generate(options: SynthesisOptions): Promise<SynthesisResult> {
@@ -123,6 +127,7 @@ export class ExternalCodeSynthesis implements CodeSynthesisCapability {
 ### 3.3 Hybrid Provider
 
 **特點：**
+
 - 優先使用外部服務
 - 失敗時降級到本地實現
 - 最佳平衡方案
@@ -133,7 +138,7 @@ export class ExternalCodeSynthesis implements CodeSynthesisCapability {
 // providers/hybrid/src/code-synthesis.ts
 export class HybridCodeSynthesis implements CodeSynthesisCapability {
   readonly source = 'hybrid';
-  
+
   constructor(
     private external: ExternalCodeSynthesis,
     private native: NativeCodeSynthesis
@@ -157,15 +162,15 @@ export class HybridCodeSynthesis implements CodeSynthesisCapability {
 
 ### 4.1 已轉化模組
 
-| 模組 | Native | External | Hybrid | 狀態 |
-|------|--------|----------|--------|------|
-| Framework Detection | ✅ | 🔄 | 🔄 | 進行中 |
-| Code Synthesis | ✅ | 🔄 | 🔄 | 進行中 |
-| Truth History | ✅ | 🔄 | 🔄 | 進行中 |
-| Storage | 🔄 | 🔄 | 🔄 | 待開始 |
-| Auth | 🔄 | 🔄 | 🔄 | 待開始 |
-| Metrics | 🔄 | 🔄 | 🔄 | 待開始 |
-| Logging | 🔄 | 🔄 | 🔄 | 待開始 |
+| 模組                | Native | External | Hybrid | 狀態   |
+| ------------------- | ------ | -------- | ------ | ------ |
+| Framework Detection | ✅     | 🔄       | 🔄     | 進行中 |
+| Code Synthesis      | ✅     | 🔄       | 🔄     | 進行中 |
+| Truth History       | ✅     | 🔄       | 🔄     | 進行中 |
+| Storage             | 🔄     | 🔄       | 🔄     | 待開始 |
+| Auth                | 🔄     | 🔄       | 🔄     | 待開始 |
+| Metrics             | 🔄     | 🔄       | 🔄     | 待開始 |
+| Logging             | 🔄     | 🔄       | 🔄     | 待開始 |
 
 ### 4.2 待轉化模組
 
@@ -257,12 +262,12 @@ const result = await synthesis.generate({ prompt });
 
 ### 6.2 測試矩陣
 
-| 測試場景 | Native | Hybrid | Connected |
-|----------|--------|--------|-----------|
-| 離線運行 | ✅ 必須通過 | ✅ 必須通過 | ❌ 應該失敗 |
-| 外部 API 可用 | N/A | 使用外部 | 使用外部 |
-| 外部 API 不可用 | N/A | 降級到本地 | 啟動失敗 |
-| 數據遷移 | ✅ | ✅ | ✅ |
+| 測試場景        | Native      | Hybrid      | Connected   |
+| --------------- | ----------- | ----------- | ----------- |
+| 離線運行        | ✅ 必須通過 | ✅ 必須通過 | ❌ 應該失敗 |
+| 外部 API 可用   | N/A         | 使用外部    | 使用外部    |
+| 外部 API 不可用 | N/A         | 降級到本地  | 啟動失敗    |
+| 數據遷移        | ✅          | ✅          | ✅          |
 
 ---
 

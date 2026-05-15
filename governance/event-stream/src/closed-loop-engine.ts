@@ -1,19 +1,19 @@
 /**
  * Governance Event Stream - Closed-Loop Engine
- * 
+ *
  * Implements the mandatory governance event stream closed loop as defined in
  * platform-governance-spec.yaml. Every governance-relevant action MUST:
- * 
+ *
  * 1. EMIT an event through this engine
  * 2. RECEIVE acknowledgement from all mandatory consumers
  * 3. VERIFY compliance status
  * 4. ANCHOR to immutable ledger (blockchain provider)
  * 5. CLOSE the loop with a verified terminal state
- * 
+ *
  * Closed-Loop State Machine:
  *   EMITTED → ACKNOWLEDGED → PROCESSING → VERIFIED → ANCHORED → CLOSED
  *                                                               ↘ FAILED → ESCALATED
- * 
+ *
  * Mandatory Rules:
  * - No event may be discarded; all events must reach a terminal state
  * - CRITICAL severity events require human escalation on failure
@@ -127,12 +127,14 @@ export class ClosedLoopEngine {
     const event = this.createEvent(GovernanceEventTypes.EVENT_STREAM_OPENED, {
       description: `Governance event stream opened: ${this.streamId}`,
       actor: 'system:closed-loop-engine',
-      affectedResources: [{
-        urn: `urn:mycodexvantaos:event-stream:session:${this.streamId}`,
-        type: 'event-stream-session',
-        name: this.streamId,
-        changeType: 'created',
-      }],
+      affectedResources: [
+        {
+          urn: `urn:mycodexvantaos:event-stream:session:${this.streamId}`,
+          type: 'event-stream-session',
+          name: this.streamId,
+          changeType: 'created',
+        },
+      ],
     });
 
     await this.storeEvent(event);
@@ -169,12 +171,14 @@ export class ClosedLoopEngine {
     const closeEvent = this.createEvent(GovernanceEventTypes.EVENT_STREAM_CLOSED, {
       description: `Governance event stream closed: ${this.streamId}`,
       actor: 'system:closed-loop-engine',
-      affectedResources: [{
-        urn: `urn:mycodexvantaos:event-stream:session:${this.streamId}`,
-        type: 'event-stream-session',
-        name: this.streamId,
-        changeType: 'verified',
-      }],
+      affectedResources: [
+        {
+          urn: `urn:mycodexvantaos:event-stream:session:${this.streamId}`,
+          type: 'event-stream-session',
+          name: this.streamId,
+          changeType: 'verified',
+        },
+      ],
     });
     await this.storeEvent(closeEvent);
 
@@ -243,12 +247,14 @@ export class ClosedLoopEngine {
       {
         description: `Bias detected in model ${modelId}: fairness score ${fairnessScore}`,
         actor: `ai-ethics-native-auditor`,
-        affectedResources: [{
-          urn: `urn:mycodexvantaos:ai-model:${modelId}`,
-          type: 'ai-model',
-          name: modelId,
-          changeType: auditDecision === 'pass' ? 'verified' : 'violated',
-        }],
+        affectedResources: [
+          {
+            urn: `urn:mycodexvantaos:ai-model:${modelId}`,
+            type: 'ai-model',
+            name: modelId,
+            changeType: auditDecision === 'pass' ? 'verified' : 'violated',
+          },
+        ],
         ethicsContext,
       },
       {
@@ -274,12 +280,14 @@ export class ClosedLoopEngine {
       {
         description: `Fairness audit completed for model ${modelId}: ${auditDecision}`,
         actor: 'ai-ethics-fairlearn',
-        affectedResources: [{
-          urn: `urn:mycodexvantaos:ai-model:${modelId}`,
-          type: 'ai-model',
-          name: modelId,
-          changeType: 'verified',
-        }],
+        affectedResources: [
+          {
+            urn: `urn:mycodexvantaos:ai-model:${modelId}`,
+            type: 'ai-model',
+            name: modelId,
+            changeType: 'verified',
+          },
+        ],
         ethicsContext: {
           modelId,
           datasetId,
@@ -314,12 +322,14 @@ export class ClosedLoopEngine {
       {
         description: `Merkle root anchored to ${ledgerType}: ${merkleRootHash.slice(0, 12)}...`,
         actor: `blockchain-${ledgerType}`,
-        affectedResources: [{
-          urn: `urn:mycodexvantaos:blockchain:ledger:${ledgerType}`,
-          type: 'blockchain-ledger',
-          name: ledgerType,
-          changeType: 'created',
-        }],
+        affectedResources: [
+          {
+            urn: `urn:mycodexvantaos:blockchain:ledger:${ledgerType}`,
+            type: 'blockchain-ledger',
+            name: ledgerType,
+            changeType: 'created',
+          },
+        ],
         blockchainContext: {
           ledgerType,
           merkleRootHash,
@@ -348,12 +358,14 @@ export class ClosedLoopEngine {
       {
         description: `Consensus verified for transaction ${transactionId} on ${ledgerType}`,
         actor: `blockchain-${ledgerType}`,
-        affectedResources: [{
-          urn: `urn:mycodexvantaos:blockchain:transaction:${transactionId}`,
-          type: 'blockchain-transaction',
-          name: transactionId,
-          changeType: 'verified',
-        }],
+        affectedResources: [
+          {
+            urn: `urn:mycodexvantaos:blockchain:transaction:${transactionId}`,
+            type: 'blockchain-transaction',
+            name: transactionId,
+            changeType: 'verified',
+          },
+        ],
         blockchainContext: {
           ledgerType,
           transactionId,
@@ -389,24 +401,28 @@ export class ClosedLoopEngine {
       {
         description: `Policy violation: ${rule} (expected: ${expected}, actual: ${actual})`,
         actor: 'governance-validation',
-        affectedResources: [{
-          urn: `urn:mycodexvantaos:governance:policy:${policyId}`,
-          type: 'governance-policy',
-          name: policyId,
-          changeType: 'violated',
-        }],
+        affectedResources: [
+          {
+            urn: `urn:mycodexvantaos:governance:policy:${policyId}`,
+            type: 'governance-policy',
+            name: policyId,
+            changeType: 'violated',
+          },
+        ],
         complianceContext: {
           policyId,
           ruleFile: `ci/rules/${rule}.rule.ts`,
           enforceLevel,
           passed: false,
-          violations: [{
-            rule,
-            expected,
-            actual,
-            severity: enforceLevel === 'hard' ? EventSeverity.CRITICAL : EventSeverity.HIGH,
-            remediation: `Correct the value to match expected: ${expected}`,
-          }],
+          violations: [
+            {
+              rule,
+              expected,
+              actual,
+              severity: enforceLevel === 'hard' ? EventSeverity.CRITICAL : EventSeverity.HIGH,
+              remediation: `Correct the value to match expected: ${expected}`,
+            },
+          ],
         },
       },
       {
@@ -435,7 +451,7 @@ export class ClosedLoopEngine {
       {
         description: `Pipeline gate ${gateName}: ${passed ? 'PASSED' : 'FAILED'}`,
         actor: 'ci:pipeline-gate',
-        affectedResources: evidenceFiles.map(f => ({
+        affectedResources: evidenceFiles.map((f) => ({
           urn: `urn:mycodexvantaos:evidence:file:${f}`,
           type: 'evidence-file',
           name: f,
@@ -479,8 +495,11 @@ export class ClosedLoopEngine {
       }
 
       // Step 5: CLOSED - Mark as closed
-      await this.transitionState(eventId, ClosedLoopState.CLOSED, 'Closed-loop completed successfully');
-
+      await this.transitionState(
+        eventId,
+        ClosedLoopState.CLOSED,
+        'Closed-loop completed successfully'
+      );
     } catch (error: any) {
       // Handle failure
       await this.handleClosedLoopFailure(eventId, error.message);
@@ -496,7 +515,9 @@ export class ClosedLoopEngine {
       try {
         await consumer.acknowledge(stored.event);
       } catch (error: any) {
-        console.warn(`Consumer ${consumer.name} failed to acknowledge event ${eventId}: ${error.message}`);
+        console.warn(
+          `Consumer ${consumer.name} failed to acknowledge event ${eventId}: ${error.message}`
+        );
       }
     }
 
@@ -512,7 +533,9 @@ export class ClosedLoopEngine {
       try {
         await consumer.process(stored.event);
       } catch (error: any) {
-        console.warn(`Consumer ${consumer.name} failed to process event ${eventId}: ${error.message}`);
+        console.warn(
+          `Consumer ${consumer.name} failed to process event ${eventId}: ${error.message}`
+        );
       }
     }
 
@@ -528,7 +551,9 @@ export class ClosedLoopEngine {
     if (complianceContext && !complianceContext.passed) {
       // Compliance violation detected
       if (complianceContext.enforceLevel === 'hard') {
-        throw new Error(`Hard enforcement violation: ${complianceContext.violations.map(v => v.rule).join(', ')}`);
+        throw new Error(
+          `Hard enforcement violation: ${complianceContext.violations.map((v) => v.rule).join(', ')}`
+        );
       }
     }
 
@@ -552,7 +577,11 @@ export class ClosedLoopEngine {
     // Update the event with the Merkle root hash
     stored.event.mycodexvantaosorgmerkleroothash = anchorHash;
 
-    await this.transitionState(eventId, ClosedLoopState.ANCHORED, `Anchored to ledger: ${anchorHash.slice(0, 16)}...`);
+    await this.transitionState(
+      eventId,
+      ClosedLoopState.ANCHORED,
+      `Anchored to ledger: ${anchorHash.slice(0, 16)}...`
+    );
   }
 
   private async handleClosedLoopFailure(eventId: string, reason: string): Promise<void> {
@@ -564,19 +593,30 @@ export class ClosedLoopEngine {
     // Check if we should retry
     if (stored.retryCount < this.config.maxRetries) {
       stored.retryCount++;
-      await this.transitionState(eventId, ClosedLoopState.EMITTED, `Retry attempt ${stored.retryCount}`);
-      
+      await this.transitionState(
+        eventId,
+        ClosedLoopState.EMITTED,
+        `Retry attempt ${stored.retryCount}`
+      );
+
       // Exponential backoff
       const delay = this.config.retryDelayMs * Math.pow(2, stored.retryCount - 1);
-      await new Promise(resolve => setTimeout(resolve, delay));
-      
+      await new Promise((resolve) => setTimeout(resolve, delay));
+
       await this.processClosedLoop(eventId);
       return;
     }
 
     // Max retries exceeded - escalate if CRITICAL
-    if (stored.event.mycodexvantaosorgseverity === EventSeverity.CRITICAL && this.config.autoEscalate) {
-      await this.transitionState(eventId, ClosedLoopState.ESCALATED, `Auto-escalated after ${this.config.maxRetries} retries: ${reason}`);
+    if (
+      stored.event.mycodexvantaosorgseverity === EventSeverity.CRITICAL &&
+      this.config.autoEscalate
+    ) {
+      await this.transitionState(
+        eventId,
+        ClosedLoopState.ESCALATED,
+        `Auto-escalated after ${this.config.maxRetries} retries: ${reason}`
+      );
     }
   }
 
@@ -607,8 +647,8 @@ export class ClosedLoopEngine {
    */
   getEventsBySeverity(severity: EventSeverity): GovernanceEvent[] {
     return Array.from(this.events.values())
-      .filter(s => s.event.mycodexvantaosorgseverity === severity)
-      .map(s => s.event);
+      .filter((s) => s.event.mycodexvantaosorgseverity === severity)
+      .map((s) => s.event);
   }
 
   /**
@@ -616,8 +656,8 @@ export class ClosedLoopEngine {
    */
   getEventsByState(state: ClosedLoopState): GovernanceEvent[] {
     return Array.from(this.events.values())
-      .filter(s => s.currentState === state)
-      .map(s => s.event);
+      .filter((s) => s.currentState === state)
+      .map((s) => s.event);
   }
 
   /**
@@ -654,21 +694,22 @@ export class ClosedLoopEngine {
     }
 
     // Calculate closed-loop completion rate
-    const terminalEvents = events.filter(s =>
-      s.currentState === ClosedLoopState.CLOSED ||
-      s.currentState === ClosedLoopState.ESCALATED
+    const terminalEvents = events.filter(
+      (s) =>
+        s.currentState === ClosedLoopState.CLOSED || s.currentState === ClosedLoopState.ESCALATED
     );
     const closedLoopCompletionRate = totalEvents > 0 ? terminalEvents.length / totalEvents : 0;
 
     // Determine overall compliance status
-    const hasViolations = events.some(s =>
-      s.currentState === ClosedLoopState.FAILED ||
-      s.currentState === ClosedLoopState.ESCALATED
+    const hasViolations = events.some(
+      (s) =>
+        s.currentState === ClosedLoopState.FAILED || s.currentState === ClosedLoopState.ESCALATED
     );
-    const hasPending = events.some(s =>
-      s.currentState !== ClosedLoopState.CLOSED &&
-      s.currentState !== ClosedLoopState.ESCALATED &&
-      s.currentState !== ClosedLoopState.FAILED
+    const hasPending = events.some(
+      (s) =>
+        s.currentState !== ClosedLoopState.CLOSED &&
+        s.currentState !== ClosedLoopState.ESCALATED &&
+        s.currentState !== ClosedLoopState.FAILED
     );
 
     let complianceStatus: 'compliant' | 'non-compliant' | 'pending';
@@ -704,10 +745,9 @@ export class ClosedLoopEngine {
 
     for (const stored of this.events.values()) {
       const lastTransition = stored.stateHistory[stored.stateHistory.length - 1];
-      const isTerminal = [
-        ClosedLoopState.CLOSED,
-        ClosedLoopState.ESCALATED,
-      ].includes(stored.currentState);
+      const isTerminal = [ClosedLoopState.CLOSED, ClosedLoopState.ESCALATED].includes(
+        stored.currentState
+      );
 
       results.push({
         eventId: stored.event.id,
@@ -718,12 +758,12 @@ export class ClosedLoopEngine {
         transitionTime: lastTransition?.timestamp ?? stored.event.time,
         verificationPassed: isTerminal,
         anchorHash: stored.event.mycodexvantaosorgmerkleroothash,
-        failureReason: stored.currentState === ClosedLoopState.FAILED
-          ? 'Event failed closed-loop processing'
-          : undefined,
-        escalationTarget: stored.currentState === ClosedLoopState.ESCALATED
-          ? 'governance-committee'
-          : undefined,
+        failureReason:
+          stored.currentState === ClosedLoopState.FAILED
+            ? 'Event failed closed-loop processing'
+            : undefined,
+        escalationTarget:
+          stored.currentState === ClosedLoopState.ESCALATED ? 'governance-committee' : undefined,
       });
     }
 
@@ -768,12 +808,14 @@ export class ClosedLoopEngine {
     this.events.set(event.id, {
       event,
       currentState: ClosedLoopState.EMITTED,
-      stateHistory: [{
-        from: ClosedLoopState.EMITTED,
-        to: ClosedLoopState.EMITTED,
-        timestamp: new Date().toISOString(),
-        reason: 'Event emitted',
-      }],
+      stateHistory: [
+        {
+          from: ClosedLoopState.EMITTED,
+          to: ClosedLoopState.EMITTED,
+          timestamp: new Date().toISOString(),
+          reason: 'Event emitted',
+        },
+      ],
       retryCount: 0,
       lastUpdated: new Date().toISOString(),
     });
@@ -803,12 +845,8 @@ export class ClosedLoopEngine {
   }
 
   private getNonTerminalEvents(): StoredEvent[] {
-    const terminalStates: ClosedLoopState[] = [
-      ClosedLoopState.CLOSED,
-      ClosedLoopState.ESCALATED,
-    ];
-    return Array.from(this.events.values())
-      .filter(s => !terminalStates.includes(s.currentState));
+    const terminalStates: ClosedLoopState[] = [ClosedLoopState.CLOSED, ClosedLoopState.ESCALATED];
+    return Array.from(this.events.values()).filter((s) => !terminalStates.includes(s.currentState));
   }
 
   private meetsAnchorThreshold(severity: EventSeverity): boolean {
@@ -827,7 +865,7 @@ export class ClosedLoopEngine {
     // In production, use the gitops-controlplane MerkleRootCalculator
     const eventHashes = Array.from(this.events.values())
       .sort((a, b) => a.event.time.localeCompare(b.event.time))
-      .map(s => this.hashEvent(s.event));
+      .map((s) => this.hashEvent(s.event));
 
     if (eventHashes.length === 0) {
       return 'sha256-00000000000000000000000000000000';
@@ -854,7 +892,7 @@ export class ClosedLoopEngine {
     let hash = 0;
     for (let i = 0; i < input.length; i++) {
       const char = input.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
+      hash = (hash << 5) - hash + char;
       hash = hash & hash; // Convert to 32-bit integer
     }
     return Math.abs(hash).toString(16).padStart(12, '0');
@@ -896,13 +934,19 @@ export class AiEthicsAuditConsumer implements EventConsumer {
   async process(event: GovernanceEvent): Promise<void> {
     if (event.data.ethicsContext) {
       const { auditDecision, fairnessScore } = event.data.ethicsContext;
-      
+
       if (auditDecision === 'fail') {
-        console.error(`[AI-ETHICS] Model ${event.data.ethicsContext.modelId} failed fairness audit (score: ${fairnessScore})`);
+        console.error(
+          `[AI-ETHICS] Model ${event.data.ethicsContext.modelId} failed fairness audit (score: ${fairnessScore})`
+        );
       } else if (auditDecision === 'conditional') {
-        console.warn(`[AI-ETHICS] Model ${event.data.ethicsContext.modelId} received conditional pass (score: ${fairnessScore})`);
+        console.warn(
+          `[AI-ETHICS] Model ${event.data.ethicsContext.modelId} received conditional pass (score: ${fairnessScore})`
+        );
       } else {
-        console.log(`[AI-ETHICS] Model ${event.data.ethicsContext.modelId} passed fairness audit (score: ${fairnessScore})`);
+        console.log(
+          `[AI-ETHICS] Model ${event.data.ethicsContext.modelId} passed fairness audit (score: ${fairnessScore})`
+        );
       }
     }
   }
@@ -922,8 +966,10 @@ export class BlockchainAnchorConsumer implements EventConsumer {
   async process(event: GovernanceEvent): Promise<void> {
     if (event.data.blockchainContext) {
       const { ledgerType, merkleRootHash } = event.data.blockchainContext;
-      console.log(`[BLOCKCHAIN] Anchoring to ${ledgerType}: ${merkleRootHash?.slice(0, 16) ?? 'pending'}...`);
-      
+      console.log(
+        `[BLOCKCHAIN] Anchoring to ${ledgerType}: ${merkleRootHash?.slice(0, 16) ?? 'pending'}...`
+      );
+
       // In production, this would call the blockchain provider
       event.data.blockchainContext.consensusStatus = 'committed';
     }
@@ -944,13 +990,17 @@ export class GovernancePolicyConsumer implements EventConsumer {
   async process(event: GovernanceEvent): Promise<void> {
     if (event.data.complianceContext) {
       const { enforceLevel, passed, violations } = event.data.complianceContext;
-      
+
       if (!passed) {
-        console.error(`[GOVERNANCE] Policy violation (${enforceLevel} enforcement): ${violations.map(v => v.rule).join(', ')}`);
-        
+        console.error(
+          `[GOVERNANCE] Policy violation (${enforceLevel} enforcement): ${violations.map((v) => v.rule).join(', ')}`
+        );
+
         if (enforceLevel === 'hard') {
           // Hard enforcement: this should block the pipeline
-          throw new Error(`Hard enforcement violation: ${violations.map(v => `${v.rule}: expected ${v.expected}, got ${v.actual}`).join('; ')}`);
+          throw new Error(
+            `Hard enforcement violation: ${violations.map((v) => `${v.rule}: expected ${v.expected}, got ${v.actual}`).join('; ')}`
+          );
         }
       }
     }
@@ -964,9 +1014,7 @@ export class GovernancePolicyConsumer implements EventConsumer {
 /**
  * Create a pre-configured closed-loop engine with standard consumers.
  */
-export function createClosedLoopEngine(
-  config?: Partial<ClosedLoopEngineConfig>
-): ClosedLoopEngine {
+export function createClosedLoopEngine(config?: Partial<ClosedLoopEngineConfig>): ClosedLoopEngine {
   const engine = new ClosedLoopEngine(config);
 
   // Register built-in consumers

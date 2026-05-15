@@ -77,20 +77,20 @@ mycodexvantaos/
 
 MyCodexVantaOS 定義了 12 項標準化基礎能力：
 
-| 能力 | 說明 | Native 實現 | Connected 實現 |
-|------|------|-------------|----------------|
-| **database** | 數據庫操作 | SQLite | PostgreSQL, Supabase |
-| **storage** | 對象存儲 | Local FS | S3, GCS |
-| **auth** | 身份認證 | JWT Native | Keycloak, OAuth |
-| **queue** | 消息隊列 | In-Memory | Redis, RabbitMQ |
-| **stateStore** | 狀態存儲 | Memory Map | Redis |
-| **secrets** | 密鑰管理 | Env Vars | Vault, AWS Secrets |
-| **repo** | 代碼倉庫 | Local Git | GitHub, GitLab |
-| **deploy** | 部署能力 | Docker Compose | Kubernetes |
-| **validation** | 驗證服務 | JSON Schema | External Validators |
-| **security** | 安全掃描 | Basic Checks | Snyk, Trivy |
-| **observability** | 可觀測性 | Console Logging | Prometheus, Grafana |
-| **notification** | 通知服務 | Console | Slack, Email |
+| 能力              | 說明       | Native 實現     | Connected 實現       |
+| ----------------- | ---------- | --------------- | -------------------- |
+| **database**      | 數據庫操作 | SQLite          | PostgreSQL, Supabase |
+| **storage**       | 對象存儲   | Local FS        | S3, GCS              |
+| **auth**          | 身份認證   | JWT Native      | Keycloak, OAuth      |
+| **queue**         | 消息隊列   | In-Memory       | Redis, RabbitMQ      |
+| **stateStore**    | 狀態存儲   | Memory Map      | Redis                |
+| **secrets**       | 密鑰管理   | Env Vars        | Vault, AWS Secrets   |
+| **repo**          | 代碼倉庫   | Local Git       | GitHub, GitLab       |
+| **deploy**        | 部署能力   | Docker Compose  | Kubernetes           |
+| **validation**    | 驗證服務   | JSON Schema     | External Validators  |
+| **security**      | 安全掃描   | Basic Checks    | Snyk, Trivy          |
+| **observability** | 可觀測性   | Console Logging | Prometheus, Grafana  |
+| **notification**  | 通知服務   | Console         | Slack, Email         |
 
 ### 2.2 運行模式（Runtime Modes）
 
@@ -116,6 +116,7 @@ ProviderAbstractionLayer.resolveProvider({
 ```
 
 關鍵特性：
+
 - 自動健康檢查
 - 智能降級（Fallback）
 - 運行時熱插拔
@@ -149,13 +150,13 @@ ProviderAbstractionLayer.resolveProvider({
 
 ### 3.2 業務價值
 
-| 價值維度 | 描述 |
-|----------|------|
-| **開發效率** | 本地開發無需配置外部服務，加速開發週期 |
+| 價值維度     | 描述                                      |
+| ------------ | ----------------------------------------- |
+| **開發效率** | 本地開發無需配置外部服務，加速開發週期    |
 | **成本優化** | 開發/測試環境可使用 Native 模式，零雲成本 |
-| **合規治理** | 自動化架構治理，確保企業標準一致性 |
-| **災難恢復** | 外部服務故障時自動降級，保障業務連續性 |
-| **可移植性** | 一套代碼多環境部署，降低遷移成本 |
+| **合規治理** | 自動化架構治理，確保企業標準一致性        |
+| **災難恢復** | 外部服務故障時自動降級，保障業務連續性    |
+| **可移植性** | 一套代碼多環境部署，降低遷移成本          |
 
 ---
 
@@ -189,6 +190,7 @@ spec:
 ```
 
 服務通過 YAML 清單聲明式定義，實現：
+
 - 機器可讀的服務規格
 - 自動化驗證和治理
 - 環境無關的服務描述
@@ -206,6 +208,7 @@ knowledge-graph/
 ```
 
 支持：
+
 - 服務依賴關係圖譜化
 - 語義化架構理解
 - 智能影響分析
@@ -228,23 +231,23 @@ infra/
 
 ```typescript
 // 統一的 Provider 解析介面
-async resolveProvider(options: ProviderResolutionOptions): 
+async resolveProvider(options: ProviderResolutionOptions):
   Promise<ProviderResolutionResult> {
-  
+
   // 1. 解析可用 adapters
   const adapters = this.adapterRegistry.resolveAdapters(
     options.capability,
     { runtimeMode: options.runtimeMode }
   );
-  
+
   // 2. 健康檢查
   const isHealthy = await selectedAdapter.healthCheck();
-  
+
   // 3. 智能 Fallback
   if (!isHealthy && options.fallbackEnabled) {
     // 嘗試備用 Providers
   }
-  
+
   return { adapter, fallbackUsed, ... };
 }
 ```
@@ -257,18 +260,18 @@ async enforceServiceManifest(
   manifest: ServiceManifest,
   options: EnforcementOptions
 ): Promise<EnforcementResult> {
-  
+
   // 1. 驗證清單結構
   const validation = await this.manifestValidator.validate(manifest);
-  
+
   // 2. 應用治理策略
   for (const [policyName, policy] of this.policies) {
     const policyResult = await this.enforcePolicy(manifest, policy);
   }
-  
+
   // 3. 生成審計日誌
   this.auditLogs.push(auditLog);
-  
+
   // 4. 違規阻斷（可配置）
   if (options.blockOnViolation && !result.compliant) {
     throw new Error('Governance enforcement failed');
@@ -282,12 +285,12 @@ async enforceServiceManifest(
 
 ### 5.1 架構缺陷
 
-| 缺陷 | 嚴重性 | 說明 |
-|------|--------|------|
-| **過度抽象** | 中 | 12 項能力抽象層增加學習曲線和複雜度 |
-| **Native 實現不完整** | 高 | 部分 Native Provider 僅為佔位實現 |
-| **測試覆蓋不足** | 高 | 大量服務缺少單元測試和集成測試 |
-| **文檔缺失** | 中 | 核心概念缺少詳細文檔說明 |
+| 缺陷                  | 嚴重性 | 說明                                |
+| --------------------- | ------ | ----------------------------------- |
+| **過度抽象**          | 中     | 12 項能力抽象層增加學習曲線和複雜度 |
+| **Native 實現不完整** | 高     | 部分 Native Provider 僅為佔位實現   |
+| **測試覆蓋不足**      | 高     | 大量服務缺少單元測試和集成測試      |
+| **文檔缺失**          | 中     | 核心概念缺少詳細文檔說明            |
 
 ### 5.2 代碼缺陷
 
@@ -295,7 +298,7 @@ async enforceServiceManifest(
 
 ```typescript
 // 當前實現
-private async evaluateCondition(condition: string, manifest: ServiceManifest): 
+private async evaluateCondition(condition: string, manifest: ServiceManifest):
   Promise<boolean> {
   if (condition.includes('runtimeMode === "native"')) {
     return manifest.spec.runtimeMode === 'native';
@@ -316,7 +319,7 @@ private async evaluateCondition(condition: string, manifest: ServiceManifest):
 // vector-store-native.ts - 僅為佔位實現
 export class NativeVectorStoreProvider implements VectorStoreProvider {
   manifest = { capability: 'vector-store', provider: 'native-memory', mode: 'native' };
-  
+
   async storeEmbedding(id: string, text: string, vector: number[]): Promise<boolean> {
     // 僅存儲在內存中
     this.embeddings.set(id, { id, text, vector });
@@ -331,16 +334,16 @@ export class NativeVectorStoreProvider implements VectorStoreProvider {
 
 ### 5.3 運維風險
 
-| 風險 | 影響 | 緩解措施 |
-|------|------|----------|
-| **混合模式複雜性** | 故障排查困難 | 增強可觀測性和日誌 |
-| **配置管理** | 環境差異導致問題 | GitOps 標準化 |
-| **Provider 版本兼容性** | 升級風險 | 版本鎖定和兼容性測試 |
+| 風險                    | 影響             | 緩解措施             |
+| ----------------------- | ---------------- | -------------------- |
+| **混合模式複雜性**      | 故障排查困難     | 增強可觀測性和日誌   |
+| **配置管理**            | 環境差異導致問題 | GitOps 標準化        |
+| **Provider 版本兼容性** | 升級風險         | 版本鎖定和兼容性測試 |
 
 ### 5.4 技術債務
 
 1. **project-import/deprecated/** 目錄包含大量遺留代碼
-2. **_legacy/** 目錄在多個服務中存在
+2. **\_legacy/** 目錄在多個服務中存在
 3. **package-lock.json** 與 pnpm workspace 混用
 4. **缺少統一的錯誤處理策略**
 
@@ -353,7 +356,6 @@ export class NativeVectorStoreProvider implements VectorStoreProvider {
 1. **完善 Native Provider 實現**
    - 提供生產可用的 SQLite-based Native Database
    - 實現持久化的 Native Vector Store
-   
 2. **增強測試覆蓋**
    - 為核心 Kernel 添加單元測試
    - 添加 Provider 集成測試
@@ -396,16 +398,16 @@ export class NativeVectorStoreProvider implements VectorStoreProvider {
 
 ## 七、總結評分
 
-| 維度 | 評分 (1-10) | 評語 |
-|------|-------------|------|
-| **架構設計** | 9 | 創新的雲無關、本地優先設計 |
-| **代碼質量** | 7 | 核心模塊設計良好，部分實現不完整 |
-| **可維護性** | 7 | 模組化設計，但缺少文檔 |
-| **可擴展性** | 9 | Provider 插件機制支持靈活擴展 |
-| **測試覆蓋** | 4 | 嚴重不足，需要優先改進 |
-| **文檔完整性** | 5 | 架構文檔存在，使用指南缺失 |
-| **生產就緒** | 5 | 需要 Native Provider 增強 |
-| **總體評分** | **7.0** | 潛力巨大的創新架構，需完善實現 |
+| 維度           | 評分 (1-10) | 評語                             |
+| -------------- | ----------- | -------------------------------- |
+| **架構設計**   | 9           | 創新的雲無關、本地優先設計       |
+| **代碼質量**   | 7           | 核心模塊設計良好，部分實現不完整 |
+| **可維護性**   | 7           | 模組化設計，但缺少文檔           |
+| **可擴展性**   | 9           | Provider 插件機制支持靈活擴展    |
+| **測試覆蓋**   | 4           | 嚴重不足，需要優先改進           |
+| **文檔完整性** | 5           | 架構文檔存在，使用指南缺失       |
+| **生產就緒**   | 5           | 需要 Native Provider 增強        |
+| **總體評分**   | **7.0**     | 潛力巨大的創新架構，需完善實現   |
 
 ---
 

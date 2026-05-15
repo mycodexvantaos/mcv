@@ -13,15 +13,15 @@ The platform's core mission is to enable developers and AI agents to build, depl
 
 ### Platform Identity
 
-| Attribute | Value |
-| :--- | :--- |
-| Organization | `mycodexvantaos` |
-| NPM Scope | `@mycodexvantaos` |
-| URN Namespace | `urn:mycodexvantaos` |
+| Attribute            | Value                    |
+| :------------------- | :----------------------- |
+| Organization         | `mycodexvantaos`         |
+| NPM Scope            | `@mycodexvantaos`        |
+| URN Namespace        | `urn:mycodexvantaos`     |
 | Kubernetes API Group | `mycodexvantaos.quantum` |
-| Primary Language | TypeScript (89%) |
-| Secondary Languages | Python, Shell, OPA |
-| Version | 1.0.0 |
+| Primary Language     | TypeScript (89%)         |
+| Secondary Languages  | Python, Shell, OPA       |
+| Version              | 1.0.0                    |
 
 ---
 
@@ -60,14 +60,14 @@ MyCodexVantaOS is organized into six distinct architectural layers, each with cl
 
 ### Layer Summary
 
-| Layer | Name | Key Components | Responsibility |
-| :---: | :--- | :--- | :--- |
-| **A** | Application | `builder`, `ui-generator`, `app-dev-studio` | User-facing application generation and studio tooling |
-| **B** | Runtime & Execution | `runtime`, `execution`, `background-job-runtime` | Multi-environment execution, job scheduling |
-| **C** | Native Services | `core-auth`, `core-kernel`, `core-gateway`, `core-config`, `database`, `storage`, `events`, `native-logging` | Platform-level infrastructure primitives |
-| **D** | Connector | `connector-github`, `connector-kafka`, `connector-mongodb`, `connector-postgresql`, `connector-redis`, `connector-s3` | External system integrations |
-| **E** | Deployment | `deployment`, `deployment-manifest-generator`, ArgoCD, Helm | GitOps-driven deployment orchestration |
-| **F** | Governance | `governance-policy`, `ci/validate-architecture.ts`, naming-spec-v1 | Naming enforcement, compliance, audit |
+| Layer | Name                | Key Components                                                                                                        | Responsibility                                        |
+| :---: | :------------------ | :-------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------- |
+| **A** | Application         | `builder`, `ui-generator`, `app-dev-studio`                                                                           | User-facing application generation and studio tooling |
+| **B** | Runtime & Execution | `runtime`, `execution`, `background-job-runtime`                                                                      | Multi-environment execution, job scheduling           |
+| **C** | Native Services     | `core-auth`, `core-kernel`, `core-gateway`, `core-config`, `database`, `storage`, `events`, `native-logging`          | Platform-level infrastructure primitives              |
+| **D** | Connector           | `connector-github`, `connector-kafka`, `connector-mongodb`, `connector-postgresql`, `connector-redis`, `connector-s3` | External system integrations                          |
+| **E** | Deployment          | `deployment`, `deployment-manifest-generator`, ArgoCD, Helm                                                           | GitOps-driven deployment orchestration                |
+| **F** | Governance          | `governance-policy`, `ci/validate-architecture.ts`, naming-spec-v1                                                    | Naming enforcement, compliance, audit                 |
 
 ---
 
@@ -95,26 +95,26 @@ modules/mycodexvantaos-ai-team-orchestrator/
 
 The Persona Engine implements intelligent AI personas with semantic mask detection, multi-layer root cause analysis, and solution generation. It provides 9 persona archetypes and 8 semantic mask detection types.
 
-| Persona Archetype | Role |
-| :--- | :--- |
-| Disrupter | Challenges assumptions, proposes radical alternatives |
-| Analyst | Data-driven pattern recognition and analysis |
-| Critic | Identifies risks, weaknesses, and failure modes |
-| Architect | System design and structural reasoning |
-| Mediator | Conflict resolution and consensus building |
-| Creative Thinker | Novel ideation and lateral thinking |
-| Facilitator | Process guidance and team coordination |
-| Mentor | Knowledge transfer and coaching |
-| Synthesizer | Cross-domain integration and summarization |
+| Persona Archetype | Role                                                  |
+| :---------------- | :---------------------------------------------------- |
+| Disrupter         | Challenges assumptions, proposes radical alternatives |
+| Analyst           | Data-driven pattern recognition and analysis          |
+| Critic            | Identifies risks, weaknesses, and failure modes       |
+| Architect         | System design and structural reasoning                |
+| Mediator          | Conflict resolution and consensus building            |
+| Creative Thinker  | Novel ideation and lateral thinking                   |
+| Facilitator       | Process guidance and team coordination                |
+| Mentor            | Knowledge transfer and coaching                       |
+| Synthesizer       | Cross-domain integration and summarization            |
 
 ### 3.3 AI Package Ecosystem
 
-| Package | URN | Capability | Provider |
-| :--- | :--- | :--- | :--- |
-| `@mycodexvantaos/ai-embedding` | `urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-embedding` | embedding, vector-store | OpenAI, pgvector |
-| `@mycodexvantaos/ai-llm` | `urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-llm` | llm | OpenAI, Gemini, Anthropic |
-| `@mycodexvantaos/ai-memory` | `urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-memory` | memory, vector-store | pgvector, Redis |
-| `@mycodexvantaos/ai-agent` | `urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-agent` | agent, llm, memory | multi-provider |
+| Package                        | URN                                                               | Capability              | Provider                  |
+| :----------------------------- | :---------------------------------------------------------------- | :---------------------- | :------------------------ |
+| `@mycodexvantaos/ai-embedding` | `urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-embedding` | embedding, vector-store | OpenAI, pgvector          |
+| `@mycodexvantaos/ai-llm`       | `urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-llm`       | llm                     | OpenAI, Gemini, Anthropic |
+| `@mycodexvantaos/ai-memory`    | `urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-memory`    | memory, vector-store    | pgvector, Redis           |
+| `@mycodexvantaos/ai-agent`     | `urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-agent`     | agent, llm, memory      | multi-provider            |
 
 ---
 
@@ -124,39 +124,39 @@ The platform exposes 25+ services organized by domain. All services follow the n
 
 ### 4.1 Core Domain
 
-| Service ID | Package | Lifecycle | Capabilities |
-| :--- | :--- | :---: | :--- |
-| `mycodexvantaos-core-kernel` | `@mycodexvantaos/core-kernel` | stable | database, cache, observability, secrets |
-| `mycodexvantaos-core-auth` | `@mycodexvantaos/core-auth` | stable | auth, database, cache, secrets |
-| `mycodexvantaos-core-gateway` | `@mycodexvantaos/core-gateway` | stable | auth, observability, cache |
-| `mycodexvantaos-core-config` | `@mycodexvantaos/core-config` | stable | config, secrets |
+| Service ID                    | Package                        | Lifecycle | Capabilities                            |
+| :---------------------------- | :----------------------------- | :-------: | :-------------------------------------- |
+| `mycodexvantaos-core-kernel`  | `@mycodexvantaos/core-kernel`  |  stable   | database, cache, observability, secrets |
+| `mycodexvantaos-core-auth`    | `@mycodexvantaos/core-auth`    |  stable   | auth, database, cache, secrets          |
+| `mycodexvantaos-core-gateway` | `@mycodexvantaos/core-gateway` |  stable   | auth, observability, cache              |
+| `mycodexvantaos-core-config`  | `@mycodexvantaos/core-config`  |  stable   | config, secrets                         |
 
 ### 4.2 AI Domain
 
-| Service ID | Package | Lifecycle | Capabilities |
-| :--- | :--- | :---: | :--- |
-| `mycodexvantaos-ai-embedding` | `@mycodexvantaos/ai-embedding` | stable | embedding, vector-store, cache |
-| `mycodexvantaos-ai-llm` | `@mycodexvantaos/ai-llm` | stable | llm, cache |
-| `mycodexvantaos-ai-memory` | `@mycodexvantaos/ai-memory` | stable | memory, vector-store |
-| `mycodexvantaos-ai-agent` | `@mycodexvantaos/ai-agent` | beta | agent, llm, memory |
+| Service ID                    | Package                        | Lifecycle | Capabilities                   |
+| :---------------------------- | :----------------------------- | :-------: | :----------------------------- |
+| `mycodexvantaos-ai-embedding` | `@mycodexvantaos/ai-embedding` |  stable   | embedding, vector-store, cache |
+| `mycodexvantaos-ai-llm`       | `@mycodexvantaos/ai-llm`       |  stable   | llm, cache                     |
+| `mycodexvantaos-ai-memory`    | `@mycodexvantaos/ai-memory`    |  stable   | memory, vector-store           |
+| `mycodexvantaos-ai-agent`     | `@mycodexvantaos/ai-agent`     |   beta    | agent, llm, memory             |
 
 ### 4.3 Data Domain
 
-| Service ID | Package | Lifecycle | Capabilities |
-| :--- | :--- | :---: | :--- |
-| `mycodexvantaos-data-graph` | `@mycodexvantaos/data-graph` | stable | graph, database |
-| `mycodexvantaos-data-pipeline` | `@mycodexvantaos/data-pipeline` | stable | pipeline, storage |
-| `mycodexvantaos-data-vector-store` | `@mycodexvantaos/data-vector-store` | stable | vector-store, database |
-| `mycodexvantaos-docs-search` | `@mycodexvantaos/docs-search` | stable | search, embedding |
+| Service ID                         | Package                             | Lifecycle | Capabilities           |
+| :--------------------------------- | :---------------------------------- | :-------: | :--------------------- |
+| `mycodexvantaos-data-graph`        | `@mycodexvantaos/data-graph`        |  stable   | graph, database        |
+| `mycodexvantaos-data-pipeline`     | `@mycodexvantaos/data-pipeline`     |  stable   | pipeline, storage      |
+| `mycodexvantaos-data-vector-store` | `@mycodexvantaos/data-vector-store` |  stable   | vector-store, database |
+| `mycodexvantaos-docs-search`       | `@mycodexvantaos/docs-search`       |  stable   | search, embedding      |
 
 ### 4.4 Platform Domain
 
-| Service ID | Package | Lifecycle | Capabilities |
-| :--- | :--- | :---: | :--- |
-| `mycodexvantaos-platform-observability` | `@mycodexvantaos/platform-observability` | stable | observability, logging, metrics |
-| `mycodexvantaos-platform-scheduler` | `@mycodexvantaos/platform-scheduler` | stable | scheduler, queue |
-| `mycodexvantaos-platform-notification` | `@mycodexvantaos/platform-notification` | stable | notification, queue |
-| `mycodexvantaos-governance-policy` | `@mycodexvantaos/governance-policy` | stable | policy, audit |
+| Service ID                              | Package                                  | Lifecycle | Capabilities                    |
+| :-------------------------------------- | :--------------------------------------- | :-------: | :------------------------------ |
+| `mycodexvantaos-platform-observability` | `@mycodexvantaos/platform-observability` |  stable   | observability, logging, metrics |
+| `mycodexvantaos-platform-scheduler`     | `@mycodexvantaos/platform-scheduler`     |  stable   | scheduler, queue                |
+| `mycodexvantaos-platform-notification`  | `@mycodexvantaos/platform-notification`  |  stable   | notification, queue             |
+| `mycodexvantaos-governance-policy`      | `@mycodexvantaos/governance-policy`      |  stable   | policy, audit                   |
 
 ---
 
@@ -180,11 +180,11 @@ providers/
 
 ### Deployment Modes
 
-| Mode | Description | Use Case |
-| :--- | :--- | :--- |
-| **Native** | All services run locally without external dependencies | Development, air-gapped environments |
-| **Connected** | Services connect to external cloud providers | Production cloud deployments |
-| **Hybrid** | Mix of native and connected providers | Staging, cost-optimized production |
+| Mode          | Description                                            | Use Case                             |
+| :------------ | :----------------------------------------------------- | :----------------------------------- |
+| **Native**    | All services run locally without external dependencies | Development, air-gapped environments |
+| **Connected** | Services connect to external cloud providers           | Production cloud deployments         |
+| **Hybrid**    | Mix of native and connected providers                  | Staging, cost-optimized production   |
 
 ---
 
@@ -192,23 +192,23 @@ providers/
 
 All resources follow the `naming-spec-v1.md` specification, enforced by CI on every PR.
 
-| Resource Type | Format | Example |
-| :--- | :--- | :--- |
-| Service ID | `mycodexvantaos-<domain>-<capability>` | `mycodexvantaos-ai-embedding` |
-| Package Name | `@mycodexvantaos/<short-id>` | `@mycodexvantaos/ai-embedding` |
-| URN | `urn:mycodexvantaos:manifest:service:<service-id>` | `urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-embedding` |
-| Env Var | `MYCODEXVANTAOS_<SUBSYSTEM>_<KEY>` | `MYCODEXVANTAOS_LLM_API_KEY` |
-| K8s Namespace | `mycodexvantaos-<env>` | `mycodexvantaos-prod` |
-| Provider Instance | `<capability>-<provider>` | `embedding-openai` |
+| Resource Type     | Format                                             | Example                                                           |
+| :---------------- | :------------------------------------------------- | :---------------------------------------------------------------- |
+| Service ID        | `mycodexvantaos-<domain>-<capability>`             | `mycodexvantaos-ai-embedding`                                     |
+| Package Name      | `@mycodexvantaos/<short-id>`                       | `@mycodexvantaos/ai-embedding`                                    |
+| URN               | `urn:mycodexvantaos:manifest:service:<service-id>` | `urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-embedding` |
+| Env Var           | `MYCODEXVANTAOS_<SUBSYSTEM>_<KEY>`                 | `MYCODEXVANTAOS_LLM_API_KEY`                                      |
+| K8s Namespace     | `mycodexvantaos-<env>`                             | `mycodexvantaos-prod`                                             |
+| Provider Instance | `<capability>-<provider>`                          | `embedding-openai`                                                |
 
 ### Naming Enforcement
 
-| Enforcement Type | File | Trigger |
-| :--- | :--- | :--- |
-| Hard (blocks merge) | `ci/validate-architecture.ts` | Every PR |
-| Legacy prefix scan | `scripts/check-legacy-prefix.sh` | Every PR |
-| Manifest schema validation | `.github/workflows/validate-naming.yml` | Every PR |
-| Exception expiry | `.github/workflows/expire-exceptions.yml` | Weekly (Monday) |
+| Enforcement Type           | File                                      | Trigger         |
+| :------------------------- | :---------------------------------------- | :-------------- |
+| Hard (blocks merge)        | `ci/validate-architecture.ts`             | Every PR        |
+| Legacy prefix scan         | `scripts/check-legacy-prefix.sh`          | Every PR        |
+| Manifest schema validation | `.github/workflows/validate-naming.yml`   | Every PR        |
+| Exception expiry           | `.github/workflows/expire-exceptions.yml` | Weekly (Monday) |
 
 ---
 
@@ -249,20 +249,20 @@ flowchart TD
 
 ### Active GitHub Actions Workflows
 
-| Workflow | Purpose |
-| :--- | :--- |
-| `unified-ci.yaml` | Main CI pipeline (lint, test, validate) |
-| `unified-cd.yaml` | Continuous deployment pipeline |
-| `security-scan.yaml` | Checkov + Trivy vulnerability scan |
+| Workflow                 | Purpose                                   |
+| :----------------------- | :---------------------------------------- |
+| `unified-ci.yaml`        | Main CI pipeline (lint, test, validate)   |
+| `unified-cd.yaml`        | Continuous deployment pipeline            |
+| `security-scan.yaml`     | Checkov + Trivy vulnerability scan        |
 | `provenance-attest.yaml` | SLSA Build Level 3 provenance attestation |
-| `sbom-upload.yaml` | CycloneDX SBOM generation and upload |
-| `drift-detection.yaml` | Configuration drift detection |
-| `freeze-gate.yaml` | Deployment freeze gate enforcement |
-| `opa-policy-check.yaml` | OPA policy compliance check |
-| `contract-diff.yaml` | OpenAPI contract diff validation |
-| `gitleaks.yaml` | Secret scanning |
-| `codeql-analysis.yml` | Static code analysis |
-| `validate-naming.yml` | Platform naming convention enforcement |
+| `sbom-upload.yaml`       | CycloneDX SBOM generation and upload      |
+| `drift-detection.yaml`   | Configuration drift detection             |
+| `freeze-gate.yaml`       | Deployment freeze gate enforcement        |
+| `opa-policy-check.yaml`  | OPA policy compliance check               |
+| `contract-diff.yaml`     | OpenAPI contract diff validation          |
+| `gitleaks.yaml`          | Secret scanning                           |
+| `codeql-analysis.yml`    | Static code analysis                      |
+| `validate-naming.yml`    | Platform naming convention enforcement    |
 
 ---
 
@@ -270,23 +270,23 @@ flowchart TD
 
 ### 8.1 Vector Collections
 
-| Collection | Embedding Model | Dimensions | Use Case |
-| :--- | :--- | :---: | :--- |
-| `mycodexvantaos-ai-memory--memories` | bge-small | 384 | Agent short-term memory |
-| `mycodexvantaos-ai-memory--sessions` | openai-text-embedding-3-small | 1536 | Session context |
-| `mycodexvantaos-data-pipeline--artifacts` | ollama-nomic-embed-text | 768 | Pipeline artifacts |
-| `mycodexvantaos-data-vector-store--datasets` | openai-text-embedding-3-large | 3072 | Large dataset embeddings |
-| `mycodexvantaos-docs-search--chunks` | cohere-embed-english-v3 | 1024 | Documentation search |
+| Collection                                   | Embedding Model               | Dimensions | Use Case                 |
+| :------------------------------------------- | :---------------------------- | :--------: | :----------------------- |
+| `mycodexvantaos-ai-memory--memories`         | bge-small                     |    384     | Agent short-term memory  |
+| `mycodexvantaos-ai-memory--sessions`         | openai-text-embedding-3-small |    1536    | Session context          |
+| `mycodexvantaos-data-pipeline--artifacts`    | ollama-nomic-embed-text       |    768     | Pipeline artifacts       |
+| `mycodexvantaos-data-vector-store--datasets` | openai-text-embedding-3-large |    3072    | Large dataset embeddings |
+| `mycodexvantaos-docs-search--chunks`         | cohere-embed-english-v3       |    1024    | Documentation search     |
 
 ### 8.2 Retrieval Pipelines
 
-| Pipeline | Backend | Strategy |
-| :--- | :--- | :--- |
-| `retrieval--dense--pgvector` | pgvector | Dense vector similarity |
+| Pipeline                      | Backend  | Strategy                |
+| :---------------------------- | :------- | :---------------------- |
+| `retrieval--dense--pgvector`  | pgvector | Dense vector similarity |
 | `retrieval--hybrid--pgvector` | pgvector | Hybrid (dense + sparse) |
-| `retrieval--dense--qdrant` | Qdrant | Dense vector similarity |
-| `retrieval--hybrid--qdrant` | Qdrant | Hybrid (dense + sparse) |
-| `retrieval--sparse--pgvector` | pgvector | Sparse BM25 |
+| `retrieval--dense--qdrant`    | Qdrant   | Dense vector similarity |
+| `retrieval--hybrid--qdrant`   | Qdrant   | Hybrid (dense + sparse) |
+| `retrieval--sparse--pgvector` | pgvector | Sparse BM25             |
 
 ---
 
@@ -315,13 +315,13 @@ infra/
 
 ## 10. Implementation Status
 
-| Phase | Status | Description |
-| :--- | :---: | :--- |
-| Phase 1 — Immediate Fixes | ✅ Complete | Symbol cleanup, test framework setup |
-| Phase 2 — Core Implementation | ✅ Complete | Builder, Runtime, Deployment, Service Discovery |
-| Phase 3 — Remaining Packages | ✅ Complete | All 27 packages implemented (100%) |
-| Phase 4 — Testing | 🔄 In Progress | 98/99 test suites passing |
-| Phase 5 — Production Hardening | 📋 Planned | Multi-cluster, DR, SLO enforcement |
+| Phase                          |     Status     | Description                                     |
+| :----------------------------- | :------------: | :---------------------------------------------- |
+| Phase 1 — Immediate Fixes      |  ✅ Complete   | Symbol cleanup, test framework setup            |
+| Phase 2 — Core Implementation  |  ✅ Complete   | Builder, Runtime, Deployment, Service Discovery |
+| Phase 3 — Remaining Packages   |  ✅ Complete   | All 27 packages implemented (100%)              |
+| Phase 4 — Testing              | 🔄 In Progress | 98/99 test suites passing                       |
+| Phase 5 — Production Hardening |   📋 Planned   | Multi-cluster, DR, SLO enforcement              |
 
 **Test Coverage**: 98/99 test suites passing as of latest commit.
 
@@ -354,4 +354,4 @@ pnpm scan-drift
 
 ---
 
-*Architecture document maintained by the MyCodexVantaOS platform team. Last updated: 2026-05-05.*
+_Architecture document maintained by the MyCodexVantaOS platform team. Last updated: 2026-05-05._

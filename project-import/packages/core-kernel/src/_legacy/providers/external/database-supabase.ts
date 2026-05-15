@@ -1,9 +1,9 @@
 /**
  * SupabaseDatabaseProvider — External PostgreSQL via Supabase
- * 
+ *
  * Example external provider showing how a third-party database
  * plugs into the DatabaseProvider interface.
- * 
+ *
  * This is a CONNECTOR, not a foundation. The platform works
  * without it via NativeDatabaseProvider (SQLite).
  */
@@ -28,7 +28,7 @@ interface SupabaseDbConfig {
  * - Connection pooling via pg.Pool
  * - SSL enabled by default for Supabase
  * - Migrations via same numbered SQL file convention
- * 
+ *
  * Install dependencies:
  *   npm install pg @types/pg
  */
@@ -78,20 +78,23 @@ export class SupabaseDatabaseProvider implements DatabaseProvider {
       return { applied, skipped, total: 0, success: true };
     }
 
-    const files = fs.readdirSync(migDir).filter((f: string) => f.endsWith('.sql')).sort();
+    const files = fs
+      .readdirSync(migDir)
+      .filter((f: string) => f.endsWith('.sql'))
+      .sort();
     const { rows: existing } = await this.query<{ filename: string }>(
       'SELECT filename FROM _migrations'
     );
-    const existingSet = new Set(existing.map(r => r.filename));
+    const existingSet = new Set(existing.map((r) => r.filename));
 
     for (const file of files) {
-      if (existingSet.has(file)) { skipped.push(file); continue; }
+      if (existingSet.has(file)) {
+        skipped.push(file);
+        continue;
+      }
       const sql = fs.readFileSync(path.join(migDir, file), 'utf-8');
       await this.execute(sql);
-      await this.execute(
-        'INSERT INTO _migrations (filename) VALUES ($1)',
-        [file]
-      );
+      await this.execute('INSERT INTO _migrations (filename) VALUES ($1)', [file]);
       applied.push(file);
     }
 
@@ -111,10 +114,7 @@ export class SupabaseDatabaseProvider implements DatabaseProvider {
     };
   }
 
-  async execute(
-    sql: string,
-    params?: unknown[]
-  ): Promise<{ affectedRows: number }> {
+  async execute(sql: string, params?: unknown[]): Promise<{ affectedRows: number }> {
     const result = await this.pool.query(sql, params);
     return { affectedRows: result.rowCount ?? 0 };
   }
@@ -127,7 +127,11 @@ export class SupabaseDatabaseProvider implements DatabaseProvider {
         query: async <R = Record<string, unknown>>(sql: string, params?: unknown[]) => {
           const start = Date.now();
           const result = await client.query(sql, params);
-          return { rows: result.rows as R[], rowCount: result.rowCount ?? 0, duration: Date.now() - start };
+          return {
+            rows: result.rows as R[],
+            rowCount: result.rowCount ?? 0,
+            duration: Date.now() - start,
+          };
         },
         execute: async (sql: string, params?: unknown[]) => {
           const result = await client.query(sql, params);

@@ -10,7 +10,12 @@
     "lint": "eslint src --ext .ts",
     "format": "prettier --write \"src/**/*.ts\""
   },
-  "keywords": ["compliance-checker", "compliancechecker", "Layer F擴展", "mycodexvantaos"],
+  "keywords": [
+    "compliance-checker",
+    "compliancechecker",
+    "Layer F擴展",
+    "mycodexvantaos"
+  ],
   "author": "MyCodeXvantaOS",
   "license": "MIT",
   "dependencies": {

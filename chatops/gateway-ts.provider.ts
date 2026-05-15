@@ -19,7 +19,7 @@ export interface GatewayResponse {
 
 /**
  * Gateway Service using Provider Pattern
- * 
+ *
  * Supports:
  * - Native: Local HTTP routing without external dependencies
  * - Hybrid: External services with fallback
@@ -44,10 +44,10 @@ export class GatewayProvider {
     try {
       this.metrics = await this.providerFactory.getMetricsProvider();
       this.logger = await this.providerFactory.getLoggingProvider();
-      
+
       await this.metrics.initialize();
       await this.logger.initialize();
-      
+
       this.initialized = true;
     } catch (error) {
       console.error('Failed to initialize Gateway:', error);
@@ -60,7 +60,7 @@ export class GatewayProvider {
    */
   async handleHealth(): Promise<GatewayResponse> {
     await this.log('info', 'Health check requested');
-    
+
     // Record metric
     if (this.metrics) {
       await this.metrics.recordMetric({
@@ -169,7 +169,7 @@ export class GatewayProvider {
    */
   async start(): Promise<void> {
     await this.initialize();
-    
+
     const http = await import('node:http');
     const { URL } = await import('node:url');
 
@@ -181,13 +181,15 @@ export class GatewayProvider {
       try {
         const u = new URL(req.url || '/', `http://${req.headers.host || 'localhost'}`);
         const query: Record<string, string> = {};
-        u.searchParams.forEach((v, k) => { query[k] = v; });
+        u.searchParams.forEach((v, k) => {
+          query[k] = v;
+        });
 
         const result = await this.routeRequest(u.pathname, query);
 
         // Set response headers
         res.setHeader('Content-Type', 'application/json; charset=utf-8');
-        
+
         if (result.ok) {
           res.statusCode = 200;
         } else if (result.error === 'not found') {
@@ -227,7 +229,7 @@ export class GatewayProvider {
    */
   async healthCheck(): Promise<boolean> {
     if (!this.metrics || !this.logger) return false;
-    
+
     try {
       const [metricsHealth, loggerHealth] = await Promise.all([
         this.metrics.healthCheck(),

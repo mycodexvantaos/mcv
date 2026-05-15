@@ -8,10 +8,10 @@ metadata:
   name: platform-namespace-policy
   labels:
     managed-by: naming-spec-v1
-    specRef: "12"
+    specRef: '12'
 
 policy:
-  namespaceFormat: "mycodexvantaos-<environment>"
+  namespaceFormat: 'mycodexvantaos-<environment>'
 
   allowedNamespaces:
     - name: mycodexvantaos-dev

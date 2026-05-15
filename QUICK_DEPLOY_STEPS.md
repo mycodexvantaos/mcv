@@ -9,11 +9,13 @@
 添加 3 個 Secrets：
 
 1. **CLOUDFLARE_API_TOKEN**
+
    ```
    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiMmZlYWQ0YTE0MWVjMmM2NzdlYjNiZjBhYzUzNWYxZDUiLCJleHAiOjE3NzgxMDcwNDYsImlhdCI6MTc3ODAwNzA0NiwicGVybWlzc2lvbnMiOlsiaHR0cHM6Ly9hcGkuY2xvdWRmbGFyZS5jb20vY2xpZW50L3Y0L2FjY291bnRzLzpmZWFkNGExNDFlYzJjNjc3ZWIzYmYwYWM1MzVmMWQ1L2JpbGxpbmcvKiIsImh0dHBzOi8vYXBpLmNsb3VkZmxhcmUuY29tL2NsaWVudC92NC9hY2NvdW50cy86ZmVhZDRhMTQxZWMyYzY3N2ViM2JmMGFjNTM1ZjFkNS9iaWxsaW5nLyo6cmVhZCJdLCJzdWIiOiJteWNvZGV2YW50YW9zQGdtYWlsLmNvbSJ9.6ed43d34957a49fcb90ec8e43f7db523
    ```
 
 2. **CLOUDFLARE_ACCOUNT_ID**
+
    ```
    2fead4a141ec2c677eb3bf0ac535f1d5
    ```
@@ -56,6 +58,7 @@ gh pr create --title "Add Cloudflare Pages Deployment" --body "Adds Cloudflare P
 ### 第五步：存取應用程式
 
 部署完成後存取：
+
 - **預覽環境**: https://preview.autoecoops.io
 - **生產環境**: https://admin.autoecoops.io
 
@@ -76,11 +79,13 @@ gh run view --log
 ## 🔧 故障排除
 
 ### 部署失敗
+
 1. 檢查 GitHub Actions 日誌
 2. 確認所有 Secrets 正確設置
 3. 驗證 Cloudflare 憑證權限
 
 ### 無法存取網站
+
 1. 檢查 DNS 設置
 2. 確認 SSL/TLS 憑證
 3. 查看 Cloudflare Pages 日誌
@@ -95,6 +100,7 @@ gh run view --log
 ## 📞 需要協助？
 
 查看完整文檔：
+
 - CLOUDFLARE_CREDENTIALS_CONFIG.md - 詳細配置指南
 - .cloudflare/README.md - 整合總覽
 - .cloudflare/DEPLOYMENT_GUIDE.md - 完整部署指南

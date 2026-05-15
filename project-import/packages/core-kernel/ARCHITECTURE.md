@@ -55,13 +55,14 @@ export interface XxxProvider {
   // Core operations
   method1(args): Promise<Result>;
   method2(args): Promise<Result>;
-  
+
   // Lifecycle
   healthcheck(): Promise<HealthStatus>;
 }
 ```
 
 Key rules:
+
 - All methods are async (return Promise)
 - All methods accept typed arguments
 - All providers have a healthcheck() method
@@ -71,20 +72,20 @@ Key rules:
 
 ## Native Provider Implementations
 
-| Provider | Technology | Data Persistence | Limitations |
-|----------|-----------|-----------------|-------------|
-| Database | better-sqlite3 | File-based SQLite | Single-writer, no replication |
-| Storage | Node.js fs | Local filesystem | Single machine |
-| Auth | crypto (HMAC) | In-memory + DB | No OAuth flows |
-| Queue | EventEmitter | In-memory | No persistence, single process |
-| StateStore | Map | In-memory | Lost on restart |
-| Secrets | process.env + dotenv | .env files | No rotation UI |
-| Repo | child_process (git) | Local git repos | Requires git installed |
-| Deploy | child_process | Local processes | No container orchestration |
-| Validation | ajv | In-memory schemas | No schema registry |
-| Security | RegExp patterns | Static rules | No CVE database |
-| Observability | console | stdout/stderr | No aggregation |
-| Notification | console | stdout | No delivery channels |
+| Provider      | Technology           | Data Persistence  | Limitations                    |
+| ------------- | -------------------- | ----------------- | ------------------------------ |
+| Database      | better-sqlite3       | File-based SQLite | Single-writer, no replication  |
+| Storage       | Node.js fs           | Local filesystem  | Single machine                 |
+| Auth          | crypto (HMAC)        | In-memory + DB    | No OAuth flows                 |
+| Queue         | EventEmitter         | In-memory         | No persistence, single process |
+| StateStore    | Map                  | In-memory         | Lost on restart                |
+| Secrets       | process.env + dotenv | .env files        | No rotation UI                 |
+| Repo          | child_process (git)  | Local git repos   | Requires git installed         |
+| Deploy        | child_process        | Local processes   | No container orchestration     |
+| Validation    | ajv                  | In-memory schemas | No schema registry             |
+| Security      | RegExp patterns      | Static rules      | No CVE database                |
+| Observability | console              | stdout/stderr     | No aggregation                 |
+| Notification  | console              | stdout            | No delivery channels           |
 
 ---
 

@@ -8,7 +8,7 @@ describe('ApiGenerator', () => {
       apiType: 'rest',
       basePath: '/api/v1',
       version: '1.0.0',
-      authType: 'bearer'
+      authType: 'bearer',
     });
   });
 
@@ -23,7 +23,7 @@ describe('ApiGenerator', () => {
         apiType: 'graphql',
         basePath: '/api/v2',
         version: '2.0.0',
-        authType: 'apiKey'
+        authType: 'apiKey',
       });
       expect(customGen).toBeInstanceOf(ApiGenerator);
     });
@@ -36,8 +36,8 @@ describe('ApiGenerator', () => {
         properties: {
           id: { type: 'string', required: true },
           name: { type: 'string', required: true },
-          email: { type: 'string', required: true }
-        }
+          email: { type: 'string', required: true },
+        },
       };
 
       const endpoints = generator.generateCrudEndpoints(model);
@@ -49,12 +49,12 @@ describe('ApiGenerator', () => {
         name: 'User',
         properties: {
           id: { type: 'string', required: true },
-          name: { type: 'string', required: true }
-        }
+          name: { type: 'string', required: true },
+        },
       };
 
       const endpoints = generator.generateCrudEndpoints(model);
-      const listEndpoint = endpoints.find(e => e.method === 'GET' && e.path === '/api/v1/users');
+      const listEndpoint = endpoints.find((e) => e.method === 'GET' && e.path === '/api/v1/users');
 
       expect(listEndpoint).toBeDefined();
       expect(listEndpoint?.description).toContain('List all');
@@ -66,12 +66,14 @@ describe('ApiGenerator', () => {
         name: 'User',
         properties: {
           id: { type: 'string', required: true },
-          name: { type: 'string', required: true }
-        }
+          name: { type: 'string', required: true },
+        },
       };
 
       const endpoints = generator.generateCrudEndpoints(model);
-      const getEndpoint = endpoints.find(e => e.method === 'GET' && e.path === '/api/v1/users/:id');
+      const getEndpoint = endpoints.find(
+        (e) => e.method === 'GET' && e.path === '/api/v1/users/:id'
+      );
 
       expect(getEndpoint).toBeDefined();
       expect(getEndpoint?.parameters).toHaveLength(1);
@@ -83,12 +85,12 @@ describe('ApiGenerator', () => {
         name: 'User',
         properties: {
           id: { type: 'string', required: true },
-          name: { type: 'string', required: true }
-        }
+          name: { type: 'string', required: true },
+        },
       };
 
       const endpoints = generator.generateCrudEndpoints(model);
-      const createEndpoint = endpoints.find(e => e.method === 'POST');
+      const createEndpoint = endpoints.find((e) => e.method === 'POST');
 
       expect(createEndpoint).toBeDefined();
       expect(createEndpoint?.requestBody).toBeDefined();
@@ -100,12 +102,12 @@ describe('ApiGenerator', () => {
         name: 'User',
         properties: {
           id: { type: 'string', required: true },
-          name: { type: 'string', required: true }
-        }
+          name: { type: 'string', required: true },
+        },
       };
 
       const endpoints = generator.generateCrudEndpoints(model);
-      const updateEndpoint = endpoints.find(e => e.method === 'PUT');
+      const updateEndpoint = endpoints.find((e) => e.method === 'PUT');
 
       expect(updateEndpoint).toBeDefined();
       expect(updateEndpoint?.requestBody).toBeDefined();
@@ -116,12 +118,12 @@ describe('ApiGenerator', () => {
         name: 'User',
         properties: {
           id: { type: 'string', required: true },
-          name: { type: 'string', required: true }
-        }
+          name: { type: 'string', required: true },
+        },
       };
 
       const endpoints = generator.generateCrudEndpoints(model);
-      const deleteEndpoint = endpoints.find(e => e.method === 'DELETE');
+      const deleteEndpoint = endpoints.find((e) => e.method === 'DELETE');
 
       expect(deleteEndpoint).toBeDefined();
       expect(deleteEndpoint?.responses).toHaveLength(2);
@@ -135,9 +137,9 @@ describe('ApiGenerator', () => {
           name: 'User',
           properties: {
             id: { type: 'string', required: true },
-            name: { type: 'string', required: true }
-          }
-        }
+            name: { type: 'string', required: true },
+          },
+        },
       ];
 
       const spec = generator.generateOpenApiSpec('Test API', 'Test Description', models);
@@ -157,16 +159,16 @@ describe('ApiGenerator', () => {
           name: 'User',
           properties: {
             id: { type: 'string', required: true },
-            name: { type: 'string', required: true }
-          }
+            name: { type: 'string', required: true },
+          },
         },
         {
           name: 'Post',
           properties: {
             id: { type: 'string', required: true },
-            title: { type: 'string', required: true }
-          }
-        }
+            title: { type: 'string', required: true },
+          },
+        },
       ];
 
       const spec = generator.generateOpenApiSpec('Test API', 'Test Description', models);
@@ -182,9 +184,9 @@ describe('ApiGenerator', () => {
           name: 'User',
           properties: {
             id: { type: 'string', required: true },
-            name: { type: 'string', required: true }
-          }
-        }
+            name: { type: 'string', required: true },
+          },
+        },
       ];
 
       const spec = generator.generateOpenApiSpec('Test API', 'Test Description', models);
@@ -205,13 +207,18 @@ describe('ApiGenerator', () => {
           responses: [
             {
               statusCode: 200,
-              description: 'Service is healthy'
-            }
-          ]
-        }
+              description: 'Service is healthy',
+            },
+          ],
+        },
       ];
 
-      const spec = generator.generateOpenApiSpec('Test API', 'Test Description', models, customEndpoints);
+      const spec = generator.generateOpenApiSpec(
+        'Test API',
+        'Test Description',
+        models,
+        customEndpoints
+      );
       const parsedSpec = JSON.parse(spec);
 
       expect(parsedSpec.paths['/api/v1/health']).toBeDefined();
@@ -226,9 +233,9 @@ describe('ApiGenerator', () => {
           name: 'User',
           properties: {
             id: { type: 'string', required: true },
-            name: { type: 'string', required: true }
-          }
-        }
+            name: { type: 'string', required: true },
+          },
+        },
       ];
 
       const schema = generator.generateGraphQLSchema(models);
@@ -246,9 +253,9 @@ describe('ApiGenerator', () => {
           name: 'User',
           properties: {
             id: { type: 'string', required: true },
-            name: { type: 'string', required: true }
-          }
-        }
+            name: { type: 'string', required: true },
+          },
+        },
       ];
 
       const schema = generator.generateGraphQLSchema(models);
@@ -261,15 +268,15 @@ describe('ApiGenerator', () => {
         {
           name: 'User',
           properties: {
-            id: { type: 'string', required: true }
-          }
+            id: { type: 'string', required: true },
+          },
         },
         {
           name: 'Post',
           properties: {
-            id: { type: 'string', required: true }
-          }
-        }
+            id: { type: 'string', required: true },
+          },
+        },
       ];
 
       const schema = generator.generateGraphQLSchema(models);
@@ -285,9 +292,9 @@ describe('ApiGenerator', () => {
         {
           name: 'User',
           properties: {
-            id: { type: 'string', required: true }
-          }
-        }
+            id: { type: 'string', required: true },
+          },
+        },
       ];
 
       const schema = generator.generateGraphQLSchema(models);
@@ -303,17 +310,17 @@ describe('ApiGenerator', () => {
           name: 'User',
           properties: {
             id: { type: 'string', required: true },
-            name: { type: 'string', required: true }
-          }
+            name: { type: 'string', required: true },
+          },
         },
         {
           name: 'Post',
           properties: {
             id: { type: 'string', required: true },
             title: { type: 'string', required: true },
-            content: { type: 'string', required: false }
-          }
-        }
+            content: { type: 'string', required: false },
+          },
+        },
       ];
 
       const schema = generator.generateGraphQLSchema(models);
@@ -331,9 +338,9 @@ describe('ApiGenerator', () => {
         {
           name: 'Test',
           properties: {
-            name: { type: 'string', required: true }
-          }
-        }
+            name: { type: 'string', required: true },
+          },
+        },
       ];
 
       const schema = generator.generateGraphQLSchema(models);
@@ -345,9 +352,9 @@ describe('ApiGenerator', () => {
         {
           name: 'Test',
           properties: {
-            value: { type: 'number', required: true }
-          }
-        }
+            value: { type: 'number', required: true },
+          },
+        },
       ];
 
       const schema = generator.generateGraphQLSchema(models);
@@ -359,9 +366,9 @@ describe('ApiGenerator', () => {
         {
           name: 'Test',
           properties: {
-            count: { type: 'integer', required: true }
-          }
-        }
+            count: { type: 'integer', required: true },
+          },
+        },
       ];
 
       const schema = generator.generateGraphQLSchema(models);
@@ -373,9 +380,9 @@ describe('ApiGenerator', () => {
         {
           name: 'Test',
           properties: {
-            active: { type: 'boolean', required: true }
-          }
-        }
+            active: { type: 'boolean', required: true },
+          },
+        },
       ];
 
       const schema = generator.generateGraphQLSchema(models);

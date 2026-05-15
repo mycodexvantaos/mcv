@@ -52,21 +52,21 @@
 
 ## Provider Dependencies
 
-| Provider | Usage |
-|---|---|
-| DatabaseProvider | Job definitions, execution history, schedule state |
-| StateStoreProvider | Distributed locks, active job tracking |
-| QueueProvider | Job queue with priority ordering |
-| ObservabilityProvider | Job execution metrics, schedule drift |
-| NotificationProvider | Job failure alerts |
+| Provider              | Usage                                              |
+| --------------------- | -------------------------------------------------- |
+| DatabaseProvider      | Job definitions, execution history, schedule state |
+| StateStoreProvider    | Distributed locks, active job tracking             |
+| QueueProvider         | Job queue with priority ordering                   |
+| ObservabilityProvider | Job execution metrics, schedule drift              |
+| NotificationProvider  | Job failure alerts                                 |
 
 ## Operational Modes
 
-| Mode | Behavior |
-|---|---|
-| **Native** | In-process setInterval/setTimeout, SQLite job store |
+| Mode          | Behavior                                             |
+| ------------- | ---------------------------------------------------- |
+| **Native**    | In-process setInterval/setTimeout, SQLite job store  |
 | **Connected** | Kubernetes CronJobs, Redis-based distributed locking |
-| **Hybrid** | Native timer with external lock manager for HA |
+| **Hybrid**    | Native timer with external lock manager for HA       |
 
 ## Directory Structure
 

@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/embedding/ollama/config.schema.json",
   "title": "embedding-ollama Configuration",
   "type": "object",
-  "required": [
-    "baseUrl"
-  ],
+  "required": ["baseUrl"],
   "properties": {
     "baseUrl": {
       "type": "string",

@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/database/postgres/config.schema.json",
   "title": "database-postgres Configuration",
   "type": "object",
-  "required": [
-    "connectionUrl"
-  ],
+  "required": ["connectionUrl"],
   "properties": {
     "connectionUrl": {
       "type": "string",

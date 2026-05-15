@@ -305,33 +305,41 @@ export class TaskDecomposer {
     const subtasks: AgentTask[] = [];
     const baseId = parentTask.id.replace('task:', 'task:sub-');
 
-    subtasks.push(this.createSubtask(
-      `${baseId}-design-001` as TaskURN,
-      parentTask,
-      'Design architecture and data models for: ' + parentTask.objective,
-      'architect'
-    ));
+    subtasks.push(
+      this.createSubtask(
+        `${baseId}-design-001` as TaskURN,
+        parentTask,
+        'Design architecture and data models for: ' + parentTask.objective,
+        'architect'
+      )
+    );
 
-    subtasks.push(this.createSubtask(
-      `${baseId}-implement-002` as TaskURN,
-      parentTask,
-      'Implement core functionality for: ' + parentTask.objective,
-      'engineer'
-    ));
+    subtasks.push(
+      this.createSubtask(
+        `${baseId}-implement-002` as TaskURN,
+        parentTask,
+        'Implement core functionality for: ' + parentTask.objective,
+        'engineer'
+      )
+    );
 
-    subtasks.push(this.createSubtask(
-      `${baseId}-test-003` as TaskURN,
-      parentTask,
-      'Write and execute tests for: ' + parentTask.objective,
-      'tester'
-    ));
+    subtasks.push(
+      this.createSubtask(
+        `${baseId}-test-003` as TaskURN,
+        parentTask,
+        'Write and execute tests for: ' + parentTask.objective,
+        'tester'
+      )
+    );
 
-    subtasks.push(this.createSubtask(
-      `${baseId}-review-004` as TaskURN,
-      parentTask,
-      'Code review for: ' + parentTask.objective,
-      'reviewer'
-    ));
+    subtasks.push(
+      this.createSubtask(
+        `${baseId}-review-004` as TaskURN,
+        parentTask,
+        'Code review for: ' + parentTask.objective,
+        'reviewer'
+      )
+    );
 
     return subtasks;
   }
@@ -343,26 +351,32 @@ export class TaskDecomposer {
     const subtasks: AgentTask[] = [];
     const baseId = parentTask.id.replace('task:', 'task:sub-');
 
-    subtasks.push(this.createSubtask(
-      `${baseId}-code-quality-001` as TaskURN,
-      parentTask,
-      'Code quality review: check style, complexity, and maintainability',
-      'reviewer'
-    ));
+    subtasks.push(
+      this.createSubtask(
+        `${baseId}-code-quality-001` as TaskURN,
+        parentTask,
+        'Code quality review: check style, complexity, and maintainability',
+        'reviewer'
+      )
+    );
 
-    subtasks.push(this.createSubtask(
-      `${baseId}-security-002` as TaskURN,
-      parentTask,
-      'Security review: identify potential vulnerabilities',
-      'security_specialist'
-    ));
+    subtasks.push(
+      this.createSubtask(
+        `${baseId}-security-002` as TaskURN,
+        parentTask,
+        'Security review: identify potential vulnerabilities',
+        'security_specialist'
+      )
+    );
 
-    subtasks.push(this.createSubtask(
-      `${baseId}-performance-003` as TaskURN,
-      parentTask,
-      'Performance review: identify bottlenecks and optimization opportunities',
-      'analyst'
-    ));
+    subtasks.push(
+      this.createSubtask(
+        `${baseId}-performance-003` as TaskURN,
+        parentTask,
+        'Performance review: identify bottlenecks and optimization opportunities',
+        'analyst'
+      )
+    );
 
     return subtasks;
   }
@@ -374,26 +388,32 @@ export class TaskDecomposer {
     const subtasks: AgentTask[] = [];
     const baseId = parentTask.id.replace('task:', 'task:sub-');
 
-    subtasks.push(this.createSubtask(
-      `${baseId}-unit-001` as TaskURN,
-      parentTask,
-      'Write and run unit tests',
-      'tester'
-    ));
+    subtasks.push(
+      this.createSubtask(
+        `${baseId}-unit-001` as TaskURN,
+        parentTask,
+        'Write and run unit tests',
+        'tester'
+      )
+    );
 
-    subtasks.push(this.createSubtask(
-      `${baseId}-integration-002` as TaskURN,
-      parentTask,
-      'Write and run integration tests',
-      'tester'
-    ));
+    subtasks.push(
+      this.createSubtask(
+        `${baseId}-integration-002` as TaskURN,
+        parentTask,
+        'Write and run integration tests',
+        'tester'
+      )
+    );
 
-    subtasks.push(this.createSubtask(
-      `${baseId}-e2e-003` as TaskURN,
-      parentTask,
-      'Write and run end-to-end tests',
-      'tester'
-    ));
+    subtasks.push(
+      this.createSubtask(
+        `${baseId}-e2e-003` as TaskURN,
+        parentTask,
+        'Write and run end-to-end tests',
+        'tester'
+      )
+    );
 
     return subtasks;
   }
@@ -405,33 +425,41 @@ export class TaskDecomposer {
     const subtasks: AgentTask[] = [];
     const baseId = parentTask.id.replace('task:', 'task:sub-');
 
-    subtasks.push(this.createSubtask(
-      `${baseId}-prepare-001` as TaskURN,
-      parentTask,
-      'Prepare deployment artifacts and configuration',
-      'devops_engineer'
-    ));
+    subtasks.push(
+      this.createSubtask(
+        `${baseId}-prepare-001` as TaskURN,
+        parentTask,
+        'Prepare deployment artifacts and configuration',
+        'devops_engineer'
+      )
+    );
 
-    subtasks.push(this.createSubtask(
-      `${baseId}-staging-002` as TaskURN,
-      parentTask,
-      'Deploy to staging environment and validate',
-      'devops_engineer'
-    ));
+    subtasks.push(
+      this.createSubtask(
+        `${baseId}-staging-002` as TaskURN,
+        parentTask,
+        'Deploy to staging environment and validate',
+        'devops_engineer'
+      )
+    );
 
-    subtasks.push(this.createSubtask(
-      `${baseId}-production-003` as TaskURN,
-      parentTask,
-      'Deploy to production environment',
-      'devops_engineer'
-    ));
+    subtasks.push(
+      this.createSubtask(
+        `${baseId}-production-003` as TaskURN,
+        parentTask,
+        'Deploy to production environment',
+        'devops_engineer'
+      )
+    );
 
-    subtasks.push(this.createSubtask(
-      `${baseId}-verify-004` as TaskURN,
-      parentTask,
-      'Verify deployment success and monitor metrics',
-      'devops_engineer'
-    ));
+    subtasks.push(
+      this.createSubtask(
+        `${baseId}-verify-004` as TaskURN,
+        parentTask,
+        'Verify deployment success and monitor metrics',
+        'devops_engineer'
+      )
+    );
 
     return subtasks;
   }
@@ -443,33 +471,41 @@ export class TaskDecomposer {
     const subtasks: AgentTask[] = [];
     const baseId = parentTask.id.replace('task:', 'task:sub-');
 
-    subtasks.push(this.createSubtask(
-      `${baseId}-scan-001` as TaskURN,
-      parentTask,
-      'Run automated security scanning tools',
-      'security_specialist'
-    ));
+    subtasks.push(
+      this.createSubtask(
+        `${baseId}-scan-001` as TaskURN,
+        parentTask,
+        'Run automated security scanning tools',
+        'security_specialist'
+      )
+    );
 
-    subtasks.push(this.createSubtask(
-      `${baseId}-analyze-002` as TaskURN,
-      parentTask,
-      'Analyze scan results and identify vulnerabilities',
-      'security_specialist'
-    ));
+    subtasks.push(
+      this.createSubtask(
+        `${baseId}-analyze-002` as TaskURN,
+        parentTask,
+        'Analyze scan results and identify vulnerabilities',
+        'security_specialist'
+      )
+    );
 
-    subtasks.push(this.createSubtask(
-      `${baseId}-remediate-003` as TaskURN,
-      parentTask,
-      'Propose remediation steps for identified vulnerabilities',
-      'security_specialist'
-    ));
+    subtasks.push(
+      this.createSubtask(
+        `${baseId}-remediate-003` as TaskURN,
+        parentTask,
+        'Propose remediation steps for identified vulnerabilities',
+        'security_specialist'
+      )
+    );
 
-    subtasks.push(this.createSubtask(
-      `${baseId}-ethics-004` as TaskURN,
-      parentTask,
-      'Ethics review: ensure compliance with AI ethics guidelines',
-      'ethicist'
-    ));
+    subtasks.push(
+      this.createSubtask(
+        `${baseId}-ethics-004` as TaskURN,
+        parentTask,
+        'Ethics review: ensure compliance with AI ethics guidelines',
+        'ethicist'
+      )
+    );
 
     return subtasks;
   }

@@ -11,16 +11,16 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  
+
   source:
     repoURL: https://github.com/mycodexvantaos/mycodexvantaos.git
     targetRevision: main
     path: k8s/overlays/production
-    
+
   destination:
     server: https://kubernetes.default.svc
     namespace: mycodexvantaos
-    
+
   syncPolicy:
     automated:
       prune: true
@@ -36,7 +36,7 @@ spec:
         duration: 5s
         factor: 2
         maxDuration: 3m
-        
+
   ignoreDifferences:
     - group: apps
       kind: Deployment
@@ -53,16 +53,16 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  
+
   source:
     repoURL: https://github.com/mycodexvantaos/mycodexvantaos.git
     targetRevision: main
     path: k8s/overlays/staging
-    
+
   destination:
     server: https://kubernetes.default.svc
     namespace: mycodexvantaos-staging
-    
+
   syncPolicy:
     automated:
       prune: true
@@ -78,16 +78,16 @@ metadata:
   namespace: argocd
 spec:
   project: default
-  
+
   source:
     repoURL: https://github.com/mycodexvantaos/mycodexvantaos.git
     targetRevision: main
     path: k8s/overlays/development
-    
+
   destination:
     server: https://kubernetes.default.svc
     namespace: mycodexvantaos-dev
-    
+
   syncPolicy:
     automated:
       prune: true

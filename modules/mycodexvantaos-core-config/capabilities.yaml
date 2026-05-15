@@ -1,5 +1,5 @@
 # modules/mycodexvantaos-core-config/capabilities.yaml
 capabilities:
-    - database
-    - cache
-    - secrets
+  - database
+  - cache
+  - secrets

@@ -10,7 +10,12 @@
     "lint": "eslint src --ext .ts",
     "format": "prettier --write \"src/**/*.ts\""
   },
-  "keywords": ["ssl-manager", "sslmanager", "Layer E擴展", "mycodexvantaos"],
+  "keywords": [
+    "ssl-manager",
+    "sslmanager",
+    "Layer E擴展",
+    "mycodexvantaos"
+  ],
   "author": "MyCodeXvantaOS",
   "license": "MIT",
   "dependencies": {

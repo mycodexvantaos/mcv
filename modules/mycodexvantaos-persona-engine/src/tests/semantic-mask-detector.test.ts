@@ -1,6 +1,6 @@
 /**
  * MyCodeXvantaOS Persona Engine - Semantic Mask Detector Tests
- * 
+ *
  * Unit tests for the SemanticMaskDetector class.
  */
 
@@ -35,7 +35,7 @@ describe('SemanticMaskDetector', () => {
 
       const customDetector = new SemanticMaskDetector([customMask]);
       const masks = customDetector.getMasks();
-      const found = masks.find(m => m.urn === customMask.urn);
+      const found = masks.find((m) => m.urn === customMask.urn);
       expect(found).toBeDefined();
     });
   });
@@ -131,10 +131,10 @@ describe('SemanticMaskDetector', () => {
     it('should remove an existing mask', () => {
       const masks = detector.getMasks();
       const firstMaskUrn = masks[0].urn;
-      
+
       const removed = detector.removeMask(firstMaskUrn);
       expect(removed).toBe(true);
-      
+
       const found = detector.getMask(firstMaskUrn);
       expect(found).toBeUndefined();
     });
@@ -148,9 +148,9 @@ describe('SemanticMaskDetector', () => {
   describe('getMasksByType', () => {
     it('should return masks filtered by type', () => {
       const comfortingPlatitudes = detector.getMasksByType('comforting_platitude');
-      
+
       expect(Array.isArray(comfortingPlatitudes)).toBe(true);
-      comfortingPlatitudes.forEach(mask => {
+      comfortingPlatitudes.forEach((mask) => {
         expect(mask.mask_type).toBe('comforting_platitude');
       });
     });
@@ -169,7 +169,12 @@ describe('SemanticMaskDetector', () => {
     });
 
     it('should return empty string for no detection', () => {
-      const detection = { detected: false, masks: [], total_severity: 0, summary: 'No masks detected' };
+      const detection = {
+        detected: false,
+        masks: [],
+        total_severity: 0,
+        summary: 'No masks detected',
+      };
       const response = detector.generateConstructiveResponse(detection);
       expect(response).toBe('');
     });
@@ -198,7 +203,7 @@ describe('SemanticMaskDetector', () => {
     it('should handle very long text', () => {
       const longText = '一切都會好起來的'.repeat(100);
       const result = detector.detect(longText);
-      
+
       // Should not throw and should handle gracefully
       expect(result).toBeDefined();
     });
@@ -206,24 +211,24 @@ describe('SemanticMaskDetector', () => {
     it('should handle special characters', () => {
       const specialText = '一切都會好起來的！@#$%^&*()';
       const result = detector.detect(specialText);
-      
-        expect(result).toBeDefined();
-      });
 
-      it('should return undefined for non-existent mask type in getTruthReframe', () => {
-        const reframe = detector.getTruthReframe('non_existent_type' as any);
-        expect(reframe).toBeUndefined();
-      });
+      expect(result).toBeDefined();
+    });
 
-      it('should return truth reframe for existing mask type', () => {
-        const text = '我很好，一切都很好，沒有問題';
-        const detection = detector.detect(text);
-        
-        if (detection.detected && detection.masks.length > 0) {
-          const maskType = detection.masks[0].mask.mask_type;
-          const reframe = detector.getTruthReframe(maskType);
-          expect(reframe).toBeDefined();
-        }
-      });
+    it('should return undefined for non-existent mask type in getTruthReframe', () => {
+      const reframe = detector.getTruthReframe('non_existent_type' as any);
+      expect(reframe).toBeUndefined();
+    });
+
+    it('should return truth reframe for existing mask type', () => {
+      const text = '我很好，一切都很好，沒有問題';
+      const detection = detector.detect(text);
+
+      if (detection.detected && detection.masks.length > 0) {
+        const maskType = detection.masks[0].mask.mask_type;
+        const reframe = detector.getTruthReframe(maskType);
+        expect(reframe).toBeDefined();
+      }
     });
   });
+});

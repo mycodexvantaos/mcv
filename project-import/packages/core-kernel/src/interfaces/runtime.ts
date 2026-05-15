@@ -1,6 +1,6 @@
 /**
  * Runtime Interface Definitions
- * 
+ *
  * Core interfaces for the provider runtime system including health status,
  * metadata, and lifecycle management contracts.
  */
@@ -13,7 +13,7 @@ export enum ProviderHealthStatus {
   HEALTHY = 'healthy',
   UNHEALTHY = 'unhealthy',
   DEGRADED = 'degraded',
-  STOPPED = 'stopped'
+  STOPPED = 'stopped',
 }
 
 /**
@@ -79,7 +79,7 @@ export enum ProviderLifecycleState {
   RUNNING = 'running',
   STOPPING = 'stopping',
   STOPPED = 'stopped',
-  ERROR = 'error'
+  ERROR = 'error',
 }
 
 /**
@@ -104,10 +104,9 @@ export interface ProviderDiscoveryConfig {
   capabilityMapping: Record<string, string[]>;
 }
 
-  /**
-   * Provider Capability — string identifier for a provider's offered capability.
-   * Used as map keys and registry indices throughout the runtime layer.
-   * Examples: "database", "storage", "auth", "queue", "secrets", "observability".
-   */
-  export type ProviderCapability = string;
-  
+/**
+ * Provider Capability — string identifier for a provider's offered capability.
+ * Used as map keys and registry indices throughout the runtime layer.
+ * Examples: "database", "storage", "auth", "queue", "secrets", "observability".
+ */
+export type ProviderCapability = string;

@@ -1,7 +1,7 @@
 /**
  * CodexvantaOS — automation-core
  * 自動化核心 — 工作流執行、Step Runner、狀態機
- * 
+ *
  * Layer: B-Runtime | Plane: Execution | Tier: 3
  * Philosophy: Native-first / Provider-agnostic
  * 「第三方服務是平台的擴充出口，不是平台成立的地基。」
@@ -26,7 +26,10 @@ export { initProviders, getProviders, shutdownProviders } from './providers.js';
  * Bootstrap automation-core
  */
 export async function bootstrap(): Promise<void> {
-  console.log('[automation-core] Starting in %s mode...', process.env.CODEXVANTA_MODE || 'auto-detect');
+  console.log(
+    '[automation-core] Starting in %s mode...',
+    process.env.CODEXVANTA_MODE || 'auto-detect'
+  );
 
   // Initialize providers (auto-detects Native/Connected/Hybrid)
   const providers = await initProviders();

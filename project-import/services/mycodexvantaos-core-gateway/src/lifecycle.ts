@@ -1,4 +1,4 @@
-import type { Logger } from "pino";
+import type { Logger } from 'pino';
 
 export interface Startable {
   start(): Promise<void>;
@@ -17,7 +17,7 @@ export class LifecycleManager {
 
   async startAll(): Promise<void> {
     for (const [name, service] of this.services) {
-      this.logger.info({ service: name }, "Starting service");
+      this.logger.info({ service: name }, 'Starting service');
       await service.start();
       this.started.push(name);
     }
@@ -27,7 +27,7 @@ export class LifecycleManager {
     for (const name of [...this.started].reverse()) {
       const service = this.services.get(name);
       if (service) {
-        this.logger.info({ service: name }, "Stopping service");
+        this.logger.info({ service: name }, 'Stopping service');
         await service.stop();
       }
     }

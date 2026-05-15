@@ -4,7 +4,10 @@
  */
 
 import type { CodeSynthesisCapability } from '../packages/capabilities/src/code-synthesis';
-import type { SynthesisOptions, SynthesisResult } from '../packages/capabilities/src/code-synthesis';
+import type {
+  SynthesisOptions,
+  SynthesisResult,
+} from '../packages/capabilities/src/code-synthesis';
 
 export interface MessageResponse {
   content: Array<{
@@ -61,10 +64,7 @@ export class APIClient {
    * Call Claude API using Provider
    * Falls back to native provider if external fails
    */
-  async callClaudeAPI(
-    prompt: string,
-    maxTokens: number = 1000
-  ): Promise<string> {
+  async callClaudeAPI(prompt: string, maxTokens: number = 1000): Promise<string> {
     if (!this.provider) {
       throw new Error('Provider not initialized. Call initialize() first.');
     }
@@ -79,7 +79,7 @@ export class APIClient {
       };
 
       const result: SynthesisResult = await this.provider.generate(options);
-      
+
       if (!result.success) {
         throw new Error(result.error || 'Synthesis failed');
       }
@@ -134,9 +134,9 @@ Provide analysis in JSON format with these fields:
         const parsed = JSON.parse(jsonMatch[0]);
         return {
           tags: Array.isArray(parsed.tags) ? parsed.tags : [],
-          overview: parsed.overview || "No overview available",
-          architecture: parsed.architecture || "No architecture description",
-          value: parsed.value || "No value description",
+          overview: parsed.overview || 'No overview available',
+          architecture: parsed.architecture || 'No architecture description',
+          value: parsed.value || 'No value description',
         };
       }
     } catch (error) {
@@ -144,10 +144,10 @@ Provide analysis in JSON format with these fields:
     }
 
     return {
-      tags: ["analyzed"],
+      tags: ['analyzed'],
       overview: response.slice(0, 200),
-      architecture: "Architecture analysis pending",
-      value: "Value analysis pending",
+      architecture: 'Architecture analysis pending',
+      value: 'Value analysis pending',
     };
   }
 
@@ -156,7 +156,7 @@ Provide analysis in JSON format with these fields:
    */
   async healthCheck(): Promise<boolean> {
     if (!this.provider) return false;
-    
+
     try {
       const result = await this.provider.healthCheck();
       return result.healthy;

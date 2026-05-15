@@ -63,15 +63,11 @@ export class Orchestrator {
 
     this.governanceEnforcer = new GovernanceEnforcer();
 
-    this.agentManager = new AgentManager(
-      this.messageBus,
-      this.governanceEnforcer,
-      {
-        maxAgents: 100,
-        defaultContextCapacity: this.config.max_context_tokens,
-        governanceEnabled: this.config.governance_enforcement_enabled,
-      }
-    );
+    this.agentManager = new AgentManager(this.messageBus, this.governanceEnforcer, {
+      maxAgents: 100,
+      defaultContextCapacity: this.config.max_context_tokens,
+      governanceEnabled: this.config.governance_enforcement_enabled,
+    });
 
     this.workflowEngine = new WorkflowEngine(this.messageBus, {
       maxConcurrentWorkflows: this.config.max_concurrent_tasks,
@@ -79,15 +75,10 @@ export class Orchestrator {
       hitlDefaultTimeoutSeconds: this.config.hitl_default_timeout_seconds,
     });
 
-    this.teamManager = new TeamManager(
-      this.agentManager,
-      this.messageBus,
-      this.workflowEngine,
-      {
-        maxTeams: 50,
-        maxAgentsPerTeam: 20,
-      }
-    );
+    this.teamManager = new TeamManager(this.agentManager, this.messageBus, this.workflowEngine, {
+      maxTeams: 50,
+      maxAgentsPerTeam: 20,
+    });
 
     this.taskDecomposer = new TaskDecomposer(this.messageBus, {
       maxDepth: 3,
@@ -161,10 +152,7 @@ export class Orchestrator {
   public registerAgent(profile: AgentProfile): AgentURN {
     this.ensureInitialized();
     const agentId = this.agentManager.registerAgent(profile);
-    this.governanceEnforcer.registerAgentTier(
-      agentId,
-      profile.governance_tier ?? 0
-    );
+    this.governanceEnforcer.registerAgentTier(agentId, profile.governance_tier ?? 0);
     return agentId;
   }
 
@@ -267,11 +255,7 @@ export class Orchestrator {
   /**
    * Add agent to team
    */
-  public addAgentToTeam(
-    teamId: TeamURN,
-    agentId: AgentURN,
-    position?: number
-  ): boolean {
+  public addAgentToTeam(teamId: TeamURN, agentId: AgentURN, position?: number): boolean {
     return this.teamManager.addAgentToTeam(teamId, agentId, position);
   }
 
@@ -300,7 +284,8 @@ export class Orchestrator {
   ): TaskURN {
     this.ensureInitialized();
 
-    const taskId = `urn:mycodexvantaos:task:${Date.now()}-${Math.random().toString(36).substr(2, 9)}` as TaskURN;
+    const taskId =
+      `urn:mycodexvantaos:task:${Date.now()}-${Math.random().toString(36).substr(2, 9)}` as TaskURN;
 
     const task: AgentTask = {
       id: taskId,
@@ -350,10 +335,7 @@ export class Orchestrator {
   /**
    * Start a workflow for a team
    */
-  public startWorkflow(
-    teamId: TeamURN,
-    variables?: Record<string, unknown>
-  ): string {
+  public startWorkflow(teamId: TeamURN, variables?: Record<string, unknown>): string {
     this.ensureInitialized();
     return this.teamManager.startWorkflow(teamId, variables);
   }
@@ -393,22 +375,14 @@ export class Orchestrator {
   /**
    * Approve HITL checkpoint
    */
-  public approveHITLCheckpoint(
-    workflowId: string,
-    nodeId: string,
-    approver?: string
-  ): void {
+  public approveHITLCheckpoint(workflowId: string, nodeId: string, approver?: string): void {
     this.workflowEngine.approveHITLCheckpoint(workflowId, nodeId, approver);
   }
 
   /**
    * Reject HITL checkpoint
    */
-  public rejectHITLCheckpoint(
-    workflowId: string,
-    nodeId: string,
-    reason?: string
-  ): void {
+  public rejectHITLCheckpoint(workflowId: string, nodeId: string, reason?: string): void {
     this.workflowEngine.rejectHITLCheckpoint(workflowId, nodeId, reason);
   }
 
@@ -419,9 +393,7 @@ export class Orchestrator {
   /**
    * Send a message
    */
-  public sendMessage(
-    message: Omit<AgentMessage, 'id' | 'timestamp'>
-  ): MessageURN {
+  public sendMessage(message: Omit<AgentMessage, 'id' | 'timestamp'>): MessageURN {
     return this.messageBus.send(message);
   }
 
@@ -474,20 +446,14 @@ export class Orchestrator {
   /**
    * Approve a request
    */
-  public approveRequest(
-    requestId: string,
-    approverTier: GovernanceTier
-  ): boolean {
+  public approveRequest(requestId: string, approverTier: GovernanceTier): boolean {
     return this.governanceEnforcer.approveRequest(requestId, approverTier);
   }
 
   /**
    * Reject a request
    */
-  public rejectRequest(
-    requestId: string,
-    approverTier: GovernanceTier
-  ): boolean {
+  public rejectRequest(requestId: string, approverTier: GovernanceTier): boolean {
     return this.governanceEnforcer.rejectRequest(requestId, approverTier);
   }
 
@@ -515,20 +481,14 @@ export class Orchestrator {
   /**
    * Subscribe to orchestrator events
    */
-  public onEvent(
-    eventType: string,
-    handler: (event: unknown) => void
-  ): void {
+  public onEvent(eventType: string, handler: (event: unknown) => void): void {
     this.messageBus.on(eventType as any, handler as any);
   }
 
   /**
    * Unsubscribe from orchestrator events
    */
-  public offEvent(
-    eventType: string,
-    handler: (event: unknown) => void
-  ): void {
+  public offEvent(eventType: string, handler: (event: unknown) => void): void {
     this.messageBus.off(eventType as any, handler as any);
   }
 

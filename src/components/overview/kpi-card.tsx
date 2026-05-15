@@ -36,8 +36,12 @@ export function KpiCard({ title, value, subtitle, change, status, icon: Icon }: 
     <Card className="overflow-hidden">
       <CardContent className="p-4">
         <div className="flex items-center justify-between mb-3">
-          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{title}</p>
-          <div className={`flex h-8 w-8 items-center justify-center rounded-md ${statusBgColors[status]}`}>
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+            {title}
+          </p>
+          <div
+            className={`flex h-8 w-8 items-center justify-center rounded-md ${statusBgColors[status]}`}
+          >
             <Icon className={`h-4 w-4 ${statusColors[status]}`} />
           </div>
         </div>
@@ -47,8 +51,14 @@ export function KpiCard({ title, value, subtitle, change, status, icon: Icon }: 
             <p className="text-xs text-muted-foreground mt-0.5">{subtitle}</p>
           </div>
           {change !== 0 && (
-            <div className={`flex items-center gap-0.5 text-xs font-medium ${isPositive ? 'text-status-healthy' : 'text-status-critical'}`}>
-              {isPositive ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
+            <div
+              className={`flex items-center gap-0.5 text-xs font-medium ${isPositive ? 'text-status-healthy' : 'text-status-critical'}`}
+            >
+              {isPositive ? (
+                <ArrowUpRight className="h-3 w-3" />
+              ) : (
+                <ArrowDownRight className="h-3 w-3" />
+              )}
               <span>{Math.abs(change)}%</span>
             </div>
           )}

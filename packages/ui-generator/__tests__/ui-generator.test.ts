@@ -11,7 +11,7 @@ describe('UIGenerator', () => {
     it('should generate a React component', () => {
       const config: ComponentConfig = {
         type: 'div',
-        props: { className: 'container' }
+        props: { className: 'container' },
       };
 
       const code = generator.generateComponent(config);
@@ -25,8 +25,8 @@ describe('UIGenerator', () => {
         type: 'div',
         children: [
           { type: 'h1', props: { text: 'Title' } },
-          { type: 'p', props: { text: 'Content' } }
-        ]
+          { type: 'p', props: { text: 'Content' } },
+        ],
       };
 
       const code = generator.generateComponent(config);
@@ -50,8 +50,8 @@ describe('UIGenerator', () => {
         components: [
           { type: 'header', props: { title: 'My App' } },
           { type: 'main', props: {} },
-          { type: 'footer', props: {} }
-        ]
+          { type: 'footer', props: {} },
+        ],
       };
 
       const code = generator.generateLayout(layout);

@@ -3,13 +3,17 @@
  * Transformed to use LoggingCapability for platform independence
  */
 
-import type { LoggingCapability, LogEntry, LogLevel as CapabilityLogLevel } from '../packages/capabilities/src/logging';
+import type {
+  LoggingCapability,
+  LogEntry,
+  LogLevel as CapabilityLogLevel,
+} from '../packages/capabilities/src/logging';
 
 export enum LogLevel {
-  DEBUG = "DEBUG",
-  INFO = "INFO",
-  WARN = "WARN",
-  ERROR = "ERROR",
+  DEBUG = 'DEBUG',
+  INFO = 'INFO',
+  WARN = 'WARN',
+  ERROR = 'ERROR',
 }
 
 export interface LogEntryLegacy {
@@ -188,7 +192,7 @@ export class LoggerProvider {
    */
   async healthCheck(): Promise<boolean> {
     if (!this.logging) return true; // Local logger is always healthy
-    
+
     try {
       const result = await this.logging.healthCheck();
       return result.healthy;

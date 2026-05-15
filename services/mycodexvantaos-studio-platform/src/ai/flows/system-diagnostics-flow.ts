@@ -37,15 +37,24 @@ export interface SystemDiagnosticsOutput {
   aiProvider: string;
 }
 
-export async function systemDiagnosticsFlow(input: SystemDiagnosticsInput = {}): Promise<SystemDiagnosticsOutput> {
-  const { services = [], includeMetrics = true, includeConnectors = true, includeEdgeNodes = true } = input;
+export async function systemDiagnosticsFlow(
+  input: SystemDiagnosticsInput = {}
+): Promise<SystemDiagnosticsOutput> {
+  const {
+    services = [],
+    includeMetrics = true,
+    includeConnectors = true,
+    includeEdgeNodes = true,
+  } = input;
 
   const scope = [
     includeMetrics ? 'inference metrics' : '',
     includeConnectors ? 'connector health' : '',
     includeEdgeNodes ? 'edge node status' : '',
     services.length > 0 ? `services: ${services.join(', ')}` : 'all services',
-  ].filter(Boolean).join(', ');
+  ]
+    .filter(Boolean)
+    .join(', ');
 
   const prompt = `You are the MyCodeXvantaOS System Diagnostics Engine.
 Scope: ${scope}
@@ -65,7 +74,8 @@ Identify the top 3 system health findings and provide:
     aiProvider = response.provider ?? 'native';
     summary = response.text.slice(0, 400);
   } catch {
-    summary = 'System diagnostics completed. connector-mongodb shows elevated latency (320ms). All other services nominal.';
+    summary =
+      'System diagnostics completed. connector-mongodb shows elevated latency (320ms). All other services nominal.';
   }
 
   const findings: DiagnosticFinding[] = [
@@ -75,7 +85,8 @@ Identify the top 3 system health findings and provide:
       severity: 'high',
       category: 'performance',
       finding: 'Response latency at 320ms, exceeding P95 SLO threshold of 200ms',
-      recommendation: 'Scale MongoDB replica set or enable connection pooling. Review slow query log.',
+      recommendation:
+        'Scale MongoDB replica set or enable connection pooling. Review slow query log.',
       autoRemediable: false,
     },
     {
@@ -102,22 +113,31 @@ Identify the top 3 system health findings and provide:
       severity: 'info',
       category: 'compliance',
       finding: 'Network policy configuration shows warning in OPA admission control',
-      recommendation: 'Review and update NetworkPolicy manifests to align with security baseline v2',
+      recommendation:
+        'Review and update NetworkPolicy manifests to align with security baseline v2',
       autoRemediable: false,
     },
   ];
 
-  const criticalCount = findings.filter(f => f.severity === 'critical').length;
-  const highCount = findings.filter(f => f.severity === 'high').length;
+  const criticalCount = findings.filter((f) => f.severity === 'critical').length;
+  const highCount = findings.filter((f) => f.severity === 'high').length;
   const overallHealth = criticalCount > 0 ? 'critical' : highCount > 0 ? 'degraded' : 'healthy';
-  const healthScore = Math.max(0, 100 - criticalCount * 30 - highCount * 15 - findings.filter(f => f.severity === 'medium').length * 5);
+  const healthScore = Math.max(
+    0,
+    100 -
+      criticalCount * 30 -
+      highCount * 15 -
+      findings.filter((f) => f.severity === 'medium').length * 5
+  );
 
   return {
     flowId: `system-diagnostics-${Date.now()}`,
     overallHealth,
     healthScore,
     findings,
-    summary: summary || `System health: ${overallHealth} (score: ${healthScore}/100). ${findings.length} findings detected.`,
+    summary:
+      summary ||
+      `System health: ${overallHealth} (score: ${healthScore}/100). ${findings.length} findings detected.`,
     immediateActions: [
       'Investigate connector-mongodb latency spike — check slow query log',
       'Monitor edge-node-sg-01 resource usage — prepare HPA trigger',

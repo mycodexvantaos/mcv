@@ -1,13 +1,11 @@
-import type { ServiceInstance } from "./types";
+import type { ServiceInstance } from './types';
 
 let counter = 0;
 
 export class ServiceDiscoveryService {
   private instances = new Map<string, ServiceInstance>();
 
-  register(
-    input: Omit<ServiceInstance, "id" | "healthy">,
-  ): ServiceInstance {
+  register(input: Omit<ServiceInstance, 'id' | 'healthy'>): ServiceInstance {
     const id = `svc-${++counter}`;
     const instance: ServiceInstance = { id, healthy: true, ...input };
     this.instances.set(id, instance);
@@ -23,9 +21,7 @@ export class ServiceDiscoveryService {
   }
 
   discover(serviceName: string): ServiceInstance[] {
-    return Array.from(this.instances.values()).filter(
-      (i) => i.name === serviceName && i.healthy,
-    );
+    return Array.from(this.instances.values()).filter((i) => i.name === serviceName && i.healthy);
   }
 
   listAll(): ServiceInstance[] {

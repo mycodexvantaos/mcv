@@ -8,7 +8,7 @@ describe('SchemaGenerator', () => {
       database: 'postgresql',
       namingConvention: 'snake_case',
       enableTimestamps: true,
-      enableSoftDelete: false
+      enableSoftDelete: false,
     });
   });
 
@@ -23,7 +23,7 @@ describe('SchemaGenerator', () => {
         database: 'mysql',
         namingConvention: 'camelCase',
         enableTimestamps: false,
-        enableSoftDelete: true
+        enableSoftDelete: true,
       });
       expect(customGen).toBeInstanceOf(SchemaGenerator);
     });
@@ -38,14 +38,14 @@ describe('SchemaGenerator', () => {
             name: 'id',
             type: 'integer',
             required: true,
-            primaryKey: true
+            primaryKey: true,
           },
           {
             name: 'name',
             type: 'string',
-            required: true
-          }
-        ]
+            required: true,
+          },
+        ],
       };
 
       const sql = generator.generateTableSchema(schema);
@@ -63,9 +63,9 @@ describe('SchemaGenerator', () => {
             name: 'id',
             type: 'integer',
             required: true,
-            primaryKey: true
-          }
-        ]
+            primaryKey: true,
+          },
+        ],
       };
 
       const sql = generator.generateTableSchema(schema);
@@ -82,9 +82,9 @@ describe('SchemaGenerator', () => {
             name: 'id',
             type: 'integer',
             required: true,
-            primaryKey: true
-          }
-        ]
+            primaryKey: true,
+          },
+        ],
       };
 
       const sql = noTimestampGen.generateTableSchema(schema);
@@ -100,15 +100,15 @@ describe('SchemaGenerator', () => {
             name: 'id',
             type: 'integer',
             required: true,
-            primaryKey: true
+            primaryKey: true,
           },
           {
             name: 'email',
             type: 'string',
             required: true,
-            unique: true
-          }
-        ]
+            unique: true,
+          },
+        ],
       };
 
       const sql = generator.generateTableSchema(schema);
@@ -123,15 +123,15 @@ describe('SchemaGenerator', () => {
             name: 'id',
             type: 'integer',
             required: true,
-            primaryKey: true
+            primaryKey: true,
           },
           {
             name: 'active',
             type: 'boolean',
             required: false,
-            default: true
-          }
-        ]
+            default: true,
+          },
+        ],
       };
 
       const sql = generator.generateTableSchema(schema);
@@ -146,7 +146,7 @@ describe('SchemaGenerator', () => {
             name: 'id',
             type: 'integer',
             required: true,
-            primaryKey: true
+            primaryKey: true,
           },
           {
             name: 'userId',
@@ -155,10 +155,10 @@ describe('SchemaGenerator', () => {
             foreignKey: {
               table: 'User',
               field: 'id',
-              onDelete: 'CASCADE'
-            }
-          }
-        ]
+              onDelete: 'CASCADE',
+            },
+          },
+        ],
       };
 
       const sql = generator.generateTableSchema(schema);
@@ -175,16 +175,16 @@ describe('SchemaGenerator', () => {
             name: 'id',
             type: 'integer',
             required: true,
-            primaryKey: true
-          }
+            primaryKey: true,
+          },
         ],
         indexes: [
           {
             name: 'idx_user_name_email',
             fields: ['name', 'email'],
-            unique: true
-          }
-        ]
+            unique: true,
+          },
+        ],
       };
 
       const sql = generator.generateTableSchema(schema);
@@ -203,15 +203,15 @@ describe('SchemaGenerator', () => {
               name: 'id',
               type: 'integer',
               required: true,
-              primaryKey: true
+              primaryKey: true,
             },
             {
               name: 'name',
               type: 'string',
-              required: true
-            }
-          ]
-        }
+              required: true,
+            },
+          ],
+        },
       ];
 
       const migration = generator.generateMigration(schemas, '001', 'Create users table');
@@ -228,16 +228,12 @@ describe('SchemaGenerator', () => {
       const schemas: SchemaDefinition[] = [
         {
           name: 'User',
-          fields: [
-            { name: 'id', type: 'integer', required: true, primaryKey: true }
-          ]
+          fields: [{ name: 'id', type: 'integer', required: true, primaryKey: true }],
         },
         {
           name: 'Post',
-          fields: [
-            { name: 'id', type: 'integer', required: true, primaryKey: true }
-          ]
-        }
+          fields: [{ name: 'id', type: 'integer', required: true, primaryKey: true }],
+        },
       ];
 
       const migration = generator.generateMigration(schemas, '002', 'Create tables');
@@ -256,20 +252,20 @@ describe('SchemaGenerator', () => {
             {
               name: 'id',
               type: 'integer',
-              required: true
+              required: true,
             },
             {
               name: 'name',
               type: 'string',
-              required: true
+              required: true,
             },
             {
               name: 'age',
               type: 'integer',
-              required: false
-            }
-          ]
-        }
+              required: false,
+            },
+          ],
+        },
       ];
 
       const ts = generator.generateTypeScriptInterfaces(schemas);
@@ -284,10 +280,8 @@ describe('SchemaGenerator', () => {
       const schemas: SchemaDefinition[] = [
         {
           name: 'User',
-          fields: [
-            { name: 'id', type: 'integer', required: true }
-          ]
-        }
+          fields: [{ name: 'id', type: 'integer', required: true }],
+        },
       ];
 
       const ts = generator.generateTypeScriptInterfaces(schemas);
@@ -300,10 +294,8 @@ describe('SchemaGenerator', () => {
       const schemas: SchemaDefinition[] = [
         {
           name: 'User',
-          fields: [
-            { name: 'id', type: 'integer', required: true }
-          ]
-        }
+          fields: [{ name: 'id', type: 'integer', required: true }],
+        },
       ];
 
       const ts = softDeleteGen.generateTypeScriptInterfaces(schemas);
@@ -319,14 +311,14 @@ describe('SchemaGenerator', () => {
           {
             name: 'id',
             type: 'integer',
-            required: true
+            required: true,
           },
           {
             name: 'name',
             type: 'string',
-            required: true
-          }
-        ]
+            required: true,
+          },
+        ],
       };
 
       const jsonSchema = generator.generateJsonSchema(schema);
@@ -347,14 +339,14 @@ describe('SchemaGenerator', () => {
           {
             name: 'id',
             type: 'integer',
-            required: true
+            required: true,
           },
           {
             name: 'name',
             type: 'string',
-            required: false
-          }
-        ]
+            required: false,
+          },
+        ],
       };
 
       const jsonSchema = generator.generateJsonSchema(schema);
@@ -375,15 +367,15 @@ describe('SchemaGenerator', () => {
               name: 'id',
               type: 'integer',
               required: true,
-              primaryKey: true
+              primaryKey: true,
             },
             {
               name: 'name',
               type: 'string',
-              required: true
-            }
-          ]
-        }
+              required: true,
+            },
+          ],
+        },
       ];
 
       const prisma = generator.generatePrismaSchema(schemas);
@@ -399,10 +391,8 @@ describe('SchemaGenerator', () => {
       const schemas: SchemaDefinition[] = [
         {
           name: 'User',
-          fields: [
-            { name: 'id', type: 'integer', required: true, primaryKey: true }
-          ]
-        }
+          fields: [{ name: 'id', type: 'integer', required: true, primaryKey: true }],
+        },
       ];
 
       const prisma = generator.generatePrismaSchema(schemas);
@@ -415,9 +405,7 @@ describe('SchemaGenerator', () => {
     it('should convert string type correctly', () => {
       const schema: SchemaDefinition = {
         name: 'Test',
-        fields: [
-          { name: 'name', type: 'string', required: true }
-        ]
+        fields: [{ name: 'name', type: 'string', required: true }],
       };
 
       const sql = generator.generateTableSchema(schema);
@@ -427,9 +415,7 @@ describe('SchemaGenerator', () => {
     it('should convert number type correctly', () => {
       const schema: SchemaDefinition = {
         name: 'Test',
-        fields: [
-          { name: 'value', type: 'number', required: true }
-        ]
+        fields: [{ name: 'value', type: 'number', required: true }],
       };
 
       const sql = generator.generateTableSchema(schema);
@@ -439,9 +425,7 @@ describe('SchemaGenerator', () => {
     it('should convert boolean type correctly', () => {
       const schema: SchemaDefinition = {
         name: 'Test',
-        fields: [
-          { name: 'active', type: 'boolean', required: true }
-        ]
+        fields: [{ name: 'active', type: 'boolean', required: true }],
       };
 
       const sql = generator.generateTableSchema(schema);
@@ -451,9 +435,7 @@ describe('SchemaGenerator', () => {
     it('should convert date type correctly', () => {
       const schema: SchemaDefinition = {
         name: 'Test',
-        fields: [
-          { name: 'createdAt', type: 'date', required: true }
-        ]
+        fields: [{ name: 'createdAt', type: 'date', required: true }],
       };
 
       const sql = generator.generateTableSchema(schema);

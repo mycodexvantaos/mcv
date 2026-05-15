@@ -7,6 +7,7 @@ Comprehensive security documentation for MyCodeXvantaOS - Enterprise-grade autom
 MyCodeXvantaOS implements defense-in-depth security architecture following industry best practices and compliance standards including SOC2 Type II, HIPAA, and GDPR.
 
 ### Security Principles
+
 - **Zero Trust Architecture**: Never trust, always verify
 - **Least Privilege Access**: Minimum necessary permissions
 - **Defense in Depth**: Multiple security layers
@@ -18,6 +19,7 @@ MyCodeXvantaOS implements defense-in-depth security architecture following indus
 ### Authentication Mechanisms
 
 #### JWT-Based Authentication
+
 ```typescript
 interface AuthConfig {
   jwtSecret: string;
@@ -35,6 +37,7 @@ class AuthenticationService {
 ```
 
 #### OAuth 2.0 / OpenID Connect
+
 ```typescript
 interface OAuthConfig {
   provider: 'google' | 'github' | 'azure' | 'okta';
@@ -54,6 +57,7 @@ class OAuthService {
 ### Authorization Model
 
 #### Role-Based Access Control (RBAC)
+
 ```typescript
 interface Role {
   name: string;
@@ -75,6 +79,7 @@ class AuthorizationService {
 ```
 
 #### Attribute-Based Access Control (ABAC)
+
 ```typescript
 interface Policy {
   id: string;
@@ -98,6 +103,7 @@ class PolicyEngine {
 ### Encryption Standards
 
 #### Data at Rest
+
 - **Database Encryption**: AES-256 for all sensitive data
 - **File Storage**: AES-256 with managed keys
 - **Backup Encryption**: GPG encryption for backups
@@ -118,6 +124,7 @@ class EncryptionService {
 ```
 
 #### Data in Transit
+
 - **TLS 1.3**: Minimum encryption standard
 - **Certificate Pinning**: Prevent MITM attacks
 - **HSTS**: Strict Transport Security enforcement
@@ -163,23 +170,23 @@ spec:
     matchLabels:
       app: database
   policyTypes:
-  - Ingress
+    - Ingress
   ingress:
-  - from:
-    - podSelector:
-        matchLabels:
-          tier: backend
-    ports:
-    - protocol: TCP
-      port: 5432
+    - from:
+        - podSelector:
+            matchLabels:
+              tier: backend
+      ports:
+        - protocol: TCP
+          port: 5432
   egress:
-  - to:
-    - podSelector:
-        matchLabels:
-          tier: backend
-    ports:
-    - protocol: TCP
-      port: 5432
+    - to:
+        - podSelector:
+            matchLabels:
+              tier: backend
+      ports:
+        - protocol: TCP
+          port: 5432
 ```
 
 ### API Gateway Security
@@ -328,7 +335,7 @@ class AuditService {
 ### Compliance Monitoring
 
 ```typescript
- interface ComplianceStandard {
+interface ComplianceStandard {
   name: 'SOC2' | 'HIPAA' | 'GDPR' | 'PCI-DSS';
   controls: Control[];
   auditFrequency: 'monthly' | 'quarterly' | 'annually';
@@ -524,11 +531,13 @@ class SIEMService {
 ## 🆘 Security Contact & Resources
 
 ### Reporting Security Issues
+
 - **Email**: security@mycodexvantaos.com
 - **PGP Key**: Available on GitHub
 - **Response Time**: 24 hours for critical issues
 
 ### Security Resources
+
 - **Documentation**: https://security.mycodexvantaos.com
 - **Status Page**: https://status.mycodexvantaos.com
 - **Bug Bounty**: https://bugcrowd.com/mycodexvantaos

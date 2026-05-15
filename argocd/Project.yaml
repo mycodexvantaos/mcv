@@ -8,12 +8,12 @@ metadata:
   namespace: argocd
 spec:
   description: MyCodeXvantaOS Platform Project
-  
+
   # Source repositories
   sourceRepos:
     - 'https://github.com/mycodexvantaos/*'
     - 'ghcr.io/mycodexvantaos/*'
-  
+
   # Destination clusters and namespaces
   destinations:
     - namespace: mycodexvantaos
@@ -22,7 +22,7 @@ spec:
       server: https://kubernetes.default.svc
     - namespace: mycodexvantaos-dev
       server: https://kubernetes.default.svc
-  
+
   # Cluster resource allow list
   clusterResourceWhitelist:
     - group: ''
@@ -35,7 +35,7 @@ spec:
       kind: ClusterRole
     - group: rbac.authorization.k8s.io
       kind: ClusterRoleBinding
-  
+
   # Namespace resource allow list
   namespaceResourceWhitelist:
     - group: ''
@@ -62,7 +62,7 @@ spec:
       kind: HorizontalPodAutoscaler
     - group: policy
       kind: PodDisruptionBudget
-  
+
   # Roles for team access
   roles:
     - name: admin
@@ -73,7 +73,7 @@ spec:
         - p, proj:mycodexvantaos:admin, clusters, *, mycodexvantaos/*, allow
       groups:
         - mycodexvantaos:admins
-        
+
     - name: developer
       description: Developer access to MyCodeXvantaOS project
       policies:

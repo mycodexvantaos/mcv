@@ -46,7 +46,8 @@ function generateDecisionGuide(input: DecisionGuideInput): DecisionGuide {
     {
       id: 'rec-1',
       title: 'Start with Hybrid Cloud-Edge Architecture',
-      description: 'Deploy lightweight models at edge for low-latency use cases while maintaining cloud-based large models for complex tasks. This provides the best balance of performance, cost, and flexibility.',
+      description:
+        'Deploy lightweight models at edge for low-latency use cases while maintaining cloud-based large models for complex tasks. This provides the best balance of performance, cost, and flexibility.',
       confidence: 0.89,
       pros: [
         'Optimal latency for real-time use cases',
@@ -70,7 +71,8 @@ function generateDecisionGuide(input: DecisionGuideInput): DecisionGuide {
     {
       id: 'rec-2',
       title: 'Implement Provider-Agnostic Abstraction Layer',
-      description: 'Build a unified connector interface that abstracts away provider-specific APIs. This enables seamless switching between LM providers and avoids vendor lock-in.',
+      description:
+        'Build a unified connector interface that abstracts away provider-specific APIs. This enables seamless switching between LM providers and avoids vendor lock-in.',
       confidence: 0.92,
       pros: [
         'No vendor lock-in',
@@ -94,7 +96,8 @@ function generateDecisionGuide(input: DecisionGuideInput): DecisionGuide {
     {
       id: 'rec-3',
       title: 'Adaptive Cost Optimization with Budget Controls',
-      description: 'Implement intelligent cost management with real-time budget tracking, automatic model downgrading when budgets approach limits, and cost anomaly detection.',
+      description:
+        'Implement intelligent cost management with real-time budget tracking, automatic model downgrading when budgets approach limits, and cost anomaly detection.',
       confidence: 0.85,
       pros: [
         'Predictable monthly costs',

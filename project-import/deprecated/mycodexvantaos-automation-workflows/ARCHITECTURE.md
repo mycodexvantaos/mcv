@@ -8,49 +8,49 @@
 
 ```yaml
 workflow:
-  name: "full-repository-scan"
-  version: "1.0.0"
+  name: 'full-repository-scan'
+  version: '1.0.0'
   trigger:
-    - event: "repository.push"
-    - schedule: "0 2 * * *"
-  
+    - event: 'repository.push'
+    - schedule: '0 2 * * *'
+
   steps:
-    - id: "clone"
-      service: "fleet-sandbox"
-      action: "createSandbox"
+    - id: 'clone'
+      service: 'fleet-sandbox'
+      action: 'createSandbox'
       params:
-        repository: "{{ trigger.repository }}"
-    
-    - id: "scan"
-      service: "core-code-deconstructor"
-      action: "analyze"
-      depends_on: ["clone"]
+        repository: '{{ trigger.repository }}'
+
+    - id: 'scan'
+      service: 'core-code-deconstructor'
+      action: 'analyze'
+      depends_on: ['clone']
       params:
-        workspace: "{{ steps.clone.output.workspace }}"
-    
-    - id: "evaluate"
-      service: "policy-engine"
-      action: "evaluate"
-      depends_on: ["scan"]
+        workspace: '{{ steps.clone.output.workspace }}'
+
+    - id: 'evaluate'
+      service: 'policy-engine'
+      action: 'evaluate'
+      depends_on: ['scan']
       params:
-        scanResults: "{{ steps.scan.output }}"
-    
-    - id: "decide"
-      service: "decision-engine"
-      action: "evaluate"
-      depends_on: ["evaluate"]
-      condition: "{{ steps.evaluate.output.violations > 0 }}"
-    
-    - id: "cleanup"
-      service: "fleet-sandbox"
-      action: "destroySandbox"
-      depends_on: ["scan"]
+        scanResults: '{{ steps.scan.output }}'
+
+    - id: 'decide'
+      service: 'decision-engine'
+      action: 'evaluate'
+      depends_on: ['evaluate']
+      condition: '{{ steps.evaluate.output.violations > 0 }}'
+
+    - id: 'cleanup'
+      service: 'fleet-sandbox'
+      action: 'destroySandbox'
+      depends_on: ['scan']
       always_run: true
-  
+
   on_failure:
     - notify:
-        channel: "platform-alerts"
-        message: "Workflow failed: {{ workflow.name }}"
+        channel: 'platform-alerts'
+        message: 'Workflow failed: {{ workflow.name }}'
 ```
 
 ## Step Execution Patterns
@@ -99,22 +99,22 @@ Each step can define:
 
 Workflow definitions support expression templates:
 
-| Expression | Description |
-|---|---|
-| `{{ trigger.* }}` | Trigger event data |
-| `{{ steps.ID.output }}` | Previous step output |
-| `{{ steps.ID.status }}` | Previous step status |
-| `{{ env.* }}` | Environment variables |
-| `{{ secrets.* }}` | Resolved secrets |
+| Expression              | Description           |
+| ----------------------- | --------------------- |
+| `{{ trigger.* }}`       | Trigger event data    |
+| `{{ steps.ID.output }}` | Previous step output  |
+| `{{ steps.ID.status }}` | Previous step status  |
+| `{{ env.* }}`           | Environment variables |
+| `{{ secrets.* }}`       | Resolved secrets      |
 
 ## Trigger Types
 
-| Type | Description |
-|---|---|
-| Event | Platform event from event-bus |
-| Schedule | Cron expression via scheduler |
-| Manual | User-initiated via API or UI |
-| Webhook | External HTTP trigger |
+| Type     | Description                                |
+| -------- | ------------------------------------------ |
+| Event    | Platform event from event-bus              |
+| Schedule | Cron expression via scheduler              |
+| Manual   | User-initiated via API or UI               |
+| Webhook  | External HTTP trigger                      |
 | Workflow | Triggered by another workflow's completion |
 
 ## Design Principles

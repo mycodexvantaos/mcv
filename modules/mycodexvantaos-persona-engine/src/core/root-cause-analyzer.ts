@@ -1,16 +1,11 @@
 /**
  * MyCodeXvantaOS Persona Engine - Root Cause Analyzer
- * 
+ *
  * Analyzes problems through multiple layers to identify root causes.
  * URN: urn:mycodexvantaos:core:root-cause-analyzer
  */
 
-import type {
-  AnalysisLayer,
-  RootCauseDiagnosis,
-  ActionStep,
-  SolutionCategory,
-} from '../types';
+import type { AnalysisLayer, RootCauseDiagnosis, ActionStep, SolutionCategory } from '../types';
 
 /**
  * Analysis layer configuration
@@ -53,12 +48,7 @@ const ANALYSIS_LAYERS: Record<AnalysisLayer, LayerConfig> = {
       'What behaviors consistently accompany this?',
       'What have you tried before?',
     ],
-    indicators: [
-      'frequency',
-      'triggers',
-      'routine_associations',
-      'past_attempts',
-    ],
+    indicators: ['frequency', 'triggers', 'routine_associations', 'past_attempts'],
     depth_level: 2,
   },
   cognitive_structures: {
@@ -87,12 +77,7 @@ const ANALYSIS_LAYERS: Record<AnalysisLayer, LayerConfig> = {
       'What would you feel if this changed?',
       'What emotional need is unmet?',
     ],
-    indicators: [
-      'primary_emotions',
-      'avoided_emotions',
-      'emotional_needs',
-      'emotional_history',
-    ],
+    indicators: ['primary_emotions', 'avoided_emotions', 'emotional_needs', 'emotional_history'],
     depth_level: 4,
   },
   core_beliefs: {
@@ -104,12 +89,7 @@ const ANALYSIS_LAYERS: Record<AnalysisLayer, LayerConfig> = {
       'What rule or standard are you applying?',
       'Where did this belief come from?',
     ],
-    indicators: [
-      'self_concept',
-      'world_assumptions',
-      'value_conflicts',
-      'origin_memories',
-    ],
+    indicators: ['self_concept', 'world_assumptions', 'value_conflicts', 'origin_memories'],
     depth_level: 5,
   },
   root_causes: {
@@ -118,7 +98,7 @@ const ANALYSIS_LAYERS: Record<AnalysisLayer, LayerConfig> = {
     probing_questions: [
       'When did this pattern first appear?',
       'What was happening in your life then?',
-      'What did you need that you didn\'t get?',
+      "What did you need that you didn't get?",
       'What decision did you make at that time?',
     ],
     indicators: [
@@ -222,7 +202,7 @@ export class RootCauseAnalyzer {
   getProbingQuestions(context: AnalysisContext, count: number = 3): string[] {
     const layerConfig = ANALYSIS_LAYERS[context.current_layer];
     const questions: string[] = [];
-    
+
     // Get questions not yet asked
     for (const question of layerConfig.probing_questions) {
       const layerAnalysis = context.layers.get(context.current_layer);
@@ -248,10 +228,10 @@ export class RootCauseAnalyzer {
     responses: string[]
   ): AnalysisContext {
     const config = ANALYSIS_LAYERS[layer];
-    
+
     // Calculate confidence based on evidence and findings
     const confidence = this.calculateLayerConfidence(findings, evidence, responses);
-    
+
     // Find connections to other layers
     const connections = this.findConnections(layer, findings, context);
 
@@ -267,10 +247,10 @@ export class RootCauseAnalyzer {
     };
 
     context.layers.set(layer, layerAnalysis);
-    
+
     // Update overall confidence
     context.confidence_score = this.calculateOverallConfidence(context);
-    
+
     return context;
   }
 
@@ -283,11 +263,11 @@ export class RootCauseAnalyzer {
     responses: string[]
   ): number {
     if (findings.length === 0) return 0;
-    
+
     const findingScore = Math.min(findings.length / 3, 1) * 0.4;
     const evidenceScore = Math.min(evidence.length / 2, 1) * 0.3;
-    const responseScore = responses.filter(r => r.length > 20).length > 0 ? 0.3 : 0.15;
-    
+    const responseScore = responses.filter((r) => r.length > 20).length > 0 ? 0.3 : 0.15;
+
     return Math.min(findingScore + evidenceScore + responseScore, 1);
   }
 
@@ -296,16 +276,16 @@ export class RootCauseAnalyzer {
    */
   private calculateOverallConfidence(context: AnalysisContext): number {
     if (context.layers.size === 0) return 0;
-    
+
     let totalConfidence = 0;
     let totalWeight = 0;
-    
+
     for (const [layer, analysis] of context.layers) {
       const weight = ANALYSIS_LAYERS[layer].depth_level;
       totalConfidence += analysis.confidence * weight;
       totalWeight += weight;
     }
-    
+
     return totalWeight > 0 ? totalConfidence / totalWeight : 0;
   }
 
@@ -318,10 +298,10 @@ export class RootCauseAnalyzer {
     context: AnalysisContext
   ): string[] {
     const connections: string[] = [];
-    
+
     for (const [otherLayer, analysis] of context.layers) {
       if (otherLayer === layer) continue;
-      
+
       for (const finding of findings) {
         for (const otherFinding of analysis.findings) {
           if (this.areRelated(finding, otherFinding)) {
@@ -330,7 +310,7 @@ export class RootCauseAnalyzer {
         }
       }
     }
-    
+
     return connections;
   }
 
@@ -341,11 +321,9 @@ export class RootCauseAnalyzer {
     // Simple keyword matching - could be enhanced with NLP
     const words1 = finding1.toLowerCase().split(/\s+/);
     const words2 = finding2.toLowerCase().split(/\s+/);
-    
-    const commonWords = words1.filter(w => 
-      w.length > 3 && words2.includes(w)
-    );
-    
+
+    const commonWords = words1.filter((w) => w.length > 3 && words2.includes(w));
+
     return commonWords.length >= 2;
   }
 
@@ -354,12 +332,12 @@ export class RootCauseAnalyzer {
    */
   advanceToNextLayer(context: AnalysisContext): AnalysisLayer | null {
     const currentIndex = this.layerOrder.indexOf(context.current_layer);
-    
+
     if (currentIndex < this.layerOrder.length - 1) {
       context.current_layer = this.layerOrder[currentIndex + 1];
       return context.current_layer;
     }
-    
+
     return null; // Already at deepest layer
   }
 
@@ -368,9 +346,9 @@ export class RootCauseAnalyzer {
    */
   isReadyToAdvance(context: AnalysisContext): boolean {
     const currentAnalysis = context.layers.get(context.current_layer);
-    
+
     if (!currentAnalysis) return false;
-    
+
     return currentAnalysis.confidence >= this.minConfidenceThreshold;
   }
 
@@ -423,7 +401,7 @@ export class RootCauseAnalyzer {
    */
   private generateLayerRecommendations(layer: AnalysisLayer, findings: string[]): string[] {
     const recommendations: string[] = [];
-    
+
     const layerRecommendations: Record<AnalysisLayer, string[]> = {
       surface_symptoms: [
         'Track when symptoms occur',
@@ -466,7 +444,7 @@ export class RootCauseAnalyzer {
   private generateNextQuestions(context: AnalysisContext): string[] {
     // First, check if current layer needs more exploration
     const currentAnalysis = context.layers.get(context.current_layer);
-    
+
     if (currentAnalysis && currentAnalysis.confidence < this.minConfidenceThreshold) {
       return this.getProbingQuestions(context, 3);
     }
@@ -490,7 +468,7 @@ export class RootCauseAnalyzer {
    */
   private generateSummary(context: AnalysisContext, diagnosis: RootCauseDiagnosis[]): string {
     const layerSummaries: string[] = [];
-    
+
     for (const d of diagnosis) {
       const config = ANALYSIS_LAYERS[d.layer];
       layerSummaries.push(
@@ -498,9 +476,11 @@ export class RootCauseAnalyzer {
       );
     }
 
-    return `## Analysis Summary\n\nOriginal Problem: ${context.original_problem}\n\n` +
+    return (
+      `## Analysis Summary\n\nOriginal Problem: ${context.original_problem}\n\n` +
       `### Layer Analysis\n${layerSummaries.join('\n\n')}\n\n` +
-      `### Overall Confidence: ${(context.confidence_score * 100).toFixed(0)}%`;
+      `### Overall Confidence: ${(context.confidence_score * 100).toFixed(0)}%`
+    );
   }
 
   /**
@@ -513,7 +493,7 @@ export class RootCauseAnalyzer {
   } {
     const suggestedLayers = this.suggestRelevantLayers(problem);
     const initialQuestions: Partial<Record<AnalysisLayer, string[]>> = {};
-    
+
     for (const layer of suggestedLayers) {
       initialQuestions[layer] = ANALYSIS_LAYERS[layer].probing_questions.slice(0, 2);
     }
@@ -545,13 +525,13 @@ export class RootCauseAnalyzer {
     };
 
     for (const [layer, keywords] of Object.entries(layerKeywords)) {
-      if (keywords.some(kw => lowerProblem.includes(kw))) {
+      if (keywords.some((kw) => lowerProblem.includes(kw))) {
         suggested.push(layer as AnalysisLayer);
       }
     }
 
     // Remove duplicates and return in order
-    return this.layerOrder.filter(l => suggested.includes(l));
+    return this.layerOrder.filter((l) => suggested.includes(l));
   }
 
   /**
@@ -559,7 +539,7 @@ export class RootCauseAnalyzer {
    */
   private generateHypotheses(problem: string, layers: AnalysisLayer[]): string[] {
     const hypotheses: string[] = [];
-    
+
     // Simple hypothesis generation based on patterns
     if (layers.includes('behavioral_patterns')) {
       hypotheses.push('This may be a recurring pattern that serves some function');

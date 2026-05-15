@@ -52,20 +52,20 @@
 
 ## Provider Dependencies
 
-| Provider | Usage |
-|---|---|
-| QueueProvider | Message transport (in-memory or external broker) |
-| StateStoreProvider | Consumer offset and subscription state |
-| ObservabilityProvider | Event throughput, latency, error rate metrics |
-| DatabaseProvider | Persistent event log for replay |
+| Provider              | Usage                                            |
+| --------------------- | ------------------------------------------------ |
+| QueueProvider         | Message transport (in-memory or external broker) |
+| StateStoreProvider    | Consumer offset and subscription state           |
+| ObservabilityProvider | Event throughput, latency, error rate metrics    |
+| DatabaseProvider      | Persistent event log for replay                  |
 
 ## Operational Modes
 
-| Mode | Behavior |
-|---|---|
-| **Native** | In-memory EventEmitter with optional SQLite persistence |
-| **Connected** | Redis Pub/Sub or Kafka via QueueProvider |
-| **Hybrid** | External broker for critical topics, in-memory for local events |
+| Mode          | Behavior                                                        |
+| ------------- | --------------------------------------------------------------- |
+| **Native**    | In-memory EventEmitter with optional SQLite persistence         |
+| **Connected** | Redis Pub/Sub or Kafka via QueueProvider                        |
+| **Hybrid**    | External broker for critical topics, in-memory for local events |
 
 ## Directory Structure
 

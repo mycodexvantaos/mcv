@@ -5,6 +5,7 @@ MyCodeXvantaOS App Dev Studio - AI Code Editor Research Platform
 ## Description
 
 A Next.js-based AI code editor research platform with Genkit integration for AI-powered features including:
+
 - AI Code Completion
 - AI Agent Code Generation & Refactoring
 - Conversational AI Assistant

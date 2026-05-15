@@ -21,6 +21,7 @@ The Config Manager provides hierarchical configuration resolution and feature fl
 ## Data Model
 
 ### Configuration Entry
+
 ```
 {
   key: string
@@ -32,6 +33,7 @@ The Config Manager provides hierarchical configuration resolution and feature fl
 ```
 
 ### Feature Flag
+
 ```
 {
   key: string
@@ -62,10 +64,10 @@ resolve(key, scope):
 
 ## Provider Usage Map
 
-| Service | database | stateStore | observability |
-|---------|----------|------------|---------------|
-| ConfigService | CRUD | cache | log changes |
-| FeatureFlagService | CRUD | eval cache | log evaluations |
+| Service            | database | stateStore | observability   |
+| ------------------ | -------- | ---------- | --------------- |
+| ConfigService      | CRUD     | cache      | log changes     |
+| FeatureFlagService | CRUD     | eval cache | log evaluations |
 
 ---
 

@@ -40,6 +40,7 @@ mycodexvantaos-ai-team-orchestrator/
 ### 1. Orchestrator
 
 The main entry point for all AI Team operations. Provides a unified API for:
+
 - Agent registration and management
 - Team creation and activation
 - Workflow execution
@@ -49,6 +50,7 @@ The main entry point for all AI Team operations. Provides a unified API for:
 ### 2. AgentManager
 
 Manages the lifecycle of AI agents:
+
 - Registration and deregistration
 - Task assignment and release
 - Context window management
@@ -57,6 +59,7 @@ Manages the lifecycle of AI agents:
 ### 3. MessageBus
 
 Implements Pub/Sub pattern for agent communication:
+
 - Direct messaging
 - Broadcast messaging
 - Message queuing
@@ -66,6 +69,7 @@ Implements Pub/Sub pattern for agent communication:
 ### 4. WorkflowEngine
 
 Executes workflows using DAG or State Machine patterns:
+
 - Workflow definition validation
 - Cycle detection
 - Node execution
@@ -75,6 +79,7 @@ Executes workflows using DAG or State Machine patterns:
 ### 5. TeamManager
 
 Manages team topologies:
+
 - Team creation from topology
 - Agent assignment
 - Topology type management
@@ -83,6 +88,7 @@ Manages team topologies:
 ### 6. TaskDecomposer
 
 Decomposes complex tasks into subtasks:
+
 - Pattern-based decomposition rules
 - Sequential, parallel, and hybrid strategies
 - Subtask dependency generation
@@ -90,6 +96,7 @@ Decomposes complex tasks into subtasks:
 ### 7. GovernanceEnforcer
 
 Enforces governance policies:
+
 - Permission validation by tier
 - Approval workflow management
 - Tool access control
@@ -99,40 +106,40 @@ Enforces governance policies:
 
 The system supports the following specialized agent roles:
 
-| Role | Description | Default Tier |
-|------|-------------|--------------|
-| `architect` | System design and architecture | 1 (Elevated) |
-| `engineer` | Code implementation | 0 (Standard) |
-| `tester` | Quality assurance and testing | 0 (Standard) |
-| `reviewer` | Code review and feedback | 0 (Standard) |
-| `coordinator` | Team coordination and management | 1 (Elevated) |
-| `analyst` | Data analysis and insights | 0 (Standard) |
-| `ethicist` | AI ethics and compliance | 2 (High) |
-| `blockchain_expert` | Blockchain and DeFi | 1 (Elevated) |
-| `security_specialist` | Security audit and compliance | 2 (High) |
-| `devops_engineer` | DevOps and infrastructure | 1 (Elevated) |
-| `data_scientist` | ML and data science | 0 (Standard) |
+| Role                  | Description                      | Default Tier |
+| --------------------- | -------------------------------- | ------------ |
+| `architect`           | System design and architecture   | 1 (Elevated) |
+| `engineer`            | Code implementation              | 0 (Standard) |
+| `tester`              | Quality assurance and testing    | 0 (Standard) |
+| `reviewer`            | Code review and feedback         | 0 (Standard) |
+| `coordinator`         | Team coordination and management | 1 (Elevated) |
+| `analyst`             | Data analysis and insights       | 0 (Standard) |
+| `ethicist`            | AI ethics and compliance         | 2 (High)     |
+| `blockchain_expert`   | Blockchain and DeFi              | 1 (Elevated) |
+| `security_specialist` | Security audit and compliance    | 2 (High)     |
+| `devops_engineer`     | DevOps and infrastructure        | 1 (Elevated) |
+| `data_scientist`      | ML and data science              | 0 (Standard) |
 
 ## Governance Tiers
 
-| Tier | Level | Description |
-|------|-------|-------------|
-| -1 | Experimental | Sandbox only, requires approval |
-| 0 | Standard | Normal operations |
-| 1 | Elevated | Cross-module access |
-| 2 | High | Sensitive operations |
-| 3 | Critical | Core system operations |
+| Tier | Level        | Description                     |
+| ---- | ------------ | ------------------------------- |
+| -1   | Experimental | Sandbox only, requires approval |
+| 0    | Standard     | Normal operations               |
+| 1    | Elevated     | Cross-module access             |
+| 2    | High         | Sensitive operations            |
+| 3    | Critical     | Core system operations          |
 
 ## Topology Types
 
-| Type | Description | Best For |
-|------|-------------|----------|
-| `sequential` | Agents execute in order | Linear workflows |
-| `hierarchical` | Manager-coordinator pattern | Complex projects |
-| `broadcast` | All agents receive messages | Information sharing |
-| `mesh` | Peer-to-peer communication | Collaborative tasks |
-| `dag` | Directed Acyclic Graph | Parallel processing |
-| `state_machine` | State-based transitions | Complex workflows |
+| Type            | Description                 | Best For            |
+| --------------- | --------------------------- | ------------------- |
+| `sequential`    | Agents execute in order     | Linear workflows    |
+| `hierarchical`  | Manager-coordinator pattern | Complex projects    |
+| `broadcast`     | All agents receive messages | Information sharing |
+| `mesh`          | Peer-to-peer communication  | Collaborative tasks |
+| `dag`           | Directed Acyclic Graph      | Parallel processing |
+| `state_machine` | State-based transitions     | Complex workflows   |
 
 ## API Usage
 
@@ -192,10 +199,12 @@ mutation {
 const ws = new WebSocket('ws://localhost:3000/ws');
 
 // Subscribe to events
-ws.send(JSON.stringify({
-  type: 'subscribe',
-  payload: { eventType: 'task:completed' }
-}));
+ws.send(
+  JSON.stringify({
+    type: 'subscribe',
+    payload: { eventType: 'task:completed' },
+  })
+);
 
 // Handle events
 ws.onmessage = (event) => {
@@ -208,12 +217,12 @@ ws.onmessage = (event) => {
 
 ### Environment Variables
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PORT` | Server port | 3000 |
-| `HOST` | Server host | 0.0.0.0 |
-| `CORS_ORIGINS` | Allowed CORS origins | * |
-| `NODE_ENV` | Environment | development |
+| Variable       | Description          | Default     |
+| -------------- | -------------------- | ----------- |
+| `PORT`         | Server port          | 3000        |
+| `HOST`         | Server host          | 0.0.0.0     |
+| `CORS_ORIGINS` | Allowed CORS origins | \*          |
+| `NODE_ENV`     | Environment          | development |
 
 ### Orchestrator Configuration
 
@@ -263,9 +272,7 @@ async function main() {
   const teamId = orchestrator.createTeam({
     name: 'Development Team',
     topology_type: 'dag',
-    agents: [
-      { agent_id: 'urn:mycodexvantaos:agent:architect-01', position: 0 },
-    ],
+    agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01', position: 0 }],
   });
 
   // Activate and start workflow

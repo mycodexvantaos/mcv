@@ -1,7 +1,7 @@
 /**
  * CodexvantaOS — event-bus
  * 事件匯流排 — 事件發布/訂閱、路由、過濾
- * 
+ *
  * Layer: B-Runtime | Plane: Integration | Tier: 1
  * Philosophy: Native-first / Provider-agnostic
  * 「第三方服務是平台的擴充出口，不是平台成立的地基。」

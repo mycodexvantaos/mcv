@@ -8,7 +8,7 @@ metadata:
   capability: auth
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: "8.1"
+    mycodexvantaos.org/specRef: '8.1'
 spec:
   providerName: jwt-native
   isNative: true
@@ -16,4 +16,4 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_AUTH_JWT
   configSchemaRef: ./config.schema.json
-  description: "Native JWT-based authentication provider (no external IdP required)."
+  description: 'Native JWT-based authentication provider (no external IdP required).'

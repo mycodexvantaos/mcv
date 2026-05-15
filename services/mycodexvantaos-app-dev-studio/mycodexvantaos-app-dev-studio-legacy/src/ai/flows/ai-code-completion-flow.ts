@@ -12,8 +12,12 @@ import { z } from 'genkit';
 
 const AiCodeCompletionInputSchema = z.object({
   currentCode: z.string().describe('The full code content of the file.'),
-  language: z.string().describe('The programming language of the current file (e.g., "typescript", "python").'),
-  cursorPosition: z.number().describe('The 0-indexed character position of the cursor within the currentCode.'),
+  language: z
+    .string()
+    .describe('The programming language of the current file (e.g., "typescript", "python").'),
+  cursorPosition: z
+    .number()
+    .describe('The 0-indexed character position of the cursor within the currentCode.'),
 });
 export type AiCodeCompletionInput = z.infer<typeof AiCodeCompletionInputSchema>;
 
@@ -22,15 +26,21 @@ const AiCodeCompletionOutputSchema = z.object({
 });
 export type AiCodeCompletionOutput = z.infer<typeof AiCodeCompletionOutputSchema>;
 
-export async function aiCodeCompletion(input: AiCodeCompletionInput): Promise<AiCodeCompletionOutput> {
+export async function aiCodeCompletion(
+  input: AiCodeCompletionInput
+): Promise<AiCodeCompletionOutput> {
   if (!process.env.GEMINI_API_KEY) {
-    throw new Error('The GEMINI_API_KEY environment variable is not set. Please add it to your .env file to use AI features.');
+    throw new Error(
+      'The GEMINI_API_KEY environment variable is not set. Please add it to your .env file to use AI features.'
+    );
   }
   try {
     return await aiCodeCompletionFlow(input);
   } catch (e: any) {
     if (e.message.includes('API key not valid')) {
-      throw new Error('The provided GEMINI_API_KEY is invalid. Please check your .env file and provide a valid key from Google AI Studio.');
+      throw new Error(
+        'The provided GEMINI_API_KEY is invalid. Please check your .env file and provide a valid key from Google AI Studio.'
+      );
     }
     // Re-throw other errors
     throw e;
@@ -43,7 +53,9 @@ const aiCodeCompletionPrompt = ai.definePrompt({
   name: 'aiCodeCompletionPrompt',
   input: {
     schema: z.object({
-      codeWithCursor: z.string().describe('The code content with a ' + CURSOR_MARKER + ' marker at the cursor position.'),
+      codeWithCursor: z
+        .string()
+        .describe('The code content with a ' + CURSOR_MARKER + ' marker at the cursor position.'),
       language: z.string().describe('The programming language.'),
     }),
   },

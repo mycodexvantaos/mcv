@@ -91,7 +91,7 @@ Before integrating the Persona Engine, ensure you have:
 import {
   PersonaManager,
   OrchestratorAdapter,
-  createIntegration
+  createIntegration,
 } from '@mycodexvantaos/persona-engine';
 ```
 
@@ -102,7 +102,7 @@ import {
 const integration = createIntegration({
   enableCache: true,
   enableValidation: true,
-  enableBehavioralAdjustment: true
+  enableBehavioralAdjustment: true,
 });
 
 await integration.initialize();
@@ -112,18 +112,21 @@ const personaManager = new PersonaManager({
   urn: 'urn:mycodexvantaos:persona-manager:main',
   configPath: './config/personas',
   autoLoad: true,
-  enableCache: true
+  enableCache: true,
 });
 
-const orchestratorAdapter = new OrchestratorAdapter({
-  urn: 'urn:mycodexvantaos:adapter:persona-orchestrator',
-  orchestratorUrn: 'urn:mycodexvantaos:module:ai-team-orchestrator',
-  defaultPersonaArchetype: 'disrupter',
-  enableSemanticMaskDetection: true,
-  enableRootCauseAnalysis: true,
-  hitlThreshold: 0.8,
-  governanceTier: 1
-}, personaManager);
+const orchestratorAdapter = new OrchestratorAdapter(
+  {
+    urn: 'urn:mycodexvantaos:adapter:persona-orchestrator',
+    orchestratorUrn: 'urn:mycodexvantaos:module:ai-team-orchestrator',
+    defaultPersonaArchetype: 'disrupter',
+    enableSemanticMaskDetection: true,
+    enableRootCauseAnalysis: true,
+    hitlThreshold: 0.8,
+    governanceTier: 1,
+  },
+  personaManager
+);
 ```
 
 ### Step 3: Register Agents
@@ -134,14 +137,14 @@ integration.registerAgent({
   urn: 'urn:mycodexvantaos:agent:analyst-01',
   name: 'Primary Analyst',
   capabilities: ['data_analysis', 'pattern_recognition'],
-  personaArchetype: 'analyst'
+  personaArchetype: 'analyst',
 });
 
 integration.registerAgent({
   urn: 'urn:mycodexvantaos:agent:challenger-01',
   name: 'Critical Challenger',
   capabilities: ['critical_review', 'assumption_testing'],
-  personaArchetype: 'disrupter'
+  personaArchetype: 'disrupter',
 });
 ```
 
@@ -155,8 +158,8 @@ const result = await integration.processTask({
   input: 'I need help understanding why my team is resistant to change.',
   metadata: {
     sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
-    timestamp: new Date().toISOString()
-  }
+    timestamp: new Date().toISOString(),
+  },
 });
 
 console.log(result.content);
@@ -175,15 +178,15 @@ import { PersonaOrchestratorIntegration } from '@mycodexvantaos/persona-engine';
 
 class MultiPersonaAnalysis {
   private integration: PersonaOrchestratorIntegration;
-  
+
   constructor(integration: PersonaOrchestratorIntegration) {
     this.integration = integration;
   }
-  
+
   async analyzeWithMultiplePerspectives(input: string): Promise<Map<string, string>> {
     const perspectives = new Map<string, string>();
     const archetypes: PersonaArchetype[] = ['disrupter', 'analyst', 'synthesizer'];
-    
+
     for (const archetype of archetypes) {
       const result = await this.integration.processTask({
         taskId: `analysis-${archetype}-${Date.now()}`,
@@ -193,13 +196,13 @@ class MultiPersonaAnalysis {
         preferredArchetype: archetype,
         metadata: {
           sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
-          timestamp: new Date().toISOString()
-        }
+          timestamp: new Date().toISOString(),
+        },
       });
-      
+
       perspectives.set(archetype, result.content);
     }
-    
+
     return perspectives;
   }
 }
@@ -217,17 +220,17 @@ function selectPersonaForContext(context: AdjustmentContext): PersonaArchetype {
   if (context.topicSensitivity && context.topicSensitivity > 0.7) {
     return 'mediator';
   }
-  
+
   // Low engagement - use mentor
   if (context.engagementLevel && context.engagementLevel < 0.3) {
     return 'mentor';
   }
-  
+
   // Complex topic - use synthesizer
   if (context.topicComplexity && context.topicComplexity > 0.8) {
     return 'synthesizer';
   }
-  
+
   // Default to disrupter for challenging assumptions
   return 'disrupter';
 }
@@ -241,17 +244,14 @@ import { PersonaCacheManager } from '@mycodexvantaos/persona-engine';
 const cache = new PersonaCacheManager({
   maxEntries: 2000,
   defaultTTL: 600000, // 10 minutes
-  enableLRU: true
+  enableLRU: true,
 });
 
 // Cache analysis results
 cache.setAnalysisResult(sessionId, 'root_cause', diagnosisResult);
 
 // Retrieve cached results
-const cachedDiagnosis = cache.getAnalysisResult<RootCauseDiagnosis>(
-  sessionId, 
-  'root_cause'
-);
+const cachedDiagnosis = cache.getAnalysisResult<RootCauseDiagnosis>(sessionId, 'root_cause');
 
 // Invalidate session cache when done
 cache.invalidateSession(sessionId);
@@ -271,15 +271,15 @@ adapter.addEventListener((event) => {
     case 'session_created':
       handleNewSession(event.data);
       break;
-      
+
     case 'mask_detected':
       handleSemanticMask(event.data);
       break;
-      
+
     case 'hitl_triggered':
       escalateToHuman(event.data);
       break;
-      
+
     case 'error':
       logError(event.data);
       break;
@@ -296,12 +296,9 @@ interface WorkflowController {
   escalate(sessionId: string, reason: string): void;
 }
 
-function handleHITLTrigger(
-  event: AdapterEvent, 
-  controller: WorkflowController
-): void {
+function handleHITLTrigger(event: AdapterEvent, controller: WorkflowController): void {
   const { sessionId, triggers } = event.data;
-  
+
   for (const trigger of triggers) {
     if (trigger.severity === 'high') {
       controller.pause(sessionId);
@@ -319,23 +316,32 @@ function handleHITLTrigger(
 
 ```typescript
 // Tier 0: Basic logging
-const basicAdapter = new OrchestratorAdapter({
-  governanceTier: 0,
-  // ... other config
-}, personaManager);
+const basicAdapter = new OrchestratorAdapter(
+  {
+    governanceTier: 0,
+    // ... other config
+  },
+  personaManager
+);
 
 // Tier 2: Human review required
-const reviewedAdapter = new OrchestratorAdapter({
-  governanceTier: 2,
-  hitlThreshold: 0.5, // Lower threshold = more human reviews
-  // ... other config
-}, personaManager);
+const reviewedAdapter = new OrchestratorAdapter(
+  {
+    governanceTier: 2,
+    hitlThreshold: 0.5, // Lower threshold = more human reviews
+    // ... other config
+  },
+  personaManager
+);
 
 // Tier 3: Maximum audit trail
-const auditedAdapter = new OrchestratorAdapter({
-  governanceTier: 3,
-  // ... other config
-}, personaManager);
+const auditedAdapter = new OrchestratorAdapter(
+  {
+    governanceTier: 3,
+    // ... other config
+  },
+  personaManager
+);
 ```
 
 ### HITL Checkpoint Configuration
@@ -346,18 +352,18 @@ const hitlConfig = {
     {
       condition: 'confidence_below_threshold',
       threshold: 0.6,
-      action: 'request_human_review'
+      action: 'request_human_review',
     },
     {
       condition: 'sensitive_topic_detected',
       keywords: ['mental_health', 'crisis', 'emergency'],
-      action: 'immediate_escalation'
+      action: 'immediate_escalation',
     },
     {
       condition: 'no_solutions_generated',
-      action: 'request_human_input'
-    }
-  ]
+      action: 'request_human_input',
+    },
+  ],
 };
 ```
 
@@ -382,32 +388,31 @@ cache.invalidateByTag('analysis');
 ### Batch Processing
 
 ```typescript
-async function processBatch(
-  inputs: string[], 
-  archetype: PersonaArchetype
-): Promise<TaskResult[]> {
+async function processBatch(inputs: string[], archetype: PersonaArchetype): Promise<TaskResult[]> {
   const results: TaskResult[] = [];
-  
+
   // Process in parallel with concurrency limit
   const batchSize = 5;
   for (let i = 0; i < inputs.length; i += batchSize) {
     const batch = inputs.slice(i, i + batchSize);
     const batchResults = await Promise.all(
-      batch.map(input => integration.processTask({
-        taskId: `batch-${i}-${Date.now()}`,
-        type: 'analysis',
-        priority: 'medium',
-        input,
-        preferredArchetype: archetype,
-        metadata: {
-          sourceAgentUrn: 'urn:mycodexvantaos:agent:batch-processor',
-          timestamp: new Date().toISOString()
-        }
-      }))
+      batch.map((input) =>
+        integration.processTask({
+          taskId: `batch-${i}-${Date.now()}`,
+          type: 'analysis',
+          priority: 'medium',
+          input,
+          preferredArchetype: archetype,
+          metadata: {
+            sourceAgentUrn: 'urn:mycodexvantaos:agent:batch-processor',
+            timestamp: new Date().toISOString(),
+          },
+        })
+      )
     );
     results.push(...batchResults);
   }
-  
+
   return results;
 }
 ```
@@ -427,25 +432,24 @@ async function safeProcess(task: OrchestratorTask): Promise<TaskResult> {
     if (!task.input || task.input.trim().length === 0) {
       throw new Error('Empty input provided');
     }
-    
+
     const result = await integration.processTask(task);
-    
+
     // Check for processing issues
     if (!result.success) {
       logWarning('Processing failed', { taskId: task.taskId, result });
     }
-    
+
     return result;
-    
   } catch (error) {
     if (error instanceof ValidationError) {
       return createErrorResult(task.taskId, 'validation_failed', error.message);
     }
-    
+
     if (error instanceof TimeoutError) {
       return createErrorResult(task.taskId, 'timeout', 'Processing timed out');
     }
-    
+
     return createErrorResult(task.taskId, 'unknown', 'An unexpected error occurred');
   }
 }
@@ -462,19 +466,19 @@ import { PersonaValidator, PersonaCacheManager } from '@mycodexvantaos/persona-e
 
 describe('PersonaOrchestratorIntegration', () => {
   let integration: PersonaOrchestratorIntegration;
-  
+
   beforeEach(async () => {
     integration = createIntegration({
       enableCache: true,
-      enableValidation: true
+      enableValidation: true,
     });
     await integration.initialize();
   });
-  
+
   afterEach(() => {
     integration.shutdown();
   });
-  
+
   test('should process task with correct persona', async () => {
     const result = await integration.processTask({
       taskId: 'test-001',
@@ -484,14 +488,14 @@ describe('PersonaOrchestratorIntegration', () => {
       preferredArchetype: 'analyst',
       metadata: {
         sourceAgentUrn: 'test-agent',
-        timestamp: new Date().toISOString()
-      }
+        timestamp: new Date().toISOString(),
+      },
     });
-    
+
     expect(result.success).toBe(true);
     expect(result.personaArchetype).toBe('analyst');
   });
-  
+
   test('should detect semantic masks', async () => {
     const result = await integration.processTask({
       taskId: 'test-002',
@@ -500,10 +504,10 @@ describe('PersonaOrchestratorIntegration', () => {
       input: 'Everything happens for a reason. The universe has a plan.',
       metadata: {
         sourceAgentUrn: 'test-agent',
-        timestamp: new Date().toISOString()
-      }
+        timestamp: new Date().toISOString(),
+      },
     });
-    
+
     expect(result.insights?.semanticMasks).toBeDefined();
     expect(result.insights?.semanticMasks?.length).toBeGreaterThan(0);
   });
@@ -520,7 +524,7 @@ describe('PersonaOrchestratorIntegration', () => {
 // Health check endpoint
 app.get('/health/persona-engine', (req, res) => {
   const health = integration.getHealthStatus();
-  
+
   res.status(health.status === 'healthy' ? 200 : 503).json(health);
 });
 ```
@@ -533,7 +537,7 @@ const metrics = {
   tasksProcessed: new Counter('persona_tasks_processed_total'),
   processingTime: new Histogram('persona_processing_time_ms'),
   cacheHits: new Counter('persona_cache_hits_total'),
-  cacheMisses: new Counter('persona_cache_misses_total')
+  cacheMisses: new Counter('persona_cache_misses_total'),
 };
 
 integration.addEventListener((event) => {
@@ -550,16 +554,16 @@ integration.addEventListener((event) => {
 ```typescript
 process.on('SIGTERM', async () => {
   console.log('Shutting down Persona Engine...');
-  
+
   // Stop accepting new tasks
   integration.pause();
-  
+
   // Wait for current tasks to complete
   await integration.drain();
-  
+
   // Clean up resources
   integration.shutdown();
-  
+
   process.exit(0);
 });
 ```
@@ -571,12 +575,14 @@ process.on('SIGTERM', async () => {
 ### Common Issues
 
 1. **Persona not found**: Ensure persona configurations are loaded
+
    ```typescript
    const available = integration.getAvailablePersonas();
    console.log('Available personas:', available);
    ```
 
 2. **Cache not working**: Check cache statistics
+
    ```typescript
    const stats = cache.getStatistics();
    console.log('Cache hit ratio:', stats.hitRatio);
@@ -584,10 +590,13 @@ process.on('SIGTERM', async () => {
 
 3. **HITL triggering too often**: Adjust threshold
    ```typescript
-   const adapter = new OrchestratorAdapter({
-     hitlThreshold: 0.9, // Higher = fewer triggers
-     // ...
-   }, personaManager);
+   const adapter = new OrchestratorAdapter(
+     {
+       hitlThreshold: 0.9, // Higher = fewer triggers
+       // ...
+     },
+     personaManager
+   );
    ```
 
 ---
@@ -602,4 +611,4 @@ For additional support:
 
 ---
 
-*Last updated: 2024-01-15*
+_Last updated: 2024-01-15_

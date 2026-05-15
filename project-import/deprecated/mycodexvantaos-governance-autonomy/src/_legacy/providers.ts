@@ -1,7 +1,7 @@
 /**
  * CodexvantaOS — governance-autonomy Provider Initialization
  * Philosophy: Native-first / Provider-agnostic
- * 
+ *
  * This module initializes the required providers using ProviderRegistry.
  * In Native mode: all providers use built-in implementations.
  * In Connected mode: providers use external services.
@@ -11,7 +11,11 @@
 import { ProviderRegistry } from '@codexvanta/core-kernel';
 
 // Provider type imports
-import type { DatabaseProvider, StateStoreProvider, NotificationProvider } from '@codexvanta/core-kernel';
+import type {
+  DatabaseProvider,
+  StateStoreProvider,
+  NotificationProvider,
+} from '@codexvanta/core-kernel';
 
 export interface Providers {
   database: DatabaseProvider;

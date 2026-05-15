@@ -4,13 +4,7 @@
  */
 
 import { v4 as uuidv4 } from 'uuid';
-import type {
-  AgentProfile,
-  AgentURN,
-  AgentInstanceState,
-  TaskURN,
-  GovernanceTier,
-} from '../types';
+import type { AgentProfile, AgentURN, AgentInstanceState, TaskURN, GovernanceTier } from '../types';
 import { MessageBus } from './message-bus';
 import { GovernanceEnforcer } from './governance-enforcer';
 
@@ -113,7 +107,9 @@ export class AgentManager {
 
     // Cannot unregister agent that is busy
     if (state.status === 'busy') {
-      throw new Error(`Cannot unregister agent ${agentId}: agent is busy with task ${state.current_task_id}`);
+      throw new Error(
+        `Cannot unregister agent ${agentId}: agent is busy with task ${state.current_task_id}`
+      );
     }
 
     this.agents.delete(agentId);
@@ -229,11 +225,7 @@ export class AgentManager {
    * @param context - Context to add
    * @param compress - Whether to compress if over threshold
    */
-  public updateContext(
-    agentId: AgentURN,
-    context: unknown,
-    compress: boolean = true
-  ): void {
+  public updateContext(agentId: AgentURN, context: unknown, compress: boolean = true): void {
     const state = this.agents.get(agentId);
     if (!state) {
       throw new Error(`Agent ${agentId} not found`);
@@ -243,8 +235,8 @@ export class AgentManager {
     state.last_activity = new Date().toISOString();
 
     // Check if compression needed
-    const capacity = state.profile.memory_configuration?.short_term_capacity
-      ?? this.config.defaultContextCapacity;
+    const capacity =
+      state.profile.memory_configuration?.short_term_capacity ?? this.config.defaultContextCapacity;
 
     if (compress && this.shouldCompress(state, capacity)) {
       this.compressContext(state, capacity);

@@ -3,13 +3,7 @@
  * @module @mycodexvantaos/ai-team-orchestrator/core
  */
 
-import type {
-  AgentProfile,
-  AgentURN,
-  GovernanceTier,
-  ToolURN,
-  TaskURN,
-} from '../types';
+import type { AgentProfile, AgentURN, GovernanceTier, ToolURN, TaskURN } from '../types';
 
 /**
  * Permission types for governance checks
@@ -156,10 +150,7 @@ export class GovernanceEnforcer {
    * @returns true if permitted
    * @throws Error if not permitted
    */
-  public validateTierPermissions(
-    tier: GovernanceTier,
-    permission: PermissionType
-  ): boolean {
+  public validateTierPermissions(tier: GovernanceTier, permission: PermissionType): boolean {
     const rule = this.permissionRules.get(permission);
 
     if (!rule) {
@@ -337,9 +328,7 @@ export class GovernanceEnforcer {
       // Check effective dates
       const now = new Date();
       const effectiveFrom = new Date(policy.effective_from);
-      const effectiveUntil = policy.effective_until
-        ? new Date(policy.effective_until)
-        : null;
+      const effectiveUntil = policy.effective_until ? new Date(policy.effective_until) : null;
 
       if (now >= effectiveFrom && (!effectiveUntil || now <= effectiveUntil)) {
         // Apply policy rules
@@ -369,9 +358,7 @@ export class GovernanceEnforcer {
     return Array.from(this.policies.values()).filter((policy) => {
       if (policy.status !== 'active') return false;
       const effectiveFrom = new Date(policy.effective_from);
-      const effectiveUntil = policy.effective_until
-        ? new Date(policy.effective_until)
-        : null;
+      const effectiveUntil = policy.effective_until ? new Date(policy.effective_until) : null;
       return now >= effectiveFrom && (!effectiveUntil || now <= effectiveUntil);
     });
   }
@@ -450,7 +437,7 @@ export class GovernanceEnforcer {
    */
   public checkPermission(check: PermissionCheck): GovernanceDecision {
     const agentTier = this.getAgentTier(check.agent_urn);
-    
+
     // Restricted tier (-1) agents are denied all actions
     if (agentTier === -1) {
       return {
@@ -463,13 +450,13 @@ export class GovernanceEnforcer {
     // Map resource:action to permission type
     const permissionKey = `${check.resource}:${check.action}` as PermissionType;
     const rule = this.permissionRules.get(permissionKey);
-    
+
     // Check if we have a specific rule for this permission
     if (rule) {
       const hasPermission = agentTier >= rule.minTier;
       return {
         allowed: hasPermission,
-        reason: hasPermission 
+        reason: hasPermission
           ? `Agent has sufficient tier (${agentTier}) for ${check.action} on ${check.resource}`
           : `Agent has insufficient tier (${agentTier}) for ${check.action} on ${check.resource}. Required: ${rule.minTier}`,
         tier: agentTier,
@@ -480,9 +467,10 @@ export class GovernanceEnforcer {
     // Default: allow if tier >= 0, deny otherwise
     return {
       allowed: agentTier >= 0,
-      reason: agentTier >= 0 
-        ? `Agent has sufficient tier (${agentTier}) for ${check.action} on ${check.resource}`
-        : `Agent has insufficient tier (${agentTier}) for ${check.action} on ${check.resource}`,
+      reason:
+        agentTier >= 0
+          ? `Agent has sufficient tier (${agentTier}) for ${check.action} on ${check.resource}`
+          : `Agent has insufficient tier (${agentTier}) for ${check.action} on ${check.resource}`,
       tier: agentTier,
     };
   }
@@ -493,7 +481,7 @@ export class GovernanceEnforcer {
    * @returns Array of GovernanceDecision results
    */
   public batchCheckPermissions(checks: PermissionCheck[]): GovernanceDecision[] {
-    return checks.map(check => this.checkPermission(check));
+    return checks.map((check) => this.checkPermission(check));
   }
 
   /**
@@ -510,9 +498,9 @@ export class GovernanceEnforcer {
     const decisions = this.batchCheckPermissions(checks);
     return {
       total: decisions.length,
-      allowed: decisions.filter(d => d.allowed).length,
-      denied: decisions.filter(d => !d.allowed).length,
-      requiresApproval: decisions.filter(d => d.requiresApproval).length,
+      allowed: decisions.filter((d) => d.allowed).length,
+      denied: decisions.filter((d) => !d.allowed).length,
+      requiresApproval: decisions.filter((d) => d.requiresApproval).length,
     };
   }
 

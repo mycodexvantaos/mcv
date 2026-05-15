@@ -35,7 +35,7 @@ export class AdvancedMonitoring {
             id: `alert_${now}_${monitor.name}`,
             severity: 'warning',
             message: `Monitor ${monitor.name}: ${result.message}`,
-            timestamp: now
+            timestamp: now,
           });
         }
       } catch (error) {
@@ -43,7 +43,7 @@ export class AdvancedMonitoring {
           id: `alert_${now}_${monitor.name}`,
           severity: 'error',
           message: `Monitor ${monitor.name} failed: ${error}`,
-          timestamp: now
+          timestamp: now,
         });
       }
     }
@@ -60,7 +60,7 @@ export class AdvancedMonitoring {
 
   getAlerts(severity?: string): Alert[] {
     if (severity) {
-      return this.alerts.filter(a => a.severity === severity);
+      return this.alerts.filter((a) => a.severity === severity);
     }
     return this.alerts;
   }

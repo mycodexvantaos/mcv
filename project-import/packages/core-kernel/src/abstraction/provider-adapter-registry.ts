@@ -1,6 +1,6 @@
 /**
  * Provider Adapter Registry
- * 
+ *
  * Central registry for managing provider adapters across all capabilities.
  * Handles adapter registration, resolution, and runtime mode-based filtering.
  */
@@ -12,7 +12,7 @@ import {
   ProviderAdapterFactory,
   ProviderAdapterMetadata,
   AdapterConfiguration,
-  AdapterHealthStatus
+  AdapterHealthStatus,
 } from './provider-adapter.interface';
 import { ProviderHealthStatus } from '../interfaces/runtime';
 
@@ -38,30 +38,33 @@ export class ProviderAdapterRegistry extends EventEmitter {
    */
   registerFactory(factory: ProviderAdapterFactory): void {
     const metadata = factory.getMetadata();
-    
+
     if (!metadata.name || !metadata.capability) {
       throw new Error('Factory metadata missing required fields');
     }
 
     this.factories.set(metadata.name, factory);
-    
-    logger.info({ 
-      factory: metadata.name, 
-      capability: metadata.capability 
-    }, 'Adapter factory registered');
+
+    logger.info(
+      {
+        factory: metadata.name,
+        capability: metadata.capability,
+      },
+      'Adapter factory registered'
+    );
   }
 
   /**
    * Register an adapter instance
    */
-  async registerAdapter(
-    adapter: ProviderAdapter,
-    config: AdapterConfiguration
-  ): Promise<void> {
-    logger.info({ 
-      adapter: adapter.name, 
-      capability: adapter.capability 
-    }, 'Registering provider adapter');
+  async registerAdapter(adapter: ProviderAdapter, config: AdapterConfiguration): Promise<void> {
+    logger.info(
+      {
+        adapter: adapter.name,
+        capability: adapter.capability,
+      },
+      'Registering provider adapter'
+    );
 
     try {
       // Create metadata
@@ -69,7 +72,7 @@ export class ProviderAdapterRegistry extends EventEmitter {
         name: adapter.name,
         capability: adapter.capability,
         version: '1.0.0',
-        supportedRuntimeModes: adapter.runtimeModes
+        supportedRuntimeModes: adapter.runtimeModes,
       };
 
       // Initialize adapter
@@ -82,7 +85,7 @@ export class ProviderAdapterRegistry extends EventEmitter {
         config,
         status: 'active',
         registeredAt: new Date(),
-        lastHealthCheck: new Date()
+        lastHealthCheck: new Date(),
       };
 
       // Store registration
@@ -93,9 +96,9 @@ export class ProviderAdapterRegistry extends EventEmitter {
       this.updateRuntimeModeIndex(adapter.runtimeModes, adapter.name);
 
       // Emit registration event
-      this.emit('adapter:registered', { 
-        adapter: adapter.name, 
-        capability: adapter.capability 
+      this.emit('adapter:registered', {
+        adapter: adapter.name,
+        capability: adapter.capability,
       });
 
       logger.info({ adapter: adapter.name }, 'Provider adapter registered successfully');
@@ -109,10 +112,13 @@ export class ProviderAdapterRegistry extends EventEmitter {
    * Create and register an adapter from factory
    */
   async createAdapter(config: AdapterConfiguration): Promise<ProviderAdapter> {
-    logger.info({ 
-      capability: config.capability,
-      implementation: config.implementation 
-    }, 'Creating adapter from factory');
+    logger.info(
+      {
+        capability: config.capability,
+        implementation: config.implementation,
+      },
+      'Creating adapter from factory'
+    );
 
     const factory = this.factories.get(config.implementation);
     if (!factory) {
@@ -170,7 +176,7 @@ export class ProviderAdapterRegistry extends EventEmitter {
 
     // Sort by priority if preferred adapter not specified
     if (options?.preferredAdapter) {
-      const preferred = adapters.find(a => a.name === options.preferredAdapter);
+      const preferred = adapters.find((a) => a.name === options.preferredAdapter);
       if (preferred) {
         return [preferred];
       }
@@ -206,8 +212,8 @@ export class ProviderAdapterRegistry extends EventEmitter {
    */
   getAllAdapters(): ProviderAdapter[] {
     return Array.from(this.adapters.values())
-      .filter(reg => reg.status === 'active')
-      .map(reg => reg.adapter);
+      .filter((reg) => reg.status === 'active')
+      .map((reg) => reg.adapter);
   }
 
   /**
@@ -240,14 +246,14 @@ export class ProviderAdapterRegistry extends EventEmitter {
     for (const [name, registration] of this.adapters) {
       try {
         const isHealthy = await registration.adapter.healthCheck();
-        
+
         registration.lastHealthCheck = new Date();
         registration.status = isHealthy ? 'active' : 'inactive';
 
         const healthStatus: AdapterHealthStatus = {
           adapterName: name,
           status: isHealthy ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.UNHEALTHY,
-          timestamp: registration.lastHealthCheck
+          timestamp: registration.lastHealthCheck,
         };
 
         results.set(name, healthStatus);
@@ -264,7 +270,7 @@ export class ProviderAdapterRegistry extends EventEmitter {
           adapterName: name,
           status: ProviderHealthStatus.UNHEALTHY,
           timestamp: registration.lastHealthCheck,
-          message: error instanceof Error ? error.message : 'Unknown error'
+          message: error instanceof Error ? error.message : 'Unknown error',
         };
 
         results.set(name, healthStatus);
@@ -323,7 +329,7 @@ export class ProviderAdapterRegistry extends EventEmitter {
       activeAdapters: 0,
       inactiveAdapters: 0,
       errorAdapters: 0,
-      adaptersByCapability: {} as Record<string, number>
+      adaptersByCapability: {} as Record<string, number>,
     };
 
     for (const registration of this.adapters.values()) {

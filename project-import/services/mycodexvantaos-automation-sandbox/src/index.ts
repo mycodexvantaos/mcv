@@ -1,10 +1,10 @@
-import pino from "pino";
+import pino from 'pino';
 
-const logger = pino({ name: "fleet-sandbox" });
+const logger = pino({ name: 'fleet-sandbox' });
 
-export * from "./types";
-export { SandboxManagerService } from "./sandbox-manager";
+export * from './types';
+export { SandboxManagerService } from './sandbox-manager';
 
 export async function bootstrap(): Promise<void> {
-  logger.info("fleet-sandbox initialized");
+  logger.info('fleet-sandbox initialized');
 }

@@ -63,21 +63,21 @@
 
 ## Provider Dependencies
 
-| Provider | Usage |
-|---|---|
-| DatabaseProvider | Governance state, approval history, compliance records |
-| StateStoreProvider | Active approval workflows and pending decisions |
-| NotificationProvider | Approval requests, escalation alerts, compliance reports |
-| ObservabilityProvider | Governance metrics and compliance posture telemetry |
-| AuthProvider | Role-based approval authority verification |
+| Provider              | Usage                                                    |
+| --------------------- | -------------------------------------------------------- |
+| DatabaseProvider      | Governance state, approval history, compliance records   |
+| StateStoreProvider    | Active approval workflows and pending decisions          |
+| NotificationProvider  | Approval requests, escalation alerts, compliance reports |
+| ObservabilityProvider | Governance metrics and compliance posture telemetry      |
+| AuthProvider          | Role-based approval authority verification               |
 
 ## Operational Modes
 
-| Mode | Behavior |
-|---|---|
-| **Native** | Local rule evaluation, SQLite governance store, in-memory workflows |
+| Mode          | Behavior                                                                 |
+| ------------- | ------------------------------------------------------------------------ |
+| **Native**    | Local rule evaluation, SQLite governance store, in-memory workflows      |
 | **Connected** | External approval systems, PostgreSQL governance DB, Slack notifications |
-| **Hybrid** | Native evaluation with external notification delivery |
+| **Hybrid**    | Native evaluation with external notification delivery                    |
 
 ## Directory Structure
 

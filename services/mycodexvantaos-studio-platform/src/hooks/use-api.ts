@@ -71,7 +71,7 @@ function useApiQuery<T>(
       return () => clearInterval(id);
     }
     return () => abortRef.current?.abort();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [url, enabled]);
 
   return { data, isLoading, isError, error, refetch: fetchData };
@@ -97,7 +97,10 @@ export function useInferenceModels() {
 
 /** Inference time-series metrics */
 export function useInferenceMetrics(hours = 24, modelId?: string) {
-  const qs = new URLSearchParams({ hours: String(hours), ...(modelId ? { modelId } : {}) }).toString();
+  const qs = new URLSearchParams({
+    hours: String(hours),
+    ...(modelId ? { modelId } : {}),
+  }).toString();
   return useApiQuery(`/api/inference/metrics?${qs}`, { refetchIntervalMs: 60_000 });
 }
 
@@ -129,9 +132,18 @@ export function useSecurity() {
 }
 
 /** Audit log entries with pagination */
-export function useAuditLog(params?: { page?: number; limit?: number; actor?: string; action?: string }) {
+export function useAuditLog(params?: {
+  page?: number;
+  limit?: number;
+  actor?: string;
+  action?: string;
+}) {
   const qs = new URLSearchParams(
-    Object.fromEntries(Object.entries(params ?? {}).filter(([, v]) => v !== undefined).map(([k, v]) => [k, String(v)]))
+    Object.fromEntries(
+      Object.entries(params ?? {})
+        .filter(([, v]) => v !== undefined)
+        .map(([k, v]) => [k, String(v)])
+    )
   ).toString();
   return useApiQuery(`/api/audit${qs ? `?${qs}` : ''}`, { refetchIntervalMs: 30_000 });
 }

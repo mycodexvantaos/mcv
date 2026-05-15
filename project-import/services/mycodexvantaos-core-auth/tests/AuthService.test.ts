@@ -27,27 +27,27 @@ jest.mock('bcrypt', () => ({
   hash: jest.fn().mockResolvedValue('mock-hashed-password'),
 }));
 
-import { AuthService } from "../src/services/AuthService";
-import { TokenService } from "../src/services/TokenService";
+import { AuthService } from '../src/services/AuthService';
+import { TokenService } from '../src/services/TokenService';
 
-describe("AuthService", () => {
-  const tokenService = new TokenService("test-secret", 3600);
+describe('AuthService', () => {
+  const tokenService = new TokenService('test-secret', 3600);
   const authService = new AuthService(tokenService);
 
-  it("should return null for empty credentials (no DB call)", async () => {
+  it('should return null for empty credentials (no DB call)', async () => {
     // AuthService checks `!email || !password` before calling Prisma
-    const result = await authService.login("", "");
+    const result = await authService.login('', '');
     expect(result).toBeNull();
   });
 
-  it("should return null when only email provided", async () => {
-    const result = await authService.login("user@test.com", "");
+  it('should return null when only email provided', async () => {
+    const result = await authService.login('user@test.com', '');
     expect(result).toBeNull();
   });
 
-  it("should return token for valid credentials", async () => {
+  it('should return token for valid credentials', async () => {
     // Prisma mock returns a user; bcrypt.compare mock returns true
-    const result = await authService.login("user@test.com", "password");
+    const result = await authService.login('user@test.com', 'password');
     expect(result).not.toBeNull();
     expect(result?.token).toBeDefined();
     expect(result?.expiresIn).toBe(3600);

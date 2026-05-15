@@ -48,7 +48,7 @@ export class ComplianceChecker {
           ruleName: rule.name,
           severity: rule.severity,
           message: result.details,
-          recommendation: `Fix compliance issue for ${rule.name}`
+          recommendation: `Fix compliance issue for ${rule.name}`,
         });
       }
     }
@@ -58,7 +58,7 @@ export class ComplianceChecker {
       totalRules: this.rules.size,
       compliantRules: compliantCount,
       nonCompliantRules: violations.length,
-      violations
+      violations,
     };
   }
 

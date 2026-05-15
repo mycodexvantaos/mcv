@@ -2,21 +2,21 @@
 # URN: urn:mycodexvantaos:workflow:problem-decomposition
 # Version: 1.0.0
 
-urn: "urn:mycodexvantaos:workflow:problem-decomposition"
-name: "Problem Decomposition Workflow"
-version: "1.0.0"
-description: "Systematic decomposition of complex problems into manageable components"
+urn: 'urn:mycodexvantaos:workflow:problem-decomposition'
+name: 'Problem Decomposition Workflow'
+version: '1.0.0'
+description: 'Systematic decomposition of complex problems into manageable components'
 
 # Workflow metadata
 metadata:
-  created_at: "2024-01-15T00:00:00Z"
-  updated_at: "2024-01-15T00:00:00Z"
-  author: "MyCodeXvantaOS Team"
+  created_at: '2024-01-15T00:00:00Z'
+  updated_at: '2024-01-15T00:00:00Z'
+  author: 'MyCodeXvantaOS Team'
   tags:
-    - "decomposition"
-    - "analysis"
-    - "problem-solving"
-    - "structural"
+    - 'decomposition'
+    - 'analysis'
+    - 'problem-solving'
+    - 'structural'
 
 # Workflow configuration
 config:
@@ -27,271 +27,271 @@ config:
 
 # Trigger configuration
 triggers:
-  - type: "manual"
-    description: "Manually triggered problem decomposition"
-  - type: "api"
-    endpoint: "/api/v1/decompose"
-    method: "POST"
+  - type: 'manual'
+    description: 'Manually triggered problem decomposition'
+  - type: 'api'
+    endpoint: '/api/v1/decompose'
+    method: 'POST'
 
 # Input schema
 input_schema:
-  type: "object"
+  type: 'object'
   required:
-    - "problem_statement"
+    - 'problem_statement'
   properties:
     problem_statement:
-      type: "string"
-      description: "The problem to decompose"
+      type: 'string'
+      description: 'The problem to decompose'
       minLength: 20
       maxLength: 5000
     decomposition_depth:
-      type: "integer"
-      description: "Maximum depth of decomposition"
+      type: 'integer'
+      description: 'Maximum depth of decomposition'
       minimum: 1
       maximum: 5
       default: 3
     focus_areas:
-      type: "array"
-      description: "Specific areas to focus decomposition"
+      type: 'array'
+      description: 'Specific areas to focus decomposition'
       items:
-        type: "string"
+        type: 'string'
     constraints:
-      type: "object"
-      description: "Constraints for the decomposition"
+      type: 'object'
+      description: 'Constraints for the decomposition'
       properties:
         time_limit:
-          type: "string"
+          type: 'string'
         resources:
-          type: "array"
+          type: 'array'
           items:
-            type: "string"
+            type: 'string'
         exclusions:
-          type: "array"
+          type: 'array'
           items:
-            type: "string"
+            type: 'string'
 
 # Workflow steps
 steps:
   # Step 1: Problem Classification
-  - id: "problem-classification"
-    name: "Problem Classification"
-    description: "Classify the problem type and complexity"
-    type: "classification"
-    
+  - id: 'problem-classification'
+    name: 'Problem Classification'
+    description: 'Classify the problem type and complexity'
+    type: 'classification'
+
     action:
-      type: "problem_analysis"
+      type: 'problem_analysis'
       config:
         classification_models:
-          - "complexity_assessment"
-          - "domain_identification"
-          - "stakeholder_mapping"
-    
+          - 'complexity_assessment'
+          - 'domain_identification'
+          - 'stakeholder_mapping'
+
     outputs:
-      - name: "problem_type"
-        type: "string"
-        enum: ["technical", "process", "interpersonal", "strategic", "operational", "mixed"]
-      - name: "complexity_score"
-        type: "number"
+      - name: 'problem_type'
+        type: 'string'
+        enum: ['technical', 'process', 'interpersonal', 'strategic', 'operational', 'mixed']
+      - name: 'complexity_score'
+        type: 'number'
         minimum: 1
         maximum: 10
-      - name: "domain_tags"
-        type: "array"
-      - name: "stakeholders"
-        type: "array"
+      - name: 'domain_tags'
+        type: 'array'
+      - name: 'stakeholders'
+        type: 'array'
 
   # Step 2: Initial Decomposition
-  - id: "initial-decomposition"
-    name: "Initial Decomposition"
-    description: "Break down problem into primary components"
-    type: "decomposition"
-    
+  - id: 'initial-decomposition'
+    name: 'Initial Decomposition'
+    description: 'Break down problem into primary components'
+    type: 'decomposition'
+
     depends_on:
-      - "problem-classification"
-    
+      - 'problem-classification'
+
     action:
-      type: "structural_decomposition"
+      type: 'structural_decomposition'
       config:
-        method: "issue_tree"
+        method: 'issue_tree'
         max_components: 7
         mutually_exclusive: true
         collectively_exhaustive: true
-    
+
     outputs:
-      - name: "primary_components"
-        type: "array"
-        description: "Primary problem components"
+      - name: 'primary_components'
+        type: 'array'
+        description: 'Primary problem components'
         items:
-          type: "object"
+          type: 'object'
           properties:
             id:
-              type: "string"
+              type: 'string'
             name:
-              type: "string"
+              type: 'string'
             description:
-              type: "string"
+              type: 'string'
             relationships:
-              type: "array"
+              type: 'array'
 
   # Step 3: Component Analysis
-  - id: "component-analysis"
-    name: "Component Analysis"
-    description: "Analyze each component in depth"
-    type: "analysis"
-    
+  - id: 'component-analysis'
+    name: 'Component Analysis'
+    description: 'Analyze each component in depth'
+    type: 'analysis'
+
     depends_on:
-      - "initial-decomposition"
-    
+      - 'initial-decomposition'
+
     action:
-      type: "parallel_analysis"
+      type: 'parallel_analysis'
       config:
         analysis_types:
-          - "causal_factors"
-          - "dependencies"
-          - "impact_assessment"
-          - "feasibility_check"
+          - 'causal_factors'
+          - 'dependencies'
+          - 'impact_assessment'
+          - 'feasibility_check'
         max_parallel: 5
-    
+
     outputs:
-      - name: "component_analyses"
-        type: "array"
-        description: "Detailed analysis for each component"
-      - name: "dependency_graph"
-        type: "object"
-        description: "Component dependency relationships"
-      - name: "impact_matrix"
-        type: "object"
-        description: "Impact assessment matrix"
+      - name: 'component_analyses'
+        type: 'array'
+        description: 'Detailed analysis for each component'
+      - name: 'dependency_graph'
+        type: 'object'
+        description: 'Component dependency relationships'
+      - name: 'impact_matrix'
+        type: 'object'
+        description: 'Impact assessment matrix'
 
   # Step 4: Root Cause Mapping
-  - id: "root-cause-mapping"
-    name: "Root Cause Mapping"
-    description: "Map root causes to components"
-    type: "analysis"
-    
+  - id: 'root-cause-mapping'
+    name: 'Root Cause Mapping'
+    description: 'Map root causes to components'
+    type: 'analysis'
+
     depends_on:
-      - "component-analysis"
-    
+      - 'component-analysis'
+
     action:
-      type: "root_cause_mapping"
+      type: 'root_cause_mapping'
       config:
-        technique: "fishbone"
+        technique: 'fishbone'
         max_causes_per_component: 5
         categorization:
-          - "people"
-          - "process"
-          - "technology"
-          - "environment"
-          - "materials"
-    
+          - 'people'
+          - 'process'
+          - 'technology'
+          - 'environment'
+          - 'materials'
+
     outputs:
-      - name: "root_cause_map"
-        type: "object"
-        description: "Root cause mapping for all components"
-      - name: "critical_causes"
-        type: "array"
-        description: "Identified critical root causes"
-      - name: "cause_effect_chains"
-        type: "array"
-        description: "Cause-effect relationship chains"
+      - name: 'root_cause_map'
+        type: 'object'
+        description: 'Root cause mapping for all components'
+      - name: 'critical_causes'
+        type: 'array'
+        description: 'Identified critical root causes'
+      - name: 'cause_effect_chains'
+        type: 'array'
+        description: 'Cause-effect relationship chains'
 
   # Step 5: Prioritization
-  - id: "prioritization"
-    name: "Component Prioritization"
-    description: "Prioritize components based on impact and feasibility"
-    type: "prioritization"
-    
+  - id: 'prioritization'
+    name: 'Component Prioritization'
+    description: 'Prioritize components based on impact and feasibility'
+    type: 'prioritization'
+
     depends_on:
-      - "root-cause-mapping"
-    
+      - 'root-cause-mapping'
+
     action:
-      type: "weighted_prioritization"
+      type: 'weighted_prioritization'
       config:
         criteria:
-          - name: "impact"
+          - name: 'impact'
             weight: 0.4
-          - name: "urgency"
+          - name: 'urgency'
             weight: 0.25
-          - name: "feasibility"
+          - name: 'feasibility'
             weight: 0.2
-          - name: "dependencies"
+          - name: 'dependencies'
             weight: 0.15
-        scoring_method: "weighted_average"
-    
+        scoring_method: 'weighted_average'
+
     outputs:
-      - name: "prioritized_components"
-        type: "array"
-        description: "Components in priority order"
-      - name: "priority_scores"
-        type: "object"
-        description: "Priority scores for each component"
-      - name: "quick_wins"
-        type: "array"
-        description: "High impact, low effort components"
+      - name: 'prioritized_components'
+        type: 'array'
+        description: 'Components in priority order'
+      - name: 'priority_scores'
+        type: 'object'
+        description: 'Priority scores for each component'
+      - name: 'quick_wins'
+        type: 'array'
+        description: 'High impact, low effort components'
 
   # Step 6: Decomposition Synthesis
-  - id: "decomposition-synthesis"
-    name: "Decomposition Synthesis"
-    description: "Synthesize decomposition results into structured output"
-    type: "synthesis"
-    
+  - id: 'decomposition-synthesis'
+    name: 'Decomposition Synthesis'
+    description: 'Synthesize decomposition results into structured output'
+    type: 'synthesis'
+
     depends_on:
-      - "prioritization"
-    
+      - 'prioritization'
+
     action:
-      type: "structured_synthesis"
+      type: 'structured_synthesis'
       config:
-        output_format: "hierarchical"
+        output_format: 'hierarchical'
         include_visualization: true
         include_actionability: true
-    
+
     outputs:
-      - name: "decomposition_tree"
-        type: "object"
-        description: "Complete decomposition tree"
-      - name: "component_details"
-        type: "array"
-        description: "Detailed information for each component"
-      - name: "recommended_sequence"
-        type: "array"
-        description: "Recommended addressing sequence"
-      - name: "visualization_data"
-        type: "object"
-        description: "Data for visualization rendering"
+      - name: 'decomposition_tree'
+        type: 'object'
+        description: 'Complete decomposition tree'
+      - name: 'component_details'
+        type: 'array'
+        description: 'Detailed information for each component'
+      - name: 'recommended_sequence'
+        type: 'array'
+        description: 'Recommended addressing sequence'
+      - name: 'visualization_data'
+        type: 'object'
+        description: 'Data for visualization rendering'
 
 # Output schema
 output_schema:
-  type: "object"
+  type: 'object'
   properties:
     decomposition_id:
-      type: "string"
+      type: 'string'
     original_problem:
-      type: "string"
+      type: 'string'
     problem_type:
-      type: "string"
+      type: 'string'
     complexity_score:
-      type: "number"
+      type: 'number'
     decomposition_tree:
-      type: "object"
+      type: 'object'
     prioritized_components:
-      type: "array"
+      type: 'array'
     root_causes:
-      type: "array"
+      type: 'array'
     recommended_sequence:
-      type: "array"
+      type: 'array'
     quick_wins:
-      type: "array"
+      type: 'array'
     metadata:
-      type: "object"
+      type: 'object'
 
 # Error handling
 error_handling:
   retry_policy:
     max_retries: 1
     backoff_seconds: 3
-  fallback_behavior: "Provide partial decomposition with available components"
+  fallback_behavior: 'Provide partial decomposition with available components'
   error_responses:
-    classification_failed: "Proceeding with generic problem decomposition"
-    decomposition_failed: "Providing best-effort decomposition"
+    classification_failed: 'Proceeding with generic problem decomposition'
+    decomposition_failed: 'Providing best-effort decomposition'
 
 # Governance
 governance:

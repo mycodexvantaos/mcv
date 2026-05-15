@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/llm/ollama/config.schema.json",
   "title": "llm-ollama Configuration",
   "type": "object",
-  "required": [
-    "baseUrl"
-  ],
+  "required": ["baseUrl"],
   "properties": {
     "baseUrl": {
       "type": "string",

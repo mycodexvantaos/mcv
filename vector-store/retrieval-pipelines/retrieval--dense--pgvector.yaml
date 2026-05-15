@@ -13,4 +13,4 @@ spec:
   embeddingModelAlias: openai--text-embedding-3-small--1536d
   topK: 10
   rerankEnabled: false
-  description: "Dense semantic retrieval using pgvector HNSW index."
+  description: 'Dense semantic retrieval using pgvector HNSW index.'

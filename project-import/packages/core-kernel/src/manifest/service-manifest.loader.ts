@@ -1,6 +1,6 @@
 /**
  * Service Manifest Loader
- * 
+ *
  * High-level service for loading, validating, and managing service manifests.
  * Integrates parser, validator, and provides lifecycle management for manifests.
  */
@@ -12,7 +12,7 @@ import {
   ServiceManifest,
   ServiceManifestValidationResult,
   ServiceManifestContext,
-  ManifestLoadOptions
+  ManifestLoadOptions,
 } from './service-manifest.types';
 
 const logger = pino({ name: 'service-manifest-loader' });
@@ -62,16 +62,19 @@ export class ServiceManifestLoader {
         validation = await this.validator.validate(context.manifest);
 
         if (!validation.valid) {
-          logger.warn({ 
-            name: context.manifest.metadata.name,
-            errors: validation.errors 
-          }, 'Service manifest validation failed');
+          logger.warn(
+            {
+              name: context.manifest.metadata.name,
+              errors: validation.errors,
+            },
+            'Service manifest validation failed'
+          );
 
           return {
             success: false,
             context,
             validation,
-            error: `Validation failed: ${validation.errors.join(', ')}`
+            error: `Validation failed: ${validation.errors.join(', ')}`,
           };
         }
       }
@@ -81,24 +84,27 @@ export class ServiceManifestLoader {
         manifest: context.manifest,
         context,
         validation: validation!,
-        loadedAt: new Date()
+        loadedAt: new Date(),
       };
 
-      logger.info({ 
-        name: context.manifest.metadata.name,
-        runtimeMode: context.manifest.spec.runtimeMode 
-      }, 'Service manifest loaded and validated successfully');
+      logger.info(
+        {
+          name: context.manifest.metadata.name,
+          runtimeMode: context.manifest.spec.runtimeMode,
+        },
+        'Service manifest loaded and validated successfully'
+      );
 
       return {
         success: true,
         context,
-        validation
+        validation,
       };
     } catch (error) {
       logger.error({ source, error }, 'Failed to load service manifest');
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : 'Unknown error',
       };
     }
   }
@@ -121,15 +127,18 @@ export class ServiceManifestLoader {
         results.push(result);
       }
 
-      const successful = results.filter(r => r.success).length;
-      const failed = results.filter(r => !r.success).length;
+      const successful = results.filter((r) => r.success).length;
+      const failed = results.filter((r) => !r.success).length;
 
-      logger.info({ 
-        directory, 
-        total: results.length,
-        successful,
-        failed 
-      }, 'Service manifests loading completed');
+      logger.info(
+        {
+          directory,
+          total: results.length,
+          successful,
+          failed,
+        },
+        'Service manifests loading completed'
+      );
 
       return results;
     } catch (error) {
@@ -166,20 +175,23 @@ export class ServiceManifestLoader {
    * Get all loaded manifests
    */
   getAllManifests(): ServiceManifest[] {
-    return Object.values(this.manifestRegistry).map(entry => entry.manifest);
+    return Object.values(this.manifestRegistry).map((entry) => entry.manifest);
   }
 
   /**
    * Get all manifest contexts
    */
   getAllManifestContexts(): ServiceManifestContext[] {
-    return Object.values(this.manifestRegistry).map(entry => entry.context);
+    return Object.values(this.manifestRegistry).map((entry) => entry.context);
   }
 
   /**
    * Reload a manifest
    */
-  async reloadManifest(serviceName: string, options: ManifestLoadOptions = {}): Promise<ManifestLoadResult> {
+  async reloadManifest(
+    serviceName: string,
+    options: ManifestLoadOptions = {}
+  ): Promise<ManifestLoadResult> {
     try {
       const entry = this.manifestRegistry[serviceName];
       if (!entry) {
@@ -202,7 +214,7 @@ export class ServiceManifestLoader {
       logger.error({ serviceName, error }, 'Failed to reload service manifest');
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : 'Unknown error',
       };
     }
   }
@@ -243,7 +255,7 @@ export class ServiceManifestLoader {
         results.set(serviceName, {
           valid: false,
           errors: [error instanceof Error ? error.message : 'Unknown error'],
-          warnings: []
+          warnings: [],
         });
       }
     }
@@ -264,7 +276,7 @@ export class ServiceManifestLoader {
       total: Object.keys(this.manifestRegistry).length,
       valid: 0,
       invalid: 0,
-      byRuntimeMode: {} as Record<string, number>
+      byRuntimeMode: {} as Record<string, number>,
     };
 
     for (const entry of Object.values(this.manifestRegistry)) {
@@ -314,7 +326,7 @@ export class ServiceManifestLoader {
             success: false,
             context,
             validation,
-            error: `Validation failed: ${validation.errors.join(', ')}`
+            error: `Validation failed: ${validation.errors.join(', ')}`,
           };
         }
       }
@@ -324,19 +336,19 @@ export class ServiceManifestLoader {
         manifest: context.manifest,
         context,
         validation: validation!,
-        loadedAt: new Date()
+        loadedAt: new Date(),
       };
 
       return {
         success: true,
         context,
-        validation
+        validation,
       };
     } catch (error) {
       return {
         success: false,
         context,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : 'Unknown error',
       };
     }
   }

@@ -1,9 +1,9 @@
 /**
  * Persona Validator for MyCodeXvantaOS Persona Engine
- * 
+ *
  * Validates persona profile configurations against MyCodeXvantaOS specifications
  * and schema definitions to ensure data integrity and compliance.
- * 
+ *
  * @module mycodexvantaos-persona-engine/core/persona-validator
  */
 
@@ -12,7 +12,7 @@ import {
   PersonaArchetype,
   BehavioralParameters,
   ResponsePatterns,
-  GovernanceConfig
+  GovernanceConfig,
 } from '../types';
 
 /**
@@ -75,15 +75,16 @@ export interface ValidationOptions {
 /**
  * Valid behavioral parameter ranges
  */
-const BEHAVIORAL_RANGES: Partial<Record<keyof BehavioralParameters, { min: number; max: number }>> = {
-  critical_tolerance: { min: 0, max: 1 },
-  empathy_level: { min: 0, max: 1 },
-  directness: { min: 0, max: 1 },
-  solution_focus: { min: 0, max: 1 },
-  abstraction_preference: { min: 0, max: 1 },
-  questioning_depth: { min: 0, max: 1 },
-  contradiction_frequency: { min: 0, max: 1 }
-};
+const BEHAVIORAL_RANGES: Partial<Record<keyof BehavioralParameters, { min: number; max: number }>> =
+  {
+    critical_tolerance: { min: 0, max: 1 },
+    empathy_level: { min: 0, max: 1 },
+    directness: { min: 0, max: 1 },
+    solution_focus: { min: 0, max: 1 },
+    abstraction_preference: { min: 0, max: 1 },
+    questioning_depth: { min: 0, max: 1 },
+    contradiction_frequency: { min: 0, max: 1 },
+  };
 
 /**
  * Valid archetypes
@@ -97,7 +98,7 @@ const VALID_ARCHETYPES: PersonaArchetype[] = [
   'creative_thinker',
   'facilitator',
   'mentor',
-  'synthesizer'
+  'synthesizer',
 ];
 
 /**
@@ -107,12 +108,12 @@ const VALID_GOVERNANCE_TIERS = [-1, 0, 1, 2, 3];
 
 /**
  * PersonaValidator validates persona profiles against specifications
- * 
+ *
  * @example
  * ```typescript
  * const validator = new PersonaValidator();
  * const result = validator.validate(profile);
- * 
+ *
  * if (!result.valid) {
  *   console.error('Validation failed:', result.issues);
  * }
@@ -128,7 +129,7 @@ export class PersonaValidator {
       validateRanges: options.validateRanges ?? true,
       checkRequired: options.checkRequired ?? true,
       validateURN: options.validateURN ?? true,
-      customRules: options.customRules ?? []
+      customRules: options.customRules ?? [],
     };
   }
 
@@ -172,13 +173,13 @@ export class PersonaValidator {
 
     // Calculate summary
     const summary = {
-      errors: issues.filter(i => i.severity === 'error').length,
-      warnings: issues.filter(i => i.severity === 'warning').length,
-      infos: issues.filter(i => i.severity === 'info').length
+      errors: issues.filter((i) => i.severity === 'error').length,
+      warnings: issues.filter((i) => i.severity === 'warning').length,
+      infos: issues.filter((i) => i.severity === 'info').length,
     };
 
     // In strict mode, warnings become errors
-    const hasErrors = this.options.strict 
+    const hasErrors = this.options.strict
       ? summary.errors + summary.warnings > 0
       : summary.errors > 0;
 
@@ -186,7 +187,7 @@ export class PersonaValidator {
       valid: !hasErrors,
       issues,
       summary,
-      profile: hasErrors ? undefined : profile as PersonaProfile
+      profile: hasErrors ? undefined : (profile as PersonaProfile),
     };
   }
 
@@ -196,8 +197,14 @@ export class PersonaValidator {
   private validateRequiredFields(profile: Partial<PersonaProfile>): ValidationIssue[] {
     const issues: ValidationIssue[] = [];
     const requiredFields: Array<keyof PersonaProfile> = [
-      'urn', 'name', 'archetype', 'version', 'description', 
-      'behavioral_parameters', 'response_patterns', 'governance'
+      'urn',
+      'name',
+      'archetype',
+      'version',
+      'description',
+      'behavioral_parameters',
+      'response_patterns',
+      'governance',
     ];
 
     for (const field of requiredFields) {
@@ -207,7 +214,7 @@ export class PersonaValidator {
           message: `Required field '${field}' is missing`,
           severity: 'error',
           path: field,
-          suggestion: `Add the '${field}' field to your persona configuration`
+          suggestion: `Add the '${field}' field to your persona configuration`,
         });
       }
     }
@@ -230,7 +237,7 @@ export class PersonaValidator {
           message: `URN '${profile.urn}' does not match expected format`,
           severity: 'error',
           path: 'urn',
-          suggestion: 'Use format: urn:mycodexvantaos:persona:{identifier}'
+          suggestion: 'Use format: urn:mycodexvantaos:persona:{identifier}',
         });
       }
 
@@ -243,7 +250,7 @@ export class PersonaValidator {
             message: `URN does not contain the archetype '${profile.archetype}'`,
             severity: 'warning',
             path: 'urn',
-            suggestion: `Consider including archetype in URN for consistency`
+            suggestion: `Consider including archetype in URN for consistency`,
           });
         }
       }
@@ -265,7 +272,7 @@ export class PersonaValidator {
         message: `Archetype '${profile.archetype}' is not a valid archetype`,
         severity: 'error',
         path: 'archetype',
-        suggestion: `Valid archetypes: ${VALID_ARCHETYPES.join(', ')}`
+        suggestion: `Valid archetypes: ${VALID_ARCHETYPES.join(', ')}`,
       });
     }
 
@@ -278,7 +285,7 @@ export class PersonaValidator {
           message: `Version '${profile.version}' does not follow semantic versioning`,
           severity: 'warning',
           path: 'version',
-          suggestion: 'Use semantic versioning format: X.Y.Z (e.g., 1.0.0)'
+          suggestion: 'Use semantic versioning format: X.Y.Z (e.g., 1.0.0)',
         });
       }
     }
@@ -290,7 +297,7 @@ export class PersonaValidator {
           code: 'NAME_TOO_SHORT',
           message: 'Persona name should be at least 3 characters',
           severity: 'warning',
-          path: 'name'
+          path: 'name',
         });
       }
       if (profile.name.length > 100) {
@@ -298,7 +305,7 @@ export class PersonaValidator {
           code: 'NAME_TOO_LONG',
           message: 'Persona name should not exceed 100 characters',
           severity: 'warning',
-          path: 'name'
+          path: 'name',
         });
       }
     }
@@ -311,7 +318,7 @@ export class PersonaValidator {
           message: 'Description should be at least 20 characters for clarity',
           severity: 'info',
           path: 'description',
-          suggestion: 'Provide a more detailed description of the persona'
+          suggestion: 'Provide a more detailed description of the persona',
         });
       }
     }
@@ -325,16 +332,19 @@ export class PersonaValidator {
   private validateBehavioralParameters(params: Partial<BehavioralParameters>): ValidationIssue[] {
     const issues: ValidationIssue[] = [];
 
-    for (const [key, range] of Object.entries(BEHAVIORAL_RANGES) as [keyof BehavioralParameters, { min: number; max: number }][]) {
+    for (const [key, range] of Object.entries(BEHAVIORAL_RANGES) as [
+      keyof BehavioralParameters,
+      { min: number; max: number },
+    ][]) {
       const value = params[key];
-      
+
       if (value !== undefined) {
         if (typeof value !== 'number') {
           issues.push({
             code: 'INVALID_PARAMETER_TYPE',
             message: `Behavioral parameter '${key}' must be a number`,
             severity: 'error',
-            path: `behavioral_parameters.${key}`
+            path: `behavioral_parameters.${key}`,
           });
         } else if (value < range.min || value > range.max) {
           issues.push({
@@ -342,7 +352,7 @@ export class PersonaValidator {
             message: `Behavioral parameter '${key}' value ${value} is out of range [${range.min}, ${range.max}]`,
             severity: 'error',
             path: `behavioral_parameters.${key}`,
-            suggestion: `Set '${key}' to a value between ${range.min} and ${range.max}`
+            suggestion: `Set '${key}' to a value between ${range.min} and ${range.max}`,
           });
         }
       } else {
@@ -351,7 +361,7 @@ export class PersonaValidator {
           message: `Behavioral parameter '${key}' is not defined`,
           severity: 'warning',
           path: `behavioral_parameters.${key}`,
-          suggestion: `Define '${key}' with a value between ${range.min} and ${range.max}`
+          suggestion: `Define '${key}' with a value between ${range.min} and ${range.max}`,
         });
       }
     }
@@ -364,7 +374,7 @@ export class PersonaValidator {
           code: 'POTENTIAL_CONTRADICTION',
           message: 'High empathy combined with high directness may create contradictory behavior',
           severity: 'info',
-          path: 'behavioral_parameters'
+          path: 'behavioral_parameters',
         });
       }
     }
@@ -386,7 +396,7 @@ export class PersonaValidator {
           message: `Governance tier ${governance.tier} is not valid`,
           severity: 'error',
           path: 'governance.tier',
-          suggestion: `Valid tiers: ${VALID_GOVERNANCE_TIERS.join(', ')}`
+          suggestion: `Valid tiers: ${VALID_GOVERNANCE_TIERS.join(', ')}`,
         });
       }
     }
@@ -398,14 +408,14 @@ export class PersonaValidator {
           code: 'INVALID_CONSTRAINTS_TYPE',
           message: 'Governance constraints must be an array',
           severity: 'error',
-          path: 'governance.constraints'
+          path: 'governance.constraints',
         });
       } else if (governance.constraints.length === 0) {
         issues.push({
           code: 'EMPTY_CONSTRAINTS',
           message: 'Consider adding at least one governance constraint',
           severity: 'info',
-          path: 'governance.constraints'
+          path: 'governance.constraints',
         });
       }
     }
@@ -418,9 +428,31 @@ export class PersonaValidator {
    */
   private validateResponsePatterns(patterns: Partial<ResponsePatterns>): ValidationIssue[] {
     const issues: ValidationIssue[] = [];
-    const validOpeningStyles = ['challenging', 'analytical', 'welcoming', 'inclusive', 'connecting', 'direct', 'empathetic'];
-    const validAnalyticalFrameworks = ['first_principles', 'data_driven', 'holistic', 'systematic', 'integrative', 'dialectical'];
-    const validConclusionStyles = ['action_oriented', 'evidence_based', 'empowering', 'synthesizing', 'unifying', 'reflective'];
+    const validOpeningStyles = [
+      'challenging',
+      'analytical',
+      'welcoming',
+      'inclusive',
+      'connecting',
+      'direct',
+      'empathetic',
+    ];
+    const validAnalyticalFrameworks = [
+      'first_principles',
+      'data_driven',
+      'holistic',
+      'systematic',
+      'integrative',
+      'dialectical',
+    ];
+    const validConclusionStyles = [
+      'action_oriented',
+      'evidence_based',
+      'empowering',
+      'synthesizing',
+      'unifying',
+      'reflective',
+    ];
 
     if (patterns.opening_style && !validOpeningStyles.includes(patterns.opening_style)) {
       issues.push({
@@ -428,17 +460,20 @@ export class PersonaValidator {
         message: `Opening style '${patterns.opening_style}' is not recognized`,
         severity: 'warning',
         path: 'response_patterns.opening_style',
-        suggestion: `Consider one of: ${validOpeningStyles.join(', ')}`
+        suggestion: `Consider one of: ${validOpeningStyles.join(', ')}`,
       });
     }
 
-    if (patterns.analytical_framework && !validAnalyticalFrameworks.includes(patterns.analytical_framework)) {
+    if (
+      patterns.analytical_framework &&
+      !validAnalyticalFrameworks.includes(patterns.analytical_framework)
+    ) {
       issues.push({
         code: 'INVALID_ANALYTICAL_FRAMEWORK',
         message: `Analytical framework '${patterns.analytical_framework}' is not recognized`,
         severity: 'warning',
         path: 'response_patterns.analytical_framework',
-        suggestion: `Consider one of: ${validAnalyticalFrameworks.join(', ')}`
+        suggestion: `Consider one of: ${validAnalyticalFrameworks.join(', ')}`,
       });
     }
 
@@ -448,7 +483,7 @@ export class PersonaValidator {
         message: `Conclusion style '${patterns.conclusion_style}' is not recognized`,
         severity: 'warning',
         path: 'response_patterns.conclusion_style',
-        suggestion: `Consider one of: ${validConclusionStyles.join(', ')}`
+        suggestion: `Consider one of: ${validConclusionStyles.join(', ')}`,
       });
     }
 
@@ -462,24 +497,24 @@ export class PersonaValidator {
     // This would typically use a YAML parser
     // For now, we'll return a placeholder
     const issues: ValidationIssue[] = [];
-    
+
     if (!yamlContent || yamlContent.trim().length === 0) {
       issues.push({
         code: 'EMPTY_YAML_CONTENT',
         message: 'YAML content is empty',
         severity: 'error',
-        path: ''
+        path: '',
       });
     }
 
     return {
-      valid: issues.filter(i => i.severity === 'error').length === 0,
+      valid: issues.filter((i) => i.severity === 'error').length === 0,
       issues,
       summary: {
-        errors: issues.filter(i => i.severity === 'error').length,
-        warnings: issues.filter(i => i.severity === 'warning').length,
-        infos: issues.filter(i => i.severity === 'info').length
-      }
+        errors: issues.filter((i) => i.severity === 'error').length,
+        warnings: issues.filter((i) => i.severity === 'warning').length,
+        infos: issues.filter((i) => i.severity === 'info').length,
+      },
     };
   }
 
@@ -508,7 +543,9 @@ export class PersonaValidator {
   /**
    * Gets behavioral parameter ranges
    */
-  static getBehavioralRanges(): Partial<Record<keyof BehavioralParameters, { min: number; max: number }>> {
+  static getBehavioralRanges(): Partial<
+    Record<keyof BehavioralParameters, { min: number; max: number }>
+  > {
     return { ...BEHAVIORAL_RANGES };
   }
 }

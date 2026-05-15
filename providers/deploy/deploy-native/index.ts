@@ -1,15 +1,19 @@
 /**
  * mycodexvantaos/providers/deploy/deploy-native/index.ts
- * 
+ *
  * Native Deployment Provider
  * Zero external dependencies - always available as fallback
- * 
+ *
  * Following MyCodeXvantaOS Architecture:
  * - Native-first: Works without any external services
  * - Provider-agnostic: Standard interface for deployment operations
  */
 
-import type { DeploymentProviderInterface, DeploymentConfig, DeploymentResult } from '@mycodexvantaos/deployment';
+import type {
+  DeploymentProviderInterface,
+  DeploymentConfig,
+  DeploymentResult,
+} from '@mycodexvantaos/deployment';
 
 export interface NativeDeploymentConfig extends DeploymentConfig {
   port?: number;
@@ -49,7 +53,7 @@ export class NativeDeploymentProvider implements DeploymentProviderInterface {
       staticDir: config.staticDir || 'public',
       buildCommand: config.buildCommand || 'npm run build',
       startCommand: config.startCommand || 'npm start',
-      ...config
+      ...config,
     };
   }
 
@@ -64,9 +68,9 @@ export class NativeDeploymentProvider implements DeploymentProviderInterface {
    * Health check for native provider
    */
   async healthCheck(): Promise<{ healthy: boolean; message: string }> {
-    return { 
-      healthy: true, 
-      message: 'Native deployment provider is operational' 
+    return {
+      healthy: true,
+      message: 'Native deployment provider is operational',
     };
   }
 
@@ -82,11 +86,11 @@ export class NativeDeploymentProvider implements DeploymentProviderInterface {
         'docker-deployment',
         'static-site-hosting',
         'process-management',
-        'hot-reload'
+        'hot-reload',
       ],
       isNative: true,
       requiresApiKey: false,
-      config: this.config
+      config: this.config,
     };
   }
 
@@ -96,12 +100,12 @@ export class NativeDeploymentProvider implements DeploymentProviderInterface {
   async deploy(application: any, config?: DeploymentConfig): Promise<DeploymentResult> {
     const startTime = Date.now();
     const jobId = `urn:mycodexvantaos:deployment:native:${application.name || 'app'}:${Date.now()}`;
-    
+
     try {
       // Execute local deployment
       const port = this.config.port || 3000;
       const host = this.config.host || 'localhost';
-      
+
       // Simulate deployment process
       const deployment = {
         jobId,
@@ -111,7 +115,7 @@ export class NativeDeploymentProvider implements DeploymentProviderInterface {
         endpoints: [`/api/v1/${application.name || 'app'}`],
         status: 'running',
         startTime,
-        process: null // Would hold actual process reference
+        process: null, // Would hold actual process reference
       };
 
       this.processes.set(jobId, deployment);
@@ -121,13 +125,13 @@ export class NativeDeploymentProvider implements DeploymentProviderInterface {
         status: 'deployed',
         url: deployment.url,
         endpoints: deployment.endpoints,
-        deploymentTime: Date.now() - startTime
+        deploymentTime: Date.now() - startTime,
       };
     } catch (error: any) {
       return {
         jobId,
         status: 'failed',
-        deploymentTime: Date.now() - startTime
+        deploymentTime: Date.now() - startTime,
       };
     }
   }
@@ -142,14 +146,14 @@ export class NativeDeploymentProvider implements DeploymentProviderInterface {
 
     const startTime = Date.now();
     const jobId = `urn:mycodexvantaos:deployment:docker:${application.name || 'app'}:${Date.now()}`;
-    
+
     // Docker deployment would be implemented here
     return {
       jobId,
       status: 'deployed',
       url: `http://localhost:${this.config.port || 3000}`,
       endpoints: [`/api/v1/${application.name || 'app'}`],
-      deploymentTime: Date.now() - startTime
+      deploymentTime: Date.now() - startTime,
     };
   }
 
@@ -189,7 +193,9 @@ export class NativeDeploymentProvider implements DeploymentProviderInterface {
 }
 
 // Factory function
-export function createNativeDeploymentProvider(config?: NativeDeploymentConfig): NativeDeploymentProvider {
+export function createNativeDeploymentProvider(
+  config?: NativeDeploymentConfig
+): NativeDeploymentProvider {
   return new NativeDeploymentProvider(config);
 }
 

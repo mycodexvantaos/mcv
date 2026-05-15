@@ -8,7 +8,7 @@ metadata:
   capability: observability
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: "8.1"
+    mycodexvantaos.org/specRef: '8.1'
 spec:
   providerName: prometheus
   isNative: false
@@ -16,4 +16,4 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_OBSERVABILITY_PROM
   configSchemaRef: ./config.schema.json
-  description: "Prometheus metrics scraping provider."
+  description: 'Prometheus metrics scraping provider.'

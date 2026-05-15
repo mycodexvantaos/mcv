@@ -73,13 +73,16 @@ async function handleKeysGenerate(request, env) {
       details: '配對金鑰已生成',
     });
 
-    return jsonResponse({
-      success: true,
-      key,
-      status: 'active',
-      expiresAt,
-      createdAt: now,
-    }, 201);
+    return jsonResponse(
+      {
+        success: true,
+        key,
+        status: 'active',
+        expiresAt,
+        createdAt: now,
+      },
+      201
+    );
   } catch (err) {
     return jsonResponse({ error: '金鑰生成失敗', details: err.message }, 500);
   }
@@ -96,11 +99,14 @@ async function handleKeysValidate(request, env) {
 
     const recordRaw = await env.SCREEN_MONITOR_KV.get(`key:${key}`);
     if (!recordRaw) {
-      return jsonResponse({
-        valid: false,
-        status: 'not_found',
-        error: '金鑰不存在，請確認後重新輸入',
-      }, 404);
+      return jsonResponse(
+        {
+          valid: false,
+          status: 'not_found',
+          error: '金鑰不存在，請確認後重新輸入',
+        },
+        404
+      );
     }
 
     const record = JSON.parse(recordRaw);
@@ -109,29 +115,38 @@ async function handleKeysValidate(request, env) {
     if (record.expiresAt && Date.now() > record.expiresAt) {
       record.status = 'expired';
       await env.SCREEN_MONITOR_KV.put(`key:${key}`, JSON.stringify(record));
-      return jsonResponse({
-        valid: false,
-        status: 'expired',
-        error: '金鑰已過期，請重新生成',
-      }, 410);
+      return jsonResponse(
+        {
+          valid: false,
+          status: 'expired',
+          error: '金鑰已過期，請重新生成',
+        },
+        410
+      );
     }
 
     // 檢查是否已撤銷
     if (record.status === 'revoked') {
-      return jsonResponse({
-        valid: false,
-        status: 'revoked',
-        error: '金鑰已被撤銷',
-      }, 403);
+      return jsonResponse(
+        {
+          valid: false,
+          status: 'revoked',
+          error: '金鑰已被撤銷',
+        },
+        403
+      );
     }
 
     // 檢查是否已配對
     if (record.status === 'paired') {
-      return jsonResponse({
-        valid: false,
-        status: 'already_paired',
-        error: '金鑰已被使用，無法重複配對',
-      }, 409);
+      return jsonResponse(
+        {
+          valid: false,
+          status: 'already_paired',
+          error: '金鑰已被使用，無法重複配對',
+        },
+        409
+      );
     }
 
     return jsonResponse({
@@ -166,10 +181,13 @@ async function handleKeysPair(request, env) {
     const record = JSON.parse(recordRaw);
 
     if (record.status !== 'active') {
-      return jsonResponse({
-        error: '金鑰狀態無效，無法配對',
-        status: record.status,
-      }, 409);
+      return jsonResponse(
+        {
+          error: '金鑰狀態無效，無法配對',
+          status: record.status,
+        },
+        409
+      );
     }
 
     if (record.expiresAt && Date.now() > record.expiresAt) {
@@ -199,13 +217,16 @@ async function handleKeysPair(request, env) {
       observer: observerInfo || null,
     };
     await env.SCREEN_MONITOR_KV.put(`device:${deviceId}`, JSON.stringify(deviceRecord));
-    await env.SCREEN_MONITOR_KV.put(`session:${sessionId}`, JSON.stringify({
-      id: sessionId,
-      key,
-      deviceId,
-      createdAt: now,
-      status: 'active',
-    }));
+    await env.SCREEN_MONITOR_KV.put(
+      `session:${sessionId}`,
+      JSON.stringify({
+        id: sessionId,
+        key,
+        deviceId,
+        createdAt: now,
+        status: 'active',
+      })
+    );
 
     // 審計紀錄
     await appendAuditLog(env, {
@@ -378,12 +399,13 @@ async function appendAuditLog(env, entry) {
     } catch (e) {}
 
     // SHA-256 審計雜湊
-    const hashInput = JSON.stringify(entry) + (logs.length > 0 ? logs[logs.length - 1].hash : 'genesis');
+    const hashInput =
+      JSON.stringify(entry) + (logs.length > 0 ? logs[logs.length - 1].hash : 'genesis');
     const encoder = new TextEncoder();
     const data = encoder.encode(hashInput);
     const hashBuffer = await crypto.subtle.digest('SHA-256', data);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    const hash = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
 
     entry.hash = hash;
     logs.push(entry);
@@ -403,30 +425,133 @@ async function appendAuditLog(env, entry) {
 
 function getMockDevices() {
   return [
-    { id: 'DEV-A7X3K9', name: '小明的手機', status: 'online', lastSeen: Date.now(), risk: 0.12, categories: { gambling: 0, adult: 0, violence: 1, drugs: 0, contacts: 0 } },
-    { id: 'DEV-B2M8P4', name: '小華的平板', status: 'online', lastSeen: Date.now() - 30000, risk: 0.34, categories: { gambling: 2, adult: 0, violence: 0, drugs: 1, contacts: 1 } },
-    { id: 'DEV-C5N1R7', name: '小美的筆電', status: 'offline', lastSeen: Date.now() - 7200000, risk: 0.08, categories: { gambling: 0, adult: 0, violence: 0, drugs: 0, contacts: 0 } },
+    {
+      id: 'DEV-A7X3K9',
+      name: '小明的手機',
+      status: 'online',
+      lastSeen: Date.now(),
+      risk: 0.12,
+      categories: { gambling: 0, adult: 0, violence: 1, drugs: 0, contacts: 0 },
+    },
+    {
+      id: 'DEV-B2M8P4',
+      name: '小華的平板',
+      status: 'online',
+      lastSeen: Date.now() - 30000,
+      risk: 0.34,
+      categories: { gambling: 2, adult: 0, violence: 0, drugs: 1, contacts: 1 },
+    },
+    {
+      id: 'DEV-C5N1R7',
+      name: '小美的筆電',
+      status: 'offline',
+      lastSeen: Date.now() - 7200000,
+      risk: 0.08,
+      categories: { gambling: 0, adult: 0, violence: 0, drugs: 0, contacts: 0 },
+    },
   ];
 }
 
 function getMockThreats() {
   return [
-    { id: 'THR-001', deviceId: 'DEV-B2M8P4', category: 'gambling', severity: 'high', description: '偵測到線上博弈網站存取', timestamp: Date.now() - 300000, resolved: false },
-    { id: 'THR-002', deviceId: 'DEV-B2M8P4', category: 'drugs', severity: 'medium', description: '可疑藥物相關搜尋', timestamp: Date.now() - 900000, resolved: false },
-    { id: 'THR-003', deviceId: 'DEV-A7X3K9', category: 'violence', severity: 'low', description: '暴力遊戲內容', timestamp: Date.now() - 3600000, resolved: true },
-    { id: 'THR-004', deviceId: 'DEV-B2M8P4', category: 'contacts', severity: 'medium', description: '未知成人聯絡人', timestamp: Date.now() - 1800000, resolved: false },
-    { id: 'THR-005', deviceId: 'DEV-A7X3K9', category: 'adult', severity: 'critical', description: '成人內容網站嘗試存取（已封鎖）', timestamp: Date.now() - 600000, resolved: false },
+    {
+      id: 'THR-001',
+      deviceId: 'DEV-B2M8P4',
+      category: 'gambling',
+      severity: 'high',
+      description: '偵測到線上博弈網站存取',
+      timestamp: Date.now() - 300000,
+      resolved: false,
+    },
+    {
+      id: 'THR-002',
+      deviceId: 'DEV-B2M8P4',
+      category: 'drugs',
+      severity: 'medium',
+      description: '可疑藥物相關搜尋',
+      timestamp: Date.now() - 900000,
+      resolved: false,
+    },
+    {
+      id: 'THR-003',
+      deviceId: 'DEV-A7X3K9',
+      category: 'violence',
+      severity: 'low',
+      description: '暴力遊戲內容',
+      timestamp: Date.now() - 3600000,
+      resolved: true,
+    },
+    {
+      id: 'THR-004',
+      deviceId: 'DEV-B2M8P4',
+      category: 'contacts',
+      severity: 'medium',
+      description: '未知成人聯絡人',
+      timestamp: Date.now() - 1800000,
+      resolved: false,
+    },
+    {
+      id: 'THR-005',
+      deviceId: 'DEV-A7X3K9',
+      category: 'adult',
+      severity: 'critical',
+      description: '成人內容網站嘗試存取（已封鎖）',
+      timestamp: Date.now() - 600000,
+      resolved: false,
+    },
   ];
 }
 
 function getMockRules() {
   return [
-    { id: 'RULE-001', name: '博弈網站封鎖', category: 'gambling', action: 'block', enabled: true, severity: 'critical' },
-    { id: 'RULE-002', name: '成人內容過濾', category: 'adult', action: 'block', enabled: true, severity: 'critical' },
-    { id: 'RULE-003', name: '暴力內容警示', category: 'violence', action: 'warn', enabled: true, severity: 'high' },
-    { id: 'RULE-004', name: '藥物資訊監控', category: 'drugs', action: 'alert', enabled: true, severity: 'high' },
-    { id: 'RULE-005', name: '陌生聯絡人提醒', category: 'contacts', action: 'alert', enabled: true, severity: 'medium' },
-    { id: 'RULE-006', name: '深夜使用限制', category: 'general', action: 'restrict', enabled: false, severity: 'low' },
+    {
+      id: 'RULE-001',
+      name: '博弈網站封鎖',
+      category: 'gambling',
+      action: 'block',
+      enabled: true,
+      severity: 'critical',
+    },
+    {
+      id: 'RULE-002',
+      name: '成人內容過濾',
+      category: 'adult',
+      action: 'block',
+      enabled: true,
+      severity: 'critical',
+    },
+    {
+      id: 'RULE-003',
+      name: '暴力內容警示',
+      category: 'violence',
+      action: 'warn',
+      enabled: true,
+      severity: 'high',
+    },
+    {
+      id: 'RULE-004',
+      name: '藥物資訊監控',
+      category: 'drugs',
+      action: 'alert',
+      enabled: true,
+      severity: 'high',
+    },
+    {
+      id: 'RULE-005',
+      name: '陌生聯絡人提醒',
+      category: 'contacts',
+      action: 'alert',
+      enabled: true,
+      severity: 'medium',
+    },
+    {
+      id: 'RULE-006',
+      name: '深夜使用限制',
+      category: 'general',
+      action: 'restrict',
+      enabled: false,
+      severity: 'low',
+    },
   ];
 }
 
@@ -503,12 +628,17 @@ export default {
       }
       // 無 KV 時的回退
       const key = generatePairingKey();
-      return jsonResponse({
-        success: true, key, status: 'active',
-        expiresAt: Date.now() + 86400000,
-        createdAt: Date.now(),
-        _fallback: true,
-      }, 201);
+      return jsonResponse(
+        {
+          success: true,
+          key,
+          status: 'active',
+          expiresAt: Date.now() + 86400000,
+          createdAt: Date.now(),
+          _fallback: true,
+        },
+        201
+      );
     }
 
     if (path === '/api/keys/validate' && request.method === 'POST') {
@@ -530,9 +660,11 @@ export default {
       const body = await request.json().catch(() => ({}));
       const sessionId = crypto.randomUUID();
       return jsonResponse({
-        paired: true, session: sessionId,
+        paired: true,
+        session: sessionId,
         device: `DEV-${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
-        pairedAt: Date.now(), _fallback: true,
+        pairedAt: Date.now(),
+        _fallback: true,
       });
     }
 

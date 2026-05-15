@@ -14,21 +14,25 @@ MyCodeXvantaOS 是一個 Local-first、Provider-agnostic、Contract-driven 的�
 這四條原則是平台的最高指導，所有設計決策都必須符合，並由 CI/CD 流程強制驗證。
 
 ### 1.1 Local-first (原生優先)
+
 - **原則**：平台必須能在零外部依賴下存活。允許功能降級，但不允許系統崩潰。
 - **要求**：所有核心能力都必須具備一個 `native` 的本地實現。
 - **範例**：沒有連接 Redis，平台依然可以使用基於內存或檔案的隊列；沒有連接 GitHub，平台依然可以透過本地 Git 進行版本控制與發布。
 
 ### 1.2 Provider-agnostic (供應商中立)
+
 - **原則**：業務邏輯不允許直接耦合任何第三方 SDK。所有外部能力都必須透過標準化的 `Provider` 抽象介面接入。
 - **要求**：更換 `Provider` 的具體實現（例如從 AWS S3 切換到 MinIO）不應需要修改核心業務代碼。
 - **範例**：業務代碼依賴 `StorageProvider` 介面，而不是直接 `import { S3Client } from "@aws-sdk/client-s3";`。
 
 ### 1.3 Contract-first (契約優先)
+
 - **原則**：介面定義先於功能實現。
 - **要求**：服務間的所有互動都必須基於明確定義的契約（如 OpenAPI、gRPC、AsyncAPI）。實現可以替換，但契約必須保持穩定。
 - **範例**：在開發新功能前，首先在 `contracts/` 目錄下定義其 API 規格。
 
 ### 1.4 Governance-enforced (治理強制)
+
 - **原則**：所有治理規則必須是機器可讀、可自動執行的，而非僅存在於文件中。
 - **要求**：命名規範、依賴規則、安全策略等，都必須有對應的 CI/CD 閘門來自動驗證，違規的程式碼將被阻止合併。
 - **範例**：一個不符合 `mycodexvantaos-<domain>-<capability>` 格式的服務目錄名，將會導致 CI/CD pipeline 失敗。
@@ -40,25 +44,30 @@ MyCodeXvantaOS 是一個 Local-first、Provider-agnostic、Contract-driven 的�
 平台採用嚴格的分層模型，確保職責分離與單向依賴。
 
 ### Layer A: Builder Layer (生成層)
+
 - **職責**：從需求、模板或配置生成完整的應用骨架與產物。
 - **包含**：UI generator, API generator, Schema generator, Workflow generator, Test generator, Deployment manifest generator.
 - **輸出**：`frontend/`, `backend/`, `shared/`, `schema/`, `workflows/`, `deploy/`, `tests/`, `docs/`.
 
 ### Layer B: Runtime Layer (執行層)
+
 - **職責**：讓 Layer A 生成的產物真正可執行。
 - **包含**：Frontend runtime, Backend runtime, API runtime, Session runtime, Background job runtime, Scheduler, Task orchestrator, Event dispatcher, Plugin loader.
 - **要求**：必須能在沒有外部 DB、Queue 或 CI/CD 的情況下運行。
 
 ### Layer C: Native Services Layer (原生服務層)
+
 - **職責**：提供平台原生服務，形成 `local-first` 閉環的根基。
 - **必備服務**：Native Database (SQLite), Native Storage (Local FS), Native Auth (Session-based), Native Secrets, Native Queue (In-memory/DB-backed), Native Logging, Native Validation Engine.
 
 ### Layer D: Connector Layer (連接器層)
+
 - **職責**：可插拔地對接所有外部服務與平台。
 - **範例**：GitHub/GitLab, Redis/Kafka, PostgreSQL/Supabase, S3/GCS, Auth0/Keycloak, Stripe/Notion/Sentry.
 - **規則**：完全可選、可替換、可禁用，且不應破壞平台在 `native` 模式下的核心功能。
 
 ### Layer E: Deployment Target Layer (部署目標層)
+
 - **職責**：處理最終的部署輸出，將應用部署到不同的目標環境。
 - **支援目標**：Internal platform deployment, Static hosting, Docker/Compose, Kubernetes, Serverless platforms, External CI/CD pipelines.
 
@@ -80,11 +89,15 @@ MyCodeXvantaOS 是一個 Local-first、Provider-agnostic、Contract-driven 的�
 所有核心能力都必須透過標準化的 `Provider` 介面進行抽象。
 
 ### 4.1 標準能力清單 (Canonical Capabilities)
+
 平台定義了一組標準能力，每個 `Provider` 都必須實現其中之一。
+
 - `database`, `storage`, `auth`, `queue`, `state-store`, `secrets`, `repo`, `deploy`, `validation`, `security`, `observability`, `notification`, `scheduler`, `vector-store`, `embedding`, `llm`, `graph`, `cache`, `search`.
 
 ### 4.2 Provider 契約
+
 每個 `Provider` 實作都必須符合以下介面契約：
+
 ```typescript
 interface BaseProvider {
   // 能力標識，例如 'database'

@@ -3,7 +3,7 @@
  * In-memory data transformation with pipeline steps
  */
 
-import type { Pipeline, PipelineStep, TransformResult } from "./types";
+import type { Pipeline, PipelineStep, TransformResult } from './types';
 
 export class TransformationService {
   private pipelines = new Map<string, Pipeline>();
@@ -15,7 +15,10 @@ export class TransformationService {
     return pipeline;
   }
 
-  async execute(pipelineId: string, data: unknown[]): Promise<{ result: unknown[]; summary: TransformResult }> {
+  async execute(
+    pipelineId: string,
+    data: unknown[]
+  ): Promise<{ result: unknown[]; summary: TransformResult }> {
     const pipeline = this.pipelines.get(pipelineId);
     if (!pipeline) throw new Error(`Pipeline not found: ${pipelineId}`);
     const start = Date.now();
@@ -48,15 +51,15 @@ export class TransformationService {
 
   private applyStep(step: PipelineStep, data: unknown[]): unknown[] {
     switch (step.type) {
-      case "filter": {
-        const field = step.config["field"] as string;
-        const value = step.config["value"];
+      case 'filter': {
+        const field = step.config['field'] as string;
+        const value = step.config['value'];
         if (!field) return data;
         return data.filter((r) => (r as Record<string, unknown>)[field] === value);
       }
-      case "map": {
-        const addField = step.config["addField"] as string;
-        const addValue = step.config["addValue"];
+      case 'map': {
+        const addField = step.config['addField'] as string;
+        const addValue = step.config['addValue'];
         if (!addField) return data;
         return data.map((r) => ({ ...(r as object), [addField]: addValue }));
       }

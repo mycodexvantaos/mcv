@@ -14,7 +14,8 @@ export class CacheManager {
   private cache: Map<string, CacheEntry<any>> = new Map();
   private defaultTTL: number;
 
-  constructor(defaultTTL: number = 3600000) { // 1 hour default
+  constructor(defaultTTL: number = 3600000) {
+    // 1 hour default
     this.defaultTTL = defaultTTL;
   }
 
@@ -23,7 +24,7 @@ export class CacheManager {
       key,
       value,
       expiresAt: Date.now() + (ttl || this.defaultTTL),
-      createdAt: Date.now()
+      createdAt: Date.now(),
     });
   }
 

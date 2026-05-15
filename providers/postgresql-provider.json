@@ -4,14 +4,9 @@
   "type": "database",
   "description": "PostgreSQL database provider with ACID compliance",
   "version": "1.0.0",
-  "capabilities": [
-    "urn:mycodexvantaos:capability:database"
-  ],
+  "capabilities": ["urn:mycodexvantaos:capability:database"],
   "config": {
-    "supportedModes": [
-      "native",
-      "connected"
-    ],
+    "supportedModes": ["native", "connected"],
     "defaultPort": 5432
   }
 }

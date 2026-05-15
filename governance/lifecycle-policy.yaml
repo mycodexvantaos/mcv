@@ -8,7 +8,7 @@ metadata:
   name: platform-lifecycle-policy
   labels:
     managed-by: naming-spec-v1
-    specRef: "11"
+    specRef: '11'
 
 policy:
   stages:
@@ -68,5 +68,5 @@ policy:
     note: >
       Replacement references MUST point to a version-free canonical identifier
       or URN (11.3). Version is carried separately in replacementVersion field.
-    validReplacementFormat: "urn:mycodexvantaos:<type>:<subtype>:<identifier>"
-    invalidReplacementExample: "urn:mycodexvantaos:service:mycodexvantaos-core-kernel-v2"
+    validReplacementFormat: 'urn:mycodexvantaos:<type>:<subtype>:<identifier>'
+    invalidReplacementExample: 'urn:mycodexvantaos:service:mycodexvantaos-core-kernel-v2'

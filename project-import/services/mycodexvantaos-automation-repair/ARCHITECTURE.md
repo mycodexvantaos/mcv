@@ -68,6 +68,7 @@ Receive Event → Find Matching Transition
 ## Data Model
 
 ### Workflow Definition
+
 ```
 {
   id: string
@@ -79,6 +80,7 @@ Receive Event → Find Matching Transition
 ```
 
 ### Workflow Step
+
 ```
 {
   id: string
@@ -91,6 +93,7 @@ Receive Event → Find Matching Transition
 ```
 
 ### State Machine Definition
+
 ```
 {
   id: string
@@ -102,6 +105,7 @@ Receive Event → Find Matching Transition
 ```
 
 ### Transition
+
 ```
 {
   from: string
@@ -115,11 +119,11 @@ Receive Event → Find Matching Transition
 
 ## Provider Usage Map
 
-| Service | database | queue | stateStore | observability |
-|---------|----------|-------|------------|---------------|
-| WorkflowEngineService | definitions, executions | step dispatch | execution state | trace runs |
-| StepRunnerService | — | — | step results | trace steps |
-| StateMachineService | definitions, history | — | instance state | log transitions |
+| Service               | database                | queue         | stateStore      | observability   |
+| --------------------- | ----------------------- | ------------- | --------------- | --------------- |
+| WorkflowEngineService | definitions, executions | step dispatch | execution state | trace runs      |
+| StepRunnerService     | —                       | —             | step results    | trace steps     |
+| StateMachineService   | definitions, history    | —             | instance state  | log transitions |
 
 ---
 

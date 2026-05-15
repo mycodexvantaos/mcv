@@ -56,21 +56,21 @@
 
 ## Provider Dependencies
 
-| Provider | Usage |
-|---|---|
-| DatabaseProvider | Decision history, rule definitions, audit trail |
-| StateStoreProvider | Current evaluation state and pending decisions |
-| NotificationProvider | Escalation alerts and approval requests |
-| ObservabilityProvider | Decision metrics, evaluation latency |
-| ValidationProvider | Input validation before rule evaluation |
+| Provider              | Usage                                           |
+| --------------------- | ----------------------------------------------- |
+| DatabaseProvider      | Decision history, rule definitions, audit trail |
+| StateStoreProvider    | Current evaluation state and pending decisions  |
+| NotificationProvider  | Escalation alerts and approval requests         |
+| ObservabilityProvider | Decision metrics, evaluation latency            |
+| ValidationProvider    | Input validation before rule evaluation         |
 
 ## Operational Modes
 
-| Mode | Behavior |
-|---|---|
-| **Native** | Built-in rule evaluator, SQLite decision store, in-memory state |
-| **Connected** | External rule engine, PostgreSQL history, Redis state cache |
-| **Hybrid** | Native evaluator with external notification delivery |
+| Mode          | Behavior                                                        |
+| ------------- | --------------------------------------------------------------- |
+| **Native**    | Built-in rule evaluator, SQLite decision store, in-memory state |
+| **Connected** | External rule engine, PostgreSQL history, Redis state cache     |
+| **Hybrid**    | Native evaluator with external notification delivery            |
 
 ## Directory Structure
 

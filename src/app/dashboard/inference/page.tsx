@@ -1,35 +1,89 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
-import {
-  Brain,
-  Activity,
-  Clock,
-  Zap,
-  AlertTriangle,
-  ArrowUpRight,
-  Filter,
-} from 'lucide-react';
+import { Brain, Activity, Clock, Zap, AlertTriangle, ArrowUpRight, Filter } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
-  Area, AreaChart, BarChart, Bar, LineChart, Line,
-  ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid,
+  Area,
+  AreaChart,
+  BarChart,
+  Bar,
+  LineChart,
+  Line,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
 } from 'recharts';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { ModelInstance, ModelProvider, ModelStatus } from '@/types/inference';
 
 const mockModels: ModelInstance[] = [
-  { id: 'm1', name: 'gemini-2.5-flash', provider: 'googleai', status: 'active', endpoint: 'generativelanguage.googleapis.com', apiKeyRef: '***', maxConcurrent: 100, currentLoad: 0.65 },
-  { id: 'm2', name: 'gpt-4o', provider: 'openai', status: 'active', endpoint: 'api.openai.com', apiKeyRef: '***', maxConcurrent: 50, currentLoad: 0.42 },
-  { id: 'm3', name: 'claude-sonnet-4', provider: 'anthropic', status: 'active', endpoint: 'api.anthropic.com', apiKeyRef: '***', maxConcurrent: 30, currentLoad: 0.28 },
-  { id: 'm4', name: 'llama-3.1-70b', provider: 'local', status: 'idle', endpoint: 'edge-us-west:8080', apiKeyRef: '***', maxConcurrent: 20, currentLoad: 0.0 },
-  { id: 'm5', name: 'gemini-2.5-pro', provider: 'googleai', status: 'draining', endpoint: 'generativelanguage.googleapis.com', apiKeyRef: '***', maxConcurrent: 50, currentLoad: 0.15 },
+  {
+    id: 'm1',
+    name: 'gemini-2.5-flash',
+    provider: 'googleai',
+    status: 'active',
+    endpoint: 'generativelanguage.googleapis.com',
+    apiKeyRef: '***',
+    maxConcurrent: 100,
+    currentLoad: 0.65,
+  },
+  {
+    id: 'm2',
+    name: 'gpt-4o',
+    provider: 'openai',
+    status: 'active',
+    endpoint: 'api.openai.com',
+    apiKeyRef: '***',
+    maxConcurrent: 50,
+    currentLoad: 0.42,
+  },
+  {
+    id: 'm3',
+    name: 'claude-sonnet-4',
+    provider: 'anthropic',
+    status: 'active',
+    endpoint: 'api.anthropic.com',
+    apiKeyRef: '***',
+    maxConcurrent: 30,
+    currentLoad: 0.28,
+  },
+  {
+    id: 'm4',
+    name: 'llama-3.1-70b',
+    provider: 'local',
+    status: 'idle',
+    endpoint: 'edge-us-west:8080',
+    apiKeyRef: '***',
+    maxConcurrent: 20,
+    currentLoad: 0.0,
+  },
+  {
+    id: 'm5',
+    name: 'gemini-2.5-pro',
+    provider: 'googleai',
+    status: 'draining',
+    endpoint: 'generativelanguage.googleapis.com',
+    apiKeyRef: '***',
+    maxConcurrent: 50,
+    currentLoad: 0.15,
+  },
 ];
 
 function generateMetricsData() {
-  const data: { time: string; requests: number; latencyP50: number; latencyP99: number; errors: number; tokensIn: number; tokensOut: number; }[] = [];
+  const data: {
+    time: string;
+    requests: number;
+    latencyP50: number;
+    latencyP99: number;
+    errors: number;
+    tokensIn: number;
+    tokensOut: number;
+  }[] = [];
   const now = Date.now();
   for (let i = 60; i >= 0; i--) {
     const t = new Date(now - i * 60000);
@@ -72,7 +126,9 @@ export default function InferencePage() {
   const metricsData = useMemo(() => generateMetricsData(), [timeRange]);
 
   const totalRequests = metricsData.reduce((sum, d) => sum + d.requests, 0);
-  const avgLatency = Math.round(metricsData.reduce((sum, d) => sum + d.latencyP50, 0) / metricsData.length);
+  const avgLatency = Math.round(
+    metricsData.reduce((sum, d) => sum + d.latencyP50, 0) / metricsData.length
+  );
   const totalErrors = metricsData.reduce((sum, d) => sum + d.errors, 0);
   const errorRate = ((totalErrors / totalRequests) * 100).toFixed(2);
 
@@ -134,7 +190,9 @@ export default function InferencePage() {
               <Brain className="h-4 w-4 text-chart-5" />
               <p className="text-xs text-muted-foreground">Active Models</p>
             </div>
-            <p className="text-2xl font-bold font-headline">{mockModels.filter((m) => m.status === 'active').length}/{mockModels.length}</p>
+            <p className="text-2xl font-bold font-headline">
+              {mockModels.filter((m) => m.status === 'active').length}/{mockModels.length}
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -158,8 +216,20 @@ export default function InferencePage() {
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                   <XAxis dataKey="time" tick={{ fontSize: 10 }} interval={9} />
                   <YAxis tick={{ fontSize: 10 }} width={40} />
-                  <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', fontSize: '12px' }} />
-                  <Area type="monotone" dataKey="requests" stroke="hsl(var(--chart-1))" fill="url(#throughputGrad)" strokeWidth={2} />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: 'hsl(var(--card))',
+                      border: '1px solid hsl(var(--border))',
+                      fontSize: '12px',
+                    }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="requests"
+                    stroke="hsl(var(--chart-1))"
+                    fill="url(#throughputGrad)"
+                    strokeWidth={2}
+                  />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
@@ -177,9 +247,29 @@ export default function InferencePage() {
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                   <XAxis dataKey="time" tick={{ fontSize: 10 }} interval={9} />
                   <YAxis tick={{ fontSize: 10 }} width={40} />
-                  <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', fontSize: '12px' }} />
-                  <Line type="monotone" dataKey="latencyP50" stroke="hsl(var(--chart-1))" strokeWidth={2} dot={false} name="P50" />
-                  <Line type="monotone" dataKey="latencyP99" stroke="hsl(var(--chart-3))" strokeWidth={2} dot={false} name="P99" />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: 'hsl(var(--card))',
+                      border: '1px solid hsl(var(--border))',
+                      fontSize: '12px',
+                    }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="latencyP50"
+                    stroke="hsl(var(--chart-1))"
+                    strokeWidth={2}
+                    dot={false}
+                    name="P50"
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="latencyP99"
+                    stroke="hsl(var(--chart-3))"
+                    strokeWidth={2}
+                    dot={false}
+                    name="P99"
+                  />
                 </LineChart>
               </ResponsiveContainer>
             </div>
@@ -202,11 +292,21 @@ export default function InferencePage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border">
-                  <th className="text-left py-2 px-3 text-xs text-muted-foreground font-medium">Model</th>
-                  <th className="text-left py-2 px-3 text-xs text-muted-foreground font-medium">Provider</th>
-                  <th className="text-left py-2 px-3 text-xs text-muted-foreground font-medium">Status</th>
-                  <th className="text-left py-2 px-3 text-xs text-muted-foreground font-medium">Load</th>
-                  <th className="text-left py-2 px-3 text-xs text-muted-foreground font-medium">Endpoint</th>
+                  <th className="text-left py-2 px-3 text-xs text-muted-foreground font-medium">
+                    Model
+                  </th>
+                  <th className="text-left py-2 px-3 text-xs text-muted-foreground font-medium">
+                    Provider
+                  </th>
+                  <th className="text-left py-2 px-3 text-xs text-muted-foreground font-medium">
+                    Status
+                  </th>
+                  <th className="text-left py-2 px-3 text-xs text-muted-foreground font-medium">
+                    Load
+                  </th>
+                  <th className="text-left py-2 px-3 text-xs text-muted-foreground font-medium">
+                    Endpoint
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -214,13 +314,22 @@ export default function InferencePage() {
                   <tr key={model.id} className="border-b border-border/50 hover:bg-secondary/30">
                     <td className="py-2.5 px-3 font-mono text-xs font-medium">{model.name}</td>
                     <td className="py-2.5 px-3">
-                      <Badge variant="outline" className="text-[10px] h-5" style={{ borderColor: providerColors[model.provider], color: providerColors[model.provider] }}>
+                      <Badge
+                        variant="outline"
+                        className="text-[10px] h-5"
+                        style={{
+                          borderColor: providerColors[model.provider],
+                          color: providerColors[model.provider],
+                        }}
+                      >
                         {model.provider}
                       </Badge>
                     </td>
                     <td className="py-2.5 px-3">
                       <Badge variant={statusBadge[model.status]} className="text-[10px] h-5">
-                        <span className={`mr-1 inline-block h-1.5 w-1.5 rounded-full ${model.status === 'active' ? 'bg-status-healthy' : model.status === 'idle' ? 'bg-status-idle' : model.status === 'draining' ? 'bg-status-warning' : 'bg-status-critical'}`} />
+                        <span
+                          className={`mr-1 inline-block h-1.5 w-1.5 rounded-full ${model.status === 'active' ? 'bg-status-healthy' : model.status === 'idle' ? 'bg-status-idle' : model.status === 'draining' ? 'bg-status-warning' : 'bg-status-critical'}`}
+                        />
                         {model.status}
                       </Badge>
                     </td>
@@ -232,10 +341,14 @@ export default function InferencePage() {
                             style={{ width: `${model.currentLoad * 100}%` }}
                           />
                         </div>
-                        <span className="text-xs text-muted-foreground font-mono">{(model.currentLoad * 100).toFixed(0)}%</span>
+                        <span className="text-xs text-muted-foreground font-mono">
+                          {(model.currentLoad * 100).toFixed(0)}%
+                        </span>
                       </div>
                     </td>
-                    <td className="py-2.5 px-3 text-xs text-muted-foreground font-mono">{model.endpoint}</td>
+                    <td className="py-2.5 px-3 text-xs text-muted-foreground font-mono">
+                      {model.endpoint}
+                    </td>
                   </tr>
                 ))}
               </tbody>

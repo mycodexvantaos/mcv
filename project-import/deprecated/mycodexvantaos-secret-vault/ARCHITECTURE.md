@@ -35,9 +35,9 @@
 interface StoredSecret {
   id: string;
   name: string;
-  encryptedValue: Buffer;    // AES-256-GCM ciphertext
-  iv: Buffer;                // Initialization vector
-  authTag: Buffer;           // GCM authentication tag
+  encryptedValue: Buffer; // AES-256-GCM ciphertext
+  iv: Buffer; // Initialization vector
+  authTag: Buffer; // GCM authentication tag
   version: number;
   createdAt: Date;
   rotatedAt: Date | null;
@@ -75,28 +75,28 @@ interface StoredSecret {
 
 ```yaml
 access_policy:
-  secret: "database-password"
+  secret: 'database-password'
   allowed_services:
-    - "core-main"
-    - "data-pipeline"
+    - 'core-main'
+    - 'data-pipeline'
   allowed_operations:
-    - "read"
+    - 'read'
   requires_audit: true
-  max_lease_duration: "1h"
+  max_lease_duration: '1h'
 ```
 
 ## Audit Trail
 
 Every secret access produces an audit record:
 
-| Field | Description |
-|---|---|
-| timestamp | When the access occurred |
-| secret_name | Which secret was accessed |
-| requester | Service identity |
-| operation | read / write / rotate / delete |
-| outcome | success / denied / error |
-| ip_address | Requester's address |
+| Field       | Description                    |
+| ----------- | ------------------------------ |
+| timestamp   | When the access occurred       |
+| secret_name | Which secret was accessed      |
+| requester   | Service identity               |
+| operation   | read / write / rotate / delete |
+| outcome     | success / denied / error       |
+| ip_address  | Requester's address            |
 
 ## Design Principles
 

@@ -1,7 +1,7 @@
 /**
  * MyCodeXvantaOS Execution Engine
  * Provides task execution and workflow orchestration capabilities
- * 
+ *
  * @packageDocumentation
  */
 
@@ -49,7 +49,7 @@ export class ExecutionEngine {
       maxRetries: 3,
       retryDelay: 1000,
       continueOnError: false,
-      ...options
+      ...options,
     };
   }
 
@@ -73,7 +73,7 @@ export class ExecutionEngine {
     const result: ExecutionResult = {
       taskId,
       status: 'running',
-      startTime: new Date()
+      startTime: new Date(),
     };
 
     this.results.set(taskId, result);
@@ -87,7 +87,7 @@ export class ExecutionEngine {
       result.status = 'failed';
       result.error = error as Error;
       result.endTime = new Date();
-      
+
       if (!opts.continueOnError) {
         throw error;
       }
@@ -102,7 +102,7 @@ export class ExecutionEngine {
   private async executeWithRetry(task: Task, options: ExecutionOptions): Promise<any> {
     const maxRetries = options.maxRetries || this.defaultOptions.maxRetries!;
     const retryDelay = options.retryDelay || this.defaultOptions.retryDelay!;
-    
+
     let lastError: Error | undefined;
 
     for (let attempt = 0; attempt <= maxRetries; attempt++) {
@@ -111,7 +111,7 @@ export class ExecutionEngine {
         return await this.executeWithTimeout(task.handler, timeout);
       } catch (error) {
         lastError = error as Error;
-        
+
         if (attempt < maxRetries) {
           await this.delay(retryDelay);
         } else {
@@ -129,9 +129,9 @@ export class ExecutionEngine {
   private async executeWithTimeout(handler: () => Promise<any>, timeout: number): Promise<any> {
     return Promise.race([
       handler(),
-      new Promise((_, reject) => 
+      new Promise((_, reject) =>
         setTimeout(() => reject(new Error(`Task timeout after ${timeout}ms`)), timeout)
-      )
+      ),
     ]);
   }
 
@@ -140,10 +140,10 @@ export class ExecutionEngine {
    */
   async executeWorkflow(config: WorkflowConfig): Promise<ExecutionResult[]> {
     const results: ExecutionResult[] = [];
-    
+
     if (config.parallel) {
       // Execute all tasks in parallel
-      const promises = config.tasks.map(task => 
+      const promises = config.tasks.map((task) =>
         this.executeTask(task.id, { continueOnError: config.continueOnError })
       );
       const executedResults = await Promise.all(promises);
@@ -153,8 +153,8 @@ export class ExecutionEngine {
       const executionOrder = this.resolveDependencies(config.tasks);
       for (const task of executionOrder) {
         try {
-          const result = await this.executeTask(task.id, { 
-            continueOnError: config.continueOnError 
+          const result = await this.executeTask(task.id, {
+            continueOnError: config.continueOnError,
           });
           results.push(result);
         } catch (error) {
@@ -186,7 +186,7 @@ export class ExecutionEngine {
 
       visiting.add(taskId);
       const task = this.tasks.get(taskId);
-      
+
       if (task?.dependencies) {
         for (const depId of task.dependencies) {
           visit(depId);
@@ -195,7 +195,7 @@ export class ExecutionEngine {
 
       visiting.delete(taskId);
       visited.add(taskId);
-      
+
       if (task) {
         resolved.push(task);
       }
@@ -245,7 +245,7 @@ export class ExecutionEngine {
    * Helper: Delay for specified milliseconds
    */
   private delay(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   /**
@@ -261,10 +261,10 @@ export class ExecutionEngine {
     const results = this.getAllResults();
     return {
       total: results.length,
-      pending: results.filter(r => r.status === 'pending').length,
-      running: results.filter(r => r.status === 'running').length,
-      completed: results.filter(r => r.status === 'completed').length,
-      failed: results.filter(r => r.status === 'failed').length
+      pending: results.filter((r) => r.status === 'pending').length,
+      running: results.filter((r) => r.status === 'running').length,
+      completed: results.filter((r) => r.status === 'completed').length,
+      failed: results.filter((r) => r.status === 'failed').length,
     };
   }
 }

@@ -23,6 +23,7 @@ providers/
 ```
 
 `provider-manifest.yaml` must have:
+
 ```yaml
 metadata:
   name: vector-store-weaviate    ← <capability>-<provider>

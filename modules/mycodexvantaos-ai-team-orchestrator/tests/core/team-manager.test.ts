@@ -2,7 +2,14 @@ import { TeamManager, TeamInstanceState, TeamCreationOptions } from '../../src/c
 import { MessageBus } from '../../src/core/message-bus';
 import { AgentManager } from '../../src/core/agent-manager';
 import { WorkflowEngine } from '../../src/core/workflow-engine';
-import { AgentProfile, TeamTopology, TeamAgentAssignment, TeamURN, AgentURN, ToolURN } from '../../src/types';
+import {
+  AgentProfile,
+  TeamTopology,
+  TeamAgentAssignment,
+  TeamURN,
+  AgentURN,
+  ToolURN,
+} from '../../src/types';
 
 describe('TeamManager', () => {
   let teamManager: TeamManager;
@@ -18,9 +25,12 @@ describe('TeamManager', () => {
       role: 'architect',
       goal: 'Design system architecture',
       backstory: 'Experienced system architect',
-      allowed_tools: ['urn:mycodexvantaos:tool:design_tool' as ToolURN, 'urn:mycodexvantaos:tool:review_tool' as ToolURN],
+      allowed_tools: [
+        'urn:mycodexvantaos:tool:design_tool' as ToolURN,
+        'urn:mycodexvantaos:tool:review_tool' as ToolURN,
+      ],
       governance_tier: 1,
-      status: 'active'
+      status: 'active',
     },
     {
       id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN,
@@ -29,9 +39,13 @@ describe('TeamManager', () => {
       role: 'engineer',
       goal: 'Implement software components',
       backstory: 'Full-stack developer',
-      allowed_tools: ['urn:mycodexvantaos:tool:code_editor' as ToolURN, 'urn:mycodexvantaos:tool:terminal' as ToolURN, 'urn:mycodexvantaos:tool:git' as ToolURN],
+      allowed_tools: [
+        'urn:mycodexvantaos:tool:code_editor' as ToolURN,
+        'urn:mycodexvantaos:tool:terminal' as ToolURN,
+        'urn:mycodexvantaos:tool:git' as ToolURN,
+      ],
       governance_tier: 0,
-      status: 'active'
+      status: 'active',
     },
     {
       id: 'urn:mycodexvantaos:agent:tester-01' as AgentURN,
@@ -40,10 +54,13 @@ describe('TeamManager', () => {
       role: 'tester',
       goal: 'Ensure code quality',
       backstory: 'QA specialist',
-      allowed_tools: ['urn:mycodexvantaos:tool:test_runner' as ToolURN, 'urn:mycodexvantaos:tool:coverage_tool' as ToolURN],
+      allowed_tools: [
+        'urn:mycodexvantaos:tool:test_runner' as ToolURN,
+        'urn:mycodexvantaos:tool:coverage_tool' as ToolURN,
+      ],
       governance_tier: 0,
-      status: 'active'
-    }
+      status: 'active',
+    },
   ];
 
   beforeEach(() => {
@@ -53,7 +70,7 @@ describe('TeamManager', () => {
     teamManager = new TeamManager(agentManager, messageBus, workflowEngine);
 
     // Register mock agents
-    mockAgents.forEach(agent => {
+    mockAgents.forEach((agent) => {
       agentManager.registerAgent(agent);
     });
   });
@@ -68,10 +85,14 @@ describe('TeamManager', () => {
         name: 'Development Team',
         topology_type: 'hierarchical',
         agents: [
-          { agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0, role_override: 'lead' },
+          {
+            agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN,
+            position: 0,
+            role_override: 'lead',
+          },
           { agent_id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, position: 1 },
-          { agent_id: 'urn:mycodexvantaos:agent:tester-01' as AgentURN, position: 2 }
-        ]
+          { agent_id: 'urn:mycodexvantaos:agent:tester-01' as AgentURN, position: 2 },
+        ],
       };
 
       const teamUrn = teamManager.createTeam(options);
@@ -88,9 +109,7 @@ describe('TeamManager', () => {
       const options: TeamCreationOptions = {
         name: 'Invalid Team',
         topology_type: 'hierarchical',
-        agents: [
-          { agent_id: 'urn:mycodexvantaos:agent:non-existent' as AgentURN, position: 0 }
-        ]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:non-existent' as AgentURN, position: 0 }],
       };
 
       expect(() => teamManager.createTeam(options)).toThrow('Agent not found');
@@ -98,7 +117,9 @@ describe('TeamManager', () => {
 
     it('should reject team creation exceeding max agents per team', () => {
       // Create a team manager with maxAgentsPerTeam = 2
-      const limitedManager = new TeamManager(agentManager, messageBus, workflowEngine, { maxAgentsPerTeam: 2 });
+      const limitedManager = new TeamManager(agentManager, messageBus, workflowEngine, {
+        maxAgentsPerTeam: 2,
+      });
 
       const options: TeamCreationOptions = {
         name: 'Too Large Team',
@@ -106,8 +127,8 @@ describe('TeamManager', () => {
         agents: [
           { agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 },
           { agent_id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, position: 1 },
-          { agent_id: 'urn:mycodexvantaos:agent:tester-01' as AgentURN, position: 2 }
-        ]
+          { agent_id: 'urn:mycodexvantaos:agent:tester-01' as AgentURN, position: 2 },
+        ],
       };
 
       expect(() => limitedManager.createTeam(options)).toThrow('Team exceeds maximum agents');
@@ -115,12 +136,14 @@ describe('TeamManager', () => {
 
     it('should reject team creation when max teams limit reached', () => {
       // Create a team manager with maxTeams = 1
-      const limitedManager = new TeamManager(agentManager, messageBus, workflowEngine, { maxTeams: 1 });
+      const limitedManager = new TeamManager(agentManager, messageBus, workflowEngine, {
+        maxTeams: 1,
+      });
 
       const options1: TeamCreationOptions = {
         name: 'First Team',
         topology_type: 'hierarchical',
-        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }],
       };
 
       limitedManager.createTeam(options1);
@@ -128,7 +151,7 @@ describe('TeamManager', () => {
       const options2: TeamCreationOptions = {
         name: 'Second Team',
         topology_type: 'hierarchical',
-        agents: [{ agent_id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, position: 0 }]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, position: 0 }],
       };
 
       expect(() => limitedManager.createTeam(options2)).toThrow('Maximum team limit');
@@ -138,16 +161,18 @@ describe('TeamManager', () => {
       const options: TeamCreationOptions = {
         name: 'Workflow Team',
         topology_type: 'dag',
-        agents: [
-          { agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }
-        ],
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }],
         workflow_definition: {
           type: 'dag',
           nodes: [
-            { id: 'node-1', agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, action: 'design' }
+            {
+              id: 'node-1',
+              agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN,
+              action: 'design',
+            },
           ],
-          edges: []
-        }
+          edges: [],
+        },
       };
 
       const teamUrn = teamManager.createTeam(options);
@@ -161,9 +186,7 @@ describe('TeamManager', () => {
       const options: TeamCreationOptions = {
         name: 'Lifecycle Test Team',
         topology_type: 'sequential',
-        agents: [
-          { agent_id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, position: 0 }
-        ]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, position: 0 }],
       };
 
       const teamUrn = teamManager.createTeam(options);
@@ -178,15 +201,16 @@ describe('TeamManager', () => {
     });
 
     it('should throw when activating non-existent team', () => {
-      expect(() => teamManager.activateTeam('urn:mycodexvantaos:team:non-existent' as TeamURN))
-        .toThrow('Team not found');
+      expect(() =>
+        teamManager.activateTeam('urn:mycodexvantaos:team:non-existent' as TeamURN)
+      ).toThrow('Team not found');
     });
 
     it('should return true when activating already active team (idempotent)', () => {
       const options: TeamCreationOptions = {
         name: 'Already Active Team',
         topology_type: 'sequential',
-        agents: [{ agent_id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, position: 0 }]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, position: 0 }],
       };
 
       const teamUrn = teamManager.createTeam(options);
@@ -201,7 +225,7 @@ describe('TeamManager', () => {
       const options: TeamCreationOptions = {
         name: 'DAG Team Without Workflow',
         topology_type: 'dag',
-        agents: [{ agent_id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, position: 0 }]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, position: 0 }],
         // No workflow_definition
       };
 
@@ -218,9 +242,7 @@ describe('TeamManager', () => {
       const options: TeamCreationOptions = {
         name: 'Destroy Test Team',
         topology_type: 'sequential',
-        agents: [
-          { agent_id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, position: 0 }
-        ]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, position: 0 }],
       };
 
       const teamUrn = teamManager.createTeam(options);
@@ -242,9 +264,7 @@ describe('TeamManager', () => {
       const options: TeamCreationOptions = {
         name: 'Agent Test Team',
         topology_type: 'sequential',
-        agents: [
-          { agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }
-        ]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }],
       };
 
       const teamUrn = teamManager.createTeam(options);
@@ -261,61 +281,63 @@ describe('TeamManager', () => {
     });
 
     it('should throw when adding agent to non-existent team', () => {
-      expect(() => teamManager.addAgentToTeam(
-        'urn:mycodexvantaos:team:non-existent' as TeamURN,
-        'urn:mycodexvantaos:agent:engineer-01' as AgentURN,
-        0
-      )).toThrow('Team not found');
+      expect(() =>
+        teamManager.addAgentToTeam(
+          'urn:mycodexvantaos:team:non-existent' as TeamURN,
+          'urn:mycodexvantaos:agent:engineer-01' as AgentURN,
+          0
+        )
+      ).toThrow('Team not found');
     });
 
     it('should throw when adding non-existent agent to team', () => {
       const options: TeamCreationOptions = {
         name: 'Test Team',
         topology_type: 'sequential',
-        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }],
       };
 
       const teamUrn = teamManager.createTeam(options);
 
-      expect(() => teamManager.addAgentToTeam(
-        teamUrn,
-        'urn:mycodexvantaos:agent:non-existent' as AgentURN,
-        1
-      )).toThrow('Agent not found');
+      expect(() =>
+        teamManager.addAgentToTeam(teamUrn, 'urn:mycodexvantaos:agent:non-existent' as AgentURN, 1)
+      ).toThrow('Agent not found');
     });
 
     it('should throw when adding agent already in team', () => {
       const options: TeamCreationOptions = {
         name: 'Test Team',
         topology_type: 'sequential',
-        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }],
       };
 
       const teamUrn = teamManager.createTeam(options);
 
-      expect(() => teamManager.addAgentToTeam(
-        teamUrn,
-        'urn:mycodexvantaos:agent:architect-01' as AgentURN,
-        1
-      )).toThrow('already in team');
+      expect(() =>
+        teamManager.addAgentToTeam(teamUrn, 'urn:mycodexvantaos:agent:architect-01' as AgentURN, 1)
+      ).toThrow('already in team');
     });
 
     it('should throw when adding agent exceeds max agents per team', () => {
-      const limitedManager = new TeamManager(agentManager, messageBus, workflowEngine, { maxAgentsPerTeam: 1 });
+      const limitedManager = new TeamManager(agentManager, messageBus, workflowEngine, {
+        maxAgentsPerTeam: 1,
+      });
 
       const options: TeamCreationOptions = {
         name: 'Limited Team',
         topology_type: 'sequential',
-        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }],
       };
 
       const teamUrn = limitedManager.createTeam(options);
 
-      expect(() => limitedManager.addAgentToTeam(
-        teamUrn,
-        'urn:mycodexvantaos:agent:engineer-01' as AgentURN,
-        1
-      )).toThrow('maximum agents');
+      expect(() =>
+        limitedManager.addAgentToTeam(
+          teamUrn,
+          'urn:mycodexvantaos:agent:engineer-01' as AgentURN,
+          1
+        )
+      ).toThrow('maximum agents');
     });
 
     it('should remove agent from team', () => {
@@ -324,8 +346,8 @@ describe('TeamManager', () => {
         topology_type: 'sequential',
         agents: [
           { agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 },
-          { agent_id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, position: 1 }
-        ]
+          { agent_id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, position: 1 },
+        ],
       };
 
       const teamUrn = teamManager.createTeam(options);
@@ -341,25 +363,26 @@ describe('TeamManager', () => {
     });
 
     it('should throw when removing agent from non-existent team', () => {
-      expect(() => teamManager.removeAgentFromTeam(
-        'urn:mycodexvantaos:team:non-existent' as TeamURN,
-        'urn:mycodexvantaos:agent:engineer-01' as AgentURN
-      )).toThrow('Team not found');
+      expect(() =>
+        teamManager.removeAgentFromTeam(
+          'urn:mycodexvantaos:team:non-existent' as TeamURN,
+          'urn:mycodexvantaos:agent:engineer-01' as AgentURN
+        )
+      ).toThrow('Team not found');
     });
 
     it('should throw when removing agent not in team', () => {
       const options: TeamCreationOptions = {
         name: 'Test Team',
         topology_type: 'sequential',
-        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }],
       };
 
       const teamUrn = teamManager.createTeam(options);
 
-      expect(() => teamManager.removeAgentFromTeam(
-        teamUrn,
-        'urn:mycodexvantaos:agent:engineer-01' as AgentURN
-      )).toThrow('not in team');
+      expect(() =>
+        teamManager.removeAgentFromTeam(teamUrn, 'urn:mycodexvantaos:agent:engineer-01' as AgentURN)
+      ).toThrow('not in team');
     });
 
     it('should get active agents for a team', () => {
@@ -368,8 +391,8 @@ describe('TeamManager', () => {
         topology_type: 'sequential',
         agents: [
           { agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 },
-          { agent_id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, position: 1 }
-        ]
+          { agent_id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, position: 1 },
+        ],
       };
 
       const teamUrn = teamManager.createTeam(options);
@@ -385,12 +408,12 @@ describe('TeamManager', () => {
       const options1: TeamCreationOptions = {
         name: 'Team One',
         topology_type: 'sequential',
-        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }],
       };
       const options2: TeamCreationOptions = {
         name: 'Team Two',
         topology_type: 'hierarchical',
-        agents: [{ agent_id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, position: 0 }]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, position: 0 }],
       };
 
       teamManager.createTeam(options1);
@@ -404,7 +427,7 @@ describe('TeamManager', () => {
       const options: TeamCreationOptions = {
         name: 'Status Test Team',
         topology_type: 'sequential',
-        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }],
       };
 
       const teamUrn = teamManager.createTeam(options);
@@ -412,22 +435,26 @@ describe('TeamManager', () => {
 
       const activeTeams = teamManager.getTeamsByStatus('active');
       expect(activeTeams.length).toBeGreaterThan(0);
-      expect(activeTeams.every(t => {
-        const state = teamManager.getTeamState(t.id as TeamURN);
-        return state?.status === 'active';
-      })).toBe(true);
+      expect(
+        activeTeams.every((t) => {
+          const state = teamManager.getTeamState(t.id as TeamURN);
+          return state?.status === 'active';
+        })
+      ).toBe(true);
     });
 
     it('should get teams by agent', () => {
       const options: TeamCreationOptions = {
         name: 'Agent Query Test Team',
         topology_type: 'sequential',
-        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }],
       };
 
       teamManager.createTeam(options);
 
-      const teams = teamManager.getTeamsByAgent('urn:mycodexvantaos:agent:architect-01' as AgentURN);
+      const teams = teamManager.getTeamsByAgent(
+        'urn:mycodexvantaos:agent:architect-01' as AgentURN
+      );
       expect(teams.length).toBeGreaterThan(0);
     });
 
@@ -435,7 +462,7 @@ describe('TeamManager', () => {
       const options: TeamCreationOptions = {
         name: 'State Test Team',
         topology_type: 'sequential',
-        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }],
       };
 
       const teamUrn = teamManager.createTeam(options);
@@ -457,10 +484,14 @@ describe('TeamManager', () => {
         name: 'Hierarchical Team',
         topology_type: 'hierarchical',
         agents: [
-          { agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0, role_override: 'lead' },
+          {
+            agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN,
+            position: 0,
+            role_override: 'lead',
+          },
           { agent_id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, position: 1 },
-          { agent_id: 'urn:mycodexvantaos:agent:tester-01' as AgentURN, position: 2 }
-        ]
+          { agent_id: 'urn:mycodexvantaos:agent:tester-01' as AgentURN, position: 2 },
+        ],
       };
 
       const teamUrn = teamManager.createTeam(options);
@@ -477,8 +508,8 @@ describe('TeamManager', () => {
         agents: [
           { agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 },
           { agent_id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, position: 1 },
-          { agent_id: 'urn:mycodexvantaos:agent:tester-01' as AgentURN, position: 2 }
-        ]
+          { agent_id: 'urn:mycodexvantaos:agent:tester-01' as AgentURN, position: 2 },
+        ],
       };
 
       const teamUrn = teamManager.createTeam(options);
@@ -494,8 +525,8 @@ describe('TeamManager', () => {
         agents: [
           { agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 },
           { agent_id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, position: 1 },
-          { agent_id: 'urn:mycodexvantaos:agent:tester-01' as AgentURN, position: 2 }
-        ]
+          { agent_id: 'urn:mycodexvantaos:agent:tester-01' as AgentURN, position: 2 },
+        ],
       };
 
       const teamUrn = teamManager.createTeam(options);
@@ -508,9 +539,7 @@ describe('TeamManager', () => {
       const options: TeamCreationOptions = {
         name: 'Broadcast Team',
         topology_type: 'broadcast',
-        agents: [
-          { agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }
-        ]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }],
       };
 
       const teamUrn = teamManager.createTeam(options);
@@ -525,8 +554,8 @@ describe('TeamManager', () => {
         topology_type: 'sequential',
         agents: [
           { agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 },
-          { agent_id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, position: 1 }
-        ]
+          { agent_id: 'urn:mycodexvantaos:agent:engineer-01' as AgentURN, position: 1 },
+        ],
       };
 
       const teamUrn = teamManager.createTeam(options);
@@ -543,7 +572,7 @@ describe('TeamManager', () => {
       const options: TeamCreationOptions = {
         name: 'Count Test Team',
         topology_type: 'sequential',
-        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }],
       };
       teamManager.createTeam(options);
 
@@ -554,7 +583,7 @@ describe('TeamManager', () => {
       const options: TeamCreationOptions = {
         name: 'Has Test Team',
         topology_type: 'sequential',
-        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }],
       };
       const teamUrn = teamManager.createTeam(options);
 
@@ -566,7 +595,7 @@ describe('TeamManager', () => {
       const options: TeamCreationOptions = {
         name: 'Get Test Team',
         topology_type: 'sequential',
-        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }],
       };
       const teamUrn = teamManager.createTeam(options);
 
@@ -586,14 +615,14 @@ describe('TeamManager', () => {
       const options: TeamCreationOptions = {
         name: 'Topology Update Team',
         topology_type: 'sequential',
-        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }],
       };
       const teamUrn = teamManager.createTeam(options);
-      
+
       // Update topology type
       const result = teamManager.updateTopologyType(teamUrn, 'mesh');
       expect(result).toBe(true);
-      
+
       const team = teamManager.getTeam(teamUrn);
       expect(team?.topology_type).toBe('mesh');
     });
@@ -608,10 +637,10 @@ describe('TeamManager', () => {
       const options: TeamCreationOptions = {
         name: 'No Workflow Team',
         topology_type: 'sequential',
-        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }],
       };
       const teamUrn = teamManager.createTeam(options);
-      
+
       expect(() => {
         teamManager.updateTopologyType(teamUrn, 'dag');
       }).toThrow('Cannot set topology to dag without workflow definition');
@@ -621,10 +650,10 @@ describe('TeamManager', () => {
       const options: TeamCreationOptions = {
         name: 'No Workflow Team 2',
         topology_type: 'sequential',
-        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }],
       };
       const teamUrn = teamManager.createTeam(options);
-      
+
       expect(() => {
         teamManager.updateTopologyType(teamUrn, 'state_machine');
       }).toThrow('Cannot set topology to state_machine without workflow definition');
@@ -634,22 +663,22 @@ describe('TeamManager', () => {
       const options: TeamCreationOptions = {
         name: 'HITL Update Team',
         topology_type: 'sequential',
-        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }],
       };
       const teamUrn = teamManager.createTeam(options);
-      
+
       const hitlConfig = {
         enabled: true,
-        checkpoints: [{ node_id: 'node-1', trigger_condition: 'always' as const }]
+        checkpoints: [{ node_id: 'node-1', trigger_condition: 'always' as const }],
       };
-      
+
       const result = teamManager.updateHITLConfig(teamUrn, hitlConfig);
       expect(result).toBe(true);
     });
 
     it('should throw when updating HITL config for non-existent team', () => {
       const hitlConfig = { enabled: true };
-      
+
       expect(() => {
         teamManager.updateHITLConfig('urn:mycodexvantaos:team:non-existent' as TeamURN, hitlConfig);
       }).toThrow();
@@ -664,14 +693,14 @@ describe('TeamManager', () => {
           type: 'dag',
           nodes: [{ id: 'node-1', agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN }],
           edges: [],
-          initial_state: 'node-1'
-        }
+          initial_state: 'node-1',
+        },
       };
       const teamUrn = teamManager.createTeam(options);
-      
+
       // Activate the team first
       teamManager.activateTeam(teamUrn);
-      
+
       // Start a workflow
       const workflowId = teamManager.startWorkflow(teamUrn, { testVar: 'value' });
       expect(workflowId).toBeDefined();
@@ -687,11 +716,11 @@ describe('TeamManager', () => {
       const options: TeamCreationOptions = {
         name: 'Inactive Workflow Team',
         topology_type: 'sequential',
-        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }]
+        agents: [{ agent_id: 'urn:mycodexvantaos:agent:architect-01' as AgentURN, position: 0 }],
       };
       const teamUrn = teamManager.createTeam(options);
       // Team is in 'draft' status by default, not 'active'
-      
+
       expect(() => {
         teamManager.startWorkflow(teamUrn);
       }).toThrow('is not active');

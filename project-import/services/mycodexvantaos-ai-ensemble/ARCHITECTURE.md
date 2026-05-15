@@ -97,30 +97,33 @@ User Request
 
 ## Provider Usage Map
 
-| Service | database | storage | stateStore | queue | observability |
-|---------|----------|---------|------------|-------|---------------|
-| LLMService | — | — | cache | — | log, metric |
-| AgentService | persist | — | state | dispatch | trace |
-| EmbeddingService | metadata | vectors | cache | — | log |
-| RAGService | metadata | documents | cache | — | log, trace |
+| Service          | database | storage   | stateStore | queue    | observability |
+| ---------------- | -------- | --------- | ---------- | -------- | ------------- |
+| LLMService       | —        | —         | cache      | —        | log, metric   |
+| AgentService     | persist  | —         | state      | dispatch | trace         |
+| EmbeddingService | metadata | vectors   | cache      | —        | log           |
+| RAGService       | metadata | documents | cache      | —        | log, trace    |
 
 ---
 
 ## Native Mode Implementation Details
 
 ### Template-Based LLM
+
 - Pattern matching against prompt keywords
 - Variable substitution in response templates
 - Deterministic output for identical inputs
 - Configurable template library
 
 ### Hash-Based Embeddings
+
 - Character code summation per dimension
 - Normalized to unit vectors
 - 128-dimension default vector space
 - Deterministic: same input always produces same vector
 
 ### In-Memory Vector Search
+
 - Brute-force cosine similarity computation
 - Suitable for up to ~10,000 vectors in memory
 - No external vector database required
@@ -139,11 +142,11 @@ User Request
 
 ## Scaling Strategy
 
-| Scale | Strategy |
-|-------|----------|
-| Development | Native mode, in-memory, no API keys |
-| Staging | Hybrid mode, external LLM + native embeddings |
-| Production | Connected mode, all external providers |
+| Scale       | Strategy                                      |
+| ----------- | --------------------------------------------- |
+| Development | Native mode, in-memory, no API keys           |
+| Staging     | Hybrid mode, external LLM + native embeddings |
+| Production  | Connected mode, all external providers        |
 
 ---
 

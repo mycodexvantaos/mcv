@@ -1,6 +1,6 @@
 /**
  * Service Manifest Parser
- * 
+ *
  * Handles parsing and loading of service manifest files with support for
  * multiple formats (YAML, JSON) and validation against the governance policy.
  */
@@ -13,7 +13,7 @@ import {
   ServiceManifest,
   ServiceManifestValidationResult,
   ManifestLoadOptions,
-  ServiceManifestContext
+  ServiceManifestContext,
 } from './service-manifest.types';
 
 const logger = pino({ name: 'service-manifest-parser' });
@@ -49,22 +49,30 @@ export class ServiceManifestParser {
         throw new Error(`Invalid manifest: kind must be ServiceManifest, got ${manifest.kind}`);
       }
 
-      logger.info({ 
-        apiVersion: manifest.apiVersion, 
-        name: manifest.metadata?.name 
-      }, 'Service manifest parsed successfully');
+      logger.info(
+        {
+          apiVersion: manifest.apiVersion,
+          name: manifest.metadata?.name,
+        },
+        'Service manifest parsed successfully'
+      );
 
       return manifest as ServiceManifest;
     } catch (error) {
       logger.error({ error }, 'Failed to parse service manifest');
-      throw new Error(`Manifest parsing failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Manifest parsing failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
   /**
    * Load service manifest from file
    */
-  async loadFromFile(filePath: string, options: ManifestLoadOptions = {}): Promise<ServiceManifestContext> {
+  async loadFromFile(
+    filePath: string,
+    options: ManifestLoadOptions = {}
+  ): Promise<ServiceManifestContext> {
     try {
       logger.info({ filePath }, 'Loading service manifest from file');
 
@@ -78,13 +86,16 @@ export class ServiceManifestParser {
         manifest,
         loadedFrom: filePath,
         loadedAt: new Date(),
-        environment: process.env.NODE_ENV || 'development'
+        environment: process.env.NODE_ENV || 'development',
       };
 
-      logger.info({ 
-        name: manifest.metadata.name, 
-        runtimeMode: manifest.spec.runtimeMode 
-      }, 'Service manifest loaded successfully');
+      logger.info(
+        {
+          name: manifest.metadata.name,
+          runtimeMode: manifest.spec.runtimeMode,
+        },
+        'Service manifest loaded successfully'
+      );
 
       return context;
     } catch (error) {
@@ -96,15 +107,20 @@ export class ServiceManifestParser {
   /**
    * Load service manifest from directory
    */
-  async loadFromDirectory(dirPath: string, options: ManifestLoadOptions = {}): Promise<ServiceManifestContext[]> {
+  async loadFromDirectory(
+    dirPath: string,
+    options: ManifestLoadOptions = {}
+  ): Promise<ServiceManifestContext[]> {
     try {
       logger.info({ dirPath }, 'Loading service manifests from directory');
 
       const entries = await fs.readdir(dirPath, { withFileTypes: true });
-      const manifestFiles = entries.filter(entry => {
+      const manifestFiles = entries.filter((entry) => {
         const name = entry.name.toLowerCase();
-        return (name.endsWith('.yaml') || name.endsWith('.yml') || name.endsWith('.json')) &&
-               entry.isFile();
+        return (
+          (name.endsWith('.yaml') || name.endsWith('.yml') || name.endsWith('.json')) &&
+          entry.isFile()
+        );
       });
 
       const manifests: ServiceManifestContext[] = [];
@@ -119,10 +135,13 @@ export class ServiceManifestParser {
         }
       }
 
-      logger.info({ 
-        directory: dirPath, 
-        count: manifests.length 
-      }, 'Service manifests loaded from directory');
+      logger.info(
+        {
+          directory: dirPath,
+          count: manifests.length,
+        },
+        'Service manifests loaded from directory'
+      );
 
       return manifests;
     } catch (error) {
@@ -141,14 +160,16 @@ export class ServiceManifestParser {
           indent: 2,
           lineWidth: -1,
           noRefs: true,
-          sortKeys: false
+          sortKeys: false,
         });
       } else {
         return JSON.stringify(manifest, null, 2);
       }
     } catch (error) {
       logger.error({ error }, 'Failed to serialize service manifest');
-      throw new Error(`Manifest serialization failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Manifest serialization failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 

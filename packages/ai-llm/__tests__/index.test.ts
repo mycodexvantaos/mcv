@@ -291,9 +291,7 @@ describe('ai-llm Package', () => {
     describe('generateChatCompletion', () => {
       it('should generate chat completion from user message', async () => {
         const response = await provider.generateChatCompletion({
-          messages: [
-            { role: 'user', content: 'Hello AI' },
-          ],
+          messages: [{ role: 'user', content: 'Hello AI' }],
         });
 
         expect(response.text).toContain('Hello AI');
@@ -443,9 +441,7 @@ describe('ai-llm Package', () => {
       const { initializeLLM, generateChatCompletion } = require('../src/index');
       await initializeLLM();
 
-      const response = await generateChatCompletion([
-        { role: 'user', content: 'Hello' },
-      ]);
+      const response = await generateChatCompletion([{ role: 'user', content: 'Hello' }]);
 
       expect(response.text).toBeDefined();
       expect(response.provider).toBe('llm-native');
@@ -457,9 +453,7 @@ describe('ai-llm Package', () => {
 
       const { generateChatCompletion } = require('../src/index');
 
-      await expect(
-        generateChatCompletion([{ role: 'user', content: 'Hello' }])
-      ).rejects.toThrow();
+      await expect(generateChatCompletion([{ role: 'user', content: 'Hello' }])).rejects.toThrow();
     });
 
     it('should use specified provider when available', async () => {
@@ -467,10 +461,9 @@ describe('ai-llm Package', () => {
       const { initializeLLM, generateChatCompletion } = require('../src/index');
       await initializeLLM();
 
-      const response = await generateChatCompletion(
-        [{ role: 'user', content: 'Hello' }],
-        { provider: 'native' }
-      );
+      const response = await generateChatCompletion([{ role: 'user', content: 'Hello' }], {
+        provider: 'native',
+      });
 
       expect(response).toBeDefined();
     });

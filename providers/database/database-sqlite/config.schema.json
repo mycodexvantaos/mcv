@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/database/sqlite/config.schema.json",
   "title": "database-sqlite Configuration",
   "type": "object",
-  "required": [
-    "filePath"
-  ],
+  "required": ["filePath"],
   "properties": {
     "filePath": {
       "type": "string",

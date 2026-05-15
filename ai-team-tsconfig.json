@@ -43,12 +43,7 @@
     { "path": "modules/mycodexvantaos-persona-engine" },
     { "path": "services/mycodexvantaos-ai-team-service" }
   ],
-  "include": [
-    "index.ts",
-    "modules/**/*.ts",
-    "services/**/*.ts",
-    "schemas/**/*.json"
-  ],
+  "include": ["index.ts", "modules/**/*.ts", "services/**/*.ts", "schemas/**/*.json"],
   "exclude": [
     "node_modules",
     "dist",

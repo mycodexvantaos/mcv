@@ -52,7 +52,7 @@ describe('Index Exports', () => {
         executionId: 'test',
         contract: {},
         userContext: { userId: 'user-123', intent: 'Deploy application' },
-        systemContext: {}
+        systemContext: {},
       });
 
       expect(result).toHaveProperty('success');
@@ -61,10 +61,10 @@ describe('Index Exports', () => {
 
     it('should execute contract with exported engine', async () => {
       const engine = new ContractEngine();
-      const result = await engine.executeContract(
-        'test-contract',
-        { userId: 'user-123', intent: 'Deploy application to production' }
-      );
+      const result = await engine.executeContract('test-contract', {
+        userId: 'user-123',
+        intent: 'Deploy application to production',
+      });
 
       expect(result.status).toBe('completed');
     });

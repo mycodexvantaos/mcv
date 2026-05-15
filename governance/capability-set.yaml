@@ -10,7 +10,7 @@ metadata:
   name: canonical-capability-set
   labels:
     managed-by: naming-spec-v1
-    specRef: "5.5"
+    specRef: '5.5'
 
 capabilities:
   - id: database

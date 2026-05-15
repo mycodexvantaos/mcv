@@ -1,5 +1,5 @@
 # modules/mycodexvantaos-governance-policy/capabilities.yaml
 capabilities:
-    - database
-    - secrets
-    - observability
+  - database
+  - secrets
+  - observability

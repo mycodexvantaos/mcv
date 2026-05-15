@@ -1,11 +1,11 @@
 /**
  * CodexvantaOS — SecretsProvider
- * 
+ *
  * Abstract interface for secrets / sensitive configuration management.
  * Native mode: encrypted file-based vault (zero dependencies)
  * External mode: GitHub Secrets, HashiCorp Vault, AWS Secrets Manager,
  *                Azure Key Vault, GCP Secret Manager, etc.
- * 
+ *
  * Design principles:
  *  - Secrets are NEVER logged or included in error messages
  *  - All secrets are namespaced by scope (global / repo / environment)
@@ -20,18 +20,18 @@ export type SecretScope = 'global' | 'repository' | 'environment' | 'user';
 export interface SecretMeta {
   key: string;
   scope: SecretScope;
-  namespace?: string;       // e.g. repo name, env name
-  createdAt: number;        // epoch ms
+  namespace?: string; // e.g. repo name, env name
+  createdAt: number; // epoch ms
   updatedAt: number;
-  rotatedAt?: number;       // last rotation timestamp
-  expiresAt?: number;       // optional expiry
+  rotatedAt?: number; // last rotation timestamp
+  expiresAt?: number; // optional expiry
   version: number;
   tags?: Record<string, string>;
 }
 
 export interface SecretValue {
   meta: SecretMeta;
-  value: string;            // always decrypted when returned
+  value: string; // always decrypted when returned
 }
 
 export interface SetSecretOptions {
@@ -39,7 +39,7 @@ export interface SetSecretOptions {
   namespace?: string;
   expiresAt?: number;
   tags?: Record<string, string>;
-  overwrite?: boolean;      // default true
+  overwrite?: boolean; // default true
 }
 
 export interface ListSecretsOptions {
@@ -63,18 +63,18 @@ export interface SecretAuditEntry {
   key?: string;
   scope?: SecretScope;
   namespace?: string;
-  actor?: string;           // principal performing the action
+  actor?: string; // principal performing the action
   success: boolean;
-  reason?: string;          // failure reason if !success
+  reason?: string; // failure reason if !success
 }
 
 export interface SecretsHealth {
   healthy: boolean;
   mode: 'native' | 'external';
   provider: string;
-  encrypted: boolean;       // whether at-rest encryption is active
+  encrypted: boolean; // whether at-rest encryption is active
   secretCount?: number;
-  oldestSecret?: number;    // epoch ms
+  oldestSecret?: number; // epoch ms
   expiringWithin24h?: number;
   details?: Record<string, unknown>;
 }

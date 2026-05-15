@@ -3,9 +3,7 @@
   "$id": "https://mycodexvantaos.org/providers/scheduler/temporal/config.schema.json",
   "title": "scheduler-temporal Configuration",
   "type": "object",
-  "required": [
-    "hostPort"
-  ],
+  "required": ["hostPort"],
   "properties": {
     "hostPort": {
       "type": "string",

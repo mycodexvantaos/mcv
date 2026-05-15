@@ -15,6 +15,7 @@ In **Native mode**, the AI Engine operates with local template-based inference, 
 ## Core Capabilities
 
 ### LLM Service
+
 - Text completion and chat-based interaction
 - Streaming response support
 - Model listing and selection
@@ -23,6 +24,7 @@ In **Native mode**, the AI Engine operates with local template-based inference, 
 - Native fallback: template-based response generation
 
 ### Agent Service
+
 - Autonomous agent creation and lifecycle management
 - Multi-step execution with tool calling
 - Result collection and history tracking
@@ -30,6 +32,7 @@ In **Native mode**, the AI Engine operates with local template-based inference, 
 - Database-persisted agent definitions and run logs
 
 ### Embedding Service
+
 - Text-to-vector embedding generation
 - Semantic similarity search across indexed documents
 - Index creation, deletion, and management
@@ -37,6 +40,7 @@ In **Native mode**, the AI Engine operates with local template-based inference, 
 - Cosine similarity computation for search ranking
 
 ### RAG Service
+
 - Document ingestion and chunking
 - Collection-based document organization
 - Context-aware query with retrieval from indexed sources
@@ -69,42 +73,45 @@ In **Native mode**, the AI Engine operates with local template-based inference, 
 
 ## Provider Dependencies
 
-| Provider | Usage |
-|----------|-------|
-| database | Persist agent definitions, embeddings metadata, RAG collections |
-| stateStore | Cache LLM responses, track agent execution state |
-| queue | Asynchronous agent task dispatch |
-| storage | Store indexed documents, embedding data |
-| observability | Log inference requests, trace agent workflows |
+| Provider      | Usage                                                           |
+| ------------- | --------------------------------------------------------------- |
+| database      | Persist agent definitions, embeddings metadata, RAG collections |
+| stateStore    | Cache LLM responses, track agent execution state                |
+| queue         | Asynchronous agent task dispatch                                |
+| storage       | Store indexed documents, embedding data                         |
+| observability | Log inference requests, trace agent workflows                   |
 
 ---
 
 ## Services
 
-| Service | Methods | Description |
-|---------|---------|-------------|
-| LLMService | complete, chat, stream, listModels | Large language model orchestration |
-| AgentService | create, execute, getResult, listAgents | Autonomous agent lifecycle |
-| EmbeddingService | embed, search, index, deleteIndex | Vector embedding and search |
-| RAGService | index, query, deleteCollection, listCollections | Retrieval-augmented generation |
+| Service          | Methods                                         | Description                        |
+| ---------------- | ----------------------------------------------- | ---------------------------------- |
+| LLMService       | complete, chat, stream, listModels              | Large language model orchestration |
+| AgentService     | create, execute, getResult, listAgents          | Autonomous agent lifecycle         |
+| EmbeddingService | embed, search, index, deleteIndex               | Vector embedding and search        |
+| RAGService       | index, query, deleteCollection, listCollections | Retrieval-augmented generation     |
 
 ---
 
 ## Operational Modes
 
 ### Native Mode
+
 - Template-based LLM responses with variable substitution
 - Hash-based embedding vectors (deterministic, reproducible)
 - In-memory cosine similarity search
 - Local document storage and SQLite metadata
 
 ### Connected Mode
+
 - External LLM API integration (OpenAI, Anthropic, etc.)
 - Hosted embedding services (OpenAI, Cohere, etc.)
 - Managed vector databases (Pinecone, Weaviate, etc.)
 - Cloud storage for document persistence
 
 ### Hybrid Mode
+
 - Mix native and external providers per capability
 - Auto-fallback from external to native on failure
 

@@ -1,14 +1,19 @@
 /**
  * Auto-Fix Bot - Provider Pattern Version
  * Transformed to use RepositoryCapability for platform independence
- * 
+ *
  * Supports:
  * - Native: Local file system operations (no GitHub API)
  * - Hybrid: GitHub API with fallback to local operations
  * - Connected: GitHub API only
  */
 
-import type { RepositoryCapability, CommitInfo, PRInfo, FileChange } from '../packages/capabilities/src/repository';
+import type {
+  RepositoryCapability,
+  CommitInfo,
+  PRInfo,
+  FileChange,
+} from '../packages/capabilities/src/repository';
 import type { LoggingCapability } from '../packages/capabilities/src/logging';
 
 export interface FixerContext {
@@ -34,14 +39,12 @@ export abstract class BaseFixer {
   protected repoProvider: RepositoryCapability | null = null;
   protected logger: LoggingCapability | null = null;
 
-  constructor(
-    protected providerFactory: any
-  ) {}
+  constructor(protected providerFactory: any) {}
 
   async initialize(): Promise<void> {
     this.repoProvider = await this.providerFactory.getRepositoryProvider();
     this.logger = await this.providerFactory.getLoggingProvider();
-    
+
     await this.repoProvider.initialize();
     await this.logger.initialize();
   }
@@ -91,7 +94,7 @@ export class NamingFixer extends BaseFixer {
 
       // Check for naming violations
       const violations = this.detectViolations(content);
-      
+
       if (violations.length === 0) {
         return {
           success: true,
@@ -108,13 +111,15 @@ export class NamingFixer extends BaseFixer {
         owner: context.owner,
         repo: context.repo,
         message: 'fix: correct naming convention violations',
-        changes: [{
-          path: context.path || '',
-          content: fixedContent,
-        }],
+        changes: [
+          {
+            path: context.path || '',
+            content: fixedContent,
+          },
+        ],
       });
 
-      await this.log('info', 'Fixed naming violations', { 
+      await this.log('info', 'Fixed naming violations', {
         count: violations.length,
         commit: commitResult.sha,
       });
@@ -123,10 +128,12 @@ export class NamingFixer extends BaseFixer {
         success: true,
         fixed: true,
         message: `Fixed ${violations.length} naming violations`,
-        changes: [{
-          path: context.path || '',
-          content: fixedContent,
-        }],
+        changes: [
+          {
+            path: context.path || '',
+            content: fixedContent,
+          },
+        ],
       };
     } catch (error: any) {
       await this.log('error', 'Failed to fix naming violations', { error: error.message });
@@ -195,9 +202,10 @@ export class NamingFixer extends BaseFixer {
       return {
         success: true,
         fixed: totalViolations > 0,
-        message: totalViolations > 0 
-          ? `Fixed ${totalViolations} files with naming violations`
-          : 'No naming violations found',
+        message:
+          totalViolations > 0
+            ? `Fixed ${totalViolations} files with naming violations`
+            : 'No naming violations found',
         changes: fixes,
       };
     } catch (error: any) {
@@ -208,7 +216,7 @@ export class NamingFixer extends BaseFixer {
 
   private detectViolations(content: string): string[] {
     const violations: string[] = [];
-    
+
     // Example: Check for kebab-case violations in YAML keys
     const lines = content.split('\n');
     lines.forEach((line, index) => {
@@ -227,14 +235,17 @@ export class NamingFixer extends BaseFixer {
 
   private fixViolations(content: string, violations: string[]): string {
     let fixed = content;
-    
-    violations.forEach(violation => {
+
+    violations.forEach((violation) => {
       const match = violation.match(/Line (\d+): (.+) should be kebab-case/);
       if (match) {
         const lineNum = parseInt(match[1]) - 1;
         const key = match[2];
-        const kebabKey = key.replace(/([A-Z])/g, '-$1').toLowerCase().replace(/^-/, '');
-        
+        const kebabKey = key
+          .replace(/([A-Z])/g, '-$1')
+          .toLowerCase()
+          .replace(/^-/, '');
+
         const lines = fixed.split('\n');
         lines[lineNum] = lines[lineNum].replace(key, kebabKey);
         fixed = lines.join('\n');
@@ -251,7 +262,7 @@ export class NamingFixer extends BaseFixer {
 export class SecurityFixer extends BaseFixer {
   async checkAndFix(context: FixerContext): Promise<FixResult> {
     await this.log('info', 'Checking security issues', context);
-    
+
     // Implementation similar to NamingFixer
     return {
       success: true,
@@ -262,7 +273,7 @@ export class SecurityFixer extends BaseFixer {
 
   async checkPR(context: FixerContext): Promise<FixResult> {
     await this.log('info', 'Checking PR for security issues', context);
-    
+
     return {
       success: true,
       fixed: false,
@@ -277,7 +288,7 @@ export class SecurityFixer extends BaseFixer {
 export class DependencyFixer extends BaseFixer {
   async checkAndFix(context: FixerContext): Promise<FixResult> {
     await this.log('info', 'Checking dependency issues', context);
-    
+
     return {
       success: true,
       fixed: false,
@@ -287,7 +298,7 @@ export class DependencyFixer extends BaseFixer {
 
   async checkPR(context: FixerContext): Promise<FixResult> {
     await this.log('info', 'Checking PR for dependency issues', context);
-    
+
     return {
       success: true,
       fixed: false,
@@ -323,7 +334,7 @@ export class AutoFixBot {
       new DependencyFixer(this.providerFactory),
     ];
 
-    await Promise.all(this.fixers.map(f => f.initialize()));
+    await Promise.all(this.fixers.map((f) => f.initialize()));
     this.initialized = true;
   }
 
@@ -379,9 +390,7 @@ export class AutoFixBot {
       headRef: payload.pull_request?.head?.ref,
     };
 
-    await Promise.all(
-      this.fixers.map(fixer => fixer.checkPR(context))
-    );
+    await Promise.all(this.fixers.map((fixer) => fixer.checkPR(context)));
   }
 
   /**
@@ -398,7 +407,7 @@ export class AutoFixBot {
    * Shutdown
    */
   async shutdown(): Promise<void> {
-    await Promise.all(this.fixers.map(f => f.shutdown()));
+    await Promise.all(this.fixers.map((f) => f.shutdown()));
     this.initialized = false;
   }
 }

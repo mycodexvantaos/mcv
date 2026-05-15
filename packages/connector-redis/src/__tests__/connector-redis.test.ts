@@ -16,9 +16,9 @@ describe('RedisConnector', () => {
       db: 0,
       timeout: 5000,
       retryDelayOnFailover: 50,
-      maxRetriesPerRequest: 3
+      maxRetriesPerRequest: 3,
     };
-    
+
     connector = new RedisConnector(config);
     await connector.connect();
   });
@@ -60,8 +60,8 @@ describe('RedisConnector', () => {
       await connector.set('expire', 'value', { ex: 1 });
       const value1 = await connector.get('expire');
       expect(value1).toBe('value');
-      
-      await new Promise(resolve => setTimeout(resolve, 1100));
+
+      await new Promise((resolve) => setTimeout(resolve, 1100));
       const value2 = await connector.get('expire');
       expect(value2).toBeNull();
     });
@@ -70,7 +70,7 @@ describe('RedisConnector', () => {
       await connector.set('test', 'value1');
       const result = await connector.set('test', 'value2', { nx: true });
       expect(result).toBe('nil');
-      
+
       const value = await connector.get('test');
       expect(value).toBe('value1');
     });
@@ -78,7 +78,7 @@ describe('RedisConnector', () => {
     test('should not set if key does not exist with xx option', async () => {
       const result = await connector.set('test', 'value', { xx: true });
       expect(result).toBe('nil');
-      
+
       const value = await connector.get('test');
       expect(value).toBeNull();
     });
@@ -96,7 +96,7 @@ describe('RedisConnector', () => {
       await connector.set('key1', 'value1');
       await connector.set('key2', 'value2');
       await connector.set('key3', 'value3');
-      
+
       const count = await connector.del('key1', 'key2', 'key3');
       expect(count).toBe(3);
     });
@@ -117,7 +117,7 @@ describe('RedisConnector', () => {
     test('should check multiple keys', async () => {
       await connector.set('key1', 'value1');
       await connector.set('key2', 'value2');
-      
+
       const count = await connector.exists('key1', 'key2', 'nonexistent');
       expect(count).toBe(2);
     });
@@ -128,8 +128,8 @@ describe('RedisConnector', () => {
       await connector.set('test', 'value');
       const result = await connector.expire('test', 1);
       expect(result).toBe(1);
-      
-      await new Promise(resolve => setTimeout(resolve, 1100));
+
+      await new Promise((resolve) => setTimeout(resolve, 1100));
       expect(await connector.get('test')).toBeNull();
     });
 
@@ -160,7 +160,7 @@ describe('RedisConnector', () => {
     test('should increment value', async () => {
       let value = await connector.incr('counter');
       expect(value).toBe(1);
-      
+
       value = await connector.incr('counter');
       expect(value).toBe(2);
     });
@@ -169,7 +169,7 @@ describe('RedisConnector', () => {
       await connector.set('counter', 5);
       let value = await connector.decr('counter');
       expect(value).toBe(4);
-      
+
       value = await connector.decr('counter');
       expect(value).toBe(3);
     });
@@ -196,7 +196,7 @@ describe('RedisConnector', () => {
       await connector.zadd('scores', 100, 'player1');
       await connector.zadd('scores', 200, 'player2');
       await connector.zadd('scores', 150, 'player3');
-      
+
       const range = await connector.zrange('scores', 0, -1);
       expect(range).toEqual(['player1', 'player3', 'player2']);
     });
@@ -207,7 +207,7 @@ describe('RedisConnector', () => {
       await connector.set('user:1', 'value1');
       await connector.set('user:2', 'value2');
       await connector.set('session:1', 'value3');
-      
+
       const keys = await connector.keys('user:*');
       expect(keys).toHaveLength(2);
       expect(keys).toContain('user:1');
@@ -219,7 +219,7 @@ describe('RedisConnector', () => {
     test('should set multiple key-value pairs', async () => {
       const result = await connector.mset('key1', 'value1', 'key2', 'value2', 'key3', 'value3');
       expect(result).toBe('OK');
-      
+
       expect(await connector.get('key1')).toBe('value1');
       expect(await connector.get('key2')).toBe('value2');
       expect(await connector.get('key3')).toBe('value3');
@@ -229,7 +229,7 @@ describe('RedisConnector', () => {
       await connector.set('key1', 'value1');
       await connector.set('key2', 'value2');
       await connector.set('key3', 'value3');
-      
+
       const values = await connector.mget('key1', 'key2', 'key3', 'nonexistent');
       expect(values).toEqual(['value1', 'value2', 'value3', null]);
     });
@@ -258,7 +258,7 @@ describe('RedisConnector', () => {
     test('should set substring', async () => {
       await connector.set('key', 'Hello World');
       const length = await connector.setrange('key', 6, 'Universe');
-      expect(length).toBe(14);  // "Hello Universe" is 14 characters
+      expect(length).toBe(14); // "Hello Universe" is 14 characters
       expect(await connector.get('key')).toBe('Hello Universe');
     });
 
@@ -273,7 +273,7 @@ describe('RedisConnector', () => {
     test('should get database size', async () => {
       await connector.set('key1', 'value1');
       await connector.set('key2', 'value2');
-      
+
       const size = await connector.dbsize();
       expect(size).toBe(2);
     });
@@ -281,7 +281,7 @@ describe('RedisConnector', () => {
     test('should flush all keys', async () => {
       await connector.set('key1', 'value1');
       await connector.set('key2', 'value2');
-      
+
       const result = await connector.flushall();
       expect(result).toBe('OK');
       expect(await connector.dbsize()).toBe(0);
@@ -290,7 +290,7 @@ describe('RedisConnector', () => {
     test('should flush database', async () => {
       await connector.set('key1', 'value1');
       await connector.set('key2', 'value2');
-      
+
       const result = await connector.flushdb();
       expect(result).toBe('OK');
       expect(await connector.dbsize()).toBe(0);

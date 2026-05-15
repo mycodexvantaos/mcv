@@ -88,9 +88,7 @@ const edgeNodes: EdgeNode[] = [
     name: 'AP Southeast (Singapore)',
     region: 'ap-southeast-1',
     status: 'deploying',
-    models: [
-      { id: 'gemini-1.5-flash', name: 'Gemini 1.5 Flash', status: 'loading', memory: 2.1 },
-    ],
+    models: [{ id: 'gemini-1.5-flash', name: 'Gemini 1.5 Flash', status: 'loading', memory: 2.1 }],
     resources: {
       cpu: { used: 92, total: 100, cores: 16 },
       memory: { used: 28, total: 32 },

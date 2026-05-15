@@ -1,6 +1,6 @@
 /**
  * NativeStateStoreProvider — In-memory key-value store with file persistence
- * 
+ *
  * Zero external dependencies. Replaces ALL hard Redis dependencies.
  *  - In-memory Map with TTL support
  *  - Periodic file-based snapshots for crash recovery
@@ -34,7 +34,7 @@ interface InternalEntry {
   value: unknown;
   createdAt: number;
   updatedAt: number;
-  expiresAt: number | null;   // null = no expiry
+  expiresAt: number | null; // null = no expiry
   version: number;
 }
 
@@ -108,10 +108,17 @@ export class NativeStateStoreProvider implements StateStoreProvider {
     const existing = this.store.get(key);
 
     // Conditional checks
-    if (options?.ifNotExists && existing && (existing.expiresAt === null || existing.expiresAt > now)) {
+    if (
+      options?.ifNotExists &&
+      existing &&
+      (existing.expiresAt === null || existing.expiresAt > now)
+    ) {
       throw new Error(`Key already exists: ${key}`);
     }
-    if (options?.ifExists && (!existing || (existing.expiresAt !== null && existing.expiresAt <= now))) {
+    if (
+      options?.ifExists &&
+      (!existing || (existing.expiresAt !== null && existing.expiresAt <= now))
+    ) {
       throw new Error(`Key does not exist: ${key}`);
     }
     if (options?.version !== undefined && existing && existing.version !== options.version) {
@@ -182,7 +189,7 @@ export class NativeStateStoreProvider implements StateStoreProvider {
 
     const regex = this.globToRegex(pattern);
     const allKeys = Array.from(this.store.keys())
-      .filter(k => regex.test(k))
+      .filter((k) => regex.test(k))
       .sort();
 
     let startIdx = 0;
@@ -277,7 +284,7 @@ export class NativeStateStoreProvider implements StateStoreProvider {
       }
 
       // Wait and retry
-      await new Promise(resolve => setTimeout(resolve, pollMs));
+      await new Promise((resolve) => setTimeout(resolve, pollMs));
     }
 
     return null; // Timeout
@@ -380,9 +387,10 @@ export class NativeStateStoreProvider implements StateStoreProvider {
     return {
       key: internal.key,
       value: internal.value as T,
-      ttl: internal.expiresAt !== null
-        ? Math.max(0, Math.floor((internal.expiresAt - now) / 1000))
-        : undefined,
+      ttl:
+        internal.expiresAt !== null
+          ? Math.max(0, Math.floor((internal.expiresAt - now) / 1000))
+          : undefined,
       createdAt: internal.createdAt,
       updatedAt: internal.updatedAt,
       version: internal.version,

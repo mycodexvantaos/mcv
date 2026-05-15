@@ -1,6 +1,6 @@
 /**
  * Service Manifest Validator
- * 
+ *
  * Validates service manifests against the governance policy specification
  * defined in governance/service-manifest-policy.yaml. Provides comprehensive
  * validation including structural, semantic, and runtime compatibility checks.
@@ -10,7 +10,7 @@ import pino from 'pino';
 import {
   ServiceManifest,
   ServiceManifestValidationResult,
-  RuntimeMode
+  RuntimeMode,
 } from './service-manifest.types';
 
 const logger = pino({ name: 'service-manifest-validator' });
@@ -24,7 +24,7 @@ const VALID_RUNTIME_MODES = ['native', 'connected', 'hybrid', 'auto'];
 // Canonical provider capabilities
 const CANONICAL_CAPABILITIES = [
   'database',
-  'storage', 
+  'storage',
   'auth',
   'queue',
   'stateStore',
@@ -34,7 +34,7 @@ const CANONICAL_CAPABILITIES = [
   'validation',
   'security',
   'observability',
-  'notification'
+  'notification',
 ];
 
 export class ServiceManifestValidator {
@@ -46,7 +46,7 @@ export class ServiceManifestValidator {
       valid: true,
       errors: [],
       warnings: [],
-      manifest
+      manifest,
     };
 
     try {
@@ -69,14 +69,19 @@ export class ServiceManifestValidator {
       if (result.valid) {
         logger.info({ name: manifest.metadata?.name }, 'Service manifest validation passed');
       } else {
-        logger.warn({ 
-          name: manifest.metadata?.name, 
-          errors: result.errors.length 
-        }, 'Service manifest validation failed');
+        logger.warn(
+          {
+            name: manifest.metadata?.name,
+            errors: result.errors.length,
+          },
+          'Service manifest validation failed'
+        );
       }
     } catch (error) {
       result.valid = false;
-      result.errors.push(`Validation error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      result.errors.push(
+        `Validation error: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
       logger.error({ error }, 'Service manifest validation encountered error');
     }
 
@@ -86,7 +91,10 @@ export class ServiceManifestValidator {
   /**
    * Validate API version
    */
-  private validateApiVersion(manifest: ServiceManifest, result: ServiceManifestValidationResult): void {
+  private validateApiVersion(
+    manifest: ServiceManifest,
+    result: ServiceManifestValidationResult
+  ): void {
     if (!manifest.apiVersion) {
       result.errors.push('apiVersion is required');
       return;
@@ -116,7 +124,10 @@ export class ServiceManifestValidator {
   /**
    * Validate metadata
    */
-  private validateMetadata(manifest: ServiceManifest, result: ServiceManifestValidationResult): void {
+  private validateMetadata(
+    manifest: ServiceManifest,
+    result: ServiceManifestValidationResult
+  ): void {
     if (!manifest.metadata) {
       result.errors.push('metadata is required');
       return;
@@ -131,7 +142,7 @@ export class ServiceManifestValidator {
       if (!nameRegex.test(manifest.metadata.name)) {
         result.errors.push(
           'metadata.name must be lowercase alphanumeric with hyphens, ' +
-          'starting and ending with alphanumeric characters'
+            'starting and ending with alphanumeric characters'
         );
       }
 
@@ -148,7 +159,9 @@ export class ServiceManifestValidator {
       // Semantic versioning format
       const versionRegex = /^\d+\.\d+\.\d+(-[a-zA-Z0-9.]+)?$/;
       if (!versionRegex.test(manifest.metadata.version)) {
-        result.errors.push('metadata.version must follow semantic versioning (e.g., 1.0.0, 2.1.0-beta)');
+        result.errors.push(
+          'metadata.version must follow semantic versioning (e.g., 1.0.0, 2.1.0-beta)'
+        );
       }
     }
   }
@@ -168,7 +181,7 @@ export class ServiceManifestValidator {
     } else if (!VALID_RUNTIME_MODES.includes(manifest.spec.runtimeMode)) {
       result.errors.push(
         `Invalid spec.runtimeMode: ${manifest.spec.runtimeMode}. ` +
-        `Valid values: ${VALID_RUNTIME_MODES.join(', ')}`
+          `Valid values: ${VALID_RUNTIME_MODES.join(', ')}`
       );
     }
 
@@ -183,7 +196,10 @@ export class ServiceManifestValidator {
   /**
    * Validate capabilities
    */
-  private validateCapabilities(manifest: ServiceManifest, result: ServiceManifestValidationResult): void {
+  private validateCapabilities(
+    manifest: ServiceManifest,
+    result: ServiceManifestValidationResult
+  ): void {
     if (!manifest.spec?.capabilities) {
       return;
     }
@@ -198,7 +214,7 @@ export class ServiceManifestValidator {
       if (!CANONICAL_CAPABILITIES.includes(cap.capability)) {
         result.errors.push(
           `Invalid capability: ${cap.capability}. ` +
-          `Must be one of: ${CANONICAL_CAPABILITIES.join(', ')}`
+            `Must be one of: ${CANONICAL_CAPABILITIES.join(', ')}`
         );
       }
 
@@ -209,20 +225,26 @@ export class ServiceManifestValidator {
 
       // Validate provider references
       if (!cap.providerReferences || !Array.isArray(cap.providerReferences)) {
-        result.errors.push(`capability.${cap.capability}.providerReferences is required and must be an array`);
+        result.errors.push(
+          `capability.${cap.capability}.providerReferences is required and must be an array`
+        );
       } else if (cap.providerReferences.length === 0) {
-        result.errors.push(`capability.${cap.capability}.providerReferences must contain at least one provider`);
+        result.errors.push(
+          `capability.${cap.capability}.providerReferences must contain at least one provider`
+        );
       }
 
       // Validate runtime modes
       if (!cap.runtimeModes || !Array.isArray(cap.runtimeModes)) {
-        result.errors.push(`capability.${cap.capability}.runtimeModes is required and must be an array`);
+        result.errors.push(
+          `capability.${cap.capability}.runtimeModes is required and must be an array`
+        );
       } else {
         for (const mode of cap.runtimeModes) {
           if (!VALID_RUNTIME_MODES.includes(mode)) {
             result.errors.push(
               `Invalid runtime mode ${mode} for capability ${cap.capability}. ` +
-              `Valid values: ${VALID_RUNTIME_MODES.join(', ')}`
+                `Valid values: ${VALID_RUNTIME_MODES.join(', ')}`
             );
           }
         }
@@ -237,7 +259,7 @@ export class ServiceManifestValidator {
       if (cap.fallbackEnabled && cap.providerReferences.length === 1) {
         result.warnings.push(
           `capability.${cap.capability} has fallbackEnabled=true but only one provider reference. ` +
-          'Fallback requires multiple providers.'
+            'Fallback requires multiple providers.'
         );
       }
     }
@@ -246,7 +268,10 @@ export class ServiceManifestValidator {
   /**
    * Validate provider references
    */
-  private validateProviderReferences(manifest: ServiceManifest, result: ServiceManifestValidationResult): void {
+  private validateProviderReferences(
+    manifest: ServiceManifest,
+    result: ServiceManifestValidationResult
+  ): void {
     if (!manifest.spec?.capabilities) {
       return;
     }
@@ -289,7 +314,10 @@ export class ServiceManifestValidator {
   /**
    * Validate runtime modes
    */
-  private validateRuntimeModes(manifest: ServiceManifest, result: ServiceManifestValidationResult): void {
+  private validateRuntimeModes(
+    manifest: ServiceManifest,
+    result: ServiceManifestValidationResult
+  ): void {
     const runtimeMode = manifest.spec?.runtimeMode;
 
     if (!runtimeMode || !manifest.spec?.capabilities) {
@@ -301,7 +329,7 @@ export class ServiceManifestValidator {
       if (cap.runtimeModes && !cap.runtimeModes.includes(runtimeMode as RuntimeMode)) {
         result.errors.push(
           `Capability ${cap.capability} does not support runtime mode ${runtimeMode}. ` +
-          `Supported modes: ${cap.runtimeModes.join(', ')}`
+            `Supported modes: ${cap.runtimeModes.join(', ')}`
         );
       }
     }
@@ -319,7 +347,7 @@ export class ServiceManifestValidator {
       if (!hasFallbackProviders) {
         result.warnings.push(
           'Service uses auto runtime mode but no capabilities have fallback providers configured. ' +
-          'Auto mode works best with fallback providers for resilience.'
+            'Auto mode works best with fallback providers for resilience.'
         );
       }
     }
@@ -343,7 +371,7 @@ export class ServiceManifestValidator {
       if (!hasNativeProviders || !hasConnectedProviders) {
         result.warnings.push(
           'Service uses hybrid runtime mode but capabilities do not support both native and connected modes. ' +
-          'Hybrid mode requires capabilities that support both native and connected execution.'
+            'Hybrid mode requires capabilities that support both native and connected execution.'
         );
       }
     }

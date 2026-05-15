@@ -32,7 +32,7 @@ class ArchitectureValidator {
     const result: ValidationResult = {
       passed: true,
       errors: [],
-      warnings: []
+      warnings: [],
     };
 
     console.log('🔍 Starting MyCodeXvantaOS Architecture Validation...');
@@ -75,8 +75,13 @@ class ArchitectureValidator {
         result.passed = false;
       }
 
-      const requiredPrinciples = ['local-first', 'cloud-agnostic', 'contract-first', 'governance-enforced'];
-      const missingPrinciples = requiredPrinciples.filter(p => !manifest.principles.includes(p));
+      const requiredPrinciples = [
+        'local-first',
+        'cloud-agnostic',
+        'contract-first',
+        'governance-enforced',
+      ];
+      const missingPrinciples = requiredPrinciples.filter((p) => !manifest.principles.includes(p));
 
       if (missingPrinciples.length > 0) {
         result.errors.push(`Missing required principles: ${missingPrinciples.join(', ')}`);
@@ -108,23 +113,26 @@ class ArchitectureValidator {
       '@mycodexvantaos/storage',
       '@mycodexvantaos/database',
       '@mycodexvantaos/events',
-      '@mycodexvantaos/monitoring'
+      '@mycodexvantaos/monitoring',
     ];
 
-    const packageDirs = fs.readdirSync(packagesPath, { withFileTypes: true })
-      .filter(dirent => dirent.isDirectory())
-      .map(dirent => dirent.name);
+    const packageDirs = fs
+      .readdirSync(packagesPath, { withFileTypes: true })
+      .filter((dirent) => dirent.isDirectory())
+      .map((dirent) => dirent.name);
 
-    const existingPackages = packageDirs.map(dir => {
-      const packageJsonPath = path.join(packagesPath, dir, 'package.json');
-      if (fs.existsSync(packageJsonPath)) {
-        const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
-        return pkg.name;
-      }
-      return null;
-    }).filter(Boolean);
+    const existingPackages = packageDirs
+      .map((dir) => {
+        const packageJsonPath = path.join(packagesPath, dir, 'package.json');
+        if (fs.existsSync(packageJsonPath)) {
+          const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
+          return pkg.name;
+        }
+        return null;
+      })
+      .filter(Boolean);
 
-    const missingPackages = requiredPackages.filter(pkg => !existingPackages.includes(pkg));
+    const missingPackages = requiredPackages.filter((pkg) => !existingPackages.includes(pkg));
 
     if (missingPackages.length > 0) {
       result.errors.push(`Missing required packages: ${missingPackages.join(', ')}`);
@@ -142,11 +150,14 @@ class ArchitectureValidator {
       return;
     }
 
-    const capabilityFiles = fs.readdirSync(capabilitiesPath)
-      .filter(file => file.endsWith('.yaml') || file.endsWith('.json'));
+    const capabilityFiles = fs
+      .readdirSync(capabilitiesPath)
+      .filter((file) => file.endsWith('.yaml') || file.endsWith('.json'));
 
     if (capabilityFiles.length < 8) {
-      result.warnings.push(`Expected at least 8 capability declarations, found ${capabilityFiles.length}`);
+      result.warnings.push(
+        `Expected at least 8 capability declarations, found ${capabilityFiles.length}`
+      );
     }
 
     console.log(`  ✅ Found ${capabilityFiles.length} capability declarations`);
@@ -154,9 +165,10 @@ class ArchitectureValidator {
 
   private async validateNamingConventions(result: ValidationResult): Promise<void> {
     const packagesPath = path.join(this.projectRoot, 'packages');
-    const packageDirs = fs.readdirSync(packagesPath, { withFileTypes: true })
-      .filter(dirent => dirent.isDirectory())
-      .map(dirent => dirent.name);
+    const packageDirs = fs
+      .readdirSync(packagesPath, { withFileTypes: true })
+      .filter((dirent) => dirent.isDirectory())
+      .map((dirent) => dirent.name);
 
     for (const dir of packageDirs) {
       const packageJsonPath = path.join(packagesPath, dir, 'package.json');
@@ -175,7 +187,12 @@ class ArchitectureValidator {
 
   private async validateCorePrinciples(result: ValidationResult): Promise<void> {
     // Validate that packages implement core principles
-    const requiredPrinciples = ['local-first', 'cloud-agnostic', 'contract-first', 'governance-enforced'];
+    const requiredPrinciples = [
+      'local-first',
+      'cloud-agnostic',
+      'contract-first',
+      'governance-enforced',
+    ];
 
     for (const principle of requiredPrinciples) {
       const principleFound = this.searchPrincipleInProject(principle);
@@ -203,11 +220,7 @@ class ArchitectureValidator {
 
   private searchPrincipleInProject(principle: string): boolean {
     // Simple search - in production, this would be more sophisticated
-    const filesToCheck = [
-      'README.md',
-      'governance.json',
-      'package.json'
-    ];
+    const filesToCheck = ['README.md', 'governance.json', 'package.json'];
 
     for (const file of filesToCheck) {
       const filePath = path.join(this.projectRoot, file);
@@ -247,18 +260,18 @@ async function main() {
 
   if (result.errors.length > 0) {
     console.log('❌ Errors:');
-    result.errors.forEach(error => console.log(`  - ${error}`));
+    result.errors.forEach((error) => console.log(`  - ${error}`));
   }
 
   if (result.warnings.length > 0) {
     console.log('⚠️  Warnings:');
-    result.warnings.forEach(warning => console.log(`  - ${warning}`));
+    result.warnings.forEach((warning) => console.log(`  - ${warning}`));
   }
 
   process.exit(result.passed ? 0 : 1);
 }
 
-main().catch(error => {
+main().catch((error) => {
   console.error('Validation failed:', error);
   process.exit(1);
 });

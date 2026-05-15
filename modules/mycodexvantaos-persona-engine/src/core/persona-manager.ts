@@ -1,6 +1,6 @@
 /**
  * MyCodeXvantaOS Persona Engine - Persona Manager
- * 
+ *
  * Manages multiple persona profiles and provides factory methods.
  * URN: urn:mycodexvantaos:core:persona-manager
  */
@@ -49,82 +49,82 @@ const DEFAULT_BEHAVIORAL_PARAMETERS: Record<PersonaArchetype, BehavioralParamete
   disrupter: {
     intellectual_provocation: 0.75,
     critical_intensity: 0.75,
-    constructive_orientation: 0.60,
+    constructive_orientation: 0.6,
     empathy_level: 0.45,
-    analytical_depth: 0.70,
+    analytical_depth: 0.7,
     solution_focus: 0.55,
-    communication_clarity: 0.80,
+    communication_clarity: 0.8,
     adaptability: 0.65,
-    truth_commitment: 0.90,
+    truth_commitment: 0.9,
     practical_wisdom: 0.65,
   },
   analyst: {
     intellectual_provocation: 0.45,
-    critical_intensity: 0.60,
+    critical_intensity: 0.6,
     constructive_orientation: 0.65,
     empathy_level: 0.55,
-    analytical_depth: 0.90,
-    solution_focus: 0.70,
+    analytical_depth: 0.9,
+    solution_focus: 0.7,
     communication_clarity: 0.85,
-    adaptability: 0.60,
-    truth_commitment: 0.80,
+    adaptability: 0.6,
+    truth_commitment: 0.8,
     practical_wisdom: 0.75,
   },
   mediator: {
-    intellectual_provocation: 0.30,
+    intellectual_provocation: 0.3,
     critical_intensity: 0.35,
-    constructive_orientation: 0.80,
+    constructive_orientation: 0.8,
     empathy_level: 0.85,
     analytical_depth: 0.65,
     solution_focus: 0.75,
-    communication_clarity: 0.80,
-    adaptability: 0.80,
+    communication_clarity: 0.8,
+    adaptability: 0.8,
     truth_commitment: 0.65,
-    practical_wisdom: 0.70,
+    practical_wisdom: 0.7,
   },
   architect: {
-    intellectual_provocation: 0.40,
+    intellectual_provocation: 0.4,
     critical_intensity: 0.45,
-    constructive_orientation: 0.80,
-    empathy_level: 0.50,
+    constructive_orientation: 0.8,
+    empathy_level: 0.5,
     analytical_depth: 0.85,
     solution_focus: 0.85,
-    communication_clarity: 0.90,
+    communication_clarity: 0.9,
     adaptability: 0.65,
     truth_commitment: 0.75,
-    practical_wisdom: 0.80,
+    practical_wisdom: 0.8,
   },
   critic: {
-    intellectual_provocation: 0.60,
+    intellectual_provocation: 0.6,
     critical_intensity: 0.85,
-    constructive_orientation: 0.50,
-    empathy_level: 0.40,
-    analytical_depth: 0.80,
+    constructive_orientation: 0.5,
+    empathy_level: 0.4,
+    analytical_depth: 0.8,
     solution_focus: 0.45,
     communication_clarity: 0.85,
-    adaptability: 0.50,
-    truth_commitment: 0.90,
+    adaptability: 0.5,
+    truth_commitment: 0.9,
     practical_wisdom: 0.55,
   },
   creative_thinker: {
     intellectual_provocation: 0.65,
-    critical_intensity: 0.40,
-    constructive_orientation: 0.80,
+    critical_intensity: 0.4,
+    constructive_orientation: 0.8,
     empathy_level: 0.65,
     analytical_depth: 0.55,
-    solution_focus: 0.80,
-    communication_clarity: 0.70,
-    adaptability: 0.90,
-    truth_commitment: 0.60,
-    practical_wisdom: 0.70,
+    solution_focus: 0.8,
+    communication_clarity: 0.7,
+    adaptability: 0.9,
+    truth_commitment: 0.6,
+    practical_wisdom: 0.7,
   },
   facilitator: {
     intellectual_provocation: 0.25,
-    critical_intensity: 0.30,
+    critical_intensity: 0.3,
     constructive_orientation: 0.85,
-    empathy_level: 0.80,
+    empathy_level: 0.8,
     analytical_depth: 0.55,
-    solution_focus: 0.80,
+    solution_focus: 0.8,
     communication_clarity: 0.85,
     adaptability: 0.85,
     truth_commitment: 0.55,
@@ -132,27 +132,27 @@ const DEFAULT_BEHAVIORAL_PARAMETERS: Record<PersonaArchetype, BehavioralParamete
   },
   mentor: {
     intellectual_provocation: 0.35,
-    critical_intensity: 0.40,
+    critical_intensity: 0.4,
     constructive_orientation: 0.85,
     empathy_level: 0.85,
-    analytical_depth: 0.70,
+    analytical_depth: 0.7,
     solution_focus: 0.85,
-    communication_clarity: 0.80,
+    communication_clarity: 0.8,
     adaptability: 0.75,
-    truth_commitment: 0.70,
-    practical_wisdom: 0.90,
+    truth_commitment: 0.7,
+    practical_wisdom: 0.9,
   },
   synthesizer: {
     intellectual_provocation: 0.45,
-    critical_intensity: 0.50,
-    constructive_orientation: 0.80,
+    critical_intensity: 0.5,
+    constructive_orientation: 0.8,
     empathy_level: 0.65,
-    analytical_depth: 0.80,
+    analytical_depth: 0.8,
     solution_focus: 0.85,
     communication_clarity: 0.85,
     adaptability: 0.75,
     truth_commitment: 0.75,
-    practical_wisdom: 0.80,
+    practical_wisdom: 0.8,
   },
 };
 
@@ -342,7 +342,7 @@ export class PersonaManager {
       autoInitializeEngines: config.autoInitializeEngines ?? true,
       maxCachedEngines: config.maxCachedEngines ?? 10,
       ...config,
-      };
+    };
     this.customMasks = config.customMasks || [];
   }
 
@@ -351,7 +351,7 @@ export class PersonaManager {
    */
   registerPersona(profile: PersonaProfile): void {
     const urn = profile.urn;
-    
+
     if (this.registry.has(urn)) {
       throw new Error(`Persona with URN ${urn} already registered`);
     }
@@ -359,7 +359,7 @@ export class PersonaManager {
     const entry: PersonaRegistryEntry = {
       profile,
       useCount: 0,
-      };
+    };
 
     // Auto-initialize engine if configured
     if (this.config.autoInitializeEngines) {
@@ -387,38 +387,38 @@ export class PersonaManager {
    * Get all registered personas
    */
   getAllPersonas(): PersonaProfile[] {
-    return Array.from(this.registry.values()).map(e => e.profile);
+    return Array.from(this.registry.values()).map((e) => e.profile);
   }
 
   /**
    * Get personas by archetype
    */
-    /**
-     * Get persona profile by URN (alias for getPersona)
-     */
-    getPersonaProfile(urn: string): PersonaProfile | undefined {
-      return this.getPersona(urn);
-    }
+  /**
+   * Get persona profile by URN (alias for getPersona)
+   */
+  getPersonaProfile(urn: string): PersonaProfile | undefined {
+    return this.getPersona(urn);
+  }
 
-    /**
-     * Get all available archetypes
-     */
-    getAvailableArchetypes(): PersonaArchetype[] {
-      return [
-        'disrupter',
-        'analyst',
-        'mediator',
-        'architect',
-        'critic',
-        'creative_thinker',
-        'facilitator',
-        'mentor',
-        'synthesizer'
-      ];
-    }
+  /**
+   * Get all available archetypes
+   */
+  getAvailableArchetypes(): PersonaArchetype[] {
+    return [
+      'disrupter',
+      'analyst',
+      'mediator',
+      'architect',
+      'critic',
+      'creative_thinker',
+      'facilitator',
+      'mentor',
+      'synthesizer',
+    ];
+  }
 
   getPersonasByArchetype(archetype: PersonaArchetype): PersonaProfile[] {
-    return this.getAllPersonas().filter(p => p.archetype === archetype);
+    return this.getAllPersonas().filter((p) => p.archetype === archetype);
   }
 
   /**
@@ -577,7 +577,11 @@ export class PersonaManager {
   /**
    * Process input with a specific persona
    */
-  processWithPersona(urn: string, input: string, sessionId?: string): {
+  processWithPersona(
+    urn: string,
+    input: string,
+    sessionId?: string
+  ): {
     success: boolean;
     result?: ReturnType<PersonaEngine['process']>;
     error?: string;
@@ -591,10 +595,10 @@ export class PersonaManager {
       const result = engine.process(input, sessionId);
       return { success: true, result };
     } catch (error) {
-      return { 
-        success: false, 
-        error: error instanceof Error ? error.message : 'Unknown error' 
-        };
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
     }
   }
 
@@ -617,7 +621,7 @@ export class PersonaManager {
       facilitator: 0,
       mentor: 0,
       synthesizer: 0,
-      };
+    };
 
     let activeEngines = 0;
     const usageData: Array<{ urn: string; useCount: number }> = [];
@@ -631,14 +635,14 @@ export class PersonaManager {
     const mostUsed = usageData
       .sort((a, b) => b.useCount - a.useCount)
       .slice(0, 5)
-      .map(d => d.urn);
+      .map((d) => d.urn);
 
     return {
       totalPersonas: this.registry.size,
       activeEngines,
       byArchetype,
       mostUsed,
-      };
+    };
   }
 
   /**
@@ -658,7 +662,7 @@ export class PersonaManager {
 
     try {
       const profiles: PersonaProfile[] = JSON.parse(json);
-      
+
       for (const profile of profiles) {
         try {
           this.registerPersona(profile);
@@ -685,7 +689,7 @@ export class PersonaManager {
 
     // Placeholder for file loading logic
     // In production, this would use fs or similar to load persona configs
-    
+
     return { loaded, errors };
   }
 }

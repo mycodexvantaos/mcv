@@ -9,25 +9,28 @@
 ## 一、驗證結果
 
 ### 1.1 原始專案驗證
+
 - ✅ TypeScript 編譯通過
 - ✅ Next.js 構建成功
 - ⚠️ 無測試文件
 
 ### 1.2 發現並修復的錯誤
 
-| 文件 | 問題 | 解決方案 |
-|------|------|----------|
-| `file-explorer.tsx` | FileItem 類型推斷錯誤 | 明確定義 `FileItem` 類型並應用到 `files` 數組 |
-| `calendar.tsx` | react-day-picker v9 API 變更 | 將 `IconLeft`/`IconRight` 替換為 `Chevron` 組件 |
+| 文件                | 問題                         | 解決方案                                        |
+| ------------------- | ---------------------------- | ----------------------------------------------- |
+| `file-explorer.tsx` | FileItem 類型推斷錯誤        | 明確定義 `FileItem` 類型並應用到 `files` 數組   |
+| `calendar.tsx`      | react-day-picker v9 API 變更 | 將 `IconLeft`/`IconRight` 替換為 `Chevron` 組件 |
 
 ---
 
 ## 二、整合變更
 
 ### 2.1 命名變更
+
 - `name`: `nextn` → `@mycodexvantaos/app-dev-studio`
 
 ### 2.2 目錄結構
+
 ```
 mycodexvantaos-app-dev-studio/
 ├── .agents/              # Genkit 技能文檔
@@ -61,6 +64,7 @@ mycodexvantaos-app-dev-studio/
 ```
 
 ### 2.3 技術棧
+
 - Next.js 15.5.9
 - React 19.2.1
 - TypeScript 5.9.3

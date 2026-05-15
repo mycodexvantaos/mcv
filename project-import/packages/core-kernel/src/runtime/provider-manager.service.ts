@@ -1,6 +1,6 @@
 /**
  * ProviderManagerService — Provider Lifecycle Management
- * 
+ *
  * This service handles the complete lifecycle of providers including initialization,
  * configuration updates, graceful shutdown, and recovery mechanisms.
  */
@@ -30,9 +30,7 @@ export class ProviderManagerService {
   private providerConfigs = new Map<string, Record<string, any>>();
   private shutdownTimeout = 30000; // 30 seconds
 
-  constructor(
-    private registry: ProviderRegistryService
-  ) {
+  constructor(private registry: ProviderRegistryService) {
     this.setupEventHandlers();
   }
 
@@ -48,7 +46,9 @@ export class ProviderManagerService {
     }
 
     try {
-      const registration = this.registry.getAllProviders().find(r => r.metadata.name === providerName);
+      const registration = this.registry
+        .getAllProviders()
+        .find((r) => r.metadata.name === providerName);
       if (!registration) {
         throw new Error(`Provider not found: ${providerName}`);
       }
@@ -75,7 +75,9 @@ export class ProviderManagerService {
   async reconfigureProvider(providerName: string, newConfig: Record<string, any>): Promise<void> {
     logger.info({ provider: providerName }, 'Reconfiguring provider');
 
-    const registration = this.registry.getAllProviders().find(r => r.metadata.name === providerName);
+    const registration = this.registry
+      .getAllProviders()
+      .find((r) => r.metadata.name === providerName);
     if (!registration) {
       throw new Error(`Provider not found: ${providerName}`);
     }
@@ -105,7 +107,9 @@ export class ProviderManagerService {
   async stopProvider(providerName: string): Promise<void> {
     logger.info({ provider: providerName }, 'Stopping provider');
 
-    const registration = this.registry.getAllProviders().find(r => r.metadata.name === providerName);
+    const registration = this.registry
+      .getAllProviders()
+      .find((r) => r.metadata.name === providerName);
     if (!registration) {
       throw new Error(`Provider not found: ${providerName}`);
     }
@@ -115,9 +119,9 @@ export class ProviderManagerService {
       if (providerImpl.shutdown) {
         await Promise.race([
           providerImpl.shutdown(),
-          new Promise((_, reject) => 
+          new Promise((_, reject) =>
             setTimeout(() => reject(new Error('Shutdown timeout')), this.shutdownTimeout)
-          )
+          ),
         ]);
       }
 
@@ -136,10 +140,10 @@ export class ProviderManagerService {
     logger.info({ provider: providerName }, 'Restarting provider');
 
     const config = this.providerConfigs.get(providerName);
-    
+
     await this.stopProvider(providerName);
     await this.initializeProvider(providerName, config);
-    
+
     logger.info({ provider: providerName }, 'Provider restarted successfully');
   }
 
@@ -170,16 +174,18 @@ export class ProviderManagerService {
     try {
       const config = this.providerConfigs.get(providerName);
       await this.restartProvider(providerName);
-      
+
       // Verify health after recovery
-      const registration = this.registry.getAllProviders().find(r => r.metadata.name === providerName);
+      const registration = this.registry
+        .getAllProviders()
+        .find((r) => r.metadata.name === providerName);
       if (registration) {
         const isHealthy = await registration.provider.healthCheck();
         if (!isHealthy) {
           throw new Error('Provider health check failed after recovery');
         }
       }
-      
+
       logger.info({ provider: providerName }, 'Provider recovered successfully');
     } catch (error) {
       logger.error({ provider: providerName, error }, 'Provider recovery failed');
@@ -214,7 +220,7 @@ export class ProviderManagerService {
   private setupEventHandlers(): void {
     this.registry.on('provider:health-failed', async ({ provider, error }) => {
       logger.warn({ provider, error }, 'Provider health check failed, attempting recovery');
-      
+
       try {
         await this.recoverProvider(provider);
       } catch (recoveryError) {

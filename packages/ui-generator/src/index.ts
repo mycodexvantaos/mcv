@@ -1,7 +1,7 @@
 /**
  * MyCodeXvantaOS UI Generator
  * Provides UI/UX generation capabilities
- * 
+ *
  * @packageDocumentation
  */
 
@@ -31,7 +31,7 @@ export class UIGenerator {
     this.options = {
       framework: 'react',
       styling: 'styled-components',
-      ...options
+      ...options,
     };
   }
 
@@ -40,9 +40,9 @@ export class UIGenerator {
    */
   generateComponent(config: ComponentConfig): string {
     const { type, props = {}, children = [] } = config;
-    
+
     let componentCode = '';
-    
+
     switch (this.options.framework) {
       case 'react':
         componentCode = this.generateReactComponent(type, props, children);
@@ -67,8 +67,8 @@ export class UIGenerator {
     const propsString = Object.entries(props)
       .map(([key, value]) => `${key}={${JSON.stringify(value)}}`)
       .join(' ');
-    
-    const childrenCode = children.map(child => this.generateComponent(child)).join('\n    ');
+
+    const childrenCode = children.map((child) => this.generateComponent(child)).join('\n    ');
 
     return `
 import React from 'react';
@@ -82,7 +82,9 @@ export const ${this.capitalize(type)}: React.FC<${this.capitalize(type)}Props> =
 };
 
 interface ${this.capitalize(type)}Props {
-  ${Object.keys(props).map(key => `${key}: any;`).join('\n  ')}
+  ${Object.keys(props)
+    .map((key) => `${key}: any;`)
+    .join('\n  ')}
 }
 `;
   }
@@ -94,8 +96,8 @@ interface ${this.capitalize(type)}Props {
     const propsString = Object.entries(props)
       .map(([key, value]) => `:${key}="${JSON.stringify(value)}"`)
       .join(' ');
-    
-    const childrenCode = children.map(child => this.generateComponent(child)).join('\n      ');
+
+    const childrenCode = children.map((child) => this.generateComponent(child)).join('\n      ');
 
     return `
 <template>
@@ -106,7 +108,9 @@ interface ${this.capitalize(type)}Props {
 
 <script setup lang="ts">
 interface Props {
-  ${Object.keys(props).map(key => `${key}?: any;`).join('\n  ')}
+  ${Object.keys(props)
+    .map((key) => `${key}?: any;`)
+    .join('\n  ')}
 }
 
 const props = defineProps<Props>();
@@ -121,8 +125,8 @@ const props = defineProps<Props>();
     const propsString = Object.entries(props)
       .map(([key, value]) => `[${key}]="${JSON.stringify(value)}"`)
       .join(' ');
-    
-    const childrenCode = children.map(child => this.generateComponent(child)).join('\n      ');
+
+    const childrenCode = children.map((child) => this.generateComponent(child)).join('\n      ');
 
     return `
 import { Component, Input } from '@angular/core';
@@ -136,7 +140,9 @@ import { Component, Input } from '@angular/core';
   \`
 })
 export class ${this.capitalize(type)}Component {
-  @Input() ${Object.keys(props).map(key => `${key}?: any;`).join('\n  @Input() ')}
+  @Input() ${Object.keys(props)
+    .map((key) => `${key}?: any;`)
+    .join('\n  @Input() ')}
 }
 `;
   }
@@ -146,7 +152,7 @@ export class ${this.capitalize(type)}Component {
    */
   generateLayout(config: LayoutConfig): string {
     const componentsCode = config.components
-      .map(comp => this.generateComponent(comp))
+      .map((comp) => this.generateComponent(comp))
       .join('\n\n');
 
     return componentsCode;

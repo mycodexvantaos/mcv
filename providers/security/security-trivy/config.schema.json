@@ -10,10 +10,7 @@
       "items": {
         "type": "string"
       },
-      "default": [
-        "CRITICAL",
-        "HIGH"
-      ]
+      "default": ["CRITICAL", "HIGH"]
     },
     "ignoreUnfixed": {
       "type": "boolean",

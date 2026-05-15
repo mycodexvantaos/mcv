@@ -28,7 +28,13 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import type { ConnectorType, ConnectorHealthStatus } from '@/types/connector';
 
 interface ConnectorCardData {
@@ -45,10 +51,54 @@ interface ConnectorCardData {
 }
 
 const mockConnectors: ConnectorCardData[] = [
-  { id: 'c1', name: 'Primary PostgreSQL', type: 'postgresql', status: 'connected', latencyMs: 3.2, connectionsActive: 42, connectionsMax: 100, queriesPerSecond: 1250, errorRate: 0.001, lastHealthCheck: '30s ago' },
-  { id: 'c2', name: 'Redis Cache Cluster', type: 'redis', status: 'connected', latencyMs: 0.8, connectionsActive: 28, connectionsMax: 50, queriesPerSecond: 8500, errorRate: 0.0002, lastHealthCheck: '15s ago' },
-  { id: 'c3', name: 'GitHub Integration', type: 'github', status: 'connected', latencyMs: 45, connectionsActive: 5, connectionsMax: 10, queriesPerSecond: 12, errorRate: 0.005, lastHealthCheck: '2m ago' },
-  { id: 'c4', name: 'S3 Document Storage', type: 's3', status: 'degraded', latencyMs: 120, connectionsActive: 15, connectionsMax: 20, queriesPerSecond: 45, errorRate: 0.02, lastHealthCheck: '1m ago' },
+  {
+    id: 'c1',
+    name: 'Primary PostgreSQL',
+    type: 'postgresql',
+    status: 'connected',
+    latencyMs: 3.2,
+    connectionsActive: 42,
+    connectionsMax: 100,
+    queriesPerSecond: 1250,
+    errorRate: 0.001,
+    lastHealthCheck: '30s ago',
+  },
+  {
+    id: 'c2',
+    name: 'Redis Cache Cluster',
+    type: 'redis',
+    status: 'connected',
+    latencyMs: 0.8,
+    connectionsActive: 28,
+    connectionsMax: 50,
+    queriesPerSecond: 8500,
+    errorRate: 0.0002,
+    lastHealthCheck: '15s ago',
+  },
+  {
+    id: 'c3',
+    name: 'GitHub Integration',
+    type: 'github',
+    status: 'connected',
+    latencyMs: 45,
+    connectionsActive: 5,
+    connectionsMax: 10,
+    queriesPerSecond: 12,
+    errorRate: 0.005,
+    lastHealthCheck: '2m ago',
+  },
+  {
+    id: 'c4',
+    name: 'S3 Document Storage',
+    type: 's3',
+    status: 'degraded',
+    latencyMs: 120,
+    connectionsActive: 15,
+    connectionsMax: 20,
+    queriesPerSecond: 45,
+    errorRate: 0.02,
+    lastHealthCheck: '1m ago',
+  },
 ];
 
 const connectorIcons: Record<ConnectorType, typeof Database> = {
@@ -102,7 +152,8 @@ export default function ConnectorsPage() {
               <DialogHeader>
                 <DialogTitle>Add New Connector</DialogTitle>
                 <DialogDescription>
-                  Configure a new connector instance. All settings are validated via Zod contracts before saving.
+                  Configure a new connector instance. All settings are validated via Zod contracts
+                  before saving.
                 </DialogDescription>
               </DialogHeader>
               <div className="space-y-4 py-4">
@@ -135,7 +186,9 @@ export default function ConnectorsPage() {
                 </div>
               </div>
               <div className="flex justify-end gap-2">
-                <Button variant="outline" onClick={() => setAddDialogOpen(false)}>Cancel</Button>
+                <Button variant="outline" onClick={() => setAddDialogOpen(false)}>
+                  Cancel
+                </Button>
                 <Button onClick={() => setAddDialogOpen(false)}>Create Connector</Button>
               </div>
             </DialogContent>
@@ -154,19 +207,27 @@ export default function ConnectorsPage() {
         <Card>
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground">Healthy</p>
-            <p className="text-2xl font-bold font-headline text-status-healthy">{mockConnectors.filter((c) => c.status === 'connected').length}</p>
+            <p className="text-2xl font-bold font-headline text-status-healthy">
+              {mockConnectors.filter((c) => c.status === 'connected').length}
+            </p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground">Degraded</p>
-            <p className="text-2xl font-bold font-headline text-status-warning">{mockConnectors.filter((c) => c.status === 'degraded').length}</p>
+            <p className="text-2xl font-bold font-headline text-status-warning">
+              {mockConnectors.filter((c) => c.status === 'degraded').length}
+            </p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground">Avg QPS</p>
-            <p className="text-2xl font-bold font-headline">{Math.round(mockConnectors.reduce((s, c) => s + c.queriesPerSecond, 0) / mockConnectors.length).toLocaleString()}</p>
+            <p className="text-2xl font-bold font-headline">
+              {Math.round(
+                mockConnectors.reduce((s, c) => s + c.queriesPerSecond, 0) / mockConnectors.length
+              ).toLocaleString()}
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -187,10 +248,16 @@ export default function ConnectorsPage() {
                     <div>
                       <CardTitle className="text-base font-medium">{connector.name}</CardTitle>
                       <div className="flex items-center gap-2 mt-0.5">
-                        <Badge variant="outline" className="text-[10px] h-4">{connector.type}</Badge>
+                        <Badge variant="outline" className="text-[10px] h-4">
+                          {connector.type}
+                        </Badge>
                         <div className="flex items-center gap-1">
-                          <Circle className={`h-2 w-2 fill-current ${statusDotColors[connector.status]}`} />
-                          <span className={`text-xs ${statusColors[connector.status]}`}>{connector.status}</span>
+                          <Circle
+                            className={`h-2 w-2 fill-current ${statusDotColors[connector.status]}`}
+                          />
+                          <span className={`text-xs ${statusColors[connector.status]}`}>
+                            {connector.status}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -222,22 +289,30 @@ export default function ConnectorsPage() {
                     <p className="text-[10px] text-muted-foreground uppercase">Latency</p>
                   </div>
                   <div>
-                    <p className="text-lg font-bold font-headline">{connector.queriesPerSecond.toLocaleString()}</p>
+                    <p className="text-lg font-bold font-headline">
+                      {connector.queriesPerSecond.toLocaleString()}
+                    </p>
                     <p className="text-[10px] text-muted-foreground uppercase">QPS</p>
                   </div>
                   <div>
-                    <p className="text-lg font-bold font-headline">{(connector.errorRate * 100).toFixed(2)}%</p>
+                    <p className="text-lg font-bold font-headline">
+                      {(connector.errorRate * 100).toFixed(2)}%
+                    </p>
                     <p className="text-[10px] text-muted-foreground uppercase">Error Rate</p>
                   </div>
                 </div>
                 <div>
                   <div className="flex items-center justify-between mb-1">
                     <p className="text-xs text-muted-foreground">Connection Pool</p>
-                    <p className="text-xs font-mono">{connector.connectionsActive}/{connector.connectionsMax}</p>
+                    <p className="text-xs font-mono">
+                      {connector.connectionsActive}/{connector.connectionsMax}
+                    </p>
                   </div>
                   <Progress value={poolPercent} className="h-1.5" />
                 </div>
-                <p className="text-[10px] text-muted-foreground">Last health check: {connector.lastHealthCheck}</p>
+                <p className="text-[10px] text-muted-foreground">
+                  Last health check: {connector.lastHealthCheck}
+                </p>
               </CardContent>
             </Card>
           );

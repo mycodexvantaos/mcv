@@ -58,21 +58,21 @@
 
 ## Provider Dependencies
 
-| Provider | Usage |
-|---|---|
-| RepoProvider | Git repository access, webhook registration, commit history |
-| DeployProvider | Infrastructure provisioning via infra-base |
-| StateStoreProvider | Reconciliation state, last-applied revision |
-| DatabaseProvider | Deployment history and audit logs |
-| ObservabilityProvider | Reconciliation metrics, drift detection alerts |
+| Provider              | Usage                                                       |
+| --------------------- | ----------------------------------------------------------- |
+| RepoProvider          | Git repository access, webhook registration, commit history |
+| DeployProvider        | Infrastructure provisioning via infra-base                  |
+| StateStoreProvider    | Reconciliation state, last-applied revision                 |
+| DatabaseProvider      | Deployment history and audit logs                           |
+| ObservabilityProvider | Reconciliation metrics, drift detection alerts              |
 
 ## Operational Modes
 
-| Mode | Behavior |
-|---|---|
-| **Native** | File-system watcher on local Git repos, local infra-base provisioning |
-| **Connected** | GitHub/GitLab webhooks, cloud infrastructure reconciliation |
-| **Hybrid** | Git webhooks with local provisioning (dev environments) |
+| Mode          | Behavior                                                              |
+| ------------- | --------------------------------------------------------------------- |
+| **Native**    | File-system watcher on local Git repos, local infra-base provisioning |
+| **Connected** | GitHub/GitLab webhooks, cloud infrastructure reconciliation           |
+| **Hybrid**    | Git webhooks with local provisioning (dev environments)               |
 
 ## Directory Structure
 

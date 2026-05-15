@@ -1,5 +1,5 @@
-import pino from "pino";
+import pino from 'pino';
 
 export function createLogger(level?: string): pino.Logger {
-  return pino({ level: level || process.env.LOG_LEVEL || "info" });
+  return pino({ level: level || process.env.LOG_LEVEL || 'info' });
 }

@@ -55,7 +55,7 @@ export function ApiExplorer() {
             </CardHeader>
             <CardContent>
               {isLoading ? (
-                 <div className="text-sm text-muted-foreground">Loading...</div>
+                <div className="text-sm text-muted-foreground">Loading...</div>
               ) : (
                 <pre className="text-xs bg-muted p-4 rounded-lg overflow-x-auto">
                   <code>{JSON.stringify(data, null, 2)}</code>

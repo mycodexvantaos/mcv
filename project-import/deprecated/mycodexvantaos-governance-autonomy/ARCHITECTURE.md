@@ -61,7 +61,7 @@ Change Request
 ```typescript
 interface CompliancePosture {
   repositoryId: string;
-  overallScore: number;          // 0-100
+  overallScore: number; // 0-100
   policyResults: PolicyResult[];
   violations: Violation[];
   exemptions: Exemption[];
@@ -86,6 +86,7 @@ Request → Review → Approve/Deny → Active (with TTL) → Expire → Re-eval
 ```
 
 All exemptions have:
+
 - Explicit expiration date
 - Required justification
 - Scope limitation (repo, policy, rule)

@@ -8,7 +8,7 @@ metadata:
   capability: ai-ethics
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: "8.1"
+    mycodexvantaos.org/specRef: '8.1'
 spec:
   providerName: ai-fairness-360
   isNative: false
@@ -16,4 +16,4 @@ spec:
     stage: beta
   envVarPrefix: MYCODEXVANTAOS_AI_ETHICS
   configSchemaRef: ./config.schema.json
-  description: "IBM AI Fairness 360 toolkit provider for comprehensive bias detection and mitigation."
+  description: 'IBM AI Fairness 360 toolkit provider for comprehensive bias detection and mitigation.'

@@ -1,7 +1,7 @@
 /**
  * CodexvantaOS — workflows
  * CI/CD 連接器 — 管線整合、觸發器、工作流自動化
- * 
+ *
  * Layer: D-Connector | Plane: Execution | Tier: 3
  * Philosophy: Native-first / Provider-agnostic
  * 「第三方服務是平台的擴充出口，不是平台成立的地基。」

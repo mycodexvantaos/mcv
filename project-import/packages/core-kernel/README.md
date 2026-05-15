@@ -15,25 +15,28 @@ The answer: **Provider interfaces + ProviderRegistry + Native-first implementati
 ## Core Capabilities
 
 ### 12 Provider Interfaces
+
 Abstract TypeScript interfaces that define the contract for each platform capability:
 
-| # | Interface | Capability | Native Implementation |
-|---|-----------|------------|----------------------|
-| 1 | DatabaseProvider | Relational data persistence | SQLite (better-sqlite3) |
-| 2 | StorageProvider | File/object storage | Local filesystem (fs) |
-| 3 | AuthProvider | Authentication tokens | JWT with HMAC-SHA256 |
-| 4 | QueueProvider | Message pub/sub | In-process EventEmitter |
-| 5 | StateStoreProvider | Key-value state | In-memory Map |
-| 6 | SecretsProvider | Secret management | Environment variables + .env files |
-| 7 | RepoProvider | Repository operations | Local git CLI |
-| 8 | DeployProvider | Deployment execution | Local process spawn |
-| 9 | ValidationProvider | Schema validation | JSON Schema (ajv) |
-| 10 | SecurityScannerProvider | Security scanning | Static pattern matching |
-| 11 | ObservabilityProvider | Logging, metrics, tracing | Console + in-memory |
-| 12 | NotificationProvider | Notifications | Console output |
+| #   | Interface               | Capability                  | Native Implementation              |
+| --- | ----------------------- | --------------------------- | ---------------------------------- |
+| 1   | DatabaseProvider        | Relational data persistence | SQLite (better-sqlite3)            |
+| 2   | StorageProvider         | File/object storage         | Local filesystem (fs)              |
+| 3   | AuthProvider            | Authentication tokens       | JWT with HMAC-SHA256               |
+| 4   | QueueProvider           | Message pub/sub             | In-process EventEmitter            |
+| 5   | StateStoreProvider      | Key-value state             | In-memory Map                      |
+| 6   | SecretsProvider         | Secret management           | Environment variables + .env files |
+| 7   | RepoProvider            | Repository operations       | Local git CLI                      |
+| 8   | DeployProvider          | Deployment execution        | Local process spawn                |
+| 9   | ValidationProvider      | Schema validation           | JSON Schema (ajv)                  |
+| 10  | SecurityScannerProvider | Security scanning           | Static pattern matching            |
+| 11  | ObservabilityProvider   | Logging, metrics, tracing   | Console + in-memory                |
+| 12  | NotificationProvider    | Notifications               | Console output                     |
 
 ### ProviderRegistry
+
 The runtime capability detector that:
+
 1. Registers all available providers (native + external)
 2. Detects environment capabilities from env vars and connectivity
 3. Selects the best provider per capability (external preferred if available)
@@ -42,6 +45,7 @@ The runtime capability detector that:
 6. Provides auto-fallback from external to native on failure
 
 ### 3 Operational Modes
+
 - **Native** — All 12 native providers, zero external dependencies
 - **Connected** — External providers for all capabilities
 - **Hybrid** — Mix of native + external, auto-detected per capability

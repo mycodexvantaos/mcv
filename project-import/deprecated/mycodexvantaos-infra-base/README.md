@@ -57,21 +57,21 @@
 
 ## Provider Dependencies
 
-| Provider | Usage |
-|---|---|
-| DeployProvider | Resource provisioning and lifecycle management |
-| StorageProvider | Infrastructure state and configuration files |
-| DatabaseProvider | Resource inventory and health history |
-| ObservabilityProvider | Infrastructure metrics and alerting |
-| SecretsProvider | Infrastructure credentials and API keys |
+| Provider              | Usage                                          |
+| --------------------- | ---------------------------------------------- |
+| DeployProvider        | Resource provisioning and lifecycle management |
+| StorageProvider       | Infrastructure state and configuration files   |
+| DatabaseProvider      | Resource inventory and health history          |
+| ObservabilityProvider | Infrastructure metrics and alerting            |
+| SecretsProvider       | Infrastructure credentials and API keys        |
 
 ## Operational Modes
 
-| Mode | Behavior |
-|---|---|
-| **Native** | Local filesystem resources, process management, port allocation |
-| **Connected** | Cloud provider APIs, Kubernetes, Terraform state |
-| **Hybrid** | Local dev environment with cloud staging/production |
+| Mode          | Behavior                                                        |
+| ------------- | --------------------------------------------------------------- |
+| **Native**    | Local filesystem resources, process management, port allocation |
+| **Connected** | Cloud provider APIs, Kubernetes, Terraform state                |
+| **Hybrid**    | Local dev environment with cloud staging/production             |
 
 ## Directory Structure
 
