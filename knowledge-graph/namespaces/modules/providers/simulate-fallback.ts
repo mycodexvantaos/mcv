@@ -3,7 +3,7 @@ import { NativeLlmProvider } from './llm-native';
 import { ConnectedGeminiProvider } from './llm-gemini';
 
 async function simulatePlatformIndependence() {
-  console.log('====== MyCodexVantaOS Platform Independence Simulation ======');
+  console.log('====== MyCodeXvantaOS Platform Independence Simulation ======');
 
   // 1. Initialize Kernel (Mocking .env configuration as HYBRID)
   process.env.MYCODEXVANTAOS_CORE_RUNTIME_MODE = 'hybrid';

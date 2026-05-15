@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-MyCodexVantaOS Observability Metrics Publisher
+MyCodeXvantaOS Observability Metrics Publisher
 
 This script publishes execution metrics to:
 - observability-prometheus
@@ -88,7 +88,7 @@ class MetricsPublisher:
 
 def main():
     """Main execution point."""
-    parser = argparse.ArgumentParser(description='MyCodexVantaOS Metrics Publisher')
+    parser = argparse.ArgumentParser(description='MyCodeXvantaOS Metrics Publisher')
     parser.add_argument('--execution-id', required=True, help='Unique execution identifier')
     parser.add_argument('--state-file', help='State file path')
     

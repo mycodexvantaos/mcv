@@ -61,7 +61,7 @@ import { bootstrapAuthService } from './services/mycodexvantaos-core-auth/src/in
 import { bootstrapVectorStore } from './services/mycodexvantaos-data-vector-store/src/index';
 
 async function run() {
-  console.log('--- MyCodexVantaOS Advanced Simulation ---');
+  console.log('--- MyCodeXvantaOS Advanced Simulation ---');
   const kernel = new Kernel();
 
   bootstrapAuthService(kernel);

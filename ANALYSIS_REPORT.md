@@ -1,8 +1,8 @@
-# MyCodexVantaOS 深度架構分析報告
+# MyCodeXvantaOS 深度架構分析報告
 
 ## 專案概述
 
-**MyCodexVantaOS** 是一個「架構即代碼」的企業級 AI 作業系統平台，採用雲端無關（Cloud-Agnostic）、本地優先（Local-First）的設計理念，實現了高度模組化、可治理、可驗證的微服務架構。
+**MyCodeXvantaOS** 是一個「架構即代碼」的企業級 AI 作業系統平台，採用雲端無關（Cloud-Agnostic）、本地優先（Local-First）的設計理念，實現了高度模組化、可治理、可驗證的微服務架構。
 
 ---
 
@@ -10,7 +10,7 @@
 
 ### 1.1 核心架構層級
 
-MyCodexVantaOS 採用四層架構模型：
+MyCodeXvantaOS 採用四層架構模型：
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -75,7 +75,7 @@ mycodexvantaos/
 
 ### 2.1 12 項核心基礎能力（Canonical Capabilities）
 
-MyCodexVantaOS 定義了 12 項標準化基礎能力：
+MyCodeXvantaOS 定義了 12 項標準化基礎能力：
 
 | 能力              | 說明       | Native 實現     | Connected 實現       |
 | ----------------- | ---------- | --------------- | -------------------- |
@@ -412,4 +412,4 @@ export class NativeVectorStoreProvider implements VectorStoreProvider {
 ---
 
 **分析完成時間**: 2026-04-19  
-**分析版本**: MyCodexVantaOS v1.0.0
+**分析版本**: MyCodeXvantaOS v1.0.0

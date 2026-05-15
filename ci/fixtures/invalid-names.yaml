@@ -8,7 +8,7 @@ serviceIds:
     rule: service-id
     reason: 'Missing mycodexvantaos- prefix (5.1)'
 
-  - value: 'MyCodexVantaOS-core-kernel'
+  - value: 'MyCodeXvantaOS-core-kernel'
     rule: service-id
     reason: 'Uppercase not allowed in canonical identifiers (3.2)'
 

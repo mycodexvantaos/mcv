@@ -13,7 +13,7 @@ import { AgentEnsemble } from './services/mycodexvantaos-ai-ensemble/src/index';
 
 async function runGlobalSimulation() {
   console.log('===========================================================');
-  console.log('🌐 MyCodexVantaOS Global "Architecture-as-Code" Simulation');
+  console.log('🌐 MyCodeXvantaOS Global "Architecture-as-Code" Simulation');
   console.log('===========================================================\n');
 
   // Force environment to Hybrid to test intelligent fallback across EVERYTHING

@@ -62,7 +62,7 @@ describe('service-id rule (Section 5.1) — hard', () => {
       'core-kernel', // missing prefix
       'mycodexvantaos-', // missing capability
       'mycodexvantaos-ai', // only one segment after prefix
-      'MyCodexVantaOS-ai-embedding', // uppercase
+      'MyCodeXvantaOS-ai-embedding', // uppercase
       'mycodexvantaos-ai-embedding-v2', // version in name
       'mycodexvantaos-ai-embedding-prod', // environment marker
       'mycodexvanta-os-ai-embedding', // legacy prefix

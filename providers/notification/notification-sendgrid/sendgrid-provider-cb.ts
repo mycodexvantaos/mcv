@@ -37,7 +37,7 @@ export class SendGridProvider extends CapabilityBase<SendGridConfig> {
     const cfg = config.config;
     this.apiKey = cfg.apiKey;
     this.fromEmail = cfg.fromEmail;
-    this.fromName = cfg.fromName || 'MyCodexVantaOS';
+    this.fromName = cfg.fromName || 'MyCodeXvantaOS';
   }
 
   protected async doInitialize(): Promise<void> {

@@ -11,7 +11,7 @@ export default function StudioDashboard() {
         <div className="flex items-center space-x-3">
           <Terminal className="w-6 h-6 text-indigo-400" />
           <span className="text-xl font-bold tracking-tight text-indigo-50">
-            MyCodexVantaOS Dev Studio
+            MyCodeXvantaOS Dev Studio
           </span>
         </div>
         <div className="flex items-center space-x-4">

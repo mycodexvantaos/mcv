@@ -1,8 +1,8 @@
 # Platform Overview
 
-## MyCodexVantaOS
+## MyCodeXvantaOS
 
-MyCodexVantaOS is a self-hostable AI operating system built on a bilingual architecture:
+MyCodeXvantaOS is a self-hostable AI operating system built on a bilingual architecture:
 a **TypeScript Control Plane** for API orchestration, policy enforcement, and audit logging,
 paired with a **Python Intelligence Plane** for ML/NLP processing, knowledge pipelines,
 and agent orchestration.

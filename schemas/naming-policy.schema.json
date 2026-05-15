@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://mycodexvantaos.org/schemas/naming-policy.schema.json",
-  "title": "MyCodexVantaOS Naming Policy",
+  "title": "MyCodeXvantaOS Naming Policy",
   "description": "Formal naming rules for mycodexvantaos platform. Source of truth for all CI validators. Based on naming-spec-v1.md 13.",
   "version": "1.0.0",
   "type": "object",

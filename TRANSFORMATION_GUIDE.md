@@ -1,4 +1,4 @@
-# MyCodexVantaOS 統一轉化指南
+# MyCodeXvantaOS 統一轉化指南
 
 ## 一、核心原則
 

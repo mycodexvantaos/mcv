@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://mycodexvantaos.org/schemas/retrieval-pipeline.schema.json",
-  "title": "MyCodexVantaOS Retrieval Pipeline Definition",
+  "title": "MyCodeXvantaOS Retrieval Pipeline Definition",
   "description": "Schema for vector-store/retrieval-pipelines/*.yaml. Based on naming-spec-v1.md 9.4.",
   "type": "object",
   "required": ["apiVersion", "kind", "metadata", "spec"],

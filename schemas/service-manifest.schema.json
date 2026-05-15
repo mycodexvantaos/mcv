@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://mycodexvantaos.org/schemas/service-manifest.schema.json",
-  "title": "MyCodexVantaOS Service / Module Manifest",
+  "title": "MyCodeXvantaOS Service / Module Manifest",
   "description": "Schema for modules/<service-id>/module-manifest.yaml. Based on naming-spec-v1.md 5.1, 5.3, 6.3, 11.",
   "type": "object",
   "required": ["apiVersion", "kind", "metadata", "spec"],

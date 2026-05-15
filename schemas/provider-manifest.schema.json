@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://mycodexvantaos.org/schemas/provider-manifest.schema.json",
-  "title": "MyCodexVantaOS Provider Manifest",
+  "title": "MyCodeXvantaOS Provider Manifest",
   "description": "Schema for providers/<capability>/<provider-instance>/provider-manifest.yaml. Based on naming-spec-v1.md 8.",
   "type": "object",
   "required": ["apiVersion", "kind", "metadata", "spec"],

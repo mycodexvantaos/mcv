@@ -195,7 +195,7 @@ export default function ValidationDashboard() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
               <FileText className="w-8 h-8 text-blue-600" />
-              <span className="text-xl font-bold text-gray-900">MyCodexVantaOS Validation</span>
+              <span className="text-xl font-bold text-gray-900">MyCodeXvantaOS Validation</span>
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-600">Welcome, {user.name}</span>

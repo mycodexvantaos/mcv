@@ -116,9 +116,9 @@ print(f"Section 8 done (created={created}, skipped={skipped})")
 docs = {
     "docs/architecture/platform-overview.md": """# Platform Overview
 
-## MyCodexVantaOS
+## MyCodeXvantaOS
 
-MyCodexVantaOS is a self-hostable AI operating system built on a bilingual architecture:
+MyCodeXvantaOS is a self-hostable AI operating system built on a bilingual architecture:
 a **TypeScript Control Plane** for API orchestration, policy enforcement, and audit logging,
 paired with a **Python Intelligence Plane** for ML/NLP processing, knowledge pipelines,
 and agent orchestration.
@@ -671,7 +671,7 @@ TS services use HPA based on CPU/memory metrics.
 
 ## Philosophy
 
-MyCodexVantaOS is designed to be self-hostable. You can run the entire platform
+MyCodeXvantaOS is designed to be self-hostable. You can run the entire platform
 on your own infrastructure without depending on any cloud service.
 
 ## Quick Start

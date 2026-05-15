@@ -1,4 +1,4 @@
-name: MyCodexVantaOS CI
+name: MyCodeXvantaOS CI
 
 on:
   push:

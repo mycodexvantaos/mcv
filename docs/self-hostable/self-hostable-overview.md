@@ -2,7 +2,7 @@
 
 ## Philosophy
 
-MyCodexVantaOS is designed to be self-hostable. You can run the entire platform
+MyCodeXvantaOS is designed to be self-hostable. You can run the entire platform
 on your own infrastructure without depending on any cloud service.
 
 ## Quick Start
