@@ -1,22 +1,27 @@
-id: knowledge-trace
-category: knowledge
-display_name: Knowledge Trace
-description: Answer trace and evidence tracking for RAG pipelines
-resource_types: []
-permissions:
-  - action: read
-    roles: [workspace-viewer, workspace-member, workspace-owner, platform-admin]
-  - action: write
-    roles: [workspace-member, workspace-owner, platform-admin]
-  - action: admin
-    roles: [workspace-owner, platform-admin]
-events: []
-usage_metrics: []
-runtime:
-  portable: true
-  supported:
-    - cloudflare-workers
-    - node-server
-    - docker-container
-audit:
-  required: true
+apiVersion: platform.mycodexvantaos/v1
+kind: ServiceDefinition
+metadata:
+  name: knowledge-trace
+  category: knowledge
+  display_name: Knowledge Trace
+  description: Answer trace and evidence tracking for RAG pipelines
+spec:
+  resource_types: []
+  runtime:
+    portable: true
+    supported:
+      - cloudflare-workers
+      - node-server
+      - docker-container
+  permissions:
+    - action: read
+      roles: [workspace-viewer, workspace-member, workspace-owner, platform-admin]
+    - action: write
+      roles: [workspace-member, workspace-owner, platform-admin]
+    - action: admin
+      roles: [workspace-owner, platform-admin]
+  events:
+    emitted: []
+    subscribed: []
+  audit:
+    required: true
