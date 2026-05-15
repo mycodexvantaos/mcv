@@ -1,0 +1,22 @@
+{
+  "name": "@mycodexvantaos/service-agent-chat",
+  "version": "0.1.0",
+  "description": "Agent chat service - AI-powered conversational agent",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/",
+    "test": "echo \"TODO: add tests\" && exit 0"
+  },
+  "keywords": ["mycodexvantaos", "service-agent-chat"],
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/node": "^20.0.0"
+  },
+  "dependencies": {
+    "@mycodexvantaos/core": "workspace:*"
+  }
+}

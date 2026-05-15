@@ -1,0 +1,10 @@
+category: runtime
+description: Event contracts for runtime domain
+events:
+  - runtime.started
+  - runtime.stopped
+  - runtime.health-checked
+  - runtime.provider-connected
+  - runtime.provider-disconnected
+  - runtime.adapter-failed
+  - runtime.migration-applied

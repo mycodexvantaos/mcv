@@ -1,0 +1,15 @@
+id: model-byok-policy
+description: Policy for BYOK model endpoint management
+rules:
+  - effect: allow
+    subject:
+      roles: ['workspace-owner']
+    action: model:register,model:delete
+    resource: model-endpoint
+
+  - effect: allow
+    subject:
+      roles: ['workspace-member', 'workspace-owner']
+    action: model:invoke
+    resource: model-endpoint
+

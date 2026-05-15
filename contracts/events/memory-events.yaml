@@ -1,0 +1,22 @@
+category: memory
+description: Event contracts for memory domain
+events:
+  - memory.candidate-created
+  - memory.candidate-promoted
+  - memory.candidate-rejected
+  - memory.item-created
+  - memory.item-updated
+  - memory.item-reinforced
+  - memory.item-merged
+  - memory.item-deprecated
+  - memory.item-orphaned
+  - memory.conflict-detected
+  - memory.conflict-resolved
+  - memory.dream-started
+  - memory.dream-scan-completed
+  - memory.dream-merge-completed
+  - memory.dream-conflict-resolved
+  - memory.dream-orphan-cleaned
+  - memory.dream-completed
+  - memory.dream-failed
+  - memory.dream-rollback

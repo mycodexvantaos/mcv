@@ -1,0 +1,26 @@
+id: local
+display_name: Local Development Runtime
+description: Local development and testing runtime
+supported_services:
+  - identity
+  - workspace
+  - service-catalog
+  - resource-registry
+  - policy-engine
+  - audit-log
+  - usage-meter
+  - knowledge-store
+  - knowledge-search
+  - agent-chat
+  - model-byok
+  - memory-store
+  - memory-capture
+  - memory-dream
+storage_backend: filesystem
+database_backend: sqlite
+queue_backend: in-process
+ai_provider_support:
+  - ollama
+  - openai
+  - anthropic
+self_hostable: true

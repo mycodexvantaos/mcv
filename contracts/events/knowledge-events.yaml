@@ -1,0 +1,15 @@
+category: knowledge
+description: Event contracts for knowledge domain
+events:
+  - knowledge.collection-created
+  - knowledge.collection-archived
+  - knowledge.document-uploaded
+  - knowledge.document-chunked
+  - knowledge.document-embedded
+  - knowledge.document-ingested
+  - knowledge.document-failed
+  - knowledge.search-performed
+  - knowledge.retrieval-completed
+  - knowledge.answer-trace-created
+  - knowledge.issue-detected
+  - knowledge.repair-initiated

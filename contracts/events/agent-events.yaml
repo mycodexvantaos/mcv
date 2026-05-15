@@ -1,0 +1,11 @@
+category: agent
+description: Event contracts for agent domain
+events:
+  - agent.session-created
+  - agent.session-archived
+  - agent.message-sent
+  - agent.message-received
+  - agent.tool-invoked
+  - agent.tool-completed
+  - agent.generation-started
+  - agent.generation-completed

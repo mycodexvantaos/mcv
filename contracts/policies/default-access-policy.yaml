@@ -1,0 +1,27 @@
+id: default-access-policy
+description: Default access control policy for platform resources
+rules:
+  - effect: allow
+    subject:
+      roles: ['platform-admin']
+    action: *
+    resource: *
+
+  - effect: allow
+    subject:
+      roles: ['workspace-owner']
+    action: *
+    resource: workspace/*
+
+  - effect: allow
+    subject:
+      roles: ['workspace-member']
+    action: read,write
+    resource: workspace/*
+
+  - effect: allow
+    subject:
+      roles: ['workspace-viewer']
+    action: read
+    resource: workspace/*
+

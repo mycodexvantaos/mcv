@@ -1,0 +1,44 @@
+kind: answer-trace
+api_version: mycodexvantaos.io/v1
+metadata_schema:
+  id:
+    type: string
+    required: true
+  urn:
+    type: string
+    required: true
+  labels:
+    type: object
+    additionalProperties:
+      type: string
+  annotations:
+    type: object
+    additionalProperties:
+      type: string
+  createdAt:
+    type: string
+    format: date-time
+  updatedAt:
+    type: string
+    format: date-time
+spec_schema: {}
+status_schema: {}
+lifecycle:
+  - creating
+  - active
+  - updating
+  - degraded
+  - suspended
+  - deleting
+  - deleted
+permissions:
+  - action: read
+    roles: [workspace-viewer, workspace-member, workspace-owner, platform-admin]
+  - action: write
+    roles: [workspace-member, workspace-owner, platform-admin]
+  - action: delete
+    roles: [workspace-owner, platform-admin]
+audit_events:
+  - answer-trace.created
+  - answer-trace.updated
+  - answer-trace.deleted

@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mycodexvantaos.com/schemas/policy.schema.json",
+  "title": "Policy",
+  "description": "Policy definition for platform access control",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Policy identifier"
+    },
+    "description": {
+      "type": "string"
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "effect": {
+            "type": "string",
+            "enum": [
+              "allow",
+              "deny",
+              "require-review"
+            ]
+          },
+          "subject": {
+            "type": "object"
+          },
+          "action": {
+            "type": "string"
+          },
+          "resource": {
+            "type": "string"
+          },
+          "condition": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "effect",
+          "subject",
+          "action",
+          "resource"
+        ]
+      }
+    }
+  },
+  "required": [
+    "id",
+    "rules"
+  ]
+}
