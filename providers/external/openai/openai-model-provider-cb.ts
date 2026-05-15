@@ -1,6 +1,6 @@
 /**
  * 📦 External/OpenAI Model Provider (CapabilityBase-based)
- * 適配原有 packages/adapters/openai 至 capabilities 層規範。
+ * 適配原有 packages/adapters/openai 至 capabilities 層範圍。
  * 本實現僅做結構適配，不影響既有業務邏輯。
  *
  * TODO：
@@ -9,8 +9,9 @@
  * - 添加指標收集與結構化日誌
  */
 
-import { CapabilityBase } from '../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../packages/capabilities/types';
+import { CapabilityBase } from '../../../packages/capabilities/base';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 export interface OpenAIModelConfig {
   apiKey?: string;
@@ -22,6 +23,10 @@ export interface OpenAIModelConfig {
 
 export class OpenAIModelProvider extends CapabilityBase<OpenAIModelConfig> {
   private client: any = null; // 實際類型按具體 SDK 注入
+
+  constructor(config: ProviderConfig<OpenAIModelConfig>) {
+    super(config);
+  }
 
   protected async doInitialize(): Promise<void> {
     const cfg = this.config.config;
@@ -39,7 +44,7 @@ export class OpenAIModelProvider extends CapabilityBase<OpenAIModelConfig> {
         isHealthy: false,
         status: ProviderHealthStatus.DEGRADED,
         checkTime: new Date().toISOString(),
-        metrics: { lastError: 'API key not provided, operating in degraded mode' },
+        metrics: {},
       };
     }
     try {
@@ -66,7 +71,7 @@ export class OpenAIModelProvider extends CapabilityBase<OpenAIModelConfig> {
         isHealthy: false,
         status: ProviderHealthStatus.UNHEALTHY,
         checkTime: new Date().toISOString(),
-        metrics: { lastError: String(e) },
+        metrics: {},
       };
     }
   }

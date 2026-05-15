@@ -9,11 +9,32 @@
  * - Provider-agnostic: Standard interface for deployment operations
  */
 
-import type {
-  DeploymentProviderInterface,
-  DeploymentConfig,
-  DeploymentResult,
-} from '@mycodexvantaos/deployment';
+// ── Deployment Interfaces (local definitions) ──────────────────────────
+
+export interface DeploymentResult {
+  jobId: string;
+  status: string;
+  url?: string;
+  endpoints?: string[];
+  deploymentTime?: number;
+}
+
+export interface DeploymentProviderInterface {
+  name: string;
+  isNative: boolean;
+  isAvailable(): boolean;
+  healthCheck(): Promise<{ healthy: boolean; message: string }>;
+  getMetadata(): Record<string, any>;
+  deploy(application: any, config?: DeploymentConfig): Promise<DeploymentResult>;
+}
+
+export interface DeploymentConfig {
+  port?: number;
+  host?: string;
+  environment?: Record<string, string>;
+  buildCommand?: string;
+  startCommand?: string;
+}
 
 export interface NativeDeploymentConfig extends DeploymentConfig {
   port?: number;

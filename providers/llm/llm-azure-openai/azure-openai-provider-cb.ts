@@ -8,7 +8,8 @@
  */
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../../packages/capabilities/types';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 /**
  * Configuration for Azure OpenAI Provider
@@ -137,7 +138,7 @@ export class AzureOpenAILLMProvider extends CapabilityBase<AzureOpenAIConfig> {
   private retries: number;
   private maxTokens: number;
   private temperature: number;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
 
   constructor(config: ProviderConfig<AzureOpenAIConfig>) {
     super(config);
@@ -157,7 +158,7 @@ export class AzureOpenAILLMProvider extends CapabilityBase<AzureOpenAIConfig> {
    */
   protected async doInitialize(): Promise<void> {
     this.log('info', 'Azure OpenAI LLM provider initialized');
-    this.log('debug', `Endpoint: ${this.endpoint}, Deployment: ${this.deployment}`);
+    this.log('info', `Endpoint: ${this.endpoint}, Deployment: ${this.deployment}`);
   }
 
   /**
@@ -184,11 +185,7 @@ export class AzureOpenAILLMProvider extends CapabilityBase<AzureOpenAIConfig> {
         isHealthy,
         status: isHealthy ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.UNHEALTHY,
         checkTime: new Date().toISOString(),
-        metrics: {
-          endpoint: this.endpoint,
-          deployment: this.deployment,
-          apiVersion: this.apiVersion,
-        },
+        metrics: {},
       };
     } catch (error) {
       return {

@@ -8,8 +8,9 @@
  * @version 1.0.0
  */
 
-import { CapabilityBase } from '../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../packages/capabilities/types';
+import { CapabilityBase } from '../../../packages/capabilities/base';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 /**
  * Configuration for Native LLM Provider
@@ -248,11 +249,7 @@ export class NativeLLMProvider extends CapabilityBase<NativeLLMConfig> {
       isHealthy: true,
       status: ProviderHealthStatus.HEALTHY,
       checkTime: new Date().toISOString(),
-      metrics: {
-        modelId: this.modelId,
-        responseMode: this.responseMode,
-        maxTokens: this.maxTokens,
-      },
+      metrics: {},
     };
   }
 
@@ -279,7 +276,7 @@ export class NativeLLMProvider extends CapabilityBase<NativeLLMConfig> {
       // Update metrics with actual latency
       this.metrics.invocationCount++;
       this.metrics.successCount++;
-      this.metrics.avgLatency = this.calculateAvgLatency(generationTime);
+      this.metrics.avgLatency = this.calculateNativeAvgLatency(generationTime);
       this.metrics.lastInvocation = new Date().toISOString();
       this.metrics.lastProviderId = this.id;
 
@@ -360,7 +357,7 @@ export class NativeLLMProvider extends CapabilityBase<NativeLLMConfig> {
   /**
    * Calculate average latency for metrics
    */
-  private calculateAvgLatency(newLatency: number): number {
+  private calculateNativeAvgLatency(newLatency: number): number {
     const count = this.metrics.invocationCount;
     if (count === 0) return newLatency;
     

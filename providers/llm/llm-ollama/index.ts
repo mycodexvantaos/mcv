@@ -1,57 +1,31 @@
 /**
- * 🦙 MyCodeXvantaOS - Ollama LLM Provider
- *
- * Local LLM provider using Ollama for offline inference.
- * 
- * @module providers/llm/llm-ollama
- * @version 1.0.0
+ * Factory function for OllamaLLMProvider
  */
 
-export { OllamaLLMProvider, default } from './ollama-provider-cb';
-export type { 
-  OllamaConfig, 
-  LLMRequest as OllamaLLMRequest, 
-  LLMResponse as OllamaLLMResponse 
-} from './ollama-provider-cb';
+import { OllamaLLMProvider } from './ollama-provider-cb';
+import type { OllamaConfig } from './ollama-provider-cb';
+import { RuntimeMode, ProviderMode } from '../../../packages/capabilities/types';
+import type { ProviderConfig } from '../../../packages/capabilities/types';
+
+export { OllamaLLMProvider } from './ollama-provider-cb';
+export type { OllamaConfig } from './ollama-provider-cb';
 
 /**
- * Create an Ollama LLM provider instance
+ * Create a OllamaLLMProvider instance with the given configuration.
  */
-export function createOllamaProvider(
-  id: string = 'ollama-default',
-  config: OllamaConfig = {}
-): OllamaLLMProvider {
-  const ProviderConfig = {
-    config,
-    mode: 'native' as const,
-    providerId: id,
+export function createOllamaLLMProvider(config: Partial<ProviderConfig<OllamaConfig>> = {}): OllamaLLMProvider {
+  const id = config.id || 'ollama-provider-cb';
+  const name = config.name || 'OllamaLLMProvider';
+  const providerConfig: ProviderConfig<OllamaConfig> = {
+    id,
+    name,
+    mode: config.mode || RuntimeMode.HYBRID,
+    providerMode: config.providerMode || ProviderMode.EXTERNAL,
+    config: (config.config || {}) as OllamaConfig,
+    fallback: config.fallback,
   };
 
-  return new OllamaLLMProvider(
-    id,
-    'Ollama LLM Provider',
-    ProviderConfig,
-    {
-      enabled: true,
-      retryCount: 3,
-    }
-  );
+  return new OllamaLLMProvider(id, name, providerConfig);
 }
 
-/**
- * Initialize Ollama provider with health check
- */
-export async function initializeOllamaProvider(
-  id: string = 'ollama-default',
-  config: OllamaConfig = {}
-): Promise<OllamaLLMProvider> {
-  const provider = createOllamaProvider(id, config);
-  await provider.initialize();
-  return provider;
-}
-
-export default {
-  OllamaLLMProvider,
-  createOllamaProvider,
-  initializeOllamaProvider,
-};
+export default createOllamaLLMProvider;

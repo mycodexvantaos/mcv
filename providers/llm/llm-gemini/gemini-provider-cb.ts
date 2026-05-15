@@ -7,8 +7,9 @@
  * @version 1.0.0
  */
 
-import { CapabilityBase } from '../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../packages/capabilities/types';
+import { CapabilityBase } from '../../../packages/capabilities/base';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 /**
  * Configuration for Gemini LLM Provider
@@ -128,9 +129,9 @@ export class GeminiLLMProvider extends CapabilityBase<GeminiConfig> {
   private temperature: number;
   private topK: number;
   private topP: number;
-  private stream: boolean;
+  private enableStreaming: boolean;
   private retries: number;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
   
   private isGeminiAvailable: boolean = false;
   private apiKey: string | undefined;
@@ -152,9 +153,8 @@ export class GeminiLLMProvider extends CapabilityBase<GeminiConfig> {
     this.temperature = cfg.temperature ?? 0.7;
     this.topK = cfg.topK || 40;
     this.topP = cfg.topP ?? 0.95;
-    this.stream = cfg.stream ?? true;
+    this.enableStreaming = cfg.stream ?? true;
     this.retries = cfg.retries || 3;
-    this.fallbackProviderId = cfg.fallbackProviderId || 'llm-native';
   }
 
   /**
@@ -220,7 +220,6 @@ export class GeminiLLMProvider extends CapabilityBase<GeminiConfig> {
         checkTime: new Date().toISOString(),
         metrics: {
           lastError: 'API key not provided',
-          hasFallback: !!this.fallbackProviderId,
         },
       };
     }
@@ -234,7 +233,6 @@ export class GeminiLLMProvider extends CapabilityBase<GeminiConfig> {
         checkTime: new Date().toISOString(),
         metrics: {
           lastError: 'Gemini API not available',
-          hasFallback: !!this.fallbackProviderId,
         },
       };
     }
@@ -243,12 +241,7 @@ export class GeminiLLMProvider extends CapabilityBase<GeminiConfig> {
       isHealthy: true,
       status: ProviderHealthStatus.HEALTHY,
       checkTime: new Date().toISOString(),
-      metrics: {
-        model: this.model,
-        baseURL: this.baseURL,
-        maxTokens: this.maxTokens,
-        hasFallback: !!this.fallbackProviderId,
-      },
+      metrics: {},
     };
   }
 

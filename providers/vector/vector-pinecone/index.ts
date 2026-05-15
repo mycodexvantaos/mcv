@@ -1,3 +1,5 @@
+import { PineconeVectorProvider } from './pinecone-vector-provider-cb';
+import type { PineconeVectorConfig } from './pinecone-vector-provider-cb';
 export { PineconeVectorProvider, default } from './pinecone-vector-provider-cb';
 export type { PineconeVectorConfig, VectorSearchResult, SearchResult } from './pinecone-vector-provider-cb';
 export function createPineconeVectorProvider(id: string = 'vector-pinecone', config?: Partial<PineconeVectorConfig>) {

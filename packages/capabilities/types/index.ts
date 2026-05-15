@@ -174,6 +174,9 @@ export interface ProviderConfig<T = unknown> {
   /** Provider 唯一標識符 */
   id: string;
 
+  /** Provider 名稱（可選，用於顯示和日誌） */
+  name?: string;
+
   /** Runtime Mode */
   mode: RuntimeMode;
 
@@ -197,6 +200,9 @@ export interface ProviderConfig<T = unknown> {
     /** 初始化超時時間（毫秒） */
     initTimeout?: number;
   };
+
+  /** Fallback 配置（可選，用於 Hybrid Provider） */
+  fallback?: FallbackConfig;
 }
 
 /**
@@ -347,14 +353,8 @@ export interface CapabilityQuery {
 
 /**
  * ✨ Export All Types
+ * 
+ * Note: Enums (RuntimeMode, ProviderMode, ProviderHealthStatus) are already exported
+ * above at their declaration site. Only interfaces need re-exporting here with
+ * `export type` to avoid duplicate export conflicts.
  */
-export type {
-  ProviderConfig,
-  FallbackConfig,
-  NetworkStatus,
-  RuntimeConfig,
-  ProviderMetrics,
-  CapabilityQuery,
-  ProviderHealthCheckResult,
-  ProviderCapability,
-};

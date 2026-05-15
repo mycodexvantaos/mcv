@@ -1,41 +1,29 @@
 /**
- * 🔒 MyCodeXvantaOS - AWS Bedrock LLM Provider
- *
- * AWS Bedrock LLM integration with native fallback.
- *
- * @module providers/llm/llm-aws-bedrock
- * @version 1.0.0
+ * Factory function for BedrockLLMProvider
  */
+
+import { BedrockLLMProvider } from './bedrock-provider-cb';
+import type { BedrockConfig } from './bedrock-provider-cb';
+import { RuntimeMode, ProviderMode } from '../../../packages/capabilities/types';
+import type { ProviderConfig } from '../../../packages/capabilities/types';
 
 export { BedrockLLMProvider } from './bedrock-provider-cb';
-export type { BedrockConfig, ChatMessage, ChatCompletionOptions, ChatCompletionResult, EmbeddingResult } from './bedrock-provider-cb';
+export type { BedrockConfig } from './bedrock-provider-cb';
 
 /**
- * Factory function to create Bedrock provider
+ * Create a BedrockLLMProvider instance with the given configuration.
  */
-export function createBedrockProvider(config: import('../../../packages/capabilities/types').ProviderConfig<any> = {}): BedrockLLMProvider {
-  return new BedrockLLMProvider({
-    id: config.id || 'bedrock-llm',
-    name: config.name || 'AWS Bedrock LLM',
-    mode: config.mode || 'hybrid',
-    providerMode: config.providerMode || 'external',
-    config: config.config || {},
+export function createBedrockLLMProvider(config: Partial<ProviderConfig<BedrockConfig>> = {}): BedrockLLMProvider {
+  const providerConfig: ProviderConfig<BedrockConfig> = {
+    id: config.id || 'bedrock-provider-cb',
+    name: config.name || 'BedrockLLMProvider',
+    mode: config.mode || RuntimeMode.HYBRID,
+    providerMode: config.providerMode || ProviderMode.EXTERNAL,
+    config: (config.config || {}) as BedrockConfig,
     fallback: config.fallback,
-  });
+  };
+
+  return new BedrockLLMProvider(providerConfig);
 }
 
-/**
- * Initialize Bedrock provider
- */
-export async function initializeBedrockProvider(
-  config: import('../../../packages/capabilities/types').ProviderConfig<any> = {}
-): Promise<BedrockLLMProvider> {
-  const provider = createBedrockProvider(config);
-  await provider.initialize();
-  return provider;
-}
-
-/**
- * Default export
- */
-export { BedrockLLMProvider as default };
+export default createBedrockLLMProvider;

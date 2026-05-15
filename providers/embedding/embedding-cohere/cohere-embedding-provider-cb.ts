@@ -8,7 +8,8 @@
  */
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../../packages/capabilities/types';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 /**
  * Configuration for Cohere Embedding Provider
@@ -84,7 +85,7 @@ export class CohereEmbeddingProvider extends CapabilityBase<CohereEmbeddingConfi
   private dimensions: number;
   private timeout: number;
   private retries: number;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
   
   private isCohereAvailable: boolean = false;
   private apiKey: string | undefined;
@@ -104,7 +105,6 @@ export class CohereEmbeddingProvider extends CapabilityBase<CohereEmbeddingConfi
     this.dimensions = cfg.dimensions || 1024;
     this.timeout = cfg.timeout || 30000;
     this.retries = cfg.retries || 3;
-    this.fallbackProviderId = cfg.fallbackProviderId || 'hybrid/embedding';
   }
 
   /**
@@ -170,7 +170,6 @@ export class CohereEmbeddingProvider extends CapabilityBase<CohereEmbeddingConfi
         checkTime: new Date().toISOString(),
         metrics: {
           lastError: 'API key not provided',
-          hasFallback: !!this.fallbackProviderId,
         },
       };
     }
@@ -184,7 +183,6 @@ export class CohereEmbeddingProvider extends CapabilityBase<CohereEmbeddingConfi
         checkTime: new Date().toISOString(),
         metrics: {
           lastError: 'Cohere API not available',
-          hasFallback: !!this.fallbackProviderId,
         },
       };
     }
@@ -193,11 +191,7 @@ export class CohereEmbeddingProvider extends CapabilityBase<CohereEmbeddingConfi
       isHealthy: true,
       status: ProviderHealthStatus.HEALTHY,
       checkTime: new Date().toISOString(),
-      metrics: {
-        model: this.model,
-        dimensions: this.dimensions,
-        hasFallback: !!this.fallbackProviderId,
-      },
+      metrics: {},
     };
   }
 

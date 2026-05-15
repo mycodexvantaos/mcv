@@ -15,10 +15,12 @@
  * @version 1.0.0
  */
 
+import {
+  ProviderHealthStatus,
+} from '../types';
 import type {
   ProviderConfig,
   ProviderHealthCheckResult,
-  ProviderHealthStatus,
   ProviderMetrics,
   FallbackConfig,
 } from '../types';
@@ -112,23 +114,42 @@ export abstract class CapabilityBase<T = unknown> {
   protected consecutiveFailureCount: number = 0;
 
   /**
+   * 📊 自定義指標存儲
+   */
+  protected customMetrics: Map<string, number> = new Map();
+
+  /**
    * 🏗️ 構造函數
    *
-   * @param id - Provider 唯一標識符
-   * @param name - Provider 名稱
-   * @param config - Provider 配置
+   * 支援兩種呼叫模式：
+   * 1. 四參數模式：super(id, name, config, fallbackConfig) — P1/P2 風格
+   * 2. 單參數模式：super(config) — P3 風格，從 ProviderConfig 中提取 id/name/fallback
+   *
+   * @param idOrConfig - Provider 唯一標識符 或 完整的 ProviderConfig
+   * @param name - Provider 名稱（當第一個參數為 string 時使用）
+   * @param config - Provider 配置（當第一個參數為 string 時使用）
    * @param fallbackConfig - （可選）Fallback 配置
    */
   constructor(
-    id: string,
-    name: string,
-    config: ProviderConfig<T>,
+    idOrConfig: string | ProviderConfig<T>,
+    name?: string,
+    config?: ProviderConfig<T>,
     fallbackConfig?: FallbackConfig
   ) {
-    this.id = id;
-    this.name = name;
-    this.config = config;
-    this.fallbackConfig = fallbackConfig;
+    if (typeof idOrConfig === 'string') {
+      // P1/P2 風格：super(id, name, config, fallbackConfig)
+      this.id = idOrConfig;
+      this.name = name || idOrConfig;
+      this.config = config!;
+      this.fallbackConfig = fallbackConfig;
+    } else {
+      // P3 風格：super(config) — 從 ProviderConfig 中提取
+      const providerConfig = idOrConfig;
+      this.id = providerConfig.id;
+      this.name = providerConfig.name || providerConfig.id;
+      this.config = providerConfig;
+      this.fallbackConfig = providerConfig.fallback || fallbackConfig;
+    }
   }
 
   /**
@@ -367,6 +388,35 @@ export abstract class CapabilityBase<T = unknown> {
       `Fallback triggered: ${fromProvider} → ${toProvider}` +
         ` (consecutive failures: ${this.consecutiveFailureCount})`
     );
+  }
+
+  /**
+   * 📊 記錄自定義指標
+   *
+   * 用於 Provider 特定的業務指標追蹤，例如：
+   * - 上傳/下載位元組數
+   * - TTS/STT 調用次數
+   * - 圖像生成次數
+   * - 聊天完成次數
+   *
+   * @param metricName - 指標名稱（如 'upload', 'tts', 'chat_complete'）
+   * @param value - 指標值（通常為 1 計數或位元組大小）
+   */
+  protected recordMetric(metricName: string, value: number): void {
+    const current = this.customMetrics.get(metricName) || 0;
+    this.customMetrics.set(metricName, current + value);
+
+    this.metrics.lastInvocation = new Date().toISOString();
+    this.metrics.lastProviderId = this.id;
+  }
+
+  /**
+   * 📊 獲取自定義指標
+   *
+   * @returns 自定義指標的快照
+   */
+  getCustomMetrics(): Record<string, number> {
+    return Object.fromEntries(this.customMetrics);
   }
 
   /**

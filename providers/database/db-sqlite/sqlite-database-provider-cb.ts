@@ -8,7 +8,8 @@
  */
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../../packages/capabilities/types';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 /**
  * Configuration for SQLite Database Provider
@@ -64,7 +65,7 @@ export class SQLiteDatabaseProvider extends CapabilityBase<SQLiteDatabaseConfig>
   private enableWAL: boolean;
   private timeout: number;
   private retries: number;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
   
   private isSQLiteAvailable: boolean = false;
 
@@ -81,7 +82,6 @@ export class SQLiteDatabaseProvider extends CapabilityBase<SQLiteDatabaseConfig>
     this.enableWAL = cfg.enableWAL ?? true;
     this.timeout = cfg.timeout || 5000;
     this.retries = cfg.retries || 3;
-    this.fallbackProviderId = cfg.fallbackProviderId || 'database/memory-native';
   }
 
   /**
@@ -128,7 +128,6 @@ export class SQLiteDatabaseProvider extends CapabilityBase<SQLiteDatabaseConfig>
         checkTime: new Date().toISOString(),
         metrics: {
           lastError: 'SQLite not available',
-          hasFallback: !!this.fallbackProviderId,
         },
       };
     }
@@ -137,11 +136,7 @@ export class SQLiteDatabaseProvider extends CapabilityBase<SQLiteDatabaseConfig>
       isHealthy: true,
       status: ProviderHealthStatus.HEALTHY,
       checkTime: new Date().toISOString(),
-      metrics: {
-        dbPath: this.dbPath,
-        enableWAL: this.enableWAL,
-        hasFallback: !!this.fallbackProviderId,
-      },
+      metrics: {},
     };
   }
 

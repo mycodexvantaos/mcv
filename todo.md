@@ -1,81 +1,36 @@
-# MyCodeXvantaOS 架構排查與補強計畫
+# 🎯 MyCodeXvantaOS — 深度驗證 & 落實計畫
 
-## Phase 0: 排查報告
-- [x] 盤點現有架構文件與規劃藍圖的差距
+**Last Updated**: 2025-01-15  
+**Phase**: 深度驗證 — 全面落實
 
-## Phase 1: 服務分類重構（8 大類別目錄）
-- [x] 重構 service-catalog.yaml 分類：core/knowledge/ai/governance → knowledge/agent/workspace/developer/security/storage/model/automation
-- [x] 為每個服務定義添加 category 欄位對應新的 8 大分類
-- [x] 建立 contracts/service-categories.yaml 定義完整分類體系
+---
 
-## Phase 2: 補強核心領域模型（packages/core 拆分）
-- [x] 建立 packages/core/shared/ (id.ts, time.ts, result.ts, errors.ts, pagination.ts, metadata.ts, index.ts)
-- [x] 建立 packages/core/service-catalog/ (service-definition.ts, service-category.ts, index.ts)
-- [x] 建立 packages/core/resource-model/ (resource-kind.ts, index.ts)
-- [x] 建立 packages/core/policy-model/ (policy-definition.ts, index.ts)
-- [x] 建立 packages/core/audit-model/ (audit-event.ts, index.ts)
-- [x] 建立 packages/core/knowledge-model/ (document.ts, document-chunk.ts, knowledge-collection.ts, knowledge-index.ts, retrieval-receipt.ts, answer-trace.ts, memory-item.ts, knowledge-issue.ts, knowledge-repair.ts, derived-artifact.ts, index.ts)
-- [x] 建立 packages/core/index.ts barrel re-export + package.json
+## 🔴 SECTION F: 非標準 Provider 修正
 
-## Phase 3: 補強 Ports 層（Repository + Provider 接口）
-- [x] 建立 packages/ports/database/ (IDatabasePort + IRepository<T> + types)
-- [x] 建立 packages/ports/object-storage/ (IObjectStoragePort + types)
-- [x] 建立 packages/ports/search/ (ISearchPort + IKnowledgeSearchPort + types)
-- [x] 建立 packages/ports/model-provider/ (IChatModelPort + IEmbeddingModelPort + IModelPort + types)
-- [x] 建立 packages/ports/queue/ (IQueuePort + IJobQueuePort + types)
-- [x] 建立 packages/ports/auth/ (IAuthPort + types)
-- [x] 建立 packages/ports/index.ts barrel re-export + package.json
+### F1. [x] `deploy/deploy-firebase` — 自訂 DeploymentProviderInterface（非 CapabilityBase），不需改動
+### F2. [x] `deploy/deploy-native` — 自訂 DeploymentProviderInterface（非 CapabilityBase），不需改動
+### F3. [x] `native/memory-cache/memory-cache-cb.ts` — 已加 index.ts factory
+### F4. [x] `native/memory-vector-store/memory-vector-store-cb.ts` — 已加 index.ts factory
+### F5. [x] `hybrid/embedding/hybrid-embedding-provider-cb.ts` — 已加 index.ts factory（含 re-export 子 providers）
 
-## Phase 4: Application 層拆分為獨立服務模組
-- [x] 建立 packages/application/identity/ (IdentityService)
-- [x] 建立 packages/application/workspace/ (WorkspaceService)
-- [x] 建立 packages/application/knowledge/ (KnowledgeService)
-- [x] 建立 packages/application/agent/ (AgentService)
-- [x] 建立 packages/application/model/ (ModelService)
-- [x] 建立 packages/application/audit/ (AuditService)
-- [x] 建立 packages/application/usage/ (UsageService)
-- [x] 建立 packages/application/automation/ (AutomationService)
-- [x] 建立 packages/application/index.ts barrel + SERVICE_DEPENDENCIES + package.json
+---
 
-## Phase 5: Adapters 拆分為獨立適配器包
-- [x] 建立 packages/adapters/cloudflare-d1/ (CloudflareD1Adapter + D1Repository<T>)
-- [x] 建立 packages/adapters/cloudflare-kv/ (CloudflareKVCacheStore + CloudflareKVSessionStore)
-- [x] 建立 packages/adapters/cloudflare-r2/ (CloudflareR2Adapter)
-- [x] 建立 packages/adapters/d1-full-text-search/ (D1FullTextSearchAdapter)
-- [x] 建立 packages/adapters/openai/ (OpenAIChatAdapter + OpenAIEmbeddingAdapter)
-- [x] 建立 packages/adapters/openrouter/ (OpenRouterChatAdapter)
-- [x] 建立 packages/adapters/workers-ai/ (WorkersAIChatAdapter + WorkersAIEmbeddingAdapter)
-- [x] 建立 packages/adapters/index.ts barrel re-export
-- [x] 建立 packages/adapters/package.json
+## 🔴 SECTION G: 全面語法 & 邏輯驗證
 
-## Phase 6: 補強 apps 層
-- [x] 建立 apps/api-worker/ (index.ts, wrangler.toml, package.json, tsconfig.json)
-- [x] 建立 apps/web-console/ (index.html, app.ts, package.json)
-- [x] 建立 apps/cli/ (index.ts, package.json, tsconfig.json)
+### G1. [x] 所有 provider-cb.ts import 路徑正確性 — 全部通過
+### G2. [x] 所有 index.ts factory import 路徑正確性 — 全部通過
+### G3. [x] 所有 provider 正確 extends CapabilityBase<T> — 全部通過
+### G4. [x] 所有 doInitialize / doHealthCheck / doShutdown 完整實作 — 全部通過
+### G5. [x] 所有 constructor 正確呼叫 super(config) — 已修正 OpenAIModelProvider
+### G6. [x] 無殘留 Python True/False/None — 全部通過
+### G7. [x] 無 ||| (triple pipe) 語法 — 全部通過
+### G8. [x] 所有 config interface 都有 export — CacheEntry 為內部介面不需 export
 
-## Phase 7: 補強 Infrastructure
-- [x] 建立 contracts/openapi/ (api-v1.yaml)
-- [x] 建立 contracts/events/ (events.yaml)
-- [x] 建立 migrations/sqlite/ (001_initial_schema.sql)
-- [x] 建立 migrations/postgres/ (001_initial_schema.sql with pgvector)
-- [x] 補強 infra/docker-compose/env.example 和 docker-compose.local.yaml
-- [x] 補強 infra/helm/ Helm chart (templates/: _helpers, serviceaccount, configmap, deployment, service, ingress, secrets, hpa, pdb, servicemonitor, migration-job, workers)
+---
 
-## Phase 8: 補強 Runtime 層
-- [x] 建立 runtimes/cloudflare/src/ (bootstrap.ts, index.ts)
-- [x] 建立 runtimes/node/src/ (bootstrap.ts, index.ts)
-- [x] 建立 runtimes/docker/ (index.ts with env mapping + shutdown handlers)
-- [x] 建立 runtimes/kubernetes/ (index.ts with K8s probes)
-- [x] 更新 runtimes/index.ts barrel re-export
+## 🔴 SECTION H: GitHub 推送 & PR
 
-## Phase 9: 補強 Docs 與 Tools
-- [x] 建立 docs/ 各子目錄
-- [x] 補強 tools/validators/
-- [x] 補強 tools/generators/
-
-## Phase 10: 清理與提交
-- [x] 清理 legacy 空白包（packages/mycodexvantaos-*）
-- [x] 移除或標記 memory-dream.yaml 為 non-MVP
-- [x] 更新 PLATFORM_ARCHITECTURE.md
-- [x] 更新 CI
-- [x] Git commit + Push + PR
+### H1. [ ] 建立 feature branch
+### H2. [ ] Commit 所有變更
+### H3. [ ] Push 到 GitHub
+### H4. [ ] 建立 Pull Request

@@ -1,3 +1,5 @@
+import { OpenAIEmbeddingProvider } from './openai-embedding-provider-cb';
+import type { OpenAIEmbeddingConfig } from './openai-embedding-provider-cb';
 /**
  * 🔒 MyCodeXvantaOS - OpenAI Embedding Provider Exports
  *

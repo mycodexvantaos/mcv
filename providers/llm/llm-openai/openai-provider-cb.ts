@@ -7,8 +7,9 @@
  * @version 1.0.0
  */
 
-import { CapabilityBase } from '../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../packages/capabilities/types';
+import { CapabilityBase } from '../../../packages/capabilities/base';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 /**
  * Configuration for OpenAI LLM Provider
@@ -117,9 +118,9 @@ export class OpenAILLMProvider extends CapabilityBase<OpenAIConfig> {
   private timeout: number;
   private maxTokens: number;
   private temperature: number;
-  private stream: boolean;
+  private enableStreaming: boolean;
   private retries: number;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
   
   private isOpenAIAvailable: boolean = false;
   private apiKey: string | undefined;
@@ -140,9 +141,8 @@ export class OpenAILLMProvider extends CapabilityBase<OpenAIConfig> {
     this.timeout = cfg.timeout || 30000;
     this.maxTokens = cfg.maxTokens || 2048;
     this.temperature = cfg.temperature ?? 0.7;
-    this.stream = cfg.stream ?? true;
+    this.enableStreaming = cfg.stream ?? true;
     this.retries = cfg.retries || 3;
-    this.fallbackProviderId = cfg.fallbackProviderId || 'llm-native';
   }
 
   /**
@@ -213,7 +213,6 @@ export class OpenAILLMProvider extends CapabilityBase<OpenAIConfig> {
         checkTime: new Date().toISOString(),
         metrics: {
           lastError: 'API key not provided',
-          hasFallback: !!this.fallbackProviderId,
         },
       };
     }
@@ -227,7 +226,6 @@ export class OpenAILLMProvider extends CapabilityBase<OpenAIConfig> {
         checkTime: new Date().toISOString(),
         metrics: {
           lastError: 'OpenAI API not available',
-          hasFallback: !!this.fallbackProviderId,
         },
       };
     }
@@ -236,12 +234,7 @@ export class OpenAILLMProvider extends CapabilityBase<OpenAIConfig> {
       isHealthy: true,
       status: ProviderHealthStatus.HEALTHY,
       checkTime: new Date().toISOString(),
-      metrics: {
-        model: this.model,
-        baseURL: this.baseURL,
-        maxTokens: this.maxTokens,
-        hasFallback: !!this.fallbackProviderId,
-      },
+      metrics: {},
     };
   }
 
@@ -328,7 +321,7 @@ export class OpenAILLMProvider extends CapabilityBase<OpenAIConfig> {
         prompt: prompt,
         max_tokens: options.maxTokens ?? this.maxTokens,
         temperature: options.temperature ?? this.temperature,
-        stream: options.stream ?? this.stream,
+        stream: options.stream ?? this.enableStreaming,
       }),
       signal: AbortSignal.timeout(this.timeout),
     });

@@ -8,7 +8,8 @@
  */
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../../packages/capabilities/types';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 /**
  * Configuration for Google Audio Provider
@@ -133,7 +134,7 @@ export class GoogleAudioProvider extends CapabilityBase<GoogleAudioConfig> {
   private languageCode: string;
   private timeout: number;
   private retries: number;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
 
   constructor(config: ProviderConfig<GoogleAudioConfig>) {
     super(config);
@@ -150,7 +151,7 @@ export class GoogleAudioProvider extends CapabilityBase<GoogleAudioConfig> {
    */
   protected async doInitialize(): Promise<void> {
     this.log('info', 'Google audio provider initialized');
-    this.log('debug', `Project: ${this.projectId}, Language: ${this.languageCode}`);
+    this.log('info', `Project: ${this.projectId}, Language: ${this.languageCode}`);
   }
 
   /**
@@ -164,10 +165,7 @@ export class GoogleAudioProvider extends CapabilityBase<GoogleAudioConfig> {
         isHealthy,
         status: isHealthy ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.UNHEALTHY,
         checkTime: new Date().toISOString(),
-        metrics: {
-          projectId: this.projectId,
-          languageCode: this.languageCode,
-        },
+        metrics: {},
       };
     } catch (error) {
       return {

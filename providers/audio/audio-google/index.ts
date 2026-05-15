@@ -1,41 +1,29 @@
 /**
- * 🔒 MyCodeXvantaOS - Google Audio Provider
- *
- * Google audio integration with native fallback.
- *
- * @module providers/audio/audio-google
- * @version 1.0.0
+ * Factory function for GoogleAudioProvider
  */
+
+import { GoogleAudioProvider } from './google-audio-provider-cb';
+import type { GoogleAudioConfig } from './google-audio-provider-cb';
+import { RuntimeMode, ProviderMode } from '../../../packages/capabilities/types';
+import type { ProviderConfig } from '../../../packages/capabilities/types';
 
 export { GoogleAudioProvider } from './google-audio-provider-cb';
-export type { GoogleAudioConfig, TTSOptions, TTSResult, STTOptions, STTResult } from './google-audio-provider-cb';
+export type { GoogleAudioConfig } from './google-audio-provider-cb';
 
 /**
- * Factory function to create Google audio provider
+ * Create a GoogleAudioProvider instance with the given configuration.
  */
-export function createGoogleAudioProvider(config: import('../../../packages/capabilities/types').ProviderConfig<any> = {}): GoogleAudioProvider {
-  return new GoogleAudioProvider({
-    id: config.id || 'google-audio',
-    name: config.name || 'Google Audio',
-    mode: config.mode || 'hybrid',
-    providerMode: config.providerMode || 'external',
-    config: config.config || {},
+export function createGoogleAudioProvider(config: Partial<ProviderConfig<GoogleAudioConfig>> = {}): GoogleAudioProvider {
+  const providerConfig: ProviderConfig<GoogleAudioConfig> = {
+    id: config.id || 'google-audio-provider-cb',
+    name: config.name || 'GoogleAudioProvider',
+    mode: config.mode || RuntimeMode.HYBRID,
+    providerMode: config.providerMode || ProviderMode.EXTERNAL,
+    config: (config.config || {}) as GoogleAudioConfig,
     fallback: config.fallback,
-  });
+  };
+
+  return new GoogleAudioProvider(providerConfig);
 }
 
-/**
- * Initialize Google audio provider
- */
-export async function initializeGoogleAudioProvider(
-  config: import('../../../packages/capabilities/types').ProviderConfig<any> = {}
-): Promise<GoogleAudioProvider> {
-  const provider = createGoogleAudioProvider(config);
-  await provider.initialize();
-  return provider;
-}
-
-/**
- * Default export
- */
-export { GoogleAudioProvider as default };
+export default createGoogleAudioProvider;

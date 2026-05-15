@@ -8,7 +8,8 @@
  */
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../../packages/capabilities/types';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 /**
  * Configuration for OpenAI Embedding Provider
@@ -81,7 +82,7 @@ export class OpenAIEmbeddingProvider extends CapabilityBase<OpenAIEmbeddingConfi
   private dimensions: number;
   private timeout: number;
   private retries: number;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
   
   private isOpenAIAvailable: boolean = false;
   private apiKey: string | undefined;
@@ -101,7 +102,6 @@ export class OpenAIEmbeddingProvider extends CapabilityBase<OpenAIEmbeddingConfi
     this.dimensions = cfg.dimensions || 1536;
     this.timeout = cfg.timeout || 30000;
     this.retries = cfg.retries || 3;
-    this.fallbackProviderId = cfg.fallbackProviderId || 'hybrid/embedding';
   }
 
   /**
@@ -162,7 +162,6 @@ export class OpenAIEmbeddingProvider extends CapabilityBase<OpenAIEmbeddingConfi
         checkTime: new Date().toISOString(),
         metrics: {
           lastError: 'API key not provided',
-          hasFallback: !!this.fallbackProviderId,
         },
       };
     }
@@ -176,7 +175,6 @@ export class OpenAIEmbeddingProvider extends CapabilityBase<OpenAIEmbeddingConfi
         checkTime: new Date().toISOString(),
         metrics: {
           lastError: 'OpenAI API not available',
-          hasFallback: !!this.fallbackProviderId,
         },
       };
     }
@@ -185,11 +183,7 @@ export class OpenAIEmbeddingProvider extends CapabilityBase<OpenAIEmbeddingConfi
       isHealthy: true,
       status: ProviderHealthStatus.HEALTHY,
       checkTime: new Date().toISOString(),
-      metrics: {
-        model: this.model,
-        dimensions: this.dimensions,
-        hasFallback: !!this.fallbackProviderId,
-      },
+      metrics: {},
     };
   }
 

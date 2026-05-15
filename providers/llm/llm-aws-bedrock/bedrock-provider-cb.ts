@@ -8,7 +8,8 @@
  */
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../../packages/capabilities/types';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 /**
  * Configuration for AWS Bedrock Provider
@@ -140,7 +141,7 @@ export class BedrockLLMProvider extends CapabilityBase<BedrockConfig> {
   private retries: number;
   private maxTokens: number;
   private temperature: number;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
 
   constructor(config: ProviderConfig<BedrockConfig>) {
     super(config);
@@ -160,7 +161,7 @@ export class BedrockLLMProvider extends CapabilityBase<BedrockConfig> {
    */
   protected async doInitialize(): Promise<void> {
     this.log('info', 'AWS Bedrock LLM provider initialized');
-    this.log('debug', `Region: ${this.region}, Model: ${this.modelId}`);
+    this.log('info', `Region: ${this.region}, Model: ${this.modelId}`);
   }
 
   /**
@@ -186,10 +187,7 @@ export class BedrockLLMProvider extends CapabilityBase<BedrockConfig> {
         isHealthy,
         status: isHealthy ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.UNHEALTHY,
         checkTime: new Date().toISOString(),
-        metrics: {
-          region: this.region,
-          modelId: this.modelId,
-        },
+        metrics: {},
       };
     } catch (error) {
       return {

@@ -1,41 +1,29 @@
 /**
- * 🔒 MyCodeXvantaOS - HuggingFace LLM Provider
- *
- * HuggingFace LLM integration with native fallback.
- *
- * @module providers/llm/llm-huggingface
- * @version 1.0.0
+ * Factory function for HuggingFaceLLMProvider
  */
+
+import { HuggingFaceLLMProvider } from './huggingface-provider-cb';
+import type { HuggingFaceConfig } from './huggingface-provider-cb';
+import { RuntimeMode, ProviderMode } from '../../../packages/capabilities/types';
+import type { ProviderConfig } from '../../../packages/capabilities/types';
 
 export { HuggingFaceLLMProvider } from './huggingface-provider-cb';
-export type { HuggingFaceConfig, ChatMessage, ChatCompletionOptions, ChatCompletionResult, EmbeddingResult } from './huggingface-provider-cb';
+export type { HuggingFaceConfig } from './huggingface-provider-cb';
 
 /**
- * Factory function to create HuggingFace provider
+ * Create a HuggingFaceLLMProvider instance with the given configuration.
  */
-export function createHuggingFaceProvider(config: import('../../../packages/capabilities/types').ProviderConfig<any> = {}): HuggingFaceLLMProvider {
-  return new HuggingFaceLLMProvider({
-    id: config.id || 'huggingface-llm',
-    name: config.name || 'HuggingFace LLM',
-    mode: config.mode || 'hybrid',
-    providerMode: config.providerMode || 'external',
-    config: config.config || {},
+export function createHuggingFaceLLMProvider(config: Partial<ProviderConfig<HuggingFaceConfig>> = {}): HuggingFaceLLMProvider {
+  const providerConfig: ProviderConfig<HuggingFaceConfig> = {
+    id: config.id || 'huggingface-provider-cb',
+    name: config.name || 'HuggingFaceLLMProvider',
+    mode: config.mode || RuntimeMode.HYBRID,
+    providerMode: config.providerMode || ProviderMode.EXTERNAL,
+    config: (config.config || {}) as HuggingFaceConfig,
     fallback: config.fallback,
-  });
+  };
+
+  return new HuggingFaceLLMProvider(providerConfig);
 }
 
-/**
- * Initialize HuggingFace provider
- */
-export async function initializeHuggingFaceProvider(
-  config: import('../../../packages/capabilities/types').ProviderConfig<any> = {}
-): Promise<HuggingFaceLLMProvider> {
-  const provider = createHuggingFaceProvider(config);
-  await provider.initialize();
-  return provider;
-}
-
-/**
- * Default export
- */
-export { HuggingFaceLLMProvider as default };
+export default createHuggingFaceLLMProvider;

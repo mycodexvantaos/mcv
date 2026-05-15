@@ -8,7 +8,8 @@
  */
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../../packages/capabilities/types';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 /**
  * Configuration for Workers AI Provider
@@ -129,7 +130,7 @@ export class WorkersAIProvider extends CapabilityBase<WorkersAIConfig> {
   private model: string;
   private timeout: number;
   private retries: number;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
   
   private isWorkersAIAvailable: boolean = false;
   private accountId: string | undefined;
@@ -149,7 +150,6 @@ export class WorkersAIProvider extends CapabilityBase<WorkersAIConfig> {
     this.model = cfg.model || '@cf/meta/llama-3.3-70b-instruct';
     this.timeout = cfg.timeout || 30000;
     this.retries = cfg.retries || 3;
-    this.fallbackProviderId = cfg.fallbackProviderId || 'hybrid/llm';
     this.baseURL = cfg.baseURL || `https://api.cloudflare.com/client/v4/accounts/${this.accountId}/ai/run`;
   }
 
@@ -213,7 +213,6 @@ export class WorkersAIProvider extends CapabilityBase<WorkersAIConfig> {
         checkTime: new Date().toISOString(),
         metrics: {
           lastError: 'Credentials not provided',
-          hasFallback: !!this.fallbackProviderId,
         },
       };
     }
@@ -227,7 +226,6 @@ export class WorkersAIProvider extends CapabilityBase<WorkersAIConfig> {
         checkTime: new Date().toISOString(),
         metrics: {
           lastError: 'Workers AI API not available',
-          hasFallback: !!this.fallbackProviderId,
         },
       };
     }
@@ -236,11 +234,7 @@ export class WorkersAIProvider extends CapabilityBase<WorkersAIConfig> {
       isHealthy: true,
       status: ProviderHealthStatus.HEALTHY,
       checkTime: new Date().toISOString(),
-      metrics: {
-        model: this.model,
-        accountId: this.accountId,
-        hasFallback: !!this.fallbackProviderId,
-      },
+      metrics: {},
     };
   }
 

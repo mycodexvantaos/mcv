@@ -17,9 +17,9 @@
  *
  * // 1. 定義你的 Provider
  * class MyVectorStore extends CapabilityBase<VectorStoreConfig> {
- *   protected async doInitialize(): Promise<void> { /* ... */ }
- *   protected async doHealthCheck(): Promise<ProviderHealthCheckResult> { /* ... */ }
- *   protected async doShutdown(): Promise<void> { /* ... */ }
+ *   protected async doInitialize(): Promise<void> { ... }
+ *   protected async doHealthCheck(): Promise<ProviderHealthCheckResult> { ... }
+ *   protected async doShutdown(): Promise<void> { ... }
  * }
  *
  * // 2. 創建 Factory

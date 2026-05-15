@@ -8,7 +8,8 @@
  */
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../../packages/capabilities/types';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 /**
  * Configuration for HuggingFace Provider
@@ -133,7 +134,7 @@ export class HuggingFaceLLMProvider extends CapabilityBase<HuggingFaceConfig> {
   private retries: number;
   private maxTokens: number;
   private temperature: number;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
 
   constructor(config: ProviderConfig<HuggingFaceConfig>) {
     super(config);
@@ -152,7 +153,7 @@ export class HuggingFaceLLMProvider extends CapabilityBase<HuggingFaceConfig> {
    */
   protected async doInitialize(): Promise<void> {
     this.log('info', 'HuggingFace LLM provider initialized');
-    this.log('debug', `Model: ${this.modelId}`);
+    this.log('info', `Model: ${this.modelId}`);
   }
 
   /**
@@ -166,10 +167,7 @@ export class HuggingFaceLLMProvider extends CapabilityBase<HuggingFaceConfig> {
         isHealthy,
         status: isHealthy ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.UNHEALTHY,
         checkTime: new Date().toISOString(),
-        metrics: {
-          modelId: this.modelId,
-          modelUrl: this.modelUrl,
-        },
+        metrics: {},
       };
     } catch (error) {
       return {

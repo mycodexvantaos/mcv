@@ -1,41 +1,29 @@
 /**
- * 🔒 MyCodeXvantaOS - AWS S3 Storage Provider
- *
- * AWS S3 storage integration with native fallback.
- *
- * @module providers/storage/storage-s3
- * @version 1.0.0
+ * Factory function for S3StorageProvider
  */
+
+import { S3StorageProvider } from './s3-storage-provider-cb';
+import type { S3StorageConfig } from './s3-storage-provider-cb';
+import { RuntimeMode, ProviderMode } from '../../../packages/capabilities/types';
+import type { ProviderConfig } from '../../../packages/capabilities/types';
 
 export { S3StorageProvider } from './s3-storage-provider-cb';
-export type { S3StorageConfig, FileMetadata, UploadResult, DownloadResult, ListResult, DeleteResult } from './s3-storage-provider-cb';
+export type { S3StorageConfig } from './s3-storage-provider-cb';
 
 /**
- * Factory function to create S3 storage provider
+ * Create a S3StorageProvider instance with the given configuration.
  */
-export function createS3StorageProvider(config: import('../../../packages/capabilities/types').ProviderConfig<any> = {}): S3StorageProvider {
-  return new S3StorageProvider({
-    id: config.id || 's3-storage',
-    name: config.name || 'AWS S3 Storage',
-    mode: config.mode || 'hybrid',
-    providerMode: config.providerMode || 'external',
-    config: config.config || {},
+export function createS3StorageProvider(config: Partial<ProviderConfig<S3StorageConfig>> = {}): S3StorageProvider {
+  const providerConfig: ProviderConfig<S3StorageConfig> = {
+    id: config.id || 's3-storage-provider-cb',
+    name: config.name || 'S3StorageProvider',
+    mode: config.mode || RuntimeMode.HYBRID,
+    providerMode: config.providerMode || ProviderMode.EXTERNAL,
+    config: (config.config || {}) as S3StorageConfig,
     fallback: config.fallback,
-  });
+  };
+
+  return new S3StorageProvider(providerConfig);
 }
 
-/**
- * Initialize S3 storage provider
- */
-export async function initializeS3StorageProvider(
-  config: import('../../../packages/capabilities/types').ProviderConfig<any> = {}
-): Promise<S3StorageProvider> {
-  const provider = createS3StorageProvider(config);
-  await provider.initialize();
-  return provider;
-}
-
-/**
- * Default export
- */
-export { S3StorageProvider as default };
+export default createS3StorageProvider;

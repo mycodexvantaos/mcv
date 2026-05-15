@@ -6,17 +6,69 @@
  * Port: @mycodexvantaos/ports/model-provider
  */
 
-import type {
-  IChatModelPort,
-  IEmbeddingModelPort,
-  ModelRequest,
-  ModelResponse,
-  ModelChunk,
-  ModelUsage,
-  EmbedRequest,
-  EmbedResponse,
-  ModelHealthStatus,
-} from '../../ports/model-provider';
+// ── Model Port Interfaces (local definitions) ──────────────────────────
+
+export interface ModelRequest {
+  model?: string;
+  messages: Array<{ role: string; content: string }>;
+  temperature?: number;
+  maxTokens?: number;
+  topP?: number;
+  stopSequences?: string[];
+}
+
+export interface ModelUsage {
+  promptTokens: number;
+  completionTokens: number;
+  totalTokens: number;
+}
+
+export interface ModelResponse {
+  id: string;
+  content: string;
+  model: string;
+  usage: ModelUsage;
+  finishReason: string;
+  created: string;
+}
+
+export interface ModelChunk {
+  id?: string;
+  content: string;
+  model?: string;
+  finishReason?: string;
+  usage?: ModelUsage;
+}
+
+export interface EmbedRequest {
+  input: string | string[];
+  model?: string;
+  dimensions?: number;
+}
+
+export interface EmbedResponse {
+  model: string;
+  embeddings: number[][];
+  usage: { totalTokens: number };
+}
+
+export interface ModelHealthStatus {
+  healthy: boolean;
+  latencyMs: number;
+  lastChecked: string;
+  error?: string;
+}
+
+export interface IChatModelPort {
+  invoke(request: ModelRequest): Promise<ModelResponse>;
+  invokeStream(request: ModelRequest): AsyncIterable<ModelChunk>;
+  healthCheck(): Promise<ModelHealthStatus>;
+}
+
+export interface IEmbeddingModelPort {
+  embed(input: EmbedRequest): Promise<EmbedResponse>;
+  healthCheck(): Promise<ModelHealthStatus>;
+}
 
 // ── OpenAI Configuration ───────────────────────────────────────────────
 

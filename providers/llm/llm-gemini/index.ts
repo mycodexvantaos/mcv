@@ -1,59 +1,31 @@
 /**
- * ✨ MyCodeXvantaOS - Gemini LLM Provider
- *
- * Google Gemini API integration with native fallback.
- * 
- * @module providers/llm/llm-gemini
- * @version 1.0.0
+ * Factory function for GeminiLLMProvider
  */
 
-export { GeminiLLMProvider, default } from './gemini-provider-cb';
-export type { 
-  GeminiConfig, 
-  Content, 
-  ContentPart, 
-  LLMRequest as GeminiLLMRequest, 
-  LLMResponse as GeminiLLMResponse 
-} from './gemini-provider-cb';
+import { GeminiLLMProvider } from './gemini-provider-cb';
+import type { GeminiConfig } from './gemini-provider-cb';
+import { RuntimeMode, ProviderMode } from '../../../packages/capabilities/types';
+import type { ProviderConfig } from '../../../packages/capabilities/types';
+
+export { GeminiLLMProvider } from './gemini-provider-cb';
+export type { GeminiConfig } from './gemini-provider-cb';
 
 /**
- * Create a Gemini LLM provider instance
+ * Create a GeminiLLMProvider instance with the given configuration.
  */
-export function createGeminiProvider(
-  id: string = 'gemini-default',
-  config: GeminiConfig = {}
-): GeminiLLMProvider {
-  const ProviderConfig = {
-    config,
-    mode: 'external' as const,
-    providerId: id,
+export function createGeminiLLMProvider(config: Partial<ProviderConfig<GeminiConfig>> = {}): GeminiLLMProvider {
+  const id = config.id || 'gemini-provider-cb';
+  const name = config.name || 'GeminiLLMProvider';
+  const providerConfig: ProviderConfig<GeminiConfig> = {
+    id,
+    name,
+    mode: config.mode || RuntimeMode.HYBRID,
+    providerMode: config.providerMode || ProviderMode.EXTERNAL,
+    config: (config.config || {}) as GeminiConfig,
+    fallback: config.fallback,
   };
 
-  return new GeminiLLMProvider(
-    id,
-    'Gemini LLM Provider',
-    ProviderConfig,
-    {
-      enabled: true,
-      retryCount: 3,
-    }
-  );
+  return new GeminiLLMProvider(id, name, providerConfig);
 }
 
-/**
- * Initialize Gemini provider with health check
- */
-export async function initializeGeminiProvider(
-  id: string = 'gemini-default',
-  config: GeminiConfig = {}
-): Promise<GeminiLLMProvider> {
-  const provider = createGeminiProvider(id, config);
-  await provider.initialize();
-  return provider;
-}
-
-export default {
-  GeminiLLMProvider,
-  createGeminiProvider,
-  initializeGeminiProvider,
-};
+export default createGeminiLLMProvider;

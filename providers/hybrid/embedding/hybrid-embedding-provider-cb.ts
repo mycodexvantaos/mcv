@@ -7,10 +7,8 @@
 import {
   CapabilityBase,
 } from '../../../packages/capabilities/base';
-import type {
-  ProviderConfig, FallbackConfig,
-  ProviderHealthCheckResult, ProviderHealthStatus
-} from '../../../packages/capabilities/types';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, FallbackConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 export interface HybirdEmbeddingConfig {
   externalApiKey?: string;
@@ -58,7 +56,7 @@ export class HybridEmbeddingProvider extends CapabilityBase<HybirdEmbeddingConfi
         isHealthy: this.enableNativeFallback,
         status: this.enableNativeFallback ? ProviderHealthStatus.DEGRADED : ProviderHealthStatus.UNHEALTHY,
         checkTime: new Date().toISOString(),
-        metrics: { lastError: 'External API key missing, native fallback available' },
+        metrics: {},
       };
     }
     try {
@@ -78,7 +76,7 @@ export class HybridEmbeddingProvider extends CapabilityBase<HybirdEmbeddingConfi
         isHealthy: this.enableNativeFallback,
         status: this.enableNativeFallback ? ProviderHealthStatus.DEGRADED : ProviderHealthStatus.UNHEALTHY,
         checkTime: new Date().toISOString(),
-        metrics: { lastError: String(e) },
+        metrics: {},
       };
     }
   }
