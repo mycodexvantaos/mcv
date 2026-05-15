@@ -1,0 +1,28 @@
+{
+  "services": [
+    {
+      "name": "agent-chat",
+      "category": "agent",
+      "display_name": "Agent Chat Service",
+      "description": "AI-powered conversational interface with knowledge-grounded responses"
+    },
+    {
+      "name": "memory-store",
+      "category": "storage",
+      "display_name": "Memory Store Service",
+      "description": "Persistent memory storage with temporal indexing and entity linking"
+    },
+    {
+      "name": "knowledge-pipeline",
+      "category": "knowledge",
+      "display_name": "Knowledge Pipeline Service",
+      "description": "Document ingestion, chunking, and embedding pipeline"
+    },
+    {
+      "name": "memory-dream",
+      "category": "knowledge",
+      "display_name": "Memory Dream Service",
+      "description": "Autonomous memory reinforcement and synthesis engine"
+    }
+  ]
+}

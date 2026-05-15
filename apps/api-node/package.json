@@ -16,7 +16,8 @@
     "@mycodexvantaos/service-service-catalog": "workspace:*",
     "@mycodexvantaos/service-resource-registry": "workspace:*",
     "@mycodexvantaos/service-audit-log": "workspace:*",
-    "@mycodexvantaos/service-knowledge-trace": "workspace:*"
+    "@mycodexvantaos/service-knowledge-trace": "workspace:*",
+    "@mycodexvantaos/service-memory-dream": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.4.0",

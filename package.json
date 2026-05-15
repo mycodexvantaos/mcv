@@ -22,7 +22,22 @@
     "validate": "npm run typecheck",
     "validate:json": "echo \"JSON validation passed\" && exit 0",
     "build:packages": "echo \"No additional packages to build\" && exit 0",
-    "build:modules": "echo \"No additional modules to build\" && exit 0"
+    "build:modules": "echo \"No additional modules to build\" && exit 0",
+    "contracts:validate": "node --import tsx packages/mycodexvantaos-contracts-sdk/src/cli.ts validate",
+    "schemas:validate": "echo \"Schema validation via contracts:validate\"",
+    "service-catalog:check": "node --import tsx -e \"const {listServices} = require(\"@mycodexvantaos/service-service-catalog\"); console.log(JSON.stringify(listServices(), null, 2))\"",
+    "resource-model:check": "node --import tsx -e \"const {listResourceKinds} = require(\"@mycodexvantaos/service-resource-registry\"); console.log(JSON.stringify(listResourceKinds(), null, 2))\"",
+    "policy:check": "echo \"Policy validation not yet implemented\"",
+    "events:check": "echo \"Event validation not yet implemented\"",
+    "migration:verify:d1": "node --import tsx tools/migrations/verify-d1-migrations.ts",
+    "migration:verify:sqlite": "node --import tsx tools/migrations/verify-sqlite-migrations.ts",
+    "python:test": "cd python && .venv/bin/python -m pytest tests/ -v",
+    "python:lint": "cd python && .venv/bin/ruff check packages/ apps/",
+    "python:typecheck": "cd python && .venv/bin/mypy packages/ --ignore-missing-imports",
+    "dream:dry-run": "cd python/apps/dream-worker && ../../.venv/bin/python main.py run --mode dry-run",
+    "api:start": "cd apps/api-node && npx tsx index.ts",
+    "test:services": "node --import tsx --test services/mycodexvantaos-service-service-catalog/src/__tests__/service-catalog.test.ts services/mycodexvantaos-service-resource-registry/src/__tests__/resource-registry.test.ts services/mycodexvantaos-service-audit-log/src/__tests__/audit-log.test.ts services/mycodexvantaos-service-knowledge-trace/src/__tests__/knowledge-trace.test.ts services/mycodexvantaos-service-memory-dream/src/__tests__/memory-dream.test.ts",
+    "test:contracts": "node --import tsx --test packages/mycodexvantaos-contracts-sdk/src/__tests__/contracts-sdk.test.ts"
   },
   "dependencies": {
     "@genkit-ai/google-genai": "^1.28.0",

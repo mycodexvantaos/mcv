@@ -1,0 +1,6 @@
+{
+  "query": "What is MyCodeXvantaOS?",
+  "collectionIds": [],
+  "topK": 5,
+  "evidenceLevel": "knowledge-assisted"
+}

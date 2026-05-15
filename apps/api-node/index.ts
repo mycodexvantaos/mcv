@@ -52,6 +52,13 @@ import {
   type SearchResult,
 } from '@mycodexvantaos/service-knowledge-trace';
 
+import {
+  createDreamRunSync,
+  getDreamRun as getDreamRunRecord,
+  listDreamRuns as listDreamRunRecords,
+  getDreamStats,
+} from '@mycodexvantaos/service-memory-dream';
+
 // ─── Knowledge trace (delegated to service-knowledge-trace) ──────────
 
 // ─── Dream run models (in-memory MVP) ─────────────────────────────────────────
@@ -340,26 +347,14 @@ addRoute('POST', '/v1/dream/run', async (req, res) => {
     sendError(res, 400, 'Invalid JSON body');
     return;
   }
-  const dreamReq = parsed as { mode?: 'dry-run' | 'proposal' | 'execute' };
+  const dreamReq = parsed as { mode?: 'dry-run' | 'proposal' | 'execute'; memory_items?: unknown[] };
   const mode = dreamReq.mode ?? 'dry-run';
-  const runId = generateId('dream');
 
-  // MVP: Create a dream run record (actual Python execution to be integrated)
-  const dreamRun: DreamRun = {
-    runId,
+  // Use the memory-dream service (sync JS engine for MVP, with Python fallback)
+  const result = createDreamRunSync({
     mode,
-    status: 'completed',
-    startedAt: new Date().toISOString(),
-    completedAt: new Date().toISOString(),
-    actionsCount: 0,
-    report: {
-      duplicates: 0,
-      conflicts: 0,
-      orphans: 0,
-      actions: 0,
-    },
-  };
-  dreamRuns.set(runId, dreamRun);
+    memory_items: dreamReq.memory_items as import('@mycodexvantaos/service-memory-dream').MemoryItem[] | undefined,
+  });
 
   // Record audit event for dream run
   recordEvent({
@@ -367,40 +362,45 @@ addRoute('POST', '/v1/dream/run', async (req, res) => {
     category: 'automation',
     severity: 'info',
     actor: { type: 'system', id: 'dream-worker' },
-    resource: { type: 'dream-run', id: runId },
+    resource: { type: 'dream-run', id: result.run.runId },
     context: { tenantId: 'system', workspaceId: null },
-    data: { mode, runId },
+    data: { mode, runId: result.run.runId },
   });
 
   sendJson(res, 202, {
-    runId,
-    mode,
-    status: dreamRun.status,
-    report: dreamRun.report,
+    runId: result.run.runId,
+    mode: result.run.mode,
+    status: result.run.status,
+    report: result.run.report,
   });
 });
 
 addRoute('GET', '/v1/dream/runs/:id', async (_req, res, params) => {
-  const run = dreamRuns.get(params.id);
-  if (!run) {
+  const result = getDreamRunRecord(params.id);
+  if (!result) {
     sendError(res, 404, `Dream run not found: ${params.id}`);
     return;
   }
-  sendJson(res, 200, { run });
+  sendJson(res, 200, { run: result.run });
 });
 
 addRoute('GET', '/v1/dream/runs/:id/actions', async (_req, res, params) => {
-  const run = dreamRuns.get(params.id);
-  if (!run) {
+  const result = getDreamRunRecord(params.id);
+  if (!result) {
     sendError(res, 404, `Dream run not found: ${params.id}`);
     return;
   }
-  // MVP: Return empty actions list
+  const actions = result.run.report?.actions ?? [];
   sendJson(res, 200, {
     runId: params.id,
-    actions: [],
-    total: 0,
+    actions,
+    total: actions.length,
   });
+});
+
+addRoute('GET', '/v1/dream/stats', async (_req, res) => {
+  const stats = getDreamStats();
+  sendJson(res, 200, stats);
 });
 
 // ─── Root ─────────────────────────────────────────────────────────────────────
@@ -437,6 +437,7 @@ addRoute('GET', '/', async (_req, res) => {
       'POST /v1/dream/run',
       'GET  /v1/dream/runs/:id',
       'GET  /v1/dream/runs/:id/actions',
+      'GET  /v1/dream/stats',
     ],
   });
 });

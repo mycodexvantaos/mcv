@@ -179,6 +179,9 @@ importers:
       '@mycodexvantaos/service-knowledge-trace':
         specifier: workspace:*
         version: link:../../services/mycodexvantaos-service-knowledge-trace
+      '@mycodexvantaos/service-memory-dream':
+        specifier: workspace:*
+        version: link:../../services/mycodexvantaos-service-memory-dream
       '@mycodexvantaos/service-resource-registry':
         specifier: workspace:*
         version: link:../../services/mycodexvantaos-service-resource-registry
@@ -2080,12 +2083,16 @@ importers:
 
   services/mycodexvantaos-service-memory-dream:
     dependencies:
-      '@mycodexvantaos/core-kernel':
+      '@mycodexvantaos/contracts-sdk':
         specifier: workspace:*
-        version: link:../../packages/core-kernel
-      '@mycodexvantaos/memory-model':
-        specifier: workspace:*
-        version: link:../../packages/mycodexvantaos-memory-model
+        version: link:../../packages/mycodexvantaos-contracts-sdk
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.40
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
 
   services/mycodexvantaos-service-memory-store:
     dependencies:

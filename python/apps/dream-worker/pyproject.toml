@@ -11,10 +11,12 @@ authors = [
 dependencies = [
     "pydantic>=2.9.0",
     "pydantic-settings>=2.5.0",
+    "mycodexvantaos-memory-dream",
 ]
 
 [project.scripts]
-dream-worker = "main:cli"
+dream = "main:cli"
+dream-worker = "main:main"
 
 [build-system]
 requires = ["hatchling"]

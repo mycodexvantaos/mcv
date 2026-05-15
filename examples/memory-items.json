@@ -1,0 +1,47 @@
+[
+  {
+    "memory_id": "mem_001",
+    "content": "System deployed version 2.1.0 at 2024-01-15",
+    "tags": ["system", "deployment"],
+    "related_entities": [],
+    "temporal_expressions": ["2024-01-15"],
+    "memory_type": "observation"
+  },
+  {
+    "memory_id": "mem_002",
+    "content": "System deployed version 2.1.0 at 2024-01-15",
+    "tags": ["system", "deployment"],
+    "related_entities": [],
+    "temporal_expressions": ["2024-01-15"],
+    "memory_type": "observation"
+  },
+  {
+    "memory_id": "mem_003",
+    "content": "Agent chat service is operational",
+    "tags": ["agent", "status"],
+    "related_entities": ["urn:mycodexvantaos:entity:agent-chat-001"],
+    "memory_type": "fact"
+  },
+  {
+    "memory_id": "mem_004",
+    "content": "Decision to use TypeScript for control plane",
+    "tags": ["architecture", "decision"],
+    "related_entities": [],
+    "memory_type": "decision"
+  },
+  {
+    "memory_id": "mem_005",
+    "content": "System is healthy",
+    "tags": ["system", "status"],
+    "related_entities": [],
+    "memory_type": "observation",
+    "conflicts_with": ["mem_006"]
+  },
+  {
+    "memory_id": "mem_006",
+    "content": "System is experiencing issues",
+    "tags": ["system", "status"],
+    "related_entities": [],
+    "memory_type": "observation"
+  }
+]
