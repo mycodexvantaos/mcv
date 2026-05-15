@@ -15,21 +15,21 @@ See [PLATFORM_ARCHITECTURE.md](../PLATFORM_ARCHITECTURE.md) for the complete arc
 
 ## Key Files
 
-| Category | Path |
-|---|---|
-| Constitutional Models | `contracts/*.yaml` |
-| Service Definitions | `contracts/service-definitions/*.yaml` |
-| JSON Schemas | `contracts/schemas/*.json` |
-| Core Models | `core/index.ts` |
-| Port Interfaces | `ports/index.ts` |
-| Cloudflare Adapters | `adapters/cloudflare/*.ts` |
-| Application Services | `application/*-service.ts` |
-| Runtime Adapters | `runtimes/*/adapter.ts` |
-| D1 Migration | `migrations/d1/001_initial_schema.sql` |
-| Wrangler Configs | `infra/cloudflare/workers/wrangler.*.toml` |
-| Docker Compose | `infra/docker-compose/docker-compose.yaml` |
-| Dockerfiles | `infra/docker/Dockerfile.*` |
-| Validation Tool | `tools/validate-contracts.ts` |
-| Generator Tool | `tools/generate-service.ts` |
-| Integrity Verifier | `tools/verify-integrity.ts` |
-| CI Pipeline | `.github/workflows/platform-constitution-ci.yml` |
+| Category              | Path                                             |
+| --------------------- | ------------------------------------------------ |
+| Constitutional Models | `contracts/*.yaml`                               |
+| Service Definitions   | `contracts/service-definitions/*.yaml`           |
+| JSON Schemas          | `contracts/schemas/*.json`                       |
+| Core Models           | `core/index.ts`                                  |
+| Port Interfaces       | `ports/index.ts`                                 |
+| Cloudflare Adapters   | `adapters/cloudflare/*.ts`                       |
+| Application Services  | `application/*-service.ts`                       |
+| Runtime Adapters      | `runtimes/*/adapter.ts`                          |
+| D1 Migration          | `migrations/d1/001_initial_schema.sql`           |
+| Wrangler Configs      | `infra/cloudflare/workers/wrangler.*.toml`       |
+| Docker Compose        | `infra/docker-compose/docker-compose.yaml`       |
+| Dockerfiles           | `infra/docker/Dockerfile.*`                      |
+| Validation Tool       | `tools/validate-contracts.ts`                    |
+| Generator Tool        | `tools/generate-service.ts`                      |
+| Integrity Verifier    | `tools/verify-integrity.ts`                      |
+| CI Pipeline           | `.github/workflows/platform-constitution-ci.yml` |

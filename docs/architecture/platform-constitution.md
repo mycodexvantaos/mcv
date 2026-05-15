@@ -4,7 +4,7 @@
 > **Date:** 2024-05-15  
 > **Status:** Active — Documented  
 > **Spectrum:** Spectrum-00 (Foundation) → Spectrum-07 (Agent Control)  
-> **Related Contracts:** `contracts/*.yaml`  
+> **Related Contracts:** `contracts/*.yaml`
 
 ---
 
@@ -25,6 +25,7 @@
 The MyCodeXvantaOS Platform Constitution is the foundational governance framework that defines how the platform operates, how services interact, and how resources are managed. It consists of **five constitutional models**, **eight service categories**, and an **eight-layer hexagonal architecture** that together create a governance-ready, AI-native service operating system.
 
 **Design Philosophy:**
+
 - **Constitutional:** The constitution is immutable — no service may bypass or override constitutional rules
 - **Contract-First:** All models are defined in human-readable YAML contracts under `contracts/`
 - **Governance-Ready:** Every action is auditable, every resource is governed, every policy is enforced
@@ -63,6 +64,7 @@ MyCodeXvantaOS is governed by five core constitutional models. These models form
 **Purpose:** Defines the AWS-like service catalog that organizes all platform capabilities into productized, searchable, enableable services.
 
 **Key Concepts:**
+
 - **8 Service Categories:** knowledge, agent, workspace, developer, security, storage, model, automation
 - **Service Definition Schema:** Every service has a standardized YAML definition
 - **Discovery Protocol:** Services can be discovered, queried, and enabled/disable
@@ -70,16 +72,16 @@ MyCodeXvantaOS is governed by five core constitutional models. These models form
 
 **Eight Service Categories:**
 
-| Category | Purpose | Icon | Services |
-|----------|---------|------|----------|
-| **Knowledge** | Knowledge ingestion, storage, search, trace | 🧠 | Knowledge Store, Knowledge Search, Knowledge Trace |
-| **Agent** | AI agent orchestration and interaction | 🤖 | Agent Chat, Agent Router, Agent Execution |
-| **Workspace** | Multi-tenant workspace isolation | 📁 | Workspace, Identity, Session Management |
-| **Developer** | Development tools and services | 👨‍💻 | Service Catalog, Resource Registry, Policy Engine |
-| **Security** | Security and governance | 🔒 | Audit Log, Policy Engine, Access Control |
-| **Storage** | Data storage and retrieval | 💾 | Storage, Vector Store, Database |
-| **Model** | AI model management | 🎯 | Model BYOK, Model Orchestration |
-| **Automation** | Automation and workflow engine | ⚙️ | Usage Meter, Memory Dream, Workflow Engine |
+| Category       | Purpose                                     | Icon | Services                                           |
+| -------------- | ------------------------------------------- | ---- | -------------------------------------------------- |
+| **Knowledge**  | Knowledge ingestion, storage, search, trace | 🧠   | Knowledge Store, Knowledge Search, Knowledge Trace |
+| **Agent**      | AI agent orchestration and interaction      | 🤖   | Agent Chat, Agent Router, Agent Execution          |
+| **Workspace**  | Multi-tenant workspace isolation            | 📁   | Workspace, Identity, Session Management            |
+| **Developer**  | Development tools and services              | 👨‍💻   | Service Catalog, Resource Registry, Policy Engine  |
+| **Security**   | Security and governance                     | 🔒   | Audit Log, Policy Engine, Access Control           |
+| **Storage**    | Data storage and retrieval                  | 💾   | Storage, Vector Store, Database                    |
+| **Model**      | AI model management                         | 🎯   | Model BYOK, Model Orchestration                    |
+| **Automation** | Automation and workflow engine              | ⚙️   | Usage Meter, Memory Dream, Workflow Engine         |
 
 **Service Definition Example:**
 
@@ -111,6 +113,7 @@ spec:
 ```
 
 **Resources:**
+
 - [Service Categories Reference](../../architecture/service-catalog/service-categories.md)
 - [Service Registration Guide](../../onboarding/service-creation-guide.md)
 
@@ -123,6 +126,7 @@ spec:
 **Purpose:** Defines the universal resource language for the platform. Every entity is a resource with standard schema, lifecycle state machine, and URN reference.
 
 **Key Concepts:**
+
 - **Universal Schema:** Every resource has `metadata / spec / status` structure
 - **URN Format:** Canonical reference `urn:mycodexvantaos:{category}:{kind}:{id}`
 - **Lifecycle State Machine:** Phases: Creating → Ready → Degraded → Terminating
@@ -147,12 +151,12 @@ spec:
         kind: { type: string }
         workspaceId: { type: string, format: uuidv4 }
     spec:
-      description: "Desired state — defined by resource kind"
+      description: 'Desired state — defined by resource kind'
     status:
       required: [phase, conditions]
       fields:
-        phase: { type: string }  # Creating, Ready, Degraded, Terminating
-        conditions: { type: "array<Condition>" }
+        phase: { type: string } # Creating, Ready, Degraded, Terminating
+        conditions: { type: 'array<Condition>' }
 ```
 
 **URN Format:**
@@ -174,6 +178,7 @@ urn:mycodexvantaos:workspace:project:770e8400-e29b-41d4-a716-446655440002
 ```
 
 **Resources:**
+
 - [Resource Model Reference](../../architecture/resource-model/README.md)
 - [Resource Kinds Reference](../../contracts/resource-kinds.md)
 
@@ -186,6 +191,7 @@ urn:mycodexvantaos:workspace:project:770e8400-e29b-41d4-a716-446655440002
 **Purpose:** Defines the permission framework, role hierarchy, and policy rules. Every access decision is evaluated against this model at runtime.
 
 **Key Concepts:**
+
 - **Subject-Action-Resource:** Core policy tuple: who can do what to which resource
 - **Role Hierarchy:** Platform Admin → Workspace Admin → Developer → Viewer
 - **Workspace-Scoped Isolation:** Fundamental security boundary
@@ -206,12 +212,12 @@ spec:
     role: workspace-admin
     workspace_scope: same-workspace
   action:
-    - "workspace:*"
-    - "knowledge:*"
-    - "agent:*"
-    - "model:*"
+    - 'workspace:*'
+    - 'knowledge:*'
+    - 'agent:*'
+    - 'model:*'
   resource:
-    kind: "*"
+    kind: '*'
     scope: workspace
   effect: allow
   condition:
@@ -220,12 +226,12 @@ spec:
 
 **Role Hierarchy:**
 
-| Role | Scope | Permissions | Constraints |
-|------|-------|-------------|-------------|
-| **Platform Admin** | Platform | Full platform control | Cannot delete platform config |
+| Role                | Scope     | Permissions            | Constraints                    |
+| ------------------- | --------- | ---------------------- | ------------------------------ |
+| **Platform Admin**  | Platform  | Full platform control  | Cannot delete platform config  |
 | **Workspace Admin** | Workspace | Full workspace control | Cannot delete workspace itself |
-| **Developer** | Workspace | Create/read resources | Cannot manage other users |
-| **Viewer** | Workspace | Read-only access | Cannot write any resource |
+| **Developer**       | Workspace | Create/read resources  | Cannot manage other users      |
+| **Viewer**          | Workspace | Read-only access       | Cannot write any resource      |
 
 **Policy Evaluation Flow:**
 
@@ -243,6 +249,7 @@ spec:
 ```
 
 **Resources:**
+
 - [Policy Model Reference](../../architecture/policy-governance/README.md)
 - [Policy Examples](../../contracts/policies.md)
 
@@ -255,6 +262,7 @@ spec:
 **Purpose:** Defines the audit event schema and append-only integrity chain. Every significant action produces an audit event.
 
 **Key Concepts:**
+
 - **Audit Event Schema:** Standardized event format with actor, resource, action, outcome
 - **Append-Only Log:** Audit events cannot be deleted or modified
 - **SHA-256 Integrity Chain:** Each event hash-links to previous event (tamper-evident DAG)
@@ -281,9 +289,9 @@ spec:
     resourceId: doc-789
   outcome:
     status: success|failure
-    reason: "Document created successfully"
+    reason: 'Document created successfully'
   integrity:
-    sha256: "abc123..."
+    sha256: 'abc123...'
     previousEventId: evt-001
 ```
 
@@ -317,6 +325,7 @@ Event 3 (hash: ghi789, previousEventId: Event 2)
 ```
 
 **Resources:**
+
 - [Audit Model Reference](../../architecture/audit-trace/README.md)
 - [Audit Events Reference](../../contracts/events/audit-events.md)
 
@@ -329,6 +338,7 @@ Event 3 (hash: ghi789, previousEventId: Event 2)
 **Purpose:** Defines how knowledge is stored, chunked, indexed, retrieved, and traced. Documents become operational substrate — parseable, searchable, citable, repairable, and promotable to memory.
 
 **Key Concepts:**
+
 - **Document Model:** Document → Chunks → Metadata → Indexing
 - **Retrieval Receipt:** Proof of which chunks were retrieved for each query
 - **Answer Trace:** Source linking from agent answers back to retrieved chunks
@@ -357,13 +367,13 @@ kind: RetrievalReceipt
 metadata:
   id: rr-001
 spec:
-  query: "What is the architecture?"
+  query: 'What is the architecture?'
   retrievedAt: 2024-05-15T12:00:00Z
   chunks:
     - documentId: doc-001
       chunkId: chunk-001
       score: 0.95
-      source: "architectural-overview.md#L10"
+      source: 'architectural-overview.md#L10'
   traceId: trace-001
 ```
 
@@ -375,18 +385,19 @@ kind: AnswerTrace
 metadata:
   id: at-001
 spec:
-  question: "What is the architecture?"
-  answer: "The platform follows..."
+  question: 'What is the architecture?'
+  answer: 'The platform follows...'
   sources:
     - chunkId: chunk-001
       documentId: doc-001
       confidence: 0.95
   citations:
-    - source: "architectural-overview.md#L10"
-      quote: "The platform follows a three-phase strategy"
+    - source: 'architectural-overview.md#L10'
+      quote: 'The platform follows a three-phase strategy'
 ```
 
 **Resources:**
+
 - [Knowledge Model Reference](../../architecture/knowledge-layer/README.md)
 - [Knowledge Trace Guide](../../architecture/knowledge-layer/retrieval-receipt.md)
 
@@ -423,20 +434,21 @@ Memory Capture
 
 **Memory Dream Capabilities:**
 
-| Capability | Description | Phase |
-|------------|-------------|-------|
-| **Memory Capture** | Auto-save agent interactions | MVP |
-| **Memory Store** | Persistent memory storage | MVP |
-| **Memory Search** | Query memory across sessions | Post-MVP |
-| **Memory Dream** | Periodic consolidation & conflict resolution | Post-MVP |
-| **Conflict Detection** | Find inconsistent memories | Proposed |
-| **Conflict Resolution** | Merge or prioritize conflicting memories | Proposed |
-| **Memory Merge** | Consolidate related memories | Proposed |
-| **Memory Reinforcement** | Strengthen high-quality memories | Proposed |
-| **Memory Audit** | Trace memory changes | Proposed |
-| **Orphan Sweeping** | Remove unused memories | Proposed |
+| Capability               | Description                                  | Phase    |
+| ------------------------ | -------------------------------------------- | -------- |
+| **Memory Capture**       | Auto-save agent interactions                 | MVP      |
+| **Memory Store**         | Persistent memory storage                    | MVP      |
+| **Memory Search**        | Query memory across sessions                 | Post-MVP |
+| **Memory Dream**         | Periodic consolidation & conflict resolution | Post-MVP |
+| **Conflict Detection**   | Find inconsistent memories                   | Proposed |
+| **Conflict Resolution**  | Merge or prioritize conflicting memories     | Proposed |
+| **Memory Merge**         | Consolidate related memories                 | Proposed |
+| **Memory Reinforcement** | Strengthen high-quality memories             | Proposed |
+| **Memory Audit**         | Trace memory changes                         | Proposed |
+| **Orphan Sweeping**      | Remove unused memories                       | Proposed |
 
 **Resources:**
+
 - [Memory Dream Reference](../../architecture/memory-dream/README.md)
 - [First Memory Dream Guide](../../onboarding/first-memory-dream.md)
 
@@ -476,20 +488,21 @@ The platform follows a clean port/adapter hexagonal architecture with eight dist
 
 ### Layer Breakdown
 
-| Layer | Responsibility | Contains |
-|-------|----------------|----------|
-| **0. Core** | Domain models, business logic | Entities, value objects, domain services |
-| **1. Ports** | Platform-neutral interfaces | Interface definitions, contracts |
-| **2. Application** | Workflows, use cases | Orchestrators, command/query handlers |
-| **3. Adapters** | Provider implementations | Cloud, database, storage, LLM adapters |
-| **4. Infrastructure** | External services | Databases, queues, storage, search |
-| **5. Governance** | Policies, audit, compliance | Policy engine, audit logging |
-| **6. Runtimes** | Deployment runtimes | Cloudflare, Node, Docker, K8s |
-| **7. Apps** | User-facing applications | Web console, API worker, CLI |
+| Layer                 | Responsibility                | Contains                                 |
+| --------------------- | ----------------------------- | ---------------------------------------- |
+| **0. Core**           | Domain models, business logic | Entities, value objects, domain services |
+| **1. Ports**          | Platform-neutral interfaces   | Interface definitions, contracts         |
+| **2. Application**    | Workflows, use cases          | Orchestrators, command/query handlers    |
+| **3. Adapters**       | Provider implementations      | Cloud, database, storage, LLM adapters   |
+| **4. Infrastructure** | External services             | Databases, queues, storage, search       |
+| **5. Governance**     | Policies, audit, compliance   | Policy engine, audit logging             |
+| **6. Runtimes**       | Deployment runtimes           | Cloudflare, Node, Docker, K8s            |
+| **7. Apps**           | User-facing applications      | Web console, API worker, CLI             |
 
 ### Dependency Rules
 
 **Strict Dependency Direction:**
+
 - Apps → Runtimes → Infrastructure → Governance → Adapters → Application → Ports → Core
 - Core has zero vendor dependencies
 - Ports define interfaces only, no implementations
@@ -526,15 +539,16 @@ The platform follows a clean port/adapter hexagonal architecture with eight dist
 Ship fast on Cloudflare's global edge with minimal infrastructure.
 
 | Platform Need | Cloudflare Service |
-|---------------|-------------------|
-| Database | D1 (SQLite) |
-| Cache | KV |
-| Storage | R2 |
-| Vector Search | Vectorize |
-| Queue | Cloudflare Queues |
-| Compute | Workers |
+| ------------- | ------------------ |
+| Database      | D1 (SQLite)        |
+| Cache         | KV                 |
+| Storage       | R2                 |
+| Vector Search | Vectorize          |
+| Queue         | Cloudflare Queues  |
+| Compute       | Workers            |
 
 **Why Cloudflare First:**
+
 - Free tier available for MVP
 - Global edge deployment
 - Serverless scaling
@@ -544,16 +558,17 @@ Ship fast on Cloudflare's global edge with minimal infrastructure.
 
 Extract core logic into portable adapters for vendor independence.
 
-| Cloudflare Resource | Portable Alternative |
-|---------------------|---------------------|
-| D1 | PostgreSQL / SQLite |
-| KV | Redis |
-| R2 | MinIO (S3-compatible) |
-| Vectorize | Qdrant / pgvector |
-| Queues | Cloud Tasks / RabbitMQ |
-| Workers | Node.js / Bun |
+| Cloudflare Resource | Portable Alternative   |
+| ------------------- | ---------------------- |
+| D1                  | PostgreSQL / SQLite    |
+| KV                  | Redis                  |
+| R2                  | MinIO (S3-compatible)  |
+| Vectorize           | Qdrant / pgvector      |
+| Queues              | Cloud Tasks / RabbitMQ |
+| Workers             | Node.js / Bun          |
 
 **Architectural Guarantee:**
+
 - `packages/core/` has zero cloud vendor dependencies
 - `packages/ports/` defines platform-neutral interfaces
 - `packages/adapters/` implements interfaces for specific providers
@@ -564,11 +579,13 @@ Extract core logic into portable adapters for vendor independence.
 Complete self-hosted deployment with Docker Compose and Helm charts.
 
 **Deployment Options:**
+
 - `docker-compose.yaml` — Local development, single-server deployment
 - `helm/mycodexvantaos/` — Kubernetes enterprise deployment
 - Migration tools — From Cloudflare to self-hosted
 
 **Migration Path:**
+
 1. Export data from Cloudflare (D1, KV, R2, Vectorize)
 2. Import to self-hosted (PostgreSQL, Redis, MinIO, pgvector)
 3. Update adapters configuration
@@ -601,18 +618,19 @@ data:
 
 **Event Types:**
 
-| Category | Events |
-|----------|--------|
+| Category  | Events                                                                                   |
+| --------- | ---------------------------------------------------------------------------------------- |
 | Knowledge | `mycodexvantaos.knowledge.document.created`, `mycodexvantaos.knowledge.search.completed` |
-| Agent | `mycodexvantaos.agent.chat.started`, `mycodexvantaos.agent.chat.completed` |
-| Audit | `mycodexvantaos.audit.event.created` |
-| Memory | `mycodexvantaos.memory.item.captured`, `mycodexvantaos.memory.dream.completed` |
+| Agent     | `mycodexvantaos.agent.chat.started`, `mycodexvantaos.agent.chat.completed`               |
+| Audit     | `mycodexvantaos.audit.event.created`                                                     |
+| Memory    | `mycodexvantaos.memory.item.captured`, `mycodexvantaos.memory.dream.completed`           |
 
 ### OpenAPI 3.1
 
 All platform APIs are documented in OpenAPI 3.1 specification.
 
 **API Structure:**
+
 - `contracts/openapi/platform-api.yaml`
 - `contracts/openapi/knowledge-api.yaml`
 - `contracts/openapi/memory-api.yaml`
@@ -631,6 +649,7 @@ The platform enforces constitutional compliance through automatic validation.
 **Workflow:** `.github/workflows/platform-constitution-ci.yml`
 
 **Checks:**
+
 1. Schema validation for all YAML contracts
 2. Service catalog completeness check
 3. Resource model compliance
@@ -645,12 +664,14 @@ The platform enforces constitutional compliance through automatic validation.
 ### Runtime Validation
 
 **Validators:**
+
 - `tools/validators/schema-validator.ts` — Schema validation
 - `tools/validators/contract-validator.ts` — Contract validation
 - `tools/validators/auditor-validator.ts` — Audit integrity check
 - `tools/validators/port-adapter-validator.ts` — Dependency check
 
 **Validation Hook:**
+
 - All contract changes must pass validators before commit
 - API calls validate against schemas at runtime
 - Audit events validated before writing to log
@@ -759,14 +780,14 @@ The platform enforces constitutional compliance through automatic validation.
 
 ## Document Metadata
 
-| Attribute | Value |
-|-----------|-------|
-| **Version** | 1.0.0 |
-| **Last Updated** | 2024-05-15 |
-| **Status** | Active — Documented |
-| **Spectrum** | Spectrum-00 to Spectrum-07 |
-| **Maintainer** | Platform Architecture Team |
-| **Review Cycle** | Quarterly |
+| Attribute        | Value                      |
+| ---------------- | -------------------------- |
+| **Version**      | 1.0.0                      |
+| **Last Updated** | 2024-05-15                 |
+| **Status**       | Active — Documented        |
+| **Spectrum**     | Spectrum-00 to Spectrum-07 |
+| **Maintainer**   | Platform Architecture Team |
+| **Review Cycle** | Quarterly                  |
 
 ---
 

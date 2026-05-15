@@ -41,11 +41,18 @@ export class AuditLogService {
       'SELECT hash, chain_index FROM audit_events ORDER BY chain_index DESC LIMIT 1'
     );
 
-    const previousHash = lastEvent?.hash ?? '0000000000000000000000000000000000000000000000000000000000000000';
+    const previousHash =
+      lastEvent?.hash ?? '0000000000000000000000000000000000000000000000000000000000000000';
     const chainIndex = (lastEvent?.chain_index ?? 0) + 1;
 
     // Compute SHA-256 hash chain
-    const hash = await this.computeHash(eventId, event.eventType, timestamp, previousHash, event.data);
+    const hash = await this.computeHash(
+      eventId,
+      event.eventType,
+      timestamp,
+      previousHash,
+      event.data
+    );
 
     // Store the event
     await this.deps.database.execute(
@@ -55,11 +62,23 @@ export class AuditLogService {
         hash, previous_hash, chain_index, closed_loop_status, created_at
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'open', ?)`,
       [
-        eventId, event.eventType, event.category, event.severity, timestamp,
-        event.subjectId, event.workspaceId ?? null, event.resourceKind ?? null,
-        event.resourceId ?? null, event.action, JSON.stringify(event.data ?? {}),
-        event.correlationId, event.parentEventId ?? null,
-        hash, previousHash, chainIndex, timestamp,
+        eventId,
+        event.eventType,
+        event.category,
+        event.severity,
+        timestamp,
+        event.subjectId,
+        event.workspaceId ?? null,
+        event.resourceKind ?? null,
+        event.resourceId ?? null,
+        event.action,
+        JSON.stringify(event.data ?? {}),
+        event.correlationId,
+        event.parentEventId ?? null,
+        hash,
+        previousHash,
+        chainIndex,
+        timestamp,
       ]
     );
 
@@ -69,7 +88,9 @@ export class AuditLogService {
     return { eventId, hash, chainIndex };
   }
 
-  async ingestBatch(events: Array<Parameters<typeof this.ingestEvent>[0]>): Promise<Array<{ eventId: string; hash: string; chainIndex: number }>> {
+  async ingestBatch(
+    events: Array<Parameters<typeof this.ingestEvent>[0]>
+  ): Promise<Array<{ eventId: string; hash: string; chainIndex: number }>> {
     const results = [];
     for (const event of events) {
       results.push(await this.ingestEvent(event));
@@ -91,13 +112,34 @@ export class AuditLogService {
     const conditions: string[] = [];
     const params: unknown[] = [];
 
-    if (filter.eventType) { conditions.push('event_type = ?'); params.push(filter.eventType); }
-    if (filter.category) { conditions.push('category = ?'); params.push(filter.category); }
-    if (filter.severity) { conditions.push('severity = ?'); params.push(filter.severity); }
-    if (filter.subjectId) { conditions.push('subject_id = ?'); params.push(filter.subjectId); }
-    if (filter.workspaceId) { conditions.push('workspace_id = ?'); params.push(filter.workspaceId); }
-    if (filter.fromTimestamp) { conditions.push('timestamp >= ?'); params.push(filter.fromTimestamp); }
-    if (filter.toTimestamp) { conditions.push('timestamp <= ?'); params.push(filter.toTimestamp); }
+    if (filter.eventType) {
+      conditions.push('event_type = ?');
+      params.push(filter.eventType);
+    }
+    if (filter.category) {
+      conditions.push('category = ?');
+      params.push(filter.category);
+    }
+    if (filter.severity) {
+      conditions.push('severity = ?');
+      params.push(filter.severity);
+    }
+    if (filter.subjectId) {
+      conditions.push('subject_id = ?');
+      params.push(filter.subjectId);
+    }
+    if (filter.workspaceId) {
+      conditions.push('workspace_id = ?');
+      params.push(filter.workspaceId);
+    }
+    if (filter.fromTimestamp) {
+      conditions.push('timestamp >= ?');
+      params.push(filter.fromTimestamp);
+    }
+    if (filter.toTimestamp) {
+      conditions.push('timestamp <= ?');
+      params.push(filter.toTimestamp);
+    }
 
     const where = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
     const limit = filter.limit ?? 100;
@@ -109,7 +151,10 @@ export class AuditLogService {
     );
   }
 
-  async verifyIntegrity(fromTimestamp: string, toTimestamp: string): Promise<{
+  async verifyIntegrity(
+    fromTimestamp: string,
+    toTimestamp: string
+  ): Promise<{
     verified: boolean;
     violationsDetected: number;
     violations: Array<{ chainIndex: number; expectedHash: string; actualHash: string }>;
@@ -177,7 +222,10 @@ export class AuditLogService {
       verified: violations.length === 0,
       violationsDetected: violations.length,
       violations,
-      checkedRange: { from: events[0]?.chain_index ?? 0, to: events[events.length - 1]?.chain_index ?? 0 },
+      checkedRange: {
+        from: events[0]?.chain_index ?? 0,
+        to: events[events.length - 1]?.chain_index ?? 0,
+      },
     };
   }
 

@@ -44,7 +44,7 @@ spec:
           system_prompt: { type: string }
       output:
         type: object
-        $ref: "urn:mycodexvantaos:ai:resource:chat-session"
+        $ref: 'urn:mycodexvantaos:ai:resource:chat-session'
 
     - id: chat.send-message
       method: sendMessage
@@ -107,7 +107,7 @@ spec:
         type: object
         properties:
           session:
-            $ref: "urn:mycodexvantaos:ai:resource:chat-session"
+            $ref: 'urn:mycodexvantaos:ai:resource:chat-session'
           messages:
             type: array
             items:

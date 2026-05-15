@@ -24,12 +24,7 @@ import type {
   DatabaseStatement,
 } from '../ports/index.js';
 
-import type {
-  UsageRecordSpec,
-  Tier,
-  Resource,
-  AuditEventSpec,
-} from '../core/index.js';
+import type { UsageRecordSpec, Tier, Resource, AuditEventSpec } from '../core/index.js';
 
 /* ──────────────────────────── Types ──────────────────────────── */
 
@@ -73,23 +68,29 @@ export interface RateLimitResult {
 export interface UsageAggregate {
   workspace_id: string;
   billing_period: string;
-  dimensions: Record<MeterDimension, {
-    consumed: number;
-    limit: number;
-    unit: string;
-    utilization_pct: number;
-  }>;
+  dimensions: Record<
+    MeterDimension,
+    {
+      consumed: number;
+      limit: number;
+      unit: string;
+      utilization_pct: number;
+    }
+  >;
   overage: MeterDimension[];
 }
 
 /** Tier-specific rate-limit configuration */
 export interface TierLimits {
   tier: Tier;
-  limits: Record<MeterDimension, {
-    monthly: number;
-    per_minute: number;
-    burst?: number; // short burst allowance
-  }>;
+  limits: Record<
+    MeterDimension,
+    {
+      monthly: number;
+      per_minute: number;
+      burst?: number; // short burst allowance
+    }
+  >;
 }
 
 /** Constructor dependencies */
@@ -106,40 +107,40 @@ const TIER_LIMITS: TierLimits[] = [
   {
     tier: 'free',
     limits: {
-      api_calls:            { monthly: 10_000,    per_minute: 30,   burst: 50 },
-      storage_bytes:        { monthly: 1_073_741_824, per_minute: 10_485_760 }, // 1 GB / 10 MB min-1
-      search_queries:       { monthly: 5_000,     per_minute: 15,   burst: 25 },
-      model_tokens_input:   { monthly: 500_000,   per_minute: 2_000 },
-      model_tokens_output:  { monthly: 200_000,   per_minute: 1_000 },
-      documents_ingested:   { monthly: 100,       per_minute: 5 },
-      chat_messages:        { monthly: 1_000,     per_minute: 10 },
-      audit_events:         { monthly: 50_000,    per_minute: 100 },
+      api_calls: { monthly: 10_000, per_minute: 30, burst: 50 },
+      storage_bytes: { monthly: 1_073_741_824, per_minute: 10_485_760 }, // 1 GB / 10 MB min-1
+      search_queries: { monthly: 5_000, per_minute: 15, burst: 25 },
+      model_tokens_input: { monthly: 500_000, per_minute: 2_000 },
+      model_tokens_output: { monthly: 200_000, per_minute: 1_000 },
+      documents_ingested: { monthly: 100, per_minute: 5 },
+      chat_messages: { monthly: 1_000, per_minute: 10 },
+      audit_events: { monthly: 50_000, per_minute: 100 },
     },
   },
   {
     tier: 'pro',
     limits: {
-      api_calls:            { monthly: 100_000,   per_minute: 120,  burst: 200 },
-      storage_bytes:        { monthly: 10_737_418_240, per_minute: 52_428_800 }, // 10 GB / 50 MB min-1
-      search_queries:       { monthly: 50_000,    per_minute: 60,   burst: 100 },
-      model_tokens_input:   { monthly: 5_000_000, per_minute: 10_000 },
-      model_tokens_output:  { monthly: 2_000_000, per_minute: 5_000 },
-      documents_ingested:   { monthly: 1_000,     per_minute: 20 },
-      chat_messages:        { monthly: 10_000,    per_minute: 30 },
-      audit_events:         { monthly: 500_000,   per_minute: 500 },
+      api_calls: { monthly: 100_000, per_minute: 120, burst: 200 },
+      storage_bytes: { monthly: 10_737_418_240, per_minute: 52_428_800 }, // 10 GB / 50 MB min-1
+      search_queries: { monthly: 50_000, per_minute: 60, burst: 100 },
+      model_tokens_input: { monthly: 5_000_000, per_minute: 10_000 },
+      model_tokens_output: { monthly: 2_000_000, per_minute: 5_000 },
+      documents_ingested: { monthly: 1_000, per_minute: 20 },
+      chat_messages: { monthly: 10_000, per_minute: 30 },
+      audit_events: { monthly: 500_000, per_minute: 500 },
     },
   },
   {
     tier: 'enterprise',
     limits: {
-      api_calls:            { monthly: 1_000_000, per_minute: 600,  burst: 1_000 },
-      storage_bytes:        { monthly: 107_374_182_400, per_minute: 262_144_000 }, // 100 GB / 250 MB min-1
-      search_queries:       { monthly: 500_000,   per_minute: 300,  burst: 500 },
-      model_tokens_input:   { monthly: 50_000_000, per_minute: 100_000 },
-      model_tokens_output:  { monthly: 20_000_000, per_minute: 50_000 },
-      documents_ingested:   { monthly: 10_000,    per_minute: 100 },
-      chat_messages:        { monthly: 100_000,   per_minute: 120 },
-      audit_events:         { monthly: 5_000_000, per_minute: 2_000 },
+      api_calls: { monthly: 1_000_000, per_minute: 600, burst: 1_000 },
+      storage_bytes: { monthly: 107_374_182_400, per_minute: 262_144_000 }, // 100 GB / 250 MB min-1
+      search_queries: { monthly: 500_000, per_minute: 300, burst: 500 },
+      model_tokens_input: { monthly: 50_000_000, per_minute: 100_000 },
+      model_tokens_output: { monthly: 20_000_000, per_minute: 50_000 },
+      documents_ingested: { monthly: 10_000, per_minute: 100 },
+      chat_messages: { monthly: 100_000, per_minute: 120 },
+      audit_events: { monthly: 5_000_000, per_minute: 2_000 },
     },
   },
 ];
@@ -153,7 +154,7 @@ export class UsageMeterService {
   private readonly queue: IQueuePort;
 
   constructor(private readonly deps: UsageMeterServiceDeps) {
-    this.db    = deps.database;
+    this.db = deps.database;
     this.cache = deps.cache;
     this.audit = deps.audit;
     this.queue = deps.queue;
@@ -183,11 +184,15 @@ export class UsageMeterService {
     const rateLimit = await this.checkRateLimitInternal(
       input.workspace_id,
       input.dimension,
-      input.tier,
+      input.tier
     );
 
     // 2. Check monthly quota
-    const monthlyUsage = await this.getMonthlyUsage(input.workspace_id, billingPeriod, input.dimension);
+    const monthlyUsage = await this.getMonthlyUsage(
+      input.workspace_id,
+      billingPeriod,
+      input.dimension
+    );
     const tierConfig = this.getTierLimits(input.tier);
     const monthlyLimit = tierConfig.limits[input.dimension]?.monthly ?? Infinity;
 
@@ -216,9 +221,7 @@ export class UsageMeterService {
         rate_limit: {
           ...rateLimit,
           allowed: false,
-          retry_after_ms: !rateLimit.allowed
-            ? rateLimit.retry_after_ms
-            : undefined,
+          retry_after_ms: !rateLimit.allowed ? rateLimit.retry_after_ms : undefined,
         },
       };
     }
@@ -256,7 +259,7 @@ export class UsageMeterService {
         record.recorded_at,
         record.billing_period,
         JSON.stringify(record.metadata ?? {}),
-      ],
+      ]
     );
 
     // 5. Emit audit event
@@ -306,7 +309,7 @@ export class UsageMeterService {
   async checkRateLimit(
     workspace_id: string,
     dimension: MeterDimension,
-    tier: Tier,
+    tier: Tier
   ): Promise<RateLimitResult> {
     return this.checkRateLimitInternal(workspace_id, dimension, tier);
   }
@@ -317,7 +320,7 @@ export class UsageMeterService {
   async getUsage(
     workspace_id: string,
     billing_period: string,
-    tier: Tier,
+    tier: Tier
   ): Promise<UsageAggregate> {
     const tierConfig = this.getTierLimits(tier);
     const dimensions: UsageAggregate['dimensions'] = {} as any;
@@ -349,13 +352,13 @@ export class UsageMeterService {
   async getMonthlyUsage(
     workspace_id: string,
     billing_period: string,
-    dimension: MeterDimension,
+    dimension: MeterDimension
   ): Promise<number> {
     const result = await this.db.queryFirst(
       `SELECT COALESCE(SUM(quantity), 0) AS total
        FROM usage_records
        WHERE workspace_id = ? AND dimension = ? AND billing_period = ?`,
-      [workspace_id, dimension, billing_period],
+      [workspace_id, dimension, billing_period]
     );
     return (result as any)?.total ?? 0;
   }
@@ -366,7 +369,7 @@ export class UsageMeterService {
   async getUsageTrend(
     workspace_id: string,
     dimension: MeterDimension,
-    billing_period: string,
+    billing_period: string
   ): Promise<Array<{ date: string; quantity: number }>> {
     const rows = await this.db.query(
       `SELECT DATE(recorded_at) AS date, SUM(quantity) AS quantity
@@ -374,9 +377,9 @@ export class UsageMeterService {
        WHERE workspace_id = ? AND dimension = ? AND billing_period = ?
        GROUP BY DATE(recorded_at)
        ORDER BY date`,
-      [workspace_id, dimension, billing_period],
+      [workspace_id, dimension, billing_period]
     );
-    return (rows as any[]).map(r => ({
+    return (rows as any[]).map((r) => ({
       date: r.date,
       quantity: Number(r.quantity),
     }));
@@ -389,7 +392,7 @@ export class UsageMeterService {
     workspace_id: string,
     dimension: MeterDimension,
     billing_period: string,
-    limit: number = 10,
+    limit: number = 10
   ): Promise<Array<{ subject_id: string; quantity: number }>> {
     const rows = await this.db.query(
       `SELECT subject_id, SUM(quantity) AS quantity
@@ -398,9 +401,9 @@ export class UsageMeterService {
        GROUP BY subject_id
        ORDER BY quantity DESC
        LIMIT ?`,
-      [workspace_id, dimension, billing_period, limit],
+      [workspace_id, dimension, billing_period, limit]
     );
-    return (rows as any[]).map(r => ({
+    return (rows as any[]).map((r) => ({
       subject_id: r.subject_id,
       quantity: Number(r.quantity),
     }));
@@ -411,7 +414,7 @@ export class UsageMeterService {
   private async checkRateLimitInternal(
     workspace_id: string,
     dimension: MeterDimension,
-    tier: Tier,
+    tier: Tier
   ): Promise<RateLimitResult> {
     const tierConfig = this.getTierLimits(tier);
     const dimLimit = tierConfig.limits[dimension];
@@ -445,14 +448,12 @@ export class UsageMeterService {
       limit,
       remaining,
       reset_at: resetAt,
-      retry_after_ms: current >= limit
-        ? (windowStart + 60_000) - now
-        : undefined,
+      retry_after_ms: current >= limit ? windowStart + 60_000 - now : undefined,
     };
   }
 
   private getTierLimits(tier: Tier): TierLimits {
-    const found = TIER_LIMITS.find(t => t.tier === tier);
+    const found = TIER_LIMITS.find((t) => t.tier === tier);
     if (!found) {
       // Default to free tier if unknown
       return TIER_LIMITS[0];

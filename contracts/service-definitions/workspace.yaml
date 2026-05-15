@@ -38,7 +38,8 @@ spec:
           settings:
             type: object
             properties:
-              data_residency: { type: string, enum: [us-east-1, eu-west-1, ap-northeast-1, ap-southeast-1] }
+              data_residency:
+                { type: string, enum: [us-east-1, eu-west-1, ap-northeast-1, ap-southeast-1] }
               retention_policy:
                 type: object
                 properties:
@@ -46,7 +47,7 @@ spec:
                   document_retention_days: { type: integer, default: 90 }
       output:
         type: object
-        $ref: "urn:mycodexvantaos:core:resource:workspace"
+        $ref: 'urn:mycodexvantaos:core:resource:workspace'
 
     - id: workspace.add-member
       method: addMember

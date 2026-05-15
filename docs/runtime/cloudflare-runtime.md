@@ -7,13 +7,13 @@ to D1, KV, R2, Workers AI, and Vectorize.
 
 ## Supported Bindings
 
-| Binding | Provider Package | Purpose |
-|---|---|---|
-| D1 | `@mycodexvantaos/provider-cloudflare-d1` | SQL database |
-| KV | `@mycodexvantaos/provider-cloudflare-kv` | Key-value storage |
-| R2 | `@mycodexvantaos/provider-cloudflare-r2` | Object storage |
-| Workers AI | `@mycodexvantaos/provider-cloudflare-workers-ai` | LLM inference |
-| Vectorize | `@mycodexvantaos/provider-cloudflare-vectorize` | Vector search |
+| Binding    | Provider Package                                 | Purpose           |
+| ---------- | ------------------------------------------------ | ----------------- |
+| D1         | `@mycodexvantaos/provider-cloudflare-d1`         | SQL database      |
+| KV         | `@mycodexvantaos/provider-cloudflare-kv`         | Key-value storage |
+| R2         | `@mycodexvantaos/provider-cloudflare-r2`         | Object storage    |
+| Workers AI | `@mycodexvantaos/provider-cloudflare-workers-ai` | LLM inference     |
+| Vectorize  | `@mycodexvantaos/provider-cloudflare-vectorize`  | Vector search     |
 
 ## Deployment
 

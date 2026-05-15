@@ -10,42 +10,42 @@ renamed; instead, each is repositioned with clear boundaries and extended contra
 
 ### Identity Layer
 
-| Existing Service | New Role | Plane | Notes |
-|---|---|---|---|
-| `@mycodexvantaos/service-identity` | Auth gateway | TS Control | Already aligned; add policy-engine hooks |
+| Existing Service                             | New Role       | Plane      | Notes                                           |
+| -------------------------------------------- | -------------- | ---------- | ----------------------------------------------- |
+| `@mycodexvantaos/service-identity`           | Auth gateway   | TS Control | Already aligned; add policy-engine hooks        |
 | `@mycodexvantaos/core` (identity sub-export) | Identity types | TS Control | Re-exported via `@mycodexvantaos/contracts-sdk` |
 
 ### Memory Layer
 
-| Existing Service | New Role | Plane | Notes |
-|---|---|---|---|
-| `@mycodexvantaos/service-memory-dream` | Dream orchestration | TS Control | Dispatches to Python dream-worker |
-| `python/packages/mycodexvantaos-memory-dream` | Dream execution | Python Intelligence | Actual ML/NLP processing |
-| `python/apps/dream-worker` | Dream job runner | Python Intelligence | Polls job table, executes dreams |
+| Existing Service                              | New Role            | Plane               | Notes                             |
+| --------------------------------------------- | ------------------- | ------------------- | --------------------------------- |
+| `@mycodexvantaos/service-memory-dream`        | Dream orchestration | TS Control          | Dispatches to Python dream-worker |
+| `python/packages/mycodexvantaos-memory-dream` | Dream execution     | Python Intelligence | Actual ML/NLP processing          |
+| `python/apps/dream-worker`                    | Dream job runner    | Python Intelligence | Polls job table, executes dreams  |
 
 ### Knowledge Layer
 
-| Existing Service | New Role | Plane | Notes |
-|---|---|---|---|
-| `@mycodexvantaos/service-knowledge` | Knowledge CRUD API | TS Control | Delegates pipeline to Python |
-| `python/packages/mycodexvantaos-knowledge-pipeline` | Document processing | Python Intelligence | Parsing, embedding, clustering |
-| `python/apps/knowledge-worker` | Knowledge job runner | Python Intelligence | Polls job table for pipeline tasks |
+| Existing Service                                    | New Role             | Plane               | Notes                              |
+| --------------------------------------------------- | -------------------- | ------------------- | ---------------------------------- |
+| `@mycodexvantaos/service-knowledge`                 | Knowledge CRUD API   | TS Control          | Delegates pipeline to Python       |
+| `python/packages/mycodexvantaos-knowledge-pipeline` | Document processing  | Python Intelligence | Parsing, embedding, clustering     |
+| `python/apps/knowledge-worker`                      | Knowledge job runner | Python Intelligence | Polls job table for pipeline tasks |
 
 ### Resource & Policy Layer
 
-| Existing Service | New Role | Plane | Notes |
-|---|---|---|---|
-| `@mycodexvantaos/service-service-catalog` | Service registry | TS Control | Already aligned |
-| `@mycodexvantaos/core` (resource-model sub-export) | Resource types | TS Control | Extended via `@mycodexvantaos/resource-model` |
-| `@mycodexvantaos/core` (policy-model sub-export) | Policy types | TS Control | Extended via `@mycodexvantaos/policy-model` |
+| Existing Service                                   | New Role         | Plane      | Notes                                         |
+| -------------------------------------------------- | ---------------- | ---------- | --------------------------------------------- |
+| `@mycodexvantaos/service-service-catalog`          | Service registry | TS Control | Already aligned                               |
+| `@mycodexvantaos/core` (resource-model sub-export) | Resource types   | TS Control | Extended via `@mycodexvantaos/resource-model` |
+| `@mycodexvantaos/core` (policy-model sub-export)   | Policy types     | TS Control | Extended via `@mycodexvantaos/policy-model`   |
 
 ### Infrastructure
 
-| Existing Service | New Role | Plane | Notes |
-|---|---|---|---|
-| `@mycodexvantaos/service-audit` | Audit event sink | TS Control | Receives events from both planes |
-| `@mycodexvantaos/service-chat` | Chat gateway | TS Control | Delegates to Python agent-worker |
-| `python/packages/mycodexvantaos-agent-worker` | Agent execution | Python Intelligence | LLM orchestration |
+| Existing Service                              | New Role         | Plane               | Notes                            |
+| --------------------------------------------- | ---------------- | ------------------- | -------------------------------- |
+| `@mycodexvantaos/service-audit`               | Audit event sink | TS Control          | Receives events from both planes |
+| `@mycodexvantaos/service-chat`                | Chat gateway     | TS Control          | Delegates to Python agent-worker |
+| `python/packages/mycodexvantaos-agent-worker` | Agent execution  | Python Intelligence | LLM orchestration                |
 
 ## Communication Pattern
 

@@ -22,7 +22,11 @@ export class KnowledgeSearchService {
     this.deps = deps;
   }
 
-  async search(workspaceId: string, query: string, options: SearchOptions): Promise<{
+  async search(
+    workspaceId: string,
+    query: string,
+    options: SearchOptions
+  ): Promise<{
     results: SearchResultItem[];
     totalResults: number;
     evidenceLevel: EvidenceLevel;
@@ -38,11 +42,12 @@ export class KnowledgeSearchService {
     // 2. Authorize — handled by the runtime layer before reaching here
 
     // 3. Search — execute against the search index
-    const rawResults = options.searchType === 'semantic'
-      ? await this.semanticSearch(query, options)
-      : options.searchType === 'fulltext'
-        ? await this.fulltextSearch(query, options)
-        : await this.hybridSearch(query, options);
+    const rawResults =
+      options.searchType === 'semantic'
+        ? await this.semanticSearch(query, options)
+        : options.searchType === 'fulltext'
+          ? await this.fulltextSearch(query, options)
+          : await this.hybridSearch(query, options);
 
     // 4. Rank — results are already ranked by the search backend
 
@@ -51,14 +56,21 @@ export class KnowledgeSearchService {
 
     // 6. Audit — emit search event
     await this.deps.audit.emitEvent({
-      eventType: rawResults.length > 0 ? 'knowledge.search.executed' : 'knowledge.search.zero-result',
+      eventType:
+        rawResults.length > 0 ? 'knowledge.search.executed' : 'knowledge.search.zero-result',
       category: 'knowledge',
       severity: 'info',
       subjectId: 'system',
       workspaceId,
       resourceKind: 'knowledge-index',
       action: 'search',
-      data: { query, searchType: options.searchType, topK: options.topK, resultCount: rawResults.length, evidenceLevel },
+      data: {
+        query,
+        searchType: options.searchType,
+        topK: options.topK,
+        resultCount: rawResults.length,
+        evidenceLevel,
+      },
       correlationId: crypto.randomUUID(),
     });
 
@@ -70,7 +82,11 @@ export class KnowledgeSearchService {
     };
   }
 
-  async hybridSearch(workspaceId: string, query: string, options: SearchOptions): Promise<{
+  async hybridSearch(
+    workspaceId: string,
+    query: string,
+    options: SearchOptions
+  ): Promise<{
     results: SearchResultItem[];
     totalResults: number;
     evidenceLevel: EvidenceLevel;

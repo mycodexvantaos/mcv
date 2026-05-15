@@ -24,16 +24,19 @@ periodically to maintain the health and relevance of the memory store.
 ## Dream Modes
 
 ### dry-run
+
 - Evaluates all memories and computes what changes would be made
 - No mutations to the memory store
 - Returns a preview of proposed changes
 
 ### proposal (default)
+
 - Generates consolidation proposals
 - Proposals require human review before application
 - Proposals include: merge candidates, deprecation candidates, reinforcement confirmations
 
 ### auto-apply
+
 - Automatically applies all consolidation changes
 - NOT enabled by default
 - Architecture decision memories are ALWAYS excluded from auto-apply

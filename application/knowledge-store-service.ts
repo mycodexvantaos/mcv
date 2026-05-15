@@ -5,8 +5,26 @@
  * Manages the complete ingestion pipeline: validate → extract → chunk → embed → index → verify.
  */
 
-import type { IDatabasePort, IStoragePort, ISearchPort, IQueuePort, IAuditPort, IIdentityPort } from '../ports/index';
-import type { DocumentSpec, DocumentStatus, DocumentPhase, KnowledgeCollectionSpec, KnowledgeCollectionStatus, CollectionPhase, Resource, IngestionResult, VerificationReport, EvidenceLevel } from '../core/index';
+import type {
+  IDatabasePort,
+  IStoragePort,
+  ISearchPort,
+  IQueuePort,
+  IAuditPort,
+  IIdentityPort,
+} from '../ports/index';
+import type {
+  DocumentSpec,
+  DocumentStatus,
+  DocumentPhase,
+  KnowledgeCollectionSpec,
+  KnowledgeCollectionStatus,
+  CollectionPhase,
+  Resource,
+  IngestionResult,
+  VerificationReport,
+  EvidenceLevel,
+} from '../core/index';
 
 export interface KnowledgeStoreServiceDeps {
   database: IDatabasePort;
@@ -24,14 +42,17 @@ export class KnowledgeStoreService {
     this.deps = deps;
   }
 
-  async uploadDocument(workspaceId: string, input: {
-    title: string;
-    format: string;
-    collectionId: string;
-    content: Uint8Array;
-    sourceUri?: string;
-    language?: string;
-  }): Promise<Resource<DocumentSpec, DocumentStatus>> {
+  async uploadDocument(
+    workspaceId: string,
+    input: {
+      title: string;
+      format: string;
+      collectionId: string;
+      content: Uint8Array;
+      sourceUri?: string;
+      language?: string;
+    }
+  ): Promise<Resource<DocumentSpec, DocumentStatus>> {
     const documentId = crypto.randomUUID();
     const urn = `urn:mycodexvantaos:knowledge:document:${documentId}`;
     const now = new Date().toISOString();
@@ -46,7 +67,19 @@ export class KnowledgeStoreService {
     await this.deps.database.execute(
       `INSERT INTO documents (id, urn, workspace_id, title, format, collection_id, source_uri, language, phase, file_size_bytes, created_at, updated_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'uploaded', ?, ?, ?)`,
-      [documentId, urn, workspaceId, input.title, input.format, input.collectionId, input.sourceUri ?? null, input.language ?? 'en', input.content.byteLength, now, now]
+      [
+        documentId,
+        urn,
+        workspaceId,
+        input.title,
+        input.format,
+        input.collectionId,
+        input.sourceUri ?? null,
+        input.language ?? 'en',
+        input.content.byteLength,
+        now,
+        now,
+      ]
     );
 
     // Queue for ingestion
@@ -71,9 +104,42 @@ export class KnowledgeStoreService {
     return {
       apiVersion: 'platform.mycodevantaos/v1',
       kind: 'document',
-      metadata: { id: documentId, urn, kind: 'document', workspaceId, labels: {}, annotations: {}, createdBy: 'system', version: '1.0.0', resourceVersion: 1, createdAt: now, updatedAt: now },
-      spec: { title: input.title, format: input.format as any, collectionId: input.collectionId, sourceUri: input.sourceUri ?? null, language: input.language ?? 'en' },
-      status: { phase: 'uploaded', conditions: [{ type: 'Ready', status: 'False', reason: 'PendingIngestion', message: 'Document awaiting ingestion', lastTransitionTime: now }], chunkCount: 0, totalTokens: 0, fileSizeBytes: input.content.byteLength, verificationStatus: 'pending' },
+      metadata: {
+        id: documentId,
+        urn,
+        kind: 'document',
+        workspaceId,
+        labels: {},
+        annotations: {},
+        createdBy: 'system',
+        version: '1.0.0',
+        resourceVersion: 1,
+        createdAt: now,
+        updatedAt: now,
+      },
+      spec: {
+        title: input.title,
+        format: input.format as any,
+        collectionId: input.collectionId,
+        sourceUri: input.sourceUri ?? null,
+        language: input.language ?? 'en',
+      },
+      status: {
+        phase: 'uploaded',
+        conditions: [
+          {
+            type: 'Ready',
+            status: 'False',
+            reason: 'PendingIngestion',
+            message: 'Document awaiting ingestion',
+            lastTransitionTime: now,
+          },
+        ],
+        chunkCount: 0,
+        totalTokens: 0,
+        fileSizeBytes: input.content.byteLength,
+        verificationStatus: 'pending',
+      },
     };
   }
 
@@ -124,7 +190,11 @@ export class KnowledgeStoreService {
         resourceKind: 'document',
         resourceId: documentId,
         action: 'ingest-document',
-        data: { chunkCount: chunksCreated, totalTokens: tokensGenerated, durationMs: Date.now() - startTime },
+        data: {
+          chunkCount: chunksCreated,
+          totalTokens: tokensGenerated,
+          durationMs: Date.now() - startTime,
+        },
         correlationId: crypto.randomUUID(),
       });
 
@@ -166,13 +236,16 @@ export class KnowledgeStoreService {
     }
   }
 
-  async createCollection(workspaceId: string, input: {
-    name: string;
-    description?: string;
-    embeddingModel?: string;
-    chunkStrategy?: string;
-    language?: string;
-  }): Promise<Resource<KnowledgeCollectionSpec, KnowledgeCollectionStatus>> {
+  async createCollection(
+    workspaceId: string,
+    input: {
+      name: string;
+      description?: string;
+      embeddingModel?: string;
+      chunkStrategy?: string;
+      language?: string;
+    }
+  ): Promise<Resource<KnowledgeCollectionSpec, KnowledgeCollectionStatus>> {
     const collectionId = crypto.randomUUID();
     const urn = `urn:mycodexvantaos:knowledge:knowledge-collection:${collectionId}`;
     const now = new Date().toISOString();
@@ -180,7 +253,18 @@ export class KnowledgeStoreService {
     await this.deps.database.execute(
       `INSERT INTO knowledge_collections (id, urn, workspace_id, name, description, embedding_model, chunk_strategy, language, phase, created_at, updated_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'empty', ?, ?)`,
-      [collectionId, urn, workspaceId, input.name, input.description ?? '', input.embeddingModel ?? 'text-embedding-3-small', input.chunkStrategy ?? 'semantic', input.language ?? 'en', now, now]
+      [
+        collectionId,
+        urn,
+        workspaceId,
+        input.name,
+        input.description ?? '',
+        input.embeddingModel ?? 'text-embedding-3-small',
+        input.chunkStrategy ?? 'semantic',
+        input.language ?? 'en',
+        now,
+        now,
+      ]
     );
 
     await this.deps.audit.emitEvent({
@@ -199,9 +283,43 @@ export class KnowledgeStoreService {
     return {
       apiVersion: 'platform.mycodevantaos/v1',
       kind: 'knowledge-collection',
-      metadata: { id: collectionId, urn, kind: 'knowledge-collection', workspaceId, labels: {}, annotations: {}, createdBy: 'system', version: '1.0.0', resourceVersion: 1, createdAt: now, updatedAt: now },
-      spec: { name: input.name, description: input.description ?? '', embeddingModel: input.embeddingModel ?? 'text-embedding-3-small', chunkStrategy: (input.chunkStrategy as any) ?? 'semantic', language: input.language ?? 'en' },
-      status: { phase: 'empty', conditions: [{ type: 'Ready', status: 'True', reason: 'Created', message: 'Collection created, awaiting documents', lastTransitionTime: now }], documentCount: 0, totalChunks: 0, totalTokens: 0, lastIndexBuiltAt: null, freshness: { avgDocumentAgeDays: 0, staleDocumentCount: 0, lastIngestedAt: null } },
+      metadata: {
+        id: collectionId,
+        urn,
+        kind: 'knowledge-collection',
+        workspaceId,
+        labels: {},
+        annotations: {},
+        createdBy: 'system',
+        version: '1.0.0',
+        resourceVersion: 1,
+        createdAt: now,
+        updatedAt: now,
+      },
+      spec: {
+        name: input.name,
+        description: input.description ?? '',
+        embeddingModel: input.embeddingModel ?? 'text-embedding-3-small',
+        chunkStrategy: (input.chunkStrategy as any) ?? 'semantic',
+        language: input.language ?? 'en',
+      },
+      status: {
+        phase: 'empty',
+        conditions: [
+          {
+            type: 'Ready',
+            status: 'True',
+            reason: 'Created',
+            message: 'Collection created, awaiting documents',
+            lastTransitionTime: now,
+          },
+        ],
+        documentCount: 0,
+        totalChunks: 0,
+        totalTokens: 0,
+        lastIndexBuiltAt: null,
+        freshness: { avgDocumentAgeDays: 0, staleDocumentCount: 0, lastIngestedAt: null },
+      },
     };
   }
 }

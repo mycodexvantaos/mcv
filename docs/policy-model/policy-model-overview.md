@@ -27,13 +27,13 @@ define rules that govern:
 
 ## Policy Contracts
 
-| Contract | Purpose | Scope |
-|---|---|---|
-| `access-control` | RBAC/ABAC rules | Per-workspace |
-| `resource-quota` | Resource limits | Per-workspace |
-| `data-governance` | Data residency rules | Per-organization |
-| `rate-limit` | API rate limits | Per-service |
-| `operational-window` | Time-based constraints | Per-service |
+| Contract             | Purpose                | Scope            |
+| -------------------- | ---------------------- | ---------------- |
+| `access-control`     | RBAC/ABAC rules        | Per-workspace    |
+| `resource-quota`     | Resource limits        | Per-workspace    |
+| `data-governance`    | Data residency rules   | Per-organization |
+| `rate-limit`         | API rate limits        | Per-service      |
+| `operational-window` | Time-based constraints | Per-service      |
 
 ## Integration with Python Plane
 

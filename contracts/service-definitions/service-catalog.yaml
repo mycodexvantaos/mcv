@@ -19,8 +19,8 @@ metadata:
       This is the single source of truth for service topology.
 
 spec:
-  version: "1.0.0-constitution"
-  phase: cloudflare-first  # cloudflare-first → portable-core → self-hostable
+  version: '1.0.0-constitution'
+  phase: cloudflare-first # cloudflare-first → portable-core → self-hostable
 
   # ─── Dependency Graph (DAG) ──────────────────────────────────────────
   # identity has zero dependencies (foundation service)
@@ -109,7 +109,7 @@ spec:
   services:
     # ──── Identity Service ──────────────────────────────────────────────
     - id: identity
-      urn: "urn:mycodexvantaos:service:identity"
+      urn: 'urn:mycodexvantaos:service:identity'
       category: security
       display_name: Identity Service
       description: |
@@ -117,7 +117,7 @@ spec:
         credentials, sessions, and workspace-scoped role assignments.
         Zero external dependencies — the root of the service DAG.
       resource_type: identity-subject
-      version: "1.0.0"
+      version: '1.0.0'
       runtime:
         provider: cloudflare-workers
         database: cloudflare-d1
@@ -160,18 +160,18 @@ spec:
           interface: IIdentityService
           protocol: http
           methods:
-            - "registerSubject(input: RegisterSubjectInput): Subject"
-            - "authenticateSubject(input: AuthenticateInput): AuthenticationResult"
-            - "issueToken(subjectId: string, scopes: string[]): TokenPair"
-            - "validateToken(accessToken: string): TokenClaims"
-            - "revokeSession(sessionId: string): void"
-            - "assignRole(subjectId: string, workspaceId: string, role: Role): RoleAssignment"
-            - "challengeMfa(subjectId: string): MfaChallenge"
-            - "verifyMfa(challengeId: string, code: string): MfaVerification"
+            - 'registerSubject(input: RegisterSubjectInput): Subject'
+            - 'authenticateSubject(input: AuthenticateInput): AuthenticationResult'
+            - 'issueToken(subjectId: string, scopes: string[]): TokenPair'
+            - 'validateToken(accessToken: string): TokenClaims'
+            - 'revokeSession(sessionId: string): void'
+            - 'assignRole(subjectId: string, workspaceId: string, role: Role): RoleAssignment'
+            - 'challengeMfa(subjectId: string): MfaChallenge'
+            - 'verifyMfa(challengeId: string, code: string): MfaVerification'
 
     # ──── Workspace Service ─────────────────────────────────────────────
     - id: workspace
-      urn: "urn:mycodexvantaos:service:workspace"
+      urn: 'urn:mycodexvantaos:service:workspace'
       category: security
       display_name: Workspace Service
       description: |
@@ -179,7 +179,7 @@ spec:
         Every resource in the platform belongs to a workspace; workspace
         enforces namespace boundaries, membership, and resource quotas.
       resource_type: workspace
-      version: "1.0.0"
+      version: '1.0.0'
       runtime:
         provider: cloudflare-workers
         database: cloudflare-d1
@@ -221,18 +221,18 @@ spec:
           interface: IWorkspaceService
           protocol: http
           methods:
-            - "createWorkspace(input: CreateWorkspaceInput): Workspace"
-            - "getWorkspace(workspaceId: string): Workspace"
-            - "updateWorkspace(workspaceId: string, patch: WorkspacePatch): Workspace"
-            - "suspendWorkspace(workspaceId: string, reason: string): Workspace"
-            - "addMember(workspaceId: string, subjectId: string, role: Role): Membership"
-            - "removeMember(workspaceId: string, subjectId: string): void"
-            - "checkQuota(workspaceId: string, resourceKind: string): QuotaStatus"
-            - "listWorkspaceResources(workspaceId: string, filter: ResourceFilter): ResourceList"
+            - 'createWorkspace(input: CreateWorkspaceInput): Workspace'
+            - 'getWorkspace(workspaceId: string): Workspace'
+            - 'updateWorkspace(workspaceId: string, patch: WorkspacePatch): Workspace'
+            - 'suspendWorkspace(workspaceId: string, reason: string): Workspace'
+            - 'addMember(workspaceId: string, subjectId: string, role: Role): Membership'
+            - 'removeMember(workspaceId: string, subjectId: string): void'
+            - 'checkQuota(workspaceId: string, resourceKind: string): QuotaStatus'
+            - 'listWorkspaceResources(workspaceId: string, filter: ResourceFilter): ResourceList'
 
     # ──── Knowledge Store Service ───────────────────────────────────────
     - id: knowledge-store
-      urn: "urn:mycodexvantaos:service:knowledge-store"
+      urn: 'urn:mycodexvantaos:service:knowledge-store'
       category: knowledge
       display_name: Knowledge Store
       description: |
@@ -241,7 +241,7 @@ spec:
         chunk → embed → index → verify. Stores raw documents, processed chunks,
         and vector embeddings with source traceability.
       resource_type: knowledge-collection
-      version: "1.0.0"
+      version: '1.0.0'
       runtime:
         provider: cloudflare-workers
         database: cloudflare-d1
@@ -292,19 +292,19 @@ spec:
           interface: IKnowledgeStoreService
           protocol: http
           methods:
-            - "uploadDocument(workspaceId: string, input: DocumentUploadInput): Document"
-            - "ingestDocument(documentId: string): IngestionResult"
-            - "getDocument(documentId: string): Document"
-            - "listDocuments(workspaceId: string, filter: DocumentFilter): DocumentList"
-            - "deleteDocument(documentId: string): void"
-            - "createCollection(workspaceId: string, input: CollectionInput): KnowledgeCollection"
-            - "getCollection(collectionId: string): KnowledgeCollection"
-            - "getIngestionStatus(documentId: string): IngestionStatus"
-            - "verifyKnowledge(collectionId: string): VerificationReport"
+            - 'uploadDocument(workspaceId: string, input: DocumentUploadInput): Document'
+            - 'ingestDocument(documentId: string): IngestionResult'
+            - 'getDocument(documentId: string): Document'
+            - 'listDocuments(workspaceId: string, filter: DocumentFilter): DocumentList'
+            - 'deleteDocument(documentId: string): void'
+            - 'createCollection(workspaceId: string, input: CollectionInput): KnowledgeCollection'
+            - 'getCollection(collectionId: string): KnowledgeCollection'
+            - 'getIngestionStatus(documentId: string): IngestionStatus'
+            - 'verifyKnowledge(collectionId: string): VerificationReport'
 
     # ──── Knowledge Search Service ──────────────────────────────────────
     - id: knowledge-search
-      urn: "urn:mycodexvantaos:service:knowledge-search"
+      urn: 'urn:mycodexvantaos:service:knowledge-search'
       category: knowledge
       display_name: Knowledge Search
       description: |
@@ -313,7 +313,7 @@ spec:
         trace → audit. Supports metadata filtering, source tracing, and
         evidence-level classification of results.
       resource_type: knowledge-index
-      version: "1.0.0"
+      version: '1.0.0'
       runtime:
         provider: cloudflare-workers
         database: cloudflare-d1
@@ -355,15 +355,15 @@ spec:
           interface: IKnowledgeSearchService
           protocol: http
           methods:
-            - "search(workspaceId: string, query: string, options: SearchOptions): SearchResult"
-            - "hybridSearch(workspaceId: string, query: string, options: HybridSearchOptions): SearchResult"
-            - "traceSource(chunkId: string): SourceTrace"
-            - "getIndexStats(workspaceId: string): IndexStats"
-            - "suggestQueries(workspaceId: string, prefix: string): string[]"
+            - 'search(workspaceId: string, query: string, options: SearchOptions): SearchResult'
+            - 'hybridSearch(workspaceId: string, query: string, options: HybridSearchOptions): SearchResult'
+            - 'traceSource(chunkId: string): SourceTrace'
+            - 'getIndexStats(workspaceId: string): IndexStats'
+            - 'suggestQueries(workspaceId: string, prefix: string): string[]'
 
     # ──── Agent Chat Service ────────────────────────────────────────────
     - id: agent-chat
-      urn: "urn:mycodexvantaos:service:agent-chat"
+      urn: 'urn:mycodexvantaos:service:agent-chat'
       category: agent
       display_name: Agent Chat
       description: |
@@ -372,7 +372,7 @@ spec:
         safety-check → audit. Integrates knowledge retrieval for RAG-based
         responses with source attribution and evidence-level classification.
       resource_type: chat-session
-      version: "1.0.0"
+      version: '1.0.0'
       runtime:
         provider: cloudflare-workers
         database: cloudflare-d1
@@ -415,16 +415,16 @@ spec:
           interface: IAgentChatService
           protocol: http
           methods:
-            - "createSession(workspaceId: string, input: SessionInput): ChatSession"
-            - "sendMessage(sessionId: string, content: string, options: MessageOptions): ChatResponse"
-            - "streamMessage(sessionId: string, content: string, options: MessageOptions): AsyncIterable<ChatChunk>"
-            - "getSessionHistory(sessionId: string, limit: int): MessageList"
-            - "closeSession(sessionId: string): void"
-            - "getSession(sessionId: string): ChatSession"
+            - 'createSession(workspaceId: string, input: SessionInput): ChatSession'
+            - 'sendMessage(sessionId: string, content: string, options: MessageOptions): ChatResponse'
+            - 'streamMessage(sessionId: string, content: string, options: MessageOptions): AsyncIterable<ChatChunk>'
+            - 'getSessionHistory(sessionId: string, limit: int): MessageList'
+            - 'closeSession(sessionId: string): void'
+            - 'getSession(sessionId: string): ChatSession'
 
     # ──── Model BYOK Service ────────────────────────────────────────────
     - id: model-byok
-      urn: "urn:mycodexvantaos:service:model-byok"
+      urn: 'urn:mycodexvantaos:service:model-byok'
       category: agent
       display_name: Model BYOK (Bring Your Own Key)
       description: |
@@ -433,7 +433,7 @@ spec:
         tracking, and provider failover. Workspace-scoped model configurations
         with policy-gated access control.
       resource_type: model-endpoint
-      version: "1.0.0"
+      version: '1.0.0'
       runtime:
         provider: cloudflare-workers
         database: cloudflare-d1
@@ -474,17 +474,17 @@ spec:
           interface: IModelByokService
           protocol: http
           methods:
-            - "registerEndpoint(workspaceId: string, input: EndpointInput): ModelEndpoint"
-            - "getEndpoint(endpointId: string): ModelEndpoint"
-            - "listEndpoints(workspaceId: string): EndpointList"
-            - "revokeEndpoint(endpointId: string): void"
-            - "invokeModel(endpointId: string, prompt: string, options: InvokeOptions): ModelResponse"
-            - "streamModel(endpointId: string, prompt: string, options: InvokeOptions): AsyncIterable<ModelChunk>"
-            - "getEndpointUsage(endpointId: string, period: UsagePeriod): UsageReport"
+            - 'registerEndpoint(workspaceId: string, input: EndpointInput): ModelEndpoint'
+            - 'getEndpoint(endpointId: string): ModelEndpoint'
+            - 'listEndpoints(workspaceId: string): EndpointList'
+            - 'revokeEndpoint(endpointId: string): void'
+            - 'invokeModel(endpointId: string, prompt: string, options: InvokeOptions): ModelResponse'
+            - 'streamModel(endpointId: string, prompt: string, options: InvokeOptions): AsyncIterable<ModelChunk>'
+            - 'getEndpointUsage(endpointId: string, period: UsagePeriod): UsageReport'
 
     # ──── Audit Log Service ─────────────────────────────────────────────
     - id: audit-log
-      urn: "urn:mycodexvantaos:service:audit-log"
+      urn: 'urn:mycodexvantaos:service:audit-log'
       category: security
       display_name: Audit Log
       description: |
@@ -493,7 +493,7 @@ spec:
         hash-linking, tamper detection, and closed-loop event completion
         verification. All platform events flow through this service.
       resource_type: audit-event
-      version: "1.0.0"
+      version: '1.0.0'
       runtime:
         provider: cloudflare-workers
         database: cloudflare-d1
@@ -513,13 +513,13 @@ spec:
         max_event_batch_size: 100
         max_query_window_days: 90
         integrity_check_interval_minutes: 60
-        max_retention_days: 2555  # 7 years for compliance
+        max_retention_days: 2555 # 7 years for compliance
       events:
         emitted:
           - governance.audit.event-ingested
           - governance.audit.integrity-violation
           - governance.audit.closed-loop-timeout
-        subscribed: []  # receives events from all services via queue
+        subscribed: [] # receives events from all services via queue
       audit:
         level: full
         retention: 2555d
@@ -533,16 +533,16 @@ spec:
           interface: IAuditLogService
           protocol: http
           methods:
-            - "ingestEvent(event: AuditEvent): IngestionReceipt"
-            - "ingestBatch(events: AuditEvent[]): BatchIngestionReceipt"
-            - "queryEvents(filter: AuditFilter, pagination: Pagination): AuditEventPage"
-            - "verifyIntegrity(fromTimestamp: string, toTimestamp: string): IntegrityReport"
-            - "getClosedLoopStatus(eventType: string): ClosedLoopStatus"
-            - "exportAuditLog(filter: AuditFilter, format: ExportFormat): ExportResult"
+            - 'ingestEvent(event: AuditEvent): IngestionReceipt'
+            - 'ingestBatch(events: AuditEvent[]): BatchIngestionReceipt'
+            - 'queryEvents(filter: AuditFilter, pagination: Pagination): AuditEventPage'
+            - 'verifyIntegrity(fromTimestamp: string, toTimestamp: string): IntegrityReport'
+            - 'getClosedLoopStatus(eventType: string): ClosedLoopStatus'
+            - 'exportAuditLog(filter: AuditFilter, format: ExportFormat): ExportResult'
 
     # ──── Usage Meter Service ───────────────────────────────────────────
     - id: usage-meter
-      urn: "urn:mycodexvantaos:service:usage-meter"
+      urn: 'urn:mycodexvantaos:service:usage-meter'
       category: security
       display_name: Usage Meter
       description: |
@@ -551,7 +551,7 @@ spec:
         billing periods and rate limit tiers (free/pro/enterprise).
         Integrates with audit-log for usage event traceability.
       resource_type: usage-record
-      version: "1.0.0"
+      version: '1.0.0'
       runtime:
         provider: cloudflare-workers
         database: cloudflare-d1
@@ -594,7 +594,7 @@ spec:
       audit:
         level: summary
         retention: 365d
-        immutable: false  # usage records can be aggregated
+        immutable: false # usage records can be aggregated
       dependencies:
         hard: [identity]
         soft: [audit-log]
@@ -603,12 +603,12 @@ spec:
           interface: IUsageMeterService
           protocol: http
           methods:
-            - "recordUsage(workspaceId: string, metric: UsageMetric): void"
-            - "checkRateLimit(workspaceId: string, tier: Tier): RateLimitStatus"
-            - "getUsageReport(workspaceId: string, period: UsagePeriod): UsageReport"
-            - "getQuotaStatus(workspaceId: string): QuotaStatus"
-            - "setTier(workspaceId: string, tier: Tier): void"
-            - "getTierLimits(tier: Tier): TierLimits"
+            - 'recordUsage(workspaceId: string, metric: UsageMetric): void'
+            - 'checkRateLimit(workspaceId: string, tier: Tier): RateLimitStatus'
+            - 'getUsageReport(workspaceId: string, period: UsagePeriod): UsageReport'
+            - 'getQuotaStatus(workspaceId: string): QuotaStatus'
+            - 'setTier(workspaceId: string, tier: Tier): void'
+            - 'getTierLimits(tier: Tier): TierLimits'
 
   # ─── Governance Overlay ──────────────────────────────────────────────
   governance:

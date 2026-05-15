@@ -111,7 +111,7 @@
 - [x] docs/knowledge-model/knowledge-model-overview.md
 - [x] docs/memory-model/memory-model-overview.md
 - [x] docs/memory-dream/auto-dream-flow.md
-- [x] docs/runtime/*.md (4 files)
+- [x] docs/runtime/\*.md (4 files)
 - [x] docs/self-hostable/self-hostable-overview.md
 - [x] docs/migration/current-audit-baseline.md
 

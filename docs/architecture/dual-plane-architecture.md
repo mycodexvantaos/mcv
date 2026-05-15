@@ -7,6 +7,7 @@ The platform is divided into two planes that communicate exclusively through con
 ### TypeScript Control Plane
 
 The control plane handles:
+
 - **API Gateway**: Request routing, authentication, rate limiting
 - **Policy Engine**: Declarative policy evaluation and enforcement
 - **Service Registry**: Catalog of all services and their capabilities
@@ -17,6 +18,7 @@ The control plane handles:
 ### Python Intelligence Plane
 
 The intelligence plane handles:
+
 - **Knowledge Pipeline**: Document parsing, embedding generation, semantic clustering
 - **Agent Orchestration**: LLM-powered chat, tool use, reasoning chains
 - **Vector Operations**: Similarity search, embedding management
@@ -27,14 +29,14 @@ The intelligence plane handles:
 
 Cross-plane communication uses these contract types:
 
-| Contract Type | Format | Direction | Purpose |
-|---|---|---|---|
-| Service Definition | YAML | TS -> Both | Service capabilities and interfaces |
-| Event Contract | YAML | Both -> Both | Asynchronous event schemas |
-| Policy Contract | YAML | TS -> Python | Policy rules for intelligence operations |
-| JSON Schema | JSON | Both -> Both | Data validation schemas |
-| Job Table | SQL (D1) | TS -> Python | Work dispatch queue |
-| Report | JSON | Python -> TS | Results and status updates |
+| Contract Type      | Format   | Direction    | Purpose                                  |
+| ------------------ | -------- | ------------ | ---------------------------------------- |
+| Service Definition | YAML     | TS -> Both   | Service capabilities and interfaces      |
+| Event Contract     | YAML     | Both -> Both | Asynchronous event schemas               |
+| Policy Contract    | YAML     | TS -> Python | Policy rules for intelligence operations |
+| JSON Schema        | JSON     | Both -> Both | Data validation schemas                  |
+| Job Table          | SQL (D1) | TS -> Python | Work dispatch queue                      |
+| Report             | JSON     | Python -> TS | Results and status updates               |
 
 ## Communication Flow
 

@@ -21,7 +21,7 @@ metadata:
       Events are chained via SHA-256 hashes for tamper detection.
 
 spec:
-  version: "1.0.0-constitution"
+  version: '1.0.0-constitution'
 
   # ─── Event Schema ─────────────────────────────────────────────────────
   # Every audit event in the platform MUST conform to this structure.
@@ -29,24 +29,37 @@ spec:
     required: [eventId, eventType, category, severity, timestamp, subjectId, action, correlationId]
     optional: [workspaceId, resourceKind, resourceId, data, parentEventId, sessionId]
     fields:
-      eventId: { type: string, format: uuidv4, description: "Globally unique event identifier" }
-      eventType: { type: string, description: "Event type from the catalog (e.g. identity.subject.registered)" }
-      category: { type: "enum(identity|workspace|knowledge|ai|model|governance)", description: "Event category" }
-      severity: { type: "enum(critical|high|medium|low|info)", description: "Impact severity" }
-      timestamp: { type: string, format: iso8601, description: "Event occurrence time (UTC)" }
-      subjectId: { type: string, description: "Subject who triggered the event" }
-      workspaceId: { type: string, description: "Workspace context (null for platform events)" }
-      resourceKind: { type: string, description: "Affected resource kind" }
-      resourceId: { type: string, description: "Affected resource identifier" }
-      action: { type: string, description: "Action that triggered the event" }
-      data: { type: map<string,any>, description: "Event-specific payload" }
-      correlationId: { type: string, format: uuidv4, description: "Correlates request → completion → failure" }
-      parentEventId: { type: string, format: uuidv4, description: "Causal parent event" }
-      sessionId: { type: string, description: "Authentication session context" }
+      eventId: { type: string, format: uuidv4, description: 'Globally unique event identifier' }
+      eventType:
+        {
+          type: string,
+          description: 'Event type from the catalog (e.g. identity.subject.registered)',
+        }
+      category:
+        {
+          type: 'enum(identity|workspace|knowledge|ai|model|governance)',
+          description: 'Event category',
+        }
+      severity: { type: 'enum(critical|high|medium|low|info)', description: 'Impact severity' }
+      timestamp: { type: string, format: iso8601, description: 'Event occurrence time (UTC)' }
+      subjectId: { type: string, description: 'Subject who triggered the event' }
+      workspaceId: { type: string, description: 'Workspace context (null for platform events)' }
+      resourceKind: { type: string, description: 'Affected resource kind' }
+      resourceId: { type: string, description: 'Affected resource identifier' }
+      action: { type: string, description: 'Action that triggered the event' }
+      data: { type: map<string, any>, description: 'Event-specific payload' }
+      correlationId:
+        { type: string, format: uuidv4, description: 'Correlates request → completion → failure' }
+      parentEventId: { type: string, format: uuidv4, description: 'Causal parent event' }
+      sessionId: { type: string, description: 'Authentication session context' }
     integrity_fields:
-      hash: { type: string, description: "SHA-256(eventId + eventType + timestamp + previousHash + data)" }
-      previousHash: { type: string, description: "Hash of the preceding event in the chain" }
-      chainIndex: { type: integer, description: "Monotonic position in the integrity chain" }
+      hash:
+        {
+          type: string,
+          description: 'SHA-256(eventId + eventType + timestamp + previousHash + data)',
+        }
+      previousHash: { type: string, description: 'Hash of the preceding event in the chain' }
+      chainIndex: { type: integer, description: 'Monotonic position in the integrity chain' }
 
   # ─── Event Catalog ───────────────────────────────────────────────────
   events:
@@ -54,7 +67,7 @@ spec:
     - event_type: identity.subject.registered
       category: identity
       severity: medium
-      description: "A new subject has been registered in the platform"
+      description: 'A new subject has been registered in the platform'
       data_schema:
         email: { type: string, required: true }
         displayName: { type: string, required: true }
@@ -63,25 +76,25 @@ spec:
       retention: 2555d
       alerting:
         channel: security
-        threshold: null  # every registration is logged, no alert threshold
+        threshold: null # every registration is logged, no alert threshold
 
     - event_type: identity.subject.authenticated
       category: identity
       severity: info
-      description: "A subject has successfully authenticated"
+      description: 'A subject has successfully authenticated'
       data_schema:
-        authMethod: { type: "enum(password|oauth|mfa|token)", required: true }
+        authMethod: { type: 'enum(password|oauth|mfa|token)', required: true }
         ipAddress: { type: string, required: true }
         userAgent: { type: string, required: true }
       retention: 365d
       alerting:
         channel: security
-        threshold: "10 failures from same IP in 5 minutes"
+        threshold: '10 failures from same IP in 5 minutes'
 
     - event_type: identity.subject.authentication-failed
       category: identity
       severity: medium
-      description: "A subject failed to authenticate"
+      description: 'A subject failed to authenticate'
       data_schema:
         authMethod: { type: string, required: true }
         ipAddress: { type: string, required: true }
@@ -89,21 +102,21 @@ spec:
       retention: 365d
       alerting:
         channel: security
-        threshold: "5 failures from same subject in 15 minutes"
+        threshold: '5 failures from same subject in 15 minutes'
 
     - event_type: identity.subject.mfa-challenged
       category: identity
       severity: info
-      description: "MFA challenge issued for a subject"
+      description: 'MFA challenge issued for a subject'
       data_schema:
-        challengeMethod: { type: "enum(totp|sms|webauthn)", required: true }
+        challengeMethod: { type: 'enum(totp|sms|webauthn)', required: true }
       retention: 90d
       alerting: null
 
     - event_type: identity.subject.mfa-verified
       category: identity
       severity: info
-      description: "MFA verification succeeded"
+      description: 'MFA verification succeeded'
       data_schema:
         challengeMethod: { type: string, required: true }
       retention: 90d
@@ -112,21 +125,21 @@ spec:
     - event_type: identity.subject.mfa-failed
       category: identity
       severity: high
-      description: "MFA verification failed"
+      description: 'MFA verification failed'
       data_schema:
         challengeMethod: { type: string, required: true }
         attemptCount: { type: integer, required: true }
       retention: 365d
       alerting:
         channel: security
-        threshold: "3 failures in 10 minutes"
+        threshold: '3 failures in 10 minutes'
 
     - event_type: identity.session.created
       category: identity
       severity: info
-      description: "A new authentication session was created"
+      description: 'A new authentication session was created'
       data_schema:
-        sessionType: { type: "enum(user|service)", required: true }
+        sessionType: { type: 'enum(user|service)', required: true }
         expiresIn: { type: integer, required: true }
       retention: 90d
       alerting: null
@@ -134,9 +147,9 @@ spec:
     - event_type: identity.session.revoked
       category: identity
       severity: medium
-      description: "A session was explicitly revoked"
+      description: 'A session was explicitly revoked'
       data_schema:
-        reason: { type: "enum(user-request|admin-action|timeout|security)", required: true }
+        reason: { type: 'enum(user-request|admin-action|timeout|security)', required: true }
         revokedBy: { type: string, required: true }
       retention: 365d
       alerting: null
@@ -144,45 +157,45 @@ spec:
     - event_type: identity.subject.suspended
       category: identity
       severity: high
-      description: "A subject has been suspended"
+      description: 'A subject has been suspended'
       data_schema:
         reason: { type: string, required: true }
         suspendedBy: { type: string, required: true }
       retention: 2555d
       alerting:
         channel: security
-        threshold: null  # always alert
+        threshold: null # always alert
 
     - event_type: identity.subject.deactivated
       category: identity
       severity: critical
-      description: "A subject has been permanently deactivated"
+      description: 'A subject has been permanently deactivated'
       data_schema:
         reason: { type: string, required: true }
         deactivatedBy: { type: string, required: true }
       retention: 2555d
       alerting:
         channel: security
-        threshold: null  # always alert
+        threshold: null # always alert
 
     # ── Workspace Events ───────────────────────────────────────────────
     - event_type: workspace.created
       category: workspace
       severity: info
-      description: "A new workspace has been created"
+      description: 'A new workspace has been created'
       data_schema:
         ownerId: { type: string, required: true }
         displayName: { type: string, required: true }
-        tier: { type: "enum(free|pro|enterprise)", required: true }
+        tier: { type: 'enum(free|pro|enterprise)', required: true }
       retention: 365d
       alerting: null
 
     - event_type: workspace.updated
       category: workspace
       severity: low
-      description: "Workspace settings have been updated"
+      description: 'Workspace settings have been updated'
       data_schema:
-        changes: { type: "array<FieldChange>", required: true }
+        changes: { type: 'array<FieldChange>', required: true }
         updatedBy: { type: string, required: true }
       retention: 180d
       alerting: null
@@ -190,7 +203,7 @@ spec:
     - event_type: workspace.member.added
       category: workspace
       severity: medium
-      description: "A member has been added to a workspace"
+      description: 'A member has been added to a workspace'
       data_schema:
         subjectId: { type: string, required: true }
         role: { type: string, required: true }
@@ -201,7 +214,7 @@ spec:
     - event_type: workspace.member.removed
       category: workspace
       severity: medium
-      description: "A member has been removed from a workspace"
+      description: 'A member has been removed from a workspace'
       data_schema:
         subjectId: { type: string, required: true }
         removedBy: { type: string, required: true }
@@ -212,19 +225,19 @@ spec:
     - event_type: workspace.suspended
       category: workspace
       severity: critical
-      description: "A workspace has been suspended"
+      description: 'A workspace has been suspended'
       data_schema:
         reason: { type: string, required: true }
         suspendedBy: { type: string, required: true }
       retention: 2555d
       alerting:
         channel: security
-        threshold: null  # always alert
+        threshold: null # always alert
 
     - event_type: workspace.resource-quota.warning
       category: workspace
       severity: medium
-      description: "A workspace resource quota has exceeded 80% usage"
+      description: 'A workspace resource quota has exceeded 80% usage'
       data_schema:
         resourceKind: { type: string, required: true }
         currentUsage: { type: number, required: true }
@@ -233,13 +246,13 @@ spec:
       retention: 90d
       alerting:
         channel: operations
-        threshold: "80% quota usage"
+        threshold: '80% quota usage'
 
     # ── Knowledge Events ───────────────────────────────────────────────
     - event_type: knowledge.document.uploaded
       category: knowledge
       severity: info
-      description: "A document has been uploaded to a knowledge collection"
+      description: 'A document has been uploaded to a knowledge collection'
       data_schema:
         documentId: { type: string, required: true }
         collectionId: { type: string, required: true }
@@ -251,17 +264,17 @@ spec:
     - event_type: knowledge.document.ingestion.started
       category: knowledge
       severity: info
-      description: "Document ingestion pipeline has started"
+      description: 'Document ingestion pipeline has started'
       data_schema:
         documentId: { type: string, required: true }
-        pipelineStages: { type: "array<string>", required: true }
+        pipelineStages: { type: 'array<string>', required: true }
       retention: 90d
       alerting: null
 
     - event_type: knowledge.document.ingestion.completed
       category: knowledge
       severity: info
-      description: "Document ingestion pipeline has completed successfully"
+      description: 'Document ingestion pipeline has completed successfully'
       data_schema:
         documentId: { type: string, required: true }
         chunkCount: { type: integer, required: true }
@@ -273,7 +286,7 @@ spec:
     - event_type: knowledge.document.ingestion.failed
       category: knowledge
       severity: high
-      description: "Document ingestion pipeline has failed"
+      description: 'Document ingestion pipeline has failed'
       data_schema:
         documentId: { type: string, required: true }
         failedStage: { type: string, required: true }
@@ -282,12 +295,12 @@ spec:
       retention: 365d
       alerting:
         channel: operations
-        threshold: "3 failures in 1 hour"
+        threshold: '3 failures in 1 hour'
 
     - event_type: knowledge.chunk.created
       category: knowledge
       severity: info
-      description: "A document chunk has been created"
+      description: 'A document chunk has been created'
       data_schema:
         chunkId: { type: string, required: true }
         documentId: { type: string, required: true }
@@ -299,7 +312,7 @@ spec:
     - event_type: knowledge.embedding.generated
       category: knowledge
       severity: info
-      description: "An embedding vector has been generated for a chunk"
+      description: 'An embedding vector has been generated for a chunk'
       data_schema:
         chunkId: { type: string, required: true }
         model: { type: string, required: true }
@@ -310,7 +323,7 @@ spec:
     - event_type: knowledge.collection.created
       category: knowledge
       severity: info
-      description: "A knowledge collection has been created"
+      description: 'A knowledge collection has been created'
       data_schema:
         collectionId: { type: string, required: true }
         name: { type: string, required: true }
@@ -321,7 +334,7 @@ spec:
     - event_type: knowledge.verification.passed
       category: knowledge
       severity: info
-      description: "Knowledge quality verification passed"
+      description: 'Knowledge quality verification passed'
       data_schema:
         collectionId: { type: string, required: true }
         checksRun: { type: integer, required: true }
@@ -332,12 +345,12 @@ spec:
     - event_type: knowledge.verification.failed
       category: knowledge
       severity: high
-      description: "Knowledge quality verification detected issues"
+      description: 'Knowledge quality verification detected issues'
       data_schema:
         collectionId: { type: string, required: true }
         checksRun: { type: integer, required: true }
         issuesFound: { type: integer, required: true }
-        issueTypes: { type: "array<string>", required: true }
+        issueTypes: { type: 'array<string>', required: true }
       retention: 365d
       alerting:
         channel: operations
@@ -347,18 +360,18 @@ spec:
     - event_type: ai.chat.session.created
       category: ai
       severity: info
-      description: "A new chat session has been created"
+      description: 'A new chat session has been created'
       data_schema:
         sessionId: { type: string, required: true }
         modelEndpointId: { type: string, required: true }
-        knowledgeCollectionIds: { type: "array<string>", required: false }
+        knowledgeCollectionIds: { type: 'array<string>', required: false }
       retention: 90d
       alerting: null
 
     - event_type: ai.chat.message.sent
       category: ai
       severity: info
-      description: "A user message has been sent in a chat session"
+      description: 'A user message has been sent in a chat session'
       data_schema:
         sessionId: { type: string, required: true }
         messageId: { type: string, required: true }
@@ -369,11 +382,12 @@ spec:
     - event_type: ai.chat.response.generated
       category: ai
       severity: info
-      description: "An AI response has been generated"
+      description: 'An AI response has been generated'
       data_schema:
         sessionId: { type: string, required: true }
         messageId: { type: string, required: true }
-        evidenceLevel: { type: "enum(knowledge-assisted|knowledge-verified|knowledge-grounded)", required: true }
+        evidenceLevel:
+          { type: 'enum(knowledge-assisted|knowledge-verified|knowledge-grounded)', required: true }
         sourceChunkCount: { type: integer, required: true }
         totalTokens: { type: integer, required: true }
         durationMs: { type: integer, required: true }
@@ -383,21 +397,21 @@ spec:
     - event_type: ai.chat.response.safety-flagged
       category: ai
       severity: high
-      description: "An AI response was flagged by the safety checker"
+      description: 'An AI response was flagged by the safety checker'
       data_schema:
         sessionId: { type: string, required: true }
         messageId: { type: string, required: true }
-        flagType: { type: "enum(harmful|biased|pii|hallucination)", required: true }
-        action: { type: "enum(blocked|warned|logged)", required: true }
+        flagType: { type: 'enum(harmful|biased|pii|hallucination)', required: true }
+        action: { type: 'enum(blocked|warned|logged)', required: true }
       retention: 2555d
       alerting:
         channel: security
-        threshold: null  # always alert on safety flags
+        threshold: null # always alert on safety flags
 
     - event_type: ai.chat.session.closed
       category: ai
       severity: info
-      description: "A chat session has been closed"
+      description: 'A chat session has been closed'
       data_schema:
         sessionId: { type: string, required: true }
         totalMessages: { type: integer, required: true }
@@ -410,7 +424,7 @@ spec:
     - event_type: model.endpoint.registered
       category: model
       severity: medium
-      description: "A new model endpoint has been registered"
+      description: 'A new model endpoint has been registered'
       data_schema:
         endpointId: { type: string, required: true }
         provider: { type: string, required: true }
@@ -422,10 +436,10 @@ spec:
     - event_type: model.endpoint.updated
       category: model
       severity: low
-      description: "A model endpoint configuration has been updated"
+      description: 'A model endpoint configuration has been updated'
       data_schema:
         endpointId: { type: string, required: true }
-        changes: { type: "array<FieldChange>", required: true }
+        changes: { type: 'array<FieldChange>', required: true }
         updatedBy: { type: string, required: true }
       retention: 180d
       alerting: null
@@ -433,7 +447,7 @@ spec:
     - event_type: model.endpoint.revoked
       category: model
       severity: high
-      description: "A model endpoint has been revoked"
+      description: 'A model endpoint has been revoked'
       data_schema:
         endpointId: { type: string, required: true }
         reason: { type: string, required: true }
@@ -446,7 +460,7 @@ spec:
     - event_type: model.invocation.started
       category: model
       severity: info
-      description: "A model invocation has started"
+      description: 'A model invocation has started'
       data_schema:
         endpointId: { type: string, required: true }
         invocationId: { type: string, required: true }
@@ -457,7 +471,7 @@ spec:
     - event_type: model.invocation.completed
       category: model
       severity: info
-      description: "A model invocation has completed"
+      description: 'A model invocation has completed'
       data_schema:
         endpointId: { type: string, required: true }
         invocationId: { type: string, required: true }
@@ -469,7 +483,7 @@ spec:
     - event_type: model.invocation.failed
       category: model
       severity: high
-      description: "A model invocation has failed"
+      description: 'A model invocation has failed'
       data_schema:
         endpointId: { type: string, required: true }
         invocationId: { type: string, required: true }
@@ -478,13 +492,13 @@ spec:
       retention: 365d
       alerting:
         channel: operations
-        threshold: "5 failures for same endpoint in 10 minutes"
+        threshold: '5 failures for same endpoint in 10 minutes'
 
     # ── Governance Events ──────────────────────────────────────────────
     - event_type: governance.audit.event-ingested
       category: governance
       severity: info
-      description: "An audit event has been ingested into the integrity chain"
+      description: 'An audit event has been ingested into the integrity chain'
       data_schema:
         ingestedEventType: { type: string, required: true }
         chainIndex: { type: integer, required: true }
@@ -495,7 +509,7 @@ spec:
     - event_type: governance.audit.integrity-violation
       category: governance
       severity: critical
-      description: "An integrity chain violation has been detected"
+      description: 'An integrity chain violation has been detected'
       data_schema:
         violatedAtIndex: { type: integer, required: true }
         expectedHash: { type: string, required: true }
@@ -504,12 +518,12 @@ spec:
       retention: 2555d
       alerting:
         channel: security
-        threshold: null  # always alert on integrity violations
+        threshold: null # always alert on integrity violations
 
     - event_type: governance.audit.closed-loop-timeout
       category: governance
       severity: high
-      description: "A closed-loop event pair was not completed within the timeout"
+      description: 'A closed-loop event pair was not completed within the timeout'
       data_schema:
         requestEventType: { type: string, required: true }
         correlationId: { type: string, required: true }
@@ -518,12 +532,12 @@ spec:
       retention: 2555d
       alerting:
         channel: operations
-        threshold: "3 timeouts for same event type in 1 hour"
+        threshold: '3 timeouts for same event type in 1 hour'
 
     - event_type: governance.usage.quota-warning
       category: governance
       severity: medium
-      description: "A usage quota has exceeded the warning threshold"
+      description: 'A usage quota has exceeded the warning threshold'
       data_schema:
         workspaceId: { type: string, required: true }
         metric: { type: string, required: true }
@@ -533,12 +547,12 @@ spec:
       retention: 90d
       alerting:
         channel: operations
-        threshold: "80% usage"
+        threshold: '80% usage'
 
     - event_type: governance.usage.rate-limit-exceeded
       category: governance
       severity: medium
-      description: "A rate limit has been exceeded"
+      description: 'A rate limit has been exceeded'
       data_schema:
         workspaceId: { type: string, required: true }
         tier: { type: string, required: true }
@@ -548,16 +562,16 @@ spec:
       retention: 90d
       alerting:
         channel: operations
-        threshold: "10 rate limit violations in 1 hour"
+        threshold: '10 rate limit violations in 1 hour'
 
     - event_type: governance.usage.billing-period-reset
       category: governance
       severity: info
-      description: "A billing period has been reset"
+      description: 'A billing period has been reset'
       data_schema:
         workspaceId: { type: string, required: true }
         period: { type: string, required: true }
-        previousUsage: { type: map<string,number>, required: true }
+        previousUsage: { type: map<string, number>, required: true }
       retention: 365d
       alerting: null
 
@@ -579,7 +593,7 @@ spec:
       - request: knowledge.document.uploaded
         completion: knowledge.document.ingestion.completed
         failure: knowledge.document.ingestion.failed
-        timeout_ms: 300000  # 5 minutes for large documents
+        timeout_ms: 300000 # 5 minutes for large documents
 
       - request: knowledge.document.ingestion.started
         completion: knowledge.document.ingestion.completed
@@ -619,8 +633,8 @@ spec:
     algorithm: sha-256
     chain_structure:
       genesis_event:
-        description: "The first event in the chain with a known sentinel previous hash"
-        previousHash: "0000000000000000000000000000000000000000000000000000000000000000"
+        description: 'The first event in the chain with a known sentinel previous hash'
+        previousHash: '0000000000000000000000000000000000000000000000000000000000000000'
       subsequent_events:
         hash_computation: |
           hash = SHA-256(
@@ -631,38 +645,38 @@ spec:
             SHA-256(canonical_json(data))
           )
         canonical_json_rules:
-          - "Keys sorted lexicographically"
-          - "No whitespace in JSON serialization"
-          - "UTF-8 encoding"
-          - "Null values omitted"
-          - "Numeric values as strings to avoid float precision issues"
+          - 'Keys sorted lexicographically'
+          - 'No whitespace in JSON serialization'
+          - 'UTF-8 encoding'
+          - 'Null values omitted'
+          - 'Numeric values as strings to avoid float precision issues'
 
     verification:
-      description: "Periodic integrity verification configuration"
+      description: 'Periodic integrity verification configuration'
       intervals:
         - type: incremental
           frequency: every_100_events
-          description: "Verify last 100 events hash chain"
+          description: 'Verify last 100 events hash chain'
         - type: windowed
           frequency: hourly
-          description: "Verify all events in the last hour"
+          description: 'Verify all events in the last hour'
         - type: full
           frequency: daily
-          description: "Verify the entire chain from genesis"
+          description: 'Verify the entire chain from genesis'
       on_violation:
         - emit: governance.audit.integrity-violation
         - alert: security_channel
-        - halt_ingestion: false  # continue ingesting but flag the violation
+        - halt_ingestion: false # continue ingesting but flag the violation
         - quarantine_from: violated_index
 
     storage:
-      description: "Immutable storage configuration for audit events"
+      description: 'Immutable storage configuration for audit events'
       backend: cloudflare-d1
-      replication: cloudflare-r2  # backup to R2 for durability
-      compression: gzip  # compress events older than 30 days
-      partitioning: monthly  # partition by month for query performance
+      replication: cloudflare-r2 # backup to R2 for durability
+      compression: gzip # compress events older than 30 days
+      partitioning: monthly # partition by month for query performance
       retention_enforcement:
         strategy: append-only
-        deletion: "never — events are archived, not deleted"
-        archival_threshold: 365d  # move to cold storage after 1 year
+        deletion: 'never — events are archived, not deleted'
+        archival_threshold: 365d # move to cold storage after 1 year
         cold_storage: cloudflare-r2-infrequent-access

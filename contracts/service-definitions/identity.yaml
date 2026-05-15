@@ -52,7 +52,7 @@ spec:
         type: object
         properties:
           subject:
-            $ref: "urn:mycodexvantaos:core:resource:identity-subject"
+            $ref: 'urn:mycodexvantaos:core:resource:identity-subject'
           token_pair:
             type: object
             properties:
@@ -90,7 +90,7 @@ spec:
           access_token: { type: string }
       output:
         type: object
-        $ref: "urn:mycodexvantaos:core:type:TokenClaims"
+        $ref: 'urn:mycodexvantaos:core:type:TokenClaims'
 
     - id: auth.revoke-session
       method: revokeSession
@@ -118,7 +118,7 @@ spec:
           workspace_id: { type: string }
       output:
         type: object
-        $ref: "urn:mycodexvantaos:core:type:PolicyDecision"
+        $ref: 'urn:mycodexvantaos:core:type:PolicyDecision'
 
     - id: auth.resolve-role
       method: resolveRole
@@ -132,7 +132,19 @@ spec:
       output:
         type: object
         properties:
-          role: { type: string, enum: [platform-admin, workspace-owner, workspace-member, workspace-viewer, agent-service, auditor] }
+          role:
+            {
+              type: string,
+              enum:
+                [
+                  platform-admin,
+                  workspace-owner,
+                  workspace-member,
+                  workspace-viewer,
+                  agent-service,
+                  auditor,
+                ],
+            }
 
     - id: auth.get-subject
       method: getSubject
@@ -144,7 +156,7 @@ spec:
           subject_id: { type: string }
       output:
         type: object
-        $ref: "urn:mycodexvantaos:core:resource:identity-subject"
+        $ref: 'urn:mycodexvantaos:core:resource:identity-subject'
 
   events:
     emitted:
@@ -158,7 +170,7 @@ spec:
   audit:
     log_all_actions: true
     integrity_chain: true
-    retention: 2555d  # 7 years
+    retention: 2555d # 7 years
 
   dependencies:
     hard: []

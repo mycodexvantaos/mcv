@@ -26,6 +26,7 @@ and agent orchestration.
 ## Package Naming Convention
 
 All packages use the `@mycodexvantaos/` prefix with lowercase kebab-case:
+
 - TS Packages: `@mycodexvantaos/service-catalog`
 - Python Packages: `mycodexvantaos-knowledge-pipeline`
 - Services: `@mycodexvantaos/service-workspace`

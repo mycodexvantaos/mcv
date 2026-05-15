@@ -12,4 +12,3 @@ rules:
       roles: ['workspace-member', 'workspace-owner']
     action: model:invoke
     resource: model-endpoint
-

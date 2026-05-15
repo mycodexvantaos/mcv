@@ -21,6 +21,7 @@ domain object (workspace, document, collection, chat session) is a "resource" wi
 ## Resource Kind System
 
 Each resource kind defines:
+
 1. **Kind**: Unique identifier (e.g., `knowledge-collection`)
 2. **API Version**: Version of the kind schema (e.g., `v1`)
 3. **Spec Schema**: JSON Schema for the resource's desired state

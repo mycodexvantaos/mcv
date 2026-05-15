@@ -39,7 +39,11 @@ spec:
           workspace_id: { type: string }
           collection_id: { type: string }
           filename: { type: string }
-          content_type: { type: string, enum: [application/pdf, text/plain, text/markdown, text/html, application/json] }
+          content_type:
+            {
+              type: string,
+              enum: [application/pdf, text/plain, text/markdown, text/html, application/json],
+            }
           data: { type: string, format: base64 }
           subject_id: { type: string }
           metadata: { type: object }
@@ -47,7 +51,7 @@ spec:
         type: object
         properties:
           document:
-            $ref: "urn:mycodexvantaos:knowledge:resource:document"
+            $ref: 'urn:mycodexvantaos:knowledge:resource:document'
           ingestion_queued: { type: boolean }
 
     - id: knowledge.ingest-document
@@ -90,10 +94,10 @@ spec:
           display_name: { type: string }
           subject_id: { type: string }
           description: { type: string }
-          embedding_model: { type: string, default: "text-embedding-3-small" }
+          embedding_model: { type: string, default: 'text-embedding-3-small' }
       output:
         type: object
-        $ref: "urn:mycodexvantaos:knowledge:resource:knowledge-collection"
+        $ref: 'urn:mycodexvantaos:knowledge:resource:knowledge-collection'
 
     - id: knowledge.get-document
       method: getDocument
@@ -106,7 +110,7 @@ spec:
           workspace_id: { type: string }
       output:
         type: object
-        $ref: "urn:mycodexvantaos:knowledge:resource:document"
+        $ref: 'urn:mycodexvantaos:knowledge:resource:document'
 
     - id: knowledge.delete-document
       method: deleteDocument

@@ -65,7 +65,16 @@
       "$ref": "#/definitions/ClosedLoopFields"
     }
   },
-  "required": ["id", "event_type", "category", "severity", "subject_id", "workspace_id", "timestamp", "integrity"],
+  "required": [
+    "id",
+    "event_type",
+    "category",
+    "severity",
+    "subject_id",
+    "workspace_id",
+    "timestamp",
+    "integrity"
+  ],
   "additionalProperties": false,
   "definitions": {
     "IntegrityFields": {

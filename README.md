@@ -4,7 +4,7 @@
 
 **AI-Native Agent Operating System**
 
-*Cloudflare-First · Hexagonal Architecture · Constitutionally Governed*
+_Cloudflare-First · Hexagonal Architecture · Constitutionally Governed_
 
 [![Platform Constitution CI](https://github.com/mycodexvantaos/mycodexvantaos/actions/workflows/platform-constitution-ci.yml/badge.svg)](https://github.com/mycodexvantaos/mycodexvantaos/actions/workflows/platform-constitution-ci.yml)
 [![CodeQL](https://github.com/mycodexvantaos/mycodexvantaos/actions/workflows/codeql.yml/badge.svg)](https://github.com/mycodexvantaos/mycodexvantaos/actions/workflows/codeql.yml)
@@ -49,11 +49,11 @@ The platform evolved from a Firebase Studio prototype through a Next.js web appl
 
 ### Three-Phase Startup Strategy
 
-| Phase | Runtime | Status |
-|---|---|---|
-| **Phase 1 — Cloudflare-First (MVP)** | Workers + D1 + KV + R2 + Vectorize + Queues | ✅ Complete |
-| **Phase 2 — Portable Core** | PostgreSQL + Redis + MinIO + Qdrant + RabbitMQ | 🔧 Bootstrap ready |
-| **Phase 3 — Self-Hostable** | Kubernetes + Helm + ArgoCD + HPA | ✅ Helm chart ready |
+| Phase                                | Runtime                                        | Status              |
+| ------------------------------------ | ---------------------------------------------- | ------------------- |
+| **Phase 1 — Cloudflare-First (MVP)** | Workers + D1 + KV + R2 + Vectorize + Queues    | ✅ Complete         |
+| **Phase 2 — Portable Core**          | PostgreSQL + Redis + MinIO + Qdrant + RabbitMQ | 🔧 Bootstrap ready  |
+| **Phase 3 — Self-Hostable**          | Kubernetes + Helm + ArgoCD + HPA               | ✅ Helm chart ready |
 
 ---
 
@@ -116,15 +116,15 @@ MyCodeXvantaOS follows an **eight-layer hexagonal (port/adapter) architecture** 
      └────────────────┘ └────────────┘ └────────────┘
 ```
 
-| Port | Interface | Cloudflare Impl | Portable Impl |
-|---|---|---|---|
-| Database | `IDatabasePort` / `IRepository<T>` | D1 | PostgreSQL |
-| Object Storage | `IObjectStoragePort` | R2 | MinIO/S3 |
-| Cache | via KV | KV | Redis |
-| Search | `ISearchPort` / `IKnowledgeSearchPort` | D1 FTS5 + Vectorize | pgvector + GIN |
-| Model | `IChatModelPort` / `IEmbeddingModelPort` | Workers AI / OpenAI / OpenRouter | Same (fetch-based) |
-| Queue | `IQueuePort` / `IJobQueuePort` | Cloudflare Queues | RabbitMQ |
-| Auth | `IAuthPort` | JWT + KV sessions | JWT + Redis sessions |
+| Port           | Interface                                | Cloudflare Impl                  | Portable Impl        |
+| -------------- | ---------------------------------------- | -------------------------------- | -------------------- |
+| Database       | `IDatabasePort` / `IRepository<T>`       | D1                               | PostgreSQL           |
+| Object Storage | `IObjectStoragePort`                     | R2                               | MinIO/S3             |
+| Cache          | via KV                                   | KV                               | Redis                |
+| Search         | `ISearchPort` / `IKnowledgeSearchPort`   | D1 FTS5 + Vectorize              | pgvector + GIN       |
+| Model          | `IChatModelPort` / `IEmbeddingModelPort` | Workers AI / OpenAI / OpenRouter | Same (fetch-based)   |
+| Queue          | `IQueuePort` / `IJobQueuePort`           | Cloudflare Queues                | RabbitMQ             |
+| Auth           | `IAuthPort`                              | JWT + KV sessions                | JWT + Redis sessions |
 
 ---
 
@@ -132,16 +132,16 @@ MyCodeXvantaOS follows an **eight-layer hexagonal (port/adapter) architecture** 
 
 The platform organizes all capabilities into **8 categories** following an AWS-like service catalog model. Every capability is productized, categorized, searchable, and enableable.
 
-| Category | Description | MVP Services | Post-MVP |
-|---|---|---|---|
-| 🔬 **Knowledge** | Document ingestion, vector search, collections | knowledge-store, knowledge-search | knowledge-trace, knowledge-repair, knowledge-cockpit |
-| 🤖 **Agent** | Conversational AI, autonomous agents | agent-chat | agent-router, agent-mode, agent-memory |
-| 🏢 **Workspace** | Multi-tenant collaboration | workspace | workspace-analytics, workspace-templates |
-| 🛠 **Developer** | Developer tooling and SDK | — | dev-portal, sdk-playground |
-| 🔐 **Security** | Authentication, authorization, secrets | identity | mfa-service, token-rotation |
-| 📦 **Storage** | Object storage, file management | (via adapters) | backup-service, lifecycle-policies |
-| 🧠 **Model** | LLM endpoints, BYOK gateway | model-byok | model-fine-tune, model-evaluator |
-| ⚡ **Automation** | Background jobs, scheduled tasks | usage-meter, automation | scheduler, event-router |
+| Category          | Description                                    | MVP Services                      | Post-MVP                                             |
+| ----------------- | ---------------------------------------------- | --------------------------------- | ---------------------------------------------------- |
+| 🔬 **Knowledge**  | Document ingestion, vector search, collections | knowledge-store, knowledge-search | knowledge-trace, knowledge-repair, knowledge-cockpit |
+| 🤖 **Agent**      | Conversational AI, autonomous agents           | agent-chat                        | agent-router, agent-mode, agent-memory               |
+| 🏢 **Workspace**  | Multi-tenant collaboration                     | workspace                         | workspace-analytics, workspace-templates             |
+| 🛠 **Developer**  | Developer tooling and SDK                      | —                                 | dev-portal, sdk-playground                           |
+| 🔐 **Security**   | Authentication, authorization, secrets         | identity                          | mfa-service, token-rotation                          |
+| 📦 **Storage**    | Object storage, file management                | (via adapters)                    | backup-service, lifecycle-policies                   |
+| 🧠 **Model**      | LLM endpoints, BYOK gateway                    | model-byok                        | model-fine-tune, model-evaluator                     |
+| ⚡ **Automation** | Background jobs, scheduled tasks               | usage-meter, automation           | scheduler, event-router                              |
 
 **URN Format:** `urn:mycodexvantaos:{category}:{kind}:{id}`
 
@@ -201,37 +201,37 @@ mycodexvantaos/
 
 ### Platform Layer
 
-| Layer | Technology | Purpose |
-|---|---|---|
-| **Language** | TypeScript | End-to-end type safety |
-| **Runtime (MVP)** | Cloudflare Workers | Global edge compute |
-| **Database** | D1 (SQLite) / PostgreSQL | Relational data, audit, usage |
-| **Cache** | KV / Redis | Sessions, rate limits, config |
-| **Storage** | R2 / MinIO | Document blobs, audit archives |
-| **Search** | Vectorize + FTS5 / pgvector + GIN | Hybrid semantic + fulltext |
-| **Queue** | Cloudflare Queues / RabbitMQ | Async processing, ingestion |
-| **AI Models** | Workers AI / OpenAI / OpenRouter | Chat completions, embeddings |
+| Layer             | Technology                        | Purpose                        |
+| ----------------- | --------------------------------- | ------------------------------ |
+| **Language**      | TypeScript                        | End-to-end type safety         |
+| **Runtime (MVP)** | Cloudflare Workers                | Global edge compute            |
+| **Database**      | D1 (SQLite) / PostgreSQL          | Relational data, audit, usage  |
+| **Cache**         | KV / Redis                        | Sessions, rate limits, config  |
+| **Storage**       | R2 / MinIO                        | Document blobs, audit archives |
+| **Search**        | Vectorize + FTS5 / pgvector + GIN | Hybrid semantic + fulltext     |
+| **Queue**         | Cloudflare Queues / RabbitMQ      | Async processing, ingestion    |
+| **AI Models**     | Workers AI / OpenAI / OpenRouter  | Chat completions, embeddings   |
 
 ### Web Application Layer
 
-| Layer | Technology | Purpose |
-|---|---|---|
-| **Framework** | Next.js 16 | React SSR/SSG with App Router |
-| **UI** | Radix UI + Tailwind CSS | Accessible, styled components |
-| **AI** | Genkit (Google GenAI) | AI flow orchestration |
-| **State** | Zustand | Client-side state management |
-| **Charts** | Recharts | Data visualization |
-| **Forms** | React Hook Form + Zod | Validation-first forms |
-| **Deploy** | OpenNext + Cloudflare Pages | SSR on edge |
+| Layer         | Technology                  | Purpose                       |
+| ------------- | --------------------------- | ----------------------------- |
+| **Framework** | Next.js 16                  | React SSR/SSG with App Router |
+| **UI**        | Radix UI + Tailwind CSS     | Accessible, styled components |
+| **AI**        | Genkit (Google GenAI)       | AI flow orchestration         |
+| **State**     | Zustand                     | Client-side state management  |
+| **Charts**    | Recharts                    | Data visualization            |
+| **Forms**     | React Hook Form + Zod       | Validation-first forms        |
+| **Deploy**    | OpenNext + Cloudflare Pages | SSR on edge                   |
 
 ### Infrastructure
 
-| Tool | Purpose |
-|---|---|
-| **pnpm** | Monorepo workspace management |
-| **Wrangler** | Cloudflare Workers dev/deploy |
-| **Docker Compose** | Local development stack |
-| **Helm** | Kubernetes deployment charts |
+| Tool               | Purpose                        |
+| ------------------ | ------------------------------ |
+| **pnpm**           | Monorepo workspace management  |
+| **Wrangler**       | Cloudflare Workers dev/deploy  |
+| **Docker Compose** | Local development stack        |
+| **Helm**           | Kubernetes deployment charts   |
 | **GitHub Actions** | CI/CD pipelines (38 workflows) |
 
 ---
@@ -385,17 +385,17 @@ All endpoints follow the OpenAPI 3.1 specification defined in `contracts/openapi
 
 ### Quick Reference
 
-| Category | Endpoints | Description |
-|---|---|---|
-| Health | `GET /health` | Platform health check |
-| Security | `/api/v1/auth/*` | Login, register, token refresh, permission check |
-| Workspace | `/api/v1/workspaces/*` | CRUD, members, settings |
-| Knowledge | `/api/v1/knowledge/*` | Collections, documents, ingestion, search |
-| Agent | `/api/v1/agent/*` | Sessions, messages, streaming |
-| Model | `/api/v1/models/*` | List endpoints, chat completions |
-| Audit | `/api/v1/audit/*` | Event list, chain verification |
-| Usage | `/api/v1/usage/*` | Current usage, quota, history |
-| Automation | `/api/v1/automation/*` | Job enqueue, status, cancellation |
+| Category   | Endpoints              | Description                                      |
+| ---------- | ---------------------- | ------------------------------------------------ |
+| Health     | `GET /health`          | Platform health check                            |
+| Security   | `/api/v1/auth/*`       | Login, register, token refresh, permission check |
+| Workspace  | `/api/v1/workspaces/*` | CRUD, members, settings                          |
+| Knowledge  | `/api/v1/knowledge/*`  | Collections, documents, ingestion, search        |
+| Agent      | `/api/v1/agent/*`      | Sessions, messages, streaming                    |
+| Model      | `/api/v1/models/*`     | List endpoints, chat completions                 |
+| Audit      | `/api/v1/audit/*`      | Event list, chain verification                   |
+| Usage      | `/api/v1/usage/*`      | Current usage, quota, history                    |
+| Automation | `/api/v1/automation/*` | Job enqueue, status, cancellation                |
 
 ### Authentication
 
@@ -462,14 +462,14 @@ Pending → Active → Succeeded / Failed / Retiring → Retired
 
 MyCodeXvantaOS has undergone a significant architectural evolution:
 
-| Era | Phase | Description |
-|---|---|---|
-| **V0** | Prototype | Firebase Studio workspace, initial Next.js prototype |
-| **V1** | Divine Control Plane | 8 core packages, 15 services, Cloudflare-first infrastructure |
-| **V2** | SentinelCore | Observer/observable dual-role system, accountability protocols, 金鑰配對系統 |
-| **V3** | Cloudflare Deployment | Next.js 16 + OpenNext on Cloudflare Workers/Pages, wrangler configuration |
-| **V4** | Platform Constitution | 8-category service classification, hexagonal decomposition, five constitutional models |
-| **V5** | Full Architecture | Apps layer, infrastructure contracts, multi-runtime bootstrap, 3-dialect migrations, Helm charts |
+| Era    | Phase                 | Description                                                                                      |
+| ------ | --------------------- | ------------------------------------------------------------------------------------------------ |
+| **V0** | Prototype             | Firebase Studio workspace, initial Next.js prototype                                             |
+| **V1** | Divine Control Plane  | 8 core packages, 15 services, Cloudflare-first infrastructure                                    |
+| **V2** | SentinelCore          | Observer/observable dual-role system, accountability protocols, 金鑰配對系統                     |
+| **V3** | Cloudflare Deployment | Next.js 16 + OpenNext on Cloudflare Workers/Pages, wrangler configuration                        |
+| **V4** | Platform Constitution | 8-category service classification, hexagonal decomposition, five constitutional models           |
+| **V5** | Full Architecture     | Apps layer, infrastructure contracts, multi-runtime bootstrap, 3-dialect migrations, Helm charts |
 
 The project merged its platform constitution architecture (PRs #23, #24) completing a 10-phase decomposition from a monolithic structure into the current layered hexagonal architecture.
 
@@ -497,9 +497,9 @@ Proprietary — All rights reserved.
 
 <div align="center">
 
-*Architecture document: [PLATFORM_ARCHITECTURE.md](./PLATFORM_ARCHITECTURE.md)*
-*Deployment guide: [docs/deployment/README.md](./docs/deployment/README.md)*
-*Operations runbook: [docs/operations/README.md](./docs/operations/README.md)*
+_Architecture document: [PLATFORM_ARCHITECTURE.md](./PLATFORM_ARCHITECTURE.md)_
+_Deployment guide: [docs/deployment/README.md](./docs/deployment/README.md)_
+_Operations runbook: [docs/operations/README.md](./docs/operations/README.md)_
 
 **Built with ☁️ Cloudflare Workers · 🏛️ Constitutional Governance · 🔗 SHA-256 Audit Chains**
 

@@ -50,12 +50,12 @@ wrangler deploy
 Self-hosted deployment with portable alternatives for all Cloudflare services:
 
 | Cloudflare | Portable Alternative |
-|-----------|---------------------|
-| D1 | PostgreSQL 15 |
-| KV | Redis 7 |
-| R2 | MinIO |
-| Vectorize | Qdrant |
-| Queues | RabbitMQ |
+| ---------- | -------------------- |
+| D1         | PostgreSQL 15        |
+| KV         | Redis 7              |
+| R2         | MinIO                |
+| Vectorize  | Qdrant               |
+| Queues     | RabbitMQ             |
 
 #### Steps
 

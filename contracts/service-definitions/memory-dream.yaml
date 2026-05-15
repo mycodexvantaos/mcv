@@ -12,7 +12,7 @@ metadata:
   annotations:
     status: deferred
     targetPhase: post-mvp
-    reason: "Depends on mature knowledge-store + agent-chat; revisit after MVP stabilization"
+    reason: 'Depends on mature knowledge-store + agent-chat; revisit after MVP stabilization'
 spec:
   displayName: 'Memory Dream'
   description: 'Autonomous memory reinforcement and synthesis engine'

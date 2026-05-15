@@ -12,6 +12,7 @@ The Service Catalog is the central registry for all platform services. It provid
 ## Architecture
 
 The catalog is implemented as a TypeScript control plane service:
+
 - **Package**: `@mycodexvantaos/service-catalog`
 - **Contract**: `contracts/service-definitions/service-catalog.yaml`
 - **Events**: `contracts/events/audit-events.yaml`
@@ -20,6 +21,7 @@ The catalog is implemented as a TypeScript control plane service:
 ## Service Registration
 
 Services self-register at startup with:
+
 1. Service name and version
 2. Capability list (CRUD operations, events produced/consumed)
 3. Health check endpoint

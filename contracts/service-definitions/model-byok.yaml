@@ -48,7 +48,7 @@ spec:
               top_p: { type: number, default: 1.0 }
       output:
         type: object
-        $ref: "urn:mycodexvantaos:ai:resource:model-endpoint"
+        $ref: 'urn:mycodexvantaos:ai:resource:model-endpoint'
 
     - id: model.invoke
       method: invokeModel

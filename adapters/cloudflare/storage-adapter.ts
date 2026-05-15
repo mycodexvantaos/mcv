@@ -20,7 +20,12 @@ export class CloudflareStorageAdapter implements IStoragePort {
     this.bucket = env.BUCKET;
   }
 
-  async put(bucket: string, key: string, data: Uint8Array, options?: StoragePutOptions): Promise<StoragePutResult> {
+  async put(
+    bucket: string,
+    key: string,
+    data: Uint8Array,
+    options?: StoragePutOptions
+  ): Promise<StoragePutResult> {
     const result = await this.bucket.put(key, data, {
       httpMetadata: options?.contentType ? { contentType: options.contentType } : undefined,
       customMetadata: options?.metadata,

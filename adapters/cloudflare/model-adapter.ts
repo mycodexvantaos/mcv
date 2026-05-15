@@ -52,7 +52,7 @@ export class CloudflareModelAdapter implements IModelPort {
       throw new Error(`Model invocation failed: ${response.status} ${await response.text()}`);
     }
 
-    const data = await response.json() as any;
+    const data = (await response.json()) as any;
     return {
       id: data.id,
       content: data.choices[0]?.message?.content ?? '',
@@ -154,7 +154,7 @@ export class CloudflareModelAdapter implements IModelPort {
       throw new Error(`Embedding failed: ${response.status}`);
     }
 
-    const data = await response.json() as any;
+    const data = (await response.json()) as any;
     return {
       model: data.model,
       embeddings: data.data.map((d: any) => d.embedding),

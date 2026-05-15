@@ -62,8 +62,6 @@ MyCodeXvantaOS 是一個 Local-first、Provider-agnostic、Contract-driven 的�
 
 - **要求**：必须在没有任何外部 DB、Queue 或 CI/CD 的情况下运行。
 
-
-
 ### Layer C.5: Capabilities Layer (能力层)
 
 - **职责**：统一的能力抽象与生命周期管理，为所有外部能力提供标准化接口。

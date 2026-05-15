@@ -29,6 +29,7 @@ operations. Every significant action is recorded with:
 ## Query Interface
 
 The audit log supports:
+
 - Time-range queries with pagination
 - Subject-based filtering (all actions by a user)
 - Resource-based filtering (all changes to a document)

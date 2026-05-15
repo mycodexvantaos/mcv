@@ -124,7 +124,8 @@ spec:
       output:
         type: object
         properties:
-          evidence_level: { type: string, enum: [knowledge-assisted, knowledge-verified, knowledge-grounded] }
+          evidence_level:
+            { type: string, enum: [knowledge-assisted, knowledge-verified, knowledge-grounded] }
           confidence: { type: number }
           reasoning: { type: string }
 

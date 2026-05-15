@@ -19,7 +19,10 @@ export class CloudflareDatabaseAdapter implements IDatabasePort {
   }
 
   async execute(query: string, params?: unknown[]): Promise<DatabaseResult> {
-    const result = await this.db.prepare(query).bind(...(params ?? [])).run();
+    const result = await this.db
+      .prepare(query)
+      .bind(...(params ?? []))
+      .run();
     return {
       rowsAffected: result.meta.changes,
       lastInsertRowid: result.meta.last_row_id,
@@ -27,12 +30,21 @@ export class CloudflareDatabaseAdapter implements IDatabasePort {
   }
 
   async query<T = Record<string, unknown>>(query: string, params?: unknown[]): Promise<T[]> {
-    const result = await this.db.prepare(query).bind(...(params ?? [])).all();
+    const result = await this.db
+      .prepare(query)
+      .bind(...(params ?? []))
+      .all();
     return (result.results as T[]) ?? [];
   }
 
-  async queryFirst<T = Record<string, unknown>>(query: string, params?: unknown[]): Promise<T | null> {
-    const result = await this.db.prepare(query).bind(...(params ?? [])).first<T>();
+  async queryFirst<T = Record<string, unknown>>(
+    query: string,
+    params?: unknown[]
+  ): Promise<T | null> {
+    const result = await this.db
+      .prepare(query)
+      .bind(...(params ?? []))
+      .first<T>();
     return result ?? null;
   }
 
@@ -54,16 +66,12 @@ export class CloudflareDatabaseAdapter implements IDatabasePort {
       )`
     );
 
-    const existing = await this.queryFirst(
-      'SELECT id FROM _migrations WHERE id = ?',
-      [migrationFile]
-    );
+    const existing = await this.queryFirst('SELECT id FROM _migrations WHERE id = ?', [
+      migrationFile,
+    ]);
 
     if (!existing) {
-      await this.execute(
-        'INSERT INTO _migrations (id) VALUES (?)',
-        [migrationFile]
-      );
+      await this.execute('INSERT INTO _migrations (id) VALUES (?)', [migrationFile]);
     }
   }
 

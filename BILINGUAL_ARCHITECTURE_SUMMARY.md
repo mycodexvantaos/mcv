@@ -17,6 +17,7 @@ mycodexvantaos = TypeScript Control Plane + Python Intelligence Plane
 ## ✅ 已完成工作
 
 ### Phase 0.5: Provider Migration (TypeScript)
+
 - 35 個 manifest-only providers 遷移至 CapabilityBase
 - 74 個 CapabilityBase provider 實作
 - 76 個 index.ts factory 檔案
@@ -24,6 +25,7 @@ mycodexvantaos = TypeScript Control Plane + Python Intelligence Plane
 - PR #31 已合併至 main
 
 ### Python 智能平面建立
+
 - ✅ Python monorepo 架構 (`python/` 目錄)
 - ✅ 第一個 package: `mycodexvantaos-memory-dream`
 - ✅ 第一個 app: `dream-worker` CLI 工具
@@ -34,16 +36,16 @@ mycodexvantaos = TypeScript Control Plane + Python Intelligence Plane
 
 ## 📊 統計
 
-| 項目 | 數量 |
-|------|------|
-| TypeScript Providers | 74 |
-| TypeScript Tests | 377 passing |
-| TypeScript Packages | 35 |
-| Python Packages | 1 |
-| Python Apps | 1 |
-| Python Tests | 6 |
-| Contract Schemas | 4 |
-| CI Workflows (Python) | 1 |
+| 項目                  | 數量        |
+| --------------------- | ----------- |
+| TypeScript Providers  | 74          |
+| TypeScript Tests      | 377 passing |
+| TypeScript Packages   | 35          |
+| Python Packages       | 1           |
+| Python Apps           | 1           |
+| Python Tests          | 6           |
+| Contract Schemas      | 4           |
+| CI Workflows (Python) | 1           |
 
 ---
 
@@ -76,11 +78,13 @@ mycodexvantaos/
 ## 💡 Memory Dream 功能
 
 **偵測器：**
+
 1. Duplicate Detection — 找出重複記憶
 2. Conflict Detection — 找出衝突記憶
 3. Orphan Detection — 找出無主實體引用
 
 **動作類型：**
+
 - `merge` — 合併重複記憶
 - `resolve` — 解決衝突
 - `mark_orphan` — 標記無主實體
@@ -121,18 +125,19 @@ pnpm test  # 377 passing
 
 ## 📖 文件
 
-| 文件 | 說明 |
-|------|------|
-| [README_BILINGUAL.md](README_BILINGUAL.md) | 雙語架構總覽 |
-| [PYTHON_PLANE_SETUP_COMPLETE.md](PYTHON_PLANE_SETUP_COMPLETE.md) | Python 設置完成報告 |
-| [python/README.md](python/README.md) | Python workspace 文檔 |
-| [todo.md](todo.md) | 最新任務狀態 |
+| 文件                                                             | 說明                  |
+| ---------------------------------------------------------------- | --------------------- |
+| [README_BILINGUAL.md](README_BILINGUAL.md)                       | 雙語架構總覽          |
+| [PYTHON_PLANE_SETUP_COMPLETE.md](PYTHON_PLANE_SETUP_COMPLETE.md) | Python 設置完成報告   |
+| [python/README.md](python/README.md)                             | Python workspace 文檔 |
+| [todo.md](todo.md)                                               | 最新任務狀態          |
 
 ---
 
 ## 🎯 核心原則
 
 ### TypeScript 控制平面
+
 - Platform contracts and control
 - Service catalog
 - Resource model
@@ -141,6 +146,7 @@ pnpm test  # 377 passing
 - Cloudflare Workers native
 
 ### Python 智能平面
+
 - AI/ML capabilities
 - Memory dream
 - Knowledge pipeline
@@ -149,6 +155,7 @@ pnpm test  # 377 passing
 - RAG retrieval
 
 ### 通訊方式
+
 ```
 TypeScript API → Database Jobs → Python Worker → Dream Report → TypeScript Read
 ```

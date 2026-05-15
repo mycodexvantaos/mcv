@@ -51,7 +51,7 @@ export class CloudflareQueueAdapter implements IQueuePort {
     // This is a known limitation — we return best-effort data
     return {
       name: queue,
-      approximateDepth: -1,  // not available
+      approximateDepth: -1, // not available
     };
   }
 

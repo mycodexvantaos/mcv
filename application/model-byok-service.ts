@@ -5,8 +5,20 @@
  * Manages model endpoint registration, credential encryption, usage tracking, and failover.
  */
 
-import type { IDatabasePort, ICachePort, IModelPort, IAuditPort, IIdentityPort, IUsagePort } from '../ports/index';
-import type { ModelEndpointSpec, ModelEndpointStatus, ModelEndpointPhase, Resource } from '../core/index';
+import type {
+  IDatabasePort,
+  ICachePort,
+  IModelPort,
+  IAuditPort,
+  IIdentityPort,
+  IUsagePort,
+} from '../ports/index';
+import type {
+  ModelEndpointSpec,
+  ModelEndpointStatus,
+  ModelEndpointPhase,
+  Resource,
+} from '../core/index';
 
 export interface ModelByokServiceDeps {
   database: IDatabasePort;
@@ -24,14 +36,17 @@ export class ModelByokService {
     this.deps = deps;
   }
 
-  async registerEndpoint(workspaceId: string, input: {
-    provider: string;
-    modelId: string;
-    apiEndpoint: string;
-    apiKey: string;
-    parameters?: Record<string, unknown>;
-    failoverEndpointId?: string;
-  }): Promise<Resource<ModelEndpointSpec, ModelEndpointStatus>> {
+  async registerEndpoint(
+    workspaceId: string,
+    input: {
+      provider: string;
+      modelId: string;
+      apiEndpoint: string;
+      apiKey: string;
+      parameters?: Record<string, unknown>;
+      failoverEndpointId?: string;
+    }
+  ): Promise<Resource<ModelEndpointSpec, ModelEndpointStatus>> {
     const endpointId = crypto.randomUUID();
     const urn = `urn:mycodexvantaos:ai:model-endpoint:${endpointId}`;
     const now = new Date().toISOString();
@@ -42,7 +57,19 @@ export class ModelByokService {
     await this.deps.database.execute(
       `INSERT INTO model_endpoints (id, urn, workspace_id, provider, model_id, api_endpoint, credential_ref, parameters, failover_endpoint_id, phase, health, created_at, updated_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'active', 'healthy', ?, ?)`,
-      [endpointId, urn, workspaceId, input.provider, input.modelId, input.apiEndpoint, credentialRef, JSON.stringify(input.parameters ?? {}), input.failoverEndpointId ?? null, now, now]
+      [
+        endpointId,
+        urn,
+        workspaceId,
+        input.provider,
+        input.modelId,
+        input.apiEndpoint,
+        credentialRef,
+        JSON.stringify(input.parameters ?? {}),
+        input.failoverEndpointId ?? null,
+        now,
+        now,
+      ]
     );
 
     await this.deps.audit.emitEvent({
@@ -61,13 +88,52 @@ export class ModelByokService {
     return {
       apiVersion: 'platform.mycodevantaos/v1',
       kind: 'model-endpoint',
-      metadata: { id: endpointId, urn, kind: 'model-endpoint', workspaceId, labels: { provider: input.provider }, annotations: {}, createdBy: 'system', version: '1.0.0', resourceVersion: 1, createdAt: now, updatedAt: now },
-      spec: { provider: input.provider as any, modelId: input.modelId, apiEndpoint: input.apiEndpoint, credentialRef, parameters: input.parameters as any, failoverEndpointId: input.failoverEndpointId ?? null },
-      status: { phase: 'active', conditions: [{ type: 'Ready', status: 'True', reason: 'Registered', message: 'Endpoint registered', lastTransitionTime: now }], health: 'healthy', totalInvocations: 0, totalTokensUsed: 0, lastInvokedAt: null, lastHealthCheckAt: now },
+      metadata: {
+        id: endpointId,
+        urn,
+        kind: 'model-endpoint',
+        workspaceId,
+        labels: { provider: input.provider },
+        annotations: {},
+        createdBy: 'system',
+        version: '1.0.0',
+        resourceVersion: 1,
+        createdAt: now,
+        updatedAt: now,
+      },
+      spec: {
+        provider: input.provider as any,
+        modelId: input.modelId,
+        apiEndpoint: input.apiEndpoint,
+        credentialRef,
+        parameters: input.parameters as any,
+        failoverEndpointId: input.failoverEndpointId ?? null,
+      },
+      status: {
+        phase: 'active',
+        conditions: [
+          {
+            type: 'Ready',
+            status: 'True',
+            reason: 'Registered',
+            message: 'Endpoint registered',
+            lastTransitionTime: now,
+          },
+        ],
+        health: 'healthy',
+        totalInvocations: 0,
+        totalTokensUsed: 0,
+        lastInvokedAt: null,
+        lastHealthCheckAt: now,
+      },
     };
   }
 
-  async invokeModel(endpointId: string, prompt: string, options?: Record<string, unknown>): Promise<any> {
+  async invokeModel(
+    endpointId: string,
+    prompt: string,
+    options?: Record<string, unknown>
+  ): Promise<any> {
     const endpoint = await this.deps.database.queryFirst<{
       id: string;
       provider: string;
@@ -97,7 +163,7 @@ export class ModelByokService {
       const response = await this.deps.model.invoke({
         model: endpoint.model_id,
         messages: [{ role: 'user', content: prompt }],
-        ...options as any,
+        ...(options as any),
       });
 
       await this.deps.audit.emitEvent({
@@ -109,7 +175,11 @@ export class ModelByokService {
         resourceKind: 'model-endpoint',
         resourceId: endpointId,
         action: 'invoke-model',
-        data: { invocationId: correlationId, totalTokens: response.usage.totalTokens, durationMs: 0 },
+        data: {
+          invocationId: correlationId,
+          totalTokens: response.usage.totalTokens,
+          durationMs: 0,
+        },
         correlationId,
       });
 
@@ -137,6 +207,8 @@ export class ModelByokService {
     const encoder = new TextEncoder();
     const data = encoder.encode(apiKey);
     const hash = await crypto.subtle.digest('SHA-256', data);
-    return `enc:aes-256-gcm:${Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('')}`;
+    return `enc:aes-256-gcm:${Array.from(new Uint8Array(hash))
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('')}`;
   }
 }

@@ -7,6 +7,7 @@ The Docker runtime provides containerized deployment for self-hosted installatio
 ## Dockerfiles
 
 Auto-generated Dockerfiles are available for all services:
+
 ```bash
 # Generate Dockerfiles
 pnpm --filter @mycodexvantaos/cli generate-dockerfiles
@@ -21,6 +22,7 @@ docker compose up -d
 ## Configuration
 
 Environment variables control runtime behavior:
+
 - `RUNTIME`: docker (required)
 - `DATABASE_URL`: PostgreSQL connection string
 - `REDIS_URL`: Redis connection for job queues
@@ -30,5 +32,6 @@ Environment variables control runtime behavior:
 ## Python Workers
 
 In Docker, Python workers can run as:
+
 - **subprocess**: Same container, simpler networking
 - **remote**: Separate containers, better scaling

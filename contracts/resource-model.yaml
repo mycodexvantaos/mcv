@@ -20,7 +20,7 @@ metadata:
       are workspace-scoped and governed by the policy model.
 
 spec:
-  version: "1.0.0-constitution"
+  version: '1.0.0-constitution'
 
   # ─── Universal Resource Schema ────────────────────────────────────────
   # Every resource in the platform MUST conform to this structure.
@@ -31,31 +31,33 @@ spec:
       required: [id, urn, kind, workspaceId, createdAt, updatedAt]
       optional: [labels, annotations, createdBy, version, resourceVersion]
       fields:
-        id: { type: string, format: uuidv4, description: "Globally unique resource identifier" }
-        urn: { type: string, format: urn, description: "Canonical URN following platform URN format" }
-        kind: { type: string, description: "Resource kind from the registry" }
-        workspaceId: { type: string, format: uuidv4, description: "Owning workspace" }
-        labels: { type: map<string,string>, description: "Key-value pairs for categorization" }
-        annotations: { type: map<string,string>, description: "Key-value pairs for metadata" }
-        createdBy: { type: string, format: subject-id, description: "Subject who created this resource" }
-        version: { type: string, description: "Semantic version of the resource definition" }
-        resourceVersion: { type: integer, description: "Monotonically increasing revision counter" }
-        createdAt: { type: string, format: iso8601, description: "Creation timestamp" }
-        updatedAt: { type: string, format: iso8601, description: "Last update timestamp" }
+        id: { type: string, format: uuidv4, description: 'Globally unique resource identifier' }
+        urn:
+          { type: string, format: urn, description: 'Canonical URN following platform URN format' }
+        kind: { type: string, description: 'Resource kind from the registry' }
+        workspaceId: { type: string, format: uuidv4, description: 'Owning workspace' }
+        labels: { type: map<string, string>, description: 'Key-value pairs for categorization' }
+        annotations: { type: map<string, string>, description: 'Key-value pairs for metadata' }
+        createdBy:
+          { type: string, format: subject-id, description: 'Subject who created this resource' }
+        version: { type: string, description: 'Semantic version of the resource definition' }
+        resourceVersion: { type: integer, description: 'Monotonically increasing revision counter' }
+        createdAt: { type: string, format: iso8601, description: 'Creation timestamp' }
+        updatedAt: { type: string, format: iso8601, description: 'Last update timestamp' }
     spec:
-      description: "Desired state — defined by the resource kind"
+      description: 'Desired state — defined by the resource kind'
     status:
-      description: "Observed state — managed by the platform controller"
+      description: 'Observed state — managed by the platform controller'
       required: [phase, conditions]
       fields:
-        phase: { type: string, description: "Current lifecycle phase" }
-        conditions: { type: "array<Condition>", description: "List of observed conditions" }
+        phase: { type: string, description: 'Current lifecycle phase' }
+        conditions: { type: 'array<Condition>', description: 'List of observed conditions' }
         observedAt: { type: string, format: iso8601 }
       condition_schema:
-        type: { type: string, description: "Condition type (e.g. Ready, Degraded)" }
-        status: { type: "enum(True|False|Unknown)", description: "Condition status" }
-        reason: { type: string, description: "Machine-readable reason" }
-        message: { type: string, description: "Human-readable message" }
+        type: { type: string, description: 'Condition type (e.g. Ready, Degraded)' }
+        status: { type: 'enum(True|False|Unknown)', description: 'Condition status' }
+        reason: { type: string, description: 'Machine-readable reason' }
+        message: { type: string, description: 'Human-readable message' }
         lastTransitionTime: { type: string, format: iso8601 }
 
   # ─── Resource Kind Registry ───────────────────────────────────────────
@@ -63,8 +65,8 @@ spec:
     # ── Core Group ──────────────────────────────────────────────────────
     - kind: identity-subject
       group: core
-      description: "An authenticated subject (user or service account)"
-      scope: platform  # platform-scoped, not workspace-scoped
+      description: 'An authenticated subject (user or service account)'
+      scope: platform # platform-scoped, not workspace-scoped
       owning_service: identity
       spec_fields:
         - name: email
@@ -74,16 +76,16 @@ spec:
         - name: displayName
           type: string
           required: true
-          validation: "maxLength:128"
+          validation: 'maxLength:128'
         - name: mfaEnabled
           type: boolean
           required: true
           default: false
         - name: credentials
-          type: "array<CredentialRef>"
+          type: 'array<CredentialRef>'
           required: false
         - name: roles
-          type: "map<workspaceId, Role>"
+          type: 'map<workspaceId, Role>'
           required: false
       status_fields:
         - name: authProvider
@@ -99,18 +101,18 @@ spec:
 
     - kind: workspace
       group: core
-      description: "Isolated namespace for resources, membership, and quotas"
+      description: 'Isolated namespace for resources, membership, and quotas'
       scope: platform
       owning_service: workspace
       spec_fields:
         - name: displayName
           type: string
           required: true
-          validation: "maxLength:128"
+          validation: 'maxLength:128'
         - name: description
           type: string
           required: false
-          validation: "maxLength:1024"
+          validation: 'maxLength:1024'
         - name: ownerId
           type: string
           format: uuidv4
@@ -134,16 +136,16 @@ spec:
     # ── Knowledge Group ─────────────────────────────────────────────────
     - kind: document
       group: knowledge
-      description: "An uploaded document awaiting or completed ingestion"
+      description: 'An uploaded document awaiting or completed ingestion'
       scope: workspace
       owning_service: knowledge-store
       spec_fields:
         - name: title
           type: string
           required: true
-          validation: "maxLength:256"
+          validation: 'maxLength:256'
         - name: format
-          type: "enum(pdf|txt|md|html|json|csv|docx)"
+          type: 'enum(pdf|txt|md|html|json|csv|docx)'
           required: true
         - name: collectionId
           type: string
@@ -157,10 +159,10 @@ spec:
           type: string
           validation: bcp47
           required: false
-          default: "en"
+          default: 'en'
       status_fields:
         - name: ingestionPhase
-          type: "enum(pending|extracting|chunking|embedding|indexing|verifying|completed|failed)"
+          type: 'enum(pending|extracting|chunking|embedding|indexing|verifying|completed|failed)'
         - name: chunkCount
           type: integer
         - name: totalTokens
@@ -168,11 +170,11 @@ spec:
         - name: fileSizeBytes
           type: integer
         - name: verificationStatus
-          type: "enum(passed|failed|pending|skipped)"
+          type: 'enum(passed|failed|pending|skipped)'
 
     - kind: document-chunk
       group: knowledge
-      description: "A semantically coherent segment of a document"
+      description: 'A semantically coherent segment of a document'
       scope: workspace
       owning_service: knowledge-store
       spec_fields:
@@ -190,7 +192,7 @@ spec:
           type: integer
           required: true
         - name: embedding
-          type: "array<float>"
+          type: 'array<float>'
           required: false
         - name: metadata
           type: ChunkMetadata
@@ -205,30 +207,30 @@ spec:
 
     - kind: knowledge-collection
       group: knowledge
-      description: "A curated set of documents sharing a common domain or purpose"
+      description: 'A curated set of documents sharing a common domain or purpose'
       scope: workspace
       owning_service: knowledge-store
       spec_fields:
         - name: name
           type: string
           required: true
-          validation: "maxLength:128"
+          validation: 'maxLength:128'
         - name: description
           type: string
           required: false
-          validation: "maxLength:512"
+          validation: 'maxLength:512'
         - name: embeddingModel
           type: string
           required: true
-          default: "text-embedding-3-small"
+          default: 'text-embedding-3-small'
         - name: chunkStrategy
-          type: "enum(fixed|semantic|sentence)"
+          type: 'enum(fixed|semantic|sentence)'
           required: false
-          default: "semantic"
+          default: 'semantic'
         - name: language
           type: string
           required: false
-          default: "en"
+          default: 'en'
       status_fields:
         - name: documentCount
           type: integer
@@ -244,7 +246,7 @@ spec:
 
     - kind: knowledge-index
       group: knowledge
-      description: "Search index over a knowledge collection"
+      description: 'Search index over a knowledge collection'
       scope: workspace
       owning_service: knowledge-search
       spec_fields:
@@ -253,9 +255,9 @@ spec:
           format: uuidv4
           required: true
         - name: indexType
-          type: "enum(vector|fulltext|hybrid)"
+          type: 'enum(vector|fulltext|hybrid)'
           required: true
-          default: "hybrid"
+          default: 'hybrid'
         - name: embeddingDimension
           type: integer
           required: true
@@ -267,11 +269,11 @@ spec:
           type: string
           format: iso8601
         - name: health
-          type: "enum(green|yellow|red)"
+          type: 'enum(green|yellow|red)'
 
     - kind: retrieval-receipt
       group: knowledge
-      description: "Evidence record for a knowledge retrieval operation"
+      description: 'Evidence record for a knowledge retrieval operation'
       scope: workspace
       owning_service: knowledge-search
       spec_fields:
@@ -286,7 +288,7 @@ spec:
           type: integer
           required: true
         - name: searchType
-          type: "enum(semantic|fulltext|hybrid)"
+          type: 'enum(semantic|fulltext|hybrid)'
           required: true
       status_fields:
         - name: resultCount
@@ -294,13 +296,13 @@ spec:
         - name: topScore
           type: float
         - name: evidenceLevel
-          type: "enum(knowledge-assisted|knowledge-verified|knowledge-grounded)"
+          type: 'enum(knowledge-assisted|knowledge-verified|knowledge-grounded)'
         - name: latencyMs
           type: integer
 
     - kind: answer-trace
       group: knowledge
-      description: "Full provenance chain from answer back to source documents"
+      description: 'Full provenance chain from answer back to source documents'
       scope: workspace
       owning_service: agent-chat
       spec_fields:
@@ -313,7 +315,7 @@ spec:
           format: uuidv4
           required: true
         - name: retrievalReceiptIds
-          type: "array<string>"
+          type: 'array<string>'
           required: true
         - name: modelEndpointId
           type: string
@@ -325,11 +327,11 @@ spec:
         - name: attributionComplete
           type: boolean
         - name: safetyCheckResult
-          type: "enum(pass|flag|block)"
+          type: 'enum(pass|flag|block)'
 
     - kind: memory-item
       group: knowledge
-      description: "A persistent memory entry for conversational context"
+      description: 'A persistent memory entry for conversational context'
       scope: workspace
       owning_service: agent-chat
       spec_fields:
@@ -341,12 +343,12 @@ spec:
           type: string
           required: true
         - name: memoryType
-          type: "enum(short-term|long-term|episodic|semantic)"
+          type: 'enum(short-term|long-term|episodic|semantic)'
           required: true
         - name: importance
           type: float
           required: false
-          validation: "min:0,max:1"
+          validation: 'min:0,max:1'
       status_fields:
         - name: accessCount
           type: integer
@@ -359,7 +361,7 @@ spec:
     # ── AI Group ────────────────────────────────────────────────────────
     - kind: chat-session
       group: ai
-      description: "A conversational session between a subject and an AI agent"
+      description: 'A conversational session between a subject and an AI agent'
       scope: workspace
       owning_service: agent-chat
       spec_fields:
@@ -375,13 +377,13 @@ spec:
           type: string
           required: false
         - name: knowledgeCollectionIds
-          type: "array<string>"
+          type: 'array<string>'
           required: false
         - name: temperature
           type: float
           required: false
           default: 0.7
-          validation: "min:0,max:2"
+          validation: 'min:0,max:2'
       status_fields:
         - name: messageCount
           type: integer
@@ -393,12 +395,12 @@ spec:
 
     - kind: model-endpoint
       group: ai
-      description: "A configured LLM endpoint with provider credentials"
+      description: 'A configured LLM endpoint with provider credentials'
       scope: workspace
       owning_service: model-byok
       spec_fields:
         - name: provider
-          type: "enum(openai|anthropic|google|ollama|custom)"
+          type: 'enum(openai|anthropic|google|ollama|custom)'
           required: true
         - name: modelId
           type: string
@@ -410,7 +412,7 @@ spec:
         - name: credentialRef
           type: string
           required: true
-          description: "Encrypted credential reference — never stored plaintext"
+          description: 'Encrypted credential reference — never stored plaintext'
         - name: parameters
           type: ModelParameters
           required: false
@@ -420,7 +422,7 @@ spec:
           required: false
       status_fields:
         - name: health
-          type: "enum(healthy|degraded|unhealthy|unknown)"
+          type: 'enum(healthy|degraded|unhealthy|unknown)'
         - name: totalInvocations
           type: integer
         - name: totalTokensUsed
@@ -435,18 +437,18 @@ spec:
     # ── Governance Group ────────────────────────────────────────────────
     - kind: audit-event
       group: governance
-      description: "An immutable audit event in the hash-chained integrity log"
-      scope: platform  # audit events span all workspaces
+      description: 'An immutable audit event in the hash-chained integrity log'
+      scope: platform # audit events span all workspaces
       owning_service: audit-log
       spec_fields:
         - name: eventType
           type: string
           required: true
         - name: category
-          type: "enum(identity|workspace|knowledge|ai|model|governance)"
+          type: 'enum(identity|workspace|knowledge|ai|model|governance)'
           required: true
         - name: severity
-          type: "enum(critical|high|medium|low|info)"
+          type: 'enum(critical|high|medium|low|info)'
           required: true
         - name: subjectId
           type: string
@@ -469,22 +471,22 @@ spec:
       status_fields:
         - name: hash
           type: string
-          description: "SHA-256 hash of this event"
+          description: 'SHA-256 hash of this event'
         - name: previousHash
           type: string
-          description: "SHA-256 hash of the previous event in the chain"
+          description: 'SHA-256 hash of the previous event in the chain'
         - name: chainIndex
           type: integer
-          description: "Monotonic position in the integrity chain"
+          description: 'Monotonic position in the integrity chain'
         - name: closedLoopStatus
-          type: "enum(open|completed|timeout|violated)"
+          type: 'enum(open|completed|timeout|violated)'
         - name: closedAt
           type: string
           format: iso8601
 
     - kind: usage-record
       group: governance
-      description: "A metered usage record for billing and rate limiting"
+      description: 'A metered usage record for billing and rate limiting'
       scope: workspace
       owning_service: usage-meter
       spec_fields:
@@ -492,13 +494,13 @@ spec:
           type: string
           required: true
         - name: metric
-          type: "enum(api_calls|tokens|storage_bytes|compute_ms)"
+          type: 'enum(api_calls|tokens|storage_bytes|compute_ms)'
           required: true
         - name: quantity
           type: number
           required: true
         - name: tier
-          type: "enum(free|pro|enterprise)"
+          type: 'enum(free|pro|enterprise)'
           required: true
         - name: billingPeriod
           type: string
@@ -514,18 +516,18 @@ spec:
 
     - kind: knowledge-issue
       group: knowledge
-      description: "A detected quality problem in the knowledge base"
+      description: 'A detected quality problem in the knowledge base'
       scope: workspace
       owning_service: knowledge-store
       spec_fields:
         - name: issueType
-          type: "enum(stale|contradiction|gap|hallucination|broken-reference)"
+          type: 'enum(stale|contradiction|gap|hallucination|broken-reference)'
           required: true
         - name: affectedResourceIds
-          type: "array<string>"
+          type: 'array<string>'
           required: true
         - name: severity
-          type: "enum(critical|high|medium|low)"
+          type: 'enum(critical|high|medium|low)'
           required: true
         - name: description
           type: string
@@ -536,14 +538,14 @@ spec:
           default: false
       status_fields:
         - name: resolutionStatus
-          type: "enum(open|in-progress|resolved|wont-fix)"
+          type: 'enum(open|in-progress|resolved|wont-fix)'
         - name: repairId
           type: string
           format: uuidv4
 
     - kind: knowledge-repair
       group: knowledge
-      description: "An automated or manual repair action for a knowledge issue"
+      description: 'An automated or manual repair action for a knowledge issue'
       scope: workspace
       owning_service: knowledge-store
       spec_fields:
@@ -552,7 +554,7 @@ spec:
           format: uuidv4
           required: true
         - name: repairType
-          type: "enum(re-ingest|re-embed|re-chunk|delete|merge|supplement)"
+          type: 'enum(re-ingest|re-embed|re-chunk|delete|merge|supplement)'
           required: true
         - name: automated
           type: boolean
@@ -563,24 +565,24 @@ spec:
           required: false
       status_fields:
         - name: result
-          type: "enum(pending|success|partial|failed)"
+          type: 'enum(pending|success|partial|failed)'
         - name: verificationStatus
-          type: "enum(pending|passed|failed)"
+          type: 'enum(pending|passed|failed)'
         - name: repairedAt
           type: string
           format: iso8601
 
     - kind: knowledge-derived-artifact
       group: knowledge
-      description: "A generated artifact derived from knowledge (summary, synthesis, etc.)"
+      description: 'A generated artifact derived from knowledge (summary, synthesis, etc.)'
       scope: workspace
       owning_service: agent-chat
       spec_fields:
         - name: artifactType
-          type: "enum(summary|synthesis|extraction|translation)"
+          type: 'enum(summary|synthesis|extraction|translation)'
           required: true
         - name: sourceResourceIds
-          type: "array<string>"
+          type: 'array<string>'
           required: true
         - name: modelEndpointId
           type: string
@@ -605,23 +607,23 @@ spec:
         - from: unregistered
           to: active
           event: identity.subject.registered
-          guard: "email verified"
+          guard: 'email verified'
         - from: active
           to: suspended
           event: identity.subject.suspended
-          guard: "platform-admin only"
+          guard: 'platform-admin only'
         - from: suspended
           to: active
           event: identity.subject.reactivated
-          guard: "platform-admin only"
+          guard: 'platform-admin only'
         - from: active
           to: deactivated
           event: identity.subject.deactivated
-          guard: "subject-owner or platform-admin"
+          guard: 'subject-owner or platform-admin'
         - from: suspended
           to: deactivated
           event: identity.subject.deactivated
-          guard: "platform-admin only"
+          guard: 'platform-admin only'
 
     workspace:
       initial: creating
@@ -633,15 +635,15 @@ spec:
         - from: active
           to: suspended
           event: workspace.suspended
-          guard: "platform-admin or policy-violation"
+          guard: 'platform-admin or policy-violation'
         - from: suspended
           to: active
           event: workspace.reactivated
-          guard: "platform-admin"
+          guard: 'platform-admin'
         - from: active
           to: deleting
           event: workspace.deletion-requested
-          guard: "workspace-owner"
+          guard: 'workspace-owner'
         - from: deleting
           to: deleted
           event: workspace.deleted
@@ -745,24 +747,24 @@ spec:
   #   3. Internal ref — within same service, minimal
   reference_format:
     urn:
-      pattern: "urn:mycodexvantaos:{group}:{kind}:{id}"
+      pattern: 'urn:mycodexvantaos:{group}:{kind}:{id}'
       examples:
-        - "urn:mycodexvantaos:core:workspace:550e8400-e29b-41d4-a716-446655440000"
-        - "urn:mycodexvantaos:knowledge:document:6ba7b810-9dad-11d1-80b4-00c04fd430c8"
-        - "urn:mycodexvantaos:ai:chat-session:7c9e6679-7425-40de-944b-e07fc1f90ae7"
-        - "urn:mycodexvantaos:governance:audit-event:12345"
+        - 'urn:mycodexvantaos:core:workspace:550e8400-e29b-41d4-a716-446655440000'
+        - 'urn:mycodexvantaos:knowledge:document:6ba7b810-9dad-11d1-80b4-00c04fd430c8'
+        - 'urn:mycodexvantaos:ai:chat-session:7c9e6679-7425-40de-944b-e07fc1f90ae7'
+        - 'urn:mycodexvantaos:governance:audit-event:12345'
     api_path:
-      pattern: "/api/v1/workspaces/{workspaceId}/{group}/{kind}s/{id}"
+      pattern: '/api/v1/workspaces/{workspaceId}/{group}/{kind}s/{id}'
       examples:
-        - "/api/v1/workspaces/ws-123/knowledge/documents/doc-456"
-        - "/api/v1/workspaces/ws-123/ai/chat-sessions/sess-789"
+        - '/api/v1/workspaces/ws-123/knowledge/documents/doc-456'
+        - '/api/v1/workspaces/ws-123/ai/chat-sessions/sess-789'
       platform_scoped:
-        pattern: "/api/v1/platform/{group}/{kind}s/{id}"
+        pattern: '/api/v1/platform/{group}/{kind}s/{id}'
         examples:
-          - "/api/v1/platform/core/identity-subjects/subj-123"
-          - "/api/v1/platform/governance/audit-events/evt-456"
+          - '/api/v1/platform/core/identity-subjects/subj-123'
+          - '/api/v1/platform/governance/audit-events/evt-456'
     internal_ref:
-      pattern: "{kind}://{id}"
+      pattern: '{kind}://{id}'
       examples:
-        - "workspace://ws-123"
-        - "document://doc-456"
+        - 'workspace://ws-123'
+        - 'document://doc-456'

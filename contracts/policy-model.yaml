@@ -20,7 +20,7 @@ metadata:
       the fundamental security boundary.
 
 spec:
-  version: "1.0.0-constitution"
+  version: '1.0.0-constitution'
 
   # ─── Policy Schema ───────────────────────────────────────────────────
   # Every policy rule in the platform conforms to this structure.
@@ -28,20 +28,21 @@ spec:
     required: [id, priority, enabled, subject, action, resource, effect]
     optional: [condition, description, tags]
     fields:
-      id: { type: string, description: "Unique policy identifier" }
-      priority: { type: integer, description: "Evaluation order (lower = higher priority)" }
-      enabled: { type: boolean, description: "Whether the policy is active" }
-      description: { type: string, description: "Human-readable explanation" }
+      id: { type: string, description: 'Unique policy identifier' }
+      priority: { type: integer, description: 'Evaluation order (lower = higher priority)' }
+      enabled: { type: boolean, description: 'Whether the policy is active' }
+      description: { type: string, description: 'Human-readable explanation' }
       subject:
-        role: { type: string, description: "Required role for this policy" }
-        workspace_scope: { type: "enum(same-workspace|any-workspace|platform)", description: "Workspace boundary" }
-      action: { type: "array<string>", description: "List of permitted/denied actions" }
+        role: { type: string, description: 'Required role for this policy' }
+        workspace_scope:
+          { type: 'enum(same-workspace|any-workspace|platform)', description: 'Workspace boundary' }
+      action: { type: 'array<string>', description: 'List of permitted/denied actions' }
       resource:
-        kind: { type: string, description: "Target resource kind" }
-        scope: { type: "enum(workspace|platform)", description: "Resource scope" }
-      condition: { type: map<string, any>, description: "Additional constraints" }
-      effect: { type: "enum(allow|deny)", description: "Policy decision" }
-      tags: { type: "array<string>", description: "Categorization labels" }
+        kind: { type: string, description: 'Target resource kind' }
+        scope: { type: 'enum(workspace|platform)', description: 'Resource scope' }
+      condition: { type: map<string, any>, description: 'Additional constraints' }
+      effect: { type: 'enum(allow|deny)', description: 'Policy decision' }
+      tags: { type: 'array<string>', description: 'Categorization labels' }
 
   # ─── Role Hierarchy ──────────────────────────────────────────────────
   roles:
@@ -54,9 +55,9 @@ spec:
         workspaces and access cross-workspace audit data.
       inherits: []
       permissions:
-        - "platform:*"
-        - "workspace:*"
-        - "governance:*"
+        - 'platform:*'
+        - 'workspace:*'
+        - 'governance:*'
       constraints:
         mfa_required: true
         session_timeout_minutes: 240
@@ -71,14 +72,14 @@ spec:
         Cannot affect other workspaces or platform configuration.
       inherits: [workspace-member]
       permissions:
-        - "workspace:update"
-        - "workspace:delete"
-        - "workspace:member:manage"
-        - "workspace:settings:*"
-        - "workspace:quota:read"
-        - "model-endpoint:*"
-        - "knowledge-collection:*"
-        - "knowledge:*:admin"
+        - 'workspace:update'
+        - 'workspace:delete'
+        - 'workspace:member:manage'
+        - 'workspace:settings:*'
+        - 'workspace:quota:read'
+        - 'model-endpoint:*'
+        - 'knowledge-collection:*'
+        - 'knowledge:*:admin'
       constraints:
         mfa_required: true
         max_workspaces_per_owner: 10
@@ -92,15 +93,15 @@ spec:
         manage members or delete the workspace.
       inherits: [workspace-viewer]
       permissions:
-        - "knowledge:document:create"
-        - "knowledge:document:update"
-        - "knowledge:document:read"
-        - "knowledge:collection:create"
-        - "knowledge:search:execute"
-        - "ai:chat-session:create"
-        - "ai:chat-session:update"
-        - "ai:chat-session:read"
-        - "model:invoke"
+        - 'knowledge:document:create'
+        - 'knowledge:document:update'
+        - 'knowledge:document:read'
+        - 'knowledge:collection:create'
+        - 'knowledge:search:execute'
+        - 'ai:chat-session:create'
+        - 'ai:chat-session:update'
+        - 'ai:chat-session:read'
+        - 'model:invoke'
       constraints:
         mfa_required: false
         rate_limit_tier: default
@@ -113,10 +114,10 @@ spec:
         collections, and chat history but cannot create or modify anything.
       inherits: []
       permissions:
-        - "knowledge:document:read"
-        - "knowledge:collection:read"
-        - "ai:chat-session:read"
-        - "workspace:read"
+        - 'knowledge:document:read'
+        - 'knowledge:collection:read'
+        - 'ai:chat-session:read'
+        - 'workspace:read'
       constraints:
         mfa_required: false
 
@@ -129,14 +130,14 @@ spec:
         the boundaries defined by their dependency graph.
       inherits: []
       permissions:
-        - "knowledge:search:execute"
-        - "model:invoke"
-        - "audit:event:write"
-        - "usage:record:write"
+        - 'knowledge:search:execute'
+        - 'model:invoke'
+        - 'audit:event:write'
+        - 'usage:record:write'
       constraints:
         token_type: service-token
-        allowed_operations: "limited to declared service capabilities"
-        workspace_scope: "same-workspace only"
+        allowed_operations: 'limited to declared service capabilities'
+        workspace_scope: 'same-workspace only'
 
     - id: auditor
       display_name: Auditor
@@ -147,10 +148,10 @@ spec:
         Cannot modify any resources.
       inherits: []
       permissions:
-        - "governance:audit:read"
-        - "governance:audit:integrity:verify"
-        - "governance:audit:report:generate"
-        - "governance:usage:read"
+        - 'governance:audit:read'
+        - 'governance:audit:integrity:verify'
+        - 'governance:audit:report:generate'
+        - 'governance:usage:read'
       constraints:
         mfa_required: true
         read_only: true
@@ -163,14 +164,14 @@ spec:
     - id: deny-cross-workspace-access
       priority: 10
       enabled: true
-      description: "No subject may access resources in a workspace they are not a member of"
+      description: 'No subject may access resources in a workspace they are not a member of'
       subject:
-        role: "*"
+        role: '*'
         workspace_scope: any-workspace
       action:
-        - "*"
+        - '*'
       resource:
-        kind: "*"
+        kind: '*'
         scope: workspace
       condition:
         subject_not_member_of_workspace: true
@@ -180,11 +181,11 @@ spec:
     - id: deny-deleted-workspace-access
       priority: 11
       enabled: true
-      description: "No access to resources in a deleted workspace"
+      description: 'No access to resources in a deleted workspace'
       subject:
-        role: "*"
+        role: '*'
       action:
-        - "*"
+        - '*'
       resource:
         kind: workspace
       condition:
@@ -195,13 +196,13 @@ spec:
     - id: deny-suspended-subject
       priority: 12
       enabled: true
-      description: "Suspended subjects cannot perform any action"
+      description: 'Suspended subjects cannot perform any action'
       subject:
-        role: "*"
+        role: '*'
       action:
-        - "*"
+        - '*'
       resource:
-        kind: "*"
+        kind: '*'
       condition:
         subject_phase: suspended
       effect: deny
@@ -211,14 +212,14 @@ spec:
     - id: allow-platform-admin-full-access
       priority: 100
       enabled: true
-      description: "Platform admins have full access to all platform resources"
+      description: 'Platform admins have full access to all platform resources'
       subject:
         role: platform-admin
         workspace_scope: platform
       action:
-        - "*"
+        - '*'
       resource:
-        kind: "*"
+        kind: '*'
         scope: platform
       condition: {}
       effect: allow
@@ -227,13 +228,13 @@ spec:
     - id: allow-platform-admin-workspace-access
       priority: 101
       enabled: true
-      description: "Platform admins can access any workspace"
+      description: 'Platform admins can access any workspace'
       subject:
         role: platform-admin
       action:
-        - "*"
+        - '*'
       resource:
-        kind: "*"
+        kind: '*'
         scope: workspace
       condition: {}
       effect: allow
@@ -243,7 +244,7 @@ spec:
     - id: allow-workspace-owner-manage-members
       priority: 200
       enabled: true
-      description: "Workspace owners can manage membership"
+      description: 'Workspace owners can manage membership'
       subject:
         role: workspace-owner
         workspace_scope: same-workspace
@@ -260,7 +261,7 @@ spec:
     - id: allow-workspace-owner-model-endpoints
       priority: 201
       enabled: true
-      description: "Workspace owners can fully manage model endpoints"
+      description: 'Workspace owners can fully manage model endpoints'
       subject:
         role: workspace-owner
         workspace_scope: same-workspace
@@ -278,7 +279,7 @@ spec:
     - id: allow-workspace-owner-knowledge-admin
       priority: 202
       enabled: true
-      description: "Workspace owners can administer knowledge collections"
+      description: 'Workspace owners can administer knowledge collections'
       subject:
         role: workspace-owner
         workspace_scope: same-workspace
@@ -297,7 +298,7 @@ spec:
     - id: allow-workspace-member-knowledge-create
       priority: 300
       enabled: true
-      description: "Workspace members can create knowledge resources"
+      description: 'Workspace members can create knowledge resources'
       subject:
         role: workspace-member
         workspace_scope: same-workspace
@@ -314,7 +315,7 @@ spec:
     - id: allow-workspace-member-knowledge-search
       priority: 301
       enabled: true
-      description: "Workspace members can search knowledge"
+      description: 'Workspace members can search knowledge'
       subject:
         role: workspace-member
         workspace_scope: same-workspace
@@ -331,7 +332,7 @@ spec:
     - id: allow-workspace-member-ai-chat
       priority: 302
       enabled: true
-      description: "Workspace members can use AI chat services"
+      description: 'Workspace members can use AI chat services'
       subject:
         role: workspace-member
         workspace_scope: same-workspace
@@ -349,7 +350,7 @@ spec:
     - id: allow-workspace-member-model-invoke
       priority: 303
       enabled: true
-      description: "Workspace members can invoke model endpoints"
+      description: 'Workspace members can invoke model endpoints'
       subject:
         role: workspace-member
         workspace_scope: same-workspace
@@ -366,7 +367,7 @@ spec:
     - id: allow-workspace-viewer-read
       priority: 400
       enabled: true
-      description: "Workspace viewers can read resources"
+      description: 'Workspace viewers can read resources'
       subject:
         role: workspace-viewer
         workspace_scope: same-workspace
@@ -376,7 +377,7 @@ spec:
         - ai:chat-session:read
         - workspace:read
       resource:
-        kind: "*"
+        kind: '*'
       condition: {}
       effect: allow
       tags: [workspace-viewer, read-only]
@@ -385,7 +386,7 @@ spec:
     - id: allow-agent-service-search
       priority: 500
       enabled: true
-      description: "Agent services can search knowledge within their workspace scope"
+      description: 'Agent services can search knowledge within their workspace scope'
       subject:
         role: agent-service
         workspace_scope: same-workspace
@@ -402,7 +403,7 @@ spec:
     - id: allow-agent-service-model-invoke
       priority: 501
       enabled: true
-      description: "Agent services can invoke models within their workspace scope"
+      description: 'Agent services can invoke models within their workspace scope'
       subject:
         role: agent-service
         workspace_scope: same-workspace
@@ -419,7 +420,7 @@ spec:
     - id: allow-agent-service-audit-write
       priority: 502
       enabled: true
-      description: "Agent services can emit audit events"
+      description: 'Agent services can emit audit events'
       subject:
         role: agent-service
       action:
@@ -435,7 +436,7 @@ spec:
     - id: allow-auditor-read-all-audit
       priority: 600
       enabled: true
-      description: "Auditors can read all audit data across workspaces"
+      description: 'Auditors can read all audit data across workspaces'
       subject:
         role: auditor
         workspace_scope: any-workspace
@@ -454,13 +455,13 @@ spec:
     - id: default-deny
       priority: 9999
       enabled: true
-      description: "Default deny — any action not explicitly allowed is denied"
+      description: 'Default deny — any action not explicitly allowed is denied'
       subject:
-        role: "*"
+        role: '*'
       action:
-        - "*"
+        - '*'
       resource:
-        kind: "*"
+        kind: '*'
       condition: {}
       effect: deny
       tags: [default, deny-all]
@@ -468,7 +469,7 @@ spec:
   # ─── Governance Constraints ──────────────────────────────────────────
   governance_constraints:
     data_residency:
-      description: "All workspace data must remain within the declared residency region"
+      description: 'All workspace data must remain within the declared residency region'
       enforcement: platform-config
       default_region: auto
       supported_regions: [us-east, us-west, eu-west, ap-east]
@@ -479,11 +480,11 @@ spec:
         platform-admin.
 
     retention:
-      description: "Minimum retention periods for governed resource types"
+      description: 'Minimum retention periods for governed resource types'
       rules:
         - kind: audit-event
-          minimum: 2555d  # 7 years
-          maximum: null   # indefinite
+          minimum: 2555d # 7 years
+          maximum: null # indefinite
           enforcement: automatic
         - kind: usage-record
           minimum: 365d
@@ -503,7 +504,7 @@ spec:
           enforcement: workspace-owner
 
     rate_limiting:
-      description: "Tiered rate limits enforced by usage-meter service"
+      description: 'Tiered rate limits enforced by usage-meter service'
       tiers:
         free:
           requests_per_minute: 10
@@ -524,7 +525,7 @@ spec:
         enterprise:
           requests_per_minute: 300
           requests_per_day: 100000
-          tokens_per_day: -1  # unlimited
+          tokens_per_day: -1 # unlimited
           storage_mb: 50000
           concurrent_sessions: 20
           knowledge_collections: 500
@@ -532,11 +533,11 @@ spec:
       enforcement:
         strategy: sliding-window
         granularity: workspace
-        shared_limits: false  # each workspace has independent limits
-        burst_allowance: 1.5  # brief bursts up to 150% of limit
+        shared_limits: false # each workspace has independent limits
+        burst_allowance: 1.5 # brief bursts up to 150% of limit
 
     mfa_requirements:
-      description: "Multi-factor authentication requirements by role and action"
+      description: 'Multi-factor authentication requirements by role and action'
       rules:
         - role: platform-admin
           mfa_required: true
@@ -565,19 +566,19 @@ spec:
           for_all_roles: true
 
     credential_policy:
-      description: "Rules for credential management and encryption"
+      description: 'Rules for credential management and encryption'
       rules:
         - type: api-key
           storage: encrypted-at-rest
           encryption: aes-256-gcm
-          key_management: cloudflare-kv-encrypted  # portable alternative: vault
+          key_management: cloudflare-kv-encrypted # portable alternative: vault
           rotation_policy: 90d recommended
           never_logged: true
           never_returned_plaintext: true
         - type: password
           hashing: argon2id
           min_length: 12
-          complexity: "uppercase + lowercase + digit + special"
+          complexity: 'uppercase + lowercase + digit + special'
           breach_check: hibp-api
         - type: service-token
           signing: rs256

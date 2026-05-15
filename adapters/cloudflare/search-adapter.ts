@@ -59,7 +59,7 @@ export class CloudflareSearchAdapter implements ISearchPort {
       dimension: info.dimension,
       vectorCount: info.vectorCount,
       indexType: info.indexType ?? 'vectorize',
-      lastUpdated: new Date().toISOString(),  // Vectorize doesn't expose this directly
+      lastUpdated: new Date().toISOString(), // Vectorize doesn't expose this directly
     };
   }
 

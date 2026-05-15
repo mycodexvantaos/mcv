@@ -6,16 +6,16 @@ This directory contains API documentation for the MyCodeXvantaOS platform.
 
 The platform exposes a RESTful API organized by the **8 service categories**:
 
-| Category | Base Path | Description |
-|----------|-----------|-------------|
-| Knowledge | `/api/v1/knowledge/**` | Document ingestion, vector search, collections |
-| Agent | `/api/v1/agent/**` | Conversational AI sessions with RAG |
-| Workspace | `/api/v1/workspace/**` | Multi-tenant workspace management |
-| Developer | `/api/v1/developer/**` | API keys, SDKs, webhooks (reserved) |
-| Security | `/api/v1/security/**` | Identity, authentication, authorization |
-| Storage | `/api/v1/storage/**` | Object storage, presigned URLs (reserved) |
-| Model | `/api/v1/model/**` | LLM and embedding model routing |
-| Automation | `/api/v1/automation/**` | Job queues, scheduled tasks |
+| Category   | Base Path               | Description                                    |
+| ---------- | ----------------------- | ---------------------------------------------- |
+| Knowledge  | `/api/v1/knowledge/**`  | Document ingestion, vector search, collections |
+| Agent      | `/api/v1/agent/**`      | Conversational AI sessions with RAG            |
+| Workspace  | `/api/v1/workspace/**`  | Multi-tenant workspace management              |
+| Developer  | `/api/v1/developer/**`  | API keys, SDKs, webhooks (reserved)            |
+| Security   | `/api/v1/security/**`   | Identity, authentication, authorization        |
+| Storage    | `/api/v1/storage/**`    | Object storage, presigned URLs (reserved)      |
+| Model      | `/api/v1/model/**`      | LLM and embedding model routing                |
+| Automation | `/api/v1/automation/**` | Job queues, scheduled tasks                    |
 
 ## OpenAPI Specification
 
@@ -39,11 +39,11 @@ Tokens are obtained via `POST /api/v1/security/token`.
 
 Rate limits are enforced per subject and vary by workspace tier:
 
-| Tier | Requests/minute | Tokens/day |
-|------|----------------|------------|
-| Free | 60 | 10,000 |
-| Pro | 600 | 100,000 |
-| Enterprise | 6,000 | Unlimited |
+| Tier       | Requests/minute | Tokens/day |
+| ---------- | --------------- | ---------- |
+| Free       | 60              | 10,000     |
+| Pro        | 600             | 100,000    |
+| Enterprise | 6,000           | Unlimited  |
 
 ## Error Responses
 
@@ -58,6 +58,7 @@ All errors follow a consistent JSON format:
 ```
 
 Common HTTP status codes:
+
 - `400` — Invalid request body or parameters
 - `401` — Missing or invalid authentication token
 - `403` — Insufficient permissions

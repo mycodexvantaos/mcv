@@ -19,11 +19,7 @@
         "properties": {
           "effect": {
             "type": "string",
-            "enum": [
-              "allow",
-              "deny",
-              "require-review"
-            ]
+            "enum": ["allow", "deny", "require-review"]
           },
           "subject": {
             "type": "object"
@@ -38,17 +34,9 @@
             "type": "object"
           }
         },
-        "required": [
-          "effect",
-          "subject",
-          "action",
-          "resource"
-        ]
+        "required": ["effect", "subject", "action", "resource"]
       }
     }
   },
-  "required": [
-    "id",
-    "rules"
-  ]
+  "required": ["id", "rules"]
 }

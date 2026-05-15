@@ -34,7 +34,11 @@ spec:
         required: [event_type, category, severity, subject_id, workspace_id, data]
         properties:
           event_type: { type: string }
-          category: { type: string, enum: [knowledge, agent, workspace, developer, security, storage, model, automation] }
+          category:
+            {
+              type: string,
+              enum: [knowledge, agent, workspace, developer, security, storage, model, automation],
+            }
           severity: { type: string, enum: [debug, info, warning, error, critical] }
           subject_id: { type: string }
           workspace_id: { type: string }

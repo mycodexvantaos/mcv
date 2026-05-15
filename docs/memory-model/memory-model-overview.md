@@ -23,6 +23,7 @@ memory consolidation.
 ## Dream System
 
 The Dream system has three modes:
+
 - **dry-run**: Evaluate only, no changes written
 - **proposal** (default): Generate proposals for human review
 - **auto-apply**: Automatically apply changes (not enabled by default)
@@ -34,15 +35,15 @@ without explicit human review. This is a non-negotiable constraint.
 
 ## Memory Statuses
 
-| Status | Description | Injectable |
-|---|---|---|
-| `candidate` | Newly created, not yet validated | No |
-| `active` | Validated and in use | Yes |
-| `reinforced` | Confirmed by multiple sources | Yes |
-| `merged` | Merged from multiple candidates | No |
-| `deprecated` | Superseded or invalidated | No |
-| `orphaned` | No references found | No |
-| `archived` | Historical, not active | No |
-| `rejected` | Failed validation | No |
+| Status       | Description                      | Injectable |
+| ------------ | -------------------------------- | ---------- |
+| `candidate`  | Newly created, not yet validated | No         |
+| `active`     | Validated and in use             | Yes        |
+| `reinforced` | Confirmed by multiple sources    | Yes        |
+| `merged`     | Merged from multiple candidates  | No         |
+| `deprecated` | Superseded or invalidated        | No         |
+| `orphaned`   | No references found              | No         |
+| `archived`   | Historical, not active           | No         |
+| `rejected`   | Failed validation                | No         |
 
 Only `active` and `reinforced` memories may be injected into prompts.

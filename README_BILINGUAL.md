@@ -33,6 +33,7 @@ mycodexvantaos/
 ### TypeScript 控制平面
 
 負責：
+
 - Cloudflare Workers / Pages 原生執行環境
 - Service Catalog / Resource Model / Policy Model
 - Audit Log / Usage Meter
@@ -45,6 +46,7 @@ mycodexvantaos/
 ### Python 智能平面
 
 負責：
+
 - Memory Dream (記憶夢境) — 時間整合、衝突偵測、語義聚類
 - Knowledge Pipeline (知識管道) — 文件解析、embedding 生成、RAG 檢索
 - Agent Workers (智能代理) — Self-hosted AI 執行
@@ -153,6 +155,7 @@ uv run python -m apps.dream_worker.main tests/fixtures/sample-memories.json
 ## 技術棧
 
 ### TypeScript
+
 - **Package Manager**: pnpm / Turborepo
 - **Testing**: Jest (377 passing tests)
 - **Type Checking**: TypeScript 5.5 (strict mode)
@@ -160,6 +163,7 @@ uv run python -m apps.dream_worker.main tests/fixtures/sample-memories.json
 - **Runtime**: Cloudflare Workers, Node.js
 
 ### Python
+
 - **Package Manager**: uv (Rust-based, fast)
 - **Testing**: pytest
 - **Type Checking**: mypy (strict mode)

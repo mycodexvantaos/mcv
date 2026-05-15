@@ -11,4 +11,3 @@ rules:
       roles: ['platform-admin', 'auditor']
     action: audit:query,audit:verify
     resource: audit-event
-

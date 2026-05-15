@@ -37,11 +37,11 @@ pnpm --filter @mycodexvantaos/cli dev:local
 
 ## Runtime Options
 
-| Runtime | Difficulty | Use Case |
-|---|---|---|
-| Local | Easy | Development |
-| Docker | Medium | Self-hosted |
-| Kubernetes | Advanced | Production |
+| Runtime    | Difficulty | Use Case    |
+| ---------- | ---------- | ----------- |
+| Local      | Easy       | Development |
+| Docker     | Medium     | Self-hosted |
+| Kubernetes | Advanced   | Production  |
 
 ## Configuration
 

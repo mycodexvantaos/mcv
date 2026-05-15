@@ -51,7 +51,16 @@
         "document_id": { "type": "string" },
         "phase": {
           "type": "string",
-          "enum": ["validating", "extracting", "chunking", "embedding", "indexing", "verifying", "ingested", "failed"]
+          "enum": [
+            "validating",
+            "extracting",
+            "chunking",
+            "embedding",
+            "indexing",
+            "verifying",
+            "ingested",
+            "failed"
+          ]
         },
         "chunks_created": { "type": "integer" },
         "embeddings_generated": { "type": "integer" },

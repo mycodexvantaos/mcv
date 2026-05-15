@@ -12,18 +12,18 @@
 
 ### 專案現狀
 
-| 項目 | 狀態 |
-|------|------|
-| **Packages** | 70 個 |
-| **Services** | 27 個 |
-| **Providers** | 25 個 |
-| **Tests** | 377 個全通 |
-| **CI/CD** | 已配置 |
-| **技術棧** | Turborepo, pnpm, TypeScript, Jest, ESLint 全就位 |
-| **Contracts** | 已有 service-definitions, events, schemas, openapi |
-| **Migrations** | d1, sqlite, postgres 已有基礎 |
-| **Runtimes** | cloudflare, docker, kubernetes, node 已有骨架 |
-| **Infra** | cloudflare, docker-compose, helm 已有基礎 |
+| 項目           | 狀態                                               |
+| -------------- | -------------------------------------------------- |
+| **Packages**   | 70 個                                              |
+| **Services**   | 27 個                                              |
+| **Providers**  | 25 個                                              |
+| **Tests**      | 377 個全通                                         |
+| **CI/CD**      | 已配置                                             |
+| **技術棧**     | Turborepo, pnpm, TypeScript, Jest, ESLint 全就位   |
+| **Contracts**  | 已有 service-definitions, events, schemas, openapi |
+| **Migrations** | d1, sqlite, postgres 已有基礎                      |
+| **Runtimes**   | cloudflare, docker, kubernetes, node 已有骨架      |
+| **Infra**      | cloudflare, docker-compose, helm 已有基礎          |
 
 ### 文檔缺少的核心層
 
@@ -38,13 +38,13 @@
 
 ### 重構策略
 
-| 策略 | 說明 |
-|------|------|
-| **保留現有文檔** | 574 行的 ARCHITECTURE.md 保持不變 |
-| **新增控制平面層** | 在現有層次上疊加「神格控制平面」文檔 |
-| **契約優先** | 所有文檔基於 contracts/ 目錄的 YAML/JSON 契約 |
-| **光譜分層** | 按照 10 層光譜組織文檔結構 |
-| **實作循序** | 採用 Phase 0-7 的漸進式擴充路線 |
+| 策略               | 說明                                          |
+| ------------------ | --------------------------------------------- |
+| **保留現有文檔**   | 574 行的 ARCHITECTURE.md 保持不變             |
+| **新增控制平面層** | 在現有層次上疊加「神格控制平面」文檔          |
+| **契約優先**       | 所有文檔基於 contracts/ 目錄的 YAML/JSON 契約 |
+| **光譜分層**       | 按照 10 層光譜組織文檔結構                    |
+| **實作循序**       | 採用 Phase 0-7 的漸進式擴充路線               |
 
 ---
 
@@ -68,19 +68,19 @@ spectrum-10-advanced-systems    → docs/advanced-systems/
 
 ### 光譜對應模組表
 
-| 光譜 | 對應模組 | 文檔重點 |
-|------|----------|----------|
-| `spectrum-00-foundation` | core-kernel, namespaces-sdk, taxonomy-core | 核心抽象、命名空間、分類學 |
-| `spectrum-01-service-catalog` | service-catalog, engine-registry | 服務定義、分類、啟用/停用 |
-| `spectrum-02-resource-model` | resource-model | Resource Kind / Spec / Status |
-| `spectrum-03-policy-governance` | policy-engine, governance-policy | Subject / Action / Resource / Condition / Effect |
-| `spectrum-04-audit-trace` | audit-model, audit-log | Audit Event / Append-Only / Trace Chain |
-| `spectrum-05-knowledge-layer` | engine-rag, ai-embedding, data-vector-store | Document / Chunk / Retrieval / Answer Trace |
-| `spectrum-06-memory-dream` | memory-dream runtime | Memory Item / Dream Run / Conflict / Merge |
-| `spectrum-07-agent-control` | ai-ensemble, engine-execution, agent-chat | Agent 行為、對話、工作流 |
-| `spectrum-08-multi-runtime` | runtimes/* | Cloudflare / Node / Docker / K8s 適配 |
-| `spectrum-09-self-hostable` | infra/docker-compose, infra/helm | 自架部署、遷移、備份 |
-| `spectrum-10-advanced-systems` | quantum, carbon, scalability systems | 專屬進階系統 |
+| 光譜                            | 對應模組                                    | 文檔重點                                         |
+| ------------------------------- | ------------------------------------------- | ------------------------------------------------ |
+| `spectrum-00-foundation`        | core-kernel, namespaces-sdk, taxonomy-core  | 核心抽象、命名空間、分類學                       |
+| `spectrum-01-service-catalog`   | service-catalog, engine-registry            | 服務定義、分類、啟用/停用                        |
+| `spectrum-02-resource-model`    | resource-model                              | Resource Kind / Spec / Status                    |
+| `spectrum-03-policy-governance` | policy-engine, governance-policy            | Subject / Action / Resource / Condition / Effect |
+| `spectrum-04-audit-trace`       | audit-model, audit-log                      | Audit Event / Append-Only / Trace Chain          |
+| `spectrum-05-knowledge-layer`   | engine-rag, ai-embedding, data-vector-store | Document / Chunk / Retrieval / Answer Trace      |
+| `spectrum-06-memory-dream`      | memory-dream runtime                        | Memory Item / Dream Run / Conflict / Merge       |
+| `spectrum-07-agent-control`     | ai-ensemble, engine-execution, agent-chat   | Agent 行為、對話、工作流                         |
+| `spectrum-08-multi-runtime`     | runtimes/\*                                 | Cloudflare / Node / Docker / K8s 適配            |
+| `spectrum-09-self-hostable`     | infra/docker-compose, infra/helm            | 自架部署、遷移、備份                             |
+| `spectrum-10-advanced-systems`  | quantum, carbon, scalability systems        | 專屬進階系統                                     |
 
 ---
 
@@ -393,20 +393,20 @@ docs/
 
 ## 與現有文檔的關係
 
-| 現有文檔 | 處理方式 | 關係 |
-|----------|----------|------|
-| `ARCHITECTURE.md` (574 行) | **保留不變** | 六層架構基礎文檔 |
-| `architecture.md` (35 行) | **保留不變** | 簡化架構概覽 |
-| `platform-draft.md` | **保留不變** | 平台草稿參考 |
-| `CICD_INTEGRATION_PLAN.md` | **保留不變** | CI/CD 整合計畫 |
-| `integration-*.md` | **保留不變** | 整合分析報告 |
-| `onboarding/*.md` | **保留並擴充** | 入門文檔，補加控制平面內容 |
-| `deployment/README.md` | **保留並擴充** | 部署文檔，補加 runtime 文檔 |
-| `operations/README.md` | **保留並擴充** | 運維文檔，補加 audit/memory 文檔 |
-| `changelog/*` | **保留不變** | 變更日誌 |
-| `adr-*` | **保留不變** | 架構決策紀錄 |
-| `ai-team/*` | **保留不變** | AI 團隊文檔 |
-| `analysis/*` | **保留不變** | 分析報告 |
+| 現有文檔                   | 處理方式       | 關係                             |
+| -------------------------- | -------------- | -------------------------------- |
+| `ARCHITECTURE.md` (574 行) | **保留不變**   | 六層架構基礎文檔                 |
+| `architecture.md` (35 行)  | **保留不變**   | 簡化架構概覽                     |
+| `platform-draft.md`        | **保留不變**   | 平台草稿參考                     |
+| `CICD_INTEGRATION_PLAN.md` | **保留不變**   | CI/CD 整合計畫                   |
+| `integration-*.md`         | **保留不變**   | 整合分析報告                     |
+| `onboarding/*.md`          | **保留並擴充** | 入門文檔，補加控制平面內容       |
+| `deployment/README.md`     | **保留並擴充** | 部署文檔，補加 runtime 文檔      |
+| `operations/README.md`     | **保留並擴充** | 運維文檔，補加 audit/memory 文檔 |
+| `changelog/*`              | **保留不變**   | 變更日誌                         |
+| `adr-*`                    | **保留不變**   | 架構決策紀錄                     |
+| `ai-team/*`                | **保留不變**   | AI 團隊文檔                      |
+| `analysis/*`               | **保留不變**   | 分析報告                         |
 
 ### 新增文檔不覆蓋原則
 

@@ -38,7 +38,17 @@ spec:
           subject_id: { type: string }
           dimension:
             type: string
-            enum: [api_calls, storage_bytes, search_queries, model_tokens_input, model_tokens_output, documents_ingested, chat_messages, audit_events]
+            enum:
+              [
+                api_calls,
+                storage_bytes,
+                search_queries,
+                model_tokens_input,
+                model_tokens_output,
+                documents_ingested,
+                chat_messages,
+                audit_events,
+              ]
           quantity: { type: number }
           unit: { type: string }
           resource_urn: { type: string }

@@ -23,4 +23,3 @@ rules:
     resource: dream-run
     condition:
       mode: proposal
-

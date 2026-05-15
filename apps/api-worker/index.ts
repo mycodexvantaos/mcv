@@ -20,9 +20,7 @@
  * the services rather than exposed as separate top-level routes.
  */
 
-import type {
-  CloudflareBindings,
-} from '@mycodexvantaos/adapters/cloudflare-d1';
+import type { CloudflareBindings } from '@mycodexvantaos/adapters/cloudflare-d1';
 import type {
   IAuthPort,
   IDatabasePort,
@@ -34,10 +32,16 @@ import type {
 } from '@mycodexvantaos/ports';
 
 import { CloudflareD1Adapter } from '@mycodexvantaos/adapters/cloudflare-d1';
-import { CloudflareKVCacheStore, CloudflareKVSessionStore } from '@mycodexvantaos/adapters/cloudflare-kv';
+import {
+  CloudflareKVCacheStore,
+  CloudflareKVSessionStore,
+} from '@mycodexvantaos/adapters/cloudflare-kv';
 import { CloudflareR2Adapter } from '@mycodexvantaos/adapters/cloudflare-r2';
 import { D1FullTextSearchAdapter } from '@mycodexvantaos/adapters/d1-full-text-search';
-import { WorkersAIChatAdapter, WorkersAIEmbeddingAdapter } from '@mycodexvantaos/adapters/workers-ai';
+import {
+  WorkersAIChatAdapter,
+  WorkersAIEmbeddingAdapter,
+} from '@mycodexvantaos/adapters/workers-ai';
 
 import { IdentityService } from '@mycodexvantaos/application/identity';
 import { WorkspaceService } from '@mycodexvantaos/application/workspace';
@@ -54,8 +58,8 @@ export interface Env {
   KV_CACHE: KVNamespace;
   KV_SESSION: KVNamespace;
   R2_BUCKET: R2Bucket;
-  AI: Ai;                   // Cloudflare Workers AI binding
-  QUEUE_JOBS: Queue;        // Cloudflare Queue binding
+  AI: Ai; // Cloudflare Workers AI binding
+  QUEUE_JOBS: Queue; // Cloudflare Queue binding
   OPENAI_API_KEY?: string;
   OPENROUTER_API_KEY?: string;
   JWT_SECRET: string;
@@ -101,13 +105,23 @@ function assembleServices(env: Env): ServiceContainer {
 const ROUTE_TABLE: Array<{
   method: string;
   pattern: URLPattern;
-  handler: (req: Request, svc: ServiceContainer, ctx: ExecutionContext, match: URLPatternResult) => Promise<Response>;
+  handler: (
+    req: Request,
+    svc: ServiceContainer,
+    ctx: ExecutionContext,
+    match: URLPatternResult
+  ) => Promise<Response>;
 }> = [];
 
 function registerRoute(
   method: string,
   pathPattern: string,
-  handler: (req: Request, svc: ServiceContainer, ctx: ExecutionContext, match: URLPatternResult) => Promise<Response>,
+  handler: (
+    req: Request,
+    svc: ServiceContainer,
+    ctx: ExecutionContext,
+    match: URLPatternResult
+  ) => Promise<Response>
 ): void {
   ROUTE_TABLE.push({ method, pattern: new URLPattern({ pathname: pathPattern }), handler });
 }
@@ -119,13 +133,17 @@ registerRoute('GET', '/api/v1/health', async (_req, _svc, _ctx) => {
 
 // ── Security / Identity ────────────────────────────────────────────────
 registerRoute('POST', '/api/v1/security/register', async (req, svc) => {
-  const body = await req.json() as { subjectId: string; roles: string[]; claims?: Record<string, unknown> };
+  const body = (await req.json()) as {
+    subjectId: string;
+    roles: string[];
+    claims?: Record<string, unknown>;
+  };
   const result = await svc.identity.registerSubject(body);
   return Response.json(result);
 });
 
 registerRoute('POST', '/api/v1/security/token', async (req, svc) => {
-  const body = await req.json() as { subjectId: string; password: string };
+  const body = (await req.json()) as { subjectId: string; password: string };
   const result = await svc.identity.createSession(body.subjectId, body.password);
   return Response.json(result);
 });
@@ -139,7 +157,11 @@ registerRoute('GET', '/api/v1/security/verify', async (req, svc) => {
 
 // ── Workspace ──────────────────────────────────────────────────────────
 registerRoute('POST', '/api/v1/workspace', async (req, svc) => {
-  const body = await req.json() as { name: string; ownerId: string; settings?: Record<string, unknown> };
+  const body = (await req.json()) as {
+    name: string;
+    ownerId: string;
+    settings?: Record<string, unknown>;
+  };
   const result = await svc.workspace.createWorkspace(body);
   return Response.json(result, { status: 201 });
 });
@@ -151,36 +173,49 @@ registerRoute('GET', '/api/v1/workspace', async (_req, svc) => {
 
 // ── Knowledge ──────────────────────────────────────────────────────────
 registerRoute('POST', '/api/v1/knowledge/collections', async (req, svc) => {
-  const body = await req.json() as { name: string; description?: string; embeddingModel?: string };
+  const body = (await req.json()) as {
+    name: string;
+    description?: string;
+    embeddingModel?: string;
+  };
   const result = await svc.knowledge.createCollection(body);
   return Response.json(result, { status: 201 });
 });
 
 registerRoute('POST', '/api/v1/knowledge/ingest', async (req, svc) => {
-  const body = await req.json() as { collectionId: string; documentId: string; content: string; metadata?: Record<string, unknown> };
+  const body = (await req.json()) as {
+    collectionId: string;
+    documentId: string;
+    content: string;
+    metadata?: Record<string, unknown>;
+  };
   const result = await svc.knowledge.ingestDocument(body);
   return Response.json(result, { status: 202 });
 });
 
 registerRoute('POST', '/api/v1/knowledge/search', async (req, svc) => {
-  const body = await req.json() as { query: string; collectionIds?: string[]; topK?: number };
+  const body = (await req.json()) as { query: string; collectionIds?: string[]; topK?: number };
   const result = await svc.knowledge.searchKnowledge(body.query, body.collectionIds, body.topK);
   return Response.json(result);
 });
 
 // ── Agent ──────────────────────────────────────────────────────────────
 registerRoute('POST', '/api/v1/agent/sessions', async (req, svc) => {
-  const body = await req.json() as { workspaceId: string; modelEndpointId?: string };
+  const body = (await req.json()) as { workspaceId: string; modelEndpointId?: string };
   const result = await svc.agent.createSession(body.workspaceId, body.modelEndpointId);
   return Response.json(result, { status: 201 });
 });
 
-registerRoute('POST', '/api/v1/agent/sessions/:sessionId/messages', async (req, svc, _ctx, match) => {
-  const sessionId = match.pathname.groups.sessionId!;
-  const body = await req.json() as { content: string; collectionIds?: string[] };
-  const result = await svc.agent.sendMessage(sessionId, body.content, body.collectionIds);
-  return Response.json(result);
-});
+registerRoute(
+  'POST',
+  '/api/v1/agent/sessions/:sessionId/messages',
+  async (req, svc, _ctx, match) => {
+    const sessionId = match.pathname.groups.sessionId!;
+    const body = (await req.json()) as { content: string; collectionIds?: string[] };
+    const result = await svc.agent.sendMessage(sessionId, body.content, body.collectionIds);
+    return Response.json(result);
+  }
+);
 
 // ── Model ──────────────────────────────────────────────────────────────
 registerRoute('GET', '/api/v1/model/endpoints', async (_req, svc) => {
@@ -189,7 +224,11 @@ registerRoute('GET', '/api/v1/model/endpoints', async (_req, svc) => {
 });
 
 registerRoute('POST', '/api/v1/model/chat', async (req, svc) => {
-  const body = await req.json() as { modelId: string; messages: Array<{ role: string; content: string }>; options?: Record<string, unknown> };
+  const body = (await req.json()) as {
+    modelId: string;
+    messages: Array<{ role: string; content: string }>;
+    options?: Record<string, unknown>;
+  };
   const result = await svc.model.callChatModel(body.modelId, body.messages, body.options);
   return Response.json(result);
 });
@@ -219,7 +258,7 @@ registerRoute('GET', '/api/v1/usage/:subjectId', async (req, svc, _ctx, match) =
 
 // ── Automation ─────────────────────────────────────────────────────────
 registerRoute('POST', '/api/v1/automation/jobs', async (req, svc) => {
-  const body = await req.json() as { jobType: string; payload: unknown; priority?: number };
+  const body = (await req.json()) as { jobType: string; payload: unknown; priority?: number };
   const result = await svc.automation.enqueueJob(body.jobType, body.payload, body.priority);
   return Response.json(result, { status: 202 });
 });
@@ -264,12 +303,17 @@ export default {
           return response;
         } catch (err) {
           const message = err instanceof Error ? err.message : 'Internal Server Error';
-          const status = message.includes('not found') ? 404
-            : message.includes('unauthorized') || message.includes('Unauthorized') ? 401
-            : message.includes('forbidden') ? 403
-            : message.includes('already exists') ? 409
-            : message.includes('quota') ? 429
-            : 500;
+          const status = message.includes('not found')
+            ? 404
+            : message.includes('unauthorized') || message.includes('Unauthorized')
+              ? 401
+              : message.includes('forbidden')
+                ? 403
+                : message.includes('already exists')
+                  ? 409
+                  : message.includes('quota')
+                    ? 429
+                    : 500;
           return Response.json({ error: message }, { status });
         }
       }
@@ -292,7 +336,11 @@ export default {
         const { jobType, payload } = message.body as { jobType: string; payload: unknown };
         if (jobType === 'chunk-and-embed') {
           const p = payload as { documentId: string; collectionId: string };
-          await knowledge.ingestDocument({ documentId: p.documentId, collectionId: p.collectionId, content: '' });
+          await knowledge.ingestDocument({
+            documentId: p.documentId,
+            collectionId: p.collectionId,
+            content: '',
+          });
         }
         message.ack();
       } catch {

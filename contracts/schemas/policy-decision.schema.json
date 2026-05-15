@@ -21,7 +21,14 @@
     },
     "role": {
       "type": "string",
-      "enum": ["platform-admin", "workspace-owner", "workspace-member", "workspace-viewer", "agent-service", "auditor"]
+      "enum": [
+        "platform-admin",
+        "workspace-owner",
+        "workspace-member",
+        "workspace-viewer",
+        "agent-service",
+        "auditor"
+      ]
     },
     "scope": {
       "type": "string",

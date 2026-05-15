@@ -3,6 +3,7 @@
 ## 概要
 
 MyCodeXvantaOS 已成功升級為 **雙語架構平台**：
+
 - **TypeScript 控制平面**：74 個 CapabilityBase providers，377 個 tests，Cloudflare-first
 - **Python 智能平面**：新增 memory-dream 引擎，提供 AI/ML 能力
 
@@ -39,6 +40,7 @@ python/
 ### 2. Memory Dream Engine (`mycodexvantaos-memory-dream`)
 
 **核心功能：**
+
 - ✅ MemoryItem 資料模型（匹配 JSON Schema）
 - ✅ DreamRun 執行配置
 - ✅ DreamAction 動作生成
@@ -46,6 +48,7 @@ python/
 - ✅ DreamEngine 編排執行
 
 **偵測器：**
+
 - ✅ Duplicate Detection — Jaccard similarity (TF-IDF 預留)
 - ✅ Conflict Detection — Explicit `conflicts_with` 解析
 - ✅ Orphan Detection — Orphan `related_entities` 識別
@@ -53,12 +56,14 @@ python/
 ### 3. Dream Worker CLI
 
 功能：
+
 - 從 JSON 檔案讀取 memory items
 - 執行 dream processing
 - 生成 dream report (JSON)
 - 列印人類可讀摘要
 
 命令示例：
+
 ```bash
 # Basic
 uv run python -m apps.dream_worker.main memories.json
@@ -96,6 +101,7 @@ python/tests/test_memory_dream.py           ✅ 6 test functions
 ```
 
 包含：
+
 - Python 3.11 setup
 - uv installation
 - Dependency installation
@@ -110,6 +116,7 @@ python/tests/test_memory_dream.py           ✅ 6 test functions
 ## 驗證結果
 
 ### 語法驗證
+
 ```
 ✅ models.py syntax OK
 ✅ dream_engine.py syntax OK
@@ -118,6 +125,7 @@ python/tests/test_memory_dream.py           ✅ 6 test functions
 ```
 
 ### JSON Schema 驗證
+
 ```
 ✅ memory-item.schema.json: valid
 ✅ dream-run.schema.json: valid
@@ -128,23 +136,23 @@ python/tests/test_memory_dream.py           ✅ 6 test functions
 
 ### 代碼統計
 
-| 項目 | 數量 |
-|------|------|
-| Python Packages | 1 |
-| Python Apps | 1 |
-| Python Modules | 7 |
-| Python Files | 9 |
-| 測試案例 | 6 |
-| Contract Schemas | 4 |
+| 項目             | 數量 |
+| ---------------- | ---- |
+| Python Packages  | 1    |
+| Python Apps      | 1    |
+| Python Modules   | 7    |
+| Python Files     | 9    |
+| 測試案例         | 6    |
+| Contract Schemas | 4    |
 
 ---
 
 ## 語言分工
 
-| 平面 | 語言 | 職責 | 部署 |
-|------|------|------|------|
+| 平面         | 語言       | 職責                                                     | 部署                        |
+| ------------ | ---------- | -------------------------------------------------------- | --------------------------- |
 | **控制平面** | TypeScript | Service Catalog, Resource Model, Policy Model, Audit Log | Cloudflare Workers, Node.js |
-| **智能平面** | Python | Memory Dream, Knowledge Pipeline, Agent Workers | Docker, Kubernetes |
+| **智能平面** | Python     | Memory Dream, Knowledge Pipeline, Agent Workers          | Docker, Kubernetes          |
 
 ---
 
@@ -186,6 +194,7 @@ python/tests/test_memory_dream.py           ✅ 6 test functions
 ## 技術棧
 
 ### Python
+
 - **Package Manager**: uv (Rust-based)
 - **Data Models**: pydantic v2
 - **Testing**: pytest
@@ -194,6 +203,7 @@ python/tests/test_memory_dream.py           ✅ 6 test functions
 - **ML/NLP**: scikit-learn (MVP), sentence-transformers (future)
 
 ### TypeScript
+
 - **Package Manager**: pnpm / Turborepo
 - **Testing**: Jest (377 passing)
 - **Type Checking**: TypeScript 5.5 (strict)
@@ -204,18 +214,21 @@ python/tests/test_memory_dream.py           ✅ 6 test functions
 ## 下一步建議
 
 ### 短期（優先）
+
 1. ✅ 執行 Python CI 測試
 2. 📋 建立跨語言 contract check workflow
 3. 📋 在 TypeScript 中實作 `POST /v1/dream/run` API
 4. 📋 整合 Python dream-worker 到 TS API (DB jobs table)
 
 ### 中期
+
 - 📋 新增 TF-IDF + Cosine Similarity 於 duplicate detection
 - 📋 新增 Temporal Normalization detector
 - 📋 新增 Semantic Clustering detector
 - 📋 實作 `mycodexvantaos-knowledge-pipeline` package
 
 ### 長期
+
 - 📋 整合 sentence-transformers 於 embedding 生成
 - 📋 實作 `mycodexvantaos-agent-worker` package
 - 📋 實作 RAG retrieval pipeline
@@ -236,9 +249,9 @@ python/tests/test_memory_dream.py           ✅ 6 test functions
 
 MyCodeXvantaOS 已成功建立 Python 智能平面，第一個模組 `memory-dream` 完成。平台現在支援：
 
- ✅ TypeScript 控制平面（74 providers, 377 tests）
- ✅ Python 智能平面（memory-dream engine, dream-worker CLI）
- ✅ 跨語言 contracts（4 JSON schemas）
- ✅ Python CI/CD workflow
+✅ TypeScript 控制平面（74 providers, 377 tests）
+✅ Python 智能平面（memory-dream engine, dream-worker CLI）
+✅ 跨語言 contracts（4 JSON schemas）
+✅ Python CI/CD workflow
 
 這為 mycodexvantaos 的「成神之路」奠定了基礎：保留穩定的 TypeScript 控制平面同時引入強大的 Python AI/ML 能力。

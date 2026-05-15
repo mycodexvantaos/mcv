@@ -59,11 +59,7 @@
           }
         }
       },
-      "required": [
-        "memoryId",
-        "content",
-        "status"
-      ]
+      "required": ["memoryId", "content", "status"]
     },
     "MemoryCandidate": {
       "type": "object",
@@ -79,16 +75,10 @@
         },
         "status": {
           "type": "string",
-          "enum": [
-            "candidate"
-          ]
+          "enum": ["candidate"]
         }
       },
-      "required": [
-        "candidateId",
-        "content",
-        "source"
-      ]
+      "required": ["candidateId", "content", "source"]
     },
     "MemoryConflict": {
       "type": "object",
@@ -104,26 +94,14 @@
         },
         "conflictType": {
           "type": "string",
-          "enum": [
-            "factual",
-            "temporal",
-            "semantic"
-          ]
+          "enum": ["factual", "temporal", "semantic"]
         },
         "severity": {
           "type": "string",
-          "enum": [
-            "low",
-            "medium",
-            "high"
-          ]
+          "enum": ["low", "medium", "high"]
         }
       },
-      "required": [
-        "conflictId",
-        "memoryIds",
-        "conflictType"
-      ]
+      "required": ["conflictId", "memoryIds", "conflictType"]
     }
   }
 }

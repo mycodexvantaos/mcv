@@ -45,7 +45,9 @@ function loadConfig(): Record<string, string> {
     if (fs.existsSync(CONFIG_FILE)) {
       return JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf-8'));
     }
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
   return {};
 }
 
@@ -61,11 +63,7 @@ function saveConfig(config: Record<string, string>): void {
 
 // ── API Client ─────────────────────────────────────────────────────────
 
-async function apiRequest(
-  method: string,
-  path: string,
-  body?: unknown,
-): Promise<unknown> {
+async function apiRequest(method: string, path: string, body?: unknown): Promise<unknown> {
   const config = loadConfig();
   const baseUrl = config['api_base'] ?? 'http://localhost:8787/api/v1';
   const token = config['token'];
@@ -95,7 +93,7 @@ const statusCommand: CliCommand = {
   name: 'status',
   description: 'Show platform health status',
   action: async () => {
-    const result = await apiRequest('GET', '/health') as { status: string; timestamp: string };
+    const result = (await apiRequest('GET', '/health')) as { status: string; timestamp: string };
     console.log(`Platform Status: ${result.status}`);
     console.log(`Timestamp: ${result.timestamp}`);
   },
@@ -110,7 +108,10 @@ const configCommand: CliCommand = {
       description: 'Set a configuration value',
       action: async (args) => {
         const [key, value] = args;
-        if (!key || !value) { console.error('Usage: mcx config set <key> <value>'); process.exit(1); }
+        if (!key || !value) {
+          console.error('Usage: mcx config set <key> <value>');
+          process.exit(1);
+        }
         const config = loadConfig();
         config[key] = value;
         saveConfig(config);
@@ -122,7 +123,10 @@ const configCommand: CliCommand = {
       description: 'Get a configuration value',
       action: async (args) => {
         const [key] = args;
-        if (!key) { console.error('Usage: mcx config get <key>'); process.exit(1); }
+        if (!key) {
+          console.error('Usage: mcx config get <key>');
+          process.exit(1);
+        }
         const config = loadConfig();
         if (config[key]) {
           console.log(config[key]);
@@ -143,7 +147,10 @@ const workspaceCommand: CliCommand = {
       description: 'Create a workspace',
       action: async (args) => {
         const [name] = args;
-        if (!name) { console.error('Usage: mcx workspace create <name>'); process.exit(1); }
+        if (!name) {
+          console.error('Usage: mcx workspace create <name>');
+          process.exit(1);
+        }
         const result = await apiRequest('POST', '/workspace', { name, ownerId: 'cli-user' });
         console.log('✓ Workspace created:', JSON.stringify(result, null, 2));
       },
@@ -152,7 +159,9 @@ const workspaceCommand: CliCommand = {
       name: 'list',
       description: 'List workspaces',
       action: async () => {
-        const result = await apiRequest('GET', '/workspace') as { items: Array<{ id: string; name: string }> };
+        const result = (await apiRequest('GET', '/workspace')) as {
+          items: Array<{ id: string; name: string }>;
+        };
         if (result.items?.length) {
           console.table(result.items);
         } else {
@@ -180,7 +189,10 @@ const knowledgeCommand: CliCommand = {
       description: 'Ingest a document',
       action: async (args) => {
         const [filePath] = args;
-        if (!filePath) { console.error('Usage: mcx knowledge ingest <file>'); process.exit(1); }
+        if (!filePath) {
+          console.error('Usage: mcx knowledge ingest <file>');
+          process.exit(1);
+        }
         const fs = require('fs');
         const content = fs.readFileSync(filePath, 'utf-8');
         const fileName = filePath.split('/').pop();
@@ -197,7 +209,10 @@ const knowledgeCommand: CliCommand = {
       description: 'Search the knowledge base',
       action: async (args) => {
         const query = args.join(' ');
-        if (!query) { console.error('Usage: mcx knowledge search <query>'); process.exit(1); }
+        if (!query) {
+          console.error('Usage: mcx knowledge search <query>');
+          process.exit(1);
+        }
         const result = await apiRequest('POST', '/knowledge/search', { query, topK: 5 });
         console.log(JSON.stringify(result, null, 2));
       },
@@ -215,7 +230,9 @@ const agentCommand: CliCommand = {
       action: async (args, opts) => {
         const workspaceId = opts['workspace'] ?? 'default';
         // Create session
-        const session = await apiRequest('POST', '/agent/sessions', { workspaceId }) as { sessionId: string };
+        const session = (await apiRequest('POST', '/agent/sessions', { workspaceId })) as {
+          sessionId: string;
+        };
         console.log(`Session started: ${session.sessionId}`);
         console.log('Type your message (Ctrl+C to exit):\n');
 
@@ -224,11 +241,18 @@ const agentCommand: CliCommand = {
 
         const prompt = () => {
           rl.question('You: ', async (msg: string) => {
-            if (!msg.trim()) { prompt(); return; }
+            if (!msg.trim()) {
+              prompt();
+              return;
+            }
             try {
-              const result = await apiRequest('POST', `/agent/sessions/${session.sessionId}/messages`, {
-                content: msg,
-              }) as { content: string; evidenceLevel: string; sources?: unknown[] };
+              const result = (await apiRequest(
+                'POST',
+                `/agent/sessions/${session.sessionId}/messages`,
+                {
+                  content: msg,
+                }
+              )) as { content: string; evidenceLevel: string; sources?: unknown[] };
               console.log(`\nAgent [${result.evidenceLevel}]: ${result.content}`);
               if (result.sources?.length) {
                 console.log(`  Sources: ${result.sources.length} referenced`);
@@ -242,9 +266,7 @@ const agentCommand: CliCommand = {
         };
         prompt();
       },
-      options: [
-        { flag: '--workspace', description: 'Workspace ID', default: 'default' },
-      ],
+      options: [{ flag: '--workspace', description: 'Workspace ID', default: 'default' }],
     },
   ],
 };
@@ -266,7 +288,10 @@ const modelCommand: CliCommand = {
       description: 'Call a model directly',
       action: async (args) => {
         const [modelId, ...promptParts] = args;
-        if (!modelId) { console.error('Usage: mcx model chat <model-id> <prompt>'); process.exit(1); }
+        if (!modelId) {
+          console.error('Usage: mcx model chat <model-id> <prompt>');
+          process.exit(1);
+        }
         const prompt = promptParts.join(' ');
         const result = await apiRequest('POST', '/model/chat', {
           modelId,
@@ -290,15 +315,16 @@ const auditCommand: CliCommand = {
         const result = await apiRequest('GET', `/audit/events?limit=${limit}`);
         console.log(JSON.stringify(result, null, 2));
       },
-      options: [
-        { flag: '--limit', description: 'Max events to return', default: '50' },
-      ],
+      options: [{ flag: '--limit', description: 'Max events to return', default: '50' }],
     },
     {
       name: 'verify',
       description: 'Verify audit chain integrity',
       action: async () => {
-        const result = await apiRequest('POST', '/audit/verify') as { valid: boolean; brokenAt?: string };
+        const result = (await apiRequest('POST', '/audit/verify')) as {
+          valid: boolean;
+          brokenAt?: string;
+        };
         if (result.valid) {
           console.log('✅ Audit chain integrity verified — no tampering detected.');
         } else {
@@ -315,14 +341,15 @@ const usageCommand: CliCommand = {
   description: 'Usage metering',
   action: async (args, opts) => {
     const [subjectId] = args;
-    if (!subjectId) { console.error('Usage: mcx usage <subject-id>'); process.exit(1); }
+    if (!subjectId) {
+      console.error('Usage: mcx usage <subject-id>');
+      process.exit(1);
+    }
     const window = opts['window'] ?? 'hour';
     const result = await apiRequest('GET', `/usage/${subjectId}?window=${window}`);
     console.log(JSON.stringify(result, null, 2));
   },
-  options: [
-    { flag: '--window', description: 'Time window: minute, hour, day', default: 'hour' },
-  ],
+  options: [{ flag: '--window', description: 'Time window: minute, hour, day', default: 'hour' }],
 };
 
 const automationCommand: CliCommand = {
@@ -334,7 +361,10 @@ const automationCommand: CliCommand = {
       description: 'Enqueue an automation job',
       action: async (args) => {
         const [jobType, payloadJson] = args;
-        if (!jobType) { console.error('Usage: mcx automation enqueue <type> [json-payload]'); process.exit(1); }
+        if (!jobType) {
+          console.error('Usage: mcx automation enqueue <type> [json-payload]');
+          process.exit(1);
+        }
         const payload = payloadJson ? JSON.parse(payloadJson) : {};
         const result = await apiRequest('POST', '/automation/jobs', { jobType, payload });
         console.log('✓ Job enqueued:', JSON.stringify(result, null, 2));
@@ -375,14 +405,18 @@ function parseArgs(argv: string[]): { positional: string[]; opts: Record<string,
 
 // ── Dispatcher ─────────────────────────────────────────────────────────
 
-async function dispatch(commands: CliCommand[], positional: string[], opts: Record<string, string>): Promise<void> {
+async function dispatch(
+  commands: CliCommand[],
+  positional: string[],
+  opts: Record<string, string>
+): Promise<void> {
   const [cmd, ...rest] = positional;
   if (!cmd) {
     printHelp(commands);
     return;
   }
 
-  const found = commands.find(c => c.name === cmd);
+  const found = commands.find((c) => c.name === cmd);
   if (!found) {
     console.error(`Unknown command: ${cmd}`);
     printHelp(commands);

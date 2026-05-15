@@ -53,7 +53,10 @@ export class IdentityService implements IIdentityPort {
       [input.email]
     );
     if (existing) {
-      throw new IdentityError('SUBJECT_ALREADY_EXISTS', `Subject with email ${input.email} already exists`);
+      throw new IdentityError(
+        'SUBJECT_ALREADY_EXISTS',
+        `Subject with email ${input.email} already exists`
+      );
     }
 
     // 2. Hash password (argon2id — adapter handles the implementation)
@@ -67,7 +70,16 @@ export class IdentityService implements IIdentityPort {
     await this.deps.database.execute(
       `INSERT INTO identity_subjects (id, urn, email, display_name, password_hash, mfa_enabled, phase, created_at, updated_at)
        VALUES (?, ?, ?, ?, ?, ?, 'active', ?, ?)`,
-      [subjectId, urn, input.email, input.displayName, passwordHash, input.mfaEnabled ?? false, now, now]
+      [
+        subjectId,
+        urn,
+        input.email,
+        input.displayName,
+        passwordHash,
+        input.mfaEnabled ?? false,
+        now,
+        now,
+      ]
     );
 
     // 4. Emit audit event
@@ -107,7 +119,15 @@ export class IdentityService implements IIdentityPort {
       },
       status: {
         phase: 'active',
-        conditions: [{ type: 'Ready', status: 'True', reason: 'Registered', message: 'Subject registered successfully', lastTransitionTime: now }],
+        conditions: [
+          {
+            type: 'Ready',
+            status: 'True',
+            reason: 'Registered',
+            message: 'Subject registered successfully',
+            lastTransitionTime: now,
+          },
+        ],
         authProvider: 'native',
         lastAuthenticatedAt: null,
         mfaVerifiedAt: null,
@@ -192,7 +212,11 @@ export class IdentityService implements IIdentityPort {
       severity: 'info',
       subjectId: subject.id,
       action: 'authenticate',
-      data: { authMethod: input.mfaCode ? 'mfa' : 'password', ipAddress: input.ipAddress, userAgent: input.userAgent },
+      data: {
+        authMethod: input.mfaCode ? 'mfa' : 'password',
+        ipAddress: input.ipAddress,
+        userAgent: input.userAgent,
+      },
       correlationId: crypto.randomUUID(),
     });
 
@@ -211,12 +235,16 @@ export class IdentityService implements IIdentityPort {
     const refreshToken = `refresh_${sessionId}_${subjectId}_${now}`;
 
     // Cache the session
-    await this.deps.cache.put(`session:${sessionId}`, {
-      subjectId,
-      scopes,
-      createdAt: now,
-      expiresAt: now + 3600,
-    }, { expirationTtl: 3600 });
+    await this.deps.cache.put(
+      `session:${sessionId}`,
+      {
+        subjectId,
+        scopes,
+        createdAt: now,
+        expiresAt: now + 3600,
+      },
+      { expirationTtl: 3600 }
+    );
 
     await this.deps.audit.emitEvent({
       eventType: 'identity.session.created',
@@ -247,9 +275,12 @@ export class IdentityService implements IIdentityPort {
     const sessionId = parts[1];
     const subjectId = parts[2];
 
-    const cached = await this.deps.cache.get<{ subjectId: string; scopes: string[]; createdAt: number; expiresAt: number }>(
-      `session:${sessionId}`
-    );
+    const cached = await this.deps.cache.get<{
+      subjectId: string;
+      scopes: string[];
+      createdAt: number;
+      expiresAt: number;
+    }>(`session:${sessionId}`);
 
     if (!cached || cached.subjectId !== subjectId) {
       throw new IdentityError('TOKEN_EXPIRED', 'Token has expired or been revoked');
@@ -279,20 +310,37 @@ export class IdentityService implements IIdentityPort {
 
   // ─── Authorization ──────────────────────────────────────────────────
 
-  async checkPermission(subjectId: string, workspaceId: string, action: string, resourceKind: string): Promise<boolean> {
+  async checkPermission(
+    subjectId: string,
+    workspaceId: string,
+    action: string,
+    resourceKind: string
+  ): Promise<boolean> {
     const role = await this.resolveRole(subjectId, workspaceId);
     // Simplified permission check — in production, evaluate against policy-model.yaml
     const permissionMap: Record<Role, string[]> = {
       'platform-admin': ['*'],
       'workspace-owner': ['workspace:*', 'knowledge:*', 'ai:*', 'model:*'],
-      'workspace-member': ['knowledge:document:*', 'knowledge:search:*', 'ai:chat-session:*', 'model:invoke'],
-      'workspace-viewer': ['knowledge:document:read', 'knowledge:collection:read', 'ai:chat-session:read', 'workspace:read'],
+      'workspace-member': [
+        'knowledge:document:*',
+        'knowledge:search:*',
+        'ai:chat-session:*',
+        'model:invoke',
+      ],
+      'workspace-viewer': [
+        'knowledge:document:read',
+        'knowledge:collection:read',
+        'ai:chat-session:read',
+        'workspace:read',
+      ],
       'agent-service': ['knowledge-search:execute', 'model:invoke', 'audit:event:write'],
-      'auditor': ['governance:audit:read', 'governance:usage:read'],
+      auditor: ['governance:audit:read', 'governance:usage:read'],
     };
 
     const permissions = permissionMap[role] ?? [];
-    return permissions.some((p) => p === '*' || p === action || action.startsWith(p.replace('*', '')));
+    return permissions.some(
+      (p) => p === '*' || p === action || action.startsWith(p.replace('*', ''))
+    );
   }
 
   async resolveRole(subjectId: string, workspaceId: string): Promise<Role> {
@@ -313,14 +361,24 @@ export class IdentityService implements IIdentityPort {
     return membership.role as Role;
   }
 
-  async getSubject(subjectId: string): Promise<{ id: string; email: string; displayName: string; mfaEnabled: boolean; status: string }> {
+  async getSubject(
+    subjectId: string
+  ): Promise<{
+    id: string;
+    email: string;
+    displayName: string;
+    mfaEnabled: boolean;
+    status: string;
+  }> {
     const subject = await this.deps.database.queryFirst<{
       id: string;
       email: string;
       display_name: string;
       mfa_enabled: boolean;
       phase: string;
-    }>('SELECT id, email, display_name, mfa_enabled, phase FROM identity_subjects WHERE id = ?', [subjectId]);
+    }>('SELECT id, email, display_name, mfa_enabled, phase FROM identity_subjects WHERE id = ?', [
+      subjectId,
+    ]);
 
     if (!subject) {
       throw new IdentityError('SUBJECT_NOT_FOUND', `Subject ${subjectId} not found`);
@@ -343,7 +401,9 @@ export class IdentityService implements IIdentityPort {
     const encoder = new TextEncoder();
     const data = encoder.encode(password);
     const hash = await crypto.subtle.digest('SHA-256', data);
-    return `argon2id$${Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('')}`;
+    return `argon2id$${Array.from(new Uint8Array(hash))
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('')}`;
   }
 
   private async verifyPassword(password: string, hash: string): Promise<boolean> {
@@ -357,7 +417,7 @@ export class IdentityService implements IIdentityPort {
 export class IdentityError extends Error {
   constructor(
     public readonly code: string,
-    message: string,
+    message: string
   ) {
     super(message);
     this.name = 'IdentityError';

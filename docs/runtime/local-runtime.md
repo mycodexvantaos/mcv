@@ -10,13 +10,13 @@ for development and testing purposes.
 ```yaml
 # runtimes/local/runtime.yaml
 runtime: local
-version: "1.0"
+version: '1.0'
 services:
-  all: true  # Run all services
+  all: true # Run all services
 providers:
-  - filesystem  # Use filesystem instead of cloud storage
-  - sqlite      # Use SQLite instead of D1
-  - process     # Run Python workers as subprocesses
+  - filesystem # Use filesystem instead of cloud storage
+  - sqlite # Use SQLite instead of D1
+  - process # Run Python workers as subprocesses
 ```
 
 ## Usage
@@ -35,13 +35,13 @@ uv run python/apps/knowledge-worker/main.py --local
 
 ## Service Endpoints
 
-| Service | Port | URL |
-|---|---|---|
-| API Gateway | 8787 | http://localhost:8787 |
-| Identity | 8788 | http://localhost:8788 |
+| Service         | Port | URL                   |
+| --------------- | ---- | --------------------- |
+| API Gateway     | 8787 | http://localhost:8787 |
+| Identity        | 8788 | http://localhost:8788 |
 | Knowledge Store | 8789 | http://localhost:8789 |
-| Memory Store | 8790 | http://localhost:8790 |
-| Dream Worker | 8791 | http://localhost:8791 |
+| Memory Store    | 8790 | http://localhost:8790 |
+| Dream Worker    | 8791 | http://localhost:8791 |
 
 ## SQLite Emulation
 

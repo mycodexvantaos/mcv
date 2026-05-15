@@ -31,18 +31,18 @@ interface ApiResponse<T> {
 
 async function api<T>(
   path: string,
-  options?: RequestInit & { token?: string },
+  options?: RequestInit & { token?: string }
 ): Promise<ApiResponse<T>> {
   const { token, ...init } = options ?? {};
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    ...(init.headers as Record<string, string> ?? {}),
+    ...((init.headers as Record<string, string>) ?? {}),
   };
   if (token) headers['Authorization'] = `Bearer ${token}`;
 
   try {
     const res = await fetch(`${API_BASE}${path}`, { ...init, headers });
-    const body = await res.json() as T;
+    const body = (await res.json()) as T;
     return { data: body, status: res.status };
   } catch (err) {
     return { error: (err as Error).message, status: 500 };
@@ -112,7 +112,9 @@ async function handleWorkspaces(_params: Record<string, string>): Promise<void> 
   const res = await api<{ items: Array<{ id: string; name: string }> }>('/workspace');
   const list = document.getElementById('workspace-list')!;
   if (res.data?.items?.length) {
-    list.innerHTML = res.data.items.map(w => `<div class="list-item">${w.name} <small>${w.id}</small></div>`).join('');
+    list.innerHTML = res.data.items
+      .map((w) => `<div class="list-item">${w.name} <small>${w.id}</small></div>`)
+      .join('');
   } else {
     list.innerHTML = '<p>No workspaces found. Create one to get started.</p>';
   }
@@ -136,14 +138,20 @@ async function handleKnowledge(_params: Record<string, string>): Promise<void> {
     if (!query) return;
     const results = document.getElementById('knowledge-results')!;
     results.innerHTML = 'Searching...';
-    const res = await api<{ items: Array<{ content: string; score: number }> }>('/knowledge/search', {
-      method: 'POST',
-      body: JSON.stringify({ query, topK: 10 }),
-    });
+    const res = await api<{ items: Array<{ content: string; score: number }> }>(
+      '/knowledge/search',
+      {
+        method: 'POST',
+        body: JSON.stringify({ query, topK: 10 }),
+      }
+    );
     if (res.data?.items?.length) {
-      results.innerHTML = res.data.items.map(r =>
-        `<div class="result-item"><span class="score">${(r.score * 100).toFixed(1)}%</span><p>${r.content.slice(0, 200)}</p></div>`
-      ).join('');
+      results.innerHTML = res.data.items
+        .map(
+          (r) =>
+            `<div class="result-item"><span class="score">${(r.score * 100).toFixed(1)}%</span><p>${r.content.slice(0, 200)}</p></div>`
+        )
+        .join('');
     } else {
       results.innerHTML = '<p>No results found.</p>';
     }
@@ -173,18 +181,30 @@ async function handleAudit(_params: Record<string, string>): Promise<void> {
     </div>
     <div id="audit-list">Loading...</div>
   `;
-  const res = await api<{ items: Array<{ eventId: string; eventType: string; timestamp: string; subjectId: string }> }>('/audit/events?limit=50');
+  const res = await api<{
+    items: Array<{ eventId: string; eventType: string; timestamp: string; subjectId: string }>;
+  }>('/audit/events?limit=50');
   const list = document.getElementById('audit-list')!;
   if (res.data?.items?.length) {
-    list.innerHTML = '<table class="data-table"><thead><tr><th>Timestamp</th><th>Type</th><th>Subject</th><th>Event ID</th></tr></thead><tbody>' +
-      res.data.items.map(e => `<tr><td>${e.timestamp}</td><td>${e.eventType}</td><td>${e.subjectId}</td><td><code>${e.eventId}</code></td></tr>`).join('') +
+    list.innerHTML =
+      '<table class="data-table"><thead><tr><th>Timestamp</th><th>Type</th><th>Subject</th><th>Event ID</th></tr></thead><tbody>' +
+      res.data.items
+        .map(
+          (e) =>
+            `<tr><td>${e.timestamp}</td><td>${e.eventType}</td><td>${e.subjectId}</td><td><code>${e.eventId}</code></td></tr>`
+        )
+        .join('') +
       '</tbody></table>';
   } else {
     list.innerHTML = '<p>No audit events found.</p>';
   }
   document.getElementById('btn-verify-chain')?.addEventListener('click', async () => {
     const v = await api<{ valid: boolean; brokenAt?: string }>('/audit/verify', { method: 'POST' });
-    alert(v.data?.valid ? '✅ Audit chain integrity verified!' : `❌ Chain broken at: ${v.data?.brokenAt}`);
+    alert(
+      v.data?.valid
+        ? '✅ Audit chain integrity verified!'
+        : `❌ Chain broken at: ${v.data?.brokenAt}`
+    );
   });
 }
 

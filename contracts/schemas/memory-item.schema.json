@@ -34,7 +34,16 @@
     },
     "memory_type": {
       "type": "string",
-      "enum": ["observation", "reflection", "decision", "event", "fact", "opinion", "plan", "system"],
+      "enum": [
+        "observation",
+        "reflection",
+        "decision",
+        "event",
+        "fact",
+        "opinion",
+        "plan",
+        "system"
+      ],
       "default": "observation",
       "description": "Type of memory"
     },

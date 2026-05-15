@@ -24,10 +24,7 @@
           "type": "boolean"
         }
       },
-      "required": [
-        "id",
-        "displayName"
-      ]
+      "required": ["id", "displayName"]
     },
     "ProviderDefinition": {
       "type": "object",
@@ -42,11 +39,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "id",
-        "runtimeId",
-        "category"
-      ]
+      "required": ["id", "runtimeId", "category"]
     }
   }
 }

@@ -13,6 +13,7 @@
 ### 🎯 Task 1: 新增 `packages/capabilities` 抽象層級
 
 #### 已創建文件：
+
 ```
 packages/capabilities/
 ├── base/index.ts                    # CapabilityBase<T> 抽象基類
@@ -23,6 +24,7 @@ packages/capabilities/
 ```
 
 #### 功能特性：
+
 - ✅ **CapabilityBase<T>** - 統一 Provider 抽象接口
   - `initialize()`: 初始化 Provider
   - `healthCheck()`: 健康檢查
@@ -50,6 +52,7 @@ packages/capabilities/
   - `ProviderMetrics`: Provider 指標
 
 #### 代碼統計：
+
 - **新增文件**: 5 個
 - **代碼行數**: ~1,500 行
 - **類型定義**: 15+ 個接口/枚舉
@@ -59,6 +62,7 @@ packages/capabilities/
 ### 🎯 Task 2: 實現 `ProviderFactory` 工廠類
 
 #### 功能特性：
+
 - ✅ 四種 Runtime Mode 支持
   - **NATIVE**: 僅使用 Native Provider（完全離線）
   - **CONNECTED**: 優先使用 External Provider（需要 API）
@@ -88,6 +92,7 @@ packages/capabilities/
   - 支持多種網絡檢測策略
 
 #### 代碼統計：
+
 - **新增文件**: 1 個（factory/index.ts）
 - **代碼行數**: ~400 行
 - **方法數**: 15+ 個
@@ -97,6 +102,7 @@ packages/capabilities/
 ### 🎯 Task 3: 重構 Provider 目錄結構
 
 #### 新目錄結構：
+
 ```
 providers/
 ├── native/                          # 零依賴 Native Providers
@@ -112,6 +118,7 @@ providers/
 #### 已遷移並適配的 Provider：
 
 ##### External Providers:
+
 1. **OpenAI Model Provider**
    - 文件: `providers/external/openai/openai-model-provider-cb.ts`
    - 特性:
@@ -127,6 +134,7 @@ providers/
      - Cloudflare Workers 集成
 
 ##### Native Providers:
+
 1. **Memory Vector Store**
    - 文件: `providers/native/memory-vector-store/memory-vector-store-cb.ts`
    - 特性:
@@ -144,6 +152,7 @@ providers/
      - 自動過期清理
 
 ##### Hybrid Providers:
+
 1. **Hybrid Embedding Provider**
    - 文件: `providers/hybrid/embedding/hybrid-embedding-provider-cb.ts`
    - 特性:
@@ -153,12 +162,14 @@ providers/
      - 結構化日誌
 
 #### 遷移文檔：
+
 - ✅ `providers/REFACTORING_PLAN.md` - 遷移計劃和規則
 
 #### 代碼統計：
+
 - **新增目錄**: 3 個（native/external/hybrid）
 - **遷移 Provider**: 5 個（示例）
-- **新增適配文件**: 3 個（*-cb.ts）
+- **新增適配文件**: 3 個（\*-cb.ts）
 - **代碼行數**: ~300 行
 
 ---
@@ -166,6 +177,7 @@ providers/
 ### 🎯 Task 4: 實現 Runtime Mode 配置系統
 
 #### 已創建文件：
+
 ```
 runtimes/
 ├── types/index.ts                   # Runtime 類型定義
@@ -178,6 +190,7 @@ runtimes/
 #### 功能特性：
 
 ##### RuntimeManager（單例）:
+
 - ✅ 配置管理
   - `getConfig()`: 獲取當前配置
   - `updateConfig()`: 更新配置
@@ -194,6 +207,7 @@ runtimes/
   - `getLastDetection()`: 獲取最後檢測結果
 
 ##### ModeDetector:
+
 - ✅ 環境檢測
   - Cloudflare Workers
   - Docker
@@ -215,6 +229,7 @@ runtimes/
   - 推薦理由記錄
 
 #### 類型定義：
+
 - ✅ `RuntimeConfiguration`: 運行時配置
 - ✅ `RuntimeEnvironment`: 環境信息
 - ✅ `NetworkProbeStrategy`: 網絡檢測策略
@@ -222,11 +237,13 @@ runtimes/
 - ✅ `ModeDetectionResult`: 模式檢測結果
 
 #### 向後兼容：
+
 - ✅ 保留原有 runtime adapter 導出
 - ✅ 保留原有 `createRuntimeAdapter()` 函數
 - ✅ 保留 Cloudflare/Docker/Kubernetes 相關類
 
 #### 代碼統計：
+
 - **新增文件**: 4 個（types/index.ts, detector.ts, manager.ts, README.md）
 - **重寫文件**: 1 個（index.ts）
 - **代碼行數**: ~600 行
@@ -236,15 +253,17 @@ runtimes/
 ## 📊 總體統計
 
 ### 文件創建概況：
-| 類別 | 新增文件 | 修改文件 | 代碼行數 |
-|------|----------|----------|----------|
-| **Capabilities Layer** | 5 | 0 | ~1,500 |
-| **Providers** | 6 | 0 | ~300 |
-| **Runtime Layer** | 5 | 1 | ~600 |
-| **文檔** | 3 | 0 | ~800 |
-| **合計** | **19** | **1** | **~3,200** |
+
+| 類別                   | 新增文件 | 修改文件 | 代碼行數   |
+| ---------------------- | -------- | -------- | ---------- |
+| **Capabilities Layer** | 5        | 0        | ~1,500     |
+| **Providers**          | 6        | 0        | ~300       |
+| **Runtime Layer**      | 5        | 1        | ~600       |
+| **文檔**               | 3        | 0        | ~800       |
+| **合計**               | **19**   | **1**    | **~3,200** |
 
 ### 目錄結構變化：
+
 ```
 新增目錄：
 ├── packages/capabilities/    # 新增：CapabilityBase、ProviderFactory
@@ -259,6 +278,7 @@ runtimes/
 ```
 
 ### 架構改進：
+
 - ✅ 八層架構補全：**Capabilities Layer** 作為第 8 層
 - ✅ Platform Independence 核心機制實現
 - ✅ Runtime Mode 自動切換支持
@@ -269,6 +289,7 @@ runtimes/
 ## 🎯 P1 待辦任務（後續階段）
 
 ### Task 5: 新增 CI 合規性檢查
+
 - [ ] 創建 `.github/workflows/provider-compliance.yml`
 - [ ] 檢查：禁止直接調用第三方 API（必須通過 Provider 層）
 - [ ] 檢查：所有 Provider 必須實現 CapabilityBase
@@ -276,18 +297,21 @@ runtimes/
 - [ ] 檢查：外部 Provider 必須有 Native fallback
 
 ### Task 6: 實現 Hybrid Provider 示例
+
 - [ ] 實現 `HybridModelProvider`（OpenAI → Native）
 - [ ] 實現 `HybridVectorStore`（OpenAI → Native）
 - [ ] 實現 `HybridEmbedding`（Workers AI → Native）
 - [ ] 添加 fallback 指標監控
 
 ### Task 7: 更新現有 Provider 實現
+
 - [ ] 測試並標記 Native Provider 的零依賴性
 - [ ] 為 External Provider 添加 Native fallback
 - [ ] 更新所有 Provider 文檔（明確 Runtime Mode 支持）
 - [ ] 添加 Provider 健康檢查端點
 
 ### Task 8: 創建 Provider Registry
+
 - [ ] 實現 `packages/capabilities/registry.ts`
 - [ ] 註冊所有 Provider 及其能力
 - [ ] 提供 Provider 查詢 API
@@ -300,18 +324,20 @@ runtimes/
 ## 📈 架構合規性評估
 
 ### Platform Independence 合規性：
-| 原則 | Phase 0.5 前 | Phase 0.5 後 | 改進 |
-|------|-------------|-------------|------|
-| 平台零依賴 | ❌ 60% | ✅ 90% | +30% |
-| 技術無綁定 | ✅ 80% | ✅ 85% | +5% |
-| 可組合可分離 | ❌ 50% | ✅ 80% | +30% |
-| 完全可移植 | ❌ 40% | ✅ 75% | +35% |
-| 部署可選擇 | ✅ 70% | ✅ 85% | +15% |
-| 離線可用 | ❌ 30% | ✅ 80% | +50% |
-| 數據可遷移 | ✅ 60% | ✅ 65% | +5% |
+
+| 原則         | Phase 0.5 前 | Phase 0.5 後 | 改進     |
+| ------------ | ------------ | ------------ | -------- |
+| 平台零依賴   | ❌ 60%       | ✅ 90%       | +30%     |
+| 技術無綁定   | ✅ 80%       | ✅ 85%       | +5%      |
+| 可組合可分離 | ❌ 50%       | ✅ 80%       | +30%     |
+| 完全可移植   | ❌ 40%       | ✅ 75%       | +35%     |
+| 部署可選擇   | ✅ 70%       | ✅ 85%       | +15%     |
+| 離線可用     | ❌ 30%       | ✅ 80%       | +50%     |
+| 數據可遷移   | ✅ 60%       | ✅ 65%       | +5%      |
 | **總體評分** | **C+ (55%)** | **B+ (80%)** | **+25%** |
 
 ### 架構缺口解決：P0 缺口已全部解決：
+
 - ✅ P0: 新增 `packages/capabilities` 層級（已解決）
 - ✅ P0: 實現 CapabilityBase 和 ProviderFactory（已解決）
 - ✅ P0: 重構 Provider 目錄結構（部分解決，示例完成）
@@ -326,11 +352,13 @@ runtimes/
 ## 📚 相關文檔
 
 ### 已創建的文檔：
+
 1. **`packages/capabilities/README.md`** - Capabilities Layer 使用指南
 2. **`providers/REFACTORING_PLAN.md`** - Provider 重構計劃
 3. **`runtimes/README.md`** - Runtime Layer 使用指南
 
 ### 需要更新的文檔：
+
 1. **`PLATFORM_ARCHITECTURE.md`** - 更新八層架構
 2. **`ARCHITECTURE.md`** - 更新架構設計
 3. **`ARCHITECTURE_PRINCIPLES_VALIDATION.md`** - 標記已完成的項目
@@ -343,6 +371,7 @@ runtimes/
 Phase 0.5 的所有 P0 任務已經成功完成，建立了完整的 Capabilities Layer、Provider 管理系統和 Runtime Mode 配置系統。這些改進大幅提升了平台的 Platform Independence 合規性，從 C+ (55%) 提升到 B+ (80%)。
 
 ### 關鍵成就：
+
 1. ✅ **統一 Provider 抽象** - 所有 Provider 通過 CapabilityBase 統一管理
 2. ✅ **Runtime Mode 自動切換** - 支持四種模式，根據環境自動選擇
 3. ✅ **Provider 分類管理** - Native/External/Hybrid 清晰分離
@@ -350,6 +379,7 @@ Phase 0.5 的所有 P0 任務已經成功完成，建立了完整的 Capabilitie
 5. ✅ **向後兼容** - 保留原有 runtime adapter，不破壞現有功能
 
 ### 後續工作：
+
 - Phase 0.5 P1 任務（1 週）：CI 合規性檢查、Hybrid Provider 擴充、Provider Registry
 - 文檔更新（1 天）：更新架構文檔
 - 測試和驗證（1 天）：單元測試、集成測試
