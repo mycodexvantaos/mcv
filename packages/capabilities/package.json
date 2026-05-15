@@ -1,0 +1,22 @@
+{
+  "name": "@mycodexvantaos/capabilities",
+  "version": "1.0.0-phase-0.5",
+  "description": "MyCodeXvantaOS unified capability abstraction layer — provides runtime-aware provider lifecycle management",
+  "type": "module",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./types": "./types/index.ts",
+    "./base": "./base/index.ts",
+    "./factory": "./factory/index.ts",
+    "./registry": "./registry/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "keywords": ["capabilities", "providers", "runtime-mode", "lifecycle-management", "fallback"],
+  "license": "UNLICENSED",
+  "private": true
+}

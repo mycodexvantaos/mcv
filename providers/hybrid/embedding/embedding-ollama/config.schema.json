@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mycodexvantaos.org/providers/embedding/ollama/config.schema.json",
+  "title": "embedding-ollama Configuration",
+  "type": "object",
+  "required": ["baseUrl"],
+  "properties": {
+    "baseUrl": {
+      "type": "string",
+      "envVar": "MYCODEXVANTAOS_EMBEDDING_OLLAMA_URL",
+      "default": "http://localhost:11434"
+    },
+    "defaultModel": {
+      "type": "string",
+      "default": "nomic-embed-text"
+    },
+    "keepAlive": {
+      "type": "string",
+      "default": "5m"
+    }
+  }
+}
