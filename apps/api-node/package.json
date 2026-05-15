@@ -8,13 +8,14 @@
   "scripts": {
     "dev": "npx tsx watch index.ts",
     "build": "npx tsup index.ts --format esm --outDir dist",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@mycodexvantaos/core": "workspace:*",
-    "@mycodexvantaos/ports": "workspace:*",
-    "@mycodexvantaos/application": "workspace:*",
-    "@mycodexvantaos/adapters": "workspace:*"
+    "@mycodexvantaos/contracts-sdk": "workspace:*",
+    "@mycodexvantaos/service-service-catalog": "workspace:*",
+    "@mycodexvantaos/service-resource-registry": "workspace:*",
+    "@mycodexvantaos/service-audit-log": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.4.0",

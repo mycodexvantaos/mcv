@@ -12,23 +12,23 @@
 
 ## 核心閉環
 
-### 閉環 1：Service Catalog Runtime
-- [ ] contracts-sdk 載入 service-definitions
-- [ ] service-catalog service 實作
-- [ ] API: GET /v1/services
-- [ ] API: GET /v1/services/:id
+### 閉環 1：Service Catalog Runtime ✅
+- [x] contracts-sdk 載入 service-definitions
+- [x] service-catalog service 實作
+- [x] API: GET /v1/services
+- [x] API: GET /v1/services/:id
 
-### 閉環 2：Resource Registry Runtime
-- [ ] contracts-sdk 載入 resource-kinds
-- [ ] resource-registry service 實作
-- [ ] API: GET /v1/resource-kinds
-- [ ] API: GET /v1/resource-kinds/:kind
+### 閉環 2：Resource Registry Runtime ✅
+- [x] contracts-sdk 載入 resource-kinds
+- [x] resource-registry service 實作
+- [x] API: GET /v1/resource-kinds
+- [x] API: GET /v1/resource-kinds/:kind
 
-### 閉環 3：Audit Event Runtime
-- [ ] audit-log service 實作
-- [ ] API: POST /v1/audit/events
-- [ ] API: GET /v1/audit/events
-- [ ] state-changing actions emit audit events
+### 閉環 3：Audit Event Runtime ✅
+- [x] audit-log service 實作
+- [x] API: POST /v1/audit/events
+- [x] API: GET /v1/audit/events
+- [x] state-changing actions emit audit events
 
 ### 閉環 4：Knowledge Trace Runtime
 - [ ] knowledge-search service 實作
@@ -49,7 +49,7 @@
 
 ## PR 拆分
 
-### PR 36: contracts-sdk runtime loader
+### PR 36: contracts-sdk runtime loader ✅ COMMITTED
 - [x] 實作 loadServiceDefinitions()
 - [x] 實作 loadResourceKinds()
 - [x] 實作 loadPolicyDefinitions()
@@ -58,17 +58,17 @@
 - [x] 新增測試驗證所有 contracts 可載入
 - [x] 標準化 5 個服務定義合約格式
 
-### PR 37: service-catalog runtime API
-- [ ] service-catalog service 實作
-- [ ] API: GET /v1/services
-- [ ] API: GET /v1/services/:id
-- [ ] 資料來源：contracts/service-definitions
+### PR 37: service-catalog runtime API ✅ COMMITTED
+- [x] service-catalog service 實作
+- [x] API: GET /v1/services
+- [x] API: GET /v1/services/:id
+- [x] 資料來源：contracts/service-definitions
 
-### PR 38: resource-registry runtime API
-- [ ] resource-registry service 實作
-- [ ] API: GET /v1/resource-kinds
-- [ ] API: GET /v1/resource-kinds/:kind
-- [ ] 資料來源：contracts/resource-kinds
+### PR 38: resource-registry runtime API ✅ COMMITTED
+- [x] resource-registry service 實作
+- [x] API: GET /v1/resource-kinds
+- [x] API: GET /v1/resource-kinds/:kind
+- [x] 資料來源：contracts/resource-kinds
 
 ### PR 39: D1 / SQLite migration verifier
 - [ ] tools/migrations/verify-d1-migrations.ts
@@ -76,11 +76,11 @@
 - [ ] 驗證關鍵 tables 存在
 - [ ] 新增 package.json scripts
 
-### PR 40: audit-log minimal runtime
-- [ ] audit-log service 實作
-- [ ] API: POST /v1/audit/events
-- [ ] API: GET /v1/audit/events
-- [ ] 使用 contracts/events/audit-events.yaml
+### PR 40: audit-log minimal runtime ✅ COMMITTED
+- [x] audit-log service 實作
+- [x] API: POST /v1/audit/events
+- [x] API: GET /v1/audit/events
+- [x] 使用 contracts/events/audit-events.yaml
 
 ### PR 41: memory-dream Python worker MVP
 - [ ] python/packages/mycodexvantaos-memory-dream
@@ -101,6 +101,16 @@
 - [ ] GET /v1/knowledge/retrieval-receipts/:id
 - [ ] GET /v1/knowledge/answer-traces/:id
 - [ ] 規則：無 retrieval receipt 不能標記 knowledge-assisted
+
+---
+
+## Current Task: API Node Server Verification
+
+- [x] apps/api-node/index.ts written with all 5 loops
+- [ ] pnpm install for api-node
+- [ ] typecheck passes
+- [ ] runtime verification (start server + hit endpoints)
+- [ ] commit and push
 
 ---
 
@@ -143,7 +153,7 @@
 - [ ] POST /v1/audit/events works
 - [ ] POST /v1/dream/run works in dry-run/proposal flow
 - [ ] POST /v1/knowledge/search creates retrieval receipt
-- [ ] 377 existing tests still pass
+- [ ] existing tests still pass
 - [ ] Python tests pass
 - [ ] contract validation passes
 - [ ] migration verification passes

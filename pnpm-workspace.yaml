@@ -7,3 +7,4 @@ packages:
   - 'packages/*'
   - 'services/*'
   - 'providers/*/*'
+  - 'apps/*'
