@@ -1,14 +1,26 @@
 {
   "name": "@mycodexvantaos/service-service-catalog",
   "version": "0.1.0",
-  "description": "MyCodeXvantaOS Service Catalog Service",
-  "main": "dist/index.js",
+  "description": "MyCodeXvantaOS Service Catalog Runtime Service",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/index.js"
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test src/__tests__/service-catalog.test.ts"
   },
+  "keywords": [
+    "mycodexvantaos",
+    "service-catalog",
+    "runtime"
+  ],
+  "license": "MIT",
   "dependencies": {
-    "@mycodexvantaos/core-kernel": "workspace:*",
+    "@mycodexvantaos/contracts-sdk": "workspace:*",
     "@mycodexvantaos/service-catalog": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/node": "^20.0.0"
   }
 }

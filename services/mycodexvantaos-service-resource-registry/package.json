@@ -8,18 +8,19 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/",
-    "test": "echo \"TODO: add tests\" && exit 0"
+    "test": "node --import tsx --test src/__tests__/resource-registry.test.ts"
   },
   "keywords": [
     "mycodexvantaos",
     "service-resource-registry"
   ],
   "license": "MIT",
+  "dependencies": {
+    "@mycodexvantaos/contracts-sdk": "workspace:*",
+    "@mycodexvantaos/core": "workspace:*"
+  },
   "devDependencies": {
     "typescript": "^5.4.0",
     "@types/node": "^20.0.0"
-  },
-  "dependencies": {
-    "@mycodexvantaos/core": "workspace:*"
   }
 }

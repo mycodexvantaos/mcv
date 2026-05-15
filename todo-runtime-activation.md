@@ -50,12 +50,13 @@
 ## PR 拆分
 
 ### PR 36: contracts-sdk runtime loader
-- [ ] 實作 loadServiceDefinitions()
-- [ ] 實作 loadResourceKinds()
-- [ ] 實作 loadPolicyDefinitions()
-- [ ] 實作 loadEventDefinitions()
-- [ ] 實作 validateContract()
-- [ ] 新增測試驗證所有 contracts 可載入
+- [x] 實作 loadServiceDefinitions()
+- [x] 實作 loadResourceKinds()
+- [x] 實作 loadPolicyDefinitions()
+- [x] 實作 loadEventDefinitions()
+- [x] 實作 validateContract()
+- [x] 新增測試驗證所有 contracts 可載入
+- [x] 標準化 5 個服務定義合約格式
 
 ### PR 37: service-catalog runtime API
 - [ ] service-catalog service 實作

@@ -1130,6 +1130,10 @@ importers:
         version: 5.9.3
 
   packages/mycodexvantaos-contracts-sdk:
+    dependencies:
+      yaml:
+        specifier: ^2.8.4
+        version: 2.8.4
     devDependencies:
       '@types/node':
         specifier: ^20.0.0
@@ -1916,6 +1920,9 @@ importers:
 
   services/mycodexvantaos-service-audit-log:
     dependencies:
+      '@mycodexvantaos/contracts-sdk':
+        specifier: workspace:*
+        version: link:../../packages/mycodexvantaos-contracts-sdk
       '@mycodexvantaos/core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -2038,6 +2045,9 @@ importers:
 
   services/mycodexvantaos-service-resource-registry:
     dependencies:
+      '@mycodexvantaos/contracts-sdk':
+        specifier: workspace:*
+        version: link:../../packages/mycodexvantaos-contracts-sdk
       '@mycodexvantaos/core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -2051,12 +2061,19 @@ importers:
 
   services/mycodexvantaos-service-service-catalog:
     dependencies:
-      '@mycodexvantaos/core-kernel':
+      '@mycodexvantaos/contracts-sdk':
         specifier: workspace:*
-        version: link:../../packages/core-kernel
+        version: link:../../packages/mycodexvantaos-contracts-sdk
       '@mycodexvantaos/service-catalog':
         specifier: workspace:*
         version: link:../../packages/mycodexvantaos-service-catalog
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.40
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
 
   services/mycodexvantaos-service-usage-meter:
     dependencies:
