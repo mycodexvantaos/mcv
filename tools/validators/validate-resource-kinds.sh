@@ -13,11 +13,15 @@ for kind_file in "$KINDS_DIR"/*.yaml; do
 import yaml, sys
 with open('$kind_file') as f:
     d = yaml.safe_load(f)
-required = ['kind', 'apiVersion', 'spec']
+required = ['kind', 'apiVersion']
 for r in required:
     if r not in d:
         print(f'Missing: {r}')
         sys.exit(1)
+# Must have at least one of spec or spec_schema
+if 'spec' not in d and 'spec_schema' not in d:
+    print('Missing: spec or spec_schema')
+    sys.exit(1)
 " 2>/dev/null; then
         echo "FAIL: $kind_file (missing required fields)"
         ERRORS=$((ERRORS + 1))

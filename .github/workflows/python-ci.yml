@@ -60,10 +60,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
       - name: Validate JSON schemas
         run: |
-          npx -p ajv-cli ajv validate -s contracts/schemas/memory-item.schema.json -d python/tests/fixtures/sample-memories.json
-          npx -p ajv-cli ajv validate -s contracts/schemas/memory-item.schema.json --valid-memory-items
+          pip install jsonschema
+          python -c "
+          import json, jsonschema
+          with open('contracts/schemas/memory-item.schema.json') as f:
+              schema = json.load(f)
+          with open('python/tests/fixtures/sample-memories.json') as f:
+              data = json.load(f)
+          for item in data:
+              jsonschema.validate(item, schema)
+          print('All memory items validated successfully')
+          "
 
   dream-worker-test:
     runs-on: ubuntu-latest
@@ -90,7 +104,16 @@ jobs:
 
       - name: Validate output against schema
         run: |
-          npx -p ajv-cli ajv validate -s contracts/schemas/dream-report.schema.json -d python/test-report.json
+          pip install jsonschema
+          python -c "
+          import json, jsonschema
+          with open('contracts/schemas/dream-report.schema.json') as f:
+              schema = json.load(f)
+          with open('python/test-report.json') as f:
+              data = json.load(f)
+          jsonschema.validate(data, schema)
+          print('Dream report validated successfully')
+          "
 
       - name: Upload test report
         uses: actions/upload-artifact@v4

@@ -1,5 +1,5 @@
 kind: memory-item
-api_version: mycodexvantaos.io/v1
+apiVersion: mycodexvantaos.io/v1
 metadata_schema:
   id:
     type: string

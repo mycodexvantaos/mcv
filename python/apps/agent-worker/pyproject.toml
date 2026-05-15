@@ -13,6 +13,9 @@ dependencies = [
     "mycodexvantaos-agent-worker",
 ]
 
+[tool.uv.sources]
+mycodexvantaos-agent-worker = { workspace = true }
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

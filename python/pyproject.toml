@@ -1,5 +1,15 @@
 [tool.uv.workspace]
 members = ["packages/*", "apps/*"]
+[tool.uv.sources]
+mycodexvantaos-memory-dream = { workspace = true }
+mycodexvantaos-agent-worker = { workspace = true }
+mycodexvantaos-knowledge-pipeline = { workspace = true }
+mycodexvantaos-vector-tools = { workspace = true }
+mycodexvantaos-evaluation = { workspace = true }
+agent-worker = { workspace = true }
+dream-worker = { workspace = true }
+knowledge-worker = { workspace = true }
+
 
 [project]
 name = "mycodexvantaos-python"
