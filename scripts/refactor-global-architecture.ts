@@ -55,7 +55,7 @@ export class ProviderRegistry {
 
   register(provider: BaseProvider) {
     const { capability, provider: providerName } = provider.manifest;
-    const registrationKey = \`\${capability}-\${providerName}\`;
+    const registrationKey = `${capability}-${providerName}`;
 
     this.providers.set(registrationKey, provider);
 
@@ -65,14 +65,14 @@ export class ProviderRegistry {
   }
 
   setPreferredProvider(capability: string, providerName: string) {
-    const key = \`\${capability}-\${providerName}\`;
-    if (!this.providers.has(key)) throw new Error(\`Provider \${key} is not registered.\`);
+    const key = `${capability}-${providerName}`;
+    if (!this.providers.has(key)) throw new Error(`Provider \${key} is not registered.`);
     this.defaultCapabilityMap.set(capability, key);
   }
 
   async resolve<T extends BaseProvider>(capability: string): Promise<T> {
     const primaryKey = this.defaultCapabilityMap.get(capability);
-    if (!primaryKey) throw new Error(\`[Fatal] No provider registered for capability: \${capability}\`);
+    if (!primaryKey) throw new Error(`[Fatal] No provider registered for capability: ${capability}`);
 
     const primaryProvider = this.providers.get(primaryKey);
 
@@ -85,7 +85,7 @@ export class ProviderRegistry {
        if (health?.status === 'down') throw new Error('Primary provider is down');
        return primaryProvider as T;
     } catch (error) {
-       console.warn(\`[Registry] Primary '\${primaryKey}' failed. Initiating fallback to Native...\`);
+       console.warn(`[Registry] Primary '${primaryKey}' failed. Initiating fallback to Native...`);
        return this.seekFallback<T>(capability, 'native');
     }
   }
@@ -93,11 +93,11 @@ export class ProviderRegistry {
   private seekFallback<T extends BaseProvider>(capability: string, requiredMode: string): T {
     for (const [key, provider] of this.providers.entries()) {
        if (provider.manifest.capability === capability && provider.manifest.mode === requiredMode) {
-          console.warn(\`[Registry] Fallback Resolved: Routed to \${key}\`);
+          console.warn(`[Registry] Fallback Resolved: Routed to ${key}`);
           return provider as T;
        }
     }
-    throw new Error(\`[Fatal] Architecture violation: No '\${requiredMode}' mode fallback provider for '\${capability}'.\`);
+    throw new Error(`[Fatal] Architecture violation: No '${requiredMode}' mode fallback provider for '${capability}'.`);
   }
 }
 
@@ -182,7 +182,7 @@ export class ConnectedPgVectorProvider implements VectorStoreProvider {
 // ============================================================================
 // 4. OBSERVABILITY PROVIDERS (Native + Connected)
 // ============================================================================
-write('providers/observability-native.ts', \`
+write('providers/observability-native.ts', `
 import { ObservabilityProvider } from '@mycodexvantaos/core-kernel';
 import { exec } from 'child_process';
 import * as fs from 'fs';
@@ -193,20 +193,20 @@ export class NativeObservabilityProvider implements ObservabilityProvider {
   async initialize() {}
   async healthCheck() { return { status: 'healthy' as const }; }
   async shutdown() {}
-  log(level: string, msg: string) { console.log(\`[\${level.toUpperCase()}] \${msg}\`); }
+  log(level: string, msg: string) { console.log(`[${level.toUpperCase()}] ${msg}`); }
 
   async publishMetrics(id: string, metrics: any) { 
-    console.log(\`[Metrics] Delegating publication for \${id} to publish-metrics.py...\`);
-    const tempFile = path.join(process.cwd(), \`.temp-metrics-\${id}.json\`);
+    console.log(`[Metrics] Delegating publication for ${id} to publish-metrics.py...`);
+    const tempFile = path.join(process.cwd(), `.temp-metrics-${id}.json`);
     fs.writeFileSync(tempFile, JSON.stringify(metrics, null, 2), 'utf8');
 
     const scriptPath = path.join(process.cwd(), 'vector-store', 'retrieval-pipelines', 'src', 'publish-metrics.py');
-    exec(\`python3 "\${scriptPath}" --execution-id="\${id}" --state-file="\${tempFile}"\`, (error, stdout, stderr) => {
+    exec(`python3 "${scriptPath}" --execution-id="${id}" --state-file="${tempFile}"`, (error, stdout, stderr) => {
       if (error) {
-         console.error(\`[Metrics Error] Failed to run publish-metrics.py: \${error.message}\`);
+         console.error(`[Metrics Error] Failed to run publish-metrics.py: ${error.message}`);
          return;
       }
-      if (stderr) console.error(\`[Metrics Stderr] \${stderr}\`);
+      if (stderr) console.error(`[Metrics Stderr] ${stderr}`);
       console.log(stdout.trim());
       try {
         fs.unlinkSync(tempFile);
@@ -214,7 +214,7 @@ export class NativeObservabilityProvider implements ObservabilityProvider {
     });
   }
 }
-\`);
+`);
 
 // ============================================================================
 // 5. DOMAIN SERVICE UPGRADE: AI ENSEMBLE
@@ -228,7 +228,7 @@ export class AgentEnsemble {
 
   async processQuery(token: string, query: string) {
      const obs = await this.kernel.registry.resolve<ObservabilityProvider>('observability');
-     obs.log('info', \`🎯 AgentEnsemble receiving query: "\${query}"\`);
+     obs.log('info', `🎯 AgentEnsemble receiving query: "${query}"`);
 
      // 1. Resolve Auth Capability & Verify
      const auth = await this.kernel.registry.resolve<AuthProvider>('auth');
@@ -239,14 +239,14 @@ export class AgentEnsemble {
 
      // 2. Resolve Vector Store Capability & Retrieve
      const vectorStore = await this.kernel.registry.resolve<VectorStoreProvider>('vector-store');
-     obs.log('info', \`🔍 Retrieving RAG context using \${vectorStore.manifest.provider}...\`);
+     obs.log('info', `🔍 Retrieving RAG context using ${vectorStore.manifest.provider}...`);
      const context = await vectorStore.searchSimilar([0.1, 0.2]);
 
      // 3. Resolve LLM Capability & Generate
      const llm = await this.kernel.registry.resolve<LlmProvider>('llm');
-     obs.log('info', \`💡 Generating response using \${llm.manifest.provider}...\`);
+     obs.log('info', `💡 Generating response using ${llm.manifest.provider}...`);
 
-     const response = await llm.generate({ prompt: \`\${query} Context: \${context[0].text}\` });
+     const response = await llm.generate({ prompt: `${query} Context: ${context[0].text}` });
      obs.publishMetrics('run-888', { length: response.content.length });
 
      return response.content;
