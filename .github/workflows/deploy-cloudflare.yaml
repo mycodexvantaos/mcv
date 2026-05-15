@@ -26,6 +26,10 @@ permissions:
   deployments: write
   id-token: write
 
+
+
+
+
 env:
   CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID || '2fead4a141ec2c677eb3bf0ac535f1d5' }}
   CLOUDFLARE_ZONE_ID: ${{ vars.CLOUDFLARE_ZONE_ID || '1bdb04f9da82872cdff76d8515b85246' }}
@@ -36,8 +40,8 @@ jobs:
     name: Build & Deploy to Cloudflare
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment || 'production' }}
-    # Skip if CLOUDFLARE_API_TOKEN is not configured
-    if: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+
 
     steps:
       - name: Checkout repository
@@ -80,13 +84,11 @@ jobs:
 
       - name: Verify build output
         run: |
-          echo "Listing .open-next/ directory:"
           if [ -d ".open-next" ]; then
             echo "OpenNext build output exists at .open-next/"
             ls -la .open-next/ | head -15
           else
             echo "OpenNext build output not found at .open-next/"
-            ls -la
             exit 1
           fi
 
