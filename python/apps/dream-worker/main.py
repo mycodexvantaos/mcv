@@ -141,7 +141,7 @@ def main() -> None:
         sys.exit(1)
 
     # Execute dream run
-    print(f"\n🧠 Running dream processing...")
+    print("\n🧠 Running dream processing...")
     report = execute_dream_run(
         memory_items=memory_items,
         dry_run=not args.no_dry_run,

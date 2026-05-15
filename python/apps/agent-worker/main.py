@@ -4,7 +4,6 @@ Agent Worker CLI - Executes agent tasks (RAG, tool use, reasoning)
 
 import argparse
 import json
-import sys
 
 
 def execute_job(job_type: str, input_path: str, dry_run: bool = False) -> dict:

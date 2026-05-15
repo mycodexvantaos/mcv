@@ -4,7 +4,6 @@ Knowledge Worker CLI - Executes knowledge pipeline jobs (ingest, embed, cluster)
 
 import argparse
 import json
-import sys
 
 
 def execute_job(job_type: str, input_path: str, dry_run: bool = False) -> dict:
