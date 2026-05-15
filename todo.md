@@ -1,8 +1,13 @@
 # 🎯 Platform Control Plane Expansion — 雙語架構擴充
 
 **Milestone**: `platform-control-plane-expansion`
-**Status**: 進行中
-**PR**: 待建立
+**Status**: ✅ 完成
+**PR**: #33 (已合併)
+
+## Cross-Platform Fixes
+
+- ✅ PR #34: Removed § (section sign) symbol for cross-platform compatibility
+- ✅ PR #35: Added CI check to prevent § symbol reintroduction
 
 ---
 
