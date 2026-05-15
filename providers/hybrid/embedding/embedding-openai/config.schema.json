@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mycodexvantaos.org/providers/embedding/openai/config.schema.json",
+  "title": "embedding-openai Configuration",
+  "type": "object",
+  "required": ["apiKey"],
+  "properties": {
+    "apiKey": {
+      "type": "string",
+      "envVar": "MYCODEXVANTAOS_EMBEDDING_OPENAI_API_KEY"
+    },
+    "baseUrl": {
+      "type": "string",
+      "default": "https://api.openai.com/v1"
+    },
+    "defaultModel": {
+      "type": "string",
+      "default": "text-embedding-3-small"
+    },
+    "batchSize": {
+      "type": "integer",
+      "default": 100
+    }
+  }
+}

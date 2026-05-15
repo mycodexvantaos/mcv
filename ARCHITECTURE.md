@@ -60,6 +60,28 @@ MyCodeXvantaOS 是一個 Local-first、Provider-agnostic、Contract-driven 的�
 - **職責**：提供平台原生服務，形成 `local-first` 閉環的根基。
 - **必備服務**：Native Database (SQLite), Native Storage (Local FS), Native Auth (Session-based), Native Secrets, Native Queue (In-memory/DB-backed), Native Logging, Native Validation Engine.
 
+- **要求**：必须在没有任何外部 DB、Queue 或 CI/CD 的情况下运行。
+
+
+
+### Layer C.5: Capabilities Layer (能力层)
+
+- **职责**：统一的能力抽象与生命周期管理，为所有外部能力提供标准化接口。
+- **包含**：
+  - CapabilityBase 抽象基类：提供统一的初始化、健康检查、关闭、失败记录等生命周期管理
+  - ProviderFactory 工厂：支持运行时模式感知的 Provider 创建与选择
+  - Runtime Mode 系统：native/connected/hybrid/auto 四种运行时模式
+  - Provider 分类：
+    - Native Provider（零依赖）：完全本地实现，支持离线运行
+    - External Provider（API 依赖）：依赖外部服务 API
+    - Hybrid Provider（带 Native 回退）：外部能力失败时自动切换到 Native 实现
+- **输出**：统一的能力抽象层，为 Layer D 的 Connector 层提供标准化基础
+- **核心特性**：
+  - 零外部依赖保证（Native Provider）
+  - 自动回退机制（Hybrid Provider）
+  - 健康监控与指标收集
+  - 运行时模式智能切换（Auto 模式）
+
 ### Layer D: Connector Layer (連接器層)
 
 - **職責**：可插拔地對接所有外部服務與平台。

@@ -1,23 +1,58 @@
 /**
- * Runtime Adapter Index — Multi-runtime support
+ * 🏢 MyCodeXvantaOS - Runtime Layer
  *
- * This module provides a unified factory for creating runtime-specific
- * service collections. The runtime is determined by the execution
- * environment (Cloudflare Workers vs. Docker/K8s).
+ * Layer 1: Runtime Mode Management（Phase 0.5 新增）
+ *   Runtime Mode 配置、檢測與動態切換能力
+ *   支持 native/connected/hybrid/auto 四種模式
  *
- * Three-phase startup strategy:
- *   Phase 1: Cloudflare-first (MVP) — CloudflareRuntimeAdapter
- *   Phase 2: Portable Core — DockerRuntimeAdapter with portable adapters
- *   Phase 3: Self-hostable — Kubernetes with Helm charts
+ * Layer 2: Runtime Adapter Support（原有功能，向後兼容）
+ *   Cloudflare Workers / Docker / Kubernetes 適配器
+ *   三階段啟動策略：Cloudflare-first → Portable Core → Self-hostable
  *
- * Runtime packages:
- *   runtimes/cloudflare/src/  — Cloudflare Workers bootstrap + health check
- *   runtimes/node/src/        — Node.js generic bootstrap
- *   runtimes/docker/           — Docker Compose env mapping + shutdown handlers
- *   runtimes/kubernetes/       — K8s probes + ConfigMap/Secret mapping
+ * === Runtime Mode Management ===
+ * 快速開始：
+ * ```typescript
+ * import { getRuntimeManager, RuntimeMode } from './runtimes';
+ *
+ * const manager = getRuntimeManager({ mode: RuntimeMode.AUTO, enableAutoFallback: true, logLevel: 'info' });
+ * console.log('Current mode:', manager.getCurrentMode());
+ *
+ * // AUTO 模式下執行檢測並自動切換
+ * const result = await manager.performDetectionAndSwitch(true);
+ * console.log('Recommended:', result.recommendedMode);
+ *
+ * // 手動切換
+ * manager.setMode(RuntimeMode.NATIVE, 'user request');
+ * ```
+ *
+ * === Runtime Adapter Support ===
+ * 支持多運行時適配（與 Phase 0.5 互補）：
+ * - Cloudflare Workers（MVP 階段）
+ * - Docker / Node.js（Portable Core）
+ * - Kubernetes（Self-hostable）
  */
 
-// ── Cloudflare Runtime ──────────────────────────────────────────────────
+// 🔧 Runtime Mode Management（新增）
+export {
+  RuntimeManager,
+  getRuntimeManager,
+  loadRuntimeConfig,
+} from './manager';
+export {
+  detectMode,
+} from './detector';
+export type {
+  RuntimeConfiguration,
+  RuntimeEnvironment,
+  NetworkProbeStrategy,
+  NetworkProbeConfig,
+  ModeDetectionResult,
+} from './types';
+export { RuntimeMode } from '../packages/capabilities/types';
+
+// 🌐 Runtime Adapter Support（原有功能，向後兼容）
+
+// ── Cloudflare Runtime ─────────────────────
 export {
   bootstrapCloudflare,
   healthCheck as cloudflareHealthCheck,
@@ -28,7 +63,7 @@ export {
 // Re-export the legacy CloudflareRuntimeAdapter for backward compat
 export { CloudflareRuntimeAdapter } from './cloudflare/adapter.js';
 
-// ── Node.js Runtime ─────────────────────────────────────────────────────
+// ── Node.js Runtime ─────────────────────
 export {
   bootstrapNode,
   createNodeServer,
@@ -36,7 +71,7 @@ export {
   type NodeServiceContainer,
 } from './node/src/index.js';
 
-// ── Docker Runtime ──────────────────────────────────────────────────────
+// ── Docker Runtime ─────────────────────
 export {
   bootstrapNode as bootstrapDocker,
   createNodeServer as createDockerServer,
@@ -49,7 +84,7 @@ export {
 // Re-export the legacy DockerRuntimeAdapter for backward compat
 export { DockerRuntimeAdapter } from './docker/adapter.js';
 
-// ── Kubernetes Runtime ──────────────────────────────────────────────────
+// ── Kubernetes Runtime ──────────────────
 export {
   bootstrapNode as bootstrapKubernetes,
   mapKubernetesEnv,
@@ -60,10 +95,12 @@ export {
   type KubernetesServiceContainer,
 } from './kubernetes/index.js';
 
-// ── Runtime Detection ───────────────────────────────────────────────────
-
+// ── Runtime Detection (Legacy) ──────────
 /**
  * Detect the current runtime environment and return the appropriate adapter.
+ * 保留原有的 runtime adapter 檢測邏輯以向後兼容。
+ * 與 RuntimeMode 檢測分層：RuntimeMode 專注於能力層（Native/External/Hybrid），
+ * Runtime Adapter 專注於部署環境（Cloudflare/Docker/K8s）。
  */
 export async function createRuntimeAdapter(env: Record<string, unknown>) {
   // Cloudflare Workers have specific bindings
