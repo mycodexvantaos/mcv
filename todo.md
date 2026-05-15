@@ -129,6 +129,6 @@
 
 ## §29 驗證 & 合併
 
-- [ ] TypeScript 編譯通過 (377 tests still pass)
-- [ ] Python CI 通過 (6/6 tests)
-- [ ] 建立 feature branch + PR + 合併至 main
+- [x] TypeScript 編譯通過 (377 tests still pass)
+- [x] Python CI 通過 (6/6 tests)
+- [x] 建立 feature branch + PR + 合併至 main
