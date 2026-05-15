@@ -1,0 +1,24 @@
+{
+  "name": "@mycodexvantaos/ports",
+  "version": "1.0.0-constitution",
+  "description": "MyCodeXvantaOS platform-neutral port interfaces — defines WHAT the platform needs",
+  "type": "module",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./database": "./database/index.ts",
+    "./object-storage": "./object-storage/index.ts",
+    "./search": "./search/index.ts",
+    "./model-provider": "./model-provider/index.ts",
+    "./queue": "./queue/index.ts",
+    "./auth": "./auth/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/"
+  },
+  "keywords": ["ports", "interfaces", "hexagonal-architecture"],
+  "license": "UNLICENSED",
+  "private": true
+}

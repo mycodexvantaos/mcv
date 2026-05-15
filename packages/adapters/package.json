@@ -1,0 +1,27 @@
+{
+  "name": "@mycodexvantaos/adapters",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Adapter implementations for the MyCodeXvantaOS platform — concrete ports for Cloudflare, OpenAI, OpenRouter, etc.",
+  "type": "module",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./cloudflare-d1": "./cloudflare-d1/index.ts",
+    "./cloudflare-kv": "./cloudflare-kv/index.ts",
+    "./cloudflare-r2": "./cloudflare-r2/index.ts",
+    "./d1-full-text-search": "./d1-full-text-search/index.ts",
+    "./openai": "./openai/index.ts",
+    "./openrouter": "./openrouter/index.ts",
+    "./workers-ai": "./workers-ai/index.ts"
+  },
+  "dependencies": {
+    "@mycodexvantaos/core": "workspace:*",
+    "@mycodexvantaos/ports": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  },
+  "license": "UNLICENSED"
+}

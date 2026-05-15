@@ -110,7 +110,7 @@ spec:
     # ──── Identity Service ──────────────────────────────────────────────
     - id: identity
       urn: "urn:mycodexvantaos:service:identity"
-      category: core
+      category: security
       display_name: Identity Service
       description: |
         Foundation authentication and authorization service. Manages subjects,
@@ -172,7 +172,7 @@ spec:
     # ──── Workspace Service ─────────────────────────────────────────────
     - id: workspace
       urn: "urn:mycodexvantaos:service:workspace"
-      category: core
+      category: security
       display_name: Workspace Service
       description: |
         Workspace-scoped resource isolation and lifecycle management.
@@ -364,7 +364,7 @@ spec:
     # ──── Agent Chat Service ────────────────────────────────────────────
     - id: agent-chat
       urn: "urn:mycodexvantaos:service:agent-chat"
-      category: ai
+      category: agent
       display_name: Agent Chat
       description: |
         AI-powered conversational agent with knowledge-grounded generation.
@@ -425,7 +425,7 @@ spec:
     # ──── Model BYOK Service ────────────────────────────────────────────
     - id: model-byok
       urn: "urn:mycodexvantaos:service:model-byok"
-      category: ai
+      category: agent
       display_name: Model BYOK (Bring Your Own Key)
       description: |
         Multi-provider LLM gateway with bring-your-own-key configuration.
@@ -485,7 +485,7 @@ spec:
     # ──── Audit Log Service ─────────────────────────────────────────────
     - id: audit-log
       urn: "urn:mycodexvantaos:service:audit-log"
-      category: governance
+      category: security
       display_name: Audit Log
       description: |
         Immutable, hash-chained audit event storage and query engine.
@@ -543,7 +543,7 @@ spec:
     # ──── Usage Meter Service ───────────────────────────────────────────
     - id: usage-meter
       urn: "urn:mycodexvantaos:service:usage-meter"
-      category: governance
+      category: security
       display_name: Usage Meter
       description: |
         Multi-dimensional usage tracking, metering, and rate limit enforcement.

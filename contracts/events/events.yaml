@@ -1,0 +1,222 @@
+# MyCodeXvantaOS Event Definitions
+# All events follow CloudEvents spec v1.0
+# https://cloudevents.io/
+
+specVersion: "1.0"
+format: "http"
+contentType: "application/json"
+
+# ── Event Categories ────────────────────────────────────────────────────
+# Events are grouped by the 8 service categories
+
+events:
+  # ── Knowledge Events ─────────────────────────────────────────────────
+  - type: "com.mycodexvantaos.knowledge.document.ingested"
+    description: "A document has been successfully ingested into the knowledge base"
+    dataSchema: "./schemas/knowledge-document-ingested.json"
+    producedBy:
+      - knowledge-service
+    consumedBy:
+      - audit-service
+      - usage-service
+    data:
+      collectionId: { type: string, description: "URN of the collection" }
+      documentId: { type: string, description: "URN of the document" }
+      chunkCount: { type: integer, description: "Number of chunks created" }
+      embeddingModel: { type: string }
+      durationMs: { type: integer }
+
+  - type: "com.mycodexvantaos.knowledge.search.performed"
+    description: "A knowledge search was performed"
+    dataSchema: "./schemas/knowledge-search-performed.json"
+    producedBy:
+      - knowledge-service
+    consumedBy:
+      - audit-service
+      - usage-service
+    data:
+      query: { type: string }
+      collectionIds: { type: array, items: { type: string } }
+      resultCount: { type: integer }
+      searchType: { type: string, enum: [semantic, fulltext, hybrid] }
+      durationMs: { type: integer }
+
+  - type: "com.mycodexvantaos.knowledge.issue.detected"
+    description: "A knowledge issue has been detected (stale, contradiction, gap, etc.)"
+    dataSchema: "./schemas/knowledge-issue-detected.json"
+    producedBy:
+      - knowledge-service
+    consumedBy:
+      - audit-service
+      - automation-service
+    data:
+      issueId: { type: string }
+      issueType: { type: string, enum: [stale, contradiction, gap, hallucination, broken-reference] }
+      severity: { type: string, enum: [critical, high, medium, low] }
+      affectedDocumentIds: { type: array, items: { type: string } }
+      description: { type: string }
+
+  # ── Agent Events ──────────────────────────────────────────────────────
+  - type: "com.mycodexvantaos.agent.session.created"
+    description: "A new agent session was created"
+    dataSchema: "./schemas/agent-session-created.json"
+    producedBy:
+      - agent-service
+    consumedBy:
+      - audit-service
+    data:
+      sessionId: { type: string, format: uuid }
+      workspaceId: { type: string }
+      modelEndpointId: { type: string }
+
+  - type: "com.mycodexvantaos.agent.message.sent"
+    description: "A message was sent in an agent session"
+    dataSchema: "./schemas/agent-message-sent.json"
+    producedBy:
+      - agent-service
+    consumedBy:
+      - audit-service
+      - usage-service
+    data:
+      sessionId: { type: string, format: uuid }
+      messageId: { type: string }
+      evidenceLevel: { type: string, enum: [knowledge-assisted, knowledge-verified, knowledge-grounded] }
+      promptTokens: { type: integer }
+      completionTokens: { type: integer }
+      sourceCount: { type: integer }
+
+  # ── Workspace Events ─────────────────────────────────────────────────
+  - type: "com.mycodexvantaos.workspace.created"
+    description: "A workspace was created"
+    dataSchema: "./schemas/workspace-created.json"
+    producedBy:
+      - workspace-service
+    consumedBy:
+      - audit-service
+    data:
+      workspaceId: { type: string }
+      name: { type: string }
+      ownerId: { type: string }
+
+  - type: "com.mycodexvantaos.workspace.member.added"
+    description: "A member was added to a workspace"
+    dataSchema: "./schemas/workspace-member-added.json"
+    producedBy:
+      - workspace-service
+    consumedBy:
+      - audit-service
+    data:
+      workspaceId: { type: string }
+      subjectId: { type: string }
+      role: { type: string }
+
+  # ── Security Events ──────────────────────────────────────────────────
+  - type: "com.mycodexvantaos.security.subject.registered"
+    description: "A new subject was registered"
+    dataSchema: "./schemas/security-subject-registered.json"
+    producedBy:
+      - identity-service
+    consumedBy:
+      - audit-service
+    data:
+      subjectId: { type: string }
+      roles: { type: array, items: { type: string } }
+
+  - type: "com.mycodexvantaos.security.token.created"
+    description: "An authentication token was created"
+    producedBy:
+      - identity-service
+    consumedBy:
+      - audit-service
+    data:
+      subjectId: { type: string }
+      expiresAt: { type: string, format: date-time }
+
+  - type: "com.mycodexvantaos.security.permission.checked"
+    description: "A permission check was performed"
+    producedBy:
+      - identity-service
+    consumedBy:
+      - audit-service
+    data:
+      subjectId: { type: string }
+      resource: { type: string }
+      action: { type: string }
+      result: { type: string, enum: [allowed, denied] }
+
+  # ── Model Events ─────────────────────────────────────────────────────
+  - type: "com.mycodexvantaos.model.endpoint.registered"
+    description: "A model endpoint was registered"
+    producedBy:
+      - model-service
+    consumedBy:
+      - audit-service
+    data:
+      endpointId: { type: string }
+      provider: { type: string }
+      model: { type: string }
+
+  - type: "com.mycodexvantaos.model.invocation.completed"
+    description: "A model invocation completed"
+    producedBy:
+      - model-service
+    consumedBy:
+      - audit-service
+      - usage-service
+    data:
+      endpointId: { type: string }
+      model: { type: string }
+      promptTokens: { type: integer }
+      completionTokens: { type: integer }
+      durationMs: { type: integer }
+
+  # ── Automation Events ────────────────────────────────────────────────
+  - type: "com.mycodexvantaos.automation.job.enqueued"
+    description: "An automation job was enqueued"
+    producedBy:
+      - automation-service
+    consumedBy:
+      - audit-service
+    data:
+      jobId: { type: string }
+      jobType: { type: string }
+      priority: { type: integer }
+
+  - type: "com.mycodexvantaos.automation.job.completed"
+    description: "An automation job completed successfully"
+    producedBy:
+      - automation-service
+    consumedBy:
+      - audit-service
+      - usage-service
+    data:
+      jobId: { type: string }
+      jobType: { type: string }
+      durationMs: { type: integer }
+
+  - type: "com.mycodexvantaos.automation.job.failed"
+    description: "An automation job failed"
+    producedBy:
+      - automation-service
+    consumedBy:
+      - audit-service
+    data:
+      jobId: { type: string }
+      jobType: { type: string }
+      error: { type: string }
+      retryCount: { type: integer }
+
+# ── Event Envelope ──────────────────────────────────────────────────────
+# All events MUST include these CloudEvents standard attributes
+
+envelope:
+  required:
+    - specversion    # "1.0"
+    - type           # e.g. "com.mycodexvantaos.knowledge.document.ingested"
+    - source         # e.g. "/services/knowledge"
+    - id             # UUID
+    - time           # RFC 3339 timestamp
+  optional:
+    - datacontenttype # default "application/json"
+    - subject        # URN of the primary resource
+    - mycodexvantaosversion # platform semantic version

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mycodexvantaos.fullname" . }}-config
+  labels:
+    {{- include "mycodexvantaos.labels" . | nindent 4 }}
+data:
+  NODE_ENV: {{ .Values.env.nodeEnv | quote }}
+  LOG_LEVEL: {{ .Values.env.logLevel | quote }}
+  DATABASE_URL: {{ .Values.env.databaseUrl | quote }}
+  REDIS_URL: {{ .Values.env.redisUrl | quote }}
+  QDRANT_URL: {{ .Values.env.qdrantUrl | quote }}
+  RABBITMQ_URL: {{ .Values.env.rabbitmqUrl | quote }}

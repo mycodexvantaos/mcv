@@ -1,0 +1,789 @@
+openapi: 3.1.0
+info:
+  title: MyCodeXvantaOS Platform API
+  version: 0.1.0
+  description: |
+    The unified API surface for the MyCodeXvantaOS platform.
+    Organized by the 8 service categories: knowledge, agent, workspace,
+    developer, security, storage, model, automation.
+  contact:
+    name: MyCodeXvantaOS Team
+  license:
+    name: UNLICENSED
+
+servers:
+  - url: /api/v1
+    description: Current deployment
+
+tags:
+  - name: Health
+    description: Platform health check
+  - name: Security
+    description: Identity, authentication, and authorization
+  - name: Workspace
+    description: Multi-tenant workspace management
+  - name: Knowledge
+    description: Document ingestion, vector search, collections
+  - name: Agent
+    description: Conversational AI sessions with RAG
+  - name: Model
+    description: LLM and embedding model routing
+  - name: Audit
+    description: Audit trail and integrity verification
+  - name: Usage
+    description: Usage metering and quota management
+  - name: Automation
+    description: Job queues and scheduled tasks
+
+paths:
+  /health:
+    get:
+      tags: [Health]
+      operationId: getHealth
+      summary: Health check
+      responses:
+        '200':
+          description: Platform is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  # ── Security ────────────────────────────────────────────────────────
+  /security/register:
+    post:
+      tags: [Security]
+      operationId: registerSubject
+      summary: Register a new subject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: Subject registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+
+  /security/token:
+    post:
+      tags: [Security]
+      operationId: createToken
+      summary: Create authentication token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+      responses:
+        '200':
+          description: Token pair returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenPair'
+
+  /security/verify:
+    get:
+      tags: [Security]
+      operationId: verifyToken
+      summary: Validate a token
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Token is valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenClaims'
+
+  # ── Workspace ───────────────────────────────────────────────────────
+  /workspace:
+    post:
+      tags: [Workspace]
+      operationId: createWorkspace
+      summary: Create a workspace
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWorkspaceRequest'
+      responses:
+        '201':
+          description: Workspace created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workspace'
+    get:
+      tags: [Workspace]
+      operationId: listWorkspaces
+      summary: List workspaces
+      responses:
+        '200':
+          description: List of workspaces
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceList'
+
+  # ── Knowledge ───────────────────────────────────────────────────────
+  /knowledge/collections:
+    post:
+      tags: [Knowledge]
+      operationId: createCollection
+      summary: Create a knowledge collection
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCollectionRequest'
+      responses:
+        '201':
+          description: Collection created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Collection'
+    get:
+      tags: [Knowledge]
+      operationId: listCollections
+      summary: List knowledge collections
+      responses:
+        '200':
+          description: List of collections
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionList'
+
+  /knowledge/ingest:
+    post:
+      tags: [Knowledge]
+      operationId: ingestDocument
+      summary: Ingest a document into the knowledge base
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngestRequest'
+      responses:
+        '202':
+          description: Document accepted for processing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngestResponse'
+
+  /knowledge/search:
+    post:
+      tags: [Knowledge]
+      operationId: searchKnowledge
+      summary: Search the knowledge base
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResults'
+
+  # ── Agent ───────────────────────────────────────────────────────────
+  /agent/sessions:
+    post:
+      tags: [Agent]
+      operationId: createAgentSession
+      summary: Create an agent session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSessionRequest'
+      responses:
+        '201':
+          description: Session created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentSession'
+
+  /agent/sessions/{sessionId}/messages:
+    post:
+      tags: [Agent]
+      operationId: sendMessage
+      summary: Send a message to an agent session
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendMessageRequest'
+      responses:
+        '200':
+          description: Agent response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentResponse'
+
+  # ── Model ───────────────────────────────────────────────────────────
+  /model/endpoints:
+    get:
+      tags: [Model]
+      operationId: listModelEndpoints
+      summary: List available model endpoints
+      responses:
+        '200':
+          description: Model endpoints
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelEndpointList'
+
+  /model/chat:
+    post:
+      tags: [Model]
+      operationId: chatCompletion
+      summary: Chat completion via model routing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+      responses:
+        '200':
+          description: Chat completion result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+
+  # ── Audit ───────────────────────────────────────────────────────────
+  /audit/events:
+    get:
+      tags: [Audit]
+      operationId: listAuditEvents
+      summary: List audit events
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+        - name: cursor
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of audit events
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditEventList'
+
+  /audit/verify:
+    post:
+      tags: [Audit]
+      operationId: verifyAuditChain
+      summary: Verify the integrity of the audit chain
+      responses:
+        '200':
+          description: Verification result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditVerificationResult'
+
+  # ── Usage ───────────────────────────────────────────────────────────
+  /usage/{subjectId}:
+    get:
+      tags: [Usage]
+      operationId: getUsage
+      summary: Get usage metering for a subject
+      parameters:
+        - name: subjectId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: window
+          in: query
+          schema:
+            type: string
+            enum: [minute, hour, day]
+            default: hour
+      responses:
+        '200':
+          description: Usage data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageData'
+
+  # ── Automation ──────────────────────────────────────────────────────
+  /automation/jobs:
+    post:
+      tags: [Automation]
+      operationId: enqueueJob
+      summary: Enqueue an automation job
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnqueueJobRequest'
+      responses:
+        '202':
+          description: Job enqueued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnqueueJobResponse'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok, degraded, down]
+        timestamp:
+          type: string
+          format: date-time
+
+    RegisterRequest:
+      type: object
+      required: [subjectId, roles]
+      properties:
+        subjectId:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        claims:
+          type: object
+          additionalProperties: true
+
+    RegisterResponse:
+      type: object
+      properties:
+        subjectId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    TokenRequest:
+      type: object
+      required: [subjectId, password]
+      properties:
+        subjectId:
+          type: string
+        password:
+          type: string
+
+    TokenPair:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+        expiresIn:
+          type: integer
+
+    TokenClaims:
+      type: object
+      properties:
+        subjectId:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        expiresAt:
+          type: string
+          format: date-time
+
+    CreateWorkspaceRequest:
+      type: object
+      required: [name, ownerId]
+      properties:
+        name:
+          type: string
+        ownerId:
+          type: string
+        settings:
+          type: object
+          additionalProperties: true
+
+    Workspace:
+      type: object
+      properties:
+        id:
+          type: string
+          format: urn
+        name:
+          type: string
+        ownerId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    WorkspaceList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Workspace'
+        nextCursor:
+          type: string
+
+    CreateCollectionRequest:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        embeddingModel:
+          type: string
+
+    Collection:
+      type: object
+      properties:
+        id:
+          type: string
+          format: urn
+        name:
+          type: string
+        description:
+          type: string
+        embeddingModel:
+          type: string
+        documentCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+
+    CollectionList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Collection'
+
+    IngestRequest:
+      type: object
+      required: [collectionId, documentId, content]
+      properties:
+        collectionId:
+          type: string
+        documentId:
+          type: string
+        content:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+
+    IngestResponse:
+      type: object
+      properties:
+        documentId:
+          type: string
+        status:
+          type: string
+          enum: [accepted, processing]
+        jobId:
+          type: string
+
+    SearchRequest:
+      type: object
+      required: [query]
+      properties:
+        query:
+          type: string
+        collectionIds:
+          type: array
+          items:
+            type: string
+        topK:
+          type: integer
+          default: 10
+        searchType:
+          type: string
+          enum: [semantic, fulltext, hybrid]
+          default: hybrid
+
+    SearchResults:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchResultItem'
+        totalDurationMs:
+          type: number
+
+    SearchResultItem:
+      type: object
+      properties:
+        chunkId:
+          type: string
+        documentId:
+          type: string
+        content:
+          type: string
+        score:
+          type: number
+        evidenceLevel:
+          type: string
+          enum: [knowledge-assisted, knowledge-verified, knowledge-grounded]
+
+    CreateSessionRequest:
+      type: object
+      required: [workspaceId]
+      properties:
+        workspaceId:
+          type: string
+        modelEndpointId:
+          type: string
+
+    AgentSession:
+      type: object
+      properties:
+        sessionId:
+          type: string
+          format: uuid
+        workspaceId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    SendMessageRequest:
+      type: object
+      required: [content]
+      properties:
+        content:
+          type: string
+        collectionIds:
+          type: array
+          items:
+            type: string
+
+    AgentResponse:
+      type: object
+      properties:
+        messageId:
+          type: string
+        content:
+          type: string
+        evidenceLevel:
+          type: string
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceTrace'
+
+    SourceTrace:
+      type: object
+      properties:
+        chunkId:
+          type: string
+        documentId:
+          type: string
+        documentTitle:
+          type: string
+        relevanceScore:
+          type: number
+
+    ModelEndpointList:
+      type: object
+      properties:
+        endpoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelEndpoint'
+
+    ModelEndpoint:
+      type: object
+      properties:
+        id:
+          type: string
+        provider:
+          type: string
+        model:
+          type: string
+        status:
+          type: string
+          enum: [available, unavailable, rate-limited]
+
+    ChatRequest:
+      type: object
+      required: [modelId, messages]
+      properties:
+        modelId:
+          type: string
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatMessage'
+        options:
+          type: object
+          additionalProperties: true
+
+    ChatMessage:
+      type: object
+      required: [role, content]
+      properties:
+        role:
+          type: string
+          enum: [system, user, assistant]
+        content:
+          type: string
+
+    ChatResponse:
+      type: object
+      properties:
+        content:
+          type: string
+        model:
+          type: string
+        usage:
+          $ref: '#/components/schemas/TokenUsage'
+
+    TokenUsage:
+      type: object
+      properties:
+        promptTokens:
+          type: integer
+        completionTokens:
+          type: integer
+        totalTokens:
+          type: integer
+
+    AuditEventList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditEvent'
+        nextCursor:
+          type: string
+
+    AuditEvent:
+      type: object
+      properties:
+        eventId:
+          type: string
+        eventType:
+          type: string
+        subjectId:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        payload:
+          type: object
+          additionalProperties: true
+        previousHash:
+          type: string
+        hash:
+          type: string
+
+    AuditVerificationResult:
+      type: object
+      properties:
+        valid:
+          type: boolean
+        brokenAt:
+          type: string
+        eventsVerified:
+          type: integer
+
+    UsageData:
+      type: object
+      properties:
+        subjectId:
+          type: string
+        window:
+          type: string
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/UsageEvent'
+        quotaRemaining:
+          type: integer
+
+    UsageEvent:
+      type: object
+      properties:
+        type:
+          type: string
+        count:
+          type: integer
+        tokensUsed:
+          type: integer
+
+    EnqueueJobRequest:
+      type: object
+      required: [jobType, payload]
+      properties:
+        jobType:
+          type: string
+        payload:
+          type: object
+          additionalProperties: true
+        priority:
+          type: integer
+          default: 0
+
+    EnqueueJobResponse:
+      type: object
+      properties:
+        jobId:
+          type: string
+        status:
+          type: string
+          enum: [queued]

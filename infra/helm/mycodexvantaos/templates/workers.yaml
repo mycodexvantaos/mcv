@@ -1,0 +1,42 @@
+{{- range $serviceName, $serviceValues := .Values.workers }}
+{{- if $serviceValues.enabled }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mycodexvantaos.fullname" $ }}-{{ $serviceName }}
+  labels:
+    {{- include "mycodexvantaos.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: {{ $serviceName }}
+spec:
+  replicas: {{ $serviceValues.replicaCount | default 1 }}
+  selector:
+    matchLabels:
+      {{- include "mycodexvantaos.selectorLabels" $ | nindent 6 }}
+      app.kubernetes.io/component: {{ $serviceName }}
+  template:
+    metadata:
+      labels:
+        {{- include "mycodexvantaos.selectorLabels" $ | nindent 8 }}
+        app.kubernetes.io/component: {{ $serviceName }}
+    spec:
+      serviceAccountName: {{ include "mycodexvantaos.serviceAccountName" $ }}
+      containers:
+        - name: {{ $serviceName }}
+          image: "{{ $.Values.api.image.repository }}:{{ $.Values.api.image.tag | default $.Chart.AppVersion }}"
+          imagePullPolicy: {{ $.Values.api.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "mycodexvantaos.fullname" $ }}-config
+          env:
+            - name: SERVICE_NAME
+              value: {{ $serviceName | quote }}
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "mycodexvantaos.fullname" $ }}-secrets
+                  key: jwtSecret
+          resources:
+            {{- toYaml ($serviceValues.resources | default (dict "requests" (dict "cpu" "100m" "memory" "128Mi") "limits" (dict "cpu" "500m" "memory" "512Mi"))) | nindent 12 }}
+{{- end }}
+{{- end }}

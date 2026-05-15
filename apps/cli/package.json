@@ -1,0 +1,26 @@
+{
+  "name": "@mycodexvantaos/cli",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Command-line interface for the MyCodeXvantaOS platform",
+  "type": "module",
+  "main": "index.ts",
+  "bin": {
+    "mcx": "./index.ts"
+  },
+  "scripts": {
+    "dev": "npx tsx index.ts",
+    "build": "npx tsup index.ts --format esm --dts --outDir dist",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@mycodexvantaos/core": "workspace:*",
+    "@mycodexvantaos/ports": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "tsup": "^8.0.0",
+    "tsx": "^4.7.0"
+  },
+  "license": "UNLICENSED"
+}

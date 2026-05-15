@@ -7,7 +7,7 @@ metadata:
   name: agent-chat
   urn: urn:mycodexvantaos:ai:service:agent-chat
   version: 1.0.0-constitution
-  category: ai
+  category: agent
   display_name: Agent Chat Service
   description: >
     AI-powered conversational interface with knowledge-grounded generation.

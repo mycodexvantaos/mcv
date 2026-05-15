@@ -7,7 +7,7 @@ metadata:
   name: model-byok
   urn: urn:mycodexvantaos:ai:service:model-byok
   version: 1.0.0-constitution
-  category: ai
+  category: model
   display_name: Model BYOK (Bring Your Own Key) Service
   description: >
     Multi-provider LLM gateway that allows workspaces to register their own

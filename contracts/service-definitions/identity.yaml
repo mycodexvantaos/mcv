@@ -9,7 +9,7 @@ metadata:
   name: identity
   urn: urn:mycodexvantaos:core:service:identity
   version: 1.0.0-constitution
-  category: core
+  category: security
   display_name: Identity Service
   description: >
     Platform-wide identity, authentication, and authorization service.
