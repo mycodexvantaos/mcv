@@ -1,0 +1,29 @@
+[project]
+name = "dream-worker"
+version = "0.1.0"
+description = "Dream Worker CLI — Executes Memory Dream Processing jobs"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+    {name = "NinjaTeam AI", email = "ai-team@ninjatech.ai"},
+]
+dependencies = [
+    "pydantic>=2.9.0",
+    "pydantic-settings>=2.5.0",
+]
+
+[project.scripts]
+dream-worker = "main:cli"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.mypy]
+python_version = "3.11"
+strict = true

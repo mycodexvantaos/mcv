@@ -44,3 +44,16 @@ next-env.d.ts
 firebase-debug.log
 firestore-debug.log.open-next
 .dev.vars
+
+# python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+dist/
+.venv/
+.python-version
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/

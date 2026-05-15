@@ -1,36 +1,48 @@
-# 🎯 MyCodeXvantaOS — 深度驗證 & 落實計畫
+# 🎯 雙語架構升級 — 驗證 & 合併至 main
 
-**Last Updated**: 2025-01-15  
-**Phase**: 深度驗證 — 全面落實
-
----
-
-## 🔴 SECTION F: 非標準 Provider 修正
-
-### F1. [x] `deploy/deploy-firebase` — 自訂 DeploymentProviderInterface（非 CapabilityBase），不需改動
-### F2. [x] `deploy/deploy-native` — 自訂 DeploymentProviderInterface（非 CapabilityBase），不需改動
-### F3. [x] `native/memory-cache/memory-cache-cb.ts` — 已加 index.ts factory
-### F4. [x] `native/memory-vector-store/memory-vector-store-cb.ts` — 已加 index.ts factory
-### F5. [x] `hybrid/embedding/hybrid-embedding-provider-cb.ts` — 已加 index.ts factory（含 re-export 子 providers）
+**Last Updated**: 2025-05-15
+**Phase**: 驗證 Python 智能平面 → 合併至 main
 
 ---
 
-## 🔴 SECTION G: 全面語法 & 邏輯驗證
+## 階段一：Python CI 驗證
 
-### G1. [x] 所有 provider-cb.ts import 路徑正確性 — 全部通過
-### G2. [x] 所有 index.ts factory import 路徑正確性 — 全部通過
-### G3. [x] 所有 provider 正確 extends CapabilityBase<T> — 全部通過
-### G4. [x] 所有 doInitialize / doHealthCheck / doShutdown 完整實作 — 全部通過
-### G5. [x] 所有 constructor 正確呼叫 super(config) — 已修正 OpenAIModelProvider
-### G6. [x] 無殘留 Python True/False/None — 全部通過
-### G7. [x] 無 ||| (triple pipe) 語法 — 全部通過
-### G8. [x] 所有 config interface 都有 export — CacheEntry 為內部介面不需 export
+- [x] 執行 pytest — 6 個測試全部通過 ✅
+- [x] 執行 ruff lint — 0 errors ✅
+- [x] 執行 mypy type check — 0 errors ✅
+- [x] 驗證 JSON Schema contracts 合法 ✅ (10 schemas)
+
+## 階段二：TypeScript 編譯驗證
+
+- [x] 確認 TypeScript 專案編譯通過 ✅
+
+## 階段三：建立 Feature Branch & Commit
+
+- [ ] 建立 `feat/bilingual-architecture-python-plane` branch
+- [ ] git add 所有新檔案
+- [ ] git commit 有意義的訊息
+- [ ] push branch 至 GitHub
+
+## 階段四：建立 Pull Request & 合併
+
+- [ ] 建立 PR 至 main
+- [ ] 確認 PR 內容正確
+- [ ] 合併 PR 至 main
 
 ---
 
-## 🔴 SECTION H: GitHub 推送 & PR
+## 待合併檔案清單
 
-### H1. [ ] 建立 feature branch
-### H2. [ ] Commit 所有變更
-### H3. [ ] Push 到 GitHub
-### H4. [ ] 建立 Pull Request
+### 新增檔案
+- `.github/workflows/python-ci.yml`
+- `BILINGUAL_ARCHITECTURE_SUMMARY.md`
+- `PYTHON_PLANE_SETUP_COMPLETE.md`
+- `README_BILINGUAL.md`
+- `contracts/schemas/memory-item.schema.json`
+- `contracts/schemas/dream-run.schema.json`
+- `contracts/schemas/dream-action.schema.json`
+- `contracts/schemas/dream-report.schema.json`
+- `python/` (整個目錄)
+
+### 修改檔案
+- `todo.md`

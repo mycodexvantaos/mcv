@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mycodexvantaos.com/schemas/dream-action.schema.json",
+  "title": "Dream Action",
+  "description": "Suggested action to resolve a memory issue",
+  "type": "object",
+  "properties": {
+    "action_type": {
+      "type": "string",
+      "enum": ["merge", "resolve", "mark_orphan", "delete", "tag_add", "tag_remove", "no_action"],
+      "description": "Type of action to take"
+    },
+    "target_memory_id": {
+      "type": "string",
+      "description": "Memory ID this action targets"
+    },
+    "related_memory_id": {
+      "type": "string",
+      "description": "Optional related memory (for merge/resolve)",
+      "nullable": true
+    },
+    "reason": {
+      "type": "string",
+      "description": "Why this action is suggested"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "default": 1.0,
+      "description": "Confidence score (0-1)"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional data",
+      "additionalProperties": true
+    }
+  },
+  "required": ["action_type", "target_memory_id", "reason"]
+}

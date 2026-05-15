@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mycodexvantaos.com/schemas/dream-report.schema.json",
+  "title": "Dream Report",
+  "description": "Dream processing report",
+  "type": "object",
+  "properties": {
+    "dream_run_id": {
+      "type": "string",
+      "description": "Dream run identifier"
+    },
+    "processed_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Processing timestamp (ISO 8601)"
+    },
+    "total_memories": {
+      "type": "integer",
+      "description": "Total memories processed",
+      "minimum": 0
+    },
+    "duplicates_found": {
+      "type": "integer",
+      "default": 0,
+      "description": "Number of duplicates detected",
+      "minimum": 0
+    },
+    "conflicts_found": {
+      "type": "integer",
+      "default": 0,
+      "description": "Number of conflicts detected",
+      "minimum": 0
+    },
+    "orphans_found": {
+      "type": "integer",
+      "default": 0,
+      "description": "Number of orphans detected",
+      "minimum": 0
+    },
+    "actions": {
+      "type": "array",
+      "description": "Suggested actions",
+      "items": { "$ref": "dream-action.schema.json" },
+      "default": []
+    },
+    "statistics": {
+      "type": "object",
+      "description": "Additional statistics",
+      "additionalProperties": true
+    }
+  },
+  "required": ["dream_run_id", "total_memories"]
+}
