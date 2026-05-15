@@ -1,41 +1,29 @@
 /**
- * 🔒 MyCodeXvantaOS - DALL-E Image Provider
- *
- * OpenAI DALL-E image generation with native fallback.
- *
- * @module providers/image/image-dalle
- * @version 1.0.0
+ * Factory function for DalleProvider
  */
+
+import { DalleProvider } from './dalle-provider-cb';
+import type { DalleConfig } from './dalle-provider-cb';
+import { RuntimeMode, ProviderMode } from '../../../packages/capabilities/types';
+import type { ProviderConfig } from '../../../packages/capabilities/types';
 
 export { DalleProvider } from './dalle-provider-cb';
-export type { DalleConfig, GenerateOptions, GenerateResult, EditResult, VariationResult } from './dalle-provider-cb';
+export type { DalleConfig } from './dalle-provider-cb';
 
 /**
- * Factory function to create DALL-E provider
+ * Create a DalleProvider instance with the given configuration.
  */
-export function createDalleProvider(config: import('../../../packages/capabilities/types').ProviderConfig<any> = {}): DalleProvider {
-  return new DalleProvider({
-    id: config.id || 'dalle-image',
-    name: config.name || 'DALL-E Image',
-    mode: config.mode || 'hybrid',
-    providerMode: config.providerMode || 'external',
-    config: config.config || {},
+export function createDalleProvider(config: Partial<ProviderConfig<DalleConfig>> = {}): DalleProvider {
+  const providerConfig: ProviderConfig<DalleConfig> = {
+    id: config.id || 'dalle-provider-cb',
+    name: config.name || 'DalleProvider',
+    mode: config.mode || RuntimeMode.HYBRID,
+    providerMode: config.providerMode || ProviderMode.EXTERNAL,
+    config: (config.config || {}) as DalleConfig,
     fallback: config.fallback,
-  });
+  };
+
+  return new DalleProvider(providerConfig);
 }
 
-/**
- * Initialize DALL-E provider
- */
-export async function initializeDalleProvider(
-  config: import('../../../packages/capabilities/types').ProviderConfig<any> = {}
-): Promise<DalleProvider> {
-  const provider = createDalleProvider(config);
-  await provider.initialize();
-  return provider;
-}
-
-/**
- * Default export
- */
-export { DalleProvider as default };
+export default createDalleProvider;

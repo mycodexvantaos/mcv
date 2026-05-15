@@ -1,3 +1,5 @@
+import { ChromaVectorProvider } from './chroma-vector-provider-cb';
+import type { ChromaVectorConfig } from './chroma-vector-provider-cb';
 export { ChromaVectorProvider, default } from './chroma-vector-provider-cb';
 export type { ChromaVectorConfig, VectorSearchResult, SearchResult } from './chroma-vector-provider-cb';
 export function createChromaVectorProvider(id: string = 'vector-chroma', config?: Partial<ChromaVectorConfig>) {

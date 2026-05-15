@@ -1,3 +1,5 @@
+import { WorkersAIProvider } from './workers-ai-provider-cb';
+import type { WorkersAIConfig } from './workers-ai-provider-cb';
 /**
  * 🔒 MyCodeXvantaOS - Cloudflare Workers AI Provider Exports
  *

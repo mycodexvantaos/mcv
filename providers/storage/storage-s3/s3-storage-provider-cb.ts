@@ -8,7 +8,8 @@
  */
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../../packages/capabilities/types';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 /**
  * Configuration for S3 Storage Provider
@@ -168,7 +169,7 @@ export class S3StorageProvider extends CapabilityBase<S3StorageConfig> {
   private sslEnabled: boolean;
   private timeout: number;
   private retries: number;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
 
   constructor(config: ProviderConfig<S3StorageConfig>) {
     super(config);
@@ -193,7 +194,7 @@ export class S3StorageProvider extends CapabilityBase<S3StorageConfig> {
     }
     
     this.log('info', 'S3 storage provider initialized');
-    this.log('debug', `Bucket: ${this.bucket}, Region: ${this.region}`);
+    this.log('info', `Bucket: ${this.bucket}, Region: ${this.region}`);
   }
 
   /**
@@ -221,10 +222,7 @@ export class S3StorageProvider extends CapabilityBase<S3StorageConfig> {
         isHealthy,
         status: isHealthy ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.UNHEALTHY,
         checkTime: new Date().toISOString(),
-        metrics: {
-          bucket: this.bucket,
-          region: this.region,
-        },
+        metrics: {},
       };
     } catch (error) {
       return {

@@ -8,8 +8,9 @@
  * @version 1.0.0
  */
 
-import { CapabilityBase } from '../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../packages/capabilities/types';
+import { CapabilityBase } from '../../../packages/capabilities/base';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 /**
  * Configuration for Ollama LLM Provider
@@ -95,7 +96,7 @@ export class OllamaLLMProvider extends CapabilityBase<OllamaConfig> {
   private timeout: number;
   private maxTokens: number;
   private temperature: number;
-  private stream: boolean;
+  private enableStreaming: boolean;
   private retries: number;
   
   private isOllamaAvailable: boolean = false;
@@ -114,7 +115,7 @@ export class OllamaLLMProvider extends CapabilityBase<OllamaConfig> {
     this.timeout = cfg.timeout || 30000;
     this.maxTokens = cfg.maxTokens || 2048;
     this.temperature = cfg.temperature || 0.7;
-    this.stream = cfg.stream ?? true;
+    this.enableStreaming = cfg.stream ?? true;
     this.retries = cfg.retries || 3;
   }
 
@@ -175,7 +176,6 @@ export class OllamaLLMProvider extends CapabilityBase<OllamaConfig> {
         checkTime: new Date().toISOString(),
         metrics: {
           lastError: 'Ollama service not available',
-          baseURL: this.baseURL,
         },
       };
     }
@@ -184,11 +184,7 @@ export class OllamaLLMProvider extends CapabilityBase<OllamaConfig> {
       isHealthy: true,
       status: ProviderHealthStatus.HEALTHY,
       checkTime: new Date().toISOString(),
-      metrics: {
-        model: this.model,
-        baseURL: this.baseURL,
-        maxTokens: this.maxTokens,
-      },
+      metrics: {},
     };
   }
 
@@ -222,7 +218,7 @@ export class OllamaLLMProvider extends CapabilityBase<OllamaConfig> {
         model: this.model,
         provider: this.name,
         generationTime,
-        streamed: request.stream ?? this.stream,
+        streamed: request.stream ?? this.enableStreaming,
       };
     } catch (error) {
       const generationTime = Date.now() - startTime;
@@ -286,7 +282,7 @@ export class OllamaLLMProvider extends CapabilityBase<OllamaConfig> {
           temperature: options.temperature ?? this.temperature,
           num_predict: options.maxTokens ?? this.maxTokens,
         },
-        stream: options.stream ?? this.stream,
+        stream: options.stream ?? this.enableStreaming,
       }),
       signal: AbortSignal.timeout(this.timeout),
     });
@@ -296,7 +292,7 @@ export class OllamaLLMProvider extends CapabilityBase<OllamaConfig> {
     }
 
     // Handle streaming or non-streaming response
-    if (options.stream ?? this.stream) {
+    if (options.stream ?? this.enableStreaming) {
       return await this.handleStreamedResponse(response);
     } else {
       const data = await response.json();
@@ -323,7 +319,7 @@ export class OllamaLLMProvider extends CapabilityBase<OllamaConfig> {
           temperature: options.temperature ?? this.temperature,
           num_predict: options.maxTokens ?? this.maxTokens,
         },
-        stream: options.stream ?? this.stream,
+        stream: options.stream ?? this.enableStreaming,
       }),
       signal: AbortSignal.timeout(this.timeout),
     });
@@ -332,7 +328,7 @@ export class OllamaLLMProvider extends CapabilityBase<OllamaConfig> {
       throw new Error(`Ollama API error: ${response.status} ${response.statusText}`);
     }
 
-    if (options.stream ?? this.stream) {
+    if (options.stream ?? this.enableStreaming) {
       return await this.handleStreamedResponse(response);
     } else {
       const data = await response.json();
@@ -474,7 +470,7 @@ export class OllamaLLMProvider extends CapabilityBase<OllamaConfig> {
       baseURL: this.baseURL,
       maxTokens: this.maxTokens,
       temperature: this.temperature,
-      stream: this.stream,
+      stream: this.enableStreaming,
       available: this.isOllamaAvailable,
       status: this._status,
       isInitialized: this._isInitialized,

@@ -7,8 +7,9 @@
  * @version 1.0.0
  */
 
-import { CapabilityBase } from '../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../packages/capabilities/types';
+import { CapabilityBase } from '../../../packages/capabilities/base';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 /**
  * Configuration for Anthropic LLM Provider
@@ -131,9 +132,9 @@ export class AnthropicLLMProvider extends CapabilityBase<AnthropicConfig> {
   private temperature: number;
   private topP: number;
   private topK: number;
-  private stream: boolean;
+  private enableStreaming: boolean;
   private retries: number;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
   
   private isAnthropicAvailable: boolean = false;
   private apiKey: string | undefined;
@@ -155,10 +156,9 @@ export class AnthropicLLMProvider extends CapabilityBase<AnthropicConfig> {
     this.maxTokens = cfg.maxTokens || 2048;
     this.temperature = cfg.temperature ?? 0.7;
     this.topP = cfg.topP ?? 1.0;
-    this.topK = cfg.topK;
-    this.stream = cfg.stream ?? true;
+    this.topK = cfg.topK ?? 0;
+    this.enableStreaming = cfg.stream ?? true;
     this.retries = cfg.retries || 3;
-    this.fallbackProviderId = cfg.fallbackProviderId || 'llm-native';
   }
 
   /**
@@ -196,7 +196,7 @@ export class AnthropicLLMProvider extends CapabilityBase<AnthropicConfig> {
       const response = await fetch(this.baseURL, {
         method: 'POST',
         headers: {
-          'x-api-key': this.apiKey,
+          'x-api-key': this.apiKey || '',
           'anthropic-version': this.version,
           'content-type': 'application/json',
         },
@@ -232,7 +232,6 @@ export class AnthropicLLMProvider extends CapabilityBase<AnthropicConfig> {
         checkTime: new Date().toISOString(),
         metrics: {
           lastError: 'API key not provided',
-          hasFallback: !!this.fallbackProviderId,
         },
       };
     }
@@ -246,7 +245,6 @@ export class AnthropicLLMProvider extends CapabilityBase<AnthropicConfig> {
         checkTime: new Date().toISOString(),
         metrics: {
           lastError: 'Anthropic API not available',
-          hasFallback: !!this.fallbackProviderId,
         },
       };
     }
@@ -255,12 +253,7 @@ export class AnthropicLLMProvider extends CapabilityBase<AnthropicConfig> {
       isHealthy: true,
       status: ProviderHealthStatus.HEALTHY,
       checkTime: new Date().toISOString(),
-      metrics: {
-        model: this.model,
-        baseURL: this.baseURL,
-        maxTokens: this.maxTokens,
-        hasFallback: !!this.fallbackProviderId,
-      },
+      metrics: {},
     };
   }
 
@@ -355,7 +348,7 @@ export class AnthropicLLMProvider extends CapabilityBase<AnthropicConfig> {
     const response = await fetch(this.baseURL, {
       method: 'POST',
       headers: {
-        'x-api-key': this.apiKey,
+        'x-api-key': this.apiKey || '',
         'anthropic-version': this.version,
         'content-type': 'application/json',
       },
@@ -418,7 +411,7 @@ export class AnthropicLLMProvider extends CapabilityBase<AnthropicConfig> {
     const response = await fetch(this.baseURL, {
       method: 'POST',
       headers: {
-        'x-api-key': this.apiKey,
+        'x-api-key': this.apiKey || '',
         'anthropic-version': this.version,
         'content-type': 'application/json',
       },

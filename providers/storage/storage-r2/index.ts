@@ -1,41 +1,29 @@
 /**
- * 🔒 MyCodeXvantaOS - Cloudflare R2 Storage Provider
- *
- * Cloudflare R2 storage integration with S3 fallback.
- *
- * @module providers/storage/storage-r2
- * @version 1.0.0
+ * Factory function for R2StorageProvider
  */
+
+import { R2StorageProvider } from './r2-storage-provider-cb';
+import type { R2StorageConfig } from './r2-storage-provider-cb';
+import { RuntimeMode, ProviderMode } from '../../../packages/capabilities/types';
+import type { ProviderConfig } from '../../../packages/capabilities/types';
 
 export { R2StorageProvider } from './r2-storage-provider-cb';
-export type { R2StorageConfig, FileMetadata, UploadResult, DownloadResult, ListResult, DeleteResult } from './r2-storage-provider-cb';
+export type { R2StorageConfig } from './r2-storage-provider-cb';
 
 /**
- * Factory function to create R2 storage provider
+ * Create a R2StorageProvider instance with the given configuration.
  */
-export function createR2StorageProvider(config: import('../../../packages/capabilities/types').ProviderConfig<any> = {}): R2StorageProvider {
-  return new R2StorageProvider({
-    id: config.id || 'r2-storage',
-    name: config.name || 'Cloudflare R2 Storage',
-    mode: config.mode || 'hybrid',
-    providerMode: config.providerMode || 'external',
-    config: config.config || {},
+export function createR2StorageProvider(config: Partial<ProviderConfig<R2StorageConfig>> = {}): R2StorageProvider {
+  const providerConfig: ProviderConfig<R2StorageConfig> = {
+    id: config.id || 'r2-storage-provider-cb',
+    name: config.name || 'R2StorageProvider',
+    mode: config.mode || RuntimeMode.HYBRID,
+    providerMode: config.providerMode || ProviderMode.EXTERNAL,
+    config: (config.config || {}) as R2StorageConfig,
     fallback: config.fallback,
-  });
+  };
+
+  return new R2StorageProvider(providerConfig);
 }
 
-/**
- * Initialize R2 storage provider
- */
-export async function initializeR2StorageProvider(
-  config: import('../../../packages/capabilities/types').ProviderConfig<any> = {}
-): Promise<R2StorageProvider> {
-  const provider = createR2StorageProvider(config);
-  await provider.initialize();
-  return provider;
-}
-
-/**
- * Default export
- */
-export { R2StorageProvider as default };
+export default createR2StorageProvider;

@@ -8,7 +8,8 @@
  */
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../../packages/capabilities/types';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 /**
  * Configuration for Replicate Provider
@@ -106,7 +107,7 @@ export class ReplicateLLMProvider extends CapabilityBase<ReplicateConfig> {
   private retries: number;
   private maxTokens: number;
   private temperature: number;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
 
   constructor(config: ProviderConfig<ReplicateConfig>) {
     super(config);
@@ -125,7 +126,7 @@ export class ReplicateLLMProvider extends CapabilityBase<ReplicateConfig> {
    */
   protected async doInitialize(): Promise<void> {
     this.log('info', 'Replicate LLM provider initialized');
-    this.log('debug', `Model: ${this.model}, Version: ${this.modelVersion}`);
+    this.log('info', `Model: ${this.model}, Version: ${this.modelVersion}`);
   }
 
   /**
@@ -139,10 +140,7 @@ export class ReplicateLLMProvider extends CapabilityBase<ReplicateConfig> {
         isHealthy,
         status: isHealthy ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.UNHEALTHY,
         checkTime: new Date().toISOString(),
-        metrics: {
-          model: this.model,
-          modelVersion: this.modelVersion,
-        },
+        metrics: {},
       };
     } catch (error) {
       return {

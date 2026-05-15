@@ -4,7 +4,8 @@
  */
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../../packages/capabilities/types';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 export interface MemoryCacheConfig {
   maxSize?: number;
@@ -56,7 +57,7 @@ export class MemoryCache extends CapabilityBase<MemoryCacheConfig> {
         }
       }
       if (this.cache.size >= this.maxSize) {
-        this.cache.delete(this.cache.keys().next().value);
+        this.cache.delete(Array.from(this.cache.keys())[0]);
       }
     }
     const expireAt = Date.now() + (ttl ?? this.defaultTtl);

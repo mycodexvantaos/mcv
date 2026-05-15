@@ -8,7 +8,8 @@
  */
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../../packages/capabilities/types';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 /**
  * Configuration for Memory Storage Provider
@@ -152,7 +153,7 @@ export class MemoryStorageProvider extends CapabilityBase<MemoryStorageConfig> {
   private maxFiles: number;
   private currentSize: number;
   private autoCleanup: boolean;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
 
   constructor(config: ProviderConfig<MemoryStorageConfig>) {
     super(config);
@@ -169,7 +170,7 @@ export class MemoryStorageProvider extends CapabilityBase<MemoryStorageConfig> {
    */
   protected async doInitialize(): Promise<void> {
     this.log('info', 'Memory storage provider initialized');
-    this.log('debug', `Max size: ${this.maxSize} bytes, Max files: ${this.maxFiles}`);
+    this.log('info', `Max size: ${this.maxSize} bytes, Max files: ${this.maxFiles}`);
   }
 
   /**
@@ -184,12 +185,7 @@ export class MemoryStorageProvider extends CapabilityBase<MemoryStorageConfig> {
         isHealthy,
         status: isHealthy ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.DEGRADED,
         checkTime: new Date().toISOString(),
-        metrics: {
-          currentSize: this.currentSize,
-          maxFiles: this.storage.size,
-          maxFiles: this.maxFiles,
-          maxSize: this.maxSize,
-        },
+        metrics: {},
       };
     } catch (error) {
       return {

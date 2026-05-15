@@ -8,7 +8,8 @@
  */
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../../packages/capabilities/types';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 /**
  * Configuration for GCS Storage Provider
@@ -129,7 +130,7 @@ export class GCSStorageProvider extends CapabilityBase<GCSStorageConfig> {
   };
   private timeout: number;
   private retries: number;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
 
   constructor(config: ProviderConfig<GCSStorageConfig>) {
     super(config);
@@ -151,7 +152,7 @@ export class GCSStorageProvider extends CapabilityBase<GCSStorageConfig> {
     }
     
     this.log('info', 'GCS storage provider initialized');
-    this.log('debug', `Bucket: ${this.bucket}, Project: ${this.projectId}`);
+    this.log('info', `Bucket: ${this.bucket}, Project: ${this.projectId}`);
   }
 
   /**
@@ -177,10 +178,7 @@ export class GCSStorageProvider extends CapabilityBase<GCSStorageConfig> {
         isHealthy: true,
         status: ProviderHealthStatus.HEALTHY,
         checkTime: new Date().toISOString(),
-        metrics: {
-          bucket: this.bucket,
-          projectId: this.projectId,
-        },
+        metrics: {},
       };
     } catch (error) {
       return {

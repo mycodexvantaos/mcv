@@ -1,41 +1,29 @@
 /**
- * 🔒 MyCodeXvantaOS - Replicate LLM Provider
- *
- * Replicate LLM integration with native fallback.
- *
- * @module providers/llm/llm-replicate
- * @version 1.0.0
+ * Factory function for ReplicateLLMProvider
  */
+
+import { ReplicateLLMProvider } from './replicate-provider-cb';
+import type { ReplicateConfig } from './replicate-provider-cb';
+import { RuntimeMode, ProviderMode } from '../../../packages/capabilities/types';
+import type { ProviderConfig } from '../../../packages/capabilities/types';
 
 export { ReplicateLLMProvider } from './replicate-provider-cb';
-export type { ReplicateConfig, ChatMessage, ChatCompletionOptions, ChatCompletionResult } from './replicate-provider-cb';
+export type { ReplicateConfig } from './replicate-provider-cb';
 
 /**
- * Factory function to create Replicate provider
+ * Create a ReplicateLLMProvider instance with the given configuration.
  */
-export function createReplicateProvider(config: import('../../../packages/capabilities/types').ProviderConfig<any> = {}): ReplicateLLMProvider {
-  return new ReplicateLLMProvider({
-    id: config.id || 'replicate-llm',
-    name: config.name || 'Replicate LLM',
-    mode: config.mode || 'hybrid',
-    providerMode: config.providerMode || 'external',
-    config: config.config || {},
+export function createReplicateLLMProvider(config: Partial<ProviderConfig<ReplicateConfig>> = {}): ReplicateLLMProvider {
+  const providerConfig: ProviderConfig<ReplicateConfig> = {
+    id: config.id || 'replicate-provider-cb',
+    name: config.name || 'ReplicateLLMProvider',
+    mode: config.mode || RuntimeMode.HYBRID,
+    providerMode: config.providerMode || ProviderMode.EXTERNAL,
+    config: (config.config || {}) as ReplicateConfig,
     fallback: config.fallback,
-  });
+  };
+
+  return new ReplicateLLMProvider(providerConfig);
 }
 
-/**
- * Initialize Replicate provider
- */
-export async function initializeReplicateProvider(
-  config: import('../../../packages/capabilities/types').ProviderConfig<any> = {}
-): Promise<ReplicateLLMProvider> {
-  const provider = createReplicateProvider(config);
-  await provider.initialize();
-  return provider;
-}
-
-/**
- * Default export
- */
-export { ReplicateLLMProvider as default };
+export default createReplicateLLMProvider;

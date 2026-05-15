@@ -8,7 +8,8 @@
  */
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../../packages/capabilities/types';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 /**
  * Configuration for OpenAI Audio Provider
@@ -130,7 +131,7 @@ export class OpenAIAudioProvider extends CapabilityBase<OpenAIAudioConfig> {
   private defaultVoice: string;
   private timeout: number;
   private retries: number;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
 
   constructor(config: ProviderConfig<OpenAIAudioConfig>) {
     super(config);
@@ -147,7 +148,7 @@ export class OpenAIAudioProvider extends CapabilityBase<OpenAIAudioConfig> {
    */
   protected async doInitialize(): Promise<void> {
     this.log('info', 'OpenAI audio provider initialized');
-    this.log('debug', `TTS Model: ${this.ttsModel}, Voice: ${this.defaultVoice}`);
+    this.log('info', `TTS Model: ${this.ttsModel}, Voice: ${this.defaultVoice}`);
   }
 
   /**
@@ -161,10 +162,7 @@ export class OpenAIAudioProvider extends CapabilityBase<OpenAIAudioConfig> {
         isHealthy,
         status: isHealthy ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.UNHEALTHY,
         checkTime: new Date().toISOString(),
-        metrics: {
-          ttsModel: this.ttsModel,
-          defaultVoice: this.defaultVoice,
-        },
+        metrics: {},
       };
     } catch (error) {
       return {

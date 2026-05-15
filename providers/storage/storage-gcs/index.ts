@@ -1,41 +1,29 @@
 /**
- * 🔒 MyCodeXvantaOS - Google Cloud Storage Provider
- *
- * Google Cloud Storage integration with R2 fallback.
- *
- * @module providers/storage/storage-gcs
- * @version 1.0.0
+ * Factory function for GCSStorageProvider
  */
+
+import { GCSStorageProvider } from './gcs-storage-provider-cb';
+import type { GCSStorageConfig } from './gcs-storage-provider-cb';
+import { RuntimeMode, ProviderMode } from '../../../packages/capabilities/types';
+import type { ProviderConfig } from '../../../packages/capabilities/types';
 
 export { GCSStorageProvider } from './gcs-storage-provider-cb';
-export type { GCSStorageConfig, FileMetadata, UploadResult, DownloadResult, ListResult, DeleteResult } from './gcs-storage-provider-cb';
+export type { GCSStorageConfig } from './gcs-storage-provider-cb';
 
 /**
- * Factory function to create GCS storage provider
+ * Create a GCSStorageProvider instance with the given configuration.
  */
-export function createGCSStorageProvider(config: import('../../../packages/capabilities/types').ProviderConfig<any> = {}): GCSStorageProvider {
-  return new GCSStorageProvider({
-    id: config.id || 'gcs-storage',
-    name: config.name || 'Google Cloud Storage',
-    mode: config.mode || 'hybrid',
-    providerMode: config.providerMode || 'external',
-    config: config.config || {},
+export function createGCSStorageProvider(config: Partial<ProviderConfig<GCSStorageConfig>> = {}): GCSStorageProvider {
+  const providerConfig: ProviderConfig<GCSStorageConfig> = {
+    id: config.id || 'gcs-storage-provider-cb',
+    name: config.name || 'GCSStorageProvider',
+    mode: config.mode || RuntimeMode.HYBRID,
+    providerMode: config.providerMode || ProviderMode.EXTERNAL,
+    config: (config.config || {}) as GCSStorageConfig,
     fallback: config.fallback,
-  });
+  };
+
+  return new GCSStorageProvider(providerConfig);
 }
 
-/**
- * Initialize GCS storage provider
- */
-export async function initializeGCSStorageProvider(
-  config: import('../../../packages/capabilities/types').ProviderConfig<any> = {}
-): Promise<GCSStorageProvider> {
-  const provider = createGCSStorageProvider(config);
-  await provider.initialize();
-  return provider;
-}
-
-/**
- * Default export
- */
-export { GCSStorageProvider as default };
+export default createGCSStorageProvider;

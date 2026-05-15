@@ -6,7 +6,8 @@
  */
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../../packages/capabilities/types';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 export interface PineconeVectorConfig {
   apiKey?: string;
@@ -38,7 +39,7 @@ export class PineconeVectorProvider extends CapabilityBase<PineconeVectorConfig>
   private dimension: number;
   private timeout: number;
   private retries: number;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
   private isPineconeAvailable: boolean = false;
 
   constructor(id: string, name: string, config: ProviderConfig<PineconeVectorConfig>, fallbackConfig?: any) {
@@ -50,7 +51,6 @@ export class PineconeVectorProvider extends CapabilityBase<PineconeVectorConfig>
     this.dimension = cfg.dimension || 1536;
     this.timeout = cfg.timeout || 5000;
     this.retries = cfg.retries || 3;
-    this.fallbackProviderId = cfg.fallbackProviderId || 'vector-chroma';
   }
 
   protected async doInitialize(): Promise<void> {
@@ -68,7 +68,7 @@ export class PineconeVectorProvider extends CapabilityBase<PineconeVectorConfig>
   }
 
   protected async doHealthCheck(): Promise<ProviderHealthCheckResult> {
-    return { isHealthy: this.isPineconeAvailable, status: this.isPineconeAvailable ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.DEGRADED, checkTime: new Date().toISOString(), metrics: { hasFallback: !!this.fallbackProviderId } };
+    return { isHealthy: this.isPineconeAvailable, status: this.isPineconeAvailable ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.DEGRADED, checkTime: new Date().toISOString(), metrics: {} };
   }
 
   protected async doShutdown(): Promise<void> {
@@ -78,7 +78,7 @@ export class PineconeVectorProvider extends CapabilityBase<PineconeVectorConfig>
   async upsert(ids: string[], vectors: number[][], metadatas?: any[]): Promise<SearchResult> {
     const startTime = Date.now();
     if (!this.isPineconeAvailable) {
-      return { success: false, error: \`Pinecone not available. Use fallback: \${this.fallbackProviderId}\`, operationTime: Date.now() - startTime };
+      return { success: false, error: `Pinecone not available. Use fallback: \${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
     }
     try {
       const result = { success: true, operationTime: 0 } as SearchResult;
@@ -94,7 +94,7 @@ export class PineconeVectorProvider extends CapabilityBase<PineconeVectorConfig>
   async query(vector: number[], topK: number = 10): Promise<SearchResult> {
     const startTime = Date.now();
     if (!this.isPineconeAvailable) {
-      return { success: false, error: \`Pinecone not available. Use fallback: \${this.fallbackProviderId}\`, operationTime: Date.now() - startTime };
+      return { success: false, error: `Pinecone not available. Use fallback: \${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
     }
     try {
       const result = { success: true, results: [], operationTime: 0 } as SearchResult;
@@ -110,7 +110,7 @@ export class PineconeVectorProvider extends CapabilityBase<PineconeVectorConfig>
   async delete(ids: string[]): Promise<SearchResult> {
     const startTime = Date.now();
     if (!this.isPineconeAvailable) {
-      return { success: false, error: \`Pinecone not available. Use fallback: \${this.fallbackProviderId}\`, operationTime: Date.now() - startTime };
+      return { success: false, error: `Pinecone not available. Use fallback: \${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
     }
     try {
       const result = { success: true, operationTime: 0 } as SearchResult;

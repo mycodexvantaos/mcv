@@ -10,7 +10,34 @@
  * - Zero hard dependency - graceful degradation
  */
 
-import type { DeploymentProviderInterface, DeploymentResult } from '@mycodexvantaos/deployment';
+
+// ── Deployment Interfaces (local definitions) ──────────────────────────
+
+export interface DeploymentResult {
+  jobId: string;
+  status: string;
+  url?: string;
+  endpoints?: string[];
+  deploymentTime?: number;
+}
+
+export interface DeploymentProviderInterface {
+  name: string;
+  isNative: boolean;
+  isAvailable(): boolean;
+  healthCheck(): Promise<{ healthy: boolean; message: string }>;
+  getMetadata(): Record<string, any>;
+  deploy(application: any, config?: any): Promise<DeploymentResult>;
+  setFallback?(provider: DeploymentProviderInterface): void;
+}
+
+export interface DeploymentConfig {
+  port?: number;
+  host?: string;
+  environment?: Record<string, string>;
+  buildCommand?: string;
+  startCommand?: string;
+}
 
 export interface FirebaseDeploymentConfig {
   projectId?: string;

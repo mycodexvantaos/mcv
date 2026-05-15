@@ -8,7 +8,8 @@
  */
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../../packages/capabilities/types';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 /**
  * Configuration for R2 Storage Provider
@@ -120,7 +121,7 @@ export class R2StorageProvider extends CapabilityBase<R2StorageConfig> {
   private endpoint: string;
   private timeout: number;
   private retries: number;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
 
   constructor(config: ProviderConfig<R2StorageConfig>) {
     super(config);
@@ -142,7 +143,7 @@ export class R2StorageProvider extends CapabilityBase<R2StorageConfig> {
     }
     
     this.log('info', 'R2 storage provider initialized');
-    this.log('debug', `Bucket: ${this.bucket}, Account: ${this.accountId}`);
+    this.log('info', `Bucket: ${this.bucket}, Account: ${this.accountId}`);
   }
 
   /**
@@ -167,10 +168,7 @@ export class R2StorageProvider extends CapabilityBase<R2StorageConfig> {
         isHealthy,
         status: isHealthy ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.UNHEALTHY,
         checkTime: new Date().toISOString(),
-        metrics: {
-          bucket: this.bucket,
-          endpoint: this.endpoint,
-        },
+        metrics: {},
       };
     } catch (error) {
       return {

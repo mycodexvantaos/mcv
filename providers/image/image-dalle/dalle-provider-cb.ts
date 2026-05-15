@@ -8,7 +8,8 @@
  */
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../../packages/capabilities/types';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 /**
  * Configuration for DALL-E Provider
@@ -148,7 +149,7 @@ export class DalleProvider extends CapabilityBase<DalleConfig> {
   private style: string;
   private timeout: number;
   private retries: number;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
 
   constructor(config: ProviderConfig<DalleConfig>) {
     super(config);
@@ -167,7 +168,7 @@ export class DalleProvider extends CapabilityBase<DalleConfig> {
    */
   protected async doInitialize(): Promise<void> {
     this.log('info', 'DALL-E image provider initialized');
-    this.log('debug', `Model: ${this.model}, Size: ${this.size}`);
+    this.log('info', `Model: ${this.model}, Size: ${this.size}`);
   }
 
   /**
@@ -181,12 +182,7 @@ export class DalleProvider extends CapabilityBase<DalleConfig> {
         isHealthy,
         status: isHealthy ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.UNHEALTHY,
         checkTime: new Date().toISOString(),
-        metrics: {
-          model: this.model,
-          size: this.size,
-          quality: this.quality,
-          style: this.style,
-        },
+        metrics: {},
       };
     } catch (error) {
       return {

@@ -8,7 +8,8 @@
  */
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../../packages/capabilities/types';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 /**
  * Configuration for Memory Cache Provider
@@ -97,7 +98,7 @@ export class MemoryCacheProvider extends CapabilityBase<MemoryCacheConfig> {
   private autoCleanup: boolean;
   private cleanupInterval: number;
   private cleanupTimer: NodeJS.Timeout | null = null;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
 
   constructor(
     id: string,
@@ -114,7 +115,6 @@ export class MemoryCacheProvider extends CapabilityBase<MemoryCacheConfig> {
     this.keyPrefix = cfg.keyPrefix || 'cache:';
     this.autoCleanup = cfg.autoCleanup ?? true;
     this.cleanupInterval = cfg.cleanupInterval || 60000; // 1 minute
-    this.fallbackProviderId = cfg.fallbackProviderId || 'cache/memory-native';
   }
 
   /**
@@ -149,13 +149,7 @@ export class MemoryCacheProvider extends CapabilityBase<MemoryCacheConfig> {
       isHealthy: true,
       status: ProviderHealthStatus.HEALTHY,
       checkTime: new Date().toISOString(),
-      metrics: {
-        totalItems: this.cache.size,
-        expiredItems: expiredCount,
-        maxItems: this.maxItems,
-        autoCleanup: this.autoCleanup,
-        defaultTTL: this.defaultTTL,
-      },
+      metrics: {},
     };
   }
 
@@ -446,7 +440,7 @@ export class MemoryCacheProvider extends CapabilityBase<MemoryCacheConfig> {
     }
     
     if (cleaned > 0) {
-      this.log('debug', `Cleaned up ${cleaned} expired items`);
+      this.log('info', `Cleaned up ${cleaned} expired items`);
     }
   }
 

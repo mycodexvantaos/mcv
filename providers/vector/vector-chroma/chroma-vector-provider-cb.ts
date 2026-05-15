@@ -6,7 +6,8 @@
  */
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../../packages/capabilities/types';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 export interface ChromaVectorConfig {
   host?: string;
@@ -36,7 +37,7 @@ export class ChromaVectorProvider extends CapabilityBase<ChromaVectorConfig> {
   private path: string;
   private timeout: number;
   private retries: number;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
   private isChromaAvailable: boolean = false;
 
   constructor(id: string, name: string, config: ProviderConfig<ChromaVectorConfig>, fallbackConfig?: any) {
@@ -47,7 +48,6 @@ export class ChromaVectorProvider extends CapabilityBase<ChromaVectorConfig> {
     this.path = cfg.path || './chromadb';
     this.timeout = cfg.timeout || 5000;
     this.retries = cfg.retries || 3;
-    this.fallbackProviderId = cfg.fallbackProviderId || 'vector/memory-native';
   }
 
   protected async doInitialize(): Promise<void> {
@@ -65,7 +65,7 @@ export class ChromaVectorProvider extends CapabilityBase<ChromaVectorConfig> {
   }
 
   protected async doHealthCheck(): Promise<ProviderHealthCheckResult> {
-    return { isHealthy: this.isChromaAvailable, status: this.isChromaAvailable ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.DEGRADED, checkTime: new Date().toISOString(), metrics: { hasFallback: !!this.fallbackProviderId } };
+    return { isHealthy: this.isChromaAvailable, status: this.isChromaAvailable ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.DEGRADED, checkTime: new Date().toISOString(), metrics: {} };
   }
 
   protected async doShutdown(): Promise<void> {
@@ -75,7 +75,7 @@ export class ChromaVectorProvider extends CapabilityBase<ChromaVectorConfig> {
   async add(collection: string, ids: string[], embeddings: number[][], metadatas?: any[]): Promise<SearchResult> {
     const startTime = Date.now();
     if (!this.isChromaAvailable) {
-      return { success: false, error: \`ChromaDB not available. Use fallback: \${this.fallbackProviderId}\`, operationTime: Date.now() - startTime };
+      return { success: false, error: `ChromaDB not available. Use fallback: \${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
     }
     try {
       const result = { success: true, operationTime: 0 } as SearchResult;
@@ -91,7 +91,7 @@ export class ChromaVectorProvider extends CapabilityBase<ChromaVectorConfig> {
   async search(collection: string, query: number[], nResults: number = 10): Promise<SearchResult> {
     const startTime = Date.now();
     if (!this.isChromaAvailable) {
-      return { success: false, error: \`ChromaDB not available. Use fallback: \${this.fallbackProviderId}\`, operationTime: Date.now() - startTime };
+      return { success: false, error: `ChromaDB not available. Use fallback: \${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
     }
     try {
       const result = { success: true, results: [], operationTime: 0 } as SearchResult;
@@ -107,7 +107,7 @@ export class ChromaVectorProvider extends CapabilityBase<ChromaVectorConfig> {
   async delete(collection: string, ids: string[]): Promise<SearchResult> {
     const startTime = Date.now();
     if (!this.isChromaAvailable) {
-      return { success: false, error: \`ChromaDB not available. Use fallback: \${this.fallbackProviderId}\`, operationTime: Date.now() - startTime };
+      return { success: false, error: `ChromaDB not available. Use fallback: \${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
     }
     try {
       const result = { success: true, operationTime: 0 } as SearchResult;

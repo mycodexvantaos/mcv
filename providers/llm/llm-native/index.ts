@@ -212,4 +212,3 @@ export default {
 
 // Re-export CapabilityBase version
 export { NativeLLMProvider as CapabilityNativeLLMProvider } from './llm-native-provider-cb';
-export type { NativeLLMConfig, LLMRequest, LLMResponse, ChatMessage, ChatRequest } from './llm-native-provider-cb';

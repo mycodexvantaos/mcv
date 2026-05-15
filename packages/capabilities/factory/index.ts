@@ -17,12 +17,11 @@
  */
 
 import { CapabilityBase } from '../base';
+import { RuntimeMode, ProviderHealthStatus } from '../types';
 import type {
   ProviderConfig,
-  RuntimeMode,
   FallbackConfig,
   NetworkStatus,
-  ProviderHealthStatus,
 } from '../types';
 
 /**
@@ -240,7 +239,7 @@ export class ProviderFactory<T extends CapabilityBase> {
       ? {
           enabled: this.enableAutoFallback,
           providerId: selectedProviders.fallback.id,
-          retryCount: selectedProviders.fallback.config.fallbackThreshold || 3,
+          retryCount: (selectedProviders.fallback.config as Record<string, unknown>).fallbackThreshold as number || 3,
           retryDelay: 1000,
           logFallback: true,
         }
@@ -362,28 +361,28 @@ export class ProviderFactory<T extends CapabilityBase> {
 
     // NATIVE 模式：只能用 native Provider
     if (mode === RuntimeMode.NATIVE) {
-      primary = candidates.find((c) => c.config.providerMode === 'native');
+      primary = candidates.find((c) => (c.config as Record<string, unknown>).providerMode === 'native');
     }
     // CONNECTED 模式：優先用 external，沒有就用 native
     else if (mode === RuntimeMode.CONNECTED) {
-      primary = candidates.find((c) => c.config.providerMode === 'external');
+      primary = candidates.find((c) => (c.config as Record<string, unknown>).providerMode === 'external');
       if (!primary) {
-        primary = candidates.find((c) => c.config.providerMode === 'native');
+        primary = candidates.find((c) => (c.config as Record<string, unknown>).providerMode === 'native');
       }
     }
     // HYBRID 模式：external first，native fallback
     else if (mode === RuntimeMode.HYBRID) {
-      primary = candidates.find((c) => c.config.providerMode === 'external');
-      fallback = candidates.find((c) => c.config.providerMode === 'native');
+      primary = candidates.find((c) => (c.config as Record<string, unknown>).providerMode === 'external');
+      fallback = candidates.find((c) => (c.config as Record<string, unknown>).providerMode === 'native');
     }
 
     // AUTO 模式：根據網絡狀態切換
     else if (mode === RuntimeMode.AUTO) {
       if (this.networkStatus?.isOnline) {
-        primary = candidates.find((c) => c.config.providerMode === 'external');
-        fallback = candidates.find((c) => c.config.providerMode === 'native');
+        primary = candidates.find((c) => (c.config as Record<string, unknown>).providerMode === 'external');
+        fallback = candidates.find((c) => (c.config as Record<string, unknown>).providerMode === 'native');
       } else {
-        primary = candidates.find((c) => c.config.providerMode === 'native');
+        primary = candidates.find((c) => (c.config as Record<string, unknown>).providerMode === 'native');
       }
     }
 

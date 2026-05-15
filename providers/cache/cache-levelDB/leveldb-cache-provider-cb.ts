@@ -8,7 +8,8 @@
  */
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../../packages/capabilities/types';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 /**
  * Configuration for LevelDB Cache Provider
@@ -101,7 +102,7 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
   private cacheSize: number;
   private writeBufferSize: number;
   private retries: number;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
   
   private isLevelDBAvailable: boolean = false;
 
@@ -121,7 +122,6 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
     this.cacheSize = cfg.cacheSize || 8 * 1024 * 1024; // 8MB
     this.writeBufferSize = cfg.writeBufferSize || 4 * 1024 * 1024; // 4MB
     this.retries = cfg.retries || 3;
-    this.fallbackProviderId = cfg.fallbackProviderId || 'cache/memory-native';
   }
 
   /**
@@ -168,7 +168,6 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
         checkTime: new Date().toISOString(),
         metrics: {
           lastError: 'LevelDB not available',
-          hasFallback: !!this.fallbackProviderId,
         },
       };
     }
@@ -177,13 +176,7 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
       isHealthy: true,
       status: ProviderHealthStatus.HEALTHY,
       checkTime: new Date().toISOString(),
-      metrics: {
-        dbPath: this.dbPath,
-        cacheSize: this.cacheSize,
-        defaultTTL: this.defaultTTL,
-        compression: this.compression,
-        hasFallback: !!this.fallbackProviderId,
-      },
+      metrics: {},
     };
   }
 

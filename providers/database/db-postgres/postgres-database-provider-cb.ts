@@ -6,7 +6,8 @@
  */
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../../packages/capabilities/types';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 export interface PostgreSQLDatabaseConfig {
   connectionString?: string;
@@ -32,16 +33,15 @@ export class PostgreSQLDatabaseProvider extends CapabilityBase<PostgreSQLDatabas
   private connectionString: string;
   private timeout: number;
   private retries: number;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
   private isPostgreSQLAvailable: boolean = false;
 
   constructor(id: string, name: string, config: ProviderConfig<PostgreSQLDatabaseConfig>, fallbackConfig?: any) {
     super(id, name, config, fallbackConfig);
     const cfg = config.config;
-    this.connectionString = cfg.connectionString || \`postgresql://\${cfg.user}:\${cfg.password}@\${cfg.host}:\${cfg.port}/\${cfg.database}\`;
+    this.connectionString = cfg.connectionString || `postgresql://\${cfg.user}:\${cfg.password}@\${cfg.host}:\${cfg.port}/\${cfg.database}`;
     this.timeout = cfg.timeout || 5000;
     this.retries = cfg.retries || 3;
-    this.fallbackProviderId = cfg.fallbackProviderId || 'db-sqlite';
   }
 
   protected async doInitialize(): Promise<void> {
@@ -63,7 +63,7 @@ export class PostgreSQLDatabaseProvider extends CapabilityBase<PostgreSQLDatabas
       isHealthy: this.isPostgreSQLAvailable,
       status: this.isPostgreSQLAvailable ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.DEGRADED,
       checkTime: new Date().toISOString(),
-      metrics: { hasFallback: !!this.fallbackProviderId },
+      metrics: {},
     };
   }
 
@@ -74,7 +74,7 @@ export class PostgreSQLDatabaseProvider extends CapabilityBase<PostgreSQLDatabas
   async query<T = any>(sql: string, params: any[] = []): Promise<QueryResult<T>> {
     const startTime = Date.now();
     if (!this.isPostgreSQLAvailable) {
-      return { success: false, error: \`PostgreSQL not available. Use fallback: \${this.fallbackProviderId}\`, operationTime: Date.now() - startTime };
+      return { success: false, error: `PostgreSQL not available. Use fallback: \${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
     }
     try {
       const result = { success: true, rows: [], operationTime: 0 } as QueryResult<T>;

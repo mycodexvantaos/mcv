@@ -1,58 +1,31 @@
 /**
- * 🤖 MyCodeXvantaOS - OpenAI LLM Provider
- *
- * Official OpenAI API integration with native fallback.
- * 
- * @module providers/llm/llm-openai
- * @version 1.0.0
+ * Factory function for OpenAILLMProvider
  */
 
-export { OpenAILLMProvider, default } from './openai-provider-cb';
-export type { 
-  OpenAIConfig, 
-  ChatMessage, 
-  LLMRequest as OpenAILLMRequest, 
-  LLMResponse as OpenAILLMResponse 
-} from './openai-provider-cb';
+import { OpenAILLMProvider } from './openai-provider-cb';
+import type { OpenAIConfig } from './openai-provider-cb';
+import { RuntimeMode, ProviderMode } from '../../../packages/capabilities/types';
+import type { ProviderConfig } from '../../../packages/capabilities/types';
+
+export { OpenAILLMProvider } from './openai-provider-cb';
+export type { OpenAIConfig } from './openai-provider-cb';
 
 /**
- * Create an OpenAI LLM provider instance
+ * Create a OpenAILLMProvider instance with the given configuration.
  */
-export function createOpenAIProvider(
-  id: string = 'openai-default',
-  config: OpenAIConfig = {}
-): OpenAILLMProvider {
-  const ProviderConfig = {
-    config,
-    mode: 'external' as const,
-    providerId: id,
+export function createOpenAILLMProvider(config: Partial<ProviderConfig<OpenAIConfig>> = {}): OpenAILLMProvider {
+  const id = config.id || 'openai-provider-cb';
+  const name = config.name || 'OpenAILLMProvider';
+  const providerConfig: ProviderConfig<OpenAIConfig> = {
+    id,
+    name,
+    mode: config.mode || RuntimeMode.HYBRID,
+    providerMode: config.providerMode || ProviderMode.EXTERNAL,
+    config: (config.config || {}) as OpenAIConfig,
+    fallback: config.fallback,
   };
 
-  return new OpenAILLMProvider(
-    id,
-    'OpenAI LLM Provider',
-    ProviderConfig,
-    {
-      enabled: true,
-      retryCount: 3,
-    }
-  );
+  return new OpenAILLMProvider(id, name, providerConfig);
 }
 
-/**
- * Initialize OpenAI provider with health check
- */
-export async function initializeOpenAIProvider(
-  id: string = 'openai-default',
-  config: OpenAIConfig = {}
-): Promise<OpenAILLMProvider> {
-  const provider = createOpenAIProvider(id, config);
-  await provider.initialize();
-  return provider;
-}
-
-export default {
-  OpenAILLMProvider,
-  createOpenAIProvider,
-  initializeOpenAIProvider,
-};
+export default createOpenAILLMProvider;

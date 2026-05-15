@@ -8,7 +8,8 @@
  */
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
-import type { ProviderConfig, ProviderHealthCheckResult, ProviderHealthStatus } from '../../../packages/capabilities/types';
+import { ProviderHealthStatus } from '../../../packages/capabilities/types';
+import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
 
 /**
  * Configuration for Redis Cache Provider
@@ -108,7 +109,7 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
   private defaultTTL: number;
   private timeout: number;
   private retries: number;
-  private fallbackProviderId: string;
+  private fallbackProviderId: string = 'native';
   
   private isRedisAvailable: boolean = false;
   private client: any = null;
@@ -131,7 +132,6 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
     this.defaultTTL = cfg.defaultTTL || 3600;
     this.timeout = cfg.timeout || 5000;
     this.retries = cfg.retries || 3;
-    this.fallbackProviderId = cfg.fallbackProviderId || 'cache/memory-native';
   }
 
   /**
@@ -187,7 +187,6 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
         checkTime: new Date().toISOString(),
         metrics: {
           lastError: 'Redis connection details not provided',
-          hasFallback: !!this.fallbackProviderId,
         },
       };
     }
@@ -201,7 +200,6 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
         checkTime: new Date().toISOString(),
         metrics: {
           lastError: 'Redis not available',
-          hasFallback: !!this.fallbackProviderId,
         },
       };
     }
@@ -210,12 +208,7 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
       isHealthy: true,
       status: ProviderHealthStatus.HEALTHY,
       checkTime: new Date().toISOString(),
-      metrics: {
-        url: this.url || `${this.host}:${this.port}`,
-        db: this.db,
-        defaultTTL: this.defaultTTL,
-        hasFallback: !!this.fallbackProviderId,
-      },
+      metrics: {},
     };
   }
 
