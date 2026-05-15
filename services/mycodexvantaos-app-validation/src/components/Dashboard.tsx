@@ -2,18 +2,31 @@ import React, { useState } from 'react';
 import { Upload, FileText, AlertCircle, CheckCircle, Clock, TrendingUp } from 'lucide-react';
 
 // URN: urn:mycodexvantaos:app:ui:validation-mock-data
-interface ValidationItem {
+interface ValidationItemBase {
   id: string;
   originalFileName: string;
-  status: 'PROCESSING' | 'COMPLETED' | 'FAILED';
   createdAt: string;
-  analysis?: {
+}
+
+interface ValidationItemProcessing extends ValidationItemBase {
+  status: 'PROCESSING';
+}
+
+interface ValidationItemCompleted extends ValidationItemBase {
+  status: 'COMPLETED';
+  analysis: {
     overallRiskLevel: 'LOW' | 'MEDIUM' | 'HIGH';
     confidence: number;
     createdAt: string;
   };
-  errorMessage?: string;
 }
+
+interface ValidationItemFailed extends ValidationItemBase {
+  status: 'FAILED';
+  errorMessage: string;
+}
+
+type ValidationItem = ValidationItemProcessing | ValidationItemCompleted | ValidationItemFailed;
 
 const mockValidations: ValidationItem[] = [
   {
@@ -90,7 +103,7 @@ export default function ValidationDashboard() {
       const newValidation = {
         id: `val-${Date.now()}`,
         originalFileName: file.name,
-        status: 'PROCESSING' as const,
+        status: 'PROCESSING',
         createdAt: new Date().toISOString(),
       };
 
@@ -109,7 +122,7 @@ export default function ValidationDashboard() {
               v.id === newValidation.id
                 ? {
                     ...v,
-                    status: 'FAILED' as const,
+                    status: 'FAILED',
                     errorMessage:
                       'Processing Failed [ER-001]: The document appears to be corrupted, unreadable, or password protected.',
                   }
@@ -124,7 +137,7 @@ export default function ValidationDashboard() {
             v.id === newValidation.id
               ? {
                   ...v,
-                  status: 'COMPLETED' as const,
+                  status: 'COMPLETED',
                   analysis: {
                     overallRiskLevel: 'MEDIUM' as const,
                     confidence: 85,
@@ -347,7 +360,7 @@ export default function ValidationDashboard() {
                             <AlertCircle className="w-5 h-5 text-red-600" />
                             <span className="text-sm text-red-600 font-medium">Failed</span>
                           </div>
-                          { val.status === 'FAILED' && 'errorMessage' in val && val.errorMessage ? (
+                          { val.status === 'FAILED' ? (
                             <span className="text-xs text-red-500 max-w-xs text-right whitespace-normal">
                               {val.errorMessage}
                             </span>
