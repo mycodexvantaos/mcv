@@ -98,9 +98,9 @@ export default function ValidationDashboard() {
 
     setIsUploading(true);
 
-    // 模拟 Provider 呼叫
+    // 模擬 Provider 呼叫
     setTimeout(() => {
-      const newValidation = {
+      const newValidation: ValidationItem = {
         id: `val-${Date.now()}`,
         originalFileName: file.name,
         status: 'PROCESSING',
@@ -139,7 +139,7 @@ export default function ValidationDashboard() {
                   ...v,
                   status: 'COMPLETED',
                   analysis: {
-                    overallRiskLevel: 'MEDIUM' as const,
+                    overallRiskLevel: 'MEDIUM',
                     confidence: 85,
                     createdAt: new Date().toISOString(),
                   },
@@ -324,21 +324,18 @@ export default function ValidationDashboard() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4 flex-1">
                       <FileText className="w-10 h-10 text-gray-400" />
-                      <div className="flex-1">
+                      <div>
                         <p className="text-sm font-medium text-gray-900">{val.originalFileName}</p>
-                        <p className="text-xs text-gray-500 mt-1">
-                          Uploaded {formatDate(val.createdAt)}
-                        </p>
+                        <p className="text-xs text-gray-500">{formatDate(val.createdAt)}</p>
                       </div>
                     </div>
-
-                    <div className="flex items-center space-x-4">
+                    <div className="flex flex-col items-end space-y-1">
                       {val.status === 'PROCESSING' ? (
                         <div className="flex items-center space-x-2">
                           <Clock className="w-5 h-5 text-blue-600 animate-spin" />
                           <span className="text-sm text-blue-600">Validating...</span>
                         </div>
-                      ) : val.status === 'COMPLETED' && val.analysis ? (
+                      ) : val.status === 'COMPLETED' ? (
                         <>
                           <div className="flex items-center space-x-2">
                             <span
@@ -360,7 +357,7 @@ export default function ValidationDashboard() {
                             <AlertCircle className="w-5 h-5 text-red-600" />
                             <span className="text-sm text-red-600 font-medium">Failed</span>
                           </div>
-                          { val.status === 'FAILED' ? (
+                          {'errorMessage' in val && val.errorMessage ? (
                             <span className="text-xs text-red-500 max-w-xs text-right whitespace-normal">
                               {val.errorMessage}
                             </span>
