@@ -69,14 +69,8 @@ jobs:
           echo "NODE_ENV: $NODE_ENV"
           ls -la .env* 2>/dev/null || echo "No .env files"
 
-      - name: Build Next.js application
-        run: pnpm run build
-        env:
-          NODE_ENV: production
-          NEXT_PRIVATE_STANDALONE: 'true'
-
-      - name: Build with OpenNext for Cloudflare (skip next build)
-        run: npx opennextjs-cloudflare build --skipNextBuild
+      - name: Build with OpenNext for Cloudflare
+        run: npx opennextjs-cloudflare build
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
