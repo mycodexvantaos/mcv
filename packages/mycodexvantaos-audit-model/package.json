@@ -1,5 +1,5 @@
 {
-  "name": "@mycodexvantaos/mycodexvantaos-audit-model",
+  "name": "@mycodexvantaos/audit-model",
   "version": "0.1.0",
   "description": "Audit model - audit events, actor, resource reference, trace context, integrity metadata",
   "type": "module",

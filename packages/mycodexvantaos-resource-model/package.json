@@ -1,5 +1,5 @@
 {
-  "name": "@mycodexvantaos/mycodexvantaos-resource-model",
+  "name": "@mycodexvantaos/resource-model",
   "version": "0.1.0",
   "description": "Resource model - resource kinds, metadata, spec, status, lifecycle, references",
   "type": "module",

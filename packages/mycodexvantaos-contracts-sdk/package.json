@@ -1,5 +1,5 @@
 {
-  "name": "@mycodexvantaos/mycodexvantaos-contracts-sdk",
+  "name": "@mycodexvantaos/contracts-sdk",
   "version": "0.1.0",
   "description": "Contracts SDK - load, validate, and expose typed contract readers for YAML/JSON contracts",
   "type": "module",

@@ -1,5 +1,5 @@
 {
-  "name": "@mycodexvantaos/mycodexvantaos-runtime-model",
+  "name": "@mycodexvantaos/runtime-model",
   "version": "0.1.0",
   "description": "Runtime model - runtime definition, provider definition, adapter capability, health, portability",
   "type": "module",

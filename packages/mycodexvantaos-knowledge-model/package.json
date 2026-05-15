@@ -1,5 +1,5 @@
 {
-  "name": "@mycodexvantaos/mycodexvantaos-knowledge-model",
+  "name": "@mycodexvantaos/knowledge-model",
   "version": "0.1.0",
   "description": "Knowledge model - document, chunk, collection, retrieval receipt, answer trace, issue, repair",
   "type": "module",

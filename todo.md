@@ -6,8 +6,8 @@
 
 ## Cross-Platform Fixes
 
-- ✅ PR #34: Removed § (section sign) symbol for cross-platform compatibility
-- ✅ PR #35: Added CI check to prevent § symbol reintroduction
+- ✅ PR #34: Removed Sec. (section sign) symbol for cross-platform compatibility
+- ✅ PR #35: Added CI check to prevent Sec. symbol reintroduction
 
 ---
 

@@ -166,6 +166,19 @@ importers:
         specifier: ^4.88.0
         version: 4.88.0
 
+  packages/adapters:
+    dependencies:
+      '@mycodexvantaos/core':
+        specifier: workspace:*
+        version: link:../core
+      '@mycodexvantaos/ports':
+        specifier: workspace:*
+        version: link:../ports
+    devDependencies:
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+
   packages/advanced-monitoring:
     dependencies:
       '@mycodexvantaos/runtime':
@@ -344,6 +357,8 @@ importers:
         specifier: ^5.0.0
         version: 5.9.3
 
+  packages/application: {}
+
   packages/audit-logger:
     dependencies:
       '@mycodexvantaos/runtime':
@@ -467,6 +482,8 @@ importers:
       typescript:
         specifier: ^5.0.0
         version: 5.9.3
+
+  packages/capabilities: {}
 
   packages/compliance-checker:
     dependencies:
@@ -737,6 +754,8 @@ importers:
       typescript:
         specifier: ^5.0.0
         version: 5.9.3
+
+  packages/core: {}
 
   packages/core-auth:
     devDependencies:
@@ -1099,57 +1118,95 @@ importers:
 
   packages/mycodexvantaos-audit-model:
     dependencies:
-      '@mycodexvantaos/core-kernel':
+      '@mycodexvantaos/core':
         specifier: workspace:*
-        version: link:../core-kernel
+        version: link:../core
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.40
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
 
   packages/mycodexvantaos-contracts-sdk:
-    dependencies:
-      '@mycodexvantaos/core-kernel':
-        specifier: workspace:*
-        version: link:../core-kernel
-      ajv:
-        specifier: ^8.12.0
-        version: 8.20.0
-      js-yaml:
-        specifier: ^4.1.0
-        version: 4.1.1
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.40
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
 
   packages/mycodexvantaos-knowledge-model:
     dependencies:
-      '@mycodexvantaos/core-kernel':
+      '@mycodexvantaos/core':
         specifier: workspace:*
-        version: link:../core-kernel
+        version: link:../core
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.40
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
 
   packages/mycodexvantaos-memory-model:
-    dependencies:
-      '@mycodexvantaos/core-kernel':
-        specifier: workspace:*
-        version: link:../core-kernel
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.40
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
 
   packages/mycodexvantaos-policy-model:
     dependencies:
-      '@mycodexvantaos/core-kernel':
+      '@mycodexvantaos/core':
         specifier: workspace:*
-        version: link:../core-kernel
+        version: link:../core
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.40
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
 
   packages/mycodexvantaos-resource-model:
     dependencies:
-      '@mycodexvantaos/core-kernel':
+      '@mycodexvantaos/core':
         specifier: workspace:*
-        version: link:../core-kernel
+        version: link:../core
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.40
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
 
   packages/mycodexvantaos-runtime-model:
-    dependencies:
-      '@mycodexvantaos/core-kernel':
-        specifier: workspace:*
-        version: link:../core-kernel
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.40
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
 
   packages/mycodexvantaos-service-catalog:
     dependencies:
-      '@mycodexvantaos/core-kernel':
+      '@mycodexvantaos/core':
         specifier: workspace:*
-        version: link:../core-kernel
+        version: link:../core
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.40
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
 
   packages/native-logging:
     dependencies:
@@ -1338,6 +1395,8 @@ importers:
       typescript:
         specifier: ^5.0.0
         version: 5.9.3
+
+  packages/ports: {}
 
   packages/providers:
     devDependencies:
@@ -1842,14 +1901,92 @@ importers:
         specifier: ^5.0.0
         version: 5.9.3
 
+  services/mycodexvantaos-service-agent-chat:
+    dependencies:
+      '@mycodexvantaos/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.40
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+
+  services/mycodexvantaos-service-audit-log:
+    dependencies:
+      '@mycodexvantaos/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.40
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+
   services/mycodexvantaos-service-identity:
     dependencies:
       '@mycodexvantaos/core-kernel':
         specifier: workspace:*
         version: link:../../packages/core-kernel
-      '@mycodexvantaos/service-catalog':
+      '@mycodexvantaos/service-service-catalog':
         specifier: workspace:*
-        version: link:../../packages/mycodexvantaos-service-catalog
+        version: link:../mycodexvantaos-service-service-catalog
+
+  services/mycodexvantaos-service-knowledge-search:
+    dependencies:
+      '@mycodexvantaos/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.40
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+
+  services/mycodexvantaos-service-knowledge-store:
+    dependencies:
+      '@mycodexvantaos/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.40
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+
+  services/mycodexvantaos-service-knowledge-trace:
+    dependencies:
+      '@mycodexvantaos/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.40
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+
+  services/mycodexvantaos-service-memory-capture:
+    dependencies:
+      '@mycodexvantaos/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.40
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
 
   services/mycodexvantaos-service-memory-dream:
     dependencies:
@@ -1860,6 +1997,58 @@ importers:
         specifier: workspace:*
         version: link:../../packages/mycodexvantaos-memory-model
 
+  services/mycodexvantaos-service-memory-store:
+    dependencies:
+      '@mycodexvantaos/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.40
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+
+  services/mycodexvantaos-service-model-byok:
+    dependencies:
+      '@mycodexvantaos/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.40
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+
+  services/mycodexvantaos-service-policy-engine:
+    dependencies:
+      '@mycodexvantaos/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.40
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+
+  services/mycodexvantaos-service-resource-registry:
+    dependencies:
+      '@mycodexvantaos/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.40
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+
   services/mycodexvantaos-service-service-catalog:
     dependencies:
       '@mycodexvantaos/core-kernel':
@@ -1868,6 +2057,32 @@ importers:
       '@mycodexvantaos/service-catalog':
         specifier: workspace:*
         version: link:../../packages/mycodexvantaos-service-catalog
+
+  services/mycodexvantaos-service-usage-meter:
+    dependencies:
+      '@mycodexvantaos/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.40
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+
+  services/mycodexvantaos-service-workspace:
+    dependencies:
+      '@mycodexvantaos/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.40
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
 
   services/mycodexvantaos-studio-platform:
     dependencies:
@@ -1962,7 +2177,7 @@ importers:
         specifier: 15.5.18
         version: 15.5.18(@opentelemetry/api@1.9.1)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       patch-package:
-        specifier: ^8.0.0
+        specifier: ^8.0.1
         version: 8.0.1
       react:
         specifier: ^19.2.1
@@ -11638,7 +11853,7 @@ snapshots:
     dependencies:
       '@genkit-ai/core': 1.33.0(@google-cloud/firestore@7.11.6)(firebase-admin@13.8.0)(firebase@11.10.0)(genkit@1.33.0(@google-cloud/firestore@7.11.6)(firebase-admin@13.8.0)(firebase@11.10.0))
       '@opentelemetry/api': 1.9.1
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
       colorette: 2.0.20
       dotprompt: 1.1.2
       handlebars: 4.7.9
@@ -12027,7 +12242,7 @@ snapshots:
   '@grpc/grpc-js@1.9.15':
     dependencies:
       '@grpc/proto-loader': 0.7.15
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
 
   '@grpc/proto-loader@0.7.15':
     dependencies:
@@ -12309,7 +12524,7 @@ snapshots:
   '@jest/console@29.7.0':
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
       chalk: 4.1.2
       jest-message-util: 29.7.0
       jest-util: 29.7.0
@@ -12322,14 +12537,14 @@ snapshots:
       '@jest/test-result': 29.7.0
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       ci-info: 3.9.0
       exit: 0.1.2
       graceful-fs: 4.2.11
       jest-changed-files: 29.7.0
-      jest-config: 29.7.0(@types/node@20.19.39)(ts-node@10.9.2(@types/node@20.19.39)(typescript@5.9.3))
+      jest-config: 29.7.0(@types/node@20.19.40)(ts-node@10.9.2(@types/node@20.19.39)(typescript@5.9.3))
       jest-haste-map: 29.7.0
       jest-message-util: 29.7.0
       jest-regex-util: 29.6.3
@@ -12354,7 +12569,7 @@ snapshots:
     dependencies:
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
       jest-mock: 29.7.0
 
   '@jest/expect-utils@29.7.0':
@@ -12394,7 +12609,7 @@ snapshots:
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
       '@jridgewell/trace-mapping': 0.3.31
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
       chalk: 4.1.2
       collect-v8-coverage: 1.0.3
       exit: 0.1.2
@@ -12464,7 +12679,7 @@ snapshots:
       '@jest/schemas': 29.6.3
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
       '@types/yargs': 17.0.35
       chalk: 4.1.2
 
@@ -14430,7 +14645,7 @@ snapshots:
 
   '@types/accepts@1.3.7':
     dependencies:
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
 
   '@types/aws-lambda@8.10.122':
     optional: true
@@ -14459,12 +14674,12 @@ snapshots:
   '@types/body-parser@1.19.2':
     dependencies:
       '@types/connect': 3.4.38
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
 
   '@types/body-parser@1.19.6':
     dependencies:
       '@types/connect': 3.4.38
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
 
   '@types/bunyan@1.8.9':
     dependencies:
@@ -14480,13 +14695,13 @@ snapshots:
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
 
   '@types/cors@2.8.12': {}
 
   '@types/cors@2.8.19':
     dependencies:
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
 
   '@types/d3-array@3.2.2': {}
 
@@ -14516,13 +14731,13 @@ snapshots:
 
   '@types/express-serve-static-core@4.17.31':
     dependencies:
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
       '@types/qs': 6.15.0
       '@types/range-parser': 1.2.7
 
   '@types/express-serve-static-core@4.19.8':
     dependencies:
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
       '@types/qs': 6.15.0
       '@types/range-parser': 1.2.7
       '@types/send': 1.2.1
@@ -14644,29 +14859,29 @@ snapshots:
   '@types/request@2.48.13':
     dependencies:
       '@types/caseless': 0.12.5
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
       '@types/tough-cookie': 4.0.5
       form-data: 2.5.5
 
   '@types/send@0.17.6':
     dependencies:
       '@types/mime': 1.3.5
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
 
   '@types/send@1.2.1':
     dependencies:
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
 
   '@types/serve-static@1.15.10':
     dependencies:
       '@types/http-errors': 2.0.5
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
       '@types/send': 0.17.6
 
   '@types/serve-static@2.2.0':
     dependencies:
       '@types/http-errors': 2.0.5
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
 
   '@types/shimmer@1.2.0': {}
 
@@ -14685,7 +14900,7 @@ snapshots:
 
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
 
   '@types/yargs-parser@21.0.3': {}
 
@@ -14695,7 +14910,7 @@ snapshots:
 
   '@types/yauzl@2.10.3':
     dependencies:
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
     optional: true
 
   '@ungap/structured-clone@1.3.0': {}
@@ -16837,6 +17052,37 @@ snapshots:
       - babel-plugin-macros
       - supports-color
 
+  jest-config@29.7.0(@types/node@20.19.40)(ts-node@10.9.2(@types/node@20.19.39)(typescript@5.9.3)):
+    dependencies:
+      '@babel/core': 7.29.0
+      '@jest/test-sequencer': 29.7.0
+      '@jest/types': 29.6.3
+      babel-jest: 29.7.0(@babel/core@7.29.0)
+      chalk: 4.1.2
+      ci-info: 3.9.0
+      deepmerge: 4.3.1
+      glob: 7.2.3
+      graceful-fs: 4.2.11
+      jest-circus: 29.7.0
+      jest-environment-node: 29.7.0
+      jest-get-type: 29.6.3
+      jest-regex-util: 29.6.3
+      jest-resolve: 29.7.0
+      jest-runner: 29.7.0
+      jest-util: 29.7.0
+      jest-validate: 29.7.0
+      micromatch: 4.0.8
+      parse-json: 5.2.0
+      pretty-format: 29.7.0
+      slash: 3.0.0
+      strip-json-comments: 3.1.1
+    optionalDependencies:
+      '@types/node': 20.19.40
+      ts-node: 10.9.2(@types/node@20.19.39)(typescript@5.9.3)
+    transitivePeerDependencies:
+      - babel-plugin-macros
+      - supports-color
+
   jest-diff@29.7.0:
     dependencies:
       chalk: 4.1.2
@@ -16871,7 +17117,7 @@ snapshots:
     dependencies:
       '@jest/types': 29.6.3
       '@types/graceful-fs': 4.1.9
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
       anymatch: 3.1.3
       fb-watchman: 2.0.2
       graceful-fs: 4.2.11
@@ -16945,7 +17191,7 @@ snapshots:
       '@jest/test-result': 29.7.0
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
       chalk: 4.1.2
       emittery: 0.13.1
       graceful-fs: 4.2.11
@@ -16973,7 +17219,7 @@ snapshots:
       '@jest/test-result': 29.7.0
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
       chalk: 4.1.2
       cjs-module-lexer: 1.4.3
       collect-v8-coverage: 1.0.3
@@ -17019,7 +17265,7 @@ snapshots:
   jest-util@29.7.0:
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
       chalk: 4.1.2
       ci-info: 3.9.0
       graceful-fs: 4.2.11
@@ -17038,7 +17284,7 @@ snapshots:
     dependencies:
       '@jest/test-result': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       emittery: 0.13.1
@@ -17713,7 +17959,7 @@ snapshots:
       klaw-sync: 6.0.0
       minimist: 1.2.8
       open: 7.4.2
-      semver: 7.7.4
+      semver: 7.8.0
       slash: 2.0.0
       tmp: 0.2.5
       yaml: 2.8.4
@@ -17904,7 +18150,7 @@ snapshots:
       '@protobufjs/path': 1.1.2
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.1
-      '@types/node': 20.19.39
+      '@types/node': 20.19.40
       long: 5.3.2
 
   proxy-addr@2.0.7:

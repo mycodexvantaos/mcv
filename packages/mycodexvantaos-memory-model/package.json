@@ -1,5 +1,5 @@
 {
-  "name": "@mycodexvantaos/mycodexvantaos-memory-model",
+  "name": "@mycodexvantaos/memory-model",
   "version": "0.1.0",
   "description": "Memory model - memory item, candidate, relation, conflict, dream run, dream action, dream report",
   "type": "module",

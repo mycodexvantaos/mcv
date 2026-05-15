@@ -22,7 +22,8 @@ jobs:
               *node_modules*) continue ;;
               *.venv*) continue ;;
               *.git*) continue ;;
-              */remediate_section_sign.py) continue ;;
+                */remediate_section_sign.py) continue ;;
+              .github/workflows/no-section-sign.yml) continue ;;
             esac
             if grep -qP '\xA7' "$file" 2>/dev/null; then
               echo "ERROR: Found § (U+00A7) in $file"

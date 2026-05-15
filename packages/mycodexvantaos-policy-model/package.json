@@ -1,5 +1,5 @@
 {
-  "name": "@mycodexvantaos/mycodexvantaos-policy-model",
+  "name": "@mycodexvantaos/policy-model",
   "version": "0.1.0",
   "description": "Policy model - subject, action, resource, condition, effect, evaluation result",
   "type": "module",
