@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mycodexvantaos.com/schemas/memory-item.schema.json",
+  "title": "Memory Item",
+  "description": "Single memory item in the memory system",
+  "type": "object",
+  "properties": {
+    "memory_id": {
+      "type": "string",
+      "description": "Unique memory identifier (e.g., mem_001 or URN format)",
+      "pattern": "^(mem_|urn:mycodexvantaos:memory:)"
+    },
+    "content": {
+      "type": "string",
+      "description": "Memory content text"
+    },
+    "tags": {
+      "type": "array",
+      "description": "Associated tags",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "related_entities": {
+      "type": "array",
+      "description": "Referenced entity IDs",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "temporal_expressions": {
+      "type": "array",
+      "description": "Temporal references extracted from content",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "memory_type": {
+      "type": "string",
+      "enum": ["observation", "reflection", "decision", "event", "fact", "opinion", "plan", "system"],
+      "default": "observation",
+      "description": "Type of memory"
+    },
+    "conflicts_with": {
+      "type": "array",
+      "description": "IDs of memories this explicitly conflicts with",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Creation timestamp (ISO 8601)"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional metadata",
+      "additionalProperties": true
+    }
+  },
+  "required": ["memory_id", "content"]
+}

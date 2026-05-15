@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mycodexvantaos.com/schemas/dream-run.schema.json",
+  "title": "Dream Run",
+  "description": "Dream run configuration and execution",
+  "type": "object",
+  "properties": {
+    "dream_run_id": {
+      "type": "string",
+      "description": "Unique dream run identifier"
+    },
+    "memory_items": {
+      "type": "array",
+      "description": "Memory items to process",
+      "items": { "$ref": "memory-item.schema.json" }
+    },
+    "dry_run": {
+      "type": "boolean",
+      "default": true,
+      "description": "If True, only report actions without executing"
+    },
+    "proposal_mode": {
+      "type": "boolean",
+      "default": true,
+      "description": "If True, suggest actions but don't auto-apply"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Creation timestamp (ISO 8601)"
+    }
+  },
+  "required": ["dream_run_id", "memory_items"]
+}

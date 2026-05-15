@@ -1,0 +1,52 @@
+[
+  {
+    "memory_id": "mem_001",
+    "content": "System updated at 2024-01-15",
+    "tags": ["system", "update"],
+    "related_entities": ["system-001"],
+    "temporal_expressions": ["2024-01-15"],
+    "memory_type": "observation"
+  },
+  {
+    "memory_id": "mem_002",
+    "content": "System updated at 2024-01-15",
+    "tags": ["system", "update"],
+    "related_entities": ["system-001"],
+    "temporal_expressions": ["2024-01-15"],
+    "memory_type": "observation"
+  },
+  {
+    "memory_id": "mem_003",
+    "content": "User john.doe logged in at 2024-01-16",
+    "tags": ["user", "login"],
+    "related_entities": ["user_john_doe"],
+    "temporal_expressions": ["2024-01-16"],
+    "memory_type": "event"
+  },
+  {
+    "memory_id": "mem_004",
+    "content": "User john.doe logged in at 2024-01-16 with IP 192.168.1.1",
+    "tags": ["user", "login"],
+    "related_entities": ["user_john_doe"],
+    "temporal_expressions": ["2024-01-16"],
+    "memory_type": "event"
+  },
+  {
+    "memory_id": "urn:mycodexvantaos:memory:mem_005",
+    "content": "System is healthy and operational",
+    "tags": ["system", "health"],
+    "conflicts_with": ["mem_006"]
+  },
+  {
+    "memory_id": "urn:mycodexvantaos:memory:mem_006",
+    "content": "System is down and experiencing issues",
+    "tags": ["system", "health"],
+    "memory_type": "system"
+  },
+  {
+    "memory_id": "mem_007",
+    "content": "Deployment failed for service api-gateway",
+    "tags": ["deployment", "error"],
+    "related_entities": ["urn:mycodexvantaos:entity:missing_service"]
+  }
+]

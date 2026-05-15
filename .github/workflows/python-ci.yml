@@ -1,0 +1,99 @@
+name: Python CI
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - "python/**"
+      - "contracts/schemas/memory-*.json"
+      - "contracts/schemas/dream-*.json"
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - "python/**"
+      - "contracts/schemas/memory-*.json"
+      - "contracts/schemas/dream-*.json"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Install dependencies
+        working-directory: ./python
+        run: uv sync --extra dev
+
+      - name: Run linter
+        working-directory: ./python
+        run: |
+          uv run ruff check .
+          uv run ruff format --check .
+
+      - name: Run type checker
+        working-directory: ./python
+        run: uv run mypy python/packages/
+
+      - name: Run tests
+        working-directory: ./python
+        run: uv run pytest -v --cov=python/packages --cov-report=xml
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./python/coverage.xml
+          flags: python
+          name: python-coverage
+
+  contract-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate JSON schemas
+        run: |
+          npx -p ajv-cli ajv validate -s contracts/schemas/memory-item.schema.json -d python/tests/fixtures/sample-memories.json
+          npx -p ajv-cli ajv validate -s contracts/schemas/memory-item.schema.json --valid-memory-items
+
+  dream-worker-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Install dependencies
+        working-directory: ./python
+        run: uv sync --extra dev
+
+      - name: Test dream worker CLI
+        working-directory: ./python
+        run: |
+          uv run python -m apps.dream_worker.main tests/fixtures/sample-memories.json -o test-report.json
+
+      - name: Validate output against schema
+        run: |
+          npx -p ajv-cli ajv validate -s contracts/schemas/dream-report.schema.json -d python/test-report.json
+
+      - name: Upload test report
+        uses: actions/upload-artifact@v4
+        with:
+          name: dream-report
+          path: python/test-report.json
