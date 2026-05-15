@@ -137,3 +137,4 @@
 - [x] TypeScript 編譯通過 (377 tests still pass)
 - [x] Python CI 通過 (6/6 tests)
 - [x] 建立 feature branch + PR + 合併至 main
+- [x] Ruff lint 修復 (3 errors: unused imports + f-string) — commit be3b307
