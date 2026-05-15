@@ -13,7 +13,9 @@ export type { R2StorageConfig } from './r2-storage-provider-cb';
 /**
  * Create a R2StorageProvider instance with the given configuration.
  */
-export function createR2StorageProvider(config: Partial<ProviderConfig<R2StorageConfig>> = {}): R2StorageProvider {
+export function createR2StorageProvider(
+  config: Partial<ProviderConfig<R2StorageConfig>> = {}
+): R2StorageProvider {
   const providerConfig: ProviderConfig<R2StorageConfig> = {
     id: config.id || 'r2-storage-provider-cb',
     name: config.name || 'R2StorageProvider',

@@ -10,7 +10,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 /**
  * Configuration for Ollama LLM Provider
@@ -18,22 +21,22 @@ import type { ProviderConfig, ProviderHealthCheckResult } from '../../../package
 export interface OllamaConfig {
   /** Ollama server URL (default: localhost:11434) */
   baseURL?: string;
-  
+
   /** Model to use (default: llama2) */
   model?: string;
-  
+
   /** Request timeout in milliseconds */
   timeout?: number;
-  
+
   /** Maximum tokens for response */
   maxTokens?: number;
-  
+
   /** Temperature for randomness (0-1) */
   temperature?: number;
-  
+
   /** Whether to use streaming */
   stream?: boolean;
-  
+
   /** Number of retries on failure */
   retries?: number;
 }
@@ -44,19 +47,19 @@ export interface OllamaConfig {
 export interface LLMRequest {
   /** The prompt to generate response for */
   prompt?: string;
-  
+
   /** Chat messages for chat completion */
   messages?: Array<{
     role: 'system' | 'user' | 'assistant';
     content: string;
   }>;
-  
+
   /** Maximum tokens to generate */
   maxTokens?: number;
-  
+
   /** Temperature for randomness (0-1) */
   temperature?: number;
-  
+
   /** Whether to stream response */
   stream?: boolean;
 }
@@ -67,19 +70,19 @@ export interface LLMRequest {
 export interface LLMResponse {
   /** Generated response text */
   text: string;
-  
+
   /** Number of tokens generated */
   tokens: number;
-  
+
   /** Model identifier */
   model: string;
-  
+
   /** Provider name */
   provider: string;
-  
+
   /** Generation time in milliseconds */
   generationTime: number;
-  
+
   /** Whether response was streamed */
   streamed: boolean;
 }
@@ -98,7 +101,7 @@ export class OllamaLLMProvider extends CapabilityBase<OllamaConfig> {
   private temperature: number;
   private enableStreaming: boolean;
   private retries: number;
-  
+
   private isOllamaAvailable: boolean = false;
 
   constructor(
@@ -108,7 +111,7 @@ export class OllamaLLMProvider extends CapabilityBase<OllamaConfig> {
     fallbackConfig?: any
   ) {
     super(id, name, config, fallbackConfig);
-    
+
     const cfg = config.config;
     this.baseURL = cfg.baseURL || 'http://localhost:11434';
     this.model = cfg.model || 'llama2';
@@ -126,12 +129,18 @@ export class OllamaLLMProvider extends CapabilityBase<OllamaConfig> {
     try {
       // Check if Ollama is available
       await this.checkOllamaAvailability();
-      
+
       if (this.isOllamaAvailable) {
         this.log('info', `Ollama provider initialized at ${this.baseURL} with model ${this.model}`);
-        this.log('info', `Configuration - timeout: ${this.timeout}s, maxTokens: ${this.maxTokens}, temperature: ${this.temperature}`);
+        this.log(
+          'info',
+          `Configuration - timeout: ${this.timeout}s, maxTokens: ${this.maxTokens}, temperature: ${this.temperature}`
+        );
       } else {
-        this.log('warn', `Ollama not available at ${this.baseURL}, will operate in degraded mode with fallback`);
+        this.log(
+          'warn',
+          `Ollama not available at ${this.baseURL}, will operate in degraded mode with fallback`
+        );
       }
     } catch (error) {
       this.log('warn', 'Ollama initialization failed, will operate with fallback:', error);
@@ -153,7 +162,7 @@ export class OllamaLLMProvider extends CapabilityBase<OllamaConfig> {
         this.isOllamaAvailable = true;
         return true;
       }
-      
+
       this.isOllamaAvailable = false;
       return false;
     } catch (error) {
@@ -200,7 +209,7 @@ export class OllamaLLMProvider extends CapabilityBase<OllamaConfig> {
    */
   async generate(request: LLMRequest): Promise<LLMResponse> {
     const startTime = Date.now();
-    
+
     if (!this.isOllamaAvailable) {
       this.recordFailure(new Error('Ollama not available'));
       throw new Error('Ollama service not available. Use fallback provider.');
@@ -209,7 +218,7 @@ export class OllamaLLMProvider extends CapabilityBase<OllamaConfig> {
     try {
       const responseText = await this.generateWithRetry(request);
       const generationTime = Date.now() - startTime;
-      
+
       this.recordSuccess(generationTime);
 
       return {
@@ -243,7 +252,7 @@ export class OllamaLLMProvider extends CapabilityBase<OllamaConfig> {
         if (attempt < this.retries) {
           // Exponential backoff
           const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
-          await new Promise(resolve => setTimeout(resolve, delay));
+          await new Promise((resolve) => setTimeout(resolve, delay));
         }
       }
     }
@@ -353,16 +362,16 @@ export class OllamaLLMProvider extends CapabilityBase<OllamaConfig> {
       if (done) break;
 
       const chunk = decoder.decode(value);
-      const lines = chunk.split('\n').filter(line => line.trim());
+      const lines = chunk.split('\n').filter((line) => line.trim());
 
       for (const line of lines) {
         try {
           const data = JSON.parse(line);
-          
+
           if (data.response) {
             fullResponse += data.response;
           }
-          
+
           if (data.done) {
             return fullResponse;
           }
@@ -383,8 +392,9 @@ export class OllamaLLMProvider extends CapabilityBase<OllamaConfig> {
       throw new Error('Ollama service not available');
     }
 
-    const messages = request.messages || (request.prompt ? [{ role: 'user', content: request.prompt }] : []);
-    
+    const messages =
+      request.messages || (request.prompt ? [{ role: 'user', content: request.prompt }] : []);
+
     const response = await fetch(`${this.baseURL}/api/chat`, {
       method: 'POST',
       headers: {
@@ -418,12 +428,12 @@ export class OllamaLLMProvider extends CapabilityBase<OllamaConfig> {
       if (done) break;
 
       const chunk = decoder.decode(value);
-      const lines = chunk.split('\n').filter(line => line.trim());
+      const lines = chunk.split('\n').filter((line) => line.trim());
 
       for (const line of lines) {
         try {
           const data = JSON.parse(line);
-          
+
           if (data.response) {
             yield data.response;
           }

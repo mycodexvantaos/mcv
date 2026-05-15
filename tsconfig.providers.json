@@ -17,9 +17,6 @@
       "@capabilities/*": ["packages/capabilities/*"]
     }
   },
-  "include": [
-    "packages/capabilities/**/*.ts",
-    "providers/**/*.ts"
-  ],
+  "include": ["packages/capabilities/**/*.ts", "providers/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }

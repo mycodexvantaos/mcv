@@ -13,7 +13,9 @@ export type { FairlearnConfig } from './fairlearn-provider-cb';
 /**
  * Create a FairlearnProvider instance with the given configuration.
  */
-export function createFairlearnProvider(config: Partial<ProviderConfig<FairlearnConfig>> = {}): FairlearnProvider {
+export function createFairlearnProvider(
+  config: Partial<ProviderConfig<FairlearnConfig>> = {}
+): FairlearnProvider {
   const providerConfig: ProviderConfig<FairlearnConfig> = {
     id: config.id || 'fairlearn-provider-cb',
     name: config.name || 'FairlearnProvider',

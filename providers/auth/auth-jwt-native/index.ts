@@ -13,7 +13,9 @@ export type { JWTNativeAuthConfig } from './jwt-native-auth-provider-cb';
 /**
  * Create a JWTNativeAuthProvider instance with the given configuration.
  */
-export function createJWTNativeAuthProvider(config: Partial<ProviderConfig<JWTNativeAuthConfig>> = {}): JWTNativeAuthProvider {
+export function createJWTNativeAuthProvider(
+  config: Partial<ProviderConfig<JWTNativeAuthConfig>> = {}
+): JWTNativeAuthProvider {
   const providerConfig: ProviderConfig<JWTNativeAuthConfig> = {
     id: config.id || 'jwt-native-auth-provider-cb',
     name: config.name || 'JWTNativeAuthProvider',

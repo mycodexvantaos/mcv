@@ -23,7 +23,15 @@ export {
 
 export type { ResourceMetadata, ResourceCondition, OwnerReference } from './shared';
 export type { PaginationRequest, PaginationResponse } from './shared';
-export type { PlatformError, NotFoundError, UnauthorizedError, ForbiddenError, ValidationError, QuotaExceededError, ConflictError } from './shared';
+export type {
+  PlatformError,
+  NotFoundError,
+  UnauthorizedError,
+  ForbiddenError,
+  ValidationError,
+  QuotaExceededError,
+  ConflictError,
+} from './shared';
 export { ok, err, isOk, isErr } from './shared';
 export type { Result } from './shared';
 export { nowISO, parseISO, isExpired, addDays, daysBetween } from './shared';
@@ -42,10 +50,7 @@ export type {
   GovernanceOverlay,
 } from './service-catalog';
 
-export type {
-  ServiceCategoryDefinition,
-  CategoryServiceRef,
-} from './service-catalog';
+export type { ServiceCategoryDefinition, CategoryServiceRef } from './service-catalog';
 
 export { MVP_SERVICE_CATEGORIES } from './service-catalog';
 

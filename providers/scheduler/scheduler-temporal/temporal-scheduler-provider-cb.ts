@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface TemporalSchedulerConfig {
   hostPort: string;
@@ -15,7 +18,13 @@ export interface TemporalSchedulerConfig {
   taskQueue?: string;
 }
 
-export interface ScheduleResult { success: boolean; workflowId?: string; status?: string; error?: string; operationTime: number; }
+export interface ScheduleResult {
+  success: boolean;
+  workflowId?: string;
+  status?: string;
+  error?: string;
+  operationTime: number;
+}
 
 export class TemporalSchedulerProvider extends CapabilityBase<TemporalSchedulerConfig> {
   private hostPort: string;
@@ -27,7 +36,7 @@ export class TemporalSchedulerProvider extends CapabilityBase<TemporalSchedulerC
   constructor(config: ProviderConfig<TemporalSchedulerConfig>) {
     super(config);
     const cfg = config.config;
-this.hostPort = cfg.hostPort || 'localhost:7233';
+    this.hostPort = cfg.hostPort || 'localhost:7233';
     this.namespace = cfg.namespace || 'mycodexvantaos';
     this.taskQueue = cfg.taskQueue;
   }
@@ -58,7 +67,11 @@ this.hostPort = cfg.hostPort || 'localhost:7233';
   async scheduleWorkflow(workflowId: string, cron: string): Promise<ScheduleResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `TemporalSchedulerProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `TemporalSchedulerProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -66,13 +79,21 @@ this.hostPort = cfg.hostPort || 'localhost:7233';
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async cancelSchedule(workflowId: string): Promise<ScheduleResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `TemporalSchedulerProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `TemporalSchedulerProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -80,13 +101,21 @@ this.hostPort = cfg.hostPort || 'localhost:7233';
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async describeSchedule(workflowId: string): Promise<ScheduleResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `TemporalSchedulerProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `TemporalSchedulerProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -94,7 +123,11 @@ this.hostPort = cfg.hostPort || 'localhost:7233';
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

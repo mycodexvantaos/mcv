@@ -47,15 +47,16 @@ export class D1FullTextSearchAdapter implements ISearchPort {
   async deleteByIds(ids: string[]): Promise<void> {
     // Delete from FTS5 virtual table
     const placeholders = ids.map(() => '?').join(', ');
-    await this.db.prepare(
-      `DELETE FROM document_chunks_fts WHERE chunk_id IN (${placeholders})`
-    ).bind(...ids).run();
+    await this.db
+      .prepare(`DELETE FROM document_chunks_fts WHERE chunk_id IN (${placeholders})`)
+      .bind(...ids)
+      .run();
   }
 
   async getIndexMetadata(): Promise<SearchIndexMetadata> {
-    const result = await this.db.prepare(
-      "SELECT count(*) as count FROM document_chunks_fts_content"
-    ).first<{ count: number }>();
+    const result = await this.db
+      .prepare('SELECT count(*) as count FROM document_chunks_fts_content')
+      .first<{ count: number }>();
     return {
       dimension: 0, // FTS5 doesn't have vector dimension
       vectorCount: result?.count ?? 0,
@@ -68,8 +69,9 @@ export class D1FullTextSearchAdapter implements ISearchPort {
     const limit = options?.limit ?? 10;
     const offset = options?.offset ?? 0;
 
-    const results = await this.db.prepare(
-      `SELECT
+    const results = await this.db
+      .prepare(
+        `SELECT
         chunk_id as id,
         bm25(document_chunks_fts) as score,
         document_id,
@@ -79,7 +81,9 @@ export class D1FullTextSearchAdapter implements ISearchPort {
        WHERE document_chunks_fts MATCH ?
        ORDER BY score DESC
        LIMIT ? OFFSET ?`
-    ).bind(query, limit, offset).all();
+      )
+      .bind(query, limit, offset)
+      .all();
 
     return (results.results as SearchResult[]) ?? [];
   }

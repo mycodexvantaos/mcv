@@ -13,7 +13,9 @@ export type { MemgraphConfig } from './memgraph-provider-cb';
 /**
  * Create a MemgraphProvider instance with the given configuration.
  */
-export function createMemgraphProvider(config: Partial<ProviderConfig<MemgraphConfig>> = {}): MemgraphProvider {
+export function createMemgraphProvider(
+  config: Partial<ProviderConfig<MemgraphConfig>> = {}
+): MemgraphProvider {
   const providerConfig: ProviderConfig<MemgraphConfig> = {
     id: config.id || 'memgraph-provider-cb',
     name: config.name || 'MemgraphProvider',

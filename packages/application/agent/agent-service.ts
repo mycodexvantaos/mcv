@@ -27,7 +27,13 @@ export interface AgentServiceDeps {
   queue: IJobQueuePort;
   auth: IAuthPort;
   search: {
-    searchKnowledge(request: { query: string; collectionIds: string[]; topK: number; minScore: number; searchType: string }): Promise<{ results: AgentSearchResult[] }>;
+    searchKnowledge(request: {
+      query: string;
+      collectionIds: string[];
+      topK: number;
+      minScore: number;
+      searchType: string;
+    }): Promise<{ results: AgentSearchResult[] }>;
   };
   audit: {
     emitEvent(event: AgentAuditEvent): Promise<void>;
@@ -111,7 +117,10 @@ export class AgentService {
     this.deps = deps;
   }
 
-  async createSession(workspaceId: string, input: CreateSessionInput): Promise<ChatSessionResource> {
+  async createSession(
+    workspaceId: string,
+    input: CreateSessionInput
+  ): Promise<ChatSessionResource> {
     const sessionId = crypto.randomUUID();
     const urn = `urn:mycodexvantaos:agent:chat-session:${sessionId}`;
     const now = new Date().toISOString();
@@ -119,7 +128,18 @@ export class AgentService {
     await this.deps.database.execute(
       `INSERT INTO chat_sessions (id, urn, workspace_id, subject_id, model_endpoint_id, system_prompt, knowledge_collection_ids, temperature, phase, created_at, updated_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'created', ?, ?)`,
-      [sessionId, urn, workspaceId, input.subjectId, input.modelEndpointId, input.systemPrompt ?? null, JSON.stringify(input.knowledgeCollectionIds ?? []), input.temperature ?? 0.7, now, now]
+      [
+        sessionId,
+        urn,
+        workspaceId,
+        input.subjectId,
+        input.modelEndpointId,
+        input.systemPrompt ?? null,
+        JSON.stringify(input.knowledgeCollectionIds ?? []),
+        input.temperature ?? 0.7,
+        now,
+        now,
+      ]
     );
 
     await this.deps.audit.emitEvent({
@@ -146,7 +166,11 @@ export class AgentService {
     };
   }
 
-  async sendMessage(workspaceId: string, subjectId: string, input: SendMessageInput): Promise<ChatMessage> {
+  async sendMessage(
+    workspaceId: string,
+    subjectId: string,
+    input: SendMessageInput
+  ): Promise<ChatMessage> {
     // 1. Retrieve session
     const session = await this.getSession(input.sessionId);
     if (!session) throw new Error(`Session not found: ${input.sessionId}`);
@@ -165,14 +189,19 @@ export class AgentService {
         searchType: 'hybrid',
       });
       sourceCount = searchResult.results.length;
-      knowledgeContext = searchResult.results.map(r => r.content).join('\n---\n');
+      knowledgeContext = searchResult.results.map((r) => r.content).join('\n---\n');
       evidenceLevel = sourceCount > 0 ? 'knowledge-assisted' : null;
     }
 
     // 3. Build messages
     const messages = [
-      { role: 'system' as const, content: session.spec.systemPrompt ?? 'You are a helpful assistant.' },
-      ...(knowledgeContext ? [{ role: 'system' as const, content: `Knowledge context:\n${knowledgeContext}` }] : []),
+      {
+        role: 'system' as const,
+        content: session.spec.systemPrompt ?? 'You are a helpful assistant.',
+      },
+      ...(knowledgeContext
+        ? [{ role: 'system' as const, content: `Knowledge context:\n${knowledgeContext}` }]
+        : []),
       { role: 'user' as const, content: input.content },
     ];
 
@@ -193,7 +222,15 @@ export class AgentService {
     await this.deps.database.execute(
       `INSERT INTO chat_messages (id, session_id, role, content, evidence_level, source_count, tokens_used, created_at)
        VALUES (?, ?, 'assistant', ?, ?, ?, ?, ?)`,
-      [messageId, input.sessionId, response.content, evidenceLevel, sourceCount, response.usage.totalTokens, now]
+      [
+        messageId,
+        input.sessionId,
+        response.content,
+        evidenceLevel,
+        sourceCount,
+        response.usage.totalTokens,
+        now,
+      ]
     );
 
     await this.deps.audit.emitEvent({
@@ -204,7 +241,12 @@ export class AgentService {
       workspaceId,
       action: 'answer-with-knowledge',
       correlationId: crypto.randomUUID(),
-      data: { sessionId: input.sessionId, messageId, tokensUsed: response.usage.totalTokens, evidenceLevel },
+      data: {
+        sessionId: input.sessionId,
+        messageId,
+        tokensUsed: response.usage.totalTokens,
+        evidenceLevel,
+      },
     });
 
     return {
@@ -232,7 +274,7 @@ export class AgentService {
         subjectId: row.subject_id as string,
         modelEndpointId: row.model_endpoint_id as string,
         systemPrompt: row.system_prompt as string | null,
-        knowledgeCollectionIds: JSON.parse(row.knowledge_collection_ids as string || '[]'),
+        knowledgeCollectionIds: JSON.parse((row.knowledge_collection_ids as string) || '[]'),
         temperature: row.temperature as number,
       },
       status: {

@@ -28,10 +28,10 @@ export interface RuntimeEnvironment {
  * 📡 網絡檢測策略
  */
 export type NetworkProbeStrategy =
-  | 'google'          // 檢測 www.google.com
-  | 'custom'          // 自定義端點 URL
-  | 'dns'             // DNS 查詢檢測
-  | 'system'          // 系統網絡狀態 API（瀏覽器/Workers）
+  | 'google' // 檢測 www.google.com
+  | 'custom' // 自定義端點 URL
+  | 'dns' // DNS 查詢檢測
+  | 'system'; // 系統網絡狀態 API（瀏覽器/Workers）
 
 export interface NetworkProbeConfig {
   /** 策略 */

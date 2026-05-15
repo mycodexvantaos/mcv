@@ -33,14 +33,8 @@
  */
 
 // 🔧 Runtime Mode Management（新增）
-export {
-  RuntimeManager,
-  getRuntimeManager,
-  loadRuntimeConfig,
-} from './manager';
-export {
-  detectMode,
-} from './detector';
+export { RuntimeManager, getRuntimeManager, loadRuntimeConfig } from './manager';
+export { detectMode } from './detector';
 export type {
   RuntimeConfiguration,
   RuntimeEnvironment,
@@ -126,6 +120,6 @@ export async function createRuntimeAdapter(env: Record<string, unknown>) {
 
   throw new Error(
     'Unable to detect runtime environment. ' +
-    'Ensure either Cloudflare bindings (DB, KV, R2) or Docker URLs (DATABASE_URL, REDIS_URL) are present.'
+      'Ensure either Cloudflare bindings (DB, KV, R2) or Docker URLs (DATABASE_URL, REDIS_URL) are present.'
   );
 }

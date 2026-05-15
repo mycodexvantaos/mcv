@@ -13,7 +13,9 @@ export type { OpenTelemetryConfig } from './opentelemetry-provider-cb';
 /**
  * Create a OpenTelemetryProvider instance with the given configuration.
  */
-export function createOpenTelemetryProvider(config: Partial<ProviderConfig<OpenTelemetryConfig>> = {}): OpenTelemetryProvider {
+export function createOpenTelemetryProvider(
+  config: Partial<ProviderConfig<OpenTelemetryConfig>> = {}
+): OpenTelemetryProvider {
   const providerConfig: ProviderConfig<OpenTelemetryConfig> = {
     id: config.id || 'opentelemetry-provider-cb',
     name: config.name || 'OpenTelemetryProvider',

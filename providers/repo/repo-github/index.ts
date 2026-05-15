@@ -13,7 +13,9 @@ export type { GitHubRepoConfig } from './github-repo-provider-cb';
 /**
  * Create a GitHubRepoProvider instance with the given configuration.
  */
-export function createGitHubRepoProvider(config: Partial<ProviderConfig<GitHubRepoConfig>> = {}): GitHubRepoProvider {
+export function createGitHubRepoProvider(
+  config: Partial<ProviderConfig<GitHubRepoConfig>> = {}
+): GitHubRepoProvider {
   const providerConfig: ProviderConfig<GitHubRepoConfig> = {
     id: config.id || 'github-repo-provider-cb',
     name: config.name || 'GitHubRepoProvider',

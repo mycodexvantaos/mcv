@@ -9,7 +9,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 /**
  * Configuration for LevelDB Cache Provider
@@ -17,25 +20,25 @@ import type { ProviderConfig, ProviderHealthCheckResult } from '../../../package
 export interface LevelDBCacheConfig {
   /** Database path */
   dbPath?: string;
-  
+
   /** Key prefix */
   keyPrefix?: string;
-  
+
   /** Default TTL in seconds */
   defaultTTL?: number;
-  
+
   /** Compression enabled */
   compression?: boolean;
-  
+
   /** Cache size in bytes */
   cacheSize?: number;
-  
+
   /** Write buffer size */
   writeBufferSize?: number;
-  
+
   /** Number of retries on failure */
   retries?: number;
-  
+
   /** Native fallback provider ID */
   fallbackProviderId?: string;
 }
@@ -46,13 +49,13 @@ export interface LevelDBCacheConfig {
 export interface CacheValue<T = any> {
   /** Stored value */
   value: T;
-  
+
   /** Expiration timestamp */
   expiresAt?: number;
-  
+
   /** Creation timestamp */
   createdAt: number;
-  
+
   /** Last access timestamp */
   lastAccessedAt: number;
 }
@@ -63,7 +66,7 @@ export interface CacheValue<T = any> {
 export interface CacheOptions {
   /** Time to live in seconds */
   ttl?: number;
-  
+
   /** Key prefix */
   prefix?: string;
 }
@@ -74,16 +77,16 @@ export interface CacheOptions {
 export interface CacheResult<T = any> {
   /** Success status */
   success: boolean;
-  
+
   /** Cached value */
   value?: T;
-  
+
   /** Cache hit/miss status */
   hit?: boolean;
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -103,7 +106,7 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
   private writeBufferSize: number;
   private retries: number;
   private fallbackProviderId: string = 'native';
-  
+
   private isLevelDBAvailable: boolean = false;
 
   constructor(
@@ -113,7 +116,7 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
     fallbackConfig?: any
   ) {
     super(id, name, config, fallbackConfig);
-    
+
     const cfg = config.config;
     this.dbPath = cfg.dbPath || './cache/db';
     this.keyPrefix = cfg.keyPrefix || 'cache:';
@@ -130,7 +133,7 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
   protected async doInitialize(): Promise<void> {
     try {
       await this.checkLevelDBAvailability();
-      
+
       if (this.isLevelDBAvailable) {
         this.log('info', `LevelDB cache provider initialized at ${this.dbPath}`);
       } else {
@@ -201,7 +204,7 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
    */
   async get<T = any>(key: string, options?: CacheOptions): Promise<CacheResult<T>> {
     const startTime = Date.now();
-    
+
     if (!this.isLevelDBAvailable) {
       const operationTime = Date.now() - startTime;
       return {
@@ -216,7 +219,7 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
       const result = await this.getWithRetry<T>(key, options);
       const operationTime = Date.now() - startTime;
       result.operationTime = operationTime;
-      
+
       this.recordSuccess(operationTime);
       return result;
     } catch (error) {
@@ -234,7 +237,10 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
   /**
    * Get with retry logic
    */
-  private async getWithRetry<T = any>(key: string, options?: CacheOptions): Promise<CacheResult<T>> {
+  private async getWithRetry<T = any>(
+    key: string,
+    options?: CacheOptions
+  ): Promise<CacheResult<T>> {
     let lastError: Error | null = null;
 
     for (let attempt = 1; attempt <= this.retries; attempt++) {
@@ -246,7 +252,7 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
 
         if (attempt < this.retries) {
           const delay = Math.min(100 * Math.pow(2, attempt - 1), 1000);
-          await new Promise(resolve => setTimeout(resolve, delay));
+          await new Promise((resolve) => setTimeout(resolve, delay));
         }
       }
     }
@@ -259,10 +265,10 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
    */
   private async doGet<T = any>(key: string, options?: CacheOptions): Promise<CacheResult<T>> {
     const fullKey = `${options?.prefix || this.keyPrefix}${key}`;
-    
+
     // In production, this would call LevelDB GET
     const value = await this.levelDBGet(fullKey);
-    
+
     if (!value) {
       return {
         success: true,
@@ -270,9 +276,9 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
         operationTime: 0,
       };
     }
-    
+
     const cacheValue: CacheValue<T> = JSON.parse(value);
-    
+
     // Check expiration
     if (cacheValue.expiresAt && cacheValue.expiresAt < Date.now()) {
       await this.levelDBDel(fullKey);
@@ -282,7 +288,7 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
         operationTime: 0,
       };
     }
-    
+
     return {
       success: true,
       value: cacheValue.value,
@@ -296,7 +302,7 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
    */
   async set<T = any>(key: string, value: T, options?: CacheOptions): Promise<CacheResult<void>> {
     const startTime = Date.now();
-    
+
     if (!this.isLevelDBAvailable) {
       const operationTime = Date.now() - startTime;
       return {
@@ -310,7 +316,7 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
       const result = await this.setWithRetry(key, value, options);
       const operationTime = Date.now() - startTime;
       result.operationTime = operationTime;
-      
+
       this.recordSuccess(operationTime);
       return result;
     } catch (error) {
@@ -327,7 +333,11 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
   /**
    * Set with retry logic
    */
-  private async setWithRetry<T = any>(key: string, value: T, options?: CacheOptions): Promise<CacheResult<void>> {
+  private async setWithRetry<T = any>(
+    key: string,
+    value: T,
+    options?: CacheOptions
+  ): Promise<CacheResult<void>> {
     let lastError: Error | null = null;
 
     for (let attempt = 1; attempt <= this.retries; attempt++) {
@@ -339,7 +349,7 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
 
         if (attempt < this.retries) {
           const delay = Math.min(100 * Math.pow(2, attempt - 1), 1000);
-          await new Promise(resolve => setTimeout(resolve, delay));
+          await new Promise((resolve) => setTimeout(resolve, delay));
         }
       }
     }
@@ -350,20 +360,24 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
   /**
    * Actual set logic
    */
-  private async doSet<T = any>(key: string, value: T, options?: CacheOptions): Promise<CacheResult<void>> {
+  private async doSet<T = any>(
+    key: string,
+    value: T,
+    options?: CacheOptions
+  ): Promise<CacheResult<void>> {
     const fullKey = `${options?.prefix || this.keyPrefix}${key}`;
     const ttl = options?.ttl || this.defaultTTL;
-    
+
     const cacheValue: CacheValue<T> = {
       value,
-      expiresAt: ttl > 0 ? Date.now() + (ttl * 1000) : undefined,
+      expiresAt: ttl > 0 ? Date.now() + ttl * 1000 : undefined,
       createdAt: Date.now(),
       lastAccessedAt: Date.now(),
     };
-    
+
     const serialized = JSON.stringify(cacheValue);
     await this.levelDBPut(fullKey, serialized);
-    
+
     return {
       success: true,
       operationTime: 0,
@@ -375,7 +389,7 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
    */
   async delete(key: string, options?: CacheOptions): Promise<CacheResult<void>> {
     const startTime = Date.now();
-    
+
     if (!this.isLevelDBAvailable) {
       const operationTime = Date.now() - startTime;
       return {
@@ -388,7 +402,7 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
     try {
       await this.deleteWithRetry(key, options);
       const operationTime = Date.now() - startTime;
-      
+
       this.recordSuccess(operationTime);
       return {
         success: true,
@@ -421,7 +435,7 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
 
         if (attempt < this.retries) {
           const delay = Math.min(100 * Math.pow(2, attempt - 1), 1000);
-          await new Promise(resolve => setTimeout(resolve, delay));
+          await new Promise((resolve) => setTimeout(resolve, delay));
         }
       }
     }
@@ -442,7 +456,7 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
    */
   async clear(options?: CacheOptions): Promise<CacheResult<void>> {
     const startTime = Date.now();
-    
+
     if (!this.isLevelDBAvailable) {
       const operationTime = Date.now() - startTime;
       return {
@@ -455,7 +469,7 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
     try {
       await this.clearWithRetry(options);
       const operationTime = Date.now() - startTime;
-      
+
       this.recordSuccess(operationTime);
       return {
         success: true,
@@ -488,7 +502,7 @@ export class LevelDBCacheProvider extends CapabilityBase<LevelDBCacheConfig> {
 
         if (attempt < this.retries) {
           const delay = Math.min(100 * Math.pow(2, attempt - 1), 1000);
-          await new Promise(resolve => setTimeout(resolve, delay));
+          await new Promise((resolve) => setTimeout(resolve, delay));
         }
       }
     }

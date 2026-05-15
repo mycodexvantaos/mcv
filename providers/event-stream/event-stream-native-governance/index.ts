@@ -13,7 +13,9 @@ export type { NativeGovernanceConfig } from './native-governance-provider-cb';
 /**
  * Create a NativeGovernanceProvider instance with the given configuration.
  */
-export function createNativeGovernanceProvider(config: Partial<ProviderConfig<NativeGovernanceConfig>> = {}): NativeGovernanceProvider {
+export function createNativeGovernanceProvider(
+  config: Partial<ProviderConfig<NativeGovernanceConfig>> = {}
+): NativeGovernanceProvider {
   const providerConfig: ProviderConfig<NativeGovernanceConfig> = {
     id: config.id || 'native-governance-provider-cb',
     name: config.name || 'NativeGovernanceProvider',

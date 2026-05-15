@@ -5,7 +5,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface MemoryCacheConfig {
   maxSize?: number;
@@ -22,7 +25,12 @@ export class MemoryCache extends CapabilityBase<MemoryCacheConfig> {
   private maxSize: number;
   private defaultTtl: number;
 
-  constructor(id: string, name: string, config: ProviderConfig<MemoryCacheConfig>, fallbackConfig?: any) {
+  constructor(
+    id: string,
+    name: string,
+    config: ProviderConfig<MemoryCacheConfig>,
+    fallbackConfig?: any
+  ) {
     super(id, name, config, fallbackConfig);
     this.maxSize = config.config.maxSize || 5000;
     this.defaultTtl = config.config.ttlMs || 60000;

@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface TypesenseConfig {
   host: string;
@@ -16,8 +19,19 @@ export interface TypesenseConfig {
   protocol?: string;
 }
 
-export interface SearchResult { success: boolean; hits?: Record<string, unknown>[]; found?: number; error?: string; operationTime: number; }
-export interface IndexResult { success: boolean; id?: string; error?: string; operationTime: number; }
+export interface SearchResult {
+  success: boolean;
+  hits?: Record<string, unknown>[];
+  found?: number;
+  error?: string;
+  operationTime: number;
+}
+export interface IndexResult {
+  success: boolean;
+  id?: string;
+  error?: string;
+  operationTime: number;
+}
 
 export class TypesenseProvider extends CapabilityBase<TypesenseConfig> {
   private host: string;
@@ -30,7 +44,7 @@ export class TypesenseProvider extends CapabilityBase<TypesenseConfig> {
   constructor(config: ProviderConfig<TypesenseConfig>) {
     super(config);
     const cfg = config.config;
-this.host = cfg.host;
+    this.host = cfg.host;
     this.port = cfg.port || 8108;
     this.apiKey = cfg.apiKey;
     this.protocol = cfg.protocol || 'http';
@@ -62,7 +76,11 @@ this.host = cfg.host;
   async search(collection: string, query: string): Promise<SearchResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `TypesenseProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `TypesenseProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -70,13 +88,21 @@ this.host = cfg.host;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async indexDocument(collection: string, doc: Record<string, unknown>): Promise<IndexResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `TypesenseProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `TypesenseProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -84,13 +110,21 @@ this.host = cfg.host;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async deleteDocument(collection: string, id: string): Promise<IndexResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `TypesenseProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `TypesenseProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -98,7 +132,11 @@ this.host = cfg.host;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

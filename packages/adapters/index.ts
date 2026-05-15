@@ -16,36 +16,18 @@
  */
 
 // ── Storage Adapters (Cloudflare) ──────────────────────────────────────
-export {
-  CloudflareD1Adapter,
-  D1Repository,
-} from './cloudflare-d1/index.js';
+export { CloudflareD1Adapter, D1Repository } from './cloudflare-d1/index.js';
 
-export {
-  CloudflareKVCacheStore,
-  CloudflareKVSessionStore,
-} from './cloudflare-kv/index.js';
+export { CloudflareKVCacheStore, CloudflareKVSessionStore } from './cloudflare-kv/index.js';
 
-export {
-  CloudflareR2Adapter,
-} from './cloudflare-r2/index.js';
+export { CloudflareR2Adapter } from './cloudflare-r2/index.js';
 
 // ── Search Adapters ────────────────────────────────────────────────────
-export {
-  D1FullTextSearchAdapter,
-} from './d1-full-text-search/index.js';
+export { D1FullTextSearchAdapter } from './d1-full-text-search/index.js';
 
 // ── Model Provider Adapters ────────────────────────────────────────────
-export {
-  OpenAIChatAdapter,
-  OpenAIEmbeddingAdapter,
-} from './openai/index.js';
+export { OpenAIChatAdapter, OpenAIEmbeddingAdapter } from './openai/index.js';
 
-export {
-  OpenRouterChatAdapter,
-} from './openrouter/index.js';
+export { OpenRouterChatAdapter } from './openrouter/index.js';
 
-export {
-  WorkersAIChatAdapter,
-  WorkersAIEmbeddingAdapter,
-} from './workers-ai/index.js';
+export { WorkersAIChatAdapter, WorkersAIEmbeddingAdapter } from './workers-ai/index.js';

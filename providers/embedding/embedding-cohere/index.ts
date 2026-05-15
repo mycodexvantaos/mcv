@@ -22,15 +22,11 @@ export function createCohereEmbeddingProvider(
   config?: Partial<CohereEmbeddingConfig>
 ) {
   const { CohereEmbeddingProvider } = require('./cohere-embedding-provider-cb');
-  
-  return new CohereEmbeddingProvider(
-    id,
-    'Cohere Embedding',
-    {
-      enabled: true,
-      config: config || {},
-    }
-  );
+
+  return new CohereEmbeddingProvider(id, 'Cohere Embedding', {
+    enabled: true,
+    config: config || {},
+  });
 }
 
 /**

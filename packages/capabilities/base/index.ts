@@ -15,9 +15,7 @@
  * @version 1.0.0
  */
 
-import {
-  ProviderHealthStatus,
-} from '../types';
+import { ProviderHealthStatus } from '../types';
 import type {
   ProviderConfig,
   ProviderHealthCheckResult,
@@ -432,7 +430,7 @@ export abstract class CapabilityBase<T = unknown> {
     }
 
     const currentAvg = this.metrics.avgLatency || 0;
-    return ((currentAvg * (count - 1)) + newLatency) / count;
+    return (currentAvg * (count - 1) + newLatency) / count;
   }
 
   /**

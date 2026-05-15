@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface EthereumConfig {
   timeout?: number;
@@ -15,7 +18,13 @@ export interface EthereumConfig {
   fallbackProviderId?: string;
 }
 
-export interface BlockchainResult { success: boolean; data?: unknown; hash?: string; error?: string; operationTime: number; }
+export interface BlockchainResult {
+  success: boolean;
+  data?: unknown;
+  hash?: string;
+  error?: string;
+  operationTime: number;
+}
 
 export class EthereumProvider extends CapabilityBase<EthereumConfig> {
   private timeout: number;
@@ -56,7 +65,11 @@ export class EthereumProvider extends CapabilityBase<EthereumConfig> {
   async sendTransaction(tx: Record<string, unknown>): Promise<BlockchainResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `EthereumProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `EthereumProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -64,13 +77,21 @@ export class EthereumProvider extends CapabilityBase<EthereumConfig> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async getBalance(address: string): Promise<BlockchainResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `EthereumProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `EthereumProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -78,13 +99,21 @@ export class EthereumProvider extends CapabilityBase<EthereumConfig> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async getTransaction(hash: string): Promise<BlockchainResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `EthereumProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `EthereumProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -92,7 +121,11 @@ export class EthereumProvider extends CapabilityBase<EthereumConfig> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

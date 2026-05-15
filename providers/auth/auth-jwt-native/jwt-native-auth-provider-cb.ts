@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface JWTNativeAuthConfig {
   jwtSecret: string;
@@ -15,8 +18,20 @@ export interface JWTNativeAuthConfig {
   algorithm?: string;
 }
 
-export interface TokenResult { success: boolean; token?: string; expiresAt?: string; error?: string; operationTime: number; }
-export interface VerifyResult { success: boolean; valid?: boolean; payload?: Record<string, unknown>; error?: string; operationTime: number; }
+export interface TokenResult {
+  success: boolean;
+  token?: string;
+  expiresAt?: string;
+  error?: string;
+  operationTime: number;
+}
+export interface VerifyResult {
+  success: boolean;
+  valid?: boolean;
+  payload?: Record<string, unknown>;
+  error?: string;
+  operationTime: number;
+}
 
 export class JWTNativeAuthProvider extends CapabilityBase<JWTNativeAuthConfig> {
   private jwtSecret: string;
@@ -28,7 +43,7 @@ export class JWTNativeAuthProvider extends CapabilityBase<JWTNativeAuthConfig> {
   constructor(config: ProviderConfig<JWTNativeAuthConfig>) {
     super(config);
     const cfg = config.config;
-this.jwtSecret = cfg.jwtSecret;
+    this.jwtSecret = cfg.jwtSecret;
     this.jwtExpiresIn = cfg.jwtExpiresIn || '24h';
     this.algorithm = cfg.algorithm || 'HS256';
   }
@@ -59,7 +74,11 @@ this.jwtSecret = cfg.jwtSecret;
   async signToken(payload: Record<string, unknown>): Promise<TokenResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `JWTNativeAuthProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `JWTNativeAuthProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -67,13 +86,21 @@ this.jwtSecret = cfg.jwtSecret;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async verifyToken(token: string): Promise<VerifyResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `JWTNativeAuthProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `JWTNativeAuthProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -81,13 +108,21 @@ this.jwtSecret = cfg.jwtSecret;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async refreshToken(token: string): Promise<TokenResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `JWTNativeAuthProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `JWTNativeAuthProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -95,7 +130,11 @@ this.jwtSecret = cfg.jwtSecret;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

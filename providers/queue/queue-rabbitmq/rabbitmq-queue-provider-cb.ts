@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface RabbitMQQueueConfig {
   url: string;
@@ -15,7 +18,12 @@ export interface RabbitMQQueueConfig {
   prefetch?: number;
 }
 
-export interface QueueResult { success: boolean; deliveryTag?: number; error?: string; operationTime: number; }
+export interface QueueResult {
+  success: boolean;
+  deliveryTag?: number;
+  error?: string;
+  operationTime: number;
+}
 
 export class RabbitMQQueueProvider extends CapabilityBase<RabbitMQQueueConfig> {
   private url: string;
@@ -27,7 +35,7 @@ export class RabbitMQQueueProvider extends CapabilityBase<RabbitMQQueueConfig> {
   constructor(config: ProviderConfig<RabbitMQQueueConfig>) {
     super(config);
     const cfg = config.config;
-this.url = cfg.url;
+    this.url = cfg.url;
     this.exchange = cfg.exchange || 'mycodexvantaos';
     this.prefetch = cfg.prefetch || 10;
   }
@@ -58,7 +66,11 @@ this.url = cfg.url;
   async publish(queue: string, message: unknown): Promise<QueueResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `RabbitMQQueueProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `RabbitMQQueueProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -66,13 +78,21 @@ this.url = cfg.url;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async consume(queue: string, handler: (msg: unknown) => void): Promise<QueueResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `RabbitMQQueueProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `RabbitMQQueueProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -80,13 +100,21 @@ this.url = cfg.url;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async acknowledge(deliveryTag: number): Promise<QueueResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `RabbitMQQueueProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `RabbitMQQueueProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -94,7 +122,11 @@ this.url = cfg.url;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

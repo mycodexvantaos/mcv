@@ -13,7 +13,9 @@ export type { KeycloakAuthConfig } from './keycloak-auth-provider-cb';
 /**
  * Create a KeycloakAuthProvider instance with the given configuration.
  */
-export function createKeycloakAuthProvider(config: Partial<ProviderConfig<KeycloakAuthConfig>> = {}): KeycloakAuthProvider {
+export function createKeycloakAuthProvider(
+  config: Partial<ProviderConfig<KeycloakAuthConfig>> = {}
+): KeycloakAuthProvider {
   const providerConfig: ProviderConfig<KeycloakAuthConfig> = {
     id: config.id || 'keycloak-auth-provider-cb',
     name: config.name || 'KeycloakAuthProvider',

@@ -9,7 +9,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 /**
  * Configuration for Memory Storage Provider
@@ -17,13 +20,13 @@ import type { ProviderConfig, ProviderHealthCheckResult } from '../../../package
 export interface MemoryStorageConfig {
   /** Maximum storage size in bytes */
   maxSize?: number;
-  
+
   /** Maximum number of files */
   maxFiles?: number;
-  
+
   /** Enable automatic cleanup */
   autoCleanup?: boolean;
-  
+
   /** Native fallback provider ID */
   fallbackProviderId?: string;
 }
@@ -34,22 +37,22 @@ export interface MemoryStorageConfig {
 export interface FileMetadata {
   /** File name */
   name: string;
-  
+
   /** File path */
   path: string;
-  
+
   /** File size in bytes */
   size: number;
-  
+
   /** Content type */
   contentType?: string;
-  
+
   /** Creation timestamp */
   createdAt: number;
-  
+
   /** Last modified timestamp */
   lastModified: number;
-  
+
   /** Custom metadata */
   metadata?: Record<string, string>;
 }
@@ -60,7 +63,7 @@ export interface FileMetadata {
 export interface StoredFile {
   /** File data (base64 or buffer) */
   data: string;
-  
+
   /** File metadata */
   metadata: FileMetadata;
 }
@@ -71,16 +74,16 @@ export interface StoredFile {
 export interface UploadResult {
   /** Success status */
   success: boolean;
-  
+
   /** File path */
   path?: string;
-  
+
   /** File size */
   size?: number;
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -91,16 +94,16 @@ export interface UploadResult {
 export interface DownloadResult {
   /** Success status */
   success: boolean;
-  
+
   /** File data */
   data?: string;
-  
+
   /** File metadata */
   metadata?: FileMetadata;
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -111,16 +114,16 @@ export interface DownloadResult {
 export interface ListResult {
   /** Success status */
   success: boolean;
-  
+
   /** Files */
   files?: FileMetadata[];
-  
+
   /** Total count */
   count?: number;
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -131,13 +134,13 @@ export interface ListResult {
 export interface DeleteResult {
   /** Success status */
   success: boolean;
-  
+
   /** Deleted paths */
   paths?: string[];
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -178,9 +181,8 @@ export class MemoryStorageProvider extends CapabilityBase<MemoryStorageConfig> {
    */
   protected async doHealthCheck(): Promise<ProviderHealthCheckResult> {
     try {
-      const isHealthy = this.currentSize < this.maxSize && 
-                       this.storage.size < this.maxFiles;
-      
+      const isHealthy = this.currentSize < this.maxSize && this.storage.size < this.maxFiles;
+
       return {
         isHealthy,
         status: isHealthy ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.DEGRADED,
@@ -220,10 +222,10 @@ export class MemoryStorageProvider extends CapabilityBase<MemoryStorageConfig> {
     }
   ): Promise<UploadResult> {
     const startTime = Date.now();
-    
+
     try {
       const size = data.length;
-      
+
       // Check limits
       if (this.currentSize + size > this.maxSize) {
         // Auto cleanup if enabled
@@ -237,7 +239,7 @@ export class MemoryStorageProvider extends CapabilityBase<MemoryStorageConfig> {
           };
         }
       }
-      
+
       if (this.storage.size >= this.maxFiles && !this.storage.has(path)) {
         return {
           success: false,
@@ -245,7 +247,7 @@ export class MemoryStorageProvider extends CapabilityBase<MemoryStorageConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // Store file
       const fileMetadata: FileMetadata = {
         name: path.split('/').pop() || path,
@@ -256,18 +258,18 @@ export class MemoryStorageProvider extends CapabilityBase<MemoryStorageConfig> {
         lastModified: Date.now(),
         metadata: options?.metadata,
       };
-      
+
       const storedFile: StoredFile = {
         data,
         metadata: fileMetadata,
       };
-      
+
       this.storage.set(path, storedFile);
       this.currentSize += size;
-      
+
       this.log('info', `Uploaded file: ${path} (${size} bytes)`);
       this.recordMetric('upload', size);
-      
+
       return {
         success: true,
         path,
@@ -289,10 +291,10 @@ export class MemoryStorageProvider extends CapabilityBase<MemoryStorageConfig> {
    */
   async download(path: string): Promise<DownloadResult> {
     const startTime = Date.now();
-    
+
     try {
       const file = this.storage.get(path);
-      
+
       if (!file) {
         return {
           success: false,
@@ -300,13 +302,13 @@ export class MemoryStorageProvider extends CapabilityBase<MemoryStorageConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // Update last accessed time
       file.metadata.lastModified = Date.now();
-      
+
       this.log('info', `Downloaded file: ${path}`);
       this.recordMetric('download', file.metadata.size);
-      
+
       return {
         success: true,
         data: file.data,
@@ -328,21 +330,21 @@ export class MemoryStorageProvider extends CapabilityBase<MemoryStorageConfig> {
    */
   async list(prefix?: string): Promise<ListResult> {
     const startTime = Date.now();
-    
+
     try {
       let files: FileMetadata[] = [];
-      
+
       this.storage.forEach((file) => {
         if (!prefix || file.metadata.path.startsWith(prefix)) {
           files.push(file.metadata);
         }
       });
-      
+
       // Sort by path
       files.sort((a, b) => a.path.localeCompare(b.path));
-      
+
       this.log('info', `Listed ${files.length} files`);
-      
+
       return {
         success: true,
         files,
@@ -363,10 +365,10 @@ export class MemoryStorageProvider extends CapabilityBase<MemoryStorageConfig> {
    */
   async delete(path: string): Promise<DeleteResult> {
     const startTime = Date.now();
-    
+
     try {
       const file = this.storage.get(path);
-      
+
       if (!file) {
         return {
           success: false,
@@ -374,13 +376,13 @@ export class MemoryStorageProvider extends CapabilityBase<MemoryStorageConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       this.currentSize -= file.metadata.size;
       this.storage.delete(path);
-      
+
       this.log('info', `Deleted file: ${path}`);
       this.recordMetric('delete', 1);
-      
+
       return {
         success: true,
         paths: [path],
@@ -402,7 +404,7 @@ export class MemoryStorageProvider extends CapabilityBase<MemoryStorageConfig> {
   async deleteMany(paths: string[]): Promise<DeleteResult> {
     const startTime = Date.now();
     const deletedPaths: string[] = [];
-    
+
     try {
       for (const path of paths) {
         const file = this.storage.get(path);
@@ -412,10 +414,10 @@ export class MemoryStorageProvider extends CapabilityBase<MemoryStorageConfig> {
           deletedPaths.push(path);
         }
       }
-      
+
       this.log('info', `Deleted ${deletedPaths.length} files`);
       this.recordMetric('delete_batch', deletedPaths.length);
-      
+
       return {
         success: true,
         paths: deletedPaths,
@@ -436,19 +438,20 @@ export class MemoryStorageProvider extends CapabilityBase<MemoryStorageConfig> {
    */
   private async cleanupSpace(requiredSpace: number): Promise<void> {
     // Delete oldest files first
-    const files = Array.from(this.storage.entries())
-      .sort((a, b) => a[1].metadata.createdAt - b[1].metadata.createdAt);
-    
+    const files = Array.from(this.storage.entries()).sort(
+      (a, b) => a[1].metadata.createdAt - b[1].metadata.createdAt
+    );
+
     let freedSpace = 0;
-    
+
     for (const [path, file] of files) {
       if (freedSpace >= requiredSpace) break;
-      
+
       this.currentSize -= file.metadata.size;
       this.storage.delete(path);
       freedSpace += file.metadata.size;
     }
-    
+
     this.log('info', `Cleaned up ${freedSpace} bytes`);
   }
 

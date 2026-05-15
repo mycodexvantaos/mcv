@@ -9,7 +9,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 /**
  * Configuration for OpenAI LLM Provider
@@ -17,31 +20,31 @@ import type { ProviderConfig, ProviderHealthCheckResult } from '../../../package
 export interface OpenAIConfig {
   /** OpenAI API key */
   apiKey?: string;
-  
+
   /** OpenAI base URL (for custom endpoints) */
   baseURL?: string;
-  
+
   /** Model to use (default: gpt-3.5-turbo) */
   model?: string;
-  
+
   /** Organization ID */
   organization?: string;
-  
+
   /** Request timeout in milliseconds */
   timeout?: number;
-  
+
   /** Maximum tokens for response */
   maxTokens?: number;
-  
+
   /** Temperature for randomness (0-2) */
   temperature?: number;
-  
+
   /** Whether to use streaming */
   stream?: boolean;
-  
+
   /** Number of retries on failure */
   retries?: number;
-  
+
   /** Native fallback provider ID */
   fallbackProviderId?: string;
 }
@@ -60,19 +63,19 @@ export interface ChatMessage {
 export interface LLMRequest {
   /** The prompt to generate response for */
   prompt?: string;
-  
+
   /** Chat messages for chat completion */
   messages?: ChatMessage[];
-  
+
   /** Maximum tokens to generate */
   maxTokens?: number;
-  
+
   /** Temperature for randomness (0-2) */
   temperature?: number;
-  
+
   /** Whether to stream response */
   stream?: boolean;
-  
+
   /** Response format (e.g., { type: "json_object" }) */
   responseFormat?: any;
 }
@@ -83,25 +86,25 @@ export interface LLMRequest {
 export interface LLMResponse {
   /** Generated response text */
   text: string;
-  
+
   /** Number of tokens generated */
   tokens: number;
-  
+
   /** Total tokens (prompt + completion) */
   totalTokens: number;
-  
+
   /** Model identifier */
   model: string;
-  
+
   /** Provider name */
   provider: string;
-  
+
   /** Generation time in milliseconds */
   generationTime: number;
-  
+
   /** Whether response was streamed */
   streamed: boolean;
-  
+
   /** Finish reason */
   finishReason?: string;
 }
@@ -121,7 +124,7 @@ export class OpenAILLMProvider extends CapabilityBase<OpenAIConfig> {
   private enableStreaming: boolean;
   private retries: number;
   private fallbackProviderId: string = 'native';
-  
+
   private isOpenAIAvailable: boolean = false;
   private apiKey: string | undefined;
 
@@ -132,7 +135,7 @@ export class OpenAILLMProvider extends CapabilityBase<OpenAIConfig> {
     fallbackConfig?: any
   ) {
     super(id, name, config, fallbackConfig);
-    
+
     const cfg = config.config;
     this.apiKey = cfg.apiKey;
     this.baseURL = cfg.baseURL || 'https://api.openai.com/v1';
@@ -158,7 +161,7 @@ export class OpenAILLMProvider extends CapabilityBase<OpenAIConfig> {
     try {
       // Try a simple API call to validate credentials
       await this.checkOpenAIAvailability();
-      
+
       if (this.isOpenAIAvailable) {
         this.log('info', `OpenAI provider initialized with model ${this.model}`);
         this.log('info', `Configuration - baseURL: ${this.baseURL}, timeout: ${this.timeout}ms`);
@@ -183,7 +186,7 @@ export class OpenAILLMProvider extends CapabilityBase<OpenAIConfig> {
       const response = await fetch(`${this.baseURL}/models`, {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
+          Authorization: `Bearer ${this.apiKey}`,
           'Content-Type': 'application/json',
         },
         signal: AbortSignal.timeout(this.timeout),
@@ -193,7 +196,7 @@ export class OpenAILLMProvider extends CapabilityBase<OpenAIConfig> {
         this.isOpenAIAvailable = true;
         return true;
       }
-      
+
       this.isOpenAIAvailable = false;
       return false;
     } catch (error) {
@@ -250,16 +253,18 @@ export class OpenAILLMProvider extends CapabilityBase<OpenAIConfig> {
    */
   async generate(request: LLMRequest): Promise<LLMResponse> {
     const startTime = Date.now();
-    
+
     if (!this.isOpenAIAvailable || !this.apiKey) {
       this.recordFailure(new Error('OpenAI not available'));
-      throw new Error(`OpenAI service not available. Use fallback provider: ${this.fallbackProviderId}`);
+      throw new Error(
+        `OpenAI service not available. Use fallback provider: ${this.fallbackProviderId}`
+      );
     }
 
     try {
       const response = await this.generateWithRetry(request);
       const generationTime = Date.now() - startTime;
-      
+
       this.recordSuccess(generationTime);
       return response;
     } catch (error) {
@@ -284,7 +289,7 @@ export class OpenAILLMProvider extends CapabilityBase<OpenAIConfig> {
 
         if (attempt < this.retries) {
           const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
-          await new Promise(resolve => setTimeout(resolve, delay));
+          await new Promise((resolve) => setTimeout(resolve, delay));
         }
       }
     }
@@ -312,7 +317,7 @@ export class OpenAILLMProvider extends CapabilityBase<OpenAIConfig> {
     const response = await fetch(`${this.baseURL}/completions`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${this.apiKey}`,
+        Authorization: `Bearer ${this.apiKey}`,
         'Content-Type': 'application/json',
         ...(this.organization ? { 'OpenAI-Organization': this.organization } : {}),
       },
@@ -332,7 +337,7 @@ export class OpenAILLMProvider extends CapabilityBase<OpenAIConfig> {
     }
 
     const data = await response.json();
-    
+
     return {
       text: data.choices[0]?.text || '',
       tokens: data.usage?.completion_tokens || 0,
@@ -348,14 +353,11 @@ export class OpenAILLMProvider extends CapabilityBase<OpenAIConfig> {
   /**
    * Chat completion
    */
-  private async chatCompletion(
-    messages: ChatMessage[],
-    options: LLMRequest
-  ): Promise<LLMResponse> {
+  private async chatCompletion(messages: ChatMessage[], options: LLMRequest): Promise<LLMResponse> {
     const response = await fetch(`${this.baseURL}/chat/completions`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${this.apiKey}`,
+        Authorization: `Bearer ${this.apiKey}`,
         'Content-Type': 'application/json',
         ...(this.organization ? { 'OpenAI-Organization': this.organization } : {}),
       },
@@ -376,7 +378,7 @@ export class OpenAILLMProvider extends CapabilityBase<OpenAIConfig> {
     }
 
     const data = await response.json();
-    
+
     return {
       text: data.choices[0]?.message?.content || '',
       tokens: data.usage?.completion_tokens || 0,
@@ -397,12 +399,13 @@ export class OpenAILLMProvider extends CapabilityBase<OpenAIConfig> {
       throw new Error('OpenAI service not available');
     }
 
-    const messages = request.messages || (request.prompt ? [{ role: 'user', content: request.prompt }] : []);
-    
+    const messages =
+      request.messages || (request.prompt ? [{ role: 'user', content: request.prompt }] : []);
+
     const response = await fetch(`${this.baseURL}/chat/completions`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${this.apiKey}`,
+        Authorization: `Bearer ${this.apiKey}`,
         'Content-Type': 'application/json',
         ...(this.organization ? { 'OpenAI-Organization': this.organization } : {}),
       },
@@ -433,12 +436,12 @@ export class OpenAILLMProvider extends CapabilityBase<OpenAIConfig> {
       if (done) break;
 
       const chunk = decoder.decode(value);
-      const lines = chunk.split('\n').filter(line => line.trim());
+      const lines = chunk.split('\n').filter((line) => line.trim());
 
       for (const line of lines) {
         if (line.startsWith('data: ')) {
           const data = line.slice(6);
-          
+
           if (data === '[DONE]') {
             return;
           }

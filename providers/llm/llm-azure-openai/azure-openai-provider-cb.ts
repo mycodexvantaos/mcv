@@ -9,7 +9,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 /**
  * Configuration for Azure OpenAI Provider
@@ -17,28 +20,28 @@ import type { ProviderConfig, ProviderHealthCheckResult } from '../../../package
 export interface AzureOpenAIConfig {
   /** Azure OpenAI API key */
   apiKey?: string;
-  
+
   /** Azure endpoint URL */
   endpoint?: string;
-  
+
   /** Azure deployment name */
   deployment?: string;
-  
+
   /** Azure API version */
   apiVersion?: string;
-  
+
   /** Connection timeout in milliseconds */
   timeout?: number;
-  
+
   /** Number of retries on failure */
   retries?: number;
-  
+
   /** Maximum tokens */
   maxTokens?: number;
-  
+
   /** Temperature */
   temperature?: number;
-  
+
   /** Native fallback provider ID */
   fallbackProviderId?: string;
 }
@@ -49,7 +52,7 @@ export interface AzureOpenAIConfig {
 export interface ChatMessage {
   /** Role (system, user, assistant) */
   role: 'system' | 'user' | 'assistant';
-  
+
   /** Message content */
   content: string;
 }
@@ -60,16 +63,16 @@ export interface ChatMessage {
 export interface ChatCompletionOptions {
   /** Deployment name */
   deployment?: string;
-  
+
   /** Temperature */
   temperature?: number;
-  
+
   /** Maximum tokens */
   maxTokens?: number;
-  
+
   /** Top P */
   topP?: number;
-  
+
   /** Stop sequences */
   stopSequences?: string[];
 }
@@ -80,23 +83,23 @@ export interface ChatCompletionOptions {
 export interface ChatCompletionResult {
   /** Success status */
   success: boolean;
-  
+
   /** Generated text */
   text?: string;
-  
+
   /** Deployment used */
   deployment?: string;
-  
+
   /** Token usage */
   usage?: {
     promptTokens: number;
     completionTokens: number;
     totalTokens: number;
   };
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -107,19 +110,19 @@ export interface ChatCompletionResult {
 export interface EmbeddingResult {
   /** Success status */
   success: boolean;
-  
+
   /** Embedding vector */
   embedding?: number[];
-  
+
   /** Deployment used */
   deployment?: string;
-  
+
   /** Dimension of embedding */
   dimension?: number;
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -176,11 +179,10 @@ export class AzureOpenAILLMProvider extends CapabilityBase<AzureOpenAIConfig> {
           },
         };
       }
-      
-      const isHealthy = this.apiKey.length > 0 && 
-                       this.endpoint.length > 0 && 
-                       this.deployment.length > 0;
-      
+
+      const isHealthy =
+        this.apiKey.length > 0 && this.endpoint.length > 0 && this.deployment.length > 0;
+
       return {
         isHealthy,
         status: isHealthy ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.UNHEALTHY,
@@ -214,7 +216,7 @@ export class AzureOpenAILLMProvider extends CapabilityBase<AzureOpenAIConfig> {
     options?: ChatCompletionOptions
   ): Promise<ChatCompletionResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.apiKey || !this.endpoint || !this.deployment) {
         return {
@@ -223,14 +225,14 @@ export class AzureOpenAILLMProvider extends CapabilityBase<AzureOpenAIConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // In a real implementation, we would call Azure OpenAI API
-      const prompt = messages.map(m => `${m.role}: ${m.content}`).join('\n');
+      const prompt = messages.map((m) => `${m.role}: ${m.content}`).join('\n');
       const text = `[Azure OpenAI simulation] Response to: ${prompt.substring(0, 100)}...`;
-      
+
       this.log('info', 'Azure OpenAI chat completion completed');
       this.recordMetric('chat_complete', 1);
-      
+
       return {
         success: true,
         text,
@@ -266,12 +268,9 @@ export class AzureOpenAILLMProvider extends CapabilityBase<AzureOpenAIConfig> {
   /**
    * Generate embedding
    */
-  async generateEmbedding(
-    text: string,
-    deployment?: string
-  ): Promise<EmbeddingResult> {
+  async generateEmbedding(text: string, deployment?: string): Promise<EmbeddingResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.apiKey || !this.endpoint) {
         return {
@@ -280,13 +279,13 @@ export class AzureOpenAILLMProvider extends CapabilityBase<AzureOpenAIConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // In a real implementation, we would call Azure OpenAI embedding API
       const embedding = Array.from({ length: 1536 }, () => Math.random());
-      
+
       this.log('info', 'Azure OpenAI embedding generation completed');
       this.recordMetric('embedding_generate', 1);
-      
+
       return {
         success: true,
         embedding,

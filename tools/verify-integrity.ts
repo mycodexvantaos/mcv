@@ -83,7 +83,7 @@ function verifyChain(events: AuditEvent[]): IntegrityReport {
       report.hash_mismatch++;
       report.details.push(
         `HASH_MISMATCH: event_id=${event.event_id} chain_index=${event.chain_index} ` +
-        `expected=${expectedHash.slice(0, 16)}... got=${event.hash.slice(0, 16)}...`
+          `expected=${expectedHash.slice(0, 16)}... got=${event.hash.slice(0, 16)}...`
       );
     }
 
@@ -101,14 +101,17 @@ function verifyChain(events: AuditEvent[]): IntegrityReport {
         report.missing_previous++;
         report.details.push(
           `BROKEN_LINK: event_id=${event.event_id} chain_index=${event.chain_index} ` +
-          `previous_hash doesn't match predecessor's hash`
+            `previous_hash doesn't match predecessor's hash`
         );
       }
     }
 
-    if (event.hash === expectedHash && 
-        (event.chain_index === 0 ? event.previous_hash === 'genesis' : 
-         indexMap.get(event.chain_index - 1)?.hash === event.previous_hash)) {
+    if (
+      event.hash === expectedHash &&
+      (event.chain_index === 0
+        ? event.previous_hash === 'genesis'
+        : indexMap.get(event.chain_index - 1)?.hash === event.previous_hash)
+    ) {
       report.verified++;
     }
   }
@@ -123,13 +126,15 @@ function verifyChain(events: AuditEvent[]): IntegrityReport {
   }
 
   for (const [pairId, pairEvents] of pairs) {
-    const roles = pairEvents.map(e => e.pair_role);
+    const roles = pairEvents.map((e) => e.pair_role);
     const hasRequest = roles.includes('request');
     const hasCompletion = roles.includes('completion') || roles.includes('failure');
 
     if (hasRequest && !hasCompletion) {
       report.unpaired_requests++;
-      report.details.push(`UNPAIRED_REQUEST: pair_id=${pairId} has request but no completion/failure`);
+      report.details.push(
+        `UNPAIRED_REQUEST: pair_id=${pairId} has request but no completion/failure`
+      );
     }
     if (hasCompletion && !hasRequest) {
       report.unpaired_completions++;
@@ -148,7 +153,9 @@ function formatReport(report: IntegrityReport): string {
   lines.push('════════════════════════════════════════════════════════');
   lines.push('');
   lines.push(`  Total Events:       ${report.total_events}`);
-  lines.push(`  Verified:           ${report.verified} (${((report.verified / Math.max(report.total_events, 1)) * 100).toFixed(1)}%)`);
+  lines.push(
+    `  Verified:           ${report.verified} (${((report.verified / Math.max(report.total_events, 1)) * 100).toFixed(1)}%)`
+  );
   lines.push(`  Hash Mismatches:    ${report.hash_mismatch}`);
   lines.push(`  Broken Links:       ${report.missing_previous}`);
   lines.push(`  Chain Gaps:         ${report.gaps.length} missing indices`);
@@ -172,7 +179,9 @@ function formatReport(report: IntegrityReport): string {
   lines.push('──────────────────────────────────────────────────────');
 
   const isHealthy = report.hash_mismatch === 0 && report.missing_previous === 0;
-  lines.push(`  Status: ${isHealthy ? '✅ CHAIN INTEGRITY VERIFIED' : '❌ CHAIN INTEGRITY COMPROMISED'}`);
+  lines.push(
+    `  Status: ${isHealthy ? '✅ CHAIN INTEGRITY VERIFIED' : '❌ CHAIN INTEGRITY COMPROMISED'}`
+  );
   lines.push('──────────────────────────────────────────────────────');
 
   return lines.join('\n');

@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface OllamaEmbeddingConfig {
   baseUrl: string;
@@ -15,7 +18,13 @@ export interface OllamaEmbeddingConfig {
   keepAlive?: string;
 }
 
-export interface EmbedResult { success: boolean; embeddings?: number[][]; model?: string; error?: string; operationTime: number; }
+export interface EmbedResult {
+  success: boolean;
+  embeddings?: number[][];
+  model?: string;
+  error?: string;
+  operationTime: number;
+}
 
 export class OllamaEmbeddingProvider extends CapabilityBase<OllamaEmbeddingConfig> {
   private baseUrl: string;
@@ -27,7 +36,7 @@ export class OllamaEmbeddingProvider extends CapabilityBase<OllamaEmbeddingConfi
   constructor(config: ProviderConfig<OllamaEmbeddingConfig>) {
     super(config);
     const cfg = config.config;
-this.baseUrl = cfg.baseUrl || 'http://localhost:11434';
+    this.baseUrl = cfg.baseUrl || 'http://localhost:11434';
     this.defaultModel = cfg.defaultModel || 'nomic-embed-text';
     this.keepAlive = cfg.keepAlive || '5m';
   }
@@ -58,7 +67,11 @@ this.baseUrl = cfg.baseUrl || 'http://localhost:11434';
   async embed(text: string): Promise<EmbedResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `OllamaEmbeddingProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `OllamaEmbeddingProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -66,13 +79,21 @@ this.baseUrl = cfg.baseUrl || 'http://localhost:11434';
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async embedBatch(texts: string[]): Promise<EmbedResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `OllamaEmbeddingProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `OllamaEmbeddingProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -80,7 +101,11 @@ this.baseUrl = cfg.baseUrl || 'http://localhost:11434';
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

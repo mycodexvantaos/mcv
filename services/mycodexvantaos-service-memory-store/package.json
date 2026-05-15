@@ -10,7 +10,10 @@
     "lint": "eslint src/",
     "test": "echo \"TODO: add tests\" && exit 0"
   },
-  "keywords": ["mycodexvantaos", "service-memory-store"],
+  "keywords": [
+    "mycodexvantaos",
+    "service-memory-store"
+  ],
   "license": "MIT",
   "devDependencies": {
     "typescript": "^5.4.0",

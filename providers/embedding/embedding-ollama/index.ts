@@ -13,7 +13,9 @@ export type { OllamaEmbeddingConfig } from './ollama-embedding-provider-cb';
 /**
  * Create a OllamaEmbeddingProvider instance with the given configuration.
  */
-export function createOllamaEmbeddingProvider(config: Partial<ProviderConfig<OllamaEmbeddingConfig>> = {}): OllamaEmbeddingProvider {
+export function createOllamaEmbeddingProvider(
+  config: Partial<ProviderConfig<OllamaEmbeddingConfig>> = {}
+): OllamaEmbeddingProvider {
   const providerConfig: ProviderConfig<OllamaEmbeddingConfig> = {
     id: config.id || 'ollama-embedding-provider-cb',
     name: config.name || 'OllamaEmbeddingProvider',

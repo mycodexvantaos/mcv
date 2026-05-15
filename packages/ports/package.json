@@ -18,7 +18,11 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/"
   },
-  "keywords": ["ports", "interfaces", "hexagonal-architecture"],
+  "keywords": [
+    "ports",
+    "interfaces",
+    "hexagonal-architecture"
+  ],
   "license": "UNLICENSED",
   "private": true
 }

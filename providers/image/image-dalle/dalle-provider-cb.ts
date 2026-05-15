@@ -9,7 +9,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 /**
  * Configuration for DALL-E Provider
@@ -17,25 +20,25 @@ import type { ProviderConfig, ProviderHealthCheckResult } from '../../../package
 export interface DalleConfig {
   /** OpenAI API key */
   apiKey?: string;
-  
+
   /** DALL-E model version */
   model?: string;
-  
+
   /** Image size */
   size?: string;
-  
+
   /** Image quality */
   quality?: string;
-  
+
   /** Image style */
   style?: string;
-  
+
   /** Connection timeout in milliseconds */
   timeout?: number;
-  
+
   /** Number of retries on failure */
   retries?: number;
-  
+
   /** Native fallback provider ID */
   fallbackProviderId?: string;
 }
@@ -46,19 +49,19 @@ export interface DalleConfig {
 export interface GenerateOptions {
   /** Model version */
   model?: string;
-  
+
   /** Image size (256x256, 512x512, 1024x1024, 1792x1024, 1024x1792) */
   size?: string;
-  
+
   /** Image quality (standard, hd) */
   quality?: string;
-  
+
   /** Image style (vivid, natural) */
   style?: string;
-  
+
   /** Number of images to generate */
   n?: number;
-  
+
   /** Format (url, b64_json) */
   responseFormat?: string;
 }
@@ -69,7 +72,7 @@ export interface GenerateOptions {
 export interface GenerateResult {
   /** Success status */
   success: boolean;
-  
+
   /** Generated images */
   images?: Array<{
     /** Image URL or base64 data */
@@ -79,13 +82,13 @@ export interface GenerateResult {
     /** Revised prompt (if any) */
     revised_prompt?: string;
   }>;
-  
+
   /** Model used */
   model?: string;
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -96,19 +99,19 @@ export interface GenerateResult {
 export interface EditResult {
   /** Success status */
   success: boolean;
-  
+
   /** Edited images */
   images?: Array<{
     url?: string;
     b64_json?: string;
   }>;
-  
+
   /** Model used */
   model?: string;
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -119,19 +122,19 @@ export interface EditResult {
 export interface VariationResult {
   /** Success status */
   success: boolean;
-  
+
   /** Variation images */
   images?: Array<{
     url?: string;
     b64_json?: string;
   }>;
-  
+
   /** Model used */
   model?: string;
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -177,7 +180,7 @@ export class DalleProvider extends CapabilityBase<DalleConfig> {
   protected async doHealthCheck(): Promise<ProviderHealthCheckResult> {
     try {
       const isHealthy = this.apiKey.length > 0;
-      
+
       return {
         isHealthy,
         status: isHealthy ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.UNHEALTHY,
@@ -206,12 +209,9 @@ export class DalleProvider extends CapabilityBase<DalleConfig> {
   /**
    * Generate image
    */
-  async generate(
-    prompt: string,
-    options?: GenerateOptions
-  ): Promise<GenerateResult> {
+  async generate(prompt: string, options?: GenerateOptions): Promise<GenerateResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.apiKey) {
         return {
@@ -220,17 +220,17 @@ export class DalleProvider extends CapabilityBase<DalleConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // In a real implementation, we would call DALL-E API
       const n = options?.n || 1;
       const images = Array.from({ length: n }, () => ({
         url: `https://example.com/generated-image-${Date.now()}.png`,
         revised_prompt: prompt,
       }));
-      
+
       this.log('info', `DALL-E image generation completed: ${prompt.substring(0, 50)}...`);
       this.recordMetric('generate', n);
-      
+
       return {
         success: true,
         images,
@@ -257,7 +257,7 @@ export class DalleProvider extends CapabilityBase<DalleConfig> {
     options?: GenerateOptions
   ): Promise<EditResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.apiKey) {
         return {
@@ -266,15 +266,17 @@ export class DalleProvider extends CapabilityBase<DalleConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // In a real implementation, we would call DALL-E edit API
-      const images = [{
-        url: `https://example.com/edited-image-${Date.now()}.png`,
-      }];
-      
+      const images = [
+        {
+          url: `https://example.com/edited-image-${Date.now()}.png`,
+        },
+      ];
+
       this.log('info', `DALL-E image edit completed: ${prompt.substring(0, 50)}...`);
       this.recordMetric('edit', 1);
-      
+
       return {
         success: true,
         images,
@@ -294,12 +296,9 @@ export class DalleProvider extends CapabilityBase<DalleConfig> {
   /**
    * Create variation
    */
-  async variation(
-    image: string,
-    options?: GenerateOptions
-  ): Promise<VariationResult> {
+  async variation(image: string, options?: GenerateOptions): Promise<VariationResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.apiKey) {
         return {
@@ -308,15 +307,17 @@ export class DalleProvider extends CapabilityBase<DalleConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // In a real implementation, we would call DALL-E variation API
-      const images = [{
-        url: `https://example.com/variation-image-${Date.now()}.png`,
-      }];
-      
+      const images = [
+        {
+          url: `https://example.com/variation-image-${Date.now()}.png`,
+        },
+      ];
+
       this.log('info', 'DALL-E image variation completed');
       this.recordMetric('variation', 1);
-      
+
       return {
         success: true,
         images,

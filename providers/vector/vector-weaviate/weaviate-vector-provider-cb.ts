@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface WeaviateVectorConfig {
   scheme?: string;
@@ -70,7 +73,9 @@ export class WeaviateVectorProvider extends CapabilityBase<WeaviateVectorConfig>
   protected async doHealthCheck(): Promise<ProviderHealthCheckResult> {
     return {
       isHealthy: this.isWeaviateAvailable,
-      status: this.isWeaviateAvailable ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.DEGRADED,
+      status: this.isWeaviateAvailable
+        ? ProviderHealthStatus.HEALTHY
+        : ProviderHealthStatus.DEGRADED,
       checkTime: new Date().toISOString(),
       metrics: {},
     };
@@ -80,10 +85,19 @@ export class WeaviateVectorProvider extends CapabilityBase<WeaviateVectorConfig>
     this.log('info', 'Weaviate vector provider shutdown');
   }
 
-  async add(className: string, ids: string[], embeddings: number[][], metadatas?: Record<string, unknown>[]): Promise<SearchResult> {
+  async add(
+    className: string,
+    ids: string[],
+    embeddings: number[][],
+    metadatas?: Record<string, unknown>[]
+  ): Promise<SearchResult> {
     const startTime = Date.now();
     if (!this.isWeaviateAvailable) {
-      return { success: false, error: `Weaviate not available. Use fallback: ${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: `Weaviate not available. Use fallback: ${this.fallbackProviderId}`,
+        operationTime: Date.now() - startTime,
+      };
     }
     try {
       // Would call Weaviate REST API: POST /v1/objects
@@ -92,30 +106,50 @@ export class WeaviateVectorProvider extends CapabilityBase<WeaviateVectorConfig>
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      };
     }
   }
 
   async search(className: string, query: number[], nResults: number = 10): Promise<SearchResult> {
     const startTime = Date.now();
     if (!this.isWeaviateAvailable) {
-      return { success: false, error: `Weaviate not available. Use fallback: ${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: `Weaviate not available. Use fallback: ${this.fallbackProviderId}`,
+        operationTime: Date.now() - startTime,
+      };
     }
     try {
       // Would call Weaviate REST API: POST /v1/graphql with nearVector search
-      const result: SearchResult = { success: true, results: [], operationTime: Date.now() - startTime };
+      const result: SearchResult = {
+        success: true,
+        results: [],
+        operationTime: Date.now() - startTime,
+      };
       this.recordSuccess(result.operationTime);
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      };
     }
   }
 
   async delete(className: string, ids: string[]): Promise<SearchResult> {
     const startTime = Date.now();
     if (!this.isWeaviateAvailable) {
-      return { success: false, error: `Weaviate not available. Use fallback: ${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: `Weaviate not available. Use fallback: ${this.fallbackProviderId}`,
+        operationTime: Date.now() - startTime,
+      };
     }
     try {
       const result: SearchResult = { success: true, operationTime: Date.now() - startTime };
@@ -123,7 +157,11 @@ export class WeaviateVectorProvider extends CapabilityBase<WeaviateVectorConfig>
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      };
     }
   }
 

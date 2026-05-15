@@ -7,14 +7,22 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface ZodValidationConfig {
   strictMode?: boolean;
   errorFormat?: string;
 }
 
-export interface ValidationResult { success: boolean; data?: unknown; errors?: string[]; operationTime: number; }
+export interface ValidationResult {
+  success: boolean;
+  data?: unknown;
+  errors?: string[];
+  operationTime: number;
+}
 
 export class ZodValidationProvider extends CapabilityBase<ZodValidationConfig> {
   private strictMode: boolean | undefined;
@@ -25,7 +33,7 @@ export class ZodValidationProvider extends CapabilityBase<ZodValidationConfig> {
   constructor(config: ProviderConfig<ZodValidationConfig>) {
     super(config);
     const cfg = config.config;
-this.strictMode = cfg.strictMode ?? true;
+    this.strictMode = cfg.strictMode ?? true;
     this.errorFormat = cfg.errorFormat || 'flat';
   }
 
@@ -55,7 +63,11 @@ this.strictMode = cfg.strictMode ?? true;
   async validate(schema: string, data: unknown): Promise<ValidationResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `ZodValidationProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `ZodValidationProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -63,13 +75,21 @@ this.strictMode = cfg.strictMode ?? true;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async parse(schema: string, data: unknown): Promise<ValidationResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `ZodValidationProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `ZodValidationProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -77,7 +97,11 @@ this.strictMode = cfg.strictMode ?? true;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

@@ -22,15 +22,11 @@ export function createOpenAIEmbeddingProvider(
   config?: Partial<OpenAIEmbeddingConfig>
 ) {
   const { OpenAIEmbeddingProvider } = require('./openai-embedding-provider-cb');
-  
-  return new OpenAIEmbeddingProvider(
-    id,
-    'OpenAI Embedding',
-    {
-      enabled: true,
-      config: config || {},
-    }
-  );
+
+  return new OpenAIEmbeddingProvider(id, 'OpenAI Embedding', {
+    enabled: true,
+    config: config || {},
+  });
 }
 
 /**

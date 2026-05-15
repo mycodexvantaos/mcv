@@ -13,7 +13,9 @@ export type { OpenAIConfig } from './openai-provider-cb';
 /**
  * Create a OpenAILLMProvider instance with the given configuration.
  */
-export function createOpenAILLMProvider(config: Partial<ProviderConfig<OpenAIConfig>> = {}): OpenAILLMProvider {
+export function createOpenAILLMProvider(
+  config: Partial<ProviderConfig<OpenAIConfig>> = {}
+): OpenAILLMProvider {
   const id = config.id || 'openai-provider-cb';
   const name = config.name || 'OpenAILLMProvider';
   const providerConfig: ProviderConfig<OpenAIConfig> = {

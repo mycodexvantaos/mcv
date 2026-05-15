@@ -10,7 +10,10 @@
     "lint": "eslint src/",
     "test": "echo \"TODO: add tests\" && exit 0"
   },
-  "keywords": ["mycodexvantaos", "service-agent-chat"],
+  "keywords": [
+    "mycodexvantaos",
+    "service-agent-chat"
+  ],
   "license": "MIT",
   "devDependencies": {
     "typescript": "^5.4.0",

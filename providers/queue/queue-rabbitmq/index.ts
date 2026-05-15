@@ -13,7 +13,9 @@ export type { RabbitMQQueueConfig } from './rabbitmq-queue-provider-cb';
 /**
  * Create a RabbitMQQueueProvider instance with the given configuration.
  */
-export function createRabbitMQQueueProvider(config: Partial<ProviderConfig<RabbitMQQueueConfig>> = {}): RabbitMQQueueProvider {
+export function createRabbitMQQueueProvider(
+  config: Partial<ProviderConfig<RabbitMQQueueConfig>> = {}
+): RabbitMQQueueProvider {
   const providerConfig: ProviderConfig<RabbitMQQueueConfig> = {
     id: config.id || 'rabbitmq-queue-provider-cb',
     name: config.name || 'RabbitMQQueueProvider',

@@ -9,7 +9,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 /**
  * Configuration for AWS Bedrock Provider
@@ -17,28 +20,28 @@ import type { ProviderConfig, ProviderHealthCheckResult } from '../../../package
 export interface BedrockConfig {
   /** AWS access key ID */
   accessKeyId?: string;
-  
+
   /** AWS secret access key */
   secretAccessKey?: string;
-  
+
   /** AWS region */
   region?: string;
-  
+
   /** Default model ID */
   modelId?: string;
-  
+
   /** Connection timeout in milliseconds */
   timeout?: number;
-  
+
   /** Number of retries on failure */
   retries?: number;
-  
+
   /** Maximum tokens */
   maxTokens?: number;
-  
+
   /** Temperature */
   temperature?: number;
-  
+
   /** Native fallback provider ID */
   fallbackProviderId?: string;
 }
@@ -49,7 +52,7 @@ export interface BedrockConfig {
 export interface ChatMessage {
   /** Role (system, user, assistant) */
   role: 'system' | 'user' | 'assistant';
-  
+
   /** Message content */
   content: string;
 }
@@ -60,19 +63,19 @@ export interface ChatMessage {
 export interface ChatCompletionOptions {
   /** Model ID */
   modelId?: string;
-  
+
   /** Temperature */
   temperature?: number;
-  
+
   /** Maximum tokens */
   maxTokens?: number;
-  
+
   /** Top P */
   topP?: number;
-  
+
   /** Top K */
   topK?: number;
-  
+
   /** Stop sequences */
   stopSequences?: string[];
 }
@@ -83,23 +86,23 @@ export interface ChatCompletionOptions {
 export interface ChatCompletionResult {
   /** Success status */
   success: boolean;
-  
+
   /** Generated text */
   text?: string;
-  
+
   /** Model ID used */
   modelId?: string;
-  
+
   /** Token usage */
   usage?: {
     promptTokens: number;
     completionTokens: number;
     totalTokens: number;
   };
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -110,19 +113,19 @@ export interface ChatCompletionResult {
 export interface EmbeddingResult {
   /** Success status */
   success: boolean;
-  
+
   /** Embedding vector */
   embedding?: number[];
-  
+
   /** Model ID used */
   modelId?: string;
-  
+
   /** Dimension of embedding */
   dimension?: number;
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -179,10 +182,9 @@ export class BedrockLLMProvider extends CapabilityBase<BedrockConfig> {
           },
         };
       }
-      
-      const isHealthy = this.accessKeyId.length > 0 && 
-                       this.secretAccessKey.length > 0;
-      
+
+      const isHealthy = this.accessKeyId.length > 0 && this.secretAccessKey.length > 0;
+
       return {
         isHealthy,
         status: isHealthy ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.UNHEALTHY,
@@ -216,7 +218,7 @@ export class BedrockLLMProvider extends CapabilityBase<BedrockConfig> {
     options?: ChatCompletionOptions
   ): Promise<ChatCompletionResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.accessKeyId || !this.secretAccessKey) {
         return {
@@ -225,14 +227,14 @@ export class BedrockLLMProvider extends CapabilityBase<BedrockConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // In a real implementation, we would call Bedrock API
-      const prompt = messages.map(m => `${m.role}: ${m.content}`).join('\n');
+      const prompt = messages.map((m) => `${m.role}: ${m.content}`).join('\n');
       const text = `[Bedrock simulation] Response to: ${prompt.substring(0, 100)}...`;
-      
+
       this.log('info', 'Bedrock chat completion completed');
       this.recordMetric('chat_complete', 1);
-      
+
       return {
         success: true,
         text,
@@ -268,12 +270,9 @@ export class BedrockLLMProvider extends CapabilityBase<BedrockConfig> {
   /**
    * Generate embedding
    */
-  async generateEmbedding(
-    text: string,
-    modelId?: string
-  ): Promise<EmbeddingResult> {
+  async generateEmbedding(text: string, modelId?: string): Promise<EmbeddingResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.accessKeyId || !this.secretAccessKey) {
         return {
@@ -282,13 +281,13 @@ export class BedrockLLMProvider extends CapabilityBase<BedrockConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // In a real implementation, we would call Bedrock embedding API
       const embedding = Array.from({ length: 1536 }, () => Math.random());
-      
+
       this.log('info', 'Bedrock embedding generation completed');
       this.recordMetric('embedding_generate', 1);
-      
+
       return {
         success: true,
         embedding,

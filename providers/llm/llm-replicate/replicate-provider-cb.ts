@@ -9,7 +9,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 /**
  * Configuration for Replicate Provider
@@ -17,25 +20,25 @@ import type { ProviderConfig, ProviderHealthCheckResult } from '../../../package
 export interface ReplicateConfig {
   /** Replicate API token */
   apiToken?: string;
-  
+
   /** Default model version */
   modelVersion?: string;
-  
+
   /** Model owner/name */
   model?: string;
-  
+
   /** Connection timeout in milliseconds */
   timeout?: number;
-  
+
   /** Number of retries on failure */
   retries?: number;
-  
+
   /** Maximum tokens */
   maxTokens?: number;
-  
+
   /** Temperature */
   temperature?: number;
-  
+
   /** Native fallback provider ID */
   fallbackProviderId?: string;
 }
@@ -46,7 +49,7 @@ export interface ReplicateConfig {
 export interface ChatMessage {
   /** Role (system, user, assistant) */
   role: 'system' | 'user' | 'assistant';
-  
+
   /** Message content */
   content: string;
 }
@@ -57,16 +60,16 @@ export interface ChatMessage {
 export interface ChatCompletionOptions {
   /** Model version */
   modelVersion?: string;
-  
+
   /** Temperature */
   temperature?: number;
-  
+
   /** Maximum tokens */
   maxTokens?: number;
-  
+
   /** Top P */
   topP?: number;
-  
+
   /** Additional parameters */
   parameters?: Record<string, any>;
 }
@@ -77,19 +80,19 @@ export interface ChatCompletionOptions {
 export interface ChatCompletionResult {
   /** Success status */
   success: boolean;
-  
+
   /** Generated text */
   text?: string;
-  
+
   /** Model version used */
   modelVersion?: string;
-  
+
   /** Model ID */
   model?: string;
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -135,7 +138,7 @@ export class ReplicateLLMProvider extends CapabilityBase<ReplicateConfig> {
   protected async doHealthCheck(): Promise<ProviderHealthCheckResult> {
     try {
       const isHealthy = this.apiToken.length > 0;
-      
+
       return {
         isHealthy,
         status: isHealthy ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.UNHEALTHY,
@@ -169,7 +172,7 @@ export class ReplicateLLMProvider extends CapabilityBase<ReplicateConfig> {
     options?: ChatCompletionOptions
   ): Promise<ChatCompletionResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.apiToken) {
         return {
@@ -178,14 +181,14 @@ export class ReplicateLLMProvider extends CapabilityBase<ReplicateConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // In a real implementation, we would call Replicate API
-      const prompt = messages.map(m => `${m.role}: ${m.content}`).join('\n');
+      const prompt = messages.map((m) => `${m.role}: ${m.content}`).join('\n');
       const text = `[Replicate simulation] Response using ${options?.modelVersion || this.modelVersion}: ${prompt.substring(0, 100)}...`;
-      
+
       this.log('info', 'Replicate chat completion completed');
       this.recordMetric('chat_complete', 1);
-      
+
       return {
         success: true,
         text,

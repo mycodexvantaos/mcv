@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface MinIOStorageConfig {
   endpoint: string;
@@ -16,8 +19,19 @@ export interface MinIOStorageConfig {
   secretKey?: string;
 }
 
-export interface StorageResult { success: boolean; data?: Buffer; url?: string; error?: string; operationTime: number; }
-export interface StorageListResult { success: boolean; files?: string[]; error?: string; operationTime: number; }
+export interface StorageResult {
+  success: boolean;
+  data?: Buffer;
+  url?: string;
+  error?: string;
+  operationTime: number;
+}
+export interface StorageListResult {
+  success: boolean;
+  files?: string[];
+  error?: string;
+  operationTime: number;
+}
 
 export class MinIOStorageProvider extends CapabilityBase<MinIOStorageConfig> {
   private endpoint: string;
@@ -30,7 +44,7 @@ export class MinIOStorageProvider extends CapabilityBase<MinIOStorageConfig> {
   constructor(config: ProviderConfig<MinIOStorageConfig>) {
     super(config);
     const cfg = config.config;
-this.endpoint = cfg.endpoint;
+    this.endpoint = cfg.endpoint;
     this.bucket = cfg.bucket;
     this.accessKey = cfg.accessKey;
     this.secretKey = cfg.secretKey;
@@ -62,7 +76,11 @@ this.endpoint = cfg.endpoint;
   async upload(key: string, data: Buffer): Promise<StorageResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `MinIOStorageProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `MinIOStorageProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -70,13 +88,21 @@ this.endpoint = cfg.endpoint;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async download(key: string): Promise<StorageResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `MinIOStorageProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `MinIOStorageProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -84,13 +110,21 @@ this.endpoint = cfg.endpoint;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async list(prefix?: string): Promise<StorageListResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `MinIOStorageProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `MinIOStorageProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -98,13 +132,21 @@ this.endpoint = cfg.endpoint;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async delete(key: string): Promise<StorageResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `MinIOStorageProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `MinIOStorageProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -112,7 +154,11 @@ this.endpoint = cfg.endpoint;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

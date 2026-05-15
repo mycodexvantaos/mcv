@@ -132,8 +132,5 @@ export const STANDARD_AUDIT_EVENTS: Record<string, string[]> = {
     'governance.audit.integrity-violation',
     'governance.audit.closed-loop-timeout',
   ],
-  usage: [
-    'governance.usage.quota-warning',
-    'governance.usage.rate-limit-exceeded',
-  ],
+  usage: ['governance.usage.quota-warning', 'governance.usage.rate-limit-exceeded'],
 };

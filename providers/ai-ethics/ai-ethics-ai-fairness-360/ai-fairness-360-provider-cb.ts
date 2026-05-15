@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface AIFairness360Config {
   timeout?: number;
@@ -15,7 +18,13 @@ export interface AIFairness360Config {
   fallbackProviderId?: string;
 }
 
-export interface EthicsResult { success: boolean; metrics?: Record<string, number>; mitigated?: unknown; error?: string; operationTime: number; }
+export interface EthicsResult {
+  success: boolean;
+  metrics?: Record<string, number>;
+  mitigated?: unknown;
+  error?: string;
+  operationTime: number;
+}
 
 export class AIFairness360Provider extends CapabilityBase<AIFairness360Config> {
   private timeout: number;
@@ -56,7 +65,11 @@ export class AIFairness360Provider extends CapabilityBase<AIFairness360Config> {
   async assessBias(data: unknown, protectedAttribute: string): Promise<EthicsResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `AIFairness360Provider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `AIFairness360Provider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -64,13 +77,21 @@ export class AIFairness360Provider extends CapabilityBase<AIFairness360Config> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async mitigateBias(data: unknown, method: string): Promise<EthicsResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `AIFairness360Provider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `AIFairness360Provider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -78,7 +99,11 @@ export class AIFairness360Provider extends CapabilityBase<AIFairness360Config> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

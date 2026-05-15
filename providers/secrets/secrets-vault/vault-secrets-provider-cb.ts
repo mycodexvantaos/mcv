@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface VaultSecretsConfig {
   address: string;
@@ -15,8 +18,19 @@ export interface VaultSecretsConfig {
   mountPath?: string;
 }
 
-export interface SecretResult { success: boolean; value?: string; version?: string; error?: string; operationTime: number; }
-export interface SecretListResult { success: boolean; secrets?: string[]; error?: string; operationTime: number; }
+export interface SecretResult {
+  success: boolean;
+  value?: string;
+  version?: string;
+  error?: string;
+  operationTime: number;
+}
+export interface SecretListResult {
+  success: boolean;
+  secrets?: string[];
+  error?: string;
+  operationTime: number;
+}
 
 export class VaultSecretsProvider extends CapabilityBase<VaultSecretsConfig> {
   private address: string;
@@ -28,7 +42,7 @@ export class VaultSecretsProvider extends CapabilityBase<VaultSecretsConfig> {
   constructor(config: ProviderConfig<VaultSecretsConfig>) {
     super(config);
     const cfg = config.config;
-this.address = cfg.address;
+    this.address = cfg.address;
     this.token = cfg.token;
     this.mountPath = cfg.mountPath || 'secret';
   }
@@ -59,7 +73,11 @@ this.address = cfg.address;
   async getSecret(path: string): Promise<SecretResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `VaultSecretsProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `VaultSecretsProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -67,13 +85,21 @@ this.address = cfg.address;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async setSecret(path: string, value: string): Promise<SecretResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `VaultSecretsProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `VaultSecretsProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -81,13 +107,21 @@ this.address = cfg.address;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async deleteSecret(path: string): Promise<SecretResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `VaultSecretsProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `VaultSecretsProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -95,13 +129,21 @@ this.address = cfg.address;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async listSecrets(path?: string): Promise<SecretListResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `VaultSecretsProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `VaultSecretsProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -109,7 +151,11 @@ this.address = cfg.address;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

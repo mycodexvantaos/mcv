@@ -13,7 +13,9 @@ export type { OllamaConfig } from './ollama-provider-cb';
 /**
  * Create a OllamaLLMProvider instance with the given configuration.
  */
-export function createOllamaLLMProvider(config: Partial<ProviderConfig<OllamaConfig>> = {}): OllamaLLMProvider {
+export function createOllamaLLMProvider(
+  config: Partial<ProviderConfig<OllamaConfig>> = {}
+): OllamaLLMProvider {
   const id = config.id || 'ollama-provider-cb';
   const name = config.name || 'OllamaLLMProvider';
   const providerConfig: ProviderConfig<OllamaConfig> = {

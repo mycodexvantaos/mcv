@@ -9,7 +9,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 /**
  * Configuration for Memory Cache Provider
@@ -17,19 +20,19 @@ import type { ProviderConfig, ProviderHealthCheckResult } from '../../../package
 export interface MemoryCacheConfig {
   /** Maximum number of items in cache */
   maxItems?: number;
-  
+
   /** Default TTL in seconds */
   defaultTTL?: number;
-  
+
   /** Key prefix */
   keyPrefix?: string;
-  
+
   /** Enable automatic cleanup */
   autoCleanup?: boolean;
-  
+
   /** Cleanup interval in milliseconds */
   cleanupInterval?: number;
-  
+
   /** Native fallback provider ID */
   fallbackProviderId?: string;
 }
@@ -40,16 +43,16 @@ export interface MemoryCacheConfig {
 export interface CacheValue<T = any> {
   /** Stored value */
   value: T;
-  
+
   /** Expiration timestamp */
   expiresAt?: number;
-  
+
   /** Creation timestamp */
   createdAt: number;
-  
+
   /** Last access timestamp */
   lastAccessedAt: number;
-  
+
   /** Access count */
   accessCount: number;
 }
@@ -60,7 +63,7 @@ export interface CacheValue<T = any> {
 export interface CacheOptions {
   /** Time to live in seconds */
   ttl?: number;
-  
+
   /** Key prefix */
   prefix?: string;
 }
@@ -71,16 +74,16 @@ export interface CacheOptions {
 export interface CacheResult<T = any> {
   /** Success status */
   success: boolean;
-  
+
   /** Cached value */
   value?: T;
-  
+
   /** Cache hit/miss status */
   hit?: boolean;
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -107,7 +110,7 @@ export class MemoryCacheProvider extends CapabilityBase<MemoryCacheConfig> {
     fallbackConfig?: any
   ) {
     super(id, name, config, fallbackConfig);
-    
+
     const cfg = config.config;
     this.cache = new Map();
     this.maxItems = cfg.maxItems || 1000;
@@ -138,13 +141,13 @@ export class MemoryCacheProvider extends CapabilityBase<MemoryCacheConfig> {
   protected async doHealthCheck(): Promise<ProviderHealthCheckResult> {
     const now = Date.now();
     let expiredCount = 0;
-    
+
     for (const [key, value] of this.cache.entries()) {
       if (value.expiresAt && value.expiresAt < now) {
         expiredCount++;
       }
     }
-    
+
     return {
       isHealthy: true,
       status: ProviderHealthStatus.HEALTHY,
@@ -167,11 +170,11 @@ export class MemoryCacheProvider extends CapabilityBase<MemoryCacheConfig> {
    */
   async get<T = any>(key: string, options?: CacheOptions): Promise<CacheResult<T>> {
     const startTime = Date.now();
-    
+
     try {
       const fullKey = `${options?.prefix || this.keyPrefix}${key}`;
       const cacheValue = this.cache.get(fullKey);
-      
+
       if (!cacheValue) {
         const operationTime = Date.now() - startTime;
         return {
@@ -180,7 +183,7 @@ export class MemoryCacheProvider extends CapabilityBase<MemoryCacheConfig> {
           operationTime,
         };
       }
-      
+
       // Check expiration
       const now = Date.now();
       if (cacheValue.expiresAt && cacheValue.expiresAt < now) {
@@ -192,14 +195,14 @@ export class MemoryCacheProvider extends CapabilityBase<MemoryCacheConfig> {
           operationTime,
         };
       }
-      
+
       // Update access metadata
       cacheValue.lastAccessedAt = now;
       cacheValue.accessCount++;
-      
+
       const operationTime = Date.now() - startTime;
       this.recordSuccess(operationTime);
-      
+
       return {
         success: true,
         value: cacheValue.value,
@@ -223,29 +226,29 @@ export class MemoryCacheProvider extends CapabilityBase<MemoryCacheConfig> {
    */
   async set<T = any>(key: string, value: T, options?: CacheOptions): Promise<CacheResult<void>> {
     const startTime = Date.now();
-    
+
     try {
       const fullKey = `${options?.prefix || this.keyPrefix}${key}`;
       const ttl = options?.ttl || this.defaultTTL;
-      
+
       const cacheValue: CacheValue<T> = {
         value,
-        expiresAt: ttl > 0 ? Date.now() + (ttl * 1000) : undefined,
+        expiresAt: ttl > 0 ? Date.now() + ttl * 1000 : undefined,
         createdAt: Date.now(),
         lastAccessedAt: Date.now(),
         accessCount: 0,
       };
-      
+
       // Check if we need to evict items
       if (this.cache.size >= this.maxItems && !this.cache.has(fullKey)) {
         this.evictLRU();
       }
-      
+
       this.cache.set(fullKey, cacheValue);
-      
+
       const operationTime = Date.now() - startTime;
       this.recordSuccess(operationTime);
-      
+
       return {
         success: true,
         operationTime,
@@ -266,14 +269,14 @@ export class MemoryCacheProvider extends CapabilityBase<MemoryCacheConfig> {
    */
   async delete(key: string, options?: CacheOptions): Promise<CacheResult<void>> {
     const startTime = Date.now();
-    
+
     try {
       const fullKey = `${options?.prefix || this.keyPrefix}${key}`;
       const deleted = this.cache.delete(fullKey);
-      
+
       const operationTime = Date.now() - startTime;
       this.recordSuccess(operationTime);
-      
+
       return {
         success: deleted,
         operationTime,
@@ -294,10 +297,10 @@ export class MemoryCacheProvider extends CapabilityBase<MemoryCacheConfig> {
    */
   async clear(options?: CacheOptions): Promise<CacheResult<void>> {
     const startTime = Date.now();
-    
+
     try {
       const prefix = options?.prefix || this.keyPrefix;
-      
+
       if (prefix) {
         // Clear only keys with prefix
         for (const key of this.cache.keys()) {
@@ -309,10 +312,10 @@ export class MemoryCacheProvider extends CapabilityBase<MemoryCacheConfig> {
         // Clear all
         this.cache.clear();
       }
-      
+
       const operationTime = Date.now() - startTime;
       this.recordSuccess(operationTime);
-      
+
       return {
         success: true,
         operationTime,
@@ -331,25 +334,31 @@ export class MemoryCacheProvider extends CapabilityBase<MemoryCacheConfig> {
   /**
    * Get multiple values
    */
-  async getMany<T = any>(keys: string[], options?: CacheOptions): Promise<Map<string, CacheResult<T>>> {
+  async getMany<T = any>(
+    keys: string[],
+    options?: CacheOptions
+  ): Promise<Map<string, CacheResult<T>>> {
     const results = new Map<string, CacheResult<T>>();
-    
+
     for (const key of keys) {
       const result = await this.get<T>(key, options);
       results.set(key, result);
     }
-    
+
     return results;
   }
 
   /**
    * Set multiple values
    */
-  async setMany<T = any>(items: Map<string, T>, options?: CacheOptions): Promise<CacheResult<void>> {
+  async setMany<T = any>(
+    items: Map<string, T>,
+    options?: CacheOptions
+  ): Promise<CacheResult<void>> {
     const startTime = Date.now();
     let success = true;
     let lastError: string | undefined;
-    
+
     try {
       for (const [key, value] of items.entries()) {
         const result = await this.set(key, value, options);
@@ -358,7 +367,7 @@ export class MemoryCacheProvider extends CapabilityBase<MemoryCacheConfig> {
           lastError = result.error;
         }
       }
-      
+
       const operationTime = Date.now() - startTime;
       return {
         success,
@@ -383,20 +392,20 @@ export class MemoryCacheProvider extends CapabilityBase<MemoryCacheConfig> {
     let lruKey: string | null = null;
     let lruTime = Infinity;
     const now = Date.now();
-    
+
     for (const [key, value] of this.cache.entries()) {
       if (value.expiresAt && value.expiresAt < now) {
         // Evict expired items first
         this.cache.delete(key);
         return;
       }
-      
+
       if (value.lastAccessedAt < lruTime) {
         lruTime = value.lastAccessedAt;
         lruKey = key;
       }
     }
-    
+
     if (lruKey) {
       this.cache.delete(lruKey);
     }
@@ -409,7 +418,7 @@ export class MemoryCacheProvider extends CapabilityBase<MemoryCacheConfig> {
     if (this.cleanupTimer) {
       return;
     }
-    
+
     this.cleanupTimer = setInterval(() => {
       this.cleanupExpiredItems();
     }, this.cleanupInterval);
@@ -431,14 +440,14 @@ export class MemoryCacheProvider extends CapabilityBase<MemoryCacheConfig> {
   private cleanupExpiredItems(): void {
     const now = Date.now();
     let cleaned = 0;
-    
+
     for (const [key, value] of this.cache.entries()) {
       if (value.expiresAt && value.expiresAt < now) {
         this.cache.delete(key);
         cleaned++;
       }
     }
-    
+
     if (cleaned > 0) {
       this.log('info', `Cleaned up ${cleaned} expired items`);
     }

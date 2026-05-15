@@ -24,7 +24,12 @@
 
 export interface IStoragePort {
   /** Store a blob and return its key */
-  put(bucket: string, key: string, data: Uint8Array, options?: StoragePutOptions): Promise<StoragePutResult>;
+  put(
+    bucket: string,
+    key: string,
+    data: Uint8Array,
+    options?: StoragePutOptions
+  ): Promise<StoragePutResult>;
 
   /** Retrieve a blob by key */
   get(bucket: string, key: string): Promise<Uint8Array | null>;
@@ -78,7 +83,6 @@ export interface StorageListResult {
   truncated: boolean;
 }
 
-
 // ─── Database Port ────────────────────────────────────────────────────
 // Abstracts relational database operations.
 // Cloudflare implementation: D1 (SQLite)
@@ -121,7 +125,6 @@ export interface DatabaseMetadata {
   tableCount?: number;
 }
 
-
 // ─── Cache Port ───────────────────────────────────────────────────────
 // Abstracts key-value cache operations.
 // Cloudflare implementation: KV
@@ -141,11 +144,16 @@ export interface ICachePort {
   list(options?: CacheListOptions): Promise<CacheListResult>;
 
   /** Atomic compare-and-set */
-  atomicSet(key: string, expectedValue: unknown, newValue: unknown, options?: CachePutOptions): Promise<boolean>;
+  atomicSet(
+    key: string,
+    expectedValue: unknown,
+    newValue: unknown,
+    options?: CachePutOptions
+  ): Promise<boolean>;
 }
 
 export interface CachePutOptions {
-  expirationTtl?: number;    // seconds
+  expirationTtl?: number; // seconds
   metadata?: Record<string, string>;
 }
 
@@ -160,7 +168,6 @@ export interface CacheListResult {
   cursor?: string;
   list_complete: boolean;
 }
-
 
 // ─── Search Port ──────────────────────────────────────────────────────
 // Abstracts vector search and full-text search operations.
@@ -217,7 +224,6 @@ export interface FulltextSearchOptions {
   offset?: number;
   filter?: Record<string, unknown>;
 }
-
 
 // ─── Model Port ───────────────────────────────────────────────────────
 // Abstracts LLM invocation operations.
@@ -295,7 +301,6 @@ export interface ModelHealthStatus {
   error?: string;
 }
 
-
 // ─── Queue Port ───────────────────────────────────────────────────────
 // Abstracts message queue operations for async processing.
 // Cloudflare implementation: Queues
@@ -323,7 +328,11 @@ export interface QueueMessage {
   metadata?: Record<string, string>;
 }
 
-export type QueueHandler = (messages: QueueMessage[], ack: (ids: string[]) => void, retry: (ids: string[], delaySeconds?: number) => void) => Promise<void>;
+export type QueueHandler = (
+  messages: QueueMessage[],
+  ack: (ids: string[]) => void,
+  retry: (ids: string[], delaySeconds?: number) => void
+) => Promise<void>;
 
 export interface QueueConsumeOptions {
   maxBatchSize?: number;
@@ -338,7 +347,6 @@ export interface QueueMetadata {
   createdAt?: string;
 }
 
-
 // ─── Identity Port ────────────────────────────────────────────────────
 // Abstracts authentication and authorization checks.
 // This is an internal port — the identity service exposes it.
@@ -348,7 +356,12 @@ export interface IIdentityPort {
   validateToken(accessToken: string): Promise<TokenClaims>;
 
   /** Check if a subject has a specific permission in a workspace */
-  checkPermission(subjectId: string, workspaceId: string, action: string, resourceKind: string): Promise<boolean>;
+  checkPermission(
+    subjectId: string,
+    workspaceId: string,
+    action: string,
+    resourceKind: string
+  ): Promise<boolean>;
 
   /** Get subject details */
   getSubject(subjectId: string): Promise<SubjectInfo>;
@@ -375,8 +388,13 @@ export interface SubjectInfo {
   status: string;
 }
 
-export type Role = 'platform-admin' | 'workspace-owner' | 'workspace-member' | 'workspace-viewer' | 'agent-service' | 'auditor';
-
+export type Role =
+  | 'platform-admin'
+  | 'workspace-owner'
+  | 'workspace-member'
+  | 'workspace-viewer'
+  | 'agent-service'
+  | 'auditor';
 
 // ─── Audit Port ───────────────────────────────────────────────────────
 // Abstracts audit event emission and querying.
@@ -441,7 +459,6 @@ export interface IntegrityReport {
   }>;
   checkedRange: { from: number; to: number };
 }
-
 
 // ─── Usage Port ───────────────────────────────────────────────────────
 // Abstracts usage metering and rate limit checking.

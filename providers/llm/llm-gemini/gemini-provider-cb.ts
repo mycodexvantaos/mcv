@@ -9,7 +9,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 /**
  * Configuration for Gemini LLM Provider
@@ -17,34 +20,34 @@ import type { ProviderConfig, ProviderHealthCheckResult } from '../../../package
 export interface GeminiConfig {
   /** Google API key */
   apiKey?: string;
-  
+
   /** Model to use (default: gemini-pro) */
   model?: string;
-  
+
   /** Base URL for custom endpoints */
   baseURL?: string;
-  
+
   /** Request timeout in milliseconds */
   timeout?: number;
-  
+
   /** Maximum tokens for response */
   maxTokens?: number;
-  
+
   /** Temperature for randomness (0-2) */
   temperature?: number;
-  
+
   /** Top-k sampling */
   topK?: number;
-  
+
   /** Top-p nucleus sampling */
   topP?: number;
-  
+
   /** Whether to use streaming */
   stream?: boolean;
-  
+
   /** Number of retries on failure */
   retries?: number;
-  
+
   /** Native fallback provider ID */
   fallbackProviderId?: string;
 }
@@ -70,22 +73,22 @@ export interface Content {
 export interface LLMRequest {
   /** The prompt to generate response for */
   prompt?: string;
-  
+
   /** Chat history */
   history?: Content[];
-  
+
   /** Maximum tokens to generate */
   maxTokens?: number;
-  
+
   /** Temperature for randomness (0-2) */
   temperature?: number;
-  
+
   /** Top-k sampling */
   topK?: number;
-  
+
   /** Top-p nucleus sampling */
   topP?: number;
-  
+
   /** Whether to stream response */
   stream?: boolean;
 }
@@ -96,22 +99,22 @@ export interface LLMRequest {
 export interface LLMResponse {
   /** Generated response text */
   text: string;
-  
+
   /** Number of tokens generated */
   tokens: number;
-  
+
   /** Model identifier */
   model: string;
-  
+
   /** Provider name */
   provider: string;
-  
+
   /** Generation time in milliseconds */
   generationTime: number;
-  
+
   /** Whether response was streamed */
   streamed: boolean;
-  
+
   /** Safety ratings */
   safetyRatings?: any[];
 }
@@ -132,7 +135,7 @@ export class GeminiLLMProvider extends CapabilityBase<GeminiConfig> {
   private enableStreaming: boolean;
   private retries: number;
   private fallbackProviderId: string = 'native';
-  
+
   private isGeminiAvailable: boolean = false;
   private apiKey: string | undefined;
 
@@ -143,7 +146,7 @@ export class GeminiLLMProvider extends CapabilityBase<GeminiConfig> {
     fallbackConfig?: any
   ) {
     super(id, name, config, fallbackConfig);
-    
+
     const cfg = config.config;
     this.apiKey = cfg.apiKey;
     this.baseURL = cfg.baseURL || 'https://generativelanguage.googleapis.com/v1beta';
@@ -169,7 +172,7 @@ export class GeminiLLMProvider extends CapabilityBase<GeminiConfig> {
 
     try {
       await this.checkGeminiAvailability();
-      
+
       if (this.isGeminiAvailable) {
         this.log('info', `Gemini provider initialized with model ${this.model}`);
         this.log('info', `Configuration - baseURL: ${this.baseURL}, timeout: ${this.timeout}ms`);
@@ -189,18 +192,15 @@ export class GeminiLLMProvider extends CapabilityBase<GeminiConfig> {
     if (!this.apiKey) return false;
 
     try {
-      const response = await fetch(
-        `${this.baseURL}/models?key=${this.apiKey}`,
-        {
-          signal: AbortSignal.timeout(this.timeout),
-        }
-      );
+      const response = await fetch(`${this.baseURL}/models?key=${this.apiKey}`, {
+        signal: AbortSignal.timeout(this.timeout),
+      });
 
       if (response.ok) {
         this.isGeminiAvailable = true;
         return true;
       }
-      
+
       this.isGeminiAvailable = false;
       return false;
     } catch {
@@ -257,17 +257,19 @@ export class GeminiLLMProvider extends CapabilityBase<GeminiConfig> {
    */
   async generate(request: LLMRequest): Promise<LLMResponse> {
     const startTime = Date.now();
-    
+
     if (!this.isGeminiAvailable || !this.apiKey) {
       this.recordFailure(new Error('Gemini not available'));
-      throw new Error(`Gemini service not available. Use fallback provider: ${this.fallbackProviderId}`);
+      throw new Error(
+        `Gemini service not available. Use fallback provider: ${this.fallbackProviderId}`
+      );
     }
 
     try {
       const response = await this.generateWithRetry(request);
       const generationTime = Date.now() - startTime;
       response.generationTime = generationTime;
-      
+
       this.recordSuccess(generationTime);
       return response;
     } catch (error) {
@@ -292,7 +294,7 @@ export class GeminiLLMProvider extends CapabilityBase<GeminiConfig> {
 
         if (attempt < this.retries) {
           const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
-          await new Promise(resolve => setTimeout(resolve, delay));
+          await new Promise((resolve) => setTimeout(resolve, delay));
         }
       }
     }
@@ -346,9 +348,9 @@ export class GeminiLLMProvider extends CapabilityBase<GeminiConfig> {
     }
 
     const data = await response.json();
-    
+
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    
+
     return {
       text,
       tokens: Math.ceil(text.length / 4),
@@ -388,7 +390,7 @@ export class GeminiLLMProvider extends CapabilityBase<GeminiConfig> {
     }
 
     const streamUrl = this.getApiURL().replace('generateContent', 'streamGenerateContent');
-    
+
     const response = await fetch(streamUrl, {
       method: 'POST',
       headers: {
@@ -415,7 +417,7 @@ export class GeminiLLMProvider extends CapabilityBase<GeminiConfig> {
       if (done) break;
 
       const chunk = decoder.decode(value);
-      const lines = chunk.split('\n').filter(line => line.trim());
+      const lines = chunk.split('\n').filter((line) => line.trim());
 
       for (const line of lines) {
         try {
@@ -438,10 +440,9 @@ export class GeminiLLMProvider extends CapabilityBase<GeminiConfig> {
     if (!this.isGeminiAvailable || !this.apiKey) return [];
 
     try {
-      const response = await fetch(
-        `${this.baseURL}/models?key=${this.apiKey}`,
-        { signal: AbortSignal.timeout(this.timeout) }
-      );
+      const response = await fetch(`${this.baseURL}/models?key=${this.apiKey}`, {
+        signal: AbortSignal.timeout(this.timeout),
+      });
 
       if (!response.ok) return [];
 

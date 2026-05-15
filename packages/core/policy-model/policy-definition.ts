@@ -72,12 +72,34 @@ export interface PolicyEvaluationContext {
 
 /** Standard permission actions per category */
 export const STANDARD_ACTIONS: Record<string, string[]> = {
-  knowledge: ['knowledge-store:read', 'knowledge-store:write', 'knowledge-search:execute', 'knowledge-ingestion:execute'],
+  knowledge: [
+    'knowledge-store:read',
+    'knowledge-store:write',
+    'knowledge-search:execute',
+    'knowledge-ingestion:execute',
+  ],
   agent: ['agent-chat:execute', 'agent-router:execute', 'agent-mode:switch'],
-  workspace: ['workspace:create', 'workspace:read', 'workspace:update', 'workspace:delete', 'workspace:manage-members'],
+  workspace: [
+    'workspace:create',
+    'workspace:read',
+    'workspace:update',
+    'workspace:delete',
+    'workspace:manage-members',
+  ],
   developer: ['developer-api:read', 'developer-token:create', 'developer-webhook:register'],
-  security: ['identity:read', 'identity:write', 'access-policy:read', 'access-policy:write', 'audit-log:read'],
-  storage: ['storage-object:read', 'storage-object:write', 'storage-cache:read', 'storage-cache:write'],
+  security: [
+    'identity:read',
+    'identity:write',
+    'access-policy:read',
+    'access-policy:write',
+    'audit-log:read',
+  ],
+  storage: [
+    'storage-object:read',
+    'storage-object:write',
+    'storage-cache:read',
+    'storage-cache:write',
+  ],
   model: ['model-byok:read', 'model-byok:write', 'model-byok:execute', 'model-byok:admin'],
   automation: ['automation-job:create', 'automation-job:read', 'automation-job:execute'],
 };

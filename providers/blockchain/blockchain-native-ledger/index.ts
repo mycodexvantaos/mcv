@@ -13,7 +13,9 @@ export type { NativeLedgerConfig } from './native-ledger-provider-cb';
 /**
  * Create a NativeLedgerProvider instance with the given configuration.
  */
-export function createNativeLedgerProvider(config: Partial<ProviderConfig<NativeLedgerConfig>> = {}): NativeLedgerProvider {
+export function createNativeLedgerProvider(
+  config: Partial<ProviderConfig<NativeLedgerConfig>> = {}
+): NativeLedgerProvider {
   const providerConfig: ProviderConfig<NativeLedgerConfig> = {
     id: config.id || 'native-ledger-provider-cb',
     name: config.name || 'NativeLedgerProvider',

@@ -13,7 +13,13 @@
  */
 
 import type { IDatabasePort } from '../../ports/database';
-import type { IChatModelPort, IEmbeddingModelPort, ModelResponse, EmbedResponse, ModelHealthStatus } from '../../ports/model-provider';
+import type {
+  IChatModelPort,
+  IEmbeddingModelPort,
+  ModelResponse,
+  EmbedResponse,
+  ModelHealthStatus,
+} from '../../ports/model-provider';
 import type { IAuthPort } from '../../ports/auth';
 import type { ResourceCondition } from '../../core/shared';
 
@@ -34,7 +40,14 @@ export interface ModelServiceDeps {
 
 // ── Types ──────────────────────────────────────────────────────────────
 
-export type ModelProvider = 'openai' | 'anthropic' | 'google' | 'ollama' | 'openrouter' | 'workers-ai' | 'custom';
+export type ModelProvider =
+  | 'openai'
+  | 'anthropic'
+  | 'google'
+  | 'ollama'
+  | 'openrouter'
+  | 'workers-ai'
+  | 'custom';
 export type ModelEndpointPhase = 'registering' | 'active' | 'degraded' | 'revoked';
 
 export interface RegisterEndpointInput {
@@ -99,7 +112,11 @@ export class ModelService {
     this.deps = deps;
   }
 
-  async registerEndpoint(workspaceId: string, subjectId: string, input: RegisterEndpointInput): Promise<ModelEndpointResource> {
+  async registerEndpoint(
+    workspaceId: string,
+    subjectId: string,
+    input: RegisterEndpointInput
+  ): Promise<ModelEndpointResource> {
     const endpointId = crypto.randomUUID();
     const urn = `urn:mycodexvantaos:model:endpoint:${endpointId}`;
     const now = new Date().toISOString();
@@ -110,7 +127,19 @@ export class ModelService {
     await this.deps.database.execute(
       `INSERT INTO model_endpoints (id, urn, workspace_id, provider, model_id, api_endpoint, credential_ref, parameters, failover_endpoint_id, phase, health, created_at, updated_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'active', 'healthy', ?, ?)`,
-      [endpointId, urn, workspaceId, input.provider, input.modelId, input.apiEndpoint, credentialRef, JSON.stringify(input.parameters ?? {}), input.failoverEndpointId ?? null, now, now]
+      [
+        endpointId,
+        urn,
+        workspaceId,
+        input.provider,
+        input.modelId,
+        input.apiEndpoint,
+        credentialRef,
+        JSON.stringify(input.parameters ?? {}),
+        input.failoverEndpointId ?? null,
+        now,
+        now,
+      ]
     );
 
     await this.deps.audit.emitEvent({
@@ -134,11 +163,21 @@ export class ModelService {
         parameters: input.parameters ?? {},
         failoverEndpointId: input.failoverEndpointId ?? null,
       },
-      status: { phase: 'active', health: 'healthy', totalInvocations: 0, totalTokensUsed: 0, conditions: [] },
+      status: {
+        phase: 'active',
+        health: 'healthy',
+        totalInvocations: 0,
+        totalTokensUsed: 0,
+        conditions: [],
+      },
     };
   }
 
-  async callChatModel(workspaceId: string, subjectId: string, input: CallChatModelInput): Promise<ModelResponse> {
+  async callChatModel(
+    workspaceId: string,
+    subjectId: string,
+    input: CallChatModelInput
+  ): Promise<ModelResponse> {
     const response = await this.deps.chatModel.invoke({
       model: input.endpointId,
       messages: input.messages,
@@ -162,7 +201,11 @@ export class ModelService {
     return response;
   }
 
-  async callEmbeddingModel(workspaceId: string, subjectId: string, input: CallEmbeddingModelInput): Promise<EmbedResponse> {
+  async callEmbeddingModel(
+    workspaceId: string,
+    subjectId: string,
+    input: CallEmbeddingModelInput
+  ): Promise<EmbedResponse> {
     const response = await this.deps.embeddingModel.embed({
       model: input.model ?? 'default',
       input: input.texts,

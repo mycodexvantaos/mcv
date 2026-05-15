@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface AlgoliaSearchConfig {
   appId?: string;
@@ -89,22 +92,41 @@ export class AlgoliaSearchProvider extends CapabilityBase<AlgoliaSearchConfig> {
   async search(query: string, options?: Record<string, unknown>): Promise<SearchResults> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `Algolia not available. Use fallback: ${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: `Algolia not available. Use fallback: ${this.fallbackProviderId}`,
+        operationTime: Date.now() - startTime,
+      };
     }
     try {
-      const result: SearchResults = { success: true, hits: [], nbHits: 0, page: 0, nbPages: 0, operationTime: Date.now() - startTime };
+      const result: SearchResults = {
+        success: true,
+        hits: [],
+        nbHits: 0,
+        page: 0,
+        nbPages: 0,
+        operationTime: Date.now() - startTime,
+      };
       this.recordSuccess(result.operationTime);
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      };
     }
   }
 
   async indexObject(object: Record<string, unknown>): Promise<IndexResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `Algolia not available. Use fallback: ${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: `Algolia not available. Use fallback: ${this.fallbackProviderId}`,
+        operationTime: Date.now() - startTime,
+      };
     }
     try {
       const result: IndexResult = { success: true, operationTime: Date.now() - startTime };
@@ -112,14 +134,22 @@ export class AlgoliaSearchProvider extends CapabilityBase<AlgoliaSearchConfig> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      };
     }
   }
 
   async deleteObject(objectID: string): Promise<IndexResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `Algolia not available. Use fallback: ${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: `Algolia not available. Use fallback: ${this.fallbackProviderId}`,
+        operationTime: Date.now() - startTime,
+      };
     }
     try {
       const result: IndexResult = { success: true, operationTime: Date.now() - startTime };
@@ -127,7 +157,11 @@ export class AlgoliaSearchProvider extends CapabilityBase<AlgoliaSearchConfig> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      };
     }
   }
 

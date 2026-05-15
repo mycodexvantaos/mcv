@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../../packages/capabilities/types';
 
 export interface CohereHybridEmbeddingConfig {
   apiKey: string;
@@ -15,7 +18,13 @@ export interface CohereHybridEmbeddingConfig {
   inputType?: string;
 }
 
-export interface EmbedResult { success: boolean; embeddings?: number[][]; model?: string; error?: string; operationTime: number; }
+export interface EmbedResult {
+  success: boolean;
+  embeddings?: number[][];
+  model?: string;
+  error?: string;
+  operationTime: number;
+}
 
 export class CohereHybridEmbeddingProvider extends CapabilityBase<CohereHybridEmbeddingConfig> {
   private apiKey: string;
@@ -27,7 +36,7 @@ export class CohereHybridEmbeddingProvider extends CapabilityBase<CohereHybridEm
   constructor(config: ProviderConfig<CohereHybridEmbeddingConfig>) {
     super(config);
     const cfg = config.config;
-this.apiKey = cfg.apiKey;
+    this.apiKey = cfg.apiKey;
     this.defaultModel = cfg.defaultModel || 'embed-english-v3.0';
     this.inputType = cfg.inputType || 'search_document';
   }
@@ -58,7 +67,11 @@ this.apiKey = cfg.apiKey;
   async embed(text: string): Promise<EmbedResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `CohereHybridEmbeddingProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `CohereHybridEmbeddingProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -66,13 +79,21 @@ this.apiKey = cfg.apiKey;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async embedBatch(texts: string[]): Promise<EmbedResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `CohereHybridEmbeddingProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `CohereHybridEmbeddingProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -80,7 +101,11 @@ this.apiKey = cfg.apiKey;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

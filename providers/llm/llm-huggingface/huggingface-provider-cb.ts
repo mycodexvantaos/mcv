@@ -9,7 +9,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 /**
  * Configuration for HuggingFace Provider
@@ -17,25 +20,25 @@ import type { ProviderConfig, ProviderHealthCheckResult } from '../../../package
 export interface HuggingFaceConfig {
   /** HuggingFace API token */
   apiToken?: string;
-  
+
   /** Default model ID */
   modelId?: string;
-  
+
   /** Model URL for inference API */
   modelUrl?: string;
-  
+
   /** Connection timeout in milliseconds */
   timeout?: number;
-  
+
   /** Number of retries on failure */
   retries?: number;
-  
+
   /** Maximum tokens */
   maxTokens?: number;
-  
+
   /** Temperature */
   temperature?: number;
-  
+
   /** Native fallback provider ID */
   fallbackProviderId?: string;
 }
@@ -46,7 +49,7 @@ export interface HuggingFaceConfig {
 export interface ChatMessage {
   /** Role (system, user, assistant) */
   role: 'system' | 'user' | 'assistant';
-  
+
   /** Message content */
   content: string;
 }
@@ -57,16 +60,16 @@ export interface ChatMessage {
 export interface ChatCompletionOptions {
   /** Model ID */
   modelId?: string;
-  
+
   /** Temperature */
   temperature?: number;
-  
+
   /** Maximum tokens */
   maxTokens?: number;
-  
+
   /** Top P */
   topP?: number;
-  
+
   /** Parameters for specific models */
   parameters?: Record<string, any>;
 }
@@ -77,23 +80,23 @@ export interface ChatCompletionOptions {
 export interface ChatCompletionResult {
   /** Success status */
   success: boolean;
-  
+
   /** Generated text */
   text?: string;
-  
+
   /** Model ID used */
   modelId?: string;
-  
+
   /** Token usage */
   usage?: {
     promptTokens: number;
     completionTokens: number;
     totalTokens: number;
   };
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -104,19 +107,19 @@ export interface ChatCompletionResult {
 export interface EmbeddingResult {
   /** Success status */
   success: boolean;
-  
+
   /** Embedding vector */
   embedding?: number[];
-  
+
   /** Model ID used */
   modelId?: string;
-  
+
   /** Dimension of embedding */
   dimension?: number;
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -140,7 +143,8 @@ export class HuggingFaceLLMProvider extends CapabilityBase<HuggingFaceConfig> {
     super(config);
     this.apiToken = config.config.apiToken || '';
     this.modelId = config.config.modelId || 'mistralai/Mistral-7B-Instruct-v0.2';
-    this.modelUrl = config.config.modelUrl || `https://api-inference.huggingface.co/models/${this.modelId}`;
+    this.modelUrl =
+      config.config.modelUrl || `https://api-inference.huggingface.co/models/${this.modelId}`;
     this.timeout = config.config.timeout || 60000;
     this.retries = config.config.retries || 3;
     this.maxTokens = config.config.maxTokens || 4096;
@@ -162,7 +166,7 @@ export class HuggingFaceLLMProvider extends CapabilityBase<HuggingFaceConfig> {
   protected async doHealthCheck(): Promise<ProviderHealthCheckResult> {
     try {
       const isHealthy = this.apiToken.length > 0;
-      
+
       return {
         isHealthy,
         status: isHealthy ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.UNHEALTHY,
@@ -196,7 +200,7 @@ export class HuggingFaceLLMProvider extends CapabilityBase<HuggingFaceConfig> {
     options?: ChatCompletionOptions
   ): Promise<ChatCompletionResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.apiToken) {
         return {
@@ -205,14 +209,14 @@ export class HuggingFaceLLMProvider extends CapabilityBase<HuggingFaceConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // In a real implementation, we would call HuggingFace Inference API
-      const prompt = messages.map(m => `[${m.role}] ${m.content}`).join('\n');
+      const prompt = messages.map((m) => `[${m.role}] ${m.content}`).join('\n');
       const text = `[HuggingFace simulation] Response using ${options?.modelId || this.modelId}: ${prompt.substring(0, 100)}...`;
-      
+
       this.log('info', 'HuggingFace chat completion completed');
       this.recordMetric('chat_complete', 1);
-      
+
       return {
         success: true,
         text,
@@ -248,12 +252,9 @@ export class HuggingFaceLLMProvider extends CapabilityBase<HuggingFaceConfig> {
   /**
    * Generate embedding
    */
-  async generateEmbedding(
-    text: string,
-    modelId?: string
-  ): Promise<EmbeddingResult> {
+  async generateEmbedding(text: string, modelId?: string): Promise<EmbeddingResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.apiToken) {
         return {
@@ -262,13 +263,13 @@ export class HuggingFaceLLMProvider extends CapabilityBase<HuggingFaceConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // In a real implementation, we would call HuggingFace embedding API
       const embedding = Array.from({ length: 768 }, () => Math.random());
-      
+
       this.log('info', 'HuggingFace embedding generation completed');
       this.recordMetric('embedding_generate', 1);
-      
+
       return {
         success: true,
         embedding,

@@ -13,7 +13,9 @@ export type { S3StorageConfig } from './s3-storage-provider-cb';
 /**
  * Create a S3StorageProvider instance with the given configuration.
  */
-export function createS3StorageProvider(config: Partial<ProviderConfig<S3StorageConfig>> = {}): S3StorageProvider {
+export function createS3StorageProvider(
+  config: Partial<ProviderConfig<S3StorageConfig>> = {}
+): S3StorageProvider {
   const providerConfig: ProviderConfig<S3StorageConfig> = {
     id: config.id || 's3-storage-provider-cb',
     name: config.name || 'S3StorageProvider',

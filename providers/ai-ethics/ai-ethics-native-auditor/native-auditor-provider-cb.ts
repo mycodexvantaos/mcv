@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface NativeAuditorConfig {
   timeout?: number;
@@ -15,7 +18,13 @@ export interface NativeAuditorConfig {
   fallbackProviderId?: string;
 }
 
-export interface AuditResult { success: boolean; auditId?: string; findings?: Record<string, unknown>[]; error?: string; operationTime: number; }
+export interface AuditResult {
+  success: boolean;
+  auditId?: string;
+  findings?: Record<string, unknown>[];
+  error?: string;
+  operationTime: number;
+}
 
 export class NativeAuditorProvider extends CapabilityBase<NativeAuditorConfig> {
   private timeout: number;
@@ -56,7 +65,11 @@ export class NativeAuditorProvider extends CapabilityBase<NativeAuditorConfig> {
   async audit(model: string, dataset: unknown): Promise<AuditResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `NativeAuditorProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `NativeAuditorProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -64,13 +77,21 @@ export class NativeAuditorProvider extends CapabilityBase<NativeAuditorConfig> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async generateReport(auditId: string): Promise<AuditResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `NativeAuditorProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `NativeAuditorProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -78,7 +99,11 @@ export class NativeAuditorProvider extends CapabilityBase<NativeAuditorConfig> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

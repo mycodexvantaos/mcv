@@ -13,7 +13,9 @@ export type { ElasticsearchConfig } from './elasticsearch-provider-cb';
 /**
  * Create a ElasticsearchProvider instance with the given configuration.
  */
-export function createElasticsearchProvider(config: Partial<ProviderConfig<ElasticsearchConfig>> = {}): ElasticsearchProvider {
+export function createElasticsearchProvider(
+  config: Partial<ProviderConfig<ElasticsearchConfig>> = {}
+): ElasticsearchProvider {
   const providerConfig: ProviderConfig<ElasticsearchConfig> = {
     id: config.id || 'elasticsearch-provider-cb',
     name: config.name || 'ElasticsearchProvider',

@@ -9,7 +9,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 /**
  * Configuration for GCS Storage Provider
@@ -17,25 +20,25 @@ import type { ProviderConfig, ProviderHealthCheckResult } from '../../../package
 export interface GCSStorageConfig {
   /** GCS project ID */
   projectId?: string;
-  
+
   /** GCS key file path or JSON content */
   keyFile?: string;
-  
+
   /** GCS bucket name */
   bucket?: string;
-  
+
   /** GCS authentication credentials */
   credentials?: {
     client_email?: string;
     private_key?: string;
   };
-  
+
   /** Connection timeout in milliseconds */
   timeout?: number;
-  
+
   /** Number of retries on failure */
   retries?: number;
-  
+
   /** Native fallback provider ID */
   fallbackProviderId?: string;
 }
@@ -46,25 +49,25 @@ export interface GCSStorageConfig {
 export interface FileMetadata {
   /** File name */
   name: string;
-  
+
   /** File path */
   path: string;
-  
+
   /** File size in bytes */
   size: number;
-  
+
   /** Content type */
   contentType?: string;
-  
+
   /** Generation number */
   generation?: string;
-  
+
   /** Last modified timestamp */
   lastModified: number;
-  
+
   /** ETag */
   etag?: string;
-  
+
   /** Custom metadata */
   metadata?: Record<string, string>;
 }
@@ -150,7 +153,7 @@ export class GCSStorageProvider extends CapabilityBase<GCSStorageConfig> {
     if (!this.bucket) {
       throw new Error('GCS bucket name is required');
     }
-    
+
     this.log('info', 'GCS storage provider initialized');
     this.log('info', `Bucket: ${this.bucket}, Project: ${this.projectId}`);
   }
@@ -160,9 +163,10 @@ export class GCSStorageProvider extends CapabilityBase<GCSStorageConfig> {
    */
   protected async doHealthCheck(): Promise<ProviderHealthCheckResult> {
     try {
-      const hasCredentials = (this.projectId && this.keyFile) || 
-                             (this.credentials?.client_email && this.credentials?.private_key);
-      
+      const hasCredentials =
+        (this.projectId && this.keyFile) ||
+        (this.credentials?.client_email && this.credentials?.private_key);
+
       if (!hasCredentials) {
         return {
           isHealthy: false,
@@ -173,7 +177,7 @@ export class GCSStorageProvider extends CapabilityBase<GCSStorageConfig> {
           },
         };
       }
-      
+
       return {
         isHealthy: true,
         status: ProviderHealthStatus.HEALTHY,
@@ -211,11 +215,12 @@ export class GCSStorageProvider extends CapabilityBase<GCSStorageConfig> {
     }
   ): Promise<UploadResult> {
     const startTime = Date.now();
-    
+
     try {
-      const hasCredentials = (this.projectId && this.keyFile) || 
-                             (this.credentials?.client_email && this.credentials?.private_key);
-      
+      const hasCredentials =
+        (this.projectId && this.keyFile) ||
+        (this.credentials?.client_email && this.credentials?.private_key);
+
       if (!hasCredentials) {
         return {
           success: false,
@@ -223,15 +228,15 @@ export class GCSStorageProvider extends CapabilityBase<GCSStorageConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // In a real implementation, we would upload to GCS
       const size = data.length;
       const generation = Date.now().toString();
       const etag = this.generateETag(data);
-      
+
       this.log('info', `Uploaded file to GCS: ${path} (${size} bytes)`);
       this.recordMetric('upload', size);
-      
+
       return {
         success: true,
         path,
@@ -255,11 +260,12 @@ export class GCSStorageProvider extends CapabilityBase<GCSStorageConfig> {
    */
   async download(path: string): Promise<DownloadResult> {
     const startTime = Date.now();
-    
+
     try {
-      const hasCredentials = (this.projectId && this.keyFile) || 
-                             (this.credentials?.client_email && this.credentials?.private_key);
-      
+      const hasCredentials =
+        (this.projectId && this.keyFile) ||
+        (this.credentials?.client_email && this.credentials?.private_key);
+
       if (!hasCredentials) {
         return {
           success: false,
@@ -267,7 +273,7 @@ export class GCSStorageProvider extends CapabilityBase<GCSStorageConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // In a real implementation, we would download from GCS
       const fileMetadata: FileMetadata = {
         name: path.split('/').pop() || path,
@@ -278,10 +284,10 @@ export class GCSStorageProvider extends CapabilityBase<GCSStorageConfig> {
         lastModified: Date.now(),
         etag: this.generateETag(''),
       };
-      
+
       this.log('info', `Downloaded file from GCS: ${path}`);
       this.recordMetric('download', fileMetadata.size);
-      
+
       return {
         success: true,
         data: '',
@@ -303,11 +309,12 @@ export class GCSStorageProvider extends CapabilityBase<GCSStorageConfig> {
    */
   async list(prefix?: string, pageToken?: string): Promise<ListResult> {
     const startTime = Date.now();
-    
+
     try {
-      const hasCredentials = (this.projectId && this.keyFile) || 
-                             (this.credentials?.client_email && this.credentials?.private_key);
-      
+      const hasCredentials =
+        (this.projectId && this.keyFile) ||
+        (this.credentials?.client_email && this.credentials?.private_key);
+
       if (!hasCredentials) {
         return {
           success: false,
@@ -315,9 +322,9 @@ export class GCSStorageProvider extends CapabilityBase<GCSStorageConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       this.log('info', `Listed GCS files with prefix: ${prefix || ''}`);
-      
+
       return {
         success: true,
         files: [],
@@ -338,11 +345,12 @@ export class GCSStorageProvider extends CapabilityBase<GCSStorageConfig> {
    */
   async delete(path: string): Promise<DeleteResult> {
     const startTime = Date.now();
-    
+
     try {
-      const hasCredentials = (this.projectId && this.keyFile) || 
-                             (this.credentials?.client_email && this.credentials?.private_key);
-      
+      const hasCredentials =
+        (this.projectId && this.keyFile) ||
+        (this.credentials?.client_email && this.credentials?.private_key);
+
       if (!hasCredentials) {
         return {
           success: false,
@@ -350,10 +358,10 @@ export class GCSStorageProvider extends CapabilityBase<GCSStorageConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       this.log('info', `Deleted file from GCS: ${path}`);
       this.recordMetric('delete', 1);
-      
+
       return {
         success: true,
         paths: [path],
@@ -374,11 +382,12 @@ export class GCSStorageProvider extends CapabilityBase<GCSStorageConfig> {
    */
   async deleteMany(paths: string[]): Promise<DeleteResult> {
     const startTime = Date.now();
-    
+
     try {
-      const hasCredentials = (this.projectId && this.keyFile) || 
-                             (this.credentials?.client_email && this.credentials?.private_key);
-      
+      const hasCredentials =
+        (this.projectId && this.keyFile) ||
+        (this.credentials?.client_email && this.credentials?.private_key);
+
       if (!hasCredentials) {
         return {
           success: false,
@@ -386,10 +395,10 @@ export class GCSStorageProvider extends CapabilityBase<GCSStorageConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       this.log('info', `Deleted ${paths.length} files from GCS`);
       this.recordMetric('delete_batch', paths.length);
-      
+
       return {
         success: true,
         paths,

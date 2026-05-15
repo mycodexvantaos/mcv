@@ -19,10 +19,7 @@ import * as path from 'path';
 
 const ROOT = path.resolve(__dirname, '../..');
 
-const VALID_PORTS = [
-  'database', 'object-storage', 'search',
-  'model-provider', 'queue', 'auth',
-];
+const VALID_PORTS = ['database', 'object-storage', 'search', 'model-provider', 'queue', 'auth'];
 
 // ── Parse Args ──────────────────────────────────────────────────────────
 
@@ -43,13 +40,21 @@ if (!VALID_PORTS.includes(portName)) {
   process.exit(1);
 }
 
-const pascalAdapter = adapterName.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('');
-const pascalPort = portName.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('');
+const pascalAdapter = adapterName
+  .split('-')
+  .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+  .join('');
+const pascalPort = portName
+  .split('-')
+  .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+  .join('');
 
 const adapterClassName = `${pascalAdapter}Adapter`;
 const portInterfaceName = `I${pascalPort}Port`;
 
-console.log(`🔌 Generating adapter: ${adapterName} (${adapterClassName}) implementing ${portInterfaceName}\n`);
+console.log(
+  `🔌 Generating adapter: ${adapterName} (${adapterClassName}) implementing ${portInterfaceName}\n`
+);
 
 // ── Generate Adapter Package ────────────────────────────────────────────
 

@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface RedisStateStoreConfig {
   url: string;
@@ -15,7 +18,12 @@ export interface RedisStateStoreConfig {
   ttlSeconds?: number;
 }
 
-export interface StateResult { success: boolean; value?: unknown; error?: string; operationTime: number; }
+export interface StateResult {
+  success: boolean;
+  value?: unknown;
+  error?: string;
+  operationTime: number;
+}
 
 export class RedisStateStoreProvider extends CapabilityBase<RedisStateStoreConfig> {
   private url: string;
@@ -27,7 +35,7 @@ export class RedisStateStoreProvider extends CapabilityBase<RedisStateStoreConfi
   constructor(config: ProviderConfig<RedisStateStoreConfig>) {
     super(config);
     const cfg = config.config;
-this.url = cfg.url;
+    this.url = cfg.url;
     this.keyPrefix = cfg.keyPrefix || 'mycodexvantaos:state:';
     this.ttlSeconds = cfg.ttlSeconds || 3600;
   }
@@ -58,7 +66,11 @@ this.url = cfg.url;
   async getState(key: string): Promise<StateResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `RedisStateStoreProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `RedisStateStoreProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -66,13 +78,21 @@ this.url = cfg.url;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async setState(key: string, value: unknown, ttl?: number): Promise<StateResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `RedisStateStoreProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `RedisStateStoreProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -80,13 +100,21 @@ this.url = cfg.url;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async deleteState(key: string): Promise<StateResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `RedisStateStoreProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `RedisStateStoreProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -94,7 +122,11 @@ this.url = cfg.url;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

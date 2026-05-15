@@ -7,14 +7,22 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface K8sNativeSecretsConfig {
   namespace: string;
   labelSelector?: string;
 }
 
-export interface SecretResult { success: boolean; data?: Record<string, string>; error?: string; operationTime: number; }
+export interface SecretResult {
+  success: boolean;
+  data?: Record<string, string>;
+  error?: string;
+  operationTime: number;
+}
 
 export class K8sNativeSecretsProvider extends CapabilityBase<K8sNativeSecretsConfig> {
   private namespace: string;
@@ -25,7 +33,7 @@ export class K8sNativeSecretsProvider extends CapabilityBase<K8sNativeSecretsCon
   constructor(config: ProviderConfig<K8sNativeSecretsConfig>) {
     super(config);
     const cfg = config.config;
-this.namespace = cfg.namespace || 'mycodexvantaos-prod';
+    this.namespace = cfg.namespace || 'mycodexvantaos-prod';
     this.labelSelector = cfg.labelSelector || 'app.kubernetes.io/managed-by=mycodexvantaos';
   }
 
@@ -55,7 +63,11 @@ this.namespace = cfg.namespace || 'mycodexvantaos-prod';
   async getSecret(name: string, namespace?: string): Promise<SecretResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `K8sNativeSecretsProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `K8sNativeSecretsProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -63,13 +75,25 @@ this.namespace = cfg.namespace || 'mycodexvantaos-prod';
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
-  async setSecret(name: string, data: Record<string, string>, namespace?: string): Promise<SecretResult> {
+  async setSecret(
+    name: string,
+    data: Record<string, string>,
+    namespace?: string
+  ): Promise<SecretResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `K8sNativeSecretsProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `K8sNativeSecretsProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -77,13 +101,21 @@ this.namespace = cfg.namespace || 'mycodexvantaos-prod';
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async deleteSecret(name: string, namespace?: string): Promise<SecretResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `K8sNativeSecretsProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `K8sNativeSecretsProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -91,7 +123,11 @@ this.namespace = cfg.namespace || 'mycodexvantaos-prod';
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

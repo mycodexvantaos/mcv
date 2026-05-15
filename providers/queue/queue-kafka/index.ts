@@ -13,7 +13,9 @@ export type { KafkaQueueConfig } from './kafka-queue-provider-cb';
 /**
  * Create a KafkaQueueProvider instance with the given configuration.
  */
-export function createKafkaQueueProvider(config: Partial<ProviderConfig<KafkaQueueConfig>> = {}): KafkaQueueProvider {
+export function createKafkaQueueProvider(
+  config: Partial<ProviderConfig<KafkaQueueConfig>> = {}
+): KafkaQueueProvider {
   const providerConfig: ProviderConfig<KafkaQueueConfig> = {
     id: config.id || 'kafka-queue-provider-cb',
     name: config.name || 'KafkaQueueProvider',

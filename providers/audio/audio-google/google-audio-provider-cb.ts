@@ -9,7 +9,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 /**
  * Configuration for Google Audio Provider
@@ -17,19 +20,19 @@ import type { ProviderConfig, ProviderHealthCheckResult } from '../../../package
 export interface GoogleAudioConfig {
   /** Google Cloud credentials (JSON string or path) */
   credentials?: string;
-  
+
   /** Project ID */
   projectId?: string;
-  
+
   /** Default language code */
   languageCode?: string;
-  
+
   /** Connection timeout in milliseconds */
   timeout?: number;
-  
+
   /** Number of retries on failure */
   retries?: number;
-  
+
   /** Native fallback provider ID */
   fallbackProviderId?: string;
 }
@@ -40,16 +43,16 @@ export interface GoogleAudioConfig {
 export interface TTSOptions {
   /** Language code */
   languageCode?: string;
-  
+
   /** Voice name */
   voiceName?: string;
-  
+
   /** Speaking rate (0.25 to 4.0) */
   speakingRate?: number;
-  
+
   /** Pitch (-20.0 to 20.0) */
   pitch?: number;
-  
+
   /** Audio encoding */
   audioEncoding?: string;
 }
@@ -60,22 +63,22 @@ export interface TTSOptions {
 export interface TTSResult {
   /** Success status */
   success: boolean;
-  
+
   /** Audio data (base64) */
   audio?: string;
-  
+
   /** Duration in seconds */
   duration?: number;
-  
+
   /** Language code */
   languageCode?: string;
-  
+
   /** Voice name */
   voiceName?: string;
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -86,13 +89,13 @@ export interface TTSResult {
 export interface STTOptions {
   /** Language code */
   languageCode?: string;
-  
+
   /** Model */
   model?: string;
-  
+
   /** Enable automatic punctuation */
   enableAutomaticPunctuation?: boolean;
-  
+
   /** enable word timestamps */
   enableWordTimeOffsets?: boolean;
 }
@@ -103,22 +106,22 @@ export interface STTOptions {
 export interface STTResult {
   /** Success status */
   success: boolean;
-  
+
   /** Transcribed text */
   text?: string;
-  
+
   /** Confidence score */
   confidence?: number;
-  
+
   /** Duration in seconds */
   duration?: number;
-  
+
   /** Language code */
   languageCode?: string;
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -160,7 +163,7 @@ export class GoogleAudioProvider extends CapabilityBase<GoogleAudioConfig> {
   protected async doHealthCheck(): Promise<ProviderHealthCheckResult> {
     try {
       const isHealthy = this.credentials.length > 0 && this.projectId.length > 0;
-      
+
       return {
         isHealthy,
         status: isHealthy ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.UNHEALTHY,
@@ -189,12 +192,9 @@ export class GoogleAudioProvider extends CapabilityBase<GoogleAudioConfig> {
   /**
    * Text to speech
    */
-  async textToSpeech(
-    text: string,
-    options?: TTSOptions
-  ): Promise<TTSResult> {
+  async textToSpeech(text: string, options?: TTSOptions): Promise<TTSResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.credentials || !this.projectId) {
         return {
@@ -203,13 +203,13 @@ export class GoogleAudioProvider extends CapabilityBase<GoogleAudioConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // In a real implementation, we would call Google TTS API
       const duration = text.length * 0.1; // Estimate
-      
+
       this.log('info', `Google TTS completed: ${text.substring(0, 50)}...`);
       this.recordMetric('tts', 1);
-      
+
       return {
         success: true,
         audio: 'base64encodedaudio...', // Simulated
@@ -231,12 +231,9 @@ export class GoogleAudioProvider extends CapabilityBase<GoogleAudioConfig> {
   /**
    * Speech to text
    */
-  async speechToText(
-    audio: string,
-    options?: STTOptions
-  ): Promise<STTResult> {
+  async speechToText(audio: string, options?: STTOptions): Promise<STTResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.credentials || !this.projectId) {
         return {
@@ -245,14 +242,14 @@ export class GoogleAudioProvider extends CapabilityBase<GoogleAudioConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // In a real implementation, we would call Google STT API
       const text = '[Google transcribed text simulation]';
       const duration = 10; // Simulated
-      
+
       this.log('info', 'Google STT completed');
       this.recordMetric('stt', 1);
-      
+
       return {
         success: true,
         text,

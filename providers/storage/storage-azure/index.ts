@@ -13,7 +13,9 @@ export type { AzureBlobConfig } from './azure-blob-provider-cb';
 /**
  * Create a AzureBlobProvider instance with the given configuration.
  */
-export function createAzureBlobProvider(config: Partial<ProviderConfig<AzureBlobConfig>> = {}): AzureBlobProvider {
+export function createAzureBlobProvider(
+  config: Partial<ProviderConfig<AzureBlobConfig>> = {}
+): AzureBlobProvider {
   const providerConfig: ProviderConfig<AzureBlobConfig> = {
     id: config.id || 'azure-blob-provider-cb',
     name: config.name || 'AzureBlobProvider',

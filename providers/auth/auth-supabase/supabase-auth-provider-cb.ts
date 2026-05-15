@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface SupabaseAuthConfig {
   url?: string;
@@ -82,7 +85,11 @@ export class SupabaseAuthProvider extends CapabilityBase<SupabaseAuthConfig> {
   async signIn(email: string, password: string): Promise<AuthResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `Supabase Auth not available. Use fallback: ${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: `Supabase Auth not available. Use fallback: ${this.fallbackProviderId}`,
+        operationTime: Date.now() - startTime,
+      };
     }
     try {
       const result: AuthResult = { success: true, operationTime: Date.now() - startTime };
@@ -90,14 +97,22 @@ export class SupabaseAuthProvider extends CapabilityBase<SupabaseAuthConfig> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      };
     }
   }
 
   async signUp(email: string, password: string): Promise<AuthResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `Supabase Auth not available. Use fallback: ${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: `Supabase Auth not available. Use fallback: ${this.fallbackProviderId}`,
+        operationTime: Date.now() - startTime,
+      };
     }
     try {
       const result: AuthResult = { success: true, operationTime: Date.now() - startTime };
@@ -105,14 +120,22 @@ export class SupabaseAuthProvider extends CapabilityBase<SupabaseAuthConfig> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      };
     }
   }
 
   async verifyToken(token: string): Promise<AuthResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `Supabase Auth not available. Use fallback: ${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: `Supabase Auth not available. Use fallback: ${this.fallbackProviderId}`,
+        operationTime: Date.now() - startTime,
+      };
     }
     try {
       const result: AuthResult = { success: true, operationTime: Date.now() - startTime };
@@ -120,7 +143,11 @@ export class SupabaseAuthProvider extends CapabilityBase<SupabaseAuthConfig> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      };
     }
   }
 

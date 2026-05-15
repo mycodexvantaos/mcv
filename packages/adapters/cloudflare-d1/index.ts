@@ -30,7 +30,10 @@ export class CloudflareD1Adapter implements IDatabasePort {
   }
 
   async execute(query: string, params?: unknown[]): Promise<DatabaseResult> {
-    const result = await this.db.prepare(query).bind(...(params ?? [])).run();
+    const result = await this.db
+      .prepare(query)
+      .bind(...(params ?? []))
+      .run();
     return {
       rowsAffected: result.meta.changes,
       lastInsertRowid: result.meta.last_row_id,
@@ -38,12 +41,21 @@ export class CloudflareD1Adapter implements IDatabasePort {
   }
 
   async query<T = Record<string, unknown>>(query: string, params?: unknown[]): Promise<T[]> {
-    const result = await this.db.prepare(query).bind(...(params ?? [])).all();
+    const result = await this.db
+      .prepare(query)
+      .bind(...(params ?? []))
+      .all();
     return (result.results as T[]) ?? [];
   }
 
-  async queryFirst<T = Record<string, unknown>>(query: string, params?: unknown[]): Promise<T | null> {
-    const result = await this.db.prepare(query).bind(...(params ?? [])).first<T>();
+  async queryFirst<T = Record<string, unknown>>(
+    query: string,
+    params?: unknown[]
+  ): Promise<T | null> {
+    const result = await this.db
+      .prepare(query)
+      .bind(...(params ?? []))
+      .first<T>();
     return result ?? null;
   }
 
@@ -61,7 +73,9 @@ export class CloudflareD1Adapter implements IDatabasePort {
         applied_at TEXT NOT NULL DEFAULT (datetime('now'))
       )`
     );
-    const existing = await this.queryFirst('SELECT id FROM _migrations WHERE id = ?', [migrationFile]);
+    const existing = await this.queryFirst('SELECT id FROM _migrations WHERE id = ?', [
+      migrationFile,
+    ]);
     if (!existing) {
       await this.execute('INSERT INTO _migrations (id) VALUES (?)', [migrationFile]);
     }
@@ -80,19 +94,24 @@ export class CloudflareD1Adapter implements IDatabasePort {
 export class D1Repository<T extends { id: string }> implements IRepository<T> {
   constructor(
     private db: D1Database,
-    private tableName: string,
+    private tableName: string
   ) {}
 
   async findById(id: string): Promise<T | null> {
-    return this.db.prepare(`SELECT * FROM ${this.tableName} WHERE id = ?`).bind(id).first<T>() ?? null;
+    return (
+      this.db.prepare(`SELECT * FROM ${this.tableName} WHERE id = ?`).bind(id).first<T>() ?? null
+    );
   }
 
   async findMany(filter: Record<string, unknown>, limit = 100, offset = 0): Promise<T[]> {
-    const conditions = Object.keys(filter).map(k => `${k} = ?`).join(' AND ');
+    const conditions = Object.keys(filter)
+      .map((k) => `${k} = ?`)
+      .join(' AND ');
     const params = Object.values(filter);
-    const result = await this.db.prepare(
-      `SELECT * FROM ${this.tableName} WHERE ${conditions} LIMIT ? OFFSET ?`
-    ).bind(...params, limit, offset).all();
+    const result = await this.db
+      .prepare(`SELECT * FROM ${this.tableName} WHERE ${conditions} LIMIT ? OFFSET ?`)
+      .bind(...params, limit, offset)
+      .all();
     return (result.results as T[]) ?? [];
   }
 
@@ -101,16 +120,22 @@ export class D1Repository<T extends { id: string }> implements IRepository<T> {
     const keys = ['id', ...Object.keys(entity)];
     const values = [id, ...Object.values(entity)];
     const placeholders = keys.map(() => '?').join(', ');
-    await this.db.prepare(
-      `INSERT INTO ${this.tableName} (${keys.join(', ')}) VALUES (${placeholders})`
-    ).bind(...values).run();
+    await this.db
+      .prepare(`INSERT INTO ${this.tableName} (${keys.join(', ')}) VALUES (${placeholders})`)
+      .bind(...values)
+      .run();
     return { id, ...entity } as T;
   }
 
   async update(id: string, patch: Partial<T>): Promise<T> {
-    const sets = Object.keys(patch).map(k => `${k} = ?`).join(', ');
+    const sets = Object.keys(patch)
+      .map((k) => `${k} = ?`)
+      .join(', ');
     const values = [...Object.values(patch), id];
-    await this.db.prepare(`UPDATE ${this.tableName} SET ${sets} WHERE id = ?`).bind(...values).run();
+    await this.db
+      .prepare(`UPDATE ${this.tableName} SET ${sets} WHERE id = ?`)
+      .bind(...values)
+      .run();
     return this.findById(id) as Promise<T>;
   }
 
@@ -119,9 +144,16 @@ export class D1Repository<T extends { id: string }> implements IRepository<T> {
   }
 
   async count(filter?: Record<string, unknown>): Promise<number> {
-    const where = filter ? `WHERE ${Object.keys(filter).map(k => `${k} = ?`).join(' AND ')}` : '';
+    const where = filter
+      ? `WHERE ${Object.keys(filter)
+          .map((k) => `${k} = ?`)
+          .join(' AND ')}`
+      : '';
     const params = filter ? Object.values(filter) : [];
-    const result = await this.db.prepare(`SELECT COUNT(*) as count FROM ${this.tableName} ${where}`).bind(...params).first<{ count: number }>();
+    const result = await this.db
+      .prepare(`SELECT COUNT(*) as count FROM ${this.tableName} ${where}`)
+      .bind(...params)
+      .first<{ count: number }>();
     return result?.count ?? 0;
   }
 }

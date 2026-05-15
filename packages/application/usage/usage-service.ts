@@ -24,7 +24,12 @@ export interface UsageServiceDeps {
   cache: {
     get(key: string): Promise<string | null>;
     put(key: string, value: string, options?: { expirationTtl?: number }): Promise<void>;
-    atomicSet(key: string, expected: unknown, newValue: unknown, options?: { expirationTtl?: number }): Promise<boolean>;
+    atomicSet(
+      key: string,
+      expected: unknown,
+      newValue: unknown,
+      options?: { expirationTtl?: number }
+    ): Promise<boolean>;
   };
   audit: {
     emitEvent(event: UsageAuditEvent): Promise<void>;
@@ -149,7 +154,11 @@ export class UsageService {
     await this.deps.cache.put(windowKey, newValue, { expirationTtl: 86400 });
   }
 
-  async checkQuota(workspaceId: string, dimension: MeterDimension, tier: Tier = 'free'): Promise<QuotaStatus> {
+  async checkQuota(
+    workspaceId: string,
+    dimension: MeterDimension,
+    tier: Tier = 'free'
+  ): Promise<QuotaStatus> {
     const limit = TIER_LIMITS[tier][dimension];
     const windowKey = `usage:${workspaceId}:${dimension}:${this.getCurrentWindow()}`;
     const current = await this.deps.cache.get(windowKey);

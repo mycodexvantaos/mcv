@@ -353,7 +353,7 @@ export interface CapabilityQuery {
 
 /**
  * ✨ Export All Types
- * 
+ *
  * Note: Enums (RuntimeMode, ProviderMode, ProviderHealthStatus) are already exported
  * above at their declaration site. Only interfaces need re-exporting here with
  * `export type` to avoid duplicate export conflicts.

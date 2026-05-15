@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface FirebaseAuthConfig {
   projectId?: string;
@@ -86,7 +89,11 @@ export class FirebaseAuthProvider extends CapabilityBase<FirebaseAuthConfig> {
   async verifyToken(token: string): Promise<AuthResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `Firebase Auth not available. Use fallback: ${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: `Firebase Auth not available. Use fallback: ${this.fallbackProviderId}`,
+        operationTime: Date.now() - startTime,
+      };
     }
     try {
       const result: AuthResult = { success: true, operationTime: Date.now() - startTime };
@@ -94,14 +101,22 @@ export class FirebaseAuthProvider extends CapabilityBase<FirebaseAuthConfig> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      };
     }
   }
 
   async createUser(email: string, password: string): Promise<AuthResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `Firebase Auth not available. Use fallback: ${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: `Firebase Auth not available. Use fallback: ${this.fallbackProviderId}`,
+        operationTime: Date.now() - startTime,
+      };
     }
     try {
       const result: AuthResult = { success: true, operationTime: Date.now() - startTime };
@@ -109,14 +124,22 @@ export class FirebaseAuthProvider extends CapabilityBase<FirebaseAuthConfig> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      };
     }
   }
 
   async getUser(uid: string): Promise<AuthResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `Firebase Auth not available. Use fallback: ${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: `Firebase Auth not available. Use fallback: ${this.fallbackProviderId}`,
+        operationTime: Date.now() - startTime,
+      };
     }
     try {
       const result: AuthResult = { success: true, operationTime: Date.now() - startTime };
@@ -124,7 +147,11 @@ export class FirebaseAuthProvider extends CapabilityBase<FirebaseAuthConfig> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      };
     }
   }
 

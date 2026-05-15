@@ -9,14 +9,14 @@ const httpProxy = require('http-proxy');
 const crypto = require('crypto');
 
 const SERVICE_ROUTES = {
-  identity:          process.env.IDENTITY_URL        || 'http://identity:8000',
-  workspace:         process.env.WORKSPACE_URL       || 'http://workspace:8000',
+  identity: process.env.IDENTITY_URL || 'http://identity:8000',
+  workspace: process.env.WORKSPACE_URL || 'http://workspace:8000',
   'knowledge-store': process.env.KNOWLEDGE_STORE_URL || 'http://knowledge-store:8000',
-  'knowledge-search':process.env.KNOWLEDGE_SEARCH_URL|| 'http://knowledge-search:8000',
-  'agent-chat':      process.env.AGENT_CHAT_URL      || 'http://agent-chat:8000',
-  'model-byok':      process.env.MODEL_BYOK_URL      || 'http://model-byok:8000',
-  'audit-log':       process.env.AUDIT_LOG_URL       || 'http://audit-log:8000',
-  'usage-meter':     process.env.USAGE_METER_URL     || 'http://usage-meter:8000',
+  'knowledge-search': process.env.KNOWLEDGE_SEARCH_URL || 'http://knowledge-search:8000',
+  'agent-chat': process.env.AGENT_CHAT_URL || 'http://agent-chat:8000',
+  'model-byok': process.env.MODEL_BYOK_URL || 'http://model-byok:8000',
+  'audit-log': process.env.AUDIT_LOG_URL || 'http://audit-log:8000',
+  'usage-meter': process.env.USAGE_METER_URL || 'http://usage-meter:8000',
 };
 
 const ROUTE_ALIASES = {
@@ -44,12 +44,14 @@ proxy.on('error', (err, req, res) => {
 function handler(req, res) {
   if (req.url === '/health' || req.url === '/') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({
-      status: 'ok',
-      service: 'gateway',
-      version: '0.1.0',
-      routes: Object.keys(SERVICE_ROUTES),
-    }));
+    res.end(
+      JSON.stringify({
+        status: 'ok',
+        service: 'gateway',
+        version: '0.1.0',
+        routes: Object.keys(SERVICE_ROUTES),
+      })
+    );
     return;
   }
 
@@ -70,11 +72,13 @@ function handler(req, res) {
   const target = SERVICE_ROUTES[serviceName];
   if (!target) {
     res.writeHead(404, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({
-      error: 'not_found',
-      message: `Unknown service: ${serviceName}`,
-      available: Object.keys(SERVICE_ROUTES),
-    }));
+    res.end(
+      JSON.stringify({
+        error: 'not_found',
+        message: `Unknown service: ${serviceName}`,
+        available: Object.keys(SERVICE_ROUTES),
+      })
+    );
     return;
   }
 
@@ -85,7 +89,9 @@ function handler(req, res) {
     req.headers['x-trace-id'] = traceId;
   }
 
-  console.log(`[${new Date().toISOString()}] ${req.method} /api/v1/${serviceName}${remainingPath} -> ${target} [trace=${traceId}]`);
+  console.log(
+    `[${new Date().toISOString()}] ${req.method} /api/v1/${serviceName}${remainingPath} -> ${target} [trace=${traceId}]`
+  );
 
   proxy.web(req, res, { target }, (err) => {
     console.error(`[proxy error] ${serviceName}:`, err.message);
@@ -101,7 +107,11 @@ const server = http.createServer(handler);
 
 server.listen(PORT, () => {
   console.log(`MyCodeXvantaOS Gateway listening on :${PORT}`);
-  console.log(`Routes: ${Object.entries(SERVICE_ROUTES).map(([k, v]) => `/api/v1/${k} -> ${v}`).join(', ')}`);
+  console.log(
+    `Routes: ${Object.entries(SERVICE_ROUTES)
+      .map(([k, v]) => `/api/v1/${k} -> ${v}`)
+      .join(', ')}`
+  );
 });
 
 process.on('SIGTERM', () => {

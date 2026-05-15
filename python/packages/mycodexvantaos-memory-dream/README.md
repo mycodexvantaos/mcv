@@ -34,10 +34,12 @@ report = dream_run.run()
 ## Dependencies
 
 Core:
+
 - `pydantic` — Data validation
 - `pydantic-settings` — Configuration
 
 Optional (for ML features):
+
 - `scikit-learn` — TF-IDF, clustering
 - `numpy` — Vector operations
 

@@ -13,7 +13,9 @@ export type { AblyRealtimeConfig } from './ably-realtime-provider-cb';
 /**
  * Create a AblyRealtimeProvider instance with the given configuration.
  */
-export function createAblyRealtimeProvider(config: Partial<ProviderConfig<AblyRealtimeConfig>> = {}): AblyRealtimeProvider {
+export function createAblyRealtimeProvider(
+  config: Partial<ProviderConfig<AblyRealtimeConfig>> = {}
+): AblyRealtimeProvider {
   const providerConfig: ProviderConfig<AblyRealtimeConfig> = {
     id: config.id || 'ably-realtime-provider-cb',
     name: config.name || 'AblyRealtimeProvider',

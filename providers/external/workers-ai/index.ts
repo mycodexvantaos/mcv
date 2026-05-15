@@ -24,15 +24,11 @@ export function createWorkersAIProvider(
   config?: Partial<WorkersAIConfig>
 ) {
   const { WorkersAIProvider } = require('./workers-ai-provider-cb');
-  
-  return new WorkersAIProvider(
-    id,
-    'Cloudflare Workers AI',
-    {
-      enabled: true,
-      config: config || {},
-    }
-  );
+
+  return new WorkersAIProvider(id, 'Cloudflare Workers AI', {
+    enabled: true,
+    config: config || {},
+  });
 }
 
 /**

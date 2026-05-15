@@ -39,4 +39,10 @@ export interface KnowledgeRepairStatus {
   error: string | null;
 }
 
-export type KnowledgeRepairPhase = 'pending' | 'approved' | 'executing' | 'completed' | 'failed' | 'rolled-back';
+export type KnowledgeRepairPhase =
+  | 'pending'
+  | 'approved'
+  | 'executing'
+  | 'completed'
+  | 'failed'
+  | 'rolled-back';

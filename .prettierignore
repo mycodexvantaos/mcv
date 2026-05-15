@@ -8,3 +8,6 @@ coverage/
 pnpm-lock.yaml
 package-lock.json
 .turbo/
+
+# Helm templates use Go template syntax ({{ }}) which is not valid YAML
+infra/helm/**/*.yaml

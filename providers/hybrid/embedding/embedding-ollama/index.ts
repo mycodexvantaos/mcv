@@ -13,7 +13,9 @@ export type { OllamaHybridEmbeddingConfig } from './ollama-hybrid-embedding-prov
 /**
  * Create a OllamaHybridEmbeddingProvider instance with the given configuration.
  */
-export function createOllamaHybridEmbeddingProvider(config: Partial<ProviderConfig<OllamaHybridEmbeddingConfig>> = {}): OllamaHybridEmbeddingProvider {
+export function createOllamaHybridEmbeddingProvider(
+  config: Partial<ProviderConfig<OllamaHybridEmbeddingConfig>> = {}
+): OllamaHybridEmbeddingProvider {
   const providerConfig: ProviderConfig<OllamaHybridEmbeddingConfig> = {
     id: config.id || 'ollama-hybrid-embedding-provider-cb',
     name: config.name || 'OllamaHybridEmbeddingProvider',

@@ -22,10 +22,10 @@ import type {
 
 export interface OpenRouterConfig {
   apiKey: string;
-  baseUrl?: string;           // default: https://openrouter.ai/api/v1
-  siteUrl?: string;           // optional: your site URL for rankings
-  siteName?: string;          // optional: your site name
-  defaultModel?: string;      // default: openai/gpt-4o
+  baseUrl?: string; // default: https://openrouter.ai/api/v1
+  siteUrl?: string; // optional: your site URL for rankings
+  siteName?: string; // optional: your site name
+  defaultModel?: string; // default: openai/gpt-4o
 }
 
 // ── OpenRouter Chat Adapter ────────────────────────────────────────────
@@ -41,7 +41,7 @@ export class OpenRouterChatAdapter implements IChatModelPort {
     const baseUrl = this.config.baseUrl ?? 'https://openrouter.ai/api/v1';
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.config.apiKey}`,
+      Authorization: `Bearer ${this.config.apiKey}`,
     };
     if (this.config.siteUrl) headers['HTTP-Referer'] = this.config.siteUrl;
     if (this.config.siteName) headers['X-Title'] = this.config.siteName;
@@ -63,7 +63,7 @@ export class OpenRouterChatAdapter implements IChatModelPort {
       throw new Error(`OpenRouter invocation failed: ${response.status} ${await response.text()}`);
     }
 
-    const data = await response.json() as any;
+    const data = (await response.json()) as any;
     return {
       id: data.id,
       content: data.choices[0]?.message?.content ?? '',
@@ -82,7 +82,7 @@ export class OpenRouterChatAdapter implements IChatModelPort {
     const baseUrl = this.config.baseUrl ?? 'https://openrouter.ai/api/v1';
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.config.apiKey}`,
+      Authorization: `Bearer ${this.config.apiKey}`,
     };
     if (this.config.siteUrl) headers['HTTP-Referer'] = this.config.siteUrl;
 
@@ -124,7 +124,9 @@ export class OpenRouterChatAdapter implements IChatModelPort {
             model: data.model,
             finishReason: data.choices[0]?.finish_reason,
           };
-        } catch { /* skip malformed chunks */ }
+        } catch {
+          /* skip malformed chunks */
+        }
       }
     }
   }
@@ -134,7 +136,7 @@ export class OpenRouterChatAdapter implements IChatModelPort {
       const start = Date.now();
       const baseUrl = this.config.baseUrl ?? 'https://openrouter.ai/api/v1';
       const response = await fetch(`${baseUrl}/models`, {
-        headers: { 'Authorization': `Bearer ${this.config.apiKey}` },
+        headers: { Authorization: `Bearer ${this.config.apiKey}` },
       });
       return {
         healthy: response.ok,
@@ -142,7 +144,12 @@ export class OpenRouterChatAdapter implements IChatModelPort {
         lastChecked: new Date().toISOString(),
       };
     } catch (error) {
-      return { healthy: false, latencyMs: -1, lastChecked: new Date().toISOString(), error: error instanceof Error ? error.message : 'Unknown' };
+      return {
+        healthy: false,
+        latencyMs: -1,
+        lastChecked: new Date().toISOString(),
+        error: error instanceof Error ? error.message : 'Unknown',
+      };
     }
   }
 }

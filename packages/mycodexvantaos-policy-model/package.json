@@ -10,7 +10,10 @@
     "lint": "eslint src/",
     "test": "echo \"TODO: add tests\" && exit 0"
   },
-  "keywords": ["mycodexvantaos", "policy-model"],
+  "keywords": [
+    "mycodexvantaos",
+    "policy-model"
+  ],
   "license": "MIT",
   "devDependencies": {
     "typescript": "^5.4.0",

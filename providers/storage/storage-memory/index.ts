@@ -13,7 +13,9 @@ export type { MemoryStorageConfig } from './storage-memory-provider-cb';
 /**
  * Create a MemoryStorageProvider instance with the given configuration.
  */
-export function createMemoryStorageProvider(config: Partial<ProviderConfig<MemoryStorageConfig>> = {}): MemoryStorageProvider {
+export function createMemoryStorageProvider(
+  config: Partial<ProviderConfig<MemoryStorageConfig>> = {}
+): MemoryStorageProvider {
   const providerConfig: ProviderConfig<MemoryStorageConfig> = {
     id: config.id || 'storage-memory-provider-cb',
     name: config.name || 'MemoryStorageProvider',

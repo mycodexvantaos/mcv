@@ -13,7 +13,9 @@ export type { SendGridConfig } from './sendgrid-provider-cb';
 /**
  * Create a SendGridProvider instance with the given configuration.
  */
-export function createSendGridProvider(config: Partial<ProviderConfig<SendGridConfig>> = {}): SendGridProvider {
+export function createSendGridProvider(
+  config: Partial<ProviderConfig<SendGridConfig>> = {}
+): SendGridProvider {
   const providerConfig: ProviderConfig<SendGridConfig> = {
     id: config.id || 'sendgrid-provider-cb',
     name: config.name || 'SendGridProvider',

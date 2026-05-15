@@ -9,7 +9,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 /**
  * Configuration for Workers AI Provider
@@ -17,22 +20,22 @@ import type { ProviderConfig, ProviderHealthCheckResult } from '../../../package
 export interface WorkersAIConfig {
   /** Cloudflare account ID */
   accountId?: string;
-  
+
   /** Cloudflare API key */
   apiKey?: string;
-  
+
   /** Base URL for custom endpoints */
   baseURL?: string;
-  
+
   /** Model to use */
   model?: string;
-  
+
   /** Request timeout in milliseconds */
   timeout?: number;
-  
+
   /** Number of retries on failure */
   retries?: number;
-  
+
   /** Native fallback provider ID */
   fallbackProviderId?: string;
 }
@@ -43,22 +46,22 @@ export interface WorkersAIConfig {
 export interface WorkersAILLMRequest {
   /** Prompt text */
   prompt: string;
-  
+
   /** Maximum tokens to generate */
   maxTokens?: number;
-  
+
   /** Temperature for generation (0-1) */
   temperature?: number;
-  
+
   /** Top-p sampling */
   topP?: number;
-  
+
   /** Top-k sampling */
   topK?: number;
-  
+
   /** Stop sequences */
   stop?: string[];
-  
+
   /** Streaming mode */
   stream?: boolean;
 }
@@ -69,25 +72,25 @@ export interface WorkersAILLMRequest {
 export interface WorkersAILLMResponse {
   /** Generated text */
   text: string;
-  
+
   /** Model used */
   model: string;
-  
+
   /** Provider name */
   provider: string;
-  
+
   /** Generation time in milliseconds */
   generationTime: number;
-  
+
   /** Total tokens used */
   tokens?: number;
-  
+
   /** Prompt tokens */
   promptTokens?: number;
-  
+
   /** Completion tokens */
   completionTokens?: number;
-  
+
   /** Finish reason */
   finishReason?: string;
 }
@@ -106,16 +109,16 @@ export interface WorkersAIEmbeddingRequest {
 export interface WorkersAIEmbeddingResponse {
   /** Embedding vector */
   embedding: number[];
-  
+
   /** Number of dimensions */
   dimensions: number;
-  
+
   /** Model used */
   model: string;
-  
+
   /** Provider name */
   provider: string;
-  
+
   /** Generation time in milliseconds */
   generationTime: number;
 }
@@ -131,7 +134,7 @@ export class WorkersAIProvider extends CapabilityBase<WorkersAIConfig> {
   private timeout: number;
   private retries: number;
   private fallbackProviderId: string = 'native';
-  
+
   private isWorkersAIAvailable: boolean = false;
   private accountId: string | undefined;
   private apiKey: string | undefined;
@@ -143,14 +146,15 @@ export class WorkersAIProvider extends CapabilityBase<WorkersAIConfig> {
     fallbackConfig?: any
   ) {
     super(id, name, config, fallbackConfig);
-    
+
     const cfg = config.config;
     this.accountId = cfg.accountId;
     this.apiKey = cfg.apiKey;
     this.model = cfg.model || '@cf/meta/llama-3.3-70b-instruct';
     this.timeout = cfg.timeout || 30000;
     this.retries = cfg.retries || 3;
-    this.baseURL = cfg.baseURL || `https://api.cloudflare.com/client/v4/accounts/${this.accountId}/ai/run`;
+    this.baseURL =
+      cfg.baseURL || `https://api.cloudflare.com/client/v4/accounts/${this.accountId}/ai/run`;
   }
 
   /**
@@ -165,7 +169,7 @@ export class WorkersAIProvider extends CapabilityBase<WorkersAIConfig> {
 
     try {
       await this.checkWorkersAIAvailability();
-      
+
       if (this.isWorkersAIAvailable) {
         this.log('info', `Workers AI provider initialized with model ${this.model}`);
       } else {
@@ -187,7 +191,7 @@ export class WorkersAIProvider extends CapabilityBase<WorkersAIConfig> {
       const response = await fetch(`${this.baseURL}/${this.model}`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
+          Authorization: `Bearer ${this.apiKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ prompt: 'test' }),
@@ -250,17 +254,19 @@ export class WorkersAIProvider extends CapabilityBase<WorkersAIConfig> {
    */
   async generate(request: WorkersAILLMRequest): Promise<WorkersAILLMResponse> {
     const startTime = Date.now();
-    
+
     if (!this.isWorkersAIAvailable || !this.apiKey || !this.accountId) {
       this.recordFailure(new Error('Workers AI not available'));
-      throw new Error(`Workers AI service not available. Use fallback provider: ${this.fallbackProviderId}`);
+      throw new Error(
+        `Workers AI service not available. Use fallback provider: ${this.fallbackProviderId}`
+      );
     }
 
     try {
       const response = await this.generateWithRetry(request);
       const generationTime = Date.now() - startTime;
       response.generationTime = generationTime;
-      
+
       this.recordSuccess(generationTime);
       return response;
     } catch (error) {
@@ -285,7 +291,7 @@ export class WorkersAIProvider extends CapabilityBase<WorkersAIConfig> {
 
         if (attempt < this.retries) {
           const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
-          await new Promise(resolve => setTimeout(resolve, delay));
+          await new Promise((resolve) => setTimeout(resolve, delay));
         }
       }
     }
@@ -320,7 +326,7 @@ export class WorkersAIProvider extends CapabilityBase<WorkersAIConfig> {
     const response = await fetch(`${this.baseURL}/${this.model}`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${this.apiKey}`,
+        Authorization: `Bearer ${this.apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(requestBody),
@@ -333,7 +339,7 @@ export class WorkersAIProvider extends CapabilityBase<WorkersAIConfig> {
     }
 
     const data = await response.json();
-    
+
     return {
       text: data.response || '',
       model: this.model,
@@ -352,7 +358,9 @@ export class WorkersAIProvider extends CapabilityBase<WorkersAIConfig> {
   async *stream(request: WorkersAILLMRequest): AsyncGenerator<string, void, unknown> {
     if (!this.isWorkersAIAvailable || !this.apiKey || !this.accountId) {
       this.recordFailure(new Error('Workers AI not available'));
-      throw new Error(`Workers AI service not available. Use fallback provider: ${this.fallbackProviderId}`);
+      throw new Error(
+        `Workers AI service not available. Use fallback provider: ${this.fallbackProviderId}`
+      );
     }
 
     const startTime = Date.now();
@@ -372,7 +380,7 @@ export class WorkersAIProvider extends CapabilityBase<WorkersAIConfig> {
       const response = await fetch(`${this.baseURL}/${this.model}`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
+          Authorization: `Bearer ${this.apiKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(requestBody),
@@ -433,10 +441,12 @@ export class WorkersAIProvider extends CapabilityBase<WorkersAIConfig> {
    */
   async embed(request: WorkersAIEmbeddingRequest): Promise<WorkersAIEmbeddingResponse> {
     const startTime = Date.now();
-    
+
     if (!this.isWorkersAIAvailable || !this.apiKey || !this.accountId) {
       this.recordFailure(new Error('Workers AI not available'));
-      throw new Error(`Workers AI service not available. Use fallback provider: ${this.fallbackProviderId}`);
+      throw new Error(
+        `Workers AI service not available. Use fallback provider: ${this.fallbackProviderId}`
+      );
     }
 
     try {
@@ -444,7 +454,7 @@ export class WorkersAIProvider extends CapabilityBase<WorkersAIConfig> {
       const response = await fetch(`${this.baseURL}/${embeddingModel}`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
+          Authorization: `Bearer ${this.apiKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -460,7 +470,7 @@ export class WorkersAIProvider extends CapabilityBase<WorkersAIConfig> {
 
       const data = await response.json();
       const generationTime = Date.now() - startTime;
-      
+
       this.recordSuccess(generationTime);
 
       return {

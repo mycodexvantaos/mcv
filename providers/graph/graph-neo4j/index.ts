@@ -13,7 +13,9 @@ export type { Neo4jGraphConfig } from './neo4j-graph-provider-cb';
 /**
  * Create a Neo4jGraphProvider instance with the given configuration.
  */
-export function createNeo4jGraphProvider(config: Partial<ProviderConfig<Neo4jGraphConfig>> = {}): Neo4jGraphProvider {
+export function createNeo4jGraphProvider(
+  config: Partial<ProviderConfig<Neo4jGraphConfig>> = {}
+): Neo4jGraphProvider {
   const providerConfig: ProviderConfig<Neo4jGraphConfig> = {
     id: config.id || 'neo4j-graph-provider-cb',
     name: config.name || 'Neo4jGraphProvider',

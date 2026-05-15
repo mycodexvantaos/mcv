@@ -13,7 +13,9 @@ export type { RedisStateStoreConfig } from './redis-state-store-provider-cb';
 /**
  * Create a RedisStateStoreProvider instance with the given configuration.
  */
-export function createRedisStateStoreProvider(config: Partial<ProviderConfig<RedisStateStoreConfig>> = {}): RedisStateStoreProvider {
+export function createRedisStateStoreProvider(
+  config: Partial<ProviderConfig<RedisStateStoreConfig>> = {}
+): RedisStateStoreProvider {
   const providerConfig: ProviderConfig<RedisStateStoreConfig> = {
     id: config.id || 'redis-state-store-provider-cb',
     name: config.name || 'RedisStateStoreProvider',

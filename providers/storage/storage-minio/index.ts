@@ -13,7 +13,9 @@ export type { MinIOStorageConfig } from './minio-storage-provider-cb';
 /**
  * Create a MinIOStorageProvider instance with the given configuration.
  */
-export function createMinIOStorageProvider(config: Partial<ProviderConfig<MinIOStorageConfig>> = {}): MinIOStorageProvider {
+export function createMinIOStorageProvider(
+  config: Partial<ProviderConfig<MinIOStorageConfig>> = {}
+): MinIOStorageProvider {
   const providerConfig: ProviderConfig<MinIOStorageConfig> = {
     id: config.id || 'minio-storage-provider-cb',
     name: config.name || 'MinIOStorageProvider',

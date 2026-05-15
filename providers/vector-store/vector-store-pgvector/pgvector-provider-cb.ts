@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface PgVectorConfig {
   connectionUrl: string;
@@ -17,8 +20,17 @@ export interface PgVectorConfig {
   m?: number;
 }
 
-export interface VectorResult { success: boolean; error?: string; operationTime: number; }
-export interface VectorSearchResult { success: boolean; hits?: { id: string; score: number; metadata?: Record<string, unknown> }[]; error?: string; operationTime: number; }
+export interface VectorResult {
+  success: boolean;
+  error?: string;
+  operationTime: number;
+}
+export interface VectorSearchResult {
+  success: boolean;
+  hits?: { id: string; score: number; metadata?: Record<string, unknown> }[];
+  error?: string;
+  operationTime: number;
+}
 
 export class PgVectorProvider extends CapabilityBase<PgVectorConfig> {
   private connectionUrl: string;
@@ -32,7 +44,7 @@ export class PgVectorProvider extends CapabilityBase<PgVectorConfig> {
   constructor(config: ProviderConfig<PgVectorConfig>) {
     super(config);
     const cfg = config.config;
-this.connectionUrl = cfg.connectionUrl;
+    this.connectionUrl = cfg.connectionUrl;
     this.maxConnections = cfg.maxConnections || 10;
     this.defaultIndexType = cfg.defaultIndexType || 'hnsw';
     this.efConstruction = cfg.efConstruction || 64;
@@ -65,7 +77,11 @@ this.connectionUrl = cfg.connectionUrl;
   async upsert(collection: string, ids: string[], embeddings: number[][]): Promise<VectorResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `PgVectorProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `PgVectorProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -73,13 +89,21 @@ this.connectionUrl = cfg.connectionUrl;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async search(collection: string, query: number[], k?: number): Promise<VectorSearchResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `PgVectorProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `PgVectorProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -87,13 +111,21 @@ this.connectionUrl = cfg.connectionUrl;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async delete(collection: string, ids: string[]): Promise<VectorResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `PgVectorProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `PgVectorProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -101,7 +133,11 @@ this.connectionUrl = cfg.connectionUrl;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

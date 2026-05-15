@@ -13,7 +13,9 @@ export type { HyperledgerConfig } from './hyperledger-provider-cb';
 /**
  * Create a HyperledgerProvider instance with the given configuration.
  */
-export function createHyperledgerProvider(config: Partial<ProviderConfig<HyperledgerConfig>> = {}): HyperledgerProvider {
+export function createHyperledgerProvider(
+  config: Partial<ProviderConfig<HyperledgerConfig>> = {}
+): HyperledgerProvider {
   const providerConfig: ProviderConfig<HyperledgerConfig> = {
     id: config.id || 'hyperledger-provider-cb',
     name: config.name || 'HyperledgerProvider',

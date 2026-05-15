@@ -13,7 +13,9 @@ export type { GCSStorageConfig } from './gcs-storage-provider-cb';
 /**
  * Create a GCSStorageProvider instance with the given configuration.
  */
-export function createGCSStorageProvider(config: Partial<ProviderConfig<GCSStorageConfig>> = {}): GCSStorageProvider {
+export function createGCSStorageProvider(
+  config: Partial<ProviderConfig<GCSStorageConfig>> = {}
+): GCSStorageProvider {
   const providerConfig: ProviderConfig<GCSStorageConfig> = {
     id: config.id || 'gcs-storage-provider-cb',
     name: config.name || 'GCSStorageProvider',

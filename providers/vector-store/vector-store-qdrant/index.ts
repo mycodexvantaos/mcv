@@ -13,7 +13,9 @@ export type { QdrantConfig } from './qdrant-provider-cb';
 /**
  * Create a QdrantProvider instance with the given configuration.
  */
-export function createQdrantProvider(config: Partial<ProviderConfig<QdrantConfig>> = {}): QdrantProvider {
+export function createQdrantProvider(
+  config: Partial<ProviderConfig<QdrantConfig>> = {}
+): QdrantProvider {
   const providerConfig: ProviderConfig<QdrantConfig> = {
     id: config.id || 'qdrant-provider-cb',
     name: config.name || 'QdrantProvider',

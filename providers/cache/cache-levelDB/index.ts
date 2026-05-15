@@ -23,15 +23,11 @@ export function createLevelDBCacheProvider(
   config?: Partial<LevelDBCacheConfig>
 ) {
   const { LevelDBCacheProvider } = require('./leveldb-cache-provider-cb');
-  
-  return new LevelDBCacheProvider(
-    id,
-    'LevelDB Cache',
-    {
-      enabled: true,
-      config: config || {},
-    }
-  );
+
+  return new LevelDBCacheProvider(id, 'LevelDB Cache', {
+    enabled: true,
+    config: config || {},
+  });
 }
 
 /**

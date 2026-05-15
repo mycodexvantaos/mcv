@@ -17,31 +17,31 @@ import type { ProviderConfig } from '../types';
 export interface ProviderMetadata {
   /** Provider unique identifier */
   id: string;
-  
+
   /** Provider display name */
   name: string;
-  
+
   /** Provider category (llm, embedding, storage, etc.) */
   category: string;
-  
+
   /** Provider type (openai, gemini, local, etc.) */
   type: string;
-  
+
   /** Module path for import */
   modulePath: string;
-  
+
   /** Factory function name */
   factoryFunction?: string;
-  
+
   /** Description */
   description?: string;
-  
+
   /** Whether provider is available */
   available: boolean;
-  
+
   /** Fallback provider ID (if any) */
   fallbackProvider?: string;
-  
+
   /** Configuration schema */
   configSchema?: Record<string, unknown>;
 }
@@ -52,10 +52,10 @@ export interface ProviderMetadata {
 export interface ProviderInstance<T = any> {
   /** Provider metadata */
   metadata: ProviderMetadata;
-  
+
   /** Provider instance */
   provider: CapabilityBase<T>;
-  
+
   /** Initialized status */
   initialized: boolean;
 }
@@ -66,13 +66,13 @@ export interface ProviderInstance<T = any> {
 export interface RegistryConfig {
   /** Auto-initialize providers on registration */
   autoInitialize?: boolean;
-  
+
   /** Enable health monitoring */
   enableHealthMonitoring?: boolean;
-  
+
   /** Health check interval (ms) */
   healthCheckInterval?: number;
-  
+
   /** Register fallbacks automatically */
   autoRegisterFallbacks?: boolean;
 }
@@ -84,7 +84,7 @@ export interface RegistryConfig {
  */
 export class ProviderRegistry {
   private static instance: ProviderRegistry;
-  
+
   private providers: Map<string, ProviderInstance> = new Map();
   private metadata: Map<string, ProviderMetadata> = new Map();
   private config: RegistryConfig;
@@ -97,7 +97,7 @@ export class ProviderRegistry {
       healthCheckInterval: config.healthCheckInterval ?? 60000, // 1 minute
       autoRegisterFallbacks: config.autoRegisterFallbacks ?? true,
     };
-    
+
     if (this.config.enableHealthMonitoring) {
       this.startHealthMonitoring();
     }
@@ -118,7 +118,7 @@ export class ProviderRegistry {
    */
   registerMetadata(metadata: ProviderMetadata): void {
     this.metadata.set(metadata.id, metadata);
-    
+
     if (this.config.autoRegisterFallbacks && metadata.fallbackProvider) {
       // Ensure fallback metadata is registered
       if (!this.metadata.has(metadata.fallbackProvider)) {
@@ -136,15 +136,15 @@ export class ProviderRegistry {
     autoInitialize: boolean = false
   ): Promise<void> {
     this.registerMetadata(metadata);
-    
+
     const instance: ProviderInstance<T> = {
       metadata,
       provider,
       initialized: false,
     };
-    
+
     this.providers.set(metadata.id, instance);
-    
+
     if (autoInitialize || this.config.autoInitialize) {
       await this.initializeProvider(metadata.id);
     }
@@ -158,12 +158,12 @@ export class ProviderRegistry {
     if (!instance) {
       throw new Error(`Provider ${providerId} not found in registry`);
     }
-    
+
     if (instance.initialized) {
       this.log('info', `Provider ${providerId} already initialized`);
       return;
     }
-    
+
     await instance.provider.initialize();
     instance.initialized = true;
     this.log('info', `Provider ${providerId} initialized successfully`);
@@ -227,11 +227,11 @@ export class ProviderRegistry {
     if (!instance) {
       return;
     }
-    
+
     if (instance.initialized) {
       await instance.provider.shutdown();
     }
-    
+
     this.providers.delete(providerId);
     this.metadata.delete(providerId);
     this.log('info', `Provider ${providerId} unregistered`);
@@ -245,7 +245,7 @@ export class ProviderRegistry {
     if (!instance) {
       return false;
     }
-    
+
     try {
       const result = await instance.provider.healthCheck();
       const metadata = this.metadata.get(providerId);
@@ -267,12 +267,12 @@ export class ProviderRegistry {
    */
   async healthCheckAll(): Promise<Map<string, boolean>> {
     const results = new Map<string, boolean>();
-    
+
     for (const providerId of this.providers.keys()) {
       const healthy = await this.healthCheck(providerId);
       results.set(providerId, healthy);
     }
-    
+
     return results;
   }
 
@@ -281,19 +281,19 @@ export class ProviderRegistry {
    */
   async getHealthyProviders(): Promise<ProviderInstance[]> {
     const healthy: ProviderInstance[] = [];
-    
+
     for (const instance of this.providers.values()) {
       const result = await instance.provider.healthCheck();
       const metadata = this.metadata.get(instance.metadata.id);
       if (metadata) {
         metadata.available = result.isHealthy;
       }
-      
+
       if (result.isHealthy) {
         healthy.push(instance);
       }
     }
-    
+
     return healthy;
   }
 
@@ -327,18 +327,18 @@ export class ProviderRegistry {
    */
   async shutdownAll(): Promise<void> {
     const shutdownPromises: Promise<void>[] = [];
-    
+
     for (const instance of this.providers.values()) {
       if (instance.initialized) {
         shutdownPromises.push(instance.provider.shutdown());
       }
     }
-    
+
     await Promise.all(shutdownPromises);
     this.providers.clear();
     this.metadata.clear();
     this.stopHealthMonitoring();
-    
+
     this.log('info', 'All providers shut down');
   }
 
@@ -356,15 +356,15 @@ export class ProviderRegistry {
     const byType: Record<string, number> = {};
     let initialized = 0;
     let available = 0;
-    
+
     for (const instance of this.providers.values()) {
       byCategory[instance.metadata.category] = (byCategory[instance.metadata.category] || 0) + 1;
       byType[instance.metadata.type] = (byType[instance.metadata.type] || 0) + 1;
-      
+
       if (instance.initialized) initialized++;
       if (instance.metadata.available) available++;
     }
-    
+
     return {
       totalProviders: this.providers.size,
       initializedProviders: initialized,
@@ -381,9 +381,9 @@ export class ProviderRegistry {
     if (this.healthCheckInterval) {
       return;
     }
-    
+
     this.log('info', 'Starting health monitoring');
-    
+
     this.healthCheckInterval = setInterval(async () => {
       await this.healthCheckAll();
     }, this.config.healthCheckInterval);
@@ -427,7 +427,7 @@ export function getRegistry(): ProviderRegistry {
  */
 export function registerBuiltInProviders(): void {
   const registry = getRegistry();
-  
+
   // LLM Providers
   registry.registerMetadata({
     id: 'llm-openai',
@@ -440,7 +440,7 @@ export function registerBuiltInProviders(): void {
     available: false,
     fallbackProvider: 'hybrid/llm',
   });
-  
+
   registry.registerMetadata({
     id: 'llm-gemini',
     name: 'Google Gemini',
@@ -452,7 +452,7 @@ export function registerBuiltInProviders(): void {
     available: false,
     fallbackProvider: 'hybrid/llm',
   });
-  
+
   registry.registerMetadata({
     id: 'llm-anthropic',
     name: 'Anthropic Claude',
@@ -464,7 +464,7 @@ export function registerBuiltInProviders(): void {
     available: false,
     fallbackProvider: 'hybrid/llm',
   });
-  
+
   // Embedding Providers
   registry.registerMetadata({
     id: 'embedding-openai',
@@ -477,7 +477,7 @@ export function registerBuiltInProviders(): void {
     available: false,
     fallbackProvider: 'hybrid/embedding',
   });
-  
+
   registry.registerMetadata({
     id: 'embedding-cohere',
     name: 'Cohere Embedding',
@@ -489,7 +489,7 @@ export function registerBuiltInProviders(): void {
     available: false,
     fallbackProvider: 'hybrid/embedding',
   });
-  
+
   // External Providers
   registry.registerMetadata({
     id: 'workers-ai',
@@ -502,7 +502,7 @@ export function registerBuiltInProviders(): void {
     available: false,
     fallbackProvider: 'hybrid/llm',
   });
-  
+
   // Hybrid Providers
   registry.registerMetadata({
     id: 'hybrid/llm',
@@ -513,7 +513,7 @@ export function registerBuiltInProviders(): void {
     description: 'Native hybrid LLM with zero dependencies',
     available: true,
   });
-  
+
   registry.registerMetadata({
     id: 'hybrid/embedding',
     name: 'Hybrid Embedding',

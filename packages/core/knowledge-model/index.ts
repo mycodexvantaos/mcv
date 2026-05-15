@@ -16,10 +16,7 @@ export type { DocumentSpec, DocumentStatus } from './document';
 export type { ChunkMetadata, DocumentChunkSpec } from './document-chunk';
 
 // ── Knowledge Collection ───────────────────────────────────────────────
-export type {
-  CollectionPhase,
-  ChunkStrategy,
-} from './knowledge-collection';
+export type { CollectionPhase, ChunkStrategy } from './knowledge-collection';
 export type {
   KnowledgeCollectionSpec,
   KnowledgeCollectionStatus,
@@ -57,14 +54,8 @@ export type {
 } from './answer-trace';
 
 // ── Memory Item ────────────────────────────────────────────────────────
-export type {
-  MemoryType,
-  MemoryPhase,
-} from './memory-item';
-export type {
-  MemoryItemSpec,
-  MemoryItemStatus,
-} from './memory-item';
+export type { MemoryType, MemoryPhase } from './memory-item';
+export type { MemoryItemSpec, MemoryItemStatus } from './memory-item';
 
 // ── Knowledge Issue ────────────────────────────────────────────────────
 export type {
@@ -72,27 +63,12 @@ export type {
   KnowledgeIssueSeverity,
   KnowledgeIssuePhase,
 } from './knowledge-issue';
-export type {
-  KnowledgeIssueSpec,
-  KnowledgeIssueStatus,
-} from './knowledge-issue';
+export type { KnowledgeIssueSpec, KnowledgeIssueStatus } from './knowledge-issue';
 
 // ── Knowledge Repair ───────────────────────────────────────────────────
-export type {
-  KnowledgeRepairType,
-  KnowledgeRepairPhase,
-} from './knowledge-repair';
-export type {
-  KnowledgeRepairSpec,
-  KnowledgeRepairStatus,
-} from './knowledge-repair';
+export type { KnowledgeRepairType, KnowledgeRepairPhase } from './knowledge-repair';
+export type { KnowledgeRepairSpec, KnowledgeRepairStatus } from './knowledge-repair';
 
 // ── Derived Artifact ───────────────────────────────────────────────────
-export type {
-  DerivedArtifactType,
-  DerivedArtifactPhase,
-} from './derived-artifact';
-export type {
-  DerivedArtifactSpec,
-  DerivedArtifactStatus,
-} from './derived-artifact';
+export type { DerivedArtifactType, DerivedArtifactPhase } from './derived-artifact';
+export type { DerivedArtifactSpec, DerivedArtifactStatus } from './derived-artifact';

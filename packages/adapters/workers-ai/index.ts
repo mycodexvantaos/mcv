@@ -38,7 +38,7 @@ export class WorkersAIChatAdapter implements IChatModelPort {
   async invoke(request: ModelRequest): Promise<ModelResponse> {
     const model = request.model ?? '@cf/meta/llama-3.1-8b-instruct';
     const response = await this.ai.run(model as any, {
-      messages: request.messages.map(m => ({
+      messages: request.messages.map((m) => ({
         role: m.role,
         content: m.content,
       })),
@@ -64,7 +64,7 @@ export class WorkersAIChatAdapter implements IChatModelPort {
   async *invokeStream(request: ModelRequest): AsyncIterable<ModelChunk> {
     const model = request.model ?? '@cf/meta/llama-3.1-8b-instruct';
     const response = await this.ai.run(model as any, {
-      messages: request.messages.map(m => ({
+      messages: request.messages.map((m) => ({
         role: m.role,
         content: m.content,
       })),
@@ -109,7 +109,12 @@ export class WorkersAIChatAdapter implements IChatModelPort {
         lastChecked: new Date().toISOString(),
       };
     } catch (error) {
-      return { healthy: false, latencyMs: -1, lastChecked: new Date().toISOString(), error: error instanceof Error ? error.message : 'Unknown' };
+      return {
+        healthy: false,
+        latencyMs: -1,
+        lastChecked: new Date().toISOString(),
+        error: error instanceof Error ? error.message : 'Unknown',
+      };
     }
   }
 }
@@ -140,9 +145,18 @@ export class WorkersAIEmbeddingAdapter implements IEmbeddingModelPort {
   async healthCheck(): Promise<ModelHealthStatus> {
     try {
       const start = Date.now();
-      return { healthy: true, latencyMs: Date.now() - start, lastChecked: new Date().toISOString() };
+      return {
+        healthy: true,
+        latencyMs: Date.now() - start,
+        lastChecked: new Date().toISOString(),
+      };
     } catch (error) {
-      return { healthy: false, latencyMs: -1, lastChecked: new Date().toISOString(), error: error instanceof Error ? error.message : 'Unknown' };
+      return {
+        healthy: false,
+        latencyMs: -1,
+        lastChecked: new Date().toISOString(),
+        error: error instanceof Error ? error.message : 'Unknown',
+      };
     }
   }
 }

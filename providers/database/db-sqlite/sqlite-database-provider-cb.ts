@@ -9,7 +9,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 /**
  * Configuration for SQLite Database Provider
@@ -17,16 +20,16 @@ import type { ProviderConfig, ProviderHealthCheckResult } from '../../../package
 export interface SQLiteDatabaseConfig {
   /** Database file path */
   dbPath?: string;
-  
+
   /** Enable WAL mode */
   enableWAL?: boolean;
-  
+
   /** Connection timeout in milliseconds */
   timeout?: number;
-  
+
   /** Number of retries on failure */
   retries?: number;
-  
+
   /** Native fallback provider ID */
   fallbackProviderId?: string;
 }
@@ -37,19 +40,19 @@ export interface SQLiteDatabaseConfig {
 export interface QueryResult<T = any> {
   /** Success status */
   success: boolean;
-  
+
   /** Query results */
   rows?: T[];
-  
+
   /** Affected row count */
   affectedRows?: number;
-  
+
   /** Last insert ID */
   lastInsertId?: number;
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -66,7 +69,7 @@ export class SQLiteDatabaseProvider extends CapabilityBase<SQLiteDatabaseConfig>
   private timeout: number;
   private retries: number;
   private fallbackProviderId: string = 'native';
-  
+
   private isSQLiteAvailable: boolean = false;
 
   constructor(
@@ -76,7 +79,7 @@ export class SQLiteDatabaseProvider extends CapabilityBase<SQLiteDatabaseConfig>
     fallbackConfig?: any
   ) {
     super(id, name, config, fallbackConfig);
-    
+
     const cfg = config.config;
     this.dbPath = cfg.dbPath || './database.db';
     this.enableWAL = cfg.enableWAL ?? true;
@@ -90,7 +93,7 @@ export class SQLiteDatabaseProvider extends CapabilityBase<SQLiteDatabaseConfig>
   protected async doInitialize(): Promise<void> {
     try {
       await this.checkSQLiteAvailability();
-      
+
       if (this.isSQLiteAvailable) {
         this.log('info', `SQLite database provider initialized at ${this.dbPath}`);
       } else {
@@ -161,7 +164,7 @@ export class SQLiteDatabaseProvider extends CapabilityBase<SQLiteDatabaseConfig>
    */
   async query<T = any>(sql: string, params: any[] = []): Promise<QueryResult<T>> {
     const startTime = Date.now();
-    
+
     if (!this.isSQLiteAvailable) {
       const operationTime = Date.now() - startTime;
       return {
@@ -175,7 +178,7 @@ export class SQLiteDatabaseProvider extends CapabilityBase<SQLiteDatabaseConfig>
       const result = await this.queryWithRetry<T>(sql, params);
       const operationTime = Date.now() - startTime;
       result.operationTime = operationTime;
-      
+
       this.recordSuccess(operationTime);
       return result;
     } catch (error) {
@@ -204,7 +207,7 @@ export class SQLiteDatabaseProvider extends CapabilityBase<SQLiteDatabaseConfig>
 
         if (attempt < this.retries) {
           const delay = Math.min(100 * Math.pow(2, attempt - 1), 1000);
-          await new Promise(resolve => setTimeout(resolve, delay));
+          await new Promise((resolve) => setTimeout(resolve, delay));
         }
       }
     }
@@ -231,7 +234,7 @@ export class SQLiteDatabaseProvider extends CapabilityBase<SQLiteDatabaseConfig>
    */
   async execute(sql: string, params: any[] = []): Promise<QueryResult<void>> {
     const startTime = Date.now();
-    
+
     if (!this.isSQLiteAvailable) {
       const operationTime = Date.now() - startTime;
       return {
@@ -245,7 +248,7 @@ export class SQLiteDatabaseProvider extends CapabilityBase<SQLiteDatabaseConfig>
       const result = await this.executeWithRetry(sql, params);
       const operationTime = Date.now() - startTime;
       result.operationTime = operationTime;
-      
+
       this.recordSuccess(operationTime);
       return result;
     } catch (error) {
@@ -274,7 +277,7 @@ export class SQLiteDatabaseProvider extends CapabilityBase<SQLiteDatabaseConfig>
 
         if (attempt < this.retries) {
           const delay = Math.min(100 * Math.pow(2, attempt - 1), 1000);
-          await new Promise(resolve => setTimeout(resolve, delay));
+          await new Promise((resolve) => setTimeout(resolve, delay));
         }
       }
     }

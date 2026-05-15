@@ -13,7 +13,9 @@ export type { TemporalSchedulerConfig } from './temporal-scheduler-provider-cb';
 /**
  * Create a TemporalSchedulerProvider instance with the given configuration.
  */
-export function createTemporalSchedulerProvider(config: Partial<ProviderConfig<TemporalSchedulerConfig>> = {}): TemporalSchedulerProvider {
+export function createTemporalSchedulerProvider(
+  config: Partial<ProviderConfig<TemporalSchedulerConfig>> = {}
+): TemporalSchedulerProvider {
   const providerConfig: ProviderConfig<TemporalSchedulerConfig> = {
     id: config.id || 'temporal-scheduler-provider-cb',
     name: config.name || 'TemporalSchedulerProvider',

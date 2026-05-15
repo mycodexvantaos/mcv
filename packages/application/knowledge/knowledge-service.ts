@@ -39,7 +39,14 @@ export interface KnowledgeServiceDeps {
 // ── Document Types ─────────────────────────────────────────────────────
 
 export type DocumentFormat = 'pdf' | 'txt' | 'md' | 'html' | 'json' | 'csv' | 'docx';
-export type DocumentPhase = 'uploaded' | 'ingesting' | 'ready' | 'failed' | 'stale' | 'archived' | 'deleted';
+export type DocumentPhase =
+  | 'uploaded'
+  | 'ingesting'
+  | 'ready'
+  | 'failed'
+  | 'stale'
+  | 'archived'
+  | 'deleted';
 
 export interface IngestDocumentInput {
   title: string;
@@ -123,7 +130,12 @@ export interface SearchResultItem {
 
 // ── Issue & Repair Types ───────────────────────────────────────────────
 
-export type KnowledgeIssueType = 'stale' | 'contradiction' | 'gap' | 'hallucination' | 'broken-reference';
+export type KnowledgeIssueType =
+  | 'stale'
+  | 'contradiction'
+  | 'gap'
+  | 'hallucination'
+  | 'broken-reference';
 
 export interface KnowledgeAuditEvent {
   eventType: string;
@@ -147,7 +159,11 @@ export class KnowledgeService {
 
   // ── Document Ingestion ───────────────────────────────────────────────
 
-  async ingestDocument(workspaceId: string, subjectId: string, input: IngestDocumentInput): Promise<DocumentResource> {
+  async ingestDocument(
+    workspaceId: string,
+    subjectId: string,
+    input: IngestDocumentInput
+  ): Promise<DocumentResource> {
     const documentId = crypto.randomUUID();
     const urn = `urn:mycodexvantaos:knowledge:document:${documentId}`;
     const now = new Date().toISOString();
@@ -162,7 +178,19 @@ export class KnowledgeService {
     await this.deps.database.execute(
       `INSERT INTO documents (id, urn, workspace_id, title, format, collection_id, source_uri, language, phase, file_size_bytes, created_at, updated_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'uploaded', ?, ?, ?)`,
-      [documentId, urn, workspaceId, input.title, input.format, input.collectionId, input.sourceUri ?? null, input.language ?? 'en', input.content.byteLength, now, now]
+      [
+        documentId,
+        urn,
+        workspaceId,
+        input.title,
+        input.format,
+        input.collectionId,
+        input.sourceUri ?? null,
+        input.language ?? 'en',
+        input.content.byteLength,
+        now,
+        now,
+      ]
     );
 
     // Enqueue async chunking job
@@ -187,14 +215,30 @@ export class KnowledgeService {
     return {
       id: documentId,
       urn,
-      spec: { title: input.title, format: input.format, collectionId: input.collectionId, sourceUri: input.sourceUri ?? null, language: input.language ?? 'en' },
-      status: { phase: 'uploaded', chunkCount: 0, totalTokens: 0, fileSizeBytes: input.content.byteLength, conditions: [] },
+      spec: {
+        title: input.title,
+        format: input.format,
+        collectionId: input.collectionId,
+        sourceUri: input.sourceUri ?? null,
+        language: input.language ?? 'en',
+      },
+      status: {
+        phase: 'uploaded',
+        chunkCount: 0,
+        totalTokens: 0,
+        fileSizeBytes: input.content.byteLength,
+        conditions: [],
+      },
     };
   }
 
   // ── Search ───────────────────────────────────────────────────────────
 
-  async searchKnowledge(workspaceId: string, subjectId: string, input: SearchKnowledgeInput): Promise<{
+  async searchKnowledge(
+    workspaceId: string,
+    subjectId: string,
+    input: SearchKnowledgeInput
+  ): Promise<{
     results: SearchResultItem[];
     totalDurationMs: number;
   }> {
@@ -218,7 +262,11 @@ export class KnowledgeService {
       workspaceId,
       action: 'search-knowledge',
       correlationId: crypto.randomUUID(),
-      data: { query: input.query, resultCount: response.results.length, durationMs: totalDurationMs },
+      data: {
+        query: input.query,
+        resultCount: response.results.length,
+        durationMs: totalDurationMs,
+      },
     });
 
     return { results: response.results, totalDurationMs };
@@ -226,7 +274,11 @@ export class KnowledgeService {
 
   // ── Collection Management ────────────────────────────────────────────
 
-  async createCollection(workspaceId: string, subjectId: string, input: CreateCollectionInput): Promise<CollectionResource> {
+  async createCollection(
+    workspaceId: string,
+    subjectId: string,
+    input: CreateCollectionInput
+  ): Promise<CollectionResource> {
     const collectionId = crypto.randomUUID();
     const urn = `urn:mycodexvantaos:knowledge:collection:${collectionId}`;
     const now = new Date().toISOString();
@@ -234,13 +286,30 @@ export class KnowledgeService {
     await this.deps.database.execute(
       `INSERT INTO knowledge_collections (id, urn, workspace_id, name, description, embedding_model, chunk_strategy, language, phase, created_at, updated_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'empty', ?, ?)`,
-      [collectionId, urn, workspaceId, input.name, input.description, input.embeddingModel, input.chunkStrategy, input.language ?? 'en', now, now]
+      [
+        collectionId,
+        urn,
+        workspaceId,
+        input.name,
+        input.description,
+        input.embeddingModel,
+        input.chunkStrategy,
+        input.language ?? 'en',
+        now,
+        now,
+      ]
     );
 
     return {
       id: collectionId,
       urn,
-      spec: { name: input.name, description: input.description, embeddingModel: input.embeddingModel, chunkStrategy: input.chunkStrategy, language: input.language ?? 'en' },
+      spec: {
+        name: input.name,
+        description: input.description,
+        embeddingModel: input.embeddingModel,
+        chunkStrategy: input.chunkStrategy,
+        language: input.language ?? 'en',
+      },
       status: { phase: 'empty', documentCount: 0, totalChunks: 0, conditions: [] },
     };
   }

@@ -18,7 +18,10 @@ if (!SERVICE_NAME) {
 }
 
 function toPascalCase(kebab: string): string {
-  return kebab.split('-').map(p => p.charAt(0).toUpperCase() + p.slice(1)).join('');
+  return kebab
+    .split('-')
+    .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+    .join('');
 }
 
 const ClassName = toPascalCase(SERVICE_NAME);
@@ -119,10 +122,7 @@ console.log('══════════════════════�
 console.log(`  Generating scaffold for: ${SERVICE_NAME}`);
 console.log('════════════════════════════════════════════════════════\n');
 
-writeFile(
-  path.join(ROOT_DIR, 'application', `${SERVICE_NAME}-service.ts`),
-  appServiceContent
-);
+writeFile(path.join(ROOT_DIR, 'application', `${SERVICE_NAME}-service.ts`), appServiceContent);
 writeFile(
   path.join(ROOT_DIR, 'infra', 'cloudflare', 'workers', `wrangler.${SERVICE_NAME}.toml`),
   wranglerContent

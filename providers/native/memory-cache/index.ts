@@ -17,15 +17,11 @@ export function createNativeMemoryCacheProvider(
 ) {
   const { MemoryCache } = require('./memory-cache-cb');
 
-  return new MemoryCache(
-    id,
-    'Native Memory Cache',
-    {
-      mode: 'native' as any,
-      providerMode: 'native' as any,
-      config: config || {},
-    }
-  );
+  return new MemoryCache(id, 'Native Memory Cache', {
+    mode: 'native' as any,
+    providerMode: 'native' as any,
+    config: config || {},
+  });
 }
 
 /**

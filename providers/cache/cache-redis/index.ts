@@ -23,15 +23,11 @@ export function createRedisCacheProvider(
   config?: Partial<RedisCacheConfig>
 ) {
   const { RedisCacheProvider } = require('./redis-cache-provider-cb');
-  
-  return new RedisCacheProvider(
-    id,
-    'Redis Cache',
-    {
-      enabled: true,
-      config: config || {},
-    }
-  );
+
+  return new RedisCacheProvider(id, 'Redis Cache', {
+    enabled: true,
+    config: config || {},
+  });
 }
 
 /**

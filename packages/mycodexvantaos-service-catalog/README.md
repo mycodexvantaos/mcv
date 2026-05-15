@@ -13,7 +13,11 @@ Service catalog model - service definitions, categories, capabilities, permissio
 ## Usage
 
 ```typescript
-import { ServiceDefinition, ServiceCategory, ServiceCapability } from '@mycodexvantaos/mycodexvantaos-service-catalog';
+import {
+  ServiceDefinition,
+  ServiceCategory,
+  ServiceCapability,
+} from '@mycodexvantaos/mycodexvantaos-service-catalog';
 ```
 
 ## Status

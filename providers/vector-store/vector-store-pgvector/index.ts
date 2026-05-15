@@ -13,7 +13,9 @@ export type { PgVectorConfig } from './pgvector-provider-cb';
 /**
  * Create a PgVectorProvider instance with the given configuration.
  */
-export function createPgVectorProvider(config: Partial<ProviderConfig<PgVectorConfig>> = {}): PgVectorProvider {
+export function createPgVectorProvider(
+  config: Partial<ProviderConfig<PgVectorConfig>> = {}
+): PgVectorProvider {
   const providerConfig: ProviderConfig<PgVectorConfig> = {
     id: config.id || 'pgvector-provider-cb',
     name: config.name || 'PgVectorProvider',

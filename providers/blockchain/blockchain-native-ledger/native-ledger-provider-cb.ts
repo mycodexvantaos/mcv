@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface NativeLedgerConfig {
   timeout?: number;
@@ -15,7 +18,14 @@ export interface NativeLedgerConfig {
   fallbackProviderId?: string;
 }
 
-export interface LedgerResult { success: boolean; data?: unknown; index?: number; verified?: boolean; error?: string; operationTime: number; }
+export interface LedgerResult {
+  success: boolean;
+  data?: unknown;
+  index?: number;
+  verified?: boolean;
+  error?: string;
+  operationTime: number;
+}
 
 export class NativeLedgerProvider extends CapabilityBase<NativeLedgerConfig> {
   private timeout: number;
@@ -56,7 +66,11 @@ export class NativeLedgerProvider extends CapabilityBase<NativeLedgerConfig> {
   async appendEntry(data: Record<string, unknown>): Promise<LedgerResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `NativeLedgerProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `NativeLedgerProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -64,13 +78,21 @@ export class NativeLedgerProvider extends CapabilityBase<NativeLedgerConfig> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async getEntry(index: number): Promise<LedgerResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `NativeLedgerProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `NativeLedgerProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -78,13 +100,21 @@ export class NativeLedgerProvider extends CapabilityBase<NativeLedgerConfig> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async verifyChain(): Promise<LedgerResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `NativeLedgerProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `NativeLedgerProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -92,7 +122,11 @@ export class NativeLedgerProvider extends CapabilityBase<NativeLedgerConfig> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

@@ -13,7 +13,9 @@ export type { TrivySecurityConfig } from './trivy-security-provider-cb';
 /**
  * Create a TrivySecurityProvider instance with the given configuration.
  */
-export function createTrivySecurityProvider(config: Partial<ProviderConfig<TrivySecurityConfig>> = {}): TrivySecurityProvider {
+export function createTrivySecurityProvider(
+  config: Partial<ProviderConfig<TrivySecurityConfig>> = {}
+): TrivySecurityProvider {
   const providerConfig: ProviderConfig<TrivySecurityConfig> = {
     id: config.id || 'trivy-security-provider-cb',
     name: config.name || 'TrivySecurityProvider',

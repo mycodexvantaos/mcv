@@ -3,6 +3,7 @@
 ## 📋 Overview
 
 統一 Provider 置於 `providers/` 目錄，按類型分類：
+
 - `providers/native/` - Native Provider（零依賴，完全離線）
 - `providers/external/` - External Provider（需要 API，需 fallback）
 - `providers/hybrid/` - Hybrid Provider（External + Native Fallback）
@@ -64,23 +65,25 @@ providers/
 
 ## ✅ 已遷移項目（本階段示例）
 
-| 原路徑 | 新路徑 | 類型 | 狀態 |
-|--------|--------|------|------|
-| `packages/adapters/openai` | `providers/external/openai` | External | ✅ 僅複製，業務邏輯尚未接入 CapabilityBase（示例代碼已提供） |
-| `packages/adapters/workers-ai` | `providers/external/workers-ai` | External | ✅ 僅複製，業務邏輯尚未接入 CapabilityBase |
-| `providers/vector-store` | `providers/native/memory-vector-store` | Native | ✅ 已提供 CapabilityBase 適配示例 |
-| `providers/cache` | `providers/native/memory-cache` | Native | ✅ 已提供 CapabilityBase 適配示例 |
-| `providers/embedding` | `providers/hybrid/embedding` | Hybrid | ✅ 已提供 CapabilityBase 適配示例 |
+| 原路徑                         | 新路徑                                 | 類型     | 狀態                                                         |
+| ------------------------------ | -------------------------------------- | -------- | ------------------------------------------------------------ |
+| `packages/adapters/openai`     | `providers/external/openai`            | External | ✅ 僅複製，業務邏輯尚未接入 CapabilityBase（示例代碼已提供） |
+| `packages/adapters/workers-ai` | `providers/external/workers-ai`        | External | ✅ 僅複製，業務邏輯尚未接入 CapabilityBase                   |
+| `providers/vector-store`       | `providers/native/memory-vector-store` | Native   | ✅ 已提供 CapabilityBase 適配示例                            |
+| `providers/cache`              | `providers/native/memory-cache`        | Native   | ✅ 已提供 CapabilityBase 適配示例                            |
+| `providers/embedding`          | `providers/hybrid/embedding`           | Hybrid   | ✅ 已提供 CapabilityBase 適配示例                            |
 
 ## 🔜 待遷移項目（後續階段）
 
 ### External 候選
+
 - `packages/adapters/cloudflare-d1` → `providers/external/cloudflare-d1`
 - `packages/adapters/cloudflare-kv` → `providers/external/cloudflare-kv`
 - `packages/adapters/cloudflare-r2` → `providers/external/cloudflare-r2`
 - `packages/adapters/d1-full-text-search` → `providers/external/d1-full-text-search`
 
 ### Native 候選（按架構驗證報告識別）
+
 - `providers/auth` → `providers/native/auth-jwt-native`（如需）
 - `providers/event-stream` → `providers/native/event-stream-native-governance`（如需）
 - `providers/secrets` → `providers/native/secrets-k8s-native`（如需）
@@ -90,6 +93,7 @@ providers/
 - `providers/llm` → `providers/native/llm-native`（如需）
 
 ### Hybrid 候選
+
 - 模型提供（OpenAI → Native LLM）
 - Embedding（Workers AI → Native fallback）
 - Vector Store（Pinecone/OpenAI → Native Memory）

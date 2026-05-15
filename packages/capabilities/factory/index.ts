@@ -18,11 +18,7 @@
 
 import { CapabilityBase } from '../base';
 import { RuntimeMode, ProviderHealthStatus } from '../types';
-import type {
-  ProviderConfig,
-  FallbackConfig,
-  NetworkStatus,
-} from '../types';
+import type { ProviderConfig, FallbackConfig, NetworkStatus } from '../types';
 
 /**
  * 🏭 ProviderFactory - Provider 工廠類
@@ -83,7 +79,11 @@ export class ProviderFactory<T extends CapabilityBase> {
    * @param mode - 初始 Runtime Mode
    * @param enableAutoFallback - 是否啟用自動 fallback
    */
-  constructor(name: string, mode: RuntimeMode = RuntimeMode.AUTO, enableAutoFallback: boolean = true) {
+  constructor(
+    name: string,
+    mode: RuntimeMode = RuntimeMode.AUTO,
+    enableAutoFallback: boolean = true
+  ) {
     this.name = name;
     this.providers = new Map();
     this.activeProviders = new Map();
@@ -193,7 +193,11 @@ export class ProviderFactory<T extends CapabilityBase> {
     if (this.currentMode === RuntimeMode.AUTO) {
       this.activeProviders.forEach((provider, id) => {
         provider.shutdown().catch((error) => {
-          this.log('error', `Failed to shutdown provider ${id} during network status update:`, error);
+          this.log(
+            'error',
+            `Failed to shutdown provider ${id} during network status update:`,
+            error
+          );
         });
       });
       this.activeProviders.clear();
@@ -239,17 +243,16 @@ export class ProviderFactory<T extends CapabilityBase> {
       ? {
           enabled: this.enableAutoFallback,
           providerId: selectedProviders.fallback.id,
-          retryCount: (selectedProviders.fallback.config as Record<string, unknown>).fallbackThreshold as number || 3,
+          retryCount:
+            ((selectedProviders.fallback.config as Record<string, unknown>)
+              .fallbackThreshold as number) || 3,
           retryDelay: 1000,
           logFallback: true,
         }
       : undefined;
 
     // 4. 創建 Provider 實例
-    const providerInstance = new providerConstructor(
-      selectedProviders.primary,
-      fallbackConfig
-    );
+    const providerInstance = new providerConstructor(selectedProviders.primary, fallbackConfig);
 
     // 5. 初始化 Provider
     await providerInstance.initialize();
@@ -352,7 +355,10 @@ export class ProviderFactory<T extends CapabilityBase> {
   ): { primary?: ProviderConfig; fallback?: ProviderConfig } {
     // 根據 mode 選擇 Provider
     const candidates = Array.from(this.providers.values()).filter(
-      (config) => config.mode === mode || config.mode === RuntimeMode.HYBRID || config.mode === RuntimeMode.AUTO
+      (config) =>
+        config.mode === mode ||
+        config.mode === RuntimeMode.HYBRID ||
+        config.mode === RuntimeMode.AUTO
     );
 
     // 選擇主 Provider
@@ -361,28 +367,44 @@ export class ProviderFactory<T extends CapabilityBase> {
 
     // NATIVE 模式：只能用 native Provider
     if (mode === RuntimeMode.NATIVE) {
-      primary = candidates.find((c) => (c.config as Record<string, unknown>).providerMode === 'native');
+      primary = candidates.find(
+        (c) => (c.config as Record<string, unknown>).providerMode === 'native'
+      );
     }
     // CONNECTED 模式：優先用 external，沒有就用 native
     else if (mode === RuntimeMode.CONNECTED) {
-      primary = candidates.find((c) => (c.config as Record<string, unknown>).providerMode === 'external');
+      primary = candidates.find(
+        (c) => (c.config as Record<string, unknown>).providerMode === 'external'
+      );
       if (!primary) {
-        primary = candidates.find((c) => (c.config as Record<string, unknown>).providerMode === 'native');
+        primary = candidates.find(
+          (c) => (c.config as Record<string, unknown>).providerMode === 'native'
+        );
       }
     }
     // HYBRID 模式：external first，native fallback
     else if (mode === RuntimeMode.HYBRID) {
-      primary = candidates.find((c) => (c.config as Record<string, unknown>).providerMode === 'external');
-      fallback = candidates.find((c) => (c.config as Record<string, unknown>).providerMode === 'native');
+      primary = candidates.find(
+        (c) => (c.config as Record<string, unknown>).providerMode === 'external'
+      );
+      fallback = candidates.find(
+        (c) => (c.config as Record<string, unknown>).providerMode === 'native'
+      );
     }
 
     // AUTO 模式：根據網絡狀態切換
     else if (mode === RuntimeMode.AUTO) {
       if (this.networkStatus?.isOnline) {
-        primary = candidates.find((c) => (c.config as Record<string, unknown>).providerMode === 'external');
-        fallback = candidates.find((c) => (c.config as Record<string, unknown>).providerMode === 'native');
+        primary = candidates.find(
+          (c) => (c.config as Record<string, unknown>).providerMode === 'external'
+        );
+        fallback = candidates.find(
+          (c) => (c.config as Record<string, unknown>).providerMode === 'native'
+        );
       } else {
-        primary = candidates.find((c) => (c.config as Record<string, unknown>).providerMode === 'native');
+        primary = candidates.find(
+          (c) => (c.config as Record<string, unknown>).providerMode === 'native'
+        );
       }
     }
 

@@ -15,7 +15,13 @@ export type MemoryStatus =
 
 export type ActiveMemoryStatus = 'active' | 'reinforced';
 
-export type PassiveMemoryStatus = 'candidate' | 'merged' | 'deprecated' | 'orphaned' | 'archived' | 'rejected';
+export type PassiveMemoryStatus =
+  | 'candidate'
+  | 'merged'
+  | 'deprecated'
+  | 'orphaned'
+  | 'archived'
+  | 'rejected';
 
 export interface MemoryItem {
   memoryId: string;
@@ -23,7 +29,15 @@ export interface MemoryItem {
   tags: string[];
   relatedEntities: string[];
   temporalExpressions: string[];
-  memoryType: 'observation' | 'reflection' | 'decision' | 'event' | 'fact' | 'opinion' | 'plan' | 'system';
+  memoryType:
+    | 'observation'
+    | 'reflection'
+    | 'decision'
+    | 'event'
+    | 'fact'
+    | 'opinion'
+    | 'plan'
+    | 'system';
   status: MemoryStatus;
   conflictsWith: string[];
   createdAt: string;

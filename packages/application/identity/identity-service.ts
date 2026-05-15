@@ -137,7 +137,12 @@ export class IdentityService implements IAuthPort {
     throw new Error('Not implemented: validateToken requires adapter');
   }
 
-  async checkPermission(subjectId: string, workspaceId: string, action: string, resourceKind: string): Promise<boolean> {
+  async checkPermission(
+    subjectId: string,
+    workspaceId: string,
+    action: string,
+    resourceKind: string
+  ): Promise<boolean> {
     // Policy evaluation — delegates to policy model
     throw new Error('Not implemented: checkPermission requires policy evaluation');
   }
@@ -189,9 +194,6 @@ export class IdentityService implements IAuthPort {
   }
 
   async revokeSession(sessionId: string): Promise<void> {
-    await this.deps.database.execute(
-      'DELETE FROM sessions WHERE id = ?',
-      [sessionId]
-    );
+    await this.deps.database.execute('DELETE FROM sessions WHERE id = ?', [sessionId]);
   }
 }

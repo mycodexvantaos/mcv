@@ -13,7 +13,9 @@ export type { PrometheusConfig } from './prometheus-provider-cb';
 /**
  * Create a PrometheusProvider instance with the given configuration.
  */
-export function createPrometheusProvider(config: Partial<ProviderConfig<PrometheusConfig>> = {}): PrometheusProvider {
+export function createPrometheusProvider(
+  config: Partial<ProviderConfig<PrometheusConfig>> = {}
+): PrometheusProvider {
   const providerConfig: ProviderConfig<PrometheusConfig> = {
     id: config.id || 'prometheus-provider-cb',
     name: config.name || 'PrometheusProvider',

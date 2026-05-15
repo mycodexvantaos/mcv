@@ -13,7 +13,9 @@ export type { ArgoCDConfig } from './argocd-provider-cb';
 /**
  * Create a ArgoCDProvider instance with the given configuration.
  */
-export function createArgoCDProvider(config: Partial<ProviderConfig<ArgoCDConfig>> = {}): ArgoCDProvider {
+export function createArgoCDProvider(
+  config: Partial<ProviderConfig<ArgoCDConfig>> = {}
+): ArgoCDProvider {
   const providerConfig: ProviderConfig<ArgoCDConfig> = {
     id: config.id || 'argocd-provider-cb',
     name: config.name || 'ArgoCDProvider',

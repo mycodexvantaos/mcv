@@ -22,10 +22,10 @@ import type {
 
 export interface OpenAIConfig {
   apiKey: string;
-  baseUrl?: string;           // default: https://api.openai.com/v1
+  baseUrl?: string; // default: https://api.openai.com/v1
   organization?: string;
-  defaultModel?: string;      // default: gpt-4o
-  embeddingModel?: string;    // default: text-embedding-3-small
+  defaultModel?: string; // default: gpt-4o
+  embeddingModel?: string; // default: text-embedding-3-small
 }
 
 // ── OpenAI Chat Adapter ────────────────────────────────────────────────
@@ -43,7 +43,7 @@ export class OpenAIChatAdapter implements IChatModelPort {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.config.apiKey}`,
+        Authorization: `Bearer ${this.config.apiKey}`,
         ...(this.config.organization ? { 'OpenAI-Organization': this.config.organization } : {}),
       },
       body: JSON.stringify({
@@ -60,7 +60,7 @@ export class OpenAIChatAdapter implements IChatModelPort {
       throw new Error(`OpenAI invocation failed: ${response.status} ${await response.text()}`);
     }
 
-    const data = await response.json() as any;
+    const data = (await response.json()) as any;
     return {
       id: data.id,
       content: data.choices[0]?.message?.content ?? '',
@@ -81,7 +81,7 @@ export class OpenAIChatAdapter implements IChatModelPort {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.config.apiKey}`,
+        Authorization: `Bearer ${this.config.apiKey}`,
       },
       body: JSON.stringify({
         model: request.model ?? this.config.defaultModel ?? 'gpt-4o',
@@ -117,13 +117,17 @@ export class OpenAIChatAdapter implements IChatModelPort {
             content: data.choices[0]?.delta?.content ?? '',
             model: data.model,
             finishReason: data.choices[0]?.finish_reason,
-            usage: data.usage ? {
-              promptTokens: data.usage.prompt_tokens,
-              completionTokens: data.usage.completion_tokens,
-              totalTokens: data.usage.total_tokens,
-            } : undefined,
+            usage: data.usage
+              ? {
+                  promptTokens: data.usage.prompt_tokens,
+                  completionTokens: data.usage.completion_tokens,
+                  totalTokens: data.usage.total_tokens,
+                }
+              : undefined,
           };
-        } catch { /* skip malformed chunks */ }
+        } catch {
+          /* skip malformed chunks */
+        }
       }
     }
   }
@@ -133,7 +137,7 @@ export class OpenAIChatAdapter implements IChatModelPort {
       const start = Date.now();
       const baseUrl = this.config.baseUrl ?? 'https://api.openai.com/v1';
       const response = await fetch(`${baseUrl}/models`, {
-        headers: { 'Authorization': `Bearer ${this.config.apiKey}` },
+        headers: { Authorization: `Bearer ${this.config.apiKey}` },
       });
       return {
         healthy: response.ok,
@@ -142,7 +146,12 @@ export class OpenAIChatAdapter implements IChatModelPort {
         error: response.ok ? undefined : `HTTP ${response.status}`,
       };
     } catch (error) {
-      return { healthy: false, latencyMs: -1, lastChecked: new Date().toISOString(), error: error instanceof Error ? error.message : 'Unknown' };
+      return {
+        healthy: false,
+        latencyMs: -1,
+        lastChecked: new Date().toISOString(),
+        error: error instanceof Error ? error.message : 'Unknown',
+      };
     }
   }
 }
@@ -162,7 +171,7 @@ export class OpenAIEmbeddingAdapter implements IEmbeddingModelPort {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.config.apiKey}`,
+        Authorization: `Bearer ${this.config.apiKey}`,
       },
       body: JSON.stringify({
         model: input.model ?? this.config.embeddingModel ?? 'text-embedding-3-small',
@@ -175,7 +184,7 @@ export class OpenAIEmbeddingAdapter implements IEmbeddingModelPort {
       throw new Error(`OpenAI embedding failed: ${response.status} ${await response.text()}`);
     }
 
-    const data = await response.json() as any;
+    const data = (await response.json()) as any;
     return {
       model: data.model,
       embeddings: data.data.map((d: any) => d.embedding),
@@ -186,9 +195,18 @@ export class OpenAIEmbeddingAdapter implements IEmbeddingModelPort {
   async healthCheck(): Promise<ModelHealthStatus> {
     try {
       const start = Date.now();
-      return { healthy: true, latencyMs: Date.now() - start, lastChecked: new Date().toISOString() };
+      return {
+        healthy: true,
+        latencyMs: Date.now() - start,
+        lastChecked: new Date().toISOString(),
+      };
     } catch (error) {
-      return { healthy: false, latencyMs: -1, lastChecked: new Date().toISOString(), error: error instanceof Error ? error.message : 'Unknown' };
+      return {
+        healthy: false,
+        latencyMs: -1,
+        lastChecked: new Date().toISOString(),
+        error: error instanceof Error ? error.message : 'Unknown',
+      };
     }
   }
 }

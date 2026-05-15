@@ -9,7 +9,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 /**
  * Configuration for R2 Storage Provider
@@ -17,22 +20,22 @@ import type { ProviderConfig, ProviderHealthCheckResult } from '../../../package
 export interface R2StorageConfig {
   /** Cloudflare account ID */
   accountId?: string;
-  
+
   /** Cloudflare API token */
   apiToken?: string;
-  
+
   /** R2 bucket name */
   bucket?: string;
-  
+
   /** R2 endpoint URL */
   endpoint?: string;
-  
+
   /** Connection timeout in milliseconds */
   timeout?: number;
-  
+
   /** Number of retries on failure */
   retries?: number;
-  
+
   /** Native fallback provider ID */
   fallbackProviderId?: string;
 }
@@ -43,22 +46,22 @@ export interface R2StorageConfig {
 export interface FileMetadata {
   /** File name */
   name: string;
-  
+
   /** File path */
   path: string;
-  
+
   /** File size in bytes */
   size: number;
-  
+
   /** Content type */
   contentType?: string;
-  
+
   /** Last modified timestamp */
   lastModified: number;
-  
+
   /** ETag */
   etag?: string;
-  
+
   /** Custom metadata */
   metadata?: Record<string, string>;
 }
@@ -141,7 +144,7 @@ export class R2StorageProvider extends CapabilityBase<R2StorageConfig> {
     if (!this.bucket) {
       throw new Error('R2 bucket name is required');
     }
-    
+
     this.log('info', 'R2 storage provider initialized');
     this.log('info', `Bucket: ${this.bucket}, Account: ${this.accountId}`);
   }
@@ -161,9 +164,9 @@ export class R2StorageProvider extends CapabilityBase<R2StorageConfig> {
           },
         };
       }
-      
+
       const isHealthy = this.accountId.length > 0 && this.apiToken.length > 0;
-      
+
       return {
         isHealthy,
         status: isHealthy ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.UNHEALTHY,
@@ -201,7 +204,7 @@ export class R2StorageProvider extends CapabilityBase<R2StorageConfig> {
     }
   ): Promise<UploadResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.accountId || !this.apiToken) {
         return {
@@ -210,14 +213,14 @@ export class R2StorageProvider extends CapabilityBase<R2StorageConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // In a real implementation, we would upload to R2
       const size = data.length;
       const etag = this.generateETag(data);
-      
+
       this.log('info', `Uploaded file to R2: ${path} (${size} bytes)`);
       this.recordMetric('upload', size);
-      
+
       return {
         success: true,
         path,
@@ -240,7 +243,7 @@ export class R2StorageProvider extends CapabilityBase<R2StorageConfig> {
    */
   async download(path: string): Promise<DownloadResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.accountId || !this.apiToken) {
         return {
@@ -249,7 +252,7 @@ export class R2StorageProvider extends CapabilityBase<R2StorageConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // In a real implementation, we would download from R2
       const fileMetadata: FileMetadata = {
         name: path.split('/').pop() || path,
@@ -259,10 +262,10 @@ export class R2StorageProvider extends CapabilityBase<R2StorageConfig> {
         lastModified: Date.now(),
         etag: this.generateETag(''),
       };
-      
+
       this.log('info', `Downloaded file from R2: ${path}`);
       this.recordMetric('download', fileMetadata.size);
-      
+
       return {
         success: true,
         data: '',
@@ -284,7 +287,7 @@ export class R2StorageProvider extends CapabilityBase<R2StorageConfig> {
    */
   async list(prefix?: string, continuationToken?: string): Promise<ListResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.accountId || !this.apiToken) {
         return {
@@ -293,9 +296,9 @@ export class R2StorageProvider extends CapabilityBase<R2StorageConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       this.log('info', `Listed R2 files with prefix: ${prefix || ''}`);
-      
+
       return {
         success: true,
         files: [],
@@ -317,7 +320,7 @@ export class R2StorageProvider extends CapabilityBase<R2StorageConfig> {
    */
   async delete(path: string): Promise<DeleteResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.accountId || !this.apiToken) {
         return {
@@ -326,10 +329,10 @@ export class R2StorageProvider extends CapabilityBase<R2StorageConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       this.log('info', `Deleted file from R2: ${path}`);
       this.recordMetric('delete', 1);
-      
+
       return {
         success: true,
         paths: [path],
@@ -350,7 +353,7 @@ export class R2StorageProvider extends CapabilityBase<R2StorageConfig> {
    */
   async deleteMany(paths: string[]): Promise<DeleteResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.accountId || !this.apiToken) {
         return {
@@ -359,10 +362,10 @@ export class R2StorageProvider extends CapabilityBase<R2StorageConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       this.log('info', `Deleted ${paths.length} files from R2`);
       this.recordMetric('delete_batch', paths.length);
-      
+
       return {
         success: true,
         paths,

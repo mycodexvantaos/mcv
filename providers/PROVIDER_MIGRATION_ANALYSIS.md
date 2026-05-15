@@ -18,15 +18,15 @@ This analysis provides a comprehensive inventory of all providers in the MyCodeX
 
 **Status:** Some already migrated, most need migration
 
-| Provider | Directory | Current Status | Migration Priority | Dependencies |
-|----------|-----------|----------------|-------------------|--------------|
-| Memory Cache | `native/memory-cache` | ✅ Migrated | - | None |
-| Memory Vector Store | `native/memory-vector-store` | ✅ Migrated | - | None |
-| Native LLM | `llm/llm-native` | ⚠️ Partial | HIGH | None |
-| Native Auth | `auth/auth-jwt-native` | ❌ Not Migrated | MEDIUM | None |
-| Native Ledger | `blockchain/blockchain-native-ledger` | ❌ Not Migrated | LOW | None |
-| Native Governance | `event-stream/event-stream-native-governance` | ❌ Not Migrated | MEDIUM | None |
-| Native Deploy | `deploy/deploy-native` | ❌ Not Migrated | HIGH | None |
+| Provider            | Directory                                     | Current Status  | Migration Priority | Dependencies |
+| ------------------- | --------------------------------------------- | --------------- | ------------------ | ------------ |
+| Memory Cache        | `native/memory-cache`                         | ✅ Migrated     | -                  | None         |
+| Memory Vector Store | `native/memory-vector-store`                  | ✅ Migrated     | -                  | None         |
+| Native LLM          | `llm/llm-native`                              | ⚠️ Partial      | HIGH               | None         |
+| Native Auth         | `auth/auth-jwt-native`                        | ❌ Not Migrated | MEDIUM             | None         |
+| Native Ledger       | `blockchain/blockchain-native-ledger`         | ❌ Not Migrated | LOW                | None         |
+| Native Governance   | `event-stream/event-stream-native-governance` | ❌ Not Migrated | MEDIUM             | None         |
+| Native Deploy       | `deploy/deploy-native`                        | ❌ Not Migrated | HIGH               | None         |
 
 **Total Native Providers:** 7  
 **Already Migrated:** 2  
@@ -38,29 +38,29 @@ This analysis provides a comprehensive inventory of all providers in the MyCodeX
 
 **Status:** Partially migrated, most need migration
 
-| Provider | Directory | Current Status | Migration Priority | Dependencies | Requires Fallback |
-|----------|-----------|----------------|-------------------|--------------|-------------------|
-| OpenAI Model | `external/openai` | ✅ Migrated | - | OpenAI API | ✔️ Yes |
-| Workers AI | `external/workers-ai` | ❌ Not Migrated | HIGH | Cloudflare | ✔️ Yes |
-| Ollama LLM | `llm/llm-ollama` | ❌ Not Migrated | HIGH | Ollama API | Optional |
-| OpenAI LLM | `llm/llm-openai` | ❌ Not Migrated | HIGH | OpenAI API | ✔️ Yes |
-| Gemini LLM | `llm/llm-gemini` | ❌ Not Migrated | HIGH | Google AI | ✔️ Yes |
-| Anthropic LLM | `llm/llm-anthropic` | ❌ Not Migrated | HIGH | Anthropic API | ✔️ Yes |
-| Cohere Embedding | `embedding/embedding-cohere` | ❌ Not Migrated | MEDIUM | Cohere API | ✔️ Yes |
-| OpenAI Embedding | `embedding/embedding-openai` | ❌ Not Migrated | MEDIUM | OpenAI API | ✔️ Yes |
-| Redis Cache | `cache/cache-redis` | ❌ Not Migrated | MEDIUM | Redis | ✔️ Yes |
-| Postgres DB | `database/database-postgres` | ❌ Not Migrated | MEDIUM | PostgreSQL | ✔️ Yes |
-| Neo4j Graph | `graph/graph-neo4j` | ❌ Not Migrated | LOW | Neo4j | ✔️ Yes |
-| Memgraph Graph | `graph/graph-memgraph` | ❌ Not Migrated | LOW | Memgraph | ✔️ Yes |
-| Kafka Queue | `queue/queue-kafka` | ❌ Not Migrated | LOW | Kafka | ✔️ Yes |
-| RabbitMQ Queue | `queue/queue-rabbitmq` | ❌ Not Migrated | LOW | RabbitMQ | ✔️ Yes |
-| SendGrid Notification | `notification/notification-sendgrid` | ❌ Not Migrated | LOW | SendGrid | ✔️ Yes |
-| Keycloak Auth | `auth/auth-keycloak` | ❌ Not Migrated | MEDIUM | Keycloak | ✔️ Yes |
-| Ethereum Blockchain | `blockchain/blockchain-ethereum` | ❌ Not Migrated | LOW | Ethereum N/A | Optional |
-| Hyperledger | `blockchain/blockchain-hyperledger` | ❌ Not Migrated | LOW | Hyperledger | Optional |
-| ArgoCD Deploy | `deploy/deploy-argocd` | ❌ Not Migrated | LOW | ArgoCD | ✔️ Yes |
-| Firebase Deploy | `deploy/deploy-firebase` | ❌ Not Migrated | LOW | Firebase | ✔️ Yes |
-| CloudEvents Stream | `event-stream/event-stream-cloudevents` | ❌ Not Migrated | MEDIUM | N/A | Optional |
+| Provider              | Directory                               | Current Status  | Migration Priority | Dependencies  | Requires Fallback |
+| --------------------- | --------------------------------------- | --------------- | ------------------ | ------------- | ----------------- |
+| OpenAI Model          | `external/openai`                       | ✅ Migrated     | -                  | OpenAI API    | ✔️ Yes            |
+| Workers AI            | `external/workers-ai`                   | ❌ Not Migrated | HIGH               | Cloudflare    | ✔️ Yes            |
+| Ollama LLM            | `llm/llm-ollama`                        | ❌ Not Migrated | HIGH               | Ollama API    | Optional          |
+| OpenAI LLM            | `llm/llm-openai`                        | ❌ Not Migrated | HIGH               | OpenAI API    | ✔️ Yes            |
+| Gemini LLM            | `llm/llm-gemini`                        | ❌ Not Migrated | HIGH               | Google AI     | ✔️ Yes            |
+| Anthropic LLM         | `llm/llm-anthropic`                     | ❌ Not Migrated | HIGH               | Anthropic API | ✔️ Yes            |
+| Cohere Embedding      | `embedding/embedding-cohere`            | ❌ Not Migrated | MEDIUM             | Cohere API    | ✔️ Yes            |
+| OpenAI Embedding      | `embedding/embedding-openai`            | ❌ Not Migrated | MEDIUM             | OpenAI API    | ✔️ Yes            |
+| Redis Cache           | `cache/cache-redis`                     | ❌ Not Migrated | MEDIUM             | Redis         | ✔️ Yes            |
+| Postgres DB           | `database/database-postgres`            | ❌ Not Migrated | MEDIUM             | PostgreSQL    | ✔️ Yes            |
+| Neo4j Graph           | `graph/graph-neo4j`                     | ❌ Not Migrated | LOW                | Neo4j         | ✔️ Yes            |
+| Memgraph Graph        | `graph/graph-memgraph`                  | ❌ Not Migrated | LOW                | Memgraph      | ✔️ Yes            |
+| Kafka Queue           | `queue/queue-kafka`                     | ❌ Not Migrated | LOW                | Kafka         | ✔️ Yes            |
+| RabbitMQ Queue        | `queue/queue-rabbitmq`                  | ❌ Not Migrated | LOW                | RabbitMQ      | ✔️ Yes            |
+| SendGrid Notification | `notification/notification-sendgrid`    | ❌ Not Migrated | LOW                | SendGrid      | ✔️ Yes            |
+| Keycloak Auth         | `auth/auth-keycloak`                    | ❌ Not Migrated | MEDIUM             | Keycloak      | ✔️ Yes            |
+| Ethereum Blockchain   | `blockchain/blockchain-ethereum`        | ❌ Not Migrated | LOW                | Ethereum N/A  | Optional          |
+| Hyperledger           | `blockchain/blockchain-hyperledger`     | ❌ Not Migrated | LOW                | Hyperledger   | Optional          |
+| ArgoCD Deploy         | `deploy/deploy-argocd`                  | ❌ Not Migrated | LOW                | ArgoCD        | ✔️ Yes            |
+| Firebase Deploy       | `deploy/deploy-firebase`                | ❌ Not Migrated | LOW                | Firebase      | ✔️ Yes            |
+| CloudEvents Stream    | `event-stream/event-stream-cloudevents` | ❌ Not Migrated | MEDIUM             | N/A           | Optional          |
 
 **Total External Providers:** 21  
 **Already Migrated:** 1  
@@ -72,9 +72,9 @@ This analysis provides a comprehensive inventory of all providers in the MyCodeX
 
 **Status:** Experimental implementation
 
-| Provider | Directory | Current Status | Migration Priority | Primary | Fallback |
-|----------|-----------|----------------|-------------------|---------|----------|
-| Hybrid Embedding | `hybrid/embedding` | ✅ Migrated | - | External | Native |
+| Provider         | Directory          | Current Status | Migration Priority | Primary  | Fallback |
+| ---------------- | ------------------ | -------------- | ------------------ | -------- | -------- |
+| Hybrid Embedding | `hybrid/embedding` | ✅ Migrated    | -                  | External | Native   |
 
 **Total Hybrid Providers:** 1  
 **Already Migrated:** 1  
@@ -86,11 +86,11 @@ This analysis provides a comprehensive inventory of all providers in the MyCodeX
 
 **Status:** Specialized providers, need assessment
 
-| Provider | Directory | Type | Migration Priority | Notes |
-|----------|-----------|------|-------------------|-------|
-| AI Fairness 360 | `ai-ethics/ai-fairness-360` | ML Library | LOW | May not need CapabilityBase |
-| Fairlearn | `ai-ethics/ai-fairlearn` | ML Library | LOW | May not need CapabilityBase |
-| Native Auditor | `ai-ethics/ai-native-auditor` | Analysis | MEDIUM | Native implementation |
+| Provider        | Directory                     | Type       | Migration Priority | Notes                       |
+| --------------- | ----------------------------- | ---------- | ------------------ | --------------------------- |
+| AI Fairness 360 | `ai-ethics/ai-fairness-360`   | ML Library | LOW                | May not need CapabilityBase |
+| Fairlearn       | `ai-ethics/ai-fairlearn`      | ML Library | LOW                | May not need CapabilityBase |
+| Native Auditor  | `ai-ethics/ai-native-auditor` | Analysis   | MEDIUM             | Native implementation       |
 
 **Total Specialized Providers:** 3  
 **Pending Assessment:** 3
@@ -117,6 +117,7 @@ This analysis provides a comprehensive inventory of all providers in the MyCodeX
    - `external/workers-ai` (Cloudflare integration)
 
 **Actions:**
+
 - Create `*-provider-cb.ts` files
 - Implement `CapabilityBase<T>` interface
 - Add appropriate Native fallback
@@ -143,6 +144,7 @@ This analysis provides a comprehensive inventory of all providers in the MyCodeX
    - `deploy/deploy-native` (Currently incomplete)
 
 **Actions:**
+
 - Migrate to CapabilityBase pattern
 - Implement fallback chains
 - Add health monitoring
@@ -204,10 +206,10 @@ For each provider, follow this migration template:
  */
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
-import type { 
-  ProviderConfig, 
-  ProviderHealthCheckResult, 
-  ProviderHealthStatus 
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+  ProviderHealthStatus,
 } from '../../../packages/capabilities/types';
 
 // Provider-specific configuration
@@ -218,7 +220,7 @@ export interface ProviderConfig {
 // Main provider class
 export class Provider extends CapabilityBase<ProviderConfig> {
   // Private fields
-  
+
   constructor(
     id: string,
     name: string,
@@ -228,11 +230,11 @@ export class Provider extends CapabilityBase<ProviderConfig> {
     super(id, name, config, fallbackConfig);
     // Initialize fields
   }
-  
+
   protected async doInitialize(): Promise<void> {
     // Initialization logic
   }
-  
+
   protected async doHealthCheck(): Promise<ProviderHealthCheckResult> {
     // Health check logic
     return {
@@ -242,11 +244,11 @@ export class Provider extends CapabilityBase<ProviderConfig> {
       metrics: {},
     };
   }
-  
+
   protected async doShutdown(): Promise<void> {
     // Cleanup logic
   }
-  
+
   // Business methods
 }
 ```
@@ -255,19 +257,19 @@ export class Provider extends CapabilityBase<ProviderConfig> {
 
 ## Fallback Mapping
 
-| External Provider | Native Fallback | Notes |
-|-------------------|-----------------|-------|
-| llm-openai | llm-native | Template responses |
-| llm-gemini | llm-native | Template responses |
-| llm-anthropic | llm-native | Template responses |
-| llm-ollama | llm-native | Template responses |
-| embedding-cohere | hybrid/embedding | Native implementation |
-| embedding-openai | hybrid/embedding | Native implementation |
-| cache-redis | native/memory-cache | In-memory cache |
-| database-postgres | database/sqlite | SQLite fallback |
-| workers-ai | llm-native | Template responses |
-| openai-model | llm-native | Already in hybrid pattern |
-| auth-keycloak | auth-jwt-native | JWT-based auth |
+| External Provider | Native Fallback     | Notes                     |
+| ----------------- | ------------------- | ------------------------- |
+| llm-openai        | llm-native          | Template responses        |
+| llm-gemini        | llm-native          | Template responses        |
+| llm-anthropic     | llm-native          | Template responses        |
+| llm-ollama        | llm-native          | Template responses        |
+| embedding-cohere  | hybrid/embedding    | Native implementation     |
+| embedding-openai  | hybrid/embedding    | Native implementation     |
+| cache-redis       | native/memory-cache | In-memory cache           |
+| database-postgres | database/sqlite     | SQLite fallback           |
+| workers-ai        | llm-native          | Template responses        |
+| openai-model      | llm-native          | Already in hybrid pattern |
+| auth-keycloak     | auth-jwt-native     | JWT-based auth            |
 
 ---
 

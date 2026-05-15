@@ -13,7 +13,9 @@ export type { GoogleAudioConfig } from './google-audio-provider-cb';
 /**
  * Create a GoogleAudioProvider instance with the given configuration.
  */
-export function createGoogleAudioProvider(config: Partial<ProviderConfig<GoogleAudioConfig>> = {}): GoogleAudioProvider {
+export function createGoogleAudioProvider(
+  config: Partial<ProviderConfig<GoogleAudioConfig>> = {}
+): GoogleAudioProvider {
   const providerConfig: ProviderConfig<GoogleAudioConfig> = {
     id: config.id || 'google-audio-provider-cb',
     name: config.name || 'GoogleAudioProvider',

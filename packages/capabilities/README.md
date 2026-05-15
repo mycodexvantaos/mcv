@@ -202,21 +202,25 @@ await factory.shutdown();
 ## 🎛️ Runtime Mode 選擇邏輯
 
 ### NATIVE 模式
+
 - ✅ 僅使用 NATIVE Provider
 - ❌ 不使用任何 External Provider
 - 🌐 完全離線運作
 
 ### CONNECTED 模式
+
 - ✅ 優先使用 EXTERNAL Provider
 - ⚠️ 如果沒有 External Provider，降級到 Native
 - 🌐 需要網絡連接
 
 ### HYBRID 模式
+
 - ✅ 使用 EXTERNAL Provider（主）
 - 🔄 失敗時自動回退到 NATIVE Provider（fallback）
 - 🌐 最佳可用性保證
 
 ### AUTO 模式
+
 - ✅ 根據網絡狀態自動切換
   - 在線 → CONNECTED 模式
   - 離線 → NATIVE 模式
@@ -275,16 +279,12 @@ await factory.shutdown();
 ```typescript
 describe('NativeVectorStore', () => {
   it('should initialize and shutdown correctly', async () => {
-    const provider = new NativeVectorStore(
-      'test-native',
-      'Test Native Vector Store',
-      {
-        id: 'test-native',
-        mode: RuntimeMode.NATIVE,
-        providerMode: ProviderMode.NATIVE,
-        config: { storageType: 'memory' },
-      }
-    );
+    const provider = new NativeVectorStore('test-native', 'Test Native Vector Store', {
+      id: 'test-native',
+      mode: RuntimeMode.NATIVE,
+      providerMode: ProviderMode.NATIVE,
+      config: { storageType: 'memory' },
+    });
 
     await provider.initialize();
     expect(provider.isInitialized()).toBe(true);
@@ -304,8 +304,12 @@ describe('NativeVectorStore', () => {
 describe('HybridVectorStore', () => {
   it('should fallback to native on failure', async () => {
     const factory = new ProviderFactory('test', RuntimeMode.HYBRID);
-    factory.registerProvider({ /* external config */ });
-    factory.registerProvider({ /* native config */ });
+    factory.registerProvider({
+      /* external config */
+    });
+    factory.registerProvider({
+      /* native config */
+    });
 
     const hybridProvider = await factory.createProvider(
       'vector-store',

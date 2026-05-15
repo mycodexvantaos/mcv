@@ -13,7 +13,9 @@ export type { OpenAIHybridEmbeddingConfig } from './openai-hybrid-embedding-prov
 /**
  * Create a OpenAIHybridEmbeddingProvider instance with the given configuration.
  */
-export function createOpenAIHybridEmbeddingProvider(config: Partial<ProviderConfig<OpenAIHybridEmbeddingConfig>> = {}): OpenAIHybridEmbeddingProvider {
+export function createOpenAIHybridEmbeddingProvider(
+  config: Partial<ProviderConfig<OpenAIHybridEmbeddingConfig>> = {}
+): OpenAIHybridEmbeddingProvider {
   const providerConfig: ProviderConfig<OpenAIHybridEmbeddingConfig> = {
     id: config.id || 'openai-hybrid-embedding-provider-cb',
     name: config.name || 'OpenAIHybridEmbeddingProvider',

@@ -13,7 +13,9 @@ export type { DalleConfig } from './dalle-provider-cb';
 /**
  * Create a DalleProvider instance with the given configuration.
  */
-export function createDalleProvider(config: Partial<ProviderConfig<DalleConfig>> = {}): DalleProvider {
+export function createDalleProvider(
+  config: Partial<ProviderConfig<DalleConfig>> = {}
+): DalleProvider {
   const providerConfig: ProviderConfig<DalleConfig> = {
     id: config.id || 'dalle-provider-cb',
     name: config.name || 'DalleProvider',

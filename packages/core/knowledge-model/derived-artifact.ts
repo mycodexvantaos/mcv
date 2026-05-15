@@ -9,7 +9,12 @@
 
 import type { ResourceCondition } from '../shared';
 
-export type DerivedArtifactType = 'summary' | 'translation' | 'extraction' | 'synthesis' | 'embedding-index';
+export type DerivedArtifactType =
+  | 'summary'
+  | 'translation'
+  | 'extraction'
+  | 'synthesis'
+  | 'embedding-index';
 
 export interface DerivedArtifactSpec {
   /** The document(s) this artifact was derived from */
@@ -34,4 +39,9 @@ export interface DerivedArtifactStatus {
   totalTokensUsed: number;
 }
 
-export type DerivedArtifactPhase = 'generating' | 'completed' | 'failed' | 'verified' | 'deprecated';
+export type DerivedArtifactPhase =
+  | 'generating'
+  | 'completed'
+  | 'failed'
+  | 'verified'
+  | 'deprecated';

@@ -13,7 +13,11 @@ Resource model - resource kinds, metadata, spec, status, lifecycle, references
 ## Usage
 
 ```typescript
-import { ResourceKind, ResourceMetadata, ResourceSpec } from '@mycodexvantaos/mycodexvantaos-resource-model';
+import {
+  ResourceKind,
+  ResourceMetadata,
+  ResourceSpec,
+} from '@mycodexvantaos/mycodexvantaos-resource-model';
 ```
 
 ## Status

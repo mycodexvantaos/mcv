@@ -13,7 +13,9 @@ export type { ZodValidationConfig } from './zod-validation-provider-cb';
 /**
  * Create a ZodValidationProvider instance with the given configuration.
  */
-export function createZodValidationProvider(config: Partial<ProviderConfig<ZodValidationConfig>> = {}): ZodValidationProvider {
+export function createZodValidationProvider(
+  config: Partial<ProviderConfig<ZodValidationConfig>> = {}
+): ZodValidationProvider {
   const providerConfig: ProviderConfig<ZodValidationConfig> = {
     id: config.id || 'zod-validation-provider-cb',
     name: config.name || 'ZodValidationProvider',

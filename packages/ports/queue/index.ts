@@ -37,7 +37,7 @@ export interface QueueMessage {
 export type QueueHandler = (
   messages: QueueMessage[],
   ack: (ids: string[]) => void,
-  retry: (ids: string[], delaySeconds?: number) => void,
+  retry: (ids: string[], delaySeconds?: number) => void
 ) => Promise<void>;
 
 export interface QueueConsumeOptions {

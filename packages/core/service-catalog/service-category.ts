@@ -21,8 +21,8 @@ export interface CategoryServiceRef {
 
 /** MVP service → category mapping */
 export const MVP_SERVICE_CATEGORIES: Record<string, string> = {
-  'identity': 'security',
-  'workspace': 'workspace',
+  identity: 'security',
+  workspace: 'workspace',
   'knowledge-store': 'knowledge',
   'knowledge-search': 'knowledge',
   'agent-chat': 'agent',

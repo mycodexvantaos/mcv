@@ -9,7 +9,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 /**
  * Configuration for Anthropic LLM Provider
@@ -17,37 +20,37 @@ import type { ProviderConfig, ProviderHealthCheckResult } from '../../../package
 export interface AnthropicConfig {
   /** Anthropic API key */
   apiKey?: string;
-  
+
   /** Model to use (default: claude-3-sonnet-20240229) */
   model?: string;
-  
+
   /** API version */
   version?: string;
-  
+
   /** Base URL for custom endpoints */
   baseURL?: string;
-  
+
   /** Request timeout in milliseconds */
   timeout?: number;
-  
+
   /** Maximum tokens for response */
   maxTokens?: number;
-  
+
   /** Temperature for randomness (0-1) */
   temperature?: number;
-  
+
   /** Top-p nucleus sampling */
   topP?: number;
-  
+
   /** Top-k sampling */
   topK?: number;
-  
+
   /** Whether to use streaming */
   stream?: boolean;
-  
+
   /** Number of retries on failure */
   retries?: number;
-  
+
   /** Native fallback provider ID */
   fallbackProviderId?: string;
 }
@@ -66,25 +69,25 @@ export interface Message {
 export interface LLMRequest {
   /** The prompt to generate response for */
   prompt?: string;
-  
+
   /** Chat messages for conversation */
   messages?: Message[];
-  
+
   /** Maximum tokens to generate */
   maxTokens?: number;
-  
+
   /** Temperature for randomness (0-1) */
   temperature?: number;
-  
+
   /** Top-p nucleus sampling */
   topP?: number;
-  
+
   /** Top-k sampling */
   topK?: number;
-  
+
   /** Whether to stream response */
   stream?: boolean;
-  
+
   /** System prompt */
   system?: string;
 }
@@ -95,25 +98,25 @@ export interface LLMRequest {
 export interface LLMResponse {
   /** Generated response text */
   text: string;
-  
+
   /** Number of tokens generated */
   tokens: number;
-  
+
   /** Total tokens (prompt + completion) */
   totalTokens: number;
-  
+
   /** Model identifier */
   model: string;
-  
+
   /** Provider name */
   provider: string;
-  
+
   /** Generation time in milliseconds */
   generationTime: number;
-  
+
   /** Whether response was streamed */
   streamed: boolean;
-  
+
   /** Stop reason */
   stopReason?: string;
 }
@@ -135,7 +138,7 @@ export class AnthropicLLMProvider extends CapabilityBase<AnthropicConfig> {
   private enableStreaming: boolean;
   private retries: number;
   private fallbackProviderId: string = 'native';
-  
+
   private isAnthropicAvailable: boolean = false;
   private apiKey: string | undefined;
 
@@ -146,7 +149,7 @@ export class AnthropicLLMProvider extends CapabilityBase<AnthropicConfig> {
     fallbackConfig?: any
   ) {
     super(id, name, config, fallbackConfig);
-    
+
     const cfg = config.config;
     this.apiKey = cfg.apiKey;
     this.baseURL = cfg.baseURL || 'https://api.anthropic.com/v1/messages';
@@ -173,7 +176,7 @@ export class AnthropicLLMProvider extends CapabilityBase<AnthropicConfig> {
 
     try {
       await this.checkAnthropicAvailability();
-      
+
       if (this.isAnthropicAvailable) {
         this.log('info', `Anthropic provider initialized with model ${this.model}`);
         this.log('info', `Configuration - baseURL: ${this.baseURL}, timeout: ${this.timeout}ms`);
@@ -212,7 +215,7 @@ export class AnthropicLLMProvider extends CapabilityBase<AnthropicConfig> {
         this.isAnthropicAvailable = true;
         return true;
       }
-      
+
       this.isAnthropicAvailable = false;
       return false;
     } catch {
@@ -269,17 +272,19 @@ export class AnthropicLLMProvider extends CapabilityBase<AnthropicConfig> {
    */
   async generate(request: LLMRequest): Promise<LLMResponse> {
     const startTime = Date.now();
-    
+
     if (!this.isAnthropicAvailable || !this.apiKey) {
       this.recordFailure(new Error('Anthropic not available'));
-      throw new Error(`Anthropic service not available. Use fallback provider: ${this.fallbackProviderId}`);
+      throw new Error(
+        `Anthropic service not available. Use fallback provider: ${this.fallbackProviderId}`
+      );
     }
 
     try {
       const response = await this.generateWithRetry(request);
       const generationTime = Date.now() - startTime;
       response.generationTime = generationTime;
-      
+
       this.recordSuccess(generationTime);
       return response;
     } catch (error) {
@@ -304,7 +309,7 @@ export class AnthropicLLMProvider extends CapabilityBase<AnthropicConfig> {
 
         if (attempt < this.retries) {
           const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
-          await new Promise(resolve => setTimeout(resolve, delay));
+          await new Promise((resolve) => setTimeout(resolve, delay));
         }
       }
     }
@@ -317,7 +322,7 @@ export class AnthropicLLMProvider extends CapabilityBase<AnthropicConfig> {
    */
   private async doGenerate(request: LLMRequest): Promise<LLMResponse> {
     const messages = request.messages || [];
-    
+
     if (!messages.length && request.prompt) {
       messages.push({ role: 'user', content: request.prompt });
     }
@@ -362,7 +367,7 @@ export class AnthropicLLMProvider extends CapabilityBase<AnthropicConfig> {
     }
 
     const data = await response.json();
-    
+
     return {
       text: data.content?.[0]?.text || '',
       tokens: data.usage?.output_tokens || 0,
@@ -436,15 +441,15 @@ export class AnthropicLLMProvider extends CapabilityBase<AnthropicConfig> {
       if (done) break;
 
       const chunk = decoder.decode(value);
-      const lines = chunk.split('\n').filter(line => line.trim());
+      const lines = chunk.split('\n').filter((line) => line.trim());
 
       for (const line of lines) {
         if (line.startsWith('data: ')) {
           const data = line.slice(6);
-          
+
           try {
             const parsed = JSON.parse(data);
-            
+
             if (parsed.type === 'content_block_delta') {
               yield parsed.delta?.text || '';
             }

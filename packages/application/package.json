@@ -20,7 +20,11 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/"
   },
-  "keywords": ["application", "services", "use-cases"],
+  "keywords": [
+    "application",
+    "services",
+    "use-cases"
+  ],
   "license": "UNLICENSED",
   "private": true
 }

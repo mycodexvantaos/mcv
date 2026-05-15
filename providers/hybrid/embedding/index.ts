@@ -22,15 +22,11 @@ export function createHybridEmbeddingProvider(
 ) {
   const { HybridEmbeddingProvider } = require('./hybrid-embedding-provider-cb');
 
-  return new HybridEmbeddingProvider(
-    id,
-    'Hybrid Embedding',
-    {
-      mode: 'hybrid' as any,
-      providerMode: 'hybrid' as any,
-      config: config || {},
-    }
-  );
+  return new HybridEmbeddingProvider(id, 'Hybrid Embedding', {
+    mode: 'hybrid' as any,
+    providerMode: 'hybrid' as any,
+    config: config || {},
+  });
 }
 
 /**

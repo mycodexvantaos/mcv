@@ -9,7 +9,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 /**
  * Configuration for OpenAI Embedding Provider
@@ -17,22 +20,22 @@ import type { ProviderConfig, ProviderHealthCheckResult } from '../../../package
 export interface OpenAIEmbeddingConfig {
   /** OpenAI API key */
   apiKey?: string;
-  
+
   /** Base URL for custom endpoints */
   baseURL?: string;
-  
+
   /** Model to use (default: text-embedding-3-small) */
   model?: string;
-  
+
   /** Embedding dimensions */
   dimensions?: number;
-  
+
   /** Request timeout in milliseconds */
   timeout?: number;
-  
+
   /** Number of retries on failure */
   retries?: number;
-  
+
   /** Native fallback provider ID */
   fallbackProviderId?: string;
 }
@@ -43,7 +46,7 @@ export interface OpenAIEmbeddingConfig {
 export interface EmbeddingRequest {
   /** Text to embed */
   text: string;
-  
+
   /** Number of dimensions for output */
   dimensions?: number;
 }
@@ -54,19 +57,19 @@ export interface EmbeddingRequest {
 export interface EmbeddingResponse {
   /** Embedding vector */
   embedding: number[];
-  
+
   /** Number of dimensions */
   dimensions: number;
-  
+
   /** Model used */
   model: string;
-  
+
   /** Provider name */
   provider: string;
-  
+
   /** Generation time in milliseconds */
   generationTime: number;
-  
+
   /** Total tokens */
   tokens?: number;
 }
@@ -83,7 +86,7 @@ export class OpenAIEmbeddingProvider extends CapabilityBase<OpenAIEmbeddingConfi
   private timeout: number;
   private retries: number;
   private fallbackProviderId: string = 'native';
-  
+
   private isOpenAIAvailable: boolean = false;
   private apiKey: string | undefined;
 
@@ -94,7 +97,7 @@ export class OpenAIEmbeddingProvider extends CapabilityBase<OpenAIEmbeddingConfi
     fallbackConfig?: any
   ) {
     super(id, name, config, fallbackConfig);
-    
+
     const cfg = config.config;
     this.apiKey = cfg.apiKey;
     this.baseURL = cfg.baseURL || 'https://api.openai.com/v1';
@@ -116,7 +119,7 @@ export class OpenAIEmbeddingProvider extends CapabilityBase<OpenAIEmbeddingConfi
 
     try {
       await this.checkOpenAIAvailability();
-      
+
       if (this.isOpenAIAvailable) {
         this.log('info', `OpenAI embedding provider initialized with model ${this.model}`);
       } else {
@@ -138,7 +141,7 @@ export class OpenAIEmbeddingProvider extends CapabilityBase<OpenAIEmbeddingConfi
       const response = await fetch(`${this.baseURL}/models`, {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
+          Authorization: `Bearer ${this.apiKey}`,
         },
         signal: AbortSignal.timeout(this.timeout),
       });
@@ -199,17 +202,19 @@ export class OpenAIEmbeddingProvider extends CapabilityBase<OpenAIEmbeddingConfi
    */
   async embed(request: EmbeddingRequest): Promise<EmbeddingResponse> {
     const startTime = Date.now();
-    
+
     if (!this.isOpenAIAvailable || !this.apiKey) {
       this.recordFailure(new Error('OpenAI not available'));
-      throw new Error(`OpenAI service not available. Use fallback provider: ${this.fallbackProviderId}`);
+      throw new Error(
+        `OpenAI service not available. Use fallback provider: ${this.fallbackProviderId}`
+      );
     }
 
     try {
       const response = await this.embedWithRetry(request);
       const generationTime = Date.now() - startTime;
       response.generationTime = generationTime;
-      
+
       this.recordSuccess(generationTime);
       return response;
     } catch (error) {
@@ -234,7 +239,7 @@ export class OpenAIEmbeddingProvider extends CapabilityBase<OpenAIEmbeddingConfi
 
         if (attempt < this.retries) {
           const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
-          await new Promise(resolve => setTimeout(resolve, delay));
+          await new Promise((resolve) => setTimeout(resolve, delay));
         }
       }
     }
@@ -258,7 +263,7 @@ export class OpenAIEmbeddingProvider extends CapabilityBase<OpenAIEmbeddingConfi
     const response = await fetch(`${this.baseURL}/embeddings`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${this.apiKey}`,
+        Authorization: `Bearer ${this.apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(requestBody),
@@ -271,7 +276,7 @@ export class OpenAIEmbeddingProvider extends CapabilityBase<OpenAIEmbeddingConfi
     }
 
     const data = await response.json();
-    
+
     return {
       embedding: data.data?.[0]?.embedding || [],
       dimensions: data.data?.[0]?.embedding?.length || 0,
@@ -287,17 +292,19 @@ export class OpenAIEmbeddingProvider extends CapabilityBase<OpenAIEmbeddingConfi
    */
   async embedBatch(texts: string[]): Promise<EmbeddingResponse[]> {
     const startTime = Date.now();
-    
+
     if (!this.isOpenAIAvailable || !this.apiKey) {
       this.recordFailure(new Error('OpenAI not available'));
-      throw new Error(`OpenAI service not available. Use fallback provider: ${this.fallbackProviderId}`);
+      throw new Error(
+        `OpenAI service not available. Use fallback provider: ${this.fallbackProviderId}`
+      );
     }
 
     try {
       const response = await fetch(`${this.baseURL}/embeddings`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
+          Authorization: `Bearer ${this.apiKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -315,7 +322,7 @@ export class OpenAIEmbeddingProvider extends CapabilityBase<OpenAIEmbeddingConfi
 
       const data = await response.json();
       const generationTime = Date.now() - startTime;
-      
+
       this.recordSuccess(generationTime);
 
       return data.data.map((item: any) => ({

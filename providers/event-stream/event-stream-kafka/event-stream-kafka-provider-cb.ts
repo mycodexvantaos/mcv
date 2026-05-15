@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface EventStreamKafkaConfig {
   timeout?: number;
@@ -15,7 +18,12 @@ export interface EventStreamKafkaConfig {
   fallbackProviderId?: string;
 }
 
-export interface EventResult { success: boolean; offset?: number; error?: string; operationTime: number; }
+export interface EventResult {
+  success: boolean;
+  offset?: number;
+  error?: string;
+  operationTime: number;
+}
 
 export class EventStreamKafkaProvider extends CapabilityBase<EventStreamKafkaConfig> {
   private timeout: number;
@@ -56,7 +64,11 @@ export class EventStreamKafkaProvider extends CapabilityBase<EventStreamKafkaCon
   async publish(topic: string, event: Record<string, unknown>): Promise<EventResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `EventStreamKafkaProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `EventStreamKafkaProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -64,13 +76,21 @@ export class EventStreamKafkaProvider extends CapabilityBase<EventStreamKafkaCon
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async subscribe(topic: string, handler: (event: unknown) => void): Promise<EventResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `EventStreamKafkaProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `EventStreamKafkaProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -78,7 +98,11 @@ export class EventStreamKafkaProvider extends CapabilityBase<EventStreamKafkaCon
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

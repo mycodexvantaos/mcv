@@ -13,7 +13,9 @@ export type { AnthropicConfig } from './anthropic-provider-cb';
 /**
  * Create a AnthropicLLMProvider instance with the given configuration.
  */
-export function createAnthropicLLMProvider(config: Partial<ProviderConfig<AnthropicConfig>> = {}): AnthropicLLMProvider {
+export function createAnthropicLLMProvider(
+  config: Partial<ProviderConfig<AnthropicConfig>> = {}
+): AnthropicLLMProvider {
   const id = config.id || 'anthropic-provider-cb';
   const name = config.name || 'AnthropicLLMProvider';
   const providerConfig: ProviderConfig<AnthropicConfig> = {

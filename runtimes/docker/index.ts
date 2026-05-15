@@ -9,16 +9,23 @@
  *   - Docker-specific signal handling (SIGTERM)
  */
 
-export type { NodeBindings as DockerBindings, NodeServiceContainer as DockerServiceContainer } from '../node/src/bootstrap.js';
+export type {
+  NodeBindings as DockerBindings,
+  NodeServiceContainer as DockerServiceContainer,
+} from '../node/src/bootstrap.js';
 export { bootstrapNode as bootstrapDocker, createNodeServer } from '../node/src/bootstrap.js';
 
 /**
  * Docker-specific environment variable mapping.
  * Converts Docker Compose service names to internal URLs.
  */
-export function mapDockerEnv(rawEnv: Record<string, string | undefined>): import('../node/src/bootstrap.js').NodeBindings {
+export function mapDockerEnv(
+  rawEnv: Record<string, string | undefined>
+): import('../node/src/bootstrap.js').NodeBindings {
   return {
-    DATABASE_URL: rawEnv.DATABASE_URL ?? 'postgres://mycodexvantaos:mycodexvantaos@postgres:5432/mycodexvantaos',
+    DATABASE_URL:
+      rawEnv.DATABASE_URL ??
+      'postgres://mycodexvantaos:mycodexvantaos@postgres:5432/mycodexvantaos',
     REDIS_URL: rawEnv.REDIS_URL ?? 'redis://redis:6379',
     MINIO_ENDPOINT: rawEnv.MINIO_ENDPOINT ?? 'minio:9000',
     MINIO_ACCESS_KEY: rawEnv.MINIO_ACCESS_KEY ?? 'mycodexvantaos',

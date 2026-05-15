@@ -10,7 +10,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 /**
  * Configuration for Native LLM Provider
@@ -18,16 +21,16 @@ import type { ProviderConfig, ProviderHealthCheckResult } from '../../../package
 export interface NativeLLMConfig {
   /** Enable/disable the provider */
   enabled?: boolean;
-  
+
   /** Response generation mode */
   responseMode?: 'template' | 'echo' | 'rule-based';
-  
+
   /** Maximum tokens in response */
   maxTokens?: number;
-  
+
   /** Path to custom templates (optional) */
   templatesPath?: string;
-  
+
   /** Temperature for response variation (0-1) */
   temperature?: number;
 }
@@ -38,13 +41,13 @@ export interface NativeLLMConfig {
 export interface LLMRequest {
   /** The prompt to generate response for */
   prompt: string;
-  
+
   /** Optional context for the generation */
   context?: string;
-  
+
   /** Maximum tokens to generate */
   maxTokens?: number;
-  
+
   /** Temperature for randomness (0-1) */
   temperature?: number;
 }
@@ -55,19 +58,19 @@ export interface LLMRequest {
 export interface LLMResponse {
   /** Generated response text */
   text: string;
-  
+
   /** Number of tokens generated (estimated) */
   tokens: number;
-  
+
   /** Model identifier */
   model: string;
-  
+
   /** Provider name */
   provider: string;
-  
+
   /** Generation time in milliseconds */
   generationTime: number;
-  
+
   /** Response mode used */
   mode: string;
 }
@@ -154,11 +157,7 @@ function generateRuleBasedResponse(prompt: string): string {
     return TEMPLATE_RESPONSES.help;
   }
 
-  if (
-    lowerPrompt.includes('hello') ||
-    lowerPrompt.includes('hi') ||
-    lowerPrompt.includes('hey')
-  ) {
+  if (lowerPrompt.includes('hello') || lowerPrompt.includes('hi') || lowerPrompt.includes('hey')) {
     return TEMPLATE_RESPONSES.greeting;
   }
 
@@ -168,17 +167,14 @@ function generateRuleBasedResponse(prompt: string): string {
 /**
  * Generate response based on configured mode
  */
-function generateResponse(
-  prompt: string,
-  mode: 'template' | 'echo' | 'rule-based'
-): string {
+function generateResponse(prompt: string, mode: 'template' | 'echo' | 'rule-based'): string {
   switch (mode) {
     case 'echo':
       return `[ECHO MODE]\n${prompt}`;
-    
+
     case 'rule-based':
       return generateRuleBasedResponse(prompt);
-    
+
     case 'template':
     default:
       return TEMPLATE_RESPONSES.default;
@@ -211,7 +207,7 @@ export class NativeLLMProvider extends CapabilityBase<NativeLLMConfig> {
     fallbackConfig?: any
   ) {
     super(id, name, config, fallbackConfig);
-    
+
     const cfg = config.config;
     this.modelId = 'native-llm-v1';
     this.responseMode = cfg.responseMode || 'template';
@@ -224,7 +220,10 @@ export class NativeLLMProvider extends CapabilityBase<NativeLLMConfig> {
    */
   protected async doInitialize(): Promise<void> {
     this.log('info', `Native LLM provider initialized (${this.responseMode} mode)`);
-    this.log('info', `Configuration - maxTokens: ${this.maxTokens}, temperature: ${this.temperature}`);
+    this.log(
+      'info',
+      `Configuration - maxTokens: ${this.maxTokens}, temperature: ${this.temperature}`
+    );
   }
 
   /**
@@ -233,7 +232,7 @@ export class NativeLLMProvider extends CapabilityBase<NativeLLMConfig> {
    */
   protected async doHealthCheck(): Promise<ProviderHealthCheckResult> {
     const cfg = this.config.config;
-    
+
     if (cfg.enabled === false) {
       return {
         isHealthy: false,
@@ -265,14 +264,14 @@ export class NativeLLMProvider extends CapabilityBase<NativeLLMConfig> {
    */
   async generate(request: LLMRequest): Promise<LLMResponse> {
     const startTime = Date.now();
-    
+
     try {
       this.recordSuccess(0); // Will update later with actual latency
-      
+
       const responseText = generateResponse(request.prompt, this.responseMode);
       const tokens = estimateTokens(responseText);
       const generationTime = Date.now() - startTime;
-      
+
       // Update metrics with actual latency
       this.metrics.invocationCount++;
       this.metrics.successCount++;
@@ -310,9 +309,7 @@ export class NativeLLMProvider extends CapabilityBase<NativeLLMConfig> {
    */
   async chat(request: ChatRequest): Promise<LLMResponse> {
     // Extract the last user message as the prompt
-    const lastUserMessage = request.messages
-      .reverse()
-      .find(msg => msg.role === 'user');
+    const lastUserMessage = request.messages.reverse().find((msg) => msg.role === 'user');
 
     const prompt = lastUserMessage ? lastUserMessage.content : '';
 
@@ -328,11 +325,11 @@ export class NativeLLMProvider extends CapabilityBase<NativeLLMConfig> {
    */
   async *stream(request: LLMRequest): AsyncGenerator<string, void, unknown> {
     const response = await this.generate(request);
-    
+
     // Simple streaming: split into chunks
     const chunkSize = Math.ceil(response.text.length / 5);
     for (let i = 0; i < response.text.length; i += chunkSize) {
-      await new Promise(resolve => setTimeout(resolve, 10)); // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 10)); // Simulate network delay
       yield response.text.slice(i, i + chunkSize);
     }
   }
@@ -360,9 +357,9 @@ export class NativeLLMProvider extends CapabilityBase<NativeLLMConfig> {
   private calculateNativeAvgLatency(newLatency: number): number {
     const count = this.metrics.invocationCount;
     if (count === 0) return newLatency;
-    
+
     const currentAvg = this.metrics.avgLatency || 0;
-    return ((currentAvg * (count - 1)) + newLatency) / count;
+    return (currentAvg * (count - 1) + newLatency) / count;
   }
 }
 

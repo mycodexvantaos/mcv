@@ -23,7 +23,15 @@ export interface AuditServiceDeps {
 
 // ── Types ──────────────────────────────────────────────────────────────
 
-export type AuditEventCategory = 'knowledge' | 'agent' | 'workspace' | 'developer' | 'security' | 'storage' | 'model' | 'automation';
+export type AuditEventCategory =
+  | 'knowledge'
+  | 'agent'
+  | 'workspace'
+  | 'developer'
+  | 'security'
+  | 'storage'
+  | 'model'
+  | 'automation';
 export type AuditEventSeverity = 'critical' | 'high' | 'medium' | 'low' | 'info';
 export type ClosedLoopStatus = 'open' | 'completed' | 'timeout' | 'violated';
 
@@ -94,7 +102,8 @@ export interface IntegrityVerificationResult {
 
 export class AuditService {
   private deps: AuditServiceDeps;
-  private static readonly GENESIS_HASH = '0000000000000000000000000000000000000000000000000000000000000000';
+  private static readonly GENESIS_HASH =
+    '0000000000000000000000000000000000000000000000000000000000000000';
 
   constructor(deps: AuditServiceDeps) {
     this.deps = deps;
@@ -113,12 +122,36 @@ export class AuditService {
     const chainIndex = (lastEvent?.chain_index ?? 0) + 1;
 
     // Compute SHA-256 hash chain
-    const hash = await this.computeHash(eventId, input.eventType, timestamp, previousHash, input.data);
+    const hash = await this.computeHash(
+      eventId,
+      input.eventType,
+      timestamp,
+      previousHash,
+      input.data
+    );
 
     await this.deps.database.execute(
       `INSERT INTO audit_events (id, event_type, category, severity, subject_id, workspace_id, resource_kind, resource_id, action, data, correlation_id, parent_event_id, pair_id, hash, previous_hash, chain_index, closed_loop_status, timestamp)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'open', ?)`,
-      [eventId, input.eventType, input.category, input.severity, input.subjectId, input.workspaceId ?? null, input.resourceKind ?? null, input.resourceId ?? null, input.action, JSON.stringify(input.data ?? {}), input.correlationId, input.parentEventId ?? null, input.pairId ?? null, hash, previousHash, chainIndex, timestamp]
+      [
+        eventId,
+        input.eventType,
+        input.category,
+        input.severity,
+        input.subjectId,
+        input.workspaceId ?? null,
+        input.resourceKind ?? null,
+        input.resourceId ?? null,
+        input.action,
+        JSON.stringify(input.data ?? {}),
+        input.correlationId,
+        input.parentEventId ?? null,
+        input.pairId ?? null,
+        hash,
+        previousHash,
+        chainIndex,
+        timestamp,
+      ]
     );
 
     return {
@@ -152,10 +185,22 @@ export class AuditService {
     const conditions: string[] = [];
     const params: unknown[] = [];
 
-    if (input.category) { conditions.push('category = ?'); params.push(input.category); }
-    if (input.subjectId) { conditions.push('subject_id = ?'); params.push(input.subjectId); }
-    if (input.workspaceId) { conditions.push('workspace_id = ?'); params.push(input.workspaceId); }
-    if (input.resourceKind) { conditions.push('resource_kind = ?'); params.push(input.resourceKind); }
+    if (input.category) {
+      conditions.push('category = ?');
+      params.push(input.category);
+    }
+    if (input.subjectId) {
+      conditions.push('subject_id = ?');
+      params.push(input.subjectId);
+    }
+    if (input.workspaceId) {
+      conditions.push('workspace_id = ?');
+      params.push(input.workspaceId);
+    }
+    if (input.resourceKind) {
+      conditions.push('resource_kind = ?');
+      params.push(input.resourceKind);
+    }
 
     const where = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
     params.push(input.limit ?? 100, input.offset ?? 0);
@@ -165,11 +210,22 @@ export class AuditService {
       params
     );
 
-    return rows.map(row => this.mapRowToResource(row));
+    return rows.map((row) => this.mapRowToResource(row));
   }
 
-  async verifyAuditChain(fromTimestamp?: string, toTimestamp?: string): Promise<IntegrityVerificationResult> {
-    const rows = await this.deps.database.query<{ hash: string; previous_hash: string; chain_index: number; id: string; event_type: string; timestamp: string; data: string }>(
+  async verifyAuditChain(
+    fromTimestamp?: string,
+    toTimestamp?: string
+  ): Promise<IntegrityVerificationResult> {
+    const rows = await this.deps.database.query<{
+      hash: string;
+      previous_hash: string;
+      chain_index: number;
+      id: string;
+      event_type: string;
+      timestamp: string;
+      data: string;
+    }>(
       'SELECT hash, previous_hash, chain_index, id, event_type, timestamp, data FROM audit_events ORDER BY chain_index ASC'
     );
 
@@ -195,11 +251,19 @@ export class AuditService {
     };
   }
 
-  private async computeHash(eventId: string, eventType: string, timestamp: string, previousHash: string, data?: Record<string, unknown>): Promise<string> {
+  private async computeHash(
+    eventId: string,
+    eventType: string,
+    timestamp: string,
+    previousHash: string,
+    data?: Record<string, unknown>
+  ): Promise<string> {
     const payload = JSON.stringify({ eventId, eventType, timestamp, previousHash, data });
     const encoder = new TextEncoder();
     const buffer = await crypto.subtle.digest('SHA-256', encoder.encode(payload));
-    return Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+    return Array.from(new Uint8Array(buffer))
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('');
   }
 
   private mapRowToResource(row: Record<string, unknown>): AuditEventResource {
@@ -215,7 +279,7 @@ export class AuditService {
         resourceKind: row.resource_kind as string | null,
         resourceId: row.resource_id as string | null,
         action: row.action as string,
-        data: JSON.parse(row.data as string || '{}'),
+        data: JSON.parse((row.data as string) || '{}'),
         correlationId: row.correlation_id as string,
         parentEventId: row.parent_event_id as string | null,
         pairId: row.pair_id as string | null,

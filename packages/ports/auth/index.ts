@@ -16,7 +16,12 @@ export interface IAuthPort {
   validateToken(accessToken: string): Promise<TokenClaims>;
 
   /** Check if a subject has a specific permission in a workspace */
-  checkPermission(subjectId: string, workspaceId: string, action: string, resourceKind: string): Promise<boolean>;
+  checkPermission(
+    subjectId: string,
+    workspaceId: string,
+    action: string,
+    resourceKind: string
+  ): Promise<boolean>;
 
   /** Get subject details */
   getSubject(subjectId: string): Promise<SubjectInfo>;
@@ -52,7 +57,13 @@ export interface TokenPair {
 
 // ── Identity Types ─────────────────────────────────────────────────────
 
-export type Role = 'platform-admin' | 'workspace-owner' | 'workspace-member' | 'workspace-viewer' | 'agent-service' | 'auditor';
+export type Role =
+  | 'platform-admin'
+  | 'workspace-owner'
+  | 'workspace-member'
+  | 'workspace-viewer'
+  | 'agent-service'
+  | 'auditor';
 
 export type CredentialType = 'password' | 'oauth' | 'mfa-totp' | 'mfa-webauthn' | 'api-key';
 

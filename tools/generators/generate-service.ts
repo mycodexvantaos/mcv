@@ -21,8 +21,14 @@ import * as path from 'path';
 const ROOT = path.resolve(__dirname, '../..');
 
 const VALID_CATEGORIES = [
-  'knowledge', 'agent', 'workspace', 'developer',
-  'security', 'storage', 'model', 'automation',
+  'knowledge',
+  'agent',
+  'workspace',
+  'developer',
+  'security',
+  'storage',
+  'model',
+  'automation',
 ];
 
 // ── Parse Args ──────────────────────────────────────────────────────────
@@ -44,7 +50,10 @@ if (!VALID_CATEGORIES.includes(category)) {
   process.exit(1);
 }
 
-const pascalName = serviceName.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('');
+const pascalName = serviceName
+  .split('-')
+  .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+  .join('');
 const className = `${pascalName}Service`;
 
 console.log(`🚀 Generating service: ${serviceName} (${className}) in category: ${category}\n`);

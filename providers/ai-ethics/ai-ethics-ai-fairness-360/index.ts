@@ -13,7 +13,9 @@ export type { AIFairness360Config } from './ai-fairness-360-provider-cb';
 /**
  * Create a AIFairness360Provider instance with the given configuration.
  */
-export function createAIFairness360Provider(config: Partial<ProviderConfig<AIFairness360Config>> = {}): AIFairness360Provider {
+export function createAIFairness360Provider(
+  config: Partial<ProviderConfig<AIFairness360Config>> = {}
+): AIFairness360Provider {
   const providerConfig: ProviderConfig<AIFairness360Config> = {
     id: config.id || 'ai-fairness-360-provider-cb',
     name: config.name || 'AIFairness360Provider',

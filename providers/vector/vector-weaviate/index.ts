@@ -13,7 +13,9 @@ export type { WeaviateVectorConfig } from './weaviate-vector-provider-cb';
 /**
  * Create a WeaviateVectorProvider instance with the given configuration.
  */
-export function createWeaviateVectorProvider(config: Partial<ProviderConfig<WeaviateVectorConfig>> = {}): WeaviateVectorProvider {
+export function createWeaviateVectorProvider(
+  config: Partial<ProviderConfig<WeaviateVectorConfig>> = {}
+): WeaviateVectorProvider {
   const providerConfig: ProviderConfig<WeaviateVectorConfig> = {
     id: config.id || 'weaviate-vector-provider-cb',
     name: config.name || 'WeaviateVectorProvider',

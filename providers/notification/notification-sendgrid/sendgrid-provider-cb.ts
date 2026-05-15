@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface SendGridConfig {
   apiKey: string;
@@ -15,7 +18,12 @@ export interface SendGridConfig {
   fromName?: string;
 }
 
-export interface EmailResult { success: boolean; messageId?: string; error?: string; operationTime: number; }
+export interface EmailResult {
+  success: boolean;
+  messageId?: string;
+  error?: string;
+  operationTime: number;
+}
 
 export class SendGridProvider extends CapabilityBase<SendGridConfig> {
   private apiKey: string;
@@ -27,7 +35,7 @@ export class SendGridProvider extends CapabilityBase<SendGridConfig> {
   constructor(config: ProviderConfig<SendGridConfig>) {
     super(config);
     const cfg = config.config;
-this.apiKey = cfg.apiKey;
+    this.apiKey = cfg.apiKey;
     this.fromEmail = cfg.fromEmail;
     this.fromName = cfg.fromName || 'MyCodexVantaOS';
   }
@@ -58,7 +66,11 @@ this.apiKey = cfg.apiKey;
   async sendEmail(to: string, subject: string, body: string): Promise<EmailResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `SendGridProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `SendGridProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -66,13 +78,25 @@ this.apiKey = cfg.apiKey;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
-  async sendTemplate(to: string, templateId: string, data: Record<string, unknown>): Promise<EmailResult> {
+  async sendTemplate(
+    to: string,
+    templateId: string,
+    data: Record<string, unknown>
+  ): Promise<EmailResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `SendGridProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `SendGridProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -80,7 +104,11 @@ this.apiKey = cfg.apiKey;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

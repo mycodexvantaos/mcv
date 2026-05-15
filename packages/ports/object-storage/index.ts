@@ -12,7 +12,12 @@
 
 export interface IObjectStoragePort {
   /** Store a blob and return its key */
-  put(bucket: string, key: string, data: Uint8Array, options?: StoragePutOptions): Promise<StoragePutResult>;
+  put(
+    bucket: string,
+    key: string,
+    data: Uint8Array,
+    options?: StoragePutOptions
+  ): Promise<StoragePutResult>;
 
   /** Retrieve a blob by key */
   get(bucket: string, key: string): Promise<Uint8Array | null>;

@@ -7,14 +7,22 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface KafkaQueueConfig {
   brokers: string[];
   groupId?: string;
 }
 
-export interface QueueResult { success: boolean; offset?: number; error?: string; operationTime: number; }
+export interface QueueResult {
+  success: boolean;
+  offset?: number;
+  error?: string;
+  operationTime: number;
+}
 
 export class KafkaQueueProvider extends CapabilityBase<KafkaQueueConfig> {
   private brokers: unknown[];
@@ -25,7 +33,7 @@ export class KafkaQueueProvider extends CapabilityBase<KafkaQueueConfig> {
   constructor(config: ProviderConfig<KafkaQueueConfig>) {
     super(config);
     const cfg = config.config;
-this.brokers = cfg.brokers;
+    this.brokers = cfg.brokers;
     this.groupId = cfg.groupId;
   }
 
@@ -55,7 +63,11 @@ this.brokers = cfg.brokers;
   async publish(topic: string, message: unknown): Promise<QueueResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `KafkaQueueProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `KafkaQueueProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -63,13 +75,21 @@ this.brokers = cfg.brokers;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async subscribe(topic: string, handler: (msg: unknown) => void): Promise<QueueResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `KafkaQueueProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `KafkaQueueProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -77,13 +97,21 @@ this.brokers = cfg.brokers;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async acknowledge(topic: string, offset: number): Promise<QueueResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `KafkaQueueProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `KafkaQueueProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -91,7 +119,11 @@ this.brokers = cfg.brokers;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

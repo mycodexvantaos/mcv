@@ -361,9 +361,7 @@ export class IdentityService implements IIdentityPort {
     return membership.role as Role;
   }
 
-  async getSubject(
-    subjectId: string
-  ): Promise<{
+  async getSubject(subjectId: string): Promise<{
     id: string;
     email: string;
     displayName: string;

@@ -13,7 +13,9 @@ export type { GeminiConfig } from './gemini-provider-cb';
 /**
  * Create a GeminiLLMProvider instance with the given configuration.
  */
-export function createGeminiLLMProvider(config: Partial<ProviderConfig<GeminiConfig>> = {}): GeminiLLMProvider {
+export function createGeminiLLMProvider(
+  config: Partial<ProviderConfig<GeminiConfig>> = {}
+): GeminiLLMProvider {
   const id = config.id || 'gemini-provider-cb';
   const name = config.name || 'GeminiLLMProvider';
   const providerConfig: ProviderConfig<GeminiConfig> = {

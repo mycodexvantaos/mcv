@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface KeycloakAuthConfig {
   serverUrl: string;
@@ -16,7 +19,13 @@ export interface KeycloakAuthConfig {
   clientSecret?: string;
 }
 
-export interface AuthResult { success: boolean; token?: string; user?: Record<string, unknown>; error?: string; operationTime: number; }
+export interface AuthResult {
+  success: boolean;
+  token?: string;
+  user?: Record<string, unknown>;
+  error?: string;
+  operationTime: number;
+}
 
 export class KeycloakAuthProvider extends CapabilityBase<KeycloakAuthConfig> {
   private serverUrl: string;
@@ -29,7 +38,7 @@ export class KeycloakAuthProvider extends CapabilityBase<KeycloakAuthConfig> {
   constructor(config: ProviderConfig<KeycloakAuthConfig>) {
     super(config);
     const cfg = config.config;
-this.serverUrl = cfg.serverUrl;
+    this.serverUrl = cfg.serverUrl;
     this.realm = cfg.realm;
     this.clientId = cfg.clientId;
     this.clientSecret = cfg.clientSecret;
@@ -61,7 +70,11 @@ this.serverUrl = cfg.serverUrl;
   async authenticate(username: string, password: string): Promise<AuthResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `KeycloakAuthProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `KeycloakAuthProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -69,13 +82,21 @@ this.serverUrl = cfg.serverUrl;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async verifyToken(token: string): Promise<AuthResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `KeycloakAuthProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `KeycloakAuthProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -83,13 +104,21 @@ this.serverUrl = cfg.serverUrl;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async refreshToken(token: string): Promise<AuthResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `KeycloakAuthProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `KeycloakAuthProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -97,7 +126,11 @@ this.serverUrl = cfg.serverUrl;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

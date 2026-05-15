@@ -13,7 +13,9 @@ export type { NativeAuditorConfig } from './native-auditor-provider-cb';
 /**
  * Create a NativeAuditorProvider instance with the given configuration.
  */
-export function createNativeAuditorProvider(config: Partial<ProviderConfig<NativeAuditorConfig>> = {}): NativeAuditorProvider {
+export function createNativeAuditorProvider(
+  config: Partial<ProviderConfig<NativeAuditorConfig>> = {}
+): NativeAuditorProvider {
   const providerConfig: ProviderConfig<NativeAuditorConfig> = {
     id: config.id || 'native-auditor-provider-cb',
     name: config.name || 'NativeAuditorProvider',

@@ -13,7 +13,9 @@ export type { ReplicateConfig } from './replicate-provider-cb';
 /**
  * Create a ReplicateLLMProvider instance with the given configuration.
  */
-export function createReplicateLLMProvider(config: Partial<ProviderConfig<ReplicateConfig>> = {}): ReplicateLLMProvider {
+export function createReplicateLLMProvider(
+  config: Partial<ProviderConfig<ReplicateConfig>> = {}
+): ReplicateLLMProvider {
   const providerConfig: ProviderConfig<ReplicateConfig> = {
     id: config.id || 'replicate-provider-cb',
     name: config.name || 'ReplicateLLMProvider',

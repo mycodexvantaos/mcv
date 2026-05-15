@@ -100,10 +100,13 @@ export interface DependencyGraph {
 
 export interface RuntimeProfile {
   defaultProvider: string;
-  portableAlternatives: Record<string, {
-    cloudflare: string;
-    portable: string[];
-  }>;
+  portableAlternatives: Record<
+    string,
+    {
+      cloudflare: string;
+      portable: string[];
+    }
+  >;
 }
 
 export interface GovernanceOverlay {

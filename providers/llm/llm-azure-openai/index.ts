@@ -13,7 +13,9 @@ export type { AzureOpenAIConfig } from './azure-openai-provider-cb';
 /**
  * Create a AzureOpenAILLMProvider instance with the given configuration.
  */
-export function createAzureOpenAILLMProvider(config: Partial<ProviderConfig<AzureOpenAIConfig>> = {}): AzureOpenAILLMProvider {
+export function createAzureOpenAILLMProvider(
+  config: Partial<ProviderConfig<AzureOpenAIConfig>> = {}
+): AzureOpenAILLMProvider {
   const providerConfig: ProviderConfig<AzureOpenAIConfig> = {
     id: config.id || 'azure-openai-provider-cb',
     name: config.name || 'AzureOpenAILLMProvider',

@@ -9,7 +9,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 /**
  * Configuration for OpenAI Audio Provider
@@ -17,19 +20,19 @@ import type { ProviderConfig, ProviderHealthCheckResult } from '../../../package
 export interface OpenAIAudioConfig {
   /** OpenAI API key */
   apiKey?: string;
-  
+
   /** Default model for TTS */
   ttsModel?: string;
-  
+
   /** Default voice */
   defaultVoice?: string;
-  
+
   /** Connection timeout in milliseconds */
   timeout?: number;
-  
+
   /** Number of retries on failure */
   retries?: number;
-  
+
   /** Native fallback provider ID */
   fallbackProviderId?: string;
 }
@@ -40,13 +43,13 @@ export interface OpenAIAudioConfig {
 export interface TTSOptions {
   /** Model */
   model?: string;
-  
+
   /** Voice */
   voice?: string;
-  
+
   /** Speed (0.25 to 4.0) */
   speed?: number;
-  
+
   /** Output format (mp3, opus, aac, flac) */
   format?: string;
 }
@@ -57,22 +60,22 @@ export interface TTSOptions {
 export interface TTSResult {
   /** Success status */
   success: boolean;
-  
+
   /** Audio data (base64) */
   audio?: string;
-  
+
   /** Duration in seconds */
   duration?: number;
-  
+
   /** Model used */
   model?: string;
-  
+
   /** Voice used */
   voice?: string;
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -83,13 +86,13 @@ export interface TTSResult {
 export interface STTOptions {
   /** Model */
   model?: string;
-  
+
   /** Language */
   language?: string;
-  
+
   /** Enable timestamps */
   timestamps?: boolean;
-  
+
   /** Output format (json, text, srt, verbose_json) */
   responseFormat?: string;
 }
@@ -100,22 +103,22 @@ export interface STTOptions {
 export interface STTResult {
   /** Success status */
   success: boolean;
-  
+
   /** Transcribed text */
   text?: string;
-  
+
   /** Duration in seconds */
   duration?: number;
-  
+
   /** Model used */
   model?: string;
-  
+
   /** Language */
   language?: string;
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -157,7 +160,7 @@ export class OpenAIAudioProvider extends CapabilityBase<OpenAIAudioConfig> {
   protected async doHealthCheck(): Promise<ProviderHealthCheckResult> {
     try {
       const isHealthy = this.apiKey.length > 0;
-      
+
       return {
         isHealthy,
         status: isHealthy ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.UNHEALTHY,
@@ -186,12 +189,9 @@ export class OpenAIAudioProvider extends CapabilityBase<OpenAIAudioConfig> {
   /**
    * Text to speech
    */
-  async textToSpeech(
-    text: string,
-    options?: TTSOptions
-  ): Promise<TTSResult> {
+  async textToSpeech(text: string, options?: TTSOptions): Promise<TTSResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.apiKey) {
         return {
@@ -200,13 +200,13 @@ export class OpenAIAudioProvider extends CapabilityBase<OpenAIAudioConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // In a real implementation, we would call OpenAI TTS API
       const duration = text.length * 0.1; // Estimate
-      
+
       this.log('info', `TTS completed: ${text.substring(0, 50)}...`);
       this.recordMetric('tts', 1);
-      
+
       return {
         success: true,
         audio: 'base64encodedaudio...', // Simulated
@@ -228,12 +228,9 @@ export class OpenAIAudioProvider extends CapabilityBase<OpenAIAudioConfig> {
   /**
    * Speech to text
    */
-  async speechToText(
-    audio: string,
-    options?: STTOptions
-  ): Promise<STTResult> {
+  async speechToText(audio: string, options?: STTOptions): Promise<STTResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.apiKey) {
         return {
@@ -242,14 +239,14 @@ export class OpenAIAudioProvider extends CapabilityBase<OpenAIAudioConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // In a real implementation, we would call OpenAI STT API
       const text = '[Transcribed text simulation]';
       const duration = 10; // Simulated
-      
+
       this.log('info', 'STT completed');
       this.recordMetric('stt', 1);
-      
+
       return {
         success: true,
         text,

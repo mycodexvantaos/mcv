@@ -16,7 +16,13 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint ."
   },
-  "keywords": ["capabilities", "providers", "runtime-mode", "lifecycle-management", "fallback"],
+  "keywords": [
+    "capabilities",
+    "providers",
+    "runtime-mode",
+    "lifecycle-management",
+    "fallback"
+  ],
   "license": "UNLICENSED",
   "private": true
 }

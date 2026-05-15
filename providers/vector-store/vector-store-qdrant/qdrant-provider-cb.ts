@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface QdrantConfig {
   url: string;
@@ -15,8 +18,17 @@ export interface QdrantConfig {
   timeout?: number;
 }
 
-export interface VectorResult { success: boolean; error?: string; operationTime: number; }
-export interface VectorSearchResult { success: boolean; hits?: { id: string; score: number; payload?: Record<string, unknown> }[]; error?: string; operationTime: number; }
+export interface VectorResult {
+  success: boolean;
+  error?: string;
+  operationTime: number;
+}
+export interface VectorSearchResult {
+  success: boolean;
+  hits?: { id: string; score: number; payload?: Record<string, unknown> }[];
+  error?: string;
+  operationTime: number;
+}
 
 export class QdrantProvider extends CapabilityBase<QdrantConfig> {
   private url: string;
@@ -28,7 +40,7 @@ export class QdrantProvider extends CapabilityBase<QdrantConfig> {
   constructor(config: ProviderConfig<QdrantConfig>) {
     super(config);
     const cfg = config.config;
-this.url = cfg.url;
+    this.url = cfg.url;
     this.apiKey = cfg.apiKey;
     this.timeout = cfg.timeout || 30;
   }
@@ -59,7 +71,11 @@ this.url = cfg.url;
   async upsert(collection: string, ids: string[], embeddings: number[][]): Promise<VectorResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `QdrantProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `QdrantProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -67,13 +83,21 @@ this.url = cfg.url;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async search(collection: string, query: number[], k?: number): Promise<VectorSearchResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `QdrantProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `QdrantProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -81,13 +105,21 @@ this.url = cfg.url;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async delete(collection: string, ids: string[]): Promise<VectorResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `QdrantProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `QdrantProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -95,7 +127,11 @@ this.url = cfg.url;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

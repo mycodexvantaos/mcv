@@ -23,15 +23,11 @@ export function createMemoryCacheProvider(
   config?: Partial<MemoryCacheConfig>
 ) {
   const { MemoryCacheProvider } = require('./memory-cache-provider-cb');
-  
-  return new MemoryCacheProvider(
-    id,
-    'Memory Cache',
-    {
-      enabled: true,
-      config: config || {},
-    }
-  );
+
+  return new MemoryCacheProvider(id, 'Memory Cache', {
+    enabled: true,
+    config: config || {},
+  });
 }
 
 /**

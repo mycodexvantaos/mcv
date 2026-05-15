@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface MemgraphConfig {
   host: string;
@@ -16,7 +19,12 @@ export interface MemgraphConfig {
   password?: string;
 }
 
-export interface GraphResult { success: boolean; records?: Record<string, unknown>[]; error?: string; operationTime: number; }
+export interface GraphResult {
+  success: boolean;
+  records?: Record<string, unknown>[];
+  error?: string;
+  operationTime: number;
+}
 
 export class MemgraphProvider extends CapabilityBase<MemgraphConfig> {
   private host: string;
@@ -29,7 +37,7 @@ export class MemgraphProvider extends CapabilityBase<MemgraphConfig> {
   constructor(config: ProviderConfig<MemgraphConfig>) {
     super(config);
     const cfg = config.config;
-this.host = cfg.host || 'localhost';
+    this.host = cfg.host || 'localhost';
     this.port = cfg.port || 7687;
     this.username = cfg.username || '';
     this.password = cfg.password;
@@ -61,7 +69,11 @@ this.host = cfg.host || 'localhost';
   async query(cypher: string, params?: Record<string, unknown>): Promise<GraphResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `MemgraphProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `MemgraphProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -69,13 +81,21 @@ this.host = cfg.host || 'localhost';
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async createNode(label: string, properties: Record<string, unknown>): Promise<GraphResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `MemgraphProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `MemgraphProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -83,7 +103,11 @@ this.host = cfg.host || 'localhost';
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

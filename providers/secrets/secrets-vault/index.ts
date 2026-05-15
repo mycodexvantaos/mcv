@@ -13,7 +13,9 @@ export type { VaultSecretsConfig } from './vault-secrets-provider-cb';
 /**
  * Create a VaultSecretsProvider instance with the given configuration.
  */
-export function createVaultSecretsProvider(config: Partial<ProviderConfig<VaultSecretsConfig>> = {}): VaultSecretsProvider {
+export function createVaultSecretsProvider(
+  config: Partial<ProviderConfig<VaultSecretsConfig>> = {}
+): VaultSecretsProvider {
   const providerConfig: ProviderConfig<VaultSecretsConfig> = {
     id: config.id || 'vault-secrets-provider-cb',
     name: config.name || 'VaultSecretsProvider',

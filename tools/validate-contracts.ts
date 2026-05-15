@@ -18,8 +18,14 @@ interface ValidationResult {
 
 // ── Constants ──────────────────────────────────────────────────────────
 const VALID_SERVICE_NAMES = [
-  'identity', 'workspace', 'knowledge-store', 'knowledge-search',
-  'agent-chat', 'model-byok', 'audit-log', 'usage-meter',
+  'identity',
+  'workspace',
+  'knowledge-store',
+  'knowledge-search',
+  'agent-chat',
+  'model-byok',
+  'audit-log',
+  'usage-meter',
 ];
 
 const CONTRACTS_DIR = path.resolve(__dirname, '..', 'contracts');
@@ -34,20 +40,19 @@ function parseSimpleYaml(content: string): any {
     const result: any = {};
     let currentPath: string[] = [];
     let currentObj = result;
-    
+
     for (const line of lines) {
       const trimmed = line.trimEnd();
       if (!trimmed || trimmed.startsWith('#')) continue;
-      
+
       const indent = line.length - line.trimStart().length;
       const keyMatch = trimmed.match(/^(\w[\w-]*):\s*(.*)$/);
       if (keyMatch) {
         const key = keyMatch[1];
         const value = keyMatch[2].trim();
         if (value) {
-          currentObj[key] = value.startsWith('"') || value.startsWith("'") 
-            ? value.slice(1, -1) 
-            : value;
+          currentObj[key] =
+            value.startsWith('"') || value.startsWith("'") ? value.slice(1, -1) : value;
         } else {
           currentObj[key] = {};
         }
@@ -148,10 +153,12 @@ function validateCrossReferences(): ValidationResult {
     return result;
   }
 
-  const files = fs.readdirSync(serviceDir).filter(f => f.endsWith('.yaml') && f !== 'service-catalog.yaml');
-  
+  const files = fs
+    .readdirSync(serviceDir)
+    .filter((f) => f.endsWith('.yaml') && f !== 'service-catalog.yaml');
+
   // Check all 8 MVP services have definitions
-  const foundServices = files.map(f => path.basename(f, '.yaml'));
+  const foundServices = files.map((f) => path.basename(f, '.yaml'));
   for (const name of VALID_SERVICE_NAMES) {
     if (!foundServices.includes(name)) {
       result.errors.push(`missing service definition for: ${name}`);
@@ -176,7 +183,7 @@ function main() {
   // Validate service definitions
   const serviceDir = path.join(CONTRACTS_DIR, 'service-definitions');
   if (fs.existsSync(serviceDir)) {
-    for (const file of fs.readdirSync(serviceDir).filter(f => f.endsWith('.yaml'))) {
+    for (const file of fs.readdirSync(serviceDir).filter((f) => f.endsWith('.yaml'))) {
       results.push(validateServiceDefinition(path.join(serviceDir, file)));
     }
   }
@@ -184,7 +191,7 @@ function main() {
   // Validate schemas
   const schemaDir = path.join(CONTRACTS_DIR, 'schemas');
   if (fs.existsSync(schemaDir)) {
-    for (const file of fs.readdirSync(schemaDir).filter(f => f.endsWith('.json'))) {
+    for (const file of fs.readdirSync(schemaDir).filter((f) => f.endsWith('.json'))) {
       results.push(validateSchema(path.join(schemaDir, file)));
     }
   }
@@ -193,7 +200,9 @@ function main() {
   results.push(validateCrossReferences());
 
   // Report
-  let passCount = 0, warnCount = 0, failCount = 0;
+  let passCount = 0,
+    warnCount = 0,
+    failCount = 0;
   for (const result of results) {
     const icon = result.status === 'pass' ? '✅' : result.status === 'warn' ? '⚠️' : '❌';
     console.log(`${icon} ${path.relative(ROOT_DIR, result.file)}`);

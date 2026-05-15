@@ -41,7 +41,6 @@ export interface ResourceCondition {
   lastTransitionTime: string;
 }
 
-
 // ─── Identity Models ──────────────────────────────────────────────────
 
 export interface IdentitySubjectSpec {
@@ -63,7 +62,13 @@ export interface IdentitySubjectStatus {
 
 export type SubjectPhase = 'unregistered' | 'active' | 'suspended' | 'deactivated';
 
-export type Role = 'platform-admin' | 'workspace-owner' | 'workspace-member' | 'workspace-viewer' | 'agent-service' | 'auditor';
+export type Role =
+  | 'platform-admin'
+  | 'workspace-owner'
+  | 'workspace-member'
+  | 'workspace-viewer'
+  | 'agent-service'
+  | 'auditor';
 
 export interface CredentialRef {
   id: string;
@@ -85,9 +90,8 @@ export interface TokenClaims {
   scopes: string[];
   iat: number;
   exp: number;
-  sid: string;  // session ID
+  sid: string; // session ID
 }
-
 
 // ─── Workspace Models ─────────────────────────────────────────────────
 
@@ -118,9 +122,9 @@ export interface WorkspaceSettings {
 }
 
 export interface RetentionPolicy {
-  documents: number;    // days
+  documents: number; // days
   chatSessions: number; // days
-  auditEvents: number;  // days
+  auditEvents: number; // days
 }
 
 export interface QuotaSpec {
@@ -147,7 +151,6 @@ export interface Membership {
   addedBy: string;
 }
 
-
 // ─── Knowledge Models ─────────────────────────────────────────────────
 
 export interface DocumentSpec {
@@ -169,7 +172,14 @@ export interface DocumentStatus {
   verificationStatus: 'passed' | 'failed' | 'pending' | 'skipped';
 }
 
-export type DocumentPhase = 'uploaded' | 'ingesting' | 'ready' | 'failed' | 'stale' | 'archived' | 'deleted';
+export type DocumentPhase =
+  | 'uploaded'
+  | 'ingesting'
+  | 'ready'
+  | 'failed'
+  | 'stale'
+  | 'archived'
+  | 'deleted';
 
 export interface DocumentChunkSpec {
   documentId: string;
@@ -228,7 +238,6 @@ export interface KnowledgeRepairSpec {
   repairData: Record<string, unknown>;
 }
 
-
 // ─── Search & Retrieval Models ────────────────────────────────────────
 
 export interface SearchOptions {
@@ -259,7 +268,6 @@ export interface SourceTrace {
   collectionId: string;
   relevanceScore: number;
 }
-
 
 // ─── AI Chat Models ───────────────────────────────────────────────────
 
@@ -306,14 +314,13 @@ export interface MemoryItemSpec {
   importance: number;
 }
 
-
 // ─── Model Endpoint Models ────────────────────────────────────────────
 
 export interface ModelEndpointSpec {
   provider: ModelProvider;
   modelId: string;
   apiEndpoint: string;
-  credentialRef: string;  // encrypted reference — never plaintext
+  credentialRef: string; // encrypted reference — never plaintext
   parameters: ModelParameters;
   failoverEndpointId: string | null;
 }
@@ -338,7 +345,6 @@ export interface ModelEndpointStatus {
 }
 
 export type ModelEndpointPhase = 'registering' | 'active' | 'degraded' | 'revoked';
-
 
 // ─── Governance Models ────────────────────────────────────────────────
 
@@ -375,7 +381,6 @@ export interface UsageRecordSpec {
 
 export type Tier = 'free' | 'pro' | 'enterprise';
 
-
 // ─── Pipeline Models ──────────────────────────────────────────────────
 
 export type IngestionPhase = 'validate' | 'extract' | 'chunk' | 'embed' | 'index' | 'verify';
@@ -398,7 +403,6 @@ export interface VerificationReport {
   passed: boolean;
   verifiedAt: string;
 }
-
 
 // ─── Policy Decision ──────────────────────────────────────────────────
 

@@ -13,7 +13,9 @@ export type { SupabaseAuthConfig } from './supabase-auth-provider-cb';
 /**
  * Create a SupabaseAuthProvider instance with the given configuration.
  */
-export function createSupabaseAuthProvider(config: Partial<ProviderConfig<SupabaseAuthConfig>> = {}): SupabaseAuthProvider {
+export function createSupabaseAuthProvider(
+  config: Partial<ProviderConfig<SupabaseAuthConfig>> = {}
+): SupabaseAuthProvider {
   const providerConfig: ProviderConfig<SupabaseAuthConfig> = {
     id: config.id || 'supabase-auth-provider-cb',
     name: config.name || 'SupabaseAuthProvider',

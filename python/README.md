@@ -61,14 +61,14 @@ uv run python -m apps.dream_worker.main
 
 ## Packages
 
-| Package | Description |
-|---------|-------------|
+| Package                       | Description                         |
+| ----------------------------- | ----------------------------------- |
 | `mycodexvantaos-memory-dream` | Core memory dream processing engine |
 
 ## Apps
 
-| App | Description |
-|-----|-------------|
+| App            | Description                   |
+| -------------- | ----------------------------- |
 | `dream-worker` | Memory dream execution worker |
 
 ## Development

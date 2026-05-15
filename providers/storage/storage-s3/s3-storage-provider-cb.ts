@@ -9,7 +9,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 /**
  * Configuration for S3 Storage Provider
@@ -17,28 +20,28 @@ import type { ProviderConfig, ProviderHealthCheckResult } from '../../../package
 export interface S3StorageConfig {
   /** AWS access key ID */
   accessKeyId?: string;
-  
+
   /** AWS secret access key */
   secretAccessKey?: string;
-  
+
   /** AWS region */
   region?: string;
-  
+
   /** S3 bucket name */
   bucket?: string;
-  
+
   /** S3 endpoint URL (for custom S3 endpoints) */
   endpoint?: string;
-  
+
   /** Enable SSL */
   sslEnabled?: boolean;
-  
+
   /** Connection timeout in milliseconds */
   timeout?: number;
-  
+
   /** Number of retries on failure */
   retries?: number;
-  
+
   /** Native fallback provider ID */
   fallbackProviderId?: string;
 }
@@ -49,22 +52,22 @@ export interface S3StorageConfig {
 export interface FileMetadata {
   /** File name */
   name: string;
-  
+
   /** File path */
   path: string;
-  
+
   /** File size in bytes */
   size: number;
-  
+
   /** Content type */
   contentType?: string;
-  
+
   /** Last modified timestamp */
   lastModified: number;
-  
+
   /** ETag */
   etag?: string;
-  
+
   /** Custom metadata */
   metadata?: Record<string, string>;
 }
@@ -75,19 +78,19 @@ export interface FileMetadata {
 export interface UploadResult {
   /** Success status */
   success: boolean;
-  
+
   /** File path */
   path?: string;
-  
+
   /** File size */
   size?: number;
-  
+
   /** ETag */
   etag?: string;
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -98,16 +101,16 @@ export interface UploadResult {
 export interface DownloadResult {
   /** Success status */
   success: boolean;
-  
+
   /** File data */
   data?: string;
-  
+
   /** File metadata */
   metadata?: FileMetadata;
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -118,22 +121,22 @@ export interface DownloadResult {
 export interface ListResult {
   /** Success status */
   success: boolean;
-  
+
   /** Files */
   files?: FileMetadata[];
-  
+
   /** Total count */
   count?: number;
-  
+
   /** Is truncated */
   isTruncated?: boolean;
-  
+
   /** Next continuation token */
   nextContinuationToken?: string;
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -144,13 +147,13 @@ export interface ListResult {
 export interface DeleteResult {
   /** Success status */
   success: boolean;
-  
+
   /** Deleted paths */
   paths?: string[];
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -192,7 +195,7 @@ export class S3StorageProvider extends CapabilityBase<S3StorageConfig> {
     if (!this.bucket) {
       throw new Error('S3 bucket name is required');
     }
-    
+
     this.log('info', 'S3 storage provider initialized');
     this.log('info', `Bucket: ${this.bucket}, Region: ${this.region}`);
   }
@@ -212,12 +215,11 @@ export class S3StorageProvider extends CapabilityBase<S3StorageConfig> {
           },
         };
       }
-      
+
       // In a real implementation, we would check S3 connectivity
       // For now, simulate health check
-      const isHealthy = this.accessKeyId.length > 0 && 
-                       this.secretAccessKey.length > 0;
-      
+      const isHealthy = this.accessKeyId.length > 0 && this.secretAccessKey.length > 0;
+
       return {
         isHealthy,
         status: isHealthy ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.UNHEALTHY,
@@ -255,7 +257,7 @@ export class S3StorageProvider extends CapabilityBase<S3StorageConfig> {
     }
   ): Promise<UploadResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.accessKeyId || !this.secretAccessKey) {
         return {
@@ -264,15 +266,15 @@ export class S3StorageProvider extends CapabilityBase<S3StorageConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // In a real implementation, we would upload to S3
       // For now, simulate upload
       const size = data.length;
       const etag = this.generateETag(data);
-      
+
       this.log('info', `Uploaded file to S3: ${path} (${size} bytes)`);
       this.recordMetric('upload', size);
-      
+
       return {
         success: true,
         path,
@@ -295,7 +297,7 @@ export class S3StorageProvider extends CapabilityBase<S3StorageConfig> {
    */
   async download(path: string): Promise<DownloadResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.accessKeyId || !this.secretAccessKey) {
         return {
@@ -304,7 +306,7 @@ export class S3StorageProvider extends CapabilityBase<S3StorageConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // In a real implementation, we would download from S3
       // For now, simulate download
       const fileMetadata: FileMetadata = {
@@ -315,10 +317,10 @@ export class S3StorageProvider extends CapabilityBase<S3StorageConfig> {
         lastModified: Date.now(),
         etag: this.generateETag(''),
       };
-      
+
       this.log('info', `Downloaded file from S3: ${path}`);
       this.recordMetric('download', fileMetadata.size);
-      
+
       return {
         success: true,
         data: '',
@@ -340,7 +342,7 @@ export class S3StorageProvider extends CapabilityBase<S3StorageConfig> {
    */
   async list(prefix?: string, continuationToken?: string): Promise<ListResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.accessKeyId || !this.secretAccessKey) {
         return {
@@ -349,11 +351,11 @@ export class S3StorageProvider extends CapabilityBase<S3StorageConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // In a real implementation, we would list S3 objects
       // For now, simulate listing
       this.log('info', `Listed S3 files with prefix: ${prefix || ''}`);
-      
+
       return {
         success: true,
         files: [],
@@ -375,7 +377,7 @@ export class S3StorageProvider extends CapabilityBase<S3StorageConfig> {
    */
   async delete(path: string): Promise<DeleteResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.accessKeyId || !this.secretAccessKey) {
         return {
@@ -384,12 +386,12 @@ export class S3StorageProvider extends CapabilityBase<S3StorageConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // In a real implementation, we would delete from S3
       // For now, simulate deletion
       this.log('info', `Deleted file from S3: ${path}`);
       this.recordMetric('delete', 1);
-      
+
       return {
         success: true,
         paths: [path],
@@ -410,7 +412,7 @@ export class S3StorageProvider extends CapabilityBase<S3StorageConfig> {
    */
   async deleteMany(paths: string[]): Promise<DeleteResult> {
     const startTime = Date.now();
-    
+
     try {
       if (!this.accessKeyId || !this.secretAccessKey) {
         return {
@@ -419,12 +421,12 @@ export class S3StorageProvider extends CapabilityBase<S3StorageConfig> {
           operationTime: Date.now() - startTime,
         };
       }
-      
+
       // In a real implementation, we would batch delete from S3
       // For now, simulate deletion
       this.log('info', `Deleted ${paths.length} files from S3`);
       this.recordMetric('delete_batch', paths.length);
-      
+
       return {
         success: true,
         paths,

@@ -10,7 +10,11 @@
     "lint": "eslint src/",
     "test": "echo \"TODO: add tests\" && exit 0"
   },
-  "keywords": ["mycodexvantaos", "provider", "cloudflare-vectorize"],
+  "keywords": [
+    "mycodexvantaos",
+    "provider",
+    "cloudflare-vectorize"
+  ],
   "license": "MIT",
   "devDependencies": {
     "typescript": "^5.4.0",

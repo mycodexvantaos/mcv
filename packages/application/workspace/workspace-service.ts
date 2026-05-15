@@ -111,16 +111,45 @@ export class WorkspaceService {
     const urn = `urn:mycodexvantaos:workspace:workspace:${workspaceId}`;
     const now = new Date().toISOString();
 
-    const defaultQuotas: QuotaSpec = input.tier === 'enterprise'
-      ? { maxMembers: 200, maxResources: 100000, maxCollections: 500, maxModelEndpoints: 20, maxStorageMb: 50000 }
-      : input.tier === 'pro'
-        ? { maxMembers: 50, maxResources: 50000, maxCollections: 50, maxModelEndpoints: 5, maxStorageMb: 5000 }
-        : { maxMembers: 10, maxResources: 1000, maxCollections: 5, maxModelEndpoints: 1, maxStorageMb: 100 };
+    const defaultQuotas: QuotaSpec =
+      input.tier === 'enterprise'
+        ? {
+            maxMembers: 200,
+            maxResources: 100000,
+            maxCollections: 500,
+            maxModelEndpoints: 20,
+            maxStorageMb: 50000,
+          }
+        : input.tier === 'pro'
+          ? {
+              maxMembers: 50,
+              maxResources: 50000,
+              maxCollections: 50,
+              maxModelEndpoints: 5,
+              maxStorageMb: 5000,
+            }
+          : {
+              maxMembers: 10,
+              maxResources: 1000,
+              maxCollections: 5,
+              maxModelEndpoints: 1,
+              maxStorageMb: 100,
+            };
 
     await this.deps.database.execute(
       `INSERT INTO workspaces (id, urn, display_name, description, owner_id, phase, tier, quotas, created_at, updated_at)
        VALUES (?, ?, ?, ?, ?, 'active', ?, ?, ?, ?)`,
-      [workspaceId, urn, input.displayName, input.description ?? '', input.ownerId, input.tier ?? 'free', JSON.stringify(defaultQuotas), now, now]
+      [
+        workspaceId,
+        urn,
+        input.displayName,
+        input.description ?? '',
+        input.ownerId,
+        input.tier ?? 'free',
+        JSON.stringify(defaultQuotas),
+        now,
+        now,
+      ]
     );
 
     await this.addMember(workspaceId, input.ownerId, 'workspace-owner');
@@ -138,8 +167,19 @@ export class WorkspaceService {
     return {
       id: workspaceId,
       urn,
-      spec: { displayName: input.displayName, description: input.description ?? '', ownerId: input.ownerId, quotas: defaultQuotas },
-      status: { phase: 'active', memberCount: 1, resourceCount: 0, quotaUsage: { members: 1, resources: 0, collections: 0, modelEndpoints: 0, storageMb: 0 }, conditions: [] },
+      spec: {
+        displayName: input.displayName,
+        description: input.description ?? '',
+        ownerId: input.ownerId,
+        quotas: defaultQuotas,
+      },
+      status: {
+        phase: 'active',
+        memberCount: 1,
+        resourceCount: 0,
+        quotaUsage: { members: 1, resources: 0, collections: 0, modelEndpoints: 0, storageMb: 0 },
+        conditions: [],
+      },
     };
   }
 
@@ -148,7 +188,7 @@ export class WorkspaceService {
       `SELECT w.* FROM workspaces w JOIN memberships m ON w.id = m.workspace_id WHERE m.subject_id = ?`,
       [subjectId]
     );
-    return rows.map(row => this.mapRowToResource(row));
+    return rows.map((row) => this.mapRowToResource(row));
   }
 
   async getWorkspace(workspaceId: string): Promise<WorkspaceResource | null> {
@@ -177,7 +217,7 @@ export class WorkspaceService {
         displayName: row.display_name as string,
         description: row.description as string,
         ownerId: row.owner_id as string,
-        quotas: JSON.parse(row.quotas as string || '{}'),
+        quotas: JSON.parse((row.quotas as string) || '{}'),
       },
       status: {
         phase: row.phase as WorkspacePhase,

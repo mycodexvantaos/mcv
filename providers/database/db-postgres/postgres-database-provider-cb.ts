@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface PostgreSQLDatabaseConfig {
   connectionString?: string;
@@ -36,10 +39,17 @@ export class PostgreSQLDatabaseProvider extends CapabilityBase<PostgreSQLDatabas
   private fallbackProviderId: string = 'native';
   private isPostgreSQLAvailable: boolean = false;
 
-  constructor(id: string, name: string, config: ProviderConfig<PostgreSQLDatabaseConfig>, fallbackConfig?: any) {
+  constructor(
+    id: string,
+    name: string,
+    config: ProviderConfig<PostgreSQLDatabaseConfig>,
+    fallbackConfig?: any
+  ) {
     super(id, name, config, fallbackConfig);
     const cfg = config.config;
-    this.connectionString = cfg.connectionString || `postgresql://\${cfg.user}:\${cfg.password}@\${cfg.host}:\${cfg.port}/\${cfg.database}`;
+    this.connectionString =
+      cfg.connectionString ||
+      `postgresql://\${cfg.user}:\${cfg.password}@\${cfg.host}:\${cfg.port}/\${cfg.database}`;
     this.timeout = cfg.timeout || 5000;
     this.retries = cfg.retries || 3;
   }
@@ -61,7 +71,9 @@ export class PostgreSQLDatabaseProvider extends CapabilityBase<PostgreSQLDatabas
   protected async doHealthCheck(): Promise<ProviderHealthCheckResult> {
     return {
       isHealthy: this.isPostgreSQLAvailable,
-      status: this.isPostgreSQLAvailable ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.DEGRADED,
+      status: this.isPostgreSQLAvailable
+        ? ProviderHealthStatus.HEALTHY
+        : ProviderHealthStatus.DEGRADED,
       checkTime: new Date().toISOString(),
       metrics: {},
     };
@@ -74,7 +86,11 @@ export class PostgreSQLDatabaseProvider extends CapabilityBase<PostgreSQLDatabas
   async query<T = any>(sql: string, params: any[] = []): Promise<QueryResult<T>> {
     const startTime = Date.now();
     if (!this.isPostgreSQLAvailable) {
-      return { success: false, error: `PostgreSQL not available. Use fallback: \${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: `PostgreSQL not available. Use fallback: \${this.fallbackProviderId}`,
+        operationTime: Date.now() - startTime,
+      };
     }
     try {
       const result = { success: true, rows: [], operationTime: 0 } as QueryResult<T>;
@@ -83,7 +99,11 @@ export class PostgreSQLDatabaseProvider extends CapabilityBase<PostgreSQLDatabas
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      };
     }
   }
 
@@ -92,7 +112,16 @@ export class PostgreSQLDatabaseProvider extends CapabilityBase<PostgreSQLDatabas
   }
 
   getInfo(): Record<string, unknown> {
-    return { id: this.id, name: this.name, type: 'postgresql-database', available: this.isPostgreSQLAvailable, fallbackProvider: this.fallbackProviderId, status: this._status, isInitialized: this._isInitialized, metrics: this.metrics };
+    return {
+      id: this.id,
+      name: this.name,
+      type: 'postgresql-database',
+      available: this.isPostgreSQLAvailable,
+      fallbackProvider: this.fallbackProviderId,
+      status: this._status,
+      isInitialized: this._isInitialized,
+      metrics: this.metrics,
+    };
   }
 }
 export { PostgreSQLDatabaseProvider as default };

@@ -13,7 +13,9 @@ export type { HuggingFaceConfig } from './huggingface-provider-cb';
 /**
  * Create a HuggingFaceLLMProvider instance with the given configuration.
  */
-export function createHuggingFaceLLMProvider(config: Partial<ProviderConfig<HuggingFaceConfig>> = {}): HuggingFaceLLMProvider {
+export function createHuggingFaceLLMProvider(
+  config: Partial<ProviderConfig<HuggingFaceConfig>> = {}
+): HuggingFaceLLMProvider {
   const providerConfig: ProviderConfig<HuggingFaceConfig> = {
     id: config.id || 'huggingface-provider-cb',
     name: config.name || 'HuggingFaceLLMProvider',

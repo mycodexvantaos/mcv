@@ -13,7 +13,9 @@ export type { OpenAIAudioConfig } from './openai-audio-provider-cb';
 /**
  * Create a OpenAIAudioProvider instance with the given configuration.
  */
-export function createOpenAIAudioProvider(config: Partial<ProviderConfig<OpenAIAudioConfig>> = {}): OpenAIAudioProvider {
+export function createOpenAIAudioProvider(
+  config: Partial<ProviderConfig<OpenAIAudioConfig>> = {}
+): OpenAIAudioProvider {
   const providerConfig: ProviderConfig<OpenAIAudioConfig> = {
     id: config.id || 'openai-audio-provider-cb',
     name: config.name || 'OpenAIAudioProvider',

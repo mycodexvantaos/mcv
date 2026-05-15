@@ -36,13 +36,13 @@ import {
 } from '../../application/index.js';
 
 export interface DockerEnv {
-  DATABASE_URL: string;       // postgresql://...
-  REDIS_URL: string;          // redis://...
-  MINIO_ENDPOINT: string;     // minio:9000
+  DATABASE_URL: string; // postgresql://...
+  REDIS_URL: string; // redis://...
+  MINIO_ENDPOINT: string; // minio:9000
   MINIO_ACCESS_KEY: string;
   MINIO_SECRET_KEY: string;
-  QDRANT_URL: string;         // http://qdrant:6333
-  RABBITMQ_URL: string;       // amqp://...
+  QDRANT_URL: string; // http://qdrant:6333
+  RABBITMQ_URL: string; // amqp://...
   ENCRYPTION_KEY: string;
 }
 
@@ -84,8 +84,8 @@ export class DockerRuntimeAdapter {
     // Placeholder — will be replaced when portable adapters are implemented
     throw new Error(
       'DockerRuntimeAdapter: Portable adapters not yet implemented. ' +
-      'These will be added in Phase 2 (Portable Core). ' +
-      'See adapters/ directory for the Cloudflare implementations to use as reference.'
+        'These will be added in Phase 2 (Portable Core). ' +
+        'See adapters/ directory for the Cloudflare implementations to use as reference.'
     );
   }
 

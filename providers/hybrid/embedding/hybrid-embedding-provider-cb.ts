@@ -4,11 +4,13 @@
  * 作為如何實現 Hybrid fallback 的模板。
  */
 
-import {
-  CapabilityBase,
-} from '../../../packages/capabilities/base';
+import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, FallbackConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  FallbackConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface HybirdEmbeddingConfig {
   externalApiKey?: string;
@@ -54,7 +56,9 @@ export class HybridEmbeddingProvider extends CapabilityBase<HybirdEmbeddingConfi
     if (!this.config.config.externalApiKey) {
       return {
         isHealthy: this.enableNativeFallback,
-        status: this.enableNativeFallback ? ProviderHealthStatus.DEGRADED : ProviderHealthStatus.UNHEALTHY,
+        status: this.enableNativeFallback
+          ? ProviderHealthStatus.DEGRADED
+          : ProviderHealthStatus.UNHEALTHY,
         checkTime: new Date().toISOString(),
         metrics: {},
       };
@@ -74,7 +78,9 @@ export class HybridEmbeddingProvider extends CapabilityBase<HybirdEmbeddingConfi
     } catch (e: any) {
       return {
         isHealthy: this.enableNativeFallback,
-        status: this.enableNativeFallback ? ProviderHealthStatus.DEGRADED : ProviderHealthStatus.UNHEALTHY,
+        status: this.enableNativeFallback
+          ? ProviderHealthStatus.DEGRADED
+          : ProviderHealthStatus.UNHEALTHY,
         checkTime: new Date().toISOString(),
         metrics: {},
       };

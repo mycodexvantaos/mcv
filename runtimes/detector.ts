@@ -10,7 +10,7 @@ import type {
   NetworkProbeStrategy,
   NetworkProbeConfig,
   RuntimeConfiguration,
-  ModeDetectionResult
+  ModeDetectionResult,
 } from './types';
 
 /**
@@ -18,7 +18,10 @@ import type {
  */
 function detectEnvironment(): RuntimeEnvironment {
   // 雲端平台判斷（示例）
-  const isCloudflareWorkers = typeof caches !== 'undefined' && typeof fetch === 'function' && process.env.CF_PAGES !== undefined;
+  const isCloudflareWorkers =
+    typeof caches !== 'undefined' &&
+    typeof fetch === 'function' &&
+    process.env.CF_PAGES !== undefined;
   const isDocker = process.env.DOCKER_CONTAINER === 'true' || fs.existsSync('/.dockerenv');
   const isNode = typeof process !== 'undefined' && process.versions && !!process.versions.node;
   const hasFileSystem = isNode && typeof require !== 'undefined';
@@ -36,7 +39,9 @@ function detectEnvironment(): RuntimeEnvironment {
 /**
  * 📡 網絡檢測（根據策略）
  */
-async function probeNetwork(config?: NetworkProbeConfig): Promise<{ isOnline: boolean; latency?: number; lastChecked: string }> {
+async function probeNetwork(
+  config?: NetworkProbeConfig
+): Promise<{ isOnline: boolean; latency?: number; lastChecked: string }> {
   const start = Date.now();
   const timeout = config?.timeout ?? 5000;
   let url: string;
@@ -89,7 +94,9 @@ function checkNativeDependencies(): { satisfied: boolean; missing: string[] } {
  */
 export async function detectMode(config?: RuntimeConfiguration): Promise<ModeDetectionResult> {
   const env = detectEnvironment();
-  const networkStatus = config?.networkProbe ? await probeNetwork(config.networkProbe) : { isOnline: true, lastChecked: new Date().toISOString() };
+  const networkStatus = config?.networkProbe
+    ? await probeNetwork(config.networkProbe)
+    : { isOnline: true, lastChecked: new Date().toISOString() };
   const depStatus = checkNativeDependencies();
 
   const reasons: string[] = [];

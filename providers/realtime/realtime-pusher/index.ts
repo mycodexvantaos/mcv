@@ -13,7 +13,9 @@ export type { PusherRealtimeConfig } from './pusher-realtime-provider-cb';
 /**
  * Create a PusherRealtimeProvider instance with the given configuration.
  */
-export function createPusherRealtimeProvider(config: Partial<ProviderConfig<PusherRealtimeConfig>> = {}): PusherRealtimeProvider {
+export function createPusherRealtimeProvider(
+  config: Partial<ProviderConfig<PusherRealtimeConfig>> = {}
+): PusherRealtimeProvider {
   const providerConfig: ProviderConfig<PusherRealtimeConfig> = {
     id: config.id || 'pusher-realtime-provider-cb',
     name: config.name || 'PusherRealtimeProvider',

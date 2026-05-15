@@ -33,8 +33,12 @@ const checks: ArchCheck[] = [];
 
 function checkCorePackages(): void {
   const requiredCore = [
-    'shared', 'service-catalog', 'resource-model',
-    'policy-model', 'audit-model', 'knowledge-model',
+    'shared',
+    'service-catalog',
+    'resource-model',
+    'policy-model',
+    'audit-model',
+    'knowledge-model',
   ];
   const details: string[] = [];
   let allFound = true;
@@ -61,10 +65,7 @@ function checkCorePackages(): void {
 // ── Check 2: Port packages ─────────────────────────────────────────────
 
 function checkPortPackages(): void {
-  const requiredPorts = [
-    'database', 'object-storage', 'search',
-    'model-provider', 'queue', 'auth',
-  ];
+  const requiredPorts = ['database', 'object-storage', 'search', 'model-provider', 'queue', 'auth'];
   const details: string[] = [];
   let allFound = true;
 
@@ -85,8 +86,14 @@ function checkPortPackages(): void {
 
 function checkApplicationPackages(): void {
   const requiredApps = [
-    'identity', 'workspace', 'knowledge', 'agent',
-    'model', 'audit', 'usage', 'automation',
+    'identity',
+    'workspace',
+    'knowledge',
+    'agent',
+    'model',
+    'audit',
+    'usage',
+    'automation',
   ];
   const details: string[] = [];
   let allFound = true;
@@ -94,7 +101,7 @@ function checkApplicationPackages(): void {
   for (const pkg of requiredApps) {
     const dir = path.join(ROOT, 'packages/application', pkg);
     if (fs.existsSync(dir)) {
-      const serviceFile = fs.readdirSync(dir).find(f => f.endsWith('-service.ts'));
+      const serviceFile = fs.readdirSync(dir).find((f) => f.endsWith('-service.ts'));
       if (serviceFile) {
         details.push(`  ✅ packages/application/${pkg}/ (${serviceFile})`);
       } else {
@@ -113,8 +120,13 @@ function checkApplicationPackages(): void {
 
 function checkAdapterPackages(): void {
   const requiredAdapters = [
-    'cloudflare-d1', 'cloudflare-kv', 'cloudflare-r2',
-    'd1-full-text-search', 'openai', 'openrouter', 'workers-ai',
+    'cloudflare-d1',
+    'cloudflare-kv',
+    'cloudflare-r2',
+    'd1-full-text-search',
+    'openai',
+    'openrouter',
+    'workers-ai',
   ];
   const details: string[] = [];
   let allFound = true;
@@ -139,12 +151,25 @@ function checkServiceCategories(): void {
   const details: string[] = [];
 
   if (!fs.existsSync(categoriesFile)) {
-    checks.push({ name: 'Service categories (8 categories)', passed: false, details: ['  ❌ contracts/service-categories.yaml not found'] });
+    checks.push({
+      name: 'Service categories (8 categories)',
+      passed: false,
+      details: ['  ❌ contracts/service-categories.yaml not found'],
+    });
     return;
   }
 
   const content = fs.readFileSync(categoriesFile, 'utf-8');
-  const expectedCategories = ['knowledge', 'agent', 'workspace', 'developer', 'security', 'storage', 'model', 'automation'];
+  const expectedCategories = [
+    'knowledge',
+    'agent',
+    'workspace',
+    'developer',
+    'security',
+    'storage',
+    'model',
+    'automation',
+  ];
   let allFound = true;
 
   for (const cat of expectedCategories) {
@@ -169,7 +194,7 @@ function checkMigrations(): void {
   for (const dir of requiredDirs) {
     const migrationDir = path.join(ROOT, 'migrations', dir);
     if (fs.existsSync(migrationDir)) {
-      const files = fs.readdirSync(migrationDir).filter(f => f.endsWith('.sql'));
+      const files = fs.readdirSync(migrationDir).filter((f) => f.endsWith('.sql'));
       if (files.length > 0) {
         details.push(`  ✅ migrations/${dir}/ (${files.length} file(s))`);
       } else {
@@ -215,7 +240,7 @@ function checkRuntimesLayer(): void {
     const dir = path.join(ROOT, 'runtimes', rt);
     if (fs.existsSync(dir)) {
       const files = fs.readdirSync(dir, { recursive: true }) as string[];
-      const tsFiles = files.filter(f => f.toString().endsWith('.ts'));
+      const tsFiles = files.filter((f) => f.toString().endsWith('.ts'));
       details.push(`  ✅ runtimes/${rt}/ (${tsFiles.length} TS file(s))`);
     } else {
       details.push(`  ❌ runtimes/${rt}/ not found`);

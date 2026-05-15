@@ -13,7 +13,9 @@ export type { EventStreamKafkaConfig } from './event-stream-kafka-provider-cb';
 /**
  * Create a EventStreamKafkaProvider instance with the given configuration.
  */
-export function createEventStreamKafkaProvider(config: Partial<ProviderConfig<EventStreamKafkaConfig>> = {}): EventStreamKafkaProvider {
+export function createEventStreamKafkaProvider(
+  config: Partial<ProviderConfig<EventStreamKafkaConfig>> = {}
+): EventStreamKafkaProvider {
   const providerConfig: ProviderConfig<EventStreamKafkaConfig> = {
     id: config.id || 'event-stream-kafka-provider-cb',
     name: config.name || 'EventStreamKafkaProvider',

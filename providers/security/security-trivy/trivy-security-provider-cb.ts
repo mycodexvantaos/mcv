@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface TrivySecurityConfig {
   severity?: string[];
@@ -15,7 +18,13 @@ export interface TrivySecurityConfig {
   timeout?: string;
 }
 
-export interface ScanResult { success: boolean; vulnerabilities?: unknown[]; criticalCount?: number; error?: string; operationTime: number; }
+export interface ScanResult {
+  success: boolean;
+  vulnerabilities?: unknown[];
+  criticalCount?: number;
+  error?: string;
+  operationTime: number;
+}
 
 export class TrivySecurityProvider extends CapabilityBase<TrivySecurityConfig> {
   private severity: unknown[] | undefined;
@@ -27,7 +36,7 @@ export class TrivySecurityProvider extends CapabilityBase<TrivySecurityConfig> {
   constructor(config: ProviderConfig<TrivySecurityConfig>) {
     super(config);
     const cfg = config.config;
-this.severity = cfg.severity || ['CRITICAL', 'HIGH'];
+    this.severity = cfg.severity || ['CRITICAL', 'HIGH'];
     this.ignoreUnfixed = cfg.ignoreUnfixed ?? false;
     this.timeout = cfg.timeout || '5m0s';
   }
@@ -58,7 +67,11 @@ this.severity = cfg.severity || ['CRITICAL', 'HIGH'];
   async scanImage(image: string): Promise<ScanResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `TrivySecurityProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `TrivySecurityProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -66,13 +79,21 @@ this.severity = cfg.severity || ['CRITICAL', 'HIGH'];
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async scanFilesystem(path: string): Promise<ScanResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `TrivySecurityProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `TrivySecurityProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -80,13 +101,21 @@ this.severity = cfg.severity || ['CRITICAL', 'HIGH'];
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async getReport(scanId: string): Promise<ScanResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `TrivySecurityProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `TrivySecurityProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -94,7 +123,11 @@ this.severity = cfg.severity || ['CRITICAL', 'HIGH'];
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

@@ -9,7 +9,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 /**
  * Configuration for Redis Cache Provider
@@ -17,31 +20,31 @@ import type { ProviderConfig, ProviderHealthCheckResult } from '../../../package
 export interface RedisCacheConfig {
   /** Redis connection URL */
   url?: string;
-  
+
   /** Redis host */
   host?: string;
-  
+
   /** Redis port */
   port?: number;
-  
+
   /** Redis password */
   password?: string;
-  
+
   /** Redis database number */
   db?: number;
-  
+
   /** Key prefix */
   keyPrefix?: string;
-  
+
   /** Default TTL in seconds */
   defaultTTL?: number;
-  
+
   /** Connection timeout in milliseconds */
   timeout?: number;
-  
+
   /** Number of retries on failure */
   retries?: number;
-  
+
   /** Native fallback provider ID */
   fallbackProviderId?: string;
 }
@@ -52,13 +55,13 @@ export interface RedisCacheConfig {
 export interface CacheValue<T = any> {
   /** Stored value */
   value: T;
-  
+
   /** Expiration timestamp */
   expiresAt?: number;
-  
+
   /** Creation timestamp */
   createdAt: number;
-  
+
   /** Last access timestamp */
   lastAccessedAt: number;
 }
@@ -69,7 +72,7 @@ export interface CacheValue<T = any> {
 export interface CacheOptions {
   /** Time to live in seconds */
   ttl?: number;
-  
+
   /** Key prefix */
   prefix?: string;
 }
@@ -80,16 +83,16 @@ export interface CacheOptions {
 export interface CacheResult<T = any> {
   /** Success status */
   success: boolean;
-  
+
   /** Cached value */
   value?: T;
-  
+
   /** Cache hit/miss status */
   hit?: boolean;
-  
+
   /** Error message */
   error?: string;
-  
+
   /** Operation time in milliseconds */
   operationTime: number;
 }
@@ -110,7 +113,7 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
   private timeout: number;
   private retries: number;
   private fallbackProviderId: string = 'native';
-  
+
   private isRedisAvailable: boolean = false;
   private client: any = null;
 
@@ -121,7 +124,7 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
     fallbackConfig?: any
   ) {
     super(id, name, config, fallbackConfig);
-    
+
     const cfg = config.config;
     this.url = cfg.url || '';
     this.host = cfg.host || 'localhost';
@@ -146,9 +149,12 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
 
     try {
       await this.checkRedisAvailability();
-      
+
       if (this.isRedisAvailable) {
-        this.log('info', `Redis cache provider initialized at ${this.url || `${this.host}:${this.port}`}`);
+        this.log(
+          'info',
+          `Redis cache provider initialized at ${this.url || `${this.host}:${this.port}`}`
+        );
       } else {
         this.log('warn', 'Redis connection failed - will use native fallback');
       }
@@ -232,7 +238,7 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
    */
   async get<T = any>(key: string, options?: CacheOptions): Promise<CacheResult<T>> {
     const startTime = Date.now();
-    
+
     if (!this.isRedisAvailable) {
       const operationTime = Date.now() - startTime;
       return {
@@ -247,7 +253,7 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
       const result = await this.getWithRetry(key, options);
       const operationTime = Date.now() - startTime;
       result.operationTime = operationTime;
-      
+
       this.recordSuccess(operationTime);
       return result;
     } catch (error) {
@@ -265,7 +271,10 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
   /**
    * Get with retry logic
    */
-  private async getWithRetry<T = any>(key: string, options?: CacheOptions): Promise<CacheResult<T>> {
+  private async getWithRetry<T = any>(
+    key: string,
+    options?: CacheOptions
+  ): Promise<CacheResult<T>> {
     let lastError: Error | null = null;
 
     for (let attempt = 1; attempt <= this.retries; attempt++) {
@@ -277,7 +286,7 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
 
         if (attempt < this.retries) {
           const delay = Math.min(100 * Math.pow(2, attempt - 1), 1000);
-          await new Promise(resolve => setTimeout(resolve, delay));
+          await new Promise((resolve) => setTimeout(resolve, delay));
         }
       }
     }
@@ -290,11 +299,11 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
    */
   private async doGet<T = any>(key: string, options?: CacheOptions): Promise<CacheResult<T>> {
     const fullKey = `${options?.prefix || this.keyPrefix}${key}`;
-    
+
     // In production, this would call Redis GET command
     // For now, we'll simulate the behavior
     const value = await this.redisGet(fullKey);
-    
+
     if (value === null) {
       return {
         success: true,
@@ -302,9 +311,9 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
         operationTime: 0,
       };
     }
-    
+
     const cacheValue: CacheValue<T> = JSON.parse(value);
-    
+
     // Check expiration
     if (cacheValue.expiresAt && cacheValue.expiresAt < Date.now()) {
       await this.redisDel(fullKey);
@@ -314,7 +323,7 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
         operationTime: 0,
       };
     }
-    
+
     return {
       success: true,
       value: cacheValue.value,
@@ -328,7 +337,7 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
    */
   async set<T = any>(key: string, value: T, options?: CacheOptions): Promise<CacheResult<void>> {
     const startTime = Date.now();
-    
+
     if (!this.isRedisAvailable) {
       const operationTime = Date.now() - startTime;
       return {
@@ -342,7 +351,7 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
       const result = await this.setWithRetry(key, value, options);
       const operationTime = Date.now() - startTime;
       result.operationTime = operationTime;
-      
+
       this.recordSuccess(operationTime);
       return result;
     } catch (error) {
@@ -359,7 +368,11 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
   /**
    * Set with retry logic
    */
-  private async setWithRetry<T = any>(key: string, value: T, options?: CacheOptions): Promise<CacheResult<void>> {
+  private async setWithRetry<T = any>(
+    key: string,
+    value: T,
+    options?: CacheOptions
+  ): Promise<CacheResult<void>> {
     let lastError: Error | null = null;
 
     for (let attempt = 1; attempt <= this.retries; attempt++) {
@@ -371,7 +384,7 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
 
         if (attempt < this.retries) {
           const delay = Math.min(100 * Math.pow(2, attempt - 1), 1000);
-          await new Promise(resolve => setTimeout(resolve, delay));
+          await new Promise((resolve) => setTimeout(resolve, delay));
         }
       }
     }
@@ -382,20 +395,24 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
   /**
    * Actual set logic
    */
-  private async doSet<T = any>(key: string, value: T, options?: CacheOptions): Promise<CacheResult<void>> {
+  private async doSet<T = any>(
+    key: string,
+    value: T,
+    options?: CacheOptions
+  ): Promise<CacheResult<void>> {
     const fullKey = `${options?.prefix || this.keyPrefix}${key}`;
     const ttl = options?.ttl || this.defaultTTL;
-    
+
     const cacheValue: CacheValue<T> = {
       value,
-      expiresAt: ttl > 0 ? Date.now() + (ttl * 1000) : undefined,
+      expiresAt: ttl > 0 ? Date.now() + ttl * 1000 : undefined,
       createdAt: Date.now(),
       lastAccessedAt: Date.now(),
     };
-    
+
     const serialized = JSON.stringify(cacheValue);
     await this.redisSet(fullKey, serialized, ttl);
-    
+
     return {
       success: true,
       operationTime: 0,
@@ -407,7 +424,7 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
    */
   async delete(key: string, options?: CacheOptions): Promise<CacheResult<void>> {
     const startTime = Date.now();
-    
+
     if (!this.isRedisAvailable) {
       const operationTime = Date.now() - startTime;
       return {
@@ -420,7 +437,7 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
     try {
       await this.deleteWithRetry(key, options);
       const operationTime = Date.now() - startTime;
-      
+
       this.recordSuccess(operationTime);
       return {
         success: true,
@@ -453,7 +470,7 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
 
         if (attempt < this.retries) {
           const delay = Math.min(100 * Math.pow(2, attempt - 1), 1000);
-          await new Promise(resolve => setTimeout(resolve, delay));
+          await new Promise((resolve) => setTimeout(resolve, delay));
         }
       }
     }
@@ -474,7 +491,7 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
    */
   async clear(options?: CacheOptions): Promise<CacheResult<void>> {
     const startTime = Date.now();
-    
+
     if (!this.isRedisAvailable) {
       const operationTime = Date.now() - startTime;
       return {
@@ -487,7 +504,7 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
     try {
       await this.clearWithRetry(options);
       const operationTime = Date.now() - startTime;
-      
+
       this.recordSuccess(operationTime);
       return {
         success: true,
@@ -520,7 +537,7 @@ export class RedisCacheProvider extends CapabilityBase<RedisCacheConfig> {
 
         if (attempt < this.retries) {
           const delay = Math.min(100 * Math.pow(2, attempt - 1), 1000);
-          await new Promise(resolve => setTimeout(resolve, delay));
+          await new Promise((resolve) => setTimeout(resolve, delay));
         }
       }
     }

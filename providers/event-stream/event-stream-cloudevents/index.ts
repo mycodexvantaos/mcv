@@ -13,7 +13,9 @@ export type { CloudEventsConfig } from './cloudevents-provider-cb';
 /**
  * Create a CloudEventsProvider instance with the given configuration.
  */
-export function createCloudEventsProvider(config: Partial<ProviderConfig<CloudEventsConfig>> = {}): CloudEventsProvider {
+export function createCloudEventsProvider(
+  config: Partial<ProviderConfig<CloudEventsConfig>> = {}
+): CloudEventsProvider {
   const providerConfig: ProviderConfig<CloudEventsConfig> = {
     id: config.id || 'cloudevents-provider-cb',
     name: config.name || 'CloudEventsProvider',

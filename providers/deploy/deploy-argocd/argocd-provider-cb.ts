@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface ArgoCDConfig {
   serverUrl: string;
@@ -15,7 +18,12 @@ export interface ArgoCDConfig {
   project?: string;
 }
 
-export interface DeployResult { success: boolean; status?: string; error?: string; operationTime: number; }
+export interface DeployResult {
+  success: boolean;
+  status?: string;
+  error?: string;
+  operationTime: number;
+}
 
 export class ArgoCDProvider extends CapabilityBase<ArgoCDConfig> {
   private serverUrl: string;
@@ -27,7 +35,7 @@ export class ArgoCDProvider extends CapabilityBase<ArgoCDConfig> {
   constructor(config: ProviderConfig<ArgoCDConfig>) {
     super(config);
     const cfg = config.config;
-this.serverUrl = cfg.serverUrl;
+    this.serverUrl = cfg.serverUrl;
     this.token = cfg.token;
     this.project = cfg.project || 'mycodexvantaos';
   }
@@ -58,7 +66,11 @@ this.serverUrl = cfg.serverUrl;
   async syncApplication(appName: string): Promise<DeployResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `ArgoCDProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `ArgoCDProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -66,13 +78,21 @@ this.serverUrl = cfg.serverUrl;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async getApplicationStatus(appName: string): Promise<DeployResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `ArgoCDProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `ArgoCDProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -80,13 +100,21 @@ this.serverUrl = cfg.serverUrl;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async createApplication(manifest: Record<string, unknown>): Promise<DeployResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `ArgoCDProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `ArgoCDProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -94,7 +122,11 @@ this.serverUrl = cfg.serverUrl;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

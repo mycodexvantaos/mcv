@@ -10,7 +10,7 @@ import type {
   RuntimeEnvironment,
   NetworkProbeStrategy,
   NetworkProbeConfig,
-  ModeDetectionResult
+  ModeDetectionResult,
 } from './types';
 import { detectMode, loadRuntimeConfig as rawLoadConfig } from './detector';
 
@@ -22,7 +22,12 @@ export class RuntimeManager {
   private config: RuntimeConfiguration;
   private currentMode: RuntimeMode;
   private lastDetection?: ModeDetectionResult;
-  private modeChangeLog: Array<{ timestamp: string; from: RuntimeMode; to: RuntimeMode; reason: string }> = [];
+  private modeChangeLog: Array<{
+    timestamp: string;
+    from: RuntimeMode;
+    to: RuntimeMode;
+    reason: string;
+  }> = [];
 
   private constructor(config: RuntimeConfiguration) {
     this.config = config;
@@ -74,7 +79,12 @@ export class RuntimeManager {
   }
 
   /** 獲取模式切換歷史 */
-  public getModeChangeHistory(): Array<{ timestamp: string; from: RuntimeMode; to: RuntimeMode; reason: string }> {
+  public getModeChangeHistory(): Array<{
+    timestamp: string;
+    from: RuntimeMode;
+    to: RuntimeMode;
+    reason: string;
+  }> {
     return [...this.modeChangeLog];
   }
 
@@ -85,10 +95,7 @@ export class RuntimeManager {
 
     if (autoSwitch && this.config.mode === RuntimeMode.AUTO) {
       if (result.recommendedMode !== this.currentMode) {
-        this.setMode(
-          result.recommendedMode,
-          result.reasons.join(', ') || 'automatic detection'
-        );
+        this.setMode(result.recommendedMode, result.reasons.join(', ') || 'automatic detection');
       }
     }
 
@@ -103,15 +110,21 @@ export class RuntimeManager {
   /**
    * 觸發網絡檢測（立即生效，可由外部調用以響應網絡變化）
    */
-  public async triggerNetworkProbe(config?: NetworkProbeConfig): Promise<{ isOnline: boolean; latency?: number; lastChecked: string }> {
-    const networkStatus = (await detectMode({
-      ...this.config,
-      networkProbe: config ?? this.config.networkProbe,
-    })).networkStatus;
+  public async triggerNetworkProbe(
+    config?: NetworkProbeConfig
+  ): Promise<{ isOnline: boolean; latency?: number; lastChecked: string }> {
+    const networkStatus = (
+      await detectMode({
+        ...this.config,
+        networkProbe: config ?? this.config.networkProbe,
+      })
+    ).networkStatus;
 
     if (
       this.config.mode === RuntimeMode.AUTO &&
-      (networkStatus.isOnline ? this.currentMode !== RuntimeMode.CONNECTED : this.currentMode !== RuntimeMode.NATIVE)
+      (networkStatus.isOnline
+        ? this.currentMode !== RuntimeMode.CONNECTED
+        : this.currentMode !== RuntimeMode.NATIVE)
     ) {
       const newMode = networkStatus.isOnline ? RuntimeMode.CONNECTED : RuntimeMode.NATIVE;
       this.setMode(newMode, `network probe: ${networkStatus.isOnline ? 'online' : 'offline'}`);
@@ -125,7 +138,11 @@ export class RuntimeManager {
     const timestamp = new Date().toISOString();
     const prefix = `[${timestamp}] [${level.toUpperCase()}] [RuntimeManager]`;
 
-    const enabled = this.config.logLevel === 'debug' || (level === 'info' && this.config.logLevel === 'info') || this.config.logLevel === 'warn' || this.config.logLevel === 'error';
+    const enabled =
+      this.config.logLevel === 'debug' ||
+      (level === 'info' && this.config.logLevel === 'info') ||
+      this.config.logLevel === 'warn' ||
+      this.config.logLevel === 'error';
     if (!enabled) return;
 
     if (level === 'debug') {

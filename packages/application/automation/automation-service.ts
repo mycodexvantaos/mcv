@@ -99,8 +99,21 @@ export class AutomationService {
 
     return {
       id: jobId,
-      spec: { jobType: input.jobType, workspaceId: input.workspaceId, data: input.data, priority: input.priority ?? 0, maxRetries: input.maxRetries ?? 3 },
-      status: { phase: 'pending', leasedBy: null, leasedAt: null, completedAt: null, retryCount: 0, error: null },
+      spec: {
+        jobType: input.jobType,
+        workspaceId: input.workspaceId,
+        data: input.data,
+        priority: input.priority ?? 0,
+        maxRetries: input.maxRetries ?? 3,
+      },
+      status: {
+        phase: 'pending',
+        leasedBy: null,
+        leasedAt: null,
+        completedAt: null,
+        retryCount: 0,
+        error: null,
+      },
     };
   }
 
@@ -111,8 +124,21 @@ export class AutomationService {
 
     return {
       id: job.jobId,
-      spec: { jobType: job.jobType, workspaceId: job.workspaceId, data: job.data, priority: job.priority ?? 0, maxRetries: job.maxRetries ?? 3 },
-      status: { phase: 'leased', leasedBy: workerId, leasedAt: new Date().toISOString(), completedAt: null, retryCount: 0, error: null },
+      spec: {
+        jobType: job.jobType,
+        workspaceId: job.workspaceId,
+        data: job.data,
+        priority: job.priority ?? 0,
+        maxRetries: job.maxRetries ?? 3,
+      },
+      status: {
+        phase: 'leased',
+        leasedBy: workerId,
+        leasedAt: new Date().toISOString(),
+        completedAt: null,
+        retryCount: 0,
+        error: null,
+      },
     };
   }
 

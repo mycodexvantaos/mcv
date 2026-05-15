@@ -13,7 +13,9 @@ export type { BedrockConfig } from './bedrock-provider-cb';
 /**
  * Create a BedrockLLMProvider instance with the given configuration.
  */
-export function createBedrockLLMProvider(config: Partial<ProviderConfig<BedrockConfig>> = {}): BedrockLLMProvider {
+export function createBedrockLLMProvider(
+  config: Partial<ProviderConfig<BedrockConfig>> = {}
+): BedrockLLMProvider {
   const providerConfig: ProviderConfig<BedrockConfig> = {
     id: config.id || 'bedrock-provider-cb',
     name: config.name || 'BedrockLLMProvider',

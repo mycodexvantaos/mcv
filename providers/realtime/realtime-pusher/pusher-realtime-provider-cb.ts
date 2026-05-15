@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface PusherRealtimeConfig {
   appId?: string;
@@ -82,7 +85,11 @@ export class PusherRealtimeProvider extends CapabilityBase<PusherRealtimeConfig>
   async trigger(event: PushEvent): Promise<PushResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `Pusher not available. Use fallback: ${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: `Pusher not available. Use fallback: ${this.fallbackProviderId}`,
+        operationTime: Date.now() - startTime,
+      };
     }
     try {
       const result: PushResult = { success: true, operationTime: Date.now() - startTime };
@@ -90,14 +97,22 @@ export class PusherRealtimeProvider extends CapabilityBase<PusherRealtimeConfig>
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      };
     }
   }
 
   async triggerBatch(events: PushEvent[]): Promise<PushResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `Pusher not available. Use fallback: ${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: `Pusher not available. Use fallback: ${this.fallbackProviderId}`,
+        operationTime: Date.now() - startTime,
+      };
     }
     try {
       const result: PushResult = { success: true, operationTime: Date.now() - startTime };
@@ -105,14 +120,22 @@ export class PusherRealtimeProvider extends CapabilityBase<PusherRealtimeConfig>
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      };
     }
   }
 
   async authenticate(socketId: string, channel: string): Promise<{ auth: string } | PushResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `Pusher not available. Use fallback: ${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: `Pusher not available. Use fallback: ${this.fallbackProviderId}`,
+        operationTime: Date.now() - startTime,
+      };
     }
     try {
       const result = { auth: `${this.key}:${socketId}:${channel}` };
@@ -120,7 +143,11 @@ export class PusherRealtimeProvider extends CapabilityBase<PusherRealtimeConfig>
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      };
     }
   }
 

@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface NativeGovernanceConfig {
   timeout?: number;
@@ -15,7 +18,14 @@ export interface NativeGovernanceConfig {
   fallbackProviderId?: string;
 }
 
-export interface EventResult { success: boolean; eventId?: string; events?: Record<string, unknown>[]; allowed?: boolean; error?: string; operationTime: number; }
+export interface EventResult {
+  success: boolean;
+  eventId?: string;
+  events?: Record<string, unknown>[];
+  allowed?: boolean;
+  error?: string;
+  operationTime: number;
+}
 
 export class NativeGovernanceProvider extends CapabilityBase<NativeGovernanceConfig> {
   private timeout: number;
@@ -56,7 +66,11 @@ export class NativeGovernanceProvider extends CapabilityBase<NativeGovernanceCon
   async emit(event: Record<string, unknown>): Promise<EventResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `NativeGovernanceProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `NativeGovernanceProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -64,13 +78,21 @@ export class NativeGovernanceProvider extends CapabilityBase<NativeGovernanceCon
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async getHistory(eventType?: string): Promise<EventResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `NativeGovernanceProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `NativeGovernanceProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -78,13 +100,21 @@ export class NativeGovernanceProvider extends CapabilityBase<NativeGovernanceCon
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async enforcePolicy(policy: string, event: unknown): Promise<EventResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `NativeGovernanceProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `NativeGovernanceProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -92,7 +122,11 @@ export class NativeGovernanceProvider extends CapabilityBase<NativeGovernanceCon
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

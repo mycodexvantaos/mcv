@@ -13,7 +13,9 @@ export type { K8sNativeSecretsConfig } from './k8s-native-secrets-provider-cb';
 /**
  * Create a K8sNativeSecretsProvider instance with the given configuration.
  */
-export function createK8sNativeSecretsProvider(config: Partial<ProviderConfig<K8sNativeSecretsConfig>> = {}): K8sNativeSecretsProvider {
+export function createK8sNativeSecretsProvider(
+  config: Partial<ProviderConfig<K8sNativeSecretsConfig>> = {}
+): K8sNativeSecretsProvider {
   const providerConfig: ProviderConfig<K8sNativeSecretsConfig> = {
     id: config.id || 'k8s-native-secrets-provider-cb',
     name: config.name || 'K8sNativeSecretsProvider',

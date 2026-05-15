@@ -13,7 +13,9 @@ export type { FirebaseAuthConfig } from './firebase-auth-provider-cb';
 /**
  * Create a FirebaseAuthProvider instance with the given configuration.
  */
-export function createFirebaseAuthProvider(config: Partial<ProviderConfig<FirebaseAuthConfig>> = {}): FirebaseAuthProvider {
+export function createFirebaseAuthProvider(
+  config: Partial<ProviderConfig<FirebaseAuthConfig>> = {}
+): FirebaseAuthProvider {
   const providerConfig: ProviderConfig<FirebaseAuthConfig> = {
     id: config.id || 'firebase-auth-provider-cb',
     name: config.name || 'FirebaseAuthProvider',

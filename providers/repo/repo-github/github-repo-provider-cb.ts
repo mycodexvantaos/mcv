@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface GitHubRepoConfig {
   token: string;
@@ -15,7 +18,12 @@ export interface GitHubRepoConfig {
   apiBaseUrl?: string;
 }
 
-export interface RepoResult { success: boolean; data?: unknown; error?: string; operationTime: number; }
+export interface RepoResult {
+  success: boolean;
+  data?: unknown;
+  error?: string;
+  operationTime: number;
+}
 
 export class GitHubRepoProvider extends CapabilityBase<GitHubRepoConfig> {
   private token: string;
@@ -27,7 +35,7 @@ export class GitHubRepoProvider extends CapabilityBase<GitHubRepoConfig> {
   constructor(config: ProviderConfig<GitHubRepoConfig>) {
     super(config);
     const cfg = config.config;
-this.token = cfg.token;
+    this.token = cfg.token;
     this.org = cfg.org || 'mycodexvantaos';
     this.apiBaseUrl = cfg.apiBaseUrl || 'https://api.github.com';
   }
@@ -58,7 +66,11 @@ this.token = cfg.token;
   async getRepo(owner: string, repo: string): Promise<RepoResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `GitHubRepoProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `GitHubRepoProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -66,13 +78,21 @@ this.token = cfg.token;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async createIssue(owner: string, repo: string, title: string, body: string): Promise<RepoResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `GitHubRepoProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `GitHubRepoProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -80,13 +100,21 @@ this.token = cfg.token;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async listCommits(owner: string, repo: string): Promise<RepoResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `GitHubRepoProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `GitHubRepoProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -94,7 +122,11 @@ this.token = cfg.token;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface FairlearnConfig {
   timeout?: number;
@@ -15,7 +18,13 @@ export interface FairlearnConfig {
   fallbackProviderId?: string;
 }
 
-export interface EthicsResult { success: boolean; metrics?: Record<string, number>; mitigated?: unknown; error?: string; operationTime: number; }
+export interface EthicsResult {
+  success: boolean;
+  metrics?: Record<string, number>;
+  mitigated?: unknown;
+  error?: string;
+  operationTime: number;
+}
 
 export class FairlearnProvider extends CapabilityBase<FairlearnConfig> {
   private timeout: number;
@@ -56,7 +65,11 @@ export class FairlearnProvider extends CapabilityBase<FairlearnConfig> {
   async assessFairness(data: unknown, sensitiveFeature: string): Promise<EthicsResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `FairlearnProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `FairlearnProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -64,13 +77,21 @@ export class FairlearnProvider extends CapabilityBase<FairlearnConfig> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async applyMitigation(data: unknown, constraint: string): Promise<EthicsResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `FairlearnProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `FairlearnProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -78,7 +99,11 @@ export class FairlearnProvider extends CapabilityBase<FairlearnConfig> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

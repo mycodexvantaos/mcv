@@ -13,7 +13,9 @@ export type { AlgoliaSearchConfig } from './algolia-search-provider-cb';
 /**
  * Create a AlgoliaSearchProvider instance with the given configuration.
  */
-export function createAlgoliaSearchProvider(config: Partial<ProviderConfig<AlgoliaSearchConfig>> = {}): AlgoliaSearchProvider {
+export function createAlgoliaSearchProvider(
+  config: Partial<ProviderConfig<AlgoliaSearchConfig>> = {}
+): AlgoliaSearchProvider {
   const providerConfig: ProviderConfig<AlgoliaSearchConfig> = {
     id: config.id || 'algolia-search-provider-cb',
     name: config.name || 'AlgoliaSearchProvider',

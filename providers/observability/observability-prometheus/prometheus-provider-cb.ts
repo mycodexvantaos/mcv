@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface PrometheusConfig {
   metricsPath?: string;
@@ -15,7 +18,12 @@ export interface PrometheusConfig {
   scrapeIntervalSeconds?: number;
 }
 
-export interface MetricResult { success: boolean; data?: unknown; error?: string; operationTime: number; }
+export interface MetricResult {
+  success: boolean;
+  data?: unknown;
+  error?: string;
+  operationTime: number;
+}
 
 export class PrometheusProvider extends CapabilityBase<PrometheusConfig> {
   private metricsPath: string | undefined;
@@ -27,7 +35,7 @@ export class PrometheusProvider extends CapabilityBase<PrometheusConfig> {
   constructor(config: ProviderConfig<PrometheusConfig>) {
     super(config);
     const cfg = config.config;
-this.metricsPath = cfg.metricsPath || '/metrics';
+    this.metricsPath = cfg.metricsPath || '/metrics';
     this.port = cfg.port || 9090;
     this.scrapeIntervalSeconds = cfg.scrapeIntervalSeconds || 15;
   }
@@ -58,7 +66,11 @@ this.metricsPath = cfg.metricsPath || '/metrics';
   async query(promql: string): Promise<MetricResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `PrometheusProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `PrometheusProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -66,13 +78,26 @@ this.metricsPath = cfg.metricsPath || '/metrics';
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
-  async queryRange(promql: string, start: string, end: string, step: string): Promise<MetricResult> {
+  async queryRange(
+    promql: string,
+    start: string,
+    end: string,
+    step: string
+  ): Promise<MetricResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `PrometheusProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `PrometheusProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -80,7 +105,11 @@ this.metricsPath = cfg.metricsPath || '/metrics';
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

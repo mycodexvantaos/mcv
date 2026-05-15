@@ -17,15 +17,11 @@ export function createNativeMemoryVectorStoreProvider(
 ) {
   const { MemoryVectorStore } = require('./memory-vector-store-cb');
 
-  return new MemoryVectorStore(
-    id,
-    'Native Memory Vector Store',
-    {
-      mode: 'native' as any,
-      providerMode: 'native' as any,
-      config: config || {},
-    }
-  );
+  return new MemoryVectorStore(id, 'Native Memory Vector Store', {
+    mode: 'native' as any,
+    providerMode: 'native' as any,
+    config: config || {},
+  });
 }
 
 /**

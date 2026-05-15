@@ -22,8 +22,14 @@ import * as yaml from 'js-yaml'; // optional — fallback to manual parse
 
 const ROOT = path.resolve(__dirname, '../..');
 const EXPECTED_CATEGORIES = [
-  'knowledge', 'agent', 'workspace', 'developer',
-  'security', 'storage', 'model', 'automation',
+  'knowledge',
+  'agent',
+  'workspace',
+  'developer',
+  'security',
+  'storage',
+  'model',
+  'automation',
 ];
 
 interface ValidationResult {
@@ -67,11 +73,16 @@ function validateFile(filePath: string, label: string): ValidationResult {
 function validateServiceDefinitions(): void {
   const dir = path.join(ROOT, 'contracts/service-definitions');
   if (!fs.existsSync(dir)) {
-    results.push({ file: 'service-definitions/', valid: false, errors: ['Directory not found'], warnings: [] });
+    results.push({
+      file: 'service-definitions/',
+      valid: false,
+      errors: ['Directory not found'],
+      warnings: [],
+    });
     return;
   }
 
-  const files = fs.readdirSync(dir).filter(f => f.endsWith('.yaml'));
+  const files = fs.readdirSync(dir).filter((f) => f.endsWith('.yaml'));
   for (const file of files) {
     const result = validateFile(path.join(dir, file), `service-definitions/${file}`);
 
@@ -80,7 +91,9 @@ function validateServiceDefinitions(): void {
 
       // Check for required fields
       if (!content.includes('category:')) {
-        result.warnings.push('Missing "category" field — should map to one of 8 service categories');
+        result.warnings.push(
+          'Missing "category" field — should map to one of 8 service categories'
+        );
       }
       if (!content.includes('name:') && !content.includes('name:')) {
         result.warnings.push('Missing "name" field');
@@ -121,10 +134,15 @@ function validateSchemas(): void {
     return;
   }
 
-  const files = fs.readdirSync(dir).filter(f => f.endsWith('.schema.json'));
+  const files = fs.readdirSync(dir).filter((f) => f.endsWith('.schema.json'));
   for (const file of files) {
     const filePath = path.join(dir, file);
-    const result: ValidationResult = { file: `schemas/${file}`, valid: true, errors: [], warnings: [] };
+    const result: ValidationResult = {
+      file: `schemas/${file}`,
+      valid: true,
+      errors: [],
+      warnings: [],
+    };
 
     try {
       const json = JSON.parse(fs.readFileSync(filePath, 'utf-8'));

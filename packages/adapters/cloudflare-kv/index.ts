@@ -31,7 +31,11 @@ export class CloudflareKVCacheStore {
     }
   }
 
-  async put(key: string, value: unknown, options?: { expirationTtl?: number; metadata?: Record<string, string> }): Promise<void> {
+  async put(
+    key: string,
+    value: unknown,
+    options?: { expirationTtl?: number; metadata?: Record<string, string> }
+  ): Promise<void> {
     const serialized = typeof value === 'string' ? value : JSON.stringify(value);
     await this.kv.put(key, serialized, {
       expirationTtl: options?.expirationTtl,
@@ -60,7 +64,12 @@ export class CloudflareKVCacheStore {
     };
   }
 
-  async atomicSet(key: string, expectedValue: unknown, newValue: unknown, options?: { expirationTtl?: number }): Promise<boolean> {
+  async atomicSet(
+    key: string,
+    expectedValue: unknown,
+    newValue: unknown,
+    options?: { expirationTtl?: number }
+  ): Promise<boolean> {
     const existing = await this.kv.getWithMetadata<{ revision: number }>(key);
     const expectedRevision = typeof expectedValue === 'number' ? expectedValue : 0;
     const currentRevision = existing.metadata?.revision ?? 0;

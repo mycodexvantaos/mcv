@@ -13,7 +13,9 @@ export type { TypesenseConfig } from './typesense-provider-cb';
 /**
  * Create a TypesenseProvider instance with the given configuration.
  */
-export function createTypesenseProvider(config: Partial<ProviderConfig<TypesenseConfig>> = {}): TypesenseProvider {
+export function createTypesenseProvider(
+  config: Partial<ProviderConfig<TypesenseConfig>> = {}
+): TypesenseProvider {
   const providerConfig: ProviderConfig<TypesenseConfig> = {
     id: config.id || 'typesense-provider-cb',
     name: config.name || 'TypesenseProvider',

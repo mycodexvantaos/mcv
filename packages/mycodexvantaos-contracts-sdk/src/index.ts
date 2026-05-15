@@ -23,7 +23,10 @@ export async function loadEventDefinitions(dir?: string): Promise<Record<string,
   return [];
 }
 
-export async function validateContract(schemaPath: string, data: unknown): Promise<{ valid: boolean; errors?: string[] }> {
+export async function validateContract(
+  schemaPath: string,
+  data: unknown
+): Promise<{ valid: boolean; errors?: string[] }> {
   // TODO: implement schema validation
   return { valid: true };
 }

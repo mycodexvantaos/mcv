@@ -9,7 +9,10 @@
  *   - Service mesh integration points
  */
 
-export type { NodeBindings as KubernetesBindings, NodeServiceContainer as KubernetesServiceContainer } from '../node/src/bootstrap.js';
+export type {
+  NodeBindings as KubernetesBindings,
+  NodeServiceContainer as KubernetesServiceContainer,
+} from '../node/src/bootstrap.js';
 export { bootstrapNode as bootstrapKubernetes } from '../node/src/bootstrap.js';
 
 import { mapDockerEnv } from '../docker/index.js';
@@ -18,7 +21,9 @@ import { mapDockerEnv } from '../docker/index.js';
  * Map Kubernetes environment variables to NodeBindings.
  * In K8s, env vars come from ConfigMaps and Secrets.
  */
-export function mapKubernetesEnv(rawEnv: Record<string, string | undefined>): import('../node/src/bootstrap.js').NodeBindings {
+export function mapKubernetesEnv(
+  rawEnv: Record<string, string | undefined>
+): import('../node/src/bootstrap.js').NodeBindings {
   // Same mapping as Docker, but with K8s service name conventions
   return mapDockerEnv(rawEnv);
 }

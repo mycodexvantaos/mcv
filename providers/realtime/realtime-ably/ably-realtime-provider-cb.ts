@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface AblyRealtimeConfig {
   apiKey?: string;
@@ -79,7 +82,11 @@ export class AblyRealtimeProvider extends CapabilityBase<AblyRealtimeConfig> {
   async publish(event: AblyEvent): Promise<PublishResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `Ably not available. Use fallback: ${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: `Ably not available. Use fallback: ${this.fallbackProviderId}`,
+        operationTime: Date.now() - startTime,
+      };
     }
     try {
       const result: PublishResult = { success: true, operationTime: Date.now() - startTime };
@@ -87,14 +94,22 @@ export class AblyRealtimeProvider extends CapabilityBase<AblyRealtimeConfig> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      };
     }
   }
 
   async publishBatch(events: AblyEvent[]): Promise<PublishResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `Ably not available. Use fallback: ${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: `Ably not available. Use fallback: ${this.fallbackProviderId}`,
+        operationTime: Date.now() - startTime,
+      };
     }
     try {
       const result: PublishResult = { success: true, operationTime: Date.now() - startTime };
@@ -102,14 +117,22 @@ export class AblyRealtimeProvider extends CapabilityBase<AblyRealtimeConfig> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      };
     }
   }
 
   async getToken(clientId?: string): Promise<{ token: string } | PublishResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `Ably not available. Use fallback: ${this.fallbackProviderId}`, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: `Ably not available. Use fallback: ${this.fallbackProviderId}`,
+        operationTime: Date.now() - startTime,
+      };
     }
     try {
       const result = { token: 'ably-token-placeholder' };
@@ -117,7 +140,11 @@ export class AblyRealtimeProvider extends CapabilityBase<AblyRealtimeConfig> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime };
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      };
     }
   }
 

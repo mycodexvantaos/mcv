@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface OpenTelemetryConfig {
   endpoint: string;
@@ -16,7 +19,13 @@ export interface OpenTelemetryConfig {
   exporterProtocol?: string;
 }
 
-export interface TelemetryResult { success: boolean; traceId?: string; spanId?: string; error?: string; operationTime: number; }
+export interface TelemetryResult {
+  success: boolean;
+  traceId?: string;
+  spanId?: string;
+  error?: string;
+  operationTime: number;
+}
 
 export class OpenTelemetryProvider extends CapabilityBase<OpenTelemetryConfig> {
   private endpoint: string;
@@ -29,7 +38,7 @@ export class OpenTelemetryProvider extends CapabilityBase<OpenTelemetryConfig> {
   constructor(config: ProviderConfig<OpenTelemetryConfig>) {
     super(config);
     const cfg = config.config;
-this.endpoint = cfg.endpoint;
+    this.endpoint = cfg.endpoint;
     this.serviceName = cfg.serviceName;
     this.samplingRate = cfg.samplingRate || 1.0;
     this.exporterProtocol = cfg.exporterProtocol || 'grpc';
@@ -58,10 +67,18 @@ this.endpoint = cfg.endpoint;
     this.log('info', 'OpenTelemetryProvider shutdown');
   }
 
-  async recordMetric(name: string, value: number, labels?: Record<string, string>): Promise<TelemetryResult> {
+  async recordMetric(
+    name: string,
+    value: number,
+    labels?: Record<string, string>
+  ): Promise<TelemetryResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `OpenTelemetryProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `OpenTelemetryProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -69,13 +86,21 @@ this.endpoint = cfg.endpoint;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async traceSpan(name: string, fn: () => Promise<unknown>): Promise<unknown> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `OpenTelemetryProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `OpenTelemetryProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -83,13 +108,21 @@ this.endpoint = cfg.endpoint;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async logEvent(name: string, data: Record<string, unknown>): Promise<TelemetryResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `OpenTelemetryProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `OpenTelemetryProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -97,7 +130,11 @@ this.endpoint = cfg.endpoint;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

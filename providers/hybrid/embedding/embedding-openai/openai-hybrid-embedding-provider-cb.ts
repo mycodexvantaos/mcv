@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../../packages/capabilities/types';
 
 export interface OpenAIHybridEmbeddingConfig {
   apiKey: string;
@@ -16,7 +19,13 @@ export interface OpenAIHybridEmbeddingConfig {
   batchSize?: number;
 }
 
-export interface EmbedResult { success: boolean; embeddings?: number[][]; model?: string; error?: string; operationTime: number; }
+export interface EmbedResult {
+  success: boolean;
+  embeddings?: number[][];
+  model?: string;
+  error?: string;
+  operationTime: number;
+}
 
 export class OpenAIHybridEmbeddingProvider extends CapabilityBase<OpenAIHybridEmbeddingConfig> {
   private apiKey: string;
@@ -29,7 +38,7 @@ export class OpenAIHybridEmbeddingProvider extends CapabilityBase<OpenAIHybridEm
   constructor(config: ProviderConfig<OpenAIHybridEmbeddingConfig>) {
     super(config);
     const cfg = config.config;
-this.apiKey = cfg.apiKey;
+    this.apiKey = cfg.apiKey;
     this.baseUrl = cfg.baseUrl || 'https://api.openai.com/v1';
     this.defaultModel = cfg.defaultModel || 'text-embedding-3-small';
     this.batchSize = cfg.batchSize || 100;
@@ -61,7 +70,11 @@ this.apiKey = cfg.apiKey;
   async embed(text: string): Promise<EmbedResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `OpenAIHybridEmbeddingProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `OpenAIHybridEmbeddingProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -69,13 +82,21 @@ this.apiKey = cfg.apiKey;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
   async embedBatch(texts: string[]): Promise<EmbedResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `OpenAIHybridEmbeddingProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `OpenAIHybridEmbeddingProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -83,7 +104,11 @@ this.apiKey = cfg.apiKey;
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

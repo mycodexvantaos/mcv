@@ -7,7 +7,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface HyperledgerConfig {
   timeout?: number;
@@ -15,7 +18,12 @@ export interface HyperledgerConfig {
   fallbackProviderId?: string;
 }
 
-export interface BlockchainResult { success: boolean; data?: unknown; error?: string; operationTime: number; }
+export interface BlockchainResult {
+  success: boolean;
+  data?: unknown;
+  error?: string;
+  operationTime: number;
+}
 
 export class HyperledgerProvider extends CapabilityBase<HyperledgerConfig> {
   private timeout: number;
@@ -53,10 +61,18 @@ export class HyperledgerProvider extends CapabilityBase<HyperledgerConfig> {
     this.log('info', 'HyperledgerProvider shutdown');
   }
 
-  async submitTransaction(chaincode: string, fn: string, args: string[]): Promise<BlockchainResult> {
+  async submitTransaction(
+    chaincode: string,
+    fn: string,
+    args: string[]
+  ): Promise<BlockchainResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `HyperledgerProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `HyperledgerProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -64,13 +80,25 @@ export class HyperledgerProvider extends CapabilityBase<HyperledgerConfig> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
-  async evaluateTransaction(chaincode: string, fn: string, args: string[]): Promise<BlockchainResult> {
+  async evaluateTransaction(
+    chaincode: string,
+    fn: string,
+    args: string[]
+  ): Promise<BlockchainResult> {
     const startTime = Date.now();
     if (!this.isAvailable) {
-      return { success: false, error: `HyperledgerProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: `HyperledgerProvider not available. Use fallback: ${this.fallbackProviderId || 'native'}`,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
     try {
       const result: any = { success: true, operationTime: Date.now() - startTime };
@@ -78,7 +106,11 @@ export class HyperledgerProvider extends CapabilityBase<HyperledgerConfig> {
       return result;
     } catch (error) {
       this.recordFailure(error);
-      return { success: false, error: (error as Error).message, operationTime: Date.now() - startTime } as any;
+      return {
+        success: false,
+        error: (error as Error).message,
+        operationTime: Date.now() - startTime,
+      } as any;
     }
   }
 

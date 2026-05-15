@@ -13,7 +13,9 @@ export type { AlibabaOSSConfig } from './alibaba-oss-provider-cb';
 /**
  * Create a AlibabaOSSProvider instance with the given configuration.
  */
-export function createAlibabaOSSProvider(config: Partial<ProviderConfig<AlibabaOSSConfig>> = {}): AlibabaOSSProvider {
+export function createAlibabaOSSProvider(
+  config: Partial<ProviderConfig<AlibabaOSSConfig>> = {}
+): AlibabaOSSProvider {
   const providerConfig: ProviderConfig<AlibabaOSSConfig> = {
     id: config.id || 'alibaba-oss-provider-cb',
     name: config.name || 'AlibabaOSSProvider',

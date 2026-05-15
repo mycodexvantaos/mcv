@@ -5,7 +5,10 @@
 
 import { CapabilityBase } from '../../../packages/capabilities/base';
 import { ProviderHealthStatus } from '../../../packages/capabilities/types';
-import type { ProviderConfig, ProviderHealthCheckResult } from '../../../packages/capabilities/types';
+import type {
+  ProviderConfig,
+  ProviderHealthCheckResult,
+} from '../../../packages/capabilities/types';
 
 export interface MemoryVectorStoreConfig {
   maxItems?: number;
@@ -15,7 +18,12 @@ export class MemoryVectorStore extends CapabilityBase<MemoryVectorStoreConfig> {
   private vectors: Map<string, number[]> = new Map();
   private maxItems: number;
 
-  constructor(id: string, name: string, config: ProviderConfig<MemoryVectorStoreConfig>, fallbackConfig?: any) {
+  constructor(
+    id: string,
+    name: string,
+    config: ProviderConfig<MemoryVectorStoreConfig>,
+    fallbackConfig?: any
+  ) {
     super(id, name, config, fallbackConfig);
     this.maxItems = config.config.maxItems || 10000;
   }

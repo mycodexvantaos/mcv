@@ -18,7 +18,15 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/"
   },
-  "keywords": ["platform", "constitution", "service-catalog", "resource-model", "policy-model", "audit-model", "knowledge-model"],
+  "keywords": [
+    "platform",
+    "constitution",
+    "service-catalog",
+    "resource-model",
+    "policy-model",
+    "audit-model",
+    "knowledge-model"
+  ],
   "license": "UNLICENSED",
   "private": true
 }
