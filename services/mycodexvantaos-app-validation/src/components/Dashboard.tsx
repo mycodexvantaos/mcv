@@ -2,7 +2,20 @@ import React, { useState } from 'react';
 import { Upload, FileText, AlertCircle, CheckCircle, Clock, TrendingUp } from 'lucide-react';
 
 // URN: urn:mycodexvantaos:app:ui:validation-mock-data
-const mockValidations = [
+interface ValidationItem {
+  id: string;
+  originalFileName: string;
+  status: 'PROCESSING' | 'COMPLETED' | 'FAILED';
+  createdAt: string;
+  analysis?: {
+    overallRiskLevel: 'LOW' | 'MEDIUM' | 'HIGH';
+    confidence: number;
+    createdAt: string;
+  };
+  errorMessage?: string;
+}
+
+const mockValidations: ValidationItem[] = [
   {
     id: 'val-001',
     originalFileName: 'service_agreement_v1.pdf',
@@ -334,7 +347,7 @@ export default function ValidationDashboard() {
                             <AlertCircle className="w-5 h-5 text-red-600" />
                             <span className="text-sm text-red-600 font-medium">Failed</span>
                           </div>
-                          { val.status === 'FAILED' && (val as { errorMessage: string }).errorMessage ? (
+                          { val.status === 'FAILED' && 'errorMessage' in val && val.errorMessage ? (
                             <span className="text-xs text-red-500 max-w-xs text-right whitespace-normal">
                               {val.errorMessage}
                             </span>
