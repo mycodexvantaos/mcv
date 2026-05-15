@@ -66,7 +66,9 @@ Full Kubernetes deployment with Helm charts, ArgoCD gitops, and horizontal pod a
 
 ---
 
-## 4. Eight-Layer Architecture
+## 4. Nine-Layer Architecture (Updated with Capabilities Layer)
+
+> **Phase 0.5 Update:** Added Capabilities Layer as Layer G for unified provider management with Runtime Mode auto-switching.
 
 ```
 ┌──────────────────────────────────────────────────────────┐
@@ -100,7 +102,48 @@ Full Kubernetes deployment with Helm charts, ArgoCD gitops, and horizontal pod a
 └──────────────────────────────────────────────────────────┘
 ```
 
-**Dependency Direction:** A → B → C → D → E (governance F is cross-cutting, runtimes G and apps H compose the stack)
+**Dependency Direction:** A → B → C → D → E (governance F is cross-cutting, capabilities G provides provider abstraction to adapters D, runtimes H and apps I compose the stack)
+
+### 4.1 Capabilities Layer (New - Phase 0.5)
+
+**Purpose:** Provide unified provider management with Runtime Mode auto-switching, ensuring Platform Independence across cloud/on-premise environments.
+
+**Key Components:**
+- **CapabilityBase<T>**: Abstract base class for all providers
+  - Lifecycle management (initialize, healthCheck, shutdown)
+  - Automatic metrics collection (invocation, success, failure, latency)
+  - Auto fallback trigger logic
+  - Structured logging
+
+- **ProviderFactory<T>**: Provider factory for runtime-aware provider selection
+  - Four Runtime Modes: native/connected/hybrid/auto
+  - Provider registration and management
+  - Health monitoring with automatic fallback
+  - Network detection for AUTO mode
+
+- **Providers**: Categorized into three types:
+  - **Native Providers** (`providers/native/`): Zero-dependency, fully offline-capable
+    - Example: Memory Vector Store, Memory Cache, JWT Auth
+  - **External Providers** (`providers/external/`): Third-party API dependencies
+    - Example: OpenAI, Workers AI, Cloudflare D1/KV/R2
+  - **Hybrid Providers** (`providers/hybrid/`): External with Native fallback
+    - Example: Embedding (OpenAI → Native), Vector Store (Pinecone → Native Memory)
+
+- **Runtime Manager**: Singleton for runtime configuration
+  - Mode switching with structured logging
+  - Environment detection (Cloudflare/Docker/Kubernetes)
+  - Network probing (google/custom/dns/system)
+  - Dependency verification
+
+**Runtime Modes:**
+| Mode | Description | Use Case |
+|------|-------------|----------|
+| `native` | Fully offline, zero external dependencies | Self-hosted, air-gapped, local dev |
+| `connected` | Prefer external providers, require API keys | Cloud deployment, need AI capabilities |
+| `hybrid` | External first, auto fallback to native | Production, high availability guarantee |
+| `auto` | Auto-switch based on network/status | Dynamic environments, edge compute, dev |
+
+**Implementation:** See `packages/capabilities/` for complete implementation
 
 ---
 
@@ -230,6 +273,11 @@ mycodexvantaos/
 │   │   ├── model-provider/             #   IChatModelPort, IEmbeddingModelPort
 │   │   ├── queue/                      #   IQueuePort, IJobQueuePort
 │   │   └── auth/                       #   IAuthPort
+│   └── capabilities/                   # NEW - Provider management (Phase 0.5)
+│       ├── base/                       #   CapabilityBase<T> abstract class
+│       ├── factory/                    #   ProviderFactory<T> runtime-aware factory
+│       ├── types/                      #   RuntimeMode, ProviderConfig, etc.
+│       └── index.ts                    #   Module exports
 │   ├── application/                    # 8 service business logic modules
 │   │   ├── identity/                   #   IdentityService
 │   │   ├── workspace/                  #   WorkspaceService

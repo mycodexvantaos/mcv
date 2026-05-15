@@ -9,6 +9,6 @@
   },
   "dependencies": {
     "@mycodexvantaos/core-kernel": "workspace:*",
-    "@mycodexvantaos/service-catalog": "workspace:*"
+    "@mycodexvantaos/service-service-catalog": "workspace:*"
   }
 }

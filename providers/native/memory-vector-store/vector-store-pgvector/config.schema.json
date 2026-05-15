@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mycodexvantaos.org/providers/vector-store/pgvector/config.schema.json",
+  "title": "vector-store-pgvector Configuration",
+  "type": "object",
+  "required": ["connectionUrl"],
+  "properties": {
+    "connectionUrl": {
+      "type": "string",
+      "envVar": "MYCODEXVANTAOS_VECTOR_STORE_URL"
+    },
+    "maxConnections": {
+      "type": "integer",
+      "default": 10
+    },
+    "defaultIndexType": {
+      "type": "string",
+      "enum": ["hnsw", "ivfflat"],
+      "default": "hnsw"
+    },
+    "efConstruction": {
+      "type": "integer",
+      "default": 64
+    },
+    "m": {
+      "type": "integer",
+      "default": 16
+    }
+  }
+}
