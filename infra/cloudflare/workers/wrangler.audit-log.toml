@@ -1,0 +1,43 @@
+# ═══════════════════════════════════════════════════════════════════
+# MyCodeXvantaOS — Audit Log Service Worker
+# Level 1 — zero hard dependencies; SHA-256 integrity chain
+# Runtime: Cloudflare Workers + D1 + R2 + Queues
+# ═══════════════════════════════════════════════════════════════════
+name = "mycodexvantaos-audit-log"
+main = "../../services/audit-log/src/index.ts"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+SERVICE_NAME = "audit-log"
+SERVICE_VERSION = "1.0.0-constitution"
+ENVIRONMENT = "production"
+LOG_LEVEL = "info"
+INTEGRITY_ALGORITHM = "sha256"
+VERIFICATION_INTERVAL_INCREMENTAL = "100"
+VERIFICATION_INTERVAL_WINDOWED = "3600"
+VERIFICATION_INTERVAL_FULL = "86400"
+ARCHIVAL_AFTER_DAYS = "365"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "mycodexvantaos-platform"
+database_id = "${CLOUDFLARE_D1_DATABASE_ID}"
+
+[[r2_buckets]]
+binding = "R2"
+bucket_name = "mycodexvantaos-audit-archive"
+
+# Audit queue consumer — ingests events from all services
+[[queues.consumers]]
+queue = "audit-queue"
+max_batch_size = 100
+max_retries = 5
+max_batch_timeout = 10
+
+[limits]
+cpu_ms = 100
+
+[[routes]]
+pattern = "/api/v1/audit/*"
+zone_name = "${CLOUDFLARE_ZONE_NAME}"

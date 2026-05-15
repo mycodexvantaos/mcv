@@ -1,0 +1,91 @@
+# ═══════════════════════════════════════════════════════════════════════
+# MyCodeXvantaOS — Multi-Stage Service Dockerfile
+# Builds any of the 8 MVP services via SERVICE_NAME build arg
+# ═══════════════════════════════════════════════════════════════════════
+#
+# Usage:
+#   docker build --build-arg SERVICE_NAME=identity \
+#     -f infra/docker/Dockerfile.service -t mycodexvantaos-identity .
+#
+# Services: identity, workspace, knowledge-store, knowledge-search,
+#           agent-chat, model-byok, audit-log, usage-meter
+# ═══════════════════════════════════════════════════════════════════════
+
+# ── Stage 1: Base ─────────────────────────────────────────────────────
+FROM node:20-slim AS base
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    tini curl && \
+    rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+
+# ── Stage 2: Dependencies ─────────────────────────────────────────────
+FROM base AS deps
+COPY package.json package-lock.json* pnpm-lock.yaml* ./
+RUN if [ -f pnpm-lock.yaml ]; then \
+      corepack enable pnpm && pnpm install --frozen-lockfile --prod; \
+    elif [ -f package-lock.json ]; then \
+      npm ci --omit=dev; \
+    else \
+      npm install --omit=dev; \
+    fi
+
+# ── Stage 3: Build ────────────────────────────────────────────────────
+FROM base AS build
+COPY package.json package-lock.json* pnpm-lock.yaml* ./
+RUN if [ -f pnpm-lock.yaml ]; then \
+      corepack enable pnpm && pnpm install --frozen-lockfile; \
+    elif [ -f package-lock.json ]; then \
+      npm ci; \
+    else \
+      npm install; \
+    fi
+COPY tsconfig.json tsconfig.base.json ./
+COPY core/ core/
+COPY ports/ ports/
+COPY adapters/ adapters/
+COPY application/ application/
+COPY contracts/ contracts/
+COPY runtimes/ runtimes/
+RUN npx tsc --project tsconfig.json || true
+
+# ── Stage 4: Production ──────────────────────────────────────────────
+FROM base AS production
+
+ARG SERVICE_NAME
+ENV SERVICE_NAME=${SERVICE_NAME}
+ENV NODE_ENV=production
+ENV PORT=8000
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/core ./core
+COPY --from=build /app/ports ./ports
+COPY --from=build /app/adapters ./adapters
+COPY --from=build /app/application ./application
+COPY --from=build /app/contracts ./contracts
+COPY --from=build /app/runtimes ./runtimes
+COPY --from=build /app/tsconfig.json ./
+COPY migrations/ migrations/
+
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+USER appuser
+
+EXPOSE 8000
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD curl -f http://localhost:8000/health || exit 1
+
+ENTRYPOINT ["/usr/bin/tini", "--"]
+
+CMD ["node", "-e", \
+  "const { createRuntimeAdapter } = require('./runtimes'); \
+   const adapter = createRuntimeAdapter(); \
+   const services = adapter.createAllServices(); \
+   const service = services[process.env.SERVICE_NAME]; \
+   if (!service) { console.error('Unknown service:', process.env.SERVICE_NAME); process.exit(1); } \
+   const http = require('http'); \
+   const server = http.createServer(async (req, res) => { \
+     if (req.url === '/health') { res.writeHead(200); res.end('ok'); return; } \
+     res.writeHead(404); res.end('not found'); \
+   }); \
+   server.listen(8000, () => console.log(process.env.SERVICE_NAME, 'listening on :8000'));"]

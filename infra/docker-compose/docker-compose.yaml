@@ -1,30 +1,252 @@
-version: '3.8'
+# ═══════════════════════════════════════════════════════════════════
+# MyCodeXvantaOS — Docker Compose Self-Hosted Deployment
+# Phase 2 (Portable Core) — portable alternatives for all adapters
+#   - PostgreSQL (D1 portable alternative)
+#   - Redis (KV portable alternative)
+#   - MinIO (R2 portable alternative)
+#   - Qdrant (Vectorize portable alternative)
+#   - RabbitMQ (Cloudflare Queues portable alternative)
+# ═══════════════════════════════════════════════════════════════════
+version: "3.8"
+
+x-common-env: &common-env
+  NODE_ENV: production
+  LOG_LEVEL: info
+  DATABASE_URL: postgres://mycodexvantaos:mycodexvantaos@postgres:5432/mycodexvantaos
+  REDIS_URL: redis://redis:6379
+  MINIO_ENDPOINT: minio:9000
+  MINIO_ACCESS_KEY: mycodexvantaos
+  MINIO_SECRET_KEY: mycodexvantaos-secret
+  QDRANT_URL: http://qdrant:6333
+  RABBITMQ_URL: amqp://mycodexvantaos:mycodexvantaos@rabbitmq:5672
+  ENCRYPTION_KEY: ${ENCRYPTION_KEY:-change-me-in-production-32ch}
 
 services:
-  control-plane:
-    image: mycodexvantaos/control-plane:latest
+  # ── Platform Services ──────────────────────────────────────────
+
+  identity:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.service
+      args:
+        SERVICE_NAME: identity
     ports:
-      - '8080:8080'
+      - "8001:8000"
     environment:
-      - DATABASE_URL=postgres://user:pass@postgres:5432/db
+      <<: *common-env
+      SERVICE_NAME: identity
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  workspace:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.service
+      args:
+        SERVICE_NAME: workspace
+    ports:
+      - "8002:8000"
+    environment:
+      <<: *common-env
+      SERVICE_NAME: workspace
+      IDENTITY_SERVICE_URL: http://identity:8000
+    depends_on:
+      - identity
+
+  knowledge-store:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.service
+      args:
+        SERVICE_NAME: knowledge-store
+    ports:
+      - "8003:8000"
+    environment:
+      <<: *common-env
+      SERVICE_NAME: knowledge-store
+      IDENTITY_SERVICE_URL: http://identity:8000
+      MINIO_BUCKET: mycodexvantaos-documents
+    depends_on:
+      - identity
+      - minio
+      - qdrant
+
+  knowledge-search:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.service
+      args:
+        SERVICE_NAME: knowledge-search
+    ports:
+      - "8004:8000"
+    environment:
+      <<: *common-env
+      SERVICE_NAME: knowledge-search
+      IDENTITY_SERVICE_URL: http://identity:8000
+    depends_on:
+      - identity
+      - qdrant
+
+  agent-chat:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.service
+      args:
+        SERVICE_NAME: agent-chat
+    ports:
+      - "8005:8000"
+    environment:
+      <<: *common-env
+      SERVICE_NAME: agent-chat
+      IDENTITY_SERVICE_URL: http://identity:8000
+      KNOWLEDGE_SEARCH_URL: http://knowledge-search:8000
+      MODEL_BYOK_URL: http://model-byok:8000
+    depends_on:
+      - knowledge-search
+      - model-byok
+
+  model-byok:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.service
+      args:
+        SERVICE_NAME: model-byok
+    ports:
+      - "8006:8000"
+    environment:
+      <<: *common-env
+      SERVICE_NAME: model-byok
+      IDENTITY_SERVICE_URL: http://identity:8000
+    depends_on:
+      - identity
+
+  audit-log:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.service
+      args:
+        SERVICE_NAME: audit-log
+    ports:
+      - "8007:8000"
+    environment:
+      <<: *common-env
+      SERVICE_NAME: audit-log
+      MINIO_BUCKET: mycodexvantaos-audit-archive
+    depends_on:
+      - postgres
+      - minio
+      - rabbitmq
+
+  usage-meter:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.service
+      args:
+        SERVICE_NAME: usage-meter
+    ports:
+      - "8008:8000"
+    environment:
+      <<: *common-env
+      SERVICE_NAME: usage-meter
     depends_on:
       - postgres
       - redis
 
+  # ── API Gateway ────────────────────────────────────────────────
+
+  gateway:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.gateway
+    ports:
+      - "8080:8080"
+    environment:
+      IDENTITY_URL: http://identity:8000
+      WORKSPACE_URL: http://workspace:8000
+      KNOWLEDGE_STORE_URL: http://knowledge-store:8000
+      KNOWLEDGE_SEARCH_URL: http://knowledge-search:8000
+      AGENT_CHAT_URL: http://agent-chat:8000
+      MODEL_BYOK_URL: http://model-byok:8000
+      AUDIT_LOG_URL: http://audit-log:8000
+      USAGE_METER_URL: http://usage-meter:8000
+    depends_on:
+      - identity
+      - workspace
+      - knowledge-store
+      - knowledge-search
+      - agent-chat
+      - model-byok
+      - audit-log
+      - usage-meter
+
+  # ── Infrastructure Services (Portable Alternatives) ────────────
+
   postgres:
     image: postgres:15-alpine
     environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=pass
-      - POSTGRES_DB=db
+      POSTGRES_USER: mycodexvantaos
+      POSTGRES_PASSWORD: mycodexvantaos
+      POSTGRES_DB: mycodexvantaos
+    ports:
+      - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ../../migrations/d1:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mycodexvantaos"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:7-alpine
+    ports:
+      - "6379:6379"
     volumes:
       - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: mycodexvantaos
+      MINIO_ROOT_PASSWORD: mycodexvantaos-secret
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - miniodata:/data
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrantdata:/qdrant/storage
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    environment:
+      RABBITMQ_DEFAULT_USER: mycodexvantaos
+      RABBITMQ_DEFAULT_PASS: mycodexvantaos
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmqdata:/var/lib/rabbitmq
 
 volumes:
   pgdata:
   redisdata:
+  miniodata:
+  qdrantdata:
+  rabbitmqdata:

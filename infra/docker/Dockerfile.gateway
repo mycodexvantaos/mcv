@@ -1,0 +1,35 @@
+# ═══════════════════════════════════════════════════════════════════════
+# MyCodeXvantaOS — API Gateway Dockerfile
+# Reverse proxy / request router for all 8 platform services
+# Routes: /api/v1/{identity,workspace,knowledge,chat,model,audit,usage}/*
+# ═══════════════════════════════════════════════════════════════════════
+
+FROM node:20-slim AS build
+WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends tini && \
+    rm -rf /var/lib/apt/lists/*
+COPY infra/docker/gateway/package.json ./
+RUN npm install --omit=dev
+COPY infra/docker/gateway/ ./
+
+FROM node:20-slim AS production
+RUN apt-get update && apt-get install -y --no-install-recommends tini curl && \
+    rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV PORT=8080
+
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/server.js ./
+
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+USER appuser
+
+EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:8080/health || exit 1
+
+ENTRYPOINT ["/usr/bin/tini", "--"]
+CMD ["node", "server.js"]

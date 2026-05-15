@@ -1,0 +1,43 @@
+# ═══════════════════════════════════════════════════════════════════
+# MyCodeXvantaOS — Knowledge Search Service Worker
+# Level 2 — depends on identity; uses Vectorize + D1 FTS5
+# Runtime: Cloudflare Workers + D1 + Vectorize
+# ═══════════════════════════════════════════════════════════════════
+name = "mycodexvantaos-knowledge-search"
+main = "../../services/knowledge-search/src/index.ts"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+SERVICE_NAME = "knowledge-search"
+SERVICE_VERSION = "1.0.0-constitution"
+ENVIRONMENT = "production"
+LOG_LEVEL = "info"
+DEFAULT_SEARCH_MODE = "hybrid"
+DEFAULT_TOP_K = "10"
+RRF_K = "60"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "mycodexvantaos-platform"
+database_id = "${CLOUDFLARE_D1_DATABASE_ID}"
+
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "mycodexvantaos-embeddings"
+
+[[services]]
+binding = "IDENTITY"
+service = "mycodexvantaos-identity"
+
+[[queues.consumers]]
+queue = "audit-queue"
+max_batch_size = 10
+max_retries = 3
+
+[limits]
+cpu_ms = 150
+
+[[routes]]
+pattern = "/api/v1/knowledge/search/*"
+zone_name = "${CLOUDFLARE_ZONE_NAME}"

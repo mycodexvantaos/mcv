@@ -1,0 +1,147 @@
+# ═══════════════════════════════════════════════════════════════════
+# MyCodeXvantaOS — Audit Log Service Definition
+# ═══════════════════════════════════════════════════════════════════
+apiVersion: platform.mycodexvantaos/v1
+kind: ServiceDefinition
+metadata:
+  name: audit-log
+  urn: urn:mycodexvantaos:governance:service:audit-log
+  version: 1.0.0-constitution
+  category: governance
+  display_name: Audit Log Service
+  description: >
+    Immutable, tamper-evident audit event logging with SHA-256 hash-linked
+    integrity chain, closed-loop event pairing, and compliance-grade retention.
+    Every platform action flows through this service. Level 1 service.
+
+spec:
+  resource_type: audit-event
+  runtime:
+    provider: cloudflare-workers
+    database: d1
+    storage: r2
+    queue: cloudflare-queues
+    limits:
+      cpu_ms: 100
+      memory_mb: 128
+
+  capabilities:
+    - id: audit.ingest-event
+      method: ingestEvent
+      description: Ingest a single audit event into the integrity chain
+      input:
+        type: object
+        required: [event_type, category, severity, subject_id, workspace_id, data]
+        properties:
+          event_type: { type: string }
+          category: { type: string, enum: [identity, workspace, knowledge, ai, model, governance] }
+          severity: { type: string, enum: [debug, info, warning, error, critical] }
+          subject_id: { type: string }
+          workspace_id: { type: string }
+          resource_urn: { type: string }
+          data: { type: object }
+      output:
+        type: object
+        properties:
+          event_id: { type: string }
+          chain_index: { type: integer }
+          hash: { type: string }
+
+    - id: audit.ingest-batch
+      method: ingestBatch
+      description: Ingest multiple audit events atomically
+      input:
+        type: object
+        required: [events]
+        properties:
+          events:
+            type: array
+            items:
+              type: object
+              properties:
+                event_type: { type: string }
+                category: { type: string }
+                severity: { type: string }
+                subject_id: { type: string }
+                workspace_id: { type: string }
+                resource_urn: { type: string }
+                data: { type: object }
+      output:
+        type: object
+        properties:
+          ingested_count: { type: integer }
+          first_chain_index: { type: integer }
+          last_chain_index: { type: integer }
+
+    - id: audit.query-events
+      method: queryEvents
+      description: Query audit events with flexible filters
+      input:
+        type: object
+        properties:
+          workspace_id: { type: string }
+          event_type: { type: string }
+          category: { type: string }
+          subject_id: { type: string }
+          resource_urn: { type: string }
+          severity_gte: { type: string }
+          start_time: { type: string, format: date-time }
+          end_time: { type: string, format: date-time }
+          limit: { type: integer, default: 50, maximum: 500 }
+          cursor: { type: string }
+      output:
+        type: object
+        properties:
+          events:
+            type: array
+            items:
+              type: object
+          next_cursor: { type: string }
+
+    - id: audit.verify-integrity
+      method: verifyIntegrity
+      description: Verify the SHA-256 integrity chain across a time range
+      input:
+        type: object
+        required: [workspace_id]
+        properties:
+          workspace_id: { type: string }
+          start_time: { type: string, format: date-time }
+          end_time: { type: string, format: date-time }
+      output:
+        type: object
+        properties:
+          valid: { type: boolean }
+          events_checked: { type: integer }
+          broken_at: { type: integer }
+          verification_hash: { type: string }
+
+  events:
+    emitted:
+      - governance.audit.ingested
+      - governance.audit.integrity-violation
+      - governance.audit.closed-loop-timeout
+    subscribed: []
+
+  audit:
+    log_all_actions: true
+    integrity_chain: true
+    retention: 2555d
+    storage:
+      primary: d1
+      replication: r2
+      compression: gzip
+      partitioning: monthly
+      archival_after_days: 365
+
+  dependencies:
+    hard: []
+    soft: []
+
+  ports:
+    - interface: IAuditPort
+      methods:
+        - emitEvent
+        - emitBatch
+        - queryEvents
+        - verifyIntegrity

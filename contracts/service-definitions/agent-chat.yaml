@@ -1,0 +1,162 @@
+# ═══════════════════════════════════════════════════════════════════
+# MyCodeXvantaOS — Agent Chat Service Definition
+# ═══════════════════════════════════════════════════════════════════
+apiVersion: platform.mycodexvantaos/v1
+kind: ServiceDefinition
+metadata:
+  name: agent-chat
+  urn: urn:mycodexvantaos:ai:service:agent-chat
+  version: 1.0.0-constitution
+  category: ai
+  display_name: Agent Chat Service
+  description: >
+    AI-powered conversational interface with knowledge-grounded generation.
+    Implements the 5-stage generation pipeline: assemble → invoke → attribute →
+    safety-check → audit. Supports streaming responses, evidence attribution,
+    and safety guardrails. Level 3 service — depends on knowledge-search + model-byok.
+
+spec:
+  resource_type: chat-session
+  runtime:
+    provider: cloudflare-workers
+    database: d1
+    cache: kv
+    queue: cloudflare-queues
+    limits:
+      cpu_ms: 300
+      memory_mb: 256
+
+  capabilities:
+    - id: chat.create-session
+      method: createSession
+      description: Create a new chat session within a workspace
+      input:
+        type: object
+        required: [workspace_id, subject_id]
+        properties:
+          workspace_id: { type: string }
+          subject_id: { type: string }
+          title: { type: string }
+          model_endpoint_id: { type: string }
+          collection_ids:
+            type: array
+            items: { type: string }
+          system_prompt: { type: string }
+      output:
+        type: object
+        $ref: "urn:mycodexvantaos:ai:resource:chat-session"
+
+    - id: chat.send-message
+      method: sendMessage
+      description: >
+        Send a message in a chat session. Triggers the full generation pipeline:
+        assemble context → invoke model → attribute evidence → safety check → audit.
+        Supports streaming responses via SSE.
+      input:
+        type: object
+        required: [session_id, workspace_id, content, subject_id]
+        properties:
+          session_id: { type: string }
+          workspace_id: { type: string }
+          content: { type: string, minLength: 1, maxLength: 10000 }
+          subject_id: { type: string }
+          stream: { type: boolean, default: false }
+      output:
+        type: object
+        properties:
+          message:
+            type: object
+            properties:
+              id: { type: string }
+              role: { type: string, enum: [assistant] }
+              content: { type: string }
+              created_at: { type: string, format: date-time }
+          evidence_level: { type: string }
+          sources:
+            type: array
+            items:
+              type: object
+              properties:
+                chunk_id: { type: string }
+                document_urn: { type: string }
+                relevance: { type: number }
+          usage:
+            type: object
+            properties:
+              input_tokens: { type: integer }
+              output_tokens: { type: integer }
+              model: { type: string }
+          safety:
+            type: object
+            properties:
+              passed: { type: boolean }
+              flags: { type: array, items: { type: string } }
+
+    - id: chat.get-session
+      method: getSession
+      description: Get a chat session with its message history
+      input:
+        type: object
+        required: [session_id, workspace_id]
+        properties:
+          session_id: { type: string }
+          workspace_id: { type: string }
+          limit: { type: integer, default: 50 }
+          cursor: { type: string }
+      output:
+        type: object
+        properties:
+          session:
+            $ref: "urn:mycodexvantaos:ai:resource:chat-session"
+          messages:
+            type: array
+            items:
+              type: object
+              properties:
+                id: { type: string }
+                role: { type: string }
+                content: { type: string }
+                created_at: { type: string }
+                evidence_level: { type: string }
+
+    - id: chat.delete-session
+      method: deleteSession
+      description: Soft-delete a chat session
+      input:
+        type: object
+        required: [session_id, workspace_id, subject_id]
+        properties:
+          session_id: { type: string }
+          workspace_id: { type: string }
+          subject_id: { type: string }
+      output:
+        type: object
+        properties:
+          deleted: { type: boolean }
+
+  events:
+    emitted:
+      - ai.chat.session-created
+      - ai.chat.message-sent
+      - ai.chat.response-generated
+      - ai.chat.safety-flag
+    subscribed:
+      - knowledge.search.executed
+      - model.endpoint.invoked
+
+  audit:
+    log_all_actions: true
+    integrity_chain: true
+    retention: 2555d
+
+  dependencies:
+    hard: [knowledge-search, model-byok]
+    soft: [audit-log, usage-meter]
+
+  ports:
+    - interface: IAgentChatPort
+      methods:
+        - createSession
+        - sendMessage
+        - getSession
+        - deleteSession

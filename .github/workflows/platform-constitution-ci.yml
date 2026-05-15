@@ -1,0 +1,160 @@
+# ═══════════════════════════════════════════════════════════════════════
+# MyCodeXvantaOS — Platform Constitution CI
+# Validates service contracts, schemas, cross-references, and architecture
+# ═══════════════════════════════════════════════════════════════════════
+name: Platform Constitution CI
+
+on:
+  push:
+    branches: [feat/platform-constitution-complete, main]
+    paths:
+      - 'contracts/**'
+      - 'core/**'
+      - 'ports/**'
+      - 'adapters/**'
+      - 'application/**'
+      - 'migrations/**'
+      - 'runtimes/**'
+      - 'infra/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'contracts/**'
+      - 'core/**'
+      - 'ports/**'
+      - 'adapters/**'
+      - 'application/**'
+      - 'migrations/**'
+      - 'runtimes/**'
+      - 'infra/**'
+
+jobs:
+  validate-contracts:
+    name: Validate Contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Validate YAML syntax
+        run: |
+          echo "Validating service definition YAML files..."
+          for f in contracts/service-definitions/*.yaml; do
+            echo "  Checking: $f"
+            npx js-yaml "$f" > /dev/null 2>&1 || { echo "FAIL: $f"; exit 1; }
+          done
+          echo "All YAML files valid"
+      - name: Validate JSON Schema syntax
+        run: |
+          echo "Validating JSON Schema files..."
+          for f in contracts/schemas/*.json; do
+            echo "  Checking: $f"
+            node -e "JSON.parse(require('fs').readFileSync('$f','utf-8'))" || { echo "FAIL: $f"; exit 1; }
+          done
+          echo "All JSON Schema files valid"
+      - name: Validate service count
+        run: |
+          EXPECTED=8
+          COUNT=$(ls contracts/service-definitions/*.yaml 2>/dev/null | grep -v service-catalog | wc -l)
+          echo "Found $COUNT service definitions (expected $EXPECTED)"
+          if [ "$COUNT" -ne "$EXPECTED" ]; then
+            echo "FAIL: Expected $EXPECTED service definitions, found $COUNT"
+            exit 1
+          fi
+
+  validate-schemas:
+    name: Validate Schemas
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check required schemas exist
+        run: |
+          REQUIRED_SCHEMAS=(
+            "universal-resource.schema.json"
+            "audit-event.schema.json"
+            "policy-decision.schema.json"
+            "service-definition.schema.json"
+            "knowledge-pipeline.schema.json"
+          )
+          for schema in "${REQUIRED_SCHEMAS[@]}"; do
+            if [ ! -f "contracts/schemas/$schema" ]; then
+              echo "FAIL: Missing required schema: $schema"
+              exit 1
+            fi
+            echo "  OK: $schema"
+          done
+
+  validate-infra:
+    name: Validate Infrastructure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate wrangler.toml files
+        run: |
+          EXPECTED_SERVICES=("identity" "workspace" "knowledge-store" "knowledge-search" "agent-chat" "model-byok" "audit-log" "usage-meter")
+          for svc in "${EXPECTED_SERVICES[@]}"; do
+            if [ ! -f "infra/cloudflare/workers/wrangler.${svc}.toml" ]; then
+              echo "FAIL: Missing wrangler.toml for $svc"
+              exit 1
+            fi
+            echo "  OK: wrangler.${svc}.toml"
+          done
+      - name: Validate Dockerfiles exist
+        run: |
+          for df in infra/docker/Dockerfile.service infra/docker/Dockerfile.gateway; do
+            if [ ! -f "$df" ]; then
+              echo "FAIL: Missing $df"
+              exit 1
+            fi
+            echo "  OK: $df"
+          done
+      - name: Validate migration SQL
+        run: |
+          if [ ! -f "migrations/d1/001_initial_schema.sql" ]; then
+            echo "FAIL: Missing initial migration"
+            exit 1
+          fi
+          echo "Migration file present"
+
+  architecture-check:
+    name: Architecture Integrity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check core/ has no external dependencies
+        run: |
+          if grep -rq "from 'aws-sdk'\|from '@cloudflare'\|from '@azure'\|from '@google-cloud'" core/ 2>/dev/null; then
+            echo "FAIL: core/ must have zero cloud vendor dependencies"
+            exit 1
+          fi
+          echo "core/ is vendor-free"
+      - name: Check ports/ depend only on core types
+        run: |
+          if grep -rq "from '@cloudflare'\|from 'aws-sdk'\|from '@azure'" ports/ 2>/dev/null; then
+            echo "FAIL: ports/ must not import cloud SDKs"
+            exit 1
+          fi
+          echo "ports/ is cloud-free"
+      - name: Check all 8 application services exist
+        run: |
+          EXPECTED_SERVICES=("identity" "workspace" "knowledge-store" "knowledge-search" "agent-chat" "model-byok" "audit-log" "usage-meter")
+          for svc in "${EXPECTED_SERVICES[@]}"; do
+            if [ ! -f "application/${svc}-service.ts" ]; then
+              echo "FAIL: Missing application service: application/${svc}-service.ts"
+              exit 1
+            fi
+            echo "  OK: ${svc}-service.ts"
+          done
+      - name: Check runtime adapters exist
+        run: |
+          for rt in runtimes/cloudflare/adapter.ts runtimes/docker/adapter.ts runtimes/index.ts; do
+            if [ ! -f "$rt" ]; then
+              echo "FAIL: Missing runtime adapter: $rt"
+              exit 1
+            fi
+            echo "  OK: $rt"
+          done

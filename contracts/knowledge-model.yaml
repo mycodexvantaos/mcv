@@ -1,0 +1,720 @@
+# ╔══════════════════════════════════════════════════════════════════════╗
+# ║  MyCodeXvantaOS — Knowledge Model (知識模型憲法)                      ║
+# ║  Knowledge types · Pipeline stages · Evidence levels · QA metrics   ║
+# ║  Version: 1.0.0-constitution                                      ║
+# ╚══════════════════════════════════════════════════════════════════════╝
+
+apiVersion: platform.mycodevantaos/v1
+kind: KnowledgeModel
+metadata:
+  name: mycodexvantaos-knowledge-model
+  namespace: mycodexvantaos-system
+  labels:
+    tier: constitution
+    scope: platform
+  annotations:
+    description: |
+      Defines the knowledge operation base for the platform. Covers knowledge
+      types, lifecycle, pipeline stages (ingestion, retrieval, generation),
+      evidence levels, quality assurance metrics, and the knowledge issue/repair
+      closed loop. Knowledge is the foundation of AI-grounded responses.
+
+spec:
+  version: "1.0.0-constitution"
+
+  # ─── Knowledge Types ─────────────────────────────────────────────────
+  # Each knowledge type defines its operations, lifecycle, and audit/policy
+  # integration points. Types correspond to resource kinds in the resource model.
+  knowledge_types:
+    - kind: document
+      description: "An uploaded document awaiting or completed ingestion"
+      owning_service: knowledge-store
+      operations:
+        - name: upload
+          input: DocumentUploadInput
+          output: Document
+          audit_event: knowledge.document.uploaded
+          policy_check: "knowledge:document:create"
+        - name: ingest
+          input: documentId
+          output: IngestionResult
+          audit_event: knowledge.document.ingestion.started
+          policy_check: "knowledge:document:update"
+        - name: delete
+          input: documentId
+          output: void
+          audit_event: knowledge.document.deleted
+          policy_check: "knowledge:document:delete"
+      lifecycle:
+        transitions:
+          - from: uploaded
+            to: ingesting
+            trigger: ingest
+          - from: ingesting
+            to: ready
+            trigger: ingestion.completed
+          - from: ingesting
+            to: failed
+            trigger: ingestion.failed
+          - from: ready
+            to: stale
+            trigger: staleness-detected
+          - from: stale
+            to: ingesting
+            trigger: re-ingest
+
+    - kind: document-chunk
+      description: "A semantically coherent segment of a document"
+      owning_service: knowledge-store
+      operations:
+        - name: create
+          input: ChunkCreationInput
+          output: DocumentChunk
+          audit_event: knowledge.chunk.created
+          policy_check: "system:internal"
+        - name: embed
+          input: chunkId
+          output: EmbeddingResult
+          audit_event: knowledge.embedding.generated
+          policy_check: "system:internal"
+      lifecycle:
+        transitions:
+          - from: created
+            to: embedded
+            trigger: embedding.generated
+          - from: embedded
+            to: indexed
+            trigger: index.added
+
+    - kind: knowledge-collection
+      description: "A curated set of documents sharing a domain or purpose"
+      owning_service: knowledge-store
+      operations:
+        - name: create
+          input: CollectionInput
+          output: KnowledgeCollection
+          audit_event: knowledge.collection.created
+          policy_check: "knowledge:collection:create"
+        - name: verify
+          input: collectionId
+          output: VerificationReport
+          audit_event: knowledge.verification.passed | knowledge.verification.failed
+          policy_check: "knowledge:verification:trigger"
+        - name: delete
+          input: collectionId
+          output: void
+          audit_event: knowledge.collection.deleted
+          policy_check: "knowledge:collection:delete"
+      lifecycle:
+        transitions:
+          - from: creating
+            to: empty
+            trigger: collection.created
+          - from: empty
+            to: indexing
+            trigger: first.document.uploaded
+          - from: indexing
+            to: ready
+            trigger: all.documents.ingested
+          - from: ready
+            to: degraded
+            trigger: verification.failed
+          - from: degraded
+            to: ready
+            trigger: repair.completed
+
+    - kind: knowledge-index
+      description: "Search index over a knowledge collection"
+      owning_service: knowledge-search
+      operations:
+        - name: build
+          input: collectionId
+          output: IndexBuildResult
+          audit_event: knowledge.index.built
+          policy_check: "system:internal"
+        - name: query
+          input: SearchQuery
+          output: SearchResult
+          audit_event: knowledge.search.executed
+          policy_check: "knowledge-search:execute"
+        - name: rebuild
+          input: collectionId
+          output: IndexBuildResult
+          audit_event: knowledge.index.rebuilt
+          policy_check: "knowledge:collection:update"
+      lifecycle:
+        transitions:
+          - from: building
+            to: active
+            trigger: index.built
+          - from: active
+            to: stale
+            trigger: document.changed
+          - from: stale
+            to: rebuilding
+            trigger: rebuild.started
+          - from: rebuilding
+            to: active
+            trigger: rebuild.completed
+
+    - kind: retrieval-receipt
+      description: "Evidence record for a knowledge retrieval operation"
+      owning_service: knowledge-search
+      operations:
+        - name: create
+          input: RetrievalInput
+          output: RetrievalReceipt
+          audit_event: knowledge.retrieval.completed
+          policy_check: "knowledge-search:execute"
+      lifecycle:
+        transitions:
+          - from: created
+            to: consumed
+            trigger: receipt.used-in-generation
+
+    - kind: answer-trace
+      description: "Full provenance chain from answer back to source documents"
+      owning_service: agent-chat
+      operations:
+        - name: create
+          input: TraceInput
+          output: AnswerTrace
+          audit_event: ai.chat.response.generated
+          policy_check: "ai:chat-session:send-message"
+        - name: verify-attribution
+          input: traceId
+          output: AttributionReport
+          audit_event: governance.audit.event-ingested
+          policy_check: "governance:audit:read"
+      lifecycle:
+        transitions:
+          - from: created
+            to: attributed
+            trigger: attribution.complete
+          - from: attributed
+            to: verified
+            trigger: safety-check.passed
+
+    - kind: memory-item
+      description: "A persistent memory entry for conversational context"
+      owning_service: agent-chat
+      operations:
+        - name: store
+          input: MemoryInput
+          output: MemoryItem
+          audit_event: ai.chat.memory.stored
+          policy_check: "ai:chat-session:update"
+        - name: recall
+          input: RecallQuery
+          output: MemoryResult
+          audit_event: ai.chat.memory.recalled
+          policy_check: "ai:chat-session:read"
+        - name: decay
+          input: memoryId
+          output: void
+          audit_event: ai.chat.memory.decayed
+          policy_check: "system:internal"
+      lifecycle:
+        transitions:
+          - from: active
+            to: decaying
+            trigger: decay-threshold-reached
+          - from: decaying
+            to: archived
+            trigger: importance-below-minimum
+          - from: active
+            to: promoted
+            trigger: high-access-count
+          - from: promoted
+            to: long-term
+            trigger: consolidation
+
+    - kind: knowledge-issue
+      description: "A detected quality problem in the knowledge base"
+      owning_service: knowledge-store
+      operations:
+        - name: detect
+          input: DetectionInput
+          output: KnowledgeIssue
+          audit_event: knowledge.issue.detected
+          policy_check: "system:internal"
+        - name: resolve
+          input: issueId, resolution
+          output: void
+          audit_event: knowledge.issue.resolved
+          policy_check: "knowledge:repair:approve"
+      lifecycle:
+        transitions:
+          - from: open
+            to: in-progress
+            trigger: repair.started
+          - from: in-progress
+            to: resolved
+            trigger: repair.completed
+          - from: in-progress
+            to: wont-fix
+            trigger: dismissed
+
+    - kind: knowledge-repair
+      description: "An automated or manual repair action for a knowledge issue"
+      owning_service: knowledge-store
+      operations:
+        - name: execute
+          input: RepairInput
+          output: RepairResult
+          audit_event: knowledge.repair.executed
+          policy_check: "knowledge:repair:approve"
+        - name: verify
+          input: repairId
+          output: VerificationReport
+          audit_event: knowledge.repair.verified
+          policy_check: "knowledge:verification:trigger"
+      lifecycle:
+        transitions:
+          - from: pending
+            to: executing
+            trigger: repair.started
+          - from: executing
+            to: completed
+            trigger: repair.success
+          - from: executing
+            to: failed
+            trigger: repair.failure
+          - from: completed
+            to: verified
+            trigger: verification.passed
+
+    - kind: knowledge-derived-artifact
+      description: "A generated artifact derived from knowledge"
+      owning_service: agent-chat
+      operations:
+        - name: generate
+          input: ArtifactGenerationInput
+          output: KnowledgeDerivedArtifact
+          audit_event: knowledge.artifact.generated
+          policy_check: "ai:chat-session:send-message"
+        - name: verify-quality
+          input: artifactId
+          output: QualityReport
+          audit_event: knowledge.artifact.verified
+          policy_check: "knowledge:verification:trigger"
+      lifecycle:
+        transitions:
+          - from: generated
+            to: verified
+            trigger: quality-check.passed
+          - from: generated
+            to: rejected
+            trigger: quality-check.failed
+
+  # ─── Evidence Levels ─────────────────────────────────────────────────
+  # Classification of how strongly an AI response is grounded in knowledge.
+  evidence_levels:
+    - level: knowledge-assisted
+      description: |
+        The AI response used knowledge retrieval as supplementary context
+        but the primary generation was driven by the model's training data.
+        Source attribution is provided but not verified for completeness.
+      requirements:
+        - "At least one knowledge chunk retrieved"
+        - "Source attribution includes collection and document references"
+        - "Retrieval receipt created"
+      confidence_range: [0.0, 0.5]
+      usage: "General Q&A where precision is not critical"
+
+    - level: knowledge-verified
+      description: |
+        The AI response was generated with knowledge retrieval and the
+        sources have been verified for relevance and consistency. No
+        contradictions were detected between retrieved chunks.
+      requirements:
+        - "Knowledge-assisted requirements met"
+        - "All retrieved chunks have relevance score >= 0.7"
+        - "No contradictions detected between retrieved chunks"
+        - "Answer trace created with full source attribution"
+      confidence_range: [0.5, 0.8]
+      usage: "Professional knowledge work requiring reliable sourcing"
+
+    - level: knowledge-grounded
+      description: |
+        The AI response is fully grounded in the knowledge base. Every
+        claim in the response is traceable to a specific source document
+        chunk. Safety checks have passed and no hallucination indicators
+        were detected.
+      requirements:
+        - "Knowledge-verified requirements met"
+        - "Every factual claim maps to a source chunk"
+        - "Safety check passed (no harmful, biased, or PII content)"
+        - "No hallucination indicators detected"
+        - "Complete answer trace with attribution verification"
+      confidence_range: [0.8, 1.0]
+      usage: "Compliance, legal, medical, or safety-critical applications"
+
+  # ─── Ingestion Pipeline ──────────────────────────────────────────────
+  # Pipeline: validate → extract → chunk → embed → index → verify
+  ingestion_pipeline:
+    description: |
+      The knowledge ingestion pipeline processes uploaded documents through
+      six sequential stages. Each stage is observable, auditable, and
+      resumable. Failure at any stage halts the pipeline and creates an
+      issue for investigation.
+
+    stages:
+      - stage: validate
+        order: 1
+        description: "Validate document format, size, and integrity"
+        input: DocumentUploadInput
+        output: ValidatedDocument
+        checks:
+          - "Format is in supported_formats list"
+          - "File size within max_document_size_mb"
+          - "Content is parseable (not corrupted)"
+          - "Virus/malware scan passed (if configured)"
+        failure:
+          action: reject_document
+          audit_event: knowledge.document.ingestion.failed
+          retryable: false
+
+      - stage: extract
+        order: 2
+        description: "Extract text content from the document"
+        input: ValidatedDocument
+        output: ExtractedContent
+        processing:
+          - "Parse document structure (headings, paragraphs, lists, tables)"
+          - "Extract text with structure metadata"
+          - "Handle encoding detection (UTF-8, Latin-1, etc.)"
+          - "Preserve document hierarchy for context-aware chunking"
+        failure:
+          action: retry_with_different_parser
+          audit_event: knowledge.document.ingestion.failed
+          retryable: true
+          max_retries: 2
+
+      - stage: chunk
+        order: 3
+        description: "Split extracted content into semantically coherent chunks"
+        input: ExtractedContent
+        output: "array<DocumentChunk>"
+        strategy:
+          default: semantic
+          options:
+            - id: fixed
+              description: "Fixed token count with overlap"
+              parameters:
+                chunk_size_tokens: 512
+                overlap_tokens: 64
+            - id: semantic
+              description: "Sentence-level semantic boundary detection"
+              parameters:
+                max_chunk_tokens: 512
+                min_chunk_tokens: 64
+                similarity_threshold: 0.85
+            - id: sentence
+              description: "One chunk per sentence or paragraph"
+              parameters:
+                max_sentences_per_chunk: 5
+        metadata_preserved:
+          - "Document title and metadata"
+          - "Section headings hierarchy"
+          - "Page numbers (if available)"
+          - "Chunk index within document"
+        failure:
+          action: fallback_to_fixed_chunking
+          audit_event: knowledge.chunk.creation.failed
+          retryable: true
+
+      - stage: embed
+        order: 4
+        description: "Generate vector embeddings for each chunk"
+        input: "array<DocumentChunk>"
+        output: "array<EmbeddedChunk>"
+        configuration:
+          default_model: "text-embedding-3-small"
+          dimension: 1536
+          batch_size: 100
+          rate_limit_respected: true
+        alternative_models:
+          - id: "text-embedding-3-large"
+            dimension: 3072
+          - id: "cohere-embed-v3"
+            dimension: 1024
+        failure:
+          action: retry_with_backoff
+          audit_event: knowledge.embedding.generation.failed
+          retryable: true
+          max_retries: 3
+          backoff_ms: [1000, 5000, 15000]
+
+      - stage: index
+        order: 5
+        description: "Add embedded chunks to the search index"
+        input: "array<EmbeddedChunk>"
+        output: IndexUpdateResult
+        index_types:
+          - vector
+            description: "Approximate nearest neighbor search"
+            backend: cloudflare-vectorize
+            portable_alternatives: [qdrant, pgvector]
+          - fulltext
+            description: "Full-text search with BM25 ranking"
+            backend: cloudflare-d1-fts
+            portable_alternatives: [typesense, elasticsearch]
+        failure:
+          action: retry_index_update
+          audit_event: knowledge.index.update.failed
+          retryable: true
+          max_retries: 3
+
+      - stage: verify
+        order: 6
+        description: "Verify ingested knowledge quality and completeness"
+        input: IndexUpdateResult
+        output: VerificationReport
+        checks:
+          - "Chunk count matches expected count"
+          - "All chunks have embeddings"
+          - "All chunks are indexed and searchable"
+          - "Sample retrieval test passes (round-trip verification)"
+          - "No duplicate chunks detected"
+          - "Content integrity verified (checksum match)"
+        failure:
+          action: create_knowledge_issue
+          audit_event: knowledge.verification.failed
+          retryable: false
+          issue_type: ingestion-verification-failure
+
+  # ─── Retrieval Pipeline ──────────────────────────────────────────────
+  # Pipeline: parse → authorize → search → rank → trace → audit
+  retrieval_pipeline:
+    description: |
+      The knowledge retrieval pipeline processes search queries through
+      six stages. It enforces workspace-scoped access control, combines
+      multiple search strategies, and produces a retrieval receipt for
+      full traceability.
+
+    stages:
+      - stage: parse
+        order: 1
+        description: "Parse and validate the search query"
+        input: SearchRequest
+        output: ParsedQuery
+        processing:
+          - "Validate query length (max_query_length)"
+          - "Extract metadata filters from query"
+          - "Detect query language"
+          - "Classify query intent (factual, procedural, analytical)"
+
+      - stage: authorize
+        order: 2
+        description: "Verify the subject has search permission in this workspace"
+        input: ParsedQuery
+        output: AuthorizedQuery
+        checks:
+          - "Subject has knowledge-search:execute permission"
+          - "Workspace is active (not suspended)"
+          - "Collection is accessible by subject"
+          - "Rate limit not exceeded"
+        failure:
+          action: deny_with_policy_violation
+          audit_event: governance.usage.rate-limit-exceeded
+
+      - stage: search
+        order: 3
+        description: "Execute search against the knowledge index"
+        input: AuthorizedQuery
+        output: RawSearchResult
+        strategies:
+          - semantic
+            description: "Vector similarity search"
+            parameters:
+              top_k: 5
+              min_score: 0.7
+          - fulltext
+            description: "BM25 full-text search"
+            parameters:
+              top_k: 5
+              min_score: 0.3
+          - hybrid
+            description: "Reciprocal rank fusion of semantic + fulltext"
+            parameters:
+              semantic_weight: 0.7
+              fulltext_weight: 0.3
+              top_k: 5
+        failure:
+          action: return_empty_results
+          audit_event: knowledge.search.zero-result
+
+      - stage: rank
+        order: 4
+        description: "Re-rank results by relevance, freshness, and authority"
+        input: RawSearchResult
+        output: RankedSearchResult
+        ranking_signals:
+          - relevance_score: { weight: 0.5, description: "Vector/BM25 similarity score" }
+          - freshness_score: { weight: 0.2, description: "Document recency (decay after 180 days)" }
+          - authority_score: { weight: 0.2, description: "Source authority (verified > unverified)" }
+          - diversity_score: { weight: 0.1, description: "Penalize similar results (MMR)" }
+
+      - stage: trace
+        order: 5
+        description: "Create source traceability records for each result"
+        input: RankedSearchResult
+        output: TracedSearchResult
+        processing:
+          - "Map each result chunk to its source document"
+          - "Record page number, section, and offset"
+          - "Create retrieval receipt with evidence level classification"
+          - "Generate answer trace stub for downstream generation"
+
+      - stage: audit
+        order: 6
+        description: "Emit audit events for the retrieval operation"
+        input: TracedSearchResult
+        output: FinalSearchResult
+        processing:
+          - "Emit knowledge.search.executed event"
+          - "Emit knowledge.search.result-served event"
+          - "Record latency metrics"
+          - "Check for zero-result condition and create issue if detected"
+
+  # ─── Generation Pipeline ─────────────────────────────────────────────
+  # Pipeline: assemble → invoke → attribute → safety-check → audit
+  generation_pipeline:
+    description: |
+      The generation pipeline produces AI responses grounded in retrieved
+      knowledge. It assembles context from retrieval results, invokes the
+      configured LLM, attributes sources, performs safety checks, and
+      creates a complete audit trail.
+
+    stages:
+      - stage: assemble
+        order: 1
+        description: "Assemble the prompt with retrieved context"
+        input: ChatMessage + TracedSearchResult
+        output: AssembledPrompt
+        processing:
+          - "Construct system prompt with workspace context"
+          - "Inject retrieved chunks as context with source markers"
+          - "Format conversation history within token budget"
+          - "Add generation instructions (evidence level, attribution requirements)"
+        token_budget:
+          system_prompt: 500
+          context_chunks: 3000
+          conversation_history: 2000
+          generation_reserve: 1500
+
+      - stage: invoke
+        order: 2
+        description: "Invoke the configured LLM endpoint"
+        input: AssembledPrompt
+        output: ModelResponse
+        processing:
+          - "Route to the configured model endpoint (model-byok)"
+          - "Handle streaming response if requested"
+          - "Track token usage for metering"
+          - "Handle provider errors and failover"
+        failure:
+          action: retry_or_failover
+          audit_event: model.invocation.failed
+          retryable: true
+
+      - stage: attribute
+        order: 3
+        description: "Attribute sources to generated content"
+        input: ModelResponse + TracedSearchResult
+        output: AttributedResponse
+        processing:
+          - "Map generated claims to source chunks"
+          - "Classify evidence level (assisted/verified/grounded)"
+          - "Create answer-trace resource with full provenance"
+          - "Flag any claims without source attribution"
+        attribution_requirements:
+          knowledge-assisted: "at least one source cited"
+          knowledge-verified: "all major claims cited with relevance >= 0.7"
+          knowledge-grounded: "every factual claim traceable to source chunk"
+
+      - stage: safety-check
+        order: 4
+        description: "Screen the response for safety violations"
+        input: AttributedResponse
+        output: SafetyCheckedResponse
+        checks:
+          - harmful_content: "Detect harmful, violent, or illegal content"
+          - bias_detection: "Detect demographic or ideological bias"
+          - pii_detection: "Detect personally identifiable information"
+          - hallucination_detection: "Detect unsupported or contradictory claims"
+        actions:
+          pass: "Response delivered normally"
+          flag: "Response delivered with safety warning"
+          block: "Response blocked, safety event emitted"
+
+      - stage: audit
+        order: 5
+        description: "Create complete audit trail for the generation"
+        input: SafetyCheckedResponse
+        output: FinalChatResponse
+        processing:
+          - "Emit ai.chat.response.generated (or safety-flagged)"
+          - "Complete the closed-loop pair for ai.chat.message.sent"
+          - "Record token usage in usage-meter"
+          - "Update answer-trace with safety check results"
+
+  # ─── Quality Assurance ───────────────────────────────────────────────
+  quality_assurance:
+    description: |
+      Continuous quality assurance for the knowledge base. Detects and
+      addresses staleness, gaps, contradictions, and hallucination risks.
+
+    freshness:
+      description: "Knowledge freshness monitoring"
+      threshold_days: 180
+      rules:
+        - condition: "document age > 180 days"
+          action: "Mark as stale, emit knowledge.document.stale-detected"
+          auto_reingest: false  # requires human approval
+        - condition: "document age > 365 days"
+          action: "Mark as very-stale, create knowledge-issue"
+          alert_workspace_owner: true
+
+    completeness:
+      description: "Knowledge completeness monitoring"
+      rules:
+        - condition: "search returns zero results for expected query"
+          action: "Create knowledge-issue with type 'gap'"
+          auto_create_issue: true
+        - condition: "collection has < 3 documents"
+          action: "Create knowledge-issue with type 'coverage'"
+          alert_workspace_owner: true
+        - condition: "chunking produces 0 chunks from a document"
+          action: "Create knowledge-issue with type 'extraction-failure'"
+          auto_reingest: true
+
+    accuracy:
+      description: "Knowledge accuracy and consistency monitoring"
+      rules:
+        - condition: "contradictory chunks in same collection"
+          detection: "semantic similarity with opposing semantics"
+          action: "Create knowledge-issue with type 'contradiction'"
+          auto_repair: false  # requires human review
+        - condition: "hallucination indicators in generated response"
+          detection: "claims without source attribution"
+          action: "Create knowledge-issue with type 'hallucination'"
+          safety_action: "downgrade evidence level"
+        - condition: "embedding drift detected"
+          detection: "re-embedding produces significantly different vectors"
+          action: "Create knowledge-issue with type 'embedding-drift'"
+          auto_reembed: true
+
+    coverage:
+      description: "Knowledge coverage monitoring"
+      target_percentage: 80
+      rules:
+        - condition: "query success rate < 80%"
+          measurement_period: 7_days
+          action: "Create knowledge-issue with type 'coverage-gap'"
+          suggestion: "Recommend document supplementation"
+        - condition: "frequently asked questions not in knowledge base"
+          detection: "high-frequency zero-result queries"
+          action: "Create knowledge-issue with type 'popular-gap'"
+          priority: high

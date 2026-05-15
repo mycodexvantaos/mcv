@@ -1,0 +1,153 @@
+# ═══════════════════════════════════════════════════════════════════
+# MyCodeXvantaOS — Knowledge Search Service Definition
+# ═══════════════════════════════════════════════════════════════════
+apiVersion: platform.mycodexvantaos/v1
+kind: ServiceDefinition
+metadata:
+  name: knowledge-search
+  urn: urn:mycodexvantaos:knowledge:service:knowledge-search
+  version: 1.0.0-constitution
+  category: knowledge
+  display_name: Knowledge Search Service
+  description: >
+    Evidence-level knowledge retrieval with hybrid search (semantic + full-text),
+    reciprocal rank fusion, and source tracing. Implements the retrieval pipeline:
+    parse → authorize → search → rank → trace → audit. Classifies results into
+    three evidence levels: assisted, verified, grounded.
+    Level 2 service — depends on identity.
+
+spec:
+  resource_type: retrieval-receipt
+  runtime:
+    provider: cloudflare-workers
+    database: d1
+    search: vectorize
+    limits:
+      cpu_ms: 150
+      memory_mb: 256
+
+  capabilities:
+    - id: knowledge.search
+      method: search
+      description: >
+        Search knowledge collections with hybrid retrieval (semantic + full-text),
+        reciprocal rank fusion, and evidence-level classification.
+      input:
+        type: object
+        required: [workspace_id, query, subject_id]
+        properties:
+          workspace_id: { type: string }
+          query: { type: string, minLength: 1, maxLength: 2000 }
+          subject_id: { type: string }
+          collection_ids:
+            type: array
+            items: { type: string }
+          top_k: { type: integer, default: 10, maximum: 50 }
+          evidence_level:
+            type: string
+            enum: [knowledge-assisted, knowledge-verified, knowledge-grounded]
+            default: knowledge-assisted
+          search_mode:
+            type: string
+            enum: [semantic, fulltext, hybrid]
+            default: hybrid
+      output:
+        type: object
+        properties:
+          results:
+            type: array
+            items:
+              type: object
+              properties:
+                chunk_id: { type: string }
+                document_id: { type: string }
+                content: { type: string }
+                relevance_score: { type: number }
+                evidence_level: { type: string }
+                source_trace:
+                  type: object
+                  properties:
+                    document_urn: { type: string }
+                    chunk_index: { type: integer }
+                    collection_id: { type: string }
+          total: { type: integer }
+          evidence_level: { type: string }
+
+    - id: knowledge.hybrid-search
+      method: hybridSearch
+      description: Parallel semantic + full-text search with reciprocal rank fusion
+      input:
+        type: object
+        required: [workspace_id, query, collection_ids]
+        properties:
+          workspace_id: { type: string }
+          query: { type: string }
+          collection_ids: { type: array, items: { type: string } }
+          top_k: { type: integer, default: 10 }
+          rrf_k: { type: integer, default: 60 }
+      output:
+        type: object
+        properties:
+          fused_results: { type: array }
+          semantic_count: { type: integer }
+          fulltext_count: { type: integer }
+
+    - id: knowledge.trace-source
+      method: traceSource
+      description: Trace the source of a specific chunk for attribution
+      input:
+        type: object
+        required: [chunk_id, workspace_id]
+        properties:
+          chunk_id: { type: string }
+          workspace_id: { type: string }
+      output:
+        type: object
+        properties:
+          source_trace:
+            type: object
+            properties:
+              document_urn: { type: string }
+              document_title: { type: string }
+              chunk_index: { type: integer }
+              collection_id: { type: string }
+              ingestion_date: { type: string, format: date-time }
+
+    - id: knowledge.classify-evidence
+      method: classifyEvidenceLevel
+      description: Classify the evidence level of search results
+      input:
+        type: object
+        required: [results]
+        properties:
+          results: { type: array }
+      output:
+        type: object
+        properties:
+          evidence_level: { type: string, enum: [knowledge-assisted, knowledge-verified, knowledge-grounded] }
+          confidence: { type: number }
+          reasoning: { type: string }
+
+  events:
+    emitted:
+      - knowledge.search.executed
+      - knowledge.search.zero-results
+    subscribed:
+      - knowledge.document.ingestion-completed
+
+  audit:
+    log_all_actions: true
+    integrity_chain: true
+    retention: 2555d
+
+  dependencies:
+    hard: [identity]
+    soft: [audit-log, usage-meter]
+
+  ports:
+    - interface: IKnowledgeSearchPort
+      methods:
+        - search
+        - hybridSearch
+        - traceSource
+        - classifyEvidenceLevel

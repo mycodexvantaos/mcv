@@ -1,15 +1,15 @@
-# MyCodexVantaOS — Platform Architecture Design
+# MyCodeXvantaOS — Platform Architecture Design
 
-> **Platform Root Monorepo** · Version 1.0.0  
+> **Cloudflare-First, Multi-Runtime, Self-Hostable AI-Native Service Platform**  
 > Organization: `mycodexvantaos` · NPM Scope: `@mycodexvantaos` · URN Namespace: `urn:mycodexvantaos`
 
 ---
 
 ## 1. Platform Overview
 
-**MyCodexVantaOS** is an enterprise-grade, cloud-agnostic, AI-native operating system platform. It is designed as a modular monorepo that combines an AI Team Orchestration system, a Persona Engine, a multi-provider infrastructure layer, and a governance-driven naming specification — all unified under a single coherent platform identity.
+**MyCodeXvantaOS** is an AI-native Agent Operating System — a platform where AI agents can authenticate, access knowledge, invoke models, and produce auditable outcomes within a governed workspace. The architecture is defined by five immutable constitutional models, implemented through a clean port/adapter pattern, and deployable across multiple runtimes.
 
-The platform's core mission is to enable developers and AI agents to build, deploy, and manage modern applications with maximum observability, governance compliance, and operational excellence. It follows a **local-first, quantum-aware** design philosophy, ensuring portability across cloud providers and on-premise environments.
+The platform follows a **three-phase startup strategy**: Cloudflare-first (MVP) → Portable Core (adapters/ports) → Self-hostable (Docker/K8s). This approach ships fast on Cloudflare's global edge while ensuring the ultimate goal — vendor independence — is architecturally guaranteed from day one.
 
 ### Platform Identity
 
@@ -18,340 +18,223 @@ The platform's core mission is to enable developers and AI agents to build, depl
 | Organization         | `mycodexvantaos`         |
 | NPM Scope            | `@mycodexvantaos`        |
 | URN Namespace        | `urn:mycodexvantaos`     |
-| Kubernetes API Group | `mycodexvantaos.quantum` |
-| Primary Language     | TypeScript (89%)         |
-| Secondary Languages  | Python, Shell, OPA       |
-| Version              | 1.0.0                    |
+| Primary Language     | TypeScript               |
+| Primary Runtime      | Cloudflare Workers       |
+| Portable Runtime     | Docker / Kubernetes      |
+| Architecture Pattern | Port/Adapter (Hexagonal) |
 
 ---
 
-## 2. Six-Layer Architecture
+## 2. Design Philosophy
 
-MyCodexVantaOS is organized into six distinct architectural layers, each with clearly defined responsibilities and inter-layer contracts.
+Three fundamental principles govern every design decision.
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    MyCodexVantaOS Platform                      │
-├─────────────────────────────────────────────────────────────────┤
-│  Layer A — Application Layer                                    │
-│  Builder · UI Generator · App Dev Studio (MyCodeXvantaOS Studio)    │
-├─────────────────────────────────────────────────────────────────┤
-│  Layer B — Runtime & Execution Layer                            │
-│  Runtime · Execution Engine · Background Job Runtime           │
-├─────────────────────────────────────────────────────────────────┤
-│  Layer C — Native Services Layer                                │
-│  Auth · Config · Database · Storage · Secrets · Observability   │
-│  Event Bus · Logging · Validation · Queue · SSL Manager        │
-├─────────────────────────────────────────────────────────────────┤
-│  Layer D — Connector Layer                                      │
-│  connector-github · connector-kafka · connector-mongodb         │
-│  connector-postgresql · connector-redis · connector-s3          │
-│  connector-elastic · connector-auth                             │
-├─────────────────────────────────────────────────────────────────┤
-│  Layer E — Deployment Layer                                     │
-│  Deployment Engine · Manifest Generator · ArgoCD GitOps         │
-│  Kubernetes (base + overlays) · Helm Charts                     │
-├─────────────────────────────────────────────────────────────────┤
-│  Layer F — Governance Layer                                     │
-│  Naming Policy · Service Manifest · Architecture Validation     │
-│  Capability Set · Provider Registry · URN Registry             │
-└─────────────────────────────────────────────────────────────────┘
-```
+**Constitutional Governance.** Five core models form the immutable constitution of the platform. Every service, every API call, every data flow must conform to these models. The models are defined in human-readable YAML contracts under `contracts/` and validated by JSON Schemas. No service may bypass or override constitutional rules.
 
-### Layer Summary
+**Cloud-Vendor Independence.** The platform is cloudflare-first but not cloudflare-only. All cloud-specific logic lives behind port/adapter boundaries. The `core/` layer has zero cloud vendor dependencies. The `ports/` layer defines platform-neutral interfaces. The `adapters/` layer implements those interfaces for specific providers.
 
-| Layer | Name                | Key Components                                                                                                        | Responsibility                                        |
-| :---: | :------------------ | :-------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------- |
-| **A** | Application         | `builder`, `ui-generator`, `app-dev-studio`                                                                           | User-facing application generation and studio tooling |
-| **B** | Runtime & Execution | `runtime`, `execution`, `background-job-runtime`                                                                      | Multi-environment execution, job scheduling           |
-| **C** | Native Services     | `core-auth`, `core-kernel`, `core-gateway`, `core-config`, `database`, `storage`, `events`, `native-logging`          | Platform-level infrastructure primitives              |
-| **D** | Connector           | `connector-github`, `connector-kafka`, `connector-mongodb`, `connector-postgresql`, `connector-redis`, `connector-s3` | External system integrations                          |
-| **E** | Deployment          | `deployment`, `deployment-manifest-generator`, ArgoCD, Helm                                                           | GitOps-driven deployment orchestration                |
-| **F** | Governance          | `governance-policy`, `ci/validate-architecture.ts`, naming-spec-v1                                                    | Naming enforcement, compliance, audit                 |
+**Closed-Loop Auditability.** Every significant action produces an audit event. Events form a SHA-256 integrity chain. Synchronous operations follow a request→completion/failure pairing model. The audit trail is a DAG of cryptographic proof.
 
 ---
 
-## 3. AI Core Modules
+## 3. Three-Phase Startup Strategy
 
-The AI subsystem is the platform's primary differentiator, consisting of two flagship modules and a supporting set of AI packages.
+### Phase 1: Cloudflare-First (MVP)
 
-### 3.1 AI Team Orchestrator (`mycodexvantaos-ai-team-orchestrator`)
+| Platform Resource | Cloudflare Service | Purpose |
+|---|---|---|
+| Database | D1 (SQLite) | Relational data, audit events, usage records |
+| Cache | KV | Session tokens, rate limit counters, config |
+| Storage | R2 | Document blobs, audit archives |
+| Search | Vectorize + D1 FTS5 | Semantic + fulltext hybrid search |
+| Queue | Cloudflare Queues | Async event processing, ingestion pipeline |
+| Compute | Workers | Service runtime |
 
-The AI Team Orchestrator manages multi-agent collaboration, task decomposition, workflow execution, and governance enforcement. It coordinates specialized AI agents with distinct archetypes and routes tasks through a structured workflow engine.
+### Phase 2: Portable Core
 
-```
-modules/mycodexvantaos-ai-team-orchestrator/
-└── src/core/
-    ├── agent-manager.ts        # Agent registration and lifecycle
-    ├── message-bus.ts          # Inter-agent communication
-    ├── orchestrator.ts         # Central coordination engine
-    ├── task-decomposer.ts      # Task breakdown and routing
-    ├── team-manager.ts         # Team topology management
-    ├── workflow-engine.ts      # Parallel/sequential execution
-    └── governance-enforcer.ts  # Tiered governance with HITL checkpoints
-```
+| Cloudflare Resource | Portable Alternative | Docker Image |
+|---|---|---|
+| D1 | PostgreSQL / SQLite | `postgres:15-alpine` |
+| KV | Redis | `redis:7-alpine` |
+| R2 | MinIO (S3-compatible) | `minio/minio:latest` |
+| Vectorize | Qdrant / pgvector | `qdrant/qdrant:latest` |
+| Queues | RabbitMQ / Kafka | `rabbitmq:3-management-alpine` |
 
-### 3.2 Persona Engine (`mycodexvantaos-persona-engine`)
+### Phase 3: Self-Hostable
 
-The Persona Engine implements intelligent AI personas with semantic mask detection, multi-layer root cause analysis, and solution generation. It provides 9 persona archetypes and 8 semantic mask detection types.
-
-| Persona Archetype | Role                                                  |
-| :---------------- | :---------------------------------------------------- |
-| Disrupter         | Challenges assumptions, proposes radical alternatives |
-| Analyst           | Data-driven pattern recognition and analysis          |
-| Critic            | Identifies risks, weaknesses, and failure modes       |
-| Architect         | System design and structural reasoning                |
-| Mediator          | Conflict resolution and consensus building            |
-| Creative Thinker  | Novel ideation and lateral thinking                   |
-| Facilitator       | Process guidance and team coordination                |
-| Mentor            | Knowledge transfer and coaching                       |
-| Synthesizer       | Cross-domain integration and summarization            |
-
-### 3.3 AI Package Ecosystem
-
-| Package                        | URN                                                               | Capability              | Provider                  |
-| :----------------------------- | :---------------------------------------------------------------- | :---------------------- | :------------------------ |
-| `@mycodexvantaos/ai-embedding` | `urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-embedding` | embedding, vector-store | OpenAI, pgvector          |
-| `@mycodexvantaos/ai-llm`       | `urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-llm`       | llm                     | OpenAI, Gemini, Anthropic |
-| `@mycodexvantaos/ai-memory`    | `urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-memory`    | memory, vector-store    | pgvector, Redis           |
-| `@mycodexvantaos/ai-agent`     | `urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-agent`     | agent, llm, memory      | multi-provider            |
+Full Kubernetes deployment with Helm charts, ArgoCD gitops, and horizontal pod autoscaling.
 
 ---
 
-## 4. Core Services Catalog
-
-The platform exposes 25+ services organized by domain. All services follow the naming convention `mycodexvantaos-<domain>-<capability>`.
-
-### 4.1 Core Domain
-
-| Service ID                    | Package                        | Lifecycle | Capabilities                            |
-| :---------------------------- | :----------------------------- | :-------: | :-------------------------------------- |
-| `mycodexvantaos-core-kernel`  | `@mycodexvantaos/core-kernel`  |  stable   | database, cache, observability, secrets |
-| `mycodexvantaos-core-auth`    | `@mycodexvantaos/core-auth`    |  stable   | auth, database, cache, secrets          |
-| `mycodexvantaos-core-gateway` | `@mycodexvantaos/core-gateway` |  stable   | auth, observability, cache              |
-| `mycodexvantaos-core-config`  | `@mycodexvantaos/core-config`  |  stable   | config, secrets                         |
-
-### 4.2 AI Domain
-
-| Service ID                    | Package                        | Lifecycle | Capabilities                   |
-| :---------------------------- | :----------------------------- | :-------: | :----------------------------- |
-| `mycodexvantaos-ai-embedding` | `@mycodexvantaos/ai-embedding` |  stable   | embedding, vector-store, cache |
-| `mycodexvantaos-ai-llm`       | `@mycodexvantaos/ai-llm`       |  stable   | llm, cache                     |
-| `mycodexvantaos-ai-memory`    | `@mycodexvantaos/ai-memory`    |  stable   | memory, vector-store           |
-| `mycodexvantaos-ai-agent`     | `@mycodexvantaos/ai-agent`     |   beta    | agent, llm, memory             |
-
-### 4.3 Data Domain
-
-| Service ID                         | Package                             | Lifecycle | Capabilities           |
-| :--------------------------------- | :---------------------------------- | :-------: | :--------------------- |
-| `mycodexvantaos-data-graph`        | `@mycodexvantaos/data-graph`        |  stable   | graph, database        |
-| `mycodexvantaos-data-pipeline`     | `@mycodexvantaos/data-pipeline`     |  stable   | pipeline, storage      |
-| `mycodexvantaos-data-vector-store` | `@mycodexvantaos/data-vector-store` |  stable   | vector-store, database |
-| `mycodexvantaos-docs-search`       | `@mycodexvantaos/docs-search`       |  stable   | search, embedding      |
-
-### 4.4 Platform Domain
-
-| Service ID                              | Package                                  | Lifecycle | Capabilities                    |
-| :-------------------------------------- | :--------------------------------------- | :-------: | :------------------------------ |
-| `mycodexvantaos-platform-observability` | `@mycodexvantaos/platform-observability` |  stable   | observability, logging, metrics |
-| `mycodexvantaos-platform-scheduler`     | `@mycodexvantaos/platform-scheduler`     |  stable   | scheduler, queue                |
-| `mycodexvantaos-platform-notification`  | `@mycodexvantaos/platform-notification`  |  stable   | notification, queue             |
-| `mycodexvantaos-governance-policy`      | `@mycodexvantaos/governance-policy`      |  stable   | policy, audit                   |
-
----
-
-## 5. Provider System
-
-The platform uses a multi-provider architecture that supports **Native**, **Connected**, and **Hybrid** modes, enabling cloud-agnostic deployments.
+## 4. Six-Layer Architecture
 
 ```
-providers/
-├── auth/          # auth-keycloak, auth-jwt-native, auth-supabase
-├── cache/         # cache-redis, cache-memory-native
-├── database/      # database-postgres, database-sqlite-native
-├── embedding/     # embedding-openai, embedding-ollama, embedding-cohere
-├── llm/           # llm-openai, llm-gemini, llm-anthropic, llm-ollama
-├── vector-store/  # vector-store-pgvector, vector-store-qdrant
-├── storage/       # storage-s3, storage-gcs, storage-local
-├── observability/ # observability-opentelemetry, observability-prometheus
-├── secrets/       # secrets-k8s-native, secrets-vault
-└── graph/         # graph-neo4j, graph-native
+┌──────────────────────────────────────────────────────┐
+│  F. Governance Layer                                  │
+│  Policy Engine • Audit Chain • Usage Metering         │
+├──────────────────────────────────────────────────────┤
+│  E. Deployment Layer                                  │
+│  Cloudflare Workers • Docker Compose • Kubernetes     │
+├──────────────────────────────────────────────────────┤
+│  D. Connector Layer                                   │
+│  Adapters: Storage • Database • Cache • Search •      │
+│  Model • Queue                                        │
+├──────────────────────────────────────────────────────┤
+│  C. Native Services Layer                             │
+│  8 MVP Services: identity • workspace • knowledge •   │
+│  chat • model • audit • usage                         │
+├──────────────────────────────────────────────────────┤
+│  B. Runtime & Execution Layer                         │
+│  Cloudflare Runtime • Docker Runtime • Auto-Detect    │
+├──────────────────────────────────────────────────────┤
+│  A. Application Layer                                 │
+│  Service Logic • Ports (interfaces) • Core (models)   │
+└──────────────────────────────────────────────────────┘
 ```
 
-### Deployment Modes
-
-| Mode          | Description                                            | Use Case                             |
-| :------------ | :----------------------------------------------------- | :----------------------------------- |
-| **Native**    | All services run locally without external dependencies | Development, air-gapped environments |
-| **Connected** | Services connect to external cloud providers           | Production cloud deployments         |
-| **Hybrid**    | Mix of native and connected providers                  | Staging, cost-optimized production   |
+**Dependency Direction:** A → B → C → D → E (governance F is cross-cutting)
 
 ---
 
-## 6. Naming Convention
+## 5. Five Constitutional Models
 
-All resources follow the `naming-spec-v1.md` specification, enforced by CI on every PR.
+### 5.1 Service Catalog
+**File:** `contracts/service-definitions/service-catalog.yaml`
 
-| Resource Type     | Format                                             | Example                                                           |
-| :---------------- | :------------------------------------------------- | :---------------------------------------------------------------- |
-| Service ID        | `mycodexvantaos-<domain>-<capability>`             | `mycodexvantaos-ai-embedding`                                     |
-| Package Name      | `@mycodexvantaos/<short-id>`                       | `@mycodexvantaos/ai-embedding`                                    |
-| URN               | `urn:mycodexvantaos:manifest:service:<service-id>` | `urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-embedding` |
-| Env Var           | `MYCODEXVANTAOS_<SUBSYSTEM>_<KEY>`                 | `MYCODEXVANTAOS_LLM_API_KEY`                                      |
-| K8s Namespace     | `mycodexvantaos-<env>`                             | `mycodexvantaos-prod`                                             |
-| Provider Instance | `<capability>-<provider>`                          | `embedding-openai`                                                |
+| Level | Services | Hard Dependencies |
+|---|---|---|
+| 0 | audit-log, identity | None |
+| 1 | workspace, usage-meter | identity |
+| 2 | knowledge-store, knowledge-search, model-byok | identity |
+| 3 | agent-chat | knowledge-search, model-byok |
 
-### Naming Enforcement
+**Startup Order:** audit-log → identity → workspace, usage-meter → knowledge-store, knowledge-search, model-byok → agent-chat
 
-| Enforcement Type           | File                                      | Trigger         |
-| :------------------------- | :---------------------------------------- | :-------------- |
-| Hard (blocks merge)        | `ci/validate-architecture.ts`             | Every PR        |
-| Legacy prefix scan         | `scripts/check-legacy-prefix.sh`          | Every PR        |
-| Manifest schema validation | `.github/workflows/validate-naming.yml`   | Every PR        |
-| Exception expiry           | `.github/workflows/expire-exceptions.yml` | Weekly (Monday) |
+### 5.2 Resource Model
+**File:** `contracts/resource-model.yaml`  
+**Schema:** `contracts/schemas/universal-resource.schema.json`
 
----
+**URN Format:** `urn:mycodexvantaos:{kind}:{name}:{uuid}`
 
-## 7. CI/CD & GitOps Pipeline
+**18 Resource Kinds:** subject, session, workspace, membership, collection, document, chunk, embedding, chat-session, chat-message, model-endpoint, audit-event, usage-record, policy, role, quota, knowledge-base, agent
 
-```mermaid
-flowchart TD
-    subgraph Development
-        Dev[Developer] -->|push| Repo[GitHub Monorepo]
-        Repo -->|trigger| CI[GitHub Actions CI]
-        CI --> Test[Unit + Contract Tests]
-        CI --> Lint[ESLint + Prettier]
-        CI --> Validate[Architecture Naming Validation]
-        CI --> Security[Checkov + Gitleaks + Semgrep + CodeQL]
-        CI --> SBOM[SBOM Generation CycloneDX]
-        CI --> Sign[cosign / SLSA Provenance]
-        CI --> Artifact[OCI Artifact / Image]
-    end
+**Lifecycle:** Pending → Active → Succeeded / Failed / Retiring → Retired
 
-    subgraph Deployment
-        GitOpsRepo[GitOps Config Repo] -->|ArgoCD monitors| Argo[ArgoCD Server]
-        Argo -->|sync| Cluster[Kubernetes Cluster]
-        Cluster --> DevNS[mycodexvantaos-dev]
-        Cluster --> StagingNS[mycodexvantaos-staging]
-        Cluster --> ProdNS[mycodexvantaos-prod]
-    end
+### 5.3 Policy Model
+**File:** `contracts/policy-model.yaml`  
+**Schema:** `contracts/schemas/policy-decision.schema.json`
 
-    subgraph Governance
-        Policy[OPA / Kyverno] -->|admission control| Cluster
-        DriftDetect[Drift Detection] -->|detect| Cluster
-        DriftDetect -->|rollback trigger| Argo
-        FreezeGate[Deployment Freeze Gate] -->|gate| Argo
-    end
+**6 Roles:** system:admin, workspace:owner, workspace:admin, workspace:editor, workspace:viewer, workspace:agent
 
-    CI -->|update manifests| GitOpsRepo
-    Artifact -->|pull| Cluster
-```
+**14+ Policy Rules** with workspace-scoped RBAC isolation, MFA requirements, and tier-based rate limits.
 
-### Active GitHub Actions Workflows
+### 5.4 Audit Model
+**File:** `contracts/audit-events.yaml`  
+**Schema:** `contracts/schemas/audit-event.schema.json`
 
-| Workflow                 | Purpose                                   |
-| :----------------------- | :---------------------------------------- |
-| `unified-ci.yaml`        | Main CI pipeline (lint, test, validate)   |
-| `unified-cd.yaml`        | Continuous deployment pipeline            |
-| `security-scan.yaml`     | Checkov + Trivy vulnerability scan        |
-| `provenance-attest.yaml` | SLSA Build Level 3 provenance attestation |
-| `sbom-upload.yaml`       | CycloneDX SBOM generation and upload      |
-| `drift-detection.yaml`   | Configuration drift detection             |
-| `freeze-gate.yaml`       | Deployment freeze gate enforcement        |
-| `opa-policy-check.yaml`  | OPA policy compliance check               |
-| `contract-diff.yaml`     | OpenAPI contract diff validation          |
-| `gitleaks.yaml`          | Secret scanning                           |
-| `codeql-analysis.yml`    | Static code analysis                      |
-| `validate-naming.yml`    | Platform naming convention enforcement    |
+**35+ Event Types** with SHA-256 integrity chain and closed-loop pairing (request→completion/failure).
+
+### 5.5 Knowledge Model
+**File:** `contracts/knowledge-model.yaml`  
+**Schema:** `contracts/schemas/knowledge-pipeline.schema.json`
+
+**Evidence Levels:** knowledge-assisted, knowledge-verified, knowledge-grounded
+
+**10 Knowledge Types:** document, chunk, embedding, collection, knowledge-base, search-result, ingestion-result, evidence, attribution, qa-pair
 
 ---
 
-## 8. Vector Store & Knowledge Graph
-
-### 8.1 Vector Collections
-
-| Collection                                   | Embedding Model               | Dimensions | Use Case                 |
-| :------------------------------------------- | :---------------------------- | :--------: | :----------------------- |
-| `mycodexvantaos-ai-memory--memories`         | bge-small                     |    384     | Agent short-term memory  |
-| `mycodexvantaos-ai-memory--sessions`         | openai-text-embedding-3-small |    1536    | Session context          |
-| `mycodexvantaos-data-pipeline--artifacts`    | ollama-nomic-embed-text       |    768     | Pipeline artifacts       |
-| `mycodexvantaos-data-vector-store--datasets` | openai-text-embedding-3-large |    3072    | Large dataset embeddings |
-| `mycodexvantaos-docs-search--chunks`         | cohere-embed-english-v3       |    1024    | Documentation search     |
-
-### 8.2 Retrieval Pipelines
-
-| Pipeline                      | Backend  | Strategy                |
-| :---------------------------- | :------- | :---------------------- |
-| `retrieval--dense--pgvector`  | pgvector | Dense vector similarity |
-| `retrieval--hybrid--pgvector` | pgvector | Hybrid (dense + sparse) |
-| `retrieval--dense--qdrant`    | Qdrant   | Dense vector similarity |
-| `retrieval--hybrid--qdrant`   | Qdrant   | Hybrid (dense + sparse) |
-| `retrieval--sparse--pgvector` | pgvector | Sparse BM25             |
-
----
-
-## 9. Kubernetes Infrastructure
+## 6. Port/Adapter Pattern
 
 ```
-infra/
-├── helm/mycodexvantaos/
-│   ├── Chart.yaml
-│   ├── values.yaml           # Base values
-│   ├── values-dev.yaml       # Development overrides
-│   ├── values-staging.yaml   # Staging overrides
-│   └── values-prod.yaml      # Production overrides
-├── kubernetes/
-│   ├── base/kustomization.yaml
-│   └── namespaces/
-│       ├── mycodexvantaos-dev.yaml
-│       ├── mycodexvantaos-staging.yaml
-│       └── mycodexvantaos-prod.yaml
-└── oci/
-    ├── image-registry.yaml
-    └── image-policies/prod-digest-pinning-policy.yaml
+                    ┌─────────────┐
+                    │ application/ │  ← Business logic
+                    └──────┬──────┘
+                           │ depends on
+                    ┌──────▼──────┐
+                    │   ports/     │  ← Interfaces only
+                    └──────┬──────┘
+                           │ implemented by
+              ┌────────────┼────────────┐
+              │            │            │
+     ┌────────▼───┐ ┌─────▼─────┐ ┌───▼────────┐
+     │ adapters/  │ │ adapters/  │ │ adapters/  │
+     │ cloudflare/│ │  docker/   │ │  k8s/      │
+     └────────────┘ └───────────┘ └────────────┘
+```
+
+| Port | Interface | Cloudflare Impl | Docker Impl |
+|---|---|---|---|
+| Storage | `IStoragePort` | R2 | MinIO (S3) |
+| Database | `IDatabasePort` | D1 | PostgreSQL |
+| Cache | `ICachePort` | KV | Redis |
+| Search | `ISearchPort` | Vectorize + FTS5 | Qdrant + pgvector |
+| Model | `IModelPort` | fetch (Workers) | fetch (Node) |
+| Queue | `IQueuePort` | Cloudflare Queues | RabbitMQ |
+| Audit | `IAuditPort` | D1 + R2 | PostgreSQL + S3 |
+| Usage | `IUsagePort` | D1 + KV | PostgreSQL + Redis |
+
+---
+
+## 7. 8 MVP Services
+
+| Service | Level | Capabilities | Key Features |
+|---|---|---|---|
+| identity | 0 | 7 (auth.*) | JWT, RBAC, session management |
+| workspace | 1 | 5 (workspace.*) | Multi-tenant, tier quotas |
+| knowledge-store | 2 | 6 (knowledge.*) | Ingestion pipeline, R2+Vectorize |
+| knowledge-search | 2 | 4 (knowledge.*) | Hybrid search, evidence levels |
+| agent-chat | 3 | 4 (chat.*) | 5-stage generation pipeline |
+| model-byok | 2 | 5 (model.*) | Multi-provider BYOK gateway |
+| audit-log | 0 | 4 (audit.*) | SHA-256 chain, closed-loop |
+| usage-meter | 1 | 5 (usage.*) | 8 dimensions, sliding-window |
+
+---
+
+## 8. Knowledge Pipeline
+
+**Ingestion:** Upload → Validate → Extract → Chunk → Embed → Index → Verify
+
+**Retrieval:** Query → Parse → Authorize → Search → Rank → Trace → Audit
+
+**Generation:** Context → Assemble → Invoke → Attribute → Safety-Check → Audit
+
+---
+
+## 9. Repository Structure
+
+```
+mycodexvantaos/
+├── contracts/                      # Constitutional model definitions
+│   ├── service-definitions/        #   8 service YAML files + catalog
+│   └── schemas/                    #   5 JSON Schema validation files
+├── core/                           # Zero-dependency core models
+├── ports/                          # Platform-neutral interfaces
+├── adapters/cloudflare/            # Cloudflare adapter implementations
+├── application/                    # 8 service business logic files
+├── runtimes/                       # Multi-runtime support
+├── migrations/d1/                  # Database migrations
+├── infra/                          # Infrastructure configs
+│   ├── cloudflare/workers/         #   8 wrangler.toml files
+│   ├── docker/                     #   Dockerfiles + gateway
+│   └── docker-compose/             #   docker-compose.yaml
+├── tools/                          # Development tools (3)
+└── .github/workflows/              # CI/CD pipeline
 ```
 
 ---
 
 ## 10. Implementation Status
 
-| Phase                          |     Status     | Description                                     |
-| :----------------------------- | :------------: | :---------------------------------------------- |
-| Phase 1 — Immediate Fixes      |  ✅ Complete   | Symbol cleanup, test framework setup            |
-| Phase 2 — Core Implementation  |  ✅ Complete   | Builder, Runtime, Deployment, Service Discovery |
-| Phase 3 — Remaining Packages   |  ✅ Complete   | All 27 packages implemented (100%)              |
-| Phase 4 — Testing              | 🔄 In Progress | 98/99 test suites passing                       |
-| Phase 5 — Production Hardening |   📋 Planned   | Multi-cluster, DR, SLO enforcement              |
-
-**Test Coverage**: 98/99 test suites passing as of latest commit.
-
----
-
-## 11. Quick Start
-
-```bash
-# Install dependencies
-pnpm install
-
-# Validate all naming (hard + soft enforcement)
-pnpm validate
-
-# Run tests
-pnpm test
-
-# Generate a new service scaffold
-pnpm scaffold mycodexvantaos-ai-reasoning --capabilities=llm,embedding
-
-# Start development server
-pnpm dev
-
-# Check for forbidden legacy prefixes
-pnpm check-legacy
-
-# Scan for naming drift
-pnpm scan-drift
-```
+| Phase | Status | Description |
+|---|---|---|
+| Phase 1 — Platform Constitution | ✅ Complete | Five constitutional models |
+| Phase 2 — Layered Architecture | ✅ Complete | core/, ports/, adapters/, application/ |
+| Phase 3 — Service Definitions & Schemas | ✅ Complete | 8 YAML + 5 JSON Schema + D1 migration |
+| Phase 4 — Infrastructure & Runtime | ✅ Complete | wrangler.toml, Docker, runtimes |
+| Phase 5 — Tools, CI & Docs | ✅ Complete | Tools, CI workflow, architecture docs |
+| Phase 6 — Push & PR | 📋 In Progress | Branch push + Pull Request |
 
 ---
 
-_Architecture document maintained by the MyCodexVantaOS platform team. Last updated: 2026-05-05._
+_Architecture document maintained by the MyCodeXvantaOS platform team. Constitution design completed on 2025-05-15._
