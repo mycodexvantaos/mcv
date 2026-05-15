@@ -15,7 +15,8 @@
     "@mycodexvantaos/contracts-sdk": "workspace:*",
     "@mycodexvantaos/service-service-catalog": "workspace:*",
     "@mycodexvantaos/service-resource-registry": "workspace:*",
-    "@mycodexvantaos/service-audit-log": "workspace:*"
+    "@mycodexvantaos/service-audit-log": "workspace:*",
+    "@mycodexvantaos/service-knowledge-trace": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.4.0",

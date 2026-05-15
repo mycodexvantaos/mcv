@@ -43,34 +43,16 @@ import {
 
 import { validateAllContracts } from '@mycodexvantaos/contracts-sdk';
 
-// ─── Knowledge trace models (in-memory MVP) ──────────────────────────────────
+import {
+  createSearchReceipt as createReceipt,
+  getReceipt as getRetrievalReceipt,
+  getTrace as getAnswerTrace,
+  createAnswerTrace as createTrace,
+  verifyReceipt as verifyRetrievalReceipt,
+  type SearchResult,
+} from '@mycodexvantaos/service-knowledge-trace';
 
-interface RetrievalReceipt {
-  receiptId: string;
-  query: string;
-  collectionIds: string[];
-  results: Array<{
-    chunkId: string;
-    content: string;
-    score: number;
-    metadata?: Record<string, unknown>;
-  }>;
-  createdAt: string;
-}
-
-interface AnswerTrace {
-  traceId: string;
-  receiptId: string;
-  answer: string;
-  citations: Array<{
-    chunkId: string;
-    text: string;
-  }>;
-  createdAt: string;
-}
-
-const retrievalReceipts = new Map<string, RetrievalReceipt>();
-const answerTraces = new Map<string, AnswerTrace>();
+// ─── Knowledge trace (delegated to service-knowledge-trace) ──────────
 
 // ─── Dream run models (in-memory MVP) ─────────────────────────────────────────
 
@@ -268,37 +250,64 @@ addRoute('POST', '/v1/knowledge/search', async (req, res) => {
     sendError(res, 400, 'Invalid JSON body');
     return;
   }
-  const searchReq = parsed as { query: string; collectionIds?: string[]; topK?: number };
+  const searchReq = parsed as { query: string; collectionIds?: string[]; topK?: number; evidenceLevel?: 'knowledge-assisted' | 'knowledge-verified' | 'knowledge-grounded' };
   if (!searchReq.query) {
     sendError(res, 400, 'Missing required field: query');
     return;
   }
 
-  // MVP: Return placeholder results with a retrieval receipt
-  const receiptId = generateId('rcpt');
-  const receipt: RetrievalReceipt = {
-    receiptId,
+  // Create a retrieval receipt via knowledge-trace service
+  const { receipt } = createReceipt({
     query: searchReq.query,
-    collectionIds: searchReq.collectionIds ?? [],
-    results: [],
-    createdAt: new Date().toISOString(),
-  };
-  retrievalReceipts.set(receiptId, receipt);
+    collectionIds: searchReq.collectionIds,
+    topK: searchReq.topK,
+    evidenceLevel: searchReq.evidenceLevel,
+  });
 
   sendJson(res, 200, {
-    receiptId,
-    query: searchReq.query,
+    receiptId: receipt.receiptId,
+    query: receipt.query,
     results: receipt.results,
-    totalResults: 0,
+    totalResults: receipt.totalResults,
     receipt: {
-      receiptId,
+      receiptId: receipt.receiptId,
+      evidenceLevel: receipt.evidenceLevel,
       createdAt: receipt.createdAt,
     },
   });
 });
 
+addRoute('POST', '/v1/knowledge/answer', async (req, res) => {
+  const body = await readBody(req);
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(body);
+  } catch {
+    sendError(res, 400, 'Invalid JSON body');
+    return;
+  }
+  const answerReq = parsed as { receiptId: string; answer: string; evidenceLevel?: string; citations?: Array<{ chunkId: string; text: string }> };
+  if (!answerReq.receiptId || !answerReq.answer) {
+    sendError(res, 400, 'Missing required fields: receiptId, answer');
+    return;
+  }
+
+  try {
+    const { trace } = createTrace({
+      receiptId: answerReq.receiptId,
+      answer: answerReq.answer,
+      evidenceLevel: answerReq.evidenceLevel as 'knowledge-assisted' | 'knowledge-verified' | 'knowledge-grounded' | undefined,
+      citations: answerReq.citations,
+    });
+    sendJson(res, 201, { trace });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Internal error';
+    sendError(res, 400, message);
+  }
+});
+
 addRoute('GET', '/v1/knowledge/retrieval-receipts/:id', async (_req, res, params) => {
-  const receipt = retrievalReceipts.get(params.id);
+  const receipt = getRetrievalReceipt(params.id);
   if (!receipt) {
     sendError(res, 404, `Retrieval receipt not found: ${params.id}`);
     return;
@@ -307,12 +316,17 @@ addRoute('GET', '/v1/knowledge/retrieval-receipts/:id', async (_req, res, params
 });
 
 addRoute('GET', '/v1/knowledge/answer-traces/:id', async (_req, res, params) => {
-  const trace = answerTraces.get(params.id);
+  const trace = getAnswerTrace(params.id);
   if (!trace) {
     sendError(res, 404, `Answer trace not found: ${params.id}`);
     return;
   }
   sendJson(res, 200, { trace });
+});
+
+addRoute('GET', '/v1/knowledge/verify/:id', async (_req, res, params) => {
+  const result = verifyRetrievalReceipt(params.id);
+  sendJson(res, 200, result);
 });
 
 // ─── Loop 5: Memory Dream Runtime ────────────────────────────────────────────
@@ -416,8 +430,10 @@ addRoute('GET', '/', async (_req, res) => {
       'GET  /v1/audit/events/:eventId',
       'GET  /v1/audit/verify',
       'POST /v1/knowledge/search',
+      'POST /v1/knowledge/answer',
       'GET  /v1/knowledge/retrieval-receipts/:id',
       'GET  /v1/knowledge/answer-traces/:id',
+      'GET  /v1/knowledge/verify/:id',
       'POST /v1/dream/run',
       'GET  /v1/dream/runs/:id',
       'GET  /v1/dream/runs/:id/actions',

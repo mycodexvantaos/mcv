@@ -176,6 +176,9 @@ importers:
       '@mycodexvantaos/service-audit-log':
         specifier: workspace:*
         version: link:../../services/mycodexvantaos-service-audit-log
+      '@mycodexvantaos/service-knowledge-trace':
+        specifier: workspace:*
+        version: link:../../services/mycodexvantaos-service-knowledge-trace
       '@mycodexvantaos/service-resource-registry':
         specifier: workspace:*
         version: link:../../services/mycodexvantaos-service-resource-registry
@@ -2048,6 +2051,9 @@ importers:
 
   services/mycodexvantaos-service-knowledge-trace:
     dependencies:
+      '@mycodexvantaos/contracts-sdk':
+        specifier: workspace:*
+        version: link:../../packages/mycodexvantaos-contracts-sdk
       '@mycodexvantaos/core':
         specifier: workspace:*
         version: link:../../packages/core
