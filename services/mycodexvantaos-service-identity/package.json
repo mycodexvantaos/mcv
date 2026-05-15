@@ -1,0 +1,14 @@
+{
+  "name": "@mycodexvantaos/service-identity",
+  "version": "0.1.0",
+  "description": "MyCodeXvantaOS Identity Service",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@mycodexvantaos/core-kernel": "workspace:*",
+    "@mycodexvantaos/service-catalog": "workspace:*"
+  }
+}

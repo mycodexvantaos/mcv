@@ -1,0 +1,20 @@
+name = "mycodexvantaos-api"
+main = "src/index.ts"
+compatibility_date = "2024-04-03"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+ENVIRONMENT = "production"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "mycodexvantaos-d1"
+database_id = "your-database-id"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "your-kv-id"
+
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "mycodexvantaos-r2"

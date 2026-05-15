@@ -1,0 +1,14 @@
+{
+  "name": "@mycodexvantaos/service-memory-dream",
+  "version": "0.1.0",
+  "description": "MyCodeXvantaOS Memory Dream Service",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@mycodexvantaos/core-kernel": "workspace:*",
+    "@mycodexvantaos/memory-model": "workspace:*"
+  }
+}

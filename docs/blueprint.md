@@ -1,21 +1,22 @@
-# **App Name**: Sentinel Architecture
+# **App Name**: MyCodeXvantaOS Studio
 
 ## Core Features:
 
-- Architecture Definition & GitLab Sync: An intuitive user interface for defining and visualizing system architectures, including components, dependencies, and data flows. Seamlessly syncs architectural definitions with GitLab repositories, allowing storage as code (e.g., PlantUML, Mermaid diagrams) within project files and leveraging Git for version control.
-- CI/CD Pipeline Generation & Validation Tool: A generative AI tool that automatically translates defined architectural components and deployment strategies into executable GitLab CI/CD pipeline configurations. This tool also validates generated pipelines against best practices for 'perfect pass' scenarios.
-- AI-Powered Risk & Compliance Analysis: Utilizes AI to analyze the defined architecture and its corresponding GitLab CI/CD pipelines, acting as a tool to identify potential single points of failure, security vulnerabilities, compliance deviations, and CI/CD pipeline inefficiencies, aiming for 'zero-failure' deployments.
-- Intelligent Architecture Refinement Suggestions: A generative AI tool that suggests architectural improvements, resilience patterns, and alternative design choices based on analysis and best practices, specifically considering GitLab's capabilities for deployment and operations, to achieve a 'zero-failure' design.
-- Comprehensive Version & Audit History: Automatically tracks and stores all architectural versions and changes within GitLab repositories, leveraging Git for version control. Provides a detailed audit trail of all architectural modifications, analysis runs, and CI/CD pipeline generations, ensuring full traceability and rollback capabilities.
-- Customizable 'Zero-Failure' Checklists & GitLab Policy Enforcement: Allows users to define and apply custom checklists and best practices for both architecture and GitLab CI/CD configurations. Includes AI assistance to validate adherence, suggest new checklist items, and ensure automated enforcement of critical policies within the GitLab ecosystem for ultimate reliability.
+- AI-Powered Code Editor: Provide a robust code editing environment with core functionalities like syntax highlighting, alongside integrated AI-driven code completion, inline suggestions, and conversational AI assistance for developers.
+- Intelligent Agent Workflow: Orchestrate complex development and research tasks using specialized generative AI agents (e.g., Builder, Reviewer, Security) that act as a tool to automate and streamline workflows.
+- Ecosystem Research Workbench: Offer dedicated tools and visualizations for researchers to collect, analyze, and interpret deep data regarding code editor ecosystems, market trends, and platform governance.
+- Extensible Marketplace for Plugins: Enable users to browse, install, and manage extensions and plugins to customize and enhance the editor and research functionalities, fostering an open ecosystem.
+- Real-time Collaborative Coding: Facilitate seamless multi-user collaboration within the editor, featuring real-time synchronization, cursor presence, and robust conflict resolution.
+- Advanced Project & File Management: Implement comprehensive project and file handling, including creation, organization, saving, and navigation, backed by a persistent database for data integrity and retrieval.
+- Multi-Model AI Gateway: Provide a unified API layer to integrate with and manage various Large Language Models from different providers (e.g., OpenAI, Anthropic, Google) as well as support for local models.
 
 ## Style Guidelines:
 
-- The application employs a dark color scheme to convey professionalism and focus on detail, evoking a sense of deep system analysis and reliability.
-- Primary interactive color: A refined technical blue-cyan (#2988AB), symbolizing precision and trust within the robust architecture. (HSL: H:195, S:60%, L:40%)
-- Background color: A very dark, subtle charcoal tone (#1A1F21), providing a stable foundation that allows interactive elements and data to stand out clearly. (HSL: H:195, S:15%, L:10%)
-- Accent color: A vibrant, clear lime green (#CDFF61), used sparingly for crucial highlights, success indicators, and calls to action, providing high contrast and signaling successful validation or resolution. (HSL: H:100, S:80%, L:70%)
-- Primary font: 'Inter', a grotesque sans-serif. Chosen for its modern, objective, and neutral aesthetic, it ensures clarity and legibility for both headings and detailed architectural descriptions.
-- Icons should be geometric, clean, and utilize sharp lines to reflect the technical and precise nature of architectural diagrams and analysis. Icons for components, data flow, alerts, and success states are essential.
-- Layouts should be highly structured and organized, resembling a professional dashboard with clear segmentation for architectural components, analysis results, and historical data. Information hierarchy must be well-defined to manage data density effectively without clutter.
-- Subtle, functional animations will be used for state changes, data loading, and interactive element feedback, ensuring a smooth and responsive user experience without distraction. Emphasis on utility and professionalism over flashy effects.
+- A deep, insightful blue (#2663D9) as the primary color, symbolizing professionalism and technological depth. This hue is designed to be eye-friendly for prolonged periods of focus on code.
+- The background color is a heavily desaturated, very dark blue (#0A1529), providing a neutral, non-distracting canvas that enhances code readability and minimizes eye strain in a dark scheme.
+- A fresh, clear green (#52E0B0) acts as an accent color, representing growth, data vitality, and ecological connections, while providing a vivid contrast against the dark blues.
+- For all UI text, including headlines and body, use the 'Inter' sans-serif font for its modern, clean, and objective aesthetic, ensuring optimal readability for dense code and analytical content.
+- For displaying all code snippets and editor content, 'Source Code Pro' monospace font will be used, guaranteeing consistent character width for excellent code readability and alignment.
+- Utilize a set of clean, modern, and highly legible line-art or glyph icons that align with a technical and professional aesthetic, aiding quick feature identification without clutter.
+- Employ a multi-panel, highly customizable layout inspired by professional IDEs, allowing users to resize, dock, and arrange various editor, AI, and research tools to suit their workflow.
+- Implement subtle, functional animations for UI state changes, real-time AI feedback, and smooth transitions between different research visualizations to enhance the user experience without causing distraction.
