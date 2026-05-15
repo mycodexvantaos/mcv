@@ -74,8 +74,8 @@
 - [x] 補強 tools/generators/
 
 ## Phase 10: 清理與提交
-- [ ] 清理 legacy 空白包（packages/mycodexvantaos-*）
-- [ ] 移除或標記 memory-dream.yaml 為 non-MVP
-- [ ] 更新 PLATFORM_ARCHITECTURE.md
-- [ ] 更新 CI
-- [ ] Git commit + Push + PR
+- [x] 清理 legacy 空白包（packages/mycodexvantaos-*）
+- [x] 移除或標記 memory-dream.yaml 為 non-MVP
+- [x] 更新 PLATFORM_ARCHITECTURE.md
+- [x] 更新 CI
+- [x] Git commit + Push + PR
