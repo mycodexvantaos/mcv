@@ -336,7 +336,7 @@ export default function ValidationDashboard() {
                           </div>
                           {val.errorMessage ? (
                             <span className="text-xs text-red-500 max-w-xs text-right whitespace-normal">
-                              val.errorMessage as string
+                              val.errorMessage
                             </span>
                           ) : null}
                         </div>
