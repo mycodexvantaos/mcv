@@ -22,7 +22,7 @@ jobs:
     name: Preview Deployment
     runs-on: ubuntu-latest
     environment: preview
-    if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+    if: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
     steps:
       - name: Checkout repository
