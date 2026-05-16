@@ -262,7 +262,9 @@ export function queryReceipts(req: QueryReceiptsRequest = {}): QueryReceiptsResp
 export function createAnswerTrace(req: CreateAnswerTraceRequest): CreateAnswerTraceResponse {
   const receipt = retrievalReceipts.get(req.receiptId);
   if (!receipt) {
-    throw new Error(`Retrieval receipt not found: ${req.receiptId}. Cannot create answer trace without a valid receipt.`);
+    throw new Error(
+      `Retrieval receipt not found: ${req.receiptId}. Cannot create answer trace without a valid receipt.`
+    );
   }
 
   const traceId = generateId('trace');

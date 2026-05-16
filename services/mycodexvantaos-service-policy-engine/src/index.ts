@@ -151,24 +151,42 @@ export class PolicyEngine {
 
       switch (rule.effect) {
         case 'allow':
-          return allowDecision(reason, { matchedRuleId, matchedPolicyId: policyId, role: request.subject.roles?.[0] });
+          return allowDecision(reason, {
+            matchedRuleId,
+            matchedPolicyId: policyId,
+            role: request.subject.roles?.[0],
+          });
         case 'deny':
-          return denyDecision(reason, { matchedRuleId, matchedPolicyId: policyId, role: request.subject.roles?.[0] });
+          return denyDecision(reason, {
+            matchedRuleId,
+            matchedPolicyId: policyId,
+            role: request.subject.roles?.[0],
+          });
         case 'require-review':
-          return requireReviewDecision(reason, { matchedRuleId, matchedPolicyId: policyId, role: request.subject.roles?.[0] });
+          return requireReviewDecision(reason, {
+            matchedRuleId,
+            matchedPolicyId: policyId,
+            role: request.subject.roles?.[0],
+          });
         case 'dry-run-only':
           return dryRunOnlyDecision(reason, { matchedRuleId, matchedPolicyId: policyId });
         case 'audit-required':
           return auditRequiredDecision(reason, { matchedRuleId, matchedPolicyId: policyId });
         default:
-          return denyDecision(`Unknown effect: ${rule.effect}`, { matchedRuleId, matchedPolicyId: policyId });
+          return denyDecision(`Unknown effect: ${rule.effect}`, {
+            matchedRuleId,
+            matchedPolicyId: policyId,
+          });
       }
     }
 
     // No rule matched — default deny
-    return denyDecision(`No matching policy rule found for action '${request.action}' on resource '${request.resource.type}'`, {
-      role: request.subject.roles?.[0],
-    });
+    return denyDecision(
+      `No matching policy rule found for action '${request.action}' on resource '${request.resource.type}'`,
+      {
+        role: request.subject.roles?.[0],
+      }
+    );
   }
 
   /** List all loaded policies */

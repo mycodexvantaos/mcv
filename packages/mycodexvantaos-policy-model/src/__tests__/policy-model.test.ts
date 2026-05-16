@@ -82,9 +82,18 @@ describe('Action Matching', () => {
   });
 
   it('actionMatches with compound action', () => {
-    assert.equal(actionMatches('memory-item-deprecate,memory-item-merge', 'memory-item-deprecate'), true);
-    assert.equal(actionMatches('memory-item-deprecate,memory-item-merge', 'memory-item-merge'), true);
-    assert.equal(actionMatches('memory-item-deprecate,memory-item-merge', 'memory-item-create'), false);
+    assert.equal(
+      actionMatches('memory-item-deprecate,memory-item-merge', 'memory-item-deprecate'),
+      true
+    );
+    assert.equal(
+      actionMatches('memory-item-deprecate,memory-item-merge', 'memory-item-merge'),
+      true
+    );
+    assert.equal(
+      actionMatches('memory-item-deprecate,memory-item-merge', 'memory-item-create'),
+      false
+    );
   });
 });
 
@@ -107,8 +116,14 @@ describe('Resource Matching', () => {
   });
 
   it('matches prefix pattern knowledge/collections/*', () => {
-    assert.equal(resourceMatches('knowledge/collections/*', { type: 'knowledge/collections/docs' }), true);
-    assert.equal(resourceMatches('knowledge/collections/*', { type: 'knowledge/collections' }), true);
+    assert.equal(
+      resourceMatches('knowledge/collections/*', { type: 'knowledge/collections/docs' }),
+      true
+    );
+    assert.equal(
+      resourceMatches('knowledge/collections/*', { type: 'knowledge/collections' }),
+      true
+    );
     assert.equal(resourceMatches('knowledge/collections/*', { type: 'knowledge/models' }), false);
   });
 });
@@ -123,7 +138,10 @@ describe('Condition Matching', () => {
 
   it('matches exact string value', () => {
     assert.equal(conditionMatches({ memory_type: 'decision' }, { memory_type: 'decision' }), true);
-    assert.equal(conditionMatches({ memory_type: 'decision' }, { memory_type: 'observation' }), false);
+    assert.equal(
+      conditionMatches({ memory_type: 'decision' }, { memory_type: 'observation' }),
+      false
+    );
   });
 
   it('matches array value (OR logic)', () => {
@@ -140,23 +158,29 @@ describe('Condition Matching', () => {
       conditionMatches({ tags_contains: ['architecture'] }, { tags: ['frontend', 'ui'] }),
       false
     );
-    assert.equal(
-      conditionMatches({ tags_contains: ['architecture'] }, {}),
-      false
-    );
+    assert.equal(conditionMatches({ tags_contains: ['architecture'] }, {}), false);
   });
 
   it('matches multiple conditions (AND logic)', () => {
     assert.equal(
-      conditionMatches({ memory_type: 'decision', tags_contains: ['architecture'] }, { memory_type: 'decision', tags: ['architecture'] }),
+      conditionMatches(
+        { memory_type: 'decision', tags_contains: ['architecture'] },
+        { memory_type: 'decision', tags: ['architecture'] }
+      ),
       true
     );
     assert.equal(
-      conditionMatches({ memory_type: 'decision', tags_contains: ['architecture'] }, { memory_type: 'decision', tags: ['frontend'] }),
+      conditionMatches(
+        { memory_type: 'decision', tags_contains: ['architecture'] },
+        { memory_type: 'decision', tags: ['frontend'] }
+      ),
       false
     );
     assert.equal(
-      conditionMatches({ memory_type: 'decision', tags_contains: ['architecture'] }, { memory_type: 'observation', tags: ['architecture'] }),
+      conditionMatches(
+        { memory_type: 'decision', tags_contains: ['architecture'] },
+        { memory_type: 'observation', tags: ['architecture'] }
+      ),
       false
     );
   });
@@ -189,25 +213,13 @@ describe('Subject Matching', () => {
   });
 
   it('matches subject by role', () => {
-    assert.equal(
-      subjectMatches({ roles: ['platform-admin'] }, adminSubject),
-      true
-    );
-    assert.equal(
-      subjectMatches({ roles: ['platform-admin'] }, viewerSubject),
-      false
-    );
+    assert.equal(subjectMatches({ roles: ['platform-admin'] }, adminSubject), true);
+    assert.equal(subjectMatches({ roles: ['platform-admin'] }, viewerSubject), false);
   });
 
   it('matches subject by service', () => {
-    assert.equal(
-      subjectMatches({ service: 'memory-dream' }, serviceSubject),
-      true
-    );
-    assert.equal(
-      subjectMatches({ service: 'memory-dream' }, adminSubject),
-      false
-    );
+    assert.equal(subjectMatches({ service: 'memory-dream' }, serviceSubject), true);
+    assert.equal(subjectMatches({ service: 'memory-dream' }, adminSubject), false);
   });
 
   it('matches multiple roles (OR logic)', () => {
@@ -233,7 +245,11 @@ describe('Subject Matching', () => {
 
 describe('Decision Helpers', () => {
   it('allowDecision creates correct result', () => {
-    const result = allowDecision('Access granted', { matchedRuleId: 'rule-1', matchedPolicyId: 'policy-a', role: 'platform-admin' });
+    const result = allowDecision('Access granted', {
+      matchedRuleId: 'rule-1',
+      matchedPolicyId: 'policy-a',
+      role: 'platform-admin',
+    });
     assert.equal(result.allowed, true);
     assert.equal(result.effect, 'allow');
     assert.equal(result.reason, 'Access granted');
@@ -251,7 +267,9 @@ describe('Decision Helpers', () => {
   });
 
   it('requireReviewDecision creates correct result', () => {
-    const result = requireReviewDecision('Architecture decision requires review', { matchedPolicyId: 'memory-dream-policy' });
+    const result = requireReviewDecision('Architecture decision requires review', {
+      matchedPolicyId: 'memory-dream-policy',
+    });
     assert.equal(result.allowed, false);
     assert.equal(result.effect, 'require-review');
     assert.equal(result.reason, 'Architecture decision requires review');
@@ -307,12 +325,19 @@ describe('Full Policy Rule Evaluation Scenario', () => {
   it('architecture decision memory merge requires review', () => {
     const rule = memoryDreamPolicy.rules[0];
     const subject: PolicySubject = { type: 'service', id: 'dream-worker', service: 'memory-dream' };
-    const resource: PolicyResource = { type: 'memory-item', id: 'mem-1', attributes: { memory_type: 'decision', tags: ['architecture', 'backend'] } };
+    const resource: PolicyResource = {
+      type: 'memory-item',
+      id: 'mem-1',
+      attributes: { memory_type: 'decision', tags: ['architecture', 'backend'] },
+    };
 
     const subjectMatch = subjectMatches(rule.subject, subject);
     const actionMatch = actionMatches(rule.action, 'memory-item-merge');
     const resourceMatch = resourceMatches(rule.resource, resource);
-    const conditionMatch = conditionMatches(rule.condition, { memory_type: 'decision', tags: ['architecture', 'backend'] });
+    const conditionMatch = conditionMatches(rule.condition, {
+      memory_type: 'decision',
+      tags: ['architecture', 'backend'],
+    });
 
     assert.equal(subjectMatch, true);
     assert.equal(actionMatch, true);
@@ -323,7 +348,10 @@ describe('Full Policy Rule Evaluation Scenario', () => {
 
   it('non-architecture memory merge does not match the require-review rule', () => {
     const rule = memoryDreamPolicy.rules[0];
-    const conditionMatch = conditionMatches(rule.condition, { memory_type: 'observation', tags: ['frontend'] });
+    const conditionMatch = conditionMatches(rule.condition, {
+      memory_type: 'observation',
+      tags: ['frontend'],
+    });
     assert.equal(conditionMatch, false);
   });
 

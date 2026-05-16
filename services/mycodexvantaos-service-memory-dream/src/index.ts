@@ -29,13 +29,28 @@ export interface MemoryItem {
   tags?: string[];
   related_entities?: string[];
   temporal_expressions?: string[];
-  memory_type?: 'observation' | 'reflection' | 'decision' | 'event' | 'fact' | 'opinion' | 'plan' | 'system';
+  memory_type?:
+    | 'observation'
+    | 'reflection'
+    | 'decision'
+    | 'event'
+    | 'fact'
+    | 'opinion'
+    | 'plan'
+    | 'system';
   conflicts_with?: string[];
   created_at?: string;
   metadata?: Record<string, unknown>;
 }
 
-export type DreamActionType = 'merge' | 'resolve' | 'mark_orphan' | 'delete' | 'tag_add' | 'tag_remove' | 'no_action';
+export type DreamActionType =
+  | 'merge'
+  | 'resolve'
+  | 'mark_orphan'
+  | 'delete'
+  | 'tag_add'
+  | 'tag_remove'
+  | 'no_action';
 
 export interface DreamAction {
   action_type: DreamActionType;
@@ -111,7 +126,7 @@ function getPythonWorkerPath(): string | null {
     }
   }
 
-  _pythonWorkerPath = '';  // Cache the miss
+  _pythonWorkerPath = ''; // Cache the miss
   return null;
 }
 
@@ -124,9 +139,7 @@ function generateId(prefix: string): string {
 }
 
 function computeHash(data: unknown): string {
-  return createHash('sha256')
-    .update(JSON.stringify(data))
-    .digest('hex');
+  return createHash('sha256').update(JSON.stringify(data)).digest('hex');
 }
 
 // ─── Python worker execution ──────────────────────────────────────
@@ -152,13 +165,7 @@ export async function executePythonDreamWorker(
       return;
     }
 
-    const args = [
-      workerPath,
-      'run',
-      '--stdin',
-      '--json',
-      '--mode', mode,
-    ];
+    const args = [workerPath, 'run', '--stdin', '--json', '--mode', mode];
 
     const proc = spawn('python3', args, {
       stdio: ['pipe', 'pipe', 'pipe'],
@@ -317,12 +324,15 @@ export function executeJsDreamEngine(
     actions,
     statistics: {
       memory_types: memoryTypes,
-      avg_tags_per_memory: memoryItems.length > 0
-        ? memoryItems.reduce((sum, m) => sum + (m.tags?.length ?? 0), 0) / memoryItems.length
-        : 0,
-      avg_entities_per_memory: memoryItems.length > 0
-        ? memoryItems.reduce((sum, m) => sum + (m.related_entities?.length ?? 0), 0) / memoryItems.length
-        : 0,
+      avg_tags_per_memory:
+        memoryItems.length > 0
+          ? memoryItems.reduce((sum, m) => sum + (m.tags?.length ?? 0), 0) / memoryItems.length
+          : 0,
+      avg_entities_per_memory:
+        memoryItems.length > 0
+          ? memoryItems.reduce((sum, m) => sum + (m.related_entities?.length ?? 0), 0) /
+            memoryItems.length
+          : 0,
       dry_run: dryRun,
       proposal_mode: proposalMode,
       engine: 'js-fallback',
@@ -337,7 +347,9 @@ export function executeJsDreamEngine(
 /**
  * Create and execute a dream run
  */
-export async function createDreamRun(request: CreateDreamRunRequest): Promise<CreateDreamRunResponse> {
+export async function createDreamRun(
+  request: CreateDreamRunRequest
+): Promise<CreateDreamRunResponse> {
   const mode = request.mode ?? 'dry-run';
   const memoryItems = request.memory_items ?? [];
   const runId = generateId('dream');
@@ -423,7 +435,11 @@ export function listDreamRuns(): ListDreamRunsResponse {
 /**
  * Get dream run statistics
  */
-export function getDreamStats(): { totalRuns: number; byStatus: Record<string, number>; byMode: Record<string, number> } {
+export function getDreamStats(): {
+  totalRuns: number;
+  byStatus: Record<string, number>;
+  byMode: Record<string, number>;
+} {
   const runs = Array.from(dreamRuns.values());
   const byStatus: Record<string, number> = {};
   const byMode: Record<string, number> = {};

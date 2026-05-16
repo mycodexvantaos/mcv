@@ -14,7 +14,11 @@ const command = process.argv[2];
 
 if (command === 'validate') {
   const result = validateAllContracts();
-  const allValid = result.services.valid && result.resourceKinds.valid && result.policies.valid && result.events.valid;
+  const allValid =
+    result.services.valid &&
+    result.resourceKinds.valid &&
+    result.policies.valid &&
+    result.events.valid;
   const allErrors = [
     ...result.services.errors,
     ...result.resourceKinds.errors,

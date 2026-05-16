@@ -42,14 +42,18 @@ describe('memory-dream service', () => {
 
     it('should detect orphan entities', () => {
       const items: MemoryItem[] = [
-        { memory_id: 'mem_001', content: 'Entity system-001 is online', related_entities: ['urn:mycodexvantaos:entity:system-002'] },
+        {
+          memory_id: 'mem_001',
+          content: 'Entity system-001 is online',
+          related_entities: ['urn:mycodexvantaos:entity:system-002'],
+        },
         { memory_id: 'mem_002', content: 'User activity', related_entities: [] },
       ];
 
       const report = executeJsDreamEngine(items, true, true);
 
       assert.equal(report.orphans_found, 1);
-      assert.ok(report.actions.some(a => a.action_type === 'mark_orphan'));
+      assert.ok(report.actions.some((a) => a.action_type === 'mark_orphan'));
     });
 
     it('should detect explicit conflicts', () => {
@@ -61,7 +65,7 @@ describe('memory-dream service', () => {
       const report = executeJsDreamEngine(items, true, true);
 
       assert.equal(report.conflicts_found, 1);
-      assert.ok(report.actions.some(a => a.action_type === 'resolve'));
+      assert.ok(report.actions.some((a) => a.action_type === 'resolve'));
     });
 
     it('should handle empty memory items', () => {
@@ -97,7 +101,7 @@ describe('memory-dream service', () => {
 
       // Should only report once despite both declaring conflicts
       assert.equal(report.conflicts_found, 1);
-      assert.equal(report.actions.filter(a => a.action_type === 'resolve').length, 1);
+      assert.equal(report.actions.filter((a) => a.action_type === 'resolve').length, 1);
     });
   });
 
@@ -114,9 +118,7 @@ describe('memory-dream service', () => {
     });
 
     it('should create a dream run with memory items', () => {
-      const items: MemoryItem[] = [
-        { memory_id: 'mem_001', content: 'Test memory' },
-      ];
+      const items: MemoryItem[] = [{ memory_id: 'mem_001', content: 'Test memory' }];
 
       const result = createDreamRunSync({ memory_items: items, mode: 'proposal' });
 

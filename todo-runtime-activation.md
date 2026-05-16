@@ -13,18 +13,21 @@
 ## 核心閉環
 
 ### 閉環 1：Service Catalog Runtime ✅
+
 - [x] contracts-sdk 載入 service-definitions
 - [x] service-catalog service 實作
 - [x] API: GET /v1/services
 - [x] API: GET /v1/services/:id
 
 ### 閉環 2：Resource Registry Runtime ✅
+
 - [x] contracts-sdk 載入 resource-kinds
 - [x] resource-registry service 實作
 - [x] API: GET /v1/resource-kinds
 - [x] API: GET /v1/resource-kinds/:kind
 
 ### 閉環 3：Audit Event Runtime ✅
+
 - [x] audit-log service 實作
 - [x] API: POST /v1/audit/events
 - [x] API: GET /v1/audit/events
@@ -32,6 +35,7 @@
 - [x] state-changing actions emit audit events
 
 ### 閉環 4：Knowledge Trace Runtime ✅
+
 - [x] knowledge-trace service 實作 (SHA-256 integrity)
 - [x] retrieval-receipt 建立
 - [x] answer-trace 建立 (requires valid receipt)
@@ -43,6 +47,7 @@
 - [x] 規則：無 retrieval receipt 不能標記 knowledge-assisted
 
 ### 閉環 5：Memory Dream Runtime ✅
+
 - [x] Python dream-worker MVP (detect duplicates/conflicts/orphans)
 - [x] CLI: dream run --mode dry-run
 - [x] CLI: dream run --stdin --json (TS integration mode)
@@ -58,6 +63,7 @@
 ## PR 拆分
 
 ### PR 36: contracts-sdk runtime loader ✅ COMMITTED
+
 - [x] 實作 loadServiceDefinitions()
 - [x] 實作 loadResourceKinds()
 - [x] 實作 loadPolicyDefinitions()
@@ -67,27 +73,32 @@
 - [x] 標準化 5 個服務定義合約格式
 
 ### PR 37: service-catalog runtime API ✅ COMMITTED
+
 - [x] service-catalog service 實作
 - [x] API: GET /v1/services
 - [x] API: GET /v1/services/:id
 
 ### PR 38: resource-registry runtime API ✅ COMMITTED
+
 - [x] resource-registry service 實作
 - [x] API: GET /v1/resource-kinds
 - [x] API: GET /v1/resource-kinds/:kind
 
 ### PR 39: D1 / SQLite migration verifier ✅ COMMITTED
+
 - [x] tools/migrations/verify-d1-migrations.ts
 - [x] tools/migrations/verify-sqlite-migrations.ts
 - [x] 驗證關鍵 tables 存在
 
 ### PR 40: audit-log minimal runtime ✅ COMMITTED
+
 - [x] audit-log service 實作
 - [x] API: POST /v1/audit/events
 - [x] API: GET /v1/audit/events
 - [x] 使用 contracts/events/audit-events.yaml
 
 ### PR 41: memory-dream Python worker MVP ✅ COMMITTED
+
 - [x] python/packages/mycodexvantaos-memory-dream (DreamRun, DreamReport, MemoryItem)
 - [x] python/apps/dream-worker (CLI: dream run --mode dry-run)
 - [x] scan/group/detect conflicts/detect duplicates/orphans
@@ -95,6 +106,7 @@
 - [x] --stdin --json flags for TS integration
 
 ### PR 42: memory-dream TS integration ✅ COMMITTED
+
 - [x] services/mycodexvantaos-service-memory-dream
 - [x] POST /v1/dream/run
 - [x] GET /v1/dream/runs/:id
@@ -104,6 +116,7 @@
 - [x] JS fallback engine when Python unavailable
 
 ### PR 43: knowledge trace minimal runtime ✅ COMMITTED
+
 - [x] POST /v1/knowledge/search (creates receipt)
 - [x] POST /v1/knowledge/answer (creates trace)
 - [x] GET /v1/knowledge/retrieval-receipts/:id
@@ -161,16 +174,16 @@
 
 ## Test Summary
 
-| Service | Tests | Status |
-|---------|-------|--------|
-| contracts-sdk | 31 | ✅ |
-| service-catalog | 9 | ✅ |
-| resource-registry | 8 | ✅ |
-| audit-log | 17 | ✅ |
-| knowledge-trace | 23 | ✅ |
-| memory-dream (TS) | 13 | ✅ |
-| memory-dream (Python) | 6 | ✅ |
-| **Total** | **107** | **✅** |
+| Service               | Tests   | Status |
+| --------------------- | ------- | ------ |
+| contracts-sdk         | 31      | ✅     |
+| service-catalog       | 9       | ✅     |
+| resource-registry     | 8       | ✅     |
+| audit-log             | 17      | ✅     |
+| knowledge-trace       | 23      | ✅     |
+| memory-dream (TS)     | 13      | ✅     |
+| memory-dream (Python) | 6       | ✅     |
+| **Total**             | **107** | **✅** |
 
 ---
 

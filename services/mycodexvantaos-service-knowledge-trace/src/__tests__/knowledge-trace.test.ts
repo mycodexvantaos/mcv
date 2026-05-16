@@ -66,10 +66,7 @@ describe('Knowledge Trace Service', () => {
         { chunkId: 'chunk-3', content: 'Result 3', score: 0.7 },
       ];
 
-      const { receipt } = createSearchReceiptWithResults(
-        { query: 'test', topK: 2 },
-        results
-      );
+      const { receipt } = createSearchReceiptWithResults({ query: 'test', topK: 2 }, results);
 
       assert.equal(receipt.results.length, 2);
       assert.equal(receipt.totalResults, 2);
@@ -151,7 +148,10 @@ describe('Knowledge Trace Service', () => {
     });
 
     it('should inherit evidence level from receipt if not specified', () => {
-      const { receipt } = createSearchReceipt({ query: 'test', evidenceLevel: 'knowledge-grounded' });
+      const { receipt } = createSearchReceipt({
+        query: 'test',
+        evidenceLevel: 'knowledge-grounded',
+      });
       const { trace } = createAnswerTrace({
         receiptId: receipt.receiptId,
         answer: 'test answer',
@@ -160,7 +160,10 @@ describe('Knowledge Trace Service', () => {
     });
 
     it('should override evidence level when specified', () => {
-      const { receipt } = createSearchReceipt({ query: 'test', evidenceLevel: 'knowledge-assisted' });
+      const { receipt } = createSearchReceipt({
+        query: 'test',
+        evidenceLevel: 'knowledge-assisted',
+      });
       const { trace } = createAnswerTrace({
         receiptId: receipt.receiptId,
         answer: 'test answer',
@@ -210,9 +213,16 @@ describe('Knowledge Trace Service', () => {
     });
 
     it('should filter by evidenceLevel', () => {
-      const { receipt } = createSearchReceipt({ query: 'test', evidenceLevel: 'knowledge-grounded' });
+      const { receipt } = createSearchReceipt({
+        query: 'test',
+        evidenceLevel: 'knowledge-grounded',
+      });
       createAnswerTrace({ receiptId: receipt.receiptId, answer: 'a1' });
-      createAnswerTrace({ receiptId: receipt.receiptId, answer: 'a2', evidenceLevel: 'knowledge-assisted' });
+      createAnswerTrace({
+        receiptId: receipt.receiptId,
+        answer: 'a2',
+        evidenceLevel: 'knowledge-assisted',
+      });
 
       const result = queryTraces({ evidenceLevel: 'knowledge-assisted' });
       assert.equal(result.total, 1);

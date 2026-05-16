@@ -6,10 +6,7 @@
  * Data source: contracts/resource-kinds/ (via contracts-sdk)
  */
 
-import {
-  loadResourceKinds,
-  type ResourceKindContract,
-} from '@mycodexvantaos/contracts-sdk';
+import { loadResourceKinds, type ResourceKindContract } from '@mycodexvantaos/contracts-sdk';
 
 // ─── Response Types ───────────────────────────────────────────────────────────
 

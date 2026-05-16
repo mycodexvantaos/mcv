@@ -140,7 +140,12 @@ interface Route {
 
 const routes: Route[] = [];
 
-function addRoute(method: string, path: string, handler: RouteHandler, opts?: { audited?: boolean }): void {
+function addRoute(
+  method: string,
+  path: string,
+  handler: RouteHandler,
+  opts?: { audited?: boolean }
+): void {
   const paramNames: string[] = [];
   const regexStr = path.replace(/:([a-zA-Z_]+)/g, (_, name) => {
     paramNames.push(name);
@@ -173,7 +178,16 @@ export function isAuditEnforcementEnabled(): boolean {
 }
 
 type AuditableEventType = string;
-type AuditableCategory = 'knowledge' | 'agent' | 'workspace' | 'developer' | 'security' | 'storage' | 'model' | 'automation' | 'audit';
+type AuditableCategory =
+  | 'knowledge'
+  | 'agent'
+  | 'workspace'
+  | 'developer'
+  | 'security'
+  | 'storage'
+  | 'model'
+  | 'automation'
+  | 'audit';
 
 function withAudit(
   eventType: AuditableEventType,
@@ -195,9 +209,21 @@ function withAudit(
       responseStatus = statusCode;
       // Call original with proper types
       if (args.length === 0) return originalWriteHead.call(res, statusCode);
-      if (typeof args[0] === 'string' && args.length === 1) return originalWriteHead.call(res, statusCode, args[0] as string);
-      if (typeof args[0] === 'object' && args.length === 1) return originalWriteHead.call(res, statusCode, args[0] as Record<string, string | string[]>);
-      if (typeof args[0] === 'string' && typeof args[1] === 'object') return originalWriteHead.call(res, statusCode, args[0] as string, args[1] as Record<string, string | string[]>);
+      if (typeof args[0] === 'string' && args.length === 1)
+        return originalWriteHead.call(res, statusCode, args[0] as string);
+      if (typeof args[0] === 'object' && args.length === 1)
+        return originalWriteHead.call(
+          res,
+          statusCode,
+          args[0] as Record<string, string | string[]>
+        );
+      if (typeof args[0] === 'string' && typeof args[1] === 'object')
+        return originalWriteHead.call(
+          res,
+          statusCode,
+          args[0] as string,
+          args[1] as Record<string, string | string[]>
+        );
       return originalWriteHead.call(res, statusCode);
     };
 
@@ -283,28 +309,58 @@ addRoute('GET', '/v1/resource-kinds/:kind', async (_req, res, params) => {
 
 // ── Loop 3: Audit Event Runtime (with withAudit enforcement) ────────────
 
-addRoute('POST', '/v1/audit/events', withAudit('audit.event-created', 'audit', async (req, res) => {
-  const body = await readBody(req);
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(body);
-  } catch {
-    sendError(res, 400, 'Invalid JSON body');
-    return;
-  }
-  const createReq = parsed as CreateAuditEventRequest;
-  if (!createReq.eventType || !createReq.category || !createReq.actor || !createReq.resource || !createReq.context) {
-    sendError(res, 400, 'Missing required fields: eventType, category, actor, resource, context');
-    return;
-  }
-  const result = recordEvent(createReq);
-  sendJson(res, 201, result);
-}, { resourceType: 'audit-event' }), { audited: true });
+addRoute(
+  'POST',
+  '/v1/audit/events',
+  withAudit(
+    'audit.event-created',
+    'audit',
+    async (req, res) => {
+      const body = await readBody(req);
+      let parsed: unknown;
+      try {
+        parsed = JSON.parse(body);
+      } catch {
+        sendError(res, 400, 'Invalid JSON body');
+        return;
+      }
+      const createReq = parsed as CreateAuditEventRequest;
+      if (
+        !createReq.eventType ||
+        !createReq.category ||
+        !createReq.actor ||
+        !createReq.resource ||
+        !createReq.context
+      ) {
+        sendError(
+          res,
+          400,
+          'Missing required fields: eventType, category, actor, resource, context'
+        );
+        return;
+      }
+      const result = recordEvent(createReq);
+      sendJson(res, 201, result);
+    },
+    { resourceType: 'audit-event' }
+  ),
+  { audited: true }
+);
 
 addRoute('GET', '/v1/audit/events', async (_req, res, _params, query) => {
   const result = queryEvents({
     eventType: query['eventType'],
-    category: query['category'] as 'knowledge' | 'agent' | 'workspace' | 'developer' | 'security' | 'storage' | 'model' | 'automation' | 'audit' | undefined,
+    category: query['category'] as
+      | 'knowledge'
+      | 'agent'
+      | 'workspace'
+      | 'developer'
+      | 'security'
+      | 'storage'
+      | 'model'
+      | 'automation'
+      | 'audit'
+      | undefined,
     resourceType: query['resourceType'],
     resourceId: query['resourceId'],
     actorId: query['actorId'],
@@ -334,79 +390,118 @@ addRoute('GET', '/v1/audit/verify', async (_req, res) => {
 
 // ── Loop 4: Knowledge Trace Runtime (with withAudit enforcement) ────────
 
-addRoute('POST', '/v1/knowledge/search', withAudit('knowledge.search', 'knowledge', async (req, res) => {
-  const body = await readBody(req);
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(body);
-  } catch {
-    sendError(res, 400, 'Invalid JSON body');
-    return;
-  }
-  const searchReq = parsed as { query: string; collectionIds?: string[]; topK?: number; evidenceLevel?: 'knowledge-assisted' | 'knowledge-verified' | 'knowledge-grounded' };
-  if (!searchReq.query) {
-    sendError(res, 400, 'Missing required field: query');
-    return;
-  }
+addRoute(
+  'POST',
+  '/v1/knowledge/search',
+  withAudit(
+    'knowledge.search',
+    'knowledge',
+    async (req, res) => {
+      const body = await readBody(req);
+      let parsed: unknown;
+      try {
+        parsed = JSON.parse(body);
+      } catch {
+        sendError(res, 400, 'Invalid JSON body');
+        return;
+      }
+      const searchReq = parsed as {
+        query: string;
+        collectionIds?: string[];
+        topK?: number;
+        evidenceLevel?: 'knowledge-assisted' | 'knowledge-verified' | 'knowledge-grounded';
+      };
+      if (!searchReq.query) {
+        sendError(res, 400, 'Missing required field: query');
+        return;
+      }
 
-  const { receipt } = createReceipt({
-    query: searchReq.query,
-    collectionIds: searchReq.collectionIds,
-    topK: searchReq.topK,
-    evidenceLevel: searchReq.evidenceLevel,
-  });
+      const { receipt } = createReceipt({
+        query: searchReq.query,
+        collectionIds: searchReq.collectionIds,
+        topK: searchReq.topK,
+        evidenceLevel: searchReq.evidenceLevel,
+      });
 
-  sendJson(res, 200, {
-    receiptId: receipt.receiptId,
-    query: receipt.query,
-    results: receipt.results,
-    totalResults: receipt.totalResults,
-    receipt: {
-      receiptId: receipt.receiptId,
-      evidenceLevel: receipt.evidenceLevel,
-      createdAt: receipt.createdAt,
+      sendJson(res, 200, {
+        receiptId: receipt.receiptId,
+        query: receipt.query,
+        results: receipt.results,
+        totalResults: receipt.totalResults,
+        receipt: {
+          receiptId: receipt.receiptId,
+          evidenceLevel: receipt.evidenceLevel,
+          createdAt: receipt.createdAt,
+        },
+      });
     },
-  });
-}, { resourceType: 'knowledge-receipt' }), { audited: true });
+    { resourceType: 'knowledge-receipt' }
+  ),
+  { audited: true }
+);
 
-addRoute('POST', '/v1/knowledge/answer', withAudit('knowledge.answer-created', 'knowledge', async (req, res) => {
-  const body = await readBody(req);
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(body);
-  } catch {
-    sendError(res, 400, 'Invalid JSON body');
-    return;
-  }
-  const answerReq = parsed as { receiptId: string; answer: string; evidenceLevel?: string; citations?: Array<{ chunkId: string; text: string }>; knowledge_assisted?: boolean };
-  if (!answerReq.receiptId || !answerReq.answer) {
-    sendError(res, 400, 'Missing required fields: receiptId, answer');
-    return;
-  }
+addRoute(
+  'POST',
+  '/v1/knowledge/answer',
+  withAudit(
+    'knowledge.answer-created',
+    'knowledge',
+    async (req, res) => {
+      const body = await readBody(req);
+      let parsed: unknown;
+      try {
+        parsed = JSON.parse(body);
+      } catch {
+        sendError(res, 400, 'Invalid JSON body');
+        return;
+      }
+      const answerReq = parsed as {
+        receiptId: string;
+        answer: string;
+        evidenceLevel?: string;
+        citations?: Array<{ chunkId: string; text: string }>;
+        knowledge_assisted?: boolean;
+      };
+      if (!answerReq.receiptId || !answerReq.answer) {
+        sendError(res, 400, 'Missing required fields: receiptId, answer');
+        return;
+      }
 
-  // ── Knowledge Trace Enforcement (PR 46) ────────────────────────────
-  // If knowledge_assisted=true, the receiptId MUST be a valid retrieval receipt
-  if (answerReq.knowledge_assisted === true) {
-    const receipt = getRetrievalReceipt(answerReq.receiptId);
-    if (!receipt) {
-      sendError(res, 403, `Knowledge-assisted answer requires valid retrieval_receipt_id. Receipt not found: ${answerReq.receiptId}`);
-      return;
-    }
-  }
+      // ── Knowledge Trace Enforcement (PR 46) ────────────────────────────
+      // If knowledge_assisted=true, the receiptId MUST be a valid retrieval receipt
+      if (answerReq.knowledge_assisted === true) {
+        const receipt = getRetrievalReceipt(answerReq.receiptId);
+        if (!receipt) {
+          sendError(
+            res,
+            403,
+            `Knowledge-assisted answer requires valid retrieval_receipt_id. Receipt not found: ${answerReq.receiptId}`
+          );
+          return;
+        }
+      }
 
-  try {
-    const { trace } = createTrace({
-      receiptId: answerReq.receiptId,
-      answer: answerReq.answer,
-      evidenceLevel: answerReq.evidenceLevel as 'knowledge-assisted' | 'knowledge-verified' | 'knowledge-grounded' | undefined,
-      citations: answerReq.citations,
-    });
-    sendJson(res, 201, { trace });
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Internal error';
-    sendError(res, 400, message);
-  }
-}, { resourceType: 'knowledge-answer-trace' }), { audited: true });
+      try {
+        const { trace } = createTrace({
+          receiptId: answerReq.receiptId,
+          answer: answerReq.answer,
+          evidenceLevel: answerReq.evidenceLevel as
+            | 'knowledge-assisted'
+            | 'knowledge-verified'
+            | 'knowledge-grounded'
+            | undefined,
+          citations: answerReq.citations,
+        });
+        sendJson(res, 201, { trace });
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Internal error';
+        sendError(res, 400, message);
+      }
+    },
+    { resourceType: 'knowledge-answer-trace' }
+  ),
+  { audited: true }
+);
 
 addRoute('GET', '/v1/knowledge/retrieval-receipts/:id', async (_req, res, params) => {
   const receipt = getRetrievalReceipt(params.id);
@@ -433,31 +528,46 @@ addRoute('GET', '/v1/knowledge/verify/:id', async (_req, res, params) => {
 
 // ── Loop 5: Memory Dream Runtime (with withAudit enforcement) ───────────
 
-addRoute('POST', '/v1/dream/run', withAudit('dream.run-initiated', 'automation', async (req, res) => {
-  const body = await readBody(req);
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(body);
-  } catch {
-    sendError(res, 400, 'Invalid JSON body');
-    return;
-  }
-  const dreamReq = parsed as { mode?: 'dry-run' | 'proposal' | 'execute'; memory_items?: unknown[] };
-  const mode = dreamReq.mode ?? 'dry-run';
+addRoute(
+  'POST',
+  '/v1/dream/run',
+  withAudit(
+    'dream.run-initiated',
+    'automation',
+    async (req, res) => {
+      const body = await readBody(req);
+      let parsed: unknown;
+      try {
+        parsed = JSON.parse(body);
+      } catch {
+        sendError(res, 400, 'Invalid JSON body');
+        return;
+      }
+      const dreamReq = parsed as {
+        mode?: 'dry-run' | 'proposal' | 'execute';
+        memory_items?: unknown[];
+      };
+      const mode = dreamReq.mode ?? 'dry-run';
 
-  // Use the memory-dream service (sync JS engine for MVP, with Python fallback)
-  const result = createDreamRunSync({
-    mode,
-    memory_items: dreamReq.memory_items as import('@mycodexvantaos/service-memory-dream').MemoryItem[] | undefined,
-  });
+      // Use the memory-dream service (sync JS engine for MVP, with Python fallback)
+      const result = createDreamRunSync({
+        mode,
+        memory_items: dreamReq.memory_items as
+          | import('@mycodexvantaos/service-memory-dream').MemoryItem[]
+          | undefined,
+      });
 
-  sendJson(res, 202, {
-    runId: result.run.runId,
-    mode: result.run.mode,
-    status: result.run.status,
-    report: result.run.report,
-  });
-}, { resourceType: 'dream-run' }), { audited: true });
+      sendJson(res, 202, {
+        runId: result.run.runId,
+        mode: result.run.mode,
+        status: result.run.status,
+        report: result.run.report,
+      });
+    },
+    { resourceType: 'dream-run' }
+  ),
+  { audited: true }
+);
 
 addRoute('GET', '/v1/dream/runs/:id', async (_req, res, params) => {
   const result = getDreamRunRecord(params.id);
@@ -508,185 +618,241 @@ interface DreamApplication {
 const dreamReviews = new Map<string, DreamReview>();
 const dreamApplications = new Map<string, DreamApplication>();
 
-addRoute('POST', '/v1/dream/runs/:id/review', withAudit('dream.run-reviewed', 'automation', async (req, res, params) => {
-  const body = await readBody(req);
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(body);
-  } catch {
-    sendError(res, 400, 'Invalid JSON body');
-    return;
-  }
-  const reviewReq = parsed as { reviewer?: string; decision?: 'approved' | 'rejected'; comment?: string };
-  if (!reviewReq.reviewer || !reviewReq.decision) {
-    sendError(res, 400, 'Missing required fields: reviewer, decision');
-    return;
-  }
-  const runId = params.id;
-  const dreamResult = getDreamRunRecord(runId);
-  if (!dreamResult) {
-    sendError(res, 404, `Dream run not found: ${runId}`);
-    return;
-  }
+addRoute(
+  'POST',
+  '/v1/dream/runs/:id/review',
+  withAudit(
+    'dream.run-reviewed',
+    'automation',
+    async (req, res, params) => {
+      const body = await readBody(req);
+      let parsed: unknown;
+      try {
+        parsed = JSON.parse(body);
+      } catch {
+        sendError(res, 400, 'Invalid JSON body');
+        return;
+      }
+      const reviewReq = parsed as {
+        reviewer?: string;
+        decision?: 'approved' | 'rejected';
+        comment?: string;
+      };
+      if (!reviewReq.reviewer || !reviewReq.decision) {
+        sendError(res, 400, 'Missing required fields: reviewer, decision');
+        return;
+      }
+      const runId = params.id;
+      const dreamResult = getDreamRunRecord(runId);
+      if (!dreamResult) {
+        sendError(res, 404, `Dream run not found: ${runId}`);
+        return;
+      }
 
-  // Check if the dream run has architecture decision actions that require review
-  const actions = dreamResult.run.report?.actions ?? [];
-  const archActions = actions.filter((a: any) =>
-    a.action_type === 'merge' || a.action_type === 'deprecate'
-  );
+      // Check if the dream run has architecture decision actions that require review
+      const actions = dreamResult.run.report?.actions ?? [];
+      const archActions = actions.filter(
+        (a: any) => a.action_type === 'merge' || a.action_type === 'deprecate'
+      );
 
-  const review: DreamReview = {
-    runId,
-    reviewer: reviewReq.reviewer,
-    decision: reviewReq.decision,
-    comment: reviewReq.comment,
-    reviewedAt: new Date().toISOString(),
-  };
-  dreamReviews.set(runId, review);
+      const review: DreamReview = {
+        runId,
+        reviewer: reviewReq.reviewer,
+        decision: reviewReq.decision,
+        comment: reviewReq.comment,
+        reviewedAt: new Date().toISOString(),
+      };
+      dreamReviews.set(runId, review);
 
-  sendJson(res, 200, { review });
-}, { resourceType: 'dream-run' }), { audited: true });
-
-addRoute('POST', '/v1/dream/runs/:id/apply', withAudit('dream.run-applied', 'automation', async (req, res, params) => {
-  const body = await readBody(req);
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(body);
-  } catch {
-    sendError(res, 400, 'Invalid JSON body');
-    return;
-  }
-  const applyReq = parsed as { appliedBy?: string };
-  if (!applyReq.appliedBy) {
-    sendError(res, 400, 'Missing required field: appliedBy');
-    return;
-  }
-  const runId = params.id;
-  const dreamResult = getDreamRunRecord(runId);
-  if (!dreamResult) {
-    sendError(res, 404, `Dream run not found: ${runId}`);
-    return;
-  }
-
-  // Enforce: auto-apply disabled by default — must have review approval
-  const review = dreamReviews.get(runId);
-  if (!review || review.decision !== 'approved') {
-    sendError(res, 403, 'Dream run must be reviewed and approved before applying. POST /v1/dream/runs/:id/review first.');
-    return;
-  }
-
-  // Enforce: delete is forbidden in MVP
-  const actions = dreamResult.run.report?.actions ?? [];
-  const deleteActions = actions.filter((a: any) => a.action_type === 'delete');
-  if (deleteActions.length > 0) {
-    sendError(res, 403, 'Delete actions are forbidden in MVP. Remove delete actions before applying.');
-    return;
-  }
-
-  // Enforce: architecture decisions require review (already checked above via review requirement)
-
-  const application: DreamApplication = {
-    runId,
-    appliedBy: applyReq.appliedBy,
-    appliedAt: new Date().toISOString(),
-    actionsApplied: actions.length,
-  };
-  dreamApplications.set(runId, application);
-
-  sendJson(res, 200, {
-    application,
-    before_json: dreamResult.run,
-    after_json: { ...dreamResult.run, status: 'completed', appliedAt: application.appliedAt },
-  });
-}, { resourceType: 'dream-run' }), { audited: true });
-
-addRoute('POST', '/v1/dream/runs/:id/rollback', withAudit('dream.run-rolled-back', 'automation', async (req, res, params) => {
-  const body = await readBody(req);
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(body);
-  } catch {
-    sendError(res, 400, 'Invalid JSON body');
-    return;
-  }
-  const rollbackReq = parsed as { rolledBackBy?: string };
-  if (!rollbackReq.rolledBackBy) {
-    sendError(res, 400, 'Missing required field: rolledBackBy');
-    return;
-  }
-  const runId = params.id;
-  const application = dreamApplications.get(runId);
-  if (!application) {
-    sendError(res, 404, `No application found for dream run: ${runId}. Cannot rollback a run that was not applied.`);
-    return;
-  }
-
-  // Remove the application record
-  dreamApplications.delete(runId);
-
-  const dreamResult = getDreamRunRecord(runId);
-
-  sendJson(res, 200, {
-    rollback: {
-      runId,
-      rolledBackBy: rollbackReq.rolledBackBy,
-      rolledBackAt: new Date().toISOString(),
+      sendJson(res, 200, { review });
     },
-    before_json: dreamResult?.run,
-    after_json: null,
-  });
-}, { resourceType: 'dream-run' }), { audited: true });
+    { resourceType: 'dream-run' }
+  ),
+  { audited: true }
+);
+
+addRoute(
+  'POST',
+  '/v1/dream/runs/:id/apply',
+  withAudit(
+    'dream.run-applied',
+    'automation',
+    async (req, res, params) => {
+      const body = await readBody(req);
+      let parsed: unknown;
+      try {
+        parsed = JSON.parse(body);
+      } catch {
+        sendError(res, 400, 'Invalid JSON body');
+        return;
+      }
+      const applyReq = parsed as { appliedBy?: string };
+      if (!applyReq.appliedBy) {
+        sendError(res, 400, 'Missing required field: appliedBy');
+        return;
+      }
+      const runId = params.id;
+      const dreamResult = getDreamRunRecord(runId);
+      if (!dreamResult) {
+        sendError(res, 404, `Dream run not found: ${runId}`);
+        return;
+      }
+
+      // Enforce: auto-apply disabled by default — must have review approval
+      const review = dreamReviews.get(runId);
+      if (!review || review.decision !== 'approved') {
+        sendError(
+          res,
+          403,
+          'Dream run must be reviewed and approved before applying. POST /v1/dream/runs/:id/review first.'
+        );
+        return;
+      }
+
+      // Enforce: delete is forbidden in MVP
+      const actions = dreamResult.run.report?.actions ?? [];
+      const deleteActions = actions.filter((a: any) => a.action_type === 'delete');
+      if (deleteActions.length > 0) {
+        sendError(
+          res,
+          403,
+          'Delete actions are forbidden in MVP. Remove delete actions before applying.'
+        );
+        return;
+      }
+
+      // Enforce: architecture decisions require review (already checked above via review requirement)
+
+      const application: DreamApplication = {
+        runId,
+        appliedBy: applyReq.appliedBy,
+        appliedAt: new Date().toISOString(),
+        actionsApplied: actions.length,
+      };
+      dreamApplications.set(runId, application);
+
+      sendJson(res, 200, {
+        application,
+        before_json: dreamResult.run,
+        after_json: { ...dreamResult.run, status: 'completed', appliedAt: application.appliedAt },
+      });
+    },
+    { resourceType: 'dream-run' }
+  ),
+  { audited: true }
+);
+
+addRoute(
+  'POST',
+  '/v1/dream/runs/:id/rollback',
+  withAudit(
+    'dream.run-rolled-back',
+    'automation',
+    async (req, res, params) => {
+      const body = await readBody(req);
+      let parsed: unknown;
+      try {
+        parsed = JSON.parse(body);
+      } catch {
+        sendError(res, 400, 'Invalid JSON body');
+        return;
+      }
+      const rollbackReq = parsed as { rolledBackBy?: string };
+      if (!rollbackReq.rolledBackBy) {
+        sendError(res, 400, 'Missing required field: rolledBackBy');
+        return;
+      }
+      const runId = params.id;
+      const application = dreamApplications.get(runId);
+      if (!application) {
+        sendError(
+          res,
+          404,
+          `No application found for dream run: ${runId}. Cannot rollback a run that was not applied.`
+        );
+        return;
+      }
+
+      // Remove the application record
+      dreamApplications.delete(runId);
+
+      const dreamResult = getDreamRunRecord(runId);
+
+      sendJson(res, 200, {
+        rollback: {
+          runId,
+          rolledBackBy: rollbackReq.rolledBackBy,
+          rolledBackAt: new Date().toISOString(),
+        },
+        before_json: dreamResult?.run,
+        after_json: null,
+      });
+    },
+    { resourceType: 'dream-run' }
+  ),
+  { audited: true }
+);
 
 // ── Governance: Policy Evaluation ────────────────────────────────────────
 
-addRoute('POST', '/v1/policies/evaluate', withAudit('policy.evaluated', 'audit', async (req, res) => {
-  const body = await readBody(req);
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(body);
-  } catch {
-    sendError(res, 400, 'Invalid JSON body');
-    return;
-  }
-  const evalReq = parsed as {
-    subject?: { type?: string; id?: string; roles?: string[]; service?: string };
-    action?: string;
-    resource?: { type?: string; id?: string; attributes?: Record<string, unknown> };
-    context?: Record<string, unknown>;
-  };
+addRoute(
+  'POST',
+  '/v1/policies/evaluate',
+  withAudit(
+    'policy.evaluated',
+    'audit',
+    async (req, res) => {
+      const body = await readBody(req);
+      let parsed: unknown;
+      try {
+        parsed = JSON.parse(body);
+      } catch {
+        sendError(res, 400, 'Invalid JSON body');
+        return;
+      }
+      const evalReq = parsed as {
+        subject?: { type?: string; id?: string; roles?: string[]; service?: string };
+        action?: string;
+        resource?: { type?: string; id?: string; attributes?: Record<string, unknown> };
+        context?: Record<string, unknown>;
+      };
 
-  if (!evalReq.subject || !evalReq.action || !evalReq.resource) {
-    sendError(res, 400, 'Missing required fields: subject, action, resource');
-    return;
-  }
-  if (!evalReq.subject.type || !evalReq.subject.id) {
-    sendError(res, 400, 'Subject must include type and id');
-    return;
-  }
-  if (!evalReq.resource.type) {
-    sendError(res, 400, 'Resource must include type');
-    return;
-  }
+      if (!evalReq.subject || !evalReq.action || !evalReq.resource) {
+        sendError(res, 400, 'Missing required fields: subject, action, resource');
+        return;
+      }
+      if (!evalReq.subject.type || !evalReq.subject.id) {
+        sendError(res, 400, 'Subject must include type and id');
+        return;
+      }
+      if (!evalReq.resource.type) {
+        sendError(res, 400, 'Resource must include type');
+        return;
+      }
 
-  const result = evaluatePolicy({
-    subject: {
-      type: evalReq.subject.type,
-      id: evalReq.subject.id,
-      roles: evalReq.subject.roles,
-      service: evalReq.subject.service,
+      const result = evaluatePolicy({
+        subject: {
+          type: evalReq.subject.type,
+          id: evalReq.subject.id,
+          roles: evalReq.subject.roles,
+          service: evalReq.subject.service,
+        },
+        action: evalReq.action,
+        resource: {
+          type: evalReq.resource.type,
+          id: evalReq.resource.id,
+          attributes: evalReq.resource.attributes,
+        },
+        context: evalReq.context,
+      });
+
+      const statusCode = result.allowed ? 200 : 403;
+      sendJson(res, statusCode, result);
     },
-    action: evalReq.action,
-    resource: {
-      type: evalReq.resource.type,
-      id: evalReq.resource.id,
-      attributes: evalReq.resource.attributes,
-    },
-    context: evalReq.context,
-  });
-
-  const statusCode = result.allowed ? 200 : 403;
-  sendJson(res, statusCode, result);
-}, { resourceType: 'policy-decision' }), { audited: true });
+    { resourceType: 'policy-decision' }
+  ),
+  { audited: true }
+);
 
 addRoute('GET', '/v1/policies', async (_req, res) => {
   const engine = getPolicyEngine();
@@ -795,7 +961,11 @@ const server = createServer(async (req, res) => {
     // If enforcement is enabled and this is a state-changing method (POST/PUT/DELETE)
     // that is NOT wrapped with withAudit(), reject it.
     if (auditEnforcementEnabled && ['POST', 'PUT', 'DELETE'].includes(method) && !route.audited) {
-      sendError(res, 403, `Audit enforcement: ${method} ${pathname} is not wrapped with withAudit(). State-changing operations must be auditable.`);
+      sendError(
+        res,
+        403,
+        `Audit enforcement: ${method} ${pathname} is not wrapped with withAudit(). State-changing operations must be auditable.`
+      );
       return;
     }
 
