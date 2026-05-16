@@ -21,49 +21,50 @@ jobs:
     name: Deploy to Dev Environment
     runs-on: ubuntu-latest
     environment: dev
+    env:
+      HAS_GCP_CREDS: ${{ secrets.GCP_PROJECT_ID != '' }}
     steps:
       - name: Check GCP credentials
-        id: check_creds
-        if: ${{ !secrets.GCP_PROJECT_ID }}
-        run: echo "GCP_PROJECT_ID not configured — skipping deployment" && exit 0
+        if: ${{ env.HAS_GCP_CREDS == 'false' }}
+        run: echo "GCP_PROJECT_ID not configured — skipping deployment"
 
       - name: Checkout repository
-        if: ${{ secrets.GCP_PROJECT_ID }}
+        if: ${{ env.HAS_GCP_CREDS == 'true' }}
         uses: actions/checkout@v4
 
       - name: 'Authenticate to Google Cloud'
-        if: ${{ secrets.GCP_PROJECT_ID }}
+        if: ${{ env.HAS_GCP_CREDS == 'true' }}
         uses: 'google-github-actions/auth@v2'
         with:
           workload_identity_provider: 'projects/${{ secrets.GCP_PROJECT_ID }}/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
           service_account: 'deploy-bot@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com'
 
       - name: Set up GKE credentials
-        if: ${{ secrets.GCP_PROJECT_ID }}
+        if: ${{ env.HAS_GCP_CREDS == 'true' }}
         uses: google-github-actions/get-gke-credentials@v1
         with:
           cluster_name: dev-cluster
           location: us-central1
 
       - name: Download Build Artifacts
-        if: ${{ secrets.GCP_PROJECT_ID }}
+        if: ${{ env.HAS_GCP_CREDS == 'true' }}
         uses: actions/download-artifact@v4
         with:
           path: dist
 
       - name: Deploy with Kustomize
-        if: ${{ secrets.GCP_PROJECT_ID }}
+        if: ${{ env.HAS_GCP_CREDS == 'true' }}
         run: |
           kustomize build deploy/kustomize/overlays/dev | kubectl apply -f -
           kubectl rollout status deployment/my-app-api -n dev
           kubectl rollout status deployment/my-app-web -n dev
 
       - name: Run Smoke Tests
-        if: ${{ secrets.GCP_PROJECT_ID }}
+        if: ${{ env.HAS_GCP_CREDS == 'true' }}
         run: ./ops/scripts/smoke.sh dev
 
       - name: Log Deployment
-        if: ${{ secrets.GCP_PROJECT_ID }}
+        if: ${{ env.HAS_GCP_CREDS == 'true' }}
         run: |
           echo "Deployment to dev successful."
           # In a real scenario, you'd log to a dedicated audit service here.
@@ -77,7 +78,7 @@ jobs:
           }' >> deployment-audit.log
 
       - name: Upload Audit Log
-        if: ${{ secrets.GCP_PROJECT_ID }}
+        if: ${{ env.HAS_GCP_CREDS == 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: deployment-audit-log-dev

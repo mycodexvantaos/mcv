@@ -17,20 +17,21 @@ jobs:
   gitleaks_scan:
     name: Gitleaks Scan
     runs-on: ubuntu-latest
+    env:
+      HAS_GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE != '' }}
     steps:
       - name: Check Gitleaks license
-        id: check_license
-        if: ${{ !secrets.GITLEAKS_LICENSE }}
-        run: echo "GITLEAKS_LICENSE not configured — skipping scan" && exit 0
+        if: ${{ env.HAS_GITLEAKS_LICENSE == 'false' }}
+        run: echo "GITLEAKS_LICENSE not configured — skipping scan"
 
       - name: Checkout repository
-        if: ${{ secrets.GITLEAKS_LICENSE }}
+        if: ${{ env.HAS_GITLEAKS_LICENSE == 'true' }}
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Run Gitleaks
-        if: ${{ secrets.GITLEAKS_LICENSE }}
+        if: ${{ env.HAS_GITLEAKS_LICENSE == 'true' }}
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
