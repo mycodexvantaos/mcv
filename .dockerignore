@@ -1,21 +1,65 @@
-node_modules/
-dist/
-.next/
-out/
-build/
+# ── Version control ──
+.git
+.github
+
+# ── Dependencies (installed fresh inside container) ──
+node_modules
+**/node_modules
+
+# ── Build outputs (built inside container) ──
+dist
+.next
+out
+build
+coverage
+.nyc_output
+.turbo
+.cache
+
+# ── Environment & secrets ──
 .env
-.env.local
-.git/
-.github/
-.vscode/
-__tests__/
-coverage/
-*.test.ts
-*.spec.ts
-docs/
+.env.*
+!.env.example
+
+# ── OS artifacts ──
+.DS_Store
+Thumbs.db
+
+# ── Python virtual environments ──
+python/.venv
+python/**/__pycache__
+python/**/.pytest_cache
+*.py
+
+# ── IDE ──
+.vscode
+.idea
+*.swp
+*.swo
+
+# ── Docker (prevent recursive copies) ──
+Dockerfile*
+docker-compose*
+.docker
+
+# ── Web / public assets (not needed in api-node container) ──
+public
+web-deploy
+outputs
+
+# ── Docs & meta ──
+docs
 *.md
 !README.md
-*.py
-public/
-web-deploy/
-outputs/
+!packages/*/README.md
+!services/*/README.md
+!apps/*/README.md
+
+# ── Test artifacts ──
+test
+tests
+__tests__
+*.test.ts
+*.test.js
+*.spec.ts
+*.spec.js
