@@ -1,252 +1,90 @@
-# ═══════════════════════════════════════════════════════════════════
-# MyCodeXvantaOS — Docker Compose Self-Hosted Deployment
-# Phase 2 (Portable Core) — portable alternatives for all adapters
-#   - PostgreSQL (D1 portable alternative)
-#   - Redis (KV portable alternative)
-#   - MinIO (R2 portable alternative)
-#   - Qdrant (Vectorize portable alternative)
-#   - RabbitMQ (Cloudflare Queues portable alternative)
-# ═══════════════════════════════════════════════════════════════════
-version: '3.8'
-
-x-common-env: &common-env
-  NODE_ENV: production
-  LOG_LEVEL: info
-  DATABASE_URL: postgres://mycodexvantaos:mycodexvantaos@postgres:5432/mycodexvantaos
-  REDIS_URL: redis://redis:6379
-  MINIO_ENDPOINT: minio:9000
-  MINIO_ACCESS_KEY: mycodexvantaos
-  MINIO_SECRET_KEY: mycodexvantaos-secret
-  QDRANT_URL: http://qdrant:6333
-  RABBITMQ_URL: amqp://mycodexvantaos:mycodexvantaos@rabbitmq:5672
-  ENCRYPTION_KEY: ${ENCRYPTION_KEY:-change-me-in-production-32ch}
+# ── MyCodeXvantaOS Docker Compose ─────────────────────────────────────
+# Self-hostable runtime for the governance-hardened platform
+#
+# Services:
+#   api-node      — Node.js API server (TypeScript control plane)
+#   dream-worker  — Python dream worker (intelligence plane)
+#   postgres      — Persistent storage (production-grade)
+#
+# Usage:
+#   docker compose up                # Start all services
+#   docker compose up api-node       # Start only the API
+#   docker compose logs -f api-node  # Follow API logs
+#
+# Governance enforcement is active by default:
+#   - All mutations are audited
+#   - Policy engine evaluates requests
+#   - Knowledge-assisted requires receipts
+#   - Dream: auto-apply disabled, delete forbidden, review required
+#
+# For development (SQLite instead of Postgres):
+#   Set USE_SQLITE=1 and remove the postgres service
 
 services:
-  # ── Platform Services ──────────────────────────────────────────
-
-  identity:
+  # ── API Node (TypeScript Control Plane) ────────────────────────────
+  api-node:
     build:
       context: ../..
-      dockerfile: infra/docker/Dockerfile.service
-      args:
-        SERVICE_NAME: identity
+      dockerfile: infra/docker-compose/Dockerfile.api-node
+    container_name: mycodexvantaos-api
     ports:
-      - '8001:8000'
+      - "${API_PORT:-3100}:3100"
     environment:
-      <<: *common-env
-      SERVICE_NAME: identity
+      - NODE_ENV=production
+      - PORT=3100
+      - DATABASE_URL=${DATABASE_URL:-postgres://mycodexvantaos:mycodexvantaos@postgres:5432/mycodexvantaos}
+    volumes:
+      - ../../contracts:/app/contracts:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3100/"]
+      interval: 30s
+      timeout: 5s
+      start_period: 15s
+      retries: 3
+    restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
-      redis:
-        condition: service_healthy
 
-  workspace:
+  # ── Dream Worker (Python Intelligence Plane) ───────────────────────
+  dream-worker:
     build:
       context: ../..
-      dockerfile: infra/docker/Dockerfile.service
-      args:
-        SERVICE_NAME: workspace
-    ports:
-      - '8002:8000'
+      dockerfile: infra/docker-compose/Dockerfile.dream-worker
+    container_name: mycodexvantaos-dream
     environment:
-      <<: *common-env
-      SERVICE_NAME: workspace
-      IDENTITY_SERVICE_URL: http://identity:8000
-    depends_on:
-      - identity
+      - DREAM_MODE=${DREAM_MODE:-dry-run}
+      - PYTHONUNBUFFERED=1
+      - DATABASE_URL=${DATABASE_URL:-postgres://mycodexvantaos:mycodexvantaos@postgres:5432/mycodexvantaos}
+    volumes:
+      - dream-data:/app/data
+    restart: unless-stopped
+    # Dream worker runs on-demand via CLI, not as a long-lived server
+    # Override command for different modes:
+    #   docker compose run dream-worker dream-worker run --mode proposal
+    command: ["dream-worker", "run", "--mode", "${DREAM_MODE:-dry-run}"]
 
-  knowledge-store:
-    build:
-      context: ../..
-      dockerfile: infra/docker/Dockerfile.service
-      args:
-        SERVICE_NAME: knowledge-store
-    ports:
-      - '8003:8000'
-    environment:
-      <<: *common-env
-      SERVICE_NAME: knowledge-store
-      IDENTITY_SERVICE_URL: http://identity:8000
-      MINIO_BUCKET: mycodexvantaos-documents
-    depends_on:
-      - identity
-      - minio
-      - qdrant
-
-  knowledge-search:
-    build:
-      context: ../..
-      dockerfile: infra/docker/Dockerfile.service
-      args:
-        SERVICE_NAME: knowledge-search
-    ports:
-      - '8004:8000'
-    environment:
-      <<: *common-env
-      SERVICE_NAME: knowledge-search
-      IDENTITY_SERVICE_URL: http://identity:8000
-    depends_on:
-      - identity
-      - qdrant
-
-  agent-chat:
-    build:
-      context: ../..
-      dockerfile: infra/docker/Dockerfile.service
-      args:
-        SERVICE_NAME: agent-chat
-    ports:
-      - '8005:8000'
-    environment:
-      <<: *common-env
-      SERVICE_NAME: agent-chat
-      IDENTITY_SERVICE_URL: http://identity:8000
-      KNOWLEDGE_SEARCH_URL: http://knowledge-search:8000
-      MODEL_BYOK_URL: http://model-byok:8000
-    depends_on:
-      - knowledge-search
-      - model-byok
-
-  model-byok:
-    build:
-      context: ../..
-      dockerfile: infra/docker/Dockerfile.service
-      args:
-        SERVICE_NAME: model-byok
-    ports:
-      - '8006:8000'
-    environment:
-      <<: *common-env
-      SERVICE_NAME: model-byok
-      IDENTITY_SERVICE_URL: http://identity:8000
-    depends_on:
-      - identity
-
-  audit-log:
-    build:
-      context: ../..
-      dockerfile: infra/docker/Dockerfile.service
-      args:
-        SERVICE_NAME: audit-log
-    ports:
-      - '8007:8000'
-    environment:
-      <<: *common-env
-      SERVICE_NAME: audit-log
-      MINIO_BUCKET: mycodexvantaos-audit-archive
-    depends_on:
-      - postgres
-      - minio
-      - rabbitmq
-
-  usage-meter:
-    build:
-      context: ../..
-      dockerfile: infra/docker/Dockerfile.service
-      args:
-        SERVICE_NAME: usage-meter
-    ports:
-      - '8008:8000'
-    environment:
-      <<: *common-env
-      SERVICE_NAME: usage-meter
-    depends_on:
-      - postgres
-      - redis
-
-  # ── API Gateway ────────────────────────────────────────────────
-
-  gateway:
-    build:
-      context: ../..
-      dockerfile: infra/docker/Dockerfile.gateway
-    ports:
-      - '8080:8080'
-    environment:
-      IDENTITY_URL: http://identity:8000
-      WORKSPACE_URL: http://workspace:8000
-      KNOWLEDGE_STORE_URL: http://knowledge-store:8000
-      KNOWLEDGE_SEARCH_URL: http://knowledge-search:8000
-      AGENT_CHAT_URL: http://agent-chat:8000
-      MODEL_BYOK_URL: http://model-byok:8000
-      AUDIT_LOG_URL: http://audit-log:8000
-      USAGE_METER_URL: http://usage-meter:8000
-    depends_on:
-      - identity
-      - workspace
-      - knowledge-store
-      - knowledge-search
-      - agent-chat
-      - model-byok
-      - audit-log
-      - usage-meter
-
-  # ── Infrastructure Services (Portable Alternatives) ────────────
-
+  # ── PostgreSQL (Production Storage) ────────────────────────────────
   postgres:
-    image: postgres:15-alpine
+    image: postgres:16-alpine
+    container_name: mycodexvantaos-db
     environment:
-      POSTGRES_USER: mycodexvantaos
-      POSTGRES_PASSWORD: mycodexvantaos
       POSTGRES_DB: mycodexvantaos
+      POSTGRES_USER: mycodexvantaos
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-mycodexvantaos}
     ports:
-      - '5432:5432'
+      - "${DB_PORT:-5432}:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
-      - ../../migrations/d1:/docker-entrypoint-initdb.d:ro
+      - pg-data:/var/lib/postgresql/data
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U mycodexvantaos']
+      test: ["CMD-SHELL", "pg_isready -U mycodexvantaos"]
       interval: 5s
       timeout: 5s
       retries: 5
-
-  redis:
-    image: redis:7-alpine
-    ports:
-      - '6379:6379'
-    volumes:
-      - redisdata:/data
-    healthcheck:
-      test: ['CMD', 'redis-cli', 'ping']
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
-  minio:
-    image: minio/minio:latest
-    command: server /data --console-address ":9001"
-    environment:
-      MINIO_ROOT_USER: mycodexvantaos
-      MINIO_ROOT_PASSWORD: mycodexvantaos-secret
-    ports:
-      - '9000:9000'
-      - '9001:9001'
-    volumes:
-      - miniodata:/data
-
-  qdrant:
-    image: qdrant/qdrant:latest
-    ports:
-      - '6333:6333'
-      - '6334:6334'
-    volumes:
-      - qdrantdata:/qdrant/storage
-
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
-    environment:
-      RABBITMQ_DEFAULT_USER: mycodexvantaos
-      RABBITMQ_DEFAULT_PASS: mycodexvantaos
-    ports:
-      - '5672:5672'
-      - '15672:15672'
-    volumes:
-      - rabbitmqdata:/var/lib/rabbitmq
+    restart: unless-stopped
 
 volumes:
-  pgdata:
-  redisdata:
-  miniodata:
-  qdrantdata:
-  rabbitmqdata:
+  dream-data:
+    driver: local
+  pg-data:
+    driver: local

@@ -1,15 +1,9 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "types": ["@cloudflare/workers-types"],
+    "types": ["@cloudflare/workers-types", "node"],
     "outDir": "./dist",
     "rootDir": "."
   },
-  "include": ["index.ts"],
-  "references": [
-    { "path": "../../packages/core" },
-    { "path": "../../packages/ports" },
-    { "path": "../../packages/application" },
-    { "path": "../../packages/adapters" }
-  ]
+  "include": ["index.ts"]
 }

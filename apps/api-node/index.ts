@@ -9,13 +9,19 @@
  *   Loop 4: POST /v1/knowledge/search (with retrieval receipt)
  *   Loop 5: POST /v1/dream/run, GET /v1/dream/runs/:id
  *
+ * Governance hardening (spectrum-03):
+ *   Loop 6: POST /v1/policies/evaluate, GET /v1/policies
+ *   withAudit() enforcement on all state-changing routes
+ *   Knowledge trace enforcement (receipt required)
+ *   Dream safety enforcement (review/apply/rollback)
+ *
  * Uses Node.js http module — zero external HTTP framework dependencies.
  * All contract data loaded via @mycodexvantaos/contracts-sdk.
  */
 
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 
-// ─── Service imports ──────────────────────────────────────────────────────────
+// ── Service imports ──────────────────────────────────────────────────────
 
 import {
   listServices,
@@ -59,9 +65,13 @@ import {
   getDreamStats,
 } from '@mycodexvantaos/service-memory-dream';
 
-// ─── Knowledge trace (delegated to service-knowledge-trace) ──────────
+import {
+  evaluatePolicy,
+  getPolicyEngine,
+  type PolicyEvaluateRequest as PolicyEvaluateRequestType,
+} from '@mycodexvantaos/service-policy-engine';
 
-// ─── Dream run models (in-memory MVP) ─────────────────────────────────────────
+// ── Dream run models (in-memory MVP) ────────────────────────────────────
 
 interface DreamRun {
   runId: string;
@@ -80,7 +90,7 @@ interface DreamRun {
 
 const dreamRuns = new Map<string, DreamRun>();
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+// ── Helpers ──────────────────────────────────────────────────────────────
 
 function generateId(prefix: string): string {
   const timestamp = Date.now().toString(36);
@@ -111,7 +121,7 @@ function sendError(res: ServerResponse, status: number, message: string): void {
   sendJson(res, status, { error: message });
 }
 
-// ─── Route matching ───────────────────────────────────────────────────────────
+// ── Route matching ───────────────────────────────────────────────────────
 
 type RouteHandler = (
   req: IncomingMessage,
@@ -125,22 +135,99 @@ interface Route {
   pattern: RegExp;
   paramNames: string[];
   handler: RouteHandler;
+  audited?: boolean;
 }
 
 const routes: Route[] = [];
 
-function addRoute(method: string, path: string, handler: RouteHandler): void {
-  // Convert path like /v1/services/:id to a regex with named captures
+function addRoute(method: string, path: string, handler: RouteHandler, opts?: { audited?: boolean }): void {
   const paramNames: string[] = [];
   const regexStr = path.replace(/:([a-zA-Z_]+)/g, (_, name) => {
     paramNames.push(name);
     return '([^/]+)';
   });
   const pattern = new RegExp(`^${regexStr}$`);
-  routes.push({ method, pattern, paramNames, handler });
+  routes.push({ method, pattern, paramNames, handler, audited: opts?.audited });
 }
 
-// ─── Health / Meta ────────────────────────────────────────────────────────────
+// ── Audit Enforcement Middleware ─────────────────────────────────────────
+
+/**
+ * withAudit() wraps a state-changing route handler to ensure it produces an audit event.
+ * This is the governance enforcement layer — every mutation must be auditable.
+ *
+ * If audit enforcement is enabled (default), any POST/PUT/DELETE route that is NOT
+ * wrapped with withAudit() will be rejected at runtime with a 403 error.
+ *
+ * Usage:
+ *   addRoute('POST', '/v1/dream/run', withAudit('dream.run-initiated', 'automation', handler));
+ */
+let auditEnforcementEnabled = true;
+
+export function setAuditEnforcement(enabled: boolean): void {
+  auditEnforcementEnabled = enabled;
+}
+
+export function isAuditEnforcementEnabled(): boolean {
+  return auditEnforcementEnabled;
+}
+
+type AuditableEventType = string;
+type AuditableCategory = 'knowledge' | 'agent' | 'workspace' | 'developer' | 'security' | 'storage' | 'model' | 'automation' | 'audit';
+
+function withAudit(
+  eventType: AuditableEventType,
+  category: AuditableCategory,
+  handler: RouteHandler,
+  opts?: {
+    severity?: 'info' | 'warning' | 'error';
+    resourceType?: string;
+    resourceIdParam?: string;
+  }
+): RouteHandler {
+  return async (req, res, params, query) => {
+    // Track the response status by intercepting writeHead
+    let responseStatus = 200;
+    const originalWriteHead = res.writeHead;
+
+    // Override writeHead to capture the status code
+    res.writeHead = function (statusCode: number, ...args: unknown[]) {
+      responseStatus = statusCode;
+      // Call original with proper types
+      if (args.length === 0) return originalWriteHead.call(res, statusCode);
+      if (typeof args[0] === 'string' && args.length === 1) return originalWriteHead.call(res, statusCode, args[0] as string);
+      if (typeof args[0] === 'object' && args.length === 1) return originalWriteHead.call(res, statusCode, args[0] as Record<string, string | string[]>);
+      if (typeof args[0] === 'string' && typeof args[1] === 'object') return originalWriteHead.call(res, statusCode, args[0] as string, args[1] as Record<string, string | string[]>);
+      return originalWriteHead.call(res, statusCode);
+    };
+
+    // Execute the handler
+    await handler(req, res, params, query);
+
+    // Produce audit event for the state-changing operation
+    const success = responseStatus >= 200 && responseStatus < 300;
+    const resourceType = opts?.resourceType ?? 'unknown';
+    const resourceId = opts?.resourceIdParam ? params[opts.resourceIdParam] : undefined;
+
+    recordEvent({
+      eventType,
+      category,
+      severity: success ? (opts?.severity ?? 'info') : 'warning',
+      actor: { type: 'system', id: 'api-node' },
+      resource: { type: resourceType, id: resourceId },
+      context: { tenantId: 'system', workspaceId: null },
+      data: {
+        method: req.method,
+        path: req.url,
+        status: responseStatus,
+        success,
+        enforcedBy: 'withAudit',
+      },
+    });
+  };
+}
+
+// ── Health / Meta ────────────────────────────────────────────────────────
 
 addRoute('GET', '/v1/health', async (_req, res) => {
   sendJson(res, 200, {
@@ -156,11 +243,10 @@ addRoute('GET', '/v1/contracts/validate', async (_req, res) => {
   sendJson(res, 200, result);
 });
 
-// ─── Loop 1: Service Catalog ─────────────────────────────────────────────────
+// ── Loop 1: Service Catalog ─────────────────────────────────────────────
 
 addRoute('GET', '/v1/services', async (_req, res, _params, query) => {
   const result = listServices();
-  // Support optional filtering by category
   const category = query['category'];
   if (category) {
     const filtered = result.services.filter((s) => s.category === category);
@@ -179,7 +265,7 @@ addRoute('GET', '/v1/services/:id', async (_req, res, params) => {
   sendJson(res, 200, { service });
 });
 
-// ─── Loop 2: Resource Registry ───────────────────────────────────────────────
+// ── Loop 2: Resource Registry ───────────────────────────────────────────
 
 addRoute('GET', '/v1/resource-kinds', async (_req, res) => {
   const result = listResourceKinds();
@@ -195,9 +281,9 @@ addRoute('GET', '/v1/resource-kinds/:kind', async (_req, res, params) => {
   sendJson(res, 200, { resourceKind });
 });
 
-// ─── Loop 3: Audit Event Runtime ─────────────────────────────────────────────
+// ── Loop 3: Audit Event Runtime (with withAudit enforcement) ────────────
 
-addRoute('POST', '/v1/audit/events', async (req, res) => {
+addRoute('POST', '/v1/audit/events', withAudit('audit.event-created', 'audit', async (req, res) => {
   const body = await readBody(req);
   let parsed: unknown;
   try {
@@ -213,7 +299,7 @@ addRoute('POST', '/v1/audit/events', async (req, res) => {
   }
   const result = recordEvent(createReq);
   sendJson(res, 201, result);
-});
+}, { resourceType: 'audit-event' }), { audited: true });
 
 addRoute('GET', '/v1/audit/events', async (_req, res, _params, query) => {
   const result = queryEvents({
@@ -246,9 +332,9 @@ addRoute('GET', '/v1/audit/verify', async (_req, res) => {
   sendJson(res, 200, result);
 });
 
-// ─── Loop 4: Knowledge Trace Runtime ─────────────────────────────────────────
+// ── Loop 4: Knowledge Trace Runtime (with withAudit enforcement) ────────
 
-addRoute('POST', '/v1/knowledge/search', async (req, res) => {
+addRoute('POST', '/v1/knowledge/search', withAudit('knowledge.search', 'knowledge', async (req, res) => {
   const body = await readBody(req);
   let parsed: unknown;
   try {
@@ -263,7 +349,6 @@ addRoute('POST', '/v1/knowledge/search', async (req, res) => {
     return;
   }
 
-  // Create a retrieval receipt via knowledge-trace service
   const { receipt } = createReceipt({
     query: searchReq.query,
     collectionIds: searchReq.collectionIds,
@@ -282,9 +367,9 @@ addRoute('POST', '/v1/knowledge/search', async (req, res) => {
       createdAt: receipt.createdAt,
     },
   });
-});
+}, { resourceType: 'knowledge-receipt' }), { audited: true });
 
-addRoute('POST', '/v1/knowledge/answer', async (req, res) => {
+addRoute('POST', '/v1/knowledge/answer', withAudit('knowledge.answer-created', 'knowledge', async (req, res) => {
   const body = await readBody(req);
   let parsed: unknown;
   try {
@@ -293,10 +378,20 @@ addRoute('POST', '/v1/knowledge/answer', async (req, res) => {
     sendError(res, 400, 'Invalid JSON body');
     return;
   }
-  const answerReq = parsed as { receiptId: string; answer: string; evidenceLevel?: string; citations?: Array<{ chunkId: string; text: string }> };
+  const answerReq = parsed as { receiptId: string; answer: string; evidenceLevel?: string; citations?: Array<{ chunkId: string; text: string }>; knowledge_assisted?: boolean };
   if (!answerReq.receiptId || !answerReq.answer) {
     sendError(res, 400, 'Missing required fields: receiptId, answer');
     return;
+  }
+
+  // ── Knowledge Trace Enforcement (PR 46) ────────────────────────────
+  // If knowledge_assisted=true, the receiptId MUST be a valid retrieval receipt
+  if (answerReq.knowledge_assisted === true) {
+    const receipt = getRetrievalReceipt(answerReq.receiptId);
+    if (!receipt) {
+      sendError(res, 403, `Knowledge-assisted answer requires valid retrieval_receipt_id. Receipt not found: ${answerReq.receiptId}`);
+      return;
+    }
   }
 
   try {
@@ -311,7 +406,7 @@ addRoute('POST', '/v1/knowledge/answer', async (req, res) => {
     const message = err instanceof Error ? err.message : 'Internal error';
     sendError(res, 400, message);
   }
-});
+}, { resourceType: 'knowledge-answer-trace' }), { audited: true });
 
 addRoute('GET', '/v1/knowledge/retrieval-receipts/:id', async (_req, res, params) => {
   const receipt = getRetrievalReceipt(params.id);
@@ -336,9 +431,9 @@ addRoute('GET', '/v1/knowledge/verify/:id', async (_req, res, params) => {
   sendJson(res, 200, result);
 });
 
-// ─── Loop 5: Memory Dream Runtime ────────────────────────────────────────────
+// ── Loop 5: Memory Dream Runtime (with withAudit enforcement) ───────────
 
-addRoute('POST', '/v1/dream/run', async (req, res) => {
+addRoute('POST', '/v1/dream/run', withAudit('dream.run-initiated', 'automation', async (req, res) => {
   const body = await readBody(req);
   let parsed: unknown;
   try {
@@ -356,24 +451,13 @@ addRoute('POST', '/v1/dream/run', async (req, res) => {
     memory_items: dreamReq.memory_items as import('@mycodexvantaos/service-memory-dream').MemoryItem[] | undefined,
   });
 
-  // Record audit event for dream run
-  recordEvent({
-    eventType: 'dream.run-initiated',
-    category: 'automation',
-    severity: 'info',
-    actor: { type: 'system', id: 'dream-worker' },
-    resource: { type: 'dream-run', id: result.run.runId },
-    context: { tenantId: 'system', workspaceId: null },
-    data: { mode, runId: result.run.runId },
-  });
-
   sendJson(res, 202, {
     runId: result.run.runId,
     mode: result.run.mode,
     status: result.run.status,
     report: result.run.report,
   });
-});
+}, { resourceType: 'dream-run' }), { audited: true });
 
 addRoute('GET', '/v1/dream/runs/:id', async (_req, res, params) => {
   const result = getDreamRunRecord(params.id);
@@ -403,7 +487,222 @@ addRoute('GET', '/v1/dream/stats', async (_req, res) => {
   sendJson(res, 200, stats);
 });
 
-// ─── Root ─────────────────────────────────────────────────────────────────────
+// ── Dream Safety Enforcement (PR 47) ────────────────────────────────────
+
+/** In-memory store for dream run reviews */
+interface DreamReview {
+  runId: string;
+  reviewer: string;
+  decision: 'approved' | 'rejected';
+  comment?: string;
+  reviewedAt: string;
+}
+
+interface DreamApplication {
+  runId: string;
+  appliedBy: string;
+  appliedAt: string;
+  actionsApplied: number;
+}
+
+const dreamReviews = new Map<string, DreamReview>();
+const dreamApplications = new Map<string, DreamApplication>();
+
+addRoute('POST', '/v1/dream/runs/:id/review', withAudit('dream.run-reviewed', 'automation', async (req, res, params) => {
+  const body = await readBody(req);
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(body);
+  } catch {
+    sendError(res, 400, 'Invalid JSON body');
+    return;
+  }
+  const reviewReq = parsed as { reviewer?: string; decision?: 'approved' | 'rejected'; comment?: string };
+  if (!reviewReq.reviewer || !reviewReq.decision) {
+    sendError(res, 400, 'Missing required fields: reviewer, decision');
+    return;
+  }
+  const runId = params.id;
+  const dreamResult = getDreamRunRecord(runId);
+  if (!dreamResult) {
+    sendError(res, 404, `Dream run not found: ${runId}`);
+    return;
+  }
+
+  // Check if the dream run has architecture decision actions that require review
+  const actions = dreamResult.run.report?.actions ?? [];
+  const archActions = actions.filter((a: any) =>
+    a.action_type === 'merge' || a.action_type === 'deprecate'
+  );
+
+  const review: DreamReview = {
+    runId,
+    reviewer: reviewReq.reviewer,
+    decision: reviewReq.decision,
+    comment: reviewReq.comment,
+    reviewedAt: new Date().toISOString(),
+  };
+  dreamReviews.set(runId, review);
+
+  sendJson(res, 200, { review });
+}, { resourceType: 'dream-run' }), { audited: true });
+
+addRoute('POST', '/v1/dream/runs/:id/apply', withAudit('dream.run-applied', 'automation', async (req, res, params) => {
+  const body = await readBody(req);
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(body);
+  } catch {
+    sendError(res, 400, 'Invalid JSON body');
+    return;
+  }
+  const applyReq = parsed as { appliedBy?: string };
+  if (!applyReq.appliedBy) {
+    sendError(res, 400, 'Missing required field: appliedBy');
+    return;
+  }
+  const runId = params.id;
+  const dreamResult = getDreamRunRecord(runId);
+  if (!dreamResult) {
+    sendError(res, 404, `Dream run not found: ${runId}`);
+    return;
+  }
+
+  // Enforce: auto-apply disabled by default — must have review approval
+  const review = dreamReviews.get(runId);
+  if (!review || review.decision !== 'approved') {
+    sendError(res, 403, 'Dream run must be reviewed and approved before applying. POST /v1/dream/runs/:id/review first.');
+    return;
+  }
+
+  // Enforce: delete is forbidden in MVP
+  const actions = dreamResult.run.report?.actions ?? [];
+  const deleteActions = actions.filter((a: any) => a.action_type === 'delete');
+  if (deleteActions.length > 0) {
+    sendError(res, 403, 'Delete actions are forbidden in MVP. Remove delete actions before applying.');
+    return;
+  }
+
+  // Enforce: architecture decisions require review (already checked above via review requirement)
+
+  const application: DreamApplication = {
+    runId,
+    appliedBy: applyReq.appliedBy,
+    appliedAt: new Date().toISOString(),
+    actionsApplied: actions.length,
+  };
+  dreamApplications.set(runId, application);
+
+  sendJson(res, 200, {
+    application,
+    before_json: dreamResult.run,
+    after_json: { ...dreamResult.run, status: 'completed', appliedAt: application.appliedAt },
+  });
+}, { resourceType: 'dream-run' }), { audited: true });
+
+addRoute('POST', '/v1/dream/runs/:id/rollback', withAudit('dream.run-rolled-back', 'automation', async (req, res, params) => {
+  const body = await readBody(req);
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(body);
+  } catch {
+    sendError(res, 400, 'Invalid JSON body');
+    return;
+  }
+  const rollbackReq = parsed as { rolledBackBy?: string };
+  if (!rollbackReq.rolledBackBy) {
+    sendError(res, 400, 'Missing required field: rolledBackBy');
+    return;
+  }
+  const runId = params.id;
+  const application = dreamApplications.get(runId);
+  if (!application) {
+    sendError(res, 404, `No application found for dream run: ${runId}. Cannot rollback a run that was not applied.`);
+    return;
+  }
+
+  // Remove the application record
+  dreamApplications.delete(runId);
+
+  const dreamResult = getDreamRunRecord(runId);
+
+  sendJson(res, 200, {
+    rollback: {
+      runId,
+      rolledBackBy: rollbackReq.rolledBackBy,
+      rolledBackAt: new Date().toISOString(),
+    },
+    before_json: dreamResult?.run,
+    after_json: null,
+  });
+}, { resourceType: 'dream-run' }), { audited: true });
+
+// ── Governance: Policy Evaluation ────────────────────────────────────────
+
+addRoute('POST', '/v1/policies/evaluate', withAudit('policy.evaluated', 'audit', async (req, res) => {
+  const body = await readBody(req);
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(body);
+  } catch {
+    sendError(res, 400, 'Invalid JSON body');
+    return;
+  }
+  const evalReq = parsed as {
+    subject?: { type?: string; id?: string; roles?: string[]; service?: string };
+    action?: string;
+    resource?: { type?: string; id?: string; attributes?: Record<string, unknown> };
+    context?: Record<string, unknown>;
+  };
+
+  if (!evalReq.subject || !evalReq.action || !evalReq.resource) {
+    sendError(res, 400, 'Missing required fields: subject, action, resource');
+    return;
+  }
+  if (!evalReq.subject.type || !evalReq.subject.id) {
+    sendError(res, 400, 'Subject must include type and id');
+    return;
+  }
+  if (!evalReq.resource.type) {
+    sendError(res, 400, 'Resource must include type');
+    return;
+  }
+
+  const result = evaluatePolicy({
+    subject: {
+      type: evalReq.subject.type,
+      id: evalReq.subject.id,
+      roles: evalReq.subject.roles,
+      service: evalReq.subject.service,
+    },
+    action: evalReq.action,
+    resource: {
+      type: evalReq.resource.type,
+      id: evalReq.resource.id,
+      attributes: evalReq.resource.attributes,
+    },
+    context: evalReq.context,
+  });
+
+  const statusCode = result.allowed ? 200 : 403;
+  sendJson(res, statusCode, result);
+}, { resourceType: 'policy-decision' }), { audited: true });
+
+addRoute('GET', '/v1/policies', async (_req, res) => {
+  const engine = getPolicyEngine();
+  const policies = engine.listPolicies();
+  sendJson(res, 200, {
+    policies: policies.map((p) => ({
+      id: p.id,
+      description: p.description,
+      ruleCount: p.rules.length,
+    })),
+    total: policies.length,
+    ruleCount: engine.getRuleCount(),
+  });
+});
+
+// ── Root ─────────────────────────────────────────────────────────────────
 
 addRoute('GET', '/', async (_req, res) => {
   sendJson(res, 200, {
@@ -417,7 +716,13 @@ addRoute('GET', '/', async (_req, res) => {
       'audit-log',
       'knowledge-trace',
       'memory-dream',
+      'policy-engine',
     ],
+    governance: {
+      auditEnforcement: auditEnforcementEnabled,
+      knowledgeTraceEnforcement: true,
+      dreamSafetyEnforcement: true,
+    },
     endpoints: [
       'GET  /v1/health',
       'GET  /v1/contracts/validate',
@@ -438,11 +743,16 @@ addRoute('GET', '/', async (_req, res) => {
       'GET  /v1/dream/runs/:id',
       'GET  /v1/dream/runs/:id/actions',
       'GET  /v1/dream/stats',
+      'POST /v1/dream/runs/:id/review',
+      'POST /v1/dream/runs/:id/apply',
+      'POST /v1/dream/runs/:id/rollback',
+      'POST /v1/policies/evaluate',
+      'GET  /v1/policies',
     ],
   });
 });
 
-// ─── HTTP Server ──────────────────────────────────────────────────────────────
+// ── HTTP Server ──────────────────────────────────────────────────────────
 
 const PORT = Number(process.env.PORT ?? 9100);
 
@@ -481,6 +791,14 @@ const server = createServer(async (req, res) => {
       params[route.paramNames[i]] = match[i + 1];
     }
 
+    // ── Audit Enforcement Check ─────────────────────────────────────
+    // If enforcement is enabled and this is a state-changing method (POST/PUT/DELETE)
+    // that is NOT wrapped with withAudit(), reject it.
+    if (auditEnforcementEnabled && ['POST', 'PUT', 'DELETE'].includes(method) && !route.audited) {
+      sendError(res, 403, `Audit enforcement: ${method} ${pathname} is not wrapped with withAudit(). State-changing operations must be auditable.`);
+      return;
+    }
+
     try {
       await route.handler(req, res, params, query);
     } catch (err) {
@@ -500,6 +818,7 @@ server.listen(PORT, () => {
   console.log(`   Services: http://localhost:${PORT}/v1/services`);
   console.log(`   Resource Kinds: http://localhost:${PORT}/v1/resource-kinds`);
   console.log(`   Audit Events: http://localhost:${PORT}/v1/audit/events`);
+  console.log(`   Policies: http://localhost:${PORT}/v1/policies`);
 });
 
 export { server, routes };

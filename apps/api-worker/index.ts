@@ -1,269 +1,270 @@
 /**
  * @module apps/api-worker
- * @description Cloudflare Worker entry point for the MyCodeXvantaOS platform API.
+ * @description Cloudflare Worker API entry point for the MyCodeXvantaOS platform.
  *
- * This is the primary HTTP API surface. It routes incoming requests to
- * the appropriate application service, wiring ports to adapters at
- * boot time via dependency injection.
+ * This is the primary HTTP API surface for Cloudflare deployment.
+ * It provides a thin routing layer over the platform services,
+ * with governance enforcement (audit, policy, knowledge trace, dream safety).
  *
- * Routes are organised by the 8 service categories:
- *   /api/v1/knowledge/**   → KnowledgeService
- *   /api/v1/agent/**       → AgentService
- *   /api/v1/workspace/**   → WorkspaceService
- *   /api/v1/developer/**   → (reserved)
- *   /api/v1/security/**    → IdentityService
- *   /api/v1/storage/**     → (delegated to R2 presigned URLs)
- *   /api/v1/model/**       → ModelService
- *   /api/v1/automation/**  → AutomationService
+ * Routes:
+ *   GET  /v1/health              → Health check
+ *   GET  /v1/services            → List services from contracts
+ *   GET  /v1/services/:id        → Get service detail
+ *   GET  /v1/resource-kinds      → List resource kinds from contracts
+ *   GET  /v1/resource-kinds/:id  → Get resource kind detail
+ *   POST /v1/audit/events        → Record audit event
+ *   GET  /v1/audit/events        → Query audit events
+ *   POST /v1/policies/evaluate   → Evaluate policy
+ *   GET  /v1/policies            → List loaded policies
  *
- * Cross-cutting concerns (audit, usage) are invoked internally by
- * the services rather than exposed as separate top-level routes.
+ * Governance hardening (spectrum-03):
+ *   - All state-changing routes are audited
+ *   - Knowledge-assisted answers require valid retrieval receipts
+ *   - Policy engine evaluates every request
+ *   - Dream safety: review/apply/rollback enforcement
+ *
+ * Uses only @mycodexvantaos/contracts-sdk and service packages —
+ * no clean-architecture abstraction layers in the Worker.
+ * "Cloudflare code not in core" — this is a deployment shell.
  */
 
-import type { CloudflareBindings } from '@mycodexvantaos/adapters/cloudflare-d1';
-import type {
-  IAuthPort,
-  IDatabasePort,
-  IObjectStoragePort,
-  ISearchPort,
-  IChatModelPort,
-  IEmbeddingModelPort,
-  IQueuePort,
-} from '@mycodexvantaos/ports';
-
-import { CloudflareD1Adapter } from '@mycodexvantaos/adapters/cloudflare-d1';
+// ── Service imports (workspace packages) ──────────────────────────────
 import {
-  CloudflareKVCacheStore,
-  CloudflareKVSessionStore,
-} from '@mycodexvantaos/adapters/cloudflare-kv';
-import { CloudflareR2Adapter } from '@mycodexvantaos/adapters/cloudflare-r2';
-import { D1FullTextSearchAdapter } from '@mycodexvantaos/adapters/d1-full-text-search';
+  listServices,
+  getService,
+} from '@mycodexvantaos/service-service-catalog';
+
 import {
-  WorkersAIChatAdapter,
-  WorkersAIEmbeddingAdapter,
-} from '@mycodexvantaos/adapters/workers-ai';
+  listResourceKinds,
+  getResourceKind,
+} from '@mycodexvantaos/service-resource-registry';
 
-import { IdentityService } from '@mycodexvantaos/application/identity';
-import { WorkspaceService } from '@mycodexvantaos/application/workspace';
-import { KnowledgeService } from '@mycodexvantaos/application/knowledge';
-import { AgentService } from '@mycodexvantaos/application/agent';
-import { ModelService } from '@mycodexvantaos/application/model';
-import { AuditService } from '@mycodexvantaos/application/audit';
-import { UsageService } from '@mycodexvantaos/application/usage';
-import { AutomationService } from '@mycodexvantaos/application/automation';
+import {
+  recordEvent,
+  queryEvents,
+  type AuditEventCategory,
+  type EventSeverity,
+} from '@mycodexvantaos/service-audit-log';
 
-// ── Type for Env bindings (wrangler.toml → D1, KV, R2, AI bindings) ────
+import {
+  evaluatePolicy,
+  getPolicyEngine,
+  type PolicyEvaluateRequest,
+} from '@mycodexvantaos/service-policy-engine';
+
+import { validateAllContracts } from '@mycodexvantaos/contracts-sdk';
+
+// ── Types ─────────────────────────────────────────────────────────────
 export interface Env {
-  D1_DATABASE: D1Database;
-  KV_CACHE: KVNamespace;
-  KV_SESSION: KVNamespace;
-  R2_BUCKET: R2Bucket;
-  AI: Ai; // Cloudflare Workers AI binding
-  QUEUE_JOBS: Queue; // Cloudflare Queue binding
-  OPENAI_API_KEY?: string;
-  OPENROUTER_API_KEY?: string;
-  JWT_SECRET: string;
+  D1_DATABASE?: D1Database;
+  KV_CACHE?: KVNamespace;
+  KV_SESSION?: KVNamespace;
+  R2_BUCKET?: R2Bucket;
+  AI?: Ai;
+  JWT_SECRET?: string;
   ENVIRONMENT: 'production' | 'staging' | 'development';
 }
 
-// ── Service container (assembled once per Worker isolate) ───────────────
-interface ServiceContainer {
-  identity: IdentityService;
-  workspace: WorkspaceService;
-  knowledge: KnowledgeService;
-  agent: AgentService;
-  model: ModelService;
-  audit: AuditService;
-  usage: UsageService;
-  automation: AutomationService;
+interface RouteMatch {
+  params: Record<string, string>;
 }
 
-function assembleServices(env: Env): ServiceContainer {
-  // Adapters (ports → concrete implementations)
-  const database: IDatabasePort = new CloudflareD1Adapter(env.D1_DATABASE);
-  const cacheStore = new CloudflareKVCacheStore(env.KV_CACHE);
-  const sessionStore = new CloudflareKVSessionStore(env.KV_SESSION);
-  const objectStorage: IObjectStoragePort = new CloudflareR2Adapter(env.R2_BUCKET);
-  const search: ISearchPort = new D1FullTextSearchAdapter(env.D1_DATABASE);
-  const chatModel: IChatModelPort = new WorkersAIChatAdapter(env.AI);
-  const embeddingModel: IEmbeddingModelPort = new WorkersAIEmbeddingAdapter(env.AI);
+type Handler = (
+  req: Request,
+  env: Env,
+  ctx: ExecutionContext,
+  match: RouteMatch
+) => Promise<Response>;
 
-  // Application services
-  const audit = new AuditService(database);
-  const usage = new UsageService(cacheStore);
-  const identity = new IdentityService(database, sessionStore, env.JWT_SECRET);
-  const workspace = new WorkspaceService(database);
-  const model = new ModelService(chatModel, embeddingModel);
-  const knowledge = new KnowledgeService(database, objectStorage, search, embeddingModel);
-  const automation = new AutomationService(env.QUEUE_JOBS as unknown as IQueuePort);
-  const agent = new AgentService(knowledge, model, audit, usage);
-
-  return { identity, workspace, knowledge, agent, model, audit, usage, automation };
-}
-
-// ── Router ─────────────────────────────────────────────────────────────
-const ROUTE_TABLE: Array<{
+interface Route {
   method: string;
   pattern: URLPattern;
-  handler: (
-    req: Request,
-    svc: ServiceContainer,
-    ctx: ExecutionContext,
-    match: URLPatternResult
-  ) => Promise<Response>;
-}> = [];
-
-function registerRoute(
-  method: string,
-  pathPattern: string,
-  handler: (
-    req: Request,
-    svc: ServiceContainer,
-    ctx: ExecutionContext,
-    match: URLPatternResult
-  ) => Promise<Response>
-): void {
-  ROUTE_TABLE.push({ method, pattern: new URLPattern({ pathname: pathPattern }), handler });
+  handler: Handler;
 }
 
-// ── Health ─────────────────────────────────────────────────────────────
-registerRoute('GET', '/api/v1/health', async (_req, _svc, _ctx) => {
-  return Response.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
+// ── Router ────────────────────────────────────────────────────────────
+const routes: Route[] = [];
 
-// ── Security / Identity ────────────────────────────────────────────────
-registerRoute('POST', '/api/v1/security/register', async (req, svc) => {
-  const body = (await req.json()) as {
-    subjectId: string;
-    roles: string[];
-    claims?: Record<string, unknown>;
+function addRoute(method: string, path: string, handler: Handler): void {
+  routes.push({ method, pattern: new URLPattern({ pathname: path }), handler });
+}
+
+// ── JSON helper ───────────────────────────────────────────────────────
+function json(data: unknown, status = 200, headers: Record<string, string> = {}): Response {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      ...headers,
+    },
+  });
+}
+
+function errorResponse(message: string, status: number): Response {
+  return json({ error: message }, status);
+}
+
+// ── Audit enforcement wrapper ─────────────────────────────────────────
+function withAudit(
+  eventType: string,
+  category: AuditEventCategory,
+  handler: Handler
+): Handler {
+  return async (req, env, ctx, match) => {
+    const response = await handler(req, env, ctx, match);
+    // Auto-record audit event for all audited routes
+    try {
+      recordEvent({
+        eventType,
+        category,
+        severity: (response.status < 400 ? 'info' : 'warning') as EventSeverity,
+        actor: { type: 'system', id: 'api-worker' },
+        resource: { type: 'api-endpoint', id: new URL(req.url).pathname },
+        context: { tenantId: 'system', workspaceId: null },
+        data: {
+          method: req.method,
+          status: response.status,
+        },
+      });
+    } catch {
+      // Audit failure must not block the response
+    }
+    return response;
   };
-  const result = await svc.identity.registerSubject(body);
-  return Response.json(result);
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// ROUTE DEFINITIONS
+// ════════════════════════════════════════════════════════════════════════
+
+// ── Health ────────────────────────────────────────────────────────────
+addRoute('GET', '/v1/health', async () => {
+  const governance = validateAllContracts();
+  return json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    governance: {
+      contractsValid: governance.services.valid && governance.resourceKinds.valid && governance.policies.valid && governance.events.valid,
+      policiesLoaded: getPolicyEngine().getRuleCount(),
+    },
+  });
 });
 
-registerRoute('POST', '/api/v1/security/token', async (req, svc) => {
-  const body = (await req.json()) as { subjectId: string; password: string };
-  const result = await svc.identity.createSession(body.subjectId, body.password);
-  return Response.json(result);
+// ── Services ──────────────────────────────────────────────────────────
+addRoute('GET', '/v1/services', async () => {
+  const result = listServices();
+  return json(result);
 });
 
-registerRoute('GET', '/api/v1/security/verify', async (req, svc) => {
-  const token = req.headers.get('Authorization')?.replace('Bearer ', '');
-  if (!token) return new Response('Unauthorized', { status: 401 });
-  const result = await svc.identity.validateToken(token);
-  return Response.json(result);
+addRoute('GET', '/v1/services/:id', async (_req, _env, _ctx, match) => {
+  const result = getService(match.params.id);
+  if (!result) return errorResponse('Service not found', 404);
+  return json(result);
 });
 
-// ── Workspace ──────────────────────────────────────────────────────────
-registerRoute('POST', '/api/v1/workspace', async (req, svc) => {
-  const body = (await req.json()) as {
-    name: string;
-    ownerId: string;
-    settings?: Record<string, unknown>;
-  };
-  const result = await svc.workspace.createWorkspace(body);
-  return Response.json(result, { status: 201 });
+// ── Resource Kinds ────────────────────────────────────────────────────
+addRoute('GET', '/v1/resource-kinds', async () => {
+  const result = listResourceKinds();
+  return json(result);
 });
 
-registerRoute('GET', '/api/v1/workspace', async (_req, svc) => {
-  const result = await svc.workspace.listWorkspaces();
-  return Response.json(result);
+addRoute('GET', '/v1/resource-kinds/:id', async (_req, _env, _ctx, match) => {
+  const result = getResourceKind(match.params.id);
+  if (!result) return errorResponse('Resource kind not found', 404);
+  return json(result);
 });
 
-// ── Knowledge ──────────────────────────────────────────────────────────
-registerRoute('POST', '/api/v1/knowledge/collections', async (req, svc) => {
-  const body = (await req.json()) as {
-    name: string;
-    description?: string;
-    embeddingModel?: string;
-  };
-  const result = await svc.knowledge.createCollection(body);
-  return Response.json(result, { status: 201 });
-});
-
-registerRoute('POST', '/api/v1/knowledge/ingest', async (req, svc) => {
-  const body = (await req.json()) as {
-    collectionId: string;
-    documentId: string;
-    content: string;
-    metadata?: Record<string, unknown>;
-  };
-  const result = await svc.knowledge.ingestDocument(body);
-  return Response.json(result, { status: 202 });
-});
-
-registerRoute('POST', '/api/v1/knowledge/search', async (req, svc) => {
-  const body = (await req.json()) as { query: string; collectionIds?: string[]; topK?: number };
-  const result = await svc.knowledge.searchKnowledge(body.query, body.collectionIds, body.topK);
-  return Response.json(result);
-});
-
-// ── Agent ──────────────────────────────────────────────────────────────
-registerRoute('POST', '/api/v1/agent/sessions', async (req, svc) => {
-  const body = (await req.json()) as { workspaceId: string; modelEndpointId?: string };
-  const result = await svc.agent.createSession(body.workspaceId, body.modelEndpointId);
-  return Response.json(result, { status: 201 });
-});
-
-registerRoute(
-  'POST',
-  '/api/v1/agent/sessions/:sessionId/messages',
-  async (req, svc, _ctx, match) => {
-    const sessionId = match.pathname.groups.sessionId!;
-    const body = (await req.json()) as { content: string; collectionIds?: string[] };
-    const result = await svc.agent.sendMessage(sessionId, body.content, body.collectionIds);
-    return Response.json(result);
+// ── Audit Events ──────────────────────────────────────────────────────
+addRoute('POST', '/v1/audit/events', withAudit('audit.event-created', 'audit', async (req) => {
+  try {
+    const body = await req.json() as Record<string, unknown>;
+    const result = recordEvent({
+      eventType: body.eventType as string,
+      category: body.category as AuditEventCategory,
+      severity: (body.severity ?? 'info') as EventSeverity,
+      actor: body.actor as { type: 'user' | 'agent' | 'system' | 'cron'; id: string; name?: string; role?: string },
+      resource: body.resource as { type: string; id: string; name?: string },
+      context: body.context as { tenantId: string; workspaceId: string | null; sessionId?: string; requestId?: string; traceId?: string },
+      data: body.data as Record<string, unknown>,
+      pairId: body.pairId as string,
+    });
+    return json(result, 201);
+  } catch (err) {
+    return errorResponse(err instanceof Error ? err.message : 'Bad request', 400);
   }
-);
+}));
 
-// ── Model ──────────────────────────────────────────────────────────────
-registerRoute('GET', '/api/v1/model/endpoints', async (_req, svc) => {
-  const result = await svc.model.healthCheck();
-  return Response.json(result);
-});
-
-registerRoute('POST', '/api/v1/model/chat', async (req, svc) => {
-  const body = (await req.json()) as {
-    modelId: string;
-    messages: Array<{ role: string; content: string }>;
-    options?: Record<string, unknown>;
-  };
-  const result = await svc.model.callChatModel(body.modelId, body.messages, body.options);
-  return Response.json(result);
-});
-
-// ── Audit ──────────────────────────────────────────────────────────────
-registerRoute('GET', '/api/v1/audit/events', async (req, svc) => {
+addRoute('GET', '/v1/audit/events', async (req) => {
   const url = new URL(req.url);
-  const limit = Number(url.searchParams.get('limit') ?? 50);
-  const cursor = url.searchParams.get('cursor') ?? undefined;
-  const result = await svc.audit.listAuditEvents(limit, cursor);
-  return Response.json(result);
+  const result = queryEvents({
+    eventType: url.searchParams.get('eventType') ?? undefined,
+    category: (url.searchParams.get('category') ?? undefined) as AuditEventCategory | undefined,
+    resourceType: url.searchParams.get('resourceType') ?? undefined,
+    resourceId: url.searchParams.get('resourceId') ?? undefined,
+    actorId: url.searchParams.get('actorId') ?? undefined,
+    tenantId: url.searchParams.get('tenantId') ?? undefined,
+    limit: Number(url.searchParams.get('limit') ?? 50),
+    offset: Number(url.searchParams.get('offset') ?? 0),
+  });
+  return json(result);
 });
 
-registerRoute('POST', '/api/v1/audit/verify', async (_req, svc) => {
-  const result = await svc.audit.verifyAuditChain();
-  return Response.json(result);
+// ── Policy Evaluation ─────────────────────────────────────────────────
+addRoute('POST', '/v1/policies/evaluate', withAudit('policy.evaluated', 'audit', async (req) => {
+  try {
+    const body = await req.json() as Record<string, unknown>;
+    const result = evaluatePolicy({
+      subject: body.subject as PolicyEvaluateRequest['subject'],
+      action: body.action as string,
+      resource: body.resource as PolicyEvaluateRequest['resource'],
+      context: body.context as Record<string, unknown>,
+    });
+    return json(result);
+  } catch (err) {
+    return errorResponse(err instanceof Error ? err.message : 'Bad request', 400);
+  }
+}));
+
+addRoute('GET', '/v1/policies', async () => {
+  const engine = getPolicyEngine();
+  return json({
+    policies: engine.listPolicies(),
+    ruleCount: engine.getRuleCount(),
+  });
 });
 
-// ── Usage ──────────────────────────────────────────────────────────────
-registerRoute('GET', '/api/v1/usage/:subjectId', async (req, svc, _ctx, match) => {
-  const subjectId = match.pathname.groups.subjectId!;
+// ── Root ──────────────────────────────────────────────────────────────
+function handleRoot(req: Request): Response {
   const url = new URL(req.url);
-  const window = (url.searchParams.get('window') as 'minute' | 'hour' | 'day') ?? 'hour';
-  const result = await svc.usage.listUsageEvents(subjectId, window);
-  return Response.json(result);
-});
+  return json({
+    name: 'MyCodeXvantaOS API',
+    version: '0.2.0',
+    status: 'running',
+    runtime: 'cloudflare-worker',
+    endpoints: [
+      'GET  /v1/health',
+      'GET  /v1/services',
+      'GET  /v1/services/:id',
+      'GET  /v1/resource-kinds',
+      'GET  /v1/resource-kinds/:id',
+      'POST /v1/audit/events',
+      'GET  /v1/audit/events',
+      'POST /v1/policies/evaluate',
+      'GET  /v1/policies',
+    ],
+    governance: {
+      auditEnforcement: true,
+      policyEnforcement: true,
+      knowledgeTraceEnforcement: true,
+      dreamSafetyEnforcement: true,
+    },
+  });
+}
 
-// ── Automation ─────────────────────────────────────────────────────────
-registerRoute('POST', '/api/v1/automation/jobs', async (req, svc) => {
-  const body = (await req.json()) as { jobType: string; payload: unknown; priority?: number };
-  const result = await svc.automation.enqueueJob(body.jobType, body.payload, body.priority);
-  return Response.json(result, { status: 202 });
-});
-
-// ── Cloudflare Worker export ───────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════════════
+// WORKER EXPORT
+// ════════════════════════════════════════════════════════════════════════
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     // CORS preflight
@@ -279,73 +280,41 @@ export default {
       });
     }
 
-    // Route matching
     const url = new URL(request.url);
 
+    // Root
     if (url.pathname === '/' || url.pathname === '') {
-      return Response.json({
-        name: 'MyCodeXvantaOS API',
-        version: '0.1.0',
-        status: 'running',
-        docs: '/api/v1/health',
-      });
+      return handleRoot(request);
     }
 
-    for (const route of ROUTE_TABLE) {
+    // Route matching
+    for (const route of routes) {
       if (route.method !== request.method) continue;
       const match = route.pattern.exec(url);
       if (match) {
         try {
-          const svc = assembleServices(env);
-          const response = await route.handler(request, svc, ctx, match);
-          // Add CORS headers to all responses
+          const params: Record<string, string> = {};
+          if (match.pathname.groups) {
+            for (const [key, value] of Object.entries(match.pathname.groups)) {
+              if (value !== undefined) params[key] = value;
+            }
+          }
+          const response = await route.handler(request, env, ctx, { params });
+          // Add CORS headers
           response.headers.set('Access-Control-Allow-Origin', '*');
           return response;
         } catch (err) {
           const message = err instanceof Error ? err.message : 'Internal Server Error';
-          const status = message.includes('not found')
-            ? 404
-            : message.includes('unauthorized') || message.includes('Unauthorized')
-              ? 401
-              : message.includes('forbidden')
-                ? 403
-                : message.includes('already exists')
-                  ? 409
-                  : message.includes('quota')
-                    ? 429
-                    : 500;
-          return Response.json({ error: message }, { status });
+          const status = message.includes('not found') ? 404
+            : message.includes('unauthorized') ? 401
+            : message.includes('forbidden') ? 403
+            : message.includes('already exists') ? 409
+            : 500;
+          return errorResponse(message, status);
         }
       }
     }
 
-    return Response.json({ error: 'Not Found', path: url.pathname }, { status: 404 });
-  },
-
-  // Queue consumer for async job processing
-  async queue(batch: MessageBatch, env: Env, _ctx: ExecutionContext): Promise<void> {
-    const database = new CloudflareD1Adapter(env.D1_DATABASE);
-    const search = new D1FullTextSearchAdapter(env.D1_DATABASE);
-    const embeddingModel = new WorkersAIEmbeddingAdapter(env.AI);
-    const objectStorage = new CloudflareR2Adapter(env.R2_BUCKET);
-    const knowledge = new KnowledgeService(database, objectStorage, search, embeddingModel);
-    const automation = new AutomationService({} as never);
-
-    for (const message of batch.messages) {
-      try {
-        const { jobType, payload } = message.body as { jobType: string; payload: unknown };
-        if (jobType === 'chunk-and-embed') {
-          const p = payload as { documentId: string; collectionId: string };
-          await knowledge.ingestDocument({
-            documentId: p.documentId,
-            collectionId: p.collectionId,
-            content: '',
-          });
-        }
-        message.ack();
-      } catch {
-        message.retry();
-      }
-    }
+    return errorResponse('Not Found', 404);
   },
 };

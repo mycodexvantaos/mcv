@@ -1,0 +1,41 @@
+# ── MyCodeXvantaOS Dream Worker ────────────────────────────────────────
+# Python-based dream worker for memory dream processing
+#
+# Usage:
+#   docker build -f Dockerfile.dream-worker -t mycodexvantaos-dream-worker ../..
+#   docker run mycodexvantaos-dream-worker dream run --mode dry-run
+
+# ── Stage 1: Build ────────────────────────────────────────────────────
+FROM python:3.11-slim AS builder
+
+WORKDIR /app
+
+# Install build dependencies
+RUN pip install --no-cache-dir hatchling
+
+# Copy Python workspace
+COPY python/ python/
+
+# Install the dream worker and its dependencies
+WORKDIR /app/python
+RUN pip install --no-cache-dir -e packages/mycodexvantaos-memory-dream && \
+    pip install --no-cache-dir -e apps/dream-worker
+
+# ── Stage 2: Runtime ─────────────────────────────────────────────────
+FROM python:3.11-slim AS runtime
+
+# Copy installed packages from builder
+COPY --from=builder /usr/local/lib/python3.11/site-packages/ /usr/local/lib/python3.11/site-packages/
+COPY --from=builder /usr/local/bin/ /usr/local/bin/
+
+# Copy Python source
+COPY python/ /app/python/
+
+WORKDIR /app/python
+
+# Environment
+ENV PYTHONUNBUFFERED=1
+ENV DREAM_MODE=dry-run
+
+# Default command: dry-run mode (safe by default — no auto-apply)
+CMD ["dream-worker", "run", "--mode", "dry-run"]
