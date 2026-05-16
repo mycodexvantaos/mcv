@@ -273,3 +273,76 @@ describe('Knowledge Trace Service', () => {
     });
   });
 });
+
+// ── Knowledge Trace Enforcement - Receipt Requirement ────────────────
+
+describe('Knowledge Trace Enforcement - Receipt Requirement', () => {
+  beforeEach(() => {
+    clearAll();
+  });
+
+  it('answer trace creation requires a valid receipt', () => {
+    // Creating an answer trace with a nonexistent receipt must throw
+    assert.throws(
+      () => createAnswerTrace({ receiptId: 'rcpt_nonexistent', answer: 'test' }),
+      /Retrieval receipt not found/
+    );
+  });
+
+  it('answer trace creation succeeds with a valid receipt', () => {
+    const { receipt } = createSearchReceipt({ query: 'What is the policy?' });
+    const { trace } = createAnswerTrace({
+      receiptId: receipt.receiptId,
+      answer: 'The policy requires review.',
+    });
+    assert.ok(trace.traceId);
+    assert.equal(trace.receiptId, receipt.receiptId);
+  });
+
+  it('fabricated receipt ID is rejected', () => {
+    // Attempting to use a fabricated receipt ID should fail
+    assert.throws(
+      () => createAnswerTrace({ receiptId: 'rcpt_fabricated_12345', answer: 'test' }),
+      /Retrieval receipt not found/
+    );
+  });
+
+  it('retrieval receipt contains evidence level for traceability', () => {
+    const { receipt } = createSearchReceipt({
+      query: 'architecture decisions',
+      evidenceLevel: 'knowledge-grounded',
+    });
+    assert.equal(receipt.evidenceLevel, 'knowledge-grounded');
+    // The receipt provides the traceability chain
+    const { trace } = createAnswerTrace({
+      receiptId: receipt.receiptId,
+      answer: 'Architecture decisions require review.',
+    });
+    assert.equal(trace.evidenceLevel, 'knowledge-grounded');
+  });
+
+  it('search produces a receipt before answer can be created', () => {
+    // Simulating the full flow: search -> receipt -> answer
+    const { receipt } = createSearchReceiptWithResults(
+      { query: 'What are the policy rules?', topK: 3 },
+      [
+        { chunkId: 'c1', content: 'Policy rule 1', score: 0.95 },
+        { chunkId: 'c2', content: 'Policy rule 2', score: 0.85 },
+      ]
+    );
+    assert.ok(receipt.receiptId);
+    assert.equal(receipt.totalResults, 2);
+
+    // Answer trace can only be created with the valid receipt
+    const { trace } = createAnswerTrace({
+      receiptId: receipt.receiptId,
+      answer: 'There are multiple policy rules.',
+      citations: [
+        { chunkId: 'c1', text: 'Policy rule 1' },
+        { chunkId: 'c2', text: 'Policy rule 2' },
+      ],
+    });
+    assert.ok(trace.traceId);
+    assert.equal(trace.citations.length, 2);
+  });
+});

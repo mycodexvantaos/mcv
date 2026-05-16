@@ -198,6 +198,33 @@ check('Knowledge trace receipt validation is enforced', () => {
   return true;
 });
 
+check('Knowledge trace enforcement middleware flag is present', () => {
+  const source = fs.readFileSync('apps/api-node/index.ts', 'utf-8');
+  const count = (source.match(/knowledgeTraceEnforcementMiddleware:/g) || []).length;
+  if (count < 2) {
+    console.log(
+      `     Missing: knowledgeTraceEnforcementMiddleware flag (found ${count}, expected 2)`
+    );
+    return false;
+  }
+  console.log('     knowledgeTraceEnforcementMiddleware flag present in governance sections');
+  return true;
+});
+
+check('Knowledge-assisted answers require valid retrieval receipt', () => {
+  const source = fs.readFileSync('apps/api-node/index.ts', 'utf-8');
+  const hasReceiptValidation =
+    source.includes('knowledge_assisted') &&
+    source.includes('getRetrievalReceipt') &&
+    source.includes('Receipt not found');
+  if (!hasReceiptValidation) {
+    console.log('     Missing: retrieval receipt validation for knowledge-assisted answers');
+    return false;
+  }
+  console.log('     Retrieval receipt validation verified for knowledge-assisted answers');
+  return true;
+});
+
 check('Dream safety enforcement is present', () => {
   const source = fs.readFileSync('apps/api-node/index.ts', 'utf-8');
   const hasDreamEnforcement =
