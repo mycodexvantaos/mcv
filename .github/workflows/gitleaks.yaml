@@ -18,7 +18,7 @@ jobs:
     name: Gitleaks Scan
     runs-on: ubuntu-latest
     env:
-      HAS_GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE != '' }}
+      HAS_GITLEAKS_LICENSE: "${{ secrets.GITLEAKS_LICENSE != '' }}"
     steps:
       - name: Check Gitleaks license
         if: ${{ env.HAS_GITLEAKS_LICENSE == 'false' }}

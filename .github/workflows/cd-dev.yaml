@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: dev
     env:
-      HAS_GCP_CREDS: ${{ secrets.GCP_PROJECT_ID != '' }}
+      HAS_GCP_CREDS: "${{ secrets.GCP_PROJECT_ID != '' }}"
     steps:
       - name: Check GCP credentials
         if: ${{ env.HAS_GCP_CREDS == 'false' }}

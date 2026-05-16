@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: preview
     env:
-      HAS_CLOUDFLARE_CREDS: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+      HAS_CLOUDFLARE_CREDS: "${{ secrets.CLOUDFLARE_API_TOKEN != '' }}"
 
     steps:
       - name: Check Cloudflare credentials
