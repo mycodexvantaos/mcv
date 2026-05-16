@@ -195,6 +195,24 @@ export function isKnowledgeTraceEnforcementEnabled(): boolean {
   return knowledgeTraceEnforcementEnabled;
 }
 
+/**
+ * Dream Safety Enforcement: when enabled, dream run apply/rollback operations
+ * are subject to safety constraints:
+ *   - review/apply flow: must be reviewed before applying
+ *   - auto-apply disabled: no automatic application of dream results
+ *   - delete forbidden: delete actions are not permitted in MVP
+ *   - architecture decisions require explicit human review
+ */
+let dreamSafetyEnforcementEnabled = true;
+
+export function setDreamSafetyEnforcement(enabled: boolean): void {
+  dreamSafetyEnforcementEnabled = enabled;
+}
+
+export function isDreamSafetyEnforcementEnabled(): boolean {
+  return dreamSafetyEnforcementEnabled;
+}
+
 type AuditableEventType = string;
 type AuditableCategory =
   | 'knowledge'
@@ -292,7 +310,7 @@ addRoute('GET', '/', async (_req, res) => {
     governance: {
       auditEnforcement: auditEnforcementEnabled,
       knowledgeTraceEnforcement: knowledgeTraceEnforcementEnabled,
-      dreamSafetyEnforcement: true,
+      dreamSafetyEnforcement: dreamSafetyEnforcementEnabled,
     },
     endpoints: [
       'GET  /v1/health',
@@ -396,7 +414,7 @@ addRoute('GET', '/v1/health', async (_req, res) => {
     governance: {
       auditEnforcement: auditEnforcementEnabled,
       knowledgeTraceEnforcement: knowledgeTraceEnforcementEnabled,
-      dreamSafetyEnforcement: true,
+      dreamSafetyEnforcement: dreamSafetyEnforcementEnabled,
     },
   });
 });
@@ -906,30 +924,49 @@ addRoute(
         return;
       }
 
-      // Enforce: auto-apply disabled by default — must have review approval
-      const review = dreamReviews.get(runId);
-      if (!review || review.decision !== 'approved') {
-        sendError(
-          res,
-          403,
-          'Dream run must be reviewed and approved before applying. POST /v1/dream/runs/:id/review first.'
-        );
-        return;
-      }
+      // ── Dream Safety Enforcement ──────────────────────────────
+      if (dreamSafetyEnforcementEnabled) {
+        // Enforce: auto-apply disabled — must have review approval
+        const review = dreamReviews.get(runId);
+        if (!review || review.decision !== 'approved') {
+          sendError(
+            res,
+            403,
+            'Dream safety enforcement: dream run must be reviewed and approved before applying. POST /v1/dream/runs/:id/review first.'
+          );
+          return;
+        }
 
-      // Enforce: delete is forbidden in MVP
-      const actions = dreamResult.run.report?.actions ?? [];
-      const deleteActions = actions.filter((a: any) => a.action_type === 'delete');
-      if (deleteActions.length > 0) {
-        sendError(
-          res,
-          403,
-          'Delete actions are forbidden in MVP. Remove delete actions before applying.'
-        );
-        return;
-      }
+        // Enforce: delete is forbidden in MVP
+        const actions = dreamResult.run.report?.actions ?? [];
+        const deleteActions = actions.filter((a: any) => a.action_type === 'delete');
+        if (deleteActions.length > 0) {
+          sendError(
+            res,
+            403,
+            'Dream safety enforcement: delete actions are forbidden. Remove delete actions before applying.'
+          );
+          return;
+        }
 
-      // Enforce: architecture decisions require review (already checked above via review requirement)
+        // Enforce: architecture decisions require explicit human review
+        const archActions = actions.filter(
+          (a: any) =>
+            (a.action_type === 'merge' || a.action_type === 'deprecate') &&
+            (a.resource_type === 'architecture-decision' || a.resource_type === 'arch-decision')
+        );
+        if (archActions.length > 0) {
+          // Verify the review specifically acknowledged architecture decisions
+          if (!review.comment?.includes('architecture-decision')) {
+            sendError(
+              res,
+              403,
+              'Dream safety enforcement: architecture decision actions require explicit review acknowledgment. Review comment must reference architecture-decision.'
+            );
+            return;
+          }
+        }
+      }
 
       const application: DreamApplication = {
         runId,
