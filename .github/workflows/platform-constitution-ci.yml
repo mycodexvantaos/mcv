@@ -9,21 +9,21 @@ on:
   push:
     branches: [main]
     paths:
-      - "contracts/**"
-      - "packages/**"
-      - "services/**"
-      - "apps/**"
-      - "migrations/**"
-      - "infra/**"
+      - 'contracts/**'
+      - 'packages/**'
+      - 'services/**'
+      - 'apps/**'
+      - 'migrations/**'
+      - 'infra/**'
   pull_request:
     branches: [main]
     paths:
-      - "contracts/**"
-      - "packages/**"
-      - "services/**"
-      - "apps/**"
-      - "migrations/**"
-      - "infra/**"
+      - 'contracts/**'
+      - 'packages/**'
+      - 'services/**'
+      - 'apps/**'
+      - 'migrations/**'
+      - 'infra/**'
 
 jobs:
   validate-contracts:
@@ -36,7 +36,7 @@ jobs:
           version: 10
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '20'
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -74,7 +74,7 @@ jobs:
           version: 10
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '20'
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile

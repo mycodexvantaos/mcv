@@ -6,15 +6,15 @@ on:
   push:
     branches: [main]
     paths-ignore:
-      - "**.md"
-      - "docs/**"
-      - ".github/workflows/!(deploy-cloudflare*)"
+      - '**.md'
+      - 'docs/**'
+      - '.github/workflows/!(deploy-cloudflare*)'
   workflow_dispatch:
     inputs:
       environment:
-        description: "Deployment environment"
+        description: 'Deployment environment'
         required: true
-        default: "production"
+        default: 'production'
         type: choice
         options:
           - production
@@ -34,6 +34,7 @@ jobs:
     name: Build & Deploy to Cloudflare
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment || 'production' }}
+    if: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
     steps:
       - name: Checkout repository
@@ -47,8 +48,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: "pnpm"
+          node-version: '20'
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
