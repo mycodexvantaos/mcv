@@ -5,6 +5,30 @@ All notable changes to MyCodeXvantaOS will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.0] - 2026-05-17
+
+### Added
+
+- Stable release v0.1.0 promoted from v0.1.0-rc.1 with evidence-based go/no-go recommendation
+- RC soak validation script (`pnpm rc:soak`) producing soak-report.json and markdown report
+- Promotion gate evaluation script (`pnpm release:promotion:evaluate`) evaluating 11 gates against rc-promotion-policy.json
+- Stable release signing plan (`docs/security/release-signing.md`) defining Sigstore keyless, GPG, and Vault/HSM signing methods
+- Machine-readable signing policy (`release/policies/signing-policy.json`) with signing-not-configured to signing-configured transition
+- Stable release draft (`docs/releases/v0.1.0.md`) with promotion evidence, supply chain artifacts, and post-stable requirements
+- Release draft artifact (`release/artifacts/v0.1.0/release-draft.json`) with promotion evidence, go/no-go recommendation, and draft hash
+
+### Changed
+
+- Promotion gate evaluation: 9/11 gates pass, 2 skipped with acceptable-skip (G010: signing-not-configured, G011: infrastructure-not-configured)
+- Signing classification: signing-not-configured documented with policy and implementation plan for stable release requirement
+- Infrastructure classification: infrastructure-not-configured documented as optional for stable per promotion policy
+
+### Security
+
+- Signing policy defines transition from signing-not-configured (RC) to signing-configured (stable)
+- All 7 governance enforcement flags remain active and verified
+- No security scanning disabled or bypassed
+
 ## [0.1.0-rc.1] - 2026-05-16
 
 ### Added
