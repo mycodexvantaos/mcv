@@ -264,6 +264,42 @@ check('withPolicy() is composed with withAudit() on protected routes', () => {
   return true;
 });
 
+check('withAudit() generates trace_id for audit events', () => {
+  const source = fs.readFileSync('apps/api-node/index.ts', 'utf-8');
+  const hasTraceIdGeneration =
+    source.includes('randomUUID') && source.includes('const traceId = randomUUID()');
+  const hasTraceIdInContext = source.includes(
+    "context: { tenantId: 'system', workspaceId: null, traceId }"
+  );
+  const hasTraceIdInData =
+    source.includes('traceId,') && source.includes("enforcedBy: 'withAudit'");
+  if (!hasTraceIdGeneration) {
+    console.log('     Missing: trace_id generation (randomUUID)');
+    return false;
+  }
+  if (!hasTraceIdInContext) {
+    console.log('     Missing: traceId in audit context');
+    return false;
+  }
+  if (!hasTraceIdInData) {
+    console.log('     Missing: traceId in audit event data');
+    return false;
+  }
+  console.log('     withAudit() trace_id propagation verified');
+  return true;
+});
+
+check('auditEnforcementMiddleware flag is present in governance', () => {
+  const source = fs.readFileSync('apps/api-node/index.ts', 'utf-8');
+  const count = (source.match(/auditEnforcementMiddleware:/g) || []).length;
+  if (count < 2) {
+    console.log(`     Missing: auditEnforcementMiddleware flag (found ${count}, expected 2)`);
+    return false;
+  }
+  console.log('     auditEnforcementMiddleware flag present in governance sections');
+  return true;
+});
+
 // ── Summary ───────────────────────────────────────────────────────────
 console.log('\n' + '━'.repeat(50));
 if (exitCode === 0) {

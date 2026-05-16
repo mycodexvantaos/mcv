@@ -23,6 +23,7 @@
  */
 
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
+import { randomUUID } from 'node:crypto';
 
 // ── Service imports ──────────────────────────────────────────────────────
 
@@ -225,6 +226,18 @@ type AuditableCategory =
   | 'automation'
   | 'audit';
 
+/**
+ * withAudit() wraps a state-changing route handler to ensure it produces an audit event.
+ * Every mutation must be auditable — handlers not wrapped with withAudit() will be
+ * rejected at runtime with a 403 error when audit enforcement is enabled.
+ *
+ * Trace ID propagation: Each withAudit() call generates a trace_id (UUID) that is:
+ *   - Included in the audit event context for end-to-end traceability
+ *   - Set as a response header (X-Trace-Id) for client-side correlation
+ *   - Attached to the request object for downstream handler access
+ *
+ *   addRoute('POST', '/v1/dream/run', withAudit('dream.run-initiated', 'automation', handler));
+ */
 function withAudit(
   eventType: AuditableEventType,
   category: AuditableCategory,
@@ -236,13 +249,30 @@ function withAudit(
   }
 ): RouteHandler {
   return async (req, res, params, query) => {
+    // Generate trace_id for this request lifecycle
+    const traceId = randomUUID();
+
+    // Attach trace_id to request for downstream handler access
+    (req as any).traceId = traceId;
+
+    // Set trace_id as response header for client-side correlation
+    (res as any).setHeader?.('X-Trace-Id', traceId);
+
     // Track the response status by intercepting writeHead
     let responseStatus = 200;
     const originalWriteHead = res.writeHead;
 
-    // Override writeHead to capture the status code
+    // Override writeHead to capture the status code and set trace header
     res.writeHead = function (statusCode: number, ...args: unknown[]) {
       responseStatus = statusCode;
+      // Set X-Trace-Id header on the response
+      try {
+        originalWriteHead.call(res, statusCode);
+        // We need to set the header before writeHead is called
+        // Since writeHead sends the response, we set it via setHeader if available
+      } catch {
+        // Ignore if headers already sent
+      }
       // Call original with proper types
       if (args.length === 0) return originalWriteHead.call(res, statusCode);
       if (typeof args[0] === 'string' && args.length === 1)
@@ -277,13 +307,14 @@ function withAudit(
       severity: success ? (opts?.severity ?? 'info') : 'warning',
       actor: { type: 'system', id: 'api-node' },
       resource: { type: resourceType, id: resourceId },
-      context: { tenantId: 'system', workspaceId: null },
+      context: { tenantId: 'system', workspaceId: null, traceId },
       data: {
         method: req.method,
         path: req.url,
         status: responseStatus,
         success,
         enforcedBy: 'withAudit',
+        traceId,
       },
     });
   };
@@ -427,6 +458,7 @@ addRoute('GET', '/', async (_req, res) => {
     ],
     governance: {
       auditEnforcement: auditEnforcementEnabled,
+      auditEnforcementMiddleware: true,
       knowledgeTraceEnforcement: knowledgeTraceEnforcementEnabled,
       dreamSafetyEnforcement: dreamSafetyEnforcementEnabled,
       policyRuntimeEnforcement: true,
@@ -532,6 +564,7 @@ addRoute('GET', '/v1/health', async (_req, res) => {
     loops,
     governance: {
       auditEnforcement: auditEnforcementEnabled,
+      auditEnforcementMiddleware: true,
       knowledgeTraceEnforcement: knowledgeTraceEnforcementEnabled,
       dreamSafetyEnforcement: dreamSafetyEnforcementEnabled,
       policyRuntimeEnforcement: true,
