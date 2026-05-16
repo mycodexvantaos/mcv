@@ -3,14 +3,14 @@ name: Memory Dream Check
 on:
   push:
     paths:
-      - "python/packages/mycodexvantaos-memory-dream/**"
-      - "python/apps/dream-worker/**"
-      - "contracts/events/memory-events.yaml"
+      - 'python/packages/mycodexvantaos-memory-dream/**'
+      - 'python/apps/dream-worker/**'
+      - 'contracts/events/memory-events.yaml'
   pull_request:
     paths:
-      - "python/packages/mycodexvantaos-memory-dream/**"
-      - "python/apps/dream-worker/**"
-      - "contracts/events/memory-events.yaml"
+      - 'python/packages/mycodexvantaos-memory-dream/**'
+      - 'python/apps/dream-worker/**'
+      - 'contracts/events/memory-events.yaml'
 
 jobs:
   validate:

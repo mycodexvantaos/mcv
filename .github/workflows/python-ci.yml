@@ -4,13 +4,13 @@ on:
   push:
     branches: [main, develop]
     paths:
-      - "python/**"
-      - "contracts/schemas/memory-*.json"
+      - 'python/**'
+      - 'contracts/schemas/memory-*.json'
   pull_request:
     branches: [main, develop]
     paths:
-      - "python/**"
-      - "contracts/schemas/memory-*.json"
+      - 'python/**'
+      - 'contracts/schemas/memory-*.json'
 
 jobs:
   test:
@@ -22,7 +22,7 @@ jobs:
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
       - name: Install uv
         run: pip install uv
@@ -50,7 +50,7 @@ jobs:
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
       - name: Validate JSON schemas
         run: |
