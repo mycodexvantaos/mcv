@@ -2,6 +2,9 @@
  * @module apps/api-node
  * @description Node.js API server for self-hosted deployment.
  *
+ * Platform launch readiness (spectrum-04):
+ *   GET /v1/version, GET /v1/runtime
+ *
  * Runtime activation (spectrum-02):
  *   Loop 1: GET /v1/services, GET /v1/services/:id
  *   Loop 2: GET /v1/resource-kinds, GET /v1/resource-kinds/:kind
@@ -261,6 +264,38 @@ addRoute('GET', '/v1/health', async (_req, res) => {
     timestamp: new Date().toISOString(),
     version: '0.1.0',
     runtime: 'node',
+  });
+});
+
+addRoute('GET', '/v1/version', async (_req, res) => {
+  sendJson(res, 200, {
+    version: process.env.npm_package_version ?? '0.1.0',
+    commit: process.env.GIT_COMMIT ?? 'unknown',
+    branch: process.env.GIT_BRANCH ?? 'unknown',
+    buildTimestamp: process.env.BUILD_TIMESTAMP ?? new Date().toISOString(),
+    nodeVersion: process.version,
+  });
+});
+
+addRoute('GET', '/v1/runtime', async (_req, res) => {
+  const memoryUsage = process.memoryUsage();
+  sendJson(res, 200, {
+    nodeVersion: process.version,
+    platform: process.platform,
+    arch: process.arch,
+    pid: process.pid,
+    uptimeSeconds: Math.floor(process.uptime()),
+    memory: {
+      rss: memoryUsage.rss,
+      heapTotal: memoryUsage.heapTotal,
+      heapUsed: memoryUsage.heapUsed,
+      external: memoryUsage.external,
+      arrayBuffers: memoryUsage.arrayBuffers,
+    },
+    env: process.env.NODE_ENV ?? 'development',
+    nodeVersions: process.versions,
+    execPath: process.execPath,
+    cwd: process.cwd(),
   });
 });
 
@@ -890,7 +925,8 @@ addRoute('GET', '/', async (_req, res) => {
       dreamSafetyEnforcement: true,
     },
     endpoints: [
-      'GET  /v1/health',
+      'GET  /v1/version',
+      'GET  /v1/runtime',
       'GET  /v1/contracts/validate',
       'GET  /v1/services',
       'GET  /v1/services/:id',
