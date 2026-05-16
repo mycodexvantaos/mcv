@@ -410,6 +410,30 @@ check('Release manifest schema includes manifestHash and services', () => {
   return true;
 });
 
+check('Policy runtime enforcement flag is present in governance', () => {
+  const source = fs.readFileSync('apps/api-node/index.ts', 'utf-8');
+  const count = (source.match(/policyRuntimeEnforcement:/g) || []).length;
+  if (count < 2) {
+    console.log(`     Missing: policyRuntimeEnforcement flag (found ${count}, expected >= 2)`);
+    return false;
+  }
+  console.log('     policyRuntimeEnforcement flag present in governance sections');
+  return true;
+});
+
+// ── Enforcement Flag Summary ─────────────────────────────────────────────────
+console.log('\n📋 Enforcement Flag Summary:');
+console.log('   Enabled toggles:');
+console.log('     • auditEnforcementEnabled');
+console.log('     • knowledgeTraceEnforcementEnabled');
+console.log('     • dreamSafetyEnforcementEnabled');
+console.log('   Middleware flags:');
+console.log('     • auditEnforcementMiddleware');
+console.log('     • knowledgeTraceEnforcementMiddleware');
+console.log('     • dreamSafetyEnforcementMiddleware');
+console.log('   Runtime flags:');
+console.log('     • policyRuntimeEnforcement');
+
 // ── Summary ───────────────────────────────────────────────────────────
 console.log('\n' + '━'.repeat(50));
 if (exitCode === 0) {
