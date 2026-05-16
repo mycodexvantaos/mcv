@@ -27,7 +27,11 @@ interface CheckResult {
 
 const results: CheckResult[] = [];
 
-function runCheck(name: string, category: string, fn: () => { passed: boolean; detail: string }): void {
+function runCheck(
+  name: string,
+  category: string,
+  fn: () => { passed: boolean; detail: string }
+): void {
   try {
     const result = fn();
     results.push({ name, category, passed: result.passed, skipped: false, detail: result.detail });
@@ -50,7 +54,11 @@ function skipCheck(name: string, category: string, reason: string): void {
 
 function exec(command: string, options?: { cwd?: string }): string {
   try {
-    return execSync(command, { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'], ...options }).trim();
+    return execSync(command, {
+      encoding: 'utf-8',
+      stdio: ['pipe', 'pipe', 'pipe'],
+      ...options,
+    }).trim();
   } catch (err: unknown) {
     const e = err as { stdout?: string; stderr?: string; message?: string };
     throw new Error(e.stderr?.trim() || e.stdout?.trim() || e.message || 'Command failed');
@@ -186,7 +194,10 @@ runCheck('Release manifest generates successfully', 'manifest', () => {
   }
   const manifest = JSON.parse(readFileSync('release/release-manifest.json', 'utf-8'));
   if (!manifest.version || !manifest.commit || !manifest.manifestHash) {
-    return { passed: false, detail: 'Manifest missing required fields (version, commit, manifestHash)' };
+    return {
+      passed: false,
+      detail: 'Manifest missing required fields (version, commit, manifestHash)',
+    };
   }
   return { passed: true, detail: `Manifest v${manifest.version} @ ${manifest.commit.slice(0, 8)}` };
 });
@@ -254,14 +265,30 @@ runCheck('Python apps exist', 'python', () => {
 });
 
 // Python runtime tests are skipped in rc:verify — they require venv setup covered by python-ci.yml
-skipCheck('Python unit tests', 'python', 'requires venv setup — covered by python-ci.yml CI workflow');
+skipCheck(
+  'Python unit tests',
+  'python',
+  'requires venv setup — covered by python-ci.yml CI workflow'
+);
 
 // ── Category 8: Infrastructure (skipped) ───────────────────────────
 console.log('\n☁️ Infrastructure:');
 
-skipCheck('GCP / Terraform Cloud', 'infrastructure', 'infrastructure-not-configured — no .tf files in repo');
-skipCheck('Cloudflare deployment', 'infrastructure', 'infrastructure-not-configured — no CF_API_TOKEN secret in CI');
-skipCheck('Kubernetes deployment', 'infrastructure', 'infrastructure-not-configured — no K8s cluster configured');
+skipCheck(
+  'GCP / Terraform Cloud',
+  'infrastructure',
+  'infrastructure-not-configured — no .tf files in repo'
+);
+skipCheck(
+  'Cloudflare deployment',
+  'infrastructure',
+  'infrastructure-not-configured — no CF_API_TOKEN secret in CI'
+);
+skipCheck(
+  'Kubernetes deployment',
+  'infrastructure',
+  'infrastructure-not-configured — no K8s cluster configured'
+);
 
 // ── Summary ─────────────────────────────────────────────────────────
 console.log('\n' + '━'.repeat(60));
