@@ -42,21 +42,27 @@ jobs:
     name: Secret Scan (Gitleaks)
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.scan_type == 'all' || github.event.inputs.scan_type == 'secrets' || github.event_name != 'workflow_dispatch' }}
-    env:
-      HAS_GITLEAKS_LICENSE: "${{ secrets.GITLEAKS_LICENSE != '' }}"
     steps:
       - name: Check Gitleaks license
-        if: ${{ env.HAS_GITLEAKS_LICENSE == 'false' }}
-        run: echo "GITLEAKS_LICENSE not configured — skipping scan"
+        id: check_license
+        run: |
+          if [ -n "$GITLEAKS_LICENSE" ]; then
+            echo "has_license=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_license=false" >> $GITHUB_OUTPUT
+            echo "GITLEAKS_LICENSE not configured — skipping scan"
+          fi
+        env:
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
 
       - name: Checkout repository
-        if: ${{ env.HAS_GITLEAKS_LICENSE == 'true' }}
+        if: steps.check_license.outputs.has_license == 'true'
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Run Gitleaks
-        if: ${{ env.HAS_GITLEAKS_LICENSE == 'true' }}
+        if: steps.check_license.outputs.has_license == 'true'
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
