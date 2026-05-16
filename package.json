@@ -41,7 +41,9 @@
     "test:contracts": "node --import tsx --test packages/mycodexvantaos-contracts-sdk/src/__tests__/contracts-sdk.test.ts",
     "generate-release-manifest": "node --import tsx tools/generators/generate-release-manifest.ts",
     "rc:verify": "node --import tsx tools/rc-verify.ts",
-    "release:artifacts": "node --import tsx tools/release-artifacts.ts"
+    "release:artifacts": "node --import tsx tools/release-artifacts.ts",
+    "release:sbom": "node --import tsx tools/generate-sbom.ts",
+    "release:provenance": "node --import tsx tools/generate-provenance.ts"
   },
   "dependencies": {
     "@genkit-ai/google-genai": "^1.28.0",
