@@ -52,7 +52,10 @@ export type PolicyAction = string;
 
 /** Parse a compound action string into individual actions */
 export function parseActions(action: PolicyAction): string[] {
-  return action.split(',').map((a) => a.trim()).filter(Boolean);
+  return action
+    .split(',')
+    .map((a) => a.trim())
+    .filter(Boolean);
 }
 
 /** Check if a requested action matches a policy action pattern.
@@ -77,7 +80,10 @@ export interface PolicyResource {
 
 /** Check if a requested resource matches a policy resource pattern.
  *  Supports wildcard '*' and prefix patterns like 'workspace/*' and 'knowledge/collections/*' */
-export function resourceMatches(policyResource: string, requestedResource: PolicyResource): boolean {
+export function resourceMatches(
+  policyResource: string,
+  requestedResource: PolicyResource
+): boolean {
   if (policyResource === '*') return true;
   // Exact match on resource type
   if (policyResource === requestedResource.type) return true;
@@ -102,7 +108,10 @@ export interface PolicyCondition {
  *  - String values: exact match
  *  - Array values: context value must be in the array (OR logic)
  *  - tags_contains: context.tags must include at least one of the specified tags */
-export function conditionMatches(condition: PolicyCondition | undefined, context: Record<string, unknown>): boolean {
+export function conditionMatches(
+  condition: PolicyCondition | undefined,
+  context: Record<string, unknown>
+): boolean {
   if (!condition || Object.keys(condition).length === 0) return true;
 
   for (const [key, expected] of Object.entries(condition)) {
@@ -202,13 +211,18 @@ export interface PolicyEvaluateResult {
 
 /** Check if a policy rule's subject matches the request subject.
  *  Supports: wildcard '*', role-based matching, service-based matching, exact match */
-export function subjectMatches(ruleSubject: PolicyRule['subject'], requestSubject: PolicySubject): boolean {
+export function subjectMatches(
+  ruleSubject: PolicyRule['subject'],
+  requestSubject: PolicySubject
+): boolean {
   // Wildcard: rule applies to all subjects
   if (ruleSubject === '*') return true;
 
   // String form: match by service name or role
   if (typeof ruleSubject === 'string') {
-    return requestSubject.service === ruleSubject || (requestSubject.roles ?? []).includes(ruleSubject);
+    return (
+      requestSubject.service === ruleSubject || (requestSubject.roles ?? []).includes(ruleSubject)
+    );
   }
 
   // Object form: check roles and/or service
@@ -225,7 +239,8 @@ export function subjectMatches(ruleSubject: PolicyRule['subject'], requestSubjec
     }
 
     // Exact subject match
-    if (rule.type && rule.id && rule.type === requestSubject.type && rule.id === requestSubject.id) return true;
+    if (rule.type && rule.id && rule.type === requestSubject.type && rule.id === requestSubject.id)
+      return true;
 
     return false;
   }
@@ -236,7 +251,10 @@ export function subjectMatches(ruleSubject: PolicyRule['subject'], requestSubjec
 // ── Policy Decision Helpers ──────────────────────────────────────────────
 
 /** Create an 'allow' decision result */
-export function allowDecision(reason: string, opts?: { matchedRuleId?: string; matchedPolicyId?: string; role?: string }): PolicyEvaluateResult {
+export function allowDecision(
+  reason: string,
+  opts?: { matchedRuleId?: string; matchedPolicyId?: string; role?: string }
+): PolicyEvaluateResult {
   return {
     allowed: true,
     effect: 'allow',
@@ -249,7 +267,10 @@ export function allowDecision(reason: string, opts?: { matchedRuleId?: string; m
 }
 
 /** Create a 'deny' decision result */
-export function denyDecision(reason: string, opts?: { matchedRuleId?: string; matchedPolicyId?: string; role?: string }): PolicyEvaluateResult {
+export function denyDecision(
+  reason: string,
+  opts?: { matchedRuleId?: string; matchedPolicyId?: string; role?: string }
+): PolicyEvaluateResult {
   return {
     allowed: false,
     effect: 'deny',
@@ -262,7 +283,10 @@ export function denyDecision(reason: string, opts?: { matchedRuleId?: string; ma
 }
 
 /** Create a 'require-review' decision result */
-export function requireReviewDecision(reason: string, opts?: { matchedRuleId?: string; matchedPolicyId?: string; role?: string }): PolicyEvaluateResult {
+export function requireReviewDecision(
+  reason: string,
+  opts?: { matchedRuleId?: string; matchedPolicyId?: string; role?: string }
+): PolicyEvaluateResult {
   return {
     allowed: false,
     effect: 'require-review',
@@ -275,7 +299,10 @@ export function requireReviewDecision(reason: string, opts?: { matchedRuleId?: s
 }
 
 /** Create a 'dry-run-only' decision result */
-export function dryRunOnlyDecision(reason: string, opts?: { matchedRuleId?: string; matchedPolicyId?: string }): PolicyEvaluateResult {
+export function dryRunOnlyDecision(
+  reason: string,
+  opts?: { matchedRuleId?: string; matchedPolicyId?: string }
+): PolicyEvaluateResult {
   return {
     allowed: false,
     effect: 'dry-run-only',
@@ -287,7 +314,10 @@ export function dryRunOnlyDecision(reason: string, opts?: { matchedRuleId?: stri
 }
 
 /** Create an 'audit-required' decision result */
-export function auditRequiredDecision(reason: string, opts?: { matchedRuleId?: string; matchedPolicyId?: string }): PolicyEvaluateResult {
+export function auditRequiredDecision(
+  reason: string,
+  opts?: { matchedRuleId?: string; matchedPolicyId?: string }
+): PolicyEvaluateResult {
   return {
     allowed: true,
     effect: 'audit-required',

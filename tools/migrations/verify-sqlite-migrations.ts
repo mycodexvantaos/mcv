@@ -59,7 +59,8 @@ function extractCreateTableNames(sql: string): string[] {
 
 function extractCreateIndexNames(sql: string): string[] {
   const indexes: string[] = [];
-  const regex = /CREATE\s+(?:UNIQUE\s+)?INDEX\s+(?:IF\s+NOT\s+EXISTS\s+)?([a-zA-Z_][a-zA-Z0-9_]*)/gi;
+  const regex =
+    /CREATE\s+(?:UNIQUE\s+)?INDEX\s+(?:IF\s+NOT\s+EXISTS\s+)?([a-zA-Z_][a-zA-Z0-9_]*)/gi;
   let match: RegExpExecArray | null;
   while ((match = regex.exec(sql)) !== null) {
     indexes.push(match[1].toLowerCase());
@@ -98,7 +99,20 @@ function verifySQLiteMigrations(): VerificationResult {
 
   if (!existsSync(sqliteDir)) {
     errors.push(`SQLite migrations directory not found: ${sqliteDir}`);
-    return { valid: false, errors, warnings, stats: { migrationCount: 0, tablesCreated: [], indexesCreated: [], criticalTablesMissing: CRITICAL_TABLES, hasFTS5: false, hasForeignKeys: false, hasWALMode: false } };
+    return {
+      valid: false,
+      errors,
+      warnings,
+      stats: {
+        migrationCount: 0,
+        tablesCreated: [],
+        indexesCreated: [],
+        criticalTablesMissing: CRITICAL_TABLES,
+        hasFTS5: false,
+        hasForeignKeys: false,
+        hasWALMode: false,
+      },
+    };
   }
 
   const files = readdirSync(sqliteDir)
@@ -107,7 +121,20 @@ function verifySQLiteMigrations(): VerificationResult {
 
   if (files.length === 0) {
     errors.push('No SQL migration files found in migrations/sqlite/');
-    return { valid: false, errors, warnings, stats: { migrationCount: 0, tablesCreated: [], indexesCreated: [], criticalTablesMissing: CRITICAL_TABLES, hasFTS5: false, hasForeignKeys: false, hasWALMode: false } };
+    return {
+      valid: false,
+      errors,
+      warnings,
+      stats: {
+        migrationCount: 0,
+        tablesCreated: [],
+        indexesCreated: [],
+        criticalTablesMissing: CRITICAL_TABLES,
+        hasFTS5: false,
+        hasForeignKeys: false,
+        hasWALMode: false,
+      },
+    };
   }
 
   // Process each migration file
@@ -122,10 +149,16 @@ function verifySQLiteMigrations(): VerificationResult {
 
     // Check for SQLite-specific PRAGMA statements
     const upperContent = content.toUpperCase();
-    if (upperContent.includes('PRAGMA JOURNAL_MODE = WAL') || upperContent.includes('PRAGMA JOURNAL_MODE=WAL')) {
+    if (
+      upperContent.includes('PRAGMA JOURNAL_MODE = WAL') ||
+      upperContent.includes('PRAGMA JOURNAL_MODE=WAL')
+    ) {
       hasWALMode = true;
     }
-    if (upperContent.includes('PRAGMA FOREIGN_KEYS = ON') || upperContent.includes('PRAGMA FOREIGN_KEYS=ON')) {
+    if (
+      upperContent.includes('PRAGMA FOREIGN_KEYS = ON') ||
+      upperContent.includes('PRAGMA FOREIGN_KEYS=ON')
+    ) {
       hasForeignKeys = true;
     }
 
@@ -172,13 +205,17 @@ function verifySQLiteMigrations(): VerificationResult {
 
   // Recommendations
   if (!hasWALMode) {
-    warnings.push('Recommended: Set PRAGMA journal_mode = WAL for better concurrent read performance');
+    warnings.push(
+      'Recommended: Set PRAGMA journal_mode = WAL for better concurrent read performance'
+    );
   }
   if (!hasForeignKeys) {
     warnings.push('Recommended: Set PRAGMA foreign_keys = ON for referential integrity');
   }
   if (!hasFTS5) {
-    warnings.push('Recommended: Consider FTS5 virtual tables for full-text search on knowledge_chunks');
+    warnings.push(
+      'Recommended: Consider FTS5 virtual tables for full-text search on knowledge_chunks'
+    );
   }
 
   return {

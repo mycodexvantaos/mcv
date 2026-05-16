@@ -155,7 +155,10 @@ describe('audit-log runtime', () => {
       const defs = getAuditEventDefinitions();
       assert.ok(Array.isArray(defs), 'Expected array of event definitions');
       assert.ok(defs.length > 0, 'Expected at least one audit event definition');
-      assert.ok(defs.includes('audit.event-recorded'), `Expected audit.event-recorded, got: ${defs.join(', ')}`);
+      assert.ok(
+        defs.includes('audit.event-recorded'),
+        `Expected audit.event-recorded, got: ${defs.join(', ')}`
+      );
     });
   });
 });

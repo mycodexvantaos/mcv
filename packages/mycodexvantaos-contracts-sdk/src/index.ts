@@ -34,7 +34,13 @@ export interface ServiceDefinitionContract {
   spec: {
     resource_type?: string;
     runtime?: Record<string, unknown>;
-    capabilities?: Array<{ id: string; method: string; description: string; input?: Record<string, unknown>; output?: Record<string, unknown> }>;
+    capabilities?: Array<{
+      id: string;
+      method: string;
+      description: string;
+      input?: Record<string, unknown>;
+      output?: Record<string, unknown>;
+    }>;
     limits?: Record<string, unknown>;
     events?: { emitted?: string[]; subscribed?: string[] };
     audit?: Record<string, unknown>;
@@ -147,7 +153,8 @@ function normalizeServiceDefinition(raw: Record<string, unknown>): ServiceDefini
   }
 
   // Normalize flat format: id → metadata.name, category → metadata.category
-  const name = (raw.id as string) ?? (raw.metadata as Record<string, unknown>)?.name as string ?? 'unknown';
+  const name =
+    (raw.id as string) ?? ((raw.metadata as Record<string, unknown>)?.name as string) ?? 'unknown';
   const metadata: ServiceDefinitionContract['metadata'] = {
     name,
     category: raw.category as string | undefined,
@@ -159,12 +166,24 @@ function normalizeServiceDefinition(raw: Record<string, unknown>): ServiceDefini
     resource_type: raw.resource_type as string | undefined,
     runtime: raw.runtime as Record<string, unknown> | undefined,
     events: raw.events
-      ? { emitted: Array.isArray(raw.events) ? raw.events as string[] : [], subscribed: [] }
+      ? { emitted: Array.isArray(raw.events) ? (raw.events as string[]) : [], subscribed: [] }
       : undefined,
     audit: raw.audit as Record<string, unknown> | undefined,
     ...Object.fromEntries(
-      Object.entries(raw).filter(([k]) =>
-        !['id', 'category', 'display_name', 'description', 'resource_types', 'permissions', 'events', 'usage_metrics', 'runtime', 'audit'].includes(k)
+      Object.entries(raw).filter(
+        ([k]) =>
+          ![
+            'id',
+            'category',
+            'display_name',
+            'description',
+            'resource_types',
+            'permissions',
+            'events',
+            'usage_metrics',
+            'runtime',
+            'audit',
+          ].includes(k)
       )
     ),
   };
@@ -182,14 +201,19 @@ function normalizeServiceDefinition(raw: Record<string, unknown>): ServiceDefini
  * Resource kinds use `kind` as the name identifier and `metadata_schema` instead of `metadata`.
  */
 function normalizeResourceKind(raw: Record<string, unknown>): ResourceKindContract {
-  const name = (raw.kind as string) ?? (raw.metadata as Record<string, unknown>)?.name as string ?? 'unknown';
+  const name =
+    (raw.kind as string) ??
+    ((raw.metadata as Record<string, unknown>)?.name as string) ??
+    'unknown';
 
   return {
     apiVersion: (raw.apiVersion as string) ?? 'mycodexvantaos.io/v1',
     kind: (raw.kind as string) ?? 'ResourceKind',
     metadata: {
       name,
-      description: (raw.description as string) ?? (raw.metadata as Record<string, unknown>)?.description as string,
+      description:
+        (raw.description as string) ??
+        ((raw.metadata as Record<string, unknown>)?.description as string),
     },
     metadata_schema: raw.metadata_schema as Record<string, unknown> | undefined,
     spec_schema: raw.spec_schema as Record<string, unknown> | undefined,
@@ -211,7 +235,8 @@ function normalizePolicyDefinition(raw: Record<string, unknown>): PolicyDefiniti
     return raw as unknown as PolicyDefinitionContract;
   }
 
-  const name = (raw.id as string) ?? (raw.metadata as Record<string, unknown>)?.name as string ?? 'unknown';
+  const name =
+    (raw.id as string) ?? ((raw.metadata as Record<string, unknown>)?.name as string) ?? 'unknown';
 
   return {
     apiVersion: (raw.apiVersion as string) ?? 'platform.mycodexvantaos/v1',
@@ -223,8 +248,8 @@ function normalizePolicyDefinition(raw: Record<string, unknown>): PolicyDefiniti
     spec: {
       rules: raw.rules,
       ...Object.fromEntries(
-        Object.entries(raw).filter(([k]) =>
-          !['id', 'description', 'rules', 'apiVersion', 'kind', 'metadata'].includes(k)
+        Object.entries(raw).filter(
+          ([k]) => !['id', 'description', 'rules', 'apiVersion', 'kind', 'metadata'].includes(k)
         )
       ),
     },
@@ -241,7 +266,11 @@ function normalizeEventDefinition(raw: Record<string, unknown>): EventDefinition
     return raw as unknown as EventDefinitionContract;
   }
 
-  const name = (raw.category as string) ?? (raw.id as string) ?? (raw.metadata as Record<string, unknown>)?.name as string ?? 'unknown';
+  const name =
+    (raw.category as string) ??
+    (raw.id as string) ??
+    ((raw.metadata as Record<string, unknown>)?.name as string) ??
+    'unknown';
 
   return {
     apiVersion: (raw.apiVersion as string) ?? 'platform.mycodexvantaos/v1',
@@ -253,8 +282,9 @@ function normalizeEventDefinition(raw: Record<string, unknown>): EventDefinition
     spec: {
       events: raw.events,
       ...Object.fromEntries(
-        Object.entries(raw).filter(([k]) =>
-          !['category', 'description', 'events', 'apiVersion', 'kind', 'metadata'].includes(k)
+        Object.entries(raw).filter(
+          ([k]) =>
+            !['category', 'description', 'events', 'apiVersion', 'kind', 'metadata'].includes(k)
         )
       ),
     },
@@ -416,7 +446,10 @@ export function validateAllContracts(contractsDir?: string): {
 
   const serviceErrors: string[] = [];
   for (const s of services) {
-    const result = validateBasicContract(s as unknown as Record<string, unknown>, ['apiVersion', 'kind']);
+    const result = validateBasicContract(s as unknown as Record<string, unknown>, [
+      'apiVersion',
+      'kind',
+    ]);
     if (!result.valid) {
       serviceErrors.push(`${s.metadata?.name ?? 'unknown'}: ${result.errors.join(', ')}`);
     }
@@ -424,7 +457,10 @@ export function validateAllContracts(contractsDir?: string): {
 
   const resourceKindErrors: string[] = [];
   for (const r of resourceKinds) {
-    const result = validateBasicContract(r as unknown as Record<string, unknown>, ['apiVersion', 'kind']);
+    const result = validateBasicContract(r as unknown as Record<string, unknown>, [
+      'apiVersion',
+      'kind',
+    ]);
     if (!result.valid) {
       resourceKindErrors.push(`${r.metadata?.name ?? 'unknown'}: ${result.errors.join(', ')}`);
     }
@@ -432,7 +468,10 @@ export function validateAllContracts(contractsDir?: string): {
 
   const policyErrors: string[] = [];
   for (const p of policies) {
-    const result = validateBasicContract(p as unknown as Record<string, unknown>, ['apiVersion', 'kind']);
+    const result = validateBasicContract(p as unknown as Record<string, unknown>, [
+      'apiVersion',
+      'kind',
+    ]);
     if (!result.valid) {
       policyErrors.push(`${p.metadata?.name ?? 'unknown'}: ${result.errors.join(', ')}`);
     }
@@ -440,7 +479,10 @@ export function validateAllContracts(contractsDir?: string): {
 
   const eventErrors: string[] = [];
   for (const e of events) {
-    const result = validateBasicContract(e as unknown as Record<string, unknown>, ['apiVersion', 'kind']);
+    const result = validateBasicContract(e as unknown as Record<string, unknown>, [
+      'apiVersion',
+      'kind',
+    ]);
     if (!result.valid) {
       eventErrors.push(`${e.metadata?.name ?? 'unknown'}: ${result.errors.join(', ')}`);
     }

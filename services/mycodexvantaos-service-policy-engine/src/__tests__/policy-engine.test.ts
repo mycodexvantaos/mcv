@@ -14,11 +14,7 @@ import {
   type PolicyEvaluateResult,
 } from '../index.js';
 
-import type {
-  PolicyDefinition,
-  PolicySubject,
-  PolicyResource,
-} from '@mycodexvantaos/policy-model';
+import type { PolicyDefinition, PolicySubject, PolicyResource } from '@mycodexvantaos/policy-model';
 
 // ── Contract-based policy loading ────────────────────────────────────────
 

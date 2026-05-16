@@ -10,9 +10,7 @@
  */
 
 import { createHash } from 'node:crypto';
-import {
-  loadEventDefinitions,
-} from '@mycodexvantaos/contracts-sdk';
+import { loadEventDefinitions } from '@mycodexvantaos/contracts-sdk';
 
 // ─── Types (aligned with core/audit-model) ────────────────────────────────────
 
@@ -248,7 +246,9 @@ export function verifyIntegrity(): { valid: boolean; chainBreaks: number; totalE
 
     // Verify previous hash linkage
     if (i === 0) {
-      if (event.previousHash !== '0000000000000000000000000000000000000000000000000000000000000000') {
+      if (
+        event.previousHash !== '0000000000000000000000000000000000000000000000000000000000000000'
+      ) {
         chainBreaks++;
       }
     } else {

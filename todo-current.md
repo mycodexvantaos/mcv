@@ -1,6 +1,7 @@
 # Platform Runtime Activation - Remaining Tasks
 
 ## ✅ Completed & Merged to Main
+
 - [x] Knowledge-trace service verification (commit f316e38)
 - [x] PR 41: memory-dream Python worker MVP (commit b2307af)
 - [x] PR 42: memory-dream TS integration (commit b2307af)
@@ -10,7 +11,9 @@
 - [x] All merged to main and pushed to GitHub
 
 ## Summary
+
 All 5 runtime loops are now complete and verified:
+
 - Loop 1: Service Catalog ✅
 - Loop 2: Resource Registry ✅
 - Loop 3: Audit Event ✅

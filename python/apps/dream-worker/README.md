@@ -28,11 +28,11 @@ cd python && uv run python apps/dream-worker/main.py memories.json
 
 ## Modes
 
-| Mode | dry_run | proposal_mode | Description |
-|------|---------|---------------|-------------|
-| `dry-run` | ✅ | ✅ | Report only, no changes |
-| `proposal` | ✅ | ✅ | Suggest actions but don't auto-apply |
-| `execute` | ❌ | ❌ | Execute actions and apply changes |
+| Mode       | dry_run | proposal_mode | Description                          |
+| ---------- | ------- | ------------- | ------------------------------------ |
+| `dry-run`  | ✅      | ✅            | Report only, no changes              |
+| `proposal` | ✅      | ✅            | Suggest actions but don't auto-apply |
+| `execute`  | ❌      | ❌            | Execute actions and apply changes    |
 
 ## Input Format
 
@@ -92,15 +92,21 @@ The `--stdin --json` flags enable TypeScript→Python integration via child proc
 import { spawn } from 'node:child_process';
 
 const proc = spawn('python', [
-  'python/apps/dream-worker/main.py', 'run',
-  '--stdin', '--json', '--mode', 'dry-run'
+  'python/apps/dream-worker/main.py',
+  'run',
+  '--stdin',
+  '--json',
+  '--mode',
+  'dry-run',
 ]);
 
 proc.stdin.write(JSON.stringify(memoryItems));
 proc.stdin.end();
 
 let output = '';
-proc.stdout.on('data', (data) => { output += data; });
+proc.stdout.on('data', (data) => {
+  output += data;
+});
 proc.on('close', () => {
   const report = JSON.parse(output);
   // Use dream report...

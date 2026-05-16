@@ -25,11 +25,11 @@ curl http://localhost:3100/v1/health
 
 ## Services
 
-| Service | Port | Description |
-|---------|------|-------------|
-| api-node | 3100 | Node.js API server (TypeScript control plane) |
-| dream-worker | — | Python dream worker (runs on-demand via CLI) |
-| postgres | 5432 | PostgreSQL 16 persistent storage |
+| Service      | Port | Description                                   |
+| ------------ | ---- | --------------------------------------------- |
+| api-node     | 3100 | Node.js API server (TypeScript control plane) |
+| dream-worker | —    | Python dream worker (runs on-demand via CLI)  |
+| postgres     | 5432 | PostgreSQL 16 persistent storage              |
 
 ## Governance Enforcement
 
@@ -126,22 +126,22 @@ curl -X POST http://localhost:3100/v1/dream/runs/$RUN_ID/rollback \
 
 ### Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `API_PORT` | 3100 | API server port |
-| `DB_PORT` | 5432 | PostgreSQL port |
-| `DB_PASSWORD` | mycodexvantaos | PostgreSQL password |
+| Variable       | Default                                                               | Description                |
+| -------------- | --------------------------------------------------------------------- | -------------------------- |
+| `API_PORT`     | 3100                                                                  | API server port            |
+| `DB_PORT`      | 5432                                                                  | PostgreSQL port            |
+| `DB_PASSWORD`  | mycodexvantaos                                                        | PostgreSQL password        |
 | `DATABASE_URL` | postgres://mycodexvantaos:mycodexvantaos@postgres:5432/mycodexvantaos | Database connection string |
-| `DREAM_MODE` | dry-run | Dream worker default mode |
-| `NODE_ENV` | production | Node.js environment |
+| `DREAM_MODE`   | dry-run                                                               | Dream worker default mode  |
+| `NODE_ENV`     | production                                                            | Node.js environment        |
 
 ### Volumes
 
-| Volume | Mount | Description |
-|--------|-------|-------------|
-| `pg-data` | /var/lib/postgresql/data | PostgreSQL data |
-| `dream-data` | /app/data | Dream worker data |
-| contracts | /app/contracts:ro | Contract YAML files (read-only) |
+| Volume       | Mount                    | Description                     |
+| ------------ | ------------------------ | ------------------------------- |
+| `pg-data`    | /var/lib/postgresql/data | PostgreSQL data                 |
+| `dream-data` | /app/data                | Dream worker data               |
+| contracts    | /app/contracts:ro        | Contract YAML files (read-only) |
 
 ## Operations
 

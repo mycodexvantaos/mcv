@@ -28,7 +28,7 @@ services:
       dockerfile: infra/docker-compose/Dockerfile.api-node
     container_name: mycodexvantaos-api
     ports:
-      - "${API_PORT:-3100}:3100"
+      - '${API_PORT:-3100}:3100'
     environment:
       - NODE_ENV=production
       - PORT=3100
@@ -36,7 +36,7 @@ services:
     volumes:
       - ../../contracts:/app/contracts:ro
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3100/"]
+      test: ['CMD', 'curl', '-f', 'http://localhost:3100/']
       interval: 30s
       timeout: 5s
       start_period: 15s
@@ -62,7 +62,7 @@ services:
     # Dream worker runs on-demand via CLI, not as a long-lived server
     # Override command for different modes:
     #   docker compose run dream-worker dream-worker run --mode proposal
-    command: ["dream-worker", "run", "--mode", "${DREAM_MODE:-dry-run}"]
+    command: ['dream-worker', 'run', '--mode', '${DREAM_MODE:-dry-run}']
 
   # ── PostgreSQL (Production Storage) ────────────────────────────────
   postgres:
@@ -73,11 +73,11 @@ services:
       POSTGRES_USER: mycodexvantaos
       POSTGRES_PASSWORD: ${DB_PASSWORD:-mycodexvantaos}
     ports:
-      - "${DB_PORT:-5432}:5432"
+      - '${DB_PORT:-5432}:5432'
     volumes:
       - pg-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U mycodexvantaos"]
+      test: ['CMD-SHELL', 'pg_isready -U mycodexvantaos']
       interval: 5s
       timeout: 5s
       retries: 5

@@ -75,7 +75,8 @@ function extractCreateTableNames(sql: string): string[] {
 
 function extractCreateIndexNames(sql: string): string[] {
   const indexes: string[] = [];
-  const regex = /CREATE\s+(?:UNIQUE\s+)?INDEX\s+(?:IF\s+NOT\s+EXISTS\s+)?([a-zA-Z_][a-zA-Z0-9_]*)/gi;
+  const regex =
+    /CREATE\s+(?:UNIQUE\s+)?INDEX\s+(?:IF\s+NOT\s+EXISTS\s+)?([a-zA-Z_][a-zA-Z0-9_]*)/gi;
   let match: RegExpExecArray | null;
   while ((match = regex.exec(sql)) !== null) {
     indexes.push(match[1].toLowerCase());
@@ -109,7 +110,17 @@ function verifyD1Migrations(): VerificationResult {
 
   if (!existsSync(d1Dir)) {
     errors.push(`D1 migrations directory not found: ${d1Dir}`);
-    return { valid: false, errors, warnings, stats: { migrationCount: 0, tablesCreated: [], indexesCreated: [], criticalTablesMissing: CRITICAL_TABLES } };
+    return {
+      valid: false,
+      errors,
+      warnings,
+      stats: {
+        migrationCount: 0,
+        tablesCreated: [],
+        indexesCreated: [],
+        criticalTablesMissing: CRITICAL_TABLES,
+      },
+    };
   }
 
   const files = readdirSync(d1Dir)
@@ -118,7 +129,17 @@ function verifyD1Migrations(): VerificationResult {
 
   if (files.length === 0) {
     errors.push('No SQL migration files found in migrations/d1/');
-    return { valid: false, errors, warnings, stats: { migrationCount: 0, tablesCreated: [], indexesCreated: [], criticalTablesMissing: CRITICAL_TABLES } };
+    return {
+      valid: false,
+      errors,
+      warnings,
+      stats: {
+        migrationCount: 0,
+        tablesCreated: [],
+        indexesCreated: [],
+        criticalTablesMissing: CRITICAL_TABLES,
+      },
+    };
   }
 
   // Check sequential numbering
@@ -151,7 +172,9 @@ function verifyD1Migrations(): VerificationResult {
     for (const table of tables) {
       if (allTables.has(table)) {
         duplicateTables.add(table);
-        warnings.push(`Table "${table}" redefined in ${file} (previously defined in another migration)`);
+        warnings.push(
+          `Table "${table}" redefined in ${file} (previously defined in another migration)`
+        );
       }
       allTables.add(table);
     }
@@ -173,14 +196,24 @@ function verifyD1Migrations(): VerificationResult {
 
     for (const stmt of statements) {
       const upper = stmt.toUpperCase();
-      if (upper.startsWith('CREATE') && !upper.includes('TABLE') && !upper.includes('INDEX') && !upper.includes('TRIGGER') && !upper.includes('VIRTUAL')) {
+      if (
+        upper.startsWith('CREATE') &&
+        !upper.includes('TABLE') &&
+        !upper.includes('INDEX') &&
+        !upper.includes('TRIGGER') &&
+        !upper.includes('VIRTUAL')
+      ) {
         warnings.push(`Unexpected CREATE statement in ${file}: ${stmt.substring(0, 80)}...`);
       }
       if (upper.startsWith('DROP') && !upper.includes('IF EXISTS')) {
-        warnings.push(`DROP without IF EXISTS in ${file} may cause errors: ${stmt.substring(0, 80)}...`);
+        warnings.push(
+          `DROP without IF EXISTS in ${file} may cause errors: ${stmt.substring(0, 80)}...`
+        );
       }
       if (upper.startsWith('ALTER')) {
-        warnings.push(`ALTER statement in ${file} may not be supported by D1: ${stmt.substring(0, 80)}...`);
+        warnings.push(
+          `ALTER statement in ${file} may not be supported by D1: ${stmt.substring(0, 80)}...`
+        );
       }
     }
   }

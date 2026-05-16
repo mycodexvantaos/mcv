@@ -53,13 +53,19 @@ describe('loadServiceDefinitions', () => {
   it('should include the audit-log service', () => {
     const services = loadServiceDefinitions(MONOREPO_ROOT);
     const names = services.map((s) => s.metadata?.name);
-    assert.ok(names.includes('audit-log'), `Expected audit-log in service names, got: ${names.join(', ')}`);
+    assert.ok(
+      names.includes('audit-log'),
+      `Expected audit-log in service names, got: ${names.join(', ')}`
+    );
   });
 
   it('should include the identity service', () => {
     const services = loadServiceDefinitions(MONOREPO_ROOT);
     const names = services.map((s) => s.metadata?.name);
-    assert.ok(names.includes('identity'), `Expected identity in service names, got: ${names.join(', ')}`);
+    assert.ok(
+      names.includes('identity'),
+      `Expected identity in service names, got: ${names.join(', ')}`
+    );
   });
 
   it('should load at least 8 services (the MVP services)', () => {
@@ -95,13 +101,19 @@ describe('loadResourceKinds', () => {
   it('should include the audit-event resource kind', () => {
     const kinds = loadResourceKinds(MONOREPO_ROOT);
     const names = kinds.map((k) => k.metadata?.name);
-    assert.ok(names.includes('audit-event'), `Expected audit-event in resource kind names, got: ${names.join(', ')}`);
+    assert.ok(
+      names.includes('audit-event'),
+      `Expected audit-event in resource kind names, got: ${names.join(', ')}`
+    );
   });
 
   it('should include the memory-item resource kind', () => {
     const kinds = loadResourceKinds(MONOREPO_ROOT);
     const names = kinds.map((k) => k.metadata?.name);
-    assert.ok(names.includes('memory-item'), `Expected memory-item in resource kind names, got: ${names.join(', ')}`);
+    assert.ok(
+      names.includes('memory-item'),
+      `Expected memory-item in resource kind names, got: ${names.join(', ')}`
+    );
   });
 
   it('should load at least 10 resource kinds', () => {
@@ -130,13 +142,19 @@ describe('loadPolicyDefinitions', () => {
   it('should include the audit-retention-policy', () => {
     const policies = loadPolicyDefinitions(MONOREPO_ROOT);
     const names = policies.map((p) => p.metadata?.name);
-    assert.ok(names.includes('audit-retention-policy'), `Expected audit-retention-policy, got: ${names.join(', ')}`);
+    assert.ok(
+      names.includes('audit-retention-policy'),
+      `Expected audit-retention-policy, got: ${names.join(', ')}`
+    );
   });
 
   it('should include the memory-dream-policy', () => {
     const policies = loadPolicyDefinitions(MONOREPO_ROOT);
     const names = policies.map((p) => p.metadata?.name);
-    assert.ok(names.includes('memory-dream-policy'), `Expected memory-dream-policy, got: ${names.join(', ')}`);
+    assert.ok(
+      names.includes('memory-dream-policy'),
+      `Expected memory-dream-policy, got: ${names.join(', ')}`
+    );
   });
 });
 
@@ -203,13 +221,19 @@ describe('loadSchemas', () => {
   it('should include the audit-event schema', () => {
     const schemas = loadSchemas(MONOREPO_ROOT);
     const names = Array.from(schemas.keys());
-    assert.ok(names.some((n) => n.includes('audit-event')), `Expected audit-event schema, got: ${names.join(', ')}`);
+    assert.ok(
+      names.some((n) => n.includes('audit-event')),
+      `Expected audit-event schema, got: ${names.join(', ')}`
+    );
   });
 
   it('should include the service-definition schema', () => {
     const schemas = loadSchemas(MONOREPO_ROOT);
     const names = Array.from(schemas.keys());
-    assert.ok(names.some((n) => n.includes('service-definition')), `Expected service-definition schema, got: ${names.join(', ')}`);
+    assert.ok(
+      names.some((n) => n.includes('service-definition')),
+      `Expected service-definition schema, got: ${names.join(', ')}`
+    );
   });
 });
 
@@ -259,9 +283,18 @@ describe('validateContract', () => {
 describe('validateAllContracts', () => {
   it('should validate all contracts without errors', () => {
     const result = validateAllContracts(MONOREPO_ROOT);
-    assert.ok(result.services.valid, `Service validation errors: ${result.services.errors.join('; ')}`);
-    assert.ok(result.resourceKinds.valid, `ResourceKind validation errors: ${result.resourceKinds.errors.join('; ')}`);
-    assert.ok(result.policies.valid, `Policy validation errors: ${result.policies.errors.join('; ')}`);
+    assert.ok(
+      result.services.valid,
+      `Service validation errors: ${result.services.errors.join('; ')}`
+    );
+    assert.ok(
+      result.resourceKinds.valid,
+      `ResourceKind validation errors: ${result.resourceKinds.errors.join('; ')}`
+    );
+    assert.ok(
+      result.policies.valid,
+      `Policy validation errors: ${result.policies.errors.join('; ')}`
+    );
     assert.ok(result.events.valid, `Event validation errors: ${result.events.errors.join('; ')}`);
   });
 });

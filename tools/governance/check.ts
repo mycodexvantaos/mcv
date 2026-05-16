@@ -14,7 +14,12 @@
  * Exit code: 0 if all checks pass, 1 if any check fails.
  */
 
-import { validateAllContracts, loadPolicyDefinitions, loadServiceDefinitions, loadResourceKinds } from '@mycodexvantaos/contracts-sdk';
+import {
+  validateAllContracts,
+  loadPolicyDefinitions,
+  loadServiceDefinitions,
+  loadResourceKinds,
+} from '@mycodexvantaos/contracts-sdk';
 import { PolicyEngine } from '@mycodexvantaos/service-policy-engine';
 
 let exitCode = 0;
@@ -41,7 +46,11 @@ console.log('━'.repeat(50));
 console.log('\n📋 Contract Validation:');
 check('All contracts validate', () => {
   const result = validateAllContracts();
-  const allValid = result.services.valid && result.resourceKinds.valid && result.policies.valid && result.events.valid;
+  const allValid =
+    result.services.valid &&
+    result.resourceKinds.valid &&
+    result.policies.valid &&
+    result.events.valid;
   if (!allValid) {
     console.log('     Validation errors:', JSON.stringify(result, null, 2));
   }
@@ -56,7 +65,9 @@ check('Policies load from contracts', () => {
     console.log('     No policies found');
     return false;
   }
-  console.log(`     Loaded ${policies.length} policies: ${policies.map(p => p.metadata?.name).join(', ')}`);
+  console.log(
+    `     Loaded ${policies.length} policies: ${policies.map((p) => p.metadata?.name).join(', ')}`
+  );
   return policies.length >= 5; // We expect at least 5 policies
 });
 
@@ -92,7 +103,9 @@ check('Services load from contracts', () => {
     console.log('     No services found');
     return false;
   }
-  console.log(`     Loaded ${services.length} services: ${services.map(s => s.metadata?.name).join(', ')}`);
+  console.log(
+    `     Loaded ${services.length} services: ${services.map((s) => s.metadata?.name).join(', ')}`
+  );
   return services.length >= 5;
 });
 
@@ -104,7 +117,9 @@ check('Resource kinds load from contracts', () => {
     console.log('     No resource kinds found');
     return false;
   }
-  console.log(`     Loaded ${kinds.length} resource kinds: ${kinds.map(k => k.metadata?.name).join(', ')}`);
+  console.log(
+    `     Loaded ${kinds.length} resource kinds: ${kinds.map((k) => k.metadata?.name).join(', ')}`
+  );
   return kinds.length >= 3;
 });
 

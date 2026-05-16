@@ -29,15 +29,9 @@
  */
 
 // ── Service imports (workspace packages) ──────────────────────────────
-import {
-  listServices,
-  getService,
-} from '@mycodexvantaos/service-service-catalog';
+import { listServices, getService } from '@mycodexvantaos/service-service-catalog';
 
-import {
-  listResourceKinds,
-  getResourceKind,
-} from '@mycodexvantaos/service-resource-registry';
+import { listResourceKinds, getResourceKind } from '@mycodexvantaos/service-resource-registry';
 
 import {
   recordEvent,
@@ -106,11 +100,7 @@ function errorResponse(message: string, status: number): Response {
 }
 
 // ── Audit enforcement wrapper ─────────────────────────────────────────
-function withAudit(
-  eventType: string,
-  category: AuditEventCategory,
-  handler: Handler
-): Handler {
+function withAudit(eventType: string, category: AuditEventCategory, handler: Handler): Handler {
   return async (req, env, ctx, match) => {
     const response = await handler(req, env, ctx, match);
     // Auto-record audit event for all audited routes
@@ -145,7 +135,11 @@ addRoute('GET', '/v1/health', async () => {
     status: 'ok',
     timestamp: new Date().toISOString(),
     governance: {
-      contractsValid: governance.services.valid && governance.resourceKinds.valid && governance.policies.valid && governance.events.valid,
+      contractsValid:
+        governance.services.valid &&
+        governance.resourceKinds.valid &&
+        governance.policies.valid &&
+        governance.events.valid,
       policiesLoaded: getPolicyEngine().getRuleCount(),
     },
   });
@@ -176,24 +170,39 @@ addRoute('GET', '/v1/resource-kinds/:id', async (_req, _env, _ctx, match) => {
 });
 
 // ── Audit Events ──────────────────────────────────────────────────────
-addRoute('POST', '/v1/audit/events', withAudit('audit.event-created', 'audit', async (req) => {
-  try {
-    const body = await req.json() as Record<string, unknown>;
-    const result = recordEvent({
-      eventType: body.eventType as string,
-      category: body.category as AuditEventCategory,
-      severity: (body.severity ?? 'info') as EventSeverity,
-      actor: body.actor as { type: 'user' | 'agent' | 'system' | 'cron'; id: string; name?: string; role?: string },
-      resource: body.resource as { type: string; id: string; name?: string },
-      context: body.context as { tenantId: string; workspaceId: string | null; sessionId?: string; requestId?: string; traceId?: string },
-      data: body.data as Record<string, unknown>,
-      pairId: body.pairId as string,
-    });
-    return json(result, 201);
-  } catch (err) {
-    return errorResponse(err instanceof Error ? err.message : 'Bad request', 400);
-  }
-}));
+addRoute(
+  'POST',
+  '/v1/audit/events',
+  withAudit('audit.event-created', 'audit', async (req) => {
+    try {
+      const body = (await req.json()) as Record<string, unknown>;
+      const result = recordEvent({
+        eventType: body.eventType as string,
+        category: body.category as AuditEventCategory,
+        severity: (body.severity ?? 'info') as EventSeverity,
+        actor: body.actor as {
+          type: 'user' | 'agent' | 'system' | 'cron';
+          id: string;
+          name?: string;
+          role?: string;
+        },
+        resource: body.resource as { type: string; id: string; name?: string },
+        context: body.context as {
+          tenantId: string;
+          workspaceId: string | null;
+          sessionId?: string;
+          requestId?: string;
+          traceId?: string;
+        },
+        data: body.data as Record<string, unknown>,
+        pairId: body.pairId as string,
+      });
+      return json(result, 201);
+    } catch (err) {
+      return errorResponse(err instanceof Error ? err.message : 'Bad request', 400);
+    }
+  })
+);
 
 addRoute('GET', '/v1/audit/events', async (req) => {
   const url = new URL(req.url);
@@ -211,20 +220,24 @@ addRoute('GET', '/v1/audit/events', async (req) => {
 });
 
 // ── Policy Evaluation ─────────────────────────────────────────────────
-addRoute('POST', '/v1/policies/evaluate', withAudit('policy.evaluated', 'audit', async (req) => {
-  try {
-    const body = await req.json() as Record<string, unknown>;
-    const result = evaluatePolicy({
-      subject: body.subject as PolicyEvaluateRequest['subject'],
-      action: body.action as string,
-      resource: body.resource as PolicyEvaluateRequest['resource'],
-      context: body.context as Record<string, unknown>,
-    });
-    return json(result);
-  } catch (err) {
-    return errorResponse(err instanceof Error ? err.message : 'Bad request', 400);
-  }
-}));
+addRoute(
+  'POST',
+  '/v1/policies/evaluate',
+  withAudit('policy.evaluated', 'audit', async (req) => {
+    try {
+      const body = (await req.json()) as Record<string, unknown>;
+      const result = evaluatePolicy({
+        subject: body.subject as PolicyEvaluateRequest['subject'],
+        action: body.action as string,
+        resource: body.resource as PolicyEvaluateRequest['resource'],
+        context: body.context as Record<string, unknown>,
+      });
+      return json(result);
+    } catch (err) {
+      return errorResponse(err instanceof Error ? err.message : 'Bad request', 400);
+    }
+  })
+);
 
 addRoute('GET', '/v1/policies', async () => {
   const engine = getPolicyEngine();
@@ -305,11 +318,15 @@ export default {
           return response;
         } catch (err) {
           const message = err instanceof Error ? err.message : 'Internal Server Error';
-          const status = message.includes('not found') ? 404
-            : message.includes('unauthorized') ? 401
-            : message.includes('forbidden') ? 403
-            : message.includes('already exists') ? 409
-            : 500;
+          const status = message.includes('not found')
+            ? 404
+            : message.includes('unauthorized')
+              ? 401
+              : message.includes('forbidden')
+                ? 403
+                : message.includes('already exists')
+                  ? 409
+                  : 500;
           return errorResponse(message, status);
         }
       }
