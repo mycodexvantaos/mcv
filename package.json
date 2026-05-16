@@ -86,6 +86,9 @@
     "zustand": "^5.0.13"
   },
   "devDependencies": {
+    "@mycodexvantaos/contracts-sdk": "workspace:*",
+    "@mycodexvantaos/policy-model": "workspace:*",
+    "@mycodexvantaos/service-policy-engine": "workspace:*",
     "@types/node": "^20",
     "@types/react": "^19.2.1",
     "@types/react-dom": "^19.2.1",
@@ -93,10 +96,8 @@
     "postcss": "^8",
     "prettier": "^3.4.2",
     "tailwindcss": "^3.4.1",
+    "tsx": "^4.22.0",
     "typescript": "^5",
-    "wrangler": "^4.88.0",
-    "@mycodexvantaos/contracts-sdk": "workspace:*",
-    "@mycodexvantaos/policy-model": "workspace:*",
-    "@mycodexvantaos/service-policy-engine": "workspace:*"
+    "wrangler": "^4.88.0"
   }
 }
