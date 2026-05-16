@@ -1,0 +1,143 @@
+{
+  "policyVersion": "1.0.0",
+  "effectiveDate": "2026-05-16",
+  "releaseLine": "v0.1.0",
+  "description": "Defines the cryptographic signing requirements for release provenance. RC releases may publish unsigned provenance classified as signing-not-configured. Stable releases must include valid cryptographic signatures.",
+  "signingMethods": [
+    {
+      "id": "sigstore-keyless",
+      "name": "Sigstore Keyless Signing",
+      "description": "Keyless signing using OpenID Connect (OIDC) federation via cosign. The GitHub Actions OIDC token serves as the identity provider.",
+      "tool": "cosign sign-blob",
+      "identityProvider": "GitHub OIDC",
+      "preferred": true,
+      "applicableReleases": ["stable"],
+      "requirements": [
+        "GitHub Actions environment with id-token: write permission",
+        "cosign installed in CI environment",
+        "Rekor transparency log entry"
+      ]
+    },
+    {
+      "id": "gpg-key",
+      "name": "GPG Key Signing",
+      "description": "Traditional GPG key-based signing using a stored private key. Fallback method when Sigstore keyless is unavailable.",
+      "tool": "gpg --sign",
+      "identityProvider": "GPG key stored in GitHub Secrets",
+      "preferred": false,
+      "applicableReleases": ["stable"],
+      "requirements": [
+        "SIGNING_GPG_KEY secret configured in repository",
+        "SIGNING_GPG_PASSPHRASE secret configured in repository",
+        "Public key published to keyserver"
+      ]
+    },
+    {
+      "id": "vault-hsm",
+      "name": "Vault/HSM-Based Signing",
+      "description": "HashiCorp Vault Transit engine or HSM PKCS#11 interface for enterprise-grade signing.",
+      "tool": "Vault Transit API or PKCS#11",
+      "identityProvider": "Vault AppRole or Kubernetes auth",
+      "preferred": false,
+      "applicableReleases": ["enterprise"],
+      "requirements": [
+        "HashiCorp Vault instance configured with Transit engine",
+        "AppRole credentials stored as GitHub Secrets",
+        "HSM device or cloud HSM service available"
+      ]
+    }
+  ],
+  "classifications": {
+    "signing-not-configured": {
+      "description": "Provenance is generated but lacks cryptographic signing. Unsigned provenance is acceptable for RC releases only.",
+      "rcPolicy": "Acceptable. Provenance is generated but classified as signing-not-configured.",
+      "stablePolicy": "Must be resolved. A signing key must be configured and all provenance statements must include valid signatures.",
+      "requiredActions": [
+        "Configure at least one signing method from signingMethods",
+        "Update generate-provenance.ts to include signatures when signing is available",
+        "Document the signing method and verification instructions in release notes"
+      ]
+    },
+    "signing-configured": {
+      "description": "Provenance includes a valid cryptographic signature from a configured signing key.",
+      "rcPolicy": "Recommended but not required.",
+      "stablePolicy": "Required. All stable release provenance must include valid signatures.",
+      "requiredActions": []
+    },
+    "signing-verified": {
+      "description": "Provenance signature has been verified against the signing certificate or public key.",
+      "rcPolicy": "Best effort.",
+      "stablePolicy": "Recommended. Automated verification in CI provides additional assurance.",
+      "requiredActions": []
+    }
+  },
+  "signatureFormat": {
+    "type": "in-toto Envelope",
+    "description": "Signatures follow the in-toto Envelope format with a signatures array at the top level of the provenance JSON document.",
+    "structure": {
+      "signatures": [
+        {
+          "keyid": "Signing key identifier",
+          "sig": "Base64-encoded signature"
+        }
+      ]
+    }
+  },
+  "minimumRequirement": {
+    "v0.1.0-rc.1": {
+      "classification": "signing-not-configured",
+      "method": "none",
+      "acceptable": true,
+      "reason": "RC release. Signing not yet configured. Provenance is generated unsigned with signing-not-configured classification."
+    },
+    "v0.1.0": {
+      "classification": "signing-configured",
+      "method": "sigstore-keyless",
+      "acceptable": false,
+      "reason": "Stable release. Provenance must be signed. Sigstore keyless signing via cosign in GitHub Actions is the minimum required method."
+    }
+  },
+  "implementationPlan": {
+    "phase1": {
+      "release": "v0.1.0 stable",
+      "tasks": [
+        "Add cosign installation step to release workflow",
+        "Add id-token: write permission to release workflow",
+        "Sign provenance after generation using cosign sign-blob",
+        "Include signature in provenance bundle",
+        "Add signature verification step to release workflow",
+        "Update generate-provenance.ts to include signatures when available",
+        "Document verification instructions in release notes"
+      ]
+    },
+    "phase2": {
+      "release": "v0.2.0+",
+      "tasks": [
+        "Create dedicated signing workflow triggered by tag push",
+        "Automate keyless signing via GitHub OIDC",
+        "Add SLSA provenance generation using slsa-github-generator",
+        "Publish signatures to Rekor transparency log",
+        "Add automated signature verification in CI"
+      ]
+    },
+    "phase3": {
+      "release": "Enterprise",
+      "tasks": [
+        "Integrate with HashiCorp Vault Transit engine",
+        "Configure HSM-backed signing keys",
+        "Add audit logging for all signing operations",
+        "Implement key rotation procedures"
+      ]
+    }
+  },
+  "verification": {
+    "sigstore-keyless": {
+      "command": "cosign verify-blob --blob-file provenance.intoto.json --signature provenance.intoto.json.sig --certificate provenance.intoto.json.cert --certificate-identity <identity> --certificate-oidc-issuer https://token.actions.githubusercontent.com",
+      "description": "Verify Sigstore keyless-signed provenance using the certificate chain and OIDC issuer."
+    },
+    "gpg-key": {
+      "command": "gpg --verify provenance.intoto.json.sig provenance.intoto.json",
+      "description": "Verify GPG-signed provenance using the signer's public key."
+    }
+  }
+}
