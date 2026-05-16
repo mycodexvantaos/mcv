@@ -5,6 +5,44 @@ All notable changes to MyCodeXvantaOS will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.0-rc.1] - 2026-05-16
+
+### Added
+
+- Platform governance enforcement: audit, knowledge trace, and dream safety enforcement middleware
+- `withAudit()` middleware wrapping all mutating routes with trace_id generation
+- `withPolicy()` runtime enforcement middleware with 5 decision types (allow, deny, require-review, dry-run-only, audit-required)
+- Knowledge trace receipt validation for knowledge-assisted answers
+- Dream safety lifecycle: review gate, before/after JSON tracking, rollback, delete prohibition
+- Architecture decision enforcement requiring review for tagged memory merges
+- Release manifest generator (`pnpm generate-release-manifest`) with manifest hash integrity
+- Release candidate verification (`pnpm rc:verify`) covering 8 categories
+- Release candidate check workflow (`.github/workflows/release-candidate-check.yml`)
+- Terraform Cloud guard workflow documenting external TFC failures as infrastructure-not-configured
+- Governance check now includes 24 checks with structured Enforcement Flag Summary
+- 7 canonical enforcement flags: auditEnforcementEnabled, knowledgeTraceEnforcementEnabled, dreamSafetyEnforcementEnabled, auditEnforcementMiddleware, knowledgeTraceEnforcementMiddleware, dreamSafetyEnforcementMiddleware, policyRuntimeEnforcement
+
+### Changed
+
+- Consolidated CodeQL from 3 redundant workflows to single CodeQL Advanced (v4) workflow covering actions, javascript-typescript, and python
+- Removed legacy `codeql-analysis.yml` (v3, JavaScript-only)
+- Removed duplicate CodeQL job from `security-scan.yaml`
+- Updated CodeQL Advanced workflow triggers to include `feature/**` and `fix/**` branches
+- Updated security-scan.yaml version from 2.1.0 to 3.0.0
+- Normalized governance flag reporting with structured summary output
+
+### Fixed
+
+- CodeQL transient failures resolved by consolidating to single v4 workflow
+- Terraform Cloud external status check failure documented and classified as infrastructure-not-configured
+- Governance enforcement flag output cleaned and normalized
+
+### Security
+
+- CodeQL analysis consolidated to v4 actions with improved coverage
+- No security scanning disabled or bypassed
+- All enforcement flags remain active and verified by governance checks
+
 ## [Unreleased]
 
 ### Added
