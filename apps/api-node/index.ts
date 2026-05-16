@@ -267,15 +267,24 @@ addRoute('GET', '/v1/health', async (_req, res) => {
     const services = listServices();
     loops['service-catalog'] = { status: 'ok', details: `${services.services.length} services` };
   } catch (e) {
-    loops['service-catalog'] = { status: 'error', details: e instanceof Error ? e.message : 'unknown' };
+    loops['service-catalog'] = {
+      status: 'error',
+      details: e instanceof Error ? e.message : 'unknown',
+    };
   }
 
   // Loop 2: Resource Registry
   try {
     const kinds = listResourceKinds();
-    loops['resource-registry'] = { status: 'ok', details: `${kinds.resourceKinds.length} resource kinds` };
+    loops['resource-registry'] = {
+      status: 'ok',
+      details: `${kinds.resourceKinds.length} resource kinds`,
+    };
   } catch (e) {
-    loops['resource-registry'] = { status: 'error', details: e instanceof Error ? e.message : 'unknown' };
+    loops['resource-registry'] = {
+      status: 'error',
+      details: e instanceof Error ? e.message : 'unknown',
+    };
   }
 
   // Loop 3: Audit Log
@@ -290,7 +299,10 @@ addRoute('GET', '/v1/health', async (_req, res) => {
   try {
     loops['knowledge-trace'] = { status: 'ok', details: 'receipt and trace services available' };
   } catch (e) {
-    loops['knowledge-trace'] = { status: 'error', details: e instanceof Error ? e.message : 'unknown' };
+    loops['knowledge-trace'] = {
+      status: 'error',
+      details: e instanceof Error ? e.message : 'unknown',
+    };
   }
 
   // Loop 5: Memory Dream
@@ -298,7 +310,10 @@ addRoute('GET', '/v1/health', async (_req, res) => {
     const stats = getDreamStats();
     loops['memory-dream'] = { status: 'ok', details: `${stats.totalRuns} runs` };
   } catch (e) {
-    loops['memory-dream'] = { status: 'error', details: e instanceof Error ? e.message : 'unknown' };
+    loops['memory-dream'] = {
+      status: 'error',
+      details: e instanceof Error ? e.message : 'unknown',
+    };
   }
 
   const allOk = Object.values(loops).every((l) => l.status === 'ok');
