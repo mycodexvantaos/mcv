@@ -180,6 +180,21 @@ export function isAuditEnforcementEnabled(): boolean {
   return auditEnforcementEnabled;
 }
 
+/**
+ * Knowledge Trace Enforcement: when enabled, any knowledge-assisted answer
+ * MUST reference a valid retrieval receipt. This ensures every AI-generated
+ * answer can be traced back to its evidence source.
+ */
+let knowledgeTraceEnforcementEnabled = true;
+
+export function setKnowledgeTraceEnforcement(enabled: boolean): void {
+  knowledgeTraceEnforcementEnabled = enabled;
+}
+
+export function isKnowledgeTraceEnforcementEnabled(): boolean {
+  return knowledgeTraceEnforcementEnabled;
+}
+
 type AuditableEventType = string;
 type AuditableCategory =
   | 'knowledge'
@@ -276,7 +291,7 @@ addRoute('GET', '/', async (_req, res) => {
     ],
     governance: {
       auditEnforcement: auditEnforcementEnabled,
-      knowledgeTraceEnforcement: true,
+      knowledgeTraceEnforcement: knowledgeTraceEnforcementEnabled,
       dreamSafetyEnforcement: true,
     },
     endpoints: [
@@ -380,7 +395,7 @@ addRoute('GET', '/v1/health', async (_req, res) => {
     loops,
     governance: {
       auditEnforcement: auditEnforcementEnabled,
-      knowledgeTraceEnforcement: true,
+      knowledgeTraceEnforcement: knowledgeTraceEnforcementEnabled,
       dreamSafetyEnforcement: true,
     },
   });
@@ -643,17 +658,34 @@ addRoute(
         return;
       }
 
-      // ── Knowledge Trace Enforcement (PR 46) ────────────────────────────
-      // If knowledge_assisted=true, the receiptId MUST be a valid retrieval receipt
-      if (answerReq.knowledge_assisted === true) {
-        const receipt = getRetrievalReceipt(answerReq.receiptId);
-        if (!receipt) {
-          sendError(
-            res,
-            403,
-            `Knowledge-assisted answer requires valid retrieval_receipt_id. Receipt not found: ${answerReq.receiptId}`
-          );
-          return;
+      // ── Knowledge Trace Enforcement ──────────────────────────────
+      // Every knowledge-assisted answer MUST reference a valid retrieval receipt.
+      // This ensures full traceability from answer → evidence → source.
+      if (knowledgeTraceEnforcementEnabled) {
+        // If knowledge_assisted is explicitly true, receipt MUST be valid
+        if (answerReq.knowledge_assisted === true) {
+          const receipt = getRetrievalReceipt(answerReq.receiptId);
+          if (!receipt) {
+            sendError(
+              res,
+              403,
+              `Knowledge trace enforcement: knowledge_assisted answer requires a valid retrieval receipt. Receipt not found: ${answerReq.receiptId}`
+            );
+            return;
+          }
+        }
+        // If a receiptId is provided, it must reference an existing receipt
+        // (prevents fabrication of receipt IDs)
+        if (answerReq.receiptId) {
+          const receipt = getRetrievalReceipt(answerReq.receiptId);
+          if (!receipt) {
+            sendError(
+              res,
+              403,
+              `Knowledge trace enforcement: provided receiptId does not reference a valid receipt. Receipt not found: ${answerReq.receiptId}`
+            );
+            return;
+          }
         }
       }
 
