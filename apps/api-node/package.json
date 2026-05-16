@@ -7,7 +7,7 @@
   "main": "index.ts",
   "scripts": {
     "dev": "npx tsx watch index.ts",
-    "build": "npx tsup index.ts --format esm --outDir dist",
+    "build": "tsup index.ts --format esm --outDir dist",
     "start": "node dist/index.js",
     "typecheck": "tsc --noEmit"
   },
@@ -21,8 +21,9 @@
     "@mycodexvantaos/service-policy-engine": "workspace:*"
   },
   "devDependencies": {
-    "typescript": "^5.4.0",
-    "@types/node": "^20.0.0"
+    "@types/node": "^20.0.0",
+    "tsup": "^8.4.0",
+    "typescript": "^5.4.0"
   },
   "license": "UNLICENSED"
 }
