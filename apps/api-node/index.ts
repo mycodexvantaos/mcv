@@ -490,41 +490,36 @@ addRoute('GET', '/v1/resource-kinds/:kind', async (_req, res, params) => {
 
 // ── Loop 3: Audit Event Runtime (with withAudit enforcement) ────────────
 
+// POST /v1/audit/events is NOT wrapped with withAudit() to prevent
+// infinite recursion — this route IS the audit mechanism. Recording an
+// audit event about recording an audit event would be redundant noise.
+// It is still marked { audited: true } so the enforcement layer allows it.
 addRoute(
   'POST',
   '/v1/audit/events',
-  withAudit(
-    'audit.event-created',
-    'audit',
-    async (req, res) => {
-      const body = await readBody(req);
-      let parsed: unknown;
-      try {
-        parsed = JSON.parse(body);
-      } catch {
-        sendError(res, 400, 'Invalid JSON body');
-        return;
-      }
-      const createReq = parsed as CreateAuditEventRequest;
-      if (
-        !createReq.eventType ||
-        !createReq.category ||
-        !createReq.actor ||
-        !createReq.resource ||
-        !createReq.context
-      ) {
-        sendError(
-          res,
-          400,
-          'Missing required fields: eventType, category, actor, resource, context'
-        );
-        return;
-      }
-      const result = recordEvent(createReq);
-      sendJson(res, 201, result);
-    },
-    { resourceType: 'audit-event' }
-  ),
+  async (req, res) => {
+    const body = await readBody(req);
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(body);
+    } catch {
+      sendError(res, 400, 'Invalid JSON body');
+      return;
+    }
+    const createReq = parsed as CreateAuditEventRequest;
+    if (
+      !createReq.eventType ||
+      !createReq.category ||
+      !createReq.actor ||
+      !createReq.resource ||
+      !createReq.context
+    ) {
+      sendError(res, 400, 'Missing required fields: eventType, category, actor, resource, context');
+      return;
+    }
+    const result = recordEvent(createReq);
+    sendJson(res, 201, result);
+  },
   { audited: true }
 );
 
