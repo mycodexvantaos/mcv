@@ -258,6 +258,59 @@ function withAudit(
 
 // ── Health / Meta ────────────────────────────────────────────────────────
 
+addRoute('GET', '/', async (_req, res) => {
+  sendJson(res, 200, {
+    name: 'MyCodeXvantaOS',
+    version: '0.1.0',
+    description: 'Self-hosted AI platform with dual-plane architecture',
+    status: 'running',
+    runtime: 'node',
+    apiBase: '/v1',
+    loops: [
+      'service-catalog',
+      'resource-registry',
+      'audit-log',
+      'knowledge-trace',
+      'memory-dream',
+      'policy-engine',
+    ],
+    governance: {
+      auditEnforcement: auditEnforcementEnabled,
+      knowledgeTraceEnforcement: true,
+      dreamSafetyEnforcement: true,
+    },
+    endpoints: [
+      'GET  /v1/health',
+      'GET  /v1/ready',
+      'GET  /v1/version',
+      'GET  /v1/runtime',
+      'GET  /v1/contracts/validate',
+      'GET  /v1/services',
+      'GET  /v1/services/:id',
+      'GET  /v1/resource-kinds',
+      'GET  /v1/resource-kinds/:kind',
+      'POST /v1/audit/events',
+      'GET  /v1/audit/events',
+      'GET  /v1/audit/events/:eventId',
+      'GET  /v1/audit/verify',
+      'POST /v1/knowledge/search',
+      'POST /v1/knowledge/answer',
+      'GET  /v1/knowledge/retrieval-receipts/:id',
+      'GET  /v1/knowledge/answer-traces/:id',
+      'GET  /v1/knowledge/verify/:id',
+      'POST /v1/dream/run',
+      'GET  /v1/dream/runs/:id',
+      'GET  /v1/dream/runs/:id/actions',
+      'GET  /v1/dream/stats',
+      'POST /v1/dream/runs/:id/review',
+      'POST /v1/dream/runs/:id/apply',
+      'POST /v1/dream/runs/:id/rollback',
+      'POST /v1/policies/evaluate',
+      'GET  /v1/policies',
+    ],
+  });
+});
+
 addRoute('GET', '/v1/health', async (_req, res) => {
   // Verify all 5 runtime loops are responsive
   const loops: Record<string, { status: string; details?: string }> = {};
@@ -974,7 +1027,50 @@ addRoute(
         context: evalReq.context,
       });
 
-      const statusCode = result.allowed ? 200 : 403;
+      // ── Architecture Decision Enforcement ────────────────────────────────
+      // Architecture decision merge/deprecate actions MUST return require-review.
+      // This is a platform safety guard that overrides any policy rule that
+      // would otherwise allow these actions without human review.
+      const archDecisionActions = ['merge', 'deprecate', 'archive', 'retire'];
+      const isArchDecisionAction = archDecisionActions.includes(evalReq.action);
+      const isArchDecisionResource =
+        evalReq.resource.type === 'architecture-decision' ||
+        evalReq.resource.type === 'arch-decision' ||
+        evalReq.resource.attributes?.['architecture_decision'] === true;
+
+      if (isArchDecisionAction && isArchDecisionResource && result.effect !== 'require-review') {
+        // Override to require-review — architecture decisions must never be
+        // auto-applied without human review
+        result.allowed = false;
+        result.effect = 'require-review';
+        result.reason = `Architecture decision action '${evalReq.action}' requires human review. Platform safety enforcement overrides effect '${result.effect}'.`;
+        result.matchedRuleId = 'platform-safety:architecture-decision-review';
+        result.matchedPolicyId = 'platform-safety';
+      }
+
+      // Return appropriate status code based on effect:
+      //   allow → 200, audit-required → 200 (allowed but must be audited)
+      //   deny → 403, require-review → 202, dry-run-only → 202
+      let statusCode: number;
+      switch (result.effect) {
+        case 'allow':
+          statusCode = 200;
+          break;
+        case 'audit-required':
+          statusCode = 200;
+          break;
+        case 'deny':
+          statusCode = 403;
+          break;
+        case 'require-review':
+          statusCode = 202;
+          break;
+        case 'dry-run-only':
+          statusCode = 202;
+          break;
+        default:
+          statusCode = result.allowed ? 200 : 403;
+      }
       sendJson(res, statusCode, result);
     },
     { resourceType: 'policy-decision' }
@@ -993,58 +1089,6 @@ addRoute('GET', '/v1/policies', async (_req, res) => {
     })),
     total: policies.length,
     ruleCount: engine.getRuleCount(),
-  });
-});
-
-// ── Root ─────────────────────────────────────────────────────────────────
-
-addRoute('GET', '/', async (_req, res) => {
-  sendJson(res, 200, {
-    name: 'MyCodeXvantaOS API',
-    version: '0.1.0',
-    status: 'running',
-    runtime: 'node',
-    loops: [
-      'service-catalog',
-      'resource-registry',
-      'audit-log',
-      'knowledge-trace',
-      'memory-dream',
-      'policy-engine',
-    ],
-    governance: {
-      auditEnforcement: auditEnforcementEnabled,
-      knowledgeTraceEnforcement: true,
-      dreamSafetyEnforcement: true,
-    },
-    endpoints: [
-      'GET  /v1/ready',
-      'GET  /v1/version',
-      'GET  /v1/runtime',
-      'GET  /v1/contracts/validate',
-      'GET  /v1/services',
-      'GET  /v1/services/:id',
-      'GET  /v1/resource-kinds',
-      'GET  /v1/resource-kinds/:kind',
-      'POST /v1/audit/events',
-      'GET  /v1/audit/events',
-      'GET  /v1/audit/events/:eventId',
-      'GET  /v1/audit/verify',
-      'POST /v1/knowledge/search',
-      'POST /v1/knowledge/answer',
-      'GET  /v1/knowledge/retrieval-receipts/:id',
-      'GET  /v1/knowledge/answer-traces/:id',
-      'GET  /v1/knowledge/verify/:id',
-      'POST /v1/dream/run',
-      'GET  /v1/dream/runs/:id',
-      'GET  /v1/dream/runs/:id/actions',
-      'GET  /v1/dream/stats',
-      'POST /v1/dream/runs/:id/review',
-      'POST /v1/dream/runs/:id/apply',
-      'POST /v1/dream/runs/:id/rollback',
-      'POST /v1/policies/evaluate',
-      'GET  /v1/policies',
-    ],
   });
 });
 
