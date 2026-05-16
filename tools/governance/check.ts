@@ -210,6 +210,60 @@ check('Dream safety enforcement is present', () => {
   return true;
 });
 
+check('withPolicy() runtime enforcement middleware is present', () => {
+  const source = fs.readFileSync('apps/api-node/index.ts', 'utf-8');
+  const hasWithPolicy = source.includes('function withPolicy(');
+  const hasDenyHandler = source.includes("case 'deny':");
+  const hasRequireReviewHandler = source.includes("case 'require-review':");
+  const hasDryRunOnlyHandler = source.includes("case 'dry-run-only':");
+  const hasAllowHandler = source.includes("case 'allow':");
+  const hasAuditRequiredHandler = source.includes("case 'audit-required':");
+  if (!hasWithPolicy) {
+    console.log('     Missing: withPolicy() function');
+    return false;
+  }
+  if (
+    !hasDenyHandler ||
+    !hasRequireReviewHandler ||
+    !hasDryRunOnlyHandler ||
+    !hasAllowHandler ||
+    !hasAuditRequiredHandler
+  ) {
+    console.log('     Missing: one or more decision type handlers in withPolicy()');
+    return false;
+  }
+  console.log('     withPolicy() middleware with all 5 decision types verified');
+  return true;
+});
+
+check('withPolicy() is composed with withAudit() on protected routes', () => {
+  const source = fs.readFileSync('apps/api-node/index.ts', 'utf-8');
+  // Use lastIndexOf to find the actual route definition (not JSDoc comments)
+  const routeIdx = source.lastIndexOf("'/v1/dream/run',");
+  if (routeIdx === -1) {
+    console.log('     Missing: POST /v1/dream/run route');
+    return false;
+  }
+  // Check that withPolicy appears before withAudit in the route definition
+  const routeSection = source.substring(routeIdx, routeIdx + 2000);
+  const withPolicyIdx = routeSection.indexOf('withPolicy(');
+  const withAuditIdx = routeSection.indexOf('withAudit(');
+  if (withPolicyIdx === -1) {
+    console.log('     Missing: withPolicy() on dream run route');
+    return false;
+  }
+  if (withAuditIdx === -1) {
+    console.log('     Missing: withAudit() on dream run route');
+    return false;
+  }
+  if (withPolicyIdx > withAuditIdx) {
+    console.log('     ERROR: withPolicy() must be outer wrapper, withAudit() inner');
+    return false;
+  }
+  console.log('     withPolicy() + withAudit() composition verified on POST /v1/dream/run');
+  return true;
+});
+
 // ── Summary ───────────────────────────────────────────────────────────
 console.log('\n' + '━'.repeat(50));
 if (exitCode === 0) {

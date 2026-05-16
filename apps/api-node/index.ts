@@ -289,6 +289,124 @@ function withAudit(
   };
 }
 
+// ── Policy Runtime Enforcement ─────────────────────────────────────────
+/**
+ * withPolicy() wraps a route handler with policy pre-evaluation.
+ * Before the handler executes, the policy engine evaluates the request.
+ * Based on the decision effect:
+ *   - 'deny': returns 403, handler NOT called
+ *   - 'require-review': returns 202 with reviewRequired flag, handler NOT called
+ *   - 'dry-run-only': handler executes (caller should respect dry-run semantics)
+ *   - 'allow' / 'audit-required': handler executes normally
+ *
+ * Architecture decision enforcement: merge/deprecate on architecture-decision
+ * resources are always overridden to require-review regardless of policy rules.
+ */
+function withPolicy(
+  subject: { type: string; id: string; roles?: string[]; service?: string },
+  action: string,
+  resource: { type: string; id?: string; attributes?: Record<string, unknown> },
+  handler: RouteHandler,
+  opts?: {
+    context?: Record<string, unknown>;
+    extractSubject?: (
+      body: Record<string, unknown>
+    ) => { type: string; id: string; roles?: string[]; service?: string } | undefined;
+    extractResource?: (
+      params: Record<string, string>
+    ) => { type: string; id?: string; attributes?: Record<string, unknown> } | undefined;
+  }
+): RouteHandler {
+  return async (req, res, params, query) => {
+    // Allow body-based subject extraction for POST routes
+    let effectiveSubject = subject;
+    if (opts?.extractSubject) {
+      try {
+        const body = await readBody(req);
+        const parsed = JSON.parse(body) as Record<string, unknown>;
+        const extracted = opts.extractSubject(parsed);
+        if (extracted) {
+          effectiveSubject = extracted;
+        }
+        // Reset body stream for downstream handler by stashing parsed body
+        (req as any).__policyBody = parsed;
+      } catch {
+        // If body parsing fails, use default subject
+      }
+    }
+
+    // Allow params-based resource extraction
+    let effectiveResource = resource;
+    if (opts?.extractResource) {
+      const extracted = opts.extractResource(params);
+      if (extracted) {
+        effectiveResource = extracted;
+      }
+    }
+
+    // Evaluate policy before executing the handler
+    const result = evaluatePolicy({
+      subject: effectiveSubject,
+      action,
+      resource: effectiveResource,
+      context: opts?.context,
+    });
+
+    // Architecture decision enforcement override
+    const archDecisionActions = ['merge', 'deprecate', 'archive', 'retire'];
+    const isArchDecisionAction = archDecisionActions.includes(action);
+    const isArchDecisionResource =
+      effectiveResource.type === 'architecture-decision' ||
+      effectiveResource.type === 'arch-decision' ||
+      effectiveResource.attributes?.['architecture_decision'] === true;
+
+    if (isArchDecisionAction && isArchDecisionResource && result.effect !== 'require-review') {
+      result.allowed = false;
+      result.effect = 'require-review';
+      result.reason = `Architecture decision action '${action}' requires human review. Platform safety enforcement overrides effect.`;
+      result.matchedRuleId = 'platform-safety:architecture-decision-review';
+      result.matchedPolicyId = 'platform-safety';
+    }
+
+    // Enforce policy decision
+    switch (result.effect) {
+      case 'deny':
+        sendJson(res, 403, {
+          error: 'Policy denied',
+          decision: result,
+          policyRuntimeEnforcement: true,
+        });
+        return;
+
+      case 'require-review':
+        sendJson(res, 202, {
+          reviewRequired: true,
+          decision: result,
+          policyRuntimeEnforcement: true,
+        });
+        return;
+
+      case 'dry-run-only':
+      case 'allow':
+      case 'audit-required':
+        // Handler executes — policy allows the action
+        break;
+
+      default:
+        // Default deny for unknown effects
+        sendJson(res, 403, {
+          error: 'Policy denied (unknown effect)',
+          decision: result,
+          policyRuntimeEnforcement: true,
+        });
+        return;
+    }
+
+    // Policy allows — proceed to handler
+    await handler(req, res, params, query);
+  };
+}
+
 // ── Health / Meta ────────────────────────────────────────────────────────
 
 addRoute('GET', '/', async (_req, res) => {
@@ -311,6 +429,7 @@ addRoute('GET', '/', async (_req, res) => {
       auditEnforcement: auditEnforcementEnabled,
       knowledgeTraceEnforcement: knowledgeTraceEnforcementEnabled,
       dreamSafetyEnforcement: dreamSafetyEnforcementEnabled,
+      policyRuntimeEnforcement: true,
     },
     endpoints: [
       'GET  /v1/health',
@@ -415,6 +534,7 @@ addRoute('GET', '/v1/health', async (_req, res) => {
       auditEnforcement: auditEnforcementEnabled,
       knowledgeTraceEnforcement: knowledgeTraceEnforcementEnabled,
       dreamSafetyEnforcement: dreamSafetyEnforcementEnabled,
+      policyRuntimeEnforcement: true,
     },
   });
 });
@@ -752,45 +872,59 @@ addRoute('GET', '/v1/knowledge/verify/:id', async (_req, res, params) => {
   sendJson(res, 200, result);
 });
 
-// ── Loop 5: Memory Dream Runtime (with withAudit enforcement) ───────────
+// ── Loop 5: Memory Dream Runtime (with withPolicy + withAudit enforcement) ──
 
 addRoute(
   'POST',
   '/v1/dream/run',
-  withAudit(
-    'dream.run-initiated',
-    'automation',
-    async (req, res) => {
-      const body = await readBody(req);
-      let parsed: unknown;
-      try {
-        parsed = JSON.parse(body);
-      } catch {
-        sendError(res, 400, 'Invalid JSON body');
-        return;
-      }
-      const dreamReq = parsed as {
-        mode?: 'dry-run' | 'proposal' | 'execute';
-        memory_items?: unknown[];
-      };
-      const mode = dreamReq.mode ?? 'dry-run';
+  withPolicy(
+    { type: 'user', id: 'requester', roles: ['workspace-owner'] },
+    'dream:run',
+    { type: 'dream-run' },
+    withAudit(
+      'dream.run-initiated',
+      'automation',
+      async (req, res) => {
+        const body = await readBody(req);
+        let parsed: unknown;
+        try {
+          parsed = JSON.parse(body);
+        } catch {
+          sendError(res, 400, 'Invalid JSON body');
+          return;
+        }
+        const dreamReq = parsed as {
+          mode?: 'dry-run' | 'proposal' | 'execute';
+          memory_items?: unknown[];
+          requester?: { type?: string; id?: string; roles?: string[]; service?: string };
+        };
+        const mode = dreamReq.mode ?? 'dry-run';
 
-      // Use the memory-dream service (sync JS engine for MVP, with Python fallback)
-      const result = createDreamRunSync({
-        mode,
-        memory_items: dreamReq.memory_items as
-          | import('@mycodexvantaos/service-memory-dream').MemoryItem[]
-          | undefined,
-      });
+        // Use the memory-dream service (sync JS engine for MVP, with Python fallback)
+        const result = createDreamRunSync({
+          mode,
+          memory_items: dreamReq.memory_items as
+            | import('@mycodexvantaos/service-memory-dream').MemoryItem[]
+            | undefined,
+        });
 
-      sendJson(res, 202, {
-        runId: result.run.runId,
-        mode: result.run.mode,
-        status: result.run.status,
-        report: result.run.report,
-      });
-    },
-    { resourceType: 'dream-run' }
+        sendJson(res, 202, {
+          runId: result.run.runId,
+          mode: result.run.mode,
+          status: result.run.status,
+          report: result.run.report,
+        });
+      },
+      { resourceType: 'dream-run' }
+    ),
+    {
+      extractSubject: (body) => {
+        const b = body as {
+          requester?: { type?: string; id?: string; roles?: string[]; service?: string };
+        };
+        return b.requester;
+      },
+    }
   ),
   { audited: true }
 );

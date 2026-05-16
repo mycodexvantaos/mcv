@@ -417,3 +417,100 @@ describe('Policy Engine - Knowledge Access Policy', () => {
     assert.equal(result.effect, 'deny');
   });
 });
+
+// ── Policy Engine - withPolicy() Decision Types ─────────────────────────
+
+describe('Policy Engine - withPolicy() Decision Types', () => {
+  let engine: PolicyEngine;
+
+  beforeEach(() => {
+    resetPolicyEngine();
+    engine = new PolicyEngine();
+    engine.loadPolicies();
+  });
+
+  it('allow decision: workspace-owner can dream:run', () => {
+    const result = engine.evaluate({
+      subject: { type: 'user', id: 'owner-1', roles: ['workspace-owner'] },
+      action: 'dream:run',
+      resource: { type: 'dream-run' },
+    });
+    assert.equal(result.effect, 'allow');
+    assert.equal(result.allowed, true);
+  });
+
+  it('deny decision: unknown role is denied', () => {
+    const result = engine.evaluate({
+      subject: { type: 'user', id: 'stranger', roles: ['unknown-role'] },
+      action: 'dream:run',
+      resource: { type: 'dream-run' },
+    });
+    assert.equal(result.effect, 'deny');
+    assert.equal(result.allowed, false);
+  });
+
+  it('require-review decision: architecture decision merge requires review', () => {
+    const result = engine.evaluate({
+      subject: { type: 'service', id: 'dream-worker', service: 'memory-dream' },
+      action: 'memory-item-merge',
+      resource: { type: 'memory-item' },
+      context: { memory_type: 'decision', tags: ['architecture'] },
+    });
+    assert.equal(result.effect, 'require-review');
+    assert.equal(result.allowed, false);
+  });
+
+  it('dry-run-only decision: programmatic policy', () => {
+    const testEngine = new PolicyEngine();
+    testEngine.addPolicy({
+      id: 'dry-run-test',
+      rules: [
+        {
+          effect: 'dry-run-only',
+          subject: { roles: ['developer'] },
+          action: 'dangerous:action',
+          resource: 'production-resource',
+        },
+      ],
+    });
+    const result = testEngine.evaluate({
+      subject: { type: 'user', id: 'dev-1', roles: ['developer'] },
+      action: 'dangerous:action',
+      resource: { type: 'production-resource' },
+    });
+    assert.equal(result.effect, 'dry-run-only');
+    assert.equal(result.allowed, false);
+  });
+
+  it('audit-required decision: programmatic policy', () => {
+    const testEngine = new PolicyEngine();
+    testEngine.addPolicy({
+      id: 'audit-test',
+      rules: [
+        {
+          effect: 'audit-required',
+          subject: '*',
+          action: 'sensitive:read',
+          resource: 'classified-data',
+        },
+      ],
+    });
+    const result = testEngine.evaluate({
+      subject: { type: 'user', id: 'user-1', roles: ['viewer'] },
+      action: 'sensitive:read',
+      resource: { type: 'classified-data' },
+    });
+    assert.equal(result.effect, 'audit-required');
+    assert.equal(result.allowed, true);
+  });
+
+  it('deny is the default when no rule matches', () => {
+    const result = engine.evaluate({
+      subject: { type: 'user', id: 'nobody', roles: [] },
+      action: 'nonexistent:action',
+      resource: { type: 'nonexistent-resource' },
+    });
+    assert.equal(result.effect, 'deny');
+    assert.equal(result.allowed, false);
+  });
+});
