@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: dev
     # Only run when GCP_PROJECT_ID secret is configured
-    if: ${{ secrets.GCP_PROJECT_ID != '' }}
+    if: ${{ secrets.GCP_PROJECT_ID }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
