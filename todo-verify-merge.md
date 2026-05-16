@@ -56,7 +56,7 @@
 - [x] scripts/smoke/self-hosted-smoke.sh created and fixed
 
 ## Merge
-- [ ] Commit all new/modified files
-- [ ] Push branch to origin
-- [ ] Create PR via gh cli
-- [ ] Merge to main
+- [x] Commit all new/modified files
+- [x] Push branch to origin
+- [x] Create PR via gh cli → PR #36
+- [x] Merge to main → Merged (fast-forward) at 9596eb5
