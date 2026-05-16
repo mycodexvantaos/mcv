@@ -22,29 +22,38 @@ jobs:
     name: Preview Deployment
     runs-on: ubuntu-latest
     environment: preview
-    if: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
     steps:
+      - name: Check Cloudflare credentials
+        id: check_creds
+        if: ${{ !secrets.CLOUDFLARE_API_TOKEN }}
+        run: echo "CLOUDFLARE_API_TOKEN not configured — skipping deployment" && exit 0
+
       - name: Checkout repository
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         uses: actions/checkout@v4
         with:
           submodules: false
 
       - name: Setup PNPM
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         uses: pnpm/action-setup@v4
         with:
           version: 9
 
       - name: Setup Node.js
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'pnpm'
 
       - name: Install dependencies
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: pnpm install --frozen-lockfile
 
       - name: Build Next.js application
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: pnpm run build
         env:
           NEXT_PUBLIC_APP_URL: https://preview.autoecoops.io
@@ -52,19 +61,21 @@ jobs:
           NEXT_PRIVATE_STANDALONE: 'true'
 
       - name: Build with OpenNext for Cloudflare (skip next build)
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: npx opennextjs-cloudflare build --skipNextBuild
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Deploy to Cloudflare Workers (Preview)
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: npx opennextjs-cloudflare deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Comment PR with preview URL
-        if: github.event_name == 'pull_request'
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN && github.event_name == 'pull_request' }}
         uses: actions/github-script@v7
         with:
           script: |

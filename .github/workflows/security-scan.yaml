@@ -41,14 +41,21 @@ jobs:
   secrets-scan:
     name: Secret Scan (Gitleaks)
     runs-on: ubuntu-latest
-    if: ${{ secrets.GITLEAKS_LICENSE && (github.event.inputs.scan_type == 'all' || github.event.inputs.scan_type == 'secrets' || github.event_name != 'workflow_dispatch') }}
+    if: ${{ github.event.inputs.scan_type == 'all' || github.event.inputs.scan_type == 'secrets' || github.event_name != 'workflow_dispatch' }}
     steps:
+      - name: Check Gitleaks license
+        id: check_license
+        if: ${{ !secrets.GITLEAKS_LICENSE }}
+        run: echo "GITLEAKS_LICENSE not configured — skipping scan" && exit 0
+
       - name: Checkout repository
+        if: ${{ secrets.GITLEAKS_LICENSE }}
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Run Gitleaks
+        if: ${{ secrets.GITLEAKS_LICENSE }}
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

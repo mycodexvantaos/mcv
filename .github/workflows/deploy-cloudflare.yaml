@@ -34,24 +34,32 @@ jobs:
     name: Build & Deploy to Cloudflare
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment || 'production' }}
-    if: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
     steps:
+      - name: Check Cloudflare credentials
+        id: check_creds
+        if: ${{ !secrets.CLOUDFLARE_API_TOKEN }}
+        run: echo "CLOUDFLARE_API_TOKEN not configured — skipping deployment" && exit 0
+
       - name: Checkout repository
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         uses: actions/checkout@v4
 
       - name: Setup PNPM
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         uses: pnpm/action-setup@v4
         with:
           version: 10
 
       - name: Setup Node.js
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
 
       - name: Install dependencies
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: pnpm install --frozen-lockfile
 
       - name: Deploy Worker

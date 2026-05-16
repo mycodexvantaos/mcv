@@ -86,7 +86,7 @@ jobs:
     name: Build Artifacts
     runs-on: ubuntu-latest
     needs: prepare
-    if: ${{ needs.prepare.outputs.should_deploy == 'true' && secrets.GITHUB_TOKEN }}
+    if: ${{ needs.prepare.outputs.should_deploy == 'true' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
