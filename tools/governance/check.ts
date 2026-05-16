@@ -375,6 +375,41 @@ check('Dream apply tracks before_json/after_json', () => {
   return true;
 });
 
+check('Release manifest generator is present and functional', () => {
+  const sourcePath = 'tools/generators/generate-release-manifest.ts';
+  if (!fs.existsSync(sourcePath)) {
+    console.log('     Missing: generate-release-manifest.ts tool');
+    return false;
+  }
+  const source = fs.readFileSync(sourcePath, 'utf-8');
+  const hasManifestHash = source.includes('manifestHash') && source.includes('computeManifestHash');
+  const hasServices = source.includes('scanServices');
+  const hasGovernance = source.includes('governance');
+  if (!hasManifestHash || !hasServices || !hasGovernance) {
+    console.log('     Missing: manifest hash, services scan, or governance in release manifest');
+    return false;
+  }
+  console.log('     Release manifest generator verified with hash, services, and governance');
+  return true;
+});
+
+check('Release manifest schema includes manifestHash and services', () => {
+  const schemaPath = 'release/release-manifest.schema.json';
+  if (!fs.existsSync(schemaPath)) {
+    console.log('     Missing: release-manifest.schema.json');
+    return false;
+  }
+  const schema = JSON.parse(fs.readFileSync(schemaPath, 'utf-8'));
+  const hasManifestHash = schema.properties?.manifestHash;
+  const hasServices = schema.properties?.services;
+  if (!hasManifestHash || !hasServices) {
+    console.log('     Missing: manifestHash or services in release manifest schema');
+    return false;
+  }
+  console.log('     Release manifest schema verified');
+  return true;
+});
+
 // ── Summary ───────────────────────────────────────────────────────────
 console.log('\n' + '━'.repeat(50));
 if (exitCode === 0) {

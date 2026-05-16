@@ -4,7 +4,7 @@
   "title": "ReleaseManifest",
   "description": "Schema for MyCodeXvantaOS release manifest. Generated at build time and served via GET /v1/version and GET /v1/runtime.",
   "type": "object",
-  "required": ["version", "commit", "branch", "buildTimestamp", "runtime"],
+  "required": ["version", "commit", "branch", "buildTimestamp", "runtime", "manifestHash"],
   "additionalProperties": false,
   "properties": {
     "version": {
@@ -58,6 +58,10 @@
           },
           "version": {
             "type": "string"
+          },
+          "hash": {
+            "type": "string",
+            "description": "SHA-256 hash of the service package for integrity verification"
           }
         }
       }
@@ -77,6 +81,11 @@
           "type": "boolean"
         }
       }
+    },
+    "manifestHash": {
+      "type": "string",
+      "description": "SHA-256 hash of the entire manifest (excluding manifestHash itself) for integrity verification",
+      "pattern": "^[0-9a-f]{64}$"
     }
   }
 }
