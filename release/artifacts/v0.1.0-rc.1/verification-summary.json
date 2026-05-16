@@ -1,8 +1,8 @@
 {
   "version": "v0.1.0-rc.1",
-  "generatedAt": "2026-05-16T22:26:20.422Z",
-  "commit": "7a79d8353acf56183fc4ae5b21a3b732d8d11fbe",
-  "branch": "chore/rc-soak-report",
+  "generatedAt": "2026-05-16T22:46:22.488Z",
+  "commit": "ce82ab605c7265ca2ce1c1908aa70b0debcd1791",
+  "branch": "chore/rc-promotion-evaluation",
   "nodeVersion": "v22.22.2",
   "pnpmVersion": "9.15.9",
   "checks": [
@@ -32,7 +32,7 @@
       "category": "manifest",
       "passed": true,
       "skipped": false,
-      "detail": "Manifest v0.1.0 @ 7a79d835"
+      "detail": "Manifest v0.1.0 @ ce82ab60"
     },
     {
       "name": "Artifact digests generated",

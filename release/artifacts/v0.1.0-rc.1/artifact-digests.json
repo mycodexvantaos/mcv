@@ -1,13 +1,13 @@
 {
   "version": "v0.1.0-rc.1",
-  "generatedAt": "2026-05-16T22:26:18.848Z",
+  "generatedAt": "2026-05-16T22:46:20.981Z",
   "digestAlgorithm": "sha3-512",
   "compatibilityAlgorithm": "sha256",
   "artifacts": [
     {
       "file": "release-manifest.json",
-      "sha3_512": "4d9323cc48588de629ed5fde0d47a494610ee77bf65d0d403af2cbb917da548e542163d9b0f108d78ed32d26346ac5eec4b092e27eef5196c87dcdcd95f6e95d",
-      "sha256": "4dbc91c8f809613ff4d7ff1b89841e01a8f84f4962717d3a3f2d254c834fe1ed",
+      "sha3_512": "85dd3a72fe95fadca9888a0c7564e0bd3036d7ef2cfe346a72af1883119e2244326fb118e4aff177f60d0658c30b5e9e37f1dbedc83b48058d1ee3257abe6cf3",
+      "sha256": "e219079360908160eb5d5b52b724d1c3d2e86663983890abdc59bf4f2bcebfd3",
       "algorithm": "sha3-512"
     },
     {
@@ -18,8 +18,8 @@
     },
     {
       "file": "package.json",
-      "sha3_512": "8acf82360f1c6cc7cb44ef1b1b6fa397b71cddf4c9c83ffd55fe97badcd108da8aa5fd5359c62b5a9a285745daa34f8240fff27132ea5875e45c66e6778d5e92",
-      "sha256": "cbd131bc6d2c87eb8df66da3a5f09945f34caed43ad779c568bf354facf02736",
+      "sha3_512": "c5256d161993f03f46cac4c3b5b778fc561727d13cd22712e8a8c596178ff8c2cd83db173715a41ba3bcce647f933ea838ef54918ec83ab9a650fd4d7d010ac4",
+      "sha256": "3a3909229a322b892fceea3bf139f9de9291f44e2c4322ac3558fc0f78b4366a",
       "algorithm": "sha3-512"
     },
     {
