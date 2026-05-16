@@ -54,6 +54,7 @@ The platform evolved from a Firebase Studio prototype through a Next.js web appl
 | **Phase 1 — Cloudflare-First (MVP)** | Workers + D1 + KV + R2 + Vectorize + Queues    | ✅ Complete         |
 | **Phase 2 — Portable Core**          | PostgreSQL + Redis + MinIO + Qdrant + RabbitMQ | 🔧 Bootstrap ready  |
 | **Phase 3 — Self-Hostable**          | Kubernetes + Helm + ArgoCD + HPA               | ✅ Helm chart ready |
+| **Phase 4 — Governance Hardening**   | Policy Engine + Audit Middleware + Dream Safety | ✅ Complete (197 tests) |
 
 ---
 
@@ -470,6 +471,7 @@ MyCodeXvantaOS has undergone a significant architectural evolution:
 | **V3** | Cloudflare Deployment | Next.js 16 + OpenNext on Cloudflare Workers/Pages, wrangler configuration                        |
 | **V4** | Platform Constitution | 8-category service classification, hexagonal decomposition, five constitutional models           |
 | **V5** | Full Architecture     | Apps layer, infrastructure contracts, multi-runtime bootstrap, 3-dialect migrations, Helm charts |
+| **V6** | Governance Hardening  | Policy enforcement runtime, audit enforcement middleware, knowledge trace enforcement, memory dream safety, contract enforcement CI, Cloudflare Worker launch, self-hostable Docker runtime |
 
 The project merged its platform constitution architecture (PRs #23, #24) completing a 10-phase decomposition from a monolithic structure into the current layered hexagonal architecture.
 

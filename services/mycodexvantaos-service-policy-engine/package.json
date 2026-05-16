@@ -1,14 +1,14 @@
 {
   "name": "@mycodexvantaos/service-policy-engine",
-  "version": "0.1.0",
-  "description": "Policy engine service - policy evaluation and enforcement",
+  "version": "0.2.0",
+  "description": "Policy engine service - runtime policy evaluation and enforcement from contract-defined policies",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "scripts": {
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/",
-    "test": "echo \"TODO: add tests\" && exit 0"
+    "test": "node --import tsx --test src/__tests__/policy-engine.test.ts"
   },
   "keywords": [
     "mycodexvantaos",
@@ -20,6 +20,7 @@
     "@types/node": "^20.0.0"
   },
   "dependencies": {
-    "@mycodexvantaos/core": "workspace:*"
+    "@mycodexvantaos/contracts-sdk": "workspace:*",
+    "@mycodexvantaos/policy-model": "workspace:*"
   }
 }

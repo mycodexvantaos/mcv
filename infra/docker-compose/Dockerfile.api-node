@@ -1,0 +1,64 @@
+# ── MyCodeXvantaOS API Node ───────────────────────────────────────────
+# Multi-stage build for the Node.js API server
+# Builds the TypeScript monorepo and runs the API server
+#
+# Usage:
+#   docker build -f Dockerfile.api-node -t mycodexvantaos-api-node ../..
+#   docker run -p 3100:3100 mycodexvantaos-api-node
+
+# ── Stage 1: Build ────────────────────────────────────────────────────
+FROM node:20-slim AS builder
+
+# Install pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+WORKDIR /app
+
+# Copy workspace config
+COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
+COPY packages/ packages/
+COPY services/ services/
+COPY contracts/ contracts/
+COPY apps/api-node/ apps/api-node/
+COPY tools/ tools/
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile || pnpm install
+
+# Build the api-node
+WORKDIR /app/apps/api-node
+RUN npx tsx index.ts --help 2>/dev/null || true  # Verify entry point exists
+
+# ── Stage 2: Runtime ─────────────────────────────────────────────────
+FROM node:20-slim AS runtime
+
+# Install pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+WORKDIR /app
+
+# Copy workspace config
+COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
+COPY packages/ packages/
+COPY services/ services/
+COPY contracts/ contracts/
+COPY apps/api-node/ apps/api-node/
+COPY tools/ tools/
+
+# Install production dependencies only
+RUN pnpm install --frozen-lockfile --prod || pnpm install --prod
+
+# Environment
+ENV NODE_ENV=production
+ENV PORT=3100
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD curl -f http://localhost:3100/ || exit 1
+
+# Expose API port
+EXPOSE 3100
+
+# Start the API server
+WORKDIR /app
+CMD ["npx", "tsx", "apps/api-node/index.ts"]

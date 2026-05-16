@@ -138,6 +138,15 @@ importers:
         specifier: ^5.0.13
         version: 5.0.13(@types/react@19.2.14)(react@19.2.5)(use-sync-external-store@1.6.0(react@19.2.5))
     devDependencies:
+      '@mycodexvantaos/contracts-sdk':
+        specifier: workspace:*
+        version: link:packages/mycodexvantaos-contracts-sdk
+      '@mycodexvantaos/policy-model':
+        specifier: workspace:*
+        version: link:packages/mycodexvantaos-policy-model
+      '@mycodexvantaos/service-policy-engine':
+        specifier: workspace:*
+        version: link:services/mycodexvantaos-service-policy-engine
       '@types/node':
         specifier: ^20
         version: 20.19.39
@@ -182,6 +191,9 @@ importers:
       '@mycodexvantaos/service-memory-dream':
         specifier: workspace:*
         version: link:../../services/mycodexvantaos-service-memory-dream
+      '@mycodexvantaos/service-policy-engine':
+        specifier: workspace:*
+        version: link:../../services/mycodexvantaos-service-policy-engine
       '@mycodexvantaos/service-resource-registry':
         specifier: workspace:*
         version: link:../../services/mycodexvantaos-service-resource-registry
@@ -198,22 +210,28 @@ importers:
 
   apps/api-worker:
     dependencies:
-      '@mycodexvantaos/adapters':
+      '@mycodexvantaos/contracts-sdk':
         specifier: workspace:*
-        version: link:../../packages/adapters
-      '@mycodexvantaos/application':
+        version: link:../../packages/mycodexvantaos-contracts-sdk
+      '@mycodexvantaos/service-audit-log':
         specifier: workspace:*
-        version: link:../../packages/application
-      '@mycodexvantaos/core':
+        version: link:../../services/mycodexvantaos-service-audit-log
+      '@mycodexvantaos/service-policy-engine':
         specifier: workspace:*
-        version: link:../../packages/core
-      '@mycodexvantaos/ports':
+        version: link:../../services/mycodexvantaos-service-policy-engine
+      '@mycodexvantaos/service-resource-registry':
         specifier: workspace:*
-        version: link:../../packages/ports
+        version: link:../../services/mycodexvantaos-service-resource-registry
+      '@mycodexvantaos/service-service-catalog':
+        specifier: workspace:*
+        version: link:../../services/mycodexvantaos-service-service-catalog
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20241205.0
         version: 4.20260515.1
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.40
       typescript:
         specifier: ^5.4.0
         version: 5.9.3
@@ -1249,9 +1267,9 @@ importers:
 
   packages/mycodexvantaos-policy-model:
     dependencies:
-      '@mycodexvantaos/core':
+      '@mycodexvantaos/contracts-sdk':
         specifier: workspace:*
-        version: link:../core
+        version: link:../mycodexvantaos-contracts-sdk
     devDependencies:
       '@types/node':
         specifier: ^20.0.0
@@ -2122,9 +2140,12 @@ importers:
 
   services/mycodexvantaos-service-policy-engine:
     dependencies:
-      '@mycodexvantaos/core':
+      '@mycodexvantaos/contracts-sdk':
         specifier: workspace:*
-        version: link:../../packages/core
+        version: link:../../packages/mycodexvantaos-contracts-sdk
+      '@mycodexvantaos/policy-model':
+        specifier: workspace:*
+        version: link:../../packages/mycodexvantaos-policy-model
     devDependencies:
       '@types/node':
         specifier: ^20.0.0
