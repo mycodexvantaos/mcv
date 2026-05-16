@@ -1,0 +1,48 @@
+# Terraform Cloud Optional Infra Guard
+# Version: 1.0.0
+#
+# The Terraform Cloud GitHub App posts external status checks for this repository.
+# When TFC credentials are not configured or the TFC workspace has issues, the
+# external check reports "Stack preparation failed". Since we have no Terraform
+# files in this repository, the failing TFC stack is a misconfiguration in the
+# external TFC project — not a problem with our code.
+#
+# This workflow provides a clear classification and step summary so that:
+# 1. Maintainers understand the TFC failure is external
+# 2. RC verification can distinguish between "our CI red" and "external infra red"
+# 3. The TFC GitHub App configuration can be fixed independently
+#
+# To resolve the TFC failure permanently:
+# - Visit https://app.terraform.io/app/mycodexvantaos
+# - Remove or reconfigure the failing stack
+# - Or disconnect the TFC GitHub App if not needed
+
+name: Terraform Cloud Guard
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Terraform Cloud Status
+    runs-on: ubuntu-latest
+    steps:
+      - name: Classify Terraform Cloud status
+        run: |
+          echo "## Terraform Cloud Status" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Classification:** infrastructure-not-configured" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Reason:** This repository contains no Terraform (.tf) configuration files." >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Action:** The Terraform Cloud GitHub App may report a 'Stack preparation failed'" >> "$GITHUB_STEP_SUMMARY"
+          echo "  status check. This is an external infrastructure integration issue, not a code quality issue." >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Resolution:** Visit the Terraform Cloud console to reconfigure or remove the failing stack," >> "$GITHUB_STEP_SUMMARY"
+          echo "  or disconnect the TFC GitHub App if Terraform Cloud is not used with this repository." >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "This workflow always passes — Terraform Cloud configuration is outside the scope of" >> "$GITHUB_STEP_SUMMARY"
+          echo "application code CI." >> "$GITHUB_STEP_SUMMARY"

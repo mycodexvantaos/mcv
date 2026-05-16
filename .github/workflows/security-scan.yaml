@@ -1,6 +1,11 @@
 # === path: .github/workflows/security-scan.yaml ===
 # Unified Security Scanning Pipeline for MyCodeXvantaOS
-# Version: 2.1.0
+# Version: 3.0.0
+#
+# CodeQL analysis removed from this workflow — it is now handled exclusively
+# by .github/workflows/codeql.yml (CodeQL Advanced) which covers actions,
+# javascript-typescript, and python with v4 actions. This eliminates redundant
+# CodeQL runs that wasted CI minutes and caused duplicate status checks.
 
 name: Security Scan
 
@@ -99,38 +104,6 @@ jobs:
           category: semgrep
 
   # ====================
-  # CodeQL Analysis
-  # ====================
-  codeql-analysis:
-    name: CodeQL Analysis
-    runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.scan_type == 'all' || github.event.inputs.scan_type == 'sast' || github.event_name != 'workflow_dispatch' }}
-    permissions:
-      contents: read
-      security-events: write
-    strategy:
-      matrix:
-        language: [typescript, javascript]
-      fail-fast: false
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: ${{ matrix.language }}
-          queries: security-and-quality
-
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
-        with:
-          category: '/language:${{ matrix.language }}'
-
-  # ====================
   # IaC Scanning (Checkov)
   # ====================
   iac-scan:
@@ -189,7 +162,7 @@ jobs:
   security-summary:
     name: Security Summary
     runs-on: ubuntu-latest
-    needs: [secrets-scan, sast-semgrep, codeql-analysis, iac-scan, container-scan]
+    needs: [secrets-scan, sast-semgrep, iac-scan, container-scan]
     if: always()
     steps:
       - name: Generate Security Summary
@@ -200,8 +173,9 @@ jobs:
           echo "|---------|--------|" >> $GITHUB_STEP_SUMMARY
           echo "| Gitleaks (Secrets) | ${{ needs.secrets-scan.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Semgrep (SAST) | ${{ needs.sast-semgrep.result }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| CodeQL (SAST) | ${{ needs.codeql-analysis.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Checkov (IaC) | ${{ needs.iac-scan.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Trivy (Container) | ${{ needs.container-scan.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Note:** CodeQL analysis is handled by the separate CodeQL Advanced workflow." >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Scan completed at: $(date -u)" >> $GITHUB_STEP_SUMMARY
