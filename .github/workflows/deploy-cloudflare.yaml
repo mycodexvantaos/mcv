@@ -1,20 +1,20 @@
-# Cloudflare Pages Production Deployment Workflow
-# Uses @opennextjs/cloudflare for Next.js 16+ support
+# Cloudflare Workers Deployment Workflow
+# Deploys the api-worker Cloudflare Worker using wrangler
 name: Deploy to Cloudflare Pages (Production)
 
 on:
   push:
     branches: [main]
     paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - '.github/workflows/!(deploy-cloudflare*)'
+      - "**.md"
+      - "docs/**"
+      - ".github/workflows/!(deploy-cloudflare*)"
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Deployment environment'
+        description: "Deployment environment"
         required: true
-        default: 'production'
+        default: "production"
         type: choice
         options:
           - production
@@ -24,11 +24,9 @@ on:
 permissions:
   contents: read
   deployments: write
-  id-token: write
 
 env:
-  CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID || '2fead4a141ec2c677eb3bf0ac535f1d5' }}
-  CLOUDFLARE_ZONE_ID: ${{ vars.CLOUDFLARE_ZONE_ID || '1bdb04f9da82872cdff76d8515b85246' }}
+  CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID || '' }}
   NODE_ENV: production
 
 jobs:
@@ -40,57 +38,27 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          submodules: false
 
       - name: Setup PNPM
         uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 10
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
-          cache: 'pnpm'
+          node-version: "20"
+          cache: "pnpm"
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile --prod=false
+        run: pnpm install --frozen-lockfile
 
-      - name: Debug environment
-        run: |
-          echo "Node version: $(node --version)"
-          echo "pnpm version: $(pnpm --version)"
-          echo "NODE_ENV: $NODE_ENV"
-          ls -la .env* 2>/dev/null || echo "No .env files"
-
-      - name: Build with OpenNext for Cloudflare
-        run: npx opennextjs-cloudflare build --experimental-skip-esm-rewriting
+      - name: Deploy Worker
+        working-directory: ./apps/api-worker
+        run: npx wrangler deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
-
-      - name: Verify build output
-        run: |
-          if [ -d ".open-next" ]; then
-            echo "OpenNext build output exists at .open-next/"
-            ls -la .open-next/ | head -15
-          else
-            echo "OpenNext build output not found at .open-next/"
-            exit 1
-          fi
-
-      - name: Deploy to Cloudflare Workers
-        run: npx opennextjs-cloudflare deploy
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
-
-      - name: Verify deployment
-        run: |
-          echo "Deployment completed successfully!"
-          echo "Production URL: https://admin.autoecoops.io"
-          echo "Deployed at: $(date -u)"
 
   notify:
     name: Deployment Notification
