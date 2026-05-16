@@ -241,9 +241,7 @@
       "reason": "signing keys not configured — unsigned RC provenance classified as signing-not-configured"
     }
   ],
-  "infrastructureClassifications": [
-    "infrastructure-not-configured"
-  ],
+  "infrastructureClassifications": ["infrastructure-not-configured"],
   "artifactDigestSummary": [
     {
       "name": "release-manifest.json",
