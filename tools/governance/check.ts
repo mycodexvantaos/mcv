@@ -327,6 +327,54 @@ check('auditEnforcementMiddleware flag is present in governance', () => {
   return true;
 });
 
+check('Dream safety enforcement middleware flag is present', () => {
+  const source = fs.readFileSync('apps/api-node/index.ts', 'utf-8');
+  const count = (source.match(/dreamSafetyEnforcementMiddleware:/g) || []).length;
+  if (count < 2) {
+    console.log(`     Missing: dreamSafetyEnforcementMiddleware flag (found ${count}, expected 2)`);
+    return false;
+  }
+  console.log('     dreamSafetyEnforcementMiddleware flag present in governance sections');
+  return true;
+});
+
+check('Dream auto-apply is disabled by default', () => {
+  const source = fs.readFileSync('apps/api-node/index.ts', 'utf-8');
+  const hasAutoApplyDisabled =
+    source.includes('auto-apply disabled') &&
+    source.includes('reviewed and approved before applying');
+  if (!hasAutoApplyDisabled) {
+    console.log('     Missing: auto-apply disabled enforcement');
+    return false;
+  }
+  console.log('     Dream auto-apply disabled by default verified');
+  return true;
+});
+
+check('Dream delete is forbidden in MVP', () => {
+  const source = fs.readFileSync('apps/api-node/index.ts', 'utf-8');
+  const hasDeleteForbidden =
+    source.includes('delete actions are forbidden') || source.includes('delete is forbidden');
+  if (!hasDeleteForbidden) {
+    console.log('     Missing: delete forbidden enforcement');
+    return false;
+  }
+  console.log('     Dream delete forbidden in MVP verified');
+  return true;
+});
+
+check('Dream apply tracks before_json/after_json', () => {
+  const source = fs.readFileSync('apps/api-node/index.ts', 'utf-8');
+  const hasBeforeJson = source.includes('before_json:');
+  const hasAfterJson = source.includes('after_json:');
+  if (!hasBeforeJson || !hasAfterJson) {
+    console.log('     Missing: before_json/after_json tracking in dream apply');
+    return false;
+  }
+  console.log('     Dream before_json/after_json tracking verified');
+  return true;
+});
+
 // ── Summary ───────────────────────────────────────────────────────────
 console.log('\n' + '━'.repeat(50));
 if (exitCode === 0) {
