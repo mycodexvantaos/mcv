@@ -34,27 +34,43 @@ jobs:
     name: Build & Deploy to Cloudflare
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment || 'production' }}
-    if: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
     steps:
+      - name: Check Cloudflare credentials
+        id: check_creds
+        run: |
+          if [ -n "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "has_creds=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_creds=false" >> $GITHUB_OUTPUT
+            echo "CLOUDFLARE_API_TOKEN not configured — skipping deployment"
+          fi
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
       - name: Checkout repository
+        if: steps.check_creds.outputs.has_creds == 'true'
         uses: actions/checkout@v4
 
       - name: Setup PNPM
+        if: steps.check_creds.outputs.has_creds == 'true'
         uses: pnpm/action-setup@v4
         with:
           version: 10
 
       - name: Setup Node.js
+        if: steps.check_creds.outputs.has_creds == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
 
       - name: Install dependencies
+        if: steps.check_creds.outputs.has_creds == 'true'
         run: pnpm install --frozen-lockfile
 
       - name: Deploy Worker
+        if: steps.check_creds.outputs.has_creds == 'true'
         working-directory: ./apps/api-worker
         run: npx wrangler deploy
         env:
