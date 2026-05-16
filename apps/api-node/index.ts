@@ -974,7 +974,50 @@ addRoute(
         context: evalReq.context,
       });
 
-      const statusCode = result.allowed ? 200 : 403;
+      // ── Architecture Decision Enforcement ────────────────────────────────
+      // Architecture decision merge/deprecate actions MUST return require-review.
+      // This is a platform safety guard that overrides any policy rule that
+      // would otherwise allow these actions without human review.
+      const archDecisionActions = ['merge', 'deprecate', 'archive', 'retire'];
+      const isArchDecisionAction = archDecisionActions.includes(evalReq.action);
+      const isArchDecisionResource =
+        evalReq.resource.type === 'architecture-decision' ||
+        evalReq.resource.type === 'arch-decision' ||
+        evalReq.resource.attributes?.['architecture_decision'] === true;
+
+      if (isArchDecisionAction && isArchDecisionResource && result.effect !== 'require-review') {
+        // Override to require-review — architecture decisions must never be
+        // auto-applied without human review
+        result.allowed = false;
+        result.effect = 'require-review';
+        result.reason = `Architecture decision action '${evalReq.action}' requires human review. Platform safety enforcement overrides effect '${result.effect}'.`;
+        result.matchedRuleId = 'platform-safety:architecture-decision-review';
+        result.matchedPolicyId = 'platform-safety';
+      }
+
+      // Return appropriate status code based on effect:
+      //   allow → 200, audit-required → 200 (allowed but must be audited)
+      //   deny → 403, require-review → 202, dry-run-only → 202
+      let statusCode: number;
+      switch (result.effect) {
+        case 'allow':
+          statusCode = 200;
+          break;
+        case 'audit-required':
+          statusCode = 200;
+          break;
+        case 'deny':
+          statusCode = 403;
+          break;
+        case 'require-review':
+          statusCode = 202;
+          break;
+        case 'dry-run-only':
+          statusCode = 202;
+          break;
+        default:
+          statusCode = result.allowed ? 200 : 403;
+      }
       sendJson(res, statusCode, result);
     },
     { resourceType: 'policy-decision' }
