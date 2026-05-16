@@ -65,15 +65,15 @@ A self-hosted quickstart guide must exist for the version, and the RC smoke test
 
 All seven canonical enforcement flags must be present and operational in the runtime:
 
-| Flag | Description |
-|------|-------------|
-| `auditEnforcementEnabled` | Audit event chain enforcement |
-| `knowledgeTraceEnforcementEnabled` | Knowledge trace receipt validation |
-| `dreamSafetyEnforcementEnabled` | Dream lifecycle review gate |
-| `auditEnforcementMiddleware` | Audit middleware active |
-| `knowledgeTraceEnforcementMiddleware` | Knowledge middleware active |
-| `dreamSafetyEnforcementMiddleware` | Dream middleware active |
-| `policyRuntimeEnforcement` | Policy runtime evaluation |
+| Flag                                  | Description                        |
+| ------------------------------------- | ---------------------------------- |
+| `auditEnforcementEnabled`             | Audit event chain enforcement      |
+| `knowledgeTraceEnforcementEnabled`    | Knowledge trace receipt validation |
+| `dreamSafetyEnforcementEnabled`       | Dream lifecycle review gate        |
+| `auditEnforcementMiddleware`          | Audit middleware active            |
+| `knowledgeTraceEnforcementMiddleware` | Knowledge middleware active        |
+| `dreamSafetyEnforcementMiddleware`    | Dream middleware active            |
+| `policyRuntimeEnforcement`            | Policy runtime evaluation          |
 
 The `rc:verify` governance check category must report all flags as present.
 
@@ -146,9 +146,9 @@ Exceptions are valid for a single release only and must be re-evaluated for subs
 
 ## Policy Version
 
-| Version | Date | Description |
-|---------|------|-------------|
-| 1.0.0 | 2025-05-16 | Initial promotion gate policy for v0.1.0-rc.1 |
+| Version | Date       | Description                                   |
+| ------- | ---------- | --------------------------------------------- |
+| 1.0.0   | 2025-05-16 | Initial promotion gate policy for v0.1.0-rc.1 |
 
 ---
 

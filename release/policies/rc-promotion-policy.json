@@ -89,9 +89,7 @@
       "description": "Release artifacts must be reproducible. Running pnpm release:artifacts on the same commit must produce bit-identical digest outputs.",
       "required": true,
       "verificationMethod": "Run pnpm release:artifacts twice on the same commit and diff the artifact-digests.json outputs.",
-      "artifacts": [
-        "release/artifacts/<version>/artifact-digests.json"
-      ],
+      "artifacts": ["release/artifacts/<version>/artifact-digests.json"],
       "rcStatus": "required",
       "stableStatus": "required"
     },
@@ -111,9 +109,7 @@
       "description": "Release provenance must be cryptographically signed. Unsigned provenance is classified as signing-not-configured.",
       "required": false,
       "verificationMethod": "Verify provenance.intoto.json contains a valid signature from a configured signing key.",
-      "artifacts": [
-        "release/artifacts/<version>/provenance.intoto.json"
-      ],
+      "artifacts": ["release/artifacts/<version>/provenance.intoto.json"],
       "rcStatus": "acceptable-skip",
       "stableStatus": "required"
     },
@@ -123,9 +119,7 @@
       "description": "External infrastructure services (Terraform Cloud, GCP, Cloudflare, Kubernetes) must be validated when available. Missing infrastructure is classified as infrastructure-not-configured.",
       "required": false,
       "verificationMethod": "Run rc:verify and confirm infrastructure-not-configured items are documented in the verification summary.",
-      "artifacts": [
-        "release/artifacts/<version>/verification-summary.json"
-      ],
+      "artifacts": ["release/artifacts/<version>/verification-summary.json"],
       "rcStatus": "acceptable-skip",
       "stableStatus": "optional"
     }
