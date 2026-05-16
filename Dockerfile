@@ -52,11 +52,11 @@ COPY --from=build /app/apps/api-node ./apps/api-node
 RUN pnpm install --frozen-lockfile --prod
 
 # Expose the API port
-EXPOSE 3000
+EXPOSE 9100
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD node -e "const http = require('http'); const options = { hostname: 'localhost', port: 3000, path: '/v1/services', timeout: 2000 }; const req = http.request(options, (res) => { process.exit(res.statusCode === 200 ? 0 : 1); }); req.on('error', () => process.exit(1)); req.end();"
+  CMD node -e "const http = require('http'); const options = { hostname: 'localhost', port: 9100, path: '/v1/services', timeout: 2000 }; const req = http.request(options, (res) => { process.exit(res.statusCode === 200 ? 0 : 1); }); req.on('error', () => process.exit(1)); req.end();"
 
 # Start the api-node server
 CMD ["pnpm", "--filter", "@mycodexvantaos/api-node", "start"]
