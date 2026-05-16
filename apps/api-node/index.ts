@@ -463,6 +463,7 @@ addRoute('GET', '/', async (_req, res) => {
       knowledgeTraceEnforcementMiddleware: true,
       dreamSafetyEnforcement: dreamSafetyEnforcementEnabled,
       policyRuntimeEnforcement: true,
+      dreamSafetyEnforcementMiddleware: true,
     },
     endpoints: [
       'GET  /v1/health',
@@ -570,6 +571,7 @@ addRoute('GET', '/v1/health', async (_req, res) => {
       knowledgeTraceEnforcementMiddleware: true,
       dreamSafetyEnforcement: dreamSafetyEnforcementEnabled,
       policyRuntimeEnforcement: true,
+      dreamSafetyEnforcementMiddleware: true,
     },
   });
 });

@@ -183,4 +183,87 @@ describe('memory-dream service', () => {
       assert.equal(stats.byMode.execute, 1);
     });
   });
+
+  // ──── Dream Safety Lifecycle ────────────────────────────────────────────
+
+  describe('Dream Safety Lifecycle', () => {
+    it('should default to dry-run mode (auto-apply disabled)', () => {
+      const result = createDreamRunSync({});
+      assert.equal(result.run.mode, 'dry-run');
+      assert.equal(result.run.report!.statistics.dry_run, true);
+      assert.equal(result.run.report!.statistics.proposal_mode, true);
+    });
+
+    it('should not auto-execute dream actions in dry-run mode', () => {
+      const items: MemoryItem[] = [
+        { memory_id: 'mem_001', content: 'A' },
+        { memory_id: 'mem_002', content: 'A' },
+      ];
+      const result = createDreamRunSync({ memory_items: items });
+      assert.equal(result.run.mode, 'dry-run');
+      assert.equal(result.run.report!.duplicates_found, 1);
+      assert.equal(result.run.report!.actions[0].action_type, 'merge');
+      // Actions are proposed but not applied in dry-run mode
+      assert.equal(result.run.report!.statistics.dry_run, true);
+    });
+
+    it('should require explicit mode for execution', () => {
+      const result = createDreamRunSync({ mode: 'execute' });
+      assert.equal(result.run.mode, 'execute');
+      assert.equal(result.run.report!.statistics.dry_run, false);
+    });
+
+    it('should never produce delete actions from the JS engine', () => {
+      const items: MemoryItem[] = [
+        { memory_id: 'mem_001', content: 'Test content alpha' },
+        { memory_id: 'mem_002', content: 'Test content beta', conflicts_with: ['mem_001'] },
+      ];
+      const report = executeJsDreamEngine(items, true, true);
+      const deleteActions = report.actions.filter((a) => a.action_type === 'delete');
+      assert.equal(
+        deleteActions.length,
+        0,
+        'JS dream engine must never produce delete actions in MVP'
+      );
+    });
+
+    it('should produce merge and resolve actions but not delete', () => {
+      const items: MemoryItem[] = [
+        { memory_id: 'mem_001', content: 'Duplicate entry' },
+        { memory_id: 'mem_002', content: 'Duplicate entry' },
+        { memory_id: 'mem_003', content: 'Conflicting', conflicts_with: ['mem_001'] },
+      ];
+      const report = executeJsDreamEngine(items, true, true);
+      const actionTypes = new Set(report.actions.map((a) => a.action_type));
+      assert.ok(actionTypes.has('merge'), 'Should detect duplicates as merge');
+      assert.ok(actionTypes.has('resolve'), 'Should detect conflicts as resolve');
+      assert.ok(!actionTypes.has('delete'), 'Must not produce delete actions');
+    });
+
+    it('should track dream run hash for integrity verification', () => {
+      const result = createDreamRunSync({ mode: 'proposal' });
+      assert.ok(result.run.hash, 'Dream run must have integrity hash');
+      assert.equal(result.run.hash.length, 64, 'Hash should be SHA-256 (64 hex chars)');
+    });
+
+    it('should preserve dream run state for before/after tracking', () => {
+      const items: MemoryItem[] = [{ memory_id: 'mem_001', content: 'State tracking test' }];
+      const result = createDreamRunSync({ memory_items: items, mode: 'proposal' });
+      // The run record is the "before" state for apply/rollback
+      assert.ok(result.run.runId);
+      assert.ok(result.run.startedAt);
+      assert.ok(result.run.report);
+      assert.equal(result.run.status, 'completed');
+      // The report and run are available for before_json/after_json comparison
+      assert.equal(result.run.memoryItems.length, 1);
+      assert.equal(result.run.memoryItems[0].memory_id, 'mem_001');
+    });
+
+    it('should allow proposal mode as intermediate between dry-run and execute', () => {
+      const result = createDreamRunSync({ mode: 'proposal' });
+      assert.equal(result.run.mode, 'proposal');
+      assert.equal(result.run.report!.statistics.proposal_mode, true);
+      assert.equal(result.run.report!.statistics.dry_run, true);
+    });
+  });
 });
