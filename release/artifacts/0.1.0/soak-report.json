@@ -1,9 +1,9 @@
 {
   "version": "0.1.0",
   "tag": "v0.1.0",
-  "commit": "5b5d6f7d4e21b00d92e19ca771021e34ad3d8dc9",
-  "branch": "fix/v0.1.0-release-integrity-recovery",
-  "soakTimestamp": "2026-05-18T06:29:43.671Z",
+  "commit": "1371a8966c3047bbd95e87308a0bc81e6b72bb41",
+  "branch": "fix/v0.1.0-artifacts-final",
+  "soakTimestamp": "2026-05-18T06:46:28.716Z",
   "nodeVersion": "v20.20.2",
   "pnpmVersion": "9.15.9",
   "platform": "linux",
@@ -12,12 +12,12 @@
   "runs": [
     {
       "runIndex": 1,
-      "timestamp": "2026-05-18T06:29:43.665Z",
+      "timestamp": "2026-05-18T06:46:28.710Z",
       "checksTotal": 25,
       "checksPassed": 19,
       "checksFailed": 0,
       "checksSkipped": 6,
-      "durationMs": 41615
+      "durationMs": 35239
     }
   ],
   "checks": [
@@ -247,37 +247,37 @@
       "name": "release-manifest.json",
       "path": "release/artifacts/0.1.0/release-manifest.json",
       "exists": true,
-      "sha256": "99afb0cdc48242e51b6e4ea6ed0c5d1fb633fd0ea6380db5bc4e628bc0b6dab6"
+      "sha256": "66df328d871f3040a32850997ab8ebbcbdfa720adbfd6fd13ed839027e9baf86"
     },
     {
       "name": "artifact-digests.json",
       "path": "release/artifacts/0.1.0/artifact-digests.json",
       "exists": true,
-      "sha256": "bf135eb9fcdf4b28a60942fea76b2fb92bbfc1031e420de793bd81ec96c5aa32"
+      "sha256": "1582deec73bd759666325d8347f9f7408efb526fa0d6c214760573f7ce7b472c"
     },
     {
       "name": "verification-summary.json",
       "path": "release/artifacts/0.1.0/verification-summary.json",
       "exists": true,
-      "sha256": "a9bb92635fef4c890c68535cea86b95f6b345738d9142ca817f2a37c5c2e4582"
+      "sha256": "3f90a71c3ad6945cd6a6c75a57e157ba39fae89e63d704e0c0fa97047e44ad4e"
     },
     {
       "name": "sbom.cyclonedx.json",
       "path": "release/artifacts/0.1.0/sbom.cyclonedx.json",
       "exists": true,
-      "sha256": "72e2c00bbf01ef1776bb1441da05ffe8e9036a37f571dec1e1605353163e7788"
+      "sha256": "74bf6bd3f255b2f1b4f1e07ee58c1f8d9084bb7aa08c1cfba30c8987887d8803"
     },
     {
       "name": "provenance.intoto.json",
       "path": "release/artifacts/0.1.0/provenance.intoto.json",
       "exists": true,
-      "sha256": "ba578a9f9640e5651a95f337fe177a5a3c85b128524499f2236058a1864c374d"
+      "sha256": "9bbd8b70ae79f250cfaa626ca58383161591e5fae9d6957ba5c990bcf162e10f"
     },
     {
       "name": "supply-chain-summary.json",
       "path": "release/artifacts/0.1.0/supply-chain-summary.json",
       "exists": true,
-      "sha256": "10826391d072af8f01b8cd989526b321e8ba5306146c40566695763fdd982045"
+      "sha256": "4cd0e86f41b87fa75fd4560153a077c77362603a61dcb30b78901d30c14eb59f"
     }
   ],
   "sbomStatus": {
