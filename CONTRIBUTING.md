@@ -216,7 +216,7 @@ pnpm test -- packages/core/shared       # Run tests for specific package
 - [ ] All tests pass (`pnpm test` passes)
 - [ ] Governance check passes (`pnpm governance:check` passes)
 - [ ] Contract validation passes (`pnpm contracts:validate` passes)
-- [ ] No Section Sign Symbol (§) in code or documentation
+- [ ] No Section Sign Symbol (U+00A7) in code or documentation
 - [ ] Documentation is updated for user-facing changes
 - [ ] Commit messages follow conventional commit format
 
@@ -242,7 +242,7 @@ Brief description of changes
 - [ ] `pnpm test` passes
 - [ ] `pnpm governance:check` passes
 - [ ] `pnpm contracts:validate` passes
-- [ ] No Section Sign Symbol (§) in changes
+- [ ] No Section Sign Symbol (U+00A7) in changes
 - [ ] Documentation updated
 
 ## Architecture Compliance
