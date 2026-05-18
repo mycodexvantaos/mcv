@@ -101,6 +101,10 @@
       "allowAny": [
         "next"
       ]
+    },
+    "overrides": {
+      "@modelcontextprotocol/sdk>hono": "4.12.19",
+      "ajv>fast-uri": "3.1.2"
     }
   },
   "devDependencies": {
