@@ -18,12 +18,12 @@ Patch releases **must not** introduce new features, API changes, or breaking cha
 
 ## Release Type Classification
 
-| Type | Criteria | Example |
-|------|----------|---------|
-| **Security patch** | CVE remediation, dependency security update, auth/authz fix | `undici` CVE fix |
-| **Runtime bug fix** | Defect in production code path, data corruption, crash fix | API response error |
-| **Doc-only patch** | Typo, outdated reference, missing documentation | README correction |
-| **Dependency update** | Non-security dep update that fixes a bug | peer dep conflict fix |
+| Type                  | Criteria                                                    | Example               |
+| --------------------- | ----------------------------------------------------------- | --------------------- |
+| **Security patch**    | CVE remediation, dependency security update, auth/authz fix | `undici` CVE fix      |
+| **Runtime bug fix**   | Defect in production code path, data corruption, crash fix  | API response error    |
+| **Doc-only patch**    | Typo, outdated reference, missing documentation             | README correction     |
+| **Dependency update** | Non-security dep update that fixes a bug                    | peer dep conflict fix |
 
 ---
 
@@ -33,21 +33,21 @@ A patch release may be shipped when **all** of the following are met:
 
 ### Required Gates
 
-| Gate | Description |
-|------|-------------|
-| **P001: CI Green** | All CI checks pass on the patch branch |
-| **P002: Scope Validation** | Changes are strictly patch-scope (no new features, no API changes) |
-| **P003: Security Review** | For security patches: CVE advisory linked, affected versions documented |
-| **P004: Regression Test** | Existing tests pass; new tests added for the bug/CVE if applicable |
-| **P005: Release Notes** | Patch release notes drafted per template below |
-| **P006: Changelog Updated** | CHANGELOG.md updated with patch entry |
+| Gate                        | Description                                                             |
+| --------------------------- | ----------------------------------------------------------------------- |
+| **P001: CI Green**          | All CI checks pass on the patch branch                                  |
+| **P002: Scope Validation**  | Changes are strictly patch-scope (no new features, no API changes)      |
+| **P003: Security Review**   | For security patches: CVE advisory linked, affected versions documented |
+| **P004: Regression Test**   | Existing tests pass; new tests added for the bug/CVE if applicable      |
+| **P005: Release Notes**     | Patch release notes drafted per template below                          |
+| **P006: Changelog Updated** | CHANGELOG.md updated with patch entry                                   |
 
 ### Optional Gates (Recommended)
 
-| Gate | Description |
-|------|-------------|
+| Gate                   | Description                                            |
+| ---------------------- | ------------------------------------------------------ |
 | **P007: SBOM Updated** | Software Bill of Materials regenerated if deps changed |
-| **P008: Provenance** | Build provenance re-generated for new artifacts |
+| **P008: Provenance**   | Build provenance re-generated for new artifacts        |
 
 ---
 
