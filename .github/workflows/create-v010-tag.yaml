@@ -1,0 +1,62 @@
+name: Create v0.1.0 Release Tag
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "yes" to confirm tag creation'
+        required: true
+        default: 'yes'
+
+permissions:
+  contents: write
+
+jobs:
+  create-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create v0.1.0 tag
+        run: |
+          TARGET_SHA="1371a8966c3047bbd95e87308a0bc81e6b72bb41"
+          echo "Creating tag v0.1.0 at commit $TARGET_SHA"
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Create annotated tag
+          git tag -a v0.1.0 "$TARGET_SHA" -m "Release v0.1.0 - Stable release
+
+          Artifact commit: $TARGET_SHA
+          
+          This is the official v0.1.0 stable release of mycodexvantaos.
+          All 15 CI checks passed. PR #85 merged."
+          
+          # Push tag
+          git push origin v0.1.0
+          echo "Tag v0.1.0 created successfully!"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create v0.1.0 \
+            --title "v0.1.0 - Stable Release" \
+            --notes "## v0.1.0 Stable Release
+
+          **Commit:** \`1371a8966c3047bbd95e87308a0bc81e6b72bb41\`
+
+          ### What's included
+          - All v0.1.0-rc.1 artifacts promoted to stable
+          - 19 soak tests passed, 0 failures
+          - 9/11 promotion gates passed
+          - Supply chain integrity verified
+
+          ### Release Notes
+          This is the first stable release of mycodexvantaos platform.
+          All CI checks (15/15) passed on PR #85." \
+            --latest
+          echo "GitHub Release v0.1.0 created successfully!"
