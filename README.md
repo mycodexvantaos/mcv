@@ -8,6 +8,8 @@ _Cloudflare-First · Hexagonal Architecture · Constitutionally Governed_
 
 [![Platform Constitution CI](https://github.com/mycodexvantaos/mycodexvantaos/actions/workflows/platform-constitution-ci.yml/badge.svg)](https://github.com/mycodexvantaos/mycodexvantaos/actions/workflows/platform-constitution-ci.yml)
 [![CodeQL](https://github.com/mycodexvantaos/mycodexvantaos/actions/workflows/codeql.yml/badge.svg)](https://github.com/mycodexvantaos/mycodexvantaos/actions/workflows/codeql.yml)
+[![Release Candidate Check](https://github.com/mycodexvantaos/mycodexvantaos/actions/workflows/release-candidate-check.yml/badge.svg)](https://github.com/mycodexvantaos/mycodexvantaos/actions/workflows/release-candidate-check.yml)
+[![Governance Check](https://github.com/mycodexvantaos/mycodexvantaos/actions/workflows/governance-check.yml/badge.svg)](https://github.com/mycodexvantaos/mycodexvantaos/actions/workflows/governance-check.yml)
 
 </div>
 
@@ -15,7 +17,7 @@ _Cloudflare-First · Hexagonal Architecture · Constitutionally Governed_
 
 MyCodeXvantaOS is an AI-native platform where agents authenticate, access knowledge, invoke models, and produce auditable outcomes within governed workspaces. Built on a five-model constitutional foundation with strict port/adapter hexagonal boundaries, it runs first on Cloudflare's global edge while guaranteeing vendor independence from day one.
 
-The platform evolved from a Firebase Studio prototype through a Next.js web application into a full-scale service-oriented architecture. Today it houses a monorepo of 70+ packages, 27 service modules, 8 constitutional service categories, a React dashboard, an AI-powered agent system, and infrastructure for three deployment runtimes.
+The platform evolved from a Firebase Studio prototype through a Next.js web application into a full-scale service-oriented architecture. Today it houses a monorepo of 79 packages, 39 service modules, 8 constitutional service categories, a React dashboard, an AI-powered agent system, a Python intelligence plane, and infrastructure for multiple deployment runtimes.
 
 ---
 
@@ -28,9 +30,11 @@ The platform evolved from a Firebase Studio prototype through a Next.js web appl
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
 - [Development](#development)
+- [Governance and Release Commands](#governance-and-release-commands)
 - [Deployment](#deployment)
 - [API Reference](#api-reference)
 - [Constitutional Models](#constitutional-models)
+- [Release and Supply Chain](#release-and-supply-chain)
 - [Project History](#project-history)
 - [Contributing](#contributing)
 - [License](#license)
@@ -41,7 +45,7 @@ The platform evolved from a Firebase Studio prototype through a Next.js web appl
 
 ### Three Design Principles
 
-**Constitutional Governance** — Five immutable models form the platform constitution. Every service, every API call, every data flow must conform to these models. They are defined in human-readable YAML contracts under `contracts/` and validated by JSON Schemas. No service may bypass or override constitutional rules.
+**Constitutional Governance** — Five immutable models form the platform constitution. Every service, every API call, every data flow must conform to these models. They are defined in human-readable YAML contracts under `contracts/` and validated by JSON Schemas. No service may bypass or override constitutional rules. The platform enforces 8 hard and 9 soft governance flags across all runtime operations.
 
 **Cloud-Vendor Independence** — The platform is Cloudflare-first but not Cloudflare-only. All cloud-specific logic lives behind port/adapter boundaries. The `packages/core/` layer has zero cloud vendor dependencies. The `packages/ports/` layer defines platform-neutral interfaces. The `packages/adapters/` layer implements those interfaces for specific providers. Swap runtime without touching business logic.
 
@@ -55,29 +59,36 @@ The platform evolved from a Firebase Studio prototype through a Next.js web appl
 | **Phase 2 — Portable Core**          | PostgreSQL + Redis + MinIO + Qdrant + RabbitMQ  | 🔧 Bootstrap ready      |
 | **Phase 3 — Self-Hostable**          | Kubernetes + Helm + ArgoCD + HPA                | ✅ Helm chart ready     |
 | **Phase 4 — Governance Hardening**   | Policy Engine + Audit Middleware + Dream Safety | ✅ Complete (197 tests) |
+| **Phase 5 — Release & Supply Chain** | SBOM + Provenance + Signing + Promotion Gates   | ✅ Complete (v0.1.0)    |
 
 ---
 
 ## Architecture
 
-MyCodeXvantaOS follows an **eight-layer hexagonal (port/adapter) architecture** with strict dependency direction from inner to outer layers:
+MyCodeXvantaOS follows a **nine-layer hexagonal (port/adapter) architecture** with strict dependency direction from inner to outer layers. The architecture comprises a TypeScript control plane and a Python intelligence plane, connected through contracts as the source of truth.
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│  H. Apps Layer                                           │
-│  api-worker (CF Workers) · web-console (SPA) · cli (mcx) │
+│  I. Apps Layer                                           │
+│  api-node (Node.js API) · api-worker (CF Workers) ·      │
+│  web-console (SPA) · admin-console · cli (mcx)           │
 ├──────────────────────────────────────────────────────────┤
-│  G. Runtimes Layer                                       │
+│  H. Runtimes Layer                                       │
 │  Cloudflare · Node.js · Docker · Kubernetes              │
 ├──────────────────────────────────────────────────────────┤
-│  F. Governance Layer (cross-cutting)                     │
+│  G. Governance Layer (cross-cutting)                     │
 │  Policy Engine · Audit Chain · Usage Metering            │
+│  Knowledge Trace Enforcement · Dream Safety Enforcement  │
+├──────────────────────────────────────────────────────────┤
+│  F. Release & Supply Chain Layer                         │
+│  Artifact Digests · SBOM · Provenance · Signing Policy   │
+│  Promotion Gates · Soak Validation                       │
 ├──────────────────────────────────────────────────────────┤
 │  E. Infrastructure Layer                                 │
 │  Helm Charts · Docker Compose · Migrations · Contracts   │
 ├──────────────────────────────────────────────────────────┤
-│  D. Adapters Layer (7 packages)                          │
-│  cloudflare-d1 · cloudflare-kv · cloudflare-r2 ·        │
+│  D. Adapters Layer (Provider Adapters)                   │
+│  cloudflare-d1 · cloudflare-kv · cloudflare-r2 ·         │
 │  d1-full-text-search · openai · openrouter · workers-ai  │
 ├──────────────────────────────────────────────────────────┤
 │  C. Application Layer (8 services)                       │
@@ -94,7 +105,15 @@ MyCodeXvantaOS follows an **eight-layer hexagonal (port/adapter) architecture** 
 └──────────────────────────────────────────────────────────┘
 ```
 
-**Dependency direction:** A → B → C → D → E (governance F is cross-cutting; runtimes G and apps H compose the stack)
+**Dependency direction:** A → B → C → D → E (governance G is cross-cutting; release F is cross-cutting; runtimes H and apps I compose the stack)
+
+### Dual-Plane Architecture
+
+The platform operates on two complementary planes:
+
+**TypeScript Control Plane** — Handles service catalog, resource management, policy enforcement, audit logging, and API routing. All governance enforcement (audit, knowledge trace, dream safety, policy runtime) runs in the control plane.
+
+**Python Intelligence Plane** — Handles knowledge pipeline processing, agent orchestration, vector operations, evaluation, and memory dream. Python packages under `python/` connect to the control plane through the shared contract layer.
 
 ### Port/Adapter Wiring
 
@@ -107,14 +126,14 @@ MyCodeXvantaOS follows an **eight-layer hexagonal (port/adapter) architecture** 
                     │   ports/     │  ← Interfaces only (6 ports)
                     └──────┬───────┘
                            │ implemented by
-              ┌────────────┼────────────┐
-              │            │            │
-     ┌────────▼───────┐ ┌──▼─────────┐ ┌▼───────────┐
-     │ CF Adapters    │ │ AI Adapters│ │ Search     │
-     │ D1 · KV · R2   │ │ OpenAI     │ │ D1 FTS5    │
-     │                │ │ OpenRouter │ │            │
-     │                │ │ Workers AI │ │            │
-     └────────────────┘ └────────────┘ └────────────┘
+              ┌────────────┼────────────────┐
+              │            │                │
+     ┌────────▼───────┐ ┌──▼──────────┐ ┌──▼───────────┐
+     │ CF Adapters    │ │ AI Adapters │ │ Search       │
+     │ D1 · KV · R2   │ │ OpenAI      │ │ D1 FTS5      │
+     │                │ │ OpenRouter  │ │              │
+     │                │ │ Workers AI  │ │              │
+     └────────────────┘ └─────────────┘ └──────────────┘
 ```
 
 | Port           | Interface                                | Cloudflare Impl                  | Portable Impl        |
@@ -139,7 +158,7 @@ The platform organizes all capabilities into **8 categories** following an AWS-l
 | 🤖 **Agent**      | Conversational AI, autonomous agents           | agent-chat                        | agent-router, agent-mode, agent-memory               |
 | 🏢 **Workspace**  | Multi-tenant collaboration                     | workspace                         | workspace-analytics, workspace-templates             |
 | 🛠 **Developer**  | Developer tooling and SDK                      | —                                 | dev-portal, sdk-playground                           |
-| 🔐 **Security**   | Authentication, authorization, secrets         | identity                          | mfa-service, token-rotation                          |
+| 🔒 **Security**   | Authentication, authorization, secrets         | identity                          | mfa-service, token-rotation                          |
 | 📦 **Storage**    | Object storage, file management                | (via adapters)                    | backup-service, lifecycle-policies                   |
 | 🧠 **Model**      | LLM endpoints, BYOK gateway                    | model-byok                        | model-fine-tune, model-evaluator                     |
 | ⚡ **Automation** | Background jobs, scheduled tasks               | usage-meter, automation           | scheduler, event-router                              |
@@ -153,25 +172,62 @@ The platform organizes all capabilities into **8 categories** following an AWS-l
 ```
 mycodexvantaos/
 ├── contracts/                          # Constitutional model definitions
-│   ├── service-definitions/            #   10 service YAML files + catalog
+│   ├── service-definitions/            #   15 service YAML files + catalog
 │   ├── service-categories.yaml         #   8-category classification system
 │   ├── openapi/api-v1.yaml             #   OpenAPI 3.1 specification
-│   ├── events/events.yaml              #   CloudEvents v1.0 event definitions
-│   └── schemas/                        #   5 JSON Schema validation files
-├── packages/
-│   ├── core/                           # Zero-dependency domain models (6 sub-packages)
-│   ├── ports/                          # Platform-neutral interfaces (6 port packages)
-│   ├── application/                    # Service business logic (8 service modules)
-│   └── adapters/                       # Provider-specific implementations (7 adapters)
+│   ├── events/                         #   7 CloudEvents v1.0 event YAML files
+│   │   ├── audit-events.yaml           #     Audit event definitions
+│   │   ├── knowledge-events.yaml       #     Knowledge pipeline events
+│   │   ├── memory-events.yaml          #     Memory system events
+│   │   ├── agent-events.yaml           #     Agent interaction events
+│   │   ├── usage-events.yaml           #     Usage metering events
+│   │   └── runtime-events.yaml         #     Runtime lifecycle events
+│   ├── resource-kinds/                 #   16 resource kind YAML files
+│   ├── policies/                       #   5 policy YAML files
+│   └── schemas/                        #   14 JSON Schema validation files
+├── packages/                           # 79 packages (TypeScript control plane)
+│   ├── core/                           #   Zero-dependency domain models (6 sub-packages)
+│   ├── ports/                          #   Platform-neutral interfaces (6 port packages)
+│   ├── application/                    #   Service business logic (8 service modules)
+│   └── adapters/                       #   Provider-specific implementations (7 adapters)
+├── services/                           # 39 service packages (monorepo)
 ├── apps/                               # Application entry points
+│   ├── api-node/                       #   Node.js API server (port 9100, self-hosted)
 │   ├── api-worker/                     #   Cloudflare Worker API
 │   ├── web-console/                    #   Admin SPA
+│   ├── admin-console/                  #   Admin management console
 │   └── cli/                            #   CLI tool (mcx)
+├── python/                             # Python intelligence plane
+│   ├── packages/                       #   5 Python packages
+│   │   ├── mycodexvantaos-knowledge-pipeline/
+│   │   ├── mycodexvantaos-agent-worker/
+│   │   ├── mycodexvantaos-vector-tools/
+│   │   ├── mycodexvantaos-evaluation/
+│   │   └── mycodexvantaos-memory-dream/
+│   └── apps/                           #   3 Python apps
+│       ├── knowledge-worker/
+│       ├── agent-worker/
+│       └── dream-worker/
+├── providers/                          # Provider adapter packages
+│   ├── mycodexvantaos-provider-cloudflare-d1/
+│   ├── mycodexvantaos-provider-cloudflare-kv/
+│   ├── mycodexvantaos-provider-cloudflare-r2/
+│   ├── mycodexvantaos-provider-cloudflare-vectorize/
+│   ├── mycodexvantaos-provider-cloudflare-workers-ai/
+│   └── ... (30+ provider categories)
 ├── runtimes/                           # Multi-runtime bootstrap
 │   ├── cloudflare/                     #   CloudflareServiceContainer
 │   ├── node/                           #   NodeServiceContainer (portable)
-│   ├── docker/                         #   Env mapping + shutdown handlers
-│   └── kubernetes/                     #   K8s liveness/readiness/startup probes
+│   ├── docker/                         #   Docker env mapping + shutdown handlers
+│   ├── kubernetes/                     #   K8s liveness/readiness/startup probes
+│   └── local/                          #   Local runtime bootstrap
+├── release/                            # Release artifacts and policies
+│   ├── artifacts/                      #   Release artifacts (manifest, digests, SBOM, provenance)
+│   │   ├── v0.1.0-rc.1/
+│   │   └── v0.1.0/
+│   └── policies/                       #   Signing policy, promotion policy
+├── governance/                         # Platform governance specification
+│   └── platform-governance-spec.yaml   #   8 hard + 9 soft enforcement flags
 ├── migrations/                         # Database schema (3 dialects)
 │   ├── d1/                             #   Cloudflare D1
 │   ├── sqlite/                         #   Portable SQLite (FTS5)
@@ -181,19 +237,22 @@ mycodexvantaos/
 │   ├── docker/                         #   Dockerfiles + API gateway
 │   ├── docker-compose/                 #   Local dev stack
 │   └── helm/mycodexvantaos/            #   Helm chart (12 templates)
-├── services/                           # 27 legacy service packages (monorepo)
-├── src/                                # Next.js web application
-│   ├── app/                            #   App Router (dashboard, API)
-│   ├── ai/                             #   Genkit AI flows
-│   └── components/                     #   React UI components
-├── docs/                               # Documentation
-│   ├── api/                            #   API reference
-│   ├── deployment/                     #   Deployment guide
-│   └── operations/                     #   Operations runbook
+├── docs/                               # Documentation (20+ topic directories)
+│   ├── architecture/                   #   Architecture design documents
+│   ├── architecture-decision-records/  #   ADR
+│   ├── releases/                       #   Release notes and reports
+│   ├── security/                       #   Signing plan and security docs
+│   ├── self-hostable/                  #   Self-hosted quickstart guide
+│   ├── memory-dream/                   #   Dream safety documentation
+│   └── ... (api, deployment, operations, etc.)
 ├── tools/                              # Development tooling
 │   ├── validators/                     #   Contract & architecture validators
-│   └── generators/                     #   Service & adapter scaffolding
-└── .github/workflows/                  # 38 CI/CD pipeline configurations
+│   ├── generators/                     #   Service & adapter scaffolding
+│   ├── governance/                     #   Governance check tool
+│   ├── rc-verify/                      #   RC verification tool
+│   ├── rc-soak/                        #   RC soak validation tool
+│   └── release/                        #   Release artifact generators
+└── .github/workflows/                  # 49 CI/CD pipeline configurations
 ```
 
 ---
@@ -202,16 +261,18 @@ mycodexvantaos/
 
 ### Platform Layer
 
-| Layer             | Technology                        | Purpose                        |
-| ----------------- | --------------------------------- | ------------------------------ |
-| **Language**      | TypeScript                        | End-to-end type safety         |
-| **Runtime (MVP)** | Cloudflare Workers                | Global edge compute            |
-| **Database**      | D1 (SQLite) / PostgreSQL          | Relational data, audit, usage  |
-| **Cache**         | KV / Redis                        | Sessions, rate limits, config  |
-| **Storage**       | R2 / MinIO                        | Document blobs, audit archives |
-| **Search**        | Vectorize + FTS5 / pgvector + GIN | Hybrid semantic + fulltext     |
-| **Queue**         | Cloudflare Queues / RabbitMQ      | Async processing, ingestion    |
-| **AI Models**     | Workers AI / OpenAI / OpenRouter  | Chat completions, embeddings   |
+| Layer                     | Technology                        | Purpose                         |
+| ------------------------- | --------------------------------- | ------------------------------- |
+| **Language**              | TypeScript + Python               | Dual-plane architecture         |
+| **Runtime (MVP)**         | Cloudflare Workers                | Global edge compute             |
+| **Runtime (Self-hosted)** | Node.js 22                        | Portable API server (port 9100) |
+| **Database**              | D1 (SQLite) / PostgreSQL          | Relational data, audit, usage   |
+| **Cache**                 | KV / Redis                        | Sessions, rate limits, config   |
+| **Storage**               | R2 / MinIO                        | Document blobs, audit archives  |
+| **Search**                | Vectorize + FTS5 / pgvector + GIN | Hybrid semantic + fulltext      |
+| **Queue**                 | Cloudflare Queues / RabbitMQ      | Async processing, ingestion     |
+| **AI Models**             | Workers AI / OpenAI / OpenRouter  | Chat completions, embeddings    |
+| **Governance**            | SHA-256 + SHA3-512                | Audit chain + artifact digests  |
 
 ### Web Application Layer
 
@@ -230,10 +291,11 @@ mycodexvantaos/
 | Tool               | Purpose                        |
 | ------------------ | ------------------------------ |
 | **pnpm**           | Monorepo workspace management  |
+| **Node.js 22**     | Primary runtime version        |
 | **Wrangler**       | Cloudflare Workers dev/deploy  |
 | **Docker Compose** | Local development stack        |
 | **Helm**           | Kubernetes deployment charts   |
-| **GitHub Actions** | CI/CD pipelines (38 workflows) |
+| **GitHub Actions** | CI/CD pipelines (49 workflows) |
 
 ---
 
@@ -241,7 +303,8 @@ mycodexvantaos/
 
 ### Prerequisites
 
-- Node.js 20+ and pnpm 9+
+- Node.js 22+ and pnpm 9+
+- Python 3.11+ (for intelligence plane)
 - Cloudflare account (for Workers deployment)
 - Docker and Docker Compose (for local development)
 
@@ -252,8 +315,11 @@ mycodexvantaos/
 git clone https://github.com/mycodexvantaos/mycodexvantaos.git
 cd mycodexvantaos
 
+# Enable corepack (required for pnpm)
+corepack enable
+
 # Install dependencies
-pnpm install
+pnpm install --frozen-lockfile
 
 # Set up environment
 cp .env.local.example .env.local
@@ -267,10 +333,13 @@ pnpm dev
 # Opens at http://localhost:9002
 ```
 
-### Local Development (Platform API + Infrastructure)
+### Local Development (Platform API — Self-Hosted)
 
 ```bash
-# Start the full local stack
+# Start the Node.js API server (port 9100)
+pnpm api:start
+
+# Or start with the full local stack
 docker compose -f infra/docker-compose/docker-compose.local.yaml up -d
 
 # Run D1 migrations locally
@@ -278,6 +347,22 @@ cd apps/api-worker && pnpm run db:migrate
 
 # Start the API worker in dev mode
 cd apps/api-worker && pnpm run dev
+```
+
+### Quick Health Check
+
+```bash
+# Verify the API is running
+curl http://localhost:9100/v1/health
+
+# Check version info
+curl http://localhost:9100/v1/version
+
+# Verify runtime status
+curl http://localhost:9100/v1/runtime
+
+# Validate all contracts
+curl http://localhost:9100/v1/contracts/validate
 ```
 
 ### Using the CLI
@@ -310,16 +395,35 @@ pnpm build              # Build all packages
 pnpm lint               # TypeScript check across workspace
 pnpm format:check       # Prettier format check
 pnpm typecheck          # Type-check without emit
+pnpm test               # Run tests
+pnpm test:coverage      # Run tests with coverage
+pnpm test:integration   # Run integration tests
+pnpm validate           # Validate project structure
 ```
 
 ### Architecture Validators
 
 ```bash
-# Validate all service contracts
-npx tsx tools/validators/validate-contracts.ts
+# Validate all contracts
+pnpm contracts:validate
 
-# Validate architecture integrity (6 core + 6 ports + 8 services + 7 adapters)
-npx tsx tools/validators/validate-architecture.ts
+# Validate JSON schemas
+pnpm schemas:validate
+
+# Validate service catalog
+pnpm service-catalog:check
+
+# Validate resource model
+pnpm resource-model:check
+
+# Validate policy model
+pnpm policy:check
+
+# Validate events
+pnpm events:check
+
+# Full governance check (all of the above)
+pnpm governance:check
 ```
 
 ### Code Generators
@@ -343,7 +447,70 @@ npx tsx tools/generators/generate-adapter.ts --port database --provider planetsc
 
 ---
 
+## Governance and Release Commands
+
+The platform includes comprehensive governance and release tooling that ensures contract-runtime alignment and supply-chain integrity.
+
+### Governance Commands
+
+```bash
+pnpm governance:check              # Full governance check (24 checks)
+pnpm contracts:validate            # Validate all YAML/JSON contracts
+pnpm schemas:validate              # Validate JSON schemas
+pnpm service-catalog:check        # Validate service catalog
+pnpm resource-model:check          # Validate resource model
+pnpm policy:check                  # Validate policy definitions
+pnpm events:check                  # Validate event contracts
+```
+
+### Release Candidate Commands
+
+```bash
+pnpm rc:verify                     # RC verification (8 categories of checks)
+pnpm rc:soak                       # RC soak validation report
+pnpm release:promotion:evaluate    # Evaluate promotion gates
+```
+
+### Release Artifact Commands
+
+```bash
+pnpm generate-release-manifest     # Generate release manifest
+pnpm release:artifacts             # Generate release artifacts
+pnpm release:sbom                  # Generate CycloneDX 1.5 SBOM
+pnpm release:provenance            # Generate SLSA v1 provenance
+```
+
+### Governance Enforcement
+
+The platform enforces governance through 8 hard and 9 soft enforcement flags defined in `governance/platform-governance-spec.yaml`. Hard enforcement flags block non-compliant operations at runtime; soft enforcement flags produce warnings and audit records.
+
+**Runtime Enforcement Middleware:**
+
+| Enforcement           | Layer | Description                                                 |
+| --------------------- | ----- | ----------------------------------------------------------- |
+| Audit Enforcement     | Hard  | All state-changing routes must use `withAudit()` middleware |
+| Knowledge Trace       | Hard  | Knowledge-assisted answers must reference valid receipt     |
+| Dream Safety          | Hard  | Dream apply/rollback subject to review/safety constraints   |
+| Policy Runtime        | Hard  | Policy engine evaluates before state-changing operations    |
+| Architecture Decision | Hard  | Architecture merge/deprecate always requires human review   |
+
+---
+
 ## Deployment
+
+### Self-Hosted (Node.js API — Recommended for v0.1.0)
+
+```bash
+# Build and run the Node.js API server
+pnpm build
+pnpm api:start
+
+# Or via Docker
+docker run -p 9100:9100 mycodexvantaos/api-node
+
+# Verify
+curl http://localhost:9100/v1/health
+```
 
 ### Cloudflare Workers (MVP)
 
@@ -382,33 +549,44 @@ The Helm chart includes 12 templates: deployment, service, ingress, HPA, PDB, Se
 
 ## API Reference
 
-All endpoints follow the OpenAPI 3.1 specification defined in `contracts/openapi/api-v1.yaml`.
+All endpoints are served from the Node.js API on port 9100. The API follows the OpenAPI 3.1 specification defined in `contracts/openapi/api-v1.yaml`.
 
 ### Quick Reference
 
-| Category   | Endpoints              | Description                                      |
-| ---------- | ---------------------- | ------------------------------------------------ |
-| Health     | `GET /health`          | Platform health check                            |
-| Security   | `/api/v1/auth/*`       | Login, register, token refresh, permission check |
-| Workspace  | `/api/v1/workspaces/*` | CRUD, members, settings                          |
-| Knowledge  | `/api/v1/knowledge/*`  | Collections, documents, ingestion, search        |
-| Agent      | `/api/v1/agent/*`      | Sessions, messages, streaming                    |
-| Model      | `/api/v1/models/*`     | List endpoints, chat completions                 |
-| Audit      | `/api/v1/audit/*`      | Event list, chain verification                   |
-| Usage      | `/api/v1/usage/*`      | Current usage, quota, history                    |
-| Automation | `/api/v1/automation/*` | Job enqueue, status, cancellation                |
+| Category      | Endpoints                                                                                                                                                                         | Description                                      |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| **Health**    | `GET /v1/health`                                                                                                                                                                  | Platform health check (all 5 runtime loops)      |
+| **Readiness** | `GET /v1/ready`                                                                                                                                                                   | Kubernetes readiness probe                       |
+| **Version**   | `GET /v1/version`                                                                                                                                                                 | Version, commit, build info                      |
+| **Runtime**   | `GET /v1/runtime`                                                                                                                                                                 | Node version, memory, platform info              |
+| **Contracts** | `GET /v1/contracts/validate`                                                                                                                                                      | Validate all contracts                           |
+| **Services**  | `GET /v1/services` · `GET /v1/services/:id`                                                                                                                                       | Service catalog (15 services)                    |
+| **Resources** | `GET /v1/resource-kinds` · `GET /v1/resource-kinds/:kind`                                                                                                                         | Resource kinds (16 kinds)                        |
+| **Audit**     | `POST /v1/audit/events` · `GET /v1/audit/events` · `GET /v1/audit/verify`                                                                                                         | Audit event recording and integrity verification |
+| **Knowledge** | `POST /v1/knowledge/search` · `POST /v1/knowledge/answer` · `GET /v1/knowledge/retrieval-receipts/:id` · `GET /v1/knowledge/answer-traces/:id`                                    | Knowledge search with trace enforcement          |
+| **Dream**     | `POST /v1/dream/run` · `GET /v1/dream/runs/:id` · `GET /v1/dream/stats` · `POST /v1/dream/runs/:id/review` · `POST /v1/dream/runs/:id/apply` · `POST /v1/dream/runs/:id/rollback` | Memory dream with safety enforcement             |
+| **Policy**    | `POST /v1/policies/evaluate` · `GET /v1/policies`                                                                                                                                 | Policy evaluation and listing                    |
 
 ### Authentication
 
 All API requests require a Bearer JWT token:
 
 ```bash
-curl -H "Authorization: Bearer <token>" https://api.mycodexvantaos.com/api/v1/workspaces
+curl -H "Authorization: Bearer <token>" http://localhost:9100/v1/services
 ```
 
 ### Event Specification
 
-All platform events follow **CloudEvents v1.0** format. See `contracts/events/events.yaml` for the full event catalog.
+All platform events follow **CloudEvents v1.0** format, split across 7 domain-specific YAML files in `contracts/events/`:
+
+| Event File            | Domain    | Description                          |
+| --------------------- | --------- | ------------------------------------ |
+| audit-events.yaml     | Audit     | Audit recording and integrity events |
+| knowledge-events.yaml | Knowledge | Document ingestion and search events |
+| memory-events.yaml    | Memory    | Memory capture and dream events      |
+| agent-events.yaml     | Agent     | Chat session and message events      |
+| usage-events.yaml     | Usage     | Metering and quota events            |
+| runtime-events.yaml   | Runtime   | Service lifecycle events             |
 
 ---
 
@@ -418,22 +596,23 @@ Five immutable models form the platform constitution. These are defined in YAML 
 
 ### 1. Service Catalog
 
-**File:** `contracts/service-definitions/service-catalog.yaml`
+**File:** `contracts/service-definitions/` (15 service YAML files)
 
-Defines the 8 MVP services with dependency levels and startup order:
+Defines the 15 services with dependency levels and startup order:
 
 ```
-Level 0: audit-log, identity          (no dependencies)
-Level 1: workspace, usage-meter       (depend on identity)
-Level 2: knowledge-store, knowledge-search, model-byok  (depend on identity)
-Level 3: agent-chat                   (depends on knowledge-search + model-byok)
+Level 0: audit-log, identity                    (no dependencies)
+Level 1: workspace, usage-meter                 (depend on identity)
+Level 2: knowledge-store, knowledge-search,     (depend on identity)
+         model-byok
+Level 3: agent-chat                             (depends on knowledge-search + model-byok)
 ```
 
 ### 2. Resource Model
 
-**File:** `contracts/service-categories.yaml` · **Schema:** `contracts/schemas/universal-resource.schema.json`
+**File:** `contracts/resource-kinds/` (16 YAML files) · **Schema:** `contracts/schemas/universal-resource.schema.json`
 
-18 resource kinds with URN addressing and lifecycle states:
+16 resource kinds with URN addressing and lifecycle states:
 
 ```
 Pending → Active → Succeeded / Failed / Retiring → Retired
@@ -441,21 +620,53 @@ Pending → Active → Succeeded / Failed / Retiring → Retired
 
 ### 3. Policy Model
 
-**File:** `contracts/policy-model.yaml` · **Schema:** `contracts/schemas/policy-decision.schema.json`
+**File:** `contracts/policies/` (5 YAML files) · **Schema:** `contracts/schemas/policy-decision.schema.json`
 
 6 roles (system:admin → workspace:agent) with 14+ policy rules enforcing workspace-scoped RBAC, MFA, and tier-based rate limits.
 
 ### 4. Audit Model
 
-**File:** `contracts/events/events.yaml` · **Schema:** `contracts/schemas/audit-event.schema.json`
+**File:** `contracts/events/` (7 event YAML files) · **Schema:** `contracts/schemas/audit-event.schema.json`
 
 35+ event types with SHA-256 integrity chain and closed-loop pairing. Every request event is paired with a completion or failure event via `pair_id`.
 
 ### 5. Knowledge Model
 
-**File:** `contracts/knowledge-model.yaml` · **Schema:** `contracts/schemas/knowledge-pipeline.schema.json`
+**File:** `contracts/schemas/knowledge-pipeline.schema.json`
 
 10 knowledge types across 3 evidence levels (assisted, verified, grounded) with a complete ingestion→retrieval→generation pipeline.
+
+---
+
+## Release and Supply Chain
+
+The v0.1.0 release introduces a comprehensive release and supply-chain pipeline that ensures artifact integrity, provenance, and governance compliance.
+
+### Release Pipeline
+
+| Stage                 | Tool/Command                      | Output                                      |
+| --------------------- | --------------------------------- | ------------------------------------------- |
+| RC Verification       | `pnpm rc:verify`                  | 8-category verification report              |
+| RC Soak Validation    | `pnpm rc:soak`                    | Soak report (19 checks, 6 classifications)  |
+| Release Manifest      | `pnpm generate-release-manifest`  | release-manifest.json with SHA3-512 digests |
+| Artifact Generation   | `pnpm release:artifacts`          | Artifact bundle with digests                |
+| SBOM Generation       | `pnpm release:sbom`               | CycloneDX 1.5 JSON SBOM                     |
+| Provenance Generation | `pnpm release:provenance`         | SLSA v1 / in-toto Statement v1 provenance   |
+| Promotion Evaluation  | `pnpm release:promotion:evaluate` | Gate evaluation (9/11 pass, 2 acceptable)   |
+
+### Artifact Integrity
+
+- **Primary hash:** SHA3-512 for all release artifacts
+- **Secondary hash:** SHA-256 for audit chains and compatibility
+- **SBOM:** CycloneDX 1.5 JSON format
+- **Provenance:** SLSA v1 / in-toto Statement v1 format
+
+### Classifications
+
+| Classification                  | Description                                         |
+| ------------------------------- | --------------------------------------------------- |
+| `signing-not-configured`        | Artifact signing not yet configured (planned)       |
+| `infrastructure-not-configured` | Infrastructure signing not yet configured (planned) |
 
 ---
 
@@ -463,17 +674,20 @@ Pending → Active → Succeeded / Failed / Retiring → Retired
 
 MyCodeXvantaOS has undergone a significant architectural evolution:
 
-| Era    | Phase                 | Description                                                                                                                                                                                 |
-| ------ | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **V0** | Prototype             | Firebase Studio workspace, initial Next.js prototype                                                                                                                                        |
-| **V1** | Divine Control Plane  | 8 core packages, 15 services, Cloudflare-first infrastructure                                                                                                                               |
-| **V2** | SentinelCore          | Observer/observable dual-role system, accountability protocols, 金鑰配對系統                                                                                                                |
-| **V3** | Cloudflare Deployment | Next.js 16 + OpenNext on Cloudflare Workers/Pages, wrangler configuration                                                                                                                   |
-| **V4** | Platform Constitution | 8-category service classification, hexagonal decomposition, five constitutional models                                                                                                      |
-| **V5** | Full Architecture     | Apps layer, infrastructure contracts, multi-runtime bootstrap, 3-dialect migrations, Helm charts                                                                                            |
-| **V6** | Governance Hardening  | Policy enforcement runtime, audit enforcement middleware, knowledge trace enforcement, memory dream safety, contract enforcement CI, Cloudflare Worker launch, self-hostable Docker runtime |
+| Era    | Phase                          | Description                                                                                                                                                                               |
+| ------ | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **V0** | Prototype                      | Firebase Studio workspace, initial Next.js prototype                                                                                                                                      |
+| **V1** | Divine Control Plane           | 8 core packages, 15 services, Cloudflare-first infrastructure                                                                                                                             |
+| **V2** | SentinelCore                   | Observer/observable dual-role system, accountability protocols, 金鑰配對系統                                                                                                              |
+| **V3** | Cloudflare Deployment          | Next.js 16 + OpenNext on Cloudflare Workers/Pages, wrangler configuration                                                                                                                 |
+| **V4** | Platform Constitution          | 8-category service classification, hexagonal decomposition, five constitutional models                                                                                                    |
+| **V5** | Full Architecture              | Apps layer, infrastructure contracts, multi-runtime bootstrap, 3-dialect migrations, Helm charts                                                                                          |
+| **V6** | Governance Hardening           | Policy enforcement runtime, audit enforcement middleware, knowledge trace enforcement, memory dream safety, contract enforcement CI, Cloudflare Worker launch, self-hosted Docker runtime |
+| **V7** | Release Stabilization          | CodeQL integration, TFC guard, RC verify pipeline, governance check CI, cross-platform section-sign enforcement                                                                           |
+| **V8** | Release Validation & Packaging | SBOM generation (CycloneDX 1.5), provenance (SLSA v1), artifact digests (SHA3-512), self-hosted quickstart, promotion policy, signing policy definition                                   |
+| **V9** | RC Soak & Stable Promotion     | Soak validation (19/19 checks), promotion gate evaluation (9/11 pass, 2 acceptable skips), stable release signing plan, v0.1.0 stable release draft                                       |
 
-The project merged its platform constitution architecture (PRs #23, #24) completing a 10-phase decomposition from a monolithic structure into the current layered hexagonal architecture.
+The project merged its platform constitution architecture (PRs #23, #24) completing a 10-phase decomposition from a monolithic structure into the current layered hexagonal architecture, followed by governance hardening (PRs #34–#70) and release validation (PRs #71–#74).
 
 ---
 
@@ -487,7 +701,10 @@ Key points:
 2. `packages/core/` must remain vendor-free — no cloud SDK imports
 3. `packages/ports/` defines interfaces only — no implementations
 4. Use the code generators to scaffold new services and adapters
-5. Run validators before submitting PRs
+5. Run governance checks before submitting PRs (`pnpm governance:check`)
+6. All state-changing API routes must use `withAudit()` middleware
+7. No provider SDK imports in core packages
+8. No fake Terraform or infrastructure files
 
 ---
 
@@ -502,7 +719,9 @@ Proprietary — All rights reserved.
 _Architecture document: [PLATFORM_ARCHITECTURE.md](./PLATFORM_ARCHITECTURE.md)_
 _Deployment guide: [docs/deployment/README.md](./docs/deployment/README.md)_
 _Operations runbook: [docs/operations/README.md](./docs/operations/README.md)_
+_Self-hosted guide: [docs/self-hostable/self-hostable-overview.md](./docs/self-hostable/self-hostable-overview.md)_
+_Release notes: [docs/releases/v0.1.0.md](./docs/releases/v0.1.0.md)_
 
-**Built with ☁️ Cloudflare Workers · 🏛️ Constitutional Governance · 🔗 SHA-256 Audit Chains**
+**Built with ☁️ Cloudflare Workers · 🏛️ Constitutional Governance · 🔐 SHA-256 Audit Chains · 📦 Supply Chain Integrity**
 
 </div>
