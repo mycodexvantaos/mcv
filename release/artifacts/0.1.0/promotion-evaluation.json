@@ -131,8 +131,6 @@
   "blockingIssues": [],
   "recommendation": "conditional-go",
   "recommendationReason": "All required gates pass. 2 gate(s) are skipped with acceptable-skip classification for RC (signing-not-configured, infrastructure-not-configured). These must be resolved for stable release. The RC is stable and ready for promotion evaluation with documented conditions.",
-  "infrastructureClassifications": [
-    "infrastructure-not-configured"
-  ],
+  "infrastructureClassifications": ["infrastructure-not-configured"],
   "signingClassification": "signing-not-configured"
 }
