@@ -23,18 +23,18 @@ jobs:
         run: |
           TARGET_SHA="1371a8966c3047bbd95e87308a0bc81e6b72bb41"
           echo "Creating tag v0.1.0 at commit $TARGET_SHA"
-          
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
+
           # Create annotated tag
           git tag -a v0.1.0 "$TARGET_SHA" -m "Release v0.1.0 - Stable release
 
           Artifact commit: $TARGET_SHA
-          
+
           This is the official v0.1.0 stable release of mycodexvantaos.
           All 15 CI checks passed. PR #85 merged."
-          
+
           # Push tag
           git push origin v0.1.0
           echo "Tag v0.1.0 created successfully!"
