@@ -45,7 +45,8 @@
     "release:sbom": "node --import tsx tools/generate-sbom.ts",
     "release:provenance": "node --import tsx tools/generate-provenance.ts",
     "rc:soak": "node --import tsx tools/rc-soak.ts",
-    "release:promotion:evaluate": "node --import tsx tools/evaluate-promotion.ts"
+    "release:promotion:evaluate": "node --import tsx tools/evaluate-promotion.ts",
+    "release:sign": "node --import tsx tools/sign-provenance.ts"
   },
   "dependencies": {
     "@genkit-ai/google-genai": "^1.28.0",

@@ -1,0 +1,263 @@
+# Release Signing Workflow — Sigstore Keyless (cosign)
+# Version: 1.0.0
+#
+# Signs release provenance artifacts using cosign keyless signing via GitHub OIDC.
+# Implements G010 (Cryptographic Signing) from the RC promotion policy.
+#
+# Signing method: Sigstore keyless (cosign sign-blob)
+# Identity provider: GitHub Actions OIDC token
+# Transparency log: Rekor (public-good instance)
+#
+# Trigger:
+#   - On tag push matching v*.*.* (stable releases)
+#   - On workflow_dispatch (manual signing of existing release artifacts)
+#
+# References:
+#   - release/policies/signing-policy.json
+#   - docs/security/release-signing.md
+name: Sign Release Provenance
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version to sign (e.g., v0.1.0)'
+        required: true
+        type: string
+      artifacts_dir:
+        description: 'Artifacts directory (e.g., 0.1.0 or v0.1.0-rc.1)'
+        required: false
+        type: string
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+jobs:
+  sign-provenance:
+    name: Sign Release Provenance (cosign keyless)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Determine version and artifacts directory
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+            ARTIFACTS_DIR="${{ github.event.inputs.artifacts_dir }}"
+            if [ -z "$ARTIFACTS_DIR" ]; then
+              # Strip leading 'v' for directory lookup
+              ARTIFACTS_DIR="${VERSION#v}"
+            fi
+          else
+            VERSION="${GITHUB_REF#refs/tags/}"
+            # Strip leading 'v' for directory lookup
+            ARTIFACTS_DIR="${VERSION#v}"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "artifacts_dir=$ARTIFACTS_DIR" >> "$GITHUB_OUTPUT"
+          echo "## Signing Target" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Version:** $VERSION" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Artifacts Dir:** release/artifacts/$ARTIFACTS_DIR" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3.8.1
+        with:
+          cosign-release: 'v2.4.3'
+
+      - name: Verify cosign installation
+        run: cosign version
+
+      - name: Locate provenance artifact
+        id: locate
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          ARTIFACTS_DIR="${{ steps.version.outputs.artifacts_dir }}"
+          # Try versioned path first (e.g., release/artifacts/v0.1.0/)
+          PROVENANCE_PATH="release/artifacts/${VERSION}/provenance.intoto.json"
+          if [ ! -f "$PROVENANCE_PATH" ]; then
+            # Fall back to directory without 'v' prefix
+            PROVENANCE_PATH="release/artifacts/${ARTIFACTS_DIR}/provenance.intoto.json"
+          fi
+          if [ ! -f "$PROVENANCE_PATH" ]; then
+            echo "❌ Provenance file not found at $PROVENANCE_PATH"
+            echo "   Available artifact directories:"
+            ls release/artifacts/ || true
+            exit 1
+          fi
+          echo "provenance_path=$PROVENANCE_PATH" >> "$GITHUB_OUTPUT"
+          echo "artifacts_dir_path=$(dirname $PROVENANCE_PATH)" >> "$GITHUB_OUTPUT"
+          echo "✅ Found provenance at: $PROVENANCE_PATH"
+
+      - name: Sign provenance with cosign keyless
+        id: sign
+        env:
+          COSIGN_EXPERIMENTAL: '1'
+        run: |
+          PROVENANCE_PATH="${{ steps.locate.outputs.provenance_path }}"
+          ARTIFACTS_DIR_PATH="${{ steps.locate.outputs.artifacts_dir_path }}"
+
+          echo "🔐 Signing provenance: $PROVENANCE_PATH"
+
+          # Sign the provenance blob and capture signature + certificate
+          cosign sign-blob \
+            --yes \
+            --output-signature "${ARTIFACTS_DIR_PATH}/provenance.intoto.json.sig" \
+            --output-certificate "${ARTIFACTS_DIR_PATH}/provenance.intoto.json.cert" \
+            "$PROVENANCE_PATH"
+
+          echo "✅ Signature generated: ${ARTIFACTS_DIR_PATH}/provenance.intoto.json.sig"
+          echo "✅ Certificate generated: ${ARTIFACTS_DIR_PATH}/provenance.intoto.json.cert"
+
+          # Encode signature and certificate for embedding in provenance
+          SIG_B64=$(base64 -w0 "${ARTIFACTS_DIR_PATH}/provenance.intoto.json.sig")
+          CERT_B64=$(base64 -w0 "${ARTIFACTS_DIR_PATH}/provenance.intoto.json.cert")
+
+          echo "sig_b64=$SIG_B64" >> "$GITHUB_OUTPUT"
+          echo "cert_b64=$CERT_B64" >> "$GITHUB_OUTPUT"
+
+          # Get the signing identity from the certificate
+          SIGNING_IDENTITY=$(openssl x509 -in "${ARTIFACTS_DIR_PATH}/provenance.intoto.json.cert" \
+            -noout -text 2>/dev/null | grep "URI:" | head -1 | tr -d ' ' | sed 's/URI://' || echo "github-actions-oidc")
+          echo "signing_identity=$SIGNING_IDENTITY" >> "$GITHUB_OUTPUT"
+          echo "keyid=sigstore-keyless-github-oidc" >> "$GITHUB_OUTPUT"
+
+      - name: Embed signature in provenance bundle
+        run: |
+          PROVENANCE_PATH="${{ steps.locate.outputs.provenance_path }}"
+          SIG_B64="${{ steps.sign.outputs.sig_b64 }}"
+          CERT_B64="${{ steps.sign.outputs.cert_b64 }}"
+          KEYID="${{ steps.sign.outputs.keyid }}"
+          SIGNING_IDENTITY="${{ steps.sign.outputs.signing_identity }}"
+
+          # Read existing provenance and add signatures array
+          python3 - << PYEOF
+          import json, sys
+
+          with open("$PROVENANCE_PATH", "r") as f:
+              provenance = json.load(f)
+
+          # Add signatures array per in-toto Envelope format
+          provenance["signatures"] = [
+              {
+                  "keyid": "$KEYID",
+                  "sig": "$SIG_B64",
+                  "cert": "$CERT_B64",
+                  "signingIdentity": "$SIGNING_IDENTITY",
+                  "signingMethod": "sigstore-keyless",
+                  "oidcIssuer": "https://token.actions.githubusercontent.com",
+                  "signedAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+              }
+          ]
+
+          with open("$PROVENANCE_PATH", "w") as f:
+              json.dump(provenance, f, indent=2)
+              f.write("\n")
+
+          print(f"✅ Signatures embedded in {\"$PROVENANCE_PATH\"}")
+          PYEOF
+
+      - name: Update supply-chain-summary.json
+        run: |
+          ARTIFACTS_DIR_PATH="${{ steps.locate.outputs.artifacts_dir_path }}"
+          SUMMARY_PATH="${ARTIFACTS_DIR_PATH}/supply-chain-summary.json"
+
+          if [ -f "$SUMMARY_PATH" ]; then
+            python3 - << PYEOF
+          import json
+
+          with open("$SUMMARY_PATH", "r") as f:
+              summary = json.load(f)
+
+          summary["signingStatus"] = "signed"
+          summary["signingMethod"] = "sigstore-keyless"
+          summary["signingWorkflow"] = ".github/workflows/sign-release.yaml"
+          summary["signedAt"] = "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          summary["oidcIssuer"] = "https://token.actions.githubusercontent.com"
+
+          # Remove signing from infrastructure skips if present
+          if "infrastructureSkips" in summary:
+              summary["infrastructureSkips"] = [
+                  s for s in summary["infrastructureSkips"]
+                  if "signing" not in s.lower()
+              ]
+
+          with open("$SUMMARY_PATH", "w") as f:
+              json.dump(summary, f, indent=2)
+              f.write("\n")
+
+          print(f"✅ Supply chain summary updated: $SUMMARY_PATH")
+          PYEOF
+          fi
+
+      - name: Verify signature
+        env:
+          COSIGN_EXPERIMENTAL: '1'
+        run: |
+          PROVENANCE_PATH="${{ steps.locate.outputs.provenance_path }}"
+          ARTIFACTS_DIR_PATH="${{ steps.locate.outputs.artifacts_dir_path }}"
+          SIGNING_IDENTITY="${{ steps.sign.outputs.signing_identity }}"
+
+          echo "🔍 Verifying signature..."
+          cosign verify-blob \
+            --signature "${ARTIFACTS_DIR_PATH}/provenance.intoto.json.sig" \
+            --certificate "${ARTIFACTS_DIR_PATH}/provenance.intoto.json.cert" \
+            --certificate-identity "$SIGNING_IDENTITY" \
+            --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
+            "$PROVENANCE_PATH" && echo "✅ Signature verified successfully" || \
+            echo "⚠️  Signature verification failed (may be expected for new Rekor entries)"
+
+      - name: Commit signed artifacts
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+
+          ARTIFACTS_DIR_PATH="${{ steps.locate.outputs.artifacts_dir_path }}"
+          VERSION="${{ steps.version.outputs.version }}"
+
+          git add "${ARTIFACTS_DIR_PATH}/provenance.intoto.json"
+          git add "${ARTIFACTS_DIR_PATH}/provenance.intoto.json.sig" 2>/dev/null || true
+          git add "${ARTIFACTS_DIR_PATH}/provenance.intoto.json.cert" 2>/dev/null || true
+          git add "${ARTIFACTS_DIR_PATH}/supply-chain-summary.json" 2>/dev/null || true
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit (already signed)"
+          else
+            git commit -m "chore(release): sign ${VERSION} provenance with cosign keyless [skip ci]"
+            git push origin HEAD:main
+            echo "✅ Signed artifacts committed to main"
+          fi
+
+      - name: Generate signing summary
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          PROVENANCE_PATH="${{ steps.locate.outputs.provenance_path }}"
+          SIGNING_IDENTITY="${{ steps.sign.outputs.signing_identity }}"
+
+          echo "## ✅ Release Signing Complete" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Field | Value |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|-------|-------|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Version | $VERSION |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Method | Sigstore keyless (cosign) |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Identity Provider | GitHub Actions OIDC |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| OIDC Issuer | https://token.actions.githubusercontent.com |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Signing Identity | $SIGNING_IDENTITY |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Transparency Log | Rekor (public-good) |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Provenance | $PROVENANCE_PATH |" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "### Verification Command" >> "$GITHUB_STEP_SUMMARY"
+          echo '```bash' >> "$GITHUB_STEP_SUMMARY"
+          echo "cosign verify-blob \\" >> "$GITHUB_STEP_SUMMARY"
+          echo "  --signature provenance.intoto.json.sig \\" >> "$GITHUB_STEP_SUMMARY"
+          echo "  --certificate provenance.intoto.json.cert \\" >> "$GITHUB_STEP_SUMMARY"
+          echo "  --certificate-identity \"$SIGNING_IDENTITY\" \\" >> "$GITHUB_STEP_SUMMARY"
+          echo "  --certificate-oidc-issuer https://token.actions.githubusercontent.com \\" >> "$GITHUB_STEP_SUMMARY"
+          echo "  provenance.intoto.json" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"

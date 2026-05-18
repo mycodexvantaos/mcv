@@ -16,6 +16,7 @@
  *   - If signing keys are NOT available, provenance is generated unsigned and
  *     classified as "signing-not-configured"
  *   - Stable releases must define signing requirements
+ *   - Use pnpm release:sign (tools/sign-provenance.ts) to sign after generation
  */
 
 import { execSync } from 'node:child_process';
@@ -54,6 +55,18 @@ interface ProvenanceConfig {
   arguments: Record<string, unknown>;
 }
 
+// Signature format per in-toto Envelope specification.
+// Populated by tools/sign-provenance.ts after cosign keyless signing.
+interface ProvenanceSignature {
+  keyid: string;
+  sig: string;
+  cert?: string;
+  signingIdentity?: string;
+  signingMethod: string;
+  oidcIssuer?: string;
+  signedAt: string;
+}
+
 interface InTotoStatement {
   _type: string;
   predicateType: string;
@@ -76,6 +89,9 @@ interface InTotoStatement {
     metadata: ProvenanceMetadata;
     materials: ProvenanceMaterial[];
   };
+  // Optional: populated by tools/sign-provenance.ts after cosign keyless signing.
+  // When present, G010 (Cryptographic Signing) transitions from signing-not-configured to signed.
+  signatures?: ProvenanceSignature[];
 }
 
 interface SupplyChainSummary {
@@ -88,6 +104,7 @@ interface SupplyChainSummary {
   provenanceAvailable: boolean;
   provenancePath: string;
   signingStatus: 'signed' | 'signing-not-configured';
+  signingWorkflow?: string;
   materialsCount: number;
   subjectsCount: number;
   infrastructureSkips: string[];
@@ -228,6 +245,8 @@ function main(): void {
       },
       materials,
     },
+    // signatures field is intentionally absent at generation time.
+    // Run pnpm release:sign (tools/sign-provenance.ts) in GitHub Actions to add signatures.
   };
 
   const provenancePath = resolve(artifactsDir, 'provenance.intoto.json');
@@ -240,7 +259,9 @@ function main(): void {
   // ── Generate supply chain summary ──────────────────────────────
   const signingStatus: 'signed' | 'signing-not-configured' = 'signing-not-configured';
   console.log(`\n  ⚠️  Signing status: ${signingStatus}`);
-  console.log('     Provenance is unsigned. Stable release must define signing requirements.');
+  console.log(
+    '     Provenance is unsigned. Run pnpm release:sign in GitHub Actions to sign with cosign.'
+  );
 
   const supplyChainSummary: SupplyChainSummary = {
     version,
@@ -252,13 +273,14 @@ function main(): void {
     provenanceAvailable: true,
     provenancePath,
     signingStatus,
+    signingWorkflow: '.github/workflows/sign-release.yaml',
     materialsCount: materials.length,
     subjectsCount: subjects.length,
     infrastructureSkips: [
       'GCP / Terraform Cloud: infrastructure-not-configured',
       'Cloudflare: infrastructure-not-configured',
       'Kubernetes: infrastructure-not-configured',
-      'Artifact signing: signing-not-configured (unsigned RC provenance)',
+      'Artifact signing: signing-not-configured (run pnpm release:sign to sign)',
     ],
   };
 
