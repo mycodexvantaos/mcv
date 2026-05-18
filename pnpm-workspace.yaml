@@ -8,7 +8,17 @@ packages:
   - 'services/*'
   - 'providers/*/*'
   - 'apps/*'
+
+# Security overrides: force safe versions of vulnerable transitive dependencies
+# See Issue #81: https://github.com/mycodexvantaos/mycodexvantaos/issues/81
+overrides:
+  # CVE: hono JWT bypass (hono < 4.12.19) — via @modelcontextprotocol/sdk
+  '@modelcontextprotocol/sdk>hono': '4.12.19'
+  # CVE: fast-uri ReDoS (fast-uri < 3.1.2) — via ajv
+  'ajv>fast-uri': '3.1.2'
+
 allowBuilds:
+  '@apollo/protobufjs': false
   '@firebase/util': true
   esbuild: true
   protobufjs: true
