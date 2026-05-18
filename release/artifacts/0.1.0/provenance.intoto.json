@@ -5,19 +5,19 @@
     {
       "name": "release-manifest.json",
       "digest": {
-        "sha256": "99afb0cdc48242e51b6e4ea6ed0c5d1fb633fd0ea6380db5bc4e628bc0b6dab6"
+        "sha256": "66df328d871f3040a32850997ab8ebbcbdfa720adbfd6fd13ed839027e9baf86"
       }
     },
     {
       "name": "artifact-digests.json",
       "digest": {
-        "sha256": "bf135eb9fcdf4b28a60942fea76b2fb92bbfc1031e420de793bd81ec96c5aa32"
+        "sha256": "1582deec73bd759666325d8347f9f7408efb526fa0d6c214760573f7ce7b472c"
       }
     },
     {
       "name": "sbom.cyclonedx.json",
       "digest": {
-        "sha256": "72e2c00bbf01ef1776bb1441da05ffe8e9036a37f571dec1e1605353163e7788"
+        "sha256": "74bf6bd3f255b2f1b4f1e07ee58c1f8d9084bb7aa08c1cfba30c8987887d8803"
       }
     }
   ],
@@ -31,13 +31,13 @@
       "configSource": {
         "uri": "https://github.com/mycodexvantaos/mycodexvantaos.git",
         "digest": {
-          "sha1": "5b5d6f7d4e21b00d92e19ca771021e34ad3d8dc9"
+          "sha1": "1371a8966c3047bbd95e87308a0bc81e6b72bb41"
         },
         "entryPoint": ".github/workflows/release-candidate-check.yml"
       },
       "parameters": {
         "version": "0.1.0",
-        "ref": "fix/v0.1.0-release-integrity-recovery"
+        "ref": "fix/v0.1.0-artifacts-final"
       },
       "environment": {
         "GITHUB_EVENT_NAME": "local",
@@ -46,9 +46,9 @@
       }
     },
     "metadata": {
-      "buildInvocationId": "local-1779085738116",
-      "buildStartedOn": "2026-05-18T06:27:58.116Z",
-      "buildFinishedOn": "2026-05-18T06:28:58.116Z",
+      "buildInvocationId": "local-1779086590020",
+      "buildStartedOn": "2026-05-18T06:42:10.020Z",
+      "buildFinishedOn": "2026-05-18T06:43:10.020Z",
       "completeness": {
         "arguments": true,
         "environment": true,
@@ -60,7 +60,7 @@
       {
         "uri": "https://github.com/mycodexvantaos/mycodexvantaos.git",
         "digest": {
-          "sha1": "5b5d6f7d4e21b00d92e19ca771021e34ad3d8dc9"
+          "sha1": "1371a8966c3047bbd95e87308a0bc81e6b72bb41"
         }
       },
       {

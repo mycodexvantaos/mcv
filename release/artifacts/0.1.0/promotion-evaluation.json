@@ -1,9 +1,9 @@
 {
   "version": "0.1.0",
   "tag": "v0.1.0",
-  "commit": "5b5d6f7d4e21b00d92e19ca771021e34ad3d8dc9",
-  "branch": "fix/v0.1.0-release-integrity-recovery",
-  "evaluationTimestamp": "2026-05-18T06:29:54.646Z",
+  "commit": "1371a8966c3047bbd95e87308a0bc81e6b72bb41",
+  "branch": "fix/v0.1.0-artifacts-final",
+  "evaluationTimestamp": "2026-05-18T06:46:39.597Z",
   "nodeVersion": "v20.20.2",
   "pnpmVersion": "9.15.9",
   "targetRelease": "v0.1.0",
@@ -46,7 +46,7 @@
       "required": true,
       "rcStatus": "required",
       "stableStatus": "required",
-      "evidence": "Release artifacts check: release-manifest.json=true, artifact-digests.json=true, verification-summary.json=true. Manifest valid: v0.1.0 @ 5b5d6f7d. Digests use SHA3-512 primary with 6 artifacts"
+      "evidence": "Release artifacts check: release-manifest.json=true, artifact-digests.json=true, verification-summary.json=true. Manifest valid: v0.1.0 @ 1371a896. Digests use SHA3-512 primary with 6 artifacts"
     },
     {
       "gateId": "G005",

@@ -1,13 +1,13 @@
 {
   "version": "0.1.0",
-  "generatedAt": "2026-05-18T06:28:47.651Z",
+  "generatedAt": "2026-05-18T06:43:06.972Z",
   "digestAlgorithm": "sha3-512",
   "compatibilityAlgorithm": "sha256",
   "artifacts": [
     {
       "file": "release-manifest.json",
-      "sha3_512": "022036f76dac92d1a7897d37292b4cf48fbbd4a8df5e73398057d03d067fac7ef15f79b8a22fccc4399192a7af5bdcc31474aa95cef4e080b1132ad61c1f04ec",
-      "sha256": "99afb0cdc48242e51b6e4ea6ed0c5d1fb633fd0ea6380db5bc4e628bc0b6dab6",
+      "sha3_512": "52af0cbcf1dad31e0aa6ddf721582e2e924c5fb6d131971ad9a77ce8d2a02033d5cee0f72b9d2e125d92b8e5afae78f4039ae63bf97d89bd8710ea758e932ab9",
+      "sha256": "66df328d871f3040a32850997ab8ebbcbdfa720adbfd6fd13ed839027e9baf86",
       "algorithm": "sha3-512"
     },
     {
