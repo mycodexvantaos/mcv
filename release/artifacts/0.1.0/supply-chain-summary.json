@@ -1,8 +1,8 @@
 {
   "version": "0.1.0",
-  "generatedAt": "2026-05-18T04:55:12.688Z",
-  "commit": "4fd4caf83c91086f2206ff3213ef1f2867b1e603",
-  "branch": "fix/v0.1.0-stable-artifacts-and-docs",
+  "generatedAt": "2026-05-18T06:28:58.117Z",
+  "commit": "5b5d6f7d4e21b00d92e19ca771021e34ad3d8dc9",
+  "branch": "fix/v0.1.0-release-integrity-recovery",
   "sbomAvailable": true,
   "sbomPath": "/workspace/mycodexvantaos/release/artifacts/0.1.0/sbom.cyclonedx.json",
   "provenanceAvailable": true,
