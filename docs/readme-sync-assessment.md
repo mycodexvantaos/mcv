@@ -259,3 +259,18 @@ README 的 Service Categories 表格列了 MVP 和 Post-MVP 服務，但部分 M
 - 新增 governance/contract/policy 驗證指令
 
 PLATFORM_ARCHITECTURE.md 的更新可併入 PR #75 或單獨為 PR #77。
+
+---
+
+### PR #76 已解決的項目
+
+- ✅ 2.1 架構描述完全不符 → 重寫為九層 hexagonal port/adapter（Layer A-I）
+- ✅ 2.2 工具鏈不符 → 統一為 pnpm 9，Node.js 22+
+- ✅ 2.3 品質標準缺少治理相關項 → PR checklist 新增 governance:check, contracts:validate, no-section-sign
+- ✅ Docker port 3000 → 9100
+- ✅ MIT License → Proprietary
+- ✅ 新增雙平面架構說明（TypeScript Control Plane + Python Intelligence Plane）
+- ✅ 新增完整的 repository structure
+- ✅ 新增 governance 與 release pipeline 指令
+- ✅ 新增分支命名慣例（feature/, fix/, docs/, governance/, contract/, chore/）
+- ✅ 新增 conventional commit type: governance, contract
