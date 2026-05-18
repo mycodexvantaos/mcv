@@ -134,13 +134,13 @@ Both planes share the same constitutional contracts (`contracts/`), ensuring cro
 
 The governance layer operates through runtime enforcement middleware on the Node.js API (`apps/api-node/`):
 
-| Middleware | Purpose | Endpoints Protected |
-|:----------|:--------|:--------------------|
-| `withAudit()` | Audit trail integrity | All mutating operations |
-| `withPolicy()` | RBAC policy enforcement | All /v1/* endpoints |
-| Knowledge Trace | Evidence-level tracking | /v1/knowledge/* |
-| Dream Safety | Review/rollback gates | /v1/dream/* |
-| Architecture Decision | Design governance | /v1/contracts/validate |
+| Middleware            | Purpose                 | Endpoints Protected     |
+| :-------------------- | :---------------------- | :---------------------- |
+| `withAudit()`         | Audit trail integrity   | All mutating operations |
+| `withPolicy()`        | RBAC policy enforcement | All /v1/\* endpoints    |
+| Knowledge Trace       | Evidence-level tracking | /v1/knowledge/\*        |
+| Dream Safety          | Review/rollback gates   | /v1/dream/\*            |
+| Architecture Decision | Design governance       | /v1/contracts/validate  |
 
 Governance is enforced by 8 hard + 9 soft flags defined in `governance/platform-governance-spec.yaml` (17 total checks, 24 governance checks via `pnpm governance:check`).
 
@@ -148,13 +148,13 @@ Governance is enforced by 8 hard + 9 soft flags defined in `governance/platform-
 
 The release and supply chain layer provides end-to-end artifact integrity:
 
-| Component | Format | Purpose |
-|:----------|:-------|:--------|
-| SBOM | CycloneDX 1.5 JSON | Software bill of materials |
-| Provenance | SLSA v1 / in-toto Statement v1 | Build provenance attestation |
-| Artifact Digests | SHA3-512 primary, SHA-256 secondary | Content-addressable integrity |
-| Promotion Gates | 11-gate evaluation | Stable release readiness |
-| Signing Policy | `release/policies/signing-policy.json` | Release signing requirements |
+| Component        | Format                                 | Purpose                       |
+| :--------------- | :------------------------------------- | :---------------------------- |
+| SBOM             | CycloneDX 1.5 JSON                     | Software bill of materials    |
+| Provenance       | SLSA v1 / in-toto Statement v1         | Build provenance attestation  |
+| Artifact Digests | SHA3-512 primary, SHA-256 secondary    | Content-addressable integrity |
+| Promotion Gates  | 11-gate evaluation                     | Stable release readiness      |
+| Signing Policy   | `release/policies/signing-policy.json` | Release signing requirements  |
 
 **Pipeline:** `rc:verify` → `rc:soak` → `release:artifacts` → `release:sbom` → `release:provenance` → `release:promotion:evaluate`
 
@@ -164,16 +164,16 @@ The release and supply chain layer provides end-to-end artifact integrity:
 
 The platform organizes all 15 services into 8 categories:
 
-| Category       | Description                            | Services                                                           |
-| -------------- | -------------------------------------- | ------------------------------------------------------------------ |
-| **knowledge**  | Document management, ingestion, search | knowledge-store, knowledge-search, knowledge-trace, memory-dream  |
-| **agent**      | Conversational AI, autonomous agents   | agent-chat                                                         |
-| **workspace**  | Multi-tenant collaboration             | workspace                                                          |
-| **developer**  | Developer tooling and SDK              | (extensible)                                                       |
-| **security**   | Authentication, authorization, secrets | identity, audit-log                                                |
-| **storage**    | Object storage, file management        | (via adapters)                                                     |
-| **model**      | LLM endpoints, BYOK gateway            | model-byok                                                         |
-| **automation** | Background jobs, scheduled tasks       | usage-meter, automation, resource-registry                         |
+| Category       | Description                            | Services                                                         |
+| -------------- | -------------------------------------- | ---------------------------------------------------------------- |
+| **knowledge**  | Document management, ingestion, search | knowledge-store, knowledge-search, knowledge-trace, memory-dream |
+| **agent**      | Conversational AI, autonomous agents   | agent-chat                                                       |
+| **workspace**  | Multi-tenant collaboration             | workspace                                                        |
+| **developer**  | Developer tooling and SDK              | (extensible)                                                     |
+| **security**   | Authentication, authorization, secrets | identity, audit-log                                              |
+| **storage**    | Object storage, file management        | (via adapters)                                                   |
+| **model**      | LLM endpoints, BYOK gateway            | model-byok                                                       |
+| **automation** | Background jobs, scheduled tasks       | usage-meter, automation, resource-registry                       |
 
 **URN Format:** `urn:mycodexvantaos:{category}:{kind}:{id}`
 
@@ -187,12 +187,12 @@ The platform organizes all 15 services into 8 categories:
 
 **File:** `contracts/service-definitions/` (15 service YAML files + catalog)
 
-| Level | Services                                                                                  | Hard Dependencies            |
-| ----- | ----------------------------------------------------------------------------------------- | ---------------------------- |
-| 0     | audit-log, identity                                                                       | None                         |
-| 1     | workspace, usage-meter, resource-registry                                                 | identity                     |
-| 2     | knowledge-store, knowledge-search, knowledge-trace, model-byok                            | identity                     |
-| 3     | agent-chat, memory-store, memory-capture, memory-dream                                    | knowledge-search, model-byok |
+| Level | Services                                                       | Hard Dependencies            |
+| ----- | -------------------------------------------------------------- | ---------------------------- |
+| 0     | audit-log, identity                                            | None                         |
+| 1     | workspace, usage-meter, resource-registry                      | identity                     |
+| 2     | knowledge-store, knowledge-search, knowledge-trace, model-byok | identity                     |
+| 3     | agent-chat, memory-store, memory-capture, memory-dream         | knowledge-search, model-byok |
 
 **Startup Order:** audit-log → identity → workspace, usage-meter, resource-registry → knowledge-store, knowledge-search, knowledge-trace, model-byok → agent-chat, memory-store, memory-capture, memory-dream
 
@@ -384,23 +384,23 @@ mycodexvantaos/
 
 ## 9. Service Catalog (15 Services)
 
-| Service           | Category      | Level | Capabilities     | Key Features                              |
-| ----------------- | ------------- | ----- | ---------------- | ----------------------------------------- |
-| identity          | security      | 0     | 7 (auth.*)       | JWT, RBAC, session management             |
-| audit-log         | security      | 0     | 4 (audit.*)      | SHA3-512 chain, closed-loop               |
-| workspace         | workspace     | 1     | 5 (workspace.*)  | Multi-tenant, tier quotas                 |
-| usage-meter       | automation    | 1     | 5 (usage.*)      | 8 dimensions, sliding-window              |
-| resource-registry | automation    | 1     | 4 (resource.*)   | URN-addressed resource lifecycle          |
-| knowledge-store   | knowledge     | 2     | 6 (knowledge.*)  | Ingestion pipeline, R2+Vectorize          |
-| knowledge-search  | knowledge     | 2     | 4 (knowledge.*)  | Hybrid search, evidence levels            |
-| knowledge-trace   | knowledge     | 2     | 3 (trace.*)      | Evidence-level tracking, attribution      |
-| model-byok        | model         | 2     | 5 (model.*)      | Multi-provider BYOK gateway               |
-| agent-chat        | agent         | 3     | 4 (chat.*)       | 5-stage generation pipeline               |
-| memory-store      | knowledge     | 3     | 3 (memory.*)     | Persistent memory, recall                 |
-| memory-capture    | knowledge     | 3     | 3 (memory.*)     | Memory ingestion, deduplication           |
-| memory-dream      | knowledge     | 3     | 4 (dream.*)      | Autonomous review, apply/rollback         |
-| service-workspace | workspace     | 1     | 3 (svc.*)        | Service-level workspace management        |
-| automation        | automation    | 1     | 3 (auto.*)       | Background jobs, scheduled tasks          |
+| Service           | Category   | Level | Capabilities     | Key Features                         |
+| ----------------- | ---------- | ----- | ---------------- | ------------------------------------ |
+| identity          | security   | 0     | 7 (auth.\*)      | JWT, RBAC, session management        |
+| audit-log         | security   | 0     | 4 (audit.\*)     | SHA3-512 chain, closed-loop          |
+| workspace         | workspace  | 1     | 5 (workspace.\*) | Multi-tenant, tier quotas            |
+| usage-meter       | automation | 1     | 5 (usage.\*)     | 8 dimensions, sliding-window         |
+| resource-registry | automation | 1     | 4 (resource.\*)  | URN-addressed resource lifecycle     |
+| knowledge-store   | knowledge  | 2     | 6 (knowledge.\*) | Ingestion pipeline, R2+Vectorize     |
+| knowledge-search  | knowledge  | 2     | 4 (knowledge.\*) | Hybrid search, evidence levels       |
+| knowledge-trace   | knowledge  | 2     | 3 (trace.\*)     | Evidence-level tracking, attribution |
+| model-byok        | model      | 2     | 5 (model.\*)     | Multi-provider BYOK gateway          |
+| agent-chat        | agent      | 3     | 4 (chat.\*)      | 5-stage generation pipeline          |
+| memory-store      | knowledge  | 3     | 3 (memory.\*)    | Persistent memory, recall            |
+| memory-capture    | knowledge  | 3     | 3 (memory.\*)    | Memory ingestion, deduplication      |
+| memory-dream      | knowledge  | 3     | 4 (dream.\*)     | Autonomous review, apply/rollback    |
+| service-workspace | workspace  | 1     | 3 (svc.\*)       | Service-level workspace management   |
+| automation        | automation | 1     | 3 (auto.\*)      | Background jobs, scheduled tasks     |
 
 ---
 
@@ -436,25 +436,26 @@ The Python Intelligence Plane complements the TypeScript Control Plane by handli
 
 ### Packages (5)
 
-| Package | Purpose |
-|:--------|:--------|
-| `mycodexvantaos-knowledge-pipeline` | Document ingestion, chunking, embedding orchestration |
-| `mycodexvantaos-agent-worker` | Agent execution, tool invocation, conversation management |
-| `mycodexvantaos-vector-tools` | Vector similarity search, embedding utilities |
-| `mycodexvantaos-evaluation` | Model evaluation, benchmarking, quality metrics |
-| `mycodexvantaos-memory-dream` | Memory dream cycle — review, apply, rollback |
+| Package                             | Purpose                                                   |
+| :---------------------------------- | :-------------------------------------------------------- |
+| `mycodexvantaos-knowledge-pipeline` | Document ingestion, chunking, embedding orchestration     |
+| `mycodexvantaos-agent-worker`       | Agent execution, tool invocation, conversation management |
+| `mycodexvantaos-vector-tools`       | Vector similarity search, embedding utilities             |
+| `mycodexvantaos-evaluation`         | Model evaluation, benchmarking, quality metrics           |
+| `mycodexvantaos-memory-dream`       | Memory dream cycle — review, apply, rollback              |
 
 ### Apps (3)
 
-| App | Purpose |
-|:----|:--------|
+| App                | Purpose                                  |
+| :----------------- | :--------------------------------------- |
 | `knowledge-worker` | Background knowledge pipeline processing |
-| `agent-worker` | Agent task execution worker |
-| `dream-worker` | Memory dream cycle processing worker |
+| `agent-worker`     | Agent task execution worker              |
+| `dream-worker`     | Memory dream cycle processing worker     |
 
 ### Cross-Plane Integration
 
 Python packages connect to the TypeScript control plane through:
+
 - **Shared contracts** (`contracts/`) — JSON Schema validation for cross-language consistency
 - **Cross-language contract check** CI workflow validates schema compatibility
 - **API endpoints** — Python workers consume/produce via the Node.js API (`/v1/*`)
@@ -497,21 +498,21 @@ The platform supports three database dialects via migrations:
 
 ## 15. Implementation Status
 
-| Phase                          | Status      | Description                                                                                                         |
-| ------------------------------ | ----------- | ------------------------------------------------------------------------------------------------------------------- |
-| Phase 1 — Service Categories   | ✅ Complete | 8-category classification, service-categories.yaml                                                                  |
-| Phase 2 — Core Domain Models   | ✅ Complete | 9 core sub-packages (shared, service-catalog, resource-model, policy-model, audit-model, knowledge-model, memory-model, runtime-model, contracts-sdk) |
-| Phase 3 — Ports Layer          | ✅ Complete | 6 port packages (database, object-storage, search, model-provider, queue, auth)                                     |
-| Phase 4 — Application Services | ✅ Complete | 10+ application service modules (identity, workspace, knowledge, agent, model, audit, usage, automation, memory, resource-registry) |
-| Phase 5 — Adapters             | ✅ Complete | 7 adapter packages + 5 Cloudflare providers                                                                         |
-| Phase 6 — Apps Layer           | ✅ Complete | 5 apps (api-worker, api-node, web-console, admin-console, cli)                                                     |
-| Phase 7 — Infrastructure       | ✅ Complete | OpenAPI, events, migrations (sqlite+postgres+D1), docker-compose, Helm chart                                        |
-| Phase 8 — Runtimes             | ✅ Complete | cloudflare, node, local, docker, kubernetes bootstrap                                                               |
-| Phase 9 — Docs & Tools         | ✅ Complete | API/deployment/operations docs, validators, generators, dream tools, audit tools                                    |
-| Phase 10 — Platform Expansion  | ✅ Complete | Python intelligence plane (5 packages + 3 apps), memory-dream, resource-registry, knowledge-trace                   |
-| Phase 11 — Governance Hardening| ✅ Complete | Policy engine, audit middleware, dream safety, architecture decisions, governance spec (8 hard + 9 soft flags)      |
-| Phase 12 — Release & Supply Chain| ✅ Complete | SBOM (CycloneDX 1.5), provenance (SLSA v1), artifact digests (SHA3-512), promotion gates, signing policy           |
-| Phase 13 — RC Validation       | ✅ Complete | RC verify (8 categories), RC soak (19/19 checks), promotion evaluation (9/11 pass), stable release draft            |
+| Phase                             | Status      | Description                                                                                                                                           |
+| --------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Phase 1 — Service Categories      | ✅ Complete | 8-category classification, service-categories.yaml                                                                                                    |
+| Phase 2 — Core Domain Models      | ✅ Complete | 9 core sub-packages (shared, service-catalog, resource-model, policy-model, audit-model, knowledge-model, memory-model, runtime-model, contracts-sdk) |
+| Phase 3 — Ports Layer             | ✅ Complete | 6 port packages (database, object-storage, search, model-provider, queue, auth)                                                                       |
+| Phase 4 — Application Services    | ✅ Complete | 10+ application service modules (identity, workspace, knowledge, agent, model, audit, usage, automation, memory, resource-registry)                   |
+| Phase 5 — Adapters                | ✅ Complete | 7 adapter packages + 5 Cloudflare providers                                                                                                           |
+| Phase 6 — Apps Layer              | ✅ Complete | 5 apps (api-worker, api-node, web-console, admin-console, cli)                                                                                        |
+| Phase 7 — Infrastructure          | ✅ Complete | OpenAPI, events, migrations (sqlite+postgres+D1), docker-compose, Helm chart                                                                          |
+| Phase 8 — Runtimes                | ✅ Complete | cloudflare, node, local, docker, kubernetes bootstrap                                                                                                 |
+| Phase 9 — Docs & Tools            | ✅ Complete | API/deployment/operations docs, validators, generators, dream tools, audit tools                                                                      |
+| Phase 10 — Platform Expansion     | ✅ Complete | Python intelligence plane (5 packages + 3 apps), memory-dream, resource-registry, knowledge-trace                                                     |
+| Phase 11 — Governance Hardening   | ✅ Complete | Policy engine, audit middleware, dream safety, architecture decisions, governance spec (8 hard + 9 soft flags)                                        |
+| Phase 12 — Release & Supply Chain | ✅ Complete | SBOM (CycloneDX 1.5), provenance (SLSA v1), artifact digests (SHA3-512), promotion gates, signing policy                                              |
+| Phase 13 — RC Validation          | ✅ Complete | RC verify (8 categories), RC soak (19/19 checks), promotion evaluation (9/11 pass), stable release draft                                              |
 
 ---
 

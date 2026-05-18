@@ -59,7 +59,7 @@ The platform evolved from a Firebase Studio prototype through a Next.js web appl
 | **Phase 2 — Portable Core**          | PostgreSQL + Redis + MinIO + Qdrant + RabbitMQ  | 🔧 Bootstrap ready      |
 | **Phase 3 — Self-Hostable**          | Kubernetes + Helm + ArgoCD + HPA                | ✅ Helm chart ready     |
 | **Phase 4 — Governance Hardening**   | Policy Engine + Audit Middleware + Dream Safety | ✅ Complete (197 tests) |
-| **Phase 5 — Release & Supply Chain** | SBOM + Provenance + Signing + Promotion Gates   | ✅ Complete (v0.1.0)   |
+| **Phase 5 — Release & Supply Chain** | SBOM + Provenance + Signing + Promotion Gates   | ✅ Complete (v0.1.0)    |
 
 ---
 
@@ -261,18 +261,18 @@ mycodexvantaos/
 
 ### Platform Layer
 
-| Layer             | Technology                        | Purpose                        |
-| ----------------- | --------------------------------- | ------------------------------ |
-| **Language**      | TypeScript + Python               | Dual-plane architecture        |
-| **Runtime (MVP)** | Cloudflare Workers                | Global edge compute            |
-| **Runtime (Self-hosted)** | Node.js 22                  | Portable API server (port 9100) |
-| **Database**      | D1 (SQLite) / PostgreSQL          | Relational data, audit, usage  |
-| **Cache**         | KV / Redis                        | Sessions, rate limits, config  |
-| **Storage**       | R2 / MinIO                        | Document blobs, audit archives |
-| **Search**        | Vectorize + FTS5 / pgvector + GIN | Hybrid semantic + fulltext     |
-| **Queue**         | Cloudflare Queues / RabbitMQ      | Async processing, ingestion    |
-| **AI Models**     | Workers AI / OpenAI / OpenRouter  | Chat completions, embeddings   |
-| **Governance**    | SHA-256 + SHA3-512                | Audit chain + artifact digests |
+| Layer                     | Technology                        | Purpose                         |
+| ------------------------- | --------------------------------- | ------------------------------- |
+| **Language**              | TypeScript + Python               | Dual-plane architecture         |
+| **Runtime (MVP)**         | Cloudflare Workers                | Global edge compute             |
+| **Runtime (Self-hosted)** | Node.js 22                        | Portable API server (port 9100) |
+| **Database**              | D1 (SQLite) / PostgreSQL          | Relational data, audit, usage   |
+| **Cache**                 | KV / Redis                        | Sessions, rate limits, config   |
+| **Storage**               | R2 / MinIO                        | Document blobs, audit archives  |
+| **Search**                | Vectorize + FTS5 / pgvector + GIN | Hybrid semantic + fulltext      |
+| **Queue**                 | Cloudflare Queues / RabbitMQ      | Async processing, ingestion     |
+| **AI Models**             | Workers AI / OpenAI / OpenRouter  | Chat completions, embeddings    |
+| **Governance**            | SHA-256 + SHA3-512                | Audit chain + artifact digests  |
 
 ### Web Application Layer
 
@@ -486,13 +486,13 @@ The platform enforces governance through 8 hard and 9 soft enforcement flags def
 
 **Runtime Enforcement Middleware:**
 
-| Enforcement                | Layer     | Description                                                    |
-| -------------------------- | --------- | -------------------------------------------------------------- |
-| Audit Enforcement          | Hard      | All state-changing routes must use `withAudit()` middleware    |
-| Knowledge Trace            | Hard      | Knowledge-assisted answers must reference valid receipt        |
-| Dream Safety               | Hard      | Dream apply/rollback subject to review/safety constraints     |
-| Policy Runtime             | Hard      | Policy engine evaluates before state-changing operations       |
-| Architecture Decision      | Hard      | Architecture merge/deprecate always requires human review      |
+| Enforcement           | Layer | Description                                                 |
+| --------------------- | ----- | ----------------------------------------------------------- |
+| Audit Enforcement     | Hard  | All state-changing routes must use `withAudit()` middleware |
+| Knowledge Trace       | Hard  | Knowledge-assisted answers must reference valid receipt     |
+| Dream Safety          | Hard  | Dream apply/rollback subject to review/safety constraints   |
+| Policy Runtime        | Hard  | Policy engine evaluates before state-changing operations    |
+| Architecture Decision | Hard  | Architecture merge/deprecate always requires human review   |
 
 ---
 
@@ -553,19 +553,19 @@ All endpoints are served from the Node.js API on port 9100. The API follows the 
 
 ### Quick Reference
 
-| Category     | Endpoints                                                        | Description                                      |
-| ------------ | ---------------------------------------------------------------- | ------------------------------------------------ |
-| **Health**   | `GET /v1/health`                                                 | Platform health check (all 5 runtime loops)      |
-| **Readiness**| `GET /v1/ready`                                                  | Kubernetes readiness probe                       |
-| **Version**  | `GET /v1/version`                                                | Version, commit, build info                      |
-| **Runtime**  | `GET /v1/runtime`                                                | Node version, memory, platform info              |
-| **Contracts**| `GET /v1/contracts/validate`                                     | Validate all contracts                           |
-| **Services** | `GET /v1/services` · `GET /v1/services/:id`                     | Service catalog (15 services)                    |
-| **Resources**| `GET /v1/resource-kinds` · `GET /v1/resource-kinds/:kind`       | Resource kinds (16 kinds)                        |
-| **Audit**    | `POST /v1/audit/events` · `GET /v1/audit/events` · `GET /v1/audit/verify` | Audit event recording and integrity verification |
-| **Knowledge**| `POST /v1/knowledge/search` · `POST /v1/knowledge/answer` · `GET /v1/knowledge/retrieval-receipts/:id` · `GET /v1/knowledge/answer-traces/:id` | Knowledge search with trace enforcement |
-| **Dream**    | `POST /v1/dream/run` · `GET /v1/dream/runs/:id` · `GET /v1/dream/stats` · `POST /v1/dream/runs/:id/review` · `POST /v1/dream/runs/:id/apply` · `POST /v1/dream/runs/:id/rollback` | Memory dream with safety enforcement |
-| **Policy**   | `POST /v1/policies/evaluate` · `GET /v1/policies`               | Policy evaluation and listing                    |
+| Category      | Endpoints                                                                                                                                                                         | Description                                      |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| **Health**    | `GET /v1/health`                                                                                                                                                                  | Platform health check (all 5 runtime loops)      |
+| **Readiness** | `GET /v1/ready`                                                                                                                                                                   | Kubernetes readiness probe                       |
+| **Version**   | `GET /v1/version`                                                                                                                                                                 | Version, commit, build info                      |
+| **Runtime**   | `GET /v1/runtime`                                                                                                                                                                 | Node version, memory, platform info              |
+| **Contracts** | `GET /v1/contracts/validate`                                                                                                                                                      | Validate all contracts                           |
+| **Services**  | `GET /v1/services` · `GET /v1/services/:id`                                                                                                                                       | Service catalog (15 services)                    |
+| **Resources** | `GET /v1/resource-kinds` · `GET /v1/resource-kinds/:kind`                                                                                                                         | Resource kinds (16 kinds)                        |
+| **Audit**     | `POST /v1/audit/events` · `GET /v1/audit/events` · `GET /v1/audit/verify`                                                                                                         | Audit event recording and integrity verification |
+| **Knowledge** | `POST /v1/knowledge/search` · `POST /v1/knowledge/answer` · `GET /v1/knowledge/retrieval-receipts/:id` · `GET /v1/knowledge/answer-traces/:id`                                    | Knowledge search with trace enforcement          |
+| **Dream**     | `POST /v1/dream/run` · `GET /v1/dream/runs/:id` · `GET /v1/dream/stats` · `POST /v1/dream/runs/:id/review` · `POST /v1/dream/runs/:id/apply` · `POST /v1/dream/runs/:id/rollback` | Memory dream with safety enforcement             |
+| **Policy**    | `POST /v1/policies/evaluate` · `GET /v1/policies`                                                                                                                                 | Policy evaluation and listing                    |
 
 ### Authentication
 
@@ -579,14 +579,14 @@ curl -H "Authorization: Bearer <token>" http://localhost:9100/v1/services
 
 All platform events follow **CloudEvents v1.0** format, split across 7 domain-specific YAML files in `contracts/events/`:
 
-| Event File          | Domain      | Description                          |
-| ------------------- | ----------- | ------------------------------------ |
-| audit-events.yaml   | Audit       | Audit recording and integrity events |
+| Event File            | Domain    | Description                          |
+| --------------------- | --------- | ------------------------------------ |
+| audit-events.yaml     | Audit     | Audit recording and integrity events |
 | knowledge-events.yaml | Knowledge | Document ingestion and search events |
-| memory-events.yaml  | Memory      | Memory capture and dream events      |
-| agent-events.yaml   | Agent       | Chat session and message events      |
-| usage-events.yaml   | Usage       | Metering and quota events            |
-| runtime-events.yaml | Runtime     | Service lifecycle events             |
+| memory-events.yaml    | Memory    | Memory capture and dream events      |
+| agent-events.yaml     | Agent     | Chat session and message events      |
+| usage-events.yaml     | Usage     | Metering and quota events            |
+| runtime-events.yaml   | Runtime   | Service lifecycle events             |
 
 ---
 
@@ -644,15 +644,15 @@ The v0.1.0 release introduces a comprehensive release and supply-chain pipeline 
 
 ### Release Pipeline
 
-| Stage                      | Tool/Command                           | Output                                    |
-| -------------------------- | -------------------------------------- | ----------------------------------------- |
-| RC Verification            | `pnpm rc:verify`                       | 8-category verification report            |
-| RC Soak Validation         | `pnpm rc:soak`                         | Soak report (19 checks, 6 classifications)|
-| Release Manifest           | `pnpm generate-release-manifest`       | release-manifest.json with SHA3-512 digests|
-| Artifact Generation        | `pnpm release:artifacts`               | Artifact bundle with digests               |
-| SBOM Generation            | `pnpm release:sbom`                    | CycloneDX 1.5 JSON SBOM                   |
-| Provenance Generation      | `pnpm release:provenance`              | SLSA v1 / in-toto Statement v1 provenance  |
-| Promotion Evaluation       | `pnpm release:promotion:evaluate`      | Gate evaluation (9/11 pass, 2 acceptable) |
+| Stage                 | Tool/Command                      | Output                                      |
+| --------------------- | --------------------------------- | ------------------------------------------- |
+| RC Verification       | `pnpm rc:verify`                  | 8-category verification report              |
+| RC Soak Validation    | `pnpm rc:soak`                    | Soak report (19 checks, 6 classifications)  |
+| Release Manifest      | `pnpm generate-release-manifest`  | release-manifest.json with SHA3-512 digests |
+| Artifact Generation   | `pnpm release:artifacts`          | Artifact bundle with digests                |
+| SBOM Generation       | `pnpm release:sbom`               | CycloneDX 1.5 JSON SBOM                     |
+| Provenance Generation | `pnpm release:provenance`         | SLSA v1 / in-toto Statement v1 provenance   |
+| Promotion Evaluation  | `pnpm release:promotion:evaluate` | Gate evaluation (9/11 pass, 2 acceptable)   |
 
 ### Artifact Integrity
 
@@ -663,10 +663,10 @@ The v0.1.0 release introduces a comprehensive release and supply-chain pipeline 
 
 ### Classifications
 
-| Classification                  | Description                                           |
-| ------------------------------- | ----------------------------------------------------- |
-| `signing-not-configured`        | Artifact signing not yet configured (planned)         |
-| `infrastructure-not-configured` | Infrastructure signing not yet configured (planned)   |
+| Classification                  | Description                                         |
+| ------------------------------- | --------------------------------------------------- |
+| `signing-not-configured`        | Artifact signing not yet configured (planned)       |
+| `infrastructure-not-configured` | Infrastructure signing not yet configured (planned) |
 
 ---
 
@@ -674,18 +674,18 @@ The v0.1.0 release introduces a comprehensive release and supply-chain pipeline 
 
 MyCodeXvantaOS has undergone a significant architectural evolution:
 
-| Era    | Phase                 | Description                                                                                                                                                                                 |
-| ------ | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **V0** | Prototype             | Firebase Studio workspace, initial Next.js prototype                                                                                                                                        |
-| **V1** | Divine Control Plane  | 8 core packages, 15 services, Cloudflare-first infrastructure                                                                                                                               |
-| **V2** | SentinelCore          | Observer/observable dual-role system, accountability protocols, 金鑰配對系統                                                                                                                |
-| **V3** | Cloudflare Deployment | Next.js 16 + OpenNext on Cloudflare Workers/Pages, wrangler configuration                                                                                                                   |
-| **V4** | Platform Constitution | 8-category service classification, hexagonal decomposition, five constitutional models                                                                                                      |
-| **V5** | Full Architecture     | Apps layer, infrastructure contracts, multi-runtime bootstrap, 3-dialect migrations, Helm charts                                                                                            |
-| **V6** | Governance Hardening  | Policy enforcement runtime, audit enforcement middleware, knowledge trace enforcement, memory dream safety, contract enforcement CI, Cloudflare Worker launch, self-hosted Docker runtime |
-| **V7** | Release Stabilization | CodeQL integration, TFC guard, RC verify pipeline, governance check CI, cross-platform section-sign enforcement                                                                            |
-| **V8** | Release Validation & Packaging | SBOM generation (CycloneDX 1.5), provenance (SLSA v1), artifact digests (SHA3-512), self-hosted quickstart, promotion policy, signing policy definition                     |
-| **V9** | RC Soak & Stable Promotion | Soak validation (19/19 checks), promotion gate evaluation (9/11 pass, 2 acceptable skips), stable release signing plan, v0.1.0 stable release draft                        |
+| Era    | Phase                          | Description                                                                                                                                                                               |
+| ------ | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **V0** | Prototype                      | Firebase Studio workspace, initial Next.js prototype                                                                                                                                      |
+| **V1** | Divine Control Plane           | 8 core packages, 15 services, Cloudflare-first infrastructure                                                                                                                             |
+| **V2** | SentinelCore                   | Observer/observable dual-role system, accountability protocols, 金鑰配對系統                                                                                                              |
+| **V3** | Cloudflare Deployment          | Next.js 16 + OpenNext on Cloudflare Workers/Pages, wrangler configuration                                                                                                                 |
+| **V4** | Platform Constitution          | 8-category service classification, hexagonal decomposition, five constitutional models                                                                                                    |
+| **V5** | Full Architecture              | Apps layer, infrastructure contracts, multi-runtime bootstrap, 3-dialect migrations, Helm charts                                                                                          |
+| **V6** | Governance Hardening           | Policy enforcement runtime, audit enforcement middleware, knowledge trace enforcement, memory dream safety, contract enforcement CI, Cloudflare Worker launch, self-hosted Docker runtime |
+| **V7** | Release Stabilization          | CodeQL integration, TFC guard, RC verify pipeline, governance check CI, cross-platform section-sign enforcement                                                                           |
+| **V8** | Release Validation & Packaging | SBOM generation (CycloneDX 1.5), provenance (SLSA v1), artifact digests (SHA3-512), self-hosted quickstart, promotion policy, signing policy definition                                   |
+| **V9** | RC Soak & Stable Promotion     | Soak validation (19/19 checks), promotion gate evaluation (9/11 pass, 2 acceptable skips), stable release signing plan, v0.1.0 stable release draft                                       |
 
 The project merged its platform constitution architecture (PRs #23, #24) completing a 10-phase decomposition from a monolithic structure into the current layered hexagonal architecture, followed by governance hardening (PRs #34–#70) and release validation (PRs #71–#74).
 
