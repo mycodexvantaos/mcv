@@ -1,9 +1,9 @@
 {
   "version": "0.1.0",
   "tag": "v0.1.0",
-  "commit": "4fd4caf83c91086f2206ff3213ef1f2867b1e603",
-  "branch": "fix/v0.1.0-stable-artifacts-and-docs",
-  "soakTimestamp": "2026-05-18T05:02:12.324Z",
+  "commit": "5b5d6f7d4e21b00d92e19ca771021e34ad3d8dc9",
+  "branch": "fix/v0.1.0-release-integrity-recovery",
+  "soakTimestamp": "2026-05-18T06:29:43.671Z",
   "nodeVersion": "v20.20.2",
   "pnpmVersion": "9.15.9",
   "platform": "linux",
@@ -12,12 +12,12 @@
   "runs": [
     {
       "runIndex": 1,
-      "timestamp": "2026-05-18T05:02:12.318Z",
+      "timestamp": "2026-05-18T06:29:43.665Z",
       "checksTotal": 25,
-      "checksPassed": 18,
-      "checksFailed": 1,
+      "checksPassed": 19,
+      "checksFailed": 0,
       "checksSkipped": 6,
-      "durationMs": 37523
+      "durationMs": 41615
     }
   ],
   "checks": [
@@ -94,9 +94,9 @@
     {
       "name": "Format check passes",
       "category": "tests",
-      "passed": false,
+      "passed": true,
       "skipped": false,
-      "detail": "[warn] docs/releases/0.1.0-soak-report.md\n[warn] docs/releases/v0.1.0.md\n[warn] release/artifacts/0.1.0/soak-report.json\n[warn] Code style issues found in 3 files. Run Prettier with --write to fix."
+      "detail": "Code format check passed"
     },
     {
       "name": "Release manifest generates",
@@ -205,8 +205,8 @@
   ],
   "summary": {
     "checksExecuted": 19,
-    "checksPassed": 18,
-    "checksFailed": 1,
+    "checksPassed": 19,
+    "checksFailed": 0,
     "checksSkipped": 6
   },
   "skipReasons": [
@@ -241,43 +241,45 @@
       "reason": "signing keys not configured — unsigned RC provenance classified as signing-not-configured"
     }
   ],
-  "infrastructureClassifications": ["infrastructure-not-configured"],
+  "infrastructureClassifications": [
+    "infrastructure-not-configured"
+  ],
   "artifactDigestSummary": [
     {
       "name": "release-manifest.json",
       "path": "release/artifacts/0.1.0/release-manifest.json",
       "exists": true,
-      "sha256": "e09994751b93dd0895a93a3f7af66a969bcae116d6837f21749652672374026c"
+      "sha256": "99afb0cdc48242e51b6e4ea6ed0c5d1fb633fd0ea6380db5bc4e628bc0b6dab6"
     },
     {
       "name": "artifact-digests.json",
       "path": "release/artifacts/0.1.0/artifact-digests.json",
       "exists": true,
-      "sha256": "6525ae1684721ee5c6cc6298c182a19cf2d116a88dbacd5235b4ef41d41025b3"
+      "sha256": "bf135eb9fcdf4b28a60942fea76b2fb92bbfc1031e420de793bd81ec96c5aa32"
     },
     {
       "name": "verification-summary.json",
       "path": "release/artifacts/0.1.0/verification-summary.json",
       "exists": true,
-      "sha256": "d55a279b8d20cc7a87a62f2a91f563ae9d6347a8f1ff6d98f1e36fed7e66a9a0"
+      "sha256": "a9bb92635fef4c890c68535cea86b95f6b345738d9142ca817f2a37c5c2e4582"
     },
     {
       "name": "sbom.cyclonedx.json",
       "path": "release/artifacts/0.1.0/sbom.cyclonedx.json",
       "exists": true,
-      "sha256": "71c2d53223b648b0caf01d6d9f9b999c890fe82f992a831e6688f07cbf095e2b"
+      "sha256": "72e2c00bbf01ef1776bb1441da05ffe8e9036a37f571dec1e1605353163e7788"
     },
     {
       "name": "provenance.intoto.json",
       "path": "release/artifacts/0.1.0/provenance.intoto.json",
       "exists": true,
-      "sha256": "0af73b7374ef2ba099d195223af3659e7bcadc062e22f43eef2d7f4e5a106989"
+      "sha256": "ba578a9f9640e5651a95f337fe177a5a3c85b128524499f2236058a1864c374d"
     },
     {
       "name": "supply-chain-summary.json",
       "path": "release/artifacts/0.1.0/supply-chain-summary.json",
       "exists": true,
-      "sha256": "707292ad8fcfd87d25aa4372b7851638aa97f928af11eafef65dcb9a6642f48e"
+      "sha256": "10826391d072af8f01b8cd989526b321e8ba5306146c40566695763fdd982045"
     }
   ],
   "sbomStatus": {
@@ -289,5 +291,5 @@
     "path": "release/artifacts/0.1.0/provenance.intoto.json",
     "signingStatus": "signing-not-configured"
   },
-  "overallStatus": "fail"
+  "overallStatus": "pass"
 }

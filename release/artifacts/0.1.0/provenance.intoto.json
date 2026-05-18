@@ -5,19 +5,19 @@
     {
       "name": "release-manifest.json",
       "digest": {
-        "sha256": "e09994751b93dd0895a93a3f7af66a969bcae116d6837f21749652672374026c"
+        "sha256": "99afb0cdc48242e51b6e4ea6ed0c5d1fb633fd0ea6380db5bc4e628bc0b6dab6"
       }
     },
     {
       "name": "artifact-digests.json",
       "digest": {
-        "sha256": "6525ae1684721ee5c6cc6298c182a19cf2d116a88dbacd5235b4ef41d41025b3"
+        "sha256": "bf135eb9fcdf4b28a60942fea76b2fb92bbfc1031e420de793bd81ec96c5aa32"
       }
     },
     {
       "name": "sbom.cyclonedx.json",
       "digest": {
-        "sha256": "71c2d53223b648b0caf01d6d9f9b999c890fe82f992a831e6688f07cbf095e2b"
+        "sha256": "72e2c00bbf01ef1776bb1441da05ffe8e9036a37f571dec1e1605353163e7788"
       }
     }
   ],
@@ -31,13 +31,13 @@
       "configSource": {
         "uri": "https://github.com/mycodexvantaos/mycodexvantaos.git",
         "digest": {
-          "sha1": "4fd4caf83c91086f2206ff3213ef1f2867b1e603"
+          "sha1": "5b5d6f7d4e21b00d92e19ca771021e34ad3d8dc9"
         },
         "entryPoint": ".github/workflows/release-candidate-check.yml"
       },
       "parameters": {
         "version": "0.1.0",
-        "ref": "fix/v0.1.0-stable-artifacts-and-docs"
+        "ref": "fix/v0.1.0-release-integrity-recovery"
       },
       "environment": {
         "GITHUB_EVENT_NAME": "local",
@@ -46,9 +46,9 @@
       }
     },
     "metadata": {
-      "buildInvocationId": "local-1779080112687",
-      "buildStartedOn": "2026-05-18T04:54:12.687Z",
-      "buildFinishedOn": "2026-05-18T04:55:12.687Z",
+      "buildInvocationId": "local-1779085738116",
+      "buildStartedOn": "2026-05-18T06:27:58.116Z",
+      "buildFinishedOn": "2026-05-18T06:28:58.116Z",
       "completeness": {
         "arguments": true,
         "environment": true,
@@ -60,7 +60,7 @@
       {
         "uri": "https://github.com/mycodexvantaos/mycodexvantaos.git",
         "digest": {
-          "sha1": "4fd4caf83c91086f2206ff3213ef1f2867b1e603"
+          "sha1": "5b5d6f7d4e21b00d92e19ca771021e34ad3d8dc9"
         }
       },
       {
