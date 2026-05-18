@@ -92,6 +92,17 @@
     "zod": "^3.24.2",
     "zustand": "^5.0.13"
   },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [],
+      "allowedVersions": {
+        "@cloudflare/next-on-pages>next": "*"
+      },
+      "allowAny": [
+        "next"
+      ]
+    }
+  },
   "devDependencies": {
     "@mycodexvantaos/contracts-sdk": "workspace:*",
     "@mycodexvantaos/policy-model": "workspace:*",
