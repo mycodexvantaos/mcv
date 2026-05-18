@@ -1,0 +1,19 @@
+{
+  "version": "0.1.0",
+  "generatedAt": "2026-05-18T04:55:12.688Z",
+  "commit": "4fd4caf83c91086f2206ff3213ef1f2867b1e603",
+  "branch": "fix/v0.1.0-stable-artifacts-and-docs",
+  "sbomAvailable": true,
+  "sbomPath": "/workspace/mycodexvantaos/release/artifacts/0.1.0/sbom.cyclonedx.json",
+  "provenanceAvailable": true,
+  "provenancePath": "/workspace/mycodexvantaos/release/artifacts/0.1.0/provenance.intoto.json",
+  "signingStatus": "signing-not-configured",
+  "materialsCount": 2,
+  "subjectsCount": 3,
+  "infrastructureSkips": [
+    "GCP / Terraform Cloud: infrastructure-not-configured",
+    "Cloudflare: infrastructure-not-configured",
+    "Kubernetes: infrastructure-not-configured",
+    "Artifact signing: signing-not-configured (unsigned RC provenance)"
+  ]
+}

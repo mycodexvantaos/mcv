@@ -5,7 +5,7 @@ All notable changes to MyCodeXvantaOS will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0] - 2026-05-17
+## [0.1.0] - 2026-05-18
 
 ### Added
 
@@ -16,6 +16,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Machine-readable signing policy (`release/policies/signing-policy.json`) with signing-not-configured to signing-configured transition
 - Stable release draft (`docs/releases/v0.1.0.md`) with promotion evidence, supply chain artifacts, and post-stable requirements
 - Release draft artifact (`release/artifacts/v0.1.0/release-draft.json`) with promotion evidence, go/no-go recommendation, and draft hash
+- v0.1.0 stable release artifacts: release-manifest.json, artifact-digests.json, verification-summary.json (`release/artifacts/0.1.0/`)
+- CycloneDX 1.5 JSON SBOM with 161 components (`release/artifacts/0.1.0/sbom.cyclonedx.json`)
+- SLSA v1 / in-toto Statement v1 provenance with supply-chain-summary.json (`release/artifacts/0.1.0/`)
+- Self-hosted quickstart guide for v0.1.0 (`docs/self-hostable/quickstart-0.1.0.md`)
+- v0.1.0 promotion evaluation report (`docs/releases/0.1.0-promotion-evaluation.md`)
+- v0.1.0 soak validation report (`docs/releases/0.1.0-soak-report.md`)
+
+### Changed
+
+- README.md and PLATFORM_ARCHITECTURE.md synchronized with v0.1.0 stable codebase (PR #75)
+- CONTRIBUTING.md rewritten for v0.1.0 architecture (PR #76)
+- Release notes artifact paths updated from v0.1.0-rc.1 to 0.1.0 stable paths
 
 ### Changed
 
