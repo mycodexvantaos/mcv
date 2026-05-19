@@ -1,4 +1,9 @@
-name: Create v0.1.0 Release Tag
+name: Create v0.1.0 Release Tag (DEPRECATED — DO NOT RUN)
+# ⚠️ BLOCKED: The v0.1.0 tag name is locked by a GitHub internal Release
+# Immutability Record. Running this workflow will fail with HTTP 422.
+# See Issue #82 and docs/runbooks/github-support-v010-immutability-record.md
+# This workflow should only be re-enabled AFTER GitHub Support clears the
+# immutability record.
 on:
   workflow_dispatch:
     inputs:
@@ -13,6 +18,7 @@ permissions:
 jobs:
   create-tag:
     runs-on: ubuntu-latest
+    if: false # Disabled: v0.1.0 tag is blocked by GitHub Immutability Record (Issue #82)
     steps:
       - name: Checkout
         uses: actions/checkout@v4
