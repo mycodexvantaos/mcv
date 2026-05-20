@@ -5,6 +5,22 @@ All notable changes to MyCodeXvantaOS will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2026-07-20
+
+### Security
+
+- Remediated 10 of 20 Dependabot vulnerability alerts (Issue #81)
+- Upgraded `wrangler` from v3 to v4 in `apps/api-worker` (resolves 5 undici vulnerabilities via miniflare v4)
+- Upgraded `ws` from `^8.16.0` to `^8.20.1` in `services/mycodexvantaos-ai-team-service` (CVE-2024-37886 memory disclosure)
+- Added 9 `pnpm.overrides` for vulnerable transitive dependencies: ws, esbuild, postcss, protobufjs, brace-expansion, ip-address, cookie, hono (via MCP SDK), fast-uri (via ajv)
+- Documented 10 deferred vulnerabilities with accepted risk and migration paths in `docs/security/dependency-vulnerability-remediation-v0.1.1.md`
+- Deferred: undici v5 (locked by @cloudflare/next-on-pages), apollo-server-core v3 (EOL), vite v5 (locked by vitest v1), OTel SDK (genkit-controlled), @tootallnate/once (deep transitive)
+
+### Changed
+
+- Simplified `pnpm-workspace.yaml` — removed duplicated overrides, consolidated to `package.json` as canonical source
+- All security overrides now documented with CVE references in `pnpm-workspace.yaml` comments
+
 ## [0.1.0] - 2026-05-18
 
 ### Added

@@ -5,19 +5,19 @@
     {
       "name": "release-manifest.json",
       "digest": {
-        "sha256": "4dbc91c8f809613ff4d7ff1b89841e01a8f84f4962717d3a3f2d254c834fe1ed"
+        "sha256": "a32d063695014b288a8d74c9f5044ccac1d1757b877ea07547151e99f86768c2"
       }
     },
     {
       "name": "artifact-digests.json",
       "digest": {
-        "sha256": "462cbc96a759302a579d01ac713145035fddaa3a0c130704d88e3fe57e698592"
+        "sha256": "6cc375637f0c6cdd3e6d58e9fcf78170e2000b8e762715ba01a0c7ba158a0a98"
       }
     },
     {
       "name": "sbom.cyclonedx.json",
       "digest": {
-        "sha256": "ac86ef11fb30e712f1e06bef2dfffa869ad1b23bd0cc8d9d5ca562062ef98dcb"
+        "sha256": "c31358b824c47b7d358a04795790397befcf1942c74b20c10e33415dfb0de3c6"
       }
     }
   ],
@@ -31,24 +31,24 @@
       "configSource": {
         "uri": "https://github.com/mycodexvantaos/mycodexvantaos.git",
         "digest": {
-          "sha1": "7a79d8353acf56183fc4ae5b21a3b732d8d11fbe"
+          "sha1": "5ec6ddf428c641395d021605109fbd28812f9f66"
         },
         "entryPoint": ".github/workflows/release-candidate-check.yml"
       },
       "parameters": {
         "version": "v0.1.0-rc.1",
-        "ref": "chore/rc-soak-report"
+        "ref": "fix/v0.1.1-dependency-security"
       },
       "environment": {
         "GITHUB_EVENT_NAME": "local",
         "RUNNER_OS": "linux",
-        "NODE_VERSION": "v22.22.2"
+        "NODE_VERSION": "v20.20.2"
       }
     },
     "metadata": {
-      "buildInvocationId": "local-1778970381837",
-      "buildStartedOn": "2026-05-16T22:25:21.837Z",
-      "buildFinishedOn": "2026-05-16T22:26:21.837Z",
+      "buildInvocationId": "local-1779286336440",
+      "buildStartedOn": "2026-05-20T14:11:16.440Z",
+      "buildFinishedOn": "2026-05-20T14:12:16.440Z",
       "completeness": {
         "arguments": true,
         "environment": true,
@@ -60,13 +60,13 @@
       {
         "uri": "https://github.com/mycodexvantaos/mycodexvantaos.git",
         "digest": {
-          "sha1": "7a79d8353acf56183fc4ae5b21a3b732d8d11fbe"
+          "sha1": "5ec6ddf428c641395d021605109fbd28812f9f66"
         }
       },
       {
         "uri": "file://pnpm-lock.yaml",
         "digest": {
-          "sha256": "bb9f7f11f4e615dd26102bf7b87bb839b672dcaee10d904073601972b8cc3f3c"
+          "sha256": "81104a35fa35ea6c7f19ed555cfe4ec7e848de05479ed8632e19bcd93e95a28d"
         }
       }
     ]

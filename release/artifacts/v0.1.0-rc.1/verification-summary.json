@@ -1,9 +1,9 @@
 {
   "version": "v0.1.0-rc.1",
-  "generatedAt": "2026-05-16T22:46:22.488Z",
-  "commit": "ce82ab605c7265ca2ce1c1908aa70b0debcd1791",
-  "branch": "chore/rc-promotion-evaluation",
-  "nodeVersion": "v22.22.2",
+  "generatedAt": "2026-05-20T14:12:14.805Z",
+  "commit": "5ec6ddf428c641395d021605109fbd28812f9f66",
+  "branch": "fix/v0.1.1-dependency-security",
+  "nodeVersion": "v20.20.2",
   "pnpmVersion": "9.15.9",
   "checks": [
     {
@@ -32,7 +32,7 @@
       "category": "manifest",
       "passed": true,
       "skipped": false,
-      "detail": "Manifest v0.1.0 @ ce82ab60"
+      "detail": "Manifest v0.1.0 @ 5ec6ddf4"
     },
     {
       "name": "Artifact digests generated",
