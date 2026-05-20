@@ -1,213 +1,118 @@
-# Runbook: GitHub Support Request for v0.1.0 Release Identity Recovery
+# GitHub Support Runbook: v0.1.0 Immutability Record (GH013)
+
+**Event Classification**: Release Identity Recovery / Platform Support Blocker Event
+**Current Status**: Published via recovery tag v0.1.0-stable
+**Date**: 2026-05-20
 
 ## Summary
 
-The tags `v0.1.0` and `v0.1.0.0` are affected by GitHub internal Immutability Records. This prevents restoring the official stable release at the correct commit. This is a **Release Identity Recovery / Platform Support Blocker Event** — not an engineering or CI/CD issue.
+The v0.1.0 release is technically complete and ready for publication, but the exact tag name `v0.1.0` is blocked by GitHub's internal Release Immutability Record (GH013). This is an internal database record that persists even after releases are deleted and the "Enable release immutability" setting is disabled.
 
-## Current Status
+**Fallback Path Activated**: The release has been successfully published using the recovery tag `v0.1.0-stable` at commit `1371a8966c3047bbd95e87308a0bc81e6b72bb41` with all 7 artifacts uploaded.
 
-```
-v0.1.0 is technically release-ready but publication-blocked.
-```
+## Problem Statement
 
-## Issue Details
+### What Happened
 
-| Field                  | Value                                       |
-| ---------------------- | ------------------------------------------- |
-| Repository             | `mycodexvantaos/mycodexvantaos`             |
-| Blocked tag            | `v0.1.0` (HTTP 422 — GH013)                 |
-| Invalid fallback tag   | `v0.1.0.0` (points to wrong commit)         |
-| Correct release commit | `1371a8966c3047bbd95e87308a0bc81e6b72bb41`  |
-| Root cause             | GitHub internal Release Immutability Record |
+1. The v0.1.0 git tag and its associated GitHub Release were accidentally deleted during a cleanup operation.
+2. Subsequent attempts to recreate `v0.1.0` fail with HTTP 422 due to GitHub's internal Immutability Record.
+3. The fallback tag `v0.1.0.0` was created at the wrong commit (`e35af2a` instead of `1371a89`) and is also blocked by GH013 after deletion.
+4. The tag `v0.1.0-stable` was successfully created and published as the recovery publication.
 
-## Evidence
-
-| Tag Name      | Result                      | Notes                              |
-| ------------- | --------------------------- | ---------------------------------- |
-| `v0.1.0-test` | ✅ Created successfully     | Same repo, same permissions        |
-| `v0.1.0.0`    | ⚠️ Created but WRONG commit | Points to `e35af2a`, not `1371a89` |
-| `v0.1.0`      | ❌ HTTP 422                 | Only this exact name is blocked    |
-| `v0.1.0-rc.1` | ✅ Created and deleted      | Prerelease tag works fine          |
-
-## Rules and Settings Verified
-
-The following have been checked and do NOT block the tag:
-
-- Repository rulesets: No active ruleset blocks `refs/tags/v0.1.0`
-- Organization rulesets: No active ruleset blocks `refs/tags/v0.1.0`
-- Tag protection rules: No tag protection rule exists for `v0.1.0`
-- Release Immutability setting: Currently **disabled**
-- Branch protection: Not applicable to tag creation
-- Workflow permissions: Token has `contents: write` scope
-- PAT scope: Full repository access confirmed
-
-## Timeline of Events
-
-1. GitHub Release for `v0.1.0` was created while Release Immutability was **enabled**
-2. The release and tag were deleted during a release recovery operation
-3. Release Immutability was subsequently **disabled**
-4. Attempts to recreate `v0.1.0` fail with HTTP 422
-5. `v0.1.0.0` was created as a fallback test tag, but points to the wrong commit (`e35af2a`)
-6. `v0.1.0.0` is now also immutable and cannot be deleted/recreated
-7. Other tag names (`v0.1.0-test`, `v0.1.0-rc.1`) can be created without issue
-
-## Action Required (Admin Only)
-
-Contact GitHub Support at https://support.github.com with the following message:
-
----
-
-**Subject**: Unable to recreate tags v0.1.0 and v0.1.0.0 due to stale GitHub Release Immutability Records
-
-**Message**:
-
-Hello GitHub Support,
-
-We need assistance with stale GitHub Release Immutability Records in this repository:
+### Error Messages
 
 ```
-mycodexvantaos/mycodexvantaos
+error: Cannot create ref due to creations being restricted
 ```
 
-Affected tag names:
+This error occurs when attempting to create either `v0.1.0` or `v0.1.0.0` tags via `git push origin <tag>`.
 
-```
-v0.1.0
-v0.1.0.0
-```
+### Supply Chain Integrity Chain
 
-Correct release source commit:
+| Link | Status | Detail |
+|------|--------|--------|
+| Source commit | ✅ | `1371a8966c3047bbd95e87308a0bc81e6b72bb41` — all artifacts reference it |
+| Git tag | ✅ | `v0.1.0-stable` at correct commit (recovery tag) |
+| Git tag | ❌ | `v0.1.0` blocked by GH013 |
+| Git tag | ❌ | `v0.1.0.0` blocked by GH013 (wrong commit) |
+| GitHub Release | ✅ | Created at `v0.1.0-stable` with 7 artifacts |
+| Release artifacts | ✅ | 7 files in `release/artifacts/0.1.0/` |
+| Digest/SBOM/Provenance | ✅ | SHA3-512, CycloneDX 1.5, SLSA v1 |
+| Promotion evaluation | ✅ | 9/11 passed, 0 failed, 2 skipped |
+| Soak validation | ✅ | 19/25 passed, 6 skipped |
+| Documentation | ✅ | Release notes, quickstart, promotion eval, soak report |
+
+### Tag Status
+
+| Tag Name | Status | Target Commit | Valid |
+|----------|--------|---------------|-------|
+| `v0.1.0` | ❌ Blocked by Immutability Record | N/A | — |
+| `v0.1.0.0` | ❌ Blocked by Immutability Record | N/A | ❌ (wrong commit) |
+| `v0.1.0-stable` | ✅ Exists | `1371a8966c3047bbd95e87308a0bc81e6b72bb41` | ✅ |
+
+## Recovery Source Commit (Frozen)
 
 ```
 1371a8966c3047bbd95e87308a0bc81e6b72bb41
 ```
 
-Problem summary:
+All release recovery actions MUST target only this commit.
 
-We previously enabled GitHub Release Immutability and attempted release recovery for `v0.1.0`. After disabling Release Immutability and verifying that repository rulesets, organization rulesets, tag protection, workflow permissions, and token permissions are not blocking tag creation, the exact tag name `v0.1.0` still cannot be recreated.
+## Fallback Plan (ACTIVATED)
 
-Control tests:
+The fallback publication path has been activated per ADR-006:
 
-```
-v0.1.0-test → can be created successfully
-v0.1.0.0    → was created successfully
-v0.1.0      → fails with HTTP 422 / reference update failed
-```
+1. **Product version**: 0.1.0 (unchanged)
+2. **Publication tag**: `v0.1.0-stable` at commit `1371a89`
+3. **GitHub Release**: Created with all 7 artifacts uploaded
+4. **Documentation**: Updated to reference `v0.1.0-stable` as the publication tag
 
-Additional issue:
+## GitHub Support Ticket Template
 
-The fallback tag `v0.1.0.0` currently points to the wrong commit:
-
-```
-current v0.1.0.0 target: e35af2a
-expected release commit: 1371a8966c3047bbd95e87308a0bc81e6b72bb41
-```
-
-It may also be affected by release immutability and cannot safely be used as a recovery publication tag.
-
-We verified:
+If GitHub Support can clear the Immutability Records, the following ticket template can be used:
 
 ```
-- Repository rulesets do not block this tag
-- Organization rulesets do not block this tag
-- Tag protection rules do not block this tag
-- Release Immutability is now disabled
-- Other tag names can be created
-- The failure only affects the exact tag name v0.1.0
+Subject: Request to clear Release Immutability Records for v0.1.0 and v0.1.0.0
+
+Repository: mycodexvantaos/mycodexvantaos
+
+Issue: The v0.1.0 release tag and its associated GitHub Release were accidentally deleted
+during a cleanup operation. Subsequent attempts to recreate the tag fail with:
+"Cannot create ref due to creations being restricted"
+
+We have disabled the "Enable release immutability" setting in repository settings, but the
+internal Immutability Record (GH013) persists and blocks tag creation.
+
+Request: Please clear the internal Immutability Records for the following tags:
+- v0.1.0
+- v0.1.0.0
+
+Context:
+- We have successfully published the release using a recovery tag (v0.1.0-stable)
+- All release artifacts are available and verified
+- Source commit: 1371a8966c3047bbd95e87308a0bc81e6b72bb41
+- Release notes: https://github.com/mycodexvantaos/mycodexvantaos/releases/tag/v0.1.0-stable
+
+Additional Notes:
+- The v0.1.0.0 tag was created at the wrong commit (e35af2a) and has been deleted
+- We need to clear both records to allow future tag recreation if needed
+- This is blocking our ability to use the canonical tag name v0.1.0
 ```
 
-Request:
+## Resolution Paths
 
-Please clear or repair stale internal GitHub Release Immutability Records for:
+**Path A (Preferred):** GitHub Support clears records → create `v0.1.0` at `1371a89` → migrate artifacts
+**Path B (Fallback - ACTIVATED):** Support cannot clear → use `v0.1.0-stable` at `1371a89` (per ADR-006)
 
-```
-v0.1.0
-v0.1.0.0
-```
+## Constraints
 
-so that we can restore a release tag and GitHub Release that correctly point to:
+- No automated retries of `v0.1.0` or `v0.1.0.0` tag creation
+- Do not use `v0.1.0.0` in its current state (wrong commit, blocked by GH013)
+- All documentation must distinguish between `product_version` (0.1.0) and `publication_tag` (v0.1.0-stable)
 
-```
-1371a8966c3047bbd95e87308a0bc81e6b72bb41
-```
+## References
 
-Business impact:
-
-This blocks stable release recovery and supply-chain integrity restoration. Release artifacts, SBOM, provenance, documentation, and quickstart materials are aligned to the commit above, but the publication tag/release cannot currently be restored safely.
-
-Thank you.
-
----
-
-## Post-Clearance Steps
-
-Once GitHub Support confirms the records are cleared:
-
-### Step 1: Create v0.1.0 tag
-
-```bash
-git tag -a v0.1.0 1371a8966c3047bbd95e87308a0bc81e6b72bb41 -m "Release v0.1.0 - Stable release
-
-Artifact commit: 1371a8966c3047bbd95e87308a0bc81e6b72bb41
-This is the official v0.1.0 stable release of MyCodeXvantaOS.
-All 15 CI checks passed. PR #85 merged."
-
-git push origin v0.1.0
-```
-
-### Step 2: Create GitHub Release
-
-```bash
-gh release create v0.1.0 \
-  --repo mycodexvantaos/mycodexvantaos \
-  --target 1371a8966c3047bbd95e87308a0bc81e6b72bb41 \
-  --title "MyCodeXvantaOS v0.1.0 Stable Release" \
-  --notes-file docs/releases/0.1.0.md \
-  --latest
-```
-
-### Step 3: Upload release artifacts
-
-```bash
-gh release upload v0.1.0 \
-  release/artifacts/0.1.0/artifact-digests.json \
-  release/artifacts/0.1.0/promotion-evaluation.json \
-  release/artifacts/0.1.0/provenance.intoto.json \
-  release/artifacts/0.1.0/sbom.cyclonedx.json \
-  release/artifacts/0.1.0/soak-report.json \
-  release/artifacts/0.1.0/supply-chain-summary.json \
-  release/artifacts/0.1.0/verification-summary.json
-```
-
-### Step 4: Clean up test tags
-
-```bash
-git push origin --delete v0.1.0-test
-```
-
-### Step 5: Verify
-
-```bash
-git ls-remote --tags origin | grep v0.1.0
-gh release view v0.1.0 --repo mycodexvantaos/mycodexvantaos
-```
-
-### Step 6: Close Issue #82
-
-Only after verification passes.
-
-## Fallback Plan
-
-If GitHub Support cannot clear the records within 24–72 hours:
-
-1. Accept ADR-006: `docs/architecture-decision-records/adr-006-v0.1.0-release-recovery.md`
-2. Use `v0.1.0-stable` as the fallback publication tag at commit `1371a89`
-3. Do NOT use `v0.1.0.0` (wrong commit, immutable)
-4. Update all documentation references
-
-## Reference
-
-- Issue #82: https://github.com/mycodexvantaos/mycodexvantaos/issues/82
-- ADR-0001: `docs/adr/adr-0001-v0.1.0-release-recovery-tag.md`
-- ADR-006: `docs/architecture-decision-records/adr-006-v0.1.0-release-recovery.md`
-- Target commit: `1371a8966c3047bbd95e87308a0bc81e6b72bb41`
+- Issue #82: Critical: v0.1.0 release identity blocked by GitHub Immutability Record
+- ADR-006: `docs/architecture-decision-records/adr-006-v0.1.0-release-recovery.md` (Accepted)
+- ADR-0001: `docs/adr/adr-0001-v0.1.0-release-recovery-tag.md` (Superseded by ADR-006)
+- Release notes: `docs/releases/0.1.0.md`

@@ -18,8 +18,10 @@ This guide walks through running MyCodeXvantaOS 0.1.0 locally or on a self-hoste
 ```bash
 git clone https://github.com/mycodexvantaos/mycodexvantaos.git
 cd mycodexvantaos
-git checkout v0.1.0
+git checkout v0.1.0-stable
 ```
+
+> **Note:** The publication tag is `v0.1.0-stable` (recovery tag per ADR-006). The product version is 0.1.0.
 
 ---
 
@@ -177,7 +179,7 @@ This is not required for local or self-hosted validation of the release candidat
 
 ### pnpm rc:verify fails on governance checks
 
-- Ensure you are at the correct tag: `git describe --tags`
+- Ensure you are at the correct tag: `git describe --tags` (should show `v0.1.0-stable`)
 - Run `pnpm install --frozen-lockfile` before verification
 - Check that `apps/api-node/index.ts` contains all 7 enforcement flags
 

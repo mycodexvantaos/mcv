@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Stable release v0.1.0 promoted from v0.1.0-rc.1 with evidence-based go/no-go recommendation
+- Publication tag `v0.1.0-stable` created at commit `1371a89` as recovery tag (per ADR-006)
 - RC soak validation script (`pnpm rc:soak`) producing soak-report.json and markdown report
 - Promotion gate evaluation script (`pnpm release:promotion:evaluate`) evaluating 11 gates against rc-promotion-policy.json
 - Stable release signing plan (`docs/security/release-signing.md`) defining Sigstore keyless, GPG, and Vault/HSM signing methods
