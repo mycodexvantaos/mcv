@@ -9,13 +9,10 @@ packages:
   - 'providers/*/*'
   - 'apps/*'
 
-# Security overrides: force safe versions of vulnerable transitive dependencies
+# Security overrides live in package.json > pnpm.overrides (pnpm v9 merges both
+# locations but package.json is the canonical source for our project).
 # See Issue #81: https://github.com/mycodexvantaos/mycodexvantaos/issues/81
-overrides:
-  # CVE: hono JWT bypass (hono < 4.12.19) — via @modelcontextprotocol/sdk
-  '@modelcontextprotocol/sdk>hono': '4.12.19'
-  # CVE: fast-uri ReDoS (fast-uri < 3.1.2) — via ajv
-  'ajv>fast-uri': '3.1.2'
+# See docs/security/dependency-vulnerability-remediation-v0.1.1.md for full classification
 
 allowBuilds:
   '@apollo/protobufjs': false
