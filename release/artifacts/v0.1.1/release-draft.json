@@ -1,0 +1,60 @@
+{
+  "version": "0.1.1",
+  "tag": "v0.1.1",
+  "releaseType": "security-patch",
+  "commit": "7d3944e3b7b3f46a4cea8375402af043d9d7c13d",
+  "branch": "main",
+  "draftTimestamp": "2026-05-20T14:58:56.178598+00:00",
+  "nodeVersion": "v22.22.2",
+  "pnpmVersion": "9.15.9",
+  "platform": "linux",
+  "arch": "x64",
+  "precededBy": "v0.1.0-stable",
+  "securityRemediation": {
+    "totalBefore": 20,
+    "totalAfter": 10,
+    "highBefore": 4,
+    "highAfter": 4,
+    "moderateBefore": 14,
+    "moderateAfter": 5,
+    "lowBefore": 2,
+    "lowAfter": 1,
+    "remediatedCount": 10,
+    "deferredCount": 10,
+    "deferredWithTrackingIssues": true,
+    "trackingIssues": [
+      95,
+      96,
+      97,
+      98,
+      99
+    ],
+    "remediationDoc": "docs/security/dependency-vulnerability-remediation-v0.1.1.md"
+  },
+  "verification": {
+    "rcVerify": {
+      "overallStatus": "pass",
+      "checksPassed": 20,
+      "checksFailed": 0,
+      "checksSkipped": 5
+    },
+    "rcSoak": {
+      "overallStatus": "pass",
+      "checksPassed": 19,
+      "checksFailed": 0,
+      "checksSkipped": 6
+    },
+    "governanceCheck": "pass",
+    "contractTests": "pass (31/31)",
+    "serviceTests": "pass (88/88)",
+    "ciPipeline": "all checks passed"
+  },
+  "releaseNotes": "docs/releases/v0.1.1.md",
+  "changelog": "CHANGELOG.md",
+  "remediationDoc": "docs/security/dependency-vulnerability-remediation-v0.1.1.md",
+  "goNoGo": "go",
+  "goNoGoRationale": "All CI checks pass. 10/20 vulnerabilities remediated. 10 remaining are deferred with accepted risk and tracked in Issues #95-#99. Each deferred item has documented reason, impact, mitigation, migration path, and target milestone. Standard met: fix what can be safely fixed, defer with documented justification, track risks.",
+  "deferredRiskStandard": "\u5df2\u4fee\u53ef\u4fee\u3001\u5ef6\u5f8c\u6709\u64da\u3001\u98a8\u96aa\u53ef\u8ffd",
+  "draftHash": "dc442185d4e40efaacf62425f738d4fcc095f546d4848b95451229188f58e52a393d87f45cdf17d63d99792df3effdf4672fdd7a5a8f093668d9342055307021",
+  "hashAlgorithm": "SHA3-512"
+}
