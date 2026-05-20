@@ -2,10 +2,10 @@
   "$schema": "https://cyclonedx.org/schema/bom-1.5.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.5",
-  "serialNumber": "urn:uuid:cf128c10-373d-438b-93db-2e2b08a30b45",
+  "serialNumber": "urn:uuid:a6e8ea40-f21d-43cd-b44f-f726c1dd8765",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-05-16T22:26:21.299Z",
+    "timestamp": "2026-05-20T14:12:15.800Z",
     "tools": [
       {
         "name": "mycodexvantaos-sbom-generator",

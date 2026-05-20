@@ -1,9 +1,9 @@
 {
   "version": "0.1.0",
   "tag": "v0.1.0",
-  "commit": "1371a8966c3047bbd95e87308a0bc81e6b72bb41",
-  "branch": "fix/v0.1.0-artifacts-final",
-  "soakTimestamp": "2026-05-18T06:46:28.716Z",
+  "commit": "5ec6ddf428c641395d021605109fbd28812f9f66",
+  "branch": "fix/v0.1.1-dependency-security",
+  "soakTimestamp": "2026-05-20T14:12:16.475Z",
   "nodeVersion": "v20.20.2",
   "pnpmVersion": "9.15.9",
   "platform": "linux",
@@ -12,12 +12,12 @@
   "runs": [
     {
       "runIndex": 1,
-      "timestamp": "2026-05-18T06:46:28.710Z",
+      "timestamp": "2026-05-20T14:12:16.468Z",
       "checksTotal": 25,
       "checksPassed": 19,
       "checksFailed": 0,
       "checksSkipped": 6,
-      "durationMs": 35239
+      "durationMs": 37178
     }
   ],
   "checks": [

@@ -1,9 +1,9 @@
 {
   "version": "0.1.0",
   "tag": "v0.1.0",
-  "commit": "1371a8966c3047bbd95e87308a0bc81e6b72bb41",
-  "branch": "fix/v0.1.0-artifacts-final",
-  "evaluationTimestamp": "2026-05-18T06:46:39.597Z",
+  "commit": "5ec6ddf428c641395d021605109fbd28812f9f66",
+  "branch": "fix/v0.1.1-dependency-security",
+  "evaluationTimestamp": "2026-05-20T14:12:28.730Z",
   "nodeVersion": "v20.20.2",
   "pnpmVersion": "9.15.9",
   "targetRelease": "v0.1.0",
@@ -81,12 +81,12 @@
     {
       "gateId": "G008",
       "gateName": "Reproducibility",
-      "passed": true,
+      "passed": false,
       "skipped": false,
       "required": true,
       "rcStatus": "required",
       "stableStatus": "required",
-      "evidence": "All 5 static source file digests match current content. Release artifacts are reproducible from the same commit."
+      "evidence": "Digest mismatches in: package.json, pnpm-lock.yaml. Source files may have changed since artifact generation."
     },
     {
       "gateId": "G009",
@@ -123,14 +123,16 @@
   ],
   "summary": {
     "totalGates": 11,
-    "passedGates": 9,
-    "failedGates": 0,
+    "passedGates": 8,
+    "failedGates": 1,
     "skippedGates": 2,
-    "requiredGatesFailed": 0
+    "requiredGatesFailed": 1
   },
-  "blockingIssues": [],
-  "recommendation": "conditional-go",
-  "recommendationReason": "All required gates pass. 2 gate(s) are skipped with acceptable-skip classification for RC (signing-not-configured, infrastructure-not-configured). These must be resolved for stable release. The RC is stable and ready for promotion evaluation with documented conditions.",
+  "blockingIssues": [
+    "G008 (Reproducibility): Digest mismatches in: package.json, pnpm-lock.yaml. Source files may have changed since artifact generation."
+  ],
+  "recommendation": "no-go",
+  "recommendationReason": "1 required gate(s) failed. The RC cannot be promoted until these issues are resolved: G008 (Reproducibility): Digest mismatches in: package.json, pnpm-lock.yaml. Source files may have changed since artifact generation.",
   "infrastructureClassifications": ["infrastructure-not-configured"],
   "signingClassification": "signing-not-configured"
 }

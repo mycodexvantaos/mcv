@@ -29,26 +29,26 @@ This error occurs when attempting to create either `v0.1.0` or `v0.1.0.0` tags v
 
 ### Supply Chain Integrity Chain
 
-| Link | Status | Detail |
-|------|--------|--------|
-| Source commit | ✅ | `1371a8966c3047bbd95e87308a0bc81e6b72bb41` — all artifacts reference it |
-| Git tag | ✅ | `v0.1.0-stable` at correct commit (recovery tag) |
-| Git tag | ❌ | `v0.1.0` blocked by GH013 |
-| Git tag | ❌ | `v0.1.0.0` blocked by GH013 (wrong commit) |
-| GitHub Release | ✅ | Created at `v0.1.0-stable` with 7 artifacts |
-| Release artifacts | ✅ | 7 files in `release/artifacts/0.1.0/` |
-| Digest/SBOM/Provenance | ✅ | SHA3-512, CycloneDX 1.5, SLSA v1 |
-| Promotion evaluation | ✅ | 9/11 passed, 0 failed, 2 skipped |
-| Soak validation | ✅ | 19/25 passed, 6 skipped |
-| Documentation | ✅ | Release notes, quickstart, promotion eval, soak report |
+| Link                   | Status | Detail                                                                  |
+| ---------------------- | ------ | ----------------------------------------------------------------------- |
+| Source commit          | ✅     | `1371a8966c3047bbd95e87308a0bc81e6b72bb41` — all artifacts reference it |
+| Git tag                | ✅     | `v0.1.0-stable` at correct commit (recovery tag)                        |
+| Git tag                | ❌     | `v0.1.0` blocked by GH013                                               |
+| Git tag                | ❌     | `v0.1.0.0` blocked by GH013 (wrong commit)                              |
+| GitHub Release         | ✅     | Created at `v0.1.0-stable` with 7 artifacts                             |
+| Release artifacts      | ✅     | 7 files in `release/artifacts/0.1.0/`                                   |
+| Digest/SBOM/Provenance | ✅     | SHA3-512, CycloneDX 1.5, SLSA v1                                        |
+| Promotion evaluation   | ✅     | 9/11 passed, 0 failed, 2 skipped                                        |
+| Soak validation        | ✅     | 19/25 passed, 6 skipped                                                 |
+| Documentation          | ✅     | Release notes, quickstart, promotion eval, soak report                  |
 
 ### Tag Status
 
-| Tag Name | Status | Target Commit | Valid |
-|----------|--------|---------------|-------|
-| `v0.1.0` | ❌ Blocked by Immutability Record | N/A | — |
-| `v0.1.0.0` | ❌ Blocked by Immutability Record | N/A | ❌ (wrong commit) |
-| `v0.1.0-stable` | ✅ Exists | `1371a8966c3047bbd95e87308a0bc81e6b72bb41` | ✅ |
+| Tag Name        | Status                            | Target Commit                              | Valid             |
+| --------------- | --------------------------------- | ------------------------------------------ | ----------------- |
+| `v0.1.0`        | ❌ Blocked by Immutability Record | N/A                                        | —                 |
+| `v0.1.0.0`      | ❌ Blocked by Immutability Record | N/A                                        | ❌ (wrong commit) |
+| `v0.1.0-stable` | ✅ Exists                         | `1371a8966c3047bbd95e87308a0bc81e6b72bb41` | ✅                |
 
 ## Recovery Source Commit (Frozen)
 
