@@ -5,6 +5,30 @@ All notable changes to MyCodeXvantaOS will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2026-05-21
+
+### Security
+
+- Fixed CodeQL code scanning configuration error (PR #100)
+  - Added `.github/codeql/codeql-config.yml` with explicit path filters and security-and-quality query suite
+  - Referenced config-file in `codeql.yml` init step for deterministic scanning
+  - Upgraded `security-scan.yaml` SARIF upload actions from v3 to v4
+- Removed vestigial `@cloudflare/next-on-pages` from studio-platform devDependencies (Closes #95)
+  - Eliminates undici v5 CVE chain (5 CVEs) introduced via miniflare v3 transitive dependency
+  - Removed `@cloudflare/next-on-pages>next` peer dependency rule from root `package.json`
+- Migrated `apollo-server-express` v3 to `@apollo/server` v5 (Closes #96)
+  - Replaced `apollo-server-express` with `@apollo/server` ^5.5.1 + `@as-integrations/express4` ^1.1.2
+  - Replaced `gql` import from `apollo-server-express` with `graphql-tag` ^2.12.6
+  - Upgraded `graphql` from ^16.8.0 to ^16.11.0 (required by @apollo/server v5)
+  - Removes apollo-server-core XS-Search vulnerability (CVE-2022-35736 class)
+- Upgraded `vitest` from ^1.3.1 to ^3.2.4 in dev-studio and validation services (Closes #97)
+  - Eliminates vite v5 path traversal vulnerability (CVE-2024-32706 class)
+
+### Accepted Risk
+
+- Issue #98: Genkit OpenTelemetry dependency chain (Prometheus exporter CVE) — code path not used, pinned by genkit
+- Issue #99: @tootallnate/once transitive vulnerability via http-proxy-agent — low severity, override incompatible with CJS
+
 ## [0.1.1] - 2026-07-20
 
 ### Security

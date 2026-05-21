@@ -96,9 +96,7 @@
   "pnpm": {
     "peerDependencyRules": {
       "ignoreMissing": [],
-      "allowedVersions": {
-        "@cloudflare/next-on-pages>next": "*"
-      },
+      "allowedVersions": {},
       "allowAny": [
         "next"
       ]
