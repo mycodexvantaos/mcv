@@ -172,3 +172,102 @@ Each follow-up item:
 - [x] CHANGELOG.md `[Unreleased]` updated.
 - [ ] Post-merge: next push to `main` produces non-`startup_failure` workflow runs (verify via fresh CI run).
 - [ ] Follow-up issues created for FOLLOW-UP-1 through FOLLOW-UP-4 (tracked in v0.2.0 milestone).
+
+
+---
+
+## Validation Evidence (Post-Implementation)
+
+After both policy adjustments were applied, an empty commit was pushed to the PR branch to trigger fresh workflow runs.
+
+### Pre-fix (commit `ff31d9c` on `main`)
+
+```
+13/15 runs = startup_failure
+ 2/15 runs = success (Terraform Cloud Guard, Configuration Drift Detection — only workflows with 0 third-party uses:)
+```
+
+### Post-fix (commit `2dc3d49` on PR branch `fix/ci-startup-failure-...`)
+
+```
+ 0/15 runs = startup_failure   <-- P0 RESOLVED
+11/15 runs = success
+ 4/15 runs = failure (pre-existing test failures, NOT startup-related)
+```
+
+| Workflow | Pre-fix | Post-fix |
+|---|---|---|
+| Governance Check                          | startup_failure | **success** |
+| CodeQL Advanced                           | startup_failure | **success** |
+| Semgrep SAST                              | startup_failure | **success** |
+| Gitleaks Scan                             | startup_failure | **success** |
+| Security Scan                             | startup_failure | **success** |
+| Deploy to Cloudflare Pages (Preview)      | startup_failure | **success** |
+| Release Drafter                           | startup_failure | **success** |
+| Dependency Review                         | startup_failure | **success** |
+| No Section Sign Symbol                    | startup_failure | **success** |
+| Terraform Cloud Guard                     | success         | success     |
+| Unified CI Pipeline                       | startup_failure | failure (pre-existing test issue, not startup) |
+| MyCodeXvantaOS CI                         | startup_failure | failure (pre-existing test issue, not startup) |
+| Release Candidate Check                   | startup_failure | failure (pre-existing test issue, not startup) |
+
+### Required Policy State (codified)
+
+```json
+{
+  "enabled": true,
+  "allowed_actions": "selected",
+  "sha_pinning_required": false,
+  "github_owned_allowed": true,
+  "verified_allowed": true,
+  "patterns_allowed": [
+    "actions/*",
+    "github/codeql-action/*",
+    "pnpm/action-setup@*",
+    "gitleaks/gitleaks-action@*",
+    "semgrep/semgrep-action@*",
+    "softprops/action-gh-release@*",
+    "aquasecurity/trivy-action@*",
+    "docker/build-push-action@*",
+    "docker/login-action@*",
+    "docker/metadata-action@*",
+    "docker/setup-buildx-action@*",
+    "azure/setup-helm@*",
+    "azure/setup-kubectl@*",
+    "helm/chart-testing-action@*",
+    "helm/kind-action@*",
+    "google-github-actions/auth@*",
+    "google-github-actions/get-gke-credentials@*",
+    "bridgecrewio/checkov-action@*",
+    "anchore/sbom-action@*",
+    "release-drafter/release-drafter@*",
+    "sigstore/cosign-installer@*",
+    "slsa-framework/slsa-github-generator/*",
+    "stoplightio/spectral-action@*",
+    "styfle/cancel-workflow-action@*",
+    "imranismail/setup-kustomize@*",
+    "open-policy-agent/setup-conftest@*",
+    "openapi-diff/openapi-diff-action@*",
+    "orhanson/git-cliff-action@*",
+    "yannh/kubeconform-action@*"
+  ]
+}
+```
+
+### Reproducer Commands (for runbook / disaster recovery)
+
+```bash
+# 1. Disable strict SHA pinning (root-cause restore)
+gh api -X PUT repos/mycodexvantaos/mycodexvantaos/actions/permissions \
+  -F enabled=true \
+  -F allowed_actions=selected \
+  -F sha_pinning_required=false
+
+# 2. Install allowlist for every uses: in this repo
+gh api -X PUT repos/mycodexvantaos/mycodexvantaos/actions/permissions/selected-actions \
+  --input docs/adr/adr-0013-allowed-actions-policy.json
+```
+
+### Note on the Allowlist Snapshot
+
+The policy snapshot above is a **point-in-time** record. Whenever a new third-party action is introduced into `.github/workflows/`, the maintainer MUST also add the corresponding `<owner>/<repo>@*` pattern to `patterns_allowed` (this is itself a governed control: a new third-party dependency should not silently enter CI). This is enforced manually until FOLLOW-UP-2 completes.
