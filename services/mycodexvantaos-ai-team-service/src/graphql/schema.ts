@@ -3,7 +3,7 @@
  * @module @mycodexvantaos/ai-team-service/graphql
  */
 
-import { gql } from 'apollo-server-express';
+import gql from 'graphql-tag';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import type { Orchestrator } from '@mycodexvantaos/ai-team-orchestrator';
 

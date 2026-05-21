@@ -8,7 +8,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import { createServer } from 'http';
 import { WebSocketServer, WebSocket } from 'ws';
-import { ApolloServer } from 'apollo-server-express';
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@as-integrations/express4';
 import { schema } from './graphql/schema';
 import { setupRoutes } from './api/routes';
 import { Orchestrator } from '@mycodexvantaos/ai-team-orchestrator';
@@ -89,12 +90,16 @@ async function createApp(config: ServerConfig = DEFAULT_CONFIG): Promise<{
   if (config.enableGraphQL) {
     const apolloServer = new ApolloServer({
       schema,
-      context: () => ({ orchestrator }),
       introspection: process.env.NODE_ENV !== 'production',
     });
 
     await apolloServer.start();
-    apolloServer.applyMiddleware({ app: app as any, path: '/graphql' });
+    app.use(
+      '/graphql',
+      expressMiddleware(apolloServer, {
+        context: async () => ({ orchestrator }),
+      })
+    );
   }
 
   // Create HTTP server
