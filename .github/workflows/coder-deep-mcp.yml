@@ -73,16 +73,27 @@ jobs:
             tests/test_coder_deep_mcp.py \
             --cov=packages/mycodexvantaos-coder-deep \
             --cov=apps/coder-deep-mcp \
+            --cov-branch \
             --cov-report=term-missing \
             --cov-report=xml:coverage-coder-deep.xml \
             --cov-fail-under=70
 
-      - name: Upload coverage
+      - name: Upload coverage artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: coder-deep-coverage
           path: python/coverage-coder-deep.xml
+
+      - name: Upload coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: mycodexvantaos/mycodexvantaos
+          files: python/coverage-coder-deep.xml
+          flags: coder-deep
+          name: coder-deep-mcp
 
   security-scan:
     runs-on: ubuntu-latest

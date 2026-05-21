@@ -1,0 +1,43 @@
+# Codecov configuration for MyCodeXvantaOS
+# https://docs.codecov.com/docs/codecov-yaml
+
+coverage:
+  precision: 2
+  round: down
+  range: "70...100"
+  status:
+    project:
+      default:
+        target: 70%
+        threshold: 5%
+    patch:
+      default:
+        target: 70%
+        threshold: 5%
+
+comment:
+  layout: "header, diff, files, footer"
+  behavior: default
+  require_changes: false
+
+flags:
+  coder-deep:
+    paths:
+      - python/packages/mycodexvantaos-coder-deep/
+      - python/apps/coder-deep-mcp/
+    carryforward: true
+  ci-repair:
+    paths:
+      - python/packages/mycodexvantaos-ci-repair/
+      - python/apps/ci-repair-agent/
+    carryforward: true
+  python:
+    paths:
+      - python/packages/
+    carryforward: true
+
+ignore:
+  - "python/tests/**"
+  - "python/scripts/**"
+  - "**/__pycache__/**"
+  - "**/migrations/**"

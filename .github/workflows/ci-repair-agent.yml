@@ -69,16 +69,27 @@ jobs:
             tests/test_ci_repair_github_client.py \
             --cov=packages/mycodexvantaos-ci-repair \
             --cov=apps/ci-repair-agent \
+            --cov-branch \
             --cov-report=term-missing \
             --cov-report=xml:coverage-ci-repair.xml \
             --cov-fail-under=70
 
-      - name: Upload coverage
+      - name: Upload coverage artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ci-repair-coverage
           path: python/coverage-ci-repair.xml
+
+      - name: Upload coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: mycodexvantaos/mycodexvantaos
+          files: python/coverage-ci-repair.xml
+          flags: ci-repair
+          name: ci-repair-agent
 
   security-scan:
     runs-on: ubuntu-latest
