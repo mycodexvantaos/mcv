@@ -1,0 +1,52 @@
+# docker-compose.yml for CI Repair Agent
+# Usage: docker compose up -d
+
+version: "3.9"
+
+services:
+  ci-repair-agent:
+    build:
+      context: ..
+      dockerfile: services/ci-repair-agent/Dockerfile
+    container_name: ci-repair-agent
+    ports:
+      - "${PORT:-8000}:8000"
+    environment:
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - GITHUB_REPOSITORY=${GITHUB_REPOSITORY:-mycodexvantaos/mycodexvantaos}
+      - DATABASE_URL=postgresql://ci_repair:${POSTGRES_PASSWORD:-ci_repair_secret}@postgres:5432/ci_repair
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - HOST=0.0.0.0
+      - PORT=8000
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: ci-repair-postgres
+    environment:
+      - POSTGRES_DB=ci_repair
+      - POSTGRES_USER=ci_repair
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-ci_repair_secret}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ci_repair -d ci_repair"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+    driver: local
