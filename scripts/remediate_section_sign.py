@@ -78,7 +78,6 @@ def replace_section_sign(content):
         return content, 0
 
     original = content
-    count = content.count('Sec.')
 
     # Replace Sec. followed by digits (like Sec.5, Sec.7, Sec.7.2, Sec.10-12)
     # Pattern: Sec.<digits> or Sec.<digits>.<digits> or Sec.<digits>-<digits>
