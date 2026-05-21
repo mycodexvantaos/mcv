@@ -20,29 +20,29 @@ The service consists of two Python packages:
 
 The agent classifies CI failures into the following categories:
 
-| Category | Description | Auto-fixable |
-|---|---|---|
-| `dependency_error` | npm/pnpm/uv dependency resolution failures | ✅ Yes |
-| `lint_error` | Ruff, ESLint, Prettier violations | ✅ Yes |
-| `test_failure` | pytest assertion failures | ❌ Manual review |
-| `build_error` | TypeScript compilation, Next.js build errors | ❌ Manual review |
-| `docker_build_error` | Dockerfile COPY/RUN failures | ❌ Manual review |
-| `deployment_error` | Cloudflare, deployment pipeline failures | ❌ Manual review |
-| `permission_error` | GitHub Actions token/scope issues | ❌ Manual review |
-| `configuration_error` | Workflow YAML syntax or config errors | ❌ Manual review |
-| `timeout_error` | Job timeout or cancellation | ❌ Manual review |
-| `unknown_error` | Unclassified failures | ❌ Manual review |
+| Category              | Description                                  | Auto-fixable     |
+| --------------------- | -------------------------------------------- | ---------------- |
+| `dependency_error`    | npm/pnpm/uv dependency resolution failures   | ✅ Yes           |
+| `lint_error`          | Ruff, ESLint, Prettier violations            | ✅ Yes           |
+| `test_failure`        | pytest assertion failures                    | ❌ Manual review |
+| `build_error`         | TypeScript compilation, Next.js build errors | ❌ Manual review |
+| `docker_build_error`  | Dockerfile COPY/RUN failures                 | ❌ Manual review |
+| `deployment_error`    | Cloudflare, deployment pipeline failures     | ❌ Manual review |
+| `permission_error`    | GitHub Actions token/scope issues            | ❌ Manual review |
+| `configuration_error` | Workflow YAML syntax or config errors        | ❌ Manual review |
+| `timeout_error`       | Job timeout or cancellation                  | ❌ Manual review |
+| `unknown_error`       | Unclassified failures                        | ❌ Manual review |
 
 ## API Endpoints
 
-| Method | Path | Description |
-|---|---|---|
-| `GET` | `/health` | Health check (reports database status) |
-| `GET` | `/api/runs` | List workflow runs (filter by branch/status) |
-| `GET` | `/api/runs/{run_id}/analyze` | Analyze a failed run and get repair plan |
-| `POST` | `/api/runs/{run_id}/repair` | Execute repair (optionally create branch/PR) |
-| `GET` | `/api/history/analyses` | Retrieve stored analyses from database |
-| `GET` | `/api/history/stats/categories` | Get error category distribution statistics |
+| Method | Path                            | Description                                  |
+| ------ | ------------------------------- | -------------------------------------------- |
+| `GET`  | `/health`                       | Health check (reports database status)       |
+| `GET`  | `/api/runs`                     | List workflow runs (filter by branch/status) |
+| `GET`  | `/api/runs/{run_id}/analyze`    | Analyze a failed run and get repair plan     |
+| `POST` | `/api/runs/{run_id}/repair`     | Execute repair (optionally create branch/PR) |
+| `GET`  | `/api/history/analyses`         | Retrieve stored analyses from database       |
+| `GET`  | `/api/history/stats/categories` | Get error category distribution statistics   |
 
 ### Example: Analyze a Failed Run
 
@@ -119,14 +119,14 @@ GITHUB_TOKEN=$GITHUB_TOKEN DATABASE_URL=postgresql://ci_repair:ci_repair_secret@
 
 ## Environment Variables
 
-| Variable | Default | Description |
-|---|---|---|
-| `GITHUB_TOKEN` | (required) | GitHub personal access token with `repo` and `actions` scopes |
-| `GITHUB_REPOSITORY` | `mycodexvantaos/mycodexvantaos` | Target GitHub repository |
-| `DATABASE_URL` | (empty) | PostgreSQL connection URL (optional — service runs without DB) |
-| `LOG_LEVEL` | `INFO` | Logging level |
-| `HOST` | `0.0.0.0` | Server bind address |
-| `PORT` | `8000` | Server bind port |
+| Variable            | Default                         | Description                                                    |
+| ------------------- | ------------------------------- | -------------------------------------------------------------- |
+| `GITHUB_TOKEN`      | (required)                      | GitHub personal access token with `repo` and `actions` scopes  |
+| `GITHUB_REPOSITORY` | `mycodexvantaos/mycodexvantaos` | Target GitHub repository                                       |
+| `DATABASE_URL`      | (empty)                         | PostgreSQL connection URL (optional — service runs without DB) |
+| `LOG_LEVEL`         | `INFO`                          | Logging level                                                  |
+| `HOST`              | `0.0.0.0`                       | Server bind address                                            |
+| `PORT`              | `8000`                          | Server bind port                                               |
 
 ## Technology Stack
 

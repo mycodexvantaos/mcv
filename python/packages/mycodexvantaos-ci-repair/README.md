@@ -11,15 +11,15 @@ CI Repair Engine — GitHub Actions failure analysis, error classification & rep
 
 ## Error Categories
 
-| Category | Auto-fixable |
-|---|---|
-| dependency_error | ✅ |
-| lint_error | ✅ |
-| test_failure | ❌ |
-| build_error | ❌ |
-| docker_build_error | ❌ |
-| deployment_error | ❌ |
-| permission_error | ❌ |
-| configuration_error | ❌ |
-| timeout_error | ❌ |
-| unknown_error | ❌ |
+| Category            | Auto-fixable |
+| ------------------- | ------------ |
+| dependency_error    | ✅           |
+| lint_error          | ✅           |
+| test_failure        | ❌           |
+| build_error         | ❌           |
+| docker_build_error  | ❌           |
+| deployment_error    | ❌           |
+| permission_error    | ❌           |
+| configuration_error | ❌           |
+| timeout_error       | ❌           |
+| unknown_error       | ❌           |
