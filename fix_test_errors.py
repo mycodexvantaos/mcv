@@ -3,7 +3,6 @@
 Fix test errors systematically
 """
 import os
-import json
 from pathlib import Path
 
 def add_service_export(package_path):
