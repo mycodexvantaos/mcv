@@ -1,0 +1,36 @@
+{
+  "hooks": {
+    "preToolUse": [
+      {
+        "type": "command",
+        "bash": "echo '{\"decision\": \"allow\"}'",
+        "timeoutSec": 5
+      }
+    ],
+    "agentStop": [
+      {
+        "type": "command",
+        "bash": "cd \"$COPILOT_HOOK_CWD\" && npm run typecheck 2>&1 | tail -5; if [ $? -ne 0 ]; then echo '{\"decision\": \"block\", \"additionalContext\": \"TypeScript errors found. Fix them before completing.\"}'; fi",
+        "timeoutSec": 60
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "shell(git:*)",
+      "shell(npm run build)",
+      "shell(npm run typecheck)",
+      "shell(npm run format:*)",
+      "shell(npm run lint)",
+      "shell(npm run governance:check)",
+      "shell(npm run contracts:validate)",
+      "write"
+    ],
+    "deny": [
+      "shell(rm -rf)",
+      "shell(git push --force)",
+      "shell(npm run deploy)",
+      "shell(npm run upload)"
+    ]
+  }
+}

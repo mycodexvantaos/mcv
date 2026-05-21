@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [
+      {
+        "type": "command",
+        "bash": "TOOL_NAME=\"$COPILOT_HOOK_TOOL_NAME\"; TOOL_ARGS=\"$COPILOT_HOOK_TOOL_ARGS\"; if echo \"$TOOL_ARGS\" | grep -qE '(rm -rf /|rm -rf \\*|rm -rf ~)'; then echo '{\"decision\": \"deny\", \"reason\": \"Dangerous rm -rf command blocked by security hook\"}'; elif echo \"$TOOL_ARGS\" | grep -qE '(password|secret|api_key|token)' && echo \"$TOOL_NAME\" | grep -q 'write'; then echo '{\"decision\": \"deny\", \"reason\": \"Potential secret exposure blocked. Do not write credentials to files.\"}'; elif echo \"$TOOL_ARGS\" | grep -qE 'git push --force'; then echo '{\"decision\": \"deny\", \"reason\": \"Force push is not allowed. Use regular git push.\"}'; elif echo \"$TOOL_ARGS\" | grep -qE 'curl.*\\| *(sh|bash)'; then echo '{\"decision\": \"deny\", \"reason\": \"Piping remote scripts to shell is not allowed.\"}'; else echo '{\"decision\": \"allow\"}'; fi",
+        "timeoutSec": 10
+      }
+    ]
+  }
+}

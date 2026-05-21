@@ -20,12 +20,14 @@ When operating in Autopilot mode, the agent MUST:
 The following tools are pre-approved for autonomous execution:
 
 ```
-shell(git:*)              — All Git commands
+shell(git:*)              — All Git commands (except force push)
 shell(npm run build:*)    — All build scripts
 shell(npm run lint:*)     — All lint scripts
 shell(npm run typecheck)  — TypeScript validation
 shell(npm run format:*)   — Code formatting
 shell(npm run validate:*) — Validation scripts
+shell(npm run governance:check) — Governance checks
+shell(npm run contracts:validate) — Contract validation
 write                     — File write operations
 ```
 
@@ -35,9 +37,33 @@ The following actions MUST NOT be performed without explicit user approval:
 
 - `git push --force` — Force pushing to any branch
 - `npm run deploy` — Production deployment
+- `npm run upload` — Upload to Cloudflare
+- `rm -rf` — Recursive deletion
 - Deleting files or directories outside of generated/temporary paths
 - Modifying CI/CD workflow files (`.github/workflows/`)
 - Changing environment variables or secrets configuration
+- Installing packages from URLs or untrusted sources
+- Running `curl | sh` or similar patterns
+
+## Hooks Integration
+
+This repository uses Copilot hooks for automated quality gates and security controls:
+
+- **`.github/hooks/quality-gates.json`** — Enforces typecheck on agent stop, logs errors, and provides session lifecycle hooks
+- **`.github/hooks/security.json`** — Blocks dangerous operations (force push, rm -rf, secret exposure, remote script execution)
+- **`.github/copilot/settings.json`** — Repository-level permissions and inline hooks
+
+### Hook Events Used
+
+| Event | Purpose |
+|-------|---------|
+| `sessionStart` | Load project conventions at session start |
+| `preToolUse` | Security checks before tool execution |
+| `postToolUse` | Track file modifications |
+| `agentStop` | Run typecheck before agent completes |
+| `errorOccurred` | Log errors for debugging |
+| `sessionEnd` | Session cleanup |
+| `subagentStop` | Track sub-agent completion |
 
 ## Plan Mode Guidelines
 
@@ -62,6 +88,29 @@ When generating code, the agent MUST:
 - Include JSDoc comments for exported functions and types
 - Ensure new code passes `npm run typecheck` without errors
 - Use the existing project dependencies; do not add new dependencies without justification
+
+## Custom Agents
+
+This repository includes specialized agents in `.github/agents/`:
+
+| Agent | File | Purpose |
+|-------|------|---------|
+| mycodexvantaos-autopilot | `my-agent.agent.md` | Main autonomous coding agent |
+| code-review | `code-review.agent.md` | Specialized code review |
+| refactor | `refactor.agent.md` | Behavior-preserving refactoring |
+| docs | `docs.agent.md` | Documentation maintenance |
+
+### Invoking Agents
+
+```bash
+# Interactive selection
+/agent
+
+# Direct invocation
+copilot --agent=code-review --prompt "Review current branch"
+copilot --agent=refactor --prompt "Refactor src/components/"
+copilot --agent=docs --prompt "Update API documentation"
+```
 
 ## Multi-Repository Context
 

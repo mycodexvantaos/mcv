@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "type": "prompt",
+        "prompt": "Read AGENTS.md and .github/copilot-instructions.md to understand project conventions before starting work."
+      }
+    ],
+    "preToolUse": [
+      {
+        "type": "command",
+        "bash": "echo '{\"decision\": \"allow\"}' # Allow all pre-approved tools by default",
+        "timeoutSec": 5
+      }
+    ],
+    "postToolUse": [
+      {
+        "type": "command",
+        "bash": "if echo \"$COPILOT_HOOK_TOOL_NAME\" | grep -q 'write'; then echo 'File modified - typecheck recommended'; fi",
+        "timeoutSec": 10
+      }
+    ],
+    "agentStop": [
+      {
+        "type": "command",
+        "bash": "cd /workspace && npm run typecheck 2>/dev/null && echo '{\"decision\": \"allow\"}' || echo '{\"decision\": \"block\", \"reason\": \"TypeScript errors detected. Please fix before completing.\", \"additionalContext\": \"Run npm run typecheck to see errors.\"}'",
+        "timeoutSec": 60
+      }
+    ],
+    "subagentStop": [
+      {
+        "type": "command",
+        "bash": "echo 'Sub-agent completed task'",
+        "timeoutSec": 5
+      }
+    ],
+    "errorOccurred": [
+      {
+        "type": "command",
+        "bash": "echo \"[ERROR] $(date -Iseconds): Hook caught error\" >> /tmp/copilot-errors.log",
+        "timeoutSec": 5
+      }
+    ],
+    "sessionEnd": [
+      {
+        "type": "command",
+        "bash": "echo \"Session ended at $(date -Iseconds)\"",
+        "timeoutSec": 5
+      }
+    ]
+  }
+}
