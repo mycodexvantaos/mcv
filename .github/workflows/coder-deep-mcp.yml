@@ -76,6 +76,8 @@ jobs:
             --cov-branch \
             --cov-report=term-missing \
             --cov-report=xml:coverage-coder-deep.xml \
+            --junitxml=junit.xml \
+            -o junit_family=legacy \
             --cov-fail-under=70
 
       - name: Upload coverage artifact
@@ -94,6 +96,12 @@ jobs:
           files: python/coverage-coder-deep.xml
           flags: coder-deep
           name: coder-deep-mcp
+
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   security-scan:
     runs-on: ubuntu-latest
