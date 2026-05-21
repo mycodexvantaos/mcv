@@ -5,9 +5,6 @@
 import {
   DeploymentProviderRegistry,
   NativeDeploymentProvider,
-  getDeploymentRegistry,
-  initializeDeployment,
-  deploy,
   Deployment,
 } from '../src/index';
 
