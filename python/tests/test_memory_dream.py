@@ -2,8 +2,6 @@
 Tests for Memory Dream Processing
 """
 
-from datetime import datetime
-
 from mycodexvantaos_memory_dream.models import (
     MemoryItem,
     MemoryItemType,
