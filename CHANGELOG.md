@@ -5,6 +5,12 @@ All notable changes to MyCodeXvantaOS will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- **CI**: Relocated misplaced ArgoCD/Kustomize manifests from `.github/workflows/argocd/` to top-level `argocd/` directory. These non-workflow YAML files caused all push-triggered GitHub Actions workflows on `main` to return `startup_failure` (10 consecutive failures observed after commit `ff31d9c`). Root cause: GitHub Actions parses every YAML under `.github/workflows/` as a workflow definition; Kubernetes manifests use top-level keys (`apiVersion`, `kind`, `metadata`, `spec`) that are not valid workflow keys. See `docs/adr/adr-0012-relocate-argocd-manifests-out-of-workflows.md`. Task type: F (Emergency Blocker) + C (CI/CD Workflow Fix). No runtime code, no dependencies, no release identity, no CodeQL language matrix changed.
+
 ## [0.1.3] - 2026-07-21
 
 ### Security
