@@ -148,7 +148,10 @@ def cmd_dream_run(args: argparse.Namespace) -> None:
         else:
             # No input specified — use sample data for demo
             memory_items = _create_sample_memory_items()
-            print(f"✅ Using {len(memory_items)} sample memory items (no input specified)", file=sys.stderr)
+            print(
+                f"✅ Using {len(memory_items)} sample memory items (no input specified)",
+                file=sys.stderr,
+            )
     except Exception as e:
         print(f"❌ Failed to load memory items: {e}", file=sys.stderr)
         sys.exit(1)
@@ -229,7 +232,8 @@ def cli() -> None:
         help="Execution mode (default: dry-run)",
     )
     run_parser.add_argument(
-        "-o", "--output",
+        "-o",
+        "--output",
         help="Output JSON file for dream report",
     )
     run_parser.add_argument(
@@ -267,7 +271,8 @@ def main() -> None:
         help="Input JSON file containing memory items",
     )
     parser.add_argument(
-        "-o", "--output",
+        "-o",
+        "--output",
         help="Output JSON file for dream report (default: stdout)",
     )
     parser.add_argument(

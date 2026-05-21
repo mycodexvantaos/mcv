@@ -3,9 +3,9 @@ Tests for Memory Dream Processing
 """
 
 from mycodexvantaos_memory_dream.models import (
+    DreamActionType,
     MemoryItem,
     MemoryItemType,
-    DreamActionType,
 )
 
 
