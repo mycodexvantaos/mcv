@@ -41,3 +41,6 @@ ignore:
   - "python/scripts/**"
   - "**/__pycache__/**"
   - "**/migrations/**"
+  - "**/node_modules/**"
+  - "**/.next/**"
+  - "**/dist/**"
