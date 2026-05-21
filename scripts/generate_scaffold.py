@@ -596,8 +596,8 @@ metadata_schema:
   updatedAt:
     type: string
     format: date-time
-spec_schema: {}
-status_schema: {}
+spec_schema: {{}}
+status_schema: {{}}
 lifecycle:
   - creating
   - active
