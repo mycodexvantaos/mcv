@@ -15,6 +15,15 @@ from contextlib import asynccontextmanager
 from typing import Any
 
 import uvicorn
+from asyncpg.exceptions import (
+    CannotConnectNowError,
+    ClientConfigurationError,
+    ConnectionDoesNotExistError,
+    InvalidAuthorizationSpecificationError,
+    InvalidCatalogNameError,
+    InvalidPasswordError,
+    PostgresConnectionError,
+)
 from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel, Field
 
@@ -165,9 +174,22 @@ async def lifespan(app: FastAPI):  # noqa: ARG001
         try:
             await _db_client.connect()
             logger.info("Database connected: %s", settings.database_url[:30] + "...")
-        except Exception:
+        except (
+            PostgresConnectionError,
+            CannotConnectNowError,
+            ConnectionDoesNotExistError,
+            InvalidAuthorizationSpecificationError,
+            InvalidPasswordError,
+            InvalidCatalogNameError,
+            ClientConfigurationError,
+            OSError,
+            asyncio.TimeoutError,
+        ):
             logger.exception("Failed to connect to database — running without persistence")
             _db_client = None
+        except Exception:
+            logger.exception("Unexpected error while connecting to database")
+            raise
 
     yield
 
