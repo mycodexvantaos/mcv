@@ -4,7 +4,6 @@ Conflict Detector — Find explicit memory conflicts
 Strategy: Detect explicit `conflicts_with` relationships
 """
 
-
 from mycodexvantaos_memory_dream.models import MemoryItem
 
 
@@ -29,7 +28,6 @@ def detect_conflicts(
     # Check each memory's conflicts_with list
     for memory in memory_items:
         for conflict_id in memory.conflicts_with:
-
             # Normalize conflict ID
             if not conflict_id.startswith("urn:"):
                 conflict_id = f"urn:mycodexvantaos:memory:{conflict_id}"

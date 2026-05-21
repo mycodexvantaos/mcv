@@ -125,9 +125,13 @@ class DreamEngine:
             if action.action_type == DreamActionType.MERGE:
                 executed.append(f"Merge {action.target_memory_id} into {action.related_memory_id}")
             elif action.action_type == DreamActionType.RESOLVE:
-                executed.append(f"Resolve conflict between {action.target_memory_id} and {action.related_memory_id}")
+                executed.append(
+                    f"Resolve conflict between {action.target_memory_id} and {action.related_memory_id}"
+                )
             elif action.action_type == DreamActionType.MARK_ORPHAN:
-                executed.append(f"Mark orphan in {action.target_memory_id}: {action.metadata.get('orphan_entity_id')}")
+                executed.append(
+                    f"Mark orphan in {action.target_memory_id}: {action.metadata.get('orphan_entity_id')}"
+                )
             elif action.action_type == DreamActionType.DELETE:
                 executed.append(f"Delete {action.target_memory_id}")
             else:
