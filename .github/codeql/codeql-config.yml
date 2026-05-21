@@ -1,0 +1,31 @@
+name: Custom CodeQL Configuration
+# Explicitly define paths to scan and paths to ignore
+# This prevents CodeQL from attempting to analyze languages not present in the repo
+
+# Path filters for analysis
+paths:
+  - 'services'
+  - 'apps'
+  - 'packages'
+  - 'contracts'
+  - 'scripts'
+  - '.github'
+
+paths-ignore:
+  - '**/node_modules'
+  - '**/dist'
+  - '**/build'
+  - '**/.next'
+  - '**/coverage'
+  - '**/*.test.ts'
+  - '**/*.spec.ts'
+  - '**/*.test.js'
+  - '**/*.spec.js'
+  - '**/vendor'
+  - '**/__pycache__'
+  - '**/.venv'
+  - '**/venv'
+
+# Query suite - use security-extended for deeper analysis
+queries:
+  - uses: security-and-quality
