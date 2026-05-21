@@ -1,82 +1,163 @@
-# AGENTS.md — Autopilot Configuration
+# AGENTS.md — Autonomous Agent Configuration
 
-## Overview
+## Platform Context
 
-This file configures autonomous agent behavior (Autopilot mode) for GitHub Copilot CLI and compatible AI coding agents working in this repository. When Autopilot mode is enabled, the agent can work autonomously on tasks without requiring step-by-step approval.
+MyCodeXvantaOS is a Local-first, Provider-agnostic, Contract-driven full-stack application operating system. This file configures autonomous agent behavior across all surfaces: GitHub Copilot CLI, Copilot Cloud Agent, and compatible AI coding agents.
+
+## Architecture Invariants (MUST NOT VIOLATE)
+
+1. **Local-first** — Never introduce external dependencies without a native fallback
+2. **Provider-agnostic** — Never couple business logic directly to third-party SDKs
+3. **Contract-first** — Define interfaces before implementation; validate with `npm run contracts:validate`
+4. **Governance-enforced** — All rules are machine-enforced via `npm run governance:check`
 
 ## Autopilot Behavior
 
 When operating in Autopilot mode, the agent MUST:
 
-1. **Always run validation before committing**: Execute `npm run typecheck` and `npm run format:check` to ensure code quality.
-2. **Follow the Explore → Plan → Code → Commit workflow** for any non-trivial changes.
-3. **Create feature branches** for new work; never commit directly to `main`.
-4. **Write descriptive commit messages** using conventional commits format.
-5. **Run governance checks** (`npm run governance:check`) before finalizing changes.
-6. **Respect existing architecture** — do not restructure directories or rename core modules without explicit instruction.
+1. **Read project conventions first**: Load `.github/copilot-instructions.md`, `AGENTS.md`, and relevant `.agents/skills/` before starting work
+2. **Always validate before committing**: Execute `npm run typecheck && npm run format:check`
+3. **Follow Explore → Plan → Code → Validate → Commit** for non-trivial changes
+4. **Create feature branches** for new work; never commit directly to `main`
+5. **Write descriptive commit messages** using conventional commits format
+6. **Run governance checks** (`npm run governance:check`) before finalizing changes
+7. **Validate contracts** (`npm run contracts:validate`) when modifying service interfaces
+8. **Respect naming conventions**: `mycodexvantaos-<domain>-<capability>` for all new services/packages
+9. **Respect layer boundaries**: Do not create circular dependencies between layers
 
-## Allowed Tools (Autopilot Permissions)
+## Tool Permissions
 
-The following tools are pre-approved for autonomous execution:
+### Pre-approved (Autopilot Safe)
 
 ```
-shell(git:*)              — All Git commands (except force push)
-shell(npm run build:*)    — All build scripts
-shell(npm run lint:*)     — All lint scripts
-shell(npm run typecheck)  — TypeScript validation
-shell(npm run format:*)   — Code formatting
-shell(npm run validate:*) — Validation scripts
-shell(npm run governance:check) — Governance checks
-shell(npm run contracts:validate) — Contract validation
-write                     — File write operations
+shell(git:*)                        — All Git commands (except force push)
+shell(npm run build)                — Build
+shell(npm run typecheck)            — TypeScript validation
+shell(npm run lint)                 — Linting
+shell(npm run format:*)             — Code formatting
+shell(npm run validate:*)           — Validation scripts
+shell(npm run governance:check)     — Governance checks
+shell(npm run contracts:validate)   — Contract validation
+shell(npm run test:*)               — All test commands
+shell(npm run python:*)             — Python plane commands
+shell(npm run genkit:*)             — Genkit development
+shell(npm run rc:verify)            — Release candidate verification
+shell(npm run api:start)            — API server start
+write                               — File write operations
 ```
 
-### Restricted Tools (Require Confirmation)
+### Require Confirmation
 
-The following actions MUST NOT be performed without explicit user approval:
+```
+shell(git push)                     — Push to remote (review branch first)
+shell(npm install)                  — Install new dependencies
+shell(npm run migration:*)          — Database migrations
+shell(rm)                           — File deletion (single files)
+```
 
-- `git push --force` — Force pushing to any branch
-- `npm run deploy` — Production deployment
-- `npm run upload` — Upload to Cloudflare
-- `rm -rf` — Recursive deletion
-- Deleting files or directories outside of generated/temporary paths
-- Modifying CI/CD workflow files (`.github/workflows/`)
-- Changing environment variables or secrets configuration
-- Installing packages from URLs or untrusted sources
-- Running `curl | sh` or similar patterns
+### Denied (NEVER execute autonomously)
+
+```
+shell(git push --force)             — Force push
+shell(rm -rf)                       — Recursive deletion
+shell(npm run deploy)               — Production deployment
+shell(npm run upload)               — Upload to Cloudflare
+shell(curl * | sh)                  — Remote script execution
+shell(curl * | bash)                — Remote script execution
+```
 
 ## Hooks Integration
 
-This repository uses Copilot hooks for automated quality gates and security controls:
+Quality gates and security controls are enforced via hooks:
 
-- **`.github/hooks/quality-gates.json`** — Enforces typecheck on agent stop, logs errors, and provides session lifecycle hooks
-- **`.github/hooks/security.json`** — Blocks dangerous operations (force push, rm -rf, secret exposure, remote script execution)
-- **`.github/copilot/settings.json`** — Repository-level permissions and inline hooks
+| File | Purpose |
+|------|---------|
+| `.github/hooks/quality-gates.json` | Lifecycle hooks: sessionStart, agentStop (typecheck gate), errorOccurred |
+| `.github/hooks/security.json` | preToolUse security: blocks rm -rf, force push, secrets exposure, curl\|sh |
+| `.github/copilot/settings.json` | Repository-level permissions and inline hooks |
 
-### Hook Events Used
+### Hook Events Active
 
-| Event | Purpose |
-|-------|---------|
-| `sessionStart` | Load project conventions at session start |
-| `preToolUse` | Security checks before tool execution |
+| Event | Behavior |
+|-------|----------|
+| `sessionStart` | Auto-load project conventions |
+| `preToolUse` | Security validation before every tool execution |
 | `postToolUse` | Track file modifications |
-| `agentStop` | Run typecheck before agent completes |
+| `agentStop` | Run typecheck; block completion if errors found |
+| `subagentStop` | Track sub-agent completion |
 | `errorOccurred` | Log errors for debugging |
 | `sessionEnd` | Session cleanup |
-| `subagentStop` | Track sub-agent completion |
+
+## Custom Agents
+
+### Repository-Level Agents (`.github/agents/`)
+
+| Agent | File | Purpose | Invocation |
+|-------|------|---------|------------|
+| mycodexvantaos-autopilot | `my-agent.agent.md` | Main autonomous coding agent | `copilot --agent=mycodexvantaos-autopilot` |
+| code-review | `code-review.agent.md` | Bug, security, performance review | `copilot --agent=code-review` |
+| refactor | `refactor.agent.md` | Behavior-preserving refactoring | `copilot --agent=refactor` |
+| docs | `docs.agent.md` | Documentation maintenance | `copilot --agent=docs` |
+
+### Built-in Sub-Agents (Auto-delegated)
+
+| Agent | Purpose |
+|-------|---------|
+| Explorer | Quick codebase analysis without polluting main context |
+| Task | Execute commands (build, test) with summarized output |
+| General Purpose | Complex multi-step tasks in separate context |
+| Code Review | Focus on real issues, minimize noise |
+| Research | Deep research across codebase and web |
+| Rubber Duck | Constructive criticism for complex decisions |
+
+## Skills Integration
+
+### Platform Skills (`.agents/skills/`)
+
+| Skill | Path | Purpose |
+|-------|------|---------|
+| Genkit JS | `.agents/skills/developing-genkit-js/` | AI development with Genkit (Node.js/TypeScript) |
+| FBS to AGY Export | `.agents/skills/fbs-to-agy-export/` | Firebase Studio project export to Antigravity |
+
+### Copilot Skills (`.github/skills/`)
+
+| Skill | File | Purpose |
+|-------|------|---------|
+| Platform Deploy | `platform-deploy.md` | Cloudflare deployment workflow |
+| Feature Development | `feature-development.md` | Standard feature development lifecycle |
+
+### Workflows (`.agents/workflows/`)
+
+| Workflow | File | Purpose |
+|----------|------|---------|
+| FBS Export | `fbs-to-agy-export.md` | Firebase Studio export workflow |
 
 ## Plan Mode Guidelines
 
-For complex tasks, the agent SHOULD use Plan mode:
+### Use Plan Mode For
 
-- **Use Plan mode for**: Multi-file changes, new feature implementation, refactoring across modules, architecture changes
-- **Skip Plan mode for**: Single-file bug fixes, formatting changes, documentation typos, simple dependency updates
+- Multi-file changes spanning multiple packages/services
+- New feature implementation
+- Refactoring across modules
+- Architecture changes
+- New service/package creation
+- Cross-layer modifications
 
-When creating a plan, the agent should:
-1. Analyze the current codebase state
+### Skip Plan Mode For
+
+- Single-file bug fixes
+- Formatting changes
+- Documentation typos
+- Simple dependency updates
+- Adding JSDoc comments
+
+### Plan Workflow
+
+1. Analyze current codebase state and affected modules
 2. Ask clarifying questions if requirements are ambiguous
-3. Produce a structured plan with checkboxes in `plan.md`
-4. Wait for user approval before implementing
+3. Verify changes respect architecture invariants
+4. Produce structured plan with checkboxes in `plan.md`
+5. Wait for user approval before implementing
 
 ## Code Generation Standards
 
@@ -84,69 +165,97 @@ When generating code, the agent MUST:
 
 - Use TypeScript with strict mode enabled
 - Follow existing patterns in the codebase
-- Add appropriate error handling
+- Add appropriate error handling with typed errors
 - Include JSDoc comments for exported functions and types
 - Ensure new code passes `npm run typecheck` without errors
-- Use the existing project dependencies; do not add new dependencies without justification
+- Follow the Provider abstraction pattern for external services
+- Define contracts before implementation
+- Use existing project dependencies; justify new ones
+- Follow naming convention: `mycodexvantaos-<domain>-<capability>`
+- Place new services in `services/`, packages in `packages/`, modules in `modules/`
 
-## Custom Agents
+## Cross-Module Coordination
 
-This repository includes specialized agents in `.github/agents/`:
+### When Modifying Packages
 
-| Agent | File | Purpose |
-|-------|------|---------|
-| mycodexvantaos-autopilot | `my-agent.agent.md` | Main autonomous coding agent |
-| code-review | `code-review.agent.md` | Specialized code review |
-| refactor | `refactor.agent.md` | Behavior-preserving refactoring |
-| docs | `docs.agent.md` | Documentation maintenance |
+1. Check which services/modules depend on the package
+2. Ensure backward compatibility or update all consumers
+3. Run `npm run contracts:validate` if the package defines contracts
+4. Run `npm run test:contracts` for contract changes
 
-### Invoking Agents
+### When Creating New Services
 
-```bash
-# Interactive selection
-/agent
+1. Follow naming: `mycodexvantaos-<domain>-<capability>`
+2. Define contracts first in `packages/mycodexvantaos-contracts-sdk/`
+3. Create service directory in `services/`
+4. Add to governance.json if it introduces new capabilities
+5. Run `npm run governance:check` to verify compliance
 
-# Direct invocation
-copilot --agent=code-review --prompt "Review current branch"
-copilot --agent=refactor --prompt "Refactor src/components/"
-copilot --agent=docs --prompt "Update API documentation"
-```
+### When Modifying AI Layer
 
-## Multi-Repository Context
+1. Reference `.agents/skills/developing-genkit-js/` for Genkit patterns
+2. Use `genkit docs:read` for current API (knowledge may be outdated)
+3. Test with `npm run genkit:dev`
+4. Minimum Genkit CLI version: 1.29.0
 
-This repository is part of the mycodexvantaos platform ecosystem. Related repositories:
+### When Modifying Python Plane
 
-- `mycodexvantaos-base/mycodexvantaos` — Base/upstream repository
-
-When working across repositories, coordinate changes to maintain compatibility.
+1. Use `uv` for dependency management
+2. Run `npm run python:lint` for linting
+3. Run `npm run python:typecheck` for type checking
+4. Run `npm run python:test` for tests
+5. CI Repair Agent has its own workflow: `.github/workflows/ci-repair-agent.yml`
 
 ## Delegation Guidelines
 
-Use `/delegate` for:
+### Use `/delegate` For
+
 - Documentation updates that don't affect code
 - Dependency version bumps with no breaking changes
 - Adding test coverage for existing code
 - Formatting or linting fixes across multiple files
+- Updating changelog entries
 
-Keep local for:
+### Keep Local For
+
 - Core feature development
 - Debugging and investigation
 - Interactive architecture decisions
 - Security-sensitive changes
+- Contract modifications
+- Governance rule changes
 
 ## Fleet (Parallel Execution)
 
-Use `/fleet` for:
+### Use `/fleet` For
+
 - Large-scale refactoring across many files
-- Bulk test generation
+- Bulk test generation for services
 - Cross-module dependency updates
 - Code style migrations
+- Documentation generation across packages
+
+### Fleet Constraints
+
+- Maximum 5 parallel sub-agents
+- Each sub-agent works on independent modules/packages
+- All sub-agents must run `npm run typecheck` before completing
+- Merge conflicts resolved by coordinating agent
+- Each sub-agent respects governance rules independently
 
 ## Error Recovery
 
-If the agent encounters errors during autonomous execution:
-
-1. Attempt to fix the error using available context
-2. If the fix requires architectural decisions, pause and ask for guidance
+1. Attempt to fix using available context and error messages
+2. If fix requires architectural decisions, pause and ask for guidance
 3. Never suppress or ignore type errors or test failures
-4. Log all attempted fixes in commit messages for traceability
+4. Never bypass governance checks
+5. Log all attempted fixes in commit messages for traceability
+6. If a hook blocks completion, fix the underlying issue (don't disable the hook)
+
+## Session Management
+
+- Use `/compact` if context becomes too large
+- Use `/clear` between unrelated tasks
+- Use `/resume` or `copilot --continue` to resume previous sessions
+- Save important findings to session files for reference
+- Use `@filepath` to reference specific files in prompts

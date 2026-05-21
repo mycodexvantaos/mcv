@@ -1,17 +1,38 @@
 {
   "hooks": {
+    "sessionStart": [
+      {
+        "type": "command",
+        "bash": "echo '{\"additionalContext\": \"Platform: MyCodeXvantaOS. Read AGENTS.md and .github/copilot-instructions.md for conventions. Architecture: Local-first, Provider-agnostic, Contract-first, Governance-enforced.\"}'",
+        "timeoutSec": 5
+      }
+    ],
     "preToolUse": [
       {
         "type": "command",
-        "bash": "echo '{\"decision\": \"allow\"}'",
-        "timeoutSec": 5
+        "bash": "ARGS=\"${COPILOT_HOOK_TOOL_ARGS:-}\"; if echo \"$ARGS\" | grep -qE '(rm -rf /|rm -rf \\*|rm -rf ~)'; then echo '{\"decision\": \"deny\", \"reason\": \"Dangerous recursive deletion blocked\"}'; elif echo \"$ARGS\" | grep -qE 'git push --force'; then echo '{\"decision\": \"deny\", \"reason\": \"Force push not allowed\"}'; elif echo \"$ARGS\" | grep -qE 'curl.*\\| *(sh|bash)'; then echo '{\"decision\": \"deny\", \"reason\": \"Remote script execution blocked\"}'; else echo '{\"decision\": \"allow\"}'; fi",
+        "timeoutSec": 10
       }
     ],
     "agentStop": [
       {
         "type": "command",
-        "bash": "cd \"$COPILOT_HOOK_CWD\" && npm run typecheck 2>&1 | tail -5; if [ $? -ne 0 ]; then echo '{\"decision\": \"block\", \"additionalContext\": \"TypeScript errors found. Fix them before completing.\"}'; fi",
-        "timeoutSec": 60
+        "bash": "cd \"${COPILOT_HOOK_CWD:-.}\" && npm run typecheck 2>&1 | tail -10; EXIT=$?; if [ $EXIT -ne 0 ]; then echo '{\"decision\": \"block\", \"additionalContext\": \"TypeScript errors detected. Run npm run typecheck to see details and fix before completing.\"}'; fi",
+        "timeoutSec": 120
+      }
+    ],
+    "postToolUse": [
+      {
+        "type": "command",
+        "bash": "echo 'Tool execution completed'",
+        "timeoutSec": 5
+      }
+    ],
+    "errorOccurred": [
+      {
+        "type": "command",
+        "bash": "echo \"[ERROR] $(date -Iseconds): Error occurred during session\" >> /tmp/copilot-session-errors.log 2>/dev/null || true",
+        "timeoutSec": 5
       }
     ]
   },
@@ -19,18 +40,44 @@
     "allow": [
       "shell(git:*)",
       "shell(npm run build)",
+      "shell(npm run dev)",
       "shell(npm run typecheck)",
-      "shell(npm run format:*)",
       "shell(npm run lint)",
+      "shell(npm run format)",
+      "shell(npm run format:check)",
+      "shell(npm run validate)",
+      "shell(npm run validate:json)",
       "shell(npm run governance:check)",
       "shell(npm run contracts:validate)",
+      "shell(npm run test)",
+      "shell(npm run test:services)",
+      "shell(npm run test:contracts)",
+      "shell(npm run test:integration)",
+      "shell(npm run python:test)",
+      "shell(npm run python:lint)",
+      "shell(npm run python:typecheck)",
+      "shell(npm run genkit:dev)",
+      "shell(npm run genkit:watch)",
+      "shell(npm run api:start)",
+      "shell(npm run rc:verify)",
+      "shell(npm run service-catalog:check)",
+      "shell(npm run resource-model:check)",
+      "shell(npm run schemas:validate)",
+      "shell(npm run dream:dry-run)",
+      "shell(npm run migration:verify:*)",
+      "shell(npm run build:packages)",
+      "shell(npm run build:modules)",
       "write"
     ],
     "deny": [
       "shell(rm -rf)",
       "shell(git push --force)",
+      "shell(git push --force-with-lease)",
       "shell(npm run deploy)",
-      "shell(npm run upload)"
+      "shell(npm run upload)",
+      "shell(curl * | sh)",
+      "shell(curl * | bash)",
+      "shell(wget * | sh)"
     ]
   }
 }

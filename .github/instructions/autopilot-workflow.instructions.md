@@ -4,51 +4,118 @@
 
 Before starting any autonomous task, verify:
 
-1. You are on a feature branch (not `main`)
-2. The working tree is clean (`git status` shows no uncommitted changes)
-3. Dependencies are installed (`node_modules/` exists)
+- [ ] Current branch is correct (create feature branch if needed)
+- [ ] Working directory is clean (`git status`)
+- [ ] Dependencies are installed (`node_modules/` exists)
+- [ ] TypeScript compiles cleanly (`npm run typecheck`)
+- [ ] Understand which platform layer the task affects
 
 ## Standard Autopilot Workflow
 
-### Step 1: Understand the Task
-- Read relevant source files without making changes
-- Identify affected modules and dependencies
-- Check for existing tests or documentation
+### Phase 1: Exploration
 
-### Step 2: Plan (for complex tasks)
-- Create a structured implementation plan
-- Identify potential risks or breaking changes
-- Estimate the scope of changes (number of files, modules affected)
+1. Read the relevant source files to understand current state
+2. Identify affected packages, modules, and services
+3. Check for existing patterns to follow
+4. Review any related contracts or schemas
+5. Check governance rules that may apply
 
-### Step 3: Implement
-- Make changes incrementally, one logical unit at a time
-- Run `npm run typecheck` after each significant change
-- Keep commits atomic and well-described
+### Phase 2: Planning (for non-trivial changes)
 
-### Step 4: Validate
-- Run full validation: `npm run typecheck && npm run format:check`
-- Run governance checks: `npm run governance:check`
-- Verify no regressions in existing functionality
+1. Determine if changes span multiple layers
+2. Identify potential breaking changes
+3. List files to be created/modified/deleted
+4. Verify changes respect architecture invariants:
+   - Local-first: Does this require external dependencies?
+   - Provider-agnostic: Is business logic decoupled from SDKs?
+   - Contract-first: Are interfaces defined before implementation?
+   - Governance-enforced: Will CI gates pass?
 
-### Step 5: Commit and Report
-- Use conventional commit messages
-- Summarize what was done and any decisions made
-- Note any follow-up tasks or known limitations
+### Phase 3: Implementation
 
-## Handling Failures
+1. Write code following existing patterns
+2. Add JSDoc comments for public APIs
+3. Use TypeScript strict mode
+4. Follow naming convention: `mycodexvantaos-<domain>-<capability>`
+5. Use Provider abstraction for external services
+6. Handle errors with typed error classes
 
-If `npm run typecheck` fails:
-- Read the error messages carefully
-- Fix type errors in the order they appear
-- Re-run validation after each fix
+### Phase 4: Validation
 
-If `npm run governance:check` fails:
-- Review governance rules in `tools/governance/`
-- Ensure changes comply with platform policies
-- Ask for guidance if governance rules conflict with the task
+Execute in order:
 
-## Session Management
+```bash
+# 1. TypeScript compilation
+npm run typecheck
 
-- Use `/compact` if context becomes too large
+# 2. Code formatting
+npm run format:check
+# If fails: npm run format && re-check
+
+# 3. Governance compliance
+npm run governance:check
+
+# 4. Contract validation (if contracts modified)
+npm run contracts:validate
+
+# 5. Tests (if available for affected area)
+npm run test:services
+npm run test:contracts
+
+# 6. Python validation (if Python modified)
+npm run python:lint
+npm run python:typecheck
+npm run python:test
+```
+
+### Phase 5: Commit & Finalize
+
+1. Stage changes: `git add -A`
+2. Review staged changes: `git diff --cached --stat`
+3. Commit with conventional message:
+   - `feat: <description>` — New feature
+   - `fix: <description>` — Bug fix
+   - `docs: <description>` — Documentation
+   - `refactor: <description>` — Code restructuring
+   - `chore: <description>` — Maintenance
+   - `test: <description>` — Test additions
+4. Push to feature branch (never directly to main for non-trivial changes)
+
+## Failure Recovery
+
+### TypeScript Errors
+
+1. Read the error messages carefully
+2. Fix type errors in order (some cascade)
+3. Re-run `npm run typecheck`
+4. If stuck after 3 attempts, ask for guidance
+
+### Governance Failures
+
+1. Read the governance error output
+2. Common issues:
+   - Naming convention violation → Rename to `mycodexvantaos-<domain>-<capability>`
+   - Missing capability declaration → Add to `governance.json`
+   - Architecture compliance → Check layer boundaries
+3. Re-run `npm run governance:check`
+
+### Contract Validation Failures
+
+1. Check `packages/mycodexvantaos-contracts-sdk/` for schema definitions
+2. Ensure implementation matches contract
+3. If contract needs updating, modify contract first, then implementation
+4. Re-run `npm run contracts:validate`
+
+### Hook Blocks
+
+1. If `agentStop` hook blocks completion: fix typecheck errors
+2. If `preToolUse` hook denies: the operation is not allowed, find alternative approach
+3. Never disable or bypass hooks
+
+## Context Management
+
+- Use `/compact` when context grows large
+- Use `@filepath` to reference specific files
+- Use `/add-dir` to add related directories to context
+- Save important findings to temporary notes
 - Use `/clear` between unrelated tasks
-- Save important findings to session files for reference

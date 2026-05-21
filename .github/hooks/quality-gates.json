@@ -4,48 +4,55 @@
     "sessionStart": [
       {
         "type": "prompt",
-        "prompt": "Read AGENTS.md and .github/copilot-instructions.md to understand project conventions before starting work."
+        "prompt": "Read AGENTS.md and .github/copilot-instructions.md to understand project conventions. This is MyCodeXvantaOS — a Local-first, Provider-agnostic, Contract-driven platform. Always run npm run typecheck before committing."
       }
     ],
     "preToolUse": [
       {
         "type": "command",
-        "bash": "echo '{\"decision\": \"allow\"}' # Allow all pre-approved tools by default",
+        "bash": "echo '{\"decision\": \"allow\"}'",
         "timeoutSec": 5
       }
     ],
     "postToolUse": [
       {
         "type": "command",
-        "bash": "if echo \"$COPILOT_HOOK_TOOL_NAME\" | grep -q 'write'; then echo 'File modified - typecheck recommended'; fi",
-        "timeoutSec": 10
+        "bash": "TOOL=\"${COPILOT_HOOK_TOOL_NAME:-unknown}\"; if echo \"$TOOL\" | grep -q 'write'; then echo '{\"additionalContext\": \"File modified. Remember to run npm run typecheck before completing.\"}'; fi",
+        "timeoutSec": 5
       }
     ],
     "agentStop": [
       {
         "type": "command",
-        "bash": "cd /workspace && npm run typecheck 2>/dev/null && echo '{\"decision\": \"allow\"}' || echo '{\"decision\": \"block\", \"reason\": \"TypeScript errors detected. Please fix before completing.\", \"additionalContext\": \"Run npm run typecheck to see errors.\"}'",
-        "timeoutSec": 60
+        "bash": "cd \"${COPILOT_HOOK_CWD:-.}\" 2>/dev/null; RESULT=$(npm run typecheck 2>&1); EXIT=$?; if [ $EXIT -ne 0 ]; then ERRORS=$(echo \"$RESULT\" | grep -c 'error TS' || echo '0'); echo \"{\\\"decision\\\": \\\"block\\\", \\\"reason\\\": \\\"TypeScript compilation failed with $ERRORS error(s). Fix all type errors before completing.\\\", \\\"additionalContext\\\": \\\"$(echo \"$RESULT\" | tail -5 | tr '\\n' ' ')\\\"}\"; else echo '{\"decision\": \"allow\"}'; fi",
+        "timeoutSec": 120
+      }
+    ],
+    "subagentStart": [
+      {
+        "type": "command",
+        "bash": "echo '{\"additionalContext\": \"You are working in the MyCodeXvantaOS monorepo. Follow conventions in AGENTS.md. Run npm run typecheck before completing.\"}'",
+        "timeoutSec": 5
       }
     ],
     "subagentStop": [
       {
         "type": "command",
-        "bash": "echo 'Sub-agent completed task'",
+        "bash": "echo 'Sub-agent completed. Verifying no conflicts...'",
         "timeoutSec": 5
       }
     ],
     "errorOccurred": [
       {
         "type": "command",
-        "bash": "echo \"[ERROR] $(date -Iseconds): Hook caught error\" >> /tmp/copilot-errors.log",
+        "bash": "echo \"[$(date -Iseconds)] ERROR: ${COPILOT_HOOK_ERROR_MESSAGE:-unknown error}\" >> /tmp/copilot-errors.log 2>/dev/null; echo '{\"additionalContext\": \"An error occurred. Check the error message and try an alternative approach.\"}'",
         "timeoutSec": 5
       }
     ],
     "sessionEnd": [
       {
         "type": "command",
-        "bash": "echo \"Session ended at $(date -Iseconds)\"",
+        "bash": "echo \"Session ended at $(date -Iseconds). Cleaning up temporary files.\" && rm -f /tmp/copilot-errors.log /tmp/copilot-session-errors.log 2>/dev/null || true",
         "timeoutSec": 5
       }
     ]
