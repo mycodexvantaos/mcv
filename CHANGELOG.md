@@ -5,6 +5,24 @@ All notable changes to MyCodeXvantaOS will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.3] - 2026-07-21
+
+### Security
+
+- Resolved GHSA-q7rr-3cgh-j5r3 (CVE-2026-44902, HIGH): OpenTelemetry Prometheus exporter DoS via malformed HTTP request to port 9464
+  - Added `pnpm.overrides` for `@opentelemetry/auto-instrumentations-node@^0.75.0` and `@opentelemetry/sdk-node@^0.217.0`
+  - Defense-in-depth: Prometheus exporter is NOT used in our codebase; port not exposed in any deployment
+  - `pnpm audit` reduced from 3 vulnerabilities (2 HIGH + 1 LOW) to 1 LOW
+  - Closes #98 (previously accepted risk, now fully remediated with overrides)
+- Remaining accepted risk: `@tootallnate/once` (GHSA-vpq2-c234-7xj6, LOW, Issue #99) — cannot override due to ESM/CJS incompatibility with http-proxy-agent@5.x
+
+### Fixed
+
+- Added `[tool.hatch.build.targets.wheel]` to Python app packages (agent-worker, dream-worker, knowledge-worker) — fixes `hatchling` build failures that prevented `uv sync --all-packages` from installing workspace packages
+- Fixed `ruff` lint errors in `test_memory_dream.py` (I001: unsorted imports, W292: no newline at end of file)
+- Applied `ruff format` to 9 Python files in `mycodexvantaos-memory-dream` package
+- Updated `uv.lock` with all workspace packages now discoverable and installable
+
 ## [0.1.2] - 2026-05-21
 
 ### Security
