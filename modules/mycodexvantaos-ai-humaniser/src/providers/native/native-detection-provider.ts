@@ -6,8 +6,8 @@
  * LLM is available.
  */
 
-import type { IDetectionProvider, DetectionResult, InputSource, ProviderSource } from '../types';
-import { detectNative } from '../core/detector';
+import type { IDetectionProvider, DetectionResult, InputSource, ProviderSource } from '../../types';
+import { detectNative } from '../../core/detector';
 
 export class NativeDetectionProvider implements IDetectionProvider {
   readonly capability = 'detection';

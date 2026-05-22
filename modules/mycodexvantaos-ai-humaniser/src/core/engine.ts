@@ -23,7 +23,7 @@ import {
   type HumaniserRuntimeMode,
   type InputSource,
   type ProviderSource,
-} from './types';
+} from '../types';
 import { NativeDetectionProvider } from './providers/native/native-detection-provider';
 import { NativeRewriteProvider } from './providers/native/native-rewrite-provider';
 import { ExternalDetectionProvider } from './providers/external/external-detection-provider';
