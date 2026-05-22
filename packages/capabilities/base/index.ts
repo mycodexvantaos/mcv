@@ -256,7 +256,7 @@ export abstract class CapabilityBase<T = unknown> {
   async healthCheck(): Promise<ProviderHealthCheckResult> {
     const checkTime = new Date().toISOString();
     let isHealthy = false;
-    let status: ProviderHealthStatus = ProviderHealthStatus.UNKNOWN;
+    let status: ProviderHealthStatus;
 
     try {
       if (!this._isInitialized) {
