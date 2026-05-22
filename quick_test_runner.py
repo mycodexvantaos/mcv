@@ -3,7 +3,6 @@
 Quick test runner to execute tests for individual packages
 """
 import subprocess
-import json
 from pathlib import Path
 
 def run_package_test(package_name):
