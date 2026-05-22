@@ -7,7 +7,6 @@ Analyzes test coverage for all 27 packages
 import os
 import subprocess
 import json
-import re
 from pathlib import Path
 
 # Package jest config template
