@@ -264,7 +264,6 @@ export abstract class CapabilityBase<T = unknown> {
       }
 
       if (this._isShuttingDown) {
-        status = ProviderHealthStatus.DEGRADED;
         throw new Error('Provider is shutting down');
       }
 
