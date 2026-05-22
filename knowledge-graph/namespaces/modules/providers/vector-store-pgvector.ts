@@ -8,10 +8,8 @@ export class ConnectedPgVectorProvider implements VectorStoreProvider {
   async shutdown() {}
   async storeEmbedding(id: string, text: string, vector: number[]) {
     throw new Error('PG Down');
-    return false;
   }
   async searchSimilar(vector: number[], topK?: number) {
     throw new Error('PG Down');
-    return [];
   }
 }
