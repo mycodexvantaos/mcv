@@ -2,14 +2,7 @@
  * @jest-environment node
  */
 
-import {
-  DeploymentProviderRegistry,
-  NativeDeploymentProvider,
-  getDeploymentRegistry,
-  initializeDeployment,
-  deploy,
-  Deployment,
-} from '../src/index';
+import { DeploymentProviderRegistry, NativeDeploymentProvider, Deployment } from '../src/index';
 
 describe('Deployment Package', () => {
   beforeEach(() => {

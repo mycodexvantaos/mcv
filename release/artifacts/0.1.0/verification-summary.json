@@ -1,0 +1,64 @@
+{
+  "version": "0.1.0",
+  "generatedAt": "2026-05-18T06:43:08.592Z",
+  "commit": "1371a8966c3047bbd95e87308a0bc81e6b72bb41",
+  "branch": "fix/v0.1.0-artifacts-final",
+  "nodeVersion": "v20.20.2",
+  "pnpmVersion": "9.15.9",
+  "checks": [
+    {
+      "name": "Governance check",
+      "category": "governance",
+      "passed": true,
+      "skipped": false,
+      "detail": "All 24 governance checks passed"
+    },
+    {
+      "name": "Enforcement flags present",
+      "category": "governance",
+      "passed": true,
+      "skipped": false,
+      "detail": "All 7 enforcement flags present"
+    },
+    {
+      "name": "Contract validation",
+      "category": "contracts",
+      "passed": true,
+      "skipped": false,
+      "detail": "All contracts validated"
+    },
+    {
+      "name": "Release manifest generated",
+      "category": "manifest",
+      "passed": true,
+      "skipped": false,
+      "detail": "Manifest v0.1.0 @ 1371a896"
+    },
+    {
+      "name": "Artifact digests generated",
+      "category": "manifest",
+      "passed": true,
+      "skipped": false,
+      "detail": "6 artifacts digested with SHA3-512"
+    },
+    {
+      "name": "Dockerfile exists",
+      "category": "docker",
+      "passed": true,
+      "skipped": false,
+      "detail": "Dockerfile present"
+    }
+  ],
+  "summary": {
+    "total": 6,
+    "passed": 6,
+    "failed": 0,
+    "skipped": 0
+  },
+  "infrastructureSkips": [
+    "GCP / Terraform Cloud: infrastructure-not-configured (no .tf files)",
+    "Cloudflare: infrastructure-not-configured (no CF_API_TOKEN)",
+    "Kubernetes: infrastructure-not-configured (no KUBE_CONFIG_DEV)"
+  ],
+  "readyForRelease": true
+}

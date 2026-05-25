@@ -1,7 +1,7 @@
 # === path: .github/workflows/unified-cd.yaml ===
 # Unified CD Pipeline for MyCodeXvantaOS
 # Consolidates: cd.yml, cd-dev.yaml
-# Version: 2.0.0
+# Version: 2.1.0
 
 name: Unified CD Pipeline
 
@@ -94,14 +94,13 @@ jobs:
       - name: Setup PNPM
         uses: pnpm/action-setup@v4
         with:
-          version: '10'
+          version: '9'
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'pnpm'
-          registry-url: ${{ env.REGISTRY }}
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -156,9 +155,10 @@ jobs:
             type=raw,value=${{ needs.prepare.outputs.version }}
 
       - name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
+          file: ./Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -182,28 +182,69 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Check Kubernetes config availability
+        id: kube-guard
+        shell: bash
+        env:
+          KUBE_CONFIG_VALUE: ${{ secrets.KUBE_CONFIG_DEV }}
+        run: |
+          if [ -n "$KUBE_CONFIG_VALUE" ]; then
+            echo "has_kube_config=true" >> "$GITHUB_OUTPUT"
+            echo "Kubernetes config is available."
+          else
+            echo "has_kube_config=false" >> "$GITHUB_OUTPUT"
+            echo "KUBE_CONFIG_DEV is not configured — skipping K8s deployment."
+          fi
+
       - name: Configure kubectl
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
         uses: azure/setup-kubectl@v3
 
       - name: Set kubeconfig
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
+        shell: bash
+        env:
+          KUBE_CONFIG_VALUE: ${{ secrets.KUBE_CONFIG_DEV }}
         run: |
-          mkdir -p ~/.kube
-          echo "${{ secrets.KUBE_CONFIG_DEV }}" | base64 -d > ~/.kube/config
+          mkdir -p "$HOME/.kube"
+          echo "$KUBE_CONFIG_VALUE" | base64 -d > "$HOME/.kube/config"
+          chmod 600 "$HOME/.kube/config"
+
+      - name: Validate Kubernetes connection
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
+        shell: bash
+        run: |
+          kubectl cluster-info
+          kubectl get nodes
 
       - name: Deploy with kubectl
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
         run: |
           kubectl set image deployment/mycodexvantaos \
             mycodexvantaos=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.prepare.outputs.version }} \
             -n development
 
       - name: Wait for rollout
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
         run: |
           kubectl rollout status deployment/mycodexvantaos -n development --timeout=300s
 
       - name: Run smoke tests
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
         run: |
           # Basic health check
           kubectl exec -n development deployment/mycodexvantaos -- curl -f http://localhost:8080/health || exit 1
+
+      - name: Mark K8s deployment skipped
+        if: steps.kube-guard.outputs.has_kube_config != 'true'
+        run: |
+          echo "### K8s Deployment Skipped" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Reason:** \`KUBE_CONFIG_DEV\` is not configured" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Classification:** infrastructure-not-configured" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Action:** Configure \`KUBE_CONFIG_DEV\` secret (base64-encoded kubeconfig) to enable K8s deployment" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Docker image build and registry push completed successfully." >> "$GITHUB_STEP_SUMMARY"
 
   # ====================
   # Stage 5: Deploy to Staging
@@ -220,23 +261,60 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Check Kubernetes config availability
+        id: kube-guard
+        shell: bash
+        env:
+          KUBE_CONFIG_VALUE: ${{ secrets.KUBE_CONFIG_STAGING }}
+        run: |
+          if [ -n "$KUBE_CONFIG_VALUE" ]; then
+            echo "has_kube_config=true" >> "$GITHUB_OUTPUT"
+            echo "Kubernetes config is available."
+          else
+            echo "has_kube_config=false" >> "$GITHUB_OUTPUT"
+            echo "KUBE_CONFIG_STAGING is not configured — skipping K8s deployment."
+          fi
+
       - name: Configure kubectl
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
         uses: azure/setup-kubectl@v3
 
       - name: Set kubeconfig
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
+        shell: bash
+        env:
+          KUBE_CONFIG_VALUE: ${{ secrets.KUBE_CONFIG_STAGING }}
         run: |
-          mkdir -p ~/.kube
-          echo "${{ secrets.KUBE_CONFIG_STAGING }}" | base64 -d > ~/.kube/config
+          mkdir -p "$HOME/.kube"
+          echo "$KUBE_CONFIG_VALUE" | base64 -d > "$HOME/.kube/config"
+          chmod 600 "$HOME/.kube/config"
+
+      - name: Validate Kubernetes connection
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
+        shell: bash
+        run: |
+          kubectl cluster-info
+          kubectl get nodes
 
       - name: Deploy with kubectl
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
         run: |
           kubectl set image deployment/mycodexvantaos \
             mycodexvantaos=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.prepare.outputs.version }} \
             -n staging
 
       - name: Wait for rollout
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
         run: |
           kubectl rollout status deployment/mycodexvantaos -n staging --timeout=300s
+
+      - name: Mark K8s deployment skipped
+        if: steps.kube-guard.outputs.has_kube_config != 'true'
+        run: |
+          echo "### K8s Deployment Skipped" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Reason:** \`KUBE_CONFIG_STAGING\` is not configured" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Classification:** infrastructure-not-configured" >> "$GITHUB_STEP_SUMMARY"
 
   # ====================
   # Stage 6: Deploy to Production (with freeze-gate)
@@ -264,15 +342,43 @@ jobs:
           fi
           echo "frozen=false" >> $GITHUB_OUTPUT
 
+      - name: Check Kubernetes config availability
+        id: kube-guard
+        shell: bash
+        env:
+          KUBE_CONFIG_VALUE: ${{ secrets.KUBE_CONFIG_PROD }}
+        run: |
+          if [ -n "$KUBE_CONFIG_VALUE" ]; then
+            echo "has_kube_config=true" >> "$GITHUB_OUTPUT"
+            echo "Kubernetes config is available."
+          else
+            echo "has_kube_config=false" >> "$GITHUB_OUTPUT"
+            echo "KUBE_CONFIG_PROD is not configured — skipping K8s deployment."
+          fi
+
       - name: Configure kubectl
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
         uses: azure/setup-kubectl@v3
 
       - name: Set kubeconfig
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
+        shell: bash
+        env:
+          KUBE_CONFIG_VALUE: ${{ secrets.KUBE_CONFIG_PROD }}
         run: |
-          mkdir -p ~/.kube
-          echo "${{ secrets.KUBE_CONFIG_PROD }}" | base64 -d > ~/.kube/config
+          mkdir -p "$HOME/.kube"
+          echo "$KUBE_CONFIG_VALUE" | base64 -d > "$HOME/.kube/config"
+          chmod 600 "$HOME/.kube/config"
+
+      - name: Validate Kubernetes connection
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
+        shell: bash
+        run: |
+          kubectl cluster-info
+          kubectl get nodes
 
       - name: Deploy with canary strategy
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
         run: |
           # Deploy canary (10% traffic)
           kubectl apply -f k8s/production-canary.yaml
@@ -289,13 +395,23 @@ jobs:
             -n production
 
       - name: Wait for rollout
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
         run: |
           kubectl rollout status deployment/mycodexvantaos -n production --timeout=600s
 
       - name: Create deployment record
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
         run: |
           echo "Deployed version ${{ needs.prepare.outputs.version }} to production" >> deployment.log
           date >> deployment.log
+
+      - name: Mark K8s deployment skipped
+        if: steps.kube-guard.outputs.has_kube_config != 'true'
+        run: |
+          echo "### K8s Deployment Skipped" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Reason:** \`KUBE_CONFIG_PROD\` is not configured" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Classification:** infrastructure-not-configured" >> "$GITHUB_STEP_SUMMARY"
 
   # ====================
   # Stage 7: Post-Deployment
@@ -303,15 +419,21 @@ jobs:
   post-deploy:
     name: Post-Deployment Tasks
     runs-on: ubuntu-latest
-    needs: [prepare, deploy-dev, deploy-staging, deploy-production]
+    needs: [prepare, container-build, deploy-dev, deploy-staging, deploy-production]
     if: always() && needs.prepare.outputs.should_deploy == 'true'
     steps:
       - name: Create deployment summary
         run: |
-          echo "## Deployment Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Environment | Status | Version |" >> $GITHUB_STEP_SUMMARY
-          echo "|-------------|--------|---------|" >> $GITHUB_STEP_SUMMARY
-          echo "| Development | ${{ needs.deploy-dev.result }} | ${{ needs.prepare.outputs.version }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Staging | ${{ needs.deploy-staging.result }} | ${{ needs.prepare.outputs.version }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Production | ${{ needs.deploy-production.result }} | ${{ needs.prepare.outputs.version }} |" >> $GITHUB_STEP_SUMMARY
+          echo "## Unified CD Summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Stage | Status |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|-------|--------|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Docker image build | ${{ needs.container-build.result }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Container registry push | ${{ needs.container-build.result }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Development K8s deploy | ${{ needs.deploy-dev.result }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Staging K8s deploy | ${{ needs.deploy-staging.result }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Production K8s deploy | ${{ needs.deploy-production.result }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Version:** ${{ needs.prepare.outputs.version }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "_K8s deploy results of 'skipped' indicate the corresponding kubeconfig secret is not configured (infrastructure-not-configured)._" >> "$GITHUB_STEP_SUMMARY"

@@ -1,0 +1,74 @@
+{
+  "_type": "https://in-toto.io/Statement/v1",
+  "predicateType": "https://slsa.dev/provenance/v1",
+  "subject": [
+    {
+      "name": "release-manifest.json",
+      "digest": {
+        "sha256": "a32d063695014b288a8d74c9f5044ccac1d1757b877ea07547151e99f86768c2"
+      }
+    },
+    {
+      "name": "artifact-digests.json",
+      "digest": {
+        "sha256": "6cc375637f0c6cdd3e6d58e9fcf78170e2000b8e762715ba01a0c7ba158a0a98"
+      }
+    },
+    {
+      "name": "sbom.cyclonedx.json",
+      "digest": {
+        "sha256": "c31358b824c47b7d358a04795790397befcf1942c74b20c10e33415dfb0de3c6"
+      }
+    }
+  ],
+  "predicate": {
+    "builder": {
+      "id": "https://github.com/mycodexvantaos/mycodexvantaos/actions",
+      "version": "1.0.0"
+    },
+    "buildType": "https://github.com/mycodexvantaos/mycodexvantaos/build-type@v1",
+    "invocation": {
+      "configSource": {
+        "uri": "https://github.com/mycodexvantaos/mycodexvantaos.git",
+        "digest": {
+          "sha1": "5ec6ddf428c641395d021605109fbd28812f9f66"
+        },
+        "entryPoint": ".github/workflows/release-candidate-check.yml"
+      },
+      "parameters": {
+        "version": "v0.1.0-rc.1",
+        "ref": "fix/v0.1.1-dependency-security"
+      },
+      "environment": {
+        "GITHUB_EVENT_NAME": "local",
+        "RUNNER_OS": "linux",
+        "NODE_VERSION": "v20.20.2"
+      }
+    },
+    "metadata": {
+      "buildInvocationId": "local-1779286336440",
+      "buildStartedOn": "2026-05-20T14:11:16.440Z",
+      "buildFinishedOn": "2026-05-20T14:12:16.440Z",
+      "completeness": {
+        "arguments": true,
+        "environment": true,
+        "materials": true
+      },
+      "reproducible": false
+    },
+    "materials": [
+      {
+        "uri": "https://github.com/mycodexvantaos/mycodexvantaos.git",
+        "digest": {
+          "sha1": "5ec6ddf428c641395d021605109fbd28812f9f66"
+        }
+      },
+      {
+        "uri": "file://pnpm-lock.yaml",
+        "digest": {
+          "sha256": "81104a35fa35ea6c7f19ed555cfe4ec7e848de05479ed8632e19bcd93e95a28d"
+        }
+      }
+    ]
+  }
+}

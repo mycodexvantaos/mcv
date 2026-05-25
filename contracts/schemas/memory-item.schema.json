@@ -71,8 +71,5 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "memory_id",
-    "content"
-  ]
+  "required": ["memory_id", "content"]
 }

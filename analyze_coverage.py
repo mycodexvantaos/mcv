@@ -89,7 +89,8 @@ def parse_coverage(output):
                     coverage['functions'] = float(func) if func and func != '-' else 0
                     coverage['lines'] = float(line_cov) if line_cov and line_cov != '-' else 0
                 except (ValueError, IndexError):
-                    pass
+                    # Ignore malformed/non-numeric coverage rows and keep searching for a valid summary line.
+                    continue
                 break
     
     return coverage

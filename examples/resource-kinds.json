@@ -1,0 +1,34 @@
+{
+  "resourceKinds": [
+    {
+      "name": "answer-trace",
+      "kind": "answer-trace",
+      "apiVersion": "mycodexvantaos.io/v1"
+    },
+    {
+      "name": "audit-event",
+      "kind": "audit-event",
+      "apiVersion": "mycodexvantaos.io/v1"
+    },
+    {
+      "name": "dream-run",
+      "kind": "dream-run",
+      "apiVersion": "mycodexvantaos.io/v1"
+    },
+    {
+      "name": "memory-item",
+      "kind": "memory-item",
+      "apiVersion": "mycodexvantaos.io/v1"
+    },
+    {
+      "name": "retrieval-receipt",
+      "kind": "retrieval-receipt",
+      "apiVersion": "mycodexvantaos.io/v1"
+    },
+    {
+      "name": "service-definition",
+      "kind": "service-definition",
+      "apiVersion": "mycodexvantaos.io/v1"
+    }
+  ]
+}

@@ -49,9 +49,7 @@ class MemoryItem(BaseModel):
     memory_id: str = Field(..., description="Unique memory identifier")
     content: str = Field(..., description="Memory content text")
     tags: list[str] = Field(default_factory=list, description="Associated tags")
-    related_entities: list[str] = Field(
-        default_factory=list, description="Referenced entity IDs"
-    )
+    related_entities: list[str] = Field(default_factory=list, description="Referenced entity IDs")
     temporal_expressions: list[str] = Field(
         default_factory=list, description="Temporal references extracted from content"
     )
@@ -61,9 +59,7 @@ class MemoryItem(BaseModel):
     conflicts_with: list[str] = Field(
         default_factory=list, description="IDs of memories this explicitly conflicts with"
     )
-    created_at: datetime = Field(
-        default_factory=datetime.utcnow, description="Creation timestamp"
-    )
+    created_at: datetime = Field(default_factory=datetime.utcnow, description="Creation timestamp")
     metadata: dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
 
     @field_validator("memory_id")
@@ -91,17 +87,13 @@ class DreamAction(BaseModel):
     Matches: contracts/schemas/dream-action.schema.json
     """
 
-    action_type: DreamActionType = Field(
-        ..., description="Type of action to take"
-    )
+    action_type: DreamActionType = Field(..., description="Type of action to take")
     target_memory_id: str = Field(..., description="Memory ID this action targets")
     related_memory_id: str | None = Field(
         default=None, description="Optional related memory (for merge/resolve)"
     )
     reason: str = Field(..., description="Why this action is suggested")
-    confidence: float = Field(
-        default=1.0, ge=0.0, le=1.0, description="Confidence score (0-1)"
-    )
+    confidence: float = Field(default=1.0, ge=0.0, le=1.0, description="Confidence score (0-1)")
     metadata: dict[str, Any] = Field(default_factory=dict, description="Additional data")
 
 
@@ -119,9 +111,7 @@ class DreamReport(BaseModel):
     conflicts_found: int = Field(default=0, description="Number of conflicts detected")
     orphans_found: int = Field(default=0, description="Number of orphans detected")
     actions: list[DreamAction] = Field(default_factory=list, description="Suggested actions")
-    statistics: dict[str, Any] = Field(
-        default_factory=dict, description="Additional statistics"
-    )
+    statistics: dict[str, Any] = Field(default_factory=dict, description="Additional statistics")
 
     @model_validator(mode="after")
     def validate_counts(self) -> Self:
@@ -138,12 +128,8 @@ class DreamRun(BaseModel):
     Matches: contracts/schemas/dream-run.schema.json
     """
 
-    dream_run_id: str = Field(
-        ..., description="Unique dream run identifier"
-    )
-    memory_items: list[MemoryItem] = Field(
-        ..., description="Memory items to process"
-    )
+    dream_run_id: str = Field(..., description="Unique dream run identifier")
+    memory_items: list[MemoryItem] = Field(..., description="Memory items to process")
     dry_run: bool = Field(
         default=True, description="If True, only report actions without executing"
     )

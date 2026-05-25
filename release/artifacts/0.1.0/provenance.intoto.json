@@ -1,0 +1,74 @@
+{
+  "_type": "https://in-toto.io/Statement/v1",
+  "predicateType": "https://slsa.dev/provenance/v1",
+  "subject": [
+    {
+      "name": "release-manifest.json",
+      "digest": {
+        "sha256": "66df328d871f3040a32850997ab8ebbcbdfa720adbfd6fd13ed839027e9baf86"
+      }
+    },
+    {
+      "name": "artifact-digests.json",
+      "digest": {
+        "sha256": "1582deec73bd759666325d8347f9f7408efb526fa0d6c214760573f7ce7b472c"
+      }
+    },
+    {
+      "name": "sbom.cyclonedx.json",
+      "digest": {
+        "sha256": "74bf6bd3f255b2f1b4f1e07ee58c1f8d9084bb7aa08c1cfba30c8987887d8803"
+      }
+    }
+  ],
+  "predicate": {
+    "builder": {
+      "id": "https://github.com/mycodexvantaos/mycodexvantaos/actions",
+      "version": "1.0.0"
+    },
+    "buildType": "https://github.com/mycodexvantaos/mycodexvantaos/build-type@v1",
+    "invocation": {
+      "configSource": {
+        "uri": "https://github.com/mycodexvantaos/mycodexvantaos.git",
+        "digest": {
+          "sha1": "1371a8966c3047bbd95e87308a0bc81e6b72bb41"
+        },
+        "entryPoint": ".github/workflows/release-candidate-check.yml"
+      },
+      "parameters": {
+        "version": "0.1.0",
+        "ref": "fix/v0.1.0-artifacts-final"
+      },
+      "environment": {
+        "GITHUB_EVENT_NAME": "local",
+        "RUNNER_OS": "linux",
+        "NODE_VERSION": "v20.20.2"
+      }
+    },
+    "metadata": {
+      "buildInvocationId": "local-1779086590020",
+      "buildStartedOn": "2026-05-18T06:42:10.020Z",
+      "buildFinishedOn": "2026-05-18T06:43:10.020Z",
+      "completeness": {
+        "arguments": true,
+        "environment": true,
+        "materials": true
+      },
+      "reproducible": false
+    },
+    "materials": [
+      {
+        "uri": "https://github.com/mycodexvantaos/mycodexvantaos.git",
+        "digest": {
+          "sha1": "1371a8966c3047bbd95e87308a0bc81e6b72bb41"
+        }
+      },
+      {
+        "uri": "file://pnpm-lock.yaml",
+        "digest": {
+          "sha256": "bb9f7f11f4e615dd26102bf7b87bb839b672dcaee10d904073601972b8cc3f3c"
+        }
+      }
+    ]
+  }
+}

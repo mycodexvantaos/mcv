@@ -1,0 +1,92 @@
+{
+  "version": "0.1.0",
+  "tag": "v0.1.0",
+  "releaseType": "stable",
+  "commit": "a24d7a2c697f5dcef22e915cdf6d927ad78273aa",
+  "branch": "docs/stable-release-draft-v0.1.0",
+  "draftTimestamp": "2026-05-16T23:19:09.374Z",
+  "nodeVersion": "v22.22.2",
+  "pnpmVersion": "9.15.9",
+  "platform": "linux",
+  "arch": "x64",
+  "precededBy": "v0.1.0-rc.1",
+  "promotionEvidence": {
+    "soakValidation": {
+      "overallStatus": "pass",
+      "checksExecuted": 19,
+      "checksPassed": 19,
+      "checksFailed": 0,
+      "checksSkipped": 6,
+      "skipClassifications": [
+        "docker-not-available",
+        "infrastructure-not-configured",
+        "signing-not-configured"
+      ],
+      "artifactPath": "release/artifacts/v0.1.0-rc.1/soak-report.json",
+      "markdownPath": "docs/releases/v0.1.0-rc.1-soak-report.md"
+    },
+    "promotionEvaluation": {
+      "recommendation": "conditional-go",
+      "totalGates": 11,
+      "passedGates": 9,
+      "failedGates": 0,
+      "skippedGates": 2,
+      "requiredGatesFailed": 0,
+      "conditions": [
+        {
+          "gate": "G010",
+          "name": "Cryptographic Signing",
+          "classification": "signing-not-configured",
+          "rcStatus": "acceptable-skip",
+          "stableStatus": "required",
+          "resolution": "Signing policy defined in release/policies/signing-policy.json. Implementation tracked as post-stable requirement."
+        },
+        {
+          "gate": "G011",
+          "name": "Infrastructure Validation",
+          "classification": "infrastructure-not-configured",
+          "rcStatus": "acceptable-skip",
+          "stableStatus": "optional",
+          "resolution": "Infrastructure provisioning (TFC, GCP, CF, K8s) tracked as post-stable requirement."
+        }
+      ],
+      "artifactPath": "release/artifacts/v0.1.0-rc.1/promotion-evaluation.json",
+      "markdownPath": "docs/releases/v0.1.0-rc.1-promotion-evaluation.md"
+    }
+  },
+  "supplyChainArtifacts": {
+    "releaseManifest": "release/artifacts/v0.1.0-rc.1/release-manifest.json",
+    "artifactDigests": "release/artifacts/v0.1.0-rc.1/artifact-digests.json",
+    "verificationSummary": "release/artifacts/v0.1.0-rc.1/verification-summary.json",
+    "sbom": "release/artifacts/v0.1.0-rc.1/sbom.cyclonedx.json",
+    "provenance": "release/artifacts/v0.1.0-rc.1/provenance.intoto.json",
+    "supplyChainSummary": "release/artifacts/v0.1.0-rc.1/supply-chain-summary.json"
+  },
+  "policies": {
+    "signingPolicy": "release/policies/signing-policy.json",
+    "promotionPolicy": "release/policies/rc-promotion-policy.json"
+  },
+  "releaseNotes": "docs/releases/v0.1.0.md",
+  "changelog": "CHANGELOG.md",
+  "signingClassification": "signing-not-configured",
+  "infrastructureClassifications": ["infrastructure-not-configured"],
+  "governanceFlags": [
+    "auditEnforcementEnabled",
+    "knowledgeTraceEnforcementEnabled",
+    "dreamSafetyEnforcementEnabled",
+    "auditEnforcementMiddleware",
+    "knowledgeTraceEnforcementMiddleware",
+    "dreamSafetyEnforcementMiddleware",
+    "policyRuntimeEnforcement"
+  ],
+  "postStableRequirements": [
+    "Deploy Sigstore keyless signing in CI for provenance artifacts",
+    "Configure infrastructure provisioning (TFC, GCP, CF, K8s)",
+    "Publish signed Docker images to container registry",
+    "Automate RC-to-stable promotion workflow in CI"
+  ],
+  "goNoGo": "go",
+  "goNoGoRationale": "All 9 required promotion gates pass with zero failures. 2 gates are skipped with documented acceptable-skip classifications: G010 (signing-not-configured, stable-status=required, policy defined with implementation plan) and G011 (infrastructure-not-configured, stable-status=optional). Soak validation: 19/19 checks pass. Recommendation: go with documented conditions for signing implementation as post-stable requirement.",
+  "draftHash": "f3b51869bcef37646e9d2ae15ad6e6482ba2d022d10ede5891702b13dbcec9b746d534930c78e8d37ee45907610eb8e0e20e967f5af21c3816e7317d98a43eb1",
+  "hashAlgorithm": "SHA3-512"
+}

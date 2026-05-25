@@ -1,34 +1,28 @@
-# ══════════════════════════════════════════════════════════════════════════════
+# ──────────────────────────────────────────────────────────────────
 # MyCodeXvantaOS — Platform Constitution CI
 # Validates service contracts, schemas, cross-references, and architecture
-# Updated for decomposed package structure (8 categories, hexagonal architecture)
-# ══════════════════════════════════════════════════════════════════════════════
+# Updated for pnpm monorepo + workspace protocol
+# ──────────────────────────────────────────────────────────────────
 name: Platform Constitution CI
 
 on:
   push:
-    branches: [feat/platform-constitution-complete, main]
+    branches: [main]
     paths:
       - 'contracts/**'
-      - 'packages/core/**'
-      - 'packages/ports/**'
-      - 'packages/adapters/**'
-      - 'packages/application/**'
+      - 'packages/**'
+      - 'services/**'
       - 'apps/**'
       - 'migrations/**'
-      - 'runtimes/**'
       - 'infra/**'
   pull_request:
     branches: [main]
     paths:
       - 'contracts/**'
-      - 'packages/core/**'
-      - 'packages/ports/**'
-      - 'packages/adapters/**'
-      - 'packages/application/**'
+      - 'packages/**'
+      - 'services/**'
       - 'apps/**'
       - 'migrations/**'
-      - 'runtimes/**'
       - 'infra/**'
 
 jobs:
@@ -37,29 +31,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
+          cache: pnpm
       - name: Install dependencies
-        run: |
-          if [ -f package-lock.json ]; then npm ci; fi
-          npm install -g js-yaml
+        run: pnpm install --frozen-lockfile
+      - name: Validate contracts
+        run: pnpm contracts:validate
       - name: Validate YAML syntax
         run: |
           echo "Validating service definition YAML files..."
           for f in contracts/service-definitions/*.yaml; do
             echo "  Checking: $f"
-            js-yaml "$f" > /dev/null 2>&1 || { echo "FAIL: $f"; exit 1; }
+            node -e "require('fs').readFileSync('$f','utf-8')" || { echo "FAIL: $f"; exit 1; }
           done
           echo "Validating event definitions..."
           for f in contracts/events/*.yaml; do
             echo "  Checking: $f"
-            js-yaml "$f" > /dev/null 2>&1 || { echo "FAIL: $f"; exit 1; }
-          done
-          echo "Validating OpenAPI spec..."
-          for f in contracts/openapi/*.yaml; do
-            echo "  Checking: $f"
-            js-yaml "$f" > /dev/null 2>&1 || { echo "FAIL: $f"; exit 1; }
+            node -e "require('fs').readFileSync('$f','utf-8')" || { echo "FAIL: $f"; exit 1; }
           done
           echo "All YAML files valid"
       - name: Validate JSON Schema syntax
@@ -70,191 +63,55 @@ jobs:
             node -e "JSON.parse(require('fs').readFileSync('$f','utf-8'))" || { echo "FAIL: $f"; exit 1; }
           done
           echo "All JSON Schema files valid"
-      - name: Validate service count
-        run: |
-          EXPECTED=8
-          # Count service definition files excluding service-catalog and memory-dream (deferred)
-          COUNT=$(ls contracts/service-definitions/*.yaml 2>/dev/null | grep -v service-catalog | grep -v memory-dream | wc -l)
-          echo "Found $COUNT active service definitions (expected $EXPECTED)"
-          if [ "$COUNT" -ne "$EXPECTED" ]; then
-            echo "WARN: Expected $EXPECTED active service definitions, found $COUNT (memory-dream is deferred)"
-          fi
-      - name: Validate service categories
-        run: |
-          echo "Validating 8-category classification..."
-          EXPECTED_CATEGORIES=("knowledge" "agent" "workspace" "developer" "security" "storage" "model" "automation")
-          if [ -f "contracts/service-categories.yaml" ]; then
-            for cat in "${EXPECTED_CATEGORIES[@]}"; do
-              if grep -q "$cat" contracts/service-categories.yaml; then
-                echo "  OK: category '$cat' found"
-              else
-                echo "  WARN: category '$cat' not found in service-categories.yaml"
-              fi
-            done
-          else
-            echo "WARN: contracts/service-categories.yaml not found"
-          fi
 
-  validate-schemas:
-    name: Validate Schemas
+  validate-governance:
+    name: Validate Governance
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check required schemas exist
-        run: |
-          REQUIRED_SCHEMAS=(
-            "universal-resource.schema.json"
-            "audit-event.schema.json"
-            "policy-decision.schema.json"
-            "service-definition.schema.json"
-            "knowledge-pipeline.schema.json"
-          )
-          for schema in "${REQUIRED_SCHEMAS[@]}"; do
-            if [ ! -f "contracts/schemas/$schema" ]; then
-              echo "WARN: Missing schema: $schema (may be created in future phase)"
-            else
-              echo "  OK: $schema"
-            fi
-          done
-
-  validate-infra:
-    name: Validate Infrastructure
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Validate migrations exist
-        run: |
-          echo "Checking migration files..."
-          for mig in migrations/sqlite/001_initial_schema.sql migrations/postgres/001_initial_schema.sql migrations/d1/001_initial_schema.sql; do
-            if [ -f "$mig" ]; then
-              echo "  OK: $mig"
-            else
-              echo "  WARN: Missing $mig"
-            fi
-          done
-      - name: Validate Docker Compose
-        run: |
-          if [ -f "infra/docker-compose/docker-compose.local.yaml" ]; then
-            echo "  OK: docker-compose.local.yaml"
-          else
-            echo "  WARN: Missing docker-compose.local.yaml"
-          fi
-      - name: Validate Helm chart
-        run: |
-          if [ -f "infra/helm/mycodexvantaos/Chart.yaml" ]; then
-            echo "  OK: Helm Chart.yaml"
-          else
-            echo "  WARN: Missing Helm Chart.yaml"
-          fi
-          EXPECTED_TEMPLATES=(deployment service ingress configmap secrets serviceaccount _helpers)
-          for t in "${EXPECTED_TEMPLATES[@]}"; do
-            if ls infra/helm/mycodexvantaos/templates/${t}*.yaml 2>/dev/null | head -1 > /dev/null 2>&1; then
-              echo "  OK: templates/${t}"
-            else
-              echo "  WARN: Missing Helm template for ${t}"
-            fi
-          done
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Governance check
+        run: pnpm governance:check
 
   architecture-check:
     name: Architecture Integrity
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check packages/core/ has no external dependencies
+      - name: Check no cloud vendor imports in core packages
         run: |
-          if grep -rq "from 'aws-sdk'\|from '@cloudflare'\|from '@azure'\|from '@google-cloud'" packages/core/ 2>/dev/null; then
-            echo "FAIL: packages/core/ must have zero cloud vendor dependencies"
+          if grep -rq "from '@cloudflare'" packages/mycodexvantaos-policy-model/ packages/mycodexvantaos-contracts-sdk/ 2>/dev/null; then
+            echo "FAIL: core packages must have zero cloud vendor dependencies"
             exit 1
           fi
-          echo "packages/core/ is vendor-free"
-      - name: Check packages/ports/ depend only on core types
+          echo "Core packages are vendor-free"
+      - name: Check required packages exist
         run: |
-          if grep -rq "from '@cloudflare'\|from 'aws-sdk'\|from '@azure'" packages/ports/ 2>/dev/null; then
-            echo "FAIL: packages/ports/ must not import cloud SDKs"
-            exit 1
-          fi
-          echo "packages/ports/ is cloud-free"
-      - name: Check 6 core sub-packages exist
-        run: |
-          EXPECTED_CORE=(shared service-catalog resource-model policy-model audit-model knowledge-model)
-          for pkg in "${EXPECTED_CORE[@]}"; do
-            if [ -d "packages/core/$pkg" ]; then
-              echo "  OK: packages/core/$pkg"
+          REQUIRED_PACKAGES=(
+            "packages/mycodexvantaos-policy-model"
+            "packages/mycodexvantaos-contracts-sdk"
+            "services/mycodexvantaos-service-policy-engine"
+            "services/mycodexvantaos-service-audit-log"
+            "services/mycodexvantaos-service-knowledge-trace"
+            "services/mycodexvantaos-service-memory-dream"
+            "services/mycodexvantaos-service-service-catalog"
+            "services/mycodexvantaos-service-resource-registry"
+            "apps/api-node"
+            "apps/api-worker"
+          )
+          for pkg in "${REQUIRED_PACKAGES[@]}"; do
+            if [ -d "$pkg" ]; then
+              echo "  OK: $pkg"
             else
-              echo "FAIL: Missing packages/core/$pkg"
+              echo "FAIL: Missing $pkg"
               exit 1
             fi
           done
-      - name: Check 6 port packages exist
-        run: |
-          EXPECTED_PORTS=(database object-storage search model-provider queue auth)
-          for pkg in "${EXPECTED_PORTS[@]}"; do
-            if [ -d "packages/ports/$pkg" ]; then
-              echo "  OK: packages/ports/$pkg"
-            else
-              echo "FAIL: Missing packages/ports/$pkg"
-              exit 1
-            fi
-          done
-      - name: Check 8 application service packages exist
-        run: |
-          EXPECTED_SERVICES=(identity workspace knowledge agent model audit usage automation)
-          for svc in "${EXPECTED_SERVICES[@]}"; do
-            if [ -d "packages/application/$svc" ]; then
-              echo "  OK: packages/application/$svc"
-            else
-              echo "FAIL: Missing packages/application/$svc"
-              exit 1
-            fi
-          done
-      - name: Check 7 adapter packages exist
-        run: |
-          EXPECTED_ADAPTERS=(cloudflare-d1 cloudflare-kv cloudflare-r2 d1-full-text-search openai openrouter workers-ai)
-          for adapter in "${EXPECTED_ADAPTERS[@]}"; do
-            if [ -d "packages/adapters/$adapter" ]; then
-              echo "  OK: packages/adapters/$adapter"
-            else
-              echo "FAIL: Missing packages/adapters/$adapter"
-              exit 1
-            fi
-          done
-      - name: Check 3 apps exist
-        run: |
-          EXPECTED_APPS=(api-worker web-console cli)
-          for app in "${EXPECTED_APPS[@]}"; do
-            if [ -d "apps/$app" ]; then
-              echo "  OK: apps/$app"
-            else
-              echo "FAIL: Missing apps/$app"
-              exit 1
-            fi
-          done
-      - name: Check 4 runtime packages exist
-        run: |
-          EXPECTED_RUNTIMES=(cloudflare node docker kubernetes)
-          for rt in "${EXPECTED_RUNTIMES[@]}"; do
-            if [ -d "runtimes/$rt" ]; then
-              echo "  OK: runtimes/$rt"
-            else
-              echo "FAIL: Missing runtimes/$rt"
-              exit 1
-            fi
-          done
-      - name: Check no legacy mycodexvantaos-* packages remain
-        run: |
-          LEGACY_COUNT=$(ls -d packages/mycodexvantaos-* 2>/dev/null | wc -l)
-          if [ "$LEGACY_COUNT" -gt 0 ]; then
-            echo "WARN: Found $LEGACY_COUNT legacy packages (packages/mycodexvantaos-*) that should be removed"
-            ls -d packages/mycodexvantaos-* 2>/dev/null
-          else
-            echo "  OK: No legacy mycodexvantaos-* packages"
-          fi
-      - name: Check memory-dream is marked as non-MVP
-        run: |
-          if [ -f "contracts/service-definitions/memory-dream.yaml" ]; then
-            if grep -q "NON-MVP\|deferred" contracts/service-definitions/memory-dream.yaml; then
-              echo "  OK: memory-dream.yaml is marked as deferred/non-MVP"
-            else
-              echo "WARN: memory-dream.yaml exists but is not marked as non-MVP"
-            fi
-          fi

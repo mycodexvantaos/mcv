@@ -1,27 +1,28 @@
 {
   "name": "@mycodexvantaos/api-worker",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "Cloudflare Worker API entry point for the MyCodeXvantaOS platform",
+  "description": "Cloudflare Worker API entry point for the MyCodeXvantaOS platform — governance-enforced",
   "type": "module",
   "main": "index.ts",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "tail": "wrangler tail",
-    "db:migrate": "wrangler d1 execute mycodexvantaos-db --file=../../migrations/d1/001_initial_schema.sql",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@mycodexvantaos/core": "workspace:*",
-    "@mycodexvantaos/ports": "workspace:*",
-    "@mycodexvantaos/application": "workspace:*",
-    "@mycodexvantaos/adapters": "workspace:*"
+    "@mycodexvantaos/contracts-sdk": "workspace:*",
+    "@mycodexvantaos/service-service-catalog": "workspace:*",
+    "@mycodexvantaos/service-resource-registry": "workspace:*",
+    "@mycodexvantaos/service-audit-log": "workspace:*",
+    "@mycodexvantaos/service-policy-engine": "workspace:*"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241205.0",
+    "@types/node": "^20.0.0",
     "typescript": "^5.4.0",
-    "wrangler": "^3.99.0"
+    "wrangler": "^4.88.0"
   },
   "license": "UNLICENSED"
 }

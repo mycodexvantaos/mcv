@@ -1,0 +1,192 @@
+{
+  "policyVersion": "1.0.0",
+  "effectiveDate": "2025-05-16",
+  "releaseLine": "v0.1.0",
+  "gates": [
+    {
+      "id": "G001",
+      "name": "CI Green",
+      "description": "All continuous integration checks on main must pass with zero failures, including TypeScript compilation, Python linting, schema validation, contract validation, CodeQL security scanning, and rc:verify workflow.",
+      "required": true,
+      "verificationMethod": "Check GitHub Actions status on main branch for the target RC commit. All jobs must be green.",
+      "artifacts": [],
+      "rcStatus": "required",
+      "stableStatus": "required"
+    },
+    {
+      "id": "G002",
+      "name": "Release Notes",
+      "description": "A release notes document must exist at docs/releases/<version>.md covering all changes, known limitations, upgrade path, and security considerations.",
+      "required": true,
+      "verificationMethod": "Verify docs/releases/<version>.md exists and contains Added, Changed, Fixed, and Security sections.",
+      "artifacts": ["docs/releases/<version>.md"],
+      "rcStatus": "required",
+      "stableStatus": "required"
+    },
+    {
+      "id": "G003",
+      "name": "CHANGELOG Entry",
+      "description": "CHANGELOG.md must include a dated entry for the version being promoted.",
+      "required": true,
+      "verificationMethod": "Verify CHANGELOG.md contains a section for the target version.",
+      "artifacts": ["CHANGELOG.md"],
+      "rcStatus": "required",
+      "stableStatus": "required"
+    },
+    {
+      "id": "G004",
+      "name": "Release Artifacts",
+      "description": "Release manifest, artifact digests (SHA3-512 primary, SHA-256 secondary), and verification summary must be generated and published under release/artifacts/<version>/.",
+      "required": true,
+      "verificationMethod": "Verify release/artifacts/<version>/ contains release-manifest.json, artifact-digests.json, and verification-summary.json.",
+      "artifacts": [
+        "release/artifacts/<version>/release-manifest.json",
+        "release/artifacts/<version>/artifact-digests.json",
+        "release/artifacts/<version>/verification-summary.json"
+      ],
+      "rcStatus": "required",
+      "stableStatus": "required"
+    },
+    {
+      "id": "G005",
+      "name": "Supply Chain Baseline",
+      "description": "A CycloneDX 1.5 JSON SBOM and in-toto Statement v1 with SLSA v1 predicate must exist for the release.",
+      "required": true,
+      "verificationMethod": "Verify release/artifacts/<version>/ contains sbom.cyclonedx.json and provenance.intoto.json.",
+      "artifacts": [
+        "release/artifacts/<version>/sbom.cyclonedx.json",
+        "release/artifacts/<version>/provenance.intoto.json"
+      ],
+      "rcStatus": "required",
+      "stableStatus": "required"
+    },
+    {
+      "id": "G006",
+      "name": "Self-Hosted Validation",
+      "description": "A self-hosted quickstart guide must exist and the RC smoke test script must pass against a running instance on PORT=9100.",
+      "required": true,
+      "verificationMethod": "Run scripts/smoke/self-hosted-rc-smoke.sh against a running instance and verify zero failures.",
+      "artifacts": [
+        "docs/self-hostable/quickstart-<version>.md",
+        "scripts/smoke/self-hosted-rc-smoke.sh"
+      ],
+      "rcStatus": "required",
+      "stableStatus": "required"
+    },
+    {
+      "id": "G007",
+      "name": "Governance Enforcement",
+      "description": "All seven canonical enforcement flags must be present and operational: auditEnforcementEnabled, knowledgeTraceEnforcementEnabled, dreamSafetyEnforcementEnabled, auditEnforcementMiddleware, knowledgeTraceEnforcementMiddleware, dreamSafetyEnforcementMiddleware, policyRuntimeEnforcement.",
+      "required": true,
+      "verificationMethod": "Run pnpm rc:verify and confirm the governance category reports all 7 flags present.",
+      "artifacts": [],
+      "rcStatus": "required",
+      "stableStatus": "required"
+    },
+    {
+      "id": "G008",
+      "name": "Reproducibility",
+      "description": "Release artifacts must be reproducible. Running pnpm release:artifacts on the same commit must produce bit-identical digest outputs.",
+      "required": true,
+      "verificationMethod": "Run pnpm release:artifacts twice on the same commit and diff the artifact-digests.json outputs.",
+      "artifacts": ["release/artifacts/<version>/artifact-digests.json"],
+      "rcStatus": "required",
+      "stableStatus": "required"
+    },
+    {
+      "id": "G009",
+      "name": "No Regressions",
+      "description": "No regressions in test coverage, API contracts, or enforcement behavior compared to the previous release. Any behavioral change must be documented.",
+      "required": true,
+      "verificationMethod": "Compare test results, contract schemas, and enforcement behavior against the previous release baseline.",
+      "artifacts": [],
+      "rcStatus": "required",
+      "stableStatus": "required"
+    },
+    {
+      "id": "G010",
+      "name": "Cryptographic Signing",
+      "description": "Release provenance must be cryptographically signed. Unsigned provenance is classified as signing-not-configured.",
+      "required": false,
+      "verificationMethod": "Verify provenance.intoto.json contains a valid signature from a configured signing key.",
+      "artifacts": ["release/artifacts/<version>/provenance.intoto.json"],
+      "rcStatus": "acceptable-skip",
+      "stableStatus": "required"
+    },
+    {
+      "id": "G011",
+      "name": "Infrastructure Validation",
+      "description": "External infrastructure services (Terraform Cloud, GCP, Cloudflare, Kubernetes) must be validated when available. Missing infrastructure is classified as infrastructure-not-configured.",
+      "required": false,
+      "verificationMethod": "Run rc:verify and confirm infrastructure-not-configured items are documented in the verification summary.",
+      "artifacts": ["release/artifacts/<version>/verification-summary.json"],
+      "rcStatus": "acceptable-skip",
+      "stableStatus": "optional"
+    }
+  ],
+  "classifications": {
+    "infrastructureNotConfigured": {
+      "description": "Infrastructure checks that cannot run due to missing external services (Terraform Cloud, GCP, Cloudflare, Kubernetes).",
+      "rcPolicy": "Acceptable if documented in verification summary and release notes. Must be tracked for resolution.",
+      "stablePolicy": "Must be resolved through proper secret configuration or formally accepted as out-of-scope with documented justification.",
+      "affectedServices": ["terraform-cloud", "gcp", "cloudflare", "kubernetes"]
+    },
+    "signingNotConfigured": {
+      "description": "Release provenance that lacks cryptographic signing.",
+      "rcPolicy": "Acceptable. Provenance is generated but classified as signing-not-configured.",
+      "stablePolicy": "Must be resolved. A signing key must be configured and all provenance statements must include valid signatures.",
+      "requiredForStable": ["sigstore", "gpg", "pgp"]
+    }
+  },
+  "promotionProcess": {
+    "steps": [
+      {
+        "order": 1,
+        "action": "Verify all gates",
+        "description": "Confirm all required gates pass on the target RC tag"
+      },
+      {
+        "order": 2,
+        "action": "Run rc:verify",
+        "description": "Execute pnpm rc:verify and confirm all check categories pass with documented infrastructure skips"
+      },
+      {
+        "order": 3,
+        "action": "Generate release artifacts",
+        "description": "Run pnpm release:artifacts && pnpm release:sbom && pnpm release:provenance"
+      },
+      {
+        "order": 4,
+        "action": "Run RC smoke test",
+        "description": "Execute scripts/smoke/self-hosted-rc-smoke.sh against a self-hosted instance"
+      },
+      {
+        "order": 5,
+        "action": "Create promotion request",
+        "description": "File a GitHub issue or PR referencing the RC tag, CI status, verification summary, artifact digests, SBOM, and provenance"
+      },
+      {
+        "order": 6,
+        "action": "Obtain maintainer approval",
+        "description": "At least one platform maintainer must approve the promotion"
+      },
+      {
+        "order": 7,
+        "action": "Tag stable release",
+        "description": "git tag -a v<version> -m 'Stable release v<version>'"
+      },
+      {
+        "order": 8,
+        "action": "Push tag and publish",
+        "description": "Push the stable tag and create a GitHub release with notes and artifact links"
+      }
+    ],
+    "requiredApprovals": 1
+  },
+  "exceptions": {
+    "allowed": true,
+    "process": "File a GitHub issue documenting the criterion that cannot be met, the reason, risk assessment, and mitigation plan. Obtain approval from two platform maintainers.",
+    "requiredApprovals": 2,
+    "scopeLimitation": "Exceptions are valid for a single release only and must be re-evaluated for subsequent releases."
+  }
+}

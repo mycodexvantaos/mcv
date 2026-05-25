@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RC Promotion Gate Policy",
+  "description": "Machine-readable promotion gate policy for MyCodeXvantaOS release candidates. Defines the criteria an RC must satisfy before promotion to stable.",
+  "type": "object",
+  "properties": {
+    "policyVersion": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version of this policy document"
+    },
+    "effectiveDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Date this policy version takes effect"
+    },
+    "releaseLine": {
+      "type": "string",
+      "description": "The release line this policy governs (e.g., v0.1.0)"
+    },
+    "gates": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/gate"
+      },
+      "description": "Ordered list of promotion gates that must all pass"
+    },
+    "classifications": {
+      "$ref": "#/$defs/classifications"
+    },
+    "promotionProcess": {
+      "$ref": "#/$defs/promotionProcess"
+    },
+    "exceptions": {
+      "$ref": "#/$defs/exceptions"
+    }
+  },
+  "$defs": {
+    "gate": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique gate identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable gate name"
+        },
+        "description": {
+          "type": "string",
+          "description": "What this gate verifies"
+        },
+        "required": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether this gate is mandatory for promotion"
+        },
+        "verificationMethod": {
+          "type": "string",
+          "description": "How to verify this gate passes"
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "File paths produced or checked by this gate"
+        },
+        "rcStatus": {
+          "type": "string",
+          "enum": ["required", "optional", "acceptable-skip", "not-applicable"],
+          "description": "Gate applicability for RC promotion"
+        },
+        "stableStatus": {
+          "type": "string",
+          "enum": ["required", "optional", "acceptable-skip", "not-applicable"],
+          "description": "Gate applicability for stable promotion"
+        }
+      },
+      "required": ["id", "name", "description", "verificationMethod", "rcStatus", "stableStatus"]
+    },
+    "classifications": {
+      "type": "object",
+      "properties": {
+        "infrastructureNotConfigured": {
+          "type": "object",
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "rcPolicy": {
+              "type": "string",
+              "description": "How this classification is handled for RC"
+            },
+            "stablePolicy": {
+              "type": "string",
+              "description": "How this classification must be resolved for stable"
+            },
+            "affectedServices": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "signingNotConfigured": {
+          "type": "object",
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "rcPolicy": {
+              "type": "string"
+            },
+            "stablePolicy": {
+              "type": "string"
+            },
+            "requiredForStable": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Signing methods acceptable for stable"
+            }
+          }
+        }
+      }
+    },
+    "promotionProcess": {
+      "type": "object",
+      "properties": {
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "order": {
+                "type": "integer"
+              },
+              "action": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            },
+            "required": ["order", "action", "description"]
+          }
+        },
+        "requiredApprovals": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of maintainer approvals required"
+        }
+      }
+    },
+    "exceptions": {
+      "type": "object",
+      "properties": {
+        "allowed": {
+          "type": "boolean"
+        },
+        "process": {
+          "type": "string"
+        },
+        "requiredApprovals": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "scopeLimitation": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "required": ["policyVersion", "effectiveDate", "releaseLine", "gates"]
+}

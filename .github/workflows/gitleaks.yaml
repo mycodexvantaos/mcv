@@ -17,14 +17,27 @@ jobs:
   gitleaks_scan:
     name: Gitleaks Scan
     runs-on: ubuntu-latest
-    if: ${{ secrets.GITLEAKS_LICENSE != '' }}
     steps:
+      - name: Check Gitleaks license
+        id: check_license
+        run: |
+          if [ -n "$GITLEAKS_LICENSE" ]; then
+            echo "has_license=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_license=false" >> $GITHUB_OUTPUT
+            echo "GITLEAKS_LICENSE not configured — skipping scan"
+          fi
+        env:
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+
       - name: Checkout repository
+        if: steps.check_license.outputs.has_license == 'true'
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Run Gitleaks
+        if: steps.check_license.outputs.has_license == 'true'
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -35,7 +48,7 @@ jobs:
           report_path: gitleaks-report.sarif
 
       - name: Upload Gitleaks SARIF report
-        if: always()
+        if: always() && hashFiles('gitleaks-report.sarif') != ''
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: gitleaks-report.sarif

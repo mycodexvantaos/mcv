@@ -1,0 +1,21 @@
+{
+  "eventType": "dream.run-initiated",
+  "category": "automation",
+  "severity": "info",
+  "actor": {
+    "type": "system",
+    "id": "dream-worker"
+  },
+  "resource": {
+    "type": "dream-run",
+    "id": "dream_example_001"
+  },
+  "context": {
+    "tenantId": "system",
+    "workspaceId": null
+  },
+  "data": {
+    "mode": "dry-run",
+    "runId": "dream_example_001"
+  }
+}

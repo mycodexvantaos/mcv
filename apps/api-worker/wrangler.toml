@@ -5,44 +5,10 @@ main = "index.ts"
 compatibility_date = "2024-12-01"
 compatibility_flags = ["nodejs_compat"]
 
-# ── Bindings ────────────────────────────────────────────────────────────
-
-[[d1_databases]]
-binding = "D1_DATABASE"
-database_name = "mycodexvantaos-db"
-database_id = "REPLACE_WITH_D1_DATABASE_ID"
-
-[[kv_namespaces]]
-binding = "KV_CACHE"
-id = "REPLACE_WITH_KV_CACHE_ID"
-
-[[kv_namespaces]]
-binding = "KV_SESSION"
-id = "REPLACE_WITH_KV_SESSION_ID"
-
-[[r2_buckets]]
-binding = "R2_BUCKET"
-bucket_name = "mycodexvantaos-storage"
-
-[ai]
-binding = "AI"
-
-[[queues.producers]]
-queue = "job-queue"
-binding = "QUEUE_JOBS"
-
-[[queues.consumers]]
-queue = "job-queue"
-max_batch_size = 10
-max_batch_timeout = 30
-max_retries = 3
-
-# ── Environment Variables ───────────────────────────────────────────────
+# ── Environment Variables ──────────────────────────────────────────────
 
 [vars]
 ENVIRONMENT = "production"
 
-# ── Secrets (set via `wrangler secret put`) ─────────────────────────────
+# ── Secrets (set via `wrangler secret put`) ────────────────────────────
 # JWT_SECRET
-# OPENAI_API_KEY (optional)
-# OPENROUTER_API_KEY (optional)

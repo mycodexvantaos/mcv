@@ -1,0 +1,44 @@
+{
+  "version": "0.1.0",
+  "generatedAt": "2026-05-18T06:43:06.972Z",
+  "digestAlgorithm": "sha3-512",
+  "compatibilityAlgorithm": "sha256",
+  "artifacts": [
+    {
+      "file": "release-manifest.json",
+      "sha3_512": "52af0cbcf1dad31e0aa6ddf721582e2e924c5fb6d131971ad9a77ce8d2a02033d5cee0f72b9d2e125d92b8e5afae78f4039ae63bf97d89bd8710ea758e932ab9",
+      "sha256": "66df328d871f3040a32850997ab8ebbcbdfa720adbfd6fd13ed839027e9baf86",
+      "algorithm": "sha3-512"
+    },
+    {
+      "file": "Dockerfile",
+      "sha3_512": "4d53690f00040dd339f496e3f101265cebc704097c343a624027da946b6ac1b403978d3994cf0950230521a7ea29fdd21ce39b92dfb638843633ce385beaff25",
+      "sha256": "130f340245112f024f732b6fa9cc577635e62831318c104573411ef7727d14de",
+      "algorithm": "sha3-512"
+    },
+    {
+      "file": "package.json",
+      "sha3_512": "c5256d161993f03f46cac4c3b5b778fc561727d13cd22712e8a8c596178ff8c2cd83db173715a41ba3bcce647f933ea838ef54918ec83ab9a650fd4d7d010ac4",
+      "sha256": "3a3909229a322b892fceea3bf139f9de9291f44e2c4322ac3558fc0f78b4366a",
+      "algorithm": "sha3-512"
+    },
+    {
+      "file": "pnpm-lock.yaml",
+      "sha3_512": "a8f8735dce32b5725eb0baf705e873f1232b315299a308a4496c7427aa285e3dd4fd6cd6113e589493af828a68b3de60594864ea4da90d457fa19475d115d471",
+      "sha256": "bb9f7f11f4e615dd26102bf7b87bb839b672dcaee10d904073601972b8cc3f3c",
+      "algorithm": "sha3-512"
+    },
+    {
+      "file": "apps/api-node/index.ts",
+      "sha3_512": "09b87bf307e11f837d4dea7d6fedaaf965414642e914edf95fc373a48e445a20b857755a9c6eb1fa0a3007fc156f13f40d363b61b2c44c0079f53478cba14db6",
+      "sha256": "a0fb4a9e079fc794639dfd18cf70c8493bfc2a764b5923877fb19a152fbf3057",
+      "algorithm": "sha3-512"
+    },
+    {
+      "file": "tools/governance/check.ts",
+      "sha3_512": "35a28c8f829be2e7953a56facd0755a278d336defa295809b694822881cad9a674904d07427da6f40f786ac6805d820a9518ee38f626f27b14a1d986225e94a2",
+      "sha256": "5de7f63870b1f25dc6f6943a597e7d80c12450fd95c7df79daad8fdd365bdc58",
+      "algorithm": "sha3-512"
+    }
+  ]
+}

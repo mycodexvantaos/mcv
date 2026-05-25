@@ -5,18 +5,34 @@ Command-line tool for executing memory dream processing.
 ## Usage
 
 ```bash
-# Basic usage
-uv run python -m apps.dream_worker.main memories.json
+# Dream run with subcommand (recommended)
+cd python && uv run python apps/dream-worker/main.py run --mode dry-run
+cd python && uv run python apps/dream-worker/main.py run --mode proposal
+cd python && uv run python apps/dream-worker/main.py run --mode execute
+
+# With input file
+cd python && uv run python apps/dream-worker/main.py run --mode dry-run memories.json
 
 # Save report to file
-uv run python -m apps.dream_worker.main memories.json -o dream-report.json
+cd python && uv run python apps/dream-worker/main.py run --mode dry-run memories.json -o dream-report.json
 
-# Execute actions (not dry-run)
-uv run python -m apps.dream_worker.main memories.json --no-dry-run
+# JSON output (for TS integration)
+cd python && uv run python apps/dream-worker/main.py run --mode dry-run --json
 
-# Auto-apply actions (not just proposal)
-uv run python -m apps.dream_worker.main memories.json --no-proposal-mode
+# Stdin input (for TS→Python child process)
+echo '[{"memory_id":"mem_001","content":"Test"}]' | uv run python apps/dream-worker/main.py run --stdin --json --mode dry-run
+
+# Legacy direct invocation
+cd python && uv run python apps/dream-worker/main.py memories.json
 ```
+
+## Modes
+
+| Mode       | dry_run | proposal_mode | Description                          |
+| ---------- | ------- | ------------- | ------------------------------------ |
+| `dry-run`  | ✅      | ✅            | Report only, no changes              |
+| `proposal` | ✅      | ✅            | Suggest actions but don't auto-apply |
+| `execute`  | ❌      | ❌            | Execute actions and apply changes    |
 
 ## Input Format
 
@@ -66,4 +82,33 @@ Output JSON file contains the dream report:
   ],
   "statistics": {...}
 }
+```
+
+## TS Integration
+
+The `--stdin --json` flags enable TypeScript→Python integration via child process:
+
+```typescript
+import { spawn } from 'node:child_process';
+
+const proc = spawn('python', [
+  'python/apps/dream-worker/main.py',
+  'run',
+  '--stdin',
+  '--json',
+  '--mode',
+  'dry-run',
+]);
+
+proc.stdin.write(JSON.stringify(memoryItems));
+proc.stdin.end();
+
+let output = '';
+proc.stdout.on('data', (data) => {
+  output += data;
+});
+proc.on('close', () => {
+  const report = JSON.parse(output);
+  // Use dream report...
+});
 ```

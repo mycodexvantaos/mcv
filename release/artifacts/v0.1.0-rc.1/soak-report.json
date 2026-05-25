@@ -1,0 +1,293 @@
+{
+  "version": "v0.1.0-rc.1",
+  "tag": "v0.1.0-rc.1",
+  "commit": "7a79d8353acf56183fc4ae5b21a3b732d8d11fbe",
+  "branch": "chore/rc-soak-report",
+  "soakTimestamp": "2026-05-16T22:26:21.865Z",
+  "nodeVersion": "v22.22.2",
+  "pnpmVersion": "9.15.9",
+  "platform": "linux",
+  "arch": "x64",
+  "soakRuns": 1,
+  "runs": [
+    {
+      "runIndex": 1,
+      "timestamp": "2026-05-16T22:26:21.859Z",
+      "checksTotal": 25,
+      "checksPassed": 19,
+      "checksFailed": 0,
+      "checksSkipped": 6,
+      "durationMs": 34078
+    }
+  ],
+  "checks": [
+    {
+      "name": "Governance check passes",
+      "category": "governance",
+      "passed": true,
+      "skipped": false,
+      "detail": "All governance checks passed"
+    },
+    {
+      "name": "Enforcement flags are present",
+      "category": "governance",
+      "passed": true,
+      "skipped": false,
+      "detail": "All 7 enforcement flags present"
+    },
+    {
+      "name": "Contract validation passes",
+      "category": "contracts",
+      "passed": true,
+      "skipped": false,
+      "detail": "All contracts validated"
+    },
+    {
+      "name": "Service definitions load",
+      "category": "contracts",
+      "passed": true,
+      "skipped": false,
+      "detail": "15 service definitions found"
+    },
+    {
+      "name": "Resource kinds load",
+      "category": "contracts",
+      "passed": true,
+      "skipped": false,
+      "detail": "16 resource kinds found"
+    },
+    {
+      "name": "Policy definitions load",
+      "category": "policy",
+      "passed": true,
+      "skipped": false,
+      "detail": "5 policies found"
+    },
+    {
+      "name": "Contract tests pass",
+      "category": "policy",
+      "passed": true,
+      "skipped": false,
+      "detail": "Contract SDK tests passed"
+    },
+    {
+      "name": "Service tests pass",
+      "category": "policy",
+      "passed": true,
+      "skipped": false,
+      "detail": "Service tests passed"
+    },
+    {
+      "name": "TypeScript typecheck passes",
+      "category": "tests",
+      "passed": true,
+      "skipped": false,
+      "detail": "TypeScript type check passed"
+    },
+    {
+      "name": "Unit tests pass",
+      "category": "tests",
+      "passed": true,
+      "skipped": false,
+      "detail": "Unit tests passed"
+    },
+    {
+      "name": "Format check passes",
+      "category": "tests",
+      "passed": true,
+      "skipped": false,
+      "detail": "Code format check passed"
+    },
+    {
+      "name": "Release manifest generates",
+      "category": "release-artifacts",
+      "passed": true,
+      "skipped": false,
+      "detail": "Release artifacts generated"
+    },
+    {
+      "name": "SBOM generates",
+      "category": "release-artifacts",
+      "passed": true,
+      "skipped": false,
+      "detail": "SBOM generated"
+    },
+    {
+      "name": "Provenance generates",
+      "category": "release-artifacts",
+      "passed": true,
+      "skipped": false,
+      "detail": "Provenance generated"
+    },
+    {
+      "name": "Dockerfile exists",
+      "category": "docker",
+      "passed": true,
+      "skipped": false,
+      "detail": "Dockerfile present"
+    },
+    {
+      "name": "Docker smoke test script exists",
+      "category": "docker",
+      "passed": true,
+      "skipped": false,
+      "detail": "Docker smoke test script present"
+    },
+    {
+      "name": "Docker build + smoke test",
+      "category": "docker",
+      "passed": true,
+      "skipped": true,
+      "detail": "Docker daemon not available locally",
+      "classification": "docker-not-available"
+    },
+    {
+      "name": "Python workspace structure is valid",
+      "category": "python",
+      "passed": true,
+      "skipped": false,
+      "detail": "Python workspace structure valid"
+    },
+    {
+      "name": "Python packages exist",
+      "category": "python",
+      "passed": true,
+      "skipped": false,
+      "detail": "5 Python packages found"
+    },
+    {
+      "name": "Python apps exist",
+      "category": "python",
+      "passed": true,
+      "skipped": false,
+      "detail": "3 Python apps found"
+    },
+    {
+      "name": "Python unit tests",
+      "category": "python",
+      "passed": true,
+      "skipped": true,
+      "detail": "requires venv setup — covered by python-ci.yml CI workflow",
+      "classification": "infrastructure-not-configured"
+    },
+    {
+      "name": "GCP / Terraform Cloud",
+      "category": "infrastructure",
+      "passed": true,
+      "skipped": true,
+      "detail": "no .tf files in repo",
+      "classification": "infrastructure-not-configured"
+    },
+    {
+      "name": "Cloudflare deployment",
+      "category": "infrastructure",
+      "passed": true,
+      "skipped": true,
+      "detail": "no CF_API_TOKEN secret in CI",
+      "classification": "infrastructure-not-configured"
+    },
+    {
+      "name": "Kubernetes deployment",
+      "category": "infrastructure",
+      "passed": true,
+      "skipped": true,
+      "detail": "no K8s cluster configured",
+      "classification": "infrastructure-not-configured"
+    },
+    {
+      "name": "Provenance signing",
+      "category": "signing",
+      "passed": true,
+      "skipped": true,
+      "detail": "signing keys not configured — unsigned RC provenance classified as signing-not-configured",
+      "classification": "signing-not-configured"
+    }
+  ],
+  "summary": {
+    "checksExecuted": 19,
+    "checksPassed": 19,
+    "checksFailed": 0,
+    "checksSkipped": 6
+  },
+  "skipReasons": [
+    {
+      "check": "Docker build + smoke test",
+      "classification": "docker-not-available",
+      "reason": "Docker daemon not available locally"
+    },
+    {
+      "check": "Python unit tests",
+      "classification": "infrastructure-not-configured",
+      "reason": "requires venv setup — covered by python-ci.yml CI workflow"
+    },
+    {
+      "check": "GCP / Terraform Cloud",
+      "classification": "infrastructure-not-configured",
+      "reason": "no .tf files in repo"
+    },
+    {
+      "check": "Cloudflare deployment",
+      "classification": "infrastructure-not-configured",
+      "reason": "no CF_API_TOKEN secret in CI"
+    },
+    {
+      "check": "Kubernetes deployment",
+      "classification": "infrastructure-not-configured",
+      "reason": "no K8s cluster configured"
+    },
+    {
+      "check": "Provenance signing",
+      "classification": "signing-not-configured",
+      "reason": "signing keys not configured — unsigned RC provenance classified as signing-not-configured"
+    }
+  ],
+  "infrastructureClassifications": ["infrastructure-not-configured"],
+  "artifactDigestSummary": [
+    {
+      "name": "release-manifest.json",
+      "path": "release/artifacts/v0.1.0-rc.1/release-manifest.json",
+      "exists": true,
+      "sha256": "4dbc91c8f809613ff4d7ff1b89841e01a8f84f4962717d3a3f2d254c834fe1ed"
+    },
+    {
+      "name": "artifact-digests.json",
+      "path": "release/artifacts/v0.1.0-rc.1/artifact-digests.json",
+      "exists": true,
+      "sha256": "462cbc96a759302a579d01ac713145035fddaa3a0c130704d88e3fe57e698592"
+    },
+    {
+      "name": "verification-summary.json",
+      "path": "release/artifacts/v0.1.0-rc.1/verification-summary.json",
+      "exists": true,
+      "sha256": "d332bc2c103dc7c820d408988fabb01fb8cce02ee396a857f2ab49024fbf37ae"
+    },
+    {
+      "name": "sbom.cyclonedx.json",
+      "path": "release/artifacts/v0.1.0-rc.1/sbom.cyclonedx.json",
+      "exists": true,
+      "sha256": "ac86ef11fb30e712f1e06bef2dfffa869ad1b23bd0cc8d9d5ca562062ef98dcb"
+    },
+    {
+      "name": "provenance.intoto.json",
+      "path": "release/artifacts/v0.1.0-rc.1/provenance.intoto.json",
+      "exists": true,
+      "sha256": "88a88a77d8577677b70734b757536d4a24bc19f08c27290c2430f7f4a7734d38"
+    },
+    {
+      "name": "supply-chain-summary.json",
+      "path": "release/artifacts/v0.1.0-rc.1/supply-chain-summary.json",
+      "exists": true,
+      "sha256": "421b6f765c1109c63df61f9a82c952e4335631847e5a80ac6bc85e17e41c769f"
+    }
+  ],
+  "sbomStatus": {
+    "available": true,
+    "path": "release/artifacts/v0.1.0-rc.1/sbom.cyclonedx.json"
+  },
+  "provenanceStatus": {
+    "available": true,
+    "path": "release/artifacts/v0.1.0-rc.1/provenance.intoto.json",
+    "signingStatus": "signing-not-configured"
+  },
+  "overallStatus": "pass"
+}

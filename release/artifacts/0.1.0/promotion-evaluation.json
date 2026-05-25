@@ -1,0 +1,138 @@
+{
+  "version": "0.1.0",
+  "tag": "v0.1.0",
+  "commit": "5ec6ddf428c641395d021605109fbd28812f9f66",
+  "branch": "fix/v0.1.1-dependency-security",
+  "evaluationTimestamp": "2026-05-20T14:12:28.730Z",
+  "nodeVersion": "v20.20.2",
+  "pnpmVersion": "9.15.9",
+  "targetRelease": "v0.1.0",
+  "gates": [
+    {
+      "gateId": "G001",
+      "gateName": "CI Green",
+      "passed": true,
+      "skipped": false,
+      "required": true,
+      "rcStatus": "required",
+      "stableStatus": "required",
+      "evidence": "All local CI checks pass: typecheck=true, test=true, governance=true. GitHub Actions CI on main branch should be verified separately."
+    },
+    {
+      "gateId": "G002",
+      "gateName": "Release Notes",
+      "passed": true,
+      "skipped": false,
+      "required": true,
+      "rcStatus": "required",
+      "stableStatus": "required",
+      "evidence": "Release notes at docs/releases/0.1.0.md exists with 1/4 standard sections (Added=false, Changed=false, Fixed=false, Security=true)"
+    },
+    {
+      "gateId": "G003",
+      "gateName": "CHANGELOG Entry",
+      "passed": true,
+      "skipped": false,
+      "required": true,
+      "rcStatus": "required",
+      "stableStatus": "required",
+      "evidence": "CHANGELOG.md contains entry for 0.1.0"
+    },
+    {
+      "gateId": "G004",
+      "gateName": "Release Artifacts",
+      "passed": true,
+      "skipped": false,
+      "required": true,
+      "rcStatus": "required",
+      "stableStatus": "required",
+      "evidence": "Release artifacts check: release-manifest.json=true, artifact-digests.json=true, verification-summary.json=true. Manifest valid: v0.1.0 @ 1371a896. Digests use SHA3-512 primary with 6 artifacts"
+    },
+    {
+      "gateId": "G005",
+      "gateName": "Supply Chain Baseline",
+      "passed": true,
+      "skipped": false,
+      "required": true,
+      "rcStatus": "required",
+      "stableStatus": "required",
+      "evidence": "SBOM=true, Provenance=true. SBOM specVersion=1.5, format=CycloneDX. Provenance type=v1, predicate=v1"
+    },
+    {
+      "gateId": "G006",
+      "gateName": "Self-Hosted Validation",
+      "passed": true,
+      "skipped": false,
+      "required": true,
+      "rcStatus": "required",
+      "stableStatus": "required",
+      "evidence": "Quickstart guide=true, Smoke script=true. Note: Live smoke test requires a running instance on PORT=9100."
+    },
+    {
+      "gateId": "G007",
+      "gateName": "Governance Enforcement",
+      "passed": true,
+      "skipped": false,
+      "required": true,
+      "rcStatus": "required",
+      "stableStatus": "required",
+      "evidence": "All 7 enforcement flags present. Governance check: passed"
+    },
+    {
+      "gateId": "G008",
+      "gateName": "Reproducibility",
+      "passed": false,
+      "skipped": false,
+      "required": true,
+      "rcStatus": "required",
+      "stableStatus": "required",
+      "evidence": "Digest mismatches in: package.json, pnpm-lock.yaml. Source files may have changed since artifact generation."
+    },
+    {
+      "gateId": "G009",
+      "gateName": "No Regressions",
+      "passed": true,
+      "skipped": false,
+      "required": true,
+      "rcStatus": "required",
+      "stableStatus": "required",
+      "evidence": "Tests=true, Contracts=true, Enforcement flags=unchanged. No regressions detected in test coverage, API contracts, or enforcement behavior."
+    },
+    {
+      "gateId": "G010",
+      "gateName": "Cryptographic Signing",
+      "passed": true,
+      "skipped": true,
+      "required": false,
+      "rcStatus": "acceptable-skip",
+      "stableStatus": "required",
+      "evidence": "Provenance is unsigned. Classified as signing-not-configured. RC policy allows this (acceptable-skip). Stable release requires signing.",
+      "classification": "signing-not-configured"
+    },
+    {
+      "gateId": "G011",
+      "gateName": "Infrastructure Validation",
+      "passed": true,
+      "skipped": true,
+      "required": false,
+      "rcStatus": "acceptable-skip",
+      "stableStatus": "optional",
+      "evidence": "Infrastructure not configured. Skips documented: 3 items. RC policy: acceptable-skip. Stable policy: optional.",
+      "classification": "infrastructure-not-configured"
+    }
+  ],
+  "summary": {
+    "totalGates": 11,
+    "passedGates": 8,
+    "failedGates": 1,
+    "skippedGates": 2,
+    "requiredGatesFailed": 1
+  },
+  "blockingIssues": [
+    "G008 (Reproducibility): Digest mismatches in: package.json, pnpm-lock.yaml. Source files may have changed since artifact generation."
+  ],
+  "recommendation": "no-go",
+  "recommendationReason": "1 required gate(s) failed. The RC cannot be promoted until these issues are resolved: G008 (Reproducibility): Digest mismatches in: package.json, pnpm-lock.yaml. Source files may have changed since artifact generation.",
+  "infrastructureClassifications": ["infrastructure-not-configured"],
+  "signingClassification": "signing-not-configured"
+}

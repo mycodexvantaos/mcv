@@ -1,0 +1,20 @@
+{
+  "version": "v0.1.0-rc.1",
+  "generatedAt": "2026-05-20T14:12:16.441Z",
+  "commit": "5ec6ddf428c641395d021605109fbd28812f9f66",
+  "branch": "fix/v0.1.1-dependency-security",
+  "sbomAvailable": true,
+  "sbomPath": "/workspace/mycodexvantaos/release/artifacts/v0.1.0-rc.1/sbom.cyclonedx.json",
+  "provenanceAvailable": true,
+  "provenancePath": "/workspace/mycodexvantaos/release/artifacts/v0.1.0-rc.1/provenance.intoto.json",
+  "signingStatus": "signing-not-configured",
+  "signingWorkflow": ".github/workflows/sign-release.yaml",
+  "materialsCount": 2,
+  "subjectsCount": 3,
+  "infrastructureSkips": [
+    "GCP / Terraform Cloud: infrastructure-not-configured",
+    "Cloudflare: infrastructure-not-configured",
+    "Kubernetes: infrastructure-not-configured",
+    "Artifact signing: signing-not-configured (run pnpm release:sign to sign)"
+  ]
+}

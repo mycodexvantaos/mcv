@@ -2,8 +2,16 @@
 MyCodeXvantaOS Dream Worker
 
 Consumes dream-run jobs from database/queue and executes memory dream processing.
+
+CLI subcommands:
+  dream run --mode dry-run   Run dream processing (dry-run mode)
+  dream run --mode proposal  Run dream processing (proposal mode)
+  dream run --mode execute   Run dream processing (execute mode)
+
+Also supports direct JSON input via stdin for TS→Python integration.
 """
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -26,6 +34,24 @@ def load_memory_items_from_json(filepath: str) -> list[MemoryItem]:
         data = json.load(f)
 
     return [MemoryItem.model_validate(item) for item in data]
+
+
+def load_memory_items_from_stdin() -> list[MemoryItem]:
+    """
+    Load memory items from stdin (JSON array)
+
+    Used by TS→Python integration via child_process.spawn
+    """
+    raw = sys.stdin.read()
+    data = json.loads(raw)
+
+    if isinstance(data, dict) and "memory_items" in data:
+        # Handle wrapped format: { "memory_items": [...] }
+        return [MemoryItem.model_validate(item) for item in data["memory_items"]]
+    elif isinstance(data, list):
+        return [MemoryItem.model_validate(item) for item in data]
+    else:
+        raise ValueError("Expected JSON array of memory items or object with 'memory_items' key")
 
 
 def save_report_to_json(report: DreamReport, filepath: str) -> None:
@@ -103,10 +129,140 @@ def print_report_summary(report: DreamReport) -> None:
     print("\n" + "=" * 60 + "\n")
 
 
-def main() -> None:
-    """Main CLI entry point"""
-    import argparse
+def cmd_dream_run(args: argparse.Namespace) -> None:
+    """Handle 'dream run' subcommand"""
+    mode = args.mode
 
+    # Determine dry_run and proposal_mode from mode
+    dry_run = mode in ("dry-run", "proposal")
+    proposal_mode = mode in ("dry-run", "proposal")
+
+    # Load memory items
+    try:
+        if args.stdin:
+            memory_items = load_memory_items_from_stdin()
+            print(f"✅ Loaded {len(memory_items)} memory items from stdin", file=sys.stderr)
+        elif args.input:
+            memory_items = load_memory_items_from_json(args.input)
+            print(f"✅ Loaded {len(memory_items)} memory items from {args.input}", file=sys.stderr)
+        else:
+            # No input specified — use sample data for demo
+            memory_items = _create_sample_memory_items()
+            print(
+                f"✅ Using {len(memory_items)} sample memory items (no input specified)",
+                file=sys.stderr,
+            )
+    except Exception as e:
+        print(f"❌ Failed to load memory items: {e}", file=sys.stderr)
+        sys.exit(1)
+
+    # Execute dream run
+    print(f"🧠 Running dream processing (mode: {mode})...", file=sys.stderr)
+    report = execute_dream_run(
+        memory_items=memory_items,
+        dry_run=dry_run,
+        proposal_mode=proposal_mode,
+    )
+
+    # Output as JSON to stdout (for TS integration)
+    if args.json:
+        report_json = report.model_dump(mode="json")
+        print(json.dumps(report_json, indent=2, default=str))
+    else:
+        # Print human-readable summary
+        print_report_summary(report)
+
+    # Save report if output specified
+    if args.output:
+        save_report_to_json(report, args.output)
+        print(f"💾 Dream report saved to: {args.output}", file=sys.stderr)
+
+
+def _create_sample_memory_items() -> list[MemoryItem]:
+    """Create sample memory items for demo/testing"""
+    from mycodexvantaos_memory_dream.models import MemoryItemType
+
+    return [
+        MemoryItem(
+            memory_id="mem_sample_001",
+            content="System deployed version 2.1.0 at 2024-01-15",
+            tags=["system", "deployment"],
+            memory_type=MemoryItemType.OBSERVATION,
+        ),
+        MemoryItem(
+            memory_id="mem_sample_002",
+            content="System deployed version 2.1.0 at 2024-01-15",
+            tags=["system", "deployment"],
+            memory_type=MemoryItemType.OBSERVATION,
+        ),
+        MemoryItem(
+            memory_id="mem_sample_003",
+            content="Agent chat service is operational",
+            tags=["agent", "status"],
+            related_entities=["urn:mycodexvantaos:entity:agent-chat-001"],
+            memory_type=MemoryItemType.FACT,
+        ),
+        MemoryItem(
+            memory_id="mem_sample_004",
+            content="Decision to use TypeScript for control plane",
+            tags=["architecture", "decision"],
+            memory_type=MemoryItemType.DECISION,
+        ),
+    ]
+
+
+def cli() -> None:
+    """Main CLI entry point"""
+    parser = argparse.ArgumentParser(
+        description="MyCodeXvantaOS Dream Worker — Memory Dream Processing"
+    )
+    subparsers = parser.add_subparsers(dest="command", help="Available commands")
+
+    # ─── dream run ────────────────────────────────────────────
+    run_parser = subparsers.add_parser("run", help="Execute a dream run")
+    run_parser.add_argument(
+        "input",
+        nargs="?",
+        help="Input JSON file containing memory items",
+    )
+    run_parser.add_argument(
+        "--mode",
+        choices=["dry-run", "proposal", "execute"],
+        default="dry-run",
+        help="Execution mode (default: dry-run)",
+    )
+    run_parser.add_argument(
+        "-o",
+        "--output",
+        help="Output JSON file for dream report",
+    )
+    run_parser.add_argument(
+        "--stdin",
+        action="store_true",
+        help="Read memory items from stdin (JSON format)",
+    )
+    run_parser.add_argument(
+        "--json",
+        action="store_true",
+        help="Output report as JSON to stdout (for TS integration)",
+    )
+
+    args = parser.parse_args()
+
+    if args.command == "run":
+        cmd_dream_run(args)
+    else:
+        parser.print_help()
+
+
+def main() -> None:
+    """Backward-compatible main() for direct script execution"""
+    # If no subcommand, fall back to legacy behavior
+    if len(sys.argv) > 1 and sys.argv[1] in ("run",):
+        cli()
+        return
+
+    # Legacy: positional input file
     parser = argparse.ArgumentParser(
         description="MyCodeXvantaOS Dream Worker — Memory Dream Processing"
     )
@@ -158,4 +314,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    cli()

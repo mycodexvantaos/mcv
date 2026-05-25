@@ -1,0 +1,2149 @@
+{
+  "$schema": "https://cyclonedx.org/schema/bom-1.5.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "serialNumber": "urn:uuid:64853335-29bd-44cc-8cbc-8d771e62800f",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-05-18T06:43:09.480Z",
+    "tools": [
+      {
+        "name": "mycodexvantaos-sbom-generator",
+        "version": "1.0.0"
+      }
+    ],
+    "component": {
+      "type": "application",
+      "bom-ref": "pkg:npm/mycodexvantaos@0.1.0",
+      "name": "mycodexvantaos",
+      "version": "0.1.0"
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@genkit-ai/google-genai@1.28.0",
+      "name": "@genkit-ai/google-genai",
+      "version": "1.28.0",
+      "purl": "pkg:npm/@genkit-ai/google-genai@1.28.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@hookform/resolvers@4.1.3",
+      "name": "@hookform/resolvers",
+      "version": "4.1.3",
+      "purl": "pkg:npm/@hookform/resolvers@4.1.3",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/adapters@0.1.0",
+      "name": "@mycodexvantaos/adapters",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/adapters@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/advanced-monitoring@1.0.0",
+      "name": "@mycodexvantaos/advanced-monitoring",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/advanced-monitoring@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/ai-agent@0.0.1",
+      "name": "@mycodexvantaos/ai-agent",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/ai-agent@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/ai-embedding@0.0.1",
+      "name": "@mycodexvantaos/ai-embedding",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/ai-embedding@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/ai-ensemble@1.0.0",
+      "name": "@mycodexvantaos/ai-ensemble",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/ai-ensemble@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/ai-llm@0.0.1",
+      "name": "@mycodexvantaos/ai-llm",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/ai-llm@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/ai-memory@0.0.1",
+      "name": "@mycodexvantaos/ai-memory",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/ai-memory@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/ai-team-service@1.0.0",
+      "name": "@mycodexvantaos/ai-team-service",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/ai-team-service@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/analytics@1.0.0",
+      "name": "@mycodexvantaos/analytics",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/analytics@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/api-gateway@1.0.0",
+      "name": "@mycodexvantaos/api-gateway",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/api-gateway@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/api-generator@0.1.0",
+      "name": "@mycodexvantaos/api-generator",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/api-generator@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/app-dev-studio@1.0.0",
+      "name": "@mycodexvantaos/app-dev-studio",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/app-dev-studio@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/app-validation@1.0.0",
+      "name": "@mycodexvantaos/app-validation",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/app-validation@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/application@1.0.0-constitution",
+      "name": "@mycodexvantaos/application",
+      "version": "1.0.0-constitution",
+      "purl": "pkg:npm/@mycodexvantaos/application@1.0.0-constitution",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/audit-logger@1.0.0",
+      "name": "@mycodexvantaos/audit-logger",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/audit-logger@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/audit-model@0.1.0",
+      "name": "@mycodexvantaos/audit-model",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/audit-model@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/auto-scaler@1.0.0",
+      "name": "@mycodexvantaos/auto-scaler",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/auto-scaler@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/background-job-runtime@0.1.0",
+      "name": "@mycodexvantaos/background-job-runtime",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/background-job-runtime@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/builder@0.0.1",
+      "name": "@mycodexvantaos/builder",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/builder@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/cache-manager@1.0.0",
+      "name": "@mycodexvantaos/cache-manager",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/cache-manager@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/capabilities@1.0.0-phase-0.5",
+      "name": "@mycodexvantaos/capabilities",
+      "version": "1.0.0-phase-0.5",
+      "purl": "pkg:npm/@mycodexvantaos/capabilities@1.0.0-phase-0.5",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/compliance-checker@1.0.0",
+      "name": "@mycodexvantaos/compliance-checker",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/compliance-checker@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/config-sync@0.0.1",
+      "name": "@mycodexvantaos/config-sync",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/config-sync@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/connector-auth@1.0.0",
+      "name": "@mycodexvantaos/connector-auth",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/connector-auth@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/connector-elastic@1.0.0",
+      "name": "@mycodexvantaos/connector-elastic",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/connector-elastic@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/connector-github@1.0.0",
+      "name": "@mycodexvantaos/connector-github",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/connector-github@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/connector-kafka@1.0.0",
+      "name": "@mycodexvantaos/connector-kafka",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/connector-kafka@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/connector-mongodb@1.0.0",
+      "name": "@mycodexvantaos/connector-mongodb",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/connector-mongodb@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/connector-postgresql@1.0.0",
+      "name": "@mycodexvantaos/connector-postgresql",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/connector-postgresql@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/connector-redis@1.0.0",
+      "name": "@mycodexvantaos/connector-redis",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/connector-redis@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/connector-s3@1.0.0",
+      "name": "@mycodexvantaos/connector-s3",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/connector-s3@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/contracts-sdk@0.1.0",
+      "name": "@mycodexvantaos/contracts-sdk",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/contracts-sdk@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/core@1.0.0-constitution",
+      "name": "@mycodexvantaos/core",
+      "version": "1.0.0-constitution",
+      "purl": "pkg:npm/@mycodexvantaos/core@1.0.0-constitution",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/core-auth@0.0.1",
+      "name": "@mycodexvantaos/core-auth",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/core-auth@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/core-config@0.0.1",
+      "name": "@mycodexvantaos/core-config",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/core-config@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/core-gateway@0.0.1",
+      "name": "@mycodexvantaos/core-gateway",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/core-gateway@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/core-kernel@0.0.1",
+      "name": "@mycodexvantaos/core-kernel",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/core-kernel@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/data-graph@0.0.1",
+      "name": "@mycodexvantaos/data-graph",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/data-graph@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/data-pipeline@0.0.1",
+      "name": "@mycodexvantaos/data-pipeline",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/data-pipeline@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/data-vector-store@0.0.1",
+      "name": "@mycodexvantaos/data-vector-store",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/data-vector-store@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/database@0.0.1",
+      "name": "@mycodexvantaos/database",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/database@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/deployment@0.0.1",
+      "name": "@mycodexvantaos/deployment",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/deployment@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/deployment-manifest-generator@0.1.0",
+      "name": "@mycodexvantaos/deployment-manifest-generator",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/deployment-manifest-generator@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/docs-search@0.0.1",
+      "name": "@mycodexvantaos/docs-search",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/docs-search@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/event-bus@1.0.0",
+      "name": "@mycodexvantaos/event-bus",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/event-bus@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/events@0.0.1",
+      "name": "@mycodexvantaos/events",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/events@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/execution@1.0.0",
+      "name": "@mycodexvantaos/execution",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/execution@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/governance-policy@0.0.1",
+      "name": "@mycodexvantaos/governance-policy",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/governance-policy@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/knowledge-model@0.1.0",
+      "name": "@mycodexvantaos/knowledge-model",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/knowledge-model@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/load-balancer@1.0.0",
+      "name": "@mycodexvantaos/load-balancer",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/load-balancer@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/memory-model@0.1.0",
+      "name": "@mycodexvantaos/memory-model",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/memory-model@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/message-queue@1.0.0",
+      "name": "@mycodexvantaos/message-queue",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/message-queue@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/monitoring@0.0.1",
+      "name": "@mycodexvantaos/monitoring",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/monitoring@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/native-logging@1.0.0",
+      "name": "@mycodexvantaos/native-logging",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/native-logging@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/native-queue@1.0.0",
+      "name": "@mycodexvantaos/native-queue",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/native-queue@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/native-validation@1.0.0",
+      "name": "@mycodexvantaos/native-validation",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/native-validation@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/platform-notification@0.0.1",
+      "name": "@mycodexvantaos/platform-notification",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/platform-notification@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/platform-observability@0.0.1",
+      "name": "@mycodexvantaos/platform-observability",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/platform-observability@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/platform-scheduler@0.0.1",
+      "name": "@mycodexvantaos/platform-scheduler",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/platform-scheduler@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/platform-validation@1.0.0",
+      "name": "@mycodexvantaos/platform-validation",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/platform-validation@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/plugin-loader@0.1.0",
+      "name": "@mycodexvantaos/plugin-loader",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/plugin-loader@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/policy-engine@1.0.0",
+      "name": "@mycodexvantaos/policy-engine",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/policy-engine@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/policy-model@0.2.0",
+      "name": "@mycodexvantaos/policy-model",
+      "version": "0.2.0",
+      "purl": "pkg:npm/@mycodexvantaos/policy-model@0.2.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/ports@1.0.0-constitution",
+      "name": "@mycodexvantaos/ports",
+      "version": "1.0.0-constitution",
+      "purl": "pkg:npm/@mycodexvantaos/ports@1.0.0-constitution",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/providers@1.0.0",
+      "name": "@mycodexvantaos/providers",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/providers@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/rate-limiter@1.0.0",
+      "name": "@mycodexvantaos/rate-limiter",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/rate-limiter@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/resource-model@0.1.0",
+      "name": "@mycodexvantaos/resource-model",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/resource-model@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/runtime@0.0.1",
+      "name": "@mycodexvantaos/runtime",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/runtime@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/runtime-model@0.1.0",
+      "name": "@mycodexvantaos/runtime-model",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/runtime-model@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/scheduler@0.1.0",
+      "name": "@mycodexvantaos/scheduler",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/scheduler@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/schema-generator@0.1.0",
+      "name": "@mycodexvantaos/schema-generator",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/schema-generator@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/search-engine@1.0.0",
+      "name": "@mycodexvantaos/search-engine",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/search-engine@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/security-secrets@0.0.1",
+      "name": "@mycodexvantaos/security-secrets",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/security-secrets@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/security-validation@0.0.1",
+      "name": "@mycodexvantaos/security-validation",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/security-validation@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/service-agent-chat@0.1.0",
+      "name": "@mycodexvantaos/service-agent-chat",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/service-agent-chat@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/service-audit-log@0.1.0",
+      "name": "@mycodexvantaos/service-audit-log",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/service-audit-log@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/service-catalog@0.1.0",
+      "name": "@mycodexvantaos/service-catalog",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/service-catalog@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/service-discovery@0.0.1",
+      "name": "@mycodexvantaos/service-discovery",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/service-discovery@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/service-identity@0.1.0",
+      "name": "@mycodexvantaos/service-identity",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/service-identity@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/service-knowledge-search@0.1.0",
+      "name": "@mycodexvantaos/service-knowledge-search",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/service-knowledge-search@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/service-knowledge-store@0.1.0",
+      "name": "@mycodexvantaos/service-knowledge-store",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/service-knowledge-store@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/service-knowledge-trace@0.1.0",
+      "name": "@mycodexvantaos/service-knowledge-trace",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/service-knowledge-trace@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/service-memory-capture@0.1.0",
+      "name": "@mycodexvantaos/service-memory-capture",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/service-memory-capture@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/service-memory-dream@0.1.0",
+      "name": "@mycodexvantaos/service-memory-dream",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/service-memory-dream@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/service-memory-store@0.1.0",
+      "name": "@mycodexvantaos/service-memory-store",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/service-memory-store@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/service-mesh@1.0.0",
+      "name": "@mycodexvantaos/service-mesh",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/service-mesh@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/service-model-byok@0.1.0",
+      "name": "@mycodexvantaos/service-model-byok",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/service-model-byok@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/service-policy-engine@0.2.0",
+      "name": "@mycodexvantaos/service-policy-engine",
+      "version": "0.2.0",
+      "purl": "pkg:npm/@mycodexvantaos/service-policy-engine@0.2.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/service-resource-registry@0.1.0",
+      "name": "@mycodexvantaos/service-resource-registry",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/service-resource-registry@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/service-service-catalog@0.1.0",
+      "name": "@mycodexvantaos/service-service-catalog",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/service-service-catalog@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/service-usage-meter@0.1.0",
+      "name": "@mycodexvantaos/service-usage-meter",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/service-usage-meter@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/service-workspace@0.1.0",
+      "name": "@mycodexvantaos/service-workspace",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/service-workspace@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/session-runtime@0.1.0",
+      "name": "@mycodexvantaos/session-runtime",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/session-runtime@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/ssl-manager@1.0.0",
+      "name": "@mycodexvantaos/ssl-manager",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/ssl-manager@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/state-manager@1.0.0",
+      "name": "@mycodexvantaos/state-manager",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/state-manager@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/storage@0.0.1",
+      "name": "@mycodexvantaos/storage",
+      "version": "0.0.1",
+      "purl": "pkg:npm/@mycodexvantaos/storage@0.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/studio-platform@0.1.0",
+      "name": "@mycodexvantaos/studio-platform",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/studio-platform@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/test-generator@0.1.0",
+      "name": "@mycodexvantaos/test-generator",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/test-generator@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/ui-generator@1.0.0",
+      "name": "@mycodexvantaos/ui-generator",
+      "version": "1.0.0",
+      "purl": "pkg:npm/@mycodexvantaos/ui-generator@1.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@mycodexvantaos/workflow-generator@0.1.0",
+      "name": "@mycodexvantaos/workflow-generator",
+      "version": "0.1.0",
+      "purl": "pkg:npm/@mycodexvantaos/workflow-generator@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "control-plane"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@opennextjs/cloudflare@1.19.9",
+      "name": "@opennextjs/cloudflare",
+      "version": "1.19.9",
+      "purl": "pkg:npm/@opennextjs/cloudflare@1.19.9",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@radix-ui/react-accordion@1.2.3",
+      "name": "@radix-ui/react-accordion",
+      "version": "1.2.3",
+      "purl": "pkg:npm/@radix-ui/react-accordion@1.2.3",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@radix-ui/react-alert-dialog@1.1.6",
+      "name": "@radix-ui/react-alert-dialog",
+      "version": "1.1.6",
+      "purl": "pkg:npm/@radix-ui/react-alert-dialog@1.1.6",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@radix-ui/react-avatar@1.1.3",
+      "name": "@radix-ui/react-avatar",
+      "version": "1.1.3",
+      "purl": "pkg:npm/@radix-ui/react-avatar@1.1.3",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@radix-ui/react-checkbox@1.1.4",
+      "name": "@radix-ui/react-checkbox",
+      "version": "1.1.4",
+      "purl": "pkg:npm/@radix-ui/react-checkbox@1.1.4",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@radix-ui/react-collapsible@1.1.11",
+      "name": "@radix-ui/react-collapsible",
+      "version": "1.1.11",
+      "purl": "pkg:npm/@radix-ui/react-collapsible@1.1.11",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@radix-ui/react-dialog@1.1.6",
+      "name": "@radix-ui/react-dialog",
+      "version": "1.1.6",
+      "purl": "pkg:npm/@radix-ui/react-dialog@1.1.6",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@radix-ui/react-dropdown-menu@2.1.6",
+      "name": "@radix-ui/react-dropdown-menu",
+      "version": "2.1.6",
+      "purl": "pkg:npm/@radix-ui/react-dropdown-menu@2.1.6",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@radix-ui/react-label@2.1.2",
+      "name": "@radix-ui/react-label",
+      "version": "2.1.2",
+      "purl": "pkg:npm/@radix-ui/react-label@2.1.2",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@radix-ui/react-menubar@1.1.6",
+      "name": "@radix-ui/react-menubar",
+      "version": "1.1.6",
+      "purl": "pkg:npm/@radix-ui/react-menubar@1.1.6",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@radix-ui/react-popover@1.1.6",
+      "name": "@radix-ui/react-popover",
+      "version": "1.1.6",
+      "purl": "pkg:npm/@radix-ui/react-popover@1.1.6",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@radix-ui/react-progress@1.1.2",
+      "name": "@radix-ui/react-progress",
+      "version": "1.1.2",
+      "purl": "pkg:npm/@radix-ui/react-progress@1.1.2",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@radix-ui/react-radio-group@1.2.3",
+      "name": "@radix-ui/react-radio-group",
+      "version": "1.2.3",
+      "purl": "pkg:npm/@radix-ui/react-radio-group@1.2.3",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@radix-ui/react-scroll-area@1.2.3",
+      "name": "@radix-ui/react-scroll-area",
+      "version": "1.2.3",
+      "purl": "pkg:npm/@radix-ui/react-scroll-area@1.2.3",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@radix-ui/react-select@2.1.6",
+      "name": "@radix-ui/react-select",
+      "version": "2.1.6",
+      "purl": "pkg:npm/@radix-ui/react-select@2.1.6",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@radix-ui/react-separator@1.1.2",
+      "name": "@radix-ui/react-separator",
+      "version": "1.1.2",
+      "purl": "pkg:npm/@radix-ui/react-separator@1.1.2",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@radix-ui/react-slider@1.2.3",
+      "name": "@radix-ui/react-slider",
+      "version": "1.2.3",
+      "purl": "pkg:npm/@radix-ui/react-slider@1.2.3",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@radix-ui/react-slot@1.2.3",
+      "name": "@radix-ui/react-slot",
+      "version": "1.2.3",
+      "purl": "pkg:npm/@radix-ui/react-slot@1.2.3",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@radix-ui/react-switch@1.1.3",
+      "name": "@radix-ui/react-switch",
+      "version": "1.1.3",
+      "purl": "pkg:npm/@radix-ui/react-switch@1.1.3",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@radix-ui/react-tabs@1.1.3",
+      "name": "@radix-ui/react-tabs",
+      "version": "1.1.3",
+      "purl": "pkg:npm/@radix-ui/react-tabs@1.1.3",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@radix-ui/react-toast@1.2.6",
+      "name": "@radix-ui/react-toast",
+      "version": "1.2.6",
+      "purl": "pkg:npm/@radix-ui/react-toast@1.2.6",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/@radix-ui/react-tooltip@1.1.8",
+      "name": "@radix-ui/react-tooltip",
+      "version": "1.1.8",
+      "purl": "pkg:npm/@radix-ui/react-tooltip@1.1.8",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "framework",
+      "bom-ref": "pkg:npm/@types/node@20",
+      "name": "@types/node",
+      "version": "20",
+      "purl": "pkg:npm/@types/node@20",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "development"
+        }
+      ]
+    },
+    {
+      "type": "framework",
+      "bom-ref": "pkg:npm/@types/react@19.2.1",
+      "name": "@types/react",
+      "version": "19.2.1",
+      "purl": "pkg:npm/@types/react@19.2.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "development"
+        }
+      ]
+    },
+    {
+      "type": "framework",
+      "bom-ref": "pkg:npm/@types/react-dom@19.2.1",
+      "name": "@types/react-dom",
+      "version": "19.2.1",
+      "purl": "pkg:npm/@types/react-dom@19.2.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "development"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "pkg:pypi/agent-worker@0.1.0",
+      "name": "agent-worker",
+      "version": "0.1.0",
+      "purl": "pkg:pypi/agent-worker@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "intelligence-plane"
+        },
+        {
+          "name": "mycodexvantaos:language",
+          "value": "python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/class-variance-authority@0.7.1",
+      "name": "class-variance-authority",
+      "version": "0.7.1",
+      "purl": "pkg:npm/class-variance-authority@0.7.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/clsx@2.1.1",
+      "name": "clsx",
+      "version": "2.1.1",
+      "purl": "pkg:npm/clsx@2.1.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/date-fns@3.6.0",
+      "name": "date-fns",
+      "version": "3.6.0",
+      "purl": "pkg:npm/date-fns@3.6.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/dotenv@16.5.0",
+      "name": "dotenv",
+      "version": "16.5.0",
+      "purl": "pkg:npm/dotenv@16.5.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "pkg:pypi/dream-worker@0.1.0",
+      "name": "dream-worker",
+      "version": "0.1.0",
+      "purl": "pkg:pypi/dream-worker@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "intelligence-plane"
+        },
+        {
+          "name": "mycodexvantaos:language",
+          "value": "python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/embla-carousel-react@8.6.0",
+      "name": "embla-carousel-react",
+      "version": "8.6.0",
+      "purl": "pkg:npm/embla-carousel-react@8.6.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/firebase@11.9.1",
+      "name": "firebase",
+      "version": "11.9.1",
+      "purl": "pkg:npm/firebase@11.9.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/genkit@1.28.0",
+      "name": "genkit",
+      "version": "1.28.0",
+      "purl": "pkg:npm/genkit@1.28.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "framework",
+      "bom-ref": "pkg:npm/genkit-cli@1.28.0",
+      "name": "genkit-cli",
+      "version": "1.28.0",
+      "purl": "pkg:npm/genkit-cli@1.28.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "development"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "pkg:pypi/knowledge-worker@0.1.0",
+      "name": "knowledge-worker",
+      "version": "0.1.0",
+      "purl": "pkg:pypi/knowledge-worker@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "intelligence-plane"
+        },
+        {
+          "name": "mycodexvantaos:language",
+          "value": "python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/lucide-react@0.475.0",
+      "name": "lucide-react",
+      "version": "0.475.0",
+      "purl": "pkg:npm/lucide-react@0.475.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/mycodexvantaos-agent-worker@0.1.0",
+      "name": "mycodexvantaos-agent-worker",
+      "version": "0.1.0",
+      "purl": "pkg:pypi/mycodexvantaos-agent-worker@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "intelligence-plane"
+        },
+        {
+          "name": "mycodexvantaos:language",
+          "value": "python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/mycodexvantaos-evaluation@0.1.0",
+      "name": "mycodexvantaos-evaluation",
+      "version": "0.1.0",
+      "purl": "pkg:pypi/mycodexvantaos-evaluation@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "intelligence-plane"
+        },
+        {
+          "name": "mycodexvantaos:language",
+          "value": "python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/mycodexvantaos-knowledge-pipeline@0.1.0",
+      "name": "mycodexvantaos-knowledge-pipeline",
+      "version": "0.1.0",
+      "purl": "pkg:pypi/mycodexvantaos-knowledge-pipeline@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "intelligence-plane"
+        },
+        {
+          "name": "mycodexvantaos:language",
+          "value": "python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/mycodexvantaos-memory-dream@0.1.0",
+      "name": "mycodexvantaos-memory-dream",
+      "version": "0.1.0",
+      "purl": "pkg:pypi/mycodexvantaos-memory-dream@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "intelligence-plane"
+        },
+        {
+          "name": "mycodexvantaos:language",
+          "value": "python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/mycodexvantaos-vector-tools@0.1.0",
+      "name": "mycodexvantaos-vector-tools",
+      "version": "0.1.0",
+      "purl": "pkg:pypi/mycodexvantaos-vector-tools@0.1.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:layer",
+          "value": "intelligence-plane"
+        },
+        {
+          "name": "mycodexvantaos:language",
+          "value": "python"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/next@16.2.6",
+      "name": "next",
+      "version": "16.2.6",
+      "purl": "pkg:npm/next@16.2.6",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/patch-package@8.0.0",
+      "name": "patch-package",
+      "version": "8.0.0",
+      "purl": "pkg:npm/patch-package@8.0.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "framework",
+      "bom-ref": "pkg:npm/postcss@8",
+      "name": "postcss",
+      "version": "8",
+      "purl": "pkg:npm/postcss@8",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "development"
+        }
+      ]
+    },
+    {
+      "type": "framework",
+      "bom-ref": "pkg:npm/prettier@3.4.2",
+      "name": "prettier",
+      "version": "3.4.2",
+      "purl": "pkg:npm/prettier@3.4.2",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "development"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/react@19.2.1",
+      "name": "react",
+      "version": "19.2.1",
+      "purl": "pkg:npm/react@19.2.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/react-day-picker@9.11.3",
+      "name": "react-day-picker",
+      "version": "9.11.3",
+      "purl": "pkg:npm/react-day-picker@9.11.3",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/react-dom@19.2.1",
+      "name": "react-dom",
+      "version": "19.2.1",
+      "purl": "pkg:npm/react-dom@19.2.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/react-hook-form@7.54.2",
+      "name": "react-hook-form",
+      "version": "7.54.2",
+      "purl": "pkg:npm/react-hook-form@7.54.2",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/recharts@2.15.1",
+      "name": "recharts",
+      "version": "2.15.1",
+      "purl": "pkg:npm/recharts@2.15.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/tailwind-merge@3.0.1",
+      "name": "tailwind-merge",
+      "version": "3.0.1",
+      "purl": "pkg:npm/tailwind-merge@3.0.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "framework",
+      "bom-ref": "pkg:npm/tailwindcss@3.4.1",
+      "name": "tailwindcss",
+      "version": "3.4.1",
+      "purl": "pkg:npm/tailwindcss@3.4.1",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "development"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/tailwindcss-animate@1.0.7",
+      "name": "tailwindcss-animate",
+      "version": "1.0.7",
+      "purl": "pkg:npm/tailwindcss-animate@1.0.7",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "framework",
+      "bom-ref": "pkg:npm/tsx@4.22.0",
+      "name": "tsx",
+      "version": "4.22.0",
+      "purl": "pkg:npm/tsx@4.22.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "development"
+        }
+      ]
+    },
+    {
+      "type": "framework",
+      "bom-ref": "pkg:npm/typescript@5",
+      "name": "typescript",
+      "version": "5",
+      "purl": "pkg:npm/typescript@5",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "development"
+        }
+      ]
+    },
+    {
+      "type": "framework",
+      "bom-ref": "pkg:npm/wrangler@4.88.0",
+      "name": "wrangler",
+      "version": "4.88.0",
+      "purl": "pkg:npm/wrangler@4.88.0",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "development"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/zod@3.24.2",
+      "name": "zod",
+      "version": "3.24.2",
+      "purl": "pkg:npm/zod@3.24.2",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/zustand@5.0.13",
+      "name": "zustand",
+      "version": "5.0.13",
+      "purl": "pkg:npm/zustand@5.0.13",
+      "properties": [
+        {
+          "name": "mycodexvantaos:scope",
+          "value": "runtime"
+        }
+      ]
+    }
+  ]
+}

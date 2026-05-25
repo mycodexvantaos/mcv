@@ -11,3 +11,6 @@ package-lock.json
 
 # Helm templates use Go template syntax ({{ }}) which is not valid YAML
 infra/helm/**/*.yaml
+
+# Release artifacts are generated JSON — skip formatting
+release/artifacts/

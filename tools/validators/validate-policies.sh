@@ -10,7 +10,11 @@ for policy_file in "$POLICIES_DIR"/*.yaml; do
 import yaml, sys
 with open('$policy_file') as f:
     d = yaml.safe_load(f)
-required = ['name', 'description', 'rules']
+required = ['description', 'rules']
+name_or_id = d.get('name') or d.get('id')
+if not name_or_id:
+    print('Missing: name or id')
+    sys.exit(1)
 for r in required:
     if r not in d:
         print(f'Missing: {r}')

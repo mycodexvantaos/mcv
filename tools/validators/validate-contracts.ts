@@ -95,7 +95,7 @@ function validateServiceDefinitions(): void {
           'Missing "category" field — should map to one of 8 service categories'
         );
       }
-      if (!content.includes('name:') && !content.includes('name:')) {
+      if (!content.includes('name:')) {
         result.warnings.push('Missing "name" field');
       }
 
