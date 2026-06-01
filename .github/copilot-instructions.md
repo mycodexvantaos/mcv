@@ -1,10 +1,16 @@
 ## GitHub Copilot CLI Instructions for MyCodeXvantaOS
 
-This document provides comprehensive instructions and best practices for utilizing GitHub Copilot CLI within the MyCodeXvantaOS project, especially when operating in Autopilot mode. Adhering to these guidelines ensures consistency, efficiency, and alignment with the project's architectural principles.
+This document provides comprehensive instructions and best practices for utilizing GitHub Copilot CLI within the MyCodeXvantaOS project, especially when operating in Autopilot mode. Adhering to these guidelines ensures consistency, efficiency, and alignment with the project's architectural principles and governance standards.
 
 ### 1. Platform Identity and Architecture Invariants
 
-MyCodeXvantaOS is a Local-first, Provider-agnostic, Contract-driven full-stack application operating system, designed to complete generation, execution, validation, publishing, and rollback with zero external dependencies. All code changes and autonomous operations MUST respect these four core principles:
+**MyCodeXvantaOS** is a Local-first, Provider-agnostic, Contract-driven full-stack application operating system. It is designed to complete generation, execution, validation, publishing, and rollback with zero external dependencies.
+
+**Critical Brand Note**: 
+- **Brand Identity**: Always use **MyCodeXvantaOS** in human-readable fields (README, docs, etc.).
+- **Machine Identity**: Always use **mycodexvantaos** (all lowercase) for machine-readable identifiers (repositories, package scopes, service IDs, OCI namespaces, K8s resource names, etc.).
+
+All code changes and autonomous operations MUST respect these four core principles:
 
 1.  **Local-first**: The platform must function without external dependencies. All core capabilities require a `native` local implementation.
 2.  **Provider-agnostic**: Business logic must not directly couple to any third-party SDK. External capabilities are accessed through standardized `Provider` abstraction interfaces.
@@ -61,44 +67,36 @@ Copilot CLI should be aware of the project's build commands and monorepo structu
 
 ### 3. Code Style and Workflow Guidelines
 
-To maintain high code quality and consistency, Copilot CLI should adhere to the following guidelines:
+#### Naming Conventions (Strictly Enforced)
 
-#### Code Style
--   TypeScript strict mode throughout all packages.
--   Prefer functional components over class components (React).
--   Next.js App Router conventions for the main app.
--   JSDoc comments for all public APIs and exported functions.
--   Prettier formatting (run `npm run format` before committing).
--   ES module imports (import/export syntax).
--   Prefer `const` over `let`; never use `var`.
--   Naming convention: `mycodexvantaos-<domain>-<capability>` for services/packages.
-
-#### Naming Conventions (Governance-Enforced)
-
-| Type | Pattern | Example |
+| Type | Pattern (lowercase/kebab-case) | Example |
 |------|---------|---------|
 | Service | `mycodexvantaos-<domain>-<capability>` | `mycodexvantaos-ai-memory` |
 | Package | `@mycodexvantaos/<capability>` | `@mycodexvantaos/core-gateway` |
 | Module | `mycodexvantaos-<domain>-<capability>` | `mycodexvantaos-governance-policy` |
 | Schema | `<domain>/<entity>.schema.json` | `ai-team/agent-profile.schema.json` |
+| Env Var | `MYCODEXVANTAOS_<NAME>` | `MYCODEXVANTAOS_API_KEY` |
+
+**Forbidden Legacy Prefixes**: `mycodexvanta-os`, `codexvanta-os`, `KUBO`, `ORCH`, `AXM`, `AXIOM`, `GL`, `NG`.
 
 #### Workflow
-1.  Run `npm run typecheck && npm run format:check` after making changes.
-2.  Run `npm run governance:check` before submitting PRs.
-3.  Run `npm run contracts:validate` after modifying contracts/SDK.
-4.  Commit messages follow conventional commits: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`.
-5.  Create feature branches from `main`.
-6.  For Python changes: run `npm run python:lint && npm run python:typecheck`.
+1.  **Explore → Plan → Code → Validate → Commit**.
+2.  Run `npm run typecheck && npm run format:check` after making changes.
+3.  Run `npm run governance:check` before submitting PRs.
+4.  Run `npm run contracts:validate` after modifying contracts/SDK.
+5.  Commit messages follow conventional commits: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`.
+6.  Create feature branches from `main`.
+7.  For Python changes: run `npm run python:lint && npm run python:typecheck`.
 
 ### 4. Autopilot Mode Specifics
 
 When operating in Autopilot mode, Copilot CLI should prioritize the following:
 
--   **Contextual Awareness**: Always load and adhere to instructions from `AGENTS.md` and any relevant modular instruction files under `.github/instructions/`.
--   **Plan Mode**: For non-trivial tasks, utilize plan mode (`Shift+Tab` or `/plan`) to generate a detailed implementation plan. Review and approve the plan before execution.
--   **Tool Permissions**: Operate within the defined tool permissions to ensure secure and controlled execution. Refer to `AGENTS.md` for a detailed list of pre-approved, confirmation-required, and denied tools.
--   **Error Recovery**: Attempt to fix errors using available context. If architectural decisions are required, pause and seek guidance. Never suppress errors or bypass governance checks.
+-   **SSOT (Single Source of Truth)**: Always refer to `platform/service-catalog.yaml` for service identities and `governance/provider-registry.yaml` for provider configurations.
+-   **Tool Permissions**: Refer to `AGENTS.md` for pre-approved vs. confirmation-required tools.
+-   **Evidence-based Gates**: All gates (design, test, deployment) require evidence in JSON/YAML format.
+-   **Runtime Mode**: In production, `auto` mode is forbidden; it must be explicitly set to `connected`, `native`, or `hybrid`.
 
 ### 5. Modular Instructions
 
-For specific domain knowledge or task-specific guidance, refer to modular instruction files located under `.github/instructions/`. These files provide granular instructions for particular aspects of the project, allowing for flexible and scalable instruction sets.
+For specific domain knowledge (e.g., database migrations, quantum-classical bridge), refer to modular instruction files under `.github/instructions/`. These files provide granular guidance for particular aspects of the project.
