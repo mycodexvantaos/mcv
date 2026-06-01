@@ -1,39 +1,40 @@
-## AGENTS.md - AI Task Model & Outcome-Based Governance
+## AGENTS.md - Namespace Governance & Taxonomy Enforcement
 
-This document defines the behavioral norms for autonomous agents within the **MyCodexVantaOS** ecosystem, focusing on the AI Task Model and outcome-based billing.
+This document defines the behavioral norms for autonomous agents within the **MyCodexVantaOS** ecosystem, focusing on namespace planes and governance code taxonomy.
 
-### 1. The AI Task Model
+### 1. Namespace Plane Governance
 
-Agents must treat AI work as a first-class, governed resource. Every AI task MUST have:
-- **Identity & URN**: A unique identifier within the `urn:mycodexvantaos:agent:task:` namespace.
-- **Contract Compliance**: Input and output must strictly follow defined JSON Schemas.
-- **Lifecycle Management**: Tasks must transition through `pending → scheduled → running → succeeded/failed`.
-- **Audit Evidence**: Every state transition must emit a CloudEvent with a SHA-256 integrity hash.
+Agents must respect the boundary between Control Plane and Product Plane:
+- **Control Plane (`mycodexvantaos`)**: Responsible for core infrastructure, policy, and signing services.
+- **Product Plane (`softwareos`)**: Responsible for business-facing services and domain agents.
+- **Dependency Rule**: Product Plane services may depend on Control Plane contracts. Control Plane must NOT have hard dependencies on Product Plane runtimes. Use mediators (Registry/Catalog) for reverse awareness.
 
-### 2. Outcome-Based Billing Integration
+### 2. Governance Code Taxonomy
 
-Agents are responsible for emitting accurate usage events to the metering pipeline:
-- **Billable Primitives**: Inference tokens, model calls, vector queries, GPU-hours, and successful task results.
-- **Event Flow**: `task_executed → result_produced → usage_event_emitted`.
-- **Attribution**: Ensure every event is correctly attributed to the `workspace_id` and `correlationId`.
+Every governance rule or policy MUST be associated with a valid governance code:
+- **Format**: `mycodexvantaos-{ll}{d}{s}{qq}` (e.g., `mycodexvantaos-00000`).
+- **Validation**: Agents must verify that new policies fall within the correct Era range (e.g., Era Three for AI/Agent intent).
+- **Traceability**: All audit logs must reference the relevant governance code to ensure regulatory compliance.
 
-### 3. Runtime & Provider Governance
+### 3. Repository Naming Enforcement
 
-- **Runtime Mode Enforcement**: Agents must respect the `MYCODEXVANTAOS_RUNTIME_MODE` (native, connected, hybrid).
-- **Provider Abstraction**: Never suggestion direct SDK calls to external providers. Always use the corresponding `Provider Adapter` defined in the service catalog.
-- **Fallback Logic**: In `hybrid` mode, agents should implement and test fallback mechanisms when primary providers are unavailable.
+Agents MUST enforce the canonical naming pattern for all new repositories and modules:
+- **Pattern**: `{namespace}-{domain}-{function}`.
+- **Controlled Vocabulary**: Only use domains (e.g., `auth`, `infra`, `compliance`) and functions (e.g., `service`, `engine`, `scanner`) from the controlled vocabulary in `governance/vocabularies/`.
+- **Normalization**: Automatically reject and remediate any identifiers containing underscores, dots, or version markers.
 
 ### 4. Automated Repair & PR Loop
 
-In Autopilot mode, agents act as "Governance Guardians":
-- **Detection**: Use `unified-gates/` to monitor platform health and compliance.
-- **Remediation**: Automatically fix naming drifts or manifest inconsistencies using `scripts/auto-fix/`.
-- **Verification**: All fixes must be verified against the **Platform Constitution** before opening a signed PR.
+In Autopilot mode, agents act as "Taxonomy Guardians":
+- **Detection**: Monitor the repository for naming drifts or taxonomy violations.
+- **Remediation**: Trigger `scripts/naming/remediate.sh` to align identifiers with the canonical pattern.
+- **Verification**: Ensure that all changes are reflected in the `governance/registry/` files and pass the `closure-prover` validation.
 
-### 5. Ethical & Operational Boundaries
+### 5. SSOT & Canonical Paths
 
-- **Local-First**: Always attempt local validation before suggesting cloud-based execution.
-- **Transparency**: Every autonomous decision must be documented in the audit log with a clear `reasoning` field.
-- **Security**: Adhere to the zero-trust principle. All tool calls must be authorized via the platform's RBAC policies.
+Agents must use the following canonical paths for governance facts:
+- **Namespace Registry**: `governance/registry/namespace-registry.yaml`
+- **Lifecycle Policy**: `governance/lifecycle/namespace-lifecycle-policy.yaml`
+- **Dependency Policy**: `navigation/dependency-policy.yaml`
 
-By following these standards, agents ensure that **MyCodexVantaOS** operates as a vertically integrated, contract-driven, and auditable AI operating system.
+By adhering to these standards, agents ensure the platform's governance remains machine-readable, auditable, and constitutionally sound.
