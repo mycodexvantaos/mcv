@@ -1,6 +1,6 @@
 ## GitHub Copilot CLI Instructions for MyCodexVantaOS
 
-This document defines the unified architectural standards and operational guidelines for the **MyCodexVantaOS** Monorepo, incorporating the latest **A.0 Patch** for canonical normalization.
+This document defines the unified architectural standards and operational guidelines for the **MyCodexVantaOS** Monorepo, incorporating the latest **A.0 Patch** and **CI/CD Expansion** for a fully self-hosted, governed environment.
 
 ### 1. Platform Identity & SSOT
 
@@ -23,25 +23,32 @@ This document defines the unified architectural standards and operational guidel
 
 **Forbidden Names**: `mycodexvantaos.module.yaml`, `module.yaml`, `axiom.module.yaml`. CI MUST reject these.
 
-### 3. Foundation Directory Rules (A.3)
+### 3. CI/CD & Automated Repair Loop (Autopilot)
 
-The `foundation/` directory is a **specification center**, not an implementation root.
-- **Prohibited**: No source code, Dockerfiles, or deployment manifests.
-- **Mandatory**: Must contain `foundation.yaml`, `capability-map.yaml`, and `roadmap.yaml` per unit.
-- **Structure**: Seven core foundations (Compute, Data, Algorithm, Agent, Contract, Governance, Business).
-
-### 4. Automated Repair & PR Loop (Autopilot)
-
-In Autopilot mode, follow the **Detect → Classify → Fix → PR** loop:
-1. **Detect**: Scan for naming, manifest, or foundation violations.
+In Autopilot mode, implement the **Detect → Classify → Fix → PR** loop with self-hosted toolchains:
+1. **Detect**: 
+   - Use `naming-guard.yaml` and `conftest-naming.yaml` for policy checks.
+   - Use `trivy-scan.yaml` and `gitleaks.yaml` for security scanning.
 2. **Classify**: Categorize as Hard Rule (Blocker) or Soft Rule (Warning).
-3. **Fix**: Use pre-approved fixers (e.g., `naming-remediate.sh`, `manifest-sync.sh`).
+3. **Fix**: 
+   - Use `actions-hardening.sh` for pinning SHA.
+   - Use `naming/remediate.sh` for automated renaming.
+   - Use `lint-fix` and `deps-refresh` for codebase health.
 4. **PR**: Create a signed PR with audit fields: `actor`, `hash`, `version`, `correlationId`.
 
-### 5. Supply Chain & Security
+### 4. Supply Chain & Security Standards
 
-- **Pinned Actions**: Use full commit SHAs for all GitHub Actions.
-- **Signed Evidence**: Every gate validation must produce signed JSON/YAML evidence.
-- **Minimal Permissions**: Adhere to the principle of least privilege for all workflows.
+- **Pinned Actions**: All GitHub Actions MUST use full commit SHAs.
+- **Artifact Integrity**: 
+  - Primary hash: **SHA3-512** for release artifacts.
+  - Secondary hash: **SHA-256** for audit chains.
+- **SBOM & Provenance**: Generate CycloneDX 1.5 SBOM and SLSA v1 Provenance for all releases.
+- **Minimal Permissions**: Workflows must use `permissions: contents: read` as the baseline.
+
+### 5. Self-Hosted Architecture (Phase 1-3)
+
+- **Local-first**: Prioritize `Docker Compose` and `PostgreSQL 16` over cloud-specific services.
+- **Independence**: All business logic MUST reside behind `packages/ports/` to ensure vendor neutrality.
+- **Observability**: Integrate Prometheus rules and Grafana dashboards for naming compliance and SLA tracking.
 
 For detailed domain knowledge, refer to modular instructions in `.github/instructions/`.
