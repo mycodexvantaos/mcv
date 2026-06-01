@@ -1,52 +1,45 @@
 ## GitHub Copilot CLI Instructions for MyCodexVantaOS
 
-This document defines the unified architectural standards and operational guidelines for the **MyCodexVantaOS** Monorepo, incorporating the latest **Namespace Governance Module** and **Governance Code Taxonomy**.
+This document defines the unified architectural standards and operational guidelines for the **MyCodexVantaOS** Monorepo, incorporating the **Namespace Governance Architecture Panorama**.
 
 ### 1. Platform Identity & SSOT
 
 - **Brand Identity**: **MyCodexVantaOS** (Human-facing).
-- **Machine Identity**: **mycodexvantaos** (Machine-facing, all lowercase, no special characters).
-- **Core Principles**: Local-first, Cloud-agnostic, Contract-first, Governance-enforced.
+- **Machine Identity**: **mycodexvantaos** (Machine-facing, all lowercase).
+- **Governance Identity**: Defined by the **Namespace Code**.
+- **Operational Responsibility**: Defined by the **Repository Name**.
 
-### 2. Namespace & Repository Governance
+### 2. Binding-Mediator Architecture (J.1.4)
 
-All identifiers MUST follow the **lowercase-kebab-case** rule.
-- **Repository Pattern**: `{namespace}-{domain}-{function}` (e.g., `mycodexvantaos-auth-service`).
-- **Forbidden**: No underscores (`_`), dots (`.`), spaces, version numbers, or environment markers (e.g., `-v1`, `-prod`) in machine identifiers.
-- **Namespace Planes**:
-  - `mycodexvantaos`: Control Plane (Core infrastructure, policy, audit, automation).
-  - `softwareos`: Product Plane (Domain platforms, business services, user APIs).
-  - **Rule**: Product Plane may depend on Control Plane, but Reverse Awareness requires a **Mediator** (Registry, Catalog, Binding).
+To prevent hard dependency cycles, all logical pairings MUST be mediated:
+- **Directory Context**: `directory-context.yaml` defines local relationships.
+- **Binding Manifest**: `navigation/bindings/*.yaml` defines logical pairings.
+- **Mediators**: Use `contracts`, `schemas`, `events`, `ports`, or `service-catalog` to decouple services.
+- **Rule**: Product Plane services may depend on Control Plane, but Control Plane MUST NOT hard-depend on Product Plane runtimes.
 
-### 3. Governance Code Taxonomy
+### 3. CI Validation Panorama (J.1.6)
 
-Governance codes follow the `mycodexvantaos-{code}` format where `{code}` is `ll-d-s-qq`:
-- `ll` (00-99): Layer group.
-- `d` (0-9): Governance domain.
-- `s` (0-9): Governance subtype.
-- `qq` (00-99): Rule sequence.
+All PRs MUST pass the following CI guards:
+- **Naming Guard**: Validates repository and resource names against canonical patterns.
+- **Binding Guard**: Ensures all dependencies are mediated and no cycles exist in the `dependency-graph.yaml`.
+- **Registry Guard**: Detects drift in namespace, repository, and governance code registries.
+- **Closure Prover**: Verifies the full governance closure and lifecycle compliance.
 
-**Era Ranges**:
-- `00000-09999`: Meta-Governance (Immutable baseline).
+### 4. Governance Code Taxonomy (J.1.3)
+
+Codes follow the `mycodexvantaos-{ll}{d}{s}{qq}` format:
+- `00000-09999`: Meta-Governance (Baseline, Identifiers, Lifecycle).
 - `10000-29999`: Era One (Code & Architecture).
 - `30000-59999`: Era Two (Distributed Runtime).
-- `60000-89999`: Era Three (Intent & Autonomy).
-- `90000-99999`: Cross-Era Governance (Migration & Archive).
-
-### 4. Manifest & Contract Governance
-
-"If there is no contract, there is no implementation."
-- **Root Module**: `<root>/mycodexvantaos-module.yaml`
-- **Service**: `modules/<service-id>/module-manifest.yaml`
-- **Provider**: `providers/<cap>/<id>/provider-manifest.yaml`
-- **Foundation**: `foundation/<name>-foundation/foundation.yaml`
+- `60000-89999`: Era Three (Intent, Autonomy, Quantum).
+- `90000-99999`: Cross-Era Governance (Mapping, Migration, Archive).
 
 ### 5. Automated Repair Loop (Autopilot)
 
-Follow the **Detect → Classify → Fix → PR** loop:
-1. **Detect**: Scan for naming, code taxonomy, or plane dependency violations.
-2. **Classify**: Categorize as Hard Rule (Blocker) or Soft Rule (Warning).
-3. **Fix**: Use remediation scripts (e.g., `naming-remediate.sh`, `manifest-sync.sh`).
-4. **PR**: Create a signed PR with audit fields: `actor`, `hash`, `version`, `correlationId`.
+In Autopilot mode, follow the **Detect → Classify → Fix → PR** loop:
+1. **Detect**: Scan `inputs` (repo names, bindings, registries) for violations.
+2. **Classify**: Categorize based on the **Governance Code** (e.g., `mycodexvantaos-00100` for naming).
+3. **Fix**: Apply remediation scripts and update relevant registries.
+4. **PR**: Create a signed PR with `validation-reports` as evidence.
 
 For detailed domain knowledge, refer to modular instructions in `.github/instructions/`.
