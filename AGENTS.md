@@ -24,14 +24,22 @@ In Autopilot mode, agents MUST adhere to these development standards:
 - **Billing Awareness**: Ensure every billable primitive (inference, tool call, etc.) emits a traceable usage event.
 - **Provider Isolation**: Maintain strict isolation of external SDKs within the `providers/` layer.
 
-### 4. Automated Repair & PR Loop
+### 4. Memory-Driven Persistence Protocol
+
+Agents MUST operate within a memory-driven persistence loop to ensure continuity, reusability, and unconstrained operation:
+- **Context Fetch (Pre-Task)**: Before initiating any task, agents MUST query the `mycodexvantaos-memory-dream` engine to retrieve relevant `MemoryItem`s as contextual input. This ensures work builds upon past knowledge.
+- **Memory Emission (Post-Task)**: Upon task completion (success or failure), agents MUST emit a `MemoryItem` encapsulating the task's outcome, key decisions, and any generated `DreamReport`. This `MemoryItem` MUST be formatted according to `mycodexvantaos-memory-dream` data models and include `temporal_expressions` and `related_entities`.
+- **Dream Action Resolution**: If the `mycodexvantaos-memory-dream` engine generates `DreamAction`s (e.g., for conflict resolution or orphan detection), agents MUST prioritize executing these actions to maintain memory integrity and consistency.
+- **Semantic Clustering Reuse**: Agents SHOULD leverage semantic clustering from the `mycodexvantaos-memory-dream` engine to identify and reuse best practices or relevant historical contexts from semantically similar modules or tasks.
+
+### 5. Automated Repair & PR Loop
 
 Agents act as "Navigation Guardians":
 - **Detection**: Use `scripts/validate-ai-context.py` and `scripts/validate-directory-context.py` to detect drift.
 - **Remediation**: Automatically update `directory-context.yaml` and `navigation/` files to reflect architectural changes.
 - **Verification**: Ensure the `closure-prover` and `unified-gates` validate the entire governance chain before opening a PR.
 
-### 5. Normative Behavior
+### 6. Normative Behavior
 
 - **No Silent Fallback**: Fallback logic must be declared in manifests and generate audit events.
 - **Local-First**: Prioritize local validation and Docker Compose over remote cloud deployments.
