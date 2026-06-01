@@ -1,38 +1,39 @@
-## AGENTS.md - Integrated CI/CD & Governance for MyCodexVantaOS
+## AGENTS.md - AI Task Model & Outcome-Based Governance
 
-This document defines the behavioral norms for autonomous agents operating in a self-hosted, constitutionally governed environment.
+This document defines the behavioral norms for autonomous agents within the **MyCodexVantaOS** ecosystem, focusing on the AI Task Model and outcome-based billing.
 
-### 1. Continuous Integration (CI) Integration
+### 1. The AI Task Model
 
-Agents MUST integrate with the following CI workflows to ensure code quality and governance compliance:
-- **Naming Guard**: Run `npm run governance:check` before every commit.
-- **Contract Validation**: Run `npm run contracts:validate` when modifying `contracts/`.
-- **Security Scanning**: Ensure all new workflows pass `trivy-scan` and `gitleaks` checks.
+Agents must treat AI work as a first-class, governed resource. Every AI task MUST have:
+- **Identity & URN**: A unique identifier within the `urn:mycodexvantaos:agent:task:` namespace.
+- **Contract Compliance**: Input and output must strictly follow defined JSON Schemas.
+- **Lifecycle Management**: Tasks must transition through `pending → scheduled → running → succeeded/failed`.
+- **Audit Evidence**: Every state transition must emit a CloudEvent with a SHA-256 integrity hash.
 
-### 2. Automated Remediation Protocols
+### 2. Outcome-Based Billing Integration
 
-In Autopilot mode, agents are authorized to trigger the following remediation scripts:
-- `scripts/naming/remediate.sh`: To fix naming violations autonomously.
-- `scripts/auto-fix/actions-hardening.sh`: To pin GitHub Action versions to SHAs.
-- `scripts/auto-fix/lint_fix.go`: To resolve formatting and linting issues.
+Agents are responsible for emitting accurate usage events to the metering pipeline:
+- **Billable Primitives**: Inference tokens, model calls, vector queries, GPU-hours, and successful task results.
+- **Event Flow**: `task_executed → result_produced → usage_event_emitted`.
+- **Attribution**: Ensure every event is correctly attributed to the `workspace_id` and `correlationId`.
 
-### 3. Self-Hosted Infrastructure Governance
+### 3. Runtime & Provider Governance
 
-- **Local-First Development**: Agents must prioritize local validation using `Docker Compose` before suggesting remote deployments.
-- **Port/Adapter Compliance**: Strictly enforce hexagonal boundaries. No provider-specific SDKs (e.g., AWS, Cloudflare) are allowed in `packages/core/`.
-- **Audit Traceability**: Every state-changing operation must be wrapped in `withAudit()` or equivalent logging, capturing the `correlationId` and `hash`.
+- **Runtime Mode Enforcement**: Agents must respect the `MYCODEXVANTAOS_RUNTIME_MODE` (native, connected, hybrid).
+- **Provider Abstraction**: Never suggestion direct SDK calls to external providers. Always use the corresponding `Provider Adapter` defined in the service catalog.
+- **Fallback Logic**: In `hybrid` mode, agents should implement and test fallback mechanisms when primary providers are unavailable.
 
-### 4. Release & Supply Chain Compliance
+### 4. Automated Repair & PR Loop
 
-Agents participating in the release process must verify:
-1. **Artifact Integrity**: Validate SHA3-512 hashes for all generated bundles.
-2. **SBOM Completeness**: Ensure CycloneDX 1.5 JSON SBOM is generated.
-3. **Provenance Attestation**: Generate SLSA v1 provenance for the release candidate.
+In Autopilot mode, agents act as "Governance Guardians":
+- **Detection**: Use `unified-gates/` to monitor platform health and compliance.
+- **Remediation**: Automatically fix naming drifts or manifest inconsistencies using `scripts/auto-fix/`.
+- **Verification**: All fixes must be verified against the **Platform Constitution** before opening a signed PR.
 
-### 5. Behavior Standards
+### 5. Ethical & Operational Boundaries
 
-- **Explore → Plan → Code → Validate → Commit**.
-- **No direct push to main**: All autonomous changes must go through a feature branch and a signed PR.
-- **Evidence-Based Gates**: Attach validation reports (JSON/YAML) to all PRs as evidence for gate approval.
+- **Local-First**: Always attempt local validation before suggesting cloud-based execution.
+- **Transparency**: Every autonomous decision must be documented in the audit log with a clear `reasoning` field.
+- **Security**: Adhere to the zero-trust principle. All tool calls must be authorized via the platform's RBAC policies.
 
-By following these protocols, agents act as guardians of the **MyCodexVantaOS** platform's integrity and security.
+By following these standards, agents ensure that **MyCodexVantaOS** operates as a vertically integrated, contract-driven, and auditable AI operating system.

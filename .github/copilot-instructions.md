@@ -1,54 +1,56 @@
 ## GitHub Copilot CLI Instructions for MyCodexVantaOS
 
-This document defines the unified architectural standards and operational guidelines for the **MyCodexVantaOS** Monorepo, incorporating the latest **A.0 Patch** and **CI/CD Expansion** for a fully self-hosted, governed environment.
+This document defines the unified architectural standards and operational guidelines for the **MyCodexVantaOS** Monorepo, an AI-native upstream infrastructure platform.
 
-### 1. Platform Identity & SSOT
+### 1. Platform Positioning & Identity
 
-- **Brand Identity**: **MyCodexVantaOS** (Use in human-readable documents).
-- **Machine Identity**: **mycodexvantaos** (Use in all machine-readable identifiers, repos, scopes, and URNs).
-- **SSOT (Single Source of Truth)**:
-  - Service Topology: `platform/service-catalog.yaml`
-  - Global Navigation: `navigation/` (dependency-graph, module-index)
-  - Namespace Governance: `mycodexvantaos-namespace-governance/`
-  - Quality Gates: `unified-gates/`
+- **Positioning**: **MyCodexVantaOS** is a vertically integrated upstream AI infrastructure platform unifying compute, data, algorithms, agents, and contracts.
+- **Brand Identity**: **MyCodexVantaOS** (Human-facing).
+- **Machine Identity**: **mycodexvantaos** (Machine-facing, all lowercase, no special characters).
+- **Core Principles**: Local-first, Cloud-agnostic, Contract-first, Governance-enforced.
 
-### 2. Manifest Governance Matrix
+### 2. The Seven Platform Foundations
 
-| Manifest Type | File Name | Required Location |
-|---------------|-----------|-------------------|
-| Root Module | `mycodexvantaos-module.yaml` | `<root-directory>/` |
-| Service | `module-manifest.yaml` | `modules/<service-id>/` |
-| Provider | `provider-manifest.yaml` | `providers/<capability>/<id>/` |
-| Foundation | `foundation.yaml` | `foundation/<name>-foundation/` |
+Agents must align all work with the seven strategic foundations defined in `foundation/`:
+1. **Compute**: AI chips, GPUs, inference pools, and workload scheduling.
+2. **Data**: Datasets, vector databases, RAG-ready assets, and data governance.
+3. **Algorithm**: Model routing, BYOK, fine-tuning, and evaluation pipelines.
+4. **Agent**: Runtime, memory, tool calling (MCP), and workflow DAGs.
+5. **Contract**: Declarative task contracts, service manifests, and URNs.
+6. **Governance**: Policy-as-code, audit chains, and CI gates.
+7. **Business**: Metering, quota, and outcome-based AI billing.
 
-**Forbidden Names**: `mycodexvantaos.module.yaml`, `module.yaml`, `axiom.module.yaml`. CI MUST reject these.
+### 3. Manifest & Contract Governance
 
-### 3. CI/CD & Automated Repair Loop (Autopilot)
+"If there is no contract, there is no implementation."
+- **Root Module**: `<root>/mycodexvantaos-module.yaml`
+- **Service**: `modules/<service-id>/module-manifest.yaml`
+- **Provider**: `providers/<cap>/<id>/provider-manifest.yaml`
+- **Foundation**: `foundation/<name>-foundation/foundation.yaml`
 
-In Autopilot mode, implement the **Detect → Classify → Fix → PR** loop with self-hosted toolchains:
-1. **Detect**: 
-   - Use `naming-guard.yaml` and `conftest-naming.yaml` for policy checks.
-   - Use `trivy-scan.yaml` and `gitleaks.yaml` for security scanning.
+### 4. Outcome-Based Billing & AI Task Model
+
+AI work is modeled as a governed **AI Task** resource with a clear lifecycle:
+`pending → scheduled → running → succeeded / failed / cancelled / fallback-used`.
+
+**Billing Loop**:
+`task submitted → provider selected → executed → result produced → usage event → metering → billing model → invoice/quota`.
+
+### 5. Runtime Modes & Provider Abstraction
+
+Production environments MUST explicitly set the runtime mode. `auto` is for startup only.
+- **native**: Local, CI, offline, disaster recovery.
+- **connected**: Full external provider integration.
+- **hybrid**: Partial provider availability with fallback.
+
+All external systems (DB, Storage, AI) MUST be accessed through **Provider Adapters** defined in `providers/`.
+
+### 6. Automated Repair Loop (Autopilot)
+
+Follow the **Detect → Classify → Fix → PR** loop:
+1. **Detect**: Scan for naming, contract, or foundation violations.
 2. **Classify**: Categorize as Hard Rule (Blocker) or Soft Rule (Warning).
-3. **Fix**: 
-   - Use `actions-hardening.sh` for pinning SHA.
-   - Use `naming/remediate.sh` for automated renaming.
-   - Use `lint-fix` and `deps-refresh` for codebase health.
+3. **Fix**: Apply remediation scripts (e.g., `naming-remediate.sh`, `manifest-sync.sh`).
 4. **PR**: Create a signed PR with audit fields: `actor`, `hash`, `version`, `correlationId`.
-
-### 4. Supply Chain & Security Standards
-
-- **Pinned Actions**: All GitHub Actions MUST use full commit SHAs.
-- **Artifact Integrity**: 
-  - Primary hash: **SHA3-512** for release artifacts.
-  - Secondary hash: **SHA-256** for audit chains.
-- **SBOM & Provenance**: Generate CycloneDX 1.5 SBOM and SLSA v1 Provenance for all releases.
-- **Minimal Permissions**: Workflows must use `permissions: contents: read` as the baseline.
-
-### 5. Self-Hosted Architecture (Phase 1-3)
-
-- **Local-first**: Prioritize `Docker Compose` and `PostgreSQL 16` over cloud-specific services.
-- **Independence**: All business logic MUST reside behind `packages/ports/` to ensure vendor neutrality.
-- **Observability**: Integrate Prometheus rules and Grafana dashboards for naming compliance and SLA tracking.
 
 For detailed domain knowledge, refer to modular instructions in `.github/instructions/`.
