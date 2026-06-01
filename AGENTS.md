@@ -1,42 +1,38 @@
-## AGENTS.md - Binding-Mediator & Lifecycle Governance
+## AGENTS.md - Namespace Governance Closure Enforcement
 
-This document defines the behavioral norms for autonomous agents within the **MyCodexVantaOS** ecosystem, focusing on dependency mediation and namespace lifecycle.
+This document defines the behavioral norms for autonomous agents within the **MyCodexVantaOS** ecosystem, focusing on the governance closure system.
 
-### 1. Binding-Mediator Enforcement
+### 1. Architectural Integrity
 
-Agents MUST prevent hard dependency cycles by enforcing the binding-mediator pattern:
-- **Logical Pairings**: Any relationship between two services (e.g., Service A relates to Service B) must be declared in a `navigation/bindings/*.yaml` file.
-- **Mediator Artifacts**: Agents should suggest using `contracts`, `events`, `ports`, or `read-models` as mediators to decouple services.
-- **Dependency Graph**: All changes must be validated against `navigation/dependency-graph.yaml` to ensure it remains a Directed Acyclic Graph (DAG).
+Agents must treat namespace governance as architecture metadata, not just naming:
+- **Identity Enforcement**: Every resource must have a machine-readable ID following the `lowercase-kebab-case` rule.
+- **Responsibility Mapping**: Repository names must define their operational responsibility (e.g., `mycodexvantaos-auth-service`).
+- **Logical Pairings**: Use `navigation/bindings/` to manage cross-service relationships and prevent cycles.
 
-### 2. Namespace Lifecycle Management (J.1.5)
+### 2. Plane and Dependency Governance
 
-Agents must manage resources according to their lifecycle stage:
-- **Proposed**: Initial stage, requires validation and approval.
-- **Active**: Fully operational, subject to health checks and compliance audits.
-- **Deprecated**: Inactive or replaced, preparing for migration.
-- **Archived**: Migration complete, read-only retention.
-- **Destroyed**: Retention expired, identifiers MUST NOT be reused.
+- **Plane Separation**: Strictly maintain the boundary between the `mycodexvantaos` (Control Plane) and `softwareos` (Product Plane).
+- **Reverse Awareness**: If the Control Plane needs to be aware of the Product Plane, it MUST use a mediator (Registry, Catalog, or Evidence Channel).
+- **Protocol Exceptions**: Dots are only allowed in protocol-specific fields (e.g., K8s API groups) and NEVER in repository or directory names.
 
-### 3. CI Validation and Reporting
+### 3. Governance Code Taxonomy (I.3)
 
-In Autopilot mode, agents act as "CI Sentinels":
-- **Input Monitoring**: Monitor repository names, directory contexts, bindings, and registries.
-- **Validator Execution**: Run `validate-naming`, `validate-directory-bindings`, and `validate-closure`.
-- **Evidence Collection**: Gather `validation-reports` (JSON) and generate a `ci-governance-summary.json` for every PR.
+Agents must classify all governance actions using the `mycodexvantaos-{code}` taxonomy:
+- **Era Alignment**: Ensure rules are placed in the correct Era (e.g., `00000-09999` for meta-governance).
+- **Metadata Compliance**: Every governance action should reference a `NamespaceGovernanceCode` record.
+- **Quantum Governance**: Place quantum-related rules in the `83000-88999` range to avoid collision with autonomous systems.
 
-### 4. Repository Directory Tree Compliance (J.2)
+### 4. Automated Repair & PR Loop
 
-Agents must ensure the repository structure adheres to the canonical tree:
-- **Governance Core**: `governance/` (baseline, codes, registry, lifecycle).
-- **Navigation Core**: `navigation/` (dependency-policy, graph, bindings).
-- **Contract Core**: `contracts/` (index, events, schemas).
-- **Platform Core**: `platform/` (service-catalog).
+In Autopilot mode, agents act as "Governance Closurers":
+- **Detection**: Monitor registries and manifests for drift or violations of the **Platform Constitution**.
+- **Remediation**: Automatically apply fixes using `scripts/naming/remediate.sh` or `scripts/manifest-sync.sh`.
+- **Audit Closure**: Every PR must include a `ci-governance-summary.json` as proof of closure.
 
-### 5. Automated Repair Loop
+### 5. Registry and Audit Standards
 
-- **Detection**: Use the `dependency-binding-guard` to find hard cycles or missing mediators.
-- **Remediation**: Automatically suggest or create mediator artifacts to break cycles.
-- **Verification**: Ensure the `closure-prover` confirms the full governance closure before merging.
+- **Registry Integrity**: Maintain the `governance/registry/` files as the SSOT for namespaces and repositories.
+- **Audit Trails**: Capture the `actor`, `hash`, and `correlationId` for every governance-related change.
+- **Lifecycle Enforcement**: Manage resources through their lifecycle states (Proposed → Active → Deprecated → Archived → Destroyed).
 
-By following these standards, agents maintain the architectural integrity and governance health of the **MyCodexVantaOS** platform.
+By adhering to these standards, agents ensure the platform remains a machine-parseable, CI-verifiable, and constitutionally governed operating system.

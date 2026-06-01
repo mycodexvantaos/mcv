@@ -1,45 +1,49 @@
 ## GitHub Copilot CLI Instructions for MyCodexVantaOS
 
-This document defines the unified architectural standards and operational guidelines for the **MyCodexVantaOS** Monorepo, incorporating the **Namespace Governance Architecture Panorama**.
+This document defines the unified architectural standards and operational guidelines for the **MyCodexVantaOS** Monorepo, incorporating the **Namespace Governance Closure Specification**.
 
 ### 1. Platform Identity & SSOT
 
 - **Brand Identity**: **MyCodexVantaOS** (Human-facing).
 - **Machine Identity**: **mycodexvantaos** (Machine-facing, all lowercase).
-- **Governance Identity**: Defined by the **Namespace Code**.
-- **Operational Responsibility**: Defined by the **Repository Name**.
+- **Governance Statement**: Namespace code defines identity; repository name defines responsibility; binding manifest defines logical pairings.
 
-### 2. Binding-Mediator Architecture (J.1.4)
+### 2. Global Naming Rules (I.1)
 
-To prevent hard dependency cycles, all logical pairings MUST be mediated:
-- **Directory Context**: `directory-context.yaml` defines local relationships.
-- **Binding Manifest**: `navigation/bindings/*.yaml` defines logical pairings.
-- **Mediators**: Use `contracts`, `schemas`, `events`, `ports`, or `service-catalog` to decouple services.
-- **Rule**: Product Plane services may depend on Control Plane, but Control Plane MUST NOT hard-depend on Product Plane runtimes.
+All machine-facing names MUST follow:
+- **Constraints**: `lowercase` only, `kebab-case` only, `hyphen` as the only separator.
+- **Forbidden**: No underscores (`_`), semantic dots (`.`), spaces, version numbers (e.g., `-v1`), or environment markers (e.g., `-prod`).
+- **Exception**: Semantic dots are only allowed in protocol-specific fields like Kubernetes API groups (e.g., `mycodexvantaos.quantum`).
 
-### 3. CI Validation Panorama (J.1.6)
+### 3. Namespace Plane Model (I.2)
 
-All PRs MUST pass the following CI guards:
-- **Naming Guard**: Validates repository and resource names against canonical patterns.
-- **Binding Guard**: Ensures all dependencies are mediated and no cycles exist in the `dependency-graph.yaml`.
-- **Registry Guard**: Detects drift in namespace, repository, and governance code registries.
-- **Closure Prover**: Verifies the full governance closure and lifecycle compliance.
+- **Control Plane (`mycodexvantaos`)**: Core infrastructure, policy, auth, audit, automation, registry.
+- **Product Plane (`softwareos`)**: Product-facing services, domain apps, user workflows.
+- **Dependency Rule**: Product Plane may depend on Control Plane. Control Plane MUST NOT hard-depend on Product Plane runtime implementations. Use mediators (Registry, Catalog, Binding) for reverse awareness.
 
-### 4. Governance Code Taxonomy (J.1.3)
+### 4. Governance Code Taxonomy (I.3)
 
 Codes follow the `mycodexvantaos-{ll}{d}{s}{qq}` format:
-- `00000-09999`: Meta-Governance (Baseline, Identifiers, Lifecycle).
+- **ll (2 digits)**: Layer group.
+- **d (1 digit)**: Governance domain.
+- **s (1 digit)**: Governance subtype.
+- **qq (2 digits)**: Rule sequence.
+- **Regex**: `^mycodexvantaos-[0-9]{5}$`.
+
+### 5. Governance Era Mapping (I.4)
+
+- `00000-09999`: Meta-Governance (Immutable baseline, charter, lifecycle).
 - `10000-29999`: Era One (Code & Architecture).
 - `30000-59999`: Era Two (Distributed Runtime).
 - `60000-89999`: Era Three (Intent, Autonomy, Quantum).
 - `90000-99999`: Cross-Era Governance (Mapping, Migration, Archive).
 
-### 5. Automated Repair Loop (Autopilot)
+### 6. Automated Repair Loop (Autopilot)
 
 In Autopilot mode, follow the **Detect → Classify → Fix → PR** loop:
-1. **Detect**: Scan `inputs` (repo names, bindings, registries) for violations.
-2. **Classify**: Categorize based on the **Governance Code** (e.g., `mycodexvantaos-00100` for naming).
-3. **Fix**: Apply remediation scripts and update relevant registries.
-4. **PR**: Create a signed PR with `validation-reports` as evidence.
+1. **Detect**: Scan for naming, plane dependency, or taxonomy violations.
+2. **Classify**: Map violations to specific Governance Codes (e.g., `mycodexvantaos-00100` for naming).
+3. **Fix**: Use remediation scripts and update the **Governance Registry**.
+4. **PR**: Create a signed PR with audit evidence and `validation-reports`.
 
 For detailed domain knowledge, refer to modular instructions in `.github/instructions/`.
