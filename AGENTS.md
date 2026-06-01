@@ -1,261 +1,43 @@
-# AGENTS.md — Autonomous Agent Configuration
-
-## Platform Context
-
-MyCodeXvantaOS is a Local-first, Provider-agnostic, Contract-driven full-stack application operating system. This file configures autonomous agent behavior across all surfaces: GitHub Copilot CLI, Copilot Cloud Agent, and compatible AI coding agents.
-
-## Architecture Invariants (MUST NOT VIOLATE)
-
-1. **Local-first** — Never introduce external dependencies without a native fallback
-2. **Provider-agnostic** — Never couple business logic directly to third-party SDKs
-3. **Contract-first** — Define interfaces before implementation; validate with `npm run contracts:validate`
-4. **Governance-enforced** — All rules are machine-enforced via `npm run governance:check`
-
-## Autopilot Behavior
-
-When operating in Autopilot mode, the agent MUST:
-
-1. **Read project conventions first**: Load `.github/copilot-instructions.md`, `AGENTS.md`, and relevant `.agents/skills/` before starting work
-2. **Always validate before committing**: Execute `npm run typecheck && npm run format:check`
-3. **Follow Explore → Plan → Code → Validate → Commit** for non-trivial changes
-4. **Create feature branches** for new work; never commit directly to `main`
-5. **Write descriptive commit messages** using conventional commits format
-6. **Run governance checks** (`npm run governance:check`) before finalizing changes
-7. **Validate contracts** (`npm run contracts:validate`) when modifying service interfaces
-8. **Respect naming conventions**: `mycodexvantaos-<domain>-<capability>` for all new services/packages
-9. **Respect layer boundaries**: Do not create circular dependencies between layers
-
-## Tool Permissions
-
-### Pre-approved (Autopilot Safe)
-
-```
-shell(git:*)                        — All Git commands (except force push)
-shell(npm run build)                — Build
-shell(npm run typecheck)            — TypeScript validation
-shell(npm run lint)                 — Linting
-shell(npm run format:*)             — Code formatting
-shell(npm run validate:*)           — Validation scripts
-shell(npm run governance:check)     — Governance checks
-shell(npm run contracts:validate)   — Contract validation
-shell(npm run test:*)               — All test commands
-shell(npm run python:*)             — Python plane commands
-shell(npm run genkit:*)             — Genkit development
-shell(npm run rc:verify)            — Release candidate verification
-shell(npm run api:start)            — API server start
-write                               — File write operations
-```
-
-### Require Confirmation
-
-```
-shell(git push)                     — Push to remote (review branch first)
-shell(npm install)                  — Install new dependencies
-shell(npm run migration:*)          — Database migrations
-shell(rm)                           — File deletion (single files)
-```
-
-### Denied (NEVER execute autonomously)
-
-```
-shell(git push --force)             — Force push
-shell(rm -rf)                       — Recursive deletion
-shell(npm run deploy)               — Production deployment
-shell(npm run upload)               — Upload to Cloudflare
-shell(curl * | sh)                  — Remote script execution
-shell(curl * | bash)                — Remote script execution
-```
-
-## Hooks Integration
-
-Quality gates and security controls are enforced via hooks:
-
-| File | Purpose |
-|------|---------|
-| `.github/hooks/quality-gates.json` | Lifecycle hooks: sessionStart, agentStop (typecheck gate), errorOccurred |
-| `.github/hooks/security.json` | preToolUse security: blocks rm -rf, force push, secrets exposure, curl\|sh |
-| `.github/copilot/settings.json` | Repository-level permissions and inline hooks |
-
-### Hook Events Active
-
-| Event | Behavior |
-|-------|----------|
-| `sessionStart` | Auto-load project conventions |
-| `preToolUse` | Security validation before every tool execution |
-| `postToolUse` | Track file modifications |
-| `agentStop` | Run typecheck; block completion if errors found |
-| `subagentStop` | Track sub-agent completion |
-| `errorOccurred` | Log errors for debugging |
-| `sessionEnd` | Session cleanup |
-
-## Custom Agents
-
-### Repository-Level Agents (`.github/agents/`)
-
-| Agent | File | Purpose | Invocation |
-|-------|------|---------|------------|
-| mycodexvantaos-autopilot | `my-agent.agent.md` | Main autonomous coding agent | `copilot --agent=mycodexvantaos-autopilot` |
-| code-review | `code-review.agent.md` | Bug, security, performance review | `copilot --agent=code-review` |
-| refactor | `refactor.agent.md` | Behavior-preserving refactoring | `copilot --agent=refactor` |
-| docs | `docs.agent.md` | Documentation maintenance | `copilot --agent=docs` |
-
-### Built-in Sub-Agents (Auto-delegated)
+## AGENTS.md - Autopilot Mode Configuration for MyCodeXvantaOS
 
-| Agent | Purpose |
-|-------|---------|
-| Explorer | Quick codebase analysis without polluting main context |
-| Task | Execute commands (build, test) with summarized output |
-| General Purpose | Complex multi-step tasks in separate context |
-| Code Review | Focus on real issues, minimize noise |
-| Research | Deep research across codebase and web |
-| Rubber Duck | Constructive criticism for complex decisions |
+This document defines the behavior and configuration for autonomous agents operating within the `mycodexvantaos/mycodexvantaos` repository, specifically for Autopilot mode. It integrates with the project's existing structure and guidelines to ensure efficient, consistent, and secure autonomous task completion.
 
-## Skills Integration
+### 1. Autopilot Mode Activation
 
-### Platform Skills (`.agents/skills/`)
+To enable full autonomous operation, agents should be configured to run in Autopilot mode. This allows for proactive task execution and problem-solving based on the provided instructions and repository context. Agents should prioritize reading and adhering to the guidelines in this `AGENTS.md` file and `.github/copilot-instructions.md` upon activation.
 
-| Skill | Path | Purpose |
-|-------|------|---------|
-| Genkit JS | `.agents/skills/developing-genkit-js/` | AI development with Genkit (Node.js/TypeScript) |
-| FBS to AGY Export | `.agents/skills/fbs-to-agy-export/` | Firebase Studio project export to Antigravity |
+### 2. Allowed Tool Permissions
 
-### Copilot Skills (`.github/skills/`)
+Autonomous agents require specific tool permissions to function effectively within the MyCodeXvantaOS project. The following permissions are essential for agents to perform repository operations, code modifications, and system interactions, while adhering to the principle of least privilege:
 
-| Skill | File | Purpose |
-|-------|------|---------|
-| Platform Deploy | `platform-deploy.md` | Cloudflare deployment workflow |
-| Feature Development | `feature-development.md` | Standard feature development lifecycle |
+-   `shell(git:*)`: Full access to Git commands for repository management (cloning, committing, pushing, branching), excluding force pushes.
+-   `shell(npm run:*)`: Permission to execute `npm run` scripts for build, test, lint, and other project-specific tasks as defined in `.github/copilot-instructions.md`.
+-   `shell(python:*)`: Access to the Python interpreter for executing scripts, especially for the Python Plane components (CI repair, agent worker, dream worker) located in the `python/` directory.
+-   `write`: Ability to create, modify, and delete files within the repository, respecting existing file structures and naming conventions.
+-   `read`: Ability to read any file within the repository for contextual understanding and information gathering.
 
-### Workflows (`.agents/workflows/`)
+Agents should always use the minimum necessary permissions for a given task. Any operation requiring elevated or sensitive permissions (e.g., `git push`, `npm install`, `rm`) should be explicitly confirmed or handled with caution, as detailed in the "Require Confirmation" section of the existing `AGENTS.md`.
 
-| Workflow | File | Purpose |
-|----------|------|---------|
-| FBS Export | `fbs-to-agy-export.md` | Firebase Studio export workflow |
+### 3. Plan Mode Usage for Autonomous Tasks
 
-## Plan Mode Guidelines
+For any non-trivial task, agents are instructed to utilize the plan mode. This ensures a structured approach to problem-solving, allows for human oversight and intervention when necessary, and aligns with the project's `Explore → Plan → Code → Validate → Commit` workflow.
 
-### Use Plan Mode For
+-   **Task Decomposition**: Break down complex tasks into smaller, manageable steps, clearly outlining objectives and expected outcomes for each step.
+-   **Plan Generation**: Generate a detailed implementation plan, including affected files, proposed changes, and verification steps. This plan should be reviewed for alignment with architectural invariants and project guidelines.
+-   **Self-Correction**: If a plan encounters issues during execution (e.g., build failures, test failures, governance violations), the agent must revert to the planning phase to re-evaluate and adjust the strategy. Never suppress errors or bypass governance checks.
+-   **Contextual Awareness**: Leverage the `.github/copilot-instructions.md`, this `AGENTS.md` file, and other modular instruction files (e.g., `.github/instructions/`) for comprehensive context during planning and execution.
 
-- Multi-file changes spanning multiple packages/services
-- New feature implementation
-- Refactoring across modules
-- Architecture changes
-- New service/package creation
-- Cross-layer modifications
+### 4. Code Style and Workflow Adherence
 
-### Skip Plan Mode For
+Autonomous agents must strictly adhere to the established code style and workflow guidelines defined in the repository to maintain consistency, quality, and governance compliance.
 
-- Single-file bug fixes
-- Formatting changes
-- Documentation typos
-- Simple dependency updates
-- Adding JSDoc comments
+-   **Code Style**: Follow the TypeScript strict mode, prefer functional components, ensure JSDoc comments for public APIs, and adhere to Prettier formatting as outlined in `.github/copilot-instructions.md`.
+-   **Naming Conventions**: Respect the governance-enforced naming conventions for services, packages, modules, and schemas (e.g., `mycodexvantaos-<domain>-<capability>`).
+-   **Workflow**: Integrate seamlessly with the existing development workflow, including running pre-commit checks (`npm run typecheck && npm run format:check`), following conventional commit messages, creating feature branches from `main`, and running governance checks (`npm run governance:check`) before finalizing changes.
+-   **Testing**: Prioritize test-driven development. Generate failing tests first, then implement code to make them pass, and finally validate the implementation using commands like `npm run test:services` or `npm run python:test`.
 
-### Plan Workflow
+### 5. Modular Instructions
 
-1. Analyze current codebase state and affected modules
-2. Ask clarifying questions if requirements are ambiguous
-3. Verify changes respect architecture invariants
-4. Produce structured plan with checkboxes in `plan.md`
-5. Wait for user approval before implementing
+Agents should actively be aware of and utilize modular instruction files located under `.github/instructions/` for specific domain knowledge or task-specific guidance. These files provide granular instructions for particular aspects of the project, allowing for flexible and scalable instruction sets that complement the general guidelines in `copilot-instructions.md` and `AGENTS.md`.
 
-## Code Generation Standards
-
-When generating code, the agent MUST:
-
-- Use TypeScript with strict mode enabled
-- Follow existing patterns in the codebase
-- Add appropriate error handling with typed errors
-- Include JSDoc comments for exported functions and types
-- Ensure new code passes `npm run typecheck` without errors
-- Follow the Provider abstraction pattern for external services
-- Define contracts before implementation
-- Use existing project dependencies; justify new ones
-- Follow naming convention: `mycodexvantaos-<domain>-<capability>`
-- Place new services in `services/`, packages in `packages/`, modules in `modules/`
-
-## Cross-Module Coordination
-
-### When Modifying Packages
-
-1. Check which services/modules depend on the package
-2. Ensure backward compatibility or update all consumers
-3. Run `npm run contracts:validate` if the package defines contracts
-4. Run `npm run test:contracts` for contract changes
-
-### When Creating New Services
-
-1. Follow naming: `mycodexvantaos-<domain>-<capability>`
-2. Define contracts first in `packages/mycodexvantaos-contracts-sdk/`
-3. Create service directory in `services/`
-4. Add to governance.json if it introduces new capabilities
-5. Run `npm run governance:check` to verify compliance
-
-### When Modifying AI Layer
-
-1. Reference `.agents/skills/developing-genkit-js/` for Genkit patterns
-2. Use `genkit docs:read` for current API (knowledge may be outdated)
-3. Test with `npm run genkit:dev`
-4. Minimum Genkit CLI version: 1.29.0
-
-### When Modifying Python Plane
-
-1. Use `uv` for dependency management
-2. Run `npm run python:lint` for linting
-3. Run `npm run python:typecheck` for type checking
-4. Run `npm run python:test` for tests
-5. CI Repair Agent has its own workflow: `.github/workflows/ci-repair-agent.yml`
-
-## Delegation Guidelines
-
-### Use `/delegate` For
-
-- Documentation updates that don't affect code
-- Dependency version bumps with no breaking changes
-- Adding test coverage for existing code
-- Formatting or linting fixes across multiple files
-- Updating changelog entries
-
-### Keep Local For
-
-- Core feature development
-- Debugging and investigation
-- Interactive architecture decisions
-- Security-sensitive changes
-- Contract modifications
-- Governance rule changes
-
-## Fleet (Parallel Execution)
-
-### Use `/fleet` For
-
-- Large-scale refactoring across many files
-- Bulk test generation for services
-- Cross-module dependency updates
-- Code style migrations
-- Documentation generation across packages
-
-### Fleet Constraints
-
-- Maximum 5 parallel sub-agents
-- Each sub-agent works on independent modules/packages
-- All sub-agents must run `npm run typecheck` before completing
-- Merge conflicts resolved by coordinating agent
-- Each sub-agent respects governance rules independently
-
-## Error Recovery
-
-1. Attempt to fix using available context and error messages
-2. If fix requires architectural decisions, pause and ask for guidance
-3. Never suppress or ignore type errors or test failures
-4. Never bypass governance checks
-5. Log all attempted fixes in commit messages for traceability
-6. If a hook blocks completion, fix the underlying issue (don't disable the hook)
-
-## Session Management
-
-- Use `/compact` if context becomes too large
-- Use `/clear` between unrelated tasks
-- Use `/resume` or `copilot --continue` to resume previous sessions
-- Save important findings to session files for reference
-- Use `@filepath` to reference specific files in prompts
+By following these guidelines, autonomous agents can contribute effectively and reliably to the MyCodeXvantaOS project, ensuring high-quality code and adherence to architectural principles.

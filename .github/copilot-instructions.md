@@ -1,25 +1,27 @@
-# Copilot Instructions for MyCodeXvantaOS
+## GitHub Copilot CLI Instructions for MyCodeXvantaOS
 
-## Platform Identity
+This document provides comprehensive instructions and best practices for utilizing GitHub Copilot CLI within the MyCodeXvantaOS project, especially when operating in Autopilot mode. Adhering to these guidelines ensures consistency, efficiency, and alignment with the project's architectural principles.
 
-MyCodeXvantaOS is a Local-first, Provider-agnostic, Contract-driven full-stack application operating system. It can complete generation, execution, validation, publishing, and rollback with zero external dependencies.
+### 1. Platform Identity and Architecture Invariants
 
-## Architecture Invariants
+MyCodeXvantaOS is a Local-first, Provider-agnostic, Contract-driven full-stack application operating system, designed to complete generation, execution, validation, publishing, and rollback with zero external dependencies. All code changes and autonomous operations MUST respect these four core principles:
 
-All code changes MUST respect these four core principles:
+1.  **Local-first**: The platform must function without external dependencies. All core capabilities require a `native` local implementation.
+2.  **Provider-agnostic**: Business logic must not directly couple to any third-party SDK. External capabilities are accessed through standardized `Provider` abstraction interfaces.
+3.  **Contract-first**: Interface definitions precede implementation. All service interactions must be based on explicitly defined contracts.
+4.  **Governance-enforced**: All governance rules must be machine-readable and automatically enforceable via CI/CD gates.
 
-1. **Local-first** — Platform must survive with zero external dependencies. All core capabilities must have a `native` local implementation.
-2. **Provider-agnostic** — Business logic must never directly couple to any third-party SDK. All external capabilities go through standardized `Provider` abstraction interfaces.
-3. **Contract-first** — Interface definitions precede implementation. All service interactions must be based on explicitly defined contracts.
-4. **Governance-enforced** — All governance rules must be machine-readable and auto-enforceable via CI/CD gates.
+### 2. Build Commands and Project Structure
 
-## Build Commands
+Copilot CLI should be aware of the project's build commands and monorepo structure for effective navigation and task execution.
+
+#### Build Commands
 
 | Command | Purpose |
 |---------|---------|
 | `npm run build` | Build the Next.js project |
 | `npm run dev` | Start dev server with Turbopack (port 9002) |
-| `npm run typecheck` | TypeScript type checking (tsc --noEmit) |
+| `npm run typecheck` | TypeScript type checking (`tsc --noEmit`) |
 | `npm run lint` | Same as typecheck |
 | `npm run format` | Format code with Prettier |
 | `npm run format:check` | Check code formatting |
@@ -38,19 +40,7 @@ All code changes MUST respect these four core principles:
 | `npm run rc:verify` | Verify release candidate |
 | `npm run release:artifacts` | Generate release artifacts |
 
-## Platform Layers
-
-| Layer | Directory | Purpose |
-|-------|-----------|---------|
-| Builder | `packages/builder`, generators in `packages/*-generator` | Code generation from templates |
-| Runtime | `packages/runtime`, `packages/core-*` | Core execution engine |
-| Deployment | `infra/`, `packages/deployment-manifest-generator` | Infrastructure and deployment |
-| Native Services | `packages/service-*`, `services/` | Platform services |
-| Modules | `modules/` | High-level domain modules |
-| AI Layer | `src/ai/`, `packages/ai-*`, `modules/mycodexvantaos-ai-*` | AI/ML capabilities via Genkit |
-| Python Plane | `python/` | Python services (CI repair, dream worker, agent worker) |
-
-## Monorepo Structure
+#### Monorepo Structure
 
 ```
 ├── src/                    # Next.js application source
@@ -69,18 +59,21 @@ All code changes MUST respect these four core principles:
 └── engineering-templates/  # Project templates
 ```
 
-## Code Style
+### 3. Code Style and Workflow Guidelines
 
-- TypeScript strict mode throughout all packages
-- Functional components over class components (React)
-- Next.js App Router conventions for the main app
-- JSDoc comments for all public APIs and exported functions
-- Prettier formatting (run `npm run format` before committing)
-- ES module imports (import/export syntax)
-- Prefer `const` over `let`; never use `var`
-- Naming convention: `mycodexvantaos-<domain>-<capability>` for services/packages
+To maintain high code quality and consistency, Copilot CLI should adhere to the following guidelines:
 
-## Naming Conventions (Governance-Enforced)
+#### Code Style
+-   TypeScript strict mode throughout all packages.
+-   Prefer functional components over class components (React).
+-   Next.js App Router conventions for the main app.
+-   JSDoc comments for all public APIs and exported functions.
+-   Prettier formatting (run `npm run format` before committing).
+-   ES module imports (import/export syntax).
+-   Prefer `const` over `let`; never use `var`.
+-   Naming convention: `mycodexvantaos-<domain>-<capability>` for services/packages.
+
+#### Naming Conventions (Governance-Enforced)
 
 | Type | Pattern | Example |
 |------|---------|---------|
@@ -89,56 +82,23 @@ All code changes MUST respect these four core principles:
 | Module | `mycodexvantaos-<domain>-<capability>` | `mycodexvantaos-governance-policy` |
 | Schema | `<domain>/<entity>.schema.json` | `ai-team/agent-profile.schema.json` |
 
-## Workflow
+#### Workflow
+1.  Run `npm run typecheck && npm run format:check` after making changes.
+2.  Run `npm run governance:check` before submitting PRs.
+3.  Run `npm run contracts:validate` after modifying contracts/SDK.
+4.  Commit messages follow conventional commits: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`.
+5.  Create feature branches from `main`.
+6.  For Python changes: run `npm run python:lint && npm run python:typecheck`.
 
-1. Run `npm run typecheck && npm run format:check` after making changes
-2. Run `npm run governance:check` before submitting PRs
-3. Run `npm run contracts:validate` after modifying contracts/SDK
-4. Commit messages follow conventional commits: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`
-5. Create feature branches from `main`
-6. For Python changes: run `npm run python:lint && npm run python:typecheck`
+### 4. Autopilot Mode Specifics
 
-## Testing
+When operating in Autopilot mode, Copilot CLI should prioritize the following:
 
-| Scope | Command | Notes |
-|-------|---------|-------|
-| TypeScript services | `npm run test:services` | Node.js test runner |
-| Contracts SDK | `npm run test:contracts` | Contract validation tests |
-| Python | `npm run python:test` | pytest via uv |
-| Integration | `npm run test:integration` | Not yet configured |
+-   **Contextual Awareness**: Always load and adhere to instructions from `AGENTS.md` and any relevant modular instruction files under `.github/instructions/`.
+-   **Plan Mode**: For non-trivial tasks, utilize plan mode (`Shift+Tab` or `/plan`) to generate a detailed implementation plan. Review and approve the plan before execution.
+-   **Tool Permissions**: Operate within the defined tool permissions to ensure secure and controlled execution. Refer to `AGENTS.md` for a detailed list of pre-approved, confirmation-required, and denied tools.
+-   **Error Recovery**: Attempt to fix errors using available context. If architectural decisions are required, pause and seek guidance. Never suppress errors or bypass governance checks.
 
-## AI Development (Genkit)
+### 5. Modular Instructions
 
-- AI capabilities live in `src/ai/` and use Google Genkit
-- Start Genkit dev: `npm run genkit:dev`
-- Genkit skills reference: `.agents/skills/developing-genkit-js/`
-- CRITICAL: Genkit API recently had breaking changes — always use `genkit docs:read` for current API
-- Minimum Genkit CLI version: 1.29.0
-
-## Python Plane
-
-- Python services use FastAPI and are managed with `uv`
-- Located in `python/` directory
-- CI Repair Agent: `python/apps/ci-repair-agent/`
-- Agent Worker: `python/apps/agent-worker/`
-- Dream Worker: `python/apps/dream-worker/`
-- Run tests: `cd python && .venv/bin/python -m pytest tests/ -v`
-- Lint: `cd python && .venv/bin/ruff check packages/ apps/`
-
-## Security
-
-- Never commit secrets or API keys
-- Use environment variables for all credentials
-- Follow security guidelines in `SECURITY.md`
-- Provider credentials go through `packages/security-secrets/`
-- Validation via `packages/security-validation/`
-
-## Release Process
-
-1. `npm run rc:verify` — Verify release candidate
-2. `npm run rc:soak` — Soak testing
-3. `npm run release:promotion:evaluate` — Evaluate promotion criteria
-4. `npm run release:artifacts` — Generate artifacts
-5. `npm run release:sbom` — Generate SBOM
-6. `npm run release:provenance` — Generate provenance
-7. `npm run release:sign` — Sign provenance
+For specific domain knowledge or task-specific guidance, refer to modular instruction files located under `.github/instructions/`. These files provide granular instructions for particular aspects of the project, allowing for flexible and scalable instruction sets.
