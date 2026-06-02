@@ -10,10 +10,8 @@
 
 import {
   HumaniserEngine,
-  detectNative,
   generateReport,
   computeGrade,
-  ContentLabel,
 } from '../src';
 
 async function main() {
