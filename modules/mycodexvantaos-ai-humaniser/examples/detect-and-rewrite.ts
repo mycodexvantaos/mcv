@@ -8,7 +8,7 @@
  *   npx ts-node examples/detect-and-rewrite.ts
  */
 
-import { HumaniserEngine, RewriteStyle, ContentLabel } from '../src';
+import { HumaniserEngine } from '../src';
 
 async function main() {
   const engine = new HumaniserEngine({ mode: 'native' });
