@@ -1,0 +1,41 @@
+name: Semantic Core Tests
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'packages/semantic-core-**'
+      - '.github/workflows/semantic-core-test.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'packages/semantic-core-**'
+
+jobs:
+  test-typescript:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: cd packages/semantic-core-client/typescript && npm install
+      - run: cd packages/semantic-core-client/typescript && npm test
+      - run: cd packages/semantic-core-client/typescript && npm run lint
+
+  test-python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - run: cd packages/semantic-core-integration/backend && pip install -r requirements.txt
+      - run: cd packages/semantic-core-integration/backend && python -m pytest tests/
+
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker/setup-buildx-action@v2
+      - run: cd packages/semantic-core-integration/infrastructure/docker && docker-compose build
