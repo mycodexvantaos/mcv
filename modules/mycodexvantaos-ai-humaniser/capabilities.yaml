@@ -1,6 +1,0 @@
-# modules/mycodexvantaos-ai-humaniser/capabilities.yaml
-capabilities:
-  - llm
-  - embedding
-  - validation
-  - observability
