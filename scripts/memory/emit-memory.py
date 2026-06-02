@@ -1,4 +1,3 @@
-import json
 import sys
 import datetime
 from typing import List, Optional
