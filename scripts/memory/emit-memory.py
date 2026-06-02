@@ -1,6 +1,6 @@
 import sys
 import datetime
-from typing import List, Optional
+from typing import List
 from pydantic import BaseModel
 
 class MemoryItem(BaseModel):
