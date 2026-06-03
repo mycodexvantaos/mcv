@@ -1,0 +1,22 @@
+{
+  "name": "@mycodexvantaos/semantic-optimization",
+  "version": "1.0.0",
+  "description": "Semantic Core Optimization Platform - Performance tuning, analytics, and continuous improvement",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write src/**/*.ts"
+  },
+  "dependencies": {
+    "typescript": "^5.0.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "vitest": "^2.0.0",
+    "typescript": "^5.0.0"
+  }
+}
