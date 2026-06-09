@@ -1,18 +1,24 @@
 {
   "name": "@mycodexvantaos/advanced-integration",
-  "version": "1.0.0",
-  "description": "Advanced Integration Package - Python Backend, Decision Strategies, Testing Framework",
+  "version": "2.0.0",
+  "description": "Complete Advanced Integration Package - All Systems",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "test": "vitest",
-    "lint": "eslint src/**/*.ts"
+    "lint": "eslint src/**/*.ts",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down"
   },
   "dependencies": {
-    "typescript": "^5.0.0"
+    "jsonwebtoken": "^9.0.0",
+    "ioredis": "^5.0.0",
+    "crypto": "^1.0.0"
   },
   "devDependencies": {
     "vitest": "^2.0.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "eslint": "^8.0.0"
   }
 }
