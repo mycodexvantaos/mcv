@@ -214,10 +214,10 @@ class DatabaseClient:
                 """
                 SELECT error_category, COUNT(*) as count
                 FROM ci_repair_analyses
-                WHERE created_at >= NOW() - INTERVAL '%d days'
+                WHERE created_at >= NOW() - ($1::int * INTERVAL '1 day')
                 GROUP BY error_category
                 ORDER BY count DESC
-                """
-                % days,
+                """,
+                days,
             )
         return {row["error_category"]: row["count"] for row in rows}
