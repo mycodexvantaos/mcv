@@ -85,9 +85,6 @@ spec:
         - id: agent-evidence
           phase: post-mvp
           description: Answer source binding and evidence chains
-        - id: agent-humaniser
-          phase: mvp
-          description: AI content detection, humanisation rewriting, and confidence scoring
 
     # ── 3. Workspace (工作空間服務) ─────────────────────────────────
     - id: workspace
@@ -249,7 +246,6 @@ spec:
     knowledge-store: knowledge
     knowledge-search: knowledge
     agent-chat: agent
-    agent-humaniser: agent
     model-byok: model
     audit-log: security
     usage-meter: security
