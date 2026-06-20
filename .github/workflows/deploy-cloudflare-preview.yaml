@@ -66,6 +66,7 @@ jobs:
           NEXT_PUBLIC_APP_URL: https://preview.autoecoops.io
           NODE_ENV: preview
           NEXT_PRIVATE_STANDALONE: 'true'
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Build with OpenNext for Cloudflare (skip next build)
         if: steps.check_creds.outputs.has_creds == 'true'
