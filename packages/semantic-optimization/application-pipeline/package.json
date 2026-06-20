@@ -1,0 +1,63 @@
+{
+  "name": "application-pipeline-skill",
+  "version": "1.0.0",
+  "description": "Advanced application pipeline skill for analyzing, comparing, and synthesizing multiple software project versions",
+  "type": "module",
+  "main": "core/pipeline.js",
+  "exports": {
+    ".": "./core/pipeline.js",
+    "./ui": "./core/PipelineUI.jsx",
+    "./skill": "./SKILL.md"
+  },
+  "scripts": {
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "lint": "eslint core examples",
+    "format": "prettier --write ."
+  },
+  "keywords": [
+    "pipeline",
+    "zip",
+    "analysis",
+    "synthesis",
+    "merge",
+    "conflict-resolution",
+    "architecture",
+    "ai",
+    "claude"
+  ],
+  "author": "Manus Team",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.24.0",
+    "jszip": "^3.10.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "eslint": "^8.50.0",
+    "prettier": "^3.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "vitest": "^0.34.0"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manus-ai/skills.git"
+  },
+  "bugs": {
+    "url": "https://github.com/manus-ai/skills/issues"
+  },
+  "homepage": "https://github.com/manus-ai/skills#readme"
+}

@@ -1,0 +1,26 @@
+{
+  "name": "@mycodexvantaos/unified-integration",
+  "version": "1.0.0",
+  "description": "Unified Integration Framework - All optimization, monitoring, and improvement systems",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write src/**/*.ts",
+    "integrate": "npm run build && npm run test"
+  },
+  "dependencies": {
+    "typescript": "^5.0.0",
+    "zod": "^4.0.0",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "vitest": "^2.0.0",
+    "typescript": "^5.0.0",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0"
+  }
+}
