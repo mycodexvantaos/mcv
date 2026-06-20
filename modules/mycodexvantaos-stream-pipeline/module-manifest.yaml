@@ -1,0 +1,26 @@
+# modules/mycodexvantaos-stream-pipeline/module-manifest.yaml
+# 6.3 — metadata.name MUST equal the directory name and service-id exactly (6.4)
+apiVersion: mycodexvantaos.org/v1
+kind: Module
+metadata:
+  name: mycodexvantaos-stream-pipeline
+  labels:
+    mycodexvantaos.org/domain: data
+    mycodexvantaos.org/managed-by: naming-spec-v1
+spec:
+  domain: data
+  capabilities:
+    - streaming
+    - queue
+    - observability
+    - aggregation
+  providers:
+    streaming: streaming-kafka
+    queue: queue-kafka
+    observability: observability-prometheus
+  lifecycle:
+    stage: alpha
+    since: 'v0.1.0'
+  urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-stream-pipeline'
+  packageName: '@mycodexvantaos/stream-pipeline'
+  description: 'Real-time Kafka stream processing pipeline with exactly-once semantics, windowing, and metrics.'

@@ -7,10 +7,12 @@ mycodexvantaos-knowledge-pipeline = { workspace = true }
 mycodexvantaos-vector-tools = { workspace = true }
 mycodexvantaos-evaluation = { workspace = true }
 mycodexvantaos-ci-repair = { workspace = true }
+mycodexvantaos-coder-deep = { workspace = true }
 agent-worker = { workspace = true }
 dream-worker = { workspace = true }
 knowledge-worker = { workspace = true }
 ci-repair-agent = { workspace = true }
+coder-deep-mcp = { workspace = true }
 
 
 [project]
@@ -73,7 +75,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["mycodexvantaos_memory_dream", "mycodexvantaos_ci_repair"]
+known-first-party = ["mycodexvantaos_memory_dream", "mycodexvantaos_ci_repair", "mycodexvantaos_coder_deep"]
 
 [tool.mypy]
 python_version = "3.11"

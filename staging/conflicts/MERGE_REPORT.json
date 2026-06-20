@@ -1,0 +1,301 @@
+{
+  "total_conflicts": 59,
+  "successfully_merged": 59,
+  "merge_details": {
+    ".github/workflows/cd.yml": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".yml"
+    },
+    ".github/workflows/ci.yml": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".yml"
+    },
+    "README.md": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".md"
+    },
+    "catalog/service-catalog.yaml": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".yaml"
+    },
+    "ci/utils/regex-table.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "ci/validate-architecture.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "engineering-templates/semantic-root/meta-architect.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "engineering-templates/semantic-root/semantic-dictionary.yaml": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".yaml"
+    },
+    "governance/platform-governance-spec.yaml": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".yaml"
+    },
+    "index.html": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".html"
+    },
+    "infra/kubernetes/base/mycodexvantaos-platform-validation/deployment.yaml": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".yaml"
+    },
+    "infra/kubernetes/base/mycodexvantaos-platform-validation/service.yaml": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".yaml"
+    },
+    "knowledge-graph/indexes/graph-idx--mycodexvantaos-governance--policy--name.yaml": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".yaml"
+    },
+    "knowledge-graph/namespaces/modules/mycodexvantaos-ai-ensemble/observability-native.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "knowledge-graph/namespaces/modules/providers/applicationset.yaml": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".yaml"
+    },
+    "knowledge-graph/namespaces/modules/providers/auth-native.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "knowledge-graph/namespaces/modules/providers/provider-manifest.yaml": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".yaml"
+    },
+    "knowledge-graph/namespaces/modules/providers/simulate-fallback.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "knowledge-graph/namespaces/modules/providers/vector-store-pgvector.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "knowledge-graph/namespaces/ns-core.ttl": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ttl"
+    },
+    "knowledge-graph/provider-manifest.yaml": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".yaml"
+    },
+    "modules/mycodexvantaos-core-kernel/module-manifest.yaml": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".yaml"
+    },
+    "modules/mycodexvantaos-platform-observability/module-manifest.yaml": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".yaml"
+    },
+    "package-lock.json": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".json"
+    },
+    "package.json": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".json"
+    },
+    "packages/providers/src/auth-connected.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "packages/providers/src/auth-native.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "packages/providers/src/deploy-argocd.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "packages/providers/src/deploy-native.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "packages/providers/src/index.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "packages/providers/src/llm-gemini.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "packages/providers/src/llm-native.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "packages/providers/src/observability-native.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "packages/providers/src/vector-store-native.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "packages/providers/src/vector-store-pgvector.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "packages/providers/tsconfig.json": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".json"
+    },
+    "pnpm-workspace.yaml": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".yaml"
+    },
+    "scripts/generate-service-scaffold.sh": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".sh"
+    },
+    "scripts/update-kustomize.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "services/mycodexvantaos-ai-ensemble/package.json": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".json"
+    },
+    "services/mycodexvantaos-ai-ensemble/src/index.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "services/mycodexvantaos-app-dev-studio/.env.example": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".example"
+    },
+    "services/mycodexvantaos-app-dev-studio/package.json": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".json"
+    },
+    "services/mycodexvantaos-app-dev-studio/src/components/StudioDashboard.tsx": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".tsx"
+    },
+    "services/mycodexvantaos-app-validation/package.json": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".json"
+    },
+    "services/mycodexvantaos-app-validation/src/components/Dashboard.tsx": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".tsx"
+    },
+    "services/mycodexvantaos-platform-observability/.env.example": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".example"
+    },
+    "services/mycodexvantaos-platform-validation/src/engine.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "services/mycodexvantaos-platform-validation/src/index.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "services/mycodexvantaos-platform-validation/src/types.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "services/mycodexvantaos-platform-validation/src/validator.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "setup-phase2-fixed.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "setup-phase2.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "simulation-global.ts": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".ts"
+    },
+    "src/index.css": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".css"
+    },
+    "tsconfig.base.json": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".json"
+    },
+    "tsconfig.json": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".json"
+    },
+    "vector-store/retrieval-pipelines/retrieval--dense--pgvector.yaml": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".yaml"
+    },
+    "vector-store/retrieval-pipelines/src/publish-metrics.py": {
+      "status": "merged",
+      "strategy": "intelligent_merge",
+      "file_type": ".py"
+    }
+  }
+}
