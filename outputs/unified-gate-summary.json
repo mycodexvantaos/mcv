@@ -1,0 +1,10 @@
+{
+  "issues": [],
+  "metrics": {
+    "blockingGateCount": 18,
+    "gateCount": 18,
+    "issueCount": 0,
+    "minimumBlockingGateCount": 18
+  },
+  "ok": true
+}
