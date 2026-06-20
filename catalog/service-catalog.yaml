@@ -1,1 +1,15 @@
-apiVersion: platform.mymycodexvantaos.org/v1\nkind: ServiceCatalog\nservices:\n  - id: mycodexvantaos-ai-ensemble\n    tier: 2\n  - id: mycodexvantaos-app-dev-studio\n    tier: 3\n  - id: mycodexvantaos-app-validation\n    tier: 3\n  - id: mycodexvantaos-core-kernel\n    tier: 0\n  - id: mycodexvantaos-platform-observability\n    tier: 2\n  - id: mycodexvantaos-platform-validation\n    tier: 2\n
+apiVersion: platform.mymycodexvantaos.org/v1
+kind: ServiceCatalog
+services:
+  - id: mycodexvantaos-ai-ensemble
+    tier: 2
+  - id: mycodexvantaos-app-dev-studio
+    tier: 3
+  - id: mycodexvantaos-app-validation
+    tier: 3
+  - id: mycodexvantaos-core-kernel
+    tier: 0
+  - id: mycodexvantaos-platform-observability
+    tier: 2
+  - id: mycodexvantaos-platform-validation
+    tier: 2
