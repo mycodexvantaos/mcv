@@ -1,7 +1,5 @@
-# modules/mycodexvantaos-platform-observability/module-manifest.yaml
-# 6.3 — metadata.name MUST equal the directory name and service-id exactly (6.4)
-apiVersion: mycodexvantaos.org/v1
-kind: Module
+apiVersion: platform.mymycodexvantaos.org/v1
+kind: ModuleManifest
 metadata:
   name: mycodexvantaos-platform-observability
   labels:
@@ -10,12 +8,25 @@ metadata:
 spec:
   domain: platform
   capabilities:
-    - observability
+  - observability
   providers:
     observability: observability-opentelemetry
   lifecycle:
     stage: stable
-    since: 'v1.0.0'
-  urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-platform-observability'
+    since: v1.0.0
+  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-platform-observability
   packageName: '@mycodexvantaos/platform-observability'
-  description: 'Platform observability aggregator. Logs, metrics, traces.'
+  description: Platform Observability layer.
+  capability: observability
+  id: mycodexvantaos-platform-observability
+  tier: 2
+  requiredProviders:
+  - observability-prometheus
+  - observability-cloudwatch
+  - observability-elk
+  supportedModes:
+  - native
+  - connected
+  - hybrid
+  deployment:
+    type: container

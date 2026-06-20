@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [
+      {
+        "type": "command",
+        "bash": "TOOL=\"${COPILOT_HOOK_TOOL_NAME:-}\"; ARGS=\"${COPILOT_HOOK_TOOL_ARGS:-}\"; if echo \"$ARGS\" | grep -qE '(rm -rf /|rm -rf \\*|rm -rf ~|rm -rf \\.)'; then echo '{\"decision\": \"deny\", \"reason\": \"SECURITY: Dangerous recursive deletion blocked by security hook.\"}'; elif echo \"$ARGS\" | grep -qE 'git push --force'; then echo '{\"decision\": \"deny\", \"reason\": \"SECURITY: Force push is not allowed. Use regular git push.\"}'; elif echo \"$ARGS\" | grep -qE 'git push.*--force-with-lease'; then echo '{\"decision\": \"deny\", \"reason\": \"SECURITY: Force push with lease is also not allowed.\"}'; elif echo \"$ARGS\" | grep -qE 'curl.*\\| *(sh|bash)'; then echo '{\"decision\": \"deny\", \"reason\": \"SECURITY: Piping remote content to shell is not allowed.\"}'; elif echo \"$ARGS\" | grep -qE 'wget.*\\| *(sh|bash)'; then echo '{\"decision\": \"deny\", \"reason\": \"SECURITY: Piping remote content to shell is not allowed.\"}'; elif echo \"$ARGS\" | grep -qE 'npm run (deploy|upload)'; then echo '{\"decision\": \"deny\", \"reason\": \"SECURITY: Production deployment requires explicit user approval. Cannot run autonomously.\"}'; elif echo \"$TOOL\" | grep -q 'write' && echo \"$ARGS\" | grep -qiE '(password|secret|api_key|token|private_key)\\s*[:=]\\s*[\"'\\''a-zA-Z0-9]'; then echo '{\"decision\": \"deny\", \"reason\": \"SECURITY: Potential credential exposure detected. Do not write secrets to files.\"}'; elif echo \"$TOOL\" | grep -q 'write' && echo \"$ARGS\" | grep -qE 'infra/secrets/'; then echo '{\"decision\": \"deny\", \"reason\": \"SECURITY: Writing to infra/secrets/ requires explicit user approval.\"}'; elif echo \"$TOOL\" | grep -q 'write' && echo \"$ARGS\" | grep -qE '\\.github/workflows/'; then echo '{\"decision\": \"ask\", \"reason\": \"Modifying CI/CD workflows requires review. Please confirm.\"}'; else echo '{\"decision\": \"allow\"}'; fi",
+        "timeoutSec": 10
+      }
+    ],
+    "permissionRequest": [
+      {
+        "type": "command",
+        "bash": "TOOL=\"${COPILOT_HOOK_TOOL_NAME:-}\"; if echo \"$TOOL\" | grep -qE '(deploy|upload|force)'; then echo '{\"behavior\": \"deny\"}'; else echo '{}'; fi",
+        "timeoutSec": 5
+      }
+    ]
+  }
+}

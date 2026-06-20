@@ -5,29 +5,29 @@ metadata:
   namespace: argocd
 spec:
   generators:
-    - list:
-        elements:
-          - cluster: in-cluster
-            env: development
-          - cluster: prd-b-cluster
-            env: production
+  - list:
+      elements:
+      - cluster: in-cluster
+        env: development
+      - cluster: prd-b-cluster
+        env: production
   template:
     metadata:
-      name: 'mycodexvantaos-{{env}}'
+      name: mycodexvantaos-{{env}}
       annotations:
         argocd.argoproj.io/sync-wave: '10'
     spec:
       project: default
       source:
-        repoURL: 'https://github.com/your-org/mycodexvantaos.git'
+        repoURL: https://github.com/your-org/mycodexvantaos.git
         targetRevision: HEAD
-        path: 'infra/kubernetes/overlays/{{env}}'
+        path: infra/kubernetes/overlays/{{env}}
       destination:
         name: '{{cluster}}'
-        namespace: 'mycodexvantaos-{{env}}'
+        namespace: mycodexvantaos-{{env}}
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
         syncOptions:
-          - CreateNamespace=true
+        - CreateNamespace=true
