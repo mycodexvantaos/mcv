@@ -69,11 +69,8 @@ jobs:
             tests/test_ci_repair_github_client.py \
             --cov=packages/mycodexvantaos-ci-repair \
             --cov=apps/ci-repair-agent \
-            --cov-branch \
             --cov-report=term-missing \
             --cov-report=xml:coverage-ci-repair.xml \
-            --junitxml=junit.xml \
-            -o junit_family=legacy \
             --cov-fail-under=70
 
       - name: Upload coverage artifact
@@ -82,22 +79,6 @@ jobs:
         with:
           name: ci-repair-coverage
           path: python/coverage-ci-repair.xml
-
-      - name: Upload coverage to Codecov
-        if: always()
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          slug: mycodexvantaos/mycodexvantaos
-          files: python/coverage-ci-repair.xml
-          flags: ci-repair
-          name: ci-repair-agent
-
-      - name: Upload test results to Codecov
-        if: ${{ !cancelled() }}
-        uses: codecov/test-results-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
 
   security-scan:
     runs-on: ubuntu-latest
