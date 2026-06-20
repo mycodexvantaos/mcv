@@ -4,7 +4,9 @@
   "description": "Namespace Governance Closure - machine-verifiable enforcement of the namespace governance closure specification (naming, governance codes, repository naming, plane dependency rule, audit closure)",
   "main": "src/index.js",
   "type": "module",
-  "engines": { "node": ">=20.0.0" },
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "start": "node src/index.js",
     "test": "node --experimental-vm-modules node_modules/.bin/jest --config jest.config.js",
