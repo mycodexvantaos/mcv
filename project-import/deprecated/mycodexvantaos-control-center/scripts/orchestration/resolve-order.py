@@ -9,6 +9,7 @@ the optimal execution order based on planes, tiers, and dependencies.
 import yaml
 import json
 import argparse
+import sys
 from typing import List, Dict, Set
 from collections import defaultdict, deque
 
@@ -289,7 +290,7 @@ def main():
         
     except Exception as e:
         print(f"Error resolving execution order: {e}")
-        exit(1)
+        sys.exit(1)
 
 
 if __name__ == '__main__':
