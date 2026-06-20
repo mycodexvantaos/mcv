@@ -9,10 +9,9 @@
     "lint": "eslint src/**/*.ts",
     "deploy": "npm run build && npm run test"
   },
-  "dependencies": {},
   "devDependencies": {
-    "vitest": "^2.0.0",
-    "typescript": "^5.0.0",
-    "eslint": "^8.0.0"
+    "eslint": "^8.57.1",
+    "typescript": "^5.9.3",
+    "vitest": "^2.1.9"
   }
 }

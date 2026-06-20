@@ -12,13 +12,13 @@
     "docker:down": "docker-compose down"
   },
   "dependencies": {
-    "jsonwebtoken": "^9.0.0",
-    "ioredis": "^5.0.0",
-    "crypto": "^1.0.0"
+    "crypto": "^1.0.1",
+    "ioredis": "^5.11.1",
+    "jsonwebtoken": "^9.0.3"
   },
   "devDependencies": {
-    "vitest": "^2.0.0",
-    "typescript": "^5.0.0",
-    "eslint": "^8.0.0"
+    "eslint": "^8.57.1",
+    "typescript": "^5.9.3",
+    "vitest": "^2.1.9"
   }
 }

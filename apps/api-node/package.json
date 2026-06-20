@@ -13,17 +13,17 @@
   },
   "dependencies": {
     "@mycodexvantaos/contracts-sdk": "workspace:*",
-    "@mycodexvantaos/service-service-catalog": "workspace:*",
-    "@mycodexvantaos/service-resource-registry": "workspace:*",
     "@mycodexvantaos/service-audit-log": "workspace:*",
     "@mycodexvantaos/service-knowledge-trace": "workspace:*",
     "@mycodexvantaos/service-memory-dream": "workspace:*",
-    "@mycodexvantaos/service-policy-engine": "workspace:*"
+    "@mycodexvantaos/service-policy-engine": "workspace:*",
+    "@mycodexvantaos/service-resource-registry": "workspace:*",
+    "@mycodexvantaos/service-service-catalog": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
-    "tsup": "^8.4.0",
-    "typescript": "^5.4.0"
+    "@types/node": "^20.19.43",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3"
   },
   "license": "UNLICENSED"
 }

@@ -4,12 +4,12 @@
   "description": "IBCS Contract Engine and Multi-Layer Validator",
   "main": "dist/index.js",
   "dependencies": {
-    "yaml": "^2.3.0",
-    "zod": "^3.22.4"
+    "yaml": "^2.9.0",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
-    "typescript": "^5.0.0",
-    "@types/node": "^20.0.0"
+    "@types/node": "^20.19.43",
+    "typescript": "^5.9.3"
   },
   "scripts": {
     "build": "tsc",

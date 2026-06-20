@@ -16,8 +16,8 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "typescript": "^5.4.0",
-    "@types/node": "^20.0.0"
+    "@types/node": "^20.19.43",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "@mycodexvantaos/contracts-sdk": "workspace:*"
