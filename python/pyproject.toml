@@ -7,12 +7,12 @@ mycodexvantaos-knowledge-pipeline = { workspace = true }
 mycodexvantaos-vector-tools = { workspace = true }
 mycodexvantaos-evaluation = { workspace = true }
 mycodexvantaos-ci-repair = { workspace = true }
-mycodexvantaos-stream-pipeline = { workspace = true }
+mycodexvantaos-coder-deep = { workspace = true }
 agent-worker = { workspace = true }
 dream-worker = { workspace = true }
 knowledge-worker = { workspace = true }
 ci-repair-agent = { workspace = true }
-kafka-stream-processor = { workspace = true }
+coder-deep-mcp = { workspace = true }
 
 
 [project]
@@ -75,7 +75,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["mycodexvantaos_memory_dream", "mycodexvantaos_ci_repair", "mycodexvantaos_stream_pipeline"]
+known-first-party = ["mycodexvantaos_memory_dream", "mycodexvantaos_ci_repair", "mycodexvantaos_coder_deep"]
 
 [tool.mypy]
 python_version = "3.11"

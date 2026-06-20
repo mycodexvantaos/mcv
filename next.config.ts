@@ -28,6 +28,20 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  webpack: (config, { dev, isServer }) => {
+    if (!dev && !isServer) {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const { codecovWebpackPlugin } = require('@codecov/webpack-plugin');
+      config.plugins.push(
+        codecovWebpackPlugin({
+          enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
+          bundleName: 'mycodexvantaos-nextjs',
+          uploadToken: process.env.CODECOV_TOKEN,
+        }),
+      );
+    }
+    return config;
+  },
 };
 
 export default nextConfig;
