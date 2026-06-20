@@ -40,7 +40,6 @@ jobs:
         run: pnpm run build
         env:
           NODE_ENV: production
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Note — static export not configured
         run: |

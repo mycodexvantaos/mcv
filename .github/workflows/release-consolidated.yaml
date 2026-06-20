@@ -77,8 +77,6 @@ jobs:
           pnpm run build:packages || true
           pnpm run build:modules || true
           pnpm run build
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   container:
     name: Build Container

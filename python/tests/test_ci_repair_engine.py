@@ -109,7 +109,7 @@ class TestSuggestFix:
             run_id=1,
             job_id=1,
             job_name="Build",
-            log_text="error TS2322: Type 'string' is not assignable",
+            log_text="error TS2322: Type \'string\' is not assignable",
         )
         assert (
             "typescript" in analysis.suggested_fix.lower()
@@ -171,7 +171,7 @@ class TestSuggestFix:
             run_id=1,
             job_id=1,
             job_name="CI",
-            log_text="Something went wrong but we don't know what",
+            log_text="Something went wrong but we don\'t know what",
         )
         assert "manual" in analysis.suggested_fix.lower()
 
@@ -398,157 +398,94 @@ class TestAnalyzeFailure:
 
 
 class TestGenerateRepairPlan:
-    """Test repair plan generation."""
+    """Test repair plan generation from multiple failure analyses."""
 
-    def test_plan_with_dependency_error(self) -> None:
-        analyses = [
-            analyze_failure(
-                run_id=100,
-                job_id=200,
-                job_name="Build",
-                log_text="npm ERR! ERESOLVE could not resolve dependency: ws",
-            ),
-        ]
-        plan = generate_repair_plan(
-            run_id=100,
-            run_name="CI",
-            branch="main",
-            analyses=analyses,
+    def test_single_analysis_plan(self) -> None:
+        analysis = analyze_failure(
+            run_id=1,
+            job_id=1,
+            job_name="Build",
+            log_text="npm ERR! ERESOLVE could not resolve dependency: ws",
         )
-        assert plan.run_id == 100
+        plan = generate_repair_plan(1, "Test Run", "main", [analysis])
+        assert plan.run_id == 1
+        assert plan.run_name == "Test Run"
+        assert plan.branch == "main"
+        assert len(plan.analyses) == 1
         assert len(plan.actions) >= 1
         assert plan.can_auto_fix is True
-        assert "fix/ci-repair-" in plan.branch_name
-        assert "dependency" in plan.pr_title
+        assert "fix/ci-repair-test-run-1" in plan.branch_name
+        assert "fix(ci): auto-repair for dependency error" in plan.pr_title
+        assert "## CI Auto-Repair" in plan.pr_body
 
-    def test_plan_with_lint_error_auto_fixable(self) -> None:
-        analyses = [
-            analyze_failure(
-                run_id=100,
-                job_id=200,
-                job_name="Lint",
-                log_text="ruff check error: I001",
-            ),
-        ]
-        plan = generate_repair_plan(
-            run_id=100,
-            run_name="Lint Check",
-            branch="main",
-            analyses=analyses,
+    def test_multiple_analyses_plan(self) -> None:
+        analysis1 = analyze_failure(
+            run_id=1,
+            job_id=1,
+            job_name="Build",
+            log_text="npm ERR! ERESOLVE could not resolve dependency: ws",
         )
-        assert plan.can_auto_fix is True
-
-    def test_plan_with_multiple_failures(self) -> None:
-        analyses = [
-            analyze_failure(
-                run_id=100,
-                job_id=200,
-                job_name="Lint",
-                log_text="ruff check error: I001",
-            ),
-            analyze_failure(
-                run_id=100,
-                job_id=201,
-                job_name="Test",
-                log_text="FAILED 1 test\nAssertionError: expected True, got False",
-            ),
-        ]
-        plan = generate_repair_plan(
-            run_id=100,
-            run_name="CI",
-            branch="main",
-            analyses=analyses,
+        analysis2 = analyze_failure(
+            run_id=1,
+            job_id=2,
+            job_name="Lint",
+            log_text="ruff check error: I001 in src/main.py",
         )
+        plan = generate_repair_plan(1, "Test Run Multi", "main", [analysis1, analysis2])
         assert len(plan.analyses) == 2
         assert len(plan.actions) >= 2
+        assert plan.can_auto_fix is True
+        assert "fix(ci): auto-repair for dependency error, lint error" in plan.pr_title
 
-    def test_plan_with_manual_review(self) -> None:
-        analyses = [
-            analyze_failure(
-                run_id=100,
-                job_id=200,
-                job_name="Deploy",
-                log_text="deploy failed: cloudflare deploy fail",
-            ),
-        ]
-        plan = generate_repair_plan(
-            run_id=100,
-            run_name="Deploy",
-            branch="main",
-            analyses=analyses,
+    def test_manual_review_required(self) -> None:
+        analysis = analyze_failure(
+            run_id=1,
+            job_id=1,
+            job_name="Test",
+            log_text="FAILED 1 test\nAssertionError: expected True",
         )
-        assert not plan.can_auto_fix
-        assert any(a.requires_manual_review for a in plan.actions)
+        plan = generate_repair_plan(1, "Test Run Manual", "main", [analysis])
+        assert plan.can_auto_fix is False
+        assert "Manual review required" in plan.summary
 
-    def test_plan_pr_body_contains_analysis(self) -> None:
-        analyses = [
-            analyze_failure(
-                run_id=100,
-                job_id=200,
-                job_name="Build",
-                log_text="npm ERR! ERESOLVE could not resolve dependency: ws",
-            ),
-        ]
-        plan = generate_repair_plan(
-            run_id=100,
-            run_name="CI",
-            branch="main",
-            analyses=analyses,
+    def test_critical_severity_prevents_auto_fix(self) -> None:
+        analysis_critical = analyze_failure(
+            run_id=1,
+            job_id=1,
+            job_name="Deploy",
+            log_text="deploy failed: cloudflare deploy fail",
         )
-        assert "dependency_error" in plan.pr_body
-        assert "Build" in plan.pr_body
+        analysis_lint = analyze_failure(
+            run_id=1,
+            job_id=2,
+            job_name="Lint",
+            log_text="ruff check error: I001 in src/main.py",
+        )
+        plan = generate_repair_plan(1, "Test Run Critical", "main", [analysis_critical, analysis_lint])
+        assert plan.can_auto_fix is False
+        assert "Manual review required" in plan.summary
 
-    def test_plan_branch_name_is_kebab_case(self) -> None:
-        analyses = [
-            analyze_failure(
-                run_id=42,
-                job_id=1,
-                job_name="Build",
-                log_text="npm ERR! ERESOLVE",
-            ),
-        ]
-        plan = generate_repair_plan(
-            run_id=42,
-            run_name="CI Pipeline",
-            branch="main",
-            analyses=analyses,
+    def test_pr_body_formatting(self) -> None:
+        analysis = analyze_failure(
+            run_id=1,
+            job_id=1,
+            job_name="Build",
+            log_text="npm ERR! ERESOLVE could not resolve dependency: ws",
         )
-        assert plan.branch_name.startswith("fix/ci-repair-")
-        # Should be lowercase kebab-case
-        assert plan.branch_name == plan.branch_name.lower()
+        plan = generate_repair_plan(1, "Test Run PR Body", "main", [analysis])
+        assert "## CI Auto-Repair" in plan.pr_body
+        assert "### Failure Analysis" in plan.pr_body
+        assert "### Repair Actions" in plan.pr_body
+        assert "*Generated by MyCodeXvantaOS CI Repair Agent*" in plan.pr_body
+        assert "🔄 Auto" in plan.pr_body
 
-    def test_plan_summary_includes_counts(self) -> None:
-        analyses = [
-            analyze_failure(
-                run_id=100,
-                job_id=200,
-                job_name="Build",
-                log_text="npm ERR! ERESOLVE",
-            ),
-        ]
-        plan = generate_repair_plan(
-            run_id=100,
-            run_name="CI",
-            branch="main",
-            analyses=analyses,
+    def test_branch_name_generation(self) -> None:
+        analysis = analyze_failure(
+            run_id=1,
+            job_id=1,
+            job_name="Build",
+            log_text="npm ERR! ERESOLVE could not resolve dependency: ws",
         )
-        assert "1 failure" in plan.summary
-        assert "1 action" in plan.summary
-
-    def test_plan_with_critical_prevents_auto_fix(self) -> None:
-        """Even if one action is auto-fixable, critical risk prevents auto-fix."""
-        analyses = [
-            analyze_failure(
-                run_id=100,
-                job_id=200,
-                job_name="Deploy",
-                log_text="deploy failed: cloudflare deploy fail",
-            ),
-        ]
-        plan = generate_repair_plan(
-            run_id=100,
-            run_name="Deploy",
-            branch="main",
-            analyses=analyses,
-        )
-        assert not plan.can_auto_fix
+        plan = generate_repair_plan(12345, "A very long and complex workflow run name that should be truncated", "main", [analysis])
+        assert "fix/ci-repair-a-very-long-and-complex-workflow-run-name-12345" in plan.branch_name
+        assert len(plan.branch_name) <= 50 # Max length for branch name

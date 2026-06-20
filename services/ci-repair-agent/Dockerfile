@@ -43,6 +43,7 @@ COPY --from=builder --chown=ci-repair:ci-repair /app/.venv /app/.venv
 
 # Copy application code
 COPY --chown=ci-repair:ci-repair python/apps/ci-repair-agent/main.py ./main.py
+COPY --chown=ci-repair:ci-repair python/packages/mycodexvantaos-ci-repair ./packages/mycodexvantaos-ci-repair
 
 # Set environment to use venv
 ENV PATH="/app/.venv/bin:$PATH" \

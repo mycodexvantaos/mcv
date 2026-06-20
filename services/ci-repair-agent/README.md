@@ -61,7 +61,6 @@ Error responses include structured error details:
 ```
 
 The `X-Request-ID` header is propagated from inbound requests or auto-generated as a UUID.
-
 | Method | Path                            | Description                                  |
 | ------ | ------------------------------- | -------------------------------------------- |
 | `GET`  | `/health`                       | Health check (reports database status)       |
@@ -110,7 +109,6 @@ Response:
   "request_id": "550e8400-e29b-41d4-a716-446655440000"
 }
 ```
-
 ### Example: Trigger Repair with PR Creation
 
 ```bash
@@ -125,7 +123,6 @@ curl -X POST http://localhost:8000/api/runs/12345/repair \
 curl http://localhost:8000/api/runs/12345/analyze \
   -H "X-Request-ID: my-trace-id-123"
 ```
-
 ## CLI Usage
 
 ### Analyze the Latest Failed Run
@@ -219,7 +216,6 @@ The test suite includes 168 tests across 5 test files:
 | `test_ci_repair_api.py`           | 28    | All API endpoints, response format, validation        |
 | `test_ci_repair_database.py`      | 10    | Database operations with mocked asyncpg               |
 | `test_ci_repair_github_client.py` | 7     | GitHub API client with mocked httpx                  |
-
 ## Technology Stack
 
 - **Python 3.11** with `uv` package manager
