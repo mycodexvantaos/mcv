@@ -1,0 +1,42 @@
+# Git
+.git
+.gitignore
+
+# Documentation
+docs/
+*.md
+!python/packages/mycodexvantaos-ci-repair/README.md
+!python/apps/ci-repair-agent/README.md
+
+# CI/CD
+.github/
+
+# IDE
+.vscode/
+.idea/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+python/.venv/
+**/.venv/
+
+# Test files (not needed in production)
+python/tests/
+
+# Node.js (not needed for this service)
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.local
