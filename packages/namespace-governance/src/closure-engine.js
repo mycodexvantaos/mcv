@@ -6,7 +6,7 @@
  * Rationale: closure must be provable, not asserted. The engine collects every
  * violation in a single deterministic pass (no early throw) and emits a
  * structured, auditable verdict — satisfying the "no near-enough solutions"
- * and "audit closure" requirements of §I.0 / §I.9.
+ * and "audit closure" requirements of Sec.I.0 / Sec.I.9.
  */
 import {
   checkMachineName, checkGovernanceCode, checkRepositoryName,

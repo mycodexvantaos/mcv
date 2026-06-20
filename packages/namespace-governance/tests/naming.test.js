@@ -4,7 +4,7 @@ import {
   checkPlaneDependency, decomposeCode, CODE_REGEX, REPO_REGEX,
 } from '../src/naming.js';
 
-describe('checkMachineName (§I.1.1)', () => {
+describe('checkMachineName (Sec.I.1.1)', () => {
   test('accepts canonical kebab-case', () => {
     expect(checkMachineName('mycodexvantaos-auth-service')).toHaveLength(0);
   });
@@ -24,7 +24,7 @@ describe('checkMachineName (§I.1.1)', () => {
   });
 });
 
-describe('checkGovernanceCode (§I.3.2)', () => {
+describe('checkGovernanceCode (Sec.I.3.2)', () => {
   test('accepts canonical 5-digit code', () => {
     expect(checkGovernanceCode('mycodexvantaos-50100')).toHaveLength(0);
   });
@@ -42,7 +42,7 @@ describe('checkGovernanceCode (§I.3.2)', () => {
   });
 });
 
-describe('decomposeCode (§I.3.1)', () => {
+describe('decomposeCode (Sec.I.3.1)', () => {
   test('decomposes security era code', () => {
     expect(decomposeCode('50100')).toMatchObject({
       layerGroup: 50, domain: 1, subtype: 0, sequence: 0, era: 'era-two',
@@ -57,7 +57,7 @@ describe('decomposeCode (§I.3.1)', () => {
   });
 });
 
-describe('checkRepositoryName (§I.6.2/§I.6.3/§I.7)', () => {
+describe('checkRepositoryName (Sec.I.6.2/Sec.I.6.3/Sec.I.7)', () => {
   test('accepts vocabulary-valid repo', () => {
     expect(checkRepositoryName('mycodexvantaos-auth-service')).toHaveLength(0);
     expect(REPO_REGEX.test('softwareos-qa-service')).toBe(true);
@@ -86,7 +86,7 @@ describe('checkRepositoryName (§I.6.2/§I.6.3/§I.7)', () => {
   });
 });
 
-describe('checkPlaneDependency (§I.2.4)', () => {
+describe('checkPlaneDependency (Sec.I.2.4)', () => {
   test('allows product -> control', () => {
     expect(checkPlaneDependency('softwareos-qa-service', 'mycodexvantaos-auth-service'))
       .toHaveLength(0);

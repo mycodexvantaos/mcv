@@ -1,7 +1,7 @@
 /**
  * Naming rule engine implementing the canonical constraints of the Namespace
- * Governance Closure Spec: §I.1 (global naming), §I.3.1/§I.3.2 (governance code
- * structure + regex), §I.6.2/§I.6.3 (repository naming + forbidden tokens).
+ * Governance Closure Spec: Sec.I.1 (global naming), Sec.I.3.1/Sec.I.3.2 (governance code
+ * structure + regex), Sec.I.6.2/Sec.I.6.3 (repository naming + forbidden tokens).
  *
  * Rationale: every rule returns a structured Violation (not a boolean) so the
  * closure engine can aggregate a complete, actionable report in one pass —
@@ -12,18 +12,18 @@ import {
   PLANE_BY_NAMESPACE, DOMAINS, FUNCTIONS, ERA_RANGES, FORBIDDEN_REPO_TOKENS,
 } from './vocabulary.js';
 
-/** Canonical governance code regex (§I.3.2). */
+/** Canonical governance code regex (Sec.I.3.2). */
 export const CODE_REGEX = /^mycodexvantaos-[0-9]{5}$/;
 
-/** Canonical repository name regex (§I.6.2). */
+/** Canonical repository name regex (Sec.I.6.2). */
 export const REPO_REGEX =
   /^(?:mycodexvantaos|softwareos)-[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
-/** Generic machine-name shape: lowercase kebab-case, hyphen only (§I.1.1). */
+/** Generic machine-name shape: lowercase kebab-case, hyphen only (Sec.I.1.1). */
 const KEBAB_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 /**
- * Validate a generic machine-facing name against §I.1.1 constraints.
+ * Validate a generic machine-facing name against Sec.I.1.1 constraints.
  * @param {string} name
  * @returns {import('./result.js').Violation[]}
  */
@@ -50,7 +50,7 @@ export function checkMachineName(name) {
 }
 
 /**
- * Decompose a governance code into its era fields (§I.3.1).
+ * Decompose a governance code into its era fields (Sec.I.3.1).
  * @param {string} code Five-digit code, e.g. "50100".
  * @returns {{ layerGroup: number, domain: number, subtype: number, sequence: number, era: string }}
  */
@@ -67,7 +67,7 @@ export function decomposeCode(code) {
 }
 
 /**
- * Validate a full governance identifier `mycodexvantaos-NNNNN` (§I.3.2).
+ * Validate a full governance identifier `mycodexvantaos-NNNNN` (Sec.I.3.2).
  * @param {string} id
  * @returns {import('./result.js').Violation[]}
  */
@@ -80,7 +80,7 @@ export function checkGovernanceCode(id) {
 }
 
 /**
- * Validate a repository name against §I.6.2 (shape) and §I.6.3 (forbidden
+ * Validate a repository name against Sec.I.6.2 (shape) and Sec.I.6.3 (forbidden
  * tokens, registered namespace/domain/function vocabularies).
  * @param {string} name
  * @returns {import('./result.js').Violation[]}
@@ -121,7 +121,7 @@ export function checkRepositoryName(name) {
 }
 
 /**
- * Plane dependency rule (§I.2.4): control-plane MUST NOT hard-depend on
+ * Plane dependency rule (Sec.I.2.4): control-plane MUST NOT hard-depend on
  * product-plane runtime implementations.
  * @param {string} fromRepo Depending repository name.
  * @param {string} toRepo   Depended-upon repository name.

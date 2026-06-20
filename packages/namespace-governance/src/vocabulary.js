@@ -1,8 +1,8 @@
 /**
  * Controlled vocabulary derived from Namespace Governance Closure Spec
- * (8BFFa5JRUNmGUthU.md §I.7). Single source of truth for plane, domain and
+ * (8BFFa5JRUNmGUthU.md Sec.I.7). Single source of truth for plane, domain and
  * function tokens. Frozen to guarantee referential immutability — vocabulary
- * drift is a CI-blocking governance violation (§I.0).
+ * drift is a CI-blocking governance violation (Sec.I.0).
  *
  * Rationale: the spec defines these as a closed set; encoding them as frozen
  * data (not scattered string literals) makes naming validation provably
@@ -15,10 +15,10 @@ export const PLANE_BY_NAMESPACE = Object.freeze({
   softwareos: 'product-plane',
 });
 
-/** Canonical namespace tokens (§I.2.1). @type {readonly string[]} */
+/** Canonical namespace tokens (Sec.I.2.1). @type {readonly string[]} */
 export const NAMESPACES = Object.freeze(Object.keys(PLANE_BY_NAMESPACE));
 
-/** Domain vocabulary (§I.7.2). @type {readonly string[]} */
+/** Domain vocabulary (Sec.I.7.2). @type {readonly string[]} */
 export const DOMAINS = Object.freeze([
   'auth', 'policy', 'memory', 'event', 'infra', 'platform', 'iaops',
   'machinenativeops', 'toolkit', 'contracts', 'signerd', 'controller',
@@ -26,7 +26,7 @@ export const DOMAINS = Object.freeze([
   'rollback', 'scheduler', 'alertd',
 ]);
 
-/** Function vocabulary (§I.7.3). @type {readonly string[]} */
+/** Function vocabulary (Sec.I.7.3). @type {readonly string[]} */
 export const FUNCTIONS = Object.freeze([
   'service', 'agent', 'sdk', 'cli', 'web', 'api', 'worker', 'manager', 'hub',
   'bus', 'engine', 'scanner', 'reporter', 'predictor', 'action', 'plugin',
@@ -34,7 +34,7 @@ export const FUNCTIONS = Object.freeze([
 ]);
 
 /**
- * Governance era mapping by layer-group (§I.4.1). Maps the two leading digits
+ * Governance era mapping by layer-group (Sec.I.4.1). Maps the two leading digits
  * of a governance code to its era. @type {ReadonlyArray<[number, number, string]>}
  */
 export const ERA_RANGES = Object.freeze([
@@ -45,7 +45,7 @@ export const ERA_RANGES = Object.freeze([
 ]);
 
 /**
- * Tokens forbidden anywhere in a repository name (§I.6.3).
+ * Tokens forbidden anywhere in a repository name (Sec.I.6.3).
  * @type {readonly string[]}
  */
 export const FORBIDDEN_REPO_TOKENS = Object.freeze([

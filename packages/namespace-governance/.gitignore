@@ -2,3 +2,4 @@ node_modules/
 config/coverage/
 config/rollback.log
 *.log
+package-lock.json
