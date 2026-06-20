@@ -1,0 +1,29 @@
+# presets/strict-preset.yaml
+# MyCodeXvantaOS — Humaniser Strict Configuration Preset
+#
+# Stricter detection thresholds for high-stakes content verification.
+
+apiVersion: mycodexvantaos.org/v1
+kind: HumaniserPreset
+metadata:
+  name: strict
+  description: Strict Humaniser configuration preset for high-stakes verification
+
+spec:
+  mode: hybrid
+  detection:
+    threshold: 0.50
+    min_sentence_length: 2
+    sensitivity: high
+  rewrite:
+    default_style: professional
+    preserve_technical_terms: true
+    default_formality: formal
+    max_iterations: 5
+  caching:
+    enabled: true
+    ttl_seconds: 600
+  limits:
+    max_text_length: 500000
+    max_file_size_mb: 25
+    rate_limit_per_minute: 10
