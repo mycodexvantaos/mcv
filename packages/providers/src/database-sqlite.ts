@@ -1,5 +1,4 @@
 import { DatabaseCapability } from './database.interface';
-import * as fs from 'fs';
 import * as path from 'path';
 
 // Minimalistic file-based JSON database for "Native" mode

@@ -38,7 +38,7 @@
     "dream:dry-run": "cd python/apps/dream-worker && ../../.venv/bin/python main.py run --mode dry-run",
     "api:start": "cd apps/api-node && npx tsx index.ts",
     "test:services": "node --import tsx --test services/mycodexvantaos-service-service-catalog/src/__tests__/service-catalog.test.ts services/mycodexvantaos-service-resource-registry/src/__tests__/resource-registry.test.ts services/mycodexvantaos-service-audit-log/src/__tests__/audit-log.test.ts services/mycodexvantaos-service-knowledge-trace/src/__tests__/knowledge-trace.test.ts services/mycodexvantaos-service-memory-dream/src/__tests__/memory-dream.test.ts",
-    "test:contracts": "node --import tsx --test packages/mycodexvantaos-contracts-sdk/src/__tests__/contracts-sdk.test.ts",
+    "test:contracts": "node --import tsx packages/mycodexvantaos-contracts-sdk/src/__tests__/contracts-sdk.test.ts",
     "generate-release-manifest": "node --import tsx tools/generators/generate-release-manifest.ts",
     "rc:verify": "node --import tsx tools/rc-verify.ts",
     "release:artifacts": "node --import tsx tools/release-artifacts.ts",
@@ -95,6 +95,7 @@
     "zustand": "^5.0.13",
     "yaml": "^2.9.0"
   },
+
   "pnpm": {
     "peerDependencyRules": {
       "ignoreMissing": [],
@@ -118,6 +119,8 @@
     }
   },
   "devDependencies": {
+    "@codecov/vite-plugin": "^2.0.1",
+    "@codecov/webpack-plugin": "^2.0.1",
     "@mycodexvantaos/contracts-sdk": "workspace:*",
     "@mycodexvantaos/policy-model": "workspace:*",
     "@mycodexvantaos/service-policy-engine": "workspace:*",
@@ -132,7 +135,6 @@
     "typescript": "^5.0.0",
     "wrangler": "^4.88.0",
     "@tailwindcss/vite": "^4.2.2",
-    "@vitejs/plugin-react": "^6.0.1",
     "autoprefixer": "^10.5.0",
     "eslint": "^8.0.0",
     "ts-node": "^10.9.1",

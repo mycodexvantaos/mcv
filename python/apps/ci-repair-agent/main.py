@@ -4,18 +4,28 @@ Provides both an HTTP API and a CLI for analyzing failed GitHub Actions
 workflow runs, classifying errors, and generating repair plans.
 """
 
-from __future__ import annotations
-
 import argparse
 import asyncio
 import json
 import logging
 import sys
+import uuid
 from contextlib import asynccontextmanager
+from datetime import datetime
 from typing import Any
 
 import uvicorn
-from fastapi import FastAPI, HTTPException, Query
+from asyncpg.exceptions import (
+    CannotConnectNowError,
+    ClientConfigurationError,
+    ConnectionDoesNotExistError,
+    InvalidAuthorizationSpecificationError,
+    InvalidCatalogNameError,
+    InvalidPasswordError,
+    PostgresConnectionError,
+)
+from fastapi import FastAPI, HTTPException, Query, Request
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from mycodexvantaos_ci_repair.database import DatabaseClient
@@ -69,34 +79,131 @@ def _get_db() -> DatabaseClient | None:
 
 
 # ---------------------------------------------------------------------------
-# API models
+# Standardized API response models
 # ---------------------------------------------------------------------------
 
 
-class HealthResponse(BaseModel):
-    """Health check response."""
+class ErrorCode:
+    """Standardized error codes for API responses."""
+
+    VALIDATION_ERROR = "VALIDATION_ERROR"
+    UNAUTHORIZED = "UNAUTHORIZED"
+    FORBIDDEN = "FORBIDDEN"
+    NOT_FOUND = "NOT_FOUND"
+    CONFLICT = "CONFLICT"
+    RATE_LIMITED = "RATE_LIMITED"
+    SERVICE_UNAVAILABLE = "SERVICE_UNAVAILABLE"
+    GITHUB_API_ERROR = "GITHUB_API_ERROR"
+    DATABASE_ERROR = "DATABASE_ERROR"
+    INTERNAL_ERROR = "INTERNAL_ERROR"
+
+
+class ApiResponse(BaseModel):
+    """Standardized API response wrapper.
+
+    All API endpoints return this format with success, data, error, and request_id.
+    """
+
+    success: bool
+    data: dict[str, Any] | None = None
+    error: dict[str, Any] | None = None
+    request_id: str
+
+
+class AppException(Exception):
+    """Base application exception with error code and HTTP status."""
+
+    def __init__(
+        self,
+        code: str,
+        message: str,
+        status_code: int = 400,
+        details: dict[str, Any] | None = None,
+    ) -> None:
+        self.code = code
+        self.message = message
+        self.status_code = status_code
+        self.details = details or {}
+        super().__init__(message)
+
+
+# ---------------------------------------------------------------------------
+# API domain models
+# ---------------------------------------------------------------------------
+
+
+class HealthData(BaseModel):
+    """Health check response data."""
 
     status: str = "ok"
-    version: str = "0.1.0"
+    version: str = "0.2.0"
     repository: str = ""
     database: str = "not_configured"
+    timestamp: str = ""
 
 
-class RunListResponse(BaseModel):
-    """Response for listing workflow runs."""
-
-    runs: list[dict[str, Any]] = Field(default_factory=list)
-    count: int = 0
-
-
-class AnalysisResponse(BaseModel):
-    """Response for failure analysis."""
+class RunData(BaseModel):
+    """Single workflow run data."""
 
     run_id: int
     run_name: str
-    branch: str
-    analyses: list[dict[str, Any]] = Field(default_factory=list)
-    repair_plan: dict[str, Any] = Field(default_factory=dict)
+    status: str
+    conclusion: str | None = None
+    head_branch: str
+    event: str
+    html_url: str = ""
+
+
+class RunListData(BaseModel):
+    """Response data for listing workflow runs."""
+
+    runs: list[RunData] = Field(default_factory=list)
+    count: int = 0
+
+
+class AnalysisData(BaseModel):
+    """Response data for a single failure analysis."""
+
+    job_id: int
+    job_name: str
+    error_category: str
+    severity: str
+    root_cause: str
+    affected_files: list[str] = Field(default_factory=list)
+    affected_dependencies: list[str] = Field(default_factory=list)
+    suggested_fix: str = ""
+    confidence: float = 0.0
+
+
+class RepairActionData(BaseModel):
+    """Response data for a single repair action."""
+
+    action_type: str
+    description: str
+    file_path: str = ""
+    command: str = ""
+    risk_level: str = "low"
+    requires_manual_review: bool = True
+
+
+class RepairPlanData(BaseModel):
+    """Response data for a complete repair plan."""
+
+    branch_name: str = ""
+    pr_title: str = ""
+    pr_body: str = ""
+    can_auto_fix: bool = False
+    summary: str = ""
+
+
+class AnalyzeData(BaseModel):
+    """Response data for the analyze endpoint."""
+
+    run_id: int
+    run_name: str = ""
+    branch: str = "main"
+    analyses: list[AnalysisData] = Field(default_factory=list)
+    repair_plan: RepairPlanData | None = None
 
 
 class RepairRequest(BaseModel):
@@ -107,25 +214,25 @@ class RepairRequest(BaseModel):
     create_pr: bool = False
 
 
-class RepairResponse(BaseModel):
-    """Response for repair execution."""
+class RepairData(BaseModel):
+    """Response data for the repair endpoint."""
 
     run_id: int
-    plan: dict[str, Any] = Field(default_factory=dict)
+    repair_plan: RepairPlanData | None = None
     branch_created: bool = False
     pr_url: str = ""
     message: str = ""
 
 
-class HistoryResponse(BaseModel):
-    """Response for repair history."""
+class HistoryData(BaseModel):
+    """Response data for repair history."""
 
     analyses: list[dict[str, Any]] = Field(default_factory=list)
     count: int = 0
 
 
-class CategoryStatsResponse(BaseModel):
-    """Response for error category statistics."""
+class CategoryStatsData(BaseModel):
+    """Response data for error category statistics."""
 
     categories: dict[str, int] = Field(default_factory=dict)
     period_days: int = 30
@@ -139,7 +246,11 @@ class CategoryStatsResponse(BaseModel):
 def _get_client() -> GitHubActionsClient:
     """Create a GitHub Actions client from settings."""
     if not settings.github_token:
-        raise HTTPException(status_code=500, detail="GITHUB_TOKEN not configured")
+        raise AppException(
+            code=ErrorCode.UNAUTHORIZED,
+            message="GITHUB_TOKEN not configured. Set the GITHUB_TOKEN environment variable.",
+            status_code=401,
+        )
     return GitHubActionsClient(token=settings.github_token, repository=settings.repository)
 
 
@@ -165,9 +276,22 @@ async def lifespan(app: FastAPI):  # noqa: ARG001
         try:
             await _db_client.connect()
             logger.info("Database connected: %s", settings.database_url[:30] + "...")
-        except Exception:
+        except (
+            PostgresConnectionError,
+            CannotConnectNowError,
+            ConnectionDoesNotExistError,
+            InvalidAuthorizationSpecificationError,
+            InvalidPasswordError,
+            InvalidCatalogNameError,
+            ClientConfigurationError,
+            OSError,
+            asyncio.TimeoutError,
+        ):
             logger.exception("Failed to connect to database — running without persistence")
             _db_client = None
+        except Exception:
+            logger.exception("Unexpected error while connecting to database")
+            raise
 
     yield
 
@@ -180,9 +304,93 @@ async def lifespan(app: FastAPI):  # noqa: ARG001
 app = FastAPI(
     title="CI Repair Agent",
     description="GitHub Actions auto-repair agent for MyCodeXvantaOS",
-    version="0.1.0",
+    version="0.2.0",
     lifespan=lifespan,
 )
+
+
+# ---------------------------------------------------------------------------
+# Middleware: request ID injection
+# ---------------------------------------------------------------------------
+
+
+@app.middleware("http")
+async def request_id_middleware(request: Request, call_next: Any) -> Any:
+    """Attach a unique request_id to every request for tracing."""
+    request_id = request.headers.get("X-Request-ID", str(uuid.uuid4()))
+    request.state.request_id = request_id
+    response = await call_next(request)
+    response.headers["X-Request-ID"] = request_id
+    return response
+
+
+# ---------------------------------------------------------------------------
+# Exception handlers
+# ---------------------------------------------------------------------------
+
+
+@app.exception_handler(AppException)
+async def app_exception_handler(request: Request, exc: AppException) -> JSONResponse:
+    """Handle application-level exceptions with standardized format."""
+    request_id = getattr(request.state, "request_id", str(uuid.uuid4()))
+    return JSONResponse(
+        status_code=exc.status_code,
+        content=ApiResponse(
+            success=False,
+            error={
+                "code": exc.code,
+                "message": exc.message,
+                "details": exc.details,
+            },
+            request_id=request_id,
+        ).model_dump(),
+    )
+
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException) -> JSONResponse:
+    """Handle FastAPI HTTPExceptions with standardized format."""
+    request_id = getattr(request.state, "request_id", str(uuid.uuid4()))
+    return JSONResponse(
+        status_code=exc.status_code,
+        content=ApiResponse(
+            success=False,
+            error={
+                "code": ErrorCode.INTERNAL_ERROR,
+                "message": str(exc.detail),
+            },
+            request_id=request_id,
+        ).model_dump(),
+    )
+
+
+@app.exception_handler(Exception)
+async def generic_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+    """Handle unexpected exceptions with standardized format."""
+    request_id = getattr(request.state, "request_id", str(uuid.uuid4()))
+    logger.exception("Unhandled exception: %s", exc)
+    return JSONResponse(
+        status_code=500,
+        content=ApiResponse(
+            success=False,
+            error={
+                "code": ErrorCode.INTERNAL_ERROR,
+                "message": "An unexpected error occurred",
+            },
+            request_id=request_id,
+        ).model_dump(),
+    )
+
+
+# ---------------------------------------------------------------------------
+# Helper: build success response
+# ---------------------------------------------------------------------------
+
+
+def _success(request: Request, data: dict[str, Any]) -> dict[str, Any]:
+    """Build a standardized success response."""
+    request_id = getattr(request.state, "request_id", str(uuid.uuid4()))
+    return ApiResponse(success=True, data=data, request_id=request_id).model_dump()
 
 
 # ---------------------------------------------------------------------------
@@ -190,10 +398,10 @@ app = FastAPI(
 # ---------------------------------------------------------------------------
 
 
-@app.get("/health", response_model=HealthResponse)
-async def health_check() -> HealthResponse:
-    """Health check endpoint."""
-    db_status = "connected" if _db_client else "not_configured"
+@app.get("/health")
+async def health_check(request: Request) -> dict[str, Any]:
+    """Health check endpoint — reports service and database status."""
+    db_status = "not_configured"
     if _db_client:
         try:
             await _db_client.get_recent_analyses(limit=1)
@@ -201,331 +409,318 @@ async def health_check() -> HealthResponse:
         except Exception:
             db_status = "error"
 
-    return HealthResponse(
-        status="ok",
-        version="0.1.0",
-        repository=settings.repository,
-        database=db_status,
+    return _success(
+        request,
+        HealthData(
+            status="ok",
+            version="0.2.0",
+            repository=settings.repository,
+            database=db_status,
+            timestamp=datetime.now().isoformat(),
+        ).model_dump(),
     )
 
 
-@app.get("/api/runs", response_model=RunListResponse)
+@app.get("/runs", summary="List recent workflow runs")
 async def list_runs(
-    branch: str | None = Query(default=None),
-    status: str | None = Query(default=None),
-    per_page: int = Query(default=20, ge=1, le=100),
-) -> RunListResponse:
-    """List workflow runs, optionally filtered."""
+    request: Request,
+    limit: int = Query(10, ge=1, le=100),
+    branch: str | None = Query(None),
+) -> dict[str, Any]:
+    """List recent GitHub Actions workflow runs for the configured repository.
+
+    Optionally filter by branch.
+    """
     client = _get_client()
-    runs = await client.list_workflow_runs(branch=branch, status=status, per_page=per_page)
-    return RunListResponse(
-        runs=[r.model_dump(mode="json") for r in runs],
-        count=len(runs),
-    )
+    runs = await client.list_workflow_runs(branch=branch, limit=limit)
+    run_data = [
+        RunData(
+            run_id=run["id"],
+            run_name=run["name"],
+            status=run["status"],
+            conclusion=run["conclusion"],
+            head_branch=run["head_branch"],
+            event=run["event"],
+            html_url=run["html_url"],
+        )
+        for run in runs
+    ]
+    return _success(request, RunListData(runs=run_data, count=len(run_data)).model_dump())
 
 
-@app.get("/api/runs/{run_id}/analyze", response_model=AnalysisResponse)
-async def analyze_run(run_id: int) -> AnalysisResponse:
-    """Analyze a failed workflow run and produce a repair plan."""
+@app.get("/runs/{run_id}/analyze", summary="Analyze a failed workflow run")
+async def analyze_run(
+    request: Request,
+    run_id: int = Field(..., gt=0),
+) -> dict[str, Any]:
+    """Analyze a specific failed GitHub Actions workflow run for root causes and repair suggestions.
+
+    Returns a detailed analysis for each failed job and a high-level repair plan.
+    """
     client = _get_client()
-    failed_jobs = await client.get_failed_jobs(run_id)
-
-    if not failed_jobs:
-        return AnalysisResponse(
-            run_id=run_id,
-            run_name="",
-            branch="",
-            analyses=[],
-            repair_plan={"message": "No failed jobs found for this run"},
+    run = await client.get_workflow_run(run_id)
+    if not run:
+        raise AppException(
+            code=ErrorCode.NOT_FOUND,
+            message=f"Workflow run {run_id} not found.",
+            status_code=404,
         )
 
-    # Get run metadata
-    runs = await client.list_workflow_runs(per_page=1)
-    run_name = ""
-    branch = "main"
-    for r in runs:
-        if r.run_id == run_id:
-            run_name = r.run_name
-            branch = r.head_branch
-            break
-
-    # Analyze each failed job
-    analyses = []
-    for job in failed_jobs:
-        analysis = analyze_failure(
-            run_id=run_id,
-            job_id=job.job_id,
-            job_name=job.job_name,
-            log_text=job.full_log,
+    jobs = await client.list_jobs_for_workflow_run(run_id)
+    if not jobs:
+        raise AppException(
+            code=ErrorCode.NOT_FOUND,
+            message=f"No jobs found for workflow run {run_id}.",
+            status_code=404,
         )
-        analyses.append(analysis)
 
-        # Save to database if configured
-        if _db_client:
-            try:
-                await _db_client.save_analysis(analysis)
-            except Exception:
-                logger.exception("Failed to save analysis to database")
+    all_analyses = []
+    for job in jobs:
+        if job["conclusion"] == "failure":
+            logs = await client.get_job_logs(job["id"])
+            analysis_result = analyze_failure(logs)
+            all_analyses.append(
+                AnalysisData(
+                    job_id=job["id"],
+                    job_name=job["name"],
+                    error_category=analysis_result["error_category"],
+                    severity=analysis_result["severity"],
+                    root_cause=analysis_result["root_cause"],
+                    affected_files=analysis_result["affected_files"],
+                    affected_dependencies=analysis_result["affected_dependencies"],
+                    suggested_fix=analysis_result["suggested_fix"],
+                    confidence=analysis_result["confidence"],
+                ).model_dump()
+            )
 
-    # Generate repair plan
-    plan = generate_repair_plan(
-        run_id=run_id,
-        run_name=run_name,
-        branch=branch,
-        analyses=analyses,
+    repair_plan = generate_repair_plan(all_analyses, run["head_branch"])
+    repair_plan_data = RepairPlanData(
+        branch_name=repair_plan["branch_name"],
+        pr_title=repair_plan["pr_title"],
+        pr_body=repair_plan["pr_body"],
+        can_auto_fix=repair_plan["can_auto_fix"],
+        summary=repair_plan["summary"],
     )
 
-    # Save plan to database if configured
-    if _db_client:
-        try:
-            await _db_client.save_repair_plan(plan)
-        except Exception:
-            logger.exception("Failed to save repair plan to database")
-
-    return AnalysisResponse(
-        run_id=run_id,
-        run_name=run_name,
-        branch=branch,
-        analyses=[a.model_dump(mode="json") for a in analyses],
-        repair_plan=plan.model_dump(mode="json"),
+    return _success(
+        request,
+        AnalyzeData(
+            run_id=run_id,
+            run_name=run["name"],
+            branch=run["head_branch"],
+            analyses=all_analyses,
+            repair_plan=repair_plan_data,
+        ).model_dump(),
     )
 
 
-@app.post("/api/runs/{run_id}/repair", response_model=RepairResponse)
-async def repair_run(run_id: int, body: RepairRequest) -> RepairResponse:
-    """Execute repair actions for a failed workflow run."""
+@app.post("/runs/{run_id}/repair", summary="Trigger a repair for a failed workflow run")
+async def trigger_repair(
+    request: Request,
+    run_id: int = Field(..., gt=0),
+    repair_request: RepairRequest | None = None,
+) -> dict[str, Any]:
+    """Trigger a repair process for a given workflow run.
+
+    If `create_branch` is true, a new branch will be created with proposed fixes.
+    If `create_pr` is true, a pull request will also be opened.
+    """
     client = _get_client()
-
-    # First analyze
-    failed_jobs = await client.get_failed_jobs(run_id)
-    if not failed_jobs:
-        return RepairResponse(
-            run_id=run_id,
-            message="No failed jobs found — nothing to repair",
+    run = await client.get_workflow_run(run_id)
+    if not run:
+        raise AppException(
+            code=ErrorCode.NOT_FOUND,
+            message=f"Workflow run {run_id} not found.",
+            status_code=404,
         )
 
-    runs = await client.list_workflow_runs(per_page=50)
-    run_name = ""
-    branch = "main"
-    for r in runs:
-        if r.run_id == run_id:
-            run_name = r.run_name
-            branch = r.head_branch
-            break
-
-    analyses = []
-    for job in failed_jobs:
-        analysis = analyze_failure(
-            run_id=run_id,
-            job_id=job.job_id,
-            job_name=job.job_name,
-            log_text=job.full_log,
+    jobs = await client.list_jobs_for_workflow_run(run_id)
+    if not jobs:
+        raise AppException(
+            code=ErrorCode.NOT_FOUND,
+            message=f"No jobs found for workflow run {run_id}.",
+            status_code=404,
         )
-        analyses.append(analysis)
 
-    plan = generate_repair_plan(
-        run_id=run_id,
-        run_name=run_name,
-        branch=branch,
-        analyses=analyses,
-    )
+    all_analyses = []
+    for job in jobs:
+        if job["conclusion"] == "failure":
+            logs = await client.get_job_logs(job["id"])
+            analysis_result = analyze_failure(logs)
+            all_analyses.append(analysis_result)
+
+    repair_plan = generate_repair_plan(all_analyses, run["head_branch"])
 
     branch_created = False
     pr_url = ""
+    message = "Repair plan generated."
 
-    # Create branch if requested and plan is auto-fixable
-    if body.create_branch and plan.can_auto_fix:
-        try:
-            sha = await client.get_branch_sha(branch)
-            branch_created = await client.create_branch(plan.branch_name, sha)
-        except Exception:
-            logger.exception("Failed to create branch")
+    if repair_request and repair_request.create_branch and repair_plan["can_auto_fix"]:
+        # In a real scenario, this would involve applying fixes and committing
+        # For now, we just simulate branch/PR creation
+        new_branch_name = repair_plan["branch_name"]
+        await client.create_branch(new_branch_name, run["head_sha"])
+        branch_created = True
+        message = f"Repair branch `{new_branch_name}` created."
 
-    # Create PR if requested
-    if body.create_pr and branch_created:
-        try:
-            pr_url = await client.create_pull_request(
-                title=plan.pr_title,
-                body=plan.pr_body,
-                head=plan.branch_name,
-                base=branch,
+        if repair_request.create_pr:
+            pr = await client.create_pull_request(
+                base_branch=run["head_branch"],
+                head_branch=new_branch_name,
+                title=repair_plan["pr_title"],
+                body=repair_plan["pr_body"],
             )
-        except Exception:
-            logger.exception("Failed to create PR")
+            pr_url = pr["html_url"]
+            message = f"Repair branch `{new_branch_name}` created and PR opened: {pr_url}"
 
-    # Save plan to database if configured
-    if _db_client:
-        try:
-            await _db_client.save_repair_plan(plan)
-        except Exception:
-            logger.exception("Failed to save repair plan to database")
-
-    return RepairResponse(
+    repair_data = RepairData(
         run_id=run_id,
-        plan=plan.model_dump(mode="json"),
+        repair_plan=RepairPlanData(
+            branch_name=repair_plan["branch_name"],
+            pr_title=repair_plan["pr_title"],
+            pr_body=repair_plan["pr_body"],
+            can_auto_fix=repair_plan["can_auto_fix"],
+            summary=repair_plan["summary"],
+        ),
         branch_created=branch_created,
         pr_url=pr_url,
-        message=plan.summary,
+        message=message,
     )
 
+    return _success(request, repair_data.model_dump())
 
-@app.get("/api/history/analyses", response_model=HistoryResponse)
-async def get_analysis_history(
-    run_id: int | None = Query(default=None),
-    limit: int = Query(default=50, ge=1, le=500),
-) -> HistoryResponse:
-    """Retrieve stored failure analyses from the database."""
+
+@app.get("/history", summary="Get repair history")
+async def get_history(
+    request: Request,
+    limit: int = Query(10, ge=1, le=100),
+) -> dict[str, Any]:
+    """Retrieve a history of past analyses and repairs.
+
+    Requires database to be configured.
+    """
     db = _get_db()
     if not db:
-        raise HTTPException(status_code=503, detail="Database not configured")
-
-    if run_id:
-        analyses = await db.get_analyses_for_run(run_id)
-    else:
-        analyses = await db.get_recent_analyses(limit=limit)
-
-    return HistoryResponse(analyses=analyses, count=len(analyses))
-
-
-@app.get("/api/history/stats/categories", response_model=CategoryStatsResponse)
-async def get_category_stats(
-    days: int = Query(default=30, ge=1, le=365),
-) -> CategoryStatsResponse:
-    """Get error category distribution statistics."""
-    db = _get_db()
-    if not db:
-        raise HTTPException(status_code=503, detail="Database not configured")
-
-    categories = await db.get_error_category_counts(days=days)
-    return CategoryStatsResponse(categories=categories, period_days=days)
-
-
-# ---------------------------------------------------------------------------
-# CLI
-# ---------------------------------------------------------------------------
-
-
-def _run_analyze(args: argparse.Namespace) -> None:
-    """CLI: analyze a workflow run."""
-    client = GitHubActionsClient(token=args.token, repository=args.repository)
-
-    if args.run_id:
-        run_id = args.run_id
-    else:
-        # Find the latest failed run
-        runs = asyncio.run(client.list_workflow_runs(status="failure", per_page=1))
-        if not runs:
-            print("No failed workflow runs found.", file=sys.stderr)
-            return
-        run_id = runs[0].run_id
-        print(f"Latest failed run: #{run_id} — {runs[0].run_name}")
-
-    failed_jobs = asyncio.run(client.get_failed_jobs(run_id))
-    if not failed_jobs:
-        print(f"No failed jobs found for run #{run_id}")
-        return
-
-    runs = asyncio.run(client.list_workflow_runs(per_page=50))
-    run_name = ""
-    branch = "main"
-    for r in runs:
-        if r.run_id == run_id:
-            run_name = r.run_name
-            branch = r.head_branch
-            break
-
-    analyses = []
-    for job in failed_jobs:
-        analysis = analyze_failure(
-            run_id=run_id,
-            job_id=job.job_id,
-            job_name=job.job_name,
-            log_text=job.full_log,
+        raise AppException(
+            code=ErrorCode.DATABASE_ERROR,
+            message="Database not configured. Cannot retrieve history.",
+            status_code=500,
         )
-        analyses.append(analysis)
-
-    plan = generate_repair_plan(
-        run_id=run_id,
-        run_name=run_name,
-        branch=branch,
-        analyses=analyses,
-    )
-
-    # Output as JSON
-    output = plan.model_dump(mode="json")
-    if args.output:
-        with open(args.output, "w") as f:
-            json.dump(output, f, indent=2, default=str)
-        print(f"Repair plan written to {args.output}")
-    else:
-        print(json.dumps(output, indent=2, default=str))
-
-    # Summary
-    print(f"\nSummary: {plan.summary}", file=sys.stderr)
-    if plan.can_auto_fix:
-        print("✅ Auto-fix available", file=sys.stderr)
-    else:
-        print("⚠️  Manual review required", file=sys.stderr)
+    analyses = await db.get_recent_analyses(limit=limit)
+    return _success(request, HistoryData(analyses=analyses, count=len(analyses)).model_dump())
 
 
-def _run_serve(args: argparse.Namespace) -> None:
-    """CLI: start the FastAPI server."""
-    if args.token:
-        settings.github_token = args.token
-    if args.repository:
-        settings.repository = args.repository
-    if args.port:
-        settings.port = args.port
-    if args.database_url:
-        settings.database_url = args.database_url
+@app.get("/stats/categories", summary="Get error category statistics")
+async def get_category_stats(
+    request: Request,
+    period_days: int = Query(30, ge=1, le=365),
+) -> dict[str, Any]:
+    """Get statistics on error categories over a given period.
 
-    uvicorn.run(
-        "main:app",
-        host=settings.host,
-        port=settings.port,
-        log_level=settings.log_level.lower(),
+    Requires database to be configured.
+    """
+    db = _get_db()
+    if not db:
+        raise AppException(
+            code=ErrorCode.DATABASE_ERROR,
+            message="Database not configured. Cannot retrieve category statistics.",
+            status_code=500,
+        )
+    stats = await db.get_category_statistics(period_days=period_days)
+    return _success(
+        request, CategoryStatsData(categories=stats, period_days=period_days).model_dump()
     )
 
 
-def cli() -> None:
-    """Main CLI entry point."""
-    parser = argparse.ArgumentParser(
-        description="CI Repair Agent — GitHub Actions auto-repair for MyCodeXvantaOS",
-    )
-    subparsers = parser.add_subparsers(dest="command", help="Available commands")
+# ---------------------------------------------------------------------------
+# CLI commands
+# ---------------------------------------------------------------------------
 
-    # analyze subcommand
-    analyze_parser = subparsers.add_parser("analyze", help="Analyze failed workflow runs")
-    analyze_parser.add_argument("--run-id", type=int, help="Specific run ID to analyze")
-    analyze_parser.add_argument("--token", required=True, help="GitHub token")
-    analyze_parser.add_argument(
-        "--repository",
-        default="mycodexvantaos/mycodexvantaos",
-        help="GitHub repository",
-    )
-    analyze_parser.add_argument("--output", "-o", help="Output JSON file path")
 
-    # serve subcommand
-    serve_parser = subparsers.add_parser("serve", help="Start the HTTP API server")
-    serve_parser.add_argument("--token", help="GitHub token (or set GITHUB_TOKEN)")
-    serve_parser.add_argument(
-        "--repository",
-        default="mycodexvantaos/mycodexvantaos",
-        help="GitHub repository",
-    )
-    serve_parser.add_argument("--port", type=int, default=8000, help="Server port")
-    serve_parser.add_argument("--database-url", help="PostgreSQL connection URL")
+async def _cli_analyze(args: argparse.Namespace) -> None:
+    """CLI command to analyze a workflow run."""
+    client = _get_client()
+    run = await client.get_workflow_run(args.run_id)
+    if not run:
+        print(f"Error: Workflow run {args.run_id} not found.")
+        sys.exit(1)
+
+    jobs = await client.list_jobs_for_workflow_run(args.run_id)
+    if not jobs:
+        print(f"Error: No jobs found for workflow run {args.run_id}.")
+        sys.exit(1)
+
+    all_analyses = []
+    for job in jobs:
+        if job["conclusion"] == "failure":
+            logs = await client.get_job_logs(job["id"])
+            analysis_result = analyze_failure(logs)
+            all_analyses.append(analysis_result)
+
+    repair_plan = generate_repair_plan(all_analyses, run["head_branch"])
+
+    print(f"\n--- Analysis for Run {args.run_id} ({run['name']}) ---")
+    print(f"Branch: {run['head_branch']}")
+    print("\nFailed Jobs Analyses:")
+    for analysis in all_analyses:
+        print(f"  Job: {analysis['job_name']} (ID: {analysis['job_id']})")
+        print(f"    Error Category: {analysis['error_category']} (Severity: {analysis['severity']})")
+        print(f"    Root Cause: {analysis['root_cause']}")
+        print(f"    Suggested Fix: {analysis['suggested_fix']}")
+        if analysis["affected_files"]:
+            print(f"    Affected Files: {', '.join(analysis['affected_files'])}")
+        if analysis["affected_dependencies"]:
+            print(f"    Affected Dependencies: {', '.join(analysis['affected_dependencies'])}")
+        print(f"    Confidence: {analysis['confidence']:.2f}")
+        print("\n")
+
+    print("--- Repair Plan ---")
+    print(f"Summary: {repair_plan['summary']}")
+    print(f"Can Auto-Fix: {repair_plan['can_auto_fix']}")
+    if repair_plan["can_auto_fix"]:
+        print(f"  Proposed Branch: {repair_plan['branch_name']}")
+        print(f"  Proposed PR Title: {repair_plan['pr_title']}")
+        print(f"  Proposed PR Body: {repair_plan['pr_body']}")
+
+
+async def _cli_serve(args: argparse.Namespace) -> None:
+    """CLI command to serve the FastAPI application."""
+    config = uvicorn.Config(app, host=args.host, port=args.port, log_level=settings.log_level.lower())
+    server = uvicorn.Server(config)
+    await server.serve()
+
+
+def main() -> None:
+    """Main entry point for the CLI."""
+    parser = argparse.ArgumentParser(description="CI Repair Agent CLI")
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    analyze_parser = subparsers.add_parser("analyze", help="Analyze a failed workflow run")
+    analyze_parser.add_argument("run_id", type=int, help="ID of the workflow run to analyze")
+    analyze_parser.set_defaults(func=_cli_analyze)
+
+    serve_parser = subparsers.add_parser("serve", help="Serve the FastAPI application")
+    serve_parser.add_argument("--host", type=str, default=settings.host, help="Host address")
+    serve_parser.add_argument("--port", type=int, default=settings.port, help="Port number")
+    serve_parser.set_defaults(func=_cli_serve)
 
     args = parser.parse_args()
 
-    if args.command == "analyze":
-        _run_analyze(args)
-    elif args.command == "serve":
-        _run_serve(args)
-    else:
-        parser.print_help()
+    # Initialize logging for CLI commands as well
+    logging.basicConfig(
+        level=getattr(logging, settings.log_level.upper(), logging.INFO),
+        format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+    )
+
+    try:
+        asyncio.run(args.func(args))
+    except AppException as e:
+        logger.error("CLI Error: %s - %s", e.code, e.message)
+        sys.exit(1)
+    except Exception as e:
+        logger.error("An unexpected error occurred in CLI: %s", e, exc_info=True)
         sys.exit(1)
 
 
 if __name__ == "__main__":
-    cli()
+    main()

@@ -1,0 +1,32 @@
+# CODEOWNERS — MyCodeXvantaOS
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# ── Security-critical paths ──────────────────────────────
+/.github/dependabot.yml          @mycodexvantaos/security
+/.github/workflows/codeql.yml    @mycodexvantaos/security
+/.github/workflows/security-scan.yaml @mycodexvantaos/security
+/.github/workflows/gitleaks.yaml @mycodexvantaos/security
+/.github/workflows/trivy-scan.yaml @mycodexvantaos/security
+/.github/workflows/checkov-scan.yaml @mycodexvantaos/security
+/.github/workflows/semgrep.yaml  @mycodexvantaos/security
+/.github/workflows/dependency-review.yaml @mycodexvantaos/security
+/.github/codeql/                 @mycodexvantaos/security
+/codecov.yml                     @mycodexvantaos/security
+
+# ── CI/CD workflows ──────────────────────────────────────
+/.github/workflows/              @mycodexvantaos/infra
+/.github/agents/                 @mycodexvantaos/infra
+
+# ── Python Intelligence Plane ────────────────────────────
+/python/packages/mycodexvantaos-coder-deep/ @mycodexvantaos/ai-team
+/python/apps/coder-deep-mcp/     @mycodexvantaos/ai-team
+/python/packages/mycodexvantaos-ci-repair/ @mycodexvantaos/ai-team
+/python/apps/ci-repair-agent/    @mycodexvantaos/ai-team
+/python/packages/mycodexvantaos-memory-dream/ @mycodexvantaos/ai-team
+/python/apps/dream-worker/       @mycodexvantaos/ai-team
+
+# ── Security documentation ───────────────────────────────
+/docs/security/                  @mycodexvantaos/security
+
+# ── Default ──────────────────────────────────────────────
+*                                @mycodexvantaos/core

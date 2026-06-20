@@ -4,6 +4,6 @@ export class ConnectedPgVectorProvider implements VectorStoreProvider {
   async initialize() {}
   async healthCheck() { return { status: 'down' as const, reason: 'Postgres DB unreachable' }; }
   async shutdown() {}
-  async storeEmbedding(id: string, text: string, vector: number[]) { throw new Error("PG Down"); return false; }
-  async searchSimilar(vector: number[], topK?: number) { throw new Error("PG Down"); return []; }
+  async storeEmbedding(id: string, text: string, vector: number[]) { throw new Error("PG Down"); }
+  async searchSimilar(vector: number[], topK?: number) { throw new Error("PG Down"); }
 }
