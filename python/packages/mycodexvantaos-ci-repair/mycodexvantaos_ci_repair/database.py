@@ -30,26 +30,26 @@ CREATE TABLE IF NOT EXISTS ci_repair_analyses (
     job_name        TEXT NOT NULL,
     error_category  TEXT NOT NULL,
     severity        TEXT NOT NULL,
-    root_cause      TEXT NOT NULL DEFAULT '',
-    affected_files  TEXT[] NOT NULL DEFAULT '{}',
-    affected_deps   TEXT[] NOT NULL DEFAULT '{}',
-    log_evidence    TEXT NOT NULL DEFAULT '',
-    suggested_fix   TEXT NOT NULL DEFAULT '',
+    root_cause      TEXT NOT NULL DEFAULT \'\',
+    affected_files  TEXT[] NOT NULL DEFAULT \'{}\',
+    affected_deps   TEXT[] NOT NULL DEFAULT \'{}\',
+    log_evidence    TEXT NOT NULL DEFAULT \'\',
+    suggested_fix   TEXT NOT NULL DEFAULT \'\',
     confidence      REAL NOT NULL DEFAULT 0.0,
-    metadata        JSONB NOT NULL DEFAULT '{}',
+    metadata        JSONB NOT NULL DEFAULT \'{}\',
     created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS ci_repair_plans (
     id              SERIAL PRIMARY KEY,
     run_id          INTEGER NOT NULL,
-    run_name        TEXT NOT NULL DEFAULT '',
-    branch          TEXT NOT NULL DEFAULT 'main',
-    branch_name     TEXT NOT NULL DEFAULT '',
-    pr_title        TEXT NOT NULL DEFAULT '',
-    pr_body         TEXT NOT NULL DEFAULT '',
+    run_name        TEXT NOT NULL DEFAULT \'\',
+    branch          TEXT NOT NULL DEFAULT \'main\',
+    branch_name     TEXT NOT NULL DEFAULT \'\',
+    pr_title        TEXT NOT NULL DEFAULT \'\',
+    pr_body         TEXT NOT NULL DEFAULT \'\',
     can_auto_fix    BOOLEAN NOT NULL DEFAULT FALSE,
-    summary         TEXT NOT NULL DEFAULT '',
+    summary         TEXT NOT NULL DEFAULT \'\',
     created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
@@ -57,12 +57,12 @@ CREATE TABLE IF NOT EXISTS ci_repair_actions (
     id              SERIAL PRIMARY KEY,
     plan_id         INTEGER NOT NULL REFERENCES ci_repair_plans(id),
     action_type     TEXT NOT NULL,
-    description     TEXT NOT NULL DEFAULT '',
-    file_path       TEXT NOT NULL DEFAULT '',
-    command         TEXT NOT NULL DEFAULT '',
-    risk_level      TEXT NOT NULL DEFAULT 'low',
+    description     TEXT NOT NULL DEFAULT \'\',
+    file_path       TEXT NOT NULL DEFAULT \'\',
+    command         TEXT NOT NULL DEFAULT \'\',
+    risk_level      TEXT NOT NULL DEFAULT \'low\',
     requires_manual BOOLEAN NOT NULL DEFAULT FALSE,
-    metadata        JSONB NOT NULL DEFAULT '{}'
+    metadata        JSONB NOT NULL DEFAULT \'{}\'
 );
 
 CREATE INDEX IF NOT EXISTS idx_analyses_run_id ON ci_repair_analyses(run_id);
@@ -212,12 +212,12 @@ class DatabaseClient:
         async with self.pool.acquire() as conn:
             rows = await conn.fetch(
                 """
-                SELECT error_category, COUNT(*) as count
+                SELECT error_category, COUNT(*)
                 FROM ci_repair_analyses
-                WHERE created_at >= NOW() - INTERVAL '%d days'
+                WHERE created_at >= NOW() - ($1::int * INTERVAL \'1 day\')
                 GROUP BY error_category
                 ORDER BY count DESC
-                """
-                % days,
+                """,
+                days,
             )
         return {row["error_category"]: row["count"] for row in rows}

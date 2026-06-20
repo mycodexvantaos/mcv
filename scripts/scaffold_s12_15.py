@@ -68,7 +68,7 @@ for filename, (category, event_list) in events.items():
     write(f"contracts/events/{filename}.yaml",
           f"category: {category}\ndescription: Event contracts for {category} domain\nevents:\n{events_yaml}\n")
 
-print(f"\nSection 12 done (created={created}, skipped={skipped})")
+print(f"\nSec.ion 12 done (created={created}, skipped={skipped})")
 
 # ═══════════════════════════════════════════════
 # Sec.13 - Policy Contracts
@@ -150,7 +150,7 @@ for policy_id, cfg in policies.items():
     write(f"contracts/policies/{policy_id}.yaml",
           f"id: {cfg['id']}\ndescription: {cfg['description']}\nrules:{rules_yaml}\n")
 
-print(f"\nSection 13 done (created={created}, skipped={skipped})")
+print(f"\nSec.ion 13 done (created={created}, skipped={skipped})")
 
 # ═══════════════════════════════════════════════
 # Sec.14 - Missing JSON Schemas
@@ -298,7 +298,7 @@ schemas = {
 for schema_name, schema_data in schemas.items():
     write(f"contracts/schemas/{schema_name}", json.dumps(schema_data, indent=2) + "\n")
 
-print(f"\nSection 14 done (created={created}, skipped={skipped})")
+print(f"\nSec.ion 14 done (created={created}, skipped={skipped})")
 
 # ═══════════════════════════════════════════════
 # Sec.15 - D1 Migrations
@@ -484,6 +484,6 @@ for mig_name, sql in migrations.items():
     write(f"migrations/d1/{mig_name}.sql",
           f"-- MyCodeXvantaOS D1 Migration: {mig_name}\n-- Compatible: Cloudflare D1 (SQLite-based)\n\n{sql}\n")
 
-print(f"\nSection 15 done (created={created}, skipped={skipped})")
+print(f"\nSec.ion 15 done (created={created}, skipped={skipped})")
 
 print(f"\nTotal: created={created}, skipped={skipped}")

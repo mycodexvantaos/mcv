@@ -1,8 +1,3 @@
-# pnpm-workspace.yaml
-# pnpm monorepo workspace configuration for mycodexvantaos platform.
-# Package directory names = package short ids (5.2)
-# Package names = @mycodexvantaos/<short-id> (7.1)
-
 packages:
   - 'packages/*'
   - 'services/*'

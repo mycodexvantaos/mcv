@@ -644,7 +644,7 @@ if __name__ == "__main__":
     main()
 ''')
 
-print(f"\nSection 16 done (created={created}, skipped={skipped})")
+print(f"\nSec.ion 16 done (created={created}, skipped={skipped})")
 
 # ═══════════════════════════════════════════════
 # Sec.20 - runtimes/local/
@@ -709,7 +709,7 @@ ai_provider_support:
 self_hostable: true
 """)
 
-print(f"\nSection 20 done (created={created}, skipped={skipped})")
+print(f"\nSec.ion 20 done (created={created}, skipped={skipped})")
 
 # ═══════════════════════════════════════════════
 # Sec.21 - Cloudflare Providers (5 providers)
@@ -794,7 +794,7 @@ Skeleton - implements port interfaces with TODO markers.
 export {{}};
 """)
 
-print(f"\nSection 21 done (created={created}, skipped={skipped})")
+print(f"\nSec.ion 21 done (created={created}, skipped={skipped})")
 
 # ═══════════════════════════════════════════════
 # Sec.22 - Missing Apps (api-node, admin-console)
@@ -875,6 +875,6 @@ Admin console for platform management - user management, policy configuration, a
 Placeholder - to be implemented.
 """)
 
-print(f"\nSection 22 done (created={created}, skipped={skipped})")
+print(f"\nSec.ion 22 done (created={created}, skipped={skipped})")
 
 print(f"\nTotal: created={created}, skipped={skipped}")

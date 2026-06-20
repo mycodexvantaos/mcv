@@ -10,28 +10,24 @@ export class ContractEngine {
     console.log('[IBCS Core] ContractEngine initialized');
   }
 
-  public async executeContract(
-    contractId: string,
-    userContext: any,
-    systemContext?: any
-  ): Promise<ExecutionContext> {
+  public async executeContract(contractId: string, userContext: any, systemContext?: any): Promise<ExecutionContext> {
     const executionId = randomUUID();
     const context: ExecutionContext = {
       executionId,
       contract: { id: contractId, name: `Contract-${contractId}` },
       userContext,
       systemContext: systemContext || {},
-      status: 'pending',
+      status: 'pending'
     };
 
     console.log(`[IBCS Core] Starting contract execution ID: ${executionId}`);
-
+    
     try {
       context.status = 'validating';
       const { success, results } = await this.validator.validate(context);
       context.validationResults = [];
-      results.forEach((r) => context.validationResults!.push(...r.gateResults));
-
+      results.forEach(r => context.validationResults!.push(...r.gateResults));
+      
       if (!success) {
         context.status = 'failed';
         context.error = 'Validation failed';
@@ -54,6 +50,6 @@ export class ContractEngine {
   private async _executeContractActions(context: ExecutionContext): Promise<void> {
     console.log(`[IBCS Core] Executing actions for contract ${context.contract.id}...`);
     // Simulate async execution
-    await new Promise((resolve) => setTimeout(resolve, 50));
+    await new Promise(resolve => setTimeout(resolve, 50));
   }
 }
