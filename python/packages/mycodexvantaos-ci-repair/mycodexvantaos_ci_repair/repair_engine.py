@@ -54,7 +54,7 @@ def _suggest_fix(analysis: FailureAnalysis) -> str:
         return "Review failing test output. Check for import errors, assertion failures, or missing fixtures."
 
     if category == ErrorCategory.BUILD_ERROR:
-        if any("TS" in analysis.log_evidence for _ in [1]):
+        if "TS" in analysis.log_evidence:
             return "Fix TypeScript errors. Run `npx tsc --noEmit` locally to reproduce."
         return (
             "Review build error output. Check for missing imports, type errors, or config issues."
