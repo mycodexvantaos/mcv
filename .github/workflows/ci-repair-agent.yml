@@ -73,7 +73,7 @@ jobs:
             --cov-report=xml:coverage-ci-repair.xml \
             --cov-fail-under=70
 
-      - name: Upload coverage
+      - name: Upload coverage artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:

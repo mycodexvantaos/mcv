@@ -1,11 +1,103 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+# Dependabot configuration for MyCodeXvantaOS
+# https://docs.github.com/en/code-security/dependabot/configuration-options-for-the-dependabot.yml-file
 
 version: 2
 updates:
-  - package-ecosystem: '' # See documentation for possible values
-    directory: '/' # Location of package manifests
+  # ── GitHub Actions ──────────────────────────────────────
+  - package-ecosystem: github-actions
+    directory: /
     schedule:
-      interval: 'weekly'
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    labels:
+      - dependencies
+      - github_actions
+      - security
+    commit-message:
+      prefix: chore(deps)
+      prefix-development: chore(deps-dev)
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+
+  # ── pnpm (TypeScript Control Plane) ─────────────────────
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: tuesday
+    open-pull-requests-limit: 15
+    versioning-strategy: increase
+    labels:
+      - dependencies
+      - javascript
+      - security
+    commit-message:
+      prefix: chore(deps)
+      prefix-development: chore(deps-dev)
+    ignore:
+      # ESM-only — blocked by http-proxy-agent@5.x CJS (see Issue #99)
+      - dependency-name: "@tootallnate/once"
+        update-types: ["version-update:semver-major"]
+    groups:
+      production:
+        dependency-type: production
+        update-types:
+          - minor
+          - patch
+      development:
+        dependency-type: development
+        update-types:
+          - minor
+          - patch
+
+  # ── pip/uv (Python Intelligence Plane) ──────────────────
+  - package-ecosystem: pip
+    directory: /python
+    schedule:
+      interval: weekly
+      day: wednesday
+    open-pull-requests-limit: 10
+    labels:
+      - dependencies
+      - security
+    commit-message:
+      prefix: chore(deps)
+      prefix-development: chore(deps-dev)
+    groups:
+      python-production:
+        dependency-type: production
+        update-types:
+          - minor
+          - patch
+      python-development:
+        dependency-type: development
+        update-types:
+          - minor
+          - patch
+
+  # ── Docker ──────────────────────────────────────────────
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly
+      day: thursday
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - infra
+      - security
+    commit-message:
+      prefix: chore(deps)
+    groups:
+      docker:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch

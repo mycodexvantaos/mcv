@@ -1,22 +1,22 @@
 {
-  "name": "nextn",
-  "version": "0.1.0",
+  "name": "mycodexvantaos",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack -p 9002",
+    "dev": "vite",
     "genkit:dev": "genkit start -- tsx src/ai/dev.ts",
     "genkit:watch": "genkit start -- tsx --watch src/ai/dev.ts",
-    "build": "next build",
+    "build": "vite build",
     "start": "next start",
-    "lint": "tsc --noEmit",
+    "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "preview": "vite preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
-    "test": "echo \"No tests configured yet\" && exit 0",
+    "test": "echo 'No tests yet'",
     "test:coverage": "echo \"No test coverage configured yet\" && exit 0",
     "test:integration": "echo \"No integration tests configured yet\" && exit 0",
     "validate": "npm run typecheck",
@@ -46,7 +46,8 @@
     "release:provenance": "node --import tsx tools/generate-provenance.ts",
     "rc:soak": "node --import tsx tools/rc-soak.ts",
     "release:promotion:evaluate": "node --import tsx tools/evaluate-promotion.ts",
-    "release:sign": "node --import tsx tools/sign-provenance.ts"
+    "release:sign": "node --import tsx tools/sign-provenance.ts",
+    "ci:validate": "ts-node ci/validate-architecture.ts"
   },
   "dependencies": {
     "@genkit-ai/google-genai": "^1.28.0",
@@ -80,18 +81,19 @@
     "embla-carousel-react": "^8.6.0",
     "firebase": "^11.9.1",
     "genkit": "^1.28.0",
-    "lucide-react": "^0.475.0",
+    "lucide-react": "^1.8.0",
     "next": "16.2.6",
     "patch-package": "^8.0.0",
-    "react": "^19.2.1",
+    "react": "^19.2.5",
     "react-day-picker": "^9.11.3",
-    "react-dom": "^19.2.1",
+    "react-dom": "^19.2.5",
     "react-hook-form": "^7.54.2",
     "recharts": "^2.15.1",
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.24.2",
-    "zustand": "^5.0.13"
+    "zod": "^4.3.6",
+    "zustand": "^5.0.13",
+    "yaml": "^2.9.0"
   },
   "pnpm": {
     "peerDependencyRules": {
@@ -116,18 +118,30 @@
     }
   },
   "devDependencies": {
+    "@codecov/vite-plugin": "^2.0.1",
+    "@codecov/webpack-plugin": "^2.0.1",
     "@mycodexvantaos/contracts-sdk": "workspace:*",
     "@mycodexvantaos/policy-model": "workspace:*",
     "@mycodexvantaos/service-policy-engine": "workspace:*",
     "@types/node": "^20",
-    "@types/react": "^19.2.1",
-    "@types/react-dom": "^19.2.1",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
     "genkit-cli": "^1.28.0",
-    "postcss": "^8",
+    "postcss": "^8.5.10",
     "prettier": "^3.4.2",
-    "tailwindcss": "^3.4.1",
+    "tailwindcss": "^4.2.2",
     "tsx": "^4.22.0",
-    "typescript": "^5",
-    "wrangler": "^4.88.0"
-  }
+    "typescript": "^5.0.0",
+    "wrangler": "^4.88.0",
+    "@tailwindcss/vite": "^4.2.2",
+    "@vitejs/plugin-react": "^6.0.1",
+    "autoprefixer": "^10.5.0",
+    "eslint": "^8.0.0",
+    "ts-node": "^10.9.1",
+    "vite": "^8.0.8"
+  },
+  "workspaces": [
+    "services/*",
+    "packages/*"
+  ]
 }
