@@ -12,6 +12,7 @@ This script verifies orchestration consistency including:
 import json
 import argparse
 import os
+import sys
 import yaml
 from typing import Dict, List, Set
 
@@ -152,7 +153,7 @@ def main():
     
     success = verifier.report_results()
     
-    exit(0 if success else 1)
+    sys.exit(0 if success else 1)
 
 
 if __name__ == '__main__':
