@@ -19,11 +19,7 @@
     "graphql": "^16.11.0",
     "helmet": "^7.1.0",
     "uuid": "^9.0.0",
-<<<<<<< HEAD
-    "ws": "^8.20.1",
-=======
     "ws": "^8.21.0",
->>>>>>> origin/main
     "@apollo/server": "^5.5.1",
     "@as-integrations/express4": "^1.1.2",
     "graphql-tag": "^2.12.6"

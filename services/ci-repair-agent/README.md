@@ -5,17 +5,10 @@ GitHub Actions auto-repair agent for MyCodeXvantaOS — analyzes failed workflow
 ## Architecture
 
 ```
-<<<<<<< HEAD
-┌──────────────────┐     ┌──────────────────────────┐     ┌──────────┐
-│  GitHub Actions  │────▶│  CI Repair Agent (API)   │────▶│PostgreSQL│
-│  API (logs/jobs) │     │  FastAPI + CLI            │     │ (history)│
-└──────────────────┘     └──────────────────────────┘     └──────────┘
-=======
 ┌──────────────────┐     ┌──────────────────────────────┐     ┌──────────────┐
 │  GitHub Actions  │─────▶  CI Repair Agent (API)       │─────▶│  PostgreSQL  │
 │  API (logs/jobs) │     │  FastAPI + CLI                │     │  (history)   │
 └──────────────────┘     └──────────────────────────────┘     └──────────────┘
->>>>>>> origin/main
 ```
 
 The service consists of two Python packages:
@@ -42,8 +35,6 @@ The agent classifies CI failures into the following categories:
 
 ## API Endpoints
 
-<<<<<<< HEAD
-=======
 All API responses follow a standardized format:
 
 ```json
@@ -70,8 +61,6 @@ Error responses include structured error details:
 ```
 
 The `X-Request-ID` header is propagated from inbound requests or auto-generated as a UUID.
-
->>>>>>> origin/main
 | Method | Path                            | Description                                  |
 | ------ | ------------------------------- | -------------------------------------------- |
 | `GET`  | `/health`                       | Health check (reports database status)       |
@@ -87,8 +76,6 @@ The `X-Request-ID` header is propagated from inbound requests or auto-generated 
 curl http://localhost:8000/api/runs/12345/analyze
 ```
 
-<<<<<<< HEAD
-=======
 Response:
 
 ```json
@@ -122,8 +109,6 @@ Response:
   "request_id": "550e8400-e29b-41d4-a716-446655440000"
 }
 ```
-
->>>>>>> origin/main
 ### Example: Trigger Repair with PR Creation
 
 ```bash
@@ -132,16 +117,12 @@ curl -X POST http://localhost:8000/api/runs/12345/repair \
   -d '{"run_id": 12345, "create_branch": true, "create_pr": true}'
 ```
 
-<<<<<<< HEAD
-=======
 ### Example: With Custom Request ID
 
 ```bash
 curl http://localhost:8000/api/runs/12345/analyze \
   -H "X-Request-ID: my-trace-id-123"
 ```
-
->>>>>>> origin/main
 ## CLI Usage
 
 ### Analyze the Latest Failed Run
@@ -190,10 +171,6 @@ uv sync --extra dev --all-packages
 uv run ruff check packages/mycodexvantaos-ci-repair apps/ci-repair-agent
 uv run ruff format --check packages/mycodexvantaos-ci-repair apps/ci-repair-agent
 
-<<<<<<< HEAD
-# Run tests
-uv run pytest tests/test_ci_repair_log_parser.py tests/test_ci_repair_engine.py -v
-=======
 # Run all CI repair tests
 uv run pytest tests/test_ci_repair_log_parser.py \
   tests/test_ci_repair_engine.py \
@@ -208,7 +185,6 @@ uv run pytest tests/test_ci_repair_* \
   --cov=apps/ci-repair-agent \
   --cov-report=term-missing \
   --cov-fail-under=70
->>>>>>> origin/main
 
 # Start the server (without database)
 GITHUB_TOKEN=$GITHUB_TOKEN uv run python -m uvicorn apps.ci-repair-agent.main:app --reload
@@ -229,8 +205,6 @@ GITHUB_TOKEN=$GITHUB_TOKEN DATABASE_URL=postgresql://ci_repair:ci_repair_secret@
 | `HOST`              | `0.0.0.0`                       | Server bind address                                            |
 | `PORT`              | `8000`                          | Server bind port                                               |
 
-<<<<<<< HEAD
-=======
 ## Test Suite
 
 The test suite includes 168 tests across 5 test files:
@@ -242,8 +216,6 @@ The test suite includes 168 tests across 5 test files:
 | `test_ci_repair_api.py`           | 28    | All API endpoints, response format, validation        |
 | `test_ci_repair_database.py`      | 10    | Database operations with mocked asyncpg               |
 | `test_ci_repair_github_client.py` | 7     | GitHub API client with mocked httpx                  |
-
->>>>>>> origin/main
 ## Technology Stack
 
 - **Python 3.11** with `uv` package manager
@@ -251,9 +223,6 @@ The test suite includes 168 tests across 5 test files:
 - **httpx** for async GitHub API client
 - **asyncpg** for PostgreSQL persistence
 - **Docker** multi-stage build with `python:3.11-slim`
-<<<<<<< HEAD
-- **GitHub Actions** CI workflow with lint, test, and Docker build verification
-=======
 - **GitHub Actions** CI workflow with lint, test, coverage threshold, security scan, and Docker build verification
 
 ## Error Codes
@@ -272,4 +241,3 @@ The API uses standardized error codes in responses:
 | `GITHUB_API_ERROR`   | 502         | GitHub API request failed              |
 | `DATABASE_ERROR`     | 503         | Database operation failed              |
 | `INTERNAL_ERROR`     | 500         | Unexpected server error                |
->>>>>>> origin/main
