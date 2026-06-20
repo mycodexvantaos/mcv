@@ -5,10 +5,17 @@ GitHub Actions auto-repair agent for MyCodeXvantaOS — analyzes failed workflow
 ## Architecture
 
 ```
+<<<<<<< HEAD
 ┌──────────────────┐     ┌──────────────────────────┐     ┌──────────┐
 │  GitHub Actions  │────▶│  CI Repair Agent (API)   │────▶│PostgreSQL│
 │  API (logs/jobs) │     │  FastAPI + CLI            │     │ (history)│
 └──────────────────┘     └──────────────────────────┘     └──────────┘
+=======
+┌──────────────────┐     ┌──────────────────────────────┐     ┌──────────────┐
+│  GitHub Actions  │─────▶  CI Repair Agent (API)       │─────▶│  PostgreSQL  │
+│  API (logs/jobs) │     │  FastAPI + CLI                │     │  (history)   │
+└──────────────────┘     └──────────────────────────────┘     └──────────────┘
+>>>>>>> origin/main
 ```
 
 The service consists of two Python packages:
@@ -35,6 +42,36 @@ The agent classifies CI failures into the following categories:
 
 ## API Endpoints
 
+<<<<<<< HEAD
+=======
+All API responses follow a standardized format:
+
+```json
+{
+  "success": true,
+  "data": { ... },
+  "error": null,
+  "request_id": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+Error responses include structured error details:
+
+```json
+{
+  "success": false,
+  "data": null,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "run_id must be a positive integer"
+  },
+  "request_id": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+The `X-Request-ID` header is propagated from inbound requests or auto-generated as a UUID.
+
+>>>>>>> origin/main
 | Method | Path                            | Description                                  |
 | ------ | ------------------------------- | -------------------------------------------- |
 | `GET`  | `/health`                       | Health check (reports database status)       |
@@ -50,6 +87,43 @@ The agent classifies CI failures into the following categories:
 curl http://localhost:8000/api/runs/12345/analyze
 ```
 
+<<<<<<< HEAD
+=======
+Response:
+
+```json
+{
+  "success": true,
+  "data": {
+    "run_id": 12345,
+    "run_name": "CI Pipeline",
+    "branch": "main",
+    "analyses": [
+      {
+        "job_id": 2001,
+        "job_name": "Build",
+        "error_category": "dependency_error",
+        "severity": "high",
+        "root_cause": "dependency_error detected in job 'Build'",
+        "affected_files": ["src/main.py"],
+        "affected_dependencies": ["ws"],
+        "suggested_fix": "Update or override dependencies: ws. Run `pnpm install` to update lockfile.",
+        "confidence": 0.8
+      }
+    ],
+    "repair_plan": {
+      "branch_name": "fix/ci-repair-ci-pipeline-12345",
+      "pr_title": "fix(ci): auto-repair for dependency error — run #12345",
+      "can_auto_fix": true,
+      "summary": "Run #12345: 1 failure(s), 1 action(s); Auto-fix available"
+    }
+  },
+  "error": null,
+  "request_id": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+>>>>>>> origin/main
 ### Example: Trigger Repair with PR Creation
 
 ```bash
@@ -58,6 +132,16 @@ curl -X POST http://localhost:8000/api/runs/12345/repair \
   -d '{"run_id": 12345, "create_branch": true, "create_pr": true}'
 ```
 
+<<<<<<< HEAD
+=======
+### Example: With Custom Request ID
+
+```bash
+curl http://localhost:8000/api/runs/12345/analyze \
+  -H "X-Request-ID: my-trace-id-123"
+```
+
+>>>>>>> origin/main
 ## CLI Usage
 
 ### Analyze the Latest Failed Run
@@ -106,8 +190,25 @@ uv sync --extra dev --all-packages
 uv run ruff check packages/mycodexvantaos-ci-repair apps/ci-repair-agent
 uv run ruff format --check packages/mycodexvantaos-ci-repair apps/ci-repair-agent
 
+<<<<<<< HEAD
 # Run tests
 uv run pytest tests/test_ci_repair_log_parser.py tests/test_ci_repair_engine.py -v
+=======
+# Run all CI repair tests
+uv run pytest tests/test_ci_repair_log_parser.py \
+  tests/test_ci_repair_engine.py \
+  tests/test_ci_repair_api.py \
+  tests/test_ci_repair_database.py \
+  tests/test_ci_repair_github_client.py \
+  -v
+
+# Run with coverage
+uv run pytest tests/test_ci_repair_* \
+  --cov=packages/mycodexvantaos-ci-repair \
+  --cov=apps/ci-repair-agent \
+  --cov-report=term-missing \
+  --cov-fail-under=70
+>>>>>>> origin/main
 
 # Start the server (without database)
 GITHUB_TOKEN=$GITHUB_TOKEN uv run python -m uvicorn apps.ci-repair-agent.main:app --reload
@@ -128,6 +229,21 @@ GITHUB_TOKEN=$GITHUB_TOKEN DATABASE_URL=postgresql://ci_repair:ci_repair_secret@
 | `HOST`              | `0.0.0.0`                       | Server bind address                                            |
 | `PORT`              | `8000`                          | Server bind port                                               |
 
+<<<<<<< HEAD
+=======
+## Test Suite
+
+The test suite includes 168 tests across 5 test files:
+
+| Test File                         | Tests | Coverage Area                                        |
+| --------------------------------- | ----- | ---------------------------------------------------- |
+| `test_ci_repair_log_parser.py`    | 60+   | Log classification, error context, file/dep extraction |
+| `test_ci_repair_engine.py`        | 30+   | Severity mapping, fix suggestions, repair actions     |
+| `test_ci_repair_api.py`           | 28    | All API endpoints, response format, validation        |
+| `test_ci_repair_database.py`      | 10    | Database operations with mocked asyncpg               |
+| `test_ci_repair_github_client.py` | 7     | GitHub API client with mocked httpx                  |
+
+>>>>>>> origin/main
 ## Technology Stack
 
 - **Python 3.11** with `uv` package manager
@@ -135,4 +251,25 @@ GITHUB_TOKEN=$GITHUB_TOKEN DATABASE_URL=postgresql://ci_repair:ci_repair_secret@
 - **httpx** for async GitHub API client
 - **asyncpg** for PostgreSQL persistence
 - **Docker** multi-stage build with `python:3.11-slim`
+<<<<<<< HEAD
 - **GitHub Actions** CI workflow with lint, test, and Docker build verification
+=======
+- **GitHub Actions** CI workflow with lint, test, coverage threshold, security scan, and Docker build verification
+
+## Error Codes
+
+The API uses standardized error codes in responses:
+
+| Code                 | HTTP Status | Description                            |
+| -------------------- | ----------- | -------------------------------------- |
+| `VALIDATION_ERROR`   | 400         | Invalid input parameters               |
+| `UNAUTHORIZED`       | 401         | Missing or invalid authentication      |
+| `FORBIDDEN`          | 403         | Insufficient permissions               |
+| `NOT_FOUND`          | 404         | Resource not found                     |
+| `CONFLICT`           | 409         | Resource already exists                |
+| `RATE_LIMITED`       | 429         | Rate limit exceeded                    |
+| `SERVICE_UNAVAILABLE`| 503         | Database or dependency not available    |
+| `GITHUB_API_ERROR`   | 502         | GitHub API request failed              |
+| `DATABASE_ERROR`     | 503         | Database operation failed              |
+| `INTERNAL_ERROR`     | 500         | Unexpected server error                |
+>>>>>>> origin/main

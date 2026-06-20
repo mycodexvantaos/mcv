@@ -1,7 +1,11 @@
 # docker-compose.yml for CI Repair Agent
 # Usage: docker compose up -d
 
+<<<<<<< HEAD
 version: '3.9'
+=======
+version: "3.9"
+>>>>>>> origin/main
 
 services:
   ci-repair-agent:
@@ -10,7 +14,11 @@ services:
       dockerfile: services/ci-repair-agent/Dockerfile
     container_name: ci-repair-agent
     ports:
+<<<<<<< HEAD
       - '${PORT:-8000}:8000'
+=======
+      - "${PORT:-8000}:8000"
+>>>>>>> origin/main
     environment:
       - GITHUB_TOKEN=${GITHUB_TOKEN}
       - GITHUB_REPOSITORY=${GITHUB_REPOSITORY:-mycodexvantaos/mycodexvantaos}
@@ -22,18 +30,46 @@ services:
       postgres:
         condition: service_healthy
     restart: unless-stopped
+<<<<<<< HEAD
     healthcheck:
       test:
         [
           'CMD',
           'python',
           '-c',
+=======
+    networks:
+      - ci-repair-net
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+        reservations:
+          cpus: "0.25"
+          memory: 128M
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+>>>>>>> origin/main
           "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')",
         ]
       interval: 30s
       timeout: 5s
       retries: 3
+<<<<<<< HEAD
       start_period: 10s
+=======
+      start_period: 15s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+>>>>>>> origin/main
 
   postgres:
     image: postgres:16-alpine
@@ -43,6 +79,7 @@ services:
       - POSTGRES_USER=ci_repair
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-ci_repair_secret}
     ports:
+<<<<<<< HEAD
       - '${POSTGRES_PORT:-5432}:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -52,6 +89,37 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+=======
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - ci-repair-net
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+        reservations:
+          cpus: "0.1"
+          memory: 64M
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ci_repair -d ci_repair"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  ci-repair-net:
+    driver: bridge
+    name: ci-repair-network
+>>>>>>> origin/main
 
 volumes:
   postgres_data:

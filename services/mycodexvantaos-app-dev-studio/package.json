@@ -17,6 +17,10 @@
     "typescript": "^5.3.3",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
+<<<<<<< HEAD
     "vitest": "^3.2.4"
+=======
+    "vitest": "^4.1.0"
+>>>>>>> origin/main
   }
 }
