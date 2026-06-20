@@ -1,0 +1,59 @@
+version: "3.9"
+
+services:
+  coder-deep-mcp:
+    build:
+      context: ../..
+      dockerfile: apps/coder-deep-mcp/Dockerfile
+    ports:
+      - "8010:8010"
+    environment:
+      - DATABASE_URL=postgresql://coder_deep:coder_deep@postgres:5432/coder_deep
+      - LOG_LEVEL=INFO
+      - CACHE_MAX_ENTRIES=1000
+      - CACHE_MAX_SIZE_BYTES=52428800
+      - MCP_ENABLED=true
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8010/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=coder_deep
+      - POSTGRES_PASSWORD=coder_deep
+      - POSTGRES_DB=coder_deep
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U coder_deep -d coder_deep"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  redis_data:

@@ -1,33 +1,67 @@
 import { DeployCapability } from './deploy.interface';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+import * as fs from 'fs';
+import * as path from 'path';
+
+const execAsync = promisify(exec);
 
 export class NativeDeployProvider implements DeployCapability {
   capability = 'deploy' as const;
   source = 'native' as const;
 
   async healthCheck() {
-    // Native deployment just requires the local machine to have basic execution capabilities
-    // (e.g., node, docker daemon, or raw binaries), so it's always ready.
-    return true;
+    try {
+      await execAsync('docker-compose --version');
+      return true;
+    } catch {
+      return false; // Requires docker-compose installed locally
+    }
   }
 
   async deploy(artifact: any): Promise<any> {
-    console.log('[Native Deploy] 🚀 Executing Internal Publish (Zero-external dependencies)...');
+    console.log('[Native Deploy] 🚀 Executing Internal Publish via docker-compose (Zero-external dependencies)...');
+    
+    // Create a generic docker-compose.yml if we are given artifact details
+    const composeContent = `
+version: '3.8'
+services:
+  ${artifact.name || 'locally-hosted-service'}:
+    image: ${artifact.image || 'node:18-alpine'}
+    command: ${artifact.command || '"node" "-e" "console.log(\'Starting...\'); setTimeout(() => {}, 100000)"'}
+    ports:
+      - "${artifact.port || 3000}:3000"
+`;
+    const deployDir = path.join(process.cwd(), '.deploy');
+    if (!fs.existsSync(deployDir)) {
+      fs.mkdirSync(deployDir, { recursive: true });
+    }
+    fs.writeFileSync(path.join(deployDir, 'docker-compose.yml'), composeContent.trim());
 
-    // In actual implementation: Here we would trigger `docker-compose up -d`
-    // or spawn local pm2/Node threads for local hosting.
-    console.log(`[Native Deploy] Launching artifact locally: ${JSON.stringify(artifact)}`);
-
-    return {
-      status: 'success',
-      provider: 'native',
-      url: 'http://localhost:3000',
-      versionId: `v-${Date.now()}`,
-      message: 'Self-hosted via Native Deploy Provider',
-    };
+    try {
+      await execAsync('docker-compose up -d', { cwd: deployDir });
+      console.log(`[Native Deploy] Successfully launched artifact locally: ${artifact.name || 'service'}`);
+      return { 
+        status: 'success', 
+        provider: 'native',
+        url: `http://localhost:${artifact.port || 3000}`,
+        versionId: `v-${Date.now()}`,
+        message: 'Self-hosted via Native Deploy Provider'
+      };
+    } catch (err: any) {
+      console.error(`[Native Deploy] Deployment failed: ${err.message}`);
+      return { status: 'failed', provider: 'native', message: err.message };
+    }
   }
 
   async rollback(versionId: string): Promise<boolean> {
     console.log(`[Native Deploy] ⏪ Rolling back locally to version: ${versionId}`);
-    return true;
+    try {
+      const deployDir = path.join(process.cwd(), '.deploy');
+      await execAsync('docker-compose down', { cwd: deployDir });
+      return true;
+    } catch (err) {
+      return false;
+    }
   }
 }
