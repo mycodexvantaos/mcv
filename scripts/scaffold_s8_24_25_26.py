@@ -107,7 +107,7 @@ TS API Gateway
 - All 377 existing TypeScript tests must continue to pass
 """)
 
-print(f"Section 8 done (created={created}, skipped={skipped})")
+print(f"Sec.ion 8 done (created={created}, skipped={skipped})")
 
 # ═══════════════════════════════════════════════════════════════
 # Sec.24 - Documentation
@@ -796,7 +796,7 @@ are differentiated by the `event_type` field.
 for path, content in docs.items():
     write(path, content)
 
-print(f"Section 24 docs done (created={created}, skipped={skipped})")
+print(f"Sec.ion 24 docs done (created={created}, skipped={skipped})")
 
 # ═══════════════════════════════════════════════════════════════
 # Sec.25 - Tools
@@ -1086,7 +1086,7 @@ Tools for querying and analyzing audit logs.
 ```
 """)
 
-print(f"Section 25 tools done (created={created}, skipped={skipped})")
+print(f"Sec.ion 25 tools done (created={created}, skipped={skipped})")
 
 # ═══════════════════════════════════════════════════════════════
 # Sec.26 - CI/CD Workflows
@@ -1313,5 +1313,5 @@ jobs:
 for path, content in workflows.items():
     write(path, content)
 
-print(f"Section 26 CI done (created={created}, skipped={skipped})")
+print(f"Sec.ion 26 CI done (created={created}, skipped={skipped})")
 print(f"\nTotal: created={created}, skipped={skipped}")

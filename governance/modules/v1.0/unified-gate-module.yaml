@@ -1,0 +1,800 @@
+apiVersion: mycodexvantaos.io/v1
+kind: UnifiedGateModule
+
+metadata:
+  name: mycodexvantaos-module
+  organization: mycodexvantaos
+  title: MyCodexVantaOS Unified Gate Module
+  description: >
+    Canonical unified gate module for MyCodexVantaOS.
+    This artifact formalizes the unified gate system that merges lifecycle
+    quality gates and AI-native infrastructure gates into a single
+    machine-readable, CI-verifiable, auditable formal delivery boundary for
+    compute, data, algorithm, workload, billing, infrastructure, compliance,
+    attestation, and evidence.
+  labels:
+    app.kubernetes.io/name: mycodexvantaos-module
+    app.kubernetes.io/part-of: mycodexvantaos
+    mycodexvantaos.io/layer: unified-gates
+    mycodexvantaos.io/module-type: formal-delivery-gates
+    mycodexvantaos.io/status: active
+  annotations:
+    mycodexvantaos.io/spec-status: normative
+    mycodexvantaos.io/naming-rule: lowercase-kebab-case
+    mycodexvantaos.io/version-in-name: forbidden
+    mycodexvantaos.io/environment-in-name: forbidden
+    mycodexvantaos.io/gate-system: unified
+    mycodexvantaos.io/formal-delivery-boundary: enabled
+
+spec:
+  identity:
+    id: unified-gates-mycodexvantaos-module
+    namespace: mycodexvantaos
+    plane: control-plane
+    layer: unified-gates
+    moduleType: formal-delivery-gates
+    lifecycle: active
+    owner: platform-ai-governance
+    governanceCode: mycodexvantaos-51000
+
+  naming:
+    canonicalRules:
+      lowercaseOnly: true
+      kebabCaseOnly: true
+      separator: hyphen
+      forbiddenSeparators:
+        - underscore
+        - dot
+        - space
+      versionInName: forbidden
+      environmentMarkerInName: forbidden
+
+    qualityGateDocumentPattern: '^gate-[a-z0-9]+(?:-[a-z0-9]+)*$'
+    aiInfraGateIdPattern: '^gate-[0-9]{2}-[a-z0-9]+(?:-[a-z0-9]+)*$'
+    fullCanonicalGateResourcePattern: '^mycodexvantaos-ai-infra-gates-gate-[0-9]{2}-[a-z0-9]+(?:-[a-z0-9]+)*$'
+
+    examples:
+      qualityGateDocuments:
+        - gate-overview
+        - gate-validation
+        - gate-model-quality
+        - gate-line
+        - gate-sbom-coverage
+      aiInfraGates:
+        - gate-11-ai-chip-capability-validation
+        - gate-41-ai-workload-contract-validation
+        - gate-58-invoice-evidence-validation
+        - gate-99-production-closure-validation
+      fullCanonicalResources:
+        - mycodexvantaos-ai-infra-gates-gate-41-ai-workload-contract-validation
+
+  scope:
+    appliesTo:
+      - quality-gate-plane
+      - ai-infra-gate-plane
+      - gate-catalog
+      - unified-gate-index
+      - gate-composition
+      - gate-evaluation
+      - gate-waiver
+      - gate-evidence
+      - gate-audit
+      - production-readiness
+      - ai-compute-foundation
+      - ai-data-foundation
+      - ai-algorithm-foundation
+      - ai-workload-execution
+      - ai-task-billing
+      - cloud-managed-infrastructure
+      - attestation-compliance-closure
+
+    canonicalPaths:
+      module: unified-gates/mycodexvantaos-module.yaml
+      root: unified-gates
+      unifiedGateIndex: unified-gates/unified-gate-index.yaml
+      gateCatalog: unified-gates/gate-catalog.yaml
+      aiInfraGateCatalog: unified-gates/ai-infra-gate-catalog.yaml
+      qualityGatePlane: unified-gates/gate
+      aiInfraGatePlane: unified-gates/ai-infra-gates
+      contracts: unified-gates/contracts
+      schemas: unified-gates/schemas
+      workflows: unified-gates/workflows
+      policies: unified-gates/policies
+      scripts: unified-gates/scripts
+      outputs: unified-gates/outputs
+
+  architecture:
+    model: dual-plane-unified-gate-system
+    planes:
+      - id: quality-gate-plane
+        path: unified-gates/gate
+        responsibility:
+          - lifecycle
+          - governance
+          - execution
+          - monitoring
+          - coverage
+          - documentation
+        blockingDefault: false
+
+      - id: ai-infra-gate-plane
+        path: unified-gates/ai-infra-gates
+        responsibility:
+          - compute
+          - data
+          - algorithm
+          - workload
+          - billing
+          - cloud-infrastructure
+          - attestation-closure
+        blockingDefault: true
+
+    flow:
+      - gate-framework
+      - gate-specification
+      - gate-catalog
+      - gate-composition
+      - ai-infra-gate-execution
+      - coverage-validation
+      - compliance-and-attestation
+      - audit-evidence
+      - release-or-block
+
+  qualityGatePlane:
+    path: unified-gates/gate
+    purpose: documentation-governance-coverage
+    layers:
+      - id: core
+        directory: gate/1-core
+        count: 4
+        purpose:
+          - overview
+          - policy
+          - validation
+          - mapping
+        documents:
+          - gate-overview
+          - gate-policies
+          - gate-validation
+          - gate-mapping
+
+      - id: lifecycle
+        directory: gate/2-lifecycle
+        count: 3
+        purpose:
+          - lifecycle
+          - states
+          - metadata
+        documents:
+          - gate-lifecycle
+          - gate-states
+          - gate-metadata
+
+      - id: technical
+        directory: gate/3-technical
+        count: 8
+        purpose:
+          - framework
+          - spec
+          - catalog
+          - composition
+          - dependencies
+          - configuration
+          - templates
+          - sdk
+        documents:
+          - gate-framework
+          - gate-spec
+          - gate-catalog
+          - gate-composition
+          - gate-dependencies
+          - gate-configuration
+          - gate-templates
+          - gate-sdk
+
+      - id: execution
+        directory: gate/4-execution
+        count: 7
+        purpose:
+          - execution
+          - pipeline
+          - metrics
+          - monitoring
+          - alerting
+          - audit
+          - reporting
+        documents:
+          - gate-execution
+          - gate-pipeline
+          - gate-metrics
+          - gate-monitoring
+          - gate-alerting
+          - gate-audit
+          - gate-reporting
+
+      - id: governance
+        directory: gate/5-governance
+        count: 8
+        purpose:
+          - governance
+          - rbac
+          - compliance
+          - risk
+          - waiver
+          - escalation
+          - slo
+          - cost
+        documents:
+          - gate-governance
+          - gate-rbac
+          - gate-compliance
+          - gate-risk
+          - gate-waiver
+          - gate-escalation
+          - gate-slo
+          - gate-cost
+
+      - id: domain-ai
+        directory: gate/6-domain-ai
+        count: 8
+        purpose:
+          - model-quality
+          - model-safety
+          - data-quality
+          - inference-latency
+          - training-stability
+          - vector-index-quality
+          - billing-accuracy
+          - tenant-isolation
+        documents:
+          - gate-model-quality
+          - gate-model-safety
+          - gate-data-quality
+          - gate-inference-latency
+          - gate-training-stability
+          - gate-vector-index-quality
+          - gate-billing-accuracy
+          - gate-multi-tenant-isolation
+
+      - id: evolution
+        directory: gate/7-evolution
+        count: 4
+        purpose:
+          - experiments
+          - evolution
+          - roadmap
+          - feedback
+        documents:
+          - gate-experiments
+          - gate-evolution
+          - gate-roadmap
+          - gate-feedback
+
+      - id: coverage
+        directory: gate/8-coverage
+        count: 51
+        purpose:
+          - code-coverage
+          - structure-coverage
+          - requirements-coverage
+          - workflow-coverage
+          - artifact-coverage
+          - resilience-coverage
+          - observability-coverage
+          - security-supplychain-coverage
+          - api-contract-coverage
+          - change-coverage
+          - state-data-coverage
+
+  aiInfraGatePlane:
+    path: unified-gates/ai-infra-gates
+    purpose: executable-ai-native-infrastructure-gates
+    executableGateKind: AiInfrastructureGate
+
+    layers:
+      - id: meta-governance
+        range: '01-08'
+        directory: ai-infra-gates/layer-00-meta-governance
+        count: 8
+        purpose:
+          - naming
+          - registry
+          - lifecycle
+          - binding
+          - dependency
+          - owner
+          - audit
+        gates:
+          - gate-01-namespace-governance-validation
+          - gate-02-repository-naming-validation
+          - gate-03-governance-code-validation
+          - gate-04-directory-binding-mediator-validation
+          - gate-05-dependency-graph-acyclic-validation
+          - gate-06-lifecycle-state-validation
+          - gate-07-owner-registry-validation
+          - gate-08-audit-evidence-validation
+
+      - id: compute-foundation
+        range: '11-18'
+        directory: ai-infra-gates/layer-10-compute-foundation
+        count: 8
+        purpose:
+          - ai-chip
+          - gpu
+          - accelerator
+          - smart-server
+          - compute-center
+          - distributed-training-runtime
+          - resource-quota
+          - compute-cost-metering
+        gates:
+          - gate-11-ai-chip-capability-validation
+          - gate-12-gpu-driver-validation
+          - gate-13-accelerator-topology-validation
+          - gate-14-smart-server-baseline-validation
+          - gate-15-ai-compute-cluster-readiness
+          - gate-16-distributed-training-runtime-validation
+          - gate-17-resource-quota-and-scheduler-validation
+          - gate-18-compute-cost-metering-validation
+
+      - id: data-foundation
+        range: '21-28'
+        directory: ai-infra-gates/layer-20-data-foundation
+        count: 8
+        purpose:
+          - dataset-contract
+          - dataset-lineage
+          - dataset-license
+          - pii-sensitive-data
+          - vector-database-schema
+          - embedding-dimension
+          - data-quality
+          - data-access-policy
+        gates:
+          - gate-21-dataset-contract-validation
+          - gate-22-dataset-lineage-validation
+          - gate-23-dataset-license-validation
+          - gate-24-pii-and-sensitive-data-scan
+          - gate-25-vector-database-schema-validation
+          - gate-26-embedding-dimension-validation
+          - gate-27-data-quality-threshold-validation
+          - gate-28-data-access-policy-validation
+
+      - id: algorithm-foundation
+        range: '31-38'
+        directory: ai-infra-gates/layer-30-algorithm-foundation
+        count: 8
+        purpose:
+          - ai-framework
+          - model-contract
+          - training-pipeline
+          - inference-runtime
+          - ai-agent-framework
+          - tool-calling-contract
+          - model-registry
+          - algorithm-safety-policy
+        gates:
+          - gate-31-ai-framework-compatibility-validation
+          - gate-32-model-contract-validation
+          - gate-33-training-pipeline-validation
+          - gate-34-inference-runtime-validation
+          - gate-35-ai-agent-framework-validation
+          - gate-36-tool-calling-contract-validation
+          - gate-37-model-registry-validation
+          - gate-38-algorithm-safety-policy-validation
+
+      - id: ai-workload
+        range: '41-48'
+        directory: ai-infra-gates/layer-40-ai-workload
+        count: 8
+        purpose:
+          - declarative-workload-contract
+          - inference-task
+          - training-task
+          - rag-pipeline
+          - agent-task-policy
+          - workload-resource-estimation
+          - workload-slo
+          - workload-runtime-sandbox
+        gates:
+          - gate-41-ai-workload-contract-validation
+          - gate-42-inference-task-validation
+          - gate-43-training-task-validation
+          - gate-44-rag-pipeline-validation
+          - gate-45-agent-task-policy-validation
+          - gate-46-workload-resource-estimation
+          - gate-47-workload-slo-validation
+          - gate-48-workload-runtime-sandbox-validation
+
+      - id: ai-task-billing
+        range: '51-58'
+        directory: ai-infra-gates/layer-50-ai-task-billing
+        count: 8
+        purpose:
+          - usage-event
+          - inference-metering
+          - training-metering
+          - embedding-metering
+          - agent-run-metering
+          - cost-attribution
+          - billing-policy
+          - invoice-evidence
+        gates:
+          - gate-51-usage-event-contract-validation
+          - gate-52-inference-metering-validation
+          - gate-53-training-metering-validation
+          - gate-54-embedding-metering-validation
+          - gate-55-agent-run-metering-validation
+          - gate-56-cost-attribution-validation
+          - gate-57-billing-policy-validation
+          - gate-58-invoice-evidence-validation
+
+      - id: cloud-managed-infrastructure
+        range: '61-64'
+        directory: ai-infra-gates/layer-60-cloud-managed-infrastructure
+        count: 4
+        purpose:
+          - cloud-infra-readiness
+          - kubernetes-baseline
+          - gitops-sync
+          - managed-service-sla
+        gates:
+          - gate-61-cloud-infra-readiness-validation
+          - gate-62-kubernetes-baseline-validation
+          - gate-63-gitops-sync-validation
+          - gate-64-managed-service-sla-validation
+
+      - id: attestation-compliance-closure
+        range: '91-99'
+        directory: ai-infra-gates/layer-90-attestation-compliance-closure
+        count: 9
+        purpose:
+          - sbom
+          - provenance
+          - signature
+          - policy-attestation
+          - audit-evidence-chain
+          - release-readiness
+          - rollback-readiness
+          - compliance-report
+          - production-closure
+        gates:
+          - gate-91-sbom-generation-validation
+          - gate-92-provenance-validation
+          - gate-93-signature-validation
+          - gate-94-policy-attestation-validation
+          - gate-95-audit-evidence-chain-validation
+          - gate-96-release-readiness-validation
+          - gate-97-rollback-readiness-validation
+          - gate-98-compliance-report-validation
+          - gate-99-production-closure-validation
+
+  catalog:
+    unifiedGateIndex:
+      path: unified-gates/unified-gate-index.yaml
+      kind: UnifiedGateIndex
+      required: true
+      mustContain:
+        - quality-gate-plane
+        - ai-infra-gate-plane
+        - gate-entries
+        - lifecycle
+        - blocking-flag
+        - validation-targets
+
+    gateCatalog:
+      path: unified-gates/gate-catalog.yaml
+      required: true
+
+    aiInfraGateCatalog:
+      path: unified-gates/ai-infra-gate-catalog.yaml
+      required: true
+
+  executableGateSchema:
+    kind: AiInfrastructureGate
+    requiredFields:
+      - apiVersion
+      - kind
+      - metadata.id
+      - metadata.name
+      - metadata.organization
+      - spec.layer
+      - spec.gateNumber
+      - spec.blocking
+      - spec.lifecycle
+      - spec.owner
+      - spec.riskLevel
+      - spec.validates
+      - spec.inputs
+      - spec.outputs
+      - spec.failurePolicy
+      - spec.evidence
+
+    lifecycleAllowedValues:
+      - proposed
+      - active
+      - deprecated
+      - archived
+      - destroyed
+
+    riskAllowedValues:
+      - low
+      - medium
+      - high
+      - critical
+
+    failurePolicy:
+      blockingGateDefaultOnFailure: block
+      waiverRequiresPolicy: true
+      highRiskUnrestrictedWaiver: forbidden
+      evidenceRequired: true
+
+  composition:
+    productionReadinessChain:
+      - meta-governance
+      - compute-foundation
+      - data-foundation
+      - algorithm-foundation
+      - ai-workload
+      - ai-task-billing
+      - cloud-managed-infrastructure
+      - attestation-compliance-closure
+
+    minimumBlockingGates:
+      - gate-01-namespace-governance-validation
+      - gate-04-directory-binding-mediator-validation
+      - gate-05-dependency-graph-acyclic-validation
+      - gate-15-ai-compute-cluster-readiness
+      - gate-21-dataset-contract-validation
+      - gate-25-vector-database-schema-validation
+      - gate-32-model-contract-validation
+      - gate-34-inference-runtime-validation
+      - gate-41-ai-workload-contract-validation
+      - gate-47-workload-slo-validation
+      - gate-51-usage-event-contract-validation
+      - gate-56-cost-attribution-validation
+      - gate-62-kubernetes-baseline-validation
+      - gate-63-gitops-sync-validation
+      - gate-91-sbom-generation-validation
+      - gate-92-provenance-validation
+      - gate-93-signature-validation
+      - gate-99-production-closure-validation
+
+    dependencyGraph:
+      mustBeAcyclic: true
+      cyclicGateDependency: forbidden
+      compositionValidationRequired: true
+
+  contracts:
+    path: unified-gates/contracts
+    required:
+      - gate-contract.yaml
+      - gate-result.yaml
+      - gate-waiver.yaml
+      - gate-evidence.yaml
+      - ai-workload-contract.yaml
+      - usage-event-contract.yaml
+      - billing-event-contract.yaml
+      - model-contract.yaml
+      - dataset-contract.yaml
+      - vector-index-contract.yaml
+      - inference-result-contract.yaml
+
+  schemas:
+    path: unified-gates/schemas
+    required:
+      - gate.schema.json
+      - gate-catalog.schema.json
+      - gate-result.schema.json
+      - gate-waiver.schema.json
+      - gate-policy.schema.json
+      - gate-pipeline.schema.json
+      - ai-infra-gate.schema.json
+      - ai-workload-contract.schema.json
+      - usage-event.schema.json
+      - model-contract.schema.json
+      - dataset-contract.schema.json
+      - vector-index.schema.json
+
+  workflows:
+    path: unified-gates/workflows
+    required:
+      - gate-evaluation-workflow.yaml
+      - gate-waiver-workflow.yaml
+      - gate-escalation-workflow.yaml
+      - gate-release-workflow.yaml
+      - ai-workload-production-readiness-workflow.yaml
+
+  policies:
+    path: unified-gates/policies
+    required:
+      - gate-governance-policy.yaml
+      - gate-rbac-policy.yaml
+      - gate-waiver-policy.yaml
+      - gate-risk-policy.yaml
+      - gate-cost-policy.yaml
+      - ai-workload-policy.yaml
+      - ai-safety-policy.yaml
+      - ai-billing-policy.yaml
+      - production-closure-policy.yaml
+
+  businessCapabilityMapping:
+    - capability: ai-compute-center-hosting
+      requiredGateLayer: layer-10-compute-foundation
+
+    - capability: vector-database-service
+      requiredGateLayer: layer-20-data-foundation
+
+    - capability: ai-agent-framework
+      requiredGateLayer:
+        - layer-30-algorithm-foundation
+        - layer-40-ai-workload
+
+    - capability: ai-full-chain-development-platform
+      requiredGateLayer:
+        - layer-00-meta-governance
+        - layer-10-compute-foundation
+        - layer-20-data-foundation
+        - layer-30-algorithm-foundation
+        - layer-40-ai-workload
+
+    - capability: inference-billing
+      requiredGateLayer: layer-50-ai-task-billing
+
+    - capability: training-billing
+      requiredGate: gate-53-training-metering-validation
+
+    - capability: embedding-billing
+      requiredGate: gate-54-embedding-metering-validation
+
+    - capability: agent-run-billing
+      requiredGate: gate-55-agent-run-metering-validation
+
+    - capability: cloud-managed-infrastructure
+      requiredGateLayer: layer-60-cloud-managed-infrastructure
+
+    - capability: compliance-grade-delivery
+      requiredGateLayer: layer-90-attestation-compliance-closure
+
+  ci:
+    requiredValidators:
+      - id: validate-gate-catalog
+        path: unified-gates/scripts/validate-gate-catalog.py
+        validates:
+          - unified-gate-index
+          - gate-catalog
+          - ai-infra-gate-catalog
+
+      - id: validate-gate-schema
+        path: unified-gates/scripts/validate-gate-schema.py
+        validates:
+          - gate-schema
+          - ai-infra-gate-schema
+          - gate-result-schema
+          - gate-waiver-schema
+
+      - id: validate-gate-composition
+        path: unified-gates/scripts/validate-gate-composition.py
+        validates:
+          - production-readiness-chain
+          - blocking-gate-set
+          - gate-dependency-graph
+
+      - id: validate-ai-infra-gates
+        path: unified-gates/scripts/validate-ai-infra-gates.py
+        validates:
+          - executable-gate-definitions
+          - gate-id-regex
+          - gate-owner
+          - gate-lifecycle
+          - gate-risk-policy
+          - gate-input-output-paths
+
+      - id: evaluate-gate
+        path: unified-gates/scripts/evaluate-gate.py
+        validates:
+          - gate-execution
+          - gate-result
+          - gate-evidence
+
+      - id: generate-gate-report
+        path: unified-gates/scripts/generate-gate-report.py
+        validates:
+          - report-generation
+
+      - id: generate-production-closure-report
+        path: unified-gates/scripts/generate-production-closure-report.py
+        validates:
+          - production-closure-summary
+
+    mustValidate:
+      - gate-catalog-schema
+      - ai-infra-gate-schema
+      - gate-id-regex
+      - gate-file-path-existence
+      - gate-lifecycle-state
+      - gate-owner-existence
+      - gate-dependency-graph-acyclic
+      - gate-composition-validity
+      - gate-waiver-policy
+      - gate-evidence-output
+      - coverage-gate-presence
+      - production-blocking-gate-set
+
+    mustFailWhen:
+      - blocking-gate-missing
+      - gate-id-malformed
+      - gate-references-missing-contract
+      - gate-references-missing-schema
+      - gate-dependency-cycle-exists
+      - active-gate-has-no-owner
+      - high-risk-gate-allows-unrestricted-waiver
+      - production-workload-skips-mandatory-ai-infra-gates
+      - attestation-closure-gates-absent
+
+    requiredReports:
+      - unified-gates/outputs/gate-validation-report.json
+      - unified-gates/outputs/gate-coverage-report.json
+      - unified-gates/outputs/ai-infra-gate-report.json
+      - unified-gates/outputs/gate-waiver-report.json
+      - unified-gates/outputs/gate-audit-report.json
+      - unified-gates/outputs/production-closure-report.json
+      - unified-gates/outputs/unified-gate-summary.json
+
+  observability:
+    requiredMetrics:
+      - gate-validation-pass-rate
+      - gate-validation-failure-count
+      - blocking-gate-failure-count
+      - waiver-request-count
+      - waiver-approval-count
+      - waiver-rejection-count
+      - production-closure-pass-rate
+      - production-closure-failure-count
+      - gate-evidence-completeness-score
+      - mandatory-gate-coverage-score
+
+    evidence:
+      required: true
+      auditReport: unified-gates/outputs/gate-audit-report.json
+      evidenceContract: unified-gates/contracts/gate-evidence.yaml
+
+  compliance:
+    criteria:
+      - every-gate-has-documentation
+      - every-executable-gate-has-machine-readable-yaml-definition
+      - every-gate-has-metadata-owner-lifecycle-risk-level-and-validation-target
+      - every-production-ai-workload-passes-mandatory-compute-data-algorithm-workload-billing-infrastructure-and-attestation-gates
+      - every-gate-result-is-auditable
+      - every-waiver-is-governed
+      - every-coverage-dimension-is-represented
+      - every-gate-catalog-entry-is-ci-verifiable
+      - high-risk-gates-do-not-allow-unrestricted-waiver
+      - gate-dependency-graphs-remain-acyclic
+      - attestation-closure-gates-are-present-for-production-delivery
+
+  references:
+    foundationModule: foundation/mycodexvantaos-module.yaml
+    navigationModule: navigation/mycodexvantaos-module.yaml
+    namespaceGovernanceModule: mycodexvantaos-namespace-governance/mycodexvantaos-module.yaml
+    appendixK:
+      title: unified-gate-system-specification
+      path: docs/governance/unified-gate-system-spec.md
+    relatedAppendices:
+      - id: appendix-h
+        title: dependency-binding-guard-ci-specification
+        path: docs/ci/dependency-binding-guard-ci-spec.md
+
+      - id: appendix-i
+        title: namespace-governance-closure-specification
+        path: docs/governance/namespace-governance-closure-spec.md
+
+      - id: appendix-j
+        title: namespace-governance-architecture-panorama-and-directory-tree
+        path: docs/architecture/namespace-governance-architecture-panorama.md
+
+status:
+  phase: unified-gates-normalized
+  readiness: ci-verifiable
+  canonicalArtifact: unified-gates/mycodexvantaos-module.yaml
+  lastReviewed: '2026-05-29T09:42:00+08:00'
