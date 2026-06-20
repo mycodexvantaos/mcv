@@ -1,22 +1,18 @@
-# modules/mycodexvantaos-core-kernel/module-manifest.yaml
-# Based on naming-spec-v1.md 6.3, schemas/service-manifest.schema.json
-# 6.4 INVARIANT: metadata.name MUST equal the directory name and service-id exactly.
-
-apiVersion: mycodexvantaos.org/v1
-kind: Module
+apiVersion: platform.mymycodexvantaos.org/v1
+kind: ModuleManifest
 metadata:
   name: mycodexvantaos-core-kernel
   labels:
     mycodexvantaos.org/domain: core
     mycodexvantaos.org/managed-by: naming-spec-v1
-
 spec:
   domain: core
   capabilities:
-    - database
-    - cache
-    - observability
-    - secrets
+  - database
+  - cache
+  - observability
+  - secrets
+  - kernel
   providers:
     database: database-postgres
     cache: cache-redis
@@ -24,7 +20,18 @@ spec:
     secrets: secrets-k8s-native
   lifecycle:
     stage: stable
-    since: 'v1.0.0'
-  urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-core-kernel'
+    since: v1.0.0
+  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-core-kernel
   packageName: '@mycodexvantaos/core-kernel'
-  description: 'Core platform kernel service. Manages lifecycle, dependency injection, and platform bootstrap.'
+  description: Core kernel capabilities.
+  capability: kernel
+  id: mycodexvantaos-core-kernel
+  tier: 0
+  requiredProviders:
+  - auth
+  supportedModes:
+  - native
+  - connected
+  - hybrid
+  deployment:
+    type: container

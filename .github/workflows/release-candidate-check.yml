@@ -162,7 +162,23 @@ jobs:
 
       - name: Run tests
         working-directory: ./python
-        run: uv run pytest -v --cov=python/packages --cov-report=xml || echo "Some tests may need setup"
+        run: uv run pytest -v --cov=python/packages --cov-branch --cov-report=xml --junitxml=junit.xml -o junit_family=legacy || echo "Some tests may need setup"
+
+      - name: Upload coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: mycodexvantaos/mycodexvantaos
+          files: python/coverage.xml
+          flags: python-rc
+          name: release-candidate-python
+
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   # ── Docker ───────────────────────────────────────────────────────
   docker:
