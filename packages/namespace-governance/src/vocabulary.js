@@ -20,17 +20,49 @@ export const NAMESPACES = Object.freeze(Object.keys(PLANE_BY_NAMESPACE));
 
 /** Domain vocabulary (Sec.I.7.2). @type {readonly string[]} */
 export const DOMAINS = Object.freeze([
-  'auth', 'policy', 'memory', 'event', 'infra', 'platform', 'iaops',
-  'machinenativeops', 'toolkit', 'contracts', 'signerd', 'controller',
-  'rolloutd', 'db-schemas', 'autotask', 'compliance', 'prediction', 'qa',
-  'rollback', 'scheduler', 'alertd',
+  'auth',
+  'policy',
+  'memory',
+  'event',
+  'infra',
+  'platform',
+  'iaops',
+  'machinenativeops',
+  'toolkit',
+  'contracts',
+  'signerd',
+  'controller',
+  'rolloutd',
+  'db-schemas',
+  'autotask',
+  'compliance',
+  'prediction',
+  'qa',
+  'rollback',
+  'scheduler',
+  'alertd',
 ]);
 
 /** Function vocabulary (Sec.I.7.3). @type {readonly string[]} */
 export const FUNCTIONS = Object.freeze([
-  'service', 'agent', 'sdk', 'cli', 'web', 'api', 'worker', 'manager', 'hub',
-  'bus', 'engine', 'scanner', 'reporter', 'predictor', 'action', 'plugin',
-  'controller', 'repository',
+  'service',
+  'agent',
+  'sdk',
+  'cli',
+  'web',
+  'api',
+  'worker',
+  'manager',
+  'hub',
+  'bus',
+  'engine',
+  'scanner',
+  'reporter',
+  'predictor',
+  'action',
+  'plugin',
+  'controller',
+  'repository',
 ]);
 
 /**
@@ -49,5 +81,10 @@ export const ERA_RANGES = Object.freeze([
  * @type {readonly string[]}
  */
 export const FORBIDDEN_REPO_TOKENS = Object.freeze([
-  'dev', 'prod', 'staging', 'v1', 'v2', 'latest',
+  'dev',
+  'prod',
+  'staging',
+  'v1',
+  'v2',
+  'latest',
 ]);

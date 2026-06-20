@@ -68,9 +68,12 @@ describe('ClosureEngine.evaluate', () => {
 
   test('concurrency: parallel evaluations are independent', async () => {
     const jobs = Array.from({ length: 64 }, (_v, i) =>
-      Promise.resolve().then(() => engine.evaluate({
-        namespace: i % 2 === 0 ? 'mycodexvantaos' : 'Bad_NS',
-      })));
+      Promise.resolve().then(() =>
+        engine.evaluate({
+          namespace: i % 2 === 0 ? 'mycodexvantaos' : 'Bad_NS',
+        })
+      )
+    );
     const results = await Promise.all(jobs);
     results.forEach((r, i) => expect(r.ok).toBe(i % 2 === 0));
   });

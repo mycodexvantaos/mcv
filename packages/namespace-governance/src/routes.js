@@ -26,8 +26,10 @@ export function createGovernanceRouter(logger) {
     }
     const nameViolations = checkMachineName(req.body.name);
     const audit = buildAuditRecord({
-      actor: req.body.owner, action: 'create-namespace',
-      resource: req.body.name, passed: nameViolations.length === 0,
+      actor: req.body.owner,
+      action: 'create-namespace',
+      resource: req.body.name,
+      passed: nameViolations.length === 0,
       violations: nameViolations.length,
       correlationId: req.get('x-correlation-id') || undefined,
     });
@@ -46,8 +48,10 @@ export function createGovernanceRouter(logger) {
     const result = closureEngine.evaluate(req.body);
     const passed = result.ok;
     const audit = buildAuditRecord({
-      actor: req.get('x-actor') || 'anonymous', action: 'evaluate-closure',
-      resource: req.body.namespace, passed,
+      actor: req.get('x-actor') || 'anonymous',
+      action: 'evaluate-closure',
+      resource: req.body.namespace,
+      passed,
       violations: passed ? 0 : result.violations.length,
       correlationId: req.get('x-correlation-id') || undefined,
     });

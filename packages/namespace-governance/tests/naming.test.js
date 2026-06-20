@@ -1,7 +1,12 @@
 import { describe, test, expect } from '@jest/globals';
 import {
-  checkMachineName, checkGovernanceCode, checkRepositoryName,
-  checkPlaneDependency, decomposeCode, CODE_REGEX, REPO_REGEX,
+  checkMachineName,
+  checkGovernanceCode,
+  checkRepositoryName,
+  checkPlaneDependency,
+  decomposeCode,
+  CODE_REGEX,
+  REPO_REGEX,
 } from '../src/naming.js';
 
 describe('checkMachineName (Sec.I.1.1)', () => {
@@ -29,10 +34,10 @@ describe('checkGovernanceCode (Sec.I.3.2)', () => {
     expect(checkGovernanceCode('mycodexvantaos-50100')).toHaveLength(0);
   });
   test.each([
-    'mycodexvantaos-5010',     // too short
-    'mycodexvantaos-501000',   // too long
-    'softwareos-50100',        // wrong namespace
-    'mycodexvantaos-5010a',    // non-digit
+    'mycodexvantaos-5010', // too short
+    'mycodexvantaos-501000', // too long
+    'softwareos-50100', // wrong namespace
+    'mycodexvantaos-5010a', // non-digit
   ])('rejects %s', (value) => {
     expect(checkGovernanceCode(value).length).toBeGreaterThan(0);
   });
@@ -45,7 +50,11 @@ describe('checkGovernanceCode (Sec.I.3.2)', () => {
 describe('decomposeCode (Sec.I.3.1)', () => {
   test('decomposes security era code', () => {
     expect(decomposeCode('50100')).toMatchObject({
-      layerGroup: 50, domain: 1, subtype: 0, sequence: 0, era: 'era-two',
+      layerGroup: 50,
+      domain: 1,
+      subtype: 0,
+      sequence: 0,
+      era: 'era-two',
     });
   });
   test.each([
@@ -88,8 +97,9 @@ describe('checkRepositoryName (Sec.I.6.2/Sec.I.6.3/Sec.I.7)', () => {
 
 describe('checkPlaneDependency (Sec.I.2.4)', () => {
   test('allows product -> control', () => {
-    expect(checkPlaneDependency('softwareos-qa-service', 'mycodexvantaos-auth-service'))
-      .toHaveLength(0);
+    expect(
+      checkPlaneDependency('softwareos-qa-service', 'mycodexvantaos-auth-service')
+    ).toHaveLength(0);
   });
   test('forbids control -> product', () => {
     const v = checkPlaneDependency('mycodexvantaos-auth-service', 'softwareos-qa-service');
@@ -97,7 +107,8 @@ describe('checkPlaneDependency (Sec.I.2.4)', () => {
     expect(v[0].rule).toBe('I.2.4');
   });
   test('allows control -> control', () => {
-    expect(checkPlaneDependency('mycodexvantaos-auth-service', 'mycodexvantaos-policy-engine'))
-      .toHaveLength(0);
+    expect(
+      checkPlaneDependency('mycodexvantaos-auth-service', 'mycodexvantaos-policy-engine')
+    ).toHaveLength(0);
   });
 });

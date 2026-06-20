@@ -9,8 +9,12 @@
  * and "audit closure" requirements of Sec.I.0 / Sec.I.9.
  */
 import {
-  checkMachineName, checkGovernanceCode, checkRepositoryName,
-  checkPlaneDependency, decomposeCode, CODE_REGEX,
+  checkMachineName,
+  checkGovernanceCode,
+  checkRepositoryName,
+  checkPlaneDependency,
+  decomposeCode,
+  CODE_REGEX,
 } from './naming.js';
 import { ok, err } from './result.js';
 
@@ -50,7 +54,11 @@ export class ClosureEngine {
     }
     for (const pair of rules.dependencies || []) {
       if (!Array.isArray(pair) || pair.length !== 2) {
-        violations.push({ rule: 'I.2.4', subject: String(pair), message: 'dependency must be a [from, to] pair' });
+        violations.push({
+          rule: 'I.2.4',
+          subject: String(pair),
+          message: 'dependency must be a [from, to] pair',
+        });
       } else {
         violations.push(...checkPlaneDependency(pair[0], pair[1]));
       }

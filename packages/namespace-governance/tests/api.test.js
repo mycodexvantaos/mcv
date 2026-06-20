@@ -60,9 +60,7 @@ describe('Namespace Governance API', () => {
       expect(res.statusCode).toBe(400);
     });
     test('422 when machine name itself is invalid', async () => {
-      const res = await request(app)
-        .post('/governance/closure')
-        .send({ namespace: 'Bad_NS' });
+      const res = await request(app).post('/governance/closure').send({ namespace: 'Bad_NS' });
       expect(res.statusCode).toBe(422);
     });
   });

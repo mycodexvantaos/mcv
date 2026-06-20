@@ -3,8 +3,11 @@ import { buildAuditRecord } from '../src/audit.js';
 
 describe('buildAuditRecord', () => {
   const base = {
-    actor: 'dev', action: 'evaluate-closure', resource: 'mycodexvantaos',
-    passed: true, violations: 0,
+    actor: 'dev',
+    action: 'evaluate-closure',
+    resource: 'mycodexvantaos',
+    passed: true,
+    violations: 0,
   };
 
   test('produces a complete tamper-evident record', () => {

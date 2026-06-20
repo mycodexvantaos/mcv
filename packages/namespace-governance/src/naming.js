@@ -9,7 +9,11 @@
  */
 import { violation } from './result.js';
 import {
-  PLANE_BY_NAMESPACE, DOMAINS, FUNCTIONS, ERA_RANGES, FORBIDDEN_REPO_TOKENS,
+  PLANE_BY_NAMESPACE,
+  DOMAINS,
+  FUNCTIONS,
+  ERA_RANGES,
+  FORBIDDEN_REPO_TOKENS,
 } from './vocabulary.js';
 
 /** Canonical governance code regex (Sec.I.3.2). */
@@ -73,8 +77,7 @@ export function decomposeCode(code) {
  */
 export function checkGovernanceCode(id) {
   if (!CODE_REGEX.test(id)) {
-    return [violation('I.3.2', String(id),
-      'governance code must match ^mycodexvantaos-[0-9]{5}$')];
+    return [violation('I.3.2', String(id), 'governance code must match ^mycodexvantaos-[0-9]{5}$')];
   }
   return [];
 }
@@ -92,8 +95,9 @@ export function checkRepositoryName(name) {
   /** @type {import('./result.js').Violation[]} */
   const out = [];
   if (!REPO_REGEX.test(name)) {
-    out.push(violation('I.6.2', name,
-      'repository name must match {namespace}-{domain}-{function}'));
+    out.push(
+      violation('I.6.2', name, 'repository name must match {namespace}-{domain}-{function}')
+    );
     return out;
   }
 
@@ -113,8 +117,9 @@ export function checkRepositoryName(name) {
   }
   for (const token of FORBIDDEN_REPO_TOKENS) {
     if (parts.includes(token)) {
-      out.push(violation('I.6.3', token,
-        `forbidden token "${token}" (version/environment marker)`));
+      out.push(
+        violation('I.6.3', token, `forbidden token "${token}" (version/environment marker)`)
+      );
     }
   }
   return out;
@@ -133,9 +138,14 @@ export function checkPlaneDependency(fromRepo, toRepo) {
   const fromPlane = PLANE_BY_NAMESPACE[fromNs];
   const toPlane = PLANE_BY_NAMESPACE[toNs];
   if (fromPlane === 'control-plane' && toPlane === 'product-plane') {
-    return [violation('I.2.4', `${fromRepo} -> ${toRepo}`,
-      'control-plane MUST NOT hard-depend on product-plane; use a mediator '
-      + '(registry/catalog/binding/contract/evidence channel)')];
+    return [
+      violation(
+        'I.2.4',
+        `${fromRepo} -> ${toRepo}`,
+        'control-plane MUST NOT hard-depend on product-plane; use a mediator ' +
+          '(registry/catalog/binding/contract/evidence channel)'
+      ),
+    ];
   }
   return [];
 }
