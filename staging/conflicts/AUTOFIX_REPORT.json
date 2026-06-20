@@ -1,0 +1,8 @@
+{
+  "conflict_markers_fixed": 2,
+  "yaml_errors_fixed": 0,
+  "fixes": [
+    "Fixed conflict markers in python/PYTHON_CI_TEST_REPORT.md",
+    "Fixed conflict markers in scripts/remediate_section_sign.py"
+  ]
+}
