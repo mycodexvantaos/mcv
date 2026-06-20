@@ -1,0 +1,92 @@
+name: Kafka Stream Processor
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'python/packages/mycodexvantaos-stream-pipeline/**'
+      - 'python/apps/kafka-stream-processor/**'
+      - 'python/tests/test_stream_pipeline_*'
+      - 'python/pyproject.toml'
+      - 'services/kafka-stream-processor/**'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'python/packages/mycodexvantaos-stream-pipeline/**'
+      - 'python/apps/kafka-stream-processor/**'
+      - 'python/tests/test_stream_pipeline_*'
+      - 'python/pyproject.toml'
+      - 'services/kafka-stream-processor/**'
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Install dependencies
+        working-directory: ./python
+        run: uv sync --extra dev --all-packages
+
+      - name: Run ruff check
+        working-directory: ./python
+        run: uv run ruff check packages/mycodexvantaos-stream-pipeline apps/kafka-stream-processor
+
+      - name: Run ruff format check
+        working-directory: ./python
+        run: uv run ruff format --check packages/mycodexvantaos-stream-pipeline apps/kafka-stream-processor
+
+      - name: Run tests
+        working-directory: ./python
+        run: |
+          uv run pytest tests/test_stream_pipeline_models.py \
+            tests/test_stream_pipeline_processor.py \
+            tests/test_stream_pipeline_metrics.py \
+            tests/test_stream_pipeline_producer_consumer.py -v
+
+      - name: Run tests with coverage
+        working-directory: ./python
+        run: |
+          uv run pytest tests/test_stream_pipeline_models.py \
+            tests/test_stream_pipeline_processor.py \
+            tests/test_stream_pipeline_metrics.py \
+            tests/test_stream_pipeline_producer_consumer.py \
+            --cov=packages/mycodexvantaos-stream-pipeline \
+            --cov-report=term-missing \
+            --cov-report=xml:coverage-stream-pipeline.xml
+
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stream-pipeline-coverage
+          path: python/coverage-stream-pipeline.xml
+
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: lint-and-test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: services/kafka-stream-processor/Dockerfile
+          push: false
+          tags: kafka-stream-processor:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

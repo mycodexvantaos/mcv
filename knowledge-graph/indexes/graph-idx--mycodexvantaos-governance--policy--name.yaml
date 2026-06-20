@@ -1,5 +1,3 @@
-# knowledge-graph/indexes/graph-idx--mycodexvantaos-governance--policy--name.yaml
-# 10.3 — Format: graph-idx--<service-id>--<label>--<property>
 apiVersion: mycodexvantaos.org/v1
 kind: GraphDbIndex
 metadata:
@@ -12,3 +10,8 @@ spec:
   property: name
   indexType: btree
   unique: true
+id: graph-idx--mycodexvantaos-governance--policy--name
+service: mycodexvantaos-governance
+label: policy
+property: name
+type: exact
