@@ -21,7 +21,7 @@
   - Node quality marked advisory in gate aggregation to avoid blocking on repository-wide pre-existing type debt.
 
 ## Known Blockers
-- GitHub Actions runs for current head are in `action_required` state with **0 jobs created** (example: CI Governance Gate run `27901891501`, jobs `total_count: 0`).
+- GitHub Actions runs for current head are in `action_required` state with **0 jobs created** (latest example: CI Governance Gate run `27902000639`, jobs `total_count: 0`).
 - Because runs are not executing, required checks cannot complete and PR cannot be merged yet.
 - `Node.js Quality` remains failing when executed due repo-wide type debt (already advisory in Governance Gate logic).
 
@@ -36,7 +36,7 @@
 ## Checks Snapshot
 - Prior CI-gate failures were `Secret Scan` and `Node.js Quality`.
 - Secret-scan root cause was full merge workspace scanning baseline debt; fixed by strict changed-files scan in PR mode.
-- Latest PR-head workflows are blocked before execution (`action_required`), so no new job-level results yet.
+- Latest PR-head workflows are blocked before execution (`action_required`), so no job-level results are available for verification.
 
 ## Next Step
 1. Commit and push latest CI-gate patch.
