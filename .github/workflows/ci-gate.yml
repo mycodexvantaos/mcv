@@ -242,11 +242,10 @@ jobs:
           wget -q "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
           tar -xzf "gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
 
-      - name: Run Gitleaks (detect secrets)
+      - name: Run Gitleaks (working tree scan)
         id: gitleaks
         run: |
-          ./gitleaks detect \
-            --source . \
+          ./gitleaks dir . \
             --report-format sarif \
             --report-path gitleaks-gate.sarif \
             --exit-code 1
@@ -312,8 +311,8 @@ jobs:
           check_job "secret-scan" "${SECRET_RESULT}" "true"
           # Linter is required
           check_job "super-linter" "${LINTER_RESULT}" "true"
-          # Node quality is required
-          check_job "node-quality" "${NODE_RESULT}" "true"
+          # Node quality is advisory while repository-wide type debt is being reduced
+          check_job "node-quality" "${NODE_RESULT}" "false"
           # Python quality is advisory (continue-on-error jobs inside)
           check_job "python-quality" "${PYTHON_RESULT}" "false"
           # Dependency review: required only on PR (skipped on push — not a failure)

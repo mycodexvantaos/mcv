@@ -15,7 +15,7 @@ export * from './vector-store-pgvector';
 
 // Deployment capabilities
 export * from './deploy.interface';
-export * f，rom './deploy-native';
+export * from './deploy-native';
 export * from './deploy-argocd';
 export * from './deploy-factory';
 

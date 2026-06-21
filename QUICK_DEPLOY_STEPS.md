@@ -11,18 +11,18 @@
 1. **CLOUDFLARE_API_TOKEN**
 
    ```
-   eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiMmZlYWQ0YTE0MWVjMmM2NzdlYjNiZjBhYzUzNWYxZDUiLCJleHAiOjE3NzgxMDcwNDYsImlhdCI6MTc3ODAwNzA0NiwicGVybWlzc2lvbnMiOlsiaHR0cHM6Ly9hcGkuY2xvdWRmbGFyZS5jb20vY2xpZW50L3Y0L2FjY291bnRzLzpmZWFkNGExNDFlYzJjNjc3ZWIzYmYwYWM1MzVmMWQ1L2JpbGxpbmcvKiIsImh0dHBzOi8vYXBpLmNsb3VkZmxhcmUuY29tL2NsaWVudC92NC9hY2NvdW50cy86ZmVhZDRhMTQxZWMyYzY3N2ViM2JmMGFjNTM1ZjFkNS9iaWxsaW5nLyo6cmVhZCJdLCJzdWIiOiJteWNvZGV2YW50YW9zQGdtYWlsLmNvbSJ9.6ed43d34957a49fcb90ec8e43f7db523
+   <redacted-cloudflare-token>
    ```
 
 2. **CLOUDFLARE_ACCOUNT_ID**
 
    ```
-   2fead4a141ec2c677eb3bf0ac535f1d5
+   <your-account-id>
    ```
 
 3. **CLOUDFLARE_ZONE_ID**
    ```
-   1bdb04f9da82872cdff76d8515b85246
+   <your-zone-id>
    ```
 
 ### 第二步：提交並推送代碼（1 分鐘）

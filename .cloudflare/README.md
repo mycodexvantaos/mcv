@@ -11,9 +11,9 @@ This directory contains all configuration files and scripts for deploying MyCode
 Add these secrets to your GitHub repository:
 
 ```bash
-CLOUDFLARE_API_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-CLOUDFLARE_ACCOUNT_ID=2fead4a141ec2c677eb3bf0ac535f1d5
-CLOUDFLARE_ZONE_ID=1bdb04f9da82872cdff76d8515b85246
+CLOUDFLARE_API_TOKEN=<redacted-cloudflare-token>
+CLOUDFLARE_ACCOUNT_ID=<your-account-id>
+CLOUDFLARE_ZONE_ID=<your-zone-id>
 ```
 
 ### 2. Deploy to Production
