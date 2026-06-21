@@ -49,8 +49,7 @@ class MemoryItem(BaseModel):
 
     memory_id: str = Field(..., description="Unique memory identifier")
     content: str = Field(..., description="Memory content text")
-    tags: list[str] = Field(default_factory=list,
-                            description="Associated tags")
+    tags: list[str] = Field(default_factory=list, description="Associated tags")
     related_entities: list[str] = Field(
         default_factory=list, description="Referenced entity IDs"
     )
@@ -96,10 +95,8 @@ class DreamAction(BaseModel):
     Matches: contracts/schemas/dream-action.schema.json
     """
 
-    action_type: DreamActionType = Field(...,
-                                         description="Type of action to take")
-    target_memory_id: str = Field(...,
-                                  description="Memory ID this action targets")
+    action_type: DreamActionType = Field(..., description="Type of action to take")
+    target_memory_id: str = Field(..., description="Memory ID this action targets")
     related_memory_id: str | None = Field(
         default=None, description="Optional related memory (for merge/resolve)"
     )
@@ -125,10 +122,8 @@ class DreamReport(BaseModel):
     duplicates_found: int = Field(
         default=0, description="Number of duplicates detected"
     )
-    conflicts_found: int = Field(
-        default=0, description="Number of conflicts detected")
-    orphans_found: int = Field(
-        default=0, description="Number of orphans detected")
+    conflicts_found: int = Field(default=0, description="Number of conflicts detected")
+    orphans_found: int = Field(default=0, description="Number of orphans detected")
     actions: list[DreamAction] = Field(
         default_factory=list, description="Suggested actions"
     )
@@ -152,8 +147,7 @@ class DreamRun(BaseModel):
     """
 
     dream_run_id: str = Field(..., description="Unique dream run identifier")
-    memory_items: list[MemoryItem] = Field(...,
-                                           description="Memory items to process")
+    memory_items: list[MemoryItem] = Field(..., description="Memory items to process")
     dry_run: bool = Field(
         default=True, description="If True, only report actions without executing"
     )

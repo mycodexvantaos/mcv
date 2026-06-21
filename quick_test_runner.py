@@ -19,8 +19,7 @@ def run_package_test(package_name):
     # Build the TypeScript first
     build_cmd = f"cd {package_dir} && npx tsc --noEmit"
     print(f"Building TypeScript...")
-    result = subprocess.run(build_cmd, shell=True,
-                            capture_output=True, text=True)
+    result = subprocess.run(build_cmd, shell=True, capture_output=True, text=True)
 
     if result.returncode != 0:
         print(f"❌ TypeScript compilation failed:")
@@ -64,8 +63,7 @@ def run_package_test(package_name):
 def main():
     """Run tests for a subset of packages to validate infrastructure"""
     # Test a few representative packages first
-    priority_packages = ["builder", "runtime",
-                         "storage", "events", "monitoring"]
+    priority_packages = ["builder", "runtime", "storage", "events", "monitoring"]
 
     results = {}
     for package in priority_packages:

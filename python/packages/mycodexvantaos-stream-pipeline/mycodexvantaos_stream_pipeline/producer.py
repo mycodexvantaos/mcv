@@ -76,8 +76,7 @@ class StreamProducer:
             try:
                 await self._producer.init_transactions()
             except KafkaError:
-                logger.exception(
-                    "Failed to initialize transactions for producer")
+                logger.exception("Failed to initialize transactions for producer")
 
         logger.info(
             "Stream producer started — semantic: %s, bootstrap: %s",
@@ -132,8 +131,7 @@ class StreamProducer:
 
         kafka_headers: list[tuple[str, bytes]] | None = None
         if headers:
-            kafka_headers = [(k, v.encode("utf-8"))
-                             for k, v in headers.items()]
+            kafka_headers = [(k, v.encode("utf-8")) for k, v in headers.items()]
 
         try:
             if self._config.delivery_semantic == DeliverySemantic.EXACTLY_ONCE:
@@ -196,8 +194,7 @@ class StreamProducer:
                                 else None
                             ),
                             headers=(
-                                [(k, v.encode("utf-8"))
-                                 for k, v in msg.headers.items()]
+                                [(k, v.encode("utf-8")) for k, v in msg.headers.items()]
                                 if msg.headers
                                 else None
                             ),
@@ -206,8 +203,7 @@ class StreamProducer:
                         self._metrics.messages_produced += 1
             except KafkaError:
                 self._metrics.messages_errored += len(messages)
-                logger.exception(
-                    "Transaction failed for batch send to '%s'", topic)
+                logger.exception("Transaction failed for batch send to '%s'", topic)
                 results = [None] * len(messages)
         else:
             for msg in messages:
@@ -246,8 +242,7 @@ class StreamProducer:
     async def begin_transaction(self) -> None:
         """Begin a Kafka transaction (for exactly-once semantics)."""
         if self._config.delivery_semantic != DeliverySemantic.EXACTLY_ONCE:
-            raise RuntimeError(
-                "Transactions require exactly-once delivery semantic")
+            raise RuntimeError("Transactions require exactly-once delivery semantic")
         await self._producer.begin_transaction()
 
     async def commit_transaction(self) -> None:

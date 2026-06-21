@@ -137,8 +137,7 @@ class TestCodexQuery:
     async def test_query_by_category(self, codex: PipelineCodex) -> None:
         """Query entries by category."""
         await codex.put(
-            entry=CodexEntry(category=CodexCategory.PATTERN,
-                             title="P1", content="c1")
+            entry=CodexEntry(category=CodexCategory.PATTERN, title="P1", content="c1")
         )
         await codex.put(
             entry=CodexEntry(
@@ -189,12 +188,10 @@ class TestCodexStats:
     async def test_stats_after_entries(self, codex: PipelineCodex) -> None:
         """Stats reflect stored entries."""
         await codex.put(
-            entry=CodexEntry(category=CodexCategory.PATTERN,
-                             title="P1", content="c1")
+            entry=CodexEntry(category=CodexCategory.PATTERN, title="P1", content="c1")
         )
         await codex.put(
-            entry=CodexEntry(category=CodexCategory.WORKFLOW,
-                             title="W1", content="c2")
+            entry=CodexEntry(category=CodexCategory.WORKFLOW, title="W1", content="c2")
         )
         stats = await codex.get_stats()
         assert stats.total_entries == 2

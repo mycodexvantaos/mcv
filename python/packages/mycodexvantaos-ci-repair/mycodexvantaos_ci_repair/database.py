@@ -172,8 +172,7 @@ class DatabaseClient:
                     action.metadata,
                 )
 
-        logger.debug("Saved repair plan row %d for run %d",
-                     plan_id, plan.run_id)
+        logger.debug("Saved repair plan row %d for run %d", plan_id, plan.run_id)
         return plan_id
 
     # ------------------------------------------------------------------

@@ -458,8 +458,7 @@ schemas = {
 }
 
 for schema_name, schema_data in schemas.items():
-    write(f"contracts/schemas/{schema_name}",
-          json.dumps(schema_data, indent=2) + "\n")
+    write(f"contracts/schemas/{schema_name}", json.dumps(schema_data, indent=2) + "\n")
 
 print(f"\nSec.ion 14 done (created={created}, skipped={skipped})")
 

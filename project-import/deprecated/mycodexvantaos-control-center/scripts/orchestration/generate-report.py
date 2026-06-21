@@ -35,8 +35,7 @@ class ReportGenerator:
 
     def load_execution_data(self, data_dir: str = ""):
         """Load execution data from artifacts."""
-        state_file = os.path.join(
-            data_dir, f"state-{self.orchestration_id}.json")
+        state_file = os.path.join(data_dir, f"state-{self.orchestration_id}.json")
 
         if os.path.exists(state_file):
             with open(state_file, "r") as f:

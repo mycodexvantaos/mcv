@@ -87,16 +87,14 @@ class AdaptiveOptimizer:
         # Adjust thresholds based on accuracy
         if avg_accuracy < 0.7:
             optimized["evidence_sufficiency_threshold"] = max(
-                0.5, optimized.get(
-                    "evidence_sufficiency_threshold", 0.7) - 0.05
+                0.5, optimized.get("evidence_sufficiency_threshold", 0.7) - 0.05
             )
             optimized["hypothesis_confidence_min"] = max(
                 0.4, optimized.get("hypothesis_confidence_min", 0.6) - 0.05
             )
         elif avg_accuracy > 0.9:
             optimized["evidence_sufficiency_threshold"] = min(
-                0.95, optimized.get(
-                    "evidence_sufficiency_threshold", 0.7) + 0.05
+                0.95, optimized.get("evidence_sufficiency_threshold", 0.7) + 0.05
             )
             optimized["hypothesis_confidence_min"] = min(
                 0.9, optimized.get("hypothesis_confidence_min", 0.6) + 0.05

@@ -222,8 +222,7 @@ def cli() -> None:
     parser = argparse.ArgumentParser(
         description="MyCodeXvantaOS Dream Worker — Memory Dream Processing"
     )
-    subparsers = parser.add_subparsers(
-        dest="command", help="Available commands")
+    subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
     # ─── dream run ────────────────────────────────────────────
     run_parser = subparsers.add_parser("run", help="Execute a dream run")

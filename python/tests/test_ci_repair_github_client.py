@@ -21,14 +21,12 @@ class TestGitHubActionsClientInit:
     """Test client initialization."""
 
     def test_parses_owner_and_repo(self) -> None:
-        c = GitHubActionsClient(
-            token="tok", repository="mycodexvantaos/mycodexvantaos")
+        c = GitHubActionsClient(token="tok", repository="mycodexvantaos/mycodexvantaos")
         assert c.owner == "mycodexvantaos"
         assert c.repo == "mycodexvantaos"
 
     def test_sets_auth_headers(self) -> None:
-        c = GitHubActionsClient(token="my-secret-token",
-                                repository="test/repo")
+        c = GitHubActionsClient(token="my-secret-token", repository="test/repo")
         assert c._headers["Authorization"] == "Bearer my-secret-token"
         assert c._headers["Accept"] == "application/vnd.github+json"
         assert c._headers["X-GitHub-Api-Version"] == "2022-11-28"
@@ -111,8 +109,7 @@ class TestGetFailedJobs:
         log_response.text = "npm ERR! ERESOLVE could not resolve dependency"
 
         mock_http_client = AsyncMock()
-        mock_http_client.get = AsyncMock(
-            side_effect=[jobs_response, log_response])
+        mock_http_client.get = AsyncMock(side_effect=[jobs_response, log_response])
         mock_http_client.__aenter__ = AsyncMock(return_value=mock_http_client)
         mock_http_client.__aexit__ = AsyncMock(return_value=False)
 

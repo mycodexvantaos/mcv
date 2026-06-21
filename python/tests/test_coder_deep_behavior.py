@@ -124,8 +124,7 @@ class TestBehaviorQuery:
             )
         )
         result = await tracker.query(
-            params=BehaviorQuery(
-                action_category=ActionCategory.CODE_MODIFICATION)
+            params=BehaviorQuery(action_category=ActionCategory.CODE_MODIFICATION)
         )
         assert len(result) >= 1
 

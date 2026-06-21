@@ -85,8 +85,7 @@ class TestMetricsCollector:
     def test_prometheus_format_kebab_to_underscore(self) -> None:
         """Processor names with hyphens are converted to underscores in labels."""
         collector = MetricsCollector()
-        metrics = StreamMetrics(
-            processor_name="my-processor", messages_consumed=5)
+        metrics = StreamMetrics(processor_name="my-processor", messages_consumed=5)
         collector.register_processor("my-processor", metrics)
         output = collector.to_prometheus_format()
         assert 'stream_messages_consumed{processor="my_processor"} 5' in output

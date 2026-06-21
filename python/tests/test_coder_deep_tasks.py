@@ -325,8 +325,7 @@ class TestTaskDependencies:
     async def test_get_dependencies(self, tracker: TaskTracker) -> None:
         """Get tasks that a task depends on."""
         dep_task = await tracker.create(
-            task=TaskEntry(title="Dependency",
-                           task_type=TaskType.A_NEW_FEATURE)
+            task=TaskEntry(title="Dependency", task_type=TaskType.A_NEW_FEATURE)
         )
         main_task = await tracker.create(
             task=TaskEntry(

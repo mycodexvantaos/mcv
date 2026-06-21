@@ -53,8 +53,7 @@ class GitHubActionsClient:
             summaries.append(
                 WorkflowRunSummary(
                     run_id=run["id"],
-                    run_name=run.get("name", run.get(
-                        "path", "").split("/")[-1]),
+                    run_name=run.get("name", run.get("path", "").split("/")[-1]),
                     status=run["status"],
                     conclusion=run.get("conclusion"),
                     head_branch=run["head_branch"],
@@ -173,8 +172,7 @@ class GitHubActionsClient:
             resp = await client.post(
                 f"{GITHUB_API_BASE}/repos/{self.owner}/{self.repo}/pulls",
                 headers=self._headers,
-                json={"title": title, "body": body,
-                      "head": head, "base": base},
+                json={"title": title, "body": body, "head": head, "base": base},
             )
             resp.raise_for_status()
             return resp.json().get("html_url", "")

@@ -67,8 +67,7 @@ class TestMemoryStorePutAndGet:
     async def test_put_with_tags(self, store: MemoryStore) -> None:
         """Store and retrieve with tags."""
         await store.put(
-            item=MemoryItem(namespace="ns", key="k",
-                            value="val", tags=["a", "b", "c"])
+            item=MemoryItem(namespace="ns", key="k", value="val", tags=["a", "b", "c"])
         )
         item = await store.get(namespace="ns", key="k")
         assert item is not None
@@ -108,12 +107,10 @@ class TestMemoryStoreSearch:
     async def test_search_by_tags(self, store: MemoryStore) -> None:
         """Search finds items matching tags."""
         await store.put(
-            item=MemoryItem(namespace="ns", key="k1",
-                            value="v1", tags=["python"])
+            item=MemoryItem(namespace="ns", key="k1", value="v1", tags=["python"])
         )
         await store.put(
-            item=MemoryItem(namespace="ns", key="k2",
-                            value="v2", tags=["typescript"])
+            item=MemoryItem(namespace="ns", key="k2", value="v2", tags=["typescript"])
         )
         result = await store.search(
             params=MemorySearchParams(namespace="ns", tags=["python"])

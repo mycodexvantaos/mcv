@@ -242,8 +242,7 @@ class TestExtractErrorContext:
         assert "error: the problem" in context
 
     def test_respects_max_lines(self) -> None:
-        log = "\n".join(
-            [f"line{i}" for i in range(100)] + ["error: bad thing"])
+        log = "\n".join([f"line{i}" for i in range(100)] + ["error: bad thing"])
         context = extract_error_context(log, max_lines=10)
         assert len(context.split("\n")) <= 10
 

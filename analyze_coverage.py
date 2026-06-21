@@ -82,13 +82,11 @@ def parse_coverage(output):
                     line_cov = parts[4].strip().replace("%", "")
 
                     # Parse numbers
-                    coverage["statements"] = float(
-                        stmt) if stmt and stmt != "-" else 0
+                    coverage["statements"] = float(stmt) if stmt and stmt != "-" else 0
                     coverage["branches"] = (
                         float(branch) if branch and branch != "-" else 0
                     )
-                    coverage["functions"] = float(
-                        func) if func and func != "-" else 0
+                    coverage["functions"] = float(func) if func and func != "-" else 0
                     coverage["lines"] = (
                         float(line_cov) if line_cov and line_cov != "-" else 0
                     )
@@ -126,8 +124,7 @@ def main():
         coverage = parse_coverage(output)
         results[pkg_name] = coverage
 
-        print(
-            f"Stmts: {coverage['statements']:.1f}% | Lines: {coverage['lines']:.1f}%")
+        print(f"Stmts: {coverage['statements']:.1f}% | Lines: {coverage['lines']:.1f}%")
 
     print()
     print("=" * 60)

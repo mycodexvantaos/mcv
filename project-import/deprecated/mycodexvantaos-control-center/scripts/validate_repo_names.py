@@ -30,8 +30,7 @@ def main():
         fail("missing validation.regex in policy")
 
     regex = re.compile(regex_raw)
-    forbidden_patterns = [re.compile(x)
-                          for x in policy.get("forbidden_patterns", [])]
+    forbidden_patterns = [re.compile(x) for x in policy.get("forbidden_patterns", [])]
     approved_planes = set(policy.get("approved_planes", []))
     approved_repo_types = set(policy.get("approved_repo_types", []))
     allowlist = set(policy.get("approved_current_repositories", []))
@@ -59,8 +58,7 @@ def main():
 
         for p in forbidden_patterns:
             if p.match(name):
-                fail(
-                    f"repo name violates forbidden pattern '{p.pattern}': {name}")
+                fail(f"repo name violates forbidden pattern '{p.pattern}': {name}")
 
         if allowlist and name not in allowlist:
             fail(f"repo name not in approved_current_repositories: {name}")

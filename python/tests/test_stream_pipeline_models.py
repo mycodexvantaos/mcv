@@ -224,8 +224,7 @@ class TestProcessorConfig:
             ProcessorConfig(name="p", input_topics=[])
 
     def test_processor_with_window(self) -> None:
-        window = WindowConfig(
-            window_type=WindowType.TUMBLING, window_size_ms=30000)
+        window = WindowConfig(window_type=WindowType.TUMBLING, window_size_ms=30000)
         config = ProcessorConfig(
             name="windowed-proc",
             input_topics=["in"],

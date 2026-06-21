@@ -68,8 +68,7 @@ class FailedStep(BaseModel):
     step_name: str
     step_number: int
     conclusion: str
-    log_excerpt: str = Field(
-        default="", description="Last N lines of step log")
+    log_excerpt: str = Field(default="", description="Last N lines of step log")
 
 
 class FailedJob(BaseModel):
@@ -105,10 +104,8 @@ class RepairAction(BaseModel):
     action_type: RepairActionType
     description: str
     file_path: str = ""
-    patch_content: str = Field(
-        default="", description="Unified diff or file content")
-    command: str = Field(
-        default="", description="Shell command to execute the fix")
+    patch_content: str = Field(default="", description="Unified diff or file content")
+    command: str = Field(default="", description="Shell command to execute the fix")
     risk_level: FailureSeverity = FailureSeverity.LOW
     requires_manual_review: bool = False
     metadata: dict[str, Any] = Field(default_factory=dict)

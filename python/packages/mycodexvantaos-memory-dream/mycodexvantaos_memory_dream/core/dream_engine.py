@@ -137,12 +137,10 @@ class DreamEngine:
             elif action.action_type == DreamActionType.DELETE:
                 executed.append(f"Delete {action.target_memory_id}")
             else:
-                executed.append(
-                    f"{action.action_type} on {action.target_memory_id}")
+                executed.append(f"{action.action_type} on {action.target_memory_id}")
 
         if executed:
-            print(
-                f"[Dream Action Execution] {len(executed)} actions executed:")
+            print(f"[Dream Action Execution] {len(executed)} actions executed:")
             for e in executed[:10]:  # Log first 10
                 print(f"  - {e}")
 

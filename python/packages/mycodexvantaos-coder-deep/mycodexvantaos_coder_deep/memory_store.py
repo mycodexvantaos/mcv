@@ -29,10 +29,8 @@ class MemoryItem(BaseModel):
     key: str
     value: Any
     metadata: dict[str, Any] = Field(default_factory=dict)
-    created_at: str = Field(
-        default_factory=lambda: datetime.utcnow().isoformat() + "Z")
-    updated_at: str = Field(
-        default_factory=lambda: datetime.utcnow().isoformat() + "Z")
+    created_at: str = Field(default_factory=lambda: datetime.utcnow().isoformat() + "Z")
+    updated_at: str = Field(default_factory=lambda: datetime.utcnow().isoformat() + "Z")
     expires_at: str | None = None
     access_count: int = 0
     source: str = "api"
@@ -117,7 +115,7 @@ class _InMemoryStore:
                 items.append(item)
         items.sort(key=lambda x: x.updated_at, reverse=True)
         total = len(items)
-        page = items[params.offset: params.offset + params.limit]
+        page = items[params.offset : params.offset + params.limit]
         return MemorySearchResult(
             items=page, total=total, limit=params.limit, offset=params.offset
         )
@@ -176,8 +174,7 @@ class MemoryStore:
     async def connect(self) -> None:
         """Connect to the PostgreSQL database."""
         if not self._dsn:
-            logger.info(
-                "MemoryStore: no DSN configured, using in-memory fallback")
+            logger.info("MemoryStore: no DSN configured, using in-memory fallback")
             return
 
         import asyncpg

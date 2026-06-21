@@ -146,8 +146,7 @@ def main():
             # Create proper test file
             test_content = create_proper_test_file(package_name, exports)
             if test_content:
-                test_file = package_dir / "__tests__" / \
-                    f"{package_name}.test.ts"
+                test_file = package_dir / "__tests__" / f"{package_name}.test.ts"
                 test_file.write_text(test_content)
                 print(f"✅ {package_name} - jest.config.js + tests created")
         else:

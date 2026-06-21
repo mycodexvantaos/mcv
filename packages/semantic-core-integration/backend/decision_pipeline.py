@@ -194,8 +194,7 @@ class DecisionExecutor:
                 )
             except Exception as e:
                 logger.error(f"Semantic Core error: {e}")
-                result = self._fallback_decision(
-                    hypothesis, evidence, parameters)
+                result = self._fallback_decision(hypothesis, evidence, parameters)
         else:
             result = self._fallback_decision(hypothesis, evidence, parameters)
 
@@ -218,8 +217,7 @@ class DecisionExecutor:
     ) -> DecisionResult:
         """Fallback decision when Semantic Core is unavailable"""
         avg_confidence = (
-            sum(e.confidence for e in evidence) /
-            len(evidence) if evidence else 0
+            sum(e.confidence for e in evidence) / len(evidence) if evidence else 0
         )
 
         return DecisionResult(
@@ -277,8 +275,7 @@ class DecisionPipeline:
 
         # Stage 3: Execute decision
         result = await self.decision_executor.execute(hypothesis, evidence, parameters)
-        logger.info(
-            f"Decision: {result.verdict} (confidence: {result.confidence})")
+        logger.info(f"Decision: {result.verdict} (confidence: {result.confidence})")
 
         return result
 

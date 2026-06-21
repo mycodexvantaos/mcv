@@ -112,10 +112,8 @@ _EXTENSION_LANGUAGE: dict[str, str] = {
     ".env": "config",
 }
 
-_CONFIG_EXTENSIONS = {".json", ".yaml",
-                      ".yml", ".toml", ".cfg", ".ini", ".env"}
-_TEST_PATTERNS = {"test", "tests", "__tests__",
-                  "spec", ".test.", ".spec.", "test_"}
+_CONFIG_EXTENSIONS = {".json", ".yaml", ".yml", ".toml", ".cfg", ".ini", ".env"}
+_TEST_PATTERNS = {"test", "tests", "__tests__", "spec", ".test.", ".spec.", "test_"}
 _DOC_EXTENSIONS = {".md", ".txt", ".rst"}
 _SOURCE_EXTENSIONS = {".py", ".ts", ".tsx", ".js", ".jsx", ".sql", ".sh"}
 
@@ -223,8 +221,7 @@ class ArchitectureSync:
             # Process files
             dir_languages: set[str] = set()
             for fname in filenames:
-                file_path = os.path.join(
-                    rel_root, fname) if rel_root else fname
+                file_path = os.path.join(rel_root, fname) if rel_root else fname
                 ext = os.path.splitext(fname)[1].lower()
 
                 full_path = os.path.join(self._root_path, file_path)
@@ -327,10 +324,8 @@ class ArchitectureSync:
         if len(self._snapshots) < 2:
             return ArchitectureDiff()
 
-        from_snapshot = self._find_snapshot(
-            from_id) if from_id else self._snapshots[-2]
-        to_snapshot = self._find_snapshot(
-            to_id) if to_id else self._snapshots[-1]
+        from_snapshot = self._find_snapshot(from_id) if from_id else self._snapshots[-2]
+        to_snapshot = self._find_snapshot(to_id) if to_id else self._snapshots[-1]
 
         if not from_snapshot or not to_snapshot:
             return ArchitectureDiff()

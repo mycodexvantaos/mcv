@@ -26,8 +26,7 @@ def get_package_structure(package_path):
     )
     functions = re.findall(r"export (?:async )?function (\w+)\(?:", content)
 
-    pkg_structure = {"classes": [], "interfaces": [],
-                     "functions": [], "methods": {}}
+    pkg_structure = {"classes": [], "interfaces": [], "functions": [], "methods": {}}
 
     # 解析類別和方法
     for class_name, class_body in classes:

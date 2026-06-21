@@ -341,8 +341,7 @@ class TestStreamConsumer:
             enable_auto_commit=False,
         )
         metrics = StreamMetrics()
-        consumer = StreamConsumer(
-            config, topics=["test-topic"], metrics=metrics)
+        consumer = StreamConsumer(config, topics=["test-topic"], metrics=metrics)
 
         with patch(
             "mycodexvantaos_stream_pipeline.consumer.AIOKafkaConsumer"

@@ -64,8 +64,7 @@ layer_results = {}
 for layer_name, components in layer_structure.items():
     layer_total = len(components)
     layer_existing = len([c for c in components if c in existing_packages])
-    layer_percentage = (layer_existing / layer_total *
-                        100) if layer_total > 0 else 0
+    layer_percentage = (layer_existing / layer_total * 100) if layer_total > 0 else 0
 
     layer_results[layer_name] = {
         "total": layer_total,
@@ -131,8 +130,7 @@ results = {
     },
 }
 
-output_file = Path(
-    "/workspace/mycodexvantaos/docs/analysis/quick-layer-coverage.json")
+output_file = Path("/workspace/mycodexvantaos/docs/analysis/quick-layer-coverage.json")
 output_file.parent.mkdir(parents=True, exist_ok=True)
 with open(output_file, "w") as f:
     json.dump(results, f, indent=2)
