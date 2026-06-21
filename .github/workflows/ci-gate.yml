@@ -253,13 +253,17 @@ jobs:
           if [ "${EVENT_NAME}" = "pull_request" ] && [ -n "${BASE_SHA}" ] && [ -n "${HEAD_SHA}" ]; then
             TMP_SCAN_DIR="$(mktemp -d)"
             cleanup_tmp_scan_dir() {
-              find "${TMP_SCAN_DIR}" -depth -type f -delete 2>/dev/null || true
-              find "${TMP_SCAN_DIR}" -depth -type d -empty -delete 2>/dev/null || true
-              rmdir "${TMP_SCAN_DIR}" 2>/dev/null || true
+              find "${TMP_SCAN_DIR}" -depth -type f -delete 2>/dev/null || echo "::warning::Temporary file cleanup failed" >&2
+              find "${TMP_SCAN_DIR}" -depth -type d -empty -delete 2>/dev/null || echo "::warning::Temporary directory cleanup failed" >&2
+              rmdir "${TMP_SCAN_DIR}" 2>/dev/null || echo "::warning::Temporary scan directory not fully removed" >&2
             }
             trap cleanup_tmp_scan_dir EXIT
             while IFS= read -r changed_file; do
               [ -z "${changed_file}" ] && continue
+              if printf '%s' "${changed_file}" | grep -Eq '(^/|(^|/)\.\.(/|$))'; then
+                echo "::warning::Skipping unsafe changed-file path: ${changed_file}"
+                continue
+              fi
               if [ -f "${changed_file}" ]; then
                 mkdir -p "${TMP_SCAN_DIR}/$(dirname "${changed_file}")"
                 cp -- "${changed_file}" "${TMP_SCAN_DIR}/${changed_file}"
