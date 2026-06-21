@@ -121,9 +121,7 @@ class GitHubActionsClient:
             )
             if resp.status_code == 200:
                 return resp.text
-            logger.warning(
-                "Log fetch returned status %s for job %s", resp.status_code, job_id
-            )
+            logger.warning("Log fetch returned status %s for job %s", resp.status_code, job_id)
             return ""
 
     async def get_run_logs(self, run_id: int) -> str:
