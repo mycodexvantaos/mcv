@@ -1,0 +1,20 @@
+apiVersion: mycodexvantaos.io/v1
+kind: NamingClosureL0
+metadata:
+  name: l0-atomic-categories
+  description: L0 atomic naming categories for MyCodexVantaOS
+
+spec:
+  atomicCategories:
+    - name: lowercase-kebab-case
+      pattern: '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+    - name: service-id
+      pattern: '^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)+$'
+    - name: provider-id
+      pattern: '^[a-z0-9]+(?:-[a-z0-9]+)+-[a-z0-9]+(?:-[a-z0-9]+)*$'
+    - name: package-name
+      pattern: '^@mycodexvantaos/[a-z0-9]+(?:-[a-z0-9]+)*$'
+    - name: oci-repo
+      pattern: "^ghcr\\.io/mycodexvantaos/mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)*$"
+    - name: urn
+      pattern: '^urn:mycodexvantaos:[a-z0-9]+(?:-[a-z0-9]+)*:[a-z0-9]+(?:-[a-z0-9]+)*:[a-z0-9]+(?:-[a-z0-9]+)*$'

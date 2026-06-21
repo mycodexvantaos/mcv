@@ -1,0 +1,11 @@
+apiVersion: mycodexvantaos.io/v1
+kind: ArtifactPolicy
+metadata:
+  name: artifact-policy
+spec:
+  digestPolicy:
+    primary: sha3-512
+    auditChain: sha256
+    fastComparison: blake3
+  imagePinningRequired: true
+  signatureRequired: true

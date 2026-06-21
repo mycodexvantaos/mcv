@@ -1,0 +1,6 @@
+apiVersion: mycodexvantaos.io/v1
+kind: SbomIndex
+metadata:
+  name: sbom-index
+spec:
+  sboms: []

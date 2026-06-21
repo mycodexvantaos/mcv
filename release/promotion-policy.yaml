@@ -1,0 +1,5 @@
+apiVersion: mycodexvantaos.io/v1
+kind: ReleaseSpec
+metadata:
+  name: promotion-policy
+spec: {}
