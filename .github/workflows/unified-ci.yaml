@@ -1,0 +1,175 @@
+# === path: .github/workflows/unified-ci.yaml ===
+# Unified CI Pipeline for MyCodeXvantaOS
+# Version: 3.1.0
+
+name: Unified CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+      - 'fix/**'
+      - 'release/**'
+  pull_request:
+    branches:
+      - main
+      - 'release/**'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  id-token: write
+  actions: read
+  pull-requests: write
+  checks: write
+
+env:
+  NODE_VERSION: '22'
+  PNPM_VERSION: '9'
+
+jobs:
+  # ====================
+  # Stage 1: Code Quality
+  # ====================
+  lint-and-format:
+    name: Lint & Format
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Run format check
+        run: pnpm run format:check
+
+      - name: Run ESLint / TypeScript check
+        run: pnpm run lint
+
+      - name: TypeScript type check
+        run: pnpm run typecheck
+
+  # ====================
+  # Stage 2: Build
+  # ====================
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: lint-and-format
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Build application
+        run: pnpm run build
+        env:
+          NODE_ENV: production
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: next-build
+          path: .next/
+          retention-days: 1
+
+  # ====================
+  # Stage 3: Test
+  # ====================
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: lint-and-format
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Run tests
+        run: pnpm run test
+
+  # ====================
+  # Stage 4: CI Summary
+  # ====================
+  ci-summary:
+    name: CI Summary
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: [lint-and-format, build, test]
+    if: always()
+    steps:
+      - name: Check overall status
+        env:
+          LINT_RESULT: ${{ needs.lint-and-format.result }}
+          BUILD_RESULT: ${{ needs.build.result }}
+          TEST_RESULT: ${{ needs.test.result }}
+        run: |
+          if [ "$LINT_RESULT" = "failure" ] || \
+             [ "$BUILD_RESULT" = "failure" ] || \
+             [ "$TEST_RESULT" = "failure" ]; then
+            echo "CI Pipeline failed"
+            exit 1
+          fi
+          echo "CI Pipeline passed"
+
+      - name: Create summary
+        env:
+          LINT_RESULT: ${{ needs.lint-and-format.result }}
+          BUILD_RESULT: ${{ needs.build.result }}
+          TEST_RESULT: ${{ needs.test.result }}
+        run: |
+          {
+            echo "## CI Pipeline Summary"
+            echo ""
+            echo "| Stage | Status |"
+            echo "|-------|--------|"
+            echo "| Lint & Format | ${LINT_RESULT} |"
+            echo "| Build | ${BUILD_RESULT} |"
+            echo "| Tests | ${TEST_RESULT} |"
+          } >> "$GITHUB_STEP_SUMMARY"

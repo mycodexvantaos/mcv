@@ -3,7 +3,7 @@ services:
   semantic-core:
     build: .
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       NODE_ENV: production
       DATABASE_URL: postgresql://user:password@postgres:5432/mycodexvantaos
@@ -13,7 +13,7 @@ services:
       - redis
       - prometheus
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      test: ['CMD', 'curl', '-f', 'http://localhost:3000/health']
       interval: 30s
       timeout: 10s
       retries: 3
@@ -21,7 +21,7 @@ services:
   python-backend:
     build: ./python
     ports:
-      - "8000:8000"
+      - '8000:8000'
     environment:
       DATABASE_URL: postgresql://user:password@postgres:5432/mycodexvantaos
       REDIS_URL: redis://redis:6379
@@ -41,14 +41,14 @@ services:
   redis:
     image: redis:7
     ports:
-      - "6379:6379"
+      - '6379:6379'
     volumes:
       - redis_data:/data
 
   prometheus:
     image: prom/prometheus:latest
     ports:
-      - "9090:9090"
+      - '9090:9090'
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus

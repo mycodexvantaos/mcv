@@ -2,22 +2,36 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@mycodexvantaos/core-kernel": ["packages/core-kernel/src/index.ts"],
+      "@mycodexvantaos/ai-llm": ["packages/ai-llm/src/index.ts"],
+      "@mycodexvantaos/providers": ["packages/providers/src/index.ts"],
+      "@mycodexvantaos/ai-team-orchestrator": ["packages/ai-agent/src/index.ts"],
       "@mycodexvantaos/*": [
         "services/mycodexvantaos-*/src/index.ts",
         "packages/mycodexvantaos-*/src/index.ts",
         "services/mycodexvantaos-*/src",
         "packages/mycodexvantaos-*/src"
       ]
-    }
+    },
+    "types": ["jest", "@cloudflare/workers-types", "node"]
   },
-  "include": [
-    "services/**/*.ts",
-    "packages/**/*.ts",
-    "ci/**/*.ts",
-    "simulation.ts"
-  ],
+  "include": ["services/**/*.ts", "packages/**/*.ts", "ci/**/*.ts", "simulation.ts"],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist",
+    "engineering-templates",
+    "infra/kubernetes/base/init.ts",
+    "scripts/refactor-global-architecture.ts",
+    "services/mycodexvantaos-app-dev-studio/mycodexvantaos-app-dev-studio-legacy",
+    "services/mycodexvantaos-studio-platform",
+    "services/mycodexvantaos-ai-team-service",
+    "packages/semantic-core-client",
+    "packages/unified-integration",
+    "packages/adapters/d1-full-text-search",
+    "packages/application/knowledge",
+    "packages/connector-github",
+    "packages/core/policy-model",
+    "packages/native-logging"
   ],
   "extends": "./tsconfig.base.json"
 }

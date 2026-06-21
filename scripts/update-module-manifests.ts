@@ -16,23 +16,23 @@ if (fs.existsSync(modulesDir)) {
           if (parsed && parsed.spec) {
             // Update to include supportedModes and requiredProviders
             if (!parsed.spec.supportedModes) {
-                parsed.spec.supportedModes = ['native', 'hybrid', 'connected'];
+              parsed.spec.supportedModes = ['native', 'hybrid', 'connected'];
             }
             if (!parsed.spec.requiredProviders) {
-                // Heuristic based on domain or just generic array for now
-                const providers = ['auth', 'database'];
-                if (dir.includes('deploy') || dir.includes('validation')) providers.push('deploy');
-                parsed.spec.requiredProviders = providers;
+              // Heuristic based on domain or just generic array for now
+              const providers = ['auth', 'database'];
+              if (dir.includes('deploy') || dir.includes('validation')) providers.push('deploy');
+              parsed.spec.requiredProviders = providers;
             }
             if (!parsed.spec.tier) {
-                parsed.spec.tier = 2; // Default to services tier
+              parsed.spec.tier = 2; // Default to services tier
             }
 
             fs.writeFileSync(manifestPath, yaml.stringify(parsed), 'utf8');
             console.log(`Updated module manifest for ${dir}`);
           }
         } catch (e) {
-             console.error(`Error processing ${dir}:`, e);
+          console.error(`Error processing ${dir}:`, e);
         }
       }
     }

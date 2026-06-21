@@ -1,0 +1,35 @@
+name: Audit Check
+
+on:
+  push:
+    paths:
+      - 'contracts/events/audit-events.yaml'
+      - 'packages/mycodexvantaos-audit-model/**'
+      - 'services/mycodexvantaos-service-audit-log/**'
+  pull_request:
+    paths:
+      - 'contracts/events/audit-events.yaml'
+      - 'packages/mycodexvantaos-audit-model/**'
+      - 'services/mycodexvantaos-service-audit-log/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+      - name: Install Python deps
+        run: pip install pyyaml
+      - name: Validate Audit Contracts
+        run: |
+          if [ -f "contracts/events/audit-events.yaml" ]; then
+            echo "Checking audit event schema..."
+            python3 -c "import yaml; yaml.safe_load(open('contracts/events/audit-events.yaml'))"
+            echo "Audit check passed"
+          else
+            echo "No audit events contract found — skipping"
+          fi

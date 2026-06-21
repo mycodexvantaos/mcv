@@ -17,11 +17,11 @@ GET /repos/mycodexvantaos/mycodexvantaos/actions/permissions
 {"enabled": true, "allowed_actions": "selected", "sha_pinning_required": true}
 ```
 
-| Commit (UTC time) | Workflow file changes | sha_pinning_required | Result |
-|---|---|---|---|
-| `63936ff` (16:00) | none affecting workflows | false (effective) | 13/15 success |
-| `98c7353` (16:11) | none in `.github/workflows/` | true (effective) | 13/15 startup_failure |
-| `ff31d9c` (16:25) | none in `.github/workflows/` | true | 13/15 startup_failure |
+| Commit (UTC time) | Workflow file changes        | sha_pinning_required | Result                |
+| ----------------- | ---------------------------- | -------------------- | --------------------- |
+| `63936ff` (16:00) | none affecting workflows     | false (effective)    | 13/15 success         |
+| `98c7353` (16:11) | none in `.github/workflows/` | true (effective)     | 13/15 startup_failure |
+| `ff31d9c` (16:25) | none in `.github/workflows/` | true                 | 13/15 startup_failure |
 
 Counterproof: `terraform-cloud-guard.yaml` is the only workflow that **passed** during the failure window. It is the only workflow that contains **zero `uses:` references** (pure shell job).
 
@@ -48,7 +48,7 @@ This violated the project governance principle:
 > Production-exposed Critical/High = 0
 > Governance Check must remain green on `main`.
 
-It also blocked PR #112 (CI repair agent v0.2.0), PR #113 (Kafka stream pipeline), and the new PR #114 (the ArgoCD manifests fix that addressed an *unrelated, also real* `actionlint` syntax issue).
+It also blocked PR #112 (CI repair agent v0.2.0), PR #113 (Kafka stream pipeline), and the new PR #114 (the ArgoCD manifests fix that addressed an _unrelated, also real_ `actionlint` syntax issue).
 
 ## Decision
 
@@ -72,8 +72,9 @@ The remainder of the Actions hardening posture is preserved:
 1. **Root-cause alignment.** The failure is policy-layer, not code-layer. The minimal-change principle (project charter Section 2) requires the fix to align with the layer that actually changed. No workflow files were modified at the time of failure; therefore the policy that was changed must be the one reverted.
 
 2. **Charter-compliant baseline.** Project charter Section 17 requires:
+
    > 固定 action major version
-   The current `@v4` style is a fixed major version. Charter does **not** require SHA pinning. Therefore the codebase already complies with the charter; only the GitHub UI policy was over-strict.
+   > The current `@v4` style is a fixed major version. Charter does **not** require SHA pinning. Therefore the codebase already complies with the charter; only the GitHub UI policy was over-strict.
 
 3. **Avoids large mechanical scope expansion.** SHA-pinning ~50 unique actions across ~30 workflow files would violate "do not expand minor fixes into broad refactors" (charter Section 2).
 
@@ -99,11 +100,11 @@ The remainder of the Actions hardening posture is preserved:
 
 ### Risk Matrix
 
-| Risk | Likelihood | Impact | Mitigation |
-|---|---|---|---|
-| Compromised third-party action publishes malicious tag re-point | Low | Medium | `allowed_actions: selected` + `verified_allowed: true` greatly limits attack surface; Dependabot for Actions can be enabled to alert on action updates |
-| Charter perceived as weakened | Low | Low | Charter Section 17 only mandates "fixed major version", which is preserved (`@v4`, `@v3`, etc.). ADR documents the conscious decision. |
-| Future re-toggle of repo policy without ADR | Medium | High | This ADR exists to record the explicit decision; any future re-enablement must be paired with the SHA-pin migration completion |
+| Risk                                                            | Likelihood | Impact | Mitigation                                                                                                                                             |
+| --------------------------------------------------------------- | ---------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Compromised third-party action publishes malicious tag re-point | Low        | Medium | `allowed_actions: selected` + `verified_allowed: true` greatly limits attack surface; Dependabot for Actions can be enabled to alert on action updates |
+| Charter perceived as weakened                                   | Low        | Low    | Charter Section 17 only mandates "fixed major version", which is preserved (`@v4`, `@v3`, etc.). ADR documents the conscious decision.                 |
+| Future re-toggle of repo policy without ADR                     | Medium     | High   | This ADR exists to record the explicit decision; any future re-enablement must be paired with the SHA-pin migration completion                         |
 
 ## Alternatives Considered
 
@@ -114,14 +115,14 @@ The remainder of the Actions hardening posture is preserved:
    - Rejected. Far broader scope than warranted. Loses the value of curated actions (auth, caching, sigstore, etc.).
 
 3. **Wait for GitHub Support / Org admin to provide guidance.**
-   - Rejected. Production CI is currently red on `main`; security scanners (CodeQL, Semgrep, Gitleaks) are non-functional. Charter Section 23 mandates: *"在 CodeQL 或安全掃描器失效時，必須先修復掃描器"*.
+   - Rejected. Production CI is currently red on `main`; security scanners (CodeQL, Semgrep, Gitleaks) are non-functional. Charter Section 23 mandates: _"在 CodeQL 或安全掃描器失效時，必須先修復掃描器"_.
 
 ## Risk
 
-| Item | Severity | Tracked |
-|---|---|---|
-| Tag re-point attack on third-party Actions | LOW | Issue: future "SHA-pin migration P2" |
-| Re-toggle by automated GitHub policy | MEDIUM | Org-level Action ruleset audit needed |
+| Item                                       | Severity | Tracked                               |
+| ------------------------------------------ | -------- | ------------------------------------- |
+| Tag re-point attack on third-party Actions | LOW      | Issue: future "SHA-pin migration P2"  |
+| Re-toggle by automated GitHub policy       | MEDIUM   | Org-level Action ruleset audit needed |
 
 ## Rollback
 
@@ -140,12 +141,12 @@ gh api -X PUT repos/mycodexvantaos/mycodexvantaos/actions/permissions \
 
 The following items are tracked as **governed deferred work** (charter Section 5):
 
-| ID | Title | Priority | Target Milestone |
-|---|---|---|---|
-| FOLLOW-UP-1 | Enable Dependabot for `github-actions` ecosystem | P2 | v0.2.0 |
-| FOLLOW-UP-2 | Adopt `pinact` (or equivalent) tooling to mass SHA-pin all actions, with grouped Dependabot updates | P2 | v0.2.0 |
-| FOLLOW-UP-3 | After SHA-pin migration completes, re-enable `sha_pinning_required: true` and supersede this ADR | P3 | v0.3.0 |
-| FOLLOW-UP-4 | Audit org-level Actions ruleset to identify what toggled `sha_pinning_required` between commits `63936ff` and `98c7353`; document in runbook | P2 | v0.2.0 |
+| ID          | Title                                                                                                                                        | Priority | Target Milestone |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ---------------- |
+| FOLLOW-UP-1 | Enable Dependabot for `github-actions` ecosystem                                                                                             | P2       | v0.2.0           |
+| FOLLOW-UP-2 | Adopt `pinact` (or equivalent) tooling to mass SHA-pin all actions, with grouped Dependabot updates                                          | P2       | v0.2.0           |
+| FOLLOW-UP-3 | After SHA-pin migration completes, re-enable `sha_pinning_required: true` and supersede this ADR                                             | P3       | v0.3.0           |
+| FOLLOW-UP-4 | Audit org-level Actions ruleset to identify what toggled `sha_pinning_required` between commits `63936ff` and `98c7353`; document in runbook | P2       | v0.2.0           |
 
 Each follow-up item:
 
@@ -173,7 +174,6 @@ Each follow-up item:
 - [ ] Post-merge: next push to `main` produces non-`startup_failure` workflow runs (verify via fresh CI run).
 - [ ] Follow-up issues created for FOLLOW-UP-1 through FOLLOW-UP-4 (tracked in v0.2.0 milestone).
 
-
 ---
 
 ## Validation Evidence (Post-Implementation)
@@ -195,21 +195,21 @@ After both policy adjustments were applied, an empty commit was pushed to the PR
  4/15 runs = failure (pre-existing test failures, NOT startup-related)
 ```
 
-| Workflow | Pre-fix | Post-fix |
-|---|---|---|
-| Governance Check                          | startup_failure | **success** |
-| CodeQL Advanced                           | startup_failure | **success** |
-| Semgrep SAST                              | startup_failure | **success** |
-| Gitleaks Scan                             | startup_failure | **success** |
-| Security Scan                             | startup_failure | **success** |
-| Deploy to Cloudflare Pages (Preview)      | startup_failure | **success** |
-| Release Drafter                           | startup_failure | **success** |
-| Dependency Review                         | startup_failure | **success** |
-| No Section Sign Symbol                    | startup_failure | **success** |
-| Terraform Cloud Guard                     | success         | success     |
-| Unified CI Pipeline                       | startup_failure | failure (pre-existing test issue, not startup) |
-| MyCodeXvantaOS CI                         | startup_failure | failure (pre-existing test issue, not startup) |
-| Release Candidate Check                   | startup_failure | failure (pre-existing test issue, not startup) |
+| Workflow                             | Pre-fix         | Post-fix                                       |
+| ------------------------------------ | --------------- | ---------------------------------------------- |
+| Governance Check                     | startup_failure | **success**                                    |
+| CodeQL Advanced                      | startup_failure | **success**                                    |
+| Semgrep SAST                         | startup_failure | **success**                                    |
+| Gitleaks Scan                        | startup_failure | **success**                                    |
+| Security Scan                        | startup_failure | **success**                                    |
+| Deploy to Cloudflare Pages (Preview) | startup_failure | **success**                                    |
+| Release Drafter                      | startup_failure | **success**                                    |
+| Dependency Review                    | startup_failure | **success**                                    |
+| No Section Sign Symbol               | startup_failure | **success**                                    |
+| Terraform Cloud Guard                | success         | success                                        |
+| Unified CI Pipeline                  | startup_failure | failure (pre-existing test issue, not startup) |
+| MyCodeXvantaOS CI                    | startup_failure | failure (pre-existing test issue, not startup) |
+| Release Candidate Check              | startup_failure | failure (pre-existing test issue, not startup) |
 
 ### Required Policy State (codified)
 

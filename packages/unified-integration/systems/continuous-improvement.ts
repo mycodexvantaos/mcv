@@ -26,7 +26,10 @@ export interface FeedbackItem {
 export class ContinuousImprovement {
   private suggestions: ImprovementSuggestion[] = [];
   private feedback: FeedbackItem[] = [];
-  private implementationLog: Array<{ suggestion: ImprovementSuggestion; result: 'success' | 'failure' }> = [];
+  private implementationLog: Array<{
+    suggestion: ImprovementSuggestion;
+    result: 'success' | 'failure';
+  }> = [];
 
   recordFeedback(feedback: FeedbackItem): void {
     this.feedback.push(feedback);
@@ -42,7 +45,8 @@ export class ContinuousImprovement {
         timestamp: new Date(),
         category: 'strategy',
         title: 'Improve Decision Accuracy',
-        description: 'Current accuracy is below 70%. Consider adjusting strategy weights or thresholds.',
+        description:
+          'Current accuracy is below 70%. Consider adjusting strategy weights or thresholds.',
         impact: 'high',
         priority: 1,
         status: 'pending',
@@ -57,7 +61,8 @@ export class ContinuousImprovement {
         timestamp: new Date(),
         category: 'parameter',
         title: 'Optimize Response Time',
-        description: 'Average response time exceeds 2 seconds. Consider caching or batch optimization.',
+        description:
+          'Average response time exceeds 2 seconds. Consider caching or batch optimization.',
         impact: 'high',
         priority: 2,
         status: 'pending',
@@ -72,7 +77,8 @@ export class ContinuousImprovement {
         timestamp: new Date(),
         category: 'parameter',
         title: 'Improve Cache Efficiency',
-        description: 'Cache hit rate is below 50%. Consider increasing TTL or adjusting cache strategy.',
+        description:
+          'Cache hit rate is below 50%. Consider increasing TTL or adjusting cache strategy.',
         impact: 'medium',
         priority: 3,
         status: 'pending',
@@ -87,7 +93,8 @@ export class ContinuousImprovement {
         timestamp: new Date(),
         category: 'process',
         title: 'Reduce Error Rate',
-        description: 'Error rate is above 5%. Investigate and implement error handling improvements.',
+        description:
+          'Error rate is above 5%. Investigate and implement error handling improvements.',
         impact: 'high',
         priority: 2,
         status: 'pending',
@@ -127,7 +134,9 @@ export class ContinuousImprovement {
       .sort((a, b) => a.priority - b.priority);
   }
 
-  getImplementationHistory(limit: number = 50): Array<{ suggestion: ImprovementSuggestion; result: 'success' | 'failure' }> {
+  getImplementationHistory(
+    limit: number = 50
+  ): Array<{ suggestion: ImprovementSuggestion; result: 'success' | 'failure' }> {
     return this.implementationLog.slice(-limit);
   }
 

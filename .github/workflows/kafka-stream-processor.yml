@@ -17,16 +17,27 @@ on:
       - 'python/tests/test_stream_pipeline_*'
       - 'python/pyproject.toml'
       - 'services/kafka-stream-processor/**'
+  workflow_dispatch:
+
+concurrency:
+  group: kafka-stream-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+  checks: write
 
 jobs:
   lint-and-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
 
       - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.11'
 
@@ -66,23 +77,26 @@ jobs:
 
       - name: Upload coverage
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: stream-pipeline-coverage
           path: python/coverage-stream-pipeline.xml
 
   docker-build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: lint-and-test
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f
 
       - name: Build Docker image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8
         with:
           context: .
           file: services/kafka-stream-processor/Dockerfile

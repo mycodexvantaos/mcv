@@ -12,13 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import {
-  ScanSearch,
-  Wand2,
-  Loader2,
-  CheckCircle2,
-  XCircle,
-} from 'lucide-react';
+import { ScanSearch, Wand2, Loader2, CheckCircle2, XCircle } from 'lucide-react';
 
 export function HumaniserPanel() {
   const [text, setText] = useState('');
@@ -120,7 +114,11 @@ export function HumaniserPanel() {
             size="sm"
             className="flex-1 h-7 text-xs"
           >
-            {loading ? <Loader2 className="h-3 w-3 animate-spin" /> : <ScanSearch className="h-3 w-3 mr-1" />}
+            {loading ? (
+              <Loader2 className="h-3 w-3 animate-spin" />
+            ) : (
+              <ScanSearch className="h-3 w-3 mr-1" />
+            )}
             Detect
           </Button>
           <Button
@@ -130,7 +128,11 @@ export function HumaniserPanel() {
             variant="secondary"
             className="flex-1 h-7 text-xs"
           >
-            {loading ? <Loader2 className="h-3 w-3 animate-spin" /> : <Wand2 className="h-3 w-3 mr-1" />}
+            {loading ? (
+              <Loader2 className="h-3 w-3 animate-spin" />
+            ) : (
+              <Wand2 className="h-3 w-3 mr-1" />
+            )}
             Humanise
           </Button>
         </div>

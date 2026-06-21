@@ -1,0 +1,78 @@
+name: Docker Smoke Test
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/api-node/**'
+      - 'Dockerfile'
+      - '.dockerignore'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'services/**'
+      - 'packages/**'
+      - 'contracts/**'
+      - 'modules/**'
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  docker-smoke:
+    name: Docker Runtime Smoke Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Check Dockerfile exists
+        id: check_dockerfile
+        run: |
+          if [ -f "Dockerfile" ]; then
+            echo "dockerfile_exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "dockerfile_exists=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Dockerfile not found — skipping Docker smoke test"
+          fi
+
+      - name: Set up Docker Buildx
+        if: steps.check_dockerfile.outputs.dockerfile_exists == 'true'
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f
+
+      - name: Build Docker image
+        if: steps.check_dockerfile.outputs.dockerfile_exists == 'true'
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8
+        with:
+          context: .
+          file: ./Dockerfile
+          load: true
+          tags: mycodexvantaos:smoke-test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Run Docker smoke tests
+        if: steps.check_dockerfile.outputs.dockerfile_exists == 'true'
+        run: |
+          if [ -f "scripts/smoke/docker-smoke.sh" ]; then
+            chmod +x scripts/smoke/docker-smoke.sh
+            ./scripts/smoke/docker-smoke.sh mycodexvantaos:smoke-test
+          else
+            echo "No smoke test script found — verifying container starts"
+            docker run --rm -d --name smoke-test mycodexvantaos:smoke-test
+            sleep 5
+            docker logs smoke-test 2>&1 | head -20 || true
+            docker stop smoke-test || true
+            echo "Docker smoke test completed"
+          fi
+
+      - name: Collect container logs on failure
+        if: failure() && steps.check_dockerfile.outputs.dockerfile_exists == 'true'
+        run: |
+          docker logs smoke-test 2>&1 || true
+          docker ps -a | grep smoke || true

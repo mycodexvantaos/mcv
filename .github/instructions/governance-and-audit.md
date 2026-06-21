@@ -11,6 +11,7 @@ This document provides modular instructions for governance enforcement and audit
 ### 2. Manifest Governance (A.2)
 
 Every module and service must contain the correct manifest type:
+
 - **Root Module**: `<root>/mycodexvantaos-module.yaml`
 - **Service**: `modules/<id>/module-manifest.yaml`
 - **Provider**: `providers/<cap>/<id>/provider-manifest.yaml`
@@ -19,6 +20,7 @@ Every module and service must contain the correct manifest type:
 ### 3. Audit Closure
 
 All autonomous and manual actions must be recorded with the following mandatory fields:
+
 - `actor`: Identity of the agent or user.
 - `action`: Specific operation performed.
 - `resource`: Target of the action (URN or path).

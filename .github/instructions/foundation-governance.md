@@ -5,6 +5,7 @@ This document provides modular instructions for managing the `foundation/` direc
 ### 1. Directory Role (A.3)
 
 The `foundation/` directory is exclusively for:
+
 - Strategic specifications and capability maps.
 - Maturity models and commercial models.
 - Reference architectures and product boundaries.

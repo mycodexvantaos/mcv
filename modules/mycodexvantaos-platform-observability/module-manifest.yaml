@@ -8,7 +8,7 @@ metadata:
 spec:
   domain: platform
   capabilities:
-  - observability
+    - observability
   providers:
     observability: observability-opentelemetry
   lifecycle:
@@ -21,12 +21,12 @@ spec:
   id: mycodexvantaos-platform-observability
   tier: 2
   requiredProviders:
-  - observability-prometheus
-  - observability-cloudwatch
-  - observability-elk
+    - observability-prometheus
+    - observability-cloudwatch
+    - observability-elk
   supportedModes:
-  - native
-  - connected
-  - hybrid
+    - native
+    - connected
+    - hybrid
   deployment:
     type: container

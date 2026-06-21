@@ -34,16 +34,16 @@ function applyConversationalRewrite(sentence: string): { rewritten: string; chan
 
   // Replace overly formal connectors with conversational ones
   const formalToCasual: Record<string, string> = {
-    'Furthermore': 'Plus',
-    'Additionally': 'Also',
-    'Consequently': 'So',
-    'Nevertheless': 'Still',
-    'Subsequently': 'Then',
-    'Therefore': 'So',
-    'Moreover': 'And',
-    'Thus': 'That way',
-    'Hence': 'So',
-    'Accordingly': 'So',
+    Furthermore: 'Plus',
+    Additionally: 'Also',
+    Consequently: 'So',
+    Nevertheless: 'Still',
+    Subsequently: 'Then',
+    Therefore: 'So',
+    Moreover: 'And',
+    Thus: 'That way',
+    Hence: 'So',
+    Accordingly: 'So',
     'In conclusion': 'To wrap up',
     'In summary': 'Long story short',
     'It is important to note': 'Keep in mind',
@@ -73,7 +73,8 @@ function applyConversationalRewrite(sentence: string): { rewritten: string; chan
   if (result.includes(';') && result.length > 60) {
     const parts = result.split(';');
     if (parts.length === 2) {
-      result = parts[0].trim() + '. ' + parts[1].trim().charAt(0).toUpperCase() + parts[1].trim().slice(1);
+      result =
+        parts[0].trim() + '. ' + parts[1].trim().charAt(0).toUpperCase() + parts[1].trim().slice(1);
       changes.push('Split semicolon-joined clauses into separate sentences');
     }
   }
@@ -106,16 +107,16 @@ function applyProfessionalRewrite(sentence: string): { rewritten: string; change
   // Remove overly casual language
   const casualToProfessional: Record<string, string> = {
     'a lot of': 'numerous',
-    'really': 'significantly',
-    'very': 'considerably',
-    'pretty': 'fairly',
+    really: 'significantly',
+    very: 'considerably',
+    pretty: 'fairly',
     'kind of': 'somewhat',
     'sort of': 'to some extent',
-    'stuff': 'material',
-    'things': 'elements',
-    'get': 'obtain',
-    'big': 'substantial',
-    'small': 'minimal',
+    stuff: 'material',
+    things: 'elements',
+    get: 'obtain',
+    big: 'substantial',
+    small: 'minimal',
   };
 
   for (const [casual, professional] of Object.entries(casualToProfessional)) {
@@ -138,12 +139,12 @@ function applyAcademicRewrite(sentence: string): { rewritten: string; changes: s
 
   // Replace casual phrasing with academic equivalents
   const casualToAcademic: Record<string, string> = {
-    'shows': 'demonstrates',
-    'says': 'asserts',
-    'uses': 'employs',
+    shows: 'demonstrates',
+    says: 'asserts',
+    uses: 'employs',
     'looks at': 'examines',
     'talks about': 'discusses',
-    'thinks': 'posits',
+    thinks: 'posits',
     'finds out': 'determines',
     'points out': 'indicates',
     'comes up with': 'proposes',
@@ -201,7 +202,7 @@ function applyNeutralRewrite(sentence: string): { rewritten: string; changes: st
   const aiPhrases: Record<string, string> = {
     'It is worth noting that': '',
     'It is important to emphasize that': '',
-    'In today\'s world': '',
+    "In today's world": '',
     'In this day and age': '',
     'At the end of the day': '',
     'plays a crucial role': 'matters',
@@ -210,11 +211,11 @@ function applyNeutralRewrite(sentence: string): { rewritten: string; changes: st
     'a plethora of': 'many',
     'delve into': 'explore',
     'navigate the complexities': 'handle',
-    'leverage': 'use',
-    'utilize': 'use',
-    'facilitate': 'help',
-    'implement': 'do',
-    'endeavor': 'try',
+    leverage: 'use',
+    utilize: 'use',
+    facilitate: 'help',
+    implement: 'do',
+    endeavor: 'try',
   };
 
   for (const [ai, human] of Object.entries(aiPhrases)) {
@@ -271,10 +272,7 @@ function buildHighlightedSegments(
 /**
  * Build diff segments between original and humanised text
  */
-function buildDiffs(
-  originalSentences: string[],
-  humanisedSentences: string[]
-): DiffSegment[] {
+function buildDiffs(originalSentences: string[], humanisedSentences: string[]): DiffSegment[] {
   const diffs: DiffSegment[] = [];
   const maxLen = Math.max(originalSentences.length, humanisedSentences.length);
 
@@ -306,7 +304,8 @@ export async function humaniseNative(request: HumaniserRequest): Promise<Humanis
   const { originalText, detectionResult, style = RewriteStyle.NEUTRAL } = request;
 
   // Determine which sentences to rewrite
-  const targetIndices = request.targetSentenceIndices ??
+  const targetIndices =
+    request.targetSentenceIndices ??
     detectionResult.sentences
       .filter((s) => s.label === ContentLabel.AI || s.label === ContentLabel.MIXED)
       .map((s) => s.index);
@@ -356,14 +355,18 @@ export async function humaniseNative(request: HumaniserRequest): Promise<Humanis
   // Compute change summary
   const sentencesRewritten = sentenceRewrites.filter((r) => r.improvement > 0).length;
   const sentencesUnchanged = sentenceRewrites.length - sentencesRewritten;
-  const avgScoreImprovement = sentencesRewritten > 0
-    ? sentenceRewrites.filter((r) => r.improvement > 0).reduce((sum, r) => sum + r.improvement, 0) / sentencesRewritten
-    : 0;
+  const avgScoreImprovement =
+    sentencesRewritten > 0
+      ? sentenceRewrites
+          .filter((r) => r.improvement > 0)
+          .reduce((sum, r) => sum + r.improvement, 0) / sentencesRewritten
+      : 0;
 
   const originalOverall = detectionResult.aiScore;
-  const newOverall = sentenceRewrites.length > 0
-    ? sentenceRewrites.reduce((sum, r) => sum + r.newAiScore, 0) / sentenceRewrites.length
-    : 0;
+  const newOverall =
+    sentenceRewrites.length > 0
+      ? sentenceRewrites.reduce((sum, r) => sum + r.newAiScore, 0) / sentenceRewrites.length
+      : 0;
 
   // Categorize changes
   const changeCategories = categorizeChanges(sentenceRewrites);
@@ -382,12 +385,21 @@ export async function humaniseNative(request: HumaniserRequest): Promise<Humanis
   // Build side-by-side comparison
   const comparison: SideBySideComparison = {
     originalHighlighted: buildHighlightedSegments(
-      detectionResult.sentences.map((s) => ({ text: s.text, label: s.label, confidence: s.confidence }))
+      detectionResult.sentences.map((s) => ({
+        text: s.text,
+        label: s.label,
+        confidence: s.confidence,
+      }))
     ),
     humanisedHighlighted: buildHighlightedSegments(
       sentenceRewrites.map((r) => ({
         text: r.rewritten,
-        label: r.newAiScore < 0.35 ? ContentLabel.HUMAN : r.newAiScore < 0.65 ? ContentLabel.MIXED : ContentLabel.AI,
+        label:
+          r.newAiScore < 0.35
+            ? ContentLabel.HUMAN
+            : r.newAiScore < 0.65
+              ? ContentLabel.MIXED
+              : ContentLabel.AI,
         confidence: 1 - Math.abs(r.newAiScore - 0.5) * 2,
       }))
     ),
@@ -397,21 +409,38 @@ export async function humaniseNative(request: HumaniserRequest): Promise<Humanis
   // Build updated detection result (simplified — reuse native detection)
   const updatedDetection: DetectionResult = {
     id: uuidv4(),
-    label: newOverall < 0.35 ? ContentLabel.HUMAN : newOverall < 0.65 ? ContentLabel.MIXED : ContentLabel.AI,
+    label:
+      newOverall < 0.35
+        ? ContentLabel.HUMAN
+        : newOverall < 0.65
+          ? ContentLabel.MIXED
+          : ContentLabel.AI,
     confidence: 1 - Math.abs(newOverall - 0.5) * 2,
     aiScore: Math.round(newOverall * 1000) / 1000,
     humanScore: Math.round((1 - newOverall) * 1000) / 1000,
     sentences: sentenceRewrites.map((r, i) => ({
       text: r.rewritten,
       index: i,
-      label: r.newAiScore < 0.35 ? ContentLabel.HUMAN : r.newAiScore < 0.65 ? ContentLabel.MIXED : ContentLabel.AI,
+      label:
+        r.newAiScore < 0.35
+          ? ContentLabel.HUMAN
+          : r.newAiScore < 0.65
+            ? ContentLabel.MIXED
+            : ContentLabel.AI,
       confidence: 1 - Math.abs(r.newAiScore - 0.5) * 2,
       aiScore: r.newAiScore,
       humanScore: 1 - r.newAiScore,
       features: detectionResult.sentences[i]?.features ?? {
-        avgWordLength: 0, wordCount: 0, lexicalDiversity: 0, avgWordFrequency: 0,
-        punctuationDensity: 0, complexity: 0, repetitionScore: 0, perplexityProxy: 0,
-        transitionSmoothness: 0, vocabularyRichness: 0,
+        avgWordLength: 0,
+        wordCount: 0,
+        lexicalDiversity: 0,
+        avgWordFrequency: 0,
+        punctuationDensity: 0,
+        complexity: 0,
+        repetitionScore: 0,
+        perplexityProxy: 0,
+        transitionSmoothness: 0,
+        vocabularyRichness: 0,
       },
       explanation: r.improvement > 0 ? 'Rewritten to sound more natural' : 'Unchanged',
     })),
@@ -419,7 +448,9 @@ export async function humaniseNative(request: HumaniserRequest): Promise<Humanis
       totalSentences: sentenceRewrites.length,
       aiSentences: sentenceRewrites.filter((r) => r.newAiScore >= 0.65).length,
       humanSentences: sentenceRewrites.filter((r) => r.newAiScore < 0.35).length,
-      uncertainSentences: sentenceRewrites.filter((r) => r.newAiScore >= 0.35 && r.newAiScore < 0.65).length,
+      uncertainSentences: sentenceRewrites.filter(
+        (r) => r.newAiScore >= 0.35 && r.newAiScore < 0.65
+      ).length,
       avgConfidence: 0,
       maxAiScore: Math.max(...sentenceRewrites.map((r) => r.newAiScore), 0),
       minAiScore: Math.min(...sentenceRewrites.map((r) => r.newAiScore), 0),

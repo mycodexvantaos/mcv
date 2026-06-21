@@ -11,6 +11,7 @@ This document provides modular instructions for managing service dependencies an
 ### 2. Implementing Bindings
 
 When connecting two services (e.g., `service-a` and `service-b`):
+
 1. Declare the relationship in `service-a/directory-context.yaml`.
 2. Create a binding manifest in `navigation/bindings/service-a-service-b-binding.yaml`.
 3. Define the mediator (e.g., `contracts/events/shared-event.yaml`).
@@ -19,6 +20,7 @@ When connecting two services (e.g., `service-a` and `service-b`):
 ### 3. Using Mediators
 
 Choose the appropriate mediator type:
+
 - **Contract**: For synchronous API calls.
 - **Event**: For asynchronous, decoupled communication.
 - **Port**: For platform-neutral interface abstractions.

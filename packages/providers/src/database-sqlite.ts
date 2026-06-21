@@ -12,7 +12,7 @@ export class NativeDatabaseProvider implements DatabaseCapability {
   }
 
   async healthCheck(): Promise<boolean> {
-    return true; 
+    return true;
   }
 
   async query(sql: string, params?: any[]): Promise<any> {

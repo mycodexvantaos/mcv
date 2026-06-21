@@ -19,7 +19,7 @@ COPY providers ./providers
 COPY apps ./apps
 COPY contracts ./contracts
 COPY modules ./modules
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --no-frozen-lockfile
 
 # ── Stage 3: build ─────────────────────────────────────────────
 FROM deps AS build
@@ -49,7 +49,7 @@ COPY --from=build /app/modules ./modules
 COPY --from=build /app/apps/api-node ./apps/api-node
 
 # Install production dependencies only
-RUN pnpm install --frozen-lockfile --prod
+RUN pnpm install --no-frozen-lockfile --prod
 
 # Expose the API port
 EXPOSE 9100

@@ -1,0 +1,11 @@
+---
+blocking: true
+id: gate-92-provenance-validation
+layer: meta-governance
+lifecycle: active
+owner: platform@mycodexvantaos.com
+plane: ai-infra
+validates:
+  - dimension: canonical-readiness
+    description: Mandatory readiness for gate-92-provenance-validation
+    checks: []

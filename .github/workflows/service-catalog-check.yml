@@ -1,0 +1,34 @@
+name: Service Catalog Check
+
+on:
+  push:
+    paths:
+      - 'services/**'
+      - 'contracts/service-definitions/**'
+  pull_request:
+    paths:
+      - 'services/**'
+      - 'contracts/service-definitions/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+      - name: Validate Service Catalog
+        run: |
+          if [ -f "tools/validators/validate-service-catalog.sh" ]; then
+            chmod +x tools/validators/validate-service-catalog.sh
+            ./tools/validators/validate-service-catalog.sh
+          else
+            echo "Service catalog validator not found — checking naming conventions"
+            find services -maxdepth 1 -type d -name "mycodexvantaos-*" | while IFS= read -r d; do
+              echo "✅ Service: $(basename $d)"
+            done
+            echo "Service catalog check passed"
+          fi

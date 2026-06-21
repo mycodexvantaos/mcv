@@ -1,0 +1,22 @@
+---
+# Markdown lint configuration - relaxed for large documentation repositories.
+# The repository contains imported/working documentation where strict prose rules
+# create noisy false positives unrelated to code quality or security.
+MD013: false # Line length - not enforced for documentation
+MD022: false # Headings should be surrounded by blank lines - not enforced for working docs
+MD024: false # Multiple headings with same content - allowed for changelogs/README sections
+MD025: false # Multiple top-level headings - allowed for generated architecture docs
+MD026: false # Trailing punctuation in heading - allowed for CJK and prompt docs
+MD029: false # Ordered list item prefix - generated docs may restart numbering
+MD030: false # Spaces after list markers - not enforced for mixed generated docs
+MD031: false # Fenced code blocks should be surrounded by blank lines - not enforced
+MD032: false # Lists should be surrounded by blank lines - not enforced for working docs
+MD033: false # Inline HTML - allowed for badges and special formatting
+MD034: false # Bare URL used - allowed for reference links
+MD036: false # Emphasis used instead of heading - allowed for status indicators
+MD038: false # Spaces inside code span - allowed when documenting whitespace
+MD040: false # Fenced code blocks should have a language specified - not enforced for working docs
+MD041: false # First line should be top-level heading - agent/instruction docs may start with metadata
+MD045: false # Images should have alternate text - legacy docs may omit alt text
+MD046: false # Code block style - mixed fenced and indented allowed
+MD058: false # Tables should be surrounded by blank lines - not enforced for working docs

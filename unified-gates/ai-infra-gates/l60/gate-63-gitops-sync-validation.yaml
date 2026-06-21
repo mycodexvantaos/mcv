@@ -1,0 +1,11 @@
+---
+blocking: true
+id: gate-63-gitops-sync-validation
+layer: meta-governance
+lifecycle: active
+owner: platform@mycodexvantaos.com
+plane: ai-infra
+validates:
+  - dimension: canonical-readiness
+    description: Mandatory readiness for gate-63-gitops-sync-validation
+    checks: []

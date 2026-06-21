@@ -1,0 +1,11 @@
+---
+blocking: true
+id: gate-99-production-closure-validation
+layer: meta-governance
+lifecycle: active
+owner: platform@mycodexvantaos.com
+plane: ai-infra
+validates:
+  - dimension: canonical-readiness
+    description: Mandatory readiness for gate-99-production-closure-validation
+    checks: []

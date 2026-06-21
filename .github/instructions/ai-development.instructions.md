@@ -95,6 +95,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai'; // NO
 ## Skills Reference
 
 Detailed Genkit development patterns are in:
+
 - `.agents/skills/developing-genkit-js/SKILL.md`
 - `.agents/skills/developing-genkit-js/references/best-practices.md`
 - `.agents/skills/developing-genkit-js/references/common-errors.md`
@@ -105,6 +106,7 @@ Detailed Genkit development patterns are in:
 ## AI Team Schemas
 
 Agent communication schemas are defined in `schemas/ai-team/`:
+
 - `agent-message.schema.json` — Message format between agents
 - `agent-profile.schema.json` — Agent profile definition
 - `agent-task.schema.json` — Task assignment format

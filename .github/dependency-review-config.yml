@@ -1,0 +1,18 @@
+# Dependency Review Configuration
+# https://docs.github.com/en/code-security/supply-chain-security/configuration-options-for-dependency-review
+
+# Fail on high severity vulnerabilities (not low — reduces noise)
+fail-on-severity: high
+
+# Deny copyleft licenses (cannot use both allow-licenses and deny-licenses)
+deny-licenses:
+  - GPL-2.0
+  - GPL-3.0
+  - AGPL-3.0
+  - SSPL-1.0
+
+# Vulnerability check
+vulnerability-check: true
+
+# License check
+license-check: true

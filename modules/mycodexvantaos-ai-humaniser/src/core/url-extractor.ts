@@ -28,7 +28,7 @@ export async function extractFromUrl(url: string): Promise<ExtractedContent> {
     const response = await fetch(url, {
       headers: {
         'User-Agent': 'MyCodeXvantaOS-Humaniser/1.0',
-        'Accept': 'text/html,application/xhtml+xml',
+        Accept: 'text/html,application/xhtml+xml',
       },
       signal: AbortSignal.timeout(10000), // 10s timeout
     });
@@ -104,24 +104,21 @@ function extractTitle(html: string): string {
  * Supports plain text, markdown, and basic document formats.
  * For PDF/DOCX, use a connected provider.
  */
-export function extractFromFile(
-  content: string,
-  mimeType: string
-): ExtractedContent {
+export function extractFromFile(content: string, mimeType: string): ExtractedContent {
   let text = content;
   let method = 'native-text';
 
   if (mimeType === 'text/markdown' || mimeType === 'text/md') {
     // Strip markdown formatting
     text = content
-      .replace(/^#{1,6}\s+/gm, '')   // Headers
+      .replace(/^#{1,6}\s+/gm, '') // Headers
       .replace(/\*\*([^*]+)\*\*/g, '$1') // Bold
-      .replace(/\*([^*]+)\*/g, '$1')     // Italic
-      .replace(/`([^`]+)`/g, '$1')       // Inline code
+      .replace(/\*([^*]+)\*/g, '$1') // Italic
+      .replace(/`([^`]+)`/g, '$1') // Inline code
       .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Links
-      .replace(/!\[([^\]]*)\]\([^)]+\)/g, '')  // Images
-      .replace(/^[-*+]\s+/gm, '')   // List items
-      .replace(/^>\s+/gm, '');      // Blockquotes
+      .replace(/!\[([^\]]*)\]\([^)]+\)/g, '') // Images
+      .replace(/^[-*+]\s+/gm, '') // List items
+      .replace(/^>\s+/gm, ''); // Blockquotes
     method = 'native-markdown';
   } else if (mimeType === 'text/html') {
     text = htmlToText(content);
@@ -132,7 +129,10 @@ export function extractFromFile(
     url: '',
     title: '',
     text: text.trim(),
-    wordCount: text.trim().split(/\s+/).filter((w) => w.length > 0).length,
+    wordCount: text
+      .trim()
+      .split(/\s+/)
+      .filter((w) => w.length > 0).length,
     extractionMethod: method,
     timestamp: new Date().toISOString(),
   };

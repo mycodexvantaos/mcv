@@ -42,7 +42,7 @@ def _suggest_fix(analysis: FailureAnalysis) -> str:
 
     if category == ErrorCategory.DEPENDENCY_ERROR:
         if deps:
-            return f"Update or override dependencies: {\", \".join(deps)}. Run `pnpm install` to update lockfile."
+            return f"Update or override dependencies: {', '.join(deps)}. Run `pnpm install` to update lockfile."
         return "Check dependency resolution. Run `pnpm install` and verify lockfile sync."
 
     if category == ErrorCategory.LINT_ERROR:
@@ -232,7 +232,7 @@ def analyze_failure(
         job_name=job_name,
         error_category=category,
         severity=severity,
-        root_cause=f"{category.value} detected in job \'{job_name}\'",
+        root_cause=f"{category.value} detected in job '{job_name}'",
         affected_files=affected_files,
         affected_dependencies=affected_deps,
         log_evidence=log_evidence,

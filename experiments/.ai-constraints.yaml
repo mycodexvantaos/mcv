@@ -1,6 +1,6 @@
 meta_modification:
-  allowed_files: 
-    - ".codeprofile.yaml"
-    - "extractors-config.yaml"
-  constraint: "必須生成變更解釋並經過2名人類審查"
-  rollback_strategy: "git revert + 知識圖譜回滾"
+  allowed_files:
+    - '.codeprofile.yaml'
+    - 'extractors-config.yaml'
+  constraint: '必須生成變更解釋並經過2名人類審查'
+  rollback_strategy: 'git revert + 知識圖譜回滾'

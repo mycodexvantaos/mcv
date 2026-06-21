@@ -85,6 +85,6 @@ export class D1FullTextSearchAdapter implements ISearchPort {
       .bind(query, limit, offset)
       .all();
 
-    return (results.results as SearchResult[]) ?? [];
+    return (results.results as unknown as SearchResult[]) ?? [];
   }
 }

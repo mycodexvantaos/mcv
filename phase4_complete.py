@@ -170,41 +170,41 @@ jobs:
   test:
     name: Test & Coverage
     runs-on: ubuntu-latest
-    
+
     strategy:
       matrix:
         node-version: [16.x, 18.x, 20.x]
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
+
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          
+
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: ${{ env.PNPM_VERSION }}
-          
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-        
+
       - name: Run TypeScript compilation
         run: pnpm run build
-        
+
       - name: Run tests with coverage
         run: pnpm test --coverage
-        
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
           files: ./coverage/lcov.info
           flags: unittests
           name: codecov-${{ matrix.node-version }}
-          
+
       - name: Check coverage threshold
         run: |
           if [ $(cat coverage/coverage-summary.json | jq '.total.lines.pct') -lt 70 ]; then
@@ -215,61 +215,61 @@ jobs:
   security-scan:
     name: Security Scan
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-          
+
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: ${{ env.PNPM_VERSION }}
-          
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-        
+
       - name: Run npm audit
         run: npm audit --audit-level=moderate || exit 1
-        
+
       - name: Run Snyk security scan
         uses: snyk/actions/node@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           args: --severity-threshold=high
-          
+
   lint:
     name: Lint & Type Check
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-          
+
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: ${{ env.PNPM_VERSION }}
-          
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-        
+
       - name: Run ESLint
         run: pnpm lint || true
-        
+
       - name: Run Prettier check
         run: pnpm format:check || true
-        
+
       - name: Run TypeScript type check
         run: pnpm type-check
 
@@ -277,27 +277,27 @@ jobs:
     name: Build Packages
     runs-on: ubuntu-latest
     needs: [test, security-scan, lint]
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-          
+
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: ${{ env.PNPM_VERSION }}
-          
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-        
+
       - name: Build all packages
         run: pnpm build
-        
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -312,21 +312,21 @@ jobs:
     environment:
       name: staging
       url: https://staging.mycodexvantaos.io
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
       - name: Download build artifacts
         uses: actions/download-artifact@v3
         with:
           name: dist
-          
+
       - name: Deploy to staging
         run: |
           echo "Deploying to staging environment..."
           # Add actual deployment commands here
-          
+
       - name: Run smoke tests
         run: |
           echo "Running smoke tests on staging..."
@@ -340,16 +340,16 @@ jobs:
     environment:
       name: production
       url: https://api.mycodexvantaos.io
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
       - name: Download build artifacts
         uses: actions/download-artifact@v3
         with:
           name: dist
-          
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
@@ -358,17 +358,17 @@ jobs:
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+
       - name: Deploy to production
         run: |
           echo "Deploying to production environment..."
           # Add actual deployment commands here
-          
+
       - name: Run health checks
         run: |
           echo "Running health checks on production..."
           # Add health check commands here
-          
+
       - name: Notify deployment
         if: success()
         run: |
@@ -380,7 +380,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [deploy-staging, deploy-production]
     if: always()
-    
+
     steps:
       - name: Send notification
         run: |

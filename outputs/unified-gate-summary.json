@@ -1,0 +1,23 @@
+{
+  "issues": [
+    {
+      "code": "missing-plane",
+      "message": "required plane is absent: ai-infra",
+      "path": "config/unified-gates/unified-gate-index.yaml",
+      "severity": "error"
+    },
+    {
+      "code": "missing-plane",
+      "message": "required plane is absent: quality",
+      "path": "config/unified-gates/unified-gate-index.yaml",
+      "severity": "error"
+    }
+  ],
+  "metrics": {
+    "blockingGateCount": 18,
+    "gateCount": 18,
+    "issueCount": 2,
+    "minimumBlockingGateCount": 18
+  },
+  "ok": false
+}

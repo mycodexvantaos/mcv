@@ -6,13 +6,13 @@ workflow runs, classifying errors, and generating repair plans.
 
 import argparse
 import asyncio
-import json
-import logging
 import sys
 import uuid
 from contextlib import asynccontextmanager
 from datetime import datetime
 from typing import Any
+
+import logging
 
 import uvicorn
 from asyncpg.exceptions import (

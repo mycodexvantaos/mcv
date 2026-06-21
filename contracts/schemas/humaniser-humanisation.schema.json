@@ -62,7 +62,15 @@
   "definitions": {
     "SentenceRewrite": {
       "type": "object",
-      "required": ["index", "original", "rewritten", "originalAiScore", "newAiScore", "improvement", "changes"],
+      "required": [
+        "index",
+        "original",
+        "rewritten",
+        "originalAiScore",
+        "newAiScore",
+        "improvement",
+        "changes"
+      ],
       "properties": {
         "index": {
           "type": "integer",
@@ -107,7 +115,13 @@
     },
     "ChangeSummary": {
       "type": "object",
-      "required": ["sentencesRewritten", "sentencesUnchanged", "avgScoreImprovement", "overallScoreChange", "changeCategories"],
+      "required": [
+        "sentencesRewritten",
+        "sentencesUnchanged",
+        "avgScoreImprovement",
+        "overallScoreChange",
+        "changeCategories"
+      ],
       "properties": {
         "sentencesRewritten": {
           "type": "integer",
@@ -154,7 +168,15 @@
       "properties": {
         "category": {
           "type": "string",
-          "enum": ["formality", "ai-pattern-removal", "sentence-structure", "hedging", "sentence-opening", "vocabulary", "other"]
+          "enum": [
+            "formality",
+            "ai-pattern-removal",
+            "sentence-structure",
+            "hedging",
+            "sentence-opening",
+            "vocabulary",
+            "other"
+          ]
         },
         "count": {
           "type": "integer",

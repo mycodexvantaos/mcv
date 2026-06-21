@@ -5,7 +5,12 @@
  * Zero external API dependencies.
  */
 
-import type { IRewriteProvider, HumaniserResult, HumaniserRequest, ProviderSource } from '../../types';
+import type {
+  IRewriteProvider,
+  HumaniserResult,
+  HumaniserRequest,
+  ProviderSource,
+} from '../../types';
 import { humaniseNative } from '../../core/rewriter';
 
 export class NativeRewriteProvider implements IRewriteProvider {

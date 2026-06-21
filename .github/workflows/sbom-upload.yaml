@@ -1,0 +1,34 @@
+# === path: .github/workflows/sbom-upload.yaml ===
+name: SBOM Upload
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: read
+
+jobs:
+  build-sbom:
+    name: Build and Upload SBOM
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Generate SBOM with Syft
+        env:
+          SYFT_VERSION: '1.11.0'
+        run: |
+          # Install Syft for SBOM generation
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin v${SYFT_VERSION}
+          syft dir:. -o cyclonedx-json > sbom-mycodexvantaos.json
+
+      - name: Upload SBOM as release asset
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65
+        if: github.event_name == 'release'
+        with:
+          files: sbom-mycodexvantaos.json

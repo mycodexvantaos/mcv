@@ -294,7 +294,7 @@ spec:
     layers:
       - id: meta-governance
         range: '01-08'
-        directory: ai-infra-gates/layer-00-meta-governance
+        directory: ai-infra-gates/l00
         count: 8
         purpose:
           - naming
@@ -316,7 +316,7 @@ spec:
 
       - id: compute-foundation
         range: '11-18'
-        directory: ai-infra-gates/layer-10-compute-foundation
+        directory: ai-infra-gates/l10
         count: 8
         purpose:
           - ai-chip
@@ -339,7 +339,7 @@ spec:
 
       - id: data-foundation
         range: '21-28'
-        directory: ai-infra-gates/layer-20-data-foundation
+        directory: ai-infra-gates/l20
         count: 8
         purpose:
           - dataset-contract
@@ -362,7 +362,7 @@ spec:
 
       - id: algorithm-foundation
         range: '31-38'
-        directory: ai-infra-gates/layer-30-algorithm-foundation
+        directory: ai-infra-gates/l30
         count: 8
         purpose:
           - ai-framework
@@ -385,7 +385,7 @@ spec:
 
       - id: ai-workload
         range: '41-48'
-        directory: ai-infra-gates/layer-40-ai-workload
+        directory: ai-infra-gates/l40
         count: 8
         purpose:
           - declarative-workload-contract
@@ -408,7 +408,7 @@ spec:
 
       - id: ai-task-billing
         range: '51-58'
-        directory: ai-infra-gates/layer-50-ai-task-billing
+        directory: ai-infra-gates/l50
         count: 8
         purpose:
           - usage-event
@@ -431,7 +431,7 @@ spec:
 
       - id: cloud-managed-infrastructure
         range: '61-64'
-        directory: ai-infra-gates/layer-60-cloud-managed-infrastructure
+        directory: ai-infra-gates/l60
         count: 4
         purpose:
           - cloud-infra-readiness
@@ -446,7 +446,7 @@ spec:
 
       - id: attestation-compliance-closure
         range: '91-99'
-        directory: ai-infra-gates/layer-90-attestation-compliance-closure
+        directory: ai-infra-gates/l90
         count: 9
         purpose:
           - sbom
@@ -620,26 +620,26 @@ spec:
 
   businessCapabilityMapping:
     - capability: ai-compute-center-hosting
-      requiredGateLayer: layer-10-compute-foundation
+      requiredGateLayer: l10
 
     - capability: vector-database-service
-      requiredGateLayer: layer-20-data-foundation
+      requiredGateLayer: l20
 
     - capability: ai-agent-framework
       requiredGateLayer:
-        - layer-30-algorithm-foundation
-        - layer-40-ai-workload
+        - l30
+        - l40
 
     - capability: ai-full-chain-development-platform
       requiredGateLayer:
-        - layer-00-meta-governance
-        - layer-10-compute-foundation
-        - layer-20-data-foundation
-        - layer-30-algorithm-foundation
-        - layer-40-ai-workload
+        - l00
+        - l10
+        - l20
+        - l30
+        - l40
 
     - capability: inference-billing
-      requiredGateLayer: layer-50-ai-task-billing
+      requiredGateLayer: l50
 
     - capability: training-billing
       requiredGate: gate-53-training-metering-validation
@@ -651,10 +651,10 @@ spec:
       requiredGate: gate-55-agent-run-metering-validation
 
     - capability: cloud-managed-infrastructure
-      requiredGateLayer: layer-60-cloud-managed-infrastructure
+      requiredGateLayer: l60
 
     - capability: compliance-grade-delivery
-      requiredGateLayer: layer-90-attestation-compliance-closure
+      requiredGateLayer: l90
 
   ci:
     requiredValidators:

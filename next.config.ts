@@ -37,7 +37,7 @@ const nextConfig: NextConfig = {
           enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
           bundleName: 'mycodexvantaos-nextjs',
           uploadToken: process.env.CODECOV_TOKEN,
-        }),
+        })
       );
     }
     return config;

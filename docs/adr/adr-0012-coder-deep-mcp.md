@@ -100,16 +100,16 @@ Implement the Coder-Deep MCP Server as six composable library modules and one Fa
 
 The comprehensive test suite covers all layers of the service with 176 tests achieving 70% coverage:
 
-| Test file | Tests | Coverage area |
-|-----------|-------|---------------|
-| `test_coder_deep_memory.py` | 15 | MemoryStore CRUD, search, namespaces, count |
-| `test_coder_deep_cache.py` | 20 | ContextCache put/get, TTL, LRU eviction, find, stats, refresh |
-| `test_coder_deep_behavior.py` | 15 | BehaviorTracker record, query, stats, sessions, enums |
-| `test_coder_deep_architecture.py` | 16 | ArchitectureSync scan, diff, snapshots, languages, ignores |
-| `test_coder_deep_codex.py` | 16 | PipelineCodex put/get, versioning, query, stats, enums |
-| `test_coder_deep_tasks.py` | 29 | TaskTracker create/update/delete, transitions, dependencies, stats, enums |
-| `test_coder_deep_api.py` | 42 | All 6 API domains, health, request ID, standardized responses |
-| `test_coder_deep_mcp.py` | 22 | MCP tools/resources/prompts listing, tool invocation, SSE |
+| Test file                         | Tests | Coverage area                                                             |
+| --------------------------------- | ----- | ------------------------------------------------------------------------- |
+| `test_coder_deep_memory.py`       | 15    | MemoryStore CRUD, search, namespaces, count                               |
+| `test_coder_deep_cache.py`        | 20    | ContextCache put/get, TTL, LRU eviction, find, stats, refresh             |
+| `test_coder_deep_behavior.py`     | 15    | BehaviorTracker record, query, stats, sessions, enums                     |
+| `test_coder_deep_architecture.py` | 16    | ArchitectureSync scan, diff, snapshots, languages, ignores                |
+| `test_coder_deep_codex.py`        | 16    | PipelineCodex put/get, versioning, query, stats, enums                    |
+| `test_coder_deep_tasks.py`        | 29    | TaskTracker create/update/delete, transitions, dependencies, stats, enums |
+| `test_coder_deep_api.py`          | 42    | All 6 API domains, health, request ID, standardized responses             |
+| `test_coder_deep_mcp.py`          | 22    | MCP tools/resources/prompts listing, tool invocation, SSE                 |
 
 Key testing techniques:
 

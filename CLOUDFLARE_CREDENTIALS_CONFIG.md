@@ -5,8 +5,8 @@
 您已提供以下憑證資訊：
 
 - **CLOUDFLARE_API_TOKEN**: [已提供]
-- **CLOUDFLARE_ACCOUNT_ID**: 2fead4a141ec2c677eb3bf0ac535f1d5
-- **CLOUDFLARE_ZONE_ID**: 1bdb04f9da82872cdff76d8515b85246
+- **CLOUDFLARE_ACCOUNT_ID**: [請填入您的 Account ID]
+- **CLOUDFLARE_ZONE_ID**: [請填入您的 Zone ID]
 
 **請立即執行以下步驟完成配置：**
 
@@ -18,7 +18,7 @@
 
 1. 前往 GitHub Secrets 設定頁面：
 
-   ```
+   ```text
    https://github.com/mycodexvantaos/mycodexvantaos/settings/secrets/actions
    ```
 
@@ -26,7 +26,7 @@
 
 3. 添加第一個 Secret：
    - **Name**: `CLOUDFLARE_API_TOKEN`
-   - **Value**: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiMmZlYWQ0YTE0MWVjMmM2NzdlYjNiZjBhYzUzNWYxZDUiLCJleHAiOjE3NzgxMDcwNDYsImlhdCI6MTc3ODAwNzA0NiwicGVybWlzc2lvbnMiOlsiaHR0cHM6Ly9hcGkuY2xvdWRmbGFyZS5jb20vY2xpZW50L3Y0L2FjY291bnRzLzpmZWFkNGExNDFlYzJjNjc3ZWIzYmYwYWM1MzVmMWQ1L2JpbGxpbmcvKiIsImh0dHBzOi8vYXBpLmNsb3VkZmxhcmUuY29tL2NsaWVudC92NC9hY2NvdW50cy86ZmVhZDRhMTQxZWMyYzY3N2ViM2JmMGFjNTM1ZjFkNS9iaWxsaW5nLyo6cmVhZCJdLCJzdWIiOiJteWNvZGV2YW50YW9zQGdtYWlsLmNvbSJ9.6ed43d34957a49fcb90ec8e43f7db523`
+   - **Value**: `<redacted-cloudflare-token>`
    - 點擊 "Add secret"
 
 4. 添加第二個 Secret：
@@ -50,11 +50,11 @@ gh secret set CLOUDFLARE_API_TOKEN
 
 # 設置 Account ID
 gh secret set CLOUDFLARE_ACCOUNT_ID
-# 在提示時貼上：2fead4a141ec2c677eb3bf0ac535f1d5
+# 在提示時貼上：<您的 Account ID>
 
 # 設置 Zone ID
 gh secret set CLOUDFLARE_ZONE_ID
-# 在提示時貼上：1bdb04f9da82872cdff76d8515b85246
+# 在提示時貼上：<您的 Zone ID>
 ```
 
 ### 步驟 2：驗證配置
@@ -97,7 +97,7 @@ gh pr create --title "Add Cloudflare Pages Deployment" --body "Adds Cloudflare P
 
 1. 前往 GitHub Actions 頁面：
 
-   ```
+   ```text
    https://github.com/mycodexvantaos/mycodexvantaos/actions
    ```
 

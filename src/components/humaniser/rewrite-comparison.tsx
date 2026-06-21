@@ -95,9 +95,7 @@ export function RewriteComparison({
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center">
-              <p className="text-xl font-bold text-green-500">
-                {changeSummary.sentencesRewritten}
-              </p>
+              <p className="text-xl font-bold text-green-500">{changeSummary.sentencesRewritten}</p>
               <p className="text-xs text-muted-foreground">Sentences Rewritten</p>
             </div>
             <div className="text-center">
@@ -105,9 +103,7 @@ export function RewriteComparison({
               <p className="text-xs text-muted-foreground">Unchanged</p>
             </div>
             <div className="text-center">
-              <p className="text-xl font-bold text-green-500">
-                {improvementPct}%
-              </p>
+              <p className="text-xl font-bold text-green-500">{improvementPct}%</p>
               <p className="text-xs text-muted-foreground">AI Score Reduction</p>
             </div>
             <div className="text-center">
@@ -198,10 +194,7 @@ export function RewriteComparison({
         <CardContent>
           <div className="space-y-1 font-mono text-sm">
             {comparison.diffs.map((diff, i) => (
-              <div
-                key={`diff-${i}`}
-                className={`px-3 py-1.5 rounded ${diffClass(diff.type)}`}
-              >
+              <div key={`diff-${i}`} className={`px-3 py-1.5 rounded ${diffClass(diff.type)}`}>
                 <span className="text-muted-foreground mr-2">
                   {diff.type === 'removed' ? '-' : diff.type === 'added' ? '+' : ' '}
                 </span>

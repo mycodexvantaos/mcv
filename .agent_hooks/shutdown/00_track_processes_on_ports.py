@@ -209,7 +209,7 @@ def main():
         processes: list[Process] = get_processes_listening_on_ports()
         processes = deduplicate_processes_by_port(processes)
     except Exception:
-        logger.exception(f"Error getting processes running on ports")
+        logger.exception("Error getting processes running on ports")
         sys.exit(1)
 
     # Track each unique command only once
@@ -221,7 +221,7 @@ def main():
         ]
         processes_info = deduplicate_processes_by_command(processes_info)
     except Exception:
-        logger.exception(f"Error getting process info")
+        logger.exception("Error getting process info")
         sys.exit(1)
 
     supervisor_config_entries: list[str] = []
@@ -242,7 +242,7 @@ def main():
         with open(SUPERVISORD_CONF_FILE, "w") as f:
             f.write("\n".join(supervisor_config_entries))
     except Exception:
-        logger.exception(f"Error writing supervisor config file")
+        logger.exception("Error writing supervisor config file")
         sys.exit(1)
 
     logger.info(
@@ -254,5 +254,5 @@ if __name__ == "__main__":
     try:
         main()
     except Exception:
-        logger.exception(f"Error tracking processes on ports")
+        logger.exception("Error tracking processes on ports")
         sys.exit(1)

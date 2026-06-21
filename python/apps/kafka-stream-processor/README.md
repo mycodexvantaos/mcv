@@ -17,13 +17,13 @@ cd python && uv run python apps/kafka-stream-processor/main.py produce --topic m
 
 ## Configuration
 
-| Environment Variable       | Default         | Description                      |
-| -------------------------- | --------------- | -------------------------------- |
-| `KAFKA_BOOTSTRAP_SERVERS`  | `localhost:9092` | Kafka broker address(es)        |
-| `LOG_LEVEL`                | `INFO`           | Logging level                   |
-| `HOST`                     | `0.0.0.0`        | API server bind host            |
-| `PORT`                     | `8001`           | API server bind port            |
-| `DATABASE_URL`             | _(empty)_        | Optional database connection    |
+| Environment Variable      | Default          | Description                  |
+| ------------------------- | ---------------- | ---------------------------- |
+| `KAFKA_BOOTSTRAP_SERVERS` | `localhost:9092` | Kafka broker address(es)     |
+| `LOG_LEVEL`               | `INFO`           | Logging level                |
+| `HOST`                    | `0.0.0.0`        | API server bind host         |
+| `PORT`                    | `8001`           | API server bind port         |
+| `DATABASE_URL`            | _(empty)_        | Optional database connection |
 
 ## API Endpoints
 

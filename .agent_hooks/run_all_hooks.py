@@ -93,5 +93,5 @@ if __name__ == "__main__":
     try:
         main()
     except Exception:
-        logger.exception(f"Error running hooks")
+        logger.exception("Error running hooks")
         sys.exit(1)

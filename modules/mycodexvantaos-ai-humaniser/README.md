@@ -16,12 +16,12 @@ The Humaniser module detects AI-generated content in text and rewrites flagged s
 
 ### Architecture Principles
 
-| Principle | Implementation |
-|---|---|
-| **Local-first** | Native detection and rewriting with zero external dependencies |
-| **Provider-agnostic** | `IDetectionProvider` / `IRewriteProvider` interfaces with native and external implementations |
-| **Contract-first** | Service definition YAML + JSON Schema validation under `contracts/` |
-| **Governance-enforced** | Audit logging, integrity chain, integrity checks on results |
+| Principle               | Implementation                                                                                |
+| ----------------------- | --------------------------------------------------------------------------------------------- |
+| **Local-first**         | Native detection and rewriting with zero external dependencies                                |
+| **Provider-agnostic**   | `IDetectionProvider` / `IRewriteProvider` interfaces with native and external implementations |
+| **Contract-first**      | Service definition YAML + JSON Schema validation under `contracts/`                           |
+| **Governance-enforced** | Audit logging, integrity chain, integrity checks on results                                   |
 
 ## Installation
 
@@ -41,13 +41,13 @@ await engine.initialize();
 
 const result = await engine.detect('Your text to analyze here.');
 
-console.log(result.label);        // 'ai' | 'human' | 'mixed' | 'uncertain'
-console.log(result.aiScore);      // 0-1 probability
-console.log(result.confidence);   // 0-1 confidence
-console.log(result.explanation);  // Human-readable explanation
+console.log(result.label); // 'ai' | 'human' | 'mixed' | 'uncertain'
+console.log(result.aiScore); // 0-1 probability
+console.log(result.confidence); // 0-1 confidence
+console.log(result.explanation); // Human-readable explanation
 
 // Per-sentence breakdown
-result.sentences.forEach(s => {
+result.sentences.forEach((s) => {
   console.log(`[${s.label}] ${s.text} (AI: ${(s.aiScore * 100).toFixed(0)}%)`);
 });
 
@@ -69,7 +69,7 @@ console.log('Humanised text:', humanisation.humanisedText);
 console.log('Score improvement:', humanisation.changeSummary.avgScoreImprovement);
 
 // Side-by-side comparison
-humanisation.comparison.diffs.forEach(diff => {
+humanisation.comparison.diffs.forEach((diff) => {
   console.log(`[${diff.type}] ${diff.original || diff.humanised}`);
 });
 ```
@@ -91,46 +91,46 @@ console.log(result.providerSource); // 'hybrid' | 'native' (fallback)
 
 ## Configuration
 
-| Option | Type | Default | Description |
-|---|---|---|---|
-| `mode` | `'native' \| 'connected' \| 'hybrid' \| 'auto'` | `'auto'` | Runtime mode |
-| `detectionThreshold` | `number` | `0.65` | AI detection threshold (0-1) |
-| `minSentenceLength` | `number` | `3` | Minimum words per sentence to analyze |
-| `nativeOnly` | `boolean` | `false` | Force native-only mode |
-| `externalEndpoint` | `string` | — | LLM API endpoint |
-| `apiKey` | `string` | — | LLM API key |
-| `defaultStyle` | `RewriteStyle` | `'neutral'` | Default rewrite style |
-| `preserveTechnicalTerms` | `boolean` | `true` | Preserve technical terms during rewrite |
-| `defaultFormality` | `FormalityLevel` | `'semi-formal'` | Default formality level |
-| `cacheTtlSeconds` | `number` | `300` | Cache TTL for detection results |
-| `maxTextLength` | `number` | `100000` | Maximum input text length |
+| Option                   | Type                                            | Default         | Description                             |
+| ------------------------ | ----------------------------------------------- | --------------- | --------------------------------------- |
+| `mode`                   | `'native' \| 'connected' \| 'hybrid' \| 'auto'` | `'auto'`        | Runtime mode                            |
+| `detectionThreshold`     | `number`                                        | `0.65`          | AI detection threshold (0-1)            |
+| `minSentenceLength`      | `number`                                        | `3`             | Minimum words per sentence to analyze   |
+| `nativeOnly`             | `boolean`                                       | `false`         | Force native-only mode                  |
+| `externalEndpoint`       | `string`                                        | —               | LLM API endpoint                        |
+| `apiKey`                 | `string`                                        | —               | LLM API key                             |
+| `defaultStyle`           | `RewriteStyle`                                  | `'neutral'`     | Default rewrite style                   |
+| `preserveTechnicalTerms` | `boolean`                                       | `true`          | Preserve technical terms during rewrite |
+| `defaultFormality`       | `FormalityLevel`                                | `'semi-formal'` | Default formality level                 |
+| `cacheTtlSeconds`        | `number`                                        | `300`           | Cache TTL for detection results         |
+| `maxTextLength`          | `number`                                        | `100000`        | Maximum input text length               |
 
 ## Rewrite Styles
 
-| Style | Description |
-|---|---|
-| `neutral` | Removes AI-typical patterns (delve, leverage, utilize, facilitate) with minimal changes |
+| Style            | Description                                                                             |
+| ---------------- | --------------------------------------------------------------------------------------- |
+| `neutral`        | Removes AI-typical patterns (delve, leverage, utilize, facilitate) with minimal changes |
 | `conversational` | Replaces formal connectors with casual equivalents, adds hedging, splits long sentences |
-| `professional` | Elevates casual language to professional vocabulary |
-| `academic` | Replaces casual phrasing with academic equivalents |
-| `creative` | Varies sentence openings and structure for more natural flow |
+| `professional`   | Elevates casual language to professional vocabulary                                     |
+| `academic`       | Replaces casual phrasing with academic equivalents                                      |
+| `creative`       | Varies sentence openings and structure for more natural flow                            |
 
 ## Detection Signals
 
 The native detector uses these weighted features:
 
-| Feature | Weight | AI Indicator |
-|---|---|---|
-| `perplexityProxy` | 0.15 | Low (uniform patterns) → AI-like |
-| `lexicalDiversity` | 0.15 | Low (repetitive vocabulary) → AI-like |
-| `repetitionScore` | 0.12 | Very low (too clean) → AI-like |
-| `avgWordFrequency` | 0.10 | High (only common words) → AI-like |
-| `complexity` | 0.10 | Uniform range → AI-like |
-| `vocabularyRichness` | 0.10 | Low (few uncommon words) → AI-like |
-| `transitionSmoothness` | 0.07 | High (overuse of connectors) → AI-like |
-| `avgWordLength` | 0.08 | Very uniform (4.2–5.8) → AI-like |
-| `punctuationDensity` | 0.08 | Very low or very high → AI-like |
-| `wordCount` | 0.05 | Very short or very long → AI-like |
+| Feature                | Weight | AI Indicator                           |
+| ---------------------- | ------ | -------------------------------------- |
+| `perplexityProxy`      | 0.15   | Low (uniform patterns) → AI-like       |
+| `lexicalDiversity`     | 0.15   | Low (repetitive vocabulary) → AI-like  |
+| `repetitionScore`      | 0.12   | Very low (too clean) → AI-like         |
+| `avgWordFrequency`     | 0.10   | High (only common words) → AI-like     |
+| `complexity`           | 0.10   | Uniform range → AI-like                |
+| `vocabularyRichness`   | 0.10   | Low (few uncommon words) → AI-like     |
+| `transitionSmoothness` | 0.07   | High (overuse of connectors) → AI-like |
+| `avgWordLength`        | 0.08   | Very uniform (4.2–5.8) → AI-like       |
+| `punctuationDensity`   | 0.08   | Very low or very high → AI-like        |
+| `wordCount`            | 0.05   | Very short or very long → AI-like      |
 
 ## API Reference
 

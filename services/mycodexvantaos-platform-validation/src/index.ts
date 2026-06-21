@@ -5,9 +5,9 @@ async function main() {
   const userContext = {
     userId: 'user123',
     intent: 'deploy application to production',
-    preferences: {}
+    preferences: {},
   };
-  
+
   const result = await engine.executeContract('AC-001', userContext);
   console.log('Final Execution Result:', result);
 }

@@ -9,17 +9,17 @@ You are a technical writer for the MyCodeXvantaOS platform — a Local-first, Pr
 
 ## Documentation Locations
 
-| Type | Location | Format |
-|------|----------|--------|
-| Architecture | `ARCHITECTURE.md`, `docs/adr/` | Markdown (Chinese) |
-| API docs | `docs/api/` | Markdown |
-| Service READMEs | `services/*/README.md` | Markdown |
-| Package READMEs | `packages/*/README.md` | Markdown |
-| Python docs | `python/*/README.md` | Markdown |
-| Agent instructions | `.github/agents/`, `.github/instructions/` | Markdown |
-| Skills | `.agents/skills/*/`, `.github/skills/` | Markdown |
-| ADRs | `docs/adr/` | Markdown (ADR format) |
-| Changelogs | `CHANGELOG.md`, `services/*/CHANGELOG.md` | Markdown |
+| Type               | Location                                   | Format                |
+| ------------------ | ------------------------------------------ | --------------------- |
+| Architecture       | `ARCHITECTURE.md`, `docs/adr/`             | Markdown (Chinese)    |
+| API docs           | `docs/api/`                                | Markdown              |
+| Service READMEs    | `services/*/README.md`                     | Markdown              |
+| Package READMEs    | `packages/*/README.md`                     | Markdown              |
+| Python docs        | `python/*/README.md`                       | Markdown              |
+| Agent instructions | `.github/agents/`, `.github/instructions/` | Markdown              |
+| Skills             | `.agents/skills/*/`, `.github/skills/`     | Markdown              |
+| ADRs               | `docs/adr/`                                | Markdown (ADR format) |
+| Changelogs         | `CHANGELOG.md`, `services/*/CHANGELOG.md`  | Markdown              |
 
 ## Documentation Standards
 
@@ -33,17 +33,20 @@ You are a technical writer for the MyCodeXvantaOS platform — a Local-first, Pr
 ## Types of Documentation
 
 ### API Documentation
+
 - Endpoint descriptions with request/response schemas
 - Authentication requirements
 - Error codes and handling
 - Usage examples with curl and TypeScript
 
 ### Architecture Decision Records (ADRs)
+
 - Follow format in `docs/adr/`
 - Include: Context, Decision, Consequences
 - Number sequentially: `adr-NNNN-<title>.md`
 
 ### Service Documentation
+
 - Purpose and responsibilities
 - API contracts
 - Configuration requirements
@@ -51,6 +54,7 @@ You are a technical writer for the MyCodeXvantaOS platform — a Local-first, Pr
 - Local development setup
 
 ### Package Documentation
+
 - Purpose and exported APIs
 - Installation and usage
 - TypeScript types and interfaces
@@ -68,6 +72,7 @@ You are a technical writer for the MyCodeXvantaOS platform — a Local-first, Pr
 ## Cross-Module Documentation
 
 When documenting cross-cutting concerns:
+
 - Reference the architecture layers
 - Link to related packages/services
 - Document the Provider pattern usage

@@ -45,6 +45,7 @@ npm run dream:dry-run
 ## CI Repair Agent
 
 ### Purpose
+
 Automatically analyzes failed GitHub Actions runs and generates repair plans.
 
 ### Usage
@@ -61,7 +62,9 @@ python -m main serve --token $GITHUB_TOKEN --port 8000
 ```
 
 ### CI Workflow
+
 Triggered by changes to:
+
 - `python/packages/mycodexvantaos-ci-repair/**`
 - `python/apps/ci-repair-agent/**`
 - `python/tests/test_ci_repair_*`

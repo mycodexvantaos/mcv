@@ -326,7 +326,7 @@ class TestExtractAffectedDependencies:
 
     def test_no_dependencies_in_log(self) -> None:
         log = "Build failed with exit code 1"
-        assert extract_affectedDependencies(log) == []
+        assert extract_affected_dependencies(log) == []
 
     def test_deduplicates(self) -> None:
         log = "Could not resolve dependency: @opentelemetry/sdk-node\nCould not resolve dependency: @opentelemetry/sdk-node"
