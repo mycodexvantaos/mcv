@@ -80,10 +80,10 @@ def replace_section_sign(content):
     original = content
     # Replace Sec. followed by digits (like Sec.5, Sec.7, Sec.7.2, Sec.10-12)
     # Pattern: Sec.<digits> or Sec.<digits>.<digits> or Sec.<digits>-<digits>
-    content = re.sub(r'Sec.(\d+(?:[.\-]\d+)*)', r'Sec.\1', content)
+    content = re.sub(r'Sec\.(\d+(?:[.\-]\d+)*)', r'Sec.\1', content)
 
     # Replace standalone Sec. (not followed by digits)
-    content = re.sub(r'Sec.', 'Sec.', content)
+    content = re.sub(r'Sec\.(?!\d)', 'Sec.', content)
 
     actual_count = original.count('Sec.') - content.count('Sec.')
     replaced_total += actual_count
