@@ -44,6 +44,63 @@ permissions:
 
 jobs:
   # ====================
+  # CodeQL Analysis (compatibility — required by GHAS rule set)
+  # These produce results in categories expected by the code-scanning
+  # configuration that existed on the main branch prior to this PR.
+  # ====================
+  codeql-javascript:
+    name: CodeQL JavaScript
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    if: ${{ github.event.inputs.scan_type == 'all' || github.event.inputs.scan_type == 'sast' || github.event_name != 'workflow_dispatch' }}
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+      packages: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@8aad20d150bbac5944a9f9d289da16a4b0d87c1e
+        with:
+          languages: javascript
+          build-mode: none
+          config-file: .github/codeql/codeql-config.yml
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@8aad20d150bbac5944a9f9d289da16a4b0d87c1e
+        with:
+          category: '/language:javascript'
+
+  codeql-typescript:
+    name: CodeQL TypeScript
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    if: ${{ github.event.inputs.scan_type == 'all' || github.event.inputs.scan_type == 'sast' || github.event_name != 'workflow_dispatch' }}
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+      packages: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@8aad20d150bbac5944a9f9d289da16a4b0d87c1e
+        with:
+          languages: javascript
+          build-mode: none
+          config-file: .github/codeql/codeql-config.yml
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@8aad20d150bbac5944a9f9d289da16a4b0d87c1e
+        with:
+          category: '/language:typescript'
+
+    # ====================
   # Secret Scanning (Gitleaks via CLI)
   # ====================
   secrets-scan:
@@ -171,7 +228,7 @@ jobs:
     name: Security Summary
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    needs: [secrets-scan, sast-semgrep, iac-scan, container-scan]
+    needs: [codeql-javascript, codeql-typescript, secrets-scan, sast-semgrep, iac-scan, container-scan]
     if: always()
     steps:
       - name: Generate Security Summary
@@ -186,7 +243,9 @@ jobs:
             echo ""
             echo "| Scanner | Status |"
             echo "|---------|--------|"
-            echo "| Gitleaks (Secrets) | ${SECRETS_RESULT} |"
+            echo "| CodeQL (JavaScript) | ${{ needs.codeql-javascript.result }} |"
+          echo "| CodeQL (TypeScript) | ${{ needs.codeql-typescript.result }} |"
+          echo "| Gitleaks (Secrets) | ${SECRETS_RESULT} |"
             echo "| Semgrep (SAST) | ${SEMGREP_RESULT} |"
             echo "| Checkov (IaC) | ${CHECKOV_RESULT} |"
             echo "| Trivy (Container) | ${TRIVY_RESULT} |"
