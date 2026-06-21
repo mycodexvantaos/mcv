@@ -6,7 +6,6 @@ Validates the foundation/ directory structure per the Unified Architecture Const
 
 import argparse
 import json
-import os
 import sys
 from pathlib import Path
 
