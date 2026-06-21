@@ -24,11 +24,13 @@ jobs:
 
       - name: Validate infrastructure definitions
         run: |
-          echo "### Drift Detection: Infrastructure Not Configured" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "- **Classification:** infrastructure-not-configured" >> "$GITHUB_STEP_SUMMARY"
-          echo "- **Action:** Configure GCP/Terraform/Cloudflare credentials to enable drift detection" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "### Drift Detection: Infrastructure Not Configured"
+            echo ""
+            echo "- **Classification:** infrastructure-not-configured"
+            echo "- **Action:** Configure GCP/Terraform/Cloudflare credentials to enable drift detection"
+            echo ""
+          } >> "$GITHUB_STEP_SUMMARY"
 
           # Basic validation of any infrastructure definitions in the repo
           if [ -d "deploy" ]; then

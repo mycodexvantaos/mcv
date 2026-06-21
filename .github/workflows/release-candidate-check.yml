@@ -157,14 +157,16 @@ jobs:
           TEST_RESULT: ${{ needs.tests.result }}
           PYTHON_RESULT: ${{ needs.python.result }}
         run: |
-          echo "## Release Candidate Verification Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Category | Status |" >> $GITHUB_STEP_SUMMARY
-          echo "|----------|--------|" >> $GITHUB_STEP_SUMMARY
-          echo "| Governance & Contracts | $GOV_RESULT |" >> $GITHUB_STEP_SUMMARY
-          echo "| Tests | $TEST_RESULT |" >> $GITHUB_STEP_SUMMARY
-          echo "| Python CI | $PYTHON_RESULT |" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
+          {
+            echo "## Release Candidate Verification Summary"
+            echo ""
+            echo "| Category | Status |"
+            echo "|----------|--------|"
+            echo "| Governance & Contracts | $GOV_RESULT |"
+            echo "| Tests | $TEST_RESULT |"
+            echo "| Python CI | $PYTHON_RESULT |"
+            echo ""
+          } >> "$GITHUB_STEP_SUMMARY"
 
           if [ "$GOV_RESULT" = "failure" ]; then
             echo "❌ Release candidate NOT ready — governance failed" >> $GITHUB_STEP_SUMMARY

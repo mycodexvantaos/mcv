@@ -27,7 +27,7 @@ jobs:
             ./tools/validators/validate-service-catalog.sh
           else
             echo "Service catalog validator not found — checking naming conventions"
-            find services -maxdepth 1 -type d -name "mycodexvantaos-*" | while read d; do
+            find services -maxdepth 1 -type d -name "mycodexvantaos-*" | while IFS= read -r d; do
               echo "✅ Service: $(basename $d)"
             done
             echo "Service catalog check passed"

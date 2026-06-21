@@ -248,13 +248,15 @@ jobs:
       - name: Mark K8s deployment skipped
         if: steps.kube-guard.outputs.has_kube_config != 'true'
         run: |
-          echo "### K8s Deployment Skipped" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "- **Reason:** \`KUBE_CONFIG_DEV\` is not configured" >> "$GITHUB_STEP_SUMMARY"
-          echo "- **Classification:** infrastructure-not-configured" >> "$GITHUB_STEP_SUMMARY"
-          echo "- **Action:** Configure \`KUBE_CONFIG_DEV\` secret (base64-encoded kubeconfig) to enable K8s deployment" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "Docker image build and registry push completed successfully." >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "### K8s Deployment Skipped"
+            echo ""
+            echo "- **Reason:** \`KUBE_CONFIG_DEV\` is not configured"
+            echo "- **Classification:** infrastructure-not-configured"
+            echo "- **Action:** Configure \`KUBE_CONFIG_DEV\` secret (base64-encoded kubeconfig) to enable K8s deployment"
+            echo ""
+            echo "Docker image build and registry push completed successfully."
+          } >> "$GITHUB_STEP_SUMMARY"
 
   # ====================
   # Stage 7: Post-Deployment
@@ -272,14 +274,16 @@ jobs:
           DEV_RESULT: ${{ needs.deploy-dev.result }}
           VERSION: ${{ needs.prepare.outputs.version }}
         run: |
-          echo "## Unified CD Summary" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "| Stage | Status |" >> "$GITHUB_STEP_SUMMARY"
-          echo "|-------|--------|" >> "$GITHUB_STEP_SUMMARY"
-          echo "| Docker image build | ${CONTAINER_RESULT} |" >> "$GITHUB_STEP_SUMMARY"
-          echo "| Container registry push | ${CONTAINER_RESULT} |" >> "$GITHUB_STEP_SUMMARY"
-          echo "| Development K8s deploy | ${DEV_RESULT} |" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "**Version:** ${VERSION}" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "_K8s deploy results of 'skipped' indicate the corresponding kubeconfig secret is not configured (infrastructure-not-configured)._" >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "## Unified CD Summary"
+            echo ""
+            echo "| Stage | Status |"
+            echo "|-------|--------|"
+            echo "| Docker image build | ${CONTAINER_RESULT} |"
+            echo "| Container registry push | ${CONTAINER_RESULT} |"
+            echo "| Development K8s deploy | ${DEV_RESULT} |"
+            echo ""
+            echo "**Version:** ${VERSION}"
+            echo ""
+            echo "_K8s deploy results of 'skipped' indicate the corresponding kubeconfig secret is not configured (infrastructure-not-configured)._"
+          } >> "$GITHUB_STEP_SUMMARY"

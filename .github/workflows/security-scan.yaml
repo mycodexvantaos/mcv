@@ -181,15 +181,17 @@ jobs:
           CHECKOV_RESULT: ${{ needs.iac-scan.result }}
           TRIVY_RESULT: ${{ needs.container-scan.result }}
         run: |
-          echo "## Security Scan Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Scanner | Status |" >> $GITHUB_STEP_SUMMARY
-          echo "|---------|--------|" >> $GITHUB_STEP_SUMMARY
-          echo "| Gitleaks (Secrets) | ${SECRETS_RESULT} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Semgrep (SAST) | ${SEMGREP_RESULT} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Checkov (IaC) | ${CHECKOV_RESULT} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Trivy (Container) | ${TRIVY_RESULT} |" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Note:** CodeQL analysis is handled by the separate CodeQL Advanced workflow." >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Scan completed at: $(date -u)" >> $GITHUB_STEP_SUMMARY
+          {
+            echo "## Security Scan Summary"
+            echo ""
+            echo "| Scanner | Status |"
+            echo "|---------|--------|"
+            echo "| Gitleaks (Secrets) | ${SECRETS_RESULT} |"
+            echo "| Semgrep (SAST) | ${SEMGREP_RESULT} |"
+            echo "| Checkov (IaC) | ${CHECKOV_RESULT} |"
+            echo "| Trivy (Container) | ${TRIVY_RESULT} |"
+            echo ""
+            echo "**Note:** CodeQL analysis is handled by the separate CodeQL Advanced workflow."
+            echo ""
+            echo "Scan completed at: $(date -u)"
+          } >> "$GITHUB_STEP_SUMMARY"
