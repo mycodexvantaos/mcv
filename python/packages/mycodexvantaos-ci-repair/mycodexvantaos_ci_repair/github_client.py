@@ -6,7 +6,6 @@ import logging
 from typing import Any
 
 import httpx
-
 from mycodexvantaos_ci_repair.models import FailedJob, FailedStep, WorkflowRunSummary
 
 logger = logging.getLogger(__name__)

@@ -1,7 +1,6 @@
 """Tests for mycodexvantaos_coder_deep.pipeline_codex module."""
 
 import pytest
-
 from mycodexvantaos_coder_deep.pipeline_codex import (
     CodexCategory,
     CodexEntry,

@@ -16,11 +16,7 @@ import json
 import sys
 from pathlib import Path
 
-from mycodexvantaos_memory_dream import (
-    DreamRun,
-    DreamReport,
-    MemoryItem,
-)
+from mycodexvantaos_memory_dream import DreamReport, DreamRun, MemoryItem
 
 
 def load_memory_items_from_json(filepath: str) -> list[MemoryItem]:
@@ -141,10 +137,16 @@ def cmd_dream_run(args: argparse.Namespace) -> None:
     try:
         if args.stdin:
             memory_items = load_memory_items_from_stdin()
-            print(f"✅ Loaded {len(memory_items)} memory items from stdin", file=sys.stderr)
+            print(
+                f"✅ Loaded {len(memory_items)} memory items from stdin",
+                file=sys.stderr,
+            )
         elif args.input:
             memory_items = load_memory_items_from_json(args.input)
-            print(f"✅ Loaded {len(memory_items)} memory items from {args.input}", file=sys.stderr)
+            print(
+                f"✅ Loaded {len(memory_items)} memory items from {args.input}",
+                file=sys.stderr,
+            )
         else:
             # No input specified — use sample data for demo
             memory_items = _create_sample_memory_items()

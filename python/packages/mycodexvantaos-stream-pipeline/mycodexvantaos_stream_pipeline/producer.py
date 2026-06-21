@@ -10,7 +10,6 @@ from typing import Any
 
 from aiokafka import AIOKafkaProducer
 from aiokafka.errors import KafkaError
-
 from mycodexvantaos_stream_pipeline.models import (
     CompressionType,
     DeadLetterMessage,
@@ -187,10 +186,12 @@ class StreamProducer:
                         result = await self._producer.send_and_wait(
                             topic,
                             value=msg.serialized_value(),
-                            key=msg.key.encode("utf-8") if isinstance(msg.key, str) else None,
-                            headers=[(k, v.encode("utf-8")) for k, v in msg.headers.items()]
-                            if msg.headers
-                            else None,
+                            key=(msg.key.encode("utf-8") if isinstance(msg.key, str) else None),
+                            headers=(
+                                [(k, v.encode("utf-8")) for k, v in msg.headers.items()]
+                                if msg.headers
+                                else None
+                            ),
                         )
                         results.append((result.partition, result.offset))
                         self._metrics.messages_produced += 1

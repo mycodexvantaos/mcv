@@ -11,6 +11,7 @@ All models map to TypeScript contracts:
 from datetime import datetime
 from enum import Enum
 from typing import Any, Self
+
 from pydantic import BaseModel, Field, field_validator, model_validator
 
 
@@ -57,7 +58,8 @@ class MemoryItem(BaseModel):
         default=MemoryItemType.OBSERVATION, description="Type of memory"
     )
     conflicts_with: list[str] = Field(
-        default_factory=list, description="IDs of memories this explicitly conflicts with"
+        default_factory=list,
+        description="IDs of memories this explicitly conflicts with",
     )
     created_at: datetime = Field(default_factory=datetime.utcnow, description="Creation timestamp")
     metadata: dict[str, Any] = Field(default_factory=dict, description="Additional metadata")

@@ -8,9 +8,8 @@ from datetime import datetime, timezone
 from typing import Any, AsyncIterator
 
 from aiokafka import AIOKafkaConsumer
-from aiokafka.errors import KafkaError, CommitFailedError
+from aiokafka.errors import CommitFailedError, KafkaError
 from aiokafka.structs import ConsumerRecord, TopicPartition
-
 from mycodexvantaos_stream_pipeline.models import (
     ConsumerConfig,
     DeliverySemantic,
@@ -125,7 +124,7 @@ class StreamConsumer:
             topic=record.topic,
             partition=record.partition,
             offset=record.offset,
-            key=record.key.decode("utf-8") if isinstance(record.key, bytes) else record.key,
+            key=(record.key.decode("utf-8") if isinstance(record.key, bytes) else record.key),
             value=value,
             headers=headers,
             timestamp=record.timestamp,

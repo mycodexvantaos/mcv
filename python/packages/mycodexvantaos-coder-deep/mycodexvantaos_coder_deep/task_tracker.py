@@ -143,7 +143,10 @@ class _InMemoryTaskStore:
         self._tasks[task.task_id] = task
         self._transitions[task.task_id] = [
             TaskTransition(
-                task_id=task.task_id, from_status="", to_status=task.status, actor="system"
+                task_id=task.task_id,
+                from_status="",
+                to_status=task.status,
+                actor="system",
             )
         ]
         return task
@@ -174,7 +177,11 @@ class _InMemoryTaskStore:
             # Set timestamps
             if updates["status"] == TaskStatus.IN_PROGRESS and not task.started_at:
                 task.started_at = datetime.utcnow().isoformat() + "Z"
-            if updates["status"] in (TaskStatus.COMPLETED, TaskStatus.FAILED, TaskStatus.CANCELLED):
+            if updates["status"] in (
+                TaskStatus.COMPLETED,
+                TaskStatus.FAILED,
+                TaskStatus.CANCELLED,
+            ):
                 task.completed_at = datetime.utcnow().isoformat() + "Z"
 
         return task
@@ -551,9 +558,11 @@ class TaskTracker:
                 to_status=r["to_status"],
                 reason=r["reason"],
                 actor=r["actor"],
-                timestamp=r["timestamp"].isoformat()
-                if hasattr(r["timestamp"], "isoformat")
-                else str(r["timestamp"]),
+                timestamp=(
+                    r["timestamp"].isoformat()
+                    if hasattr(r["timestamp"], "isoformat")
+                    else str(r["timestamp"])
+                ),
             )
             for r in rows
         ]
@@ -607,7 +616,7 @@ class TaskTracker:
             by_status=status_map,
             by_priority={r["priority"]: r["cnt"] for r in by_priority},
             by_type={r["task_type"]: r["cnt"] for r in by_type},
-            completion_rate=round(completed / total_count, 4) if total_count > 0 else 0.0,
+            completion_rate=(round(completed / total_count, 4) if total_count > 0 else 0.0),
         )
 
     @staticmethod
@@ -637,21 +646,31 @@ class TaskTracker:
             metadata=metadata,
             result=result,
             error=row["error"],
-            created_at=row["created_at"].isoformat()
-            if hasattr(row["created_at"], "isoformat")
-            else str(row["created_at"]),
-            updated_at=row["updated_at"].isoformat()
-            if hasattr(row["updated_at"], "isoformat")
-            else str(row["updated_at"]),
-            started_at=row["started_at"].isoformat()
-            if row["started_at"] and hasattr(row["started_at"], "isoformat")
-            else (str(row["started_at"]) if row["started_at"] else None),
-            completed_at=row["completed_at"].isoformat()
-            if row["completed_at"] and hasattr(row["completed_at"], "isoformat")
-            else (str(row["completed_at"]) if row["completed_at"] else None),
-            due_at=row["due_at"].isoformat()
-            if row["due_at"] and hasattr(row["due_at"], "isoformat")
-            else (str(row["due_at"]) if row["due_at"] else None),
+            created_at=(
+                row["created_at"].isoformat()
+                if hasattr(row["created_at"], "isoformat")
+                else str(row["created_at"])
+            ),
+            updated_at=(
+                row["updated_at"].isoformat()
+                if hasattr(row["updated_at"], "isoformat")
+                else str(row["updated_at"])
+            ),
+            started_at=(
+                row["started_at"].isoformat()
+                if row["started_at"] and hasattr(row["started_at"], "isoformat")
+                else (str(row["started_at"]) if row["started_at"] else None)
+            ),
+            completed_at=(
+                row["completed_at"].isoformat()
+                if row["completed_at"] and hasattr(row["completed_at"], "isoformat")
+                else (str(row["completed_at"]) if row["completed_at"] else None)
+            ),
+            due_at=(
+                row["due_at"].isoformat()
+                if row["due_at"] and hasattr(row["due_at"], "isoformat")
+                else (str(row["due_at"]) if row["due_at"] else None)
+            ),
             repository=row["repository"],
             branch=row["branch"],
             file_paths=row["file_paths"] or [],

@@ -93,7 +93,12 @@ class MetricsCollector:
                 "counter",
                 lambda m: m.dead_letter_count,
             ),
-            ("stream_consumer_lag", "Current consumer lag", "gauge", lambda m: m.consumer_lag),
+            (
+                "stream_consumer_lag",
+                "Current consumer lag",
+                "gauge",
+                lambda m: m.consumer_lag,
+            ),
             (
                 "stream_processing_latency_ms",
                 "Processing latency in ms",

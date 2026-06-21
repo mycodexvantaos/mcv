@@ -1,7 +1,6 @@
 """Tests for mycodexvantaos_coder_deep.behavior_tracker module."""
 
 import pytest
-
 from mycodexvantaos_coder_deep.behavior_tracker import (
     ActionCategory,
     ActionOutcome,

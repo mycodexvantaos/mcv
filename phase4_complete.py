@@ -2,14 +2,16 @@
 """
 Phase 4: Complete Testing Infrastructure and Production Setup
 """
+
 import json
 from pathlib import Path
 
+
 def create_production_config():
     """Create production configuration files"""
-    
+
     # Create .env.production
-    env_prod = '''
+    env_prod = """
 # MyCodeXvantaOS Production Environment Configuration
 
 # Application Settings
@@ -67,51 +69,44 @@ MAX_INSTANCES=50
 HEALTH_CHECK_ENABLED=true
 HEALTH_CHECK_PORT=8080
 HEALTH_CHECK_INTERVAL=30
-'''
-    
-    with open("/workspace/mycodexvantaos/.env.production", 'w') as f:
+"""
+
+    with open("/workspace/mycodexvantaos/.env.production", "w") as f:
         f.write(env_prod)
-    
+
     print("✅ Created .env.production configuration")
-    
+
     # Create production monitoring config
     monitoring_config = {
         "enabled": True,
-        "metrics": {
-            "enabled": True,
-            "port": 9090,
-            "path": "/metrics"
-        },
+        "metrics": {"enabled": True, "port": 9090, "path": "/metrics"},
         "logging": {
             "level": "info",
             "format": "json",
             "outputs": ["console", "file"],
-            "file_path": "/var/log/mycodexvantaos/app.log"
+            "file_path": "/var/log/mycodexvantaos/app.log",
         },
         "tracing": {
             "enabled": True,
             "endpoint": "http://jaeger:14268/api/traces",
-            "sample_rate": 0.1
+            "sample_rate": 0.1,
         },
         "alerts": {
             "enabled": True,
             "channels": ["email", "slack"],
-            "thresholds": {
-                "error_rate": 0.01,
-                "latency_ms": 5000,
-                "memory_mb": 512
-            }
-        }
+            "thresholds": {"error_rate": 0.01, "latency_ms": 5000, "memory_mb": 512},
+        },
     }
-    
-    with open("/workspace/mycodexvantaos/config/monitoring.production.json", 'w') as f:
+
+    with open("/workspace/mycodexvantaos/config/monitoring.production.json", "w") as f:
         json.dump(monitoring_config, f, indent=2)
-    
+
     print("✅ Created production monitoring configuration")
+
 
 def create_security_audit_config():
     """Create security audit configuration"""
-    
+
     security_config = {
         "audit": {
             "enabled": True,
@@ -120,21 +115,21 @@ def create_security_audit_config():
             "reporting": {
                 "enabled": True,
                 "formats": ["json", "pdf"],
-                "recipients": ["security@mycodexvantaos.com"]
-            }
+                "recipients": ["security@mycodexvantaos.com"],
+            },
         },
         "vulnerability_scan": {
             "enabled": True,
             "tools": ["snyk", "npm audit", "owasp"],
             "severity_threshold": "medium",
-            "auto_fix": True
+            "auto_fix": True,
         },
         "access_control": {
             "enabled": True,
             "authentication": "jwt",
             "authorization": "rbac",
             "session_timeout": 3600,
-            "max_login_attempts": 5
+            "max_login_attempts": 5,
         },
         "data_protection": {
             "encryption_in_transit": True,
@@ -142,19 +137,20 @@ def create_security_audit_config():
             "key_management": "aws-kms",
             "backup_enabled": True,
             "backup_interval": "daily",
-            "retention_days": 90
-        }
+            "retention_days": 90,
+        },
     }
-    
-    with open("/workspace/mycodexvantaos/config/security.audit.json", 'w') as f:
+
+    with open("/workspace/mycodexvantaos/config/security.audit.json", "w") as f:
         json.dump(security_config, f, indent=2)
-    
+
     print("✅ Created security audit configuration")
+
 
 def create_github_actions_workflow():
     """Create comprehensive CI/CD GitHub Actions workflow"""
-    
-    workflow_content = '''name: MyCodeXvantaOS CI/CD Pipeline
+
+    workflow_content = """name: MyCodeXvantaOS CI/CD Pipeline
 
 on:
   push:
@@ -386,19 +382,20 @@ jobs:
         run: |
           echo "CI/CD pipeline completed"
           # Add notification logic here
-'''
-    
+"""
+
     workflow_dir = Path("/workspace/mycodexvantaos/.github/workflows")
     workflow_dir.mkdir(parents=True, exist_ok=True)
-    
-    with open(workflow_dir / "ci-cd.yml", 'w') as f:
+
+    with open(workflow_dir / "ci-cd.yml", "w") as f:
         f.write(workflow_content)
-    
+
     print("✅ Created comprehensive CI/CD GitHub Actions workflow")
+
 
 def create_performance_benchmark():
     """Create performance benchmarking configuration"""
-    
+
     benchmark_config = {
         "enabled": True,
         "tests": [
@@ -407,7 +404,7 @@ def create_performance_benchmark():
                 "description": "Measure initialization time",
                 "iterations": 100,
                 "max_duration_ms": 500,
-                "warmup_iterations": 10
+                "warmup_iterations": 10,
             },
             {
                 "name": "concurrent_operations",
@@ -415,49 +412,50 @@ def create_performance_benchmark():
                 "iterations": 50,
                 "max_duration_ms": 1000,
                 "warmup_iterations": 5,
-                "concurrency": [1, 5, 10, 20, 50]
+                "concurrency": [1, 5, 10, 20, 50],
             },
             {
                 "name": "memory_usage",
                 "description": "Measure memory consumption",
                 "iterations": 100,
                 "max_memory_mb": 100,
-                "warmup_iterations": 10
-            }
+                "warmup_iterations": 10,
+            },
         ],
         "reporting": {
             "enabled": True,
             "format": "html",
             "output_path": "benchmark/results",
-            "comparison_baseline": "main/branch"
-        }
+            "comparison_baseline": "main/branch",
+        },
     }
-    
+
     benchmark_dir = Path("/workspace/mycodexvantaos/benchmark")
     benchmark_dir.mkdir(exist_ok=True)
-    
-    with open(benchmark_dir / "config.json", 'w') as f:
+
+    with open(benchmark_dir / "config.json", "w") as f:
         json.dump(benchmark_config, f, indent=2)
-    
+
     print("✅ Created performance benchmark configuration")
+
 
 def main():
     print("🚀 Phase 4: Complete Testing Infrastructure and Production Setup")
-    print(f"{'='*60}")
-    
+    print(f"{'=' * 60}")
+
     # Create production configuration
     create_production_config()
-    
+
     # Create security audit configuration
     create_security_audit_config()
-    
+
     # Create CI/CD workflow
     create_github_actions_workflow()
-    
+
     # Create performance benchmarks
     create_performance_benchmark()
-    
-    print(f"{'='*60}")
+
+    print(f"{'=' * 60}")
     print("✅ Phase 4 Complete!")
     print("\nCreated:")
     print("- Production environment configuration")
@@ -469,6 +467,7 @@ def main():
     print("2. Deploy to production environment")
     print("3. Execute performance benchmarks")
     print("4. Monitoring and maintenance")
+
 
 if __name__ == "__main__":
     main()

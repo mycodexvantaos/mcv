@@ -499,12 +499,16 @@ class BehaviorTracker:
         return BehaviorSession(
             session_id=row["session_id"],
             agent_id=row["agent_id"] or "default",
-            started_at=row["started_at"].isoformat()
-            if hasattr(row["started_at"], "isoformat")
-            else str(row["started_at"]),
-            ended_at=row["ended_at"].isoformat()
-            if hasattr(row["ended_at"], "isoformat")
-            else str(row["ended_at"]),
+            started_at=(
+                row["started_at"].isoformat()
+                if hasattr(row["started_at"], "isoformat")
+                else str(row["started_at"])
+            ),
+            ended_at=(
+                row["ended_at"].isoformat()
+                if hasattr(row["ended_at"], "isoformat")
+                else str(row["ended_at"])
+            ),
             action_count=row["action_count"],
             success_count=row["success_count"],
             failure_count=row["failure_count"],
@@ -537,12 +541,16 @@ class BehaviorTracker:
                 BehaviorSession(
                     session_id=r["session_id"],
                     agent_id=r["agent_id"] or "default",
-                    started_at=r["started_at"].isoformat()
-                    if hasattr(r["started_at"], "isoformat")
-                    else str(r["started_at"]),
-                    ended_at=r["ended_at"].isoformat()
-                    if hasattr(r["ended_at"], "isoformat")
-                    else str(r["ended_at"]),
+                    started_at=(
+                        r["started_at"].isoformat()
+                        if hasattr(r["started_at"], "isoformat")
+                        else str(r["started_at"])
+                    ),
+                    ended_at=(
+                        r["ended_at"].isoformat()
+                        if hasattr(r["ended_at"], "isoformat")
+                        else str(r["ended_at"])
+                    ),
                     action_count=r["action_count"],
                     success_count=r["success_count"],
                     failure_count=r["failure_count"],
@@ -585,9 +593,11 @@ class BehaviorTracker:
             outcome=row["outcome"],
             error_message=row["error_message"],
             duration_ms=row["duration_ms"],
-            timestamp=row["timestamp"].isoformat()
-            if hasattr(row["timestamp"], "isoformat")
-            else str(row["timestamp"]),
+            timestamp=(
+                row["timestamp"].isoformat()
+                if hasattr(row["timestamp"], "isoformat")
+                else str(row["timestamp"])
+            ),
             metadata=metadata,
             tags=row["tags"] or [],
             repository=row["repository"],

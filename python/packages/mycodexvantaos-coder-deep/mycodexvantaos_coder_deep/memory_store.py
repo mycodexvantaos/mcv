@@ -361,15 +361,21 @@ class MemoryStore:
             key=row["key"],
             value=value,
             metadata=metadata,
-            created_at=row["created_at"].isoformat()
-            if hasattr(row["created_at"], "isoformat")
-            else str(row["created_at"]),
-            updated_at=row["updated_at"].isoformat()
-            if hasattr(row["updated_at"], "isoformat")
-            else str(row["updated_at"]),
-            expires_at=row["expires_at"].isoformat()
-            if row["expires_at"] and hasattr(row["expires_at"], "isoformat")
-            else (str(row["expires_at"]) if row["expires_at"] else None),
+            created_at=(
+                row["created_at"].isoformat()
+                if hasattr(row["created_at"], "isoformat")
+                else str(row["created_at"])
+            ),
+            updated_at=(
+                row["updated_at"].isoformat()
+                if hasattr(row["updated_at"], "isoformat")
+                else str(row["updated_at"])
+            ),
+            expires_at=(
+                row["expires_at"].isoformat()
+                if row["expires_at"] and hasattr(row["expires_at"], "isoformat")
+                else (str(row["expires_at"]) if row["expires_at"] else None)
+            ),
             access_count=row["access_count"],
             source=row["source"],
             tags=row["tags"] if row["tags"] else [],
