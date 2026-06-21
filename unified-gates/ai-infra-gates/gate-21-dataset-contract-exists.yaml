@@ -1,0 +1,23 @@
+id: "gate-20-dataset-contract-exists"
+plane: "ai-infra"
+lifecycle: "active"
+blocking: true
+layer: "data-foundation"
+owner: "data-engineering@mycodexvantaos.com"
+
+contract:
+  input:
+    - dataset_id: "string"
+    - namespace: "string"
+  
+  validation_logic:
+    - step: "check_contract_file_exists"
+      path: "data/contracts/{{dataset_id}}.contract.yaml"
+    - step: "validate_contract_schema"
+      schema: "schemas/dataset-contract-schema.json"
+    - step: "verify_data_lineage"
+      required_fields: ["source", "transformations", "quality_metrics"]
+  
+  output:
+    - validation_result: "boolean"
+    - evidence_artifact: "path"
