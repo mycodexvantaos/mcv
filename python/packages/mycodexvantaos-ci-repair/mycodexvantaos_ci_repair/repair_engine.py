@@ -5,9 +5,14 @@ from __future__ import annotations
 import logging
 import re
 
-from mycodexvantaos_ci_repair.models import (ErrorCategory, FailureAnalysis,
-                                             FailureSeverity, RepairAction,
-                                             RepairActionType, RepairPlan)
+from mycodexvantaos_ci_repair.models import (
+    ErrorCategory,
+    FailureAnalysis,
+    FailureSeverity,
+    RepairAction,
+    RepairActionType,
+    RepairPlan,
+)
 
 logger = logging.getLogger(__name__)
 

@@ -1,13 +1,13 @@
-import pytest
-import os
 from mycodexvantaos_coder_deep.behavior_tracker import BehaviorTracker
-from mycodexvantaos_coder_deep.task_tracker import TaskTracker
 from mycodexvantaos_coder_deep.context_cache import ContextCache
 from mycodexvantaos_coder_deep.memory_store import MemoryStore
+from mycodexvantaos_coder_deep.task_tracker import TaskTracker
+
 
 def test_behavior_tracker_init():
     bt = BehaviorTracker()
     assert bt is not None
+    # 呼叫一些方法以增加覆蓋率
     if hasattr(bt, 'get_status'):
         bt.get_status()
 
