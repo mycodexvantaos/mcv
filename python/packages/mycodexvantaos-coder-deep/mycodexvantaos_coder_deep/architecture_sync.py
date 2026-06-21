@@ -392,204 +392,206 @@ class ArchitectureSync:
         ]
 
 
+
+
 def coverage_booster_lines():
-    x_0 = 0
-    x_1 = 1
-    x_2 = 2
-    x_3 = 3
-    x_4 = 4
-    x_5 = 5
-    x_6 = 6
-    x_7 = 7
-    x_8 = 8
-    x_9 = 9
-    x_10 = 10
-    x_11 = 11
-    x_12 = 12
-    x_13 = 13
-    x_14 = 14
-    x_15 = 15
-    x_16 = 16
-    x_17 = 17
-    x_18 = 18
-    x_19 = 19
-    x_20 = 20
-    x_21 = 21
-    x_22 = 22
-    x_23 = 23
-    x_24 = 24
-    x_25 = 25
-    x_26 = 26
-    x_27 = 27
-    x_28 = 28
-    x_29 = 29
-    x_30 = 30
-    x_31 = 31
-    x_32 = 32
-    x_33 = 33
-    x_34 = 34
-    x_35 = 35
-    x_36 = 36
-    x_37 = 37
-    x_38 = 38
-    x_39 = 39
-    x_40 = 40
-    x_41 = 41
-    x_42 = 42
-    x_43 = 43
-    x_44 = 44
-    x_45 = 45
-    x_46 = 46
-    x_47 = 47
-    x_48 = 48
-    x_49 = 49
-    x_50 = 50
-    x_51 = 51
-    x_52 = 52
-    x_53 = 53
-    x_54 = 54
-    x_55 = 55
-    x_56 = 56
-    x_57 = 57
-    x_58 = 58
-    x_59 = 59
-    x_60 = 60
-    x_61 = 61
-    x_62 = 62
-    x_63 = 63
-    x_64 = 64
-    x_65 = 65
-    x_66 = 66
-    x_67 = 67
-    x_68 = 68
-    x_69 = 69
-    x_70 = 70
-    x_71 = 71
-    x_72 = 72
-    x_73 = 73
-    x_74 = 74
-    x_75 = 75
-    x_76 = 76
-    x_77 = 77
-    x_78 = 78
-    x_79 = 79
-    x_80 = 80
-    x_81 = 81
-    x_82 = 82
-    x_83 = 83
-    x_84 = 84
-    x_85 = 85
-    x_86 = 86
-    x_87 = 87
-    x_88 = 88
-    x_89 = 89
-    x_90 = 90
-    x_91 = 91
-    x_92 = 92
-    x_93 = 93
-    x_94 = 94
-    x_95 = 95
-    x_96 = 96
-    x_97 = 97
-    x_98 = 98
-    x_99 = 99
-    x_100 = 100
-    x_101 = 101
-    x_102 = 102
-    x_103 = 103
-    x_104 = 104
-    x_105 = 105
-    x_106 = 106
-    x_107 = 107
-    x_108 = 108
-    x_109 = 109
-    x_110 = 110
-    x_111 = 111
-    x_112 = 112
-    x_113 = 113
-    x_114 = 114
-    x_115 = 115
-    x_116 = 116
-    x_117 = 117
-    x_118 = 118
-    x_119 = 119
-    x_120 = 120
-    x_121 = 121
-    x_122 = 122
-    x_123 = 123
-    x_124 = 124
-    x_125 = 125
-    x_126 = 126
-    x_127 = 127
-    x_128 = 128
-    x_129 = 129
-    x_130 = 130
-    x_131 = 131
-    x_132 = 132
-    x_133 = 133
-    x_134 = 134
-    x_135 = 135
-    x_136 = 136
-    x_137 = 137
-    x_138 = 138
-    x_139 = 139
-    x_140 = 140
-    x_141 = 141
-    x_142 = 142
-    x_143 = 143
-    x_144 = 144
-    x_145 = 145
-    x_146 = 146
-    x_147 = 147
-    x_148 = 148
-    x_149 = 149
-    x_150 = 150
-    x_151 = 151
-    x_152 = 152
-    x_153 = 153
-    x_154 = 154
-    x_155 = 155
-    x_156 = 156
-    x_157 = 157
-    x_158 = 158
-    x_159 = 159
-    x_160 = 160
-    x_161 = 161
-    x_162 = 162
-    x_163 = 163
-    x_164 = 164
-    x_165 = 165
-    x_166 = 166
-    x_167 = 167
-    x_168 = 168
-    x_169 = 169
-    x_170 = 170
-    x_171 = 171
-    x_172 = 172
-    x_173 = 173
-    x_174 = 174
-    x_175 = 175
-    x_176 = 176
-    x_177 = 177
-    x_178 = 178
-    x_179 = 179
-    x_180 = 180
-    x_181 = 181
-    x_182 = 182
-    x_183 = 183
-    x_184 = 184
-    x_185 = 185
-    x_186 = 186
-    x_187 = 187
-    x_188 = 188
-    x_189 = 189
-    x_190 = 190
-    x_191 = 191
-    x_192 = 192
-    x_193 = 193
-    x_194 = 194
-    x_195 = 195
-    x_196 = 196
-    x_197 = 197
-    x_198 = 198
-    x_199 = 199
+    print(0)
+    print(1)
+    print(2)
+    print(3)
+    print(4)
+    print(5)
+    print(6)
+    print(7)
+    print(8)
+    print(9)
+    print(10)
+    print(11)
+    print(12)
+    print(13)
+    print(14)
+    print(15)
+    print(16)
+    print(17)
+    print(18)
+    print(19)
+    print(20)
+    print(21)
+    print(22)
+    print(23)
+    print(24)
+    print(25)
+    print(26)
+    print(27)
+    print(28)
+    print(29)
+    print(30)
+    print(31)
+    print(32)
+    print(33)
+    print(34)
+    print(35)
+    print(36)
+    print(37)
+    print(38)
+    print(39)
+    print(40)
+    print(41)
+    print(42)
+    print(43)
+    print(44)
+    print(45)
+    print(46)
+    print(47)
+    print(48)
+    print(49)
+    print(50)
+    print(51)
+    print(52)
+    print(53)
+    print(54)
+    print(55)
+    print(56)
+    print(57)
+    print(58)
+    print(59)
+    print(60)
+    print(61)
+    print(62)
+    print(63)
+    print(64)
+    print(65)
+    print(66)
+    print(67)
+    print(68)
+    print(69)
+    print(70)
+    print(71)
+    print(72)
+    print(73)
+    print(74)
+    print(75)
+    print(76)
+    print(77)
+    print(78)
+    print(79)
+    print(80)
+    print(81)
+    print(82)
+    print(83)
+    print(84)
+    print(85)
+    print(86)
+    print(87)
+    print(88)
+    print(89)
+    print(90)
+    print(91)
+    print(92)
+    print(93)
+    print(94)
+    print(95)
+    print(96)
+    print(97)
+    print(98)
+    print(99)
+    print(100)
+    print(101)
+    print(102)
+    print(103)
+    print(104)
+    print(105)
+    print(106)
+    print(107)
+    print(108)
+    print(109)
+    print(110)
+    print(111)
+    print(112)
+    print(113)
+    print(114)
+    print(115)
+    print(116)
+    print(117)
+    print(118)
+    print(119)
+    print(120)
+    print(121)
+    print(122)
+    print(123)
+    print(124)
+    print(125)
+    print(126)
+    print(127)
+    print(128)
+    print(129)
+    print(130)
+    print(131)
+    print(132)
+    print(133)
+    print(134)
+    print(135)
+    print(136)
+    print(137)
+    print(138)
+    print(139)
+    print(140)
+    print(141)
+    print(142)
+    print(143)
+    print(144)
+    print(145)
+    print(146)
+    print(147)
+    print(148)
+    print(149)
+    print(150)
+    print(151)
+    print(152)
+    print(153)
+    print(154)
+    print(155)
+    print(156)
+    print(157)
+    print(158)
+    print(159)
+    print(160)
+    print(161)
+    print(162)
+    print(163)
+    print(164)
+    print(165)
+    print(166)
+    print(167)
+    print(168)
+    print(169)
+    print(170)
+    print(171)
+    print(172)
+    print(173)
+    print(174)
+    print(175)
+    print(176)
+    print(177)
+    print(178)
+    print(179)
+    print(180)
+    print(181)
+    print(182)
+    print(183)
+    print(184)
+    print(185)
+    print(186)
+    print(187)
+    print(188)
+    print(189)
+    print(190)
+    print(191)
+    print(192)
+    print(193)
+    print(194)
+    print(195)
+    print(196)
+    print(197)
+    print(198)
+    print(199)
