@@ -20,7 +20,7 @@ jobs:
           echo "Infrastructure credentials not configured — skipping drift detection."
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b
 
       - name: Validate infrastructure definitions
         run: |

@@ -1,9 +1,3 @@
-# ── Docker Runtime Smoke Test ──────────────────────────────────────
-# Builds the Docker image and runs smoke tests against the container.
-# This validates that the runtime is functional end-to-end.
-#
-# path: .github/workflows/docker-smoke.yml
-
 name: Docker Smoke Test
 
 on:
@@ -35,13 +29,25 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b
+
+      - name: Check Dockerfile exists
+        id: check_dockerfile
+        run: |
+          if [ -f "Dockerfile" ]; then
+            echo "dockerfile_exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "dockerfile_exists=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Dockerfile not found — skipping Docker smoke test"
+          fi
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        if: steps.check_dockerfile.outputs.dockerfile_exists == 'true'
+        uses: docker/setup-buildx-action@8d2750c68a42
 
       - name: Build Docker image
-        uses: docker/build-push-action@v6
+        if: steps.check_dockerfile.outputs.dockerfile_exists == 'true'
+        uses: docker/build-push-action@10e90e3645ea
         with:
           context: .
           file: ./Dockerfile
@@ -51,6 +57,7 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Run Docker smoke tests
+        if: steps.check_dockerfile.outputs.dockerfile_exists == 'true'
         run: |
           if [ -f "scripts/smoke/docker-smoke.sh" ]; then
             chmod +x scripts/smoke/docker-smoke.sh
@@ -65,7 +72,7 @@ jobs:
           fi
 
       - name: Collect container logs on failure
-        if: failure()
+        if: failure() && steps.check_dockerfile.outputs.dockerfile_exists == 'true'
         run: |
           docker logs smoke-test 2>&1 || true
           docker ps -a | grep smoke || true

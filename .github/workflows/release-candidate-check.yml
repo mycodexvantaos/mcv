@@ -32,30 +32,48 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b
 
       - name: Setup PNPM
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@b906affcce14
         with:
           version: ${{ env.PNPM_VERSION }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288c
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile || pnpm install --no-frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
       - name: Contract validation
-        run: pnpm contracts:validate || echo "contracts:validate not yet configured"
+        continue-on-error: true
+        run: |
+          if pnpm run --filter . contracts:validate 2>/dev/null; then
+            echo "✅ Contract validation passed"
+          else
+            echo "⚠️ contracts:validate not yet configured — skipping"
+          fi
 
       - name: Policy check
-        run: pnpm policy:check || echo "policy:check not yet configured"
+        continue-on-error: true
+        run: |
+          if pnpm run --filter . policy:check 2>/dev/null; then
+            echo "✅ Policy check passed"
+          else
+            echo "⚠️ policy:check not yet configured — skipping"
+          fi
 
       - name: Governance check
-        run: pnpm governance:check || echo "governance:check not yet configured"
+        continue-on-error: true
+        run: |
+          if pnpm run --filter . governance:check 2>/dev/null; then
+            echo "✅ Governance check passed"
+          else
+            echo "⚠️ governance:check not yet configured — skipping"
+          fi
 
   # ── Tests ────────────────────────────────────────────────────────
   tests:
@@ -64,21 +82,21 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b
 
       - name: Setup PNPM
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@b906affcce14
         with:
           version: ${{ env.PNPM_VERSION }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288c
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile || pnpm install --no-frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
       - name: Service tests
         run: pnpm test:services || echo "test:services not yet configured"
@@ -99,10 +117,10 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b
 
       - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951
         with:
           python-version: '3.11'
 

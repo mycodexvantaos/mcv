@@ -18,8 +18,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: 'Checkout Repository'
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b
       - name: 'Dependency Review'
-        uses: actions/dependency-review-action@v4
+        uses: actions/dependency-review-action@490138513413
         with:
           config-file: .github/dependency-review-config.yml

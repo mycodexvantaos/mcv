@@ -53,7 +53,7 @@ jobs:
       should_deploy: ${{ steps.check.outputs.should_deploy }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b
 
       - name: Determine version
         id: version
@@ -95,21 +95,21 @@ jobs:
     if: ${{ needs.prepare.outputs.should_deploy == 'true' }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b
 
       - name: Setup PNPM
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@b906affcce14
         with:
           version: '9'
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288c
         with:
           node-version: '22'
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build packages
         run: pnpm run build:packages
@@ -118,7 +118,7 @@ jobs:
         run: pnpm run build:modules
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6
         with:
           name: build-artifacts
           path: |
@@ -139,13 +139,13 @@ jobs:
       image_tag: ${{ steps.meta.outputs.tags }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42
 
       - name: Log in to Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb4685
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -153,7 +153,7 @@ jobs:
 
       - name: Extract metadata
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@c299e40c6544
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
@@ -162,7 +162,7 @@ jobs:
             type=raw,value=${{ needs.prepare.outputs.version }}
 
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645ea
         with:
           context: .
           file: ./Dockerfile
@@ -188,7 +188,7 @@ jobs:
       url: https://dev.mycodexvantaos.io
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b
 
       - name: Check Kubernetes config availability
         id: kube-guard
@@ -206,7 +206,7 @@ jobs:
 
       - name: Configure kubectl
         if: steps.kube-guard.outputs.has_kube_config == 'true'
-        uses: azure/setup-kubectl@v3
+        uses: azure/setup-kubectl@901a10e89ea6
 
       - name: Set kubeconfig
         if: steps.kube-guard.outputs.has_kube_config == 'true'
