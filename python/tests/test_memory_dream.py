@@ -2,8 +2,11 @@
 Tests for Memory Dream Processing
 """
 
-from mycodexvantaos_memory_dream.models import (DreamActionType, MemoryItem,
-                                                MemoryItemType)
+from mycodexvantaos_memory_dream.models import (
+    DreamActionType,
+    MemoryItem,
+    MemoryItemType,
+)
 
 
 def test_memory_item_creation():
@@ -83,7 +86,8 @@ def test_orphan_detection():
         MemoryItem(
             memory_id="mem_001",
             content="Entity system-001 is online",
-            related_entities=["urn:mycodexvantaos:entity:system-002"],  # Doesn't exist
+            # Doesn't exist
+            related_entities=["urn:mycodexvantaos:entity:system-002"],
         ),
         MemoryItem(
             memory_id="mem_002",

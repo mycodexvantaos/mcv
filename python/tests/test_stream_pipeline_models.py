@@ -6,22 +6,26 @@ import json
 from datetime import UTC
 
 import pytest
-from mycodexvantaos_stream_pipeline.models import (CompressionType,
-                                                   ConsumerConfig,
-                                                   ConsumeRequest,
-                                                   DeadLetterMessage,
-                                                   DeliverySemantic,
-                                                   KafkaMessage,
-                                                   KafkaTopicConfig,
-                                                   OffsetResetStrategy,
-                                                   ProcessorConfig,
-                                                   ProcessorState,
-                                                   ProcessorStatusResponse,
-                                                   ProducerConfig,
-                                                   ProduceRequest,
-                                                   ProduceResponse,
-                                                   StreamMetrics, WindowConfig,
-                                                   WindowResult, WindowType)
+from mycodexvantaos_stream_pipeline.models import (
+    CompressionType,
+    ConsumerConfig,
+    ConsumeRequest,
+    DeadLetterMessage,
+    DeliverySemantic,
+    KafkaMessage,
+    KafkaTopicConfig,
+    OffsetResetStrategy,
+    ProcessorConfig,
+    ProcessorState,
+    ProcessorStatusResponse,
+    ProducerConfig,
+    ProduceRequest,
+    ProduceResponse,
+    StreamMetrics,
+    WindowConfig,
+    WindowResult,
+    WindowType,
+)
 from pydantic import ValidationError
 
 # ---------------------------------------------------------------------------
@@ -220,7 +224,8 @@ class TestProcessorConfig:
             ProcessorConfig(name="p", input_topics=[])
 
     def test_processor_with_window(self) -> None:
-        window = WindowConfig(window_type=WindowType.TUMBLING, window_size_ms=30000)
+        window = WindowConfig(
+            window_type=WindowType.TUMBLING, window_size_ms=30000)
         config = ProcessorConfig(
             name="windowed-proc",
             input_topics=["in"],

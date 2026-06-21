@@ -210,7 +210,8 @@ class StateManager:
             print(f"Cleaned up orchestration state: {orchestration_id}")
             return True
 
-        print(f"Warning: Orchestration {orchestration_id} not found for cleanup")
+        print(
+            f"Warning: Orchestration {orchestration_id} not found for cleanup")
         return False
 
     def list_orchestrations(self, limit: int = 100) -> List[Dict]:
@@ -253,12 +254,15 @@ def main():
     subparsers = parser.add_subparsers(dest="action", help="Action to perform")
 
     # Initialize orchestration
-    init_parser = subparsers.add_parser("init", help="Initialize orchestration")
+    init_parser = subparsers.add_parser(
+        "init", help="Initialize orchestration")
     init_parser.add_argument("--orchestration-id", required=True)
-    init_parser.add_argument("--config", required=True, help="JSON config file")
+    init_parser.add_argument("--config", required=True,
+                             help="JSON config file")
 
     # Update repository state
-    update_parser = subparsers.add_parser("update", help="Update repository state")
+    update_parser = subparsers.add_parser(
+        "update", help="Update repository state")
     update_parser.add_argument("--orchestration-id", required=True)
     update_parser.add_argument("--repository", required=True)
     update_parser.add_argument("--status", required=True)
@@ -269,7 +273,8 @@ def main():
     get_parser.add_argument("--orchestration-id", required=True)
 
     # Synchronize orchestration
-    sync_parser = subparsers.add_parser("sync", help="Synchronize orchestration")
+    sync_parser = subparsers.add_parser(
+        "sync", help="Synchronize orchestration")
     sync_parser.add_argument("--orchestration-id", required=True)
 
     # List orchestrations
@@ -277,7 +282,8 @@ def main():
     list_parser.add_argument("--limit", type=int, default=100)
 
     # Cleanup orchestration
-    cleanup_parser = subparsers.add_parser("cleanup", help="Cleanup orchestration")
+    cleanup_parser = subparsers.add_parser(
+        "cleanup", help="Cleanup orchestration")
     cleanup_parser.add_argument("--orchestration-id", required=True)
 
     args = parser.parse_args()

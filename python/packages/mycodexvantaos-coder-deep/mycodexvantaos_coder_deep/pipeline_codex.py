@@ -63,8 +63,10 @@ class CodexEntry(BaseModel):
     team: str = ""
     tags: list[str] = Field(default_factory=list)
     metadata: dict[str, Any] = Field(default_factory=dict)
-    created_at: str = Field(default_factory=lambda: datetime.utcnow().isoformat() + "Z")
-    updated_at: str = Field(default_factory=lambda: datetime.utcnow().isoformat() + "Z")
+    created_at: str = Field(
+        default_factory=lambda: datetime.utcnow().isoformat() + "Z")
+    updated_at: str = Field(
+        default_factory=lambda: datetime.utcnow().isoformat() + "Z")
     parent_id: str | None = None
     references: list[str] = Field(default_factory=list)
     scope: str = "global"
@@ -94,7 +96,8 @@ class CodexVersion(BaseModel):
     content: str = ""
     change_description: str = ""
     author: str = ""
-    timestamp: str = Field(default_factory=lambda: datetime.utcnow().isoformat() + "Z")
+    timestamp: str = Field(
+        default_factory=lambda: datetime.utcnow().isoformat() + "Z")
 
 
 class CodexStats(BaseModel):
@@ -169,7 +172,7 @@ class _InMemoryCodexStore:
                     continue
             results.append(entry)
         results.sort(key=lambda x: (x.priority, x.updated_at), reverse=True)
-        return results[params.offset : params.offset + params.limit]
+        return results[params.offset: params.offset + params.limit]
 
     async def get_versions(self, entry_id: str) -> list[CodexVersion]:
         return self._versions.get(entry_id, [])
@@ -181,7 +184,8 @@ class _InMemoryCodexStore:
         by_scope: dict[str, int] = {}
 
         for entry in self._entries.values():
-            by_category[entry.category] = by_category.get(entry.category, 0) + 1
+            by_category[entry.category] = by_category.get(
+                entry.category, 0) + 1
             by_status[entry.status] = by_status.get(entry.status, 0) + 1
             by_team[entry.team] = by_team.get(entry.team, 0) + 1
             by_scope[entry.scope] = by_scope.get(entry.scope, 0) + 1
@@ -256,7 +260,8 @@ class PipelineCodex:
     async def connect(self) -> None:
         """Connect to the PostgreSQL database."""
         if not self._dsn:
-            logger.info("PipelineCodex: no DSN configured, using in-memory fallback")
+            logger.info(
+                "PipelineCodex: no DSN configured, using in-memory fallback")
             return
 
         import asyncpg

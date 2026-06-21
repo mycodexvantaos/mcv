@@ -68,7 +68,8 @@ class RollbackManager:
 
         # Sort by plane priority (reverse order of deployment)
         repos_with_plane = [
-            (repo, repo_plane[repo], self.queues[repo_plane[repo]].get("priority", 999))
+            (repo, repo_plane[repo],
+             self.queues[repo_plane[repo]].get("priority", 999))
             for repo in to_rollback
             if repo in repo_plane
         ]
@@ -137,7 +138,8 @@ class RollbackManager:
             plane = repo_info["plane"]
             strategy = rollback_plan["strategies"][repo]
 
-            print(f"\nRolling back {repo} (Plane: {plane}, Strategy: {strategy})")
+            print(
+                f"\nRolling back {repo} (Plane: {plane}, Strategy: {strategy})")
 
             repo_result = {
                 "repository": repo,
@@ -160,7 +162,8 @@ class RollbackManager:
 
         self._save_rollback_results(orchestration_id, results)
 
-        successful = sum(1 for r in results["results"] if r["status"] == "success")
+        successful = sum(
+            1 for r in results["results"] if r["status"] == "success")
         failed = sum(1 for r in results["results"] if r["status"] == "failed")
         manual = sum(
             1 for r in results["results"] if r["status"] == "manual_action_required"
@@ -202,14 +205,17 @@ class RollbackManager:
 def main():
     """Main entry point."""
     parser = argparse.ArgumentParser(description="Manage rollback operations")
-    parser.add_argument("--deps-file", required=True, help="Path to dependencies.yaml")
-    parser.add_argument("--queue-file", required=True, help="Path to queue-config.yaml")
+    parser.add_argument("--deps-file", required=True,
+                        help="Path to dependencies.yaml")
+    parser.add_argument("--queue-file", required=True,
+                        help="Path to queue-config.yaml")
     parser.add_argument("--repository", help="Repository to rollback")
     parser.add_argument("--orchestration-id", help="Orchestration identifier")
     parser.add_argument(
         "--reason", default="Manual rollback", help="Reason for rollback"
     )
-    parser.add_argument("--execute", action="store_true", help="Execute rollback")
+    parser.add_argument("--execute", action="store_true",
+                        help="Execute rollback")
     parser.add_argument("--dry-run", action="store_true", help="Dry run mode")
 
     args = parser.parse_args()

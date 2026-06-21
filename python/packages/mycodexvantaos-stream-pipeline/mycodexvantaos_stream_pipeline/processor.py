@@ -10,13 +10,17 @@ from datetime import datetime, timezone
 from typing import Any, Awaitable, Callable
 
 from mycodexvantaos_stream_pipeline.consumer import StreamConsumer
-from mycodexvantaos_stream_pipeline.models import (DeadLetterMessage,
-                                                   DeliverySemantic,
-                                                   KafkaMessage,
-                                                   ProcessorConfig,
-                                                   ProcessorState,
-                                                   StreamMetrics, WindowConfig,
-                                                   WindowResult, WindowType)
+from mycodexvantaos_stream_pipeline.models import (
+    DeadLetterMessage,
+    DeliverySemantic,
+    KafkaMessage,
+    ProcessorConfig,
+    ProcessorState,
+    StreamMetrics,
+    WindowConfig,
+    WindowResult,
+    WindowType,
+)
 from mycodexvantaos_stream_pipeline.producer import StreamProducer
 
 logger = logging.getLogger(__name__)
@@ -144,7 +148,8 @@ class WindowState:
 
         for key, bucket in self._windows.items():
             window_close_ms = (
-                bucket["window_end"].timestamp() * 1000 + self._config.grace_period_ms
+                bucket["window_end"].timestamp() * 1000 +
+                self._config.grace_period_ms
             )
             if now_ms >= window_close_ms:
                 result = WindowResult(
@@ -247,13 +252,15 @@ class StreamProcessor:
     async def start(self) -> None:
         """Start the stream processor (consumer, producer, and processing loop)."""
         if self._state == ProcessorState.RUNNING:
-            logger.warning("Processor '%s' is already running", self._config.name)
+            logger.warning("Processor '%s' is already running",
+                           self._config.name)
             return
 
         self._state = ProcessorState.STARTING
 
         # Initialize producer
-        self._producer = StreamProducer(self._config.producer_config, self._metrics)
+        self._producer = StreamProducer(
+            self._config.producer_config, self._metrics)
         await self._producer.start()
 
         # Initialize consumer
@@ -349,7 +356,8 @@ class StreamProcessor:
         if self._state != ProcessorState.RUNNING:
             await self.start()
 
-        logger.info("Stream processor '%s' entering main loop", self._config.name)
+        logger.info("Stream processor '%s' entering main loop",
+                    self._config.name)
         try:
             while self._state == ProcessorState.RUNNING:
                 await self.process_once(max_records=100, timeout_ms=1000)

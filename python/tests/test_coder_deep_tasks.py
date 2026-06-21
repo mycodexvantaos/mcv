@@ -1,10 +1,15 @@
 """Tests for mycodexvantaos_coder_deep.task_tracker module."""
 
 import pytest
-from mycodexvantaos_coder_deep.task_tracker import (TaskEntry, TaskPriority,
-                                                    TaskQuery, TaskStatus,
-                                                    TaskTracker,
-                                                    TaskTransition, TaskType)
+from mycodexvantaos_coder_deep.task_tracker import (
+    TaskEntry,
+    TaskPriority,
+    TaskQuery,
+    TaskStatus,
+    TaskTracker,
+    TaskTransition,
+    TaskType,
+)
 
 
 @pytest.fixture
@@ -320,7 +325,8 @@ class TestTaskDependencies:
     async def test_get_dependencies(self, tracker: TaskTracker) -> None:
         """Get tasks that a task depends on."""
         dep_task = await tracker.create(
-            task=TaskEntry(title="Dependency", task_type=TaskType.A_NEW_FEATURE)
+            task=TaskEntry(title="Dependency",
+                           task_type=TaskType.A_NEW_FEATURE)
         )
         main_task = await tracker.create(
             task=TaskEntry(

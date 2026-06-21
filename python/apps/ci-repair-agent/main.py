@@ -15,18 +15,20 @@ from datetime import datetime
 from typing import Any
 
 import uvicorn
-from asyncpg.exceptions import (CannotConnectNowError,
-                                ClientConfigurationError,
-                                ConnectionDoesNotExistError,
-                                InvalidAuthorizationSpecificationError,
-                                InvalidCatalogNameError, InvalidPasswordError,
-                                PostgresConnectionError)
+from asyncpg.exceptions import (
+    CannotConnectNowError,
+    ClientConfigurationError,
+    ConnectionDoesNotExistError,
+    InvalidAuthorizationSpecificationError,
+    InvalidCatalogNameError,
+    InvalidPasswordError,
+    PostgresConnectionError,
+)
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import JSONResponse
 from mycodexvantaos_ci_repair.database import DatabaseClient
 from mycodexvantaos_ci_repair.github_client import GitHubActionsClient
-from mycodexvantaos_ci_repair.repair_engine import (analyze_failure,
-                                                    generate_repair_plan)
+from mycodexvantaos_ci_repair.repair_engine import analyze_failure, generate_repair_plan
 from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
@@ -53,7 +55,8 @@ def _load_settings() -> Settings:
 
     return Settings(
         github_token=os.getenv("GITHUB_TOKEN", ""),
-        repository=os.getenv("GITHUB_REPOSITORY", "mycodexvantaos/mycodexvantaos"),
+        repository=os.getenv("GITHUB_REPOSITORY",
+                             "mycodexvantaos/mycodexvantaos"),
         log_level=os.getenv("LOG_LEVEL", "INFO"),
         host=os.getenv("HOST", "0.0.0.0"),
         port=int(os.getenv("PORT", "8000")),
@@ -267,14 +270,16 @@ async def lifespan(app: FastAPI):  # noqa: ARG001
         level=getattr(logging, settings.log_level.upper(), logging.INFO),
         format="%(asctime)s %(levelname)s %(name)s: %(message)s",
     )
-    logger.info("CI Repair Agent starting — repository: %s", settings.repository)
+    logger.info("CI Repair Agent starting — repository: %s",
+                settings.repository)
 
     # Connect to database if URL is configured
     if settings.database_url:
         _db_client = DatabaseClient(dsn=settings.database_url)
         try:
             await _db_client.connect()
-            logger.info("Database connected: %s", settings.database_url[:30] + "...")
+            logger.info("Database connected: %s",
+                        settings.database_url[:30] + "...")
         except (
             PostgresConnectionError,
             CannotConnectNowError,
@@ -613,7 +618,8 @@ async def get_history(
         )
     analyses = await db.get_recent_analyses(limit=limit)
     return _success(
-        request, HistoryData(analyses=analyses, count=len(analyses)).model_dump()
+        request, HistoryData(
+            analyses=analyses, count=len(analyses)).model_dump()
     )
 
 
@@ -636,7 +642,8 @@ async def get_category_stats(
     stats = await db.get_category_statistics(period_days=period_days)
     return _success(
         request,
-        CategoryStatsData(categories=stats, period_days=period_days).model_dump(),
+        CategoryStatsData(categories=stats,
+                          period_days=period_days).model_dump(),
     )
 
 
@@ -678,7 +685,8 @@ async def _cli_analyze(args: argparse.Namespace) -> None:
         print(f"    Root Cause: {analysis['root_cause']}")
         print(f"    Suggested Fix: {analysis['suggested_fix']}")
         if analysis["affected_files"]:
-            print(f"    Affected Files: {', '.join(analysis['affected_files'])}")
+            print(
+                f"    Affected Files: {', '.join(analysis['affected_files'])}")
         if analysis["affected_dependencies"]:
             print(
                 f"    Affected Dependencies: {', '.join(analysis['affected_dependencies'])}"
@@ -717,7 +725,8 @@ def main() -> None:
     )
     analyze_parser.set_defaults(func=_cli_analyze)
 
-    serve_parser = subparsers.add_parser("serve", help="Serve the FastAPI application")
+    serve_parser = subparsers.add_parser(
+        "serve", help="Serve the FastAPI application")
     serve_parser.add_argument(
         "--host", type=str, default=settings.host, help="Host address"
     )
@@ -740,7 +749,8 @@ def main() -> None:
         logger.error("CLI Error: %s - %s", e.code, e.message)
         sys.exit(1)
     except Exception as e:
-        logger.error("An unexpected error occurred in CLI: %s", e, exc_info=True)
+        logger.error("An unexpected error occurred in CLI: %s",
+                     e, exc_info=True)
         sys.exit(1)
 
 

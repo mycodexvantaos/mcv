@@ -8,9 +8,14 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from mycodexvantaos_ci_repair.database import DatabaseClient
-from mycodexvantaos_ci_repair.models import (ErrorCategory, FailureAnalysis,
-                                             FailureSeverity, RepairAction,
-                                             RepairActionType, RepairPlan)
+from mycodexvantaos_ci_repair.models import (
+    ErrorCategory,
+    FailureAnalysis,
+    FailureSeverity,
+    RepairAction,
+    RepairActionType,
+    RepairPlan,
+)
 
 
 def _make_mock_pool(mock_conn: AsyncMock) -> AsyncMock:

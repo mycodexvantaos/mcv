@@ -7,15 +7,17 @@ Cross-language contract schemas:
 """
 
 from mycodexvantaos_memory_dream.core.dream_engine import DreamEngine
-from mycodexvantaos_memory_dream.detectors.conflict_detector import \
-    detect_conflicts
-from mycodexvantaos_memory_dream.detectors.duplicate_detector import \
-    detect_duplicates
-from mycodexvantaos_memory_dream.detectors.orphan_detector import \
-    detect_orphans
-from mycodexvantaos_memory_dream.models import (DreamAction, DreamActionType,
-                                                DreamReport, DreamRun,
-                                                MemoryItem, MemoryItemType)
+from mycodexvantaos_memory_dream.detectors.conflict_detector import detect_conflicts
+from mycodexvantaos_memory_dream.detectors.duplicate_detector import detect_duplicates
+from mycodexvantaos_memory_dream.detectors.orphan_detector import detect_orphans
+from mycodexvantaos_memory_dream.models import (
+    DreamAction,
+    DreamActionType,
+    DreamReport,
+    DreamRun,
+    MemoryItem,
+    MemoryItemType,
+)
 
 __version__ = "0.1.0"
 __all__ = [

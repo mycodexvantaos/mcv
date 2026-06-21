@@ -142,7 +142,8 @@ class UnifiedGateValidator:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Unified Gate System Validator")
+    parser = argparse.ArgumentParser(
+        description="Unified Gate System Validator")
     parser.add_argument(
         "--gate-index", required=True, help="Path to unified-gate-index.yaml"
     )
@@ -154,7 +155,8 @@ def main() -> None:
         action="store_true",
         help="Check for mandatory blocking gates",
     )
-    parser.add_argument("--output", help="Path to output validation report (JSON)")
+    parser.add_argument(
+        "--output", help="Path to output validation report (JSON)")
     parser.add_argument(
         "--fail-on-error",
         action="store_true",
@@ -178,7 +180,8 @@ def main() -> None:
         if not validator.check_blocking_gates(index_path, required_count=2):
             success = False
 
-    report = {"success": success, "issues": [asdict(i) for i in validator.issues]}
+    report = {"success": success, "issues": [
+        asdict(i) for i in validator.issues]}
 
     if args.output:
         with open(args.output, "w") as f:

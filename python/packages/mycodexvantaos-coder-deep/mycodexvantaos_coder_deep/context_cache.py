@@ -209,7 +209,7 @@ class ContextCache:
             if len(results) >= query.limit:
                 break
 
-        return results[query.offset :]
+        return results[query.offset:]
 
     async def delete(self, entry_id: str) -> bool:
         """Delete a context entry. Returns True if deleted."""
@@ -221,7 +221,8 @@ class ContextCache:
 
     async def invalidate(self, namespace: str) -> int:
         """Invalidate all entries in a namespace. Returns count of invalidated entries."""
-        to_remove = [k for k, v in self._entries.items() if v.namespace == namespace]
+        to_remove = [k for k, v in self._entries.items()
+                     if v.namespace == namespace]
         for k in to_remove:
             entry = self._entries.pop(k)
             self._current_size -= entry.size_bytes

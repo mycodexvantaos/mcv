@@ -78,7 +78,8 @@ class DependencyResolver:
         # Check for cycles
         if len(result) != len(repositories):
             cycle = set(repositories) - set(result)
-            raise ValueError(f"Circular dependency detected involving: {cycle}")
+            raise ValueError(
+                f"Circular dependency detected involving: {cycle}")
 
         return result
 
@@ -156,7 +157,8 @@ class DependencyResolver:
             target_repos = set()
             for plane in target_planes:
                 if plane in self.queues:
-                    target_repos.update(self.queues[plane].get("repositories", []))
+                    target_repos.update(
+                        self.queues[plane].get("repositories", []))
             all_repos = all_repos.intersection(target_repos)
 
         # Get repository metadata
@@ -229,8 +231,10 @@ def main():
     parser = argparse.ArgumentParser(
         description="Resolve repository dependencies and calculate execution order"
     )
-    parser.add_argument("--deps-file", required=True, help="Path to dependencies.yaml")
-    parser.add_argument("--queue-file", required=True, help="Path to queue-config.yaml")
+    parser.add_argument("--deps-file", required=True,
+                        help="Path to dependencies.yaml")
+    parser.add_argument("--queue-file", required=True,
+                        help="Path to queue-config.yaml")
     parser.add_argument(
         "--action",
         default="sync",
@@ -258,7 +262,8 @@ def main():
         else None
     )
     repositories = (
-        [r.strip() for r in args.repositories.split(",")] if args.repositories else None
+        [r.strip() for r in args.repositories.split(
+            ",")] if args.repositories else None
     )
 
     # Create resolver

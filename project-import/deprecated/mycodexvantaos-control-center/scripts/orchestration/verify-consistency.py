@@ -49,11 +49,14 @@ class ConsistencyVerifier:
                     repo = state.get("repository", "unknown")
                     states[repo] = state
             except Exception as e:
-                self.issues.append(f"Failed to load state file {state_file}: {e}")
+                self.issues.append(
+                    f"Failed to load state file {state_file}: {e}")
 
-        orchestration_ids = set(s.get("orchestration_id") for s in states.values())
+        orchestration_ids = set(s.get("orchestration_id")
+                                for s in states.values())
         if len(orchestration_ids) > 1:
-            self.issues.append(f"Inconsistent orchestration IDs: {orchestration_ids}")
+            self.issues.append(
+                f"Inconsistent orchestration IDs: {orchestration_ids}")
 
         actions = set(s.get("action") for s in states.values())
         if len(actions) > 1:
@@ -83,7 +86,8 @@ class ConsistencyVerifier:
 
             missing = referenced - repos
             if missing:
-                self.issues.append(f"Missing repositories in registry: {missing}")
+                self.issues.append(
+                    f"Missing repositories in registry: {missing}")
 
             print(f"  Verified {len(referenced)} repository references")
             return len(missing) == 0
@@ -132,14 +136,16 @@ class ConsistencyVerifier:
 
 def main():
     """Main entry point."""
-    parser = argparse.ArgumentParser(description="Verify orchestration consistency")
+    parser = argparse.ArgumentParser(
+        description="Verify orchestration consistency")
     parser.add_argument(
         "--orchestration-id", required=True, help="Orchestration identifier"
     )
     parser.add_argument("--state-dir", default="", help="State directory")
     parser.add_argument("--deps-file", default="", help="Dependencies file")
     parser.add_argument("--repos-file", default="", help="Repositories file")
-    parser.add_argument("--config-dir", default="", help="Configuration directory")
+    parser.add_argument("--config-dir", default="",
+                        help="Configuration directory")
 
     args = parser.parse_args()
 

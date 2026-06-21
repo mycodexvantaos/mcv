@@ -4,12 +4,17 @@ Covers failure analysis for all error categories, repair plan generation,
 auto-fix detection, PR body generation, and branch naming.
 """
 
-from mycodexvantaos_ci_repair.models import (ErrorCategory, FailureSeverity,
-                                             RepairActionType)
-from mycodexvantaos_ci_repair.repair_engine import (_generate_repair_actions,
-                                                    _severity_for_category,
-                                                    analyze_failure,
-                                                    generate_repair_plan)
+from mycodexvantaos_ci_repair.models import (
+    ErrorCategory,
+    FailureSeverity,
+    RepairActionType,
+)
+from mycodexvantaos_ci_repair.repair_engine import (
+    _generate_repair_actions,
+    _severity_for_category,
+    analyze_failure,
+    generate_repair_plan,
+)
 
 
 class TestSeverityForCategory:
@@ -29,14 +34,17 @@ class TestSeverityForCategory:
 
     def test_test_failure_is_medium(self) -> None:
         assert (
-            _severity_for_category(ErrorCategory.TEST_FAILURE) == FailureSeverity.MEDIUM
+            _severity_for_category(
+                ErrorCategory.TEST_FAILURE) == FailureSeverity.MEDIUM
         )
 
     def test_lint_is_low(self) -> None:
-        assert _severity_for_category(ErrorCategory.LINT_ERROR) == FailureSeverity.LOW
+        assert _severity_for_category(
+            ErrorCategory.LINT_ERROR) == FailureSeverity.LOW
 
     def test_build_is_high(self) -> None:
-        assert _severity_for_category(ErrorCategory.BUILD_ERROR) == FailureSeverity.HIGH
+        assert _severity_for_category(
+            ErrorCategory.BUILD_ERROR) == FailureSeverity.HIGH
 
     def test_docker_build_is_high(self) -> None:
         assert (
@@ -212,7 +220,8 @@ class TestGenerateRepairActions:
         )
         actions = _generate_repair_actions(analysis)
         assert len(actions) >= 1
-        assert any(a.action_type == RepairActionType.UPDATE_DEPENDENCY for a in actions)
+        assert any(a.action_type ==
+                   RepairActionType.UPDATE_DEPENDENCY for a in actions)
 
     def test_dependency_error_without_deps(self) -> None:
         analysis = analyze_failure(
@@ -222,7 +231,8 @@ class TestGenerateRepairActions:
             log_text="npm ERR! ERESOLVE could not resolve",
         )
         actions = _generate_repair_actions(analysis)
-        assert any(a.action_type == RepairActionType.UPDATE_DEPENDENCY for a in actions)
+        assert any(a.action_type ==
+                   RepairActionType.UPDATE_DEPENDENCY for a in actions)
         assert "pnpm install" in actions[0].command
 
     def test_lint_error_python(self) -> None:
@@ -264,7 +274,8 @@ class TestGenerateRepairActions:
             log_text="error TS2322: Type error",
         )
         actions = _generate_repair_actions(analysis)
-        assert any(a.action_type == RepairActionType.PATCH_FILE for a in actions)
+        assert any(a.action_type ==
+                   RepairActionType.PATCH_FILE for a in actions)
 
     def test_docker_build_error(self) -> None:
         analysis = analyze_failure(
@@ -274,7 +285,8 @@ class TestGenerateRepairActions:
             log_text='process "/bin/sh -c npm ci" did not complete successfully',
         )
         actions = _generate_repair_actions(analysis)
-        assert any(a.action_type == RepairActionType.UPDATE_DOCKERFILE for a in actions)
+        assert any(a.action_type ==
+                   RepairActionType.UPDATE_DOCKERFILE for a in actions)
 
     def test_deployment_error_generates_manual(self) -> None:
         analysis = analyze_failure(
@@ -297,7 +309,8 @@ class TestGenerateRepairActions:
             log_text="Permission denied",
         )
         actions = _generate_repair_actions(analysis)
-        assert any(a.action_type == RepairActionType.UPDATE_WORKFLOW for a in actions)
+        assert any(a.action_type ==
+                   RepairActionType.UPDATE_WORKFLOW for a in actions)
 
     def test_configuration_error_generates_update_workflow(self) -> None:
         analysis = analyze_failure(
@@ -307,7 +320,8 @@ class TestGenerateRepairActions:
             log_text="config error: invalid workflow",
         )
         actions = _generate_repair_actions(analysis)
-        assert any(a.action_type == RepairActionType.UPDATE_WORKFLOW for a in actions)
+        assert any(a.action_type ==
+                   RepairActionType.UPDATE_WORKFLOW for a in actions)
 
     def test_unknown_error_generates_manual(self) -> None:
         analysis = analyze_failure(
@@ -460,7 +474,8 @@ class TestGenerateRepairPlan:
             job_name="Lint",
             log_text="ruff check error: I001 in src/main.py",
         )
-        plan = generate_repair_plan(1, "Test Run Multi", "main", [analysis1, analysis2])
+        plan = generate_repair_plan(
+            1, "Test Run Multi", "main", [analysis1, analysis2])
         assert len(plan.analyses) == 2
         assert len(plan.actions) >= 2
         assert plan.can_auto_fix is True

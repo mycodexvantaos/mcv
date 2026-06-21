@@ -103,10 +103,12 @@ class ProducerConfig(BaseModel):
     batch_size: int = Field(default=16384, ge=1)
     max_in_flight_requests: int = Field(default=5, ge=1, le=10)
     enable_idempotence: bool = Field(default=True)
-    transactional_id: str = Field(default="", description="Required for exactly-once")
+    transactional_id: str = Field(
+        default="", description="Required for exactly-once")
     retry_backoff_ms: int = Field(default=100, ge=0)
     request_timeout_ms: int = Field(default=30000, ge=1000)
-    delivery_semantic: DeliverySemantic = Field(default=DeliverySemantic.AT_LEAST_ONCE)
+    delivery_semantic: DeliverySemantic = Field(
+        default=DeliverySemantic.AT_LEAST_ONCE)
 
     @field_validator("transactional_id")
     @classmethod
@@ -114,7 +116,8 @@ class ProducerConfig(BaseModel):
         """When using exactly-once, transactional_id must be set."""
         delivery = info.data.get("delivery_semantic")
         if delivery == DeliverySemantic.EXACTLY_ONCE and not v:
-            raise ValueError("transactional_id is required for exactly-once semantics")
+            raise ValueError(
+                "transactional_id is required for exactly-once semantics")
         return v
 
     @field_validator("delivery_semantic")
@@ -122,7 +125,8 @@ class ProducerConfig(BaseModel):
     def validate_delivery_semantic(cls, v: DeliverySemantic, info: Any) -> str:
         """When using exactly-once, transactional_id must already be set."""
         if v == DeliverySemantic.EXACTLY_ONCE and not info.data.get("transactional_id"):
-            raise ValueError("transactional_id is required for exactly-once semantics")
+            raise ValueError(
+                "transactional_id is required for exactly-once semantics")
         return v
 
 
@@ -132,14 +136,16 @@ class ConsumerConfig(BaseModel):
     bootstrap_servers: str = Field(default="localhost:9092")
     group_id: str = Field(default="stream-consumer-group")
     client_id: str = Field(default="stream-consumer")
-    auto_offset_reset: OffsetResetStrategy = Field(default=OffsetResetStrategy.LATEST)
+    auto_offset_reset: OffsetResetStrategy = Field(
+        default=OffsetResetStrategy.LATEST)
     enable_auto_commit: bool = Field(default=False)
     auto_commit_interval_ms: int = Field(default=5000, ge=100)
     max_poll_records: int = Field(default=500, ge=1)
     max_poll_interval_ms: int = Field(default=300000, ge=1000)
     session_timeout_ms: int = Field(default=10000, ge=1000)
     heartbeat_interval_ms: int = Field(default=3000, ge=500)
-    delivery_semantic: DeliverySemantic = Field(default=DeliverySemantic.AT_LEAST_ONCE)
+    delivery_semantic: DeliverySemantic = Field(
+        default=DeliverySemantic.AT_LEAST_ONCE)
     isolation_level: str = Field(
         default="read_uncommitted", pattern="^(read_uncommitted|read_committed)$"
     )
@@ -149,7 +155,8 @@ class WindowConfig(BaseModel):
     """Configuration for a stream window."""
 
     window_type: WindowType
-    window_size_ms: int = Field(default=60000, ge=1000, description="Window size in ms")
+    window_size_ms: int = Field(
+        default=60000, ge=1000, description="Window size in ms")
     hop_size_ms: int = Field(
         default=0, ge=0, description="Hop size for hopping windows in ms"
     )
@@ -187,7 +194,8 @@ class ProcessorConfig(BaseModel):
     consumer_config: ConsumerConfig = Field(default_factory=ConsumerConfig)
     producer_config: ProducerConfig = Field(default_factory=ProducerConfig)
     window_config: WindowConfig | None = None
-    delivery_semantic: DeliverySemantic = Field(default=DeliverySemantic.AT_LEAST_ONCE)
+    delivery_semantic: DeliverySemantic = Field(
+        default=DeliverySemantic.AT_LEAST_ONCE)
     max_retries: int = Field(default=3, ge=0)
     retry_backoff_ms: int = Field(default=1000, ge=100)
 
@@ -198,7 +206,8 @@ class ProcessorConfig(BaseModel):
         if not v:
             raise ValueError("Processor name cannot be empty")
         if " " in v or "_" in v:
-            raise ValueError("Processor name must use kebab-case (lowercase, hyphens)")
+            raise ValueError(
+                "Processor name must use kebab-case (lowercase, hyphens)")
         return v.lower()
 
 
@@ -241,7 +250,8 @@ class DeadLetterMessage(BaseModel):
     error_type: str = "processing_error"
     retry_count: int = 0
     processor_name: str = ""
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc))
 
 
 class WindowResult(BaseModel):
@@ -254,7 +264,8 @@ class WindowResult(BaseModel):
     aggregate_value: Any = None
     record_count: int = 0
     late_records_dropped: int = 0
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc))
 
 
 class StreamMetrics(BaseModel):
@@ -271,7 +282,8 @@ class StreamMetrics(BaseModel):
     last_message_at: datetime | None = None
     window_results_count: int = 0
     uptime_seconds: float = 0.0
-    collected_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    collected_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc))
 
 
 class ProduceRequest(BaseModel):

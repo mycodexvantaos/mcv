@@ -6,13 +6,15 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from mycodexvantaos_stream_pipeline.consumer import StreamConsumer
-from mycodexvantaos_stream_pipeline.models import (ConsumerConfig,
-                                                   DeadLetterMessage,
-                                                   DeliverySemantic,
-                                                   KafkaMessage,
-                                                   OffsetResetStrategy,
-                                                   ProducerConfig,
-                                                   StreamMetrics)
+from mycodexvantaos_stream_pipeline.models import (
+    ConsumerConfig,
+    DeadLetterMessage,
+    DeliverySemantic,
+    KafkaMessage,
+    OffsetResetStrategy,
+    ProducerConfig,
+    StreamMetrics,
+)
 from mycodexvantaos_stream_pipeline.producer import StreamProducer
 
 # ---------------------------------------------------------------------------
@@ -339,7 +341,8 @@ class TestStreamConsumer:
             enable_auto_commit=False,
         )
         metrics = StreamMetrics()
-        consumer = StreamConsumer(config, topics=["test-topic"], metrics=metrics)
+        consumer = StreamConsumer(
+            config, topics=["test-topic"], metrics=metrics)
 
         with patch(
             "mycodexvantaos_stream_pipeline.consumer.AIOKafkaConsumer"

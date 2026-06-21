@@ -47,7 +47,8 @@ _PATTERNS: list[tuple[re.Pattern[str], ErrorCategory]] = [
         ErrorCategory.DEPENDENCY_ERROR,
     ),
     (re.compile(r"uv sync.*error", re.IGNORECASE), ErrorCategory.DEPENDENCY_ERROR),
-    (re.compile(r"ModuleNotFoundError", re.IGNORECASE), ErrorCategory.DEPENDENCY_ERROR),
+    (re.compile(r"ModuleNotFoundError", re.IGNORECASE),
+     ErrorCategory.DEPENDENCY_ERROR),
     (re.compile(r"ImportError", re.IGNORECASE), ErrorCategory.DEPENDENCY_ERROR),
     (
         re.compile(r"dependency_file_not_resolvable", re.IGNORECASE),
@@ -64,7 +65,8 @@ _PATTERNS: list[tuple[re.Pattern[str], ErrorCategory]] = [
         ErrorCategory.DOCKER_BUILD_ERROR,
     ),
     (
-        re.compile(r'process "/bin/sh.*did not complete successfully', re.IGNORECASE),
+        re.compile(
+            r'process "/bin/sh.*did not complete successfully', re.IGNORECASE),
         ErrorCategory.DOCKER_BUILD_ERROR,
     ),
     # Test failures
@@ -78,7 +80,8 @@ _PATTERNS: list[tuple[re.Pattern[str], ErrorCategory]] = [
     (re.compile(r"ESLint.*error", re.IGNORECASE), ErrorCategory.LINT_ERROR),
     (re.compile(r"prettier.*check.*failed", re.IGNORECASE), ErrorCategory.LINT_ERROR),
     (re.compile(r"Code style issues found", re.IGNORECASE), ErrorCategory.LINT_ERROR),
-    (re.compile(r"\d+ error[s]?\s*\(", re.IGNORECASE), ErrorCategory.LINT_ERROR),
+    (re.compile(r"\d+ error[s]?\s*\(", re.IGNORECASE),
+     ErrorCategory.LINT_ERROR),
     # Build errors
     (re.compile(r"Type error:", re.IGNORECASE), ErrorCategory.BUILD_ERROR),
     (re.compile(r"error TS\d+:", re.IGNORECASE), ErrorCategory.BUILD_ERROR),
@@ -205,9 +208,11 @@ def extract_affected_dependencies(log_text: str) -> list[str]:
         return []
 
     dep_patterns = [
-        re.compile(r"could not resolve dependency[:\s]+([@\w/-]+)", re.IGNORECASE),
+        re.compile(
+            r"could not resolve dependency[:\s]+([@\w/-]+)", re.IGNORECASE),
         re.compile(r"""npm ERR! .*['"]([@\w/-]+)['"]"""),
-        re.compile(r"""ModuleNotFoundError:\s+No module named ['"]([\w.]+)['"]"""),
+        re.compile(
+            r"""ModuleNotFoundError:\s+No module named ['"]([\w.]+)['"]"""),
         re.compile(r"""ImportError:\s+.*['"]([\w.]+)['"]"""),
         re.compile(r"""package ['"]([@\w/-]+)['"] not found"""),
     ]

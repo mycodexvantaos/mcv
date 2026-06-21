@@ -93,7 +93,8 @@ class DependencyValidator:
                     cycles.append(repo)
 
         if cycles:
-            self.errors.append(f"Circular dependencies detected: {', '.join(cycles)}")
+            self.errors.append(
+                f"Circular dependencies detected: {', '.join(cycles)}")
         else:
             print("    ✓ No circular dependencies found")
 
@@ -120,7 +121,8 @@ class DependencyValidator:
         """Validate dependency types."""
         print("  Validating dependency types...")
 
-        valid_types = {"must_precede", "should_precede", "runtime", "infrastructure"}
+        valid_types = {"must_precede", "should_precede",
+                       "runtime", "infrastructure"}
 
         for dep in self.dependencies:
             dep_type = dep.get("type")
@@ -171,7 +173,8 @@ class DependencyValidator:
                     )
 
         if conflicts:
-            self.errors.append(f"Conflicting dependencies: {', '.join(conflicts)}")
+            self.errors.append(
+                f"Conflicting dependencies: {', '.join(conflicts)}")
         else:
             print("    ✓ No conflicting dependencies found")
 
@@ -199,9 +202,12 @@ class DependencyValidator:
 
 def main():
     """Main entry point."""
-    parser = argparse.ArgumentParser(description="Validate repository dependencies")
-    parser.add_argument("--deps-file", required=True, help="Path to dependencies.yaml")
-    parser.add_argument("--repos-file", required=True, help="Path to repos.yaml")
+    parser = argparse.ArgumentParser(
+        description="Validate repository dependencies")
+    parser.add_argument("--deps-file", required=True,
+                        help="Path to dependencies.yaml")
+    parser.add_argument("--repos-file", required=True,
+                        help="Path to repos.yaml")
 
     args = parser.parse_args()
 

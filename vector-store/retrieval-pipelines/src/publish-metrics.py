@@ -32,7 +32,8 @@ class MetricsPublisher:
         repos = state.get("repositories", {})
 
         total = len(repos)
-        completed = sum(1 for r in repos.values() if r.get("status") == "completed")
+        completed = sum(1 for r in repos.values()
+                        if r.get("status") == "completed")
         failed = sum(1 for r in repos.values() if r.get("status") == "failed")
 
         self.metrics["metrics"] = {
@@ -83,7 +84,8 @@ class MetricsPublisher:
         self.publish_to_cloudwatch()
         self.publish_to_elk()
 
-        out_dir = os.environ.get("MYCODEXVANTAOS_OBSERVABILITY_METRICS_DIR", "metrics")
+        out_dir = os.environ.get(
+            "MYCODEXVANTAOS_OBSERVABILITY_METRICS_DIR", "metrics")
         os.makedirs(out_dir, exist_ok=True)
         metrics_file = os.path.join(out_dir, f"{self.execution_id}.json")
 
@@ -95,7 +97,8 @@ class MetricsPublisher:
 
 def main():
     """Main execution point."""
-    parser = argparse.ArgumentParser(description="MyCodexVantaOS Metrics Publisher")
+    parser = argparse.ArgumentParser(
+        description="MyCodexVantaOS Metrics Publisher")
     parser.add_argument(
         "--execution-id", required=True, help="Unique execution identifier"
     )

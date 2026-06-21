@@ -25,7 +25,8 @@ class KafkaAdmin:
             bootstrap_servers=self._bootstrap_servers,
         )
         await self._admin.start()
-        logger.info("Kafka admin client connected to %s", self._bootstrap_servers)
+        logger.info("Kafka admin client connected to %s",
+                    self._bootstrap_servers)
 
     async def close(self) -> None:
         """Close the admin client connection."""
@@ -38,7 +39,8 @@ class KafkaAdmin:
     def client(self) -> AIOKafkaAdminClient:
         """Get the admin client, raising if not connected."""
         if self._admin is None:
-            raise RuntimeError("Admin client not connected — call connect() first")
+            raise RuntimeError(
+                "Admin client not connected — call connect() first")
         return self._admin
 
     async def create_topic(self, config: KafkaTopicConfig) -> bool:
@@ -85,7 +87,8 @@ class KafkaAdmin:
             logger.info("Deleted topic '%s'", topic_name)
             return True
         except UnknownTopicOrPartitionError:
-            logger.info("Topic '%s' does not exist — nothing to delete", topic_name)
+            logger.info(
+                "Topic '%s' does not exist — nothing to delete", topic_name)
             return True
         except KafkaError:
             logger.exception("Failed to delete topic '%s'", topic_name)

@@ -17,9 +17,11 @@ from fastapi.testclient import TestClient
 # Load the ci-repair-agent main module directly by file path to avoid
 # name collision with apps/agent-worker/main.py
 _main_path = str(
-    Path(__file__).resolve().parent.parent / "apps" / "ci-repair-agent" / "main.py"
+    Path(__file__).resolve().parent.parent /
+    "apps" / "ci-repair-agent" / "main.py"
 )
-_spec = importlib.util.spec_from_file_location("ci_repair_agent_main", _main_path)
+_spec = importlib.util.spec_from_file_location(
+    "ci_repair_agent_main", _main_path)
 
 # Mock env vars before importing
 with patch.dict(
@@ -48,7 +50,8 @@ def mock_client_fixture():
     from conftest import make_sample_failed_jobs, make_sample_workflow_runs
 
     mock = AsyncMock()
-    mock.list_workflow_runs = AsyncMock(return_value=make_sample_workflow_runs())
+    mock.list_workflow_runs = AsyncMock(
+        return_value=make_sample_workflow_runs())
     mock.get_failed_jobs = AsyncMock(return_value=make_sample_failed_jobs())
     mock.get_branch_sha = AsyncMock(return_value="abc123def456")
     mock.create_branch = AsyncMock(return_value=True)
@@ -76,7 +79,8 @@ class TestHealthEndpoint:
         body = resp.json()
         assert "database" in body["data"]
         # Without database configured, should be not_configured
-        assert body["data"]["database"] in ("not_configured", "connected", "error")
+        assert body["data"]["database"] in (
+            "not_configured", "connected", "error")
 
     def test_health_includes_timestamp(self, client: TestClient) -> None:
         resp = client.get("/health")
@@ -338,7 +342,8 @@ class TestResponseFormat:
         mock_client_fixture: AsyncMock,  # noqa: ARG002
     ) -> None:
         """Custom X-Request-ID header should be propagated."""
-        resp = client.get("/api/runs", headers={"X-Request-ID": "test-req-123"})
+        resp = client.get(
+            "/api/runs", headers={"X-Request-ID": "test-req-123"})
         assert resp.status_code == 200
         assert resp.headers.get("X-Request-ID") == "test-req-123"
         body = resp.json()

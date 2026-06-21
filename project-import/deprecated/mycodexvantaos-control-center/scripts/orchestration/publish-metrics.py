@@ -32,7 +32,8 @@ class MetricsPublisher:
         repos = state.get("repositories", {})
 
         total = len(repos)
-        completed = sum(1 for r in repos.values() if r.get("status") == "completed")
+        completed = sum(1 for r in repos.values()
+                        if r.get("status") == "completed")
         failed = sum(1 for r in repos.values() if r.get("status") == "failed")
 
         self.metrics["metrics"] = {
@@ -102,7 +103,8 @@ class MetricsPublisher:
 
 def main():
     """Main entry point."""
-    parser = argparse.ArgumentParser(description="Publish orchestration metrics")
+    parser = argparse.ArgumentParser(
+        description="Publish orchestration metrics")
     parser.add_argument(
         "--orchestration-id", required=True, help="Orchestration identifier"
     )

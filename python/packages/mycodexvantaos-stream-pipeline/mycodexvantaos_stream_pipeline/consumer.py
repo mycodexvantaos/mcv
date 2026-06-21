@@ -10,9 +10,12 @@ from typing import Any, AsyncIterator
 from aiokafka import AIOKafkaConsumer
 from aiokafka.errors import CommitFailedError, KafkaError
 from aiokafka.structs import ConsumerRecord, TopicPartition
-from mycodexvantaos_stream_pipeline.models import (ConsumerConfig,
-                                                   DeliverySemantic,
-                                                   KafkaMessage, StreamMetrics)
+from mycodexvantaos_stream_pipeline.models import (
+    ConsumerConfig,
+    DeliverySemantic,
+    KafkaMessage,
+    StreamMetrics,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -79,7 +82,8 @@ class StreamConsumer:
                 if not self._config.enable_auto_commit:
                     await self._consumer.commit()
             except CommitFailedError:
-                logger.warning("Failed to commit offsets during consumer shutdown")
+                logger.warning(
+                    "Failed to commit offsets during consumer shutdown")
             except KafkaError:
                 logger.exception("Error committing offsets during shutdown")
             await self._consumer.stop()
@@ -111,7 +115,8 @@ class StreamConsumer:
         headers: dict[str, str] = {}
         if record.headers:
             for k, v in record.headers:
-                headers[k] = v.decode("utf-8") if isinstance(v, bytes) else str(v)
+                headers[k] = v.decode(
+                    "utf-8") if isinstance(v, bytes) else str(v)
 
         # Kafka timestamp_type: 0 = CREATE_TIME, 1 = LOG_APPEND_TIME
         ts_type_map = {0: "create_time", 1: "log_append_time"}
@@ -195,7 +200,8 @@ class StreamConsumer:
         """
         try:
             await self.consumer.commit()
-            logger.debug("Offsets committed for group %s", self._config.group_id)
+            logger.debug("Offsets committed for group %s",
+                         self._config.group_id)
         except CommitFailedError:
             self._metrics.messages_errored += 1
             logger.exception(

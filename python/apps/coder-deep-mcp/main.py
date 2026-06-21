@@ -19,19 +19,27 @@ import uvicorn
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import JSONResponse
 from mycodexvantaos_coder_deep.architecture_sync import ArchitectureSync
-from mycodexvantaos_coder_deep.behavior_tracker import (BehaviorAction,
-                                                        BehaviorQuery,
-                                                        BehaviorTracker)
-from mycodexvantaos_coder_deep.context_cache import (ContextCache,
-                                                     ContextEntry,
-                                                     ContextQuery)
-from mycodexvantaos_coder_deep.memory_store import (MemoryItem,
-                                                    MemorySearchParams,
-                                                    MemoryStore)
-from mycodexvantaos_coder_deep.pipeline_codex import (CodexEntry, CodexQuery,
-                                                      PipelineCodex)
-from mycodexvantaos_coder_deep.task_tracker import (TaskEntry, TaskQuery,
-                                                    TaskTracker)
+from mycodexvantaos_coder_deep.behavior_tracker import (
+    BehaviorAction,
+    BehaviorQuery,
+    BehaviorTracker,
+)
+from mycodexvantaos_coder_deep.context_cache import (
+    ContextCache,
+    ContextEntry,
+    ContextQuery,
+)
+from mycodexvantaos_coder_deep.memory_store import (
+    MemoryItem,
+    MemorySearchParams,
+    MemoryStore,
+)
+from mycodexvantaos_coder_deep.pipeline_codex import (
+    CodexEntry,
+    CodexQuery,
+    PipelineCodex,
+)
+from mycodexvantaos_coder_deep.task_tracker import TaskEntry, TaskQuery, TaskTracker
 from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
@@ -65,7 +73,8 @@ def _load_settings() -> Settings:
         host=os.getenv("HOST", "0.0.0.0"),
         port=int(os.getenv("PORT", "8010")),
         cache_max_entries=int(os.getenv("CACHE_MAX_ENTRIES", "1000")),
-        cache_max_size_bytes=int(os.getenv("CACHE_MAX_SIZE_BYTES", "52428800")),
+        cache_max_size_bytes=int(
+            os.getenv("CACHE_MAX_SIZE_BYTES", "52428800")),
         mcp_enabled=os.getenv("MCP_ENABLED", "true").lower() == "true",
     )
 
@@ -619,7 +628,8 @@ async def memory_put(request: Request, body: MemoryPutRequest) -> dict[str, Any]
         )
         result = await store.put(item=item)
         return _success(
-            request, {"namespace": result.namespace, "key": result.key, "stored": True}
+            request, {"namespace": result.namespace,
+                      "key": result.key, "stored": True}
         )
     except Exception as exc:
         raise AppException(
@@ -840,7 +850,8 @@ async def cache_find(request: Request, body: ContextFindRequest) -> dict[str, An
         ) from exc
 
     return _success(
-        request, {"entries": [e.model_dump() for e in entries], "count": len(entries)}
+        request, {"entries": [e.model_dump()
+                              for e in entries], "count": len(entries)}
     )
 
 
@@ -931,15 +942,18 @@ async def behavior_query(
         ) from exc
 
     return _success(
-        request, {"actions": [a.model_dump() for a in actions], "count": len(actions)}
+        request, {"actions": [a.model_dump()
+                              for a in actions], "count": len(actions)}
     )
 
 
 @app.get("/api/behavior/stats")
 async def behavior_stats(
     request: Request,
-    agent_id: str | None = Query(default=None, description="Filter by agent ID"),
-    session_id: str | None = Query(default=None, description="Filter by session ID"),
+    agent_id: str | None = Query(
+        default=None, description="Filter by agent ID"),
+    session_id: str | None = Query(
+        default=None, description="Filter by session ID"),
 ) -> dict[str, Any]:
     """Get behavior statistics, optionally filtered by agent or session."""
     tracker = _get_behavior()
@@ -973,7 +987,8 @@ async def behavior_list_sessions(
 
     return _success(
         request,
-        {"sessions": [s.model_dump() for s in sessions], "count": len(sessions)},
+        {"sessions": [s.model_dump() for s in sessions],
+         "count": len(sessions)},
     )
 
 
@@ -1147,7 +1162,8 @@ async def codex_query(request: Request, body: CodexQueryRequest) -> dict[str, An
         ) from exc
 
     return _success(
-        request, {"entries": [e.model_dump() for e in entries], "count": len(entries)}
+        request, {"entries": [e.model_dump()
+                              for e in entries], "count": len(entries)}
     )
 
 
@@ -1165,7 +1181,8 @@ async def codex_versions(request: Request, entry_id: str) -> dict[str, Any]:
         ) from exc
 
     return _success(
-        request, {"entry_id": entry_id, "versions": [v.model_dump() for v in versions]}
+        request, {"entry_id": entry_id, "versions": [
+            v.model_dump() for v in versions]}
     )
 
 
@@ -1333,7 +1350,8 @@ async def task_query(request: Request, body: TaskQueryRequest) -> dict[str, Any]
         ) from exc
 
     return _success(
-        request, {"tasks": [t.model_dump() for t in tasks], "count": len(tasks)}
+        request, {"tasks": [t.model_dump() for t in tasks],
+                  "count": len(tasks)}
     )
 
 
@@ -1352,7 +1370,8 @@ async def task_transitions(request: Request, task_id: str) -> dict[str, Any]:
 
     return _success(
         request,
-        {"task_id": task_id, "transitions": [t.model_dump() for t in transitions]},
+        {"task_id": task_id, "transitions": [
+            t.model_dump() for t in transitions]},
     )
 
 
@@ -1370,7 +1389,8 @@ async def task_dependencies(request: Request, task_id: str) -> dict[str, Any]:
         ) from exc
 
     return _success(
-        request, {"task_id": task_id, "dependencies": [d.model_dump() for d in deps]}
+        request, {"task_id": task_id, "dependencies": [
+            d.model_dump() for d in deps]}
     )
 
 
@@ -1896,7 +1916,8 @@ async def mcp_invoke_tool(request: Request, tool_name: str) -> dict[str, Any]:
             entries = await codex.query(params=params)
             return _success(
                 request,
-                {"entries": [e.model_dump() for e in entries], "count": len(entries)},
+                {"entries": [e.model_dump() for e in entries],
+                 "count": len(entries)},
             )
 
         if tool_name == "task_create":
@@ -1925,7 +1946,8 @@ async def mcp_invoke_tool(request: Request, tool_name: str) -> dict[str, Any]:
             )
             tasks = await tracker.query(params=params)
             return _success(
-                request, {"tasks": [t.model_dump() for t in tasks], "count": len(tasks)}
+                request, {"tasks": [t.model_dump()
+                                    for t in tasks], "count": len(tasks)}
             )
 
         if tool_name == "architecture_scan":
@@ -2045,7 +2067,8 @@ def _run_track(args: argparse.Namespace) -> None:
             outcome=args.outcome,
         )
         result = asyncio.run(tracker.record(action=action))
-        print(json.dumps({"action_id": result.action_id, "recorded": True}, indent=2))
+        print(json.dumps(
+            {"action_id": result.action_id, "recorded": True}, indent=2))
     finally:
         if settings.database_url:
             asyncio.run(tracker.close())
@@ -2065,30 +2088,40 @@ def cli() -> None:
     parser = argparse.ArgumentParser(
         description="Coder-Deep MCP Server — persistent memory, context bridging, and AI behavior tracking",
     )
-    subparsers = parser.add_subparsers(dest="command", help="Available commands")
+    subparsers = parser.add_subparsers(
+        dest="command", help="Available commands")
 
     # serve subcommand
-    serve_parser = subparsers.add_parser("serve", help="Start the HTTP API server")
-    serve_parser.add_argument("--port", type=int, default=8010, help="Server port")
-    serve_parser.add_argument("--database-url", help="PostgreSQL connection URL")
+    serve_parser = subparsers.add_parser(
+        "serve", help="Start the HTTP API server")
+    serve_parser.add_argument(
+        "--port", type=int, default=8010, help="Server port")
+    serve_parser.add_argument(
+        "--database-url", help="PostgreSQL connection URL")
     serve_parser.add_argument("--log-level", default="INFO", help="Log level")
 
     # cache subcommand
-    cache_parser = subparsers.add_parser("cache", help="Manage the context cache")
+    cache_parser = subparsers.add_parser(
+        "cache", help="Manage the context cache")
     cache_parser.add_argument(
         "cache_action", choices=["stats", "clear"], help="Cache action"
     )
 
     # track subcommand
-    track_parser = subparsers.add_parser("track", help="Record a behavior action")
+    track_parser = subparsers.add_parser(
+        "track", help="Record a behavior action")
     track_parser.add_argument("--session-id", required=True, help="Session ID")
     track_parser.add_argument("--agent-id", required=True, help="Agent ID")
-    track_parser.add_argument("--action-name", required=True, help="Action name")
-    track_parser.add_argument("--category", required=True, help="Action category")
-    track_parser.add_argument("--outcome", default="success", help="Action outcome")
+    track_parser.add_argument(
+        "--action-name", required=True, help="Action name")
+    track_parser.add_argument(
+        "--category", required=True, help="Action category")
+    track_parser.add_argument(
+        "--outcome", default="success", help="Action outcome")
 
     # sync subcommand
-    sync_parser = subparsers.add_parser("sync", help="Scan and report architecture")
+    sync_parser = subparsers.add_parser(
+        "sync", help="Scan and report architecture")
     sync_parser.add_argument("--path", required=True, help="Root path to scan")
 
     args = parser.parse_args()

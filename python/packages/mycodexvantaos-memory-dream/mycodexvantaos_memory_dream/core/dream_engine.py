@@ -4,12 +4,18 @@ Core Dream Engine — Orchestrate memory processing
 
 from datetime import datetime
 
-from mycodexvantaos_memory_dream.detectors import (detect_conflicts,
-                                                   detect_duplicates,
-                                                   detect_orphans)
-from mycodexvantaos_memory_dream.models import (DreamAction, DreamActionType,
-                                                DreamReport, DreamRun,
-                                                MemoryItem)
+from mycodexvantaos_memory_dream.detectors import (
+    detect_conflicts,
+    detect_duplicates,
+    detect_orphans,
+)
+from mycodexvantaos_memory_dream.models import (
+    DreamAction,
+    DreamActionType,
+    DreamReport,
+    DreamRun,
+    MemoryItem,
+)
 
 
 class DreamEngine:
@@ -131,10 +137,12 @@ class DreamEngine:
             elif action.action_type == DreamActionType.DELETE:
                 executed.append(f"Delete {action.target_memory_id}")
             else:
-                executed.append(f"{action.action_type} on {action.target_memory_id}")
+                executed.append(
+                    f"{action.action_type} on {action.target_memory_id}")
 
         if executed:
-            print(f"[Dream Action Execution] {len(executed)} actions executed:")
+            print(
+                f"[Dream Action Execution] {len(executed)} actions executed:")
             for e in executed[:10]:  # Log first 10
                 print(f"  - {e}")
 

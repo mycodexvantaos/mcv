@@ -77,8 +77,10 @@ class TaskEntry(BaseModel):
     metadata: dict[str, Any] = Field(default_factory=dict)
     result: dict[str, Any] = Field(default_factory=dict)
     error: str = ""
-    created_at: str = Field(default_factory=lambda: datetime.utcnow().isoformat() + "Z")
-    updated_at: str = Field(default_factory=lambda: datetime.utcnow().isoformat() + "Z")
+    created_at: str = Field(
+        default_factory=lambda: datetime.utcnow().isoformat() + "Z")
+    updated_at: str = Field(
+        default_factory=lambda: datetime.utcnow().isoformat() + "Z")
     started_at: str | None = None
     completed_at: str | None = None
     due_at: str | None = None
@@ -97,7 +99,8 @@ class TaskTransition(BaseModel):
     to_status: str = ""
     reason: str = ""
     actor: str = ""
-    timestamp: str = Field(default_factory=lambda: datetime.utcnow().isoformat() + "Z")
+    timestamp: str = Field(
+        default_factory=lambda: datetime.utcnow().isoformat() + "Z")
 
 
 class TaskQuery(BaseModel):
@@ -218,7 +221,7 @@ class _InMemoryTaskStore:
                 continue
             results.append(task)
         results.sort(key=lambda x: x.updated_at, reverse=True)
-        return results[params.offset : params.offset + params.limit]
+        return results[params.offset: params.offset + params.limit]
 
     async def get_transitions(self, task_id: str) -> list[TaskTransition]:
         return self._transitions.get(task_id, [])
@@ -322,7 +325,8 @@ class TaskTracker:
     async def connect(self) -> None:
         """Connect to the PostgreSQL database."""
         if not self._dsn:
-            logger.info("TaskTracker: no DSN configured, using in-memory fallback")
+            logger.info(
+                "TaskTracker: no DSN configured, using in-memory fallback")
             return
 
         import asyncpg

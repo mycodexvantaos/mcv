@@ -20,18 +20,21 @@ from fastapi import FastAPI, HTTPException
 from mycodexvantaos_stream_pipeline.admin import KafkaAdmin
 from mycodexvantaos_stream_pipeline.consumer import StreamConsumer
 from mycodexvantaos_stream_pipeline.metrics import MetricsCollector
-from mycodexvantaos_stream_pipeline.models import (ConsumerConfig,
-                                                   DeliverySemantic,
-                                                   KafkaTopicConfig,
-                                                   OffsetResetStrategy,
-                                                   ProcessorConfig,
-                                                   ProcessorState,
-                                                   ProcessorStatusResponse,
-                                                   ProducerConfig,
-                                                   ProduceRequest,
-                                                   ProduceResponse,
-                                                   StreamMetrics, WindowConfig,
-                                                   WindowType)
+from mycodexvantaos_stream_pipeline.models import (
+    ConsumerConfig,
+    DeliverySemantic,
+    KafkaTopicConfig,
+    OffsetResetStrategy,
+    ProcessorConfig,
+    ProcessorState,
+    ProcessorStatusResponse,
+    ProducerConfig,
+    ProduceRequest,
+    ProduceResponse,
+    StreamMetrics,
+    WindowConfig,
+    WindowType,
+)
 from mycodexvantaos_stream_pipeline.processor import StreamProcessor
 from mycodexvantaos_stream_pipeline.producer import StreamProducer
 from pydantic import BaseModel, Field
@@ -58,7 +61,8 @@ def _load_settings() -> Settings:
     import os
 
     return Settings(
-        kafka_bootstrap_servers=os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092"),
+        kafka_bootstrap_servers=os.getenv(
+            "KAFKA_BOOTSTRAP_SERVERS", "localhost:9092"),
         log_level=os.getenv("LOG_LEVEL", "INFO"),
         host=os.getenv("HOST", "0.0.0.0"),
         port=int(os.getenv("PORT", "8001")),
@@ -220,7 +224,8 @@ app = FastAPI(
 @app.get("/health", response_model=HealthResponse)
 async def health_check() -> HealthResponse:
     """Health check endpoint."""
-    active = sum(1 for p in _processors.values() if p.state == ProcessorState.RUNNING)
+    active = sum(1 for p in _processors.values()
+                 if p.state == ProcessorState.RUNNING)
     return HealthResponse(
         status="ok",
         version="0.1.0",
@@ -236,7 +241,8 @@ async def get_metrics() -> MetricsResponse:
     prom_text = _metrics_collector.to_prometheus_format()
     all_metrics = _metrics_collector.get_all_metrics()
     return MetricsResponse(
-        processors={name: m.model_dump(mode="json") for name, m in all_metrics.items()},
+        processors={name: m.model_dump(mode="json")
+                    for name, m in all_metrics.items()},
         prometheus_text=prom_text,
     )
 
@@ -249,7 +255,8 @@ async def list_topics() -> TopicListResponse:
         topics = await admin.list_topics()
         return TopicListResponse(topics=topics, count=len(topics))
     except Exception:
-        raise HTTPException(status_code=503, detail="Kafka admin client not available")
+        raise HTTPException(
+            status_code=503, detail="Kafka admin client not available")
 
 
 @app.post("/api/topics", response_model=TopicCreateResponse)
@@ -272,7 +279,8 @@ async def describe_topic(topic_name: str) -> dict[str, Any]:
     admin = _get_admin()
     result = await admin.describe_topic(topic_name)
     if result is None:
-        raise HTTPException(status_code=404, detail=f"Topic '{topic_name}' not found")
+        raise HTTPException(
+            status_code=404, detail=f"Topic '{topic_name}' not found")
     return result
 
 
@@ -303,7 +311,8 @@ async def produce_message(body: ProduceRequest) -> ProduceResponse:
             headers=body.headers,
         )
         if result is None:
-            raise HTTPException(status_code=500, detail="Failed to produce message")
+            raise HTTPException(
+                status_code=500, detail="Failed to produce message")
         return ProduceResponse(
             success=True,
             topic=body.topic,
@@ -313,7 +322,8 @@ async def produce_message(body: ProduceRequest) -> ProduceResponse:
     except HTTPException:
         raise
     except Exception:
-        raise HTTPException(status_code=500, detail="Failed to produce message")
+        raise HTTPException(
+            status_code=500, detail="Failed to produce message")
     finally:
         await producer.stop()
 
@@ -352,7 +362,8 @@ async def consume_messages(body: dict[str, Any]) -> dict[str, Any]:
             "request_id": str(uuid.uuid4()),
         }
     except Exception:
-        raise HTTPException(status_code=500, detail="Failed to consume messages")
+        raise HTTPException(
+            status_code=500, detail="Failed to consume messages")
     finally:
         await consumer.stop()
 
@@ -408,7 +419,8 @@ async def start_processor(name: str) -> ProcessorActionResponse:
     """Start a stream processor."""
     processor = _processors.get(name)
     if not processor:
-        raise HTTPException(status_code=404, detail=f"Processor '{name}' not found")
+        raise HTTPException(
+            status_code=404, detail=f"Processor '{name}' not found")
 
     try:
         await processor.start()
@@ -428,7 +440,8 @@ async def stop_processor(name: str) -> ProcessorActionResponse:
     """Stop a stream processor."""
     processor = _processors.get(name)
     if not processor:
-        raise HTTPException(status_code=404, detail=f"Processor '{name}' not found")
+        raise HTTPException(
+            status_code=404, detail=f"Processor '{name}' not found")
 
     await processor.stop()
     return ProcessorActionResponse(
@@ -443,7 +456,8 @@ async def get_processor_status(name: str) -> ProcessorStatusResponse:
     """Get the status and metrics of a stream processor."""
     processor = _processors.get(name)
     if not processor:
-        raise HTTPException(status_code=404, detail=f"Processor '{name}' not found")
+        raise HTTPException(
+            status_code=404, detail=f"Processor '{name}' not found")
 
     return ProcessorStatusResponse(
         name=processor.name,
@@ -593,7 +607,8 @@ def cli() -> None:
     parser = argparse.ArgumentParser(
         description="Kafka Stream Processor — real-time stream processing for MyCodeXvantaOS",
     )
-    subparsers = parser.add_subparsers(dest="command", help="Available commands")
+    subparsers = parser.add_subparsers(
+        dest="command", help="Available commands")
 
     # produce subcommand
     produce_parser = subparsers.add_parser(
@@ -631,7 +646,8 @@ def cli() -> None:
     )
 
     # admin subcommand
-    admin_parser = subparsers.add_parser("admin", help="Kafka admin operations")
+    admin_parser = subparsers.add_parser(
+        "admin", help="Kafka admin operations")
     admin_parser.add_argument(
         "admin_command", choices=["list", "create", "delete", "describe"]
     )
@@ -648,8 +664,10 @@ def cli() -> None:
     )
 
     # serve subcommand
-    serve_parser = subparsers.add_parser("serve", help="Start the HTTP API server")
-    serve_parser.add_argument("--port", type=int, default=8001, help="Server port")
+    serve_parser = subparsers.add_parser(
+        "serve", help="Start the HTTP API server")
+    serve_parser.add_argument(
+        "--port", type=int, default=8001, help="Server port")
     serve_parser.add_argument(
         "--bootstrap-servers",
         default="localhost:9092",

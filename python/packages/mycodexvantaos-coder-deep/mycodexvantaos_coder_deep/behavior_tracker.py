@@ -71,7 +71,8 @@ class BehaviorAction(BaseModel):
     outcome: str = ActionOutcome.SUCCESS
     error_message: str = ""
     duration_ms: int = 0
-    timestamp: str = Field(default_factory=lambda: datetime.utcnow().isoformat() + "Z")
+    timestamp: str = Field(
+        default_factory=lambda: datetime.utcnow().isoformat() + "Z")
     metadata: dict[str, Any] = Field(default_factory=dict)
     tags: list[str] = Field(default_factory=list)
     repository: str = ""
@@ -186,7 +187,7 @@ class _InMemoryBehaviorStore:
             results.append(action)
             if len(results) >= params.limit:
                 break
-        return results[params.offset :]
+        return results[params.offset:]
 
     async def get_stats(
         self, agent_id: str | None = None, session_id: str | None = None
@@ -203,7 +204,8 @@ class _InMemoryBehaviorStore:
         total_duration = 0
 
         for a in actions:
-            by_category[a.action_category] = by_category.get(a.action_category, 0) + 1
+            by_category[a.action_category] = by_category.get(
+                a.action_category, 0) + 1
             by_outcome[a.outcome] = by_outcome.get(a.outcome, 0) + 1
             by_agent[a.agent_id] = by_agent.get(a.agent_id, 0) + 1
             total_duration += a.duration_ms
@@ -216,7 +218,8 @@ class _InMemoryBehaviorStore:
         for a in actions:
             key = f"{a.action_category}:{a.action_name}"
             action_counts[key] = action_counts.get(key, 0) + 1
-        top = sorted(action_counts.items(), key=lambda x: x[1], reverse=True)[:10]
+        top = sorted(action_counts.items(),
+                     key=lambda x: x[1], reverse=True)[:10]
         top_actions = [{"action": k, "count": v} for k, v in top]
 
         return BehaviorStats(
@@ -238,7 +241,7 @@ class _InMemoryBehaviorStore:
         sessions = sorted(
             self._sessions.values(), key=lambda s: s.started_at, reverse=True
         )
-        return sessions[offset : offset + limit]
+        return sessions[offset: offset + limit]
 
     async def end_session(self, session_id: str) -> bool:
         session = self._sessions.get(session_id)
@@ -297,7 +300,8 @@ class BehaviorTracker:
     async def connect(self) -> None:
         """Connect to the PostgreSQL database."""
         if not self._dsn:
-            logger.info("BehaviorTracker: no DSN configured, using in-memory fallback")
+            logger.info(
+                "BehaviorTracker: no DSN configured, using in-memory fallback")
             return
 
         import asyncpg
@@ -470,7 +474,8 @@ class BehaviorTracker:
                 f"SELECT action_category || ':' || action_name as action, COUNT(*) as cnt FROM coder_deep_behavior WHERE {where} GROUP BY action_category, action_name ORDER BY cnt DESC LIMIT 10",
                 *args,
             )
-            top_actions = [{"action": r["action"], "count": r["cnt"]} for r in top_rows]
+            top_actions = [{"action": r["action"], "count": r["cnt"]}
+                           for r in top_rows]
 
         failure_count = by_outcome.get(ActionOutcome.FAILURE, 0)
         error_rate = failure_count / total if total > 0 else 0.0

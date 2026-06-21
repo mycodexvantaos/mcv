@@ -23,8 +23,10 @@ def execute_job(job_type: str, input_path: str, dry_run: bool = False) -> dict:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Knowledge Worker CLI")
-    parser.add_argument("--job-type", required=True, help="Type of job to execute")
-    parser.add_argument("--input", required=True, help="Path to input JSON file")
+    parser.add_argument("--job-type", required=True,
+                        help="Type of job to execute")
+    parser.add_argument("--input", required=True,
+                        help="Path to input JSON file")
     parser.add_argument(
         "--dry-run", action="store_true", help="Only report what would be done"
     )

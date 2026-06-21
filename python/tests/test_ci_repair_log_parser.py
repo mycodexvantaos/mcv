@@ -4,10 +4,12 @@ Covers all 10 error categories, priority ordering, context extraction,
 file path extraction, and dependency name extraction.
 """
 
-from mycodexvantaos_ci_repair.log_parser import (classify_log,
-                                                 extract_affected_dependencies,
-                                                 extract_affected_files,
-                                                 extract_error_context)
+from mycodexvantaos_ci_repair.log_parser import (
+    classify_log,
+    extract_affected_dependencies,
+    extract_affected_files,
+    extract_error_context,
+)
 from mycodexvantaos_ci_repair.models import ErrorCategory
 
 
@@ -240,7 +242,8 @@ class TestExtractErrorContext:
         assert "error: the problem" in context
 
     def test_respects_max_lines(self) -> None:
-        log = "\n".join([f"line{i}" for i in range(100)] + ["error: bad thing"])
+        log = "\n".join(
+            [f"line{i}" for i in range(100)] + ["error: bad thing"])
         context = extract_error_context(log, max_lines=10)
         assert len(context.split("\n")) <= 10
 
