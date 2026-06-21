@@ -8,7 +8,7 @@ FROM node:26-alpine AS base
 WORKDIR /app
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable && corepack prepare pnpm@9 --activate
+RUN npm install -g corepack@latest && corepack enable && corepack prepare pnpm@9 --activate
 
 # ── Stage 2: install dependencies ─────────────────────────────
 FROM base AS deps
@@ -33,7 +33,7 @@ WORKDIR /app
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 ENV NODE_ENV=production
-RUN corepack enable && corepack prepare pnpm@9 --activate
+RUN npm install -g corepack@latest && corepack enable && corepack prepare pnpm@9 --activate
 
 # Copy workspace manifests
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
