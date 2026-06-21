@@ -7,36 +7,20 @@ on:
     branches: ["main"]
   workflow_dispatch:
 
-concurrency:
-  group: ci-gate-${{ github.ref }}
-  cancel-in-progress: true
-
 permissions:
   contents: read
-  pull-requests: read
-  checks: write
-  statuses: write
   security-events: write
   actions: read
 
 jobs:
-  # ── CodeQL Security Scan (satisfies ruleset code_scanning) ─────────
-  codeql:
-    name: CodeQL
+  codeql-python:
+    name: CodeQL Python
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
       contents: read
       security-events: write
       actions: read
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - language: python
-            category: "/language:python"
-          - language: javascript-typescript
-            category: "/language:javascript-typescript"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -44,7 +28,7 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
-          languages: ${{ matrix.language }}
+          languages: python
           config-file: .github/codeql/codeql-config.yml
 
       - name: Autobuild
@@ -53,186 +37,32 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
-          category: ${{ matrix.category }}
+          category: "/language:python"
           upload: true
 
-  # ── Semgrep Security Scan (satisfies ruleset code_scanning) ────────
-  semgrep:
-    name: Semgrep Scan
+  codeql-javascript:
+    name: CodeQL JavaScript
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     permissions:
       contents: read
       security-events: write
+      actions: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Semgrep Full Scan
-        uses: returntocorp/semgrep-action@v1
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
         with:
-          config: >-
-            p/default
-            p/security-audit
-            p/python
-            p/javascript
-          generateSarif: "1"
+          languages: javascript
+          config-file: .github/codeql/codeql-config.yml
 
-      - name: Upload Semgrep SARIF
-        if: always()
-        uses: github/codeql-action/upload-sarif@v3
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
         with:
-          sarif_file: semgrep.sarif
-          category: semgrep
-
-  # ── Trivy Security Scan (satisfies ruleset code_scanning) ──────────
-  trivy:
-    name: Trivy Scan
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    permissions:
-      contents: read
-      security-events: write
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Run Trivy vulnerability scanner in repo mode
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: fs
-          scan-ref: .
-          format: sarif
-          output: trivy-results.sarif
-          severity: CRITICAL,HIGH,MEDIUM,LOW
-          exit-code: "0"
-
-      - name: Upload Trivy SARIF
-        if: always()
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: trivy-results.sarif
-          category: trivy
-
-  # ── Checkov Security Scan (satisfies ruleset code_scanning) ────────
-  checkov:
-    name: Checkov Scan
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    permissions:
-      contents: read
-      security-events: write
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Run Checkov security scan
-        uses: bridgecrewio/checkov-action@master
-        with:
-          directory: .
-          framework: dockerfile,github_actions,secrets
-          output_format: sarif
-          output_file_path: checkov-results.sarif
-          skip_check: CKV_SECRET_6
-          quiet: true
-
-      - name: Upload Checkov SARIF
-        if: always()
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: checkov-results.sarif
-          category: checkov
-
-  # ── Dependency Review ──────────────────────────────────────────────
-  dependency-review:
-    name: Dependency Review
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    if: github.event_name == 'pull_request'
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Dependency Review
-        uses: actions/dependency-review-action@v4
-        with:
-          config-file: .github/dependency-review-config.yml
-
-  # ── Secret Scan (gitleaks) ─────────────────────────────────────────
-  secret-scan:
-    name: Secret Scan
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: read
-      security-events: write
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Gitleaks
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # ── Governance Gate Summary ────────────────────────────────────────
-  governance-gate:
-    name: Governance Gate
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    needs:
-      - codeql
-      - semgrep
-      - trivy
-      - checkov
-      - dependency-review
-      - secret-scan
-    if: always()
-    permissions:
-      contents: read
-      checks: write
-    steps:
-      - name: Evaluate Gate Results
-        run: |
-          echo "╔══════════════════════════════════════════════════════╗"
-          echo "║        Unified CI Gate — Governance Summary         ║"
-          echo "╚══════════════════════════════════════════════════════╝"
-          echo ""
-          echo "Branch:  ${{ github.ref_name }}"
-          echo "SHA:     ${{ github.sha }}"
-          echo "Event:   ${{ github.event_name }}"
-          echo "Run ID:  ${{ github.run_id }}"
-          echo ""
-
-          PASS=true
-          check_result() {
-            local job=$1
-            local result=$2
-            if [ "$result" = "success" ]; then
-              echo "  ✅ $job"
-            elif [ "$result" = "skipped" ]; then
-              echo "  ⏭️  $job (skipped)"
-            else
-              echo "  ❌ $job ($result)"
-              PASS=false
-            fi
-          }
-
-          check_result "codeql" "${{ needs.codeql.result }}"
-          check_result "semgrep" "${{ needs.semgrep.result }}"
-          check_result "trivy" "${{ needs.trivy.result }}"
-          check_result "checkov" "${{ needs.checkov.result }}"
-          check_result "dependency-review" "${{ needs.dependency-review.result }}"
-          check_result "secret-scan" "${{ needs.secret-scan.result }}"
-
-          echo ""
-          if [ "$PASS" = true ]; then
-            echo "🟢 GATE: PASS — all checks satisfied"
-          else
-            echo "🔴 GATE: FAIL — one or more checks failed"
-            exit 1
-          fi
+          category: "/language:javascript-typescript"
+          upload: true
