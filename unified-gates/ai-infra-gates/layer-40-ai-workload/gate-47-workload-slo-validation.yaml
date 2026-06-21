@@ -1,0 +1,10 @@
+blocking: true
+id: gate-47-workload-slo-validation
+layer: ai-workload
+lifecycle: active
+owner: platform@mycodexvantaos.com
+plane: ai-infra
+validates:
+- checks: []
+  description: Mandatory readiness for gate-47-workload-slo-validation
+  dimension: canonical-readiness

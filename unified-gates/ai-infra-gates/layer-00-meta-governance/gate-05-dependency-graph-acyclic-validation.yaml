@@ -1,0 +1,10 @@
+blocking: true
+id: gate-05-dependency-graph-acyclic-validation
+layer: meta-governance
+lifecycle: active
+owner: platform@mycodexvantaos.com
+plane: ai-infra
+validates:
+- checks: []
+  description: Mandatory readiness for gate-05-dependency-graph-acyclic-validation
+  dimension: canonical-readiness

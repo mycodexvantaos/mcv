@@ -1,0 +1,10 @@
+blocking: true
+id: gate-91-sbom-generation-validation
+layer: attestation-compliance-closure
+lifecycle: active
+owner: platform@mycodexvantaos.com
+plane: ai-infra
+validates:
+- checks: []
+  description: Mandatory readiness for gate-91-sbom-generation-validation
+  dimension: canonical-readiness

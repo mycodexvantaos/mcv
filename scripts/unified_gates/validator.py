@@ -22,7 +22,7 @@ GATE_ID_PATTERN = re.compile(r"^gate-[0-9]{2}-[a-z0-9]+(?:-[a-z0-9]+)*$")
 OWNER_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 VALID_LIFECYCLES = {"proposed", "active", "deprecated", "archived", "destroyed"}
 VALID_RISKS = {"low", "medium", "high", "critical"}
-VALID_PLANES = {"quality-gate-plane", "ai-infra-gate-plane"}
+VALID_PLANES = {"quality-gate-plane", "ai-infra-gate-plane", "quality", "ai-infra"}
 
 MINIMUM_BLOCKING_GATES = frozenset(
     {

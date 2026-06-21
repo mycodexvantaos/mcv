@@ -1,0 +1,10 @@
+blocking: true
+id: gate-04-directory-binding-mediator-validation
+layer: meta-governance
+lifecycle: active
+owner: platform@mycodexvantaos.com
+plane: ai-infra
+validates:
+- checks: []
+  description: Mandatory readiness for gate-04-directory-binding-mediator-validation
+  dimension: canonical-readiness
