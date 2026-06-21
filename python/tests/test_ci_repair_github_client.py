@@ -8,6 +8,7 @@ from __future__ import annotations
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
+
 from mycodexvantaos_ci_repair.github_client import GitHubActionsClient
 
 

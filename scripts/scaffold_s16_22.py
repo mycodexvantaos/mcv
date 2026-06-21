@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 """Generate Sec.16 Python packages, Sec.20 runtimes/local, Sec.21 Cloudflare providers, Sec.22 apps"""
-
 import os
 
 BASE = "/workspace/mycodexvantaos"
 created = 0
 skipped = 0
-
 
 def write(path, content):
     global created, skipped
@@ -20,7 +18,6 @@ def write(path, content):
     created += 1
     print(f"  OK {path}")
 
-
 # ═══════════════════════════════════════════════
 # Sec.16 - Python Intelligence Plane
 # ═══════════════════════════════════════════════
@@ -28,9 +25,7 @@ def write(path, content):
 # knowledge-pipeline
 pkg = "mycodexvantaos-knowledge-pipeline"
 mod = "mycodexvantaos_knowledge_pipeline"
-write(
-    f"python/packages/{pkg}/pyproject.toml",
-    f"""[project]
+write(f"python/packages/{pkg}/pyproject.toml", f"""[project]
 name = "{pkg}"
 version = "0.1.0"
 description = "Knowledge Pipeline - Document parsing, embedding generation, semantic clustering"
@@ -66,12 +61,9 @@ line-length = 100
 [tool.mypy]
 python_version = "3.11"
 strict = true
-""",
-)
+""")
 
-write(
-    f"python/packages/{pkg}/README.md",
-    f"""# {pkg}
+write(f"python/packages/{pkg}/README.md", f"""# {pkg}
 
 Knowledge Pipeline - Document parsing, embedding generation, semantic clustering
 
@@ -85,12 +77,9 @@ Knowledge Pipeline - Document parsing, embedding generation, semantic clustering
 ## Status
 
 Skeleton - pydantic models with TODO markers for implementation.
-""",
-)
+""")
 
-write(
-    f"python/packages/{pkg}/{mod}/__init__.py",
-    '''"""
+write(f"python/packages/{pkg}/{mod}/__init__.py", '''"""
 MyCodeXvantaOS Knowledge Pipeline
 Document parsing, embedding generation, and semantic clustering.
 """
@@ -108,12 +97,9 @@ __all__ = [
     "EmbeddingResult",
     "ClusterResult",
 ]
-''',
-)
+''')
 
-write(
-    f"python/packages/{pkg}/{mod}/models.py",
-    '''"""
+write(f"python/packages/{pkg}/{mod}/models.py", '''"""
 Knowledge Pipeline data models
 Matches contracts/schemas/knowledge-model.schema.json
 """
@@ -157,15 +143,12 @@ class ClusterResult(BaseModel):
     clusters: list[dict[str, object]] = Field(default_factory=list)
     total_documents: int = 0
     total_clusters: int = 0
-''',
-)
+''')
 
 # agent-worker
 pkg = "mycodexvantaos-agent-worker"
 mod = "mycodexvantaos_agent_worker"
-write(
-    f"python/packages/{pkg}/pyproject.toml",
-    f"""[project]
+write(f"python/packages/{pkg}/pyproject.toml", f"""[project]
 name = "{pkg}"
 version = "0.1.0"
 description = "Agent Worker - AI-powered agent execution for RAG, tool use, and multi-step reasoning"
@@ -200,12 +183,9 @@ line-length = 100
 [tool.mypy]
 python_version = "3.11"
 strict = true
-""",
-)
+""")
 
-write(
-    f"python/packages/{pkg}/README.md",
-    f"""# {pkg}
+write(f"python/packages/{pkg}/README.md", f"""# {pkg}
 
 Agent Worker - AI-powered agent execution for RAG, tool use, and multi-step reasoning
 
@@ -218,12 +198,9 @@ Agent Worker - AI-powered agent execution for RAG, tool use, and multi-step reas
 ## Status
 
 Skeleton - pydantic models with TODO markers for implementation.
-""",
-)
+""")
 
-write(
-    f"python/packages/{pkg}/{mod}/__init__.py",
-    '''"""
+write(f"python/packages/{pkg}/{mod}/__init__.py", '''"""
 MyCodeXvantaOS Agent Worker
 AI-powered agent execution for RAG, tool use, and multi-step reasoning.
 """
@@ -239,12 +216,9 @@ __all__ = [
     "AgentResult",
     "ToolInvocation",
 ]
-''',
-)
+''')
 
-write(
-    f"python/packages/{pkg}/{mod}/models.py",
-    '''"""
+write(f"python/packages/{pkg}/{mod}/models.py", '''"""
 Agent Worker data models
 """
 
@@ -285,15 +259,12 @@ class AgentResult(BaseModel):
     total_tokens: int = 0
     evidence_level: str = "knowledge-assisted"
     metadata: dict[str, object] = Field(default_factory=dict)
-''',
-)
+''')
 
 # vector-tools
 pkg = "mycodexvantaos-vector-tools"
 mod = "mycodexvantaos_vector_tools"
-write(
-    f"python/packages/{pkg}/pyproject.toml",
-    f"""[project]
+write(f"python/packages/{pkg}/pyproject.toml", f"""[project]
 name = "{pkg}"
 version = "0.1.0"
 description = "Vector Tools - Similarity search, reranking, and vector utilities"
@@ -328,12 +299,9 @@ line-length = 100
 [tool.mypy]
 python_version = "3.11"
 strict = true
-""",
-)
+""")
 
-write(
-    f"python/packages/{pkg}/README.md",
-    f"""# {pkg}
+write(f"python/packages/{pkg}/README.md", f"""# {pkg}
 
 Vector Tools - Similarity search, reranking, and vector utilities
 
@@ -346,12 +314,9 @@ Vector Tools - Similarity search, reranking, and vector utilities
 ## Status
 
 Skeleton - pydantic models with TODO markers for implementation.
-""",
-)
+""")
 
-write(
-    f"python/packages/{pkg}/{mod}/__init__.py",
-    '''"""
+write(f"python/packages/{pkg}/{mod}/__init__.py", '''"""
 MyCodeXvantaOS Vector Tools
 Similarity search, reranking, and vector utilities.
 """
@@ -367,12 +332,9 @@ __all__ = [
     "VectorSearchResult",
     "RerankResult",
 ]
-''',
-)
+''')
 
-write(
-    f"python/packages/{pkg}/{mod}/models.py",
-    '''"""
+write(f"python/packages/{pkg}/{mod}/models.py", '''"""
 Vector Tools data models
 """
 
@@ -406,15 +368,12 @@ class RerankResult(BaseModel):
     original_count: int = 0
     reranked_count: int = 0
     model: str = "default"
-''',
-)
+''')
 
 # evaluation
 pkg = "mycodexvantaos-evaluation"
 mod = "mycodexvantaos_evaluation"
-write(
-    f"python/packages/{pkg}/pyproject.toml",
-    f"""[project]
+write(f"python/packages/{pkg}/pyproject.toml", f"""[project]
 name = "{pkg}"
 version = "0.1.0"
 description = "Evaluation - AI evaluation tools, metrics, and benchmarking"
@@ -443,12 +402,9 @@ line-length = 100
 [tool.mypy]
 python_version = "3.11"
 strict = true
-""",
-)
+""")
 
-write(
-    f"python/packages/{pkg}/README.md",
-    f"""# {pkg}
+write(f"python/packages/{pkg}/README.md", f"""# {pkg}
 
 Evaluation - AI evaluation tools, metrics, and benchmarking
 
@@ -461,12 +417,9 @@ Evaluation - AI evaluation tools, metrics, and benchmarking
 ## Status
 
 Skeleton - pydantic models with TODO markers for implementation.
-""",
-)
+""")
 
-write(
-    f"python/packages/{pkg}/{mod}/__init__.py",
-    '''"""
+write(f"python/packages/{pkg}/{mod}/__init__.py", '''"""
 MyCodeXvantaOS Evaluation
 AI evaluation tools, metrics, and benchmarking.
 """
@@ -482,12 +435,9 @@ __all__ = [
     "EvaluationMetric",
     "EvaluationReport",
 ]
-''',
-)
+''')
 
-write(
-    f"python/packages/{pkg}/{mod}/models.py",
-    '''"""
+write(f"python/packages/{pkg}/{mod}/models.py", '''"""
 Evaluation data models
 """
 
@@ -525,13 +475,10 @@ class EvaluationReport(BaseModel):
     overall_passed: bool = True
     summary: str | None = None
     created_at: str | None = None
-''',
-)
+''')
 
 # Python apps
-write(
-    "python/apps/knowledge-worker/pyproject.toml",
-    """[project]
+write("python/apps/knowledge-worker/pyproject.toml", """[project]
 name = "knowledge-worker"
 version = "0.1.0"
 description = "Knowledge Worker CLI - Executes knowledge pipeline jobs (ingest, embed, cluster)"
@@ -557,12 +504,9 @@ line-length = 100
 [tool.mypy]
 python_version = "3.11"
 strict = true
-""",
-)
+""")
 
-write(
-    "python/apps/knowledge-worker/README.md",
-    """# knowledge-worker
+write("python/apps/knowledge-worker/README.md", """# knowledge-worker
 
 Knowledge Worker CLI - Executes knowledge pipeline jobs (ingest, embed, cluster)
 
@@ -576,12 +520,9 @@ uv run python main.py --job-type ingest --input data.json --dry-run
 ## Status
 
 Skeleton - CLI entry point with TODO markers.
-""",
-)
+""")
 
-write(
-    "python/apps/knowledge-worker/main.py",
-    '''"""
+write("python/apps/knowledge-worker/main.py", '''"""
 Knowledge Worker CLI - Executes knowledge pipeline jobs (ingest, embed, cluster)
 """
 
@@ -618,12 +559,9 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-''',
-)
+''')
 
-write(
-    "python/apps/agent-worker/pyproject.toml",
-    """[project]
+write("python/apps/agent-worker/pyproject.toml", """[project]
 name = "agent-worker"
 version = "0.1.0"
 description = "Agent Worker CLI - Executes agent tasks (RAG, tool use, reasoning)"
@@ -649,12 +587,9 @@ line-length = 100
 [tool.mypy]
 python_version = "3.11"
 strict = true
-""",
-)
+""")
 
-write(
-    "python/apps/agent-worker/README.md",
-    """# agent-worker
+write("python/apps/agent-worker/README.md", """# agent-worker
 
 Agent Worker CLI - Executes agent tasks (RAG, tool use, reasoning)
 
@@ -668,12 +603,9 @@ uv run python main.py --job-type rag --input task.json --dry-run
 ## Status
 
 Skeleton - CLI entry point with TODO markers.
-""",
-)
+""")
 
-write(
-    "python/apps/agent-worker/main.py",
-    '''"""
+write("python/apps/agent-worker/main.py", '''"""
 Agent Worker CLI - Executes agent tasks (RAG, tool use, reasoning)
 """
 
@@ -710,8 +642,7 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-''',
-)
+''')
 
 print(f"\nSec.ion 16 done (created={created}, skipped={skipped})")
 
@@ -719,9 +650,7 @@ print(f"\nSec.ion 16 done (created={created}, skipped={skipped})")
 # Sec.20 - runtimes/local/
 # ═══════════════════════════════════════════════
 
-write(
-    "runtimes/local/README.md",
-    """# Local Runtime
+write("runtimes/local/README.md", """# Local Runtime
 
 Runtime configuration for local development and testing.
 
@@ -750,12 +679,9 @@ docker-compose -f infra/docker-compose/docker-compose.yml up
 ## Self-Hostable
 
 Yes - the local runtime is the primary self-hostable configuration.
-""",
-)
+""")
 
-write(
-    "runtimes/local/runtime.yaml",
-    """id: local
+write("runtimes/local/runtime.yaml", """id: local
 display_name: Local Development Runtime
 description: Local development and testing runtime
 supported_services:
@@ -781,8 +707,7 @@ ai_provider_support:
   - openai
   - anthropic
 self_hostable: true
-""",
-)
+""")
 
 print(f"\nSec.ion 20 done (created={created}, skipped={skipped})")
 
@@ -791,34 +716,17 @@ print(f"\nSec.ion 20 done (created={created}, skipped={skipped})")
 # ═══════════════════════════════════════════════
 
 cf_providers = {
-    "cloudflare-d1": (
-        "Cloudflare D1 Provider",
-        "SQLite-based database adapter for Cloudflare D1",
-    ),
-    "cloudflare-kv": (
-        "Cloudflare KV Provider",
-        "Key-value cache and session adapter for Cloudflare KV",
-    ),
-    "cloudflare-r2": (
-        "Cloudflare R2 Provider",
-        "Object storage adapter for Cloudflare R2",
-    ),
-    "cloudflare-workers-ai": (
-        "Cloudflare Workers AI Provider",
-        "Chat and embedding model adapter for Workers AI",
-    ),
-    "cloudflare-vectorize": (
-        "Cloudflare Vectorize Provider",
-        "Vector search adapter for Cloudflare Vectorize",
-    ),
+    "cloudflare-d1": ("Cloudflare D1 Provider", "SQLite-based database adapter for Cloudflare D1"),
+    "cloudflare-kv": ("Cloudflare KV Provider", "Key-value cache and session adapter for Cloudflare KV"),
+    "cloudflare-r2": ("Cloudflare R2 Provider", "Object storage adapter for Cloudflare R2"),
+    "cloudflare-workers-ai": ("Cloudflare Workers AI Provider", "Chat and embedding model adapter for Workers AI"),
+    "cloudflare-vectorize": ("Cloudflare Vectorize Provider", "Vector search adapter for Cloudflare Vectorize"),
 }
 
 for prov_name, (display, desc) in cf_providers.items():
     prov_dir = f"providers/mycodexvantaos-provider-{prov_name}"
-
-    write(
-        f"{prov_dir}/package.json",
-        f"""{{
+    
+    write(f"{prov_dir}/package.json", f"""{{
   "name": "@mycodexvantaos/provider-{prov_name}",
   "version": "0.1.0",
   "description": "{desc}",
@@ -841,12 +749,9 @@ for prov_name, (display, desc) in cf_providers.items():
     "@mycodexvantaos/ports": "workspace:*"
   }}
 }}
-""",
-    )
-
-    write(
-        f"{prov_dir}/tsconfig.json",
-        """{
+""")
+    
+    write(f"{prov_dir}/tsconfig.json", """{
   "extends": "../../tsconfig.providers.json",
   "compilerOptions": {
     "outDir": "./dist",
@@ -854,12 +759,9 @@ for prov_name, (display, desc) in cf_providers.items():
   },
   "include": ["src"]
 }
-""",
-    )
-
-    write(
-        f"{prov_dir}/README.md",
-        f"""# @mycodexvantaos/provider-{prov_name}
+""")
+    
+    write(f"{prov_dir}/README.md", f"""# @mycodexvantaos/provider-{prov_name}
 
 {desc}
 
@@ -868,22 +770,16 @@ Part of the Cloudflare runtime provider set.
 ## Status
 
 Skeleton - implements port interfaces with TODO markers.
-""",
-    )
-
-    write(
-        f"{prov_dir}/CHANGELOG.md",
-        f"""# @mycodexvantaos/provider-{prov_name}
+""")
+    
+    write(f"{prov_dir}/CHANGELOG.md", f"""# @mycodexvantaos/provider-{prov_name}
 
 ## 0.1.0 (2025-05-15)
 
 - Initial skeleton
-""",
-    )
-
-    write(
-        f"{prov_dir}/src/index.ts",
-        f"""/**
+""")
+    
+    write(f"{prov_dir}/src/index.ts", f"""/**
  * @mycodexvantaos/provider-{prov_name}
  * {desc}
  *
@@ -896,8 +792,7 @@ Skeleton - implements port interfaces with TODO markers.
 // TODO: Implement adapter class
 
 export {{}};
-""",
-    )
+""")
 
 print(f"\nSec.ion 21 done (created={created}, skipped={skipped})")
 
@@ -905,9 +800,7 @@ print(f"\nSec.ion 21 done (created={created}, skipped={skipped})")
 # Sec.22 - Missing Apps (api-node, admin-console)
 # ═══════════════════════════════════════════════
 
-write(
-    "apps/api-node/package.json",
-    """{
+write("apps/api-node/package.json", """{
   "name": "@mycodexvantaos/api-node",
   "version": "0.1.0",
   "private": true,
@@ -931,12 +824,9 @@ write(
   },
   "license": "UNLICENSED"
 }
-""",
-)
+""")
 
-write(
-    "apps/api-node/README.md",
-    """# @mycodexvantaos/api-node
+write("apps/api-node/README.md", """# @mycodexvantaos/api-node
 
 Node.js API server for self-hosted / Docker / Kubernetes runtime.
 
@@ -946,12 +836,9 @@ instead of Cloudflare Workers.
 ## Status
 
 Skeleton - route definitions with TODO markers.
-""",
-)
+""")
 
-write(
-    "apps/api-node/index.ts",
-    """/**
+write("apps/api-node/index.ts", """/**
  * @module apps/api-node
  * @description Node.js API server for self-hosted deployment.
  *
@@ -964,12 +851,9 @@ write(
 // TODO: Start HTTP server
 
 console.log('MyCodeXvantaOS API Node - TODO: implement');
-""",
-)
+""")
 
-write(
-    "apps/admin-console/package.json",
-    """{
+write("apps/admin-console/package.json", """{
   "name": "@mycodexvantaos/admin-console",
   "version": "0.1.0",
   "private": true,
@@ -980,20 +864,16 @@ write(
   },
   "license": "UNLICENSED"
 }
-""",
-)
+""")
 
-write(
-    "apps/admin-console/README.md",
-    """# @mycodexvantaos/admin-console
+write("apps/admin-console/README.md", """# @mycodexvantaos/admin-console
 
 Admin console for platform management - user management, policy configuration, audit review, usage dashboards.
 
 ## Status
 
 Placeholder - to be implemented.
-""",
-)
+""")
 
 print(f"\nSec.ion 22 done (created={created}, skipped={skipped})")
 

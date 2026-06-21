@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 """Generate Sec.8 doc, Sec.24 documentation, Sec.25 tools, Sec.26 CI workflows"""
-
 import os
 
 BASE = "/workspace/mycodexvantaos"
 created = 0
 skipped = 0
-
 
 def write(path, content):
     global created, skipped
@@ -25,9 +23,7 @@ def write(path, content):
 # ═══════════════════════════════════════════════════════════════
 # Sec.8 - Existing Service Repositioning Doc
 # ═══════════════════════════════════════════════════════════════
-write(
-    "docs/architecture/existing-service-repositioning.md",
-    """# Existing Service Repositioning
+write("docs/architecture/existing-service-repositioning.md", """# Existing Service Repositioning
 
 ## Overview
 
@@ -109,8 +105,7 @@ TS API Gateway
 - Communication is ONLY via contracts (JSON Schema, YAML, events, policies)
 - No direct imports between TS and Python codebases
 - All 377 existing TypeScript tests must continue to pass
-""",
-)
+""")
 
 print(f"Sec.ion 8 done (created={created}, skipped={skipped})")
 
@@ -157,6 +152,7 @@ All packages use the `@mycodexvantaos/` prefix with lowercase kebab-case:
 - [Dual-Plane Architecture](./dual-plane-architecture.md)
 - [Existing Service Repositioning](./existing-service-repositioning.md)
 """,
+
     "docs/architecture/dual-plane-architecture.md": """# Dual-Plane Architecture
 
 ## Concept
@@ -216,6 +212,7 @@ Cross-plane communication uses these contract types:
 - **Kubernetes**: Production deployment with auto-scaling
 - **Local**: Development runtime with all services on localhost
 """,
+
     "docs/service-catalog/service-catalog-overview.md": """# Service Catalog Overview
 
 ## Purpose
@@ -250,6 +247,7 @@ Services self-register at startup with:
 - **Resource Registry**: Links resources to owning services
 - **Knowledge Trace**: Tracks which services handle knowledge operations
 """,
+
     "docs/resource-model/resource-model-overview.md": """# Resource Model Overview
 
 ## Purpose
@@ -288,6 +286,7 @@ chat-session, chat-message, memory-item, memory-collection, agent-run,
 agent-tool-call, policy-binding, audit-event, usage-record, model-endpoint,
 service-instance, and resource-binding.
 """,
+
     "docs/policy-model/policy-model-overview.md": """# Policy Model Overview
 
 ## Purpose
@@ -332,6 +331,7 @@ policy decision as part of the job context and must honor the constraints.
 For example, a `data-governance` policy may restrict which knowledge collections
 a Python worker can access during embedding generation.
 """,
+
     "docs/audit-model/audit-model-overview.md": """# Audit Model Overview
 
 ## Purpose
@@ -376,6 +376,7 @@ The audit log supports:
 - Export formats: JSON, CSV, Parquet
 - Compliance templates: SOC2, GDPR, HIPAA
 """,
+
     "docs/knowledge-model/knowledge-model-overview.md": """# Knowledge Model Overview
 
 ## Purpose
@@ -413,6 +414,7 @@ ingestion, parsing, chunking, embedding, storage, retrieval, and traceability.
 - `EmbeddingResult`: Vector embedding with model reference
 - `KnowledgeTrace`: Provenance chain for audit
 """,
+
     "docs/memory-model/memory-model-overview.md": """# Memory Model Overview
 
 ## Purpose
@@ -462,6 +464,7 @@ without explicit human review. This is a non-negotiable constraint.
 
 Only `active` and `reinforced` memories may be injected into prompts.
 """,
+
     "docs/memory-dream/auto-dream-flow.md": """# Auto-Dream Flow
 
 ## Overview
@@ -511,6 +514,7 @@ periodically to maintain the health and relevance of the memory store.
 4. All dream operations are fully auditable
 5. Dream proposals expire after 7 days if not reviewed
 """,
+
     "docs/runtime/local-runtime.md": """# Local Runtime
 
 ## Overview
@@ -561,6 +565,7 @@ uv run python/apps/knowledge-worker/main.py --local
 The local runtime uses SQLite to emulate Cloudflare D1. Migration files
 from `migrations/d1/` are applied automatically on startup.
 """,
+
     "docs/runtime/cloudflare-runtime.md": """# Cloudflare Runtime
 
 ## Overview
@@ -593,6 +598,7 @@ pnpm --filter @mycodexvantaos/cli deploy --runtime=cloudflare --all
 Cloudflare is ONE runtime, not the core platform. The platform is designed
 to be runtime-agnostic with Cloudflare as a first-class deployment target.
 """,
+
     "docs/runtime/docker-runtime.md": """# Docker Runtime
 
 ## Overview
@@ -628,6 +634,7 @@ In Docker, Python workers can run as:
 - **subprocess**: Same container, simpler networking
 - **remote**: Separate containers, better scaling
 """,
+
     "docs/runtime/kubernetes-runtime.md": """# Kubernetes Runtime
 
 ## Overview
@@ -659,6 +666,7 @@ helm upgrade mycodexvantaos ./charts/mycodexvantaos -f values-production.yaml
 Python workers use KEDA for event-driven scaling based on job queue depth.
 TS services use HPA based on CPU/memory metrics.
 """,
+
     "docs/self-hostable/self-hostable-overview.md": """# Self-Hostable Overview
 
 ## Philosophy
@@ -714,6 +722,7 @@ API keys are required for the local or Docker runtime.
 When self-hosted, all data remains on your infrastructure. The platform does not
 phone home or require external services for core functionality.
 """,
+
     "docs/migration/current-audit-baseline.md": """# Current Audit Baseline
 
 ## Overview
@@ -813,6 +822,7 @@ done
 
 exit $ERRORS
 """,
+
     "tools/validators/validate-contracts.sh": """#!/usr/bin/env bash
 # Validate all YAML contracts in contracts/
 set -euo pipefail
@@ -841,6 +851,7 @@ validate_yaml_dir "contracts/resource-kinds"
 
 exit $ERRORS
 """,
+
     "tools/validators/validate-service-catalog.sh": """#!/usr/bin/env bash
 # Validate service catalog consistency
 set -euo pipefail
@@ -860,6 +871,7 @@ done
 echo "Service catalog validation complete ($ERRORS errors)"
 exit $ERRORS
 """,
+
     "tools/validators/validate-resource-kinds.sh": """#!/usr/bin/env bash
 # Validate resource kind definitions
 set -euo pipefail
@@ -891,6 +903,7 @@ done
 echo "Validated $COUNT resource kinds ($ERRORS errors)"
 exit $ERRORS
 """,
+
     "tools/validators/validate-policies.sh": """#!/usr/bin/env bash
 # Validate policy contracts
 set -euo pipefail
@@ -918,6 +931,7 @@ done
 
 exit $ERRORS
 """,
+
     "tools/validators/validate-cross-language-contracts.sh": """#!/usr/bin/env bash
 # Validate that cross-language contracts are consistent
 # Checks that TS types and Python models reference the same schemas
@@ -971,6 +985,7 @@ echo ""
 echo "Memory Statistics:"
 echo "  (Query D1 for memory item counts by status)"
 """,
+
     "tools/dream/dream-review.sh": """#!/usr/bin/env bash
 # Review pending dream proposals
 set -euo pipefail
@@ -997,9 +1012,7 @@ for path, content in dream_tools.items():
     write(path, content)
 
 # Other tool directories
-write(
-    "tools/generators/README.md",
-    """# Generators
+write("tools/generators/README.md", """# Generators
 
 Code generation tools for the platform.
 
@@ -1019,12 +1032,9 @@ Code generation tools for the platform.
 # Generate a new resource kind
 ./tools/generators/generate-resource-kind --kind=my-resource
 ```
-""",
-)
+""")
 
-write(
-    "tools/seed/README.md",
-    """# Seed Data
+write("tools/seed/README.md", """# Seed Data
 
 Tools for seeding development and test data.
 
@@ -1038,12 +1048,9 @@ Tools for seeding development and test data.
 ./tools/seed/seed-knowledge.sh
 ./tools/seed/seed-memory.sh
 ```
-""",
-)
+""")
 
-write(
-    "tools/migrations/README.md",
-    """# Migration Tools
+write("tools/migrations/README.md", """# Migration Tools
 
 Tools for managing D1 database migrations.
 
@@ -1059,12 +1066,9 @@ Tools for managing D1 database migrations.
 # Generate a new migration
 ./tools/migrations/generate-migration.sh --name=my-migration
 ```
-""",
-)
+""")
 
-write(
-    "tools/audit/README.md",
-    """# Audit Tools
+write("tools/audit/README.md", """# Audit Tools
 
 Tools for querying and analyzing audit logs.
 
@@ -1080,8 +1084,7 @@ Tools for querying and analyzing audit logs.
 # Check audit coverage
 ./tools/audit/audit-coverage.sh
 ```
-""",
-)
+""")
 
 print(f"Sec.ion 25 tools done (created={created}, skipped={skipped})")
 
@@ -1110,6 +1113,7 @@ jobs:
           chmod +x tools/validators/validate-schemas.sh
           ./tools/validators/validate-schemas.sh
 """,
+
     ".github/workflows/contract-check.yml": """name: Contract Check
 
 on:
@@ -1132,6 +1136,7 @@ jobs:
           chmod +x tools/validators/validate-contracts.sh
           ./tools/validators/validate-contracts.sh
 """,
+
     ".github/workflows/service-catalog-check.yml": """name: Service Catalog Check
 
 on:
@@ -1154,6 +1159,7 @@ jobs:
           chmod +x tools/validators/validate-service-catalog.sh
           ./tools/validators/validate-service-catalog.sh
 """,
+
     ".github/workflows/resource-model-check.yml": """name: Resource Model Check
 
 on:
@@ -1178,6 +1184,7 @@ jobs:
           chmod +x tools/validators/validate-resource-kinds.sh
           ./tools/validators/validate-resource-kinds.sh
 """,
+
     ".github/workflows/policy-check.yml": """name: Policy Check
 
 on:
@@ -1202,6 +1209,7 @@ jobs:
           chmod +x tools/validators/validate-policies.sh
           ./tools/validators/validate-policies.sh
 """,
+
     ".github/workflows/audit-check.yml": """name: Audit Check
 
 on:
@@ -1229,6 +1237,7 @@ jobs:
           python3 -c "import yaml; yaml.safe_load(open('contracts/events/audit-events.yaml'))"
           echo "Audit check passed"
 """,
+
     ".github/workflows/memory-dream-check.yml": """name: Memory Dream Check
 
 on:
@@ -1259,6 +1268,7 @@ jobs:
           cd python/packages/mycodexvantaos-memory-dream
           uv run mypy --strict mycodexvantaos_memory_dream/
 """,
+
     ".github/workflows/cross-language-contract-check.yml": """name: Cross-Language Contract Check
 
 on:

@@ -7,6 +7,7 @@ from typing import Any
 
 from aiokafka.admin import AIOKafkaAdminClient
 from aiokafka.errors import KafkaError, UnknownTopicOrPartitionError
+
 from mycodexvantaos_stream_pipeline.models import KafkaTopicConfig
 
 logger = logging.getLogger(__name__)
@@ -65,11 +66,7 @@ class KafkaAdmin:
                 },
             )
             await self.client.create_topics([new_topic])
-            logger.info(
-                "Created topic '%s' with %d partitions",
-                config.name,
-                config.num_partitions,
-            )
+            logger.info("Created topic '%s' with %d partitions", config.name, config.num_partitions)
             return True
         except KafkaError:
             logger.exception("Failed to create topic '%s'", config.name)

@@ -214,8 +214,11 @@ def analyze_failure(
 ) -> FailureAnalysis:
     """Analyze a single job failure from its log text."""
     from mycodexvantaos_ci_repair.log_parser import (
-        classify_log, extract_affected_dependencies, extract_affected_files,
-        extract_error_context)
+        classify_log,
+        extract_affected_dependencies,
+        extract_affected_files,
+        extract_error_context,
+    )
 
     category = classify_log(log_text)
     severity = _severity_for_category(category)
