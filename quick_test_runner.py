@@ -10,9 +10,9 @@ from pathlib import Path
 
 def run_package_test(package_name):
     """Run tests for a specific package"""
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"Testing package: {package_name}")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
 
     package_dir = f"/workspace/mycodexvantaos/packages/{package_name}"
 
@@ -74,9 +74,9 @@ def main():
             print(f"❌ Error testing {package}: {e}")
             results[package] = False
 
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print("TEST RESULTS SUMMARY")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
     for package, success in results.items():
         status = "✅ PASS" if success else "❌ FAIL"
         print(f"{status}: {package}")

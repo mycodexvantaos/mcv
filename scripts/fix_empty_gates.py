@@ -45,22 +45,32 @@ GATE_PATHS = {
     "gate-99-production-closure-validation": "unified-gates/ai-infra-gates/l90/gate-99-production-closure-validation.yaml",
 }
 
+
 def get_layer(gate_id):
-    if "layer-00" in GATE_PATHS[gate_id]: return "meta-governance"
-    if "layer-10" in GATE_PATHS[gate_id]: return "compute-foundation"
-    if "layer-20" in GATE_PATHS[gate_id]: return "data-foundation"
-    if "layer-30" in GATE_PATHS[gate_id]: return "algorithm-foundation"
-    if "layer-40" in GATE_PATHS[gate_id]: return "ai-workload"
-    if "layer-50" in GATE_PATHS[gate_id]: return "ai-task-billing"
-    if "layer-60" in GATE_PATHS[gate_id]: return "cloud-managed-infrastructure"
-    if "layer-90" in GATE_PATHS[gate_id]: return "attestation-compliance-closure"
+    if "layer-00" in GATE_PATHS[gate_id]:
+        return "meta-governance"
+    if "layer-10" in GATE_PATHS[gate_id]:
+        return "compute-foundation"
+    if "layer-20" in GATE_PATHS[gate_id]:
+        return "data-foundation"
+    if "layer-30" in GATE_PATHS[gate_id]:
+        return "algorithm-foundation"
+    if "layer-40" in GATE_PATHS[gate_id]:
+        return "ai-workload"
+    if "layer-50" in GATE_PATHS[gate_id]:
+        return "ai-task-billing"
+    if "layer-60" in GATE_PATHS[gate_id]:
+        return "cloud-managed-infrastructure"
+    if "layer-90" in GATE_PATHS[gate_id]:
+        return "attestation-compliance-closure"
     return "meta-governance"
+
 
 def fix_gates():
     for gate_id, rel_path in GATE_PATHS.items():
         full_path = Path(rel_path)
         full_path.parent.mkdir(parents=True, exist_ok=True)
-        
+
         content = {
             "id": gate_id,
             "plane": "ai-infra",
@@ -72,14 +82,15 @@ def fix_gates():
                 {
                     "dimension": "canonical-readiness",
                     "description": f"Mandatory readiness for {gate_id}",
-                    "checks": []
+                    "checks": [],
                 }
-            ]
+            ],
         }
-        
+
         with open(full_path, "w") as f:
             yaml.dump(content, f)
         print(f"Fixed {rel_path}")
+
 
 if __name__ == "__main__":
     fix_gates()

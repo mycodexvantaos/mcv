@@ -164,10 +164,7 @@ class _InMemoryBehaviorStore:
                 continue
             if params.agent_id and action.agent_id != params.agent_id:
                 continue
-            if (
-                params.action_category
-                and action.action_category != params.action_category
-            ):
+            if params.action_category and action.action_category != params.action_category:
                 continue
             if params.outcome and action.outcome != params.outcome:
                 continue
@@ -232,12 +229,8 @@ class _InMemoryBehaviorStore:
     async def get_session(self, session_id: str) -> BehaviorSession | None:
         return self._sessions.get(session_id)
 
-    async def list_sessions(
-        self, limit: int = 50, offset: int = 0
-    ) -> list[BehaviorSession]:
-        sessions = sorted(
-            self._sessions.values(), key=lambda s: s.started_at, reverse=True
-        )
+    async def list_sessions(self, limit: int = 50, offset: int = 0) -> list[BehaviorSession]:
+        sessions = sorted(self._sessions.values(), key=lambda s: s.started_at, reverse=True)
         return sessions[offset : offset + limit]
 
     async def end_session(self, session_id: str) -> bool:
@@ -411,9 +404,7 @@ class BehaviorTracker:
     ) -> BehaviorStats:
         """Get aggregate behavior statistics."""
         if not self._using_db:
-            return await self._fallback.get_stats(
-                agent_id=agent_id, session_id=session_id
-            )
+            return await self._fallback.get_stats(agent_id=agent_id, session_id=session_id)
 
         conditions: list[str] = []
         args: list[Any] = []
@@ -525,9 +516,7 @@ class BehaviorTracker:
             repositories=[r for r in (row["repositories"] or []) if r],
         )
 
-    async def list_sessions(
-        self, limit: int = 50, offset: int = 0
-    ) -> list[BehaviorSession]:
+    async def list_sessions(self, limit: int = 50, offset: int = 0) -> list[BehaviorSession]:
         """List behavior sessions."""
         if not self._using_db:
             return await self._fallback.list_sessions(limit=limit, offset=offset)

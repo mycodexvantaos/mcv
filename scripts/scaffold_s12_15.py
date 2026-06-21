@@ -272,10 +272,10 @@ for policy_id, cfg in policies.items():
         cond = format_condition(r.get("condition"))
         subj = format_subject(r["subject"])
         rules_yaml += f"""
-  - effect: {r['effect']}
+  - effect: {r["effect"]}
     subject:{subj}
-    action: {r['action']}
-    resource: {r['resource']}{cond}
+    action: {r["action"]}
+    resource: {r["resource"]}{cond}
 """
     write(
         f"contracts/policies/{policy_id}.yaml",

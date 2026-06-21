@@ -39,12 +39,8 @@ class TestMetricsCollector:
 
     def test_get_aggregate_metrics(self) -> None:
         collector = MetricsCollector()
-        m1 = StreamMetrics(
-            processor_name="p1", messages_consumed=10, messages_produced=8
-        )
-        m2 = StreamMetrics(
-            processor_name="p2", messages_consumed=20, messages_produced=15
-        )
+        m1 = StreamMetrics(processor_name="p1", messages_consumed=10, messages_produced=8)
+        m2 = StreamMetrics(processor_name="p2", messages_consumed=20, messages_produced=15)
         collector.register_processor("p1", m1)
         collector.register_processor("p2", m2)
         agg = collector.get_aggregate_metrics()

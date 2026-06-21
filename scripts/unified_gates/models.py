@@ -19,9 +19,7 @@ class ValidationResult:
     metrics: Mapping[str, Any] = field(default_factory=dict)
 
     @classmethod
-    def pass_with(
-        cls, metrics: Mapping[str, Any] | None = None
-    ) -> "ValidationResult":  # noqa: E501
+    def pass_with(cls, metrics: Mapping[str, Any] | None = None) -> "ValidationResult":  # noqa: E501
         return cls(ok=True, issues=(), metrics=metrics or {})
 
     @classmethod

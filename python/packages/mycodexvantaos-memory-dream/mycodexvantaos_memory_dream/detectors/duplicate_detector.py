@@ -77,9 +77,7 @@ def detect_duplicates(
             if other.memory_id in visited:
                 continue
 
-            sim = _jaccard_similarity(
-                patterns[item.memory_id], patterns[other.memory_id]
-            )
+            sim = _jaccard_similarity(patterns[item.memory_id], patterns[other.memory_id])
 
             if sim >= threshold:
                 group.append(other)

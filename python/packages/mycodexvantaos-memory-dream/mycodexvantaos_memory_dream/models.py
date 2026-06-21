@@ -50,9 +50,7 @@ class MemoryItem(BaseModel):
     memory_id: str = Field(..., description="Unique memory identifier")
     content: str = Field(..., description="Memory content text")
     tags: list[str] = Field(default_factory=list, description="Associated tags")
-    related_entities: list[str] = Field(
-        default_factory=list, description="Referenced entity IDs"
-    )
+    related_entities: list[str] = Field(default_factory=list, description="Referenced entity IDs")
     temporal_expressions: list[str] = Field(
         default_factory=list, description="Temporal references extracted from content"
     )
@@ -63,12 +61,8 @@ class MemoryItem(BaseModel):
         default_factory=list,
         description="IDs of memories this explicitly conflicts with",
     )
-    created_at: datetime = Field(
-        default_factory=datetime.utcnow, description="Creation timestamp"
-    )
-    metadata: dict[str, Any] = Field(
-        default_factory=dict, description="Additional metadata"
-    )
+    created_at: datetime = Field(default_factory=datetime.utcnow, description="Creation timestamp")
+    metadata: dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
 
     @field_validator("memory_id")
     @classmethod
@@ -101,12 +95,8 @@ class DreamAction(BaseModel):
         default=None, description="Optional related memory (for merge/resolve)"
     )
     reason: str = Field(..., description="Why this action is suggested")
-    confidence: float = Field(
-        default=1.0, ge=0.0, le=1.0, description="Confidence score (0-1)"
-    )
-    metadata: dict[str, Any] = Field(
-        default_factory=dict, description="Additional data"
-    )
+    confidence: float = Field(default=1.0, ge=0.0, le=1.0, description="Confidence score (0-1)")
+    metadata: dict[str, Any] = Field(default_factory=dict, description="Additional data")
 
 
 class DreamReport(BaseModel):
@@ -119,17 +109,11 @@ class DreamReport(BaseModel):
     dream_run_id: str = Field(..., description="Dream run identifier")
     processed_at: datetime = Field(default_factory=datetime.utcnow)
     total_memories: int = Field(..., description="Total memories processed")
-    duplicates_found: int = Field(
-        default=0, description="Number of duplicates detected"
-    )
+    duplicates_found: int = Field(default=0, description="Number of duplicates detected")
     conflicts_found: int = Field(default=0, description="Number of conflicts detected")
     orphans_found: int = Field(default=0, description="Number of orphans detected")
-    actions: list[DreamAction] = Field(
-        default_factory=list, description="Suggested actions"
-    )
-    statistics: dict[str, Any] = Field(
-        default_factory=dict, description="Additional statistics"
-    )
+    actions: list[DreamAction] = Field(default_factory=list, description="Suggested actions")
+    statistics: dict[str, Any] = Field(default_factory=dict, description="Additional statistics")
 
     @model_validator(mode="after")
     def validate_counts(self) -> Self:

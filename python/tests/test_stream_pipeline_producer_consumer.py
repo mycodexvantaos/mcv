@@ -42,9 +42,7 @@ class TestStreamProducer:
     @pytest.mark.asyncio
     async def test_start_at_least_once(self) -> None:
         producer = self._make_producer()
-        with patch(
-            "mycodexvantaos_stream_pipeline.producer.AIOKafkaProducer"
-        ) as mock_cls:
+        with patch("mycodexvantaos_stream_pipeline.producer.AIOKafkaProducer") as mock_cls:
             mock_instance = AsyncMock()
             mock_cls.return_value = mock_instance
             await producer.start()
@@ -56,9 +54,7 @@ class TestStreamProducer:
             semantic=DeliverySemantic.EXACTLY_ONCE,
             transactional_id="tx-1",
         )
-        with patch(
-            "mycodexvantaos_stream_pipeline.producer.AIOKafkaProducer"
-        ) as mock_cls:
+        with patch("mycodexvantaos_stream_pipeline.producer.AIOKafkaProducer") as mock_cls:
             mock_instance = AsyncMock()
             mock_cls.return_value = mock_instance
             await producer.start()
@@ -68,9 +64,7 @@ class TestStreamProducer:
     @pytest.mark.asyncio
     async def test_stop(self) -> None:
         producer = self._make_producer()
-        with patch(
-            "mycodexvantaos_stream_pipeline.producer.AIOKafkaProducer"
-        ) as mock_cls:
+        with patch("mycodexvantaos_stream_pipeline.producer.AIOKafkaProducer") as mock_cls:
             mock_instance = AsyncMock()
             mock_cls.return_value = mock_instance
             await producer.start()
@@ -81,9 +75,7 @@ class TestStreamProducer:
     @pytest.mark.asyncio
     async def test_send_string_value(self) -> None:
         producer = self._make_producer()
-        with patch(
-            "mycodexvantaos_stream_pipeline.producer.AIOKafkaProducer"
-        ) as mock_cls:
+        with patch("mycodexvantaos_stream_pipeline.producer.AIOKafkaProducer") as mock_cls:
             mock_instance = AsyncMock()
             mock_cls.return_value = mock_instance
             await producer.start()
@@ -100,9 +92,7 @@ class TestStreamProducer:
     @pytest.mark.asyncio
     async def test_send_dict_value(self) -> None:
         producer = self._make_producer()
-        with patch(
-            "mycodexvantaos_stream_pipeline.producer.AIOKafkaProducer"
-        ) as mock_cls:
+        with patch("mycodexvantaos_stream_pipeline.producer.AIOKafkaProducer") as mock_cls:
             mock_instance = AsyncMock()
             mock_cls.return_value = mock_instance
             await producer.start()
@@ -122,9 +112,7 @@ class TestStreamProducer:
     @pytest.mark.asyncio
     async def test_send_with_headers(self) -> None:
         producer = self._make_producer()
-        with patch(
-            "mycodexvantaos_stream_pipeline.producer.AIOKafkaProducer"
-        ) as mock_cls:
+        with patch("mycodexvantaos_stream_pipeline.producer.AIOKafkaProducer") as mock_cls:
             mock_instance = AsyncMock()
             mock_cls.return_value = mock_instance
             await producer.start()
@@ -144,18 +132,14 @@ class TestStreamProducer:
     @pytest.mark.asyncio
     async def test_send_failure_returns_none(self) -> None:
         producer = self._make_producer()
-        with patch(
-            "mycodexvantaos_stream_pipeline.producer.AIOKafkaProducer"
-        ) as mock_cls:
+        with patch("mycodexvantaos_stream_pipeline.producer.AIOKafkaProducer") as mock_cls:
             mock_instance = AsyncMock()
             mock_cls.return_value = mock_instance
             await producer.start()
 
             from aiokafka.errors import KafkaError
 
-            mock_instance.send_and_wait = AsyncMock(
-                side_effect=KafkaError("send failed")
-            )
+            mock_instance.send_and_wait = AsyncMock(side_effect=KafkaError("send failed"))
 
             result = await producer.send(topic="t", value="v")
             assert result is None
@@ -178,9 +162,7 @@ class TestStreamProducer:
     @pytest.mark.asyncio
     async def test_send_dead_letter(self) -> None:
         producer = self._make_producer()
-        with patch(
-            "mycodexvantaos_stream_pipeline.producer.AIOKafkaProducer"
-        ) as mock_cls:
+        with patch("mycodexvantaos_stream_pipeline.producer.AIOKafkaProducer") as mock_cls:
             mock_instance = AsyncMock()
             mock_cls.return_value = mock_instance
             await producer.start()
@@ -201,9 +183,7 @@ class TestStreamProducer:
     @pytest.mark.asyncio
     async def test_send_batch(self) -> None:
         producer = self._make_producer()
-        with patch(
-            "mycodexvantaos_stream_pipeline.producer.AIOKafkaProducer"
-        ) as mock_cls:
+        with patch("mycodexvantaos_stream_pipeline.producer.AIOKafkaProducer") as mock_cls:
             mock_instance = AsyncMock()
             mock_cls.return_value = mock_instance
             await producer.start()
@@ -242,9 +222,7 @@ class TestStreamConsumer:
     @pytest.mark.asyncio
     async def test_start(self) -> None:
         consumer = self._make_consumer()
-        with patch(
-            "mycodexvantaos_stream_pipeline.consumer.AIOKafkaConsumer"
-        ) as mock_cls:
+        with patch("mycodexvantaos_stream_pipeline.consumer.AIOKafkaConsumer") as mock_cls:
             mock_instance = AsyncMock()
             mock_cls.return_value = mock_instance
             await consumer.start()
@@ -253,9 +231,7 @@ class TestStreamConsumer:
     @pytest.mark.asyncio
     async def test_stop(self) -> None:
         consumer = self._make_consumer()
-        with patch(
-            "mycodexvantaos_stream_pipeline.consumer.AIOKafkaConsumer"
-        ) as mock_cls:
+        with patch("mycodexvantaos_stream_pipeline.consumer.AIOKafkaConsumer") as mock_cls:
             mock_instance = AsyncMock()
             mock_cls.return_value = mock_instance
             await consumer.start()
@@ -272,9 +248,7 @@ class TestStreamConsumer:
     @pytest.mark.asyncio
     async def test_consume_records(self) -> None:
         consumer = self._make_consumer()
-        with patch(
-            "mycodexvantaos_stream_pipeline.consumer.AIOKafkaConsumer"
-        ) as mock_cls:
+        with patch("mycodexvantaos_stream_pipeline.consumer.AIOKafkaConsumer") as mock_cls:
             mock_instance = AsyncMock()
             mock_cls.return_value = mock_instance
             await consumer.start()
@@ -304,9 +278,7 @@ class TestStreamConsumer:
     @pytest.mark.asyncio
     async def test_consume_string_value(self) -> None:
         consumer = self._make_consumer()
-        with patch(
-            "mycodexvantaos_stream_pipeline.consumer.AIOKafkaConsumer"
-        ) as mock_cls:
+        with patch("mycodexvantaos_stream_pipeline.consumer.AIOKafkaConsumer") as mock_cls:
             mock_instance = AsyncMock()
             mock_cls.return_value = mock_instance
             await consumer.start()
@@ -343,9 +315,7 @@ class TestStreamConsumer:
         metrics = StreamMetrics()
         consumer = StreamConsumer(config, topics=["test-topic"], metrics=metrics)
 
-        with patch(
-            "mycodexvantaos_stream_pipeline.consumer.AIOKafkaConsumer"
-        ) as mock_cls:
+        with patch("mycodexvantaos_stream_pipeline.consumer.AIOKafkaConsumer") as mock_cls:
             mock_instance = AsyncMock()
             mock_cls.return_value = mock_instance
             await consumer.start()
@@ -374,9 +344,7 @@ class TestStreamConsumer:
     @pytest.mark.asyncio
     async def test_record_to_message_with_headers(self) -> None:
         consumer = self._make_consumer()
-        with patch(
-            "mycodexvantaos_stream_pipeline.consumer.AIOKafkaConsumer"
-        ) as mock_cls:
+        with patch("mycodexvantaos_stream_pipeline.consumer.AIOKafkaConsumer") as mock_cls:
             mock_instance = AsyncMock()
             mock_cls.return_value = mock_instance
             await consumer.start()
@@ -400,9 +368,7 @@ class TestStreamConsumer:
     @pytest.mark.asyncio
     async def test_get_consumer_lag(self) -> None:
         consumer = self._make_consumer()
-        with patch(
-            "mycodexvantaos_stream_pipeline.consumer.AIOKafkaConsumer"
-        ) as mock_cls:
+        with patch("mycodexvantaos_stream_pipeline.consumer.AIOKafkaConsumer") as mock_cls:
             mock_instance = AsyncMock()
             mock_cls.return_value = mock_instance
             await consumer.start()

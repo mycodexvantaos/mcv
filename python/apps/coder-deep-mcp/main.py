@@ -452,9 +452,7 @@ async def lifespan(app: FastAPI):  # noqa: ARG001
                 await svc.connect()
                 logger.info("Connected %s to database", svc_name)
             except Exception:
-                logger.exception(
-                    "Failed to connect %s — running in-memory mode", svc_name
-                )
+                logger.exception("Failed to connect %s — running in-memory mode", svc_name)
 
     logger.info("All services initialized")
     yield
@@ -626,9 +624,7 @@ async def memory_put(request: Request, body: MemoryPutRequest) -> dict[str, Any]
             metadata=body.metadata,
         )
         result = await store.put(item=item)
-        return _success(
-            request, {"namespace": result.namespace, "key": result.key, "stored": True}
-        )
+        return _success(request, {"namespace": result.namespace, "key": result.key, "stored": True})
     except Exception as exc:
         raise AppException(
             code=ErrorCode.MEMORY_ERROR,
@@ -847,9 +843,7 @@ async def cache_find(request: Request, body: ContextFindRequest) -> dict[str, An
             status_code=500,
         ) from exc
 
-    return _success(
-        request, {"entries": [e.model_dump() for e in entries], "count": len(entries)}
-    )
+    return _success(request, {"entries": [e.model_dump() for e in entries], "count": len(entries)})
 
 
 @app.post("/api/cache/invalidate/{namespace}")
@@ -874,9 +868,7 @@ async def cache_invalidate(request: Request, namespace: str) -> dict[str, Any]:
 
 
 @app.post("/api/behavior/record")
-async def behavior_record(
-    request: Request, body: BehaviorRecordRequest
-) -> dict[str, Any]:
+async def behavior_record(request: Request, body: BehaviorRecordRequest) -> dict[str, Any]:
     """Record an AI behavior action.
 
     Actions are grouped by session and tracked with category, outcome, and duration.
@@ -910,9 +902,7 @@ async def behavior_record(
 
 
 @app.post("/api/behavior/query")
-async def behavior_query(
-    request: Request, body: BehaviorQueryRequest
-) -> dict[str, Any]:
+async def behavior_query(request: Request, body: BehaviorQueryRequest) -> dict[str, Any]:
     """Query behavior actions by session, agent, category, or outcome."""
     tracker = _get_behavior()
     try:
@@ -938,9 +928,7 @@ async def behavior_query(
             status_code=500,
         ) from exc
 
-    return _success(
-        request, {"actions": [a.model_dump() for a in actions], "count": len(actions)}
-    )
+    return _success(request, {"actions": [a.model_dump() for a in actions], "count": len(actions)})
 
 
 @app.get("/api/behavior/stats")
@@ -991,9 +979,7 @@ async def behavior_list_sessions(
 
 
 @app.post("/api/architecture/scan")
-async def architecture_scan(
-    request: Request, body: ArchitectureScanRequest
-) -> dict[str, Any]:
+async def architecture_scan(request: Request, body: ArchitectureScanRequest) -> dict[str, Any]:
     """Scan the project directory tree and produce an architecture snapshot.
 
     The snapshot includes all files with their languages, sizes, and checksums,
@@ -1016,9 +1002,7 @@ async def architecture_scan(
 
 
 @app.post("/api/architecture/diff")
-async def architecture_diff(
-    request: Request, body: ArchitectureDiffRequest
-) -> dict[str, Any]:
+async def architecture_diff(request: Request, body: ArchitectureDiffRequest) -> dict[str, Any]:
     """Compute the diff between two architecture snapshots.
 
     If from_id is not provided, uses the second-to-last snapshot.
@@ -1154,9 +1138,7 @@ async def codex_query(request: Request, body: CodexQueryRequest) -> dict[str, An
             status_code=500,
         ) from exc
 
-    return _success(
-        request, {"entries": [e.model_dump() for e in entries], "count": len(entries)}
-    )
+    return _success(request, {"entries": [e.model_dump() for e in entries], "count": len(entries)})
 
 
 @app.get("/api/codex/{entry_id}/versions")
@@ -1172,9 +1154,7 @@ async def codex_versions(request: Request, entry_id: str) -> dict[str, Any]:
             status_code=500,
         ) from exc
 
-    return _success(
-        request, {"entry_id": entry_id, "versions": [v.model_dump() for v in versions]}
-    )
+    return _success(request, {"entry_id": entry_id, "versions": [v.model_dump() for v in versions]})
 
 
 # ===========================================================================
@@ -1257,9 +1237,7 @@ async def task_get(request: Request, task_id: str) -> dict[str, Any]:
 
 
 @app.patch("/api/tasks/{task_id}")
-async def task_update(
-    request: Request, task_id: str, body: TaskUpdateRequest
-) -> dict[str, Any]:
+async def task_update(request: Request, task_id: str, body: TaskUpdateRequest) -> dict[str, Any]:
     """Update a task. Status changes are automatically recorded as transitions."""
     tracker = _get_tasks()
     try:
@@ -1340,9 +1318,7 @@ async def task_query(request: Request, body: TaskQueryRequest) -> dict[str, Any]
             status_code=500,
         ) from exc
 
-    return _success(
-        request, {"tasks": [t.model_dump() for t in tasks], "count": len(tasks)}
-    )
+    return _success(request, {"tasks": [t.model_dump() for t in tasks], "count": len(tasks)})
 
 
 @app.get("/api/tasks/{task_id}/transitions")
@@ -1377,9 +1353,7 @@ async def task_dependencies(request: Request, task_id: str) -> dict[str, Any]:
             status_code=500,
         ) from exc
 
-    return _success(
-        request, {"task_id": task_id, "dependencies": [d.model_dump() for d in deps]}
-    )
+    return _success(request, {"task_id": task_id, "dependencies": [d.model_dump() for d in deps]})
 
 
 # ===========================================================================
@@ -2083,9 +2057,7 @@ def cli() -> None:
 
     # cache subcommand
     cache_parser = subparsers.add_parser("cache", help="Manage the context cache")
-    cache_parser.add_argument(
-        "cache_action", choices=["stats", "clear"], help="Cache action"
-    )
+    cache_parser.add_argument("cache_action", choices=["stats", "clear"], help="Cache action")
 
     # track subcommand
     track_parser = subparsers.add_parser("track", help="Record a behavior action")

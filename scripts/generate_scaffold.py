@@ -392,7 +392,7 @@ for pkg_name, cfg in TS_PACKAGES.items():
         f"""{{
   "name": "@mycodexvantaos/mycodexvantaos-{pkg_name}",
   "version": "0.1.0",
-  "description": "{cfg['desc']}",
+  "description": "{cfg["desc"]}",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -434,7 +434,7 @@ for pkg_name, cfg in TS_PACKAGES.items():
         f"{pkg_dir}/README.md",
         f"""# @mycodexvantaos/mycodexvantaos-{pkg_name}
 
-{cfg['desc']}
+{cfg["desc"]}
 
 ## Core Types
 
@@ -467,13 +467,13 @@ import {{ {", ".join(cfg["types"][:3])} }} from '@mycodexvantaos/mycodexvantaos-
     # src/index.ts
     reexport_line = ""
     if cfg.get("reexport"):
-        reexport_line = f"\n// Re-export from core constitution\nexport * from '@mycodexvantaos/core/{cfg["reexport"]}';\n"
+        reexport_line = f"\n// Re-export from core constitution\nexport * from '@mycodexvantaos/core/{cfg['reexport']}';\n"
 
     write(
         f"{pkg_dir}/src/index.ts",
         f"""/**
  * @mycodexvantaos/mycodexvantaos-{pkg_name}
- * {cfg['desc']}
+ * {cfg["desc"]}
  */
 {reexport_line}
 {cfg["extra"]}
@@ -619,7 +619,7 @@ for svc_name, (desc, short) in TS_SERVICES.items():
  * TODO: Define API surface
  */
 
-export class {short.replace('-', '').title().replace('', '').replace('Workspace', 'WorkspaceService').replace('Resourceregistry', 'ResourceRegistryService').replace('Policyengine', 'PolicyEngineService').replace('Auditlog', 'AuditLogService').replace('Usagemeter', 'UsageMeterService').replace('Knowledgestore', 'KnowledgeStoreService').replace('Knowledgesearch', 'KnowledgeSearchService').replace('Knowledgetrace', 'KnowledgeTraceService').replace('Agentchat', 'AgentChatService').replace('Modelbyok', 'ModelByokService').replace('Memorystore', 'MemoryStoreService').replace('Memorycapture', 'MemoryCaptureService')} {{
+export class {short.replace("-", "").title().replace("", "").replace("Workspace", "WorkspaceService").replace("Resourceregistry", "ResourceRegistryService").replace("Policyengine", "PolicyEngineService").replace("Auditlog", "AuditLogService").replace("Usagemeter", "UsageMeterService").replace("Knowledgestore", "KnowledgeStoreService").replace("Knowledgesearch", "KnowledgeSearchService").replace("Knowledgetrace", "KnowledgeTraceService").replace("Agentchat", "AgentChatService").replace("Modelbyok", "ModelByokService").replace("Memorystore", "MemoryStoreService").replace("Memorycapture", "MemoryCaptureService")} {{
   // TODO: Implement service
 }}
 """,
@@ -871,8 +871,8 @@ for filename, cfg in EVENT_CONTRACTS.items():
     events_yaml = "\n".join(f"  - {e}" for e in cfg["events"])
     write(
         f"contracts/events/{filename}.yaml",
-        f"""category: {cfg['category']}
-description: Event contracts for {cfg['category']} domain
+        f"""category: {cfg["category"]}
+description: Event contracts for {cfg["category"]} domain
 events:
 {events_yaml}
 """,
@@ -1011,15 +1011,15 @@ for policy_id, cfg in POLICIES.items():
                 f"      {k}: {v}" for k, v in r["condition"].items()
             )
         rules_yaml += f"""
-  - effect: {r['effect']}
-    subject: {r['subject']}
-    action: {r['action']}
-    resource: {r['resource']}{cond}
+  - effect: {r["effect"]}
+    subject: {r["subject"]}
+    action: {r["action"]}
+    resource: {r["resource"]}{cond}
 """
     write(
         f"contracts/policies/{policy_id}.yaml",
-        f"""id: {cfg['id']}
-description: {cfg['description']}
+        f"""id: {cfg["id"]}
+description: {cfg["description"]}
 rules:{rules_yaml}
 """,
     )
@@ -1649,7 +1649,7 @@ for pkg_name, cfg in PYTHON_PACKAGES.items():
         f"""[project]
 name = "{pkg_name}"
 version = "0.1.0"
-description = "{cfg['desc']}"
+description = "{cfg["desc"]}"
 readme = "README.md"
 requires-python = ">=3.11"
 license = {{text = "MIT"}}
@@ -1657,7 +1657,7 @@ authors = [
     {{name = "NinjaTeam AI", email = "ai-team@ninjatech.ai"}},
 ]
 dependencies = [
-{chr(10).join(f'    "{d}",' for d in cfg['deps'])}
+{chr(10).join(f'    "{d}",' for d in cfg["deps"])}
 ]
 {opt_deps_str}
 [build-system]
@@ -1682,7 +1682,7 @@ strict = true
         f"{pkg_dir}/README.md",
         f"""# {pkg_name}
 
-{cfg['desc']}
+{cfg["desc"]}
 
 ## Core Types
 
@@ -1717,7 +1717,7 @@ for app_name, cfg in PYTHON_APPS.items():
         f"""[project]
 name = "{app_name}"
 version = "0.1.0"
-description = "{cfg['desc']}"
+description = "{cfg["desc"]}"
 readme = "README.md"
 requires-python = ">=3.11"
 license = {{text = "MIT"}}
@@ -1726,7 +1726,7 @@ authors = [
 ]
 dependencies = [
     "pydantic>=2.9.0",
-    "{cfg['pkg_dep']}",
+    "{cfg["pkg_dep"]}",
 ]
 
 [build-system]
@@ -1747,7 +1747,7 @@ strict = true
         f"{app_dir}/README.md",
         f"""# {app_name}
 
-{cfg['desc']}
+{cfg["desc"]}
 
 ## Usage
 
@@ -1768,7 +1768,7 @@ uv run python main.py --job-type ingest --input data.json --dry-run
     write(
         f"{app_dir}/main.py",
         f"""\"\"\"
-{app_name} — {cfg['desc']}
+{app_name} — {cfg["desc"]}
 \"\"\"
 
 import argparse
@@ -1782,7 +1782,7 @@ def execute_job(job_type: str, input_path: str, dry_run: bool = False) -> dict:
 
     In production, this would:
     1. Load job configuration from database (authorized by TS control plane)
-    2. Execute the job using {cfg['pkg_dep']}
+    2. Execute the job using {cfg["pkg_dep"]}
     3. Write results back to database / artifact storage
     4. Audit log the completion
 
@@ -1803,7 +1803,7 @@ def execute_job(job_type: str, input_path: str, dry_run: bool = False) -> dict:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="{cfg['desc']}")
+    parser = argparse.ArgumentParser(description="{cfg["desc"]}")
     parser.add_argument("--job-type", required=True, help="Type of job to execute")
     parser.add_argument("--input", required=True, help="Path to input JSON file")
     parser.add_argument("--dry-run", action="store_true", help="Only report what would be done")
