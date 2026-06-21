@@ -64,7 +64,7 @@ export const NAMING_RULES: Record<string, NamingRule> = {
   'capability-id': {
     id: 'capability-id',
     description:
-      'Canonical capability identifier. Must be a member of the governance-defined canonical set. Vendor names forbidden.',
+      'Canonical capability identifier. Must be a member of the current canonical allowlist. Vendor names forbidden.',
     pattern:
       /^(database|storage|auth|queue|state-store|secrets|repo|deploy|validation|security|observability|notification|scheduler|vector-store|embedding|llm|graph|cache|search|ai-ethics|blockchain|event-stream)$/,
     matchMeansValid: true,

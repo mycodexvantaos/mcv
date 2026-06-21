@@ -97,6 +97,8 @@ export interface ValidationContext {
   uuidBasedIds: string[];
   // Section 15 — approved naming exceptions
   exceptions?: NamingException[];
+  // Non-canonical package.json entries skipped from strict package-name validation
+  ignoredPackageEntries?: Array<{ directory: string; packageName: string }>;
 }
 
 interface NamingException {
@@ -155,6 +157,7 @@ export function discoverContext(rootDir: string = '.'): ValidationContext {
     contentAddressedIds: [],
     uuidBasedIds: [],
     exceptions: [],
+    ignoredPackageEntries: [],
   };
 
   const abs = (p: string) => path.resolve(rootDir, p);
@@ -210,11 +213,16 @@ export function discoverContext(rootDir: string = '.'): ValidationContext {
           const pkg = JSON.parse(fs.readFileSync(pkgJson, 'utf-8'));
           const packageName = typeof pkg.name === 'string' ? pkg.name : '';
           if (!validate('package-name', packageName)) {
+            if (packageName && pkg.private !== true) {
+              ctx.ignoredPackageEntries?.push({
+                directory: path.join('packages', e.name),
+                packageName,
+              });
+            }
             continue;
           }
 
           ctx.packageEntries.push({
-            serviceId: e.name.startsWith('mycodexvantaos-') ? e.name : undefined,
             packageName,
           });
         }
@@ -346,9 +354,17 @@ function matchesException(result: RuleResult, exception: NamingException): boole
   }
 
   const scope = exception.scope.trim();
-  return (
-    scope === result.target || scope.endsWith(`/${result.target}`) || result.target.endsWith(scope)
-  );
+  return scope === result.target || scope.endsWith(`/${result.target}`);
+}
+
+function buildIgnoredPackageWarnings(ctx: ValidationContext): RuleResult[] {
+  return (ctx.ignoredPackageEntries ?? []).map(({ directory, packageName }) => ({
+    ruleId: 'package-name-skip',
+    enforcement: 'soft' as const,
+    passed: false,
+    target: packageName,
+    message: `Skipped non-canonical package name "${packageName}" in ${directory}; add an explicit governance rule or rename it before enforcing strict package-name validation.`,
+  }));
 }
 
 function applyExceptions(results: RuleResult[], exceptions: NamingException[] = []): RuleResult[] {
@@ -400,6 +416,7 @@ export function runValidation(ctx: ValidationContext): ValidationReport {
       ...timestampedIdRule.run(ctx),
       ...contentAddressedIdRule.run(ctx),
       ...uuidBasedIdRule.run(ctx),
+      ...buildIgnoredPackageWarnings(ctx),
     ],
     ctx.exceptions
   );
