@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Unified Gate Definition Schema",
+  "type": "object",
+  "required": ["id", "plane", "lifecycle", "blocking", "layer", "owner"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^gate-(00|10|20|30|40|50|60|90)-[a-z0-9-]+$"
+    },
+    "plane": {
+      "type": "string",
+      "enum": ["quality", "ai-infra"]
+    },
+    "lifecycle": {
+      "type": "string",
+      "enum": ["proposed", "active", "deprecated", "archived"]
+    },
+    "blocking": {
+      "type": "boolean"
+    },
+    "layer": {
+      "type": "string",
+      "enum": [
+        "meta-governance",
+        "compute-foundation",
+        "data-foundation",
+        "algorithm-foundation",
+        "ai-workload",
+        "ai-task-billing",
+        "cloud-managed-infrastructure",
+        "attestation-compliance-closure"
+      ]
+    },
+    "owner": {
+      "type": "string",
+      "format": "email"
+    },
+    "contract": {
+      "type": "object",
+      "properties": {
+        "input": { "type": "array" },
+        "validation_logic": { "type": "array" },
+        "output": { "type": "array" }
+      }
+    },
+    "validates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "dimension": { "type": "string" },
+          "description": { "type": "string" },
+          "checks": { "type": "array" }
+        }
+      }
+    },
+    "evidence_sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string" }
+        }
+      }
+    }
+  }
+}
