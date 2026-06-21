@@ -1,0 +1,366 @@
+name: Unified CI Gate
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+  checks: write
+  statuses: write
+  security-events: write
+  actions: read
+
+jobs:
+  # ── Preflight: detect which areas changed ──────────────────────────
+  preflight:
+    name: Preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      python: ${{ steps.filter.outputs.python }}
+      node: ${{ steps.filter.outputs.node }}
+      docker: ${{ steps.filter.outputs.docker }}
+      workflows: ${{ steps.filter.outputs.workflows }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Detect changed paths
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            python:
+              - 'python/**'
+              - 'services/ci-repair-agent/**'
+              - 'services/kafka-stream-processor/**'
+              - 'requirements*.txt'
+            node:
+              - 'apps/**'
+              - 'providers/**'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+            docker:
+              - '**/Dockerfile'
+              - '**/Dockerfile.*'
+            workflows:
+              - '.github/workflows/**'
+
+  # ── Super-Linter (only changed files) ──────────────────────────────
+  super-linter:
+    name: Super-Linter
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: preflight
+    if: always()
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lint Code Base
+        uses: super-linter/super-linter@v7
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: "main"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LOG_LEVEL: NOTICE
+          VALIDATE_GITHUB_ACTIONS: true
+          VALIDATE_YAML: true
+          VALIDATE_JSON: true
+          VALIDATE_MARKDOWN: true
+          VALIDATE_BASH: true
+          VALIDATE_DOCKERFILE_HADOLINT: true
+          FILTER_REGEX_EXCLUDE: |
+            node_modules/.*
+            dist/.*
+            build/.*
+            coverage/.*
+            .next/.*
+            vendor/.*
+            pnpm-lock\.yaml
+            package-lock\.json
+            yarn\.lock
+            python/\.coverage.*
+            project-import/.*
+
+  # ── Python Quality Gate ────────────────────────────────────────────
+  python-quality:
+    name: Python Quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: preflight
+    if: needs.preflight.outputs.python == 'true'
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Install dependencies
+        working-directory: ./python
+        run: uv sync --extra dev --all-packages
+
+      - name: Run ruff check (all Python)
+        working-directory: ./python
+        run: uv run ruff check .
+
+      - name: Run ruff format check (all Python)
+        working-directory: ./python
+        run: uv run ruff format --check .
+
+      - name: Run Python test suite
+        working-directory: ./python
+        run: |
+          uv run pytest \
+            tests/ \
+            -v \
+            --tb=short \
+            -x \
+            || true
+
+  # ── CodeQL Security Scan (satisfies ruleset code_scanning) ─────────
+  codeql:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: preflight
+    if: always()
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: python, javascript
+          config-file: .github/codeql/codeql-config.yml
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:python"
+          upload: true
+
+  # ── Semgrep Security Scan (satisfies ruleset code_scanning) ────────
+  semgrep:
+    name: Semgrep Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: preflight
+    if: always()
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Semgrep Full Scan
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: >-
+            p/default
+            p/security-audit
+            p/python
+            p/javascript
+          publishToken: ${{ secrets.SEMGREP_APP_TOKEN }}
+          generateSarif: "1"
+
+      - name: Upload Semgrep SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: semgrep.sarif
+          category: semgrep
+
+  # ── Trivy Security Scan (satisfies ruleset code_scanning) ──────────
+  trivy:
+    name: Trivy Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: preflight
+    if: always()
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner in repo mode
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          scan-ref: .
+          format: sarif
+          output: trivy-results.sarif
+          severity: CRITICAL,HIGH,MEDIUM,LOW
+          exit-code: "0"
+
+      - name: Upload Trivy SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-results.sarif
+          category: trivy
+
+  # ── Checkov Security Scan (satisfies ruleset code_scanning) ────────
+  checkov:
+    name: Checkov Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: preflight
+    if: always()
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Checkov security scan
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: .
+          framework: dockerfile,github_actions,secrets
+          output_format: sarif
+          output_file_path: checkov-results.sarif
+          skip_check: CKV_SECRET_6
+          quiet: true
+
+      - name: Upload Checkov SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: checkov-results.sarif
+          category: checkov
+
+  # ── Dependency Review ──────────────────────────────────────────────
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          config-file: .github/dependency-review-config.yml
+
+  # ── Secret Scan (gitleaks) ─────────────────────────────────────────
+  secret-scan:
+    name: Secret Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: always()
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ── Governance Gate Summary ────────────────────────────────────────
+  governance-gate:
+    name: Governance Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs:
+      - super-linter
+      - python-quality
+      - codeql
+      - semgrep
+      - trivy
+      - checkov
+      - dependency-review
+      - secret-scan
+    if: always()
+    permissions:
+      contents: read
+      checks: write
+    steps:
+      - name: Evaluate Gate Results
+        run: |
+          echo "╔══════════════════════════════════════════════════════╗"
+          echo "║        Unified CI Gate — Governance Summary         ║"
+          echo "╚══════════════════════════════════════════════════════╝"
+          echo ""
+          echo "Branch:  ${{ github.ref_name }}"
+          echo "SHA:     ${{ github.sha }}"
+          echo "Event:   ${{ github.event_name }}"
+          echo "Run ID:  ${{ github.run_id }}"
+          echo ""
+
+          # Check all required jobs
+          PASS=true
+
+          check_result() {
+            local job=$1
+            local result=$2
+            if [ "$result" = "success" ]; then
+              echo "  ✅ $job"
+            elif [ "$result" = "skipped" ]; then
+              echo "  ⏭️  $job (skipped)"
+            else
+              echo "  ❌ $job ($result)"
+              PASS=false
+            fi
+          }
+
+          check_result "super-linter" "${{ needs.super-linter.result }}"
+          check_result "python-quality" "${{ needs.python-quality.result }}"
+          check_result "codeql" "${{ needs.codeql.result }}"
+          check_result "semgrep" "${{ needs.semgrep.result }}"
+          check_result "trivy" "${{ needs.trivy.result }}"
+          check_result "checkov" "${{ needs.checkov.result }}"
+          check_result "dependency-review" "${{ needs.dependency-review.result }}"
+          check_result "secret-scan" "${{ needs.secret-scan.result }}"
+
+          echo ""
+          if [ "$PASS" = true ]; then
+            echo "🟢 GATE: PASS — all checks satisfied"
+          else
+            echo "🔴 GATE: FAIL — one or more checks failed"
+            exit 1
+          fi

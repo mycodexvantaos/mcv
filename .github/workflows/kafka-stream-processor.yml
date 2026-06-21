@@ -17,10 +17,21 @@ on:
       - 'python/tests/test_stream_pipeline_*'
       - 'python/pyproject.toml'
       - 'services/kafka-stream-processor/**'
+  workflow_dispatch:
+
+concurrency:
+  group: kafka-stream-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+  checks: write
 
 jobs:
   lint-and-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -73,7 +84,10 @@ jobs:
 
   docker-build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: lint-and-test
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

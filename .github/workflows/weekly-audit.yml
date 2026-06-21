@@ -1,0 +1,281 @@
+name: Weekly Security Audit
+
+on:
+  schedule:
+    - cron: "0 2 * * 1"  # Monday 02:00 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: weekly-audit-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+  issues: write
+
+jobs:
+  # ── Full CodeQL Scan ──────────────────────────────────────────────
+  codeql-full:
+    name: CodeQL Full Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: python, javascript
+          config-file: .github/codeql/codeql-config.yml
+          queries: security-and-quality
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/weekly-audit"
+          upload: true
+
+  # ── Semgrep Full Audit ────────────────────────────────────────────
+  semgrep-full:
+    name: Semgrep Full Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Semgrep Full Scan
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: >-
+            p/default
+            p/security-audit
+            p/python
+            p/javascript
+            p/ci
+          publishToken: ${{ secrets.SEMGREP_APP_TOKEN }}
+          generateSarif: "1"
+
+      - name: Upload Semgrep SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: semgrep.sarif
+          category: semgrep-weekly
+
+  # ── Trivy Full Vulnerability Audit ────────────────────────────────
+  trivy-full:
+    name: Trivy Full Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner (full)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          scan-ref: .
+          format: sarif
+          output: trivy-results.sarif
+          severity: CRITICAL,HIGH,MEDIUM,LOW,INFO
+          exit-code: "0"
+          skip-dirs: node_modules,dist,build,.next,vendor,project-import
+
+      - name: Upload Trivy SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-results.sarif
+          category: trivy-weekly
+
+      - name: Run Trivy fs scan (table report)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          scan-ref: .
+          format: table
+          severity: CRITICAL,HIGH
+          exit-code: "0"
+          skip-dirs: node_modules,dist,build,.next,vendor,project-import
+
+  # ── Checkov Full Audit ────────────────────────────────────────────
+  checkov-full:
+    name: Checkov Full Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Checkov full scan
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: .
+          framework: dockerfile,github_actions,secrets,all
+          output_format: sarif
+          output_file_path: checkov-results.sarif
+          skip_check: CKV_SECRET_6
+          quiet: true
+
+      - name: Upload Checkov SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: checkov-results.sarif
+          category: checkov-weekly
+
+  # ── Dependency Review (full) ──────────────────────────────────────
+  dependency-review-full:
+    name: Dependency Review (Full)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          config-file: .github/dependency-review-config.yml
+          fail-on-severity: low
+
+  # ── Secret Scan Full History ──────────────────────────────────────
+  secret-scan-full:
+    name: Secret Scan (Full History)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Gitleaks (full history)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ── Super-Linter (full codebase) ──────────────────────────────────
+  super-linter-full:
+    name: Super-Linter (Full Codebase)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      pull-requests: read
+      checks: write
+      statuses: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lint Full Codebase
+        uses: super-linter/super-linter@v7
+        env:
+          VALIDATE_ALL_CODEBASE: true
+          DEFAULT_BRANCH: "main"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LOG_LEVEL: NOTICE
+          VALIDATE_GITHUB_ACTIONS: true
+          VALIDATE_YAML: true
+          VALIDATE_JSON: true
+          VALIDATE_MARKDOWN: true
+          VALIDATE_BASH: true
+          VALIDATE_DOCKERFILE_HADOLINT: true
+          FILTER_REGEX_EXCLUDE: |
+            node_modules/.*
+            dist/.*
+            build/.*
+            coverage/.*
+            .next/.*
+            vendor/.*
+            pnpm-lock\.yaml
+            package-lock\.json
+            yarn\.lock
+            python/\.coverage.*
+            project-import/.*
+
+  # ── Audit Summary ─────────────────────────────────────────────────
+  audit-summary:
+    name: Weekly Audit Summary
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs:
+      - codeql-full
+      - semgrep-full
+      - trivy-full
+      - checkov-full
+      - dependency-review-full
+      - secret-scan-full
+      - super-linter-full
+    if: always()
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Generate Audit Report
+        run: |
+          echo "╔══════════════════════════════════════════════════════╗"
+          echo "║        Weekly Security Audit — Summary Report       ║"
+          echo "╚══════════════════════════════════════════════════════╝"
+          echo ""
+          echo "Date:    $(date -u '+%Y-%m-%d %H:%M UTC')"
+          echo "Branch:  ${{ github.ref_name }}"
+          echo "SHA:     ${{ github.sha }}"
+          echo "Run ID:  ${{ github.run_id }}"
+          echo ""
+
+          check_result() {
+            local job=$1
+            local result=$2
+            if [ "$result" = "success" ]; then
+              echo "  ✅ $job"
+            elif [ "$result" = "skipped" ]; then
+              echo "  ⏭️  $job (skipped)"
+            else
+              echo "  ❌ $job ($result)"
+            fi
+          }
+
+          check_result "codeql-full" "${{ needs.codeql-full.result }}"
+          check_result "semgrep-full" "${{ needs.semgrep-full.result }}"
+          check_result "trivy-full" "${{ needs.trivy-full.result }}"
+          check_result "checkov-full" "${{ needs.checkov-full.result }}"
+          check_result "dependency-review-full" "${{ needs.dependency-review-full.result }}"
+          check_result "secret-scan-full" "${{ needs.secret-scan-full.result }}"
+          check_result "super-linter-full" "${{ needs.super-linter-full.result }}"
+
+          echo ""
+          echo "Full SARIF results uploaded to Security tab."
+          echo "Review: https://github.com/${{ github.repository }}/security"

@@ -17,10 +17,22 @@ on:
       - "python/tests/test_coder_deep_*"
       - "python/tests/conftest.py"
       - "python/pyproject.toml"
+  workflow_dispatch:
+
+concurrency:
+  group: coder-deep-mcp-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+  checks: write
+  security-events: write
 
 jobs:
   lint-and-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -105,7 +117,11 @@ jobs:
 
   security-scan:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     needs: lint-and-test
+    permissions:
+      contents: read
+      security-events: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -122,7 +138,10 @@ jobs:
 
   docker-build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: lint-and-test
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
