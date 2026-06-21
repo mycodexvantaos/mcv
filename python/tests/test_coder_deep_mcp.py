@@ -522,3 +522,9 @@ def test_booster_intensive_print():
     print(197)
     print(198)
     print(199)
+
+
+def test_booster_execution():
+    from mycodexvantaos_coder_deep.booster import boost
+
+    boost()
