@@ -16,11 +16,7 @@ import json
 import sys
 from pathlib import Path
 
-from mycodexvantaos_memory_dream import (
-    DreamRun,
-    DreamReport,
-    MemoryItem,
-)
+from mycodexvantaos_memory_dream import DreamReport, DreamRun, MemoryItem
 
 
 def load_memory_items_from_json(filepath: str) -> list[MemoryItem]:
@@ -51,7 +47,9 @@ def load_memory_items_from_stdin() -> list[MemoryItem]:
     elif isinstance(data, list):
         return [MemoryItem.model_validate(item) for item in data]
     else:
-        raise ValueError("Expected JSON array of memory items or object with 'memory_items' key")
+        raise ValueError(
+            "Expected JSON array of memory items or object with 'memory_items' key"
+        )
 
 
 def save_report_to_json(report: DreamReport, filepath: str) -> None:
@@ -107,7 +105,9 @@ def print_report_summary(report: DreamReport) -> None:
     memory_types = report.statistics.get("memory_types", {})
     if memory_types:
         print("\n📊 Memory Types:")
-        for mem_type, count in sorted(memory_types.items(), key=lambda x: x[1], reverse=True):
+        for mem_type, count in sorted(
+            memory_types.items(), key=lambda x: x[1], reverse=True
+        ):
             print(f"  - {mem_type}: {count}")
 
     # Print actions
@@ -141,10 +141,16 @@ def cmd_dream_run(args: argparse.Namespace) -> None:
     try:
         if args.stdin:
             memory_items = load_memory_items_from_stdin()
-            print(f"✅ Loaded {len(memory_items)} memory items from stdin", file=sys.stderr)
+            print(
+                f"✅ Loaded {len(memory_items)} memory items from stdin",
+                file=sys.stderr,
+            )
         elif args.input:
             memory_items = load_memory_items_from_json(args.input)
-            print(f"✅ Loaded {len(memory_items)} memory items from {args.input}", file=sys.stderr)
+            print(
+                f"✅ Loaded {len(memory_items)} memory items from {args.input}",
+                file=sys.stderr,
+            )
         else:
             # No input specified — use sample data for demo
             memory_items = _create_sample_memory_items()

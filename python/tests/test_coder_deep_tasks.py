@@ -1,7 +1,6 @@
 """Tests for mycodexvantaos_coder_deep.task_tracker module."""
 
 import pytest
-
 from mycodexvantaos_coder_deep.task_tracker import (
     TaskEntry,
     TaskPriority,
@@ -86,14 +85,18 @@ class TestTaskUpdate:
         task = await tracker.create(
             task=TaskEntry(title="Old Title", task_type=TaskType.A_NEW_FEATURE)
         )
-        updated = await tracker.update(task_id=task.task_id, updates={"title": "New Title"})
+        updated = await tracker.update(
+            task_id=task.task_id, updates={"title": "New Title"}
+        )
         assert updated is not None
         assert updated.title == "New Title"
 
     @pytest.mark.asyncio
     async def test_update_status_records_transition(self, tracker: TaskTracker) -> None:
         """Status changes are recorded as transitions."""
-        task = await tracker.create(task=TaskEntry(title="T", task_type=TaskType.A_NEW_FEATURE))
+        task = await tracker.create(
+            task=TaskEntry(title="T", task_type=TaskType.A_NEW_FEATURE)
+        )
         updated = await tracker.update(
             task_id=task.task_id,
             updates={"status": TaskStatus.IN_PROGRESS},
@@ -117,7 +120,9 @@ class TestTaskUpdate:
     @pytest.mark.asyncio
     async def test_update_started_at_on_in_progress(self, tracker: TaskTracker) -> None:
         """Setting status to in_progress sets started_at."""
-        task = await tracker.create(task=TaskEntry(title="T", task_type=TaskType.A_NEW_FEATURE))
+        task = await tracker.create(
+            task=TaskEntry(title="T", task_type=TaskType.A_NEW_FEATURE)
+        )
         updated = await tracker.update(
             task_id=task.task_id,
             updates={"status": TaskStatus.IN_PROGRESS},
@@ -128,8 +133,12 @@ class TestTaskUpdate:
     @pytest.mark.asyncio
     async def test_update_completed_at_on_completed(self, tracker: TaskTracker) -> None:
         """Setting status to completed sets completed_at."""
-        task = await tracker.create(task=TaskEntry(title="T", task_type=TaskType.A_NEW_FEATURE))
-        await tracker.update(task_id=task.task_id, updates={"status": TaskStatus.IN_PROGRESS})
+        task = await tracker.create(
+            task=TaskEntry(title="T", task_type=TaskType.A_NEW_FEATURE)
+        )
+        await tracker.update(
+            task_id=task.task_id, updates={"status": TaskStatus.IN_PROGRESS}
+        )
         updated = await tracker.update(
             task_id=task.task_id,
             updates={"status": TaskStatus.COMPLETED},
@@ -140,7 +149,9 @@ class TestTaskUpdate:
     @pytest.mark.asyncio
     async def test_update_multiple_fields(self, tracker: TaskTracker) -> None:
         """Update multiple fields in one call."""
-        task = await tracker.create(task=TaskEntry(title="T", task_type=TaskType.A_NEW_FEATURE))
+        task = await tracker.create(
+            task=TaskEntry(title="T", task_type=TaskType.A_NEW_FEATURE)
+        )
         updated = await tracker.update(
             task_id=task.task_id,
             updates={
@@ -161,7 +172,9 @@ class TestTaskDelete:
     @pytest.mark.asyncio
     async def test_delete_existing(self, tracker: TaskTracker) -> None:
         """Delete an existing task returns True."""
-        task = await tracker.create(task=TaskEntry(title="T", task_type=TaskType.A_NEW_FEATURE))
+        task = await tracker.create(
+            task=TaskEntry(title="T", task_type=TaskType.A_NEW_FEATURE)
+        )
         deleted = await tracker.delete(task_id=task.task_id)
         assert deleted is True
         assert await tracker.get(task_id=task.task_id) is None
@@ -179,8 +192,12 @@ class TestTaskQuery:
     @pytest.mark.asyncio
     async def test_query_by_status(self, tracker: TaskTracker) -> None:
         """Query tasks by status returns a list of TaskEntry."""
-        await tracker.create(task=TaskEntry(title="T1", task_type=TaskType.A_NEW_FEATURE))
-        await tracker.create(task=TaskEntry(title="T2", task_type=TaskType.B_SECURITY_PATCH))
+        await tracker.create(
+            task=TaskEntry(title="T1", task_type=TaskType.A_NEW_FEATURE)
+        )
+        await tracker.create(
+            task=TaskEntry(title="T2", task_type=TaskType.B_SECURITY_PATCH)
+        )
         results = await tracker.query(params=TaskQuery(status=TaskStatus.PENDING))
         assert isinstance(results, list)
         assert len(results) >= 2
@@ -191,9 +208,13 @@ class TestTaskQuery:
     @pytest.mark.asyncio
     async def test_query_by_type(self, tracker: TaskTracker) -> None:
         """Query tasks by governance type (UPPERCASE A-F values)."""
-        await tracker.create(task=TaskEntry(title="T1", task_type=TaskType.A_NEW_FEATURE))
+        await tracker.create(
+            task=TaskEntry(title="T1", task_type=TaskType.A_NEW_FEATURE)
+        )
         await tracker.create(task=TaskEntry(title="T2", task_type=TaskType.C_CICD_FIX))
-        results = await tracker.query(params=TaskQuery(task_type=TaskType.A_NEW_FEATURE))
+        results = await tracker.query(
+            params=TaskQuery(task_type=TaskType.A_NEW_FEATURE)
+        )
         assert isinstance(results, list)
         assert len(results) >= 1
         for r in results:
@@ -231,16 +252,22 @@ class TestTaskQuery:
     async def test_query_no_search_field(self, tracker: TaskTracker) -> None:
         """TaskQuery has no 'search' field — filtering is by structured fields only."""
         await tracker.create(
-            task=TaskEntry(title="Implement MCP Protocol", task_type=TaskType.A_NEW_FEATURE)
+            task=TaskEntry(
+                title="Implement MCP Protocol", task_type=TaskType.A_NEW_FEATURE
+            )
         )
         results = await tracker.query(params=TaskQuery(status=TaskStatus.PENDING))
         assert isinstance(results, list)
         assert len(results) >= 1
 
     @pytest.mark.asyncio
-    async def test_query_returns_list_not_result_object(self, tracker: TaskTracker) -> None:
+    async def test_query_returns_list_not_result_object(
+        self, tracker: TaskTracker
+    ) -> None:
         """query() returns list[TaskEntry], not a result object with total_count."""
-        await tracker.create(task=TaskEntry(title="T1", task_type=TaskType.A_NEW_FEATURE))
+        await tracker.create(
+            task=TaskEntry(title="T1", task_type=TaskType.A_NEW_FEATURE)
+        )
         results = await tracker.query(params=TaskQuery())
         assert isinstance(results, list)
 
@@ -251,10 +278,16 @@ class TestTaskTransitions:
     @pytest.mark.asyncio
     async def test_full_lifecycle_transitions(self, tracker: TaskTracker) -> None:
         """Track transitions through a full task lifecycle."""
-        task = await tracker.create(task=TaskEntry(title="T", task_type=TaskType.A_NEW_FEATURE))
+        task = await tracker.create(
+            task=TaskEntry(title="T", task_type=TaskType.A_NEW_FEATURE)
+        )
 
-        await tracker.update(task_id=task.task_id, updates={"status": TaskStatus.IN_PROGRESS})
-        await tracker.update(task_id=task.task_id, updates={"status": TaskStatus.COMPLETED})
+        await tracker.update(
+            task_id=task.task_id, updates={"status": TaskStatus.IN_PROGRESS}
+        )
+        await tracker.update(
+            task_id=task.task_id, updates={"status": TaskStatus.COMPLETED}
+        )
 
         transitions = await tracker.get_transitions(task_id=task.task_id)
         # Initial transition (from "" to pending) + 2 status changes = 3 total
@@ -270,9 +303,13 @@ class TestTaskTransitions:
         assert transitions[2].to_status == TaskStatus.COMPLETED
 
     @pytest.mark.asyncio
-    async def test_transitions_return_task_transition_objects(self, tracker: TaskTracker) -> None:
+    async def test_transitions_return_task_transition_objects(
+        self, tracker: TaskTracker
+    ) -> None:
         """Each transition is a TaskTransition model object."""
-        task = await tracker.create(task=TaskEntry(title="T", task_type=TaskType.A_NEW_FEATURE))
+        task = await tracker.create(
+            task=TaskEntry(title="T", task_type=TaskType.A_NEW_FEATURE)
+        )
         transitions = await tracker.get_transitions(task_id=task.task_id)
         assert len(transitions) >= 1
         t = transitions[0]

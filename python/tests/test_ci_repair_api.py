@@ -16,7 +16,9 @@ from fastapi.testclient import TestClient
 
 # Load the ci-repair-agent main module directly by file path to avoid
 # name collision with apps/agent-worker/main.py
-_main_path = str(Path(__file__).resolve().parent.parent / "apps" / "ci-repair-agent" / "main.py")
+_main_path = str(
+    Path(__file__).resolve().parent.parent / "apps" / "ci-repair-agent" / "main.py"
+)
 _spec = importlib.util.spec_from_file_location("ci_repair_agent_main", _main_path)
 
 # Mock env vars before importing
@@ -50,7 +52,9 @@ def mock_client_fixture():
     mock.get_failed_jobs = AsyncMock(return_value=make_sample_failed_jobs())
     mock.get_branch_sha = AsyncMock(return_value="abc123def456")
     mock.create_branch = AsyncMock(return_value=True)
-    mock.create_pull_request = AsyncMock(return_value="https://github.com/test/repo/pull/42")
+    mock.create_pull_request = AsyncMock(
+        return_value="https://github.com/test/repo/pull/42"
+    )
     with patch.object(_module, "_get_client", return_value=mock):
         yield mock
 
@@ -84,7 +88,9 @@ class TestHealthEndpoint:
 class TestListRunsEndpoint:
     """Test the GET /api/runs endpoint."""
 
-    def test_list_runs_success(self, client: TestClient, mock_client_fixture: AsyncMock) -> None:  # noqa: ARG002
+    def test_list_runs_success(
+        self, client: TestClient, mock_client_fixture: AsyncMock
+    ) -> None:  # noqa: ARG002
         resp = client.get("/api/runs")
         assert resp.status_code == 200
         body = resp.json()
@@ -132,7 +138,9 @@ class TestListRunsEndpoint:
 class TestAnalyzeEndpoint:
     """Test the GET /api/runs/{run_id}/analyze endpoint."""
 
-    def test_analyze_success(self, client: TestClient, mock_client_fixture: AsyncMock) -> None:  # noqa: ARG002
+    def test_analyze_success(
+        self, client: TestClient, mock_client_fixture: AsyncMock
+    ) -> None:  # noqa: ARG002
         resp = client.get("/api/runs/1001/analyze")
         assert resp.status_code == 200
         body = resp.json()

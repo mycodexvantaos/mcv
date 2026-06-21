@@ -1,7 +1,6 @@
 """Tests for mycodexvantaos_coder_deep.architecture_sync module."""
 
 import pytest
-
 from mycodexvantaos_coder_deep.architecture_sync import ArchitectureSync
 
 
@@ -165,7 +164,9 @@ class TestArchitectureDiff:
         baseline = await sync.scan()
 
         # Modify a file
-        (pathlib.Path(sample_project) / "src" / "main.py").write_text("print('modified')")
+        (pathlib.Path(sample_project) / "src" / "main.py").write_text(
+            "print('modified')"
+        )
         current = await sync.scan()
 
         diff = await sync.diff(from_id=baseline.snapshot_id, to_id=current.snapshot_id)

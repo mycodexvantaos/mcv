@@ -26,14 +26,26 @@ _PRIORITY: dict[ErrorCategory, int] = {
 # Patterns mapped to error categories.
 _PATTERNS: list[tuple[re.Pattern[str], ErrorCategory]] = [
     # Dependency errors
-    (re.compile(r"npm ERR! .*ERESOLVE.*", re.IGNORECASE), ErrorCategory.DEPENDENCY_ERROR),
+    (
+        re.compile(r"npm ERR! .*ERESOLVE.*", re.IGNORECASE),
+        ErrorCategory.DEPENDENCY_ERROR,
+    ),
     (
         re.compile(r"pnpm install.*--frozen-lockfile.*failed", re.IGNORECASE),
         ErrorCategory.DEPENDENCY_ERROR,
     ),
-    (re.compile(r"ERR_PNPM_LOCKFILE_MISSING", re.IGNORECASE), ErrorCategory.DEPENDENCY_ERROR),
-    (re.compile(r"Could not resolve dependency", re.IGNORECASE), ErrorCategory.DEPENDENCY_ERROR),
-    (re.compile(r"pip.*ERROR.*Could not find", re.IGNORECASE), ErrorCategory.DEPENDENCY_ERROR),
+    (
+        re.compile(r"ERR_PNPM_LOCKFILE_MISSING", re.IGNORECASE),
+        ErrorCategory.DEPENDENCY_ERROR,
+    ),
+    (
+        re.compile(r"Could not resolve dependency", re.IGNORECASE),
+        ErrorCategory.DEPENDENCY_ERROR,
+    ),
+    (
+        re.compile(r"pip.*ERROR.*Could not find", re.IGNORECASE),
+        ErrorCategory.DEPENDENCY_ERROR,
+    ),
     (re.compile(r"uv sync.*error", re.IGNORECASE), ErrorCategory.DEPENDENCY_ERROR),
     (re.compile(r"ModuleNotFoundError", re.IGNORECASE), ErrorCategory.DEPENDENCY_ERROR),
     (re.compile(r"ImportError", re.IGNORECASE), ErrorCategory.DEPENDENCY_ERROR),
@@ -42,9 +54,15 @@ _PATTERNS: list[tuple[re.Pattern[str], ErrorCategory]] = [
         ErrorCategory.DEPENDENCY_ERROR,
     ),
     # Docker build errors
-    (re.compile(r"docker build.*failed", re.IGNORECASE), ErrorCategory.DOCKER_BUILD_ERROR),
+    (
+        re.compile(r"docker build.*failed", re.IGNORECASE),
+        ErrorCategory.DOCKER_BUILD_ERROR,
+    ),
     (re.compile(r"COPY failed", re.IGNORECASE), ErrorCategory.DOCKER_BUILD_ERROR),
-    (re.compile(r"ERROR:.*Dockerfile", re.IGNORECASE), ErrorCategory.DOCKER_BUILD_ERROR),
+    (
+        re.compile(r"ERROR:.*Dockerfile", re.IGNORECASE),
+        ErrorCategory.DOCKER_BUILD_ERROR,
+    ),
     (
         re.compile(r'process "/bin/sh.*did not complete successfully', re.IGNORECASE),
         ErrorCategory.DOCKER_BUILD_ERROR,
@@ -70,15 +88,27 @@ _PATTERNS: list[tuple[re.Pattern[str], ErrorCategory]] = [
     # Deployment errors
     (re.compile(r"deploy.*failed", re.IGNORECASE), ErrorCategory.DEPLOYMENT_ERROR),
     (re.compile(r"wrangler.*error", re.IGNORECASE), ErrorCategory.DEPLOYMENT_ERROR),
-    (re.compile(r"cloudflare.*deploy.*fail", re.IGNORECASE), ErrorCategory.DEPLOYMENT_ERROR),
+    (
+        re.compile(r"cloudflare.*deploy.*fail", re.IGNORECASE),
+        ErrorCategory.DEPLOYMENT_ERROR,
+    ),
     # Permission errors
     (re.compile(r"Permission denied", re.IGNORECASE), ErrorCategory.PERMISSION_ERROR),
     (re.compile(r"403 Forbidden", re.IGNORECASE), ErrorCategory.PERMISSION_ERROR),
-    (re.compile(r"Resource not accessible", re.IGNORECASE), ErrorCategory.PERMISSION_ERROR),
+    (
+        re.compile(r"Resource not accessible", re.IGNORECASE),
+        ErrorCategory.PERMISSION_ERROR,
+    ),
     # Configuration errors
     (re.compile(r"config.*error", re.IGNORECASE), ErrorCategory.CONFIGURATION_ERROR),
-    (re.compile(r"invalid.*workflow", re.IGNORECASE), ErrorCategory.CONFIGURATION_ERROR),
-    (re.compile(r"yaml.*syntax.*error", re.IGNORECASE), ErrorCategory.CONFIGURATION_ERROR),
+    (
+        re.compile(r"invalid.*workflow", re.IGNORECASE),
+        ErrorCategory.CONFIGURATION_ERROR,
+    ),
+    (
+        re.compile(r"yaml.*syntax.*error", re.IGNORECASE),
+        ErrorCategory.CONFIGURATION_ERROR,
+    ),
     # Timeout errors
     (re.compile(r"timeout.*exceeded", re.IGNORECASE), ErrorCategory.TIMEOUT_ERROR),
     (re.compile(r"ETIMEDOUT", re.IGNORECASE), ErrorCategory.TIMEOUT_ERROR),

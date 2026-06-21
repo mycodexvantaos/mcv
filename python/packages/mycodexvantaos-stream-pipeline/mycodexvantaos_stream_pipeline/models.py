@@ -10,7 +10,6 @@ from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
 
-
 # ---------------------------------------------------------------------------
 # Enums
 # ---------------------------------------------------------------------------
@@ -74,9 +73,13 @@ class KafkaTopicConfig(BaseModel):
     name: str = Field(..., description="Topic name (kebab-case)")
     num_partitions: int = Field(default=3, ge=1, le=256)
     replication_factor: int = Field(default=1, ge=1, le=5)
-    retention_ms: int = Field(default=604800000, description="Retention in ms (default 7 days)")
+    retention_ms: int = Field(
+        default=604800000, description="Retention in ms (default 7 days)"
+    )
     cleanup_policy: str = Field(default="delete", pattern="^(delete|compact)$")
-    max_message_bytes: int = Field(default=1048576, description="Max message size in bytes")
+    max_message_bytes: int = Field(
+        default=1048576, description="Max message size in bytes"
+    )
 
     @field_validator("name")
     @classmethod
@@ -147,9 +150,15 @@ class WindowConfig(BaseModel):
 
     window_type: WindowType
     window_size_ms: int = Field(default=60000, ge=1000, description="Window size in ms")
-    hop_size_ms: int = Field(default=0, ge=0, description="Hop size for hopping windows in ms")
-    grace_period_ms: int = Field(default=0, ge=0, description="Late data tolerance in ms")
-    allowed_lateness_ms: int = Field(default=0, ge=0, description="How long to keep windows open")
+    hop_size_ms: int = Field(
+        default=0, ge=0, description="Hop size for hopping windows in ms"
+    )
+    grace_period_ms: int = Field(
+        default=0, ge=0, description="Late data tolerance in ms"
+    )
+    allowed_lateness_ms: int = Field(
+        default=0, ge=0, description="How long to keep windows open"
+    )
 
     @field_validator("hop_size_ms")
     @classmethod
@@ -169,8 +178,12 @@ class ProcessorConfig(BaseModel):
 
     name: str = Field(..., description="Processor name (kebab-case)")
     input_topics: list[str] = Field(..., min_length=1)
-    output_topic: str = Field(default="", description="Output topic for processed results")
-    error_topic: str = Field(default="", description="Dead-letter topic for failed messages")
+    output_topic: str = Field(
+        default="", description="Output topic for processed results"
+    )
+    error_topic: str = Field(
+        default="", description="Dead-letter topic for failed messages"
+    )
     consumer_config: ConsumerConfig = Field(default_factory=ConsumerConfig)
     producer_config: ProducerConfig = Field(default_factory=ProducerConfig)
     window_config: WindowConfig | None = None
