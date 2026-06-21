@@ -57,9 +57,9 @@ workload, billing, infrastructure, compliance, and evidence can be formally deli
 
 ---
 
-# K.1 Unified Gate Architecture
+## K.1 Unified Gate Architecture
 
-## K.1.1 Architecture Model
+### K.1.1 Architecture Model
 
 The unified gate system is divided into two complementary planes.
 
@@ -75,7 +75,7 @@ gate/ defines how gates are governed.
 ai-infra-gates/ defines what AI-native infrastructure gates must validate.
 ```
 
-## K.1.2 Unified Gate Flow
+### K.1.2 Unified Gate Flow
 
 ```text
 gate framework
@@ -99,7 +99,7 @@ release or block
 
 ---
 
-# K.2 Canonical Directory Tree
+## K.2 Canonical Directory Tree
 
 ```text
 unified-gates/
@@ -389,9 +389,9 @@ unified-gates/
 
 ---
 
-# K.3 Unified Gate Category System
+## K.3 Unified Gate Category System
 
-## K.3.1 Quality Gate Documentation Layers
+### K.3.1 Quality Gate Documentation Layers
 
 | Layer          | Directory           | Count | Purpose                                                                            |
 | -------------- | ------------------- | ----: | ---------------------------------------------------------------------------------- |
@@ -404,7 +404,7 @@ unified-gates/
 | `7-evolution`  | `gate/7-evolution`  |     4 | experiments, evolution, roadmap, feedback                                          |
 | `8-coverage`   | `gate/8-coverage`   |    51 | coverage dimensions                                                                |
 
-## K.3.2 AI Infrastructure Gate Layers
+### K.3.2 AI Infrastructure Gate Layers
 
 | Range   | Directory                                 | Count | Purpose                                                        |
 | ------- | ----------------------------------------- | ----: | -------------------------------------------------------------- |
@@ -419,9 +419,9 @@ unified-gates/
 
 ---
 
-# K.4 Gate Identity Model
+## K.4 Gate Identity Model
 
-## K.4.1 Quality Gate Document Identity
+### K.4.1 Quality Gate Document Identity
 
 Quality gate document IDs SHOULD follow:
 
@@ -439,7 +439,7 @@ gate-line
 gate-sbom-coverage
 ```
 
-## K.4.2 AI Infra Gate Identity
+### K.4.2 AI Infra Gate Identity
 
 AI infrastructure gate IDs MUST follow:
 
@@ -456,7 +456,7 @@ gate-58-invoice-evidence-validation
 gate-99-production-closure-validation
 ```
 
-## K.4.3 Full Canonical Gate Resource Name
+### K.4.3 Full Canonical Gate Resource Name
 
 Full canonical name:
 
@@ -472,7 +472,7 @@ Regex:
 
 ---
 
-# K.5 Unified Gate Catalog Schema
+## K.5 Unified Gate Catalog Schema
 
 `unified-gate-index.yaml` SHOULD contain both documentation gates and executable AI infrastructure gates.
 
@@ -514,7 +514,7 @@ spec:
 
 ---
 
-# K.6 Executable Gate Resource Schema
+## K.6 Executable Gate Resource Schema
 
 Each executable AI infrastructure gate SHOULD use:
 
@@ -562,9 +562,9 @@ spec:
 
 ---
 
-# K.7 Gate Composition Rule
+## K.7 Gate Composition Rule
 
-## K.7.1 Production Readiness Gate Chain
+### K.7.1 Production Readiness Gate Chain
 
 A production AI workload MUST pass the following chain:
 
@@ -586,7 +586,7 @@ cloud-managed-infrastructure
 attestation-compliance-closure
 ```
 
-## K.7.2 Minimum Blocking Gates
+### K.7.2 Minimum Blocking Gates
 
 The minimum blocking set for production is:
 
@@ -613,9 +613,9 @@ gate-99 production-closure-validation
 
 ---
 
-# K.8 Integration with Existing Gate Documents
+## K.8 Integration with Existing Gate Documents
 
-## K.8.1 Mapping Quality Documents to Executable Gates
+### K.8.1 Mapping Quality Documents to Executable Gates
 
 | Quality Gate Document        | Executable Gate Usage                                     |
 | ---------------------------- | --------------------------------------------------------- |
@@ -640,7 +640,7 @@ gate-99 production-closure-validation
 
 ---
 
-# K.9 CI Validation Requirements
+## K.9 CI Validation Requirements
 
 CI MUST validate:
 
@@ -687,7 +687,7 @@ outputs/unified-gate-summary.json
 
 ---
 
-# K.10 Business Capability Mapping
+## K.10 Business Capability Mapping
 
 | Business Capability                | Required Gate Layer                                            |
 | ---------------------------------- | -------------------------------------------------------------- |
@@ -704,7 +704,7 @@ outputs/unified-gate-summary.json
 
 ---
 
-# K.11 Compliance Criteria
+## K.11 Compliance Criteria
 
 The unified gate system is implemented when:
 
@@ -722,7 +722,7 @@ The unified gate system is implemented when:
 
 ---
 
-# K.12 Final Rule
+## K.12 Final Rule
 
 Final statement:
 

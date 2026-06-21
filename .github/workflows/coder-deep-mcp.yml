@@ -114,7 +114,6 @@ jobs:
         uses: github/codeql-action/init@v3
         with:
           languages: python
-          category: coder-deep-mcp
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
