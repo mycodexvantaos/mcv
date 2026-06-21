@@ -31,7 +31,7 @@ def test_memory_store_init():
         "python/packages/mycodexvantaos-coder-deep/tests/test_extra_coverage.py"
     ]
     
-    repo_root = os.path.expanduser('~/mycodexvantaos')
+    repo_root = "/workspace/mycodexvantaos"
     for p in paths:
         full_path = os.path.join(repo_root, p)
         os.makedirs(os.path.dirname(full_path), exist_ok=True)
