@@ -29,7 +29,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout repository
-        uses: actions/checkout@34e114876b0b
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
         with:
           fetch-depth: 0
 
@@ -50,7 +50,7 @@ jobs:
           echo "artifacts_dir=$ARTIFACTS_DIR" >> "$GITHUB_OUTPUT"
 
       - name: Install cosign
-        uses: sigstore/cosign-installer@d7d6bc7722e3
+        uses: sigstore/cosign-installer@d7d6bc7722e3daa8354c50bcb52f4837da5e9b6a
         with:
           cosign-release: 'v2.4.3'
 

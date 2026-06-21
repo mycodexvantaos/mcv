@@ -42,15 +42,15 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout repository
-        uses: actions/checkout@34e114876b0b
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
 
       - name: Setup PNPM
-        uses: pnpm/action-setup@b906affcce14
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1
         with:
           version: ${{ env.PNPM_VERSION }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@49933ea5288c
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
@@ -77,15 +77,15 @@ jobs:
     needs: lint-and-format
     steps:
       - name: Checkout repository
-        uses: actions/checkout@34e114876b0b
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
 
       - name: Setup PNPM
-        uses: pnpm/action-setup@b906affcce14
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1
         with:
           version: ${{ env.PNPM_VERSION }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@49933ea5288c
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
@@ -99,7 +99,7 @@ jobs:
           NODE_ENV: production
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@ea165f8d65b6
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: next-build
           path: .next/
@@ -115,15 +115,15 @@ jobs:
     needs: lint-and-format
     steps:
       - name: Checkout repository
-        uses: actions/checkout@34e114876b0b
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
 
       - name: Setup PNPM
-        uses: pnpm/action-setup@b906affcce14
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1
         with:
           version: ${{ env.PNPM_VERSION }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@49933ea5288c
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'

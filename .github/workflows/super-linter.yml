@@ -25,12 +25,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@34e114876b0b
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
         with:
           fetch-depth: 0
 
       - name: Lint Code Base
-        uses: super-linter/super-linter@12150456a73e
+        uses: super-linter/super-linter@12150456a73e248bdc94d0794898f94e23127c88
         env:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: "main"

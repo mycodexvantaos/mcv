@@ -42,12 +42,12 @@ jobs:
             build-mode: none
     steps:
       - name: Checkout code
-        uses: actions/checkout@34e114876b0b
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
         with:
           fetch-depth: 0
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@8aad20d150bb
+        uses: github/codeql-action/init@8aad20d150bbac5944a9f9d289da16a4b0d87c1e
         with:
           languages: ${{ matrix.language }}
           build-mode: ${{ matrix.build-mode }}
@@ -55,7 +55,7 @@ jobs:
           queries: security-and-quality
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@8aad20d150bb
+        uses: github/codeql-action/analyze@8aad20d150bbac5944a9f9d289da16a4b0d87c1e
         with:
           category: '/weekly-audit/language:${{ matrix.language }}'
 
@@ -71,7 +71,7 @@ jobs:
       image: returntocorp/semgrep-agent:latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@34e114876b0b
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
 
       - name: Semgrep Full Scan
         env:
@@ -81,7 +81,7 @@ jobs:
 
       - name: Upload Semgrep SARIF
         if: always()
-        uses: github/codeql-action/upload-sarif@dd903d2e4f54
+        uses: github/codeql-action/upload-sarif@dd903d2e4f5405488e5ef1422510ee31c8b32357
         with:
           sarif_file: semgrep.sarif
           category: semgrep-weekly
@@ -96,7 +96,7 @@ jobs:
       security-events: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@34e114876b0b
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
 
       - name: Install and run Trivy
         run: |
@@ -108,7 +108,7 @@ jobs:
 
       - name: Upload Trivy SARIF
         if: always()
-        uses: github/codeql-action/upload-sarif@dd903d2e4f54
+        uses: github/codeql-action/upload-sarif@dd903d2e4f5405488e5ef1422510ee31c8b32357
         with:
           sarif_file: trivy-results.sarif
           category: trivy-weekly
@@ -123,7 +123,7 @@ jobs:
       security-events: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@34e114876b0b
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
 
       - name: Run Checkov full scan
         run: |
@@ -136,7 +136,7 @@ jobs:
 
       - name: Upload Checkov SARIF
         if: always()
-        uses: github/codeql-action/upload-sarif@dd903d2e4f54
+        uses: github/codeql-action/upload-sarif@dd903d2e4f5405488e5ef1422510ee31c8b32357
         with:
           sarif_file: checkov-results.sarif
           category: checkov-weekly
@@ -151,7 +151,7 @@ jobs:
       security-events: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@34e114876b0b
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
         with:
           fetch-depth: 0
 
@@ -163,7 +163,7 @@ jobs:
 
       - name: Upload Gitleaks SARIF
         if: always()
-        uses: github/codeql-action/upload-sarif@dd903d2e4f54
+        uses: github/codeql-action/upload-sarif@dd903d2e4f5405488e5ef1422510ee31c8b32357
         with:
           sarif_file: gitleaks-results.sarif
           category: gitleaks-weekly
@@ -180,12 +180,12 @@ jobs:
       statuses: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@34e114876b0b
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
         with:
           fetch-depth: 0
 
       - name: Lint Full Codebase
-        uses: super-linter/super-linter@12150456a73e
+        uses: super-linter/super-linter@12150456a73e248bdc94d0794898f94e23127c88
         env:
           VALIDATE_ALL_CODEBASE: true
           DEFAULT_BRANCH: "main"
