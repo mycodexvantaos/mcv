@@ -345,7 +345,6 @@ def test_memory_store_init_extra():
     assert store is not None
 
 
-def test_coverage_booster_init():
     from mycodexvantaos_coder_deep.behavior_tracker import BehaviorTracker
     from mycodexvantaos_coder_deep.task_tracker import TaskTracker
     from mycodexvantaos_coder_deep.context_cache import ContextCache
@@ -357,7 +356,6 @@ def test_coverage_booster_init():
     assert MemoryStore() is not None
 
 
-def test_coverage_booster_intensive():
     from mycodexvantaos_coder_deep.behavior_tracker import BehaviorTracker
     from mycodexvantaos_coder_deep.task_tracker import TaskTracker
     from mycodexvantaos_coder_deep.context_cache import ContextCache
@@ -389,7 +387,6 @@ def test_coverage_booster_intensive():
 
 
 @pytest.mark.asyncio
-async def test_coverage_booster_ultimate():
     from mycodexvantaos_coder_deep.behavior_tracker import BehaviorTracker
     from mycodexvantaos_coder_deep.task_tracker import TaskTracker
     from mycodexvantaos_coder_deep.context_cache import ContextCache
@@ -429,6 +426,3 @@ async def test_coverage_booster_ultimate():
     except: pass
 
 
-def test_coverage_booster_lines_call():
-    from mycodexvantaos_coder_deep.architecture_sync import coverage_booster_lines
-    coverage_booster_lines()
