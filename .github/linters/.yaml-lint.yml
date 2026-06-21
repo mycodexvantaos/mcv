@@ -1,0 +1,19 @@
+extends: default
+
+rules:
+  line-length:
+    max: 120
+    level: warning
+
+  indentation:
+    spaces: 2
+    indent-sequences: true
+
+  truthy:
+    allowed-values:
+      - "true"
+      - "false"
+      - "on"
+      - "off"
+
+  document-start: disable
