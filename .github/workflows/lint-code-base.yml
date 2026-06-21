@@ -1,0 +1,90 @@
+name: Lint Code Base
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: lint-code-base-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  run-lint:
+    name: run-lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+          REF_SHA: ${{ github.sha }}
+          EVENT_NAME: ${{ github.event_name }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          git init .
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${REPOSITORY}.git"
+
+          if [ "$EVENT_NAME" = "pull_request" ] && [ -n "${PR_HEAD_SHA:-}" ]; then
+            git fetch --no-tags --prune --depth=200 origin "$PR_HEAD_SHA"
+            git checkout --detach FETCH_HEAD
+          else
+            git fetch --no-tags --prune --depth=200 origin "$REF_SHA"
+            git checkout --detach FETCH_HEAD
+          fi
+
+      - name: Resolve lint file set
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BEFORE_SHA: ${{ github.event.before }}
+          DEFAULT_BRANCH: main
+        run: |
+          set -euo pipefail
+          mkdir -p outputs
+
+          if [ "$EVENT_NAME" = "pull_request" ] && [ -n "${PR_BASE_SHA:-}" ]; then
+            git fetch --no-tags --prune --depth=200 origin "$PR_BASE_SHA" || true
+            BASE="$PR_BASE_SHA"
+          elif [ -n "${BEFORE_SHA:-}" ] && [ "$BEFORE_SHA" != "0000000000000000000000000000000000000000" ]; then
+            git fetch --no-tags --prune --depth=200 origin "$BEFORE_SHA" || true
+            BASE="$BEFORE_SHA"
+          else
+            git fetch --no-tags --prune --depth=200 origin "$DEFAULT_BRANCH" || true
+            BASE="$(git merge-base HEAD "origin/$DEFAULT_BRANCH" 2>/dev/null || git rev-list --max-parents=0 HEAD)"
+          fi
+
+          git diff --name-only --diff-filter=ACMR "$BASE"...HEAD 2>/dev/null \
+            | grep -vE '(^|/)(node_modules|\.pnpm-store|\.yarn|dist|build|coverage|outputs|vendor|\.git|__pycache__)/' \
+            | sort -u > outputs/lint-files.txt || true
+
+          if [ ! -s outputs/lint-files.txt ]; then
+            git ls-files \
+              | grep -vE '(^|/)(node_modules|\.pnpm-store|\.yarn|dist|build|coverage|outputs|vendor|\.git|__pycache__)/' \
+              | sort -u > outputs/lint-files.txt
+          fi
+
+          cat outputs/lint-files.txt
+
+      - name: Run stable lint gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/ci/stable_lint_gate.py \
+            --file-list outputs/lint-files.txt \
+            --report outputs/lint-code-base-report.json
+===
