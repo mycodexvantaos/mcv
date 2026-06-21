@@ -1,10 +1,11 @@
+---
 blocking: true
 id: gate-93-signature-validation
-layer: attestation-compliance-closure
+layer: meta-governance
 lifecycle: active
 owner: platform@mycodexvantaos.com
 plane: ai-infra
 validates:
-- checks: []
+- dimension: canonical-readiness
   description: Mandatory readiness for gate-93-signature-validation
-  dimension: canonical-readiness
+  checks: []

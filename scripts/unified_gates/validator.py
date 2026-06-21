@@ -7,14 +7,15 @@ closure invariants through a single auditable validation boundary.
 
 from __future__ import annotations
 
-import re
 import json
+import re
 from collections import Counter
 from pathlib import Path
 from typing import Any
 
-import yaml
 import jsonschema
+import yaml
+
 from scripts.unified_gates.io import GateIoError, read_yaml, repo_path
 from scripts.unified_gates.models import ValidationIssue, ValidationResult
 
@@ -172,7 +173,7 @@ def _validate_gates(
     for index, gate in enumerate(gates):
         gate_path = f"spec.gates[{index}]"
         gate_id = gate.get("id")
-        
+
         # 1. Basic format validation
         if not isinstance(gate_id, str) or not GATE_ID_PATTERN.match(gate_id):
             issues.append(
@@ -206,7 +207,7 @@ def _validate_gates(
                     path=gate_path,
                 )
             )
-        
+
         # 2. File and path validation
         _validate_owner(gate, issues, gate_path)
         rel_path = _validate_path(root, gate, issues, gate_path)

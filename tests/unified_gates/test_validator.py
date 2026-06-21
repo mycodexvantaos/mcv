@@ -1,6 +1,6 @@
 from pathlib import Path
+
 import yaml
-import pytest
 from scripts.unified_gates.validator import (MINIMUM_BLOCKING_GATES,
                                              validate_unified_gate_index)
 
@@ -16,15 +16,20 @@ def valid_index(tmp_path: Path) -> dict:
     for gate_id in MINIMUM_BLOCKING_GATES:
         path = f"unified-gates/ai-infra-gates/{gate_id}.yaml"
         # We also need to satisfy the schema if we are using it
-        write_yaml(tmp_path / f"config/{path}", {
-            "id": gate_id,
-            "plane": "ai-infra-gate-plane",
-            "lifecycle": "active",
-            "blocking": True,
-            "layer": "meta-governance",
-            "owner": "platform@mycodexvantaos.com",
-            "validates": [{"dimension": "test", "description": "test", "checks": []}]
-        })
+        write_yaml(
+            tmp_path / f"config/{path}",
+            {
+                "id": gate_id,
+                "plane": "ai-infra-gate-plane",
+                "lifecycle": "active",
+                "blocking": True,
+                "layer": "meta-governance",
+                "owner": "platform@mycodexvantaos.com",
+                "validates": [
+                    {"dimension": "test", "description": "test", "checks": []}
+                ],
+            },
+        )
         gates.append(
             {
                 "id": gate_id,
@@ -66,7 +71,7 @@ def test_valid_index_passes(tmp_path: Path) -> None:
     index = valid_index(tmp_path)
     index_path = "config/unified-gates/unified-gate-index.yaml"
     write_yaml(tmp_path / index_path, index)
-    
+
     # Ensure schema exists for deep validation
     schema_dir = tmp_path / "schemas"
     schema_dir.mkdir(parents=True, exist_ok=True)
@@ -81,10 +86,11 @@ def test_valid_index_passes(tmp_path: Path) -> None:
             "lifecycle": {"type": "string"},
             "blocking": {"type": "boolean"},
             "layer": {"type": "string"},
-            "owner": {"type": "string"}
-        }
+            "owner": {"type": "string"},
+        },
     }
     import json
+
     with open(schema_dir / "unified-gate-schema.json", "w") as f:
         json.dump(schema, f)
 

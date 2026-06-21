@@ -245,7 +245,7 @@ unified-gates/
 │   ├── ai-infra-gates-01-99-spec.md
 │   ├── ai-infra-gates-catalog.yaml
 │   │
-│   ├── layer-00-meta-governance/
+│   ├── l00/
 │   │   ├── gate-01-namespace-governance-validation.yaml
 │   │   ├── gate-02-repository-naming-validation.yaml
 │   │   ├── gate-03-governance-code-validation.yaml
@@ -255,7 +255,7 @@ unified-gates/
 │   │   ├── gate-07-owner-registry-validation.yaml
 │   │   └── gate-08-audit-evidence-validation.yaml
 │   │
-│   ├── layer-10-compute-foundation/
+│   ├── l10/
 │   │   ├── gate-11-ai-chip-capability-validation.yaml
 │   │   ├── gate-12-gpu-driver-validation.yaml
 │   │   ├── gate-13-accelerator-topology-validation.yaml
@@ -265,7 +265,7 @@ unified-gates/
 │   │   ├── gate-17-resource-quota-and-scheduler-validation.yaml
 │   │   └── gate-18-compute-cost-metering-validation.yaml
 │   │
-│   ├── layer-20-data-foundation/
+│   ├── l20/
 │   │   ├── gate-21-dataset-contract-validation.yaml
 │   │   ├── gate-22-dataset-lineage-validation.yaml
 │   │   ├── gate-23-dataset-license-validation.yaml
@@ -275,7 +275,7 @@ unified-gates/
 │   │   ├── gate-27-data-quality-threshold-validation.yaml
 │   │   └── gate-28-data-access-policy-validation.yaml
 │   │
-│   ├── layer-30-algorithm-foundation/
+│   ├── l30/
 │   │   ├── gate-31-ai-framework-compatibility-validation.yaml
 │   │   ├── gate-32-model-contract-validation.yaml
 │   │   ├── gate-33-training-pipeline-validation.yaml
@@ -285,7 +285,7 @@ unified-gates/
 │   │   ├── gate-37-model-registry-validation.yaml
 │   │   └── gate-38-algorithm-safety-policy-validation.yaml
 │   │
-│   ├── layer-40-ai-workload/
+│   ├── l40/
 │   │   ├── gate-41-ai-workload-contract-validation.yaml
 │   │   ├── gate-42-inference-task-validation.yaml
 │   │   ├── gate-43-training-task-validation.yaml
@@ -295,7 +295,7 @@ unified-gates/
 │   │   ├── gate-47-workload-slo-validation.yaml
 │   │   └── gate-48-workload-runtime-sandbox-validation.yaml
 │   │
-│   ├── layer-50-ai-task-billing/
+│   ├── l50/
 │   │   ├── gate-51-usage-event-contract-validation.yaml
 │   │   ├── gate-52-inference-metering-validation.yaml
 │   │   ├── gate-53-training-metering-validation.yaml
@@ -305,13 +305,13 @@ unified-gates/
 │   │   ├── gate-57-billing-policy-validation.yaml
 │   │   └── gate-58-invoice-evidence-validation.yaml
 │   │
-│   ├── layer-60-cloud-managed-infrastructure/
+│   ├── l60/
 │   │   ├── gate-61-cloud-infra-readiness-validation.yaml
 │   │   ├── gate-62-kubernetes-baseline-validation.yaml
 │   │   ├── gate-63-gitops-sync-validation.yaml
 │   │   └── gate-64-managed-service-sla-validation.yaml
 │   │
-│   └── layer-90-attestation-compliance-closure/
+│   └── l90/
 │       ├── gate-91-sbom-generation-validation.yaml
 │       ├── gate-92-provenance-validation.yaml
 │       ├── gate-93-signature-validation.yaml
@@ -408,14 +408,14 @@ unified-gates/
 
 | Range   | Directory                                 | Count | Purpose                                                        |
 | ------- | ----------------------------------------- | ----: | -------------------------------------------------------------- |
-| `01-08` | `layer-00-meta-governance`                |     8 | naming, registry, lifecycle, binding, dependency, owner, audit |
-| `11-18` | `layer-10-compute-foundation`             |     8 | ai chip, gpu, accelerator, smart server, compute center        |
-| `21-28` | `layer-20-data-foundation`                |     8 | dataset, vector database, embedding, data quality              |
-| `31-38` | `layer-30-algorithm-foundation`           |     8 | ai framework, model, training, inference, agent                |
-| `41-48` | `layer-40-ai-workload`                    |     8 | declarative workload contract, inference, training, rag, agent |
-| `51-58` | `layer-50-ai-task-billing`                |     8 | usage event, metering, cost attribution, billing evidence      |
-| `61-64` | `layer-60-cloud-managed-infrastructure`   |     4 | cloud infra, kubernetes, gitops, managed sla                   |
-| `91-99` | `layer-90-attestation-compliance-closure` |     9 | sbom, provenance, signature, audit, release closure            |
+| `01-08` | `l00`                |     8 | naming, registry, lifecycle, binding, dependency, owner, audit |
+| `11-18` | `l10`             |     8 | ai chip, gpu, accelerator, smart server, compute center        |
+| `21-28` | `l20`                |     8 | dataset, vector database, embedding, data quality              |
+| `31-38` | `l30`           |     8 | ai framework, model, training, inference, agent                |
+| `41-48` | `l40`                    |     8 | declarative workload contract, inference, training, rag, agent |
+| `51-58` | `l50`                |     8 | usage event, metering, cost attribution, billing evidence      |
+| `61-64` | `l60`   |     4 | cloud infra, kubernetes, gitops, managed sla                   |
+| `91-99` | `l90` |     9 | sbom, provenance, signature, audit, release closure            |
 
 ---
 
@@ -503,7 +503,7 @@ spec:
 
     - id: gate-41-ai-workload-contract-validation
       plane: ai-infra-gate-plane
-      path: ai-infra-gates/layer-40-ai-workload/gate-41-ai-workload-contract-validation.yaml
+      path: ai-infra-gates/l40/gate-41-ai-workload-contract-validation.yaml
       lifecycle: active
       blocking: true
       validates:
@@ -691,16 +691,16 @@ outputs/unified-gate-summary.json
 
 | Business Capability                | Required Gate Layer                                            |
 | ---------------------------------- | -------------------------------------------------------------- |
-| ai compute center hosting          | `layer-10-compute-foundation`                                  |
-| vector database service            | `layer-20-data-foundation`                                     |
-| ai agent framework                 | `layer-30-algorithm-foundation` + `layer-40-ai-workload`       |
+| ai compute center hosting          | `l10`                                  |
+| vector database service            | `l20`                                     |
+| ai agent framework                 | `l30` + `l40`       |
 | ai full-chain development platform | `layer-00` + `layer-10` + `layer-20` + `layer-30` + `layer-40` |
-| inference billing                  | `layer-50-ai-task-billing`                                     |
+| inference billing                  | `l50`                                     |
 | training billing                   | `gate-53-training-metering-validation`                         |
 | embedding billing                  | `gate-54-embedding-metering-validation`                        |
 | agent run billing                  | `gate-55-agent-run-metering-validation`                        |
-| cloud managed infrastructure       | `layer-60-cloud-managed-infrastructure`                        |
-| compliance-grade delivery          | `layer-90-attestation-compliance-closure`                      |
+| cloud managed infrastructure       | `l60`                        |
+| compliance-grade delivery          | `l90`                      |
 
 ---
 

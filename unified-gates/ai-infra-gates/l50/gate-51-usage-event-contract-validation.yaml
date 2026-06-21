@@ -1,10 +1,11 @@
+---
 blocking: true
 id: gate-51-usage-event-contract-validation
-layer: ai-task-billing
+layer: meta-governance
 lifecycle: active
 owner: platform@mycodexvantaos.com
 plane: ai-infra
 validates:
-- checks: []
+- dimension: canonical-readiness
   description: Mandatory readiness for gate-51-usage-event-contract-validation
-  dimension: canonical-readiness
+  checks: []

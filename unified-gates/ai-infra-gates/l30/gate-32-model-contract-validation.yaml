@@ -1,10 +1,11 @@
+---
 blocking: true
 id: gate-32-model-contract-validation
-layer: algorithm-foundation
+layer: meta-governance
 lifecycle: active
 owner: platform@mycodexvantaos.com
 plane: ai-infra
 validates:
-- checks: []
+- dimension: canonical-readiness
   description: Mandatory readiness for gate-32-model-contract-validation
-  dimension: canonical-readiness
+  checks: []
