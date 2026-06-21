@@ -3,11 +3,9 @@
 Platform Control Plane Expansion — Scaffold Generator
 Generates all skeleton files for the bilingual architecture expansion.
 """
-
 import os
 
 BASE = "/workspace/mycodexvantaos"
-
 
 def write(path, content):
     full = os.path.join(BASE, path)
@@ -15,7 +13,6 @@ def write(path, content):
     with open(full, "w") as f:
         f.write(content)
     print(f"  ✅ {path}")
-
 
 # ═══════════════════════════════════════════════════════════════
 # Sec.5 — TypeScript Control Plane Packages (8 packages)
@@ -25,13 +22,7 @@ TS_PACKAGES = {
     "service-catalog": {
         "desc": "Service catalog model — service definitions, categories, capabilities, permissions, runtime metadata",
         "reexport": "service-catalog",
-        "types": [
-            "ServiceDefinition",
-            "ServiceCategory",
-            "ServiceCapability",
-            "ServicePermission",
-            "ServiceRuntimeSupport",
-        ],
+        "types": ["ServiceDefinition", "ServiceCategory", "ServiceCapability", "ServicePermission", "ServiceRuntimeSupport"],
         "extra": """
 // Extended types for standalone package
 export interface ServiceDependency {
@@ -44,18 +35,12 @@ export interface ServiceRuntimeSupport {
   portable: boolean;
   supported: ('cloudflare-workers' | 'node-server' | 'docker-container' | 'kubernetes-pod')[];
 }
-""",
+"""
     },
     "resource-model": {
         "desc": "Resource model — resource kinds, metadata, spec, status, lifecycle, references",
         "reexport": "resource-model",
-        "types": [
-            "ResourceKind",
-            "ResourceMetadata",
-            "ResourceSpec",
-            "ResourceStatus",
-            "ResourceReference",
-        ],
+        "types": ["ResourceKind", "ResourceMetadata", "ResourceSpec", "ResourceStatus", "ResourceReference"],
         "extra": """
 // Extended types for standalone package
 export type ResourceKind = string;
@@ -69,20 +54,12 @@ export interface ResourceStatus {
   conditions?: Record<string, unknown>;
   observedGeneration?: number;
 }
-""",
+"""
     },
     "policy-model": {
         "desc": "Policy model — subject, action, resource, condition, effect, evaluation result",
         "reexport": "policy-model",
-        "types": [
-            "PolicyDefinition",
-            "PolicySubject",
-            "PolicyAction",
-            "PolicyResource",
-            "PolicyCondition",
-            "PolicyEffect",
-            "PolicyEvaluationResult",
-        ],
+        "types": ["PolicyDefinition", "PolicySubject", "PolicyAction", "PolicyResource", "PolicyCondition", "PolicyEffect", "PolicyEvaluationResult"],
         "extra": """
 // Extended types for standalone package
 export type PolicyEffect = 'allow' | 'deny' | 'require-review';
@@ -93,18 +70,12 @@ export interface PolicyEvaluationResult {
   matchedPolicies: string[];
   reason?: string;
 }
-""",
+"""
     },
     "audit-model": {
         "desc": "Audit model — audit events, actor, resource reference, trace context, integrity metadata",
         "reexport": "audit-model",
-        "types": [
-            "AuditEvent",
-            "AuditActor",
-            "AuditResource",
-            "AuditContext",
-            "AuditIntegrity",
-        ],
+        "types": ["AuditEvent", "AuditActor", "AuditResource", "AuditContext", "AuditIntegrity"],
         "extra": """
 // Extended types for standalone package
 export interface AuditActor {
@@ -131,34 +102,18 @@ export interface AuditIntegrity {
   previousHash?: string;
   chainIndex: number;
 }
-""",
+"""
     },
     "knowledge-model": {
         "desc": "Knowledge model — document, chunk, collection, retrieval receipt, answer trace, issue, repair",
         "reexport": "knowledge-model",
-        "types": [
-            "DocumentResource",
-            "DocumentChunk",
-            "KnowledgeCollection",
-            "RetrievalReceipt",
-            "AnswerTrace",
-            "KnowledgeIssue",
-            "KnowledgeRepair",
-        ],
-        "extra": "",
+        "types": ["DocumentResource", "DocumentChunk", "KnowledgeCollection", "RetrievalReceipt", "AnswerTrace", "KnowledgeIssue", "KnowledgeRepair"],
+        "extra": ""
     },
     "memory-model": {
         "desc": "Memory model — memory item, candidate, relation, conflict, dream run, dream action, dream report",
         "reexport": None,  # no reexport from core — this is new
-        "types": [
-            "MemoryItem",
-            "MemoryCandidate",
-            "MemoryRelation",
-            "MemoryConflict",
-            "MemoryDreamRun",
-            "MemoryDreamAction",
-            "MemoryDreamReport",
-        ],
+        "types": ["MemoryItem", "MemoryCandidate", "MemoryRelation", "MemoryConflict", "MemoryDreamRun", "MemoryDreamAction", "MemoryDreamReport"],
         "extra": """
 /**
  * Memory item statuses
@@ -281,18 +236,12 @@ export interface MemoryDreamReport {
   actions: MemoryDreamAction[];
   statistics?: Record<string, unknown>;
 }
-""",
+"""
     },
     "runtime-model": {
         "desc": "Runtime model — runtime definition, provider definition, adapter capability, health, portability",
         "reexport": None,
-        "types": [
-            "RuntimeDefinition",
-            "ProviderDefinition",
-            "AdapterCapability",
-            "RuntimeHealth",
-            "RuntimePortability",
-        ],
+        "types": ["RuntimeDefinition", "ProviderDefinition", "AdapterCapability", "RuntimeHealth", "RuntimePortability"],
         "extra": """
 export interface RuntimeDefinition {
   id: string;
@@ -333,7 +282,7 @@ export interface RuntimePortability {
   constraints: string[];
   migrationNotes?: string;
 }
-""",
+"""
     },
     "contracts-sdk": {
         "desc": "Contracts SDK — load, validate, and expose typed contract readers for YAML/JSON contracts",
@@ -379,7 +328,7 @@ export async function validateContract(schemaPath: string, data: unknown): Promi
   // TODO: implement schema validation
   return { valid: true };
 }
-""",
+"""
     },
 }
 
@@ -387,12 +336,10 @@ for pkg_name, cfg in TS_PACKAGES.items():
     pkg_dir = f"packages/mycodexvantaos-{pkg_name}"
 
     # package.json
-    write(
-        f"{pkg_dir}/package.json",
-        f"""{{
+    write(f"{pkg_dir}/package.json", f"""{{
   "name": "@mycodexvantaos/mycodexvantaos-{pkg_name}",
   "version": "0.1.0",
-  "description": "{cfg["desc"]}",
+  "description": "{cfg['desc']}",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -411,13 +358,10 @@ for pkg_name, cfg in TS_PACKAGES.items():
     "@mycodexvantaos/core": "workspace:*"
   }}
 }}
-""",
-    )
+""")
 
     # tsconfig.json
-    write(
-        f"{pkg_dir}/tsconfig.json",
-        """{
+    write(f"{pkg_dir}/tsconfig.json", """{
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
@@ -425,16 +369,13 @@ for pkg_name, cfg in TS_PACKAGES.items():
   },
   "include": ["src"]
 }
-""",
-    )
+""")
 
     # README.md
     types_list = "\n".join(f"- `{t}`" for t in cfg["types"])
-    write(
-        f"{pkg_dir}/README.md",
-        f"""# @mycodexvantaos/mycodexvantaos-{pkg_name}
+    write(f"{pkg_dir}/README.md", f"""# @mycodexvantaos/mycodexvantaos-{pkg_name}
 
-{cfg["desc"]}
+{cfg['desc']}
 
 ## Core Types
 
@@ -449,36 +390,29 @@ import {{ {", ".join(cfg["types"][:3])} }} from '@mycodexvantaos/mycodexvantaos-
 ## Status
 
 🚧 Skeleton — typed interfaces with TODO markers for implementation.
-""",
-    )
+""")
 
     # CHANGELOG.md
-    write(
-        f"{pkg_dir}/CHANGELOG.md",
-        f"""# @mycodexvantaos/mycodexvantaos-{pkg_name}
+    write(f"{pkg_dir}/CHANGELOG.md", f"""# @mycodexvantaos/mycodexvantaos-{pkg_name}
 
 ## 0.1.0 (2025-05-15)
 
 - Initial skeleton with typed interfaces
 - Re-exports from @mycodexvantaos/core where applicable
-""",
-    )
+""")
 
     # src/index.ts
     reexport_line = ""
     if cfg.get("reexport"):
-        reexport_line = f"\n// Re-export from core constitution\nexport * from '@mycodexvantaos/core/{cfg['reexport']}';\n"
+        reexport_line = f"\n// Re-export from core constitution\nexport * from '@mycodexvantaos/core/{cfg["reexport"]}';\n"
 
-    write(
-        f"{pkg_dir}/src/index.ts",
-        f"""/**
+    write(f"{pkg_dir}/src/index.ts", f"""/**
  * @mycodexvantaos/mycodexvantaos-{pkg_name}
- * {cfg["desc"]}
+ * {cfg['desc']}
  */
 {reexport_line}
 {cfg["extra"]}
-""",
-    )
+""")
 
 print("\n✅ Sec.5 — All 8 TypeScript control plane packages created")
 
@@ -487,62 +421,24 @@ print("\n✅ Sec.5 — All 8 TypeScript control plane packages created")
 # ═══════════════════════════════════════════════════════════════
 
 TS_SERVICES = {
-    "service-workspace": (
-        "Workspace service — workspace CRUD, membership, settings",
-        "workspace",
-    ),
-    "service-resource-registry": (
-        "Resource registry service — resource kind registration and lookup",
-        "resource-registry",
-    ),
-    "service-policy-engine": (
-        "Policy engine service — policy evaluation and enforcement",
-        "policy-engine",
-    ),
-    "service-audit-log": (
-        "Audit log service — immutable audit event recording and querying",
-        "audit-log",
-    ),
-    "service-usage-meter": (
-        "Usage meter service — usage recording and rate limiting",
-        "usage-meter",
-    ),
-    "service-knowledge-store": (
-        "Knowledge store service — document ingestion and chunk management",
-        "knowledge-store",
-    ),
-    "service-knowledge-search": (
-        "Knowledge search service — vector search and full-text search",
-        "knowledge-search",
-    ),
-    "service-knowledge-trace": (
-        "Knowledge trace service — answer trace and evidence tracking",
-        "knowledge-trace",
-    ),
-    "service-agent-chat": (
-        "Agent chat service — AI-powered conversational agent",
-        "agent-chat",
-    ),
-    "service-model-byok": (
-        "Model BYOK service — bring-your-own-key model endpoint management",
-        "model-byok",
-    ),
-    "service-memory-store": (
-        "Memory store service — memory item CRUD and relation management",
-        "memory-store",
-    ),
-    "service-memory-capture": (
-        "Memory capture service — memory candidate creation from conversations",
-        "memory-capture",
-    ),
+    "service-workspace": ("Workspace service — workspace CRUD, membership, settings", "workspace"),
+    "service-resource-registry": ("Resource registry service — resource kind registration and lookup", "resource-registry"),
+    "service-policy-engine": ("Policy engine service — policy evaluation and enforcement", "policy-engine"),
+    "service-audit-log": ("Audit log service — immutable audit event recording and querying", "audit-log"),
+    "service-usage-meter": ("Usage meter service — usage recording and rate limiting", "usage-meter"),
+    "service-knowledge-store": ("Knowledge store service — document ingestion and chunk management", "knowledge-store"),
+    "service-knowledge-search": ("Knowledge search service — vector search and full-text search", "knowledge-search"),
+    "service-knowledge-trace": ("Knowledge trace service — answer trace and evidence tracking", "knowledge-trace"),
+    "service-agent-chat": ("Agent chat service — AI-powered conversational agent", "agent-chat"),
+    "service-model-byok": ("Model BYOK service — bring-your-own-key model endpoint management", "model-byok"),
+    "service-memory-store": ("Memory store service — memory item CRUD and relation management", "memory-store"),
+    "service-memory-capture": ("Memory capture service — memory candidate creation from conversations", "memory-capture"),
 }
 
 for svc_name, (desc, short) in TS_SERVICES.items():
     svc_dir = f"services/mycodexvantaos-{svc_name}"
 
-    write(
-        f"{svc_dir}/package.json",
-        f"""{{
+    write(f"{svc_dir}/package.json", f"""{{
   "name": "@mycodexvantaos/{svc_name}",
   "version": "0.1.0",
   "description": "{desc}",
@@ -564,12 +460,9 @@ for svc_name, (desc, short) in TS_SERVICES.items():
     "@mycodexvantaos/core": "workspace:*"
   }}
 }}
-""",
-    )
+""")
 
-    write(
-        f"{svc_dir}/tsconfig.json",
-        """{
+    write(f"{svc_dir}/tsconfig.json", """{
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
@@ -577,12 +470,9 @@ for svc_name, (desc, short) in TS_SERVICES.items():
   },
   "include": ["src"]
 }
-""",
-    )
+""")
 
-    write(
-        f"{svc_dir}/README.md",
-        f"""# @mycodexvantaos/{svc_name}
+    write(f"{svc_dir}/README.md", f"""# @mycodexvantaos/{svc_name}
 
 {desc}
 
@@ -595,22 +485,16 @@ for svc_name, (desc, short) in TS_SERVICES.items():
 - TODO: Define service responsibilities
 - TODO: Define port dependencies
 - TODO: Define API surface
-""",
-    )
+""")
 
-    write(
-        f"{svc_dir}/CHANGELOG.md",
-        f"""# @mycodexvantaos/{svc_name}
+    write(f"{svc_dir}/CHANGELOG.md", f"""# @mycodexvantaos/{svc_name}
 
 ## 0.1.0 (2025-05-15)
 
 - Initial skeleton
-""",
-    )
+""")
 
-    write(
-        f"{svc_dir}/src/index.ts",
-        f"""/**
+    write(f"{svc_dir}/src/index.ts", f"""/**
  * @mycodexvantaos/{svc_name}
  * {desc}
  *
@@ -619,11 +503,10 @@ for svc_name, (desc, short) in TS_SERVICES.items():
  * TODO: Define API surface
  */
 
-export class {short.replace("-", "").title().replace("", "").replace("Workspace", "WorkspaceService").replace("Resourceregistry", "ResourceRegistryService").replace("Policyengine", "PolicyEngineService").replace("Auditlog", "AuditLogService").replace("Usagemeter", "UsageMeterService").replace("Knowledgestore", "KnowledgeStoreService").replace("Knowledgesearch", "KnowledgeSearchService").replace("Knowledgetrace", "KnowledgeTraceService").replace("Agentchat", "AgentChatService").replace("Modelbyok", "ModelByokService").replace("Memorystore", "MemoryStoreService").replace("Memorycapture", "MemoryCaptureService")} {{
+export class {short.replace('-', '').title().replace('', '').replace('Workspace', 'WorkspaceService').replace('Resourceregistry', 'ResourceRegistryService').replace('Policyengine', 'PolicyEngineService').replace('Auditlog', 'AuditLogService').replace('Usagemeter', 'UsageMeterService').replace('Knowledgestore', 'KnowledgeStoreService').replace('Knowledgesearch', 'KnowledgeSearchService').replace('Knowledgetrace', 'KnowledgeTraceService').replace('Agentchat', 'AgentChatService').replace('Modelbyok', 'ModelByokService').replace('Memorystore', 'MemoryStoreService').replace('Memorycapture', 'MemoryCaptureService')} {{
   // TODO: Implement service
 }}
-""",
-    )
+""")
 
 print("\n✅ Sec.7 — All 12 missing TypeScript services created")
 
@@ -632,37 +515,15 @@ print("\n✅ Sec.7 — All 12 missing TypeScript services created")
 # ═══════════════════════════════════════════════════════════════
 
 MISSING_SERVICE_DEFS = {
-    "resource-registry": (
-        "platform",
-        "Resource Registry",
-        "Central registry for all platform resource kinds",
-    ),
-    "policy-engine": (
-        "platform",
-        "Policy Engine",
-        "Policy evaluation and enforcement engine",
-    ),
-    "knowledge-trace": (
-        "knowledge",
-        "Knowledge Trace",
-        "Answer trace and evidence tracking for RAG pipelines",
-    ),
-    "memory-store": (
-        "agent",
-        "Memory Store",
-        "Memory item CRUD and relation management",
-    ),
-    "memory-capture": (
-        "agent",
-        "Memory Capture",
-        "Memory candidate creation from conversations and events",
-    ),
+    "resource-registry": ("platform", "Resource Registry", "Central registry for all platform resource kinds"),
+    "policy-engine": ("platform", "Policy Engine", "Policy evaluation and enforcement engine"),
+    "knowledge-trace": ("knowledge", "Knowledge Trace", "Answer trace and evidence tracking for RAG pipelines"),
+    "memory-store": ("agent", "Memory Store", "Memory item CRUD and relation management"),
+    "memory-capture": ("agent", "Memory Capture", "Memory candidate creation from conversations and events"),
 }
 
 for svc_id, (cat, display, desc) in MISSING_SERVICE_DEFS.items():
-    write(
-        f"contracts/service-definitions/{svc_id}.yaml",
-        f"""id: {svc_id}
+    write(f"contracts/service-definitions/{svc_id}.yaml", f"""id: {svc_id}
 category: {cat}
 display_name: {display}
 description: {desc}
@@ -684,8 +545,7 @@ runtime:
     - docker-container
 audit:
   required: true
-""",
-    )
+""")
 
 print("\n✅ Sec.10 — All 5 missing service definition contracts created")
 
@@ -699,20 +559,11 @@ RESOURCE_KINDS = {
     "workspace": ("Workspace", "Isolated workspace for teams"),
     "document": ("Document", "Uploaded document in knowledge store"),
     "document-chunk": ("DocumentChunk", "Chunked segment of a document"),
-    "knowledge-collection": (
-        "KnowledgeCollection",
-        "Named collection for knowledge artifacts",
-    ),
-    "retrieval-receipt": (
-        "RetrievalReceipt",
-        "Receipt for knowledge retrieval operations",
-    ),
+    "knowledge-collection": ("KnowledgeCollection", "Named collection for knowledge artifacts"),
+    "retrieval-receipt": ("RetrievalReceipt", "Receipt for knowledge retrieval operations"),
     "answer-trace": ("AnswerTrace", "Trace of evidence for AI-generated answers"),
     "memory-item": ("MemoryItem", "Core memory unit in the memory system"),
-    "memory-candidate": (
-        "MemoryCandidate",
-        "Candidate memory pending promotion or rejection",
-    ),
+    "memory-candidate": ("MemoryCandidate", "Candidate memory pending promotion or rejection"),
     "memory-conflict": ("MemoryConflict", "Detected conflict between memory items"),
     "dream-run": ("DreamRun", "A dream processing execution"),
     "dream-action": ("DreamAction", "Suggested action from dream processing"),
@@ -722,9 +573,7 @@ RESOURCE_KINDS = {
 }
 
 for kind, (display, desc) in RESOURCE_KINDS.items():
-    write(
-        f"contracts/resource-kinds/{kind}.yaml",
-        f"""kind: {kind}
+    write(f"contracts/resource-kinds/{kind}.yaml", f"""kind: {kind}
 api_version: mycodexvantaos.io/v1
 metadata_schema:
   id:
@@ -768,8 +617,7 @@ audit_events:
   - {kind}.created
   - {kind}.updated
   - {kind}.deleted
-""",
-    )
+""")
 
 print("\n✅ Sec.11 — All 16 resource kind contracts created")
 
@@ -781,102 +629,68 @@ EVENT_CONTRACTS = {
     "audit-events": {
         "category": "audit",
         "events": [
-            "audit.event-recorded",
-            "audit.chain-verified",
-            "audit.chain-violation-detected",
-            "audit.event-queried",
-            "audit.integrity-check-completed",
+            "audit.event-recorded", "audit.chain-verified", "audit.chain-violation-detected",
+            "audit.event-queried", "audit.integrity-check-completed",
         ],
     },
     "knowledge-events": {
         "category": "knowledge",
         "events": [
-            "knowledge.collection-created",
-            "knowledge.collection-archived",
-            "knowledge.document-uploaded",
-            "knowledge.document-chunked",
-            "knowledge.document-embedded",
-            "knowledge.document-ingested",
-            "knowledge.document-failed",
-            "knowledge.search-performed",
-            "knowledge.retrieval-completed",
-            "knowledge.answer-trace-created",
-            "knowledge.issue-detected",
-            "knowledge.repair-initiated",
+            "knowledge.collection-created", "knowledge.collection-archived",
+            "knowledge.document-uploaded", "knowledge.document-chunked",
+            "knowledge.document-embedded", "knowledge.document-ingested",
+            "knowledge.document-failed", "knowledge.search-performed",
+            "knowledge.retrieval-completed", "knowledge.answer-trace-created",
+            "knowledge.issue-detected", "knowledge.repair-initiated",
         ],
     },
     "memory-events": {
         "category": "memory",
         "events": [
-            "memory.candidate-created",
-            "memory.candidate-promoted",
-            "memory.candidate-rejected",
-            "memory.item-created",
-            "memory.item-updated",
-            "memory.item-reinforced",
-            "memory.item-merged",
-            "memory.item-deprecated",
-            "memory.item-orphaned",
-            "memory.conflict-detected",
-            "memory.conflict-resolved",
-            "memory.dream-started",
-            "memory.dream-scan-completed",
-            "memory.dream-merge-completed",
-            "memory.dream-conflict-resolved",
-            "memory.dream-orphan-cleaned",
-            "memory.dream-completed",
-            "memory.dream-failed",
-            "memory.dream-rollback",
+            "memory.candidate-created", "memory.candidate-promoted", "memory.candidate-rejected",
+            "memory.item-created", "memory.item-updated", "memory.item-reinforced",
+            "memory.item-merged", "memory.item-deprecated", "memory.item-orphaned",
+            "memory.conflict-detected", "memory.conflict-resolved",
+            "memory.dream-started", "memory.dream-scan-completed",
+            "memory.dream-merge-completed", "memory.dream-conflict-resolved",
+            "memory.dream-orphan-cleaned", "memory.dream-completed",
+            "memory.dream-failed", "memory.dream-rollback",
         ],
     },
     "agent-events": {
         "category": "agent",
         "events": [
-            "agent.session-created",
-            "agent.session-archived",
-            "agent.message-sent",
-            "agent.message-received",
-            "agent.tool-invoked",
-            "agent.tool-completed",
-            "agent.generation-started",
-            "agent.generation-completed",
+            "agent.session-created", "agent.session-archived",
+            "agent.message-sent", "agent.message-received",
+            "agent.tool-invoked", "agent.tool-completed",
+            "agent.generation-started", "agent.generation-completed",
         ],
     },
     "usage-events": {
         "category": "usage",
         "events": [
-            "usage.api-call-recorded",
-            "usage.token-usage-recorded",
-            "usage.storage-bytes-recorded",
-            "usage.rate-limit-checked",
-            "usage.quota-warning",
-            "usage.quota-exceeded",
+            "usage.api-call-recorded", "usage.token-usage-recorded",
+            "usage.storage-bytes-recorded", "usage.rate-limit-checked",
+            "usage.quota-warning", "usage.quota-exceeded",
         ],
     },
     "runtime-events": {
         "category": "runtime",
         "events": [
-            "runtime.started",
-            "runtime.stopped",
-            "runtime.health-checked",
-            "runtime.provider-connected",
-            "runtime.provider-disconnected",
-            "runtime.adapter-failed",
-            "runtime.migration-applied",
+            "runtime.started", "runtime.stopped", "runtime.health-checked",
+            "runtime.provider-connected", "runtime.provider-disconnected",
+            "runtime.adapter-failed", "runtime.migration-applied",
         ],
     },
 }
 
 for filename, cfg in EVENT_CONTRACTS.items():
     events_yaml = "\n".join(f"  - {e}" for e in cfg["events"])
-    write(
-        f"contracts/events/{filename}.yaml",
-        f"""category: {cfg["category"]}
-description: Event contracts for {cfg["category"]} domain
+    write(f"contracts/events/{filename}.yaml", f"""category: {cfg['category']}
+description: Event contracts for {cfg['category']} domain
 events:
 {events_yaml}
-""",
-    )
+""")
 
 print("\n✅ Sec.12 — All 6 event contract files created")
 
@@ -884,124 +698,68 @@ print("\n✅ Sec.12 — All 6 event contract files created")
 # Sec.13 — Policy Contracts (5 YAML files)
 # ═══════════════════════════════════════════════════════════════
 
-POLICIES = {"default-access-policy": {"id": "default-access-policy",
-                                      "description": "Default access control policy for platform resources",
-                                      "rules": [{"effect": "allow",
-                                                 "subject": {"roles": ["platform-admin"]},
-                                                 "action": "*",
-                                                 "resource": "*",
-                                                 },
-                                                {"effect": "allow",
-                                                 "subject": {"roles": ["workspace-owner"]},
-                                                 "action": "*",
-                                                 "resource": "workspace/*",
-                                                 },
-                                                {"effect": "allow",
-                                                 "subject": {"roles": ["workspace-member"]},
-                                                 "action": "read,write",
-                                                 "resource": "workspace/*",
-                                                 },
-                                                {"effect": "allow",
-                                                 "subject": {"roles": ["workspace-viewer"]},
-                                                 "action": "read",
-                                                 "resource": "workspace/*",
-                                                 },
-                                                ],
-                                      },
-            "knowledge-access-policy": {"id": "knowledge-access-policy",
-                                        "description": "Access policy for knowledge store operations",
-                                        "rules": [{"effect": "allow",
-                                                   "subject": {"roles": ["workspace-member",
-                                                                         "workspace-owner"]},
-                                                   "action": "knowledge:ingest",
-                                                   "resource": "knowledge/collections/*",
-                                                   },
-                                                  {"effect": "allow",
-                                                   "subject": {"roles": ["workspace-viewer",
-                                                                         "workspace-member",
-                                                                         "workspace-owner"]},
-                                                   "action": "knowledge:search",
-                                                   "resource": "knowledge/collections/*",
-                                                   },
-                                                  ],
-                                        },
-            "memory-dream-policy": {"id": "memory-dream-policy",
-                                    "description": "Policy for memory dream operations — architecture decisions require review",
-                                    "rules": [{"effect": "require-review",
-                                               "subject": {"service": "memory-dream"},
-                                               "action": "memory-item-deprecate,memory-item-merge",
-                                               "resource": "memory-item",
-                                               "condition": {"memory_type": "decision",
-                                                             "tags_contains": ["architecture"],
-                                                             },
-                                               },
-                                              {"effect": "allow",
-                                               "subject": {"roles": ["workspace-owner",
-                                                                     "platform-admin"]},
-                                               "action": "dream:run",
-                                               "resource": "dream-run",
-                                               },
-                                              {"effect": "allow",
-                                               "subject": {"service": "memory-dream"},
-                                               "action": "dream:execute",
-                                               "resource": "dream-run",
-                                               "condition": {"mode": "proposal"},
-                                               },
-                                              ],
-                                    },
-            "model-byok-policy": {"id": "model-byok-policy",
-                                  "description": "Policy for BYOK model endpoint management",
-                                  "rules": [{"effect": "allow",
-                                             "subject": {"roles": ["workspace-owner"]},
-                                             "action": "model:register,model:delete",
-                                             "resource": "model-endpoint",
-                                             },
-                                            {"effect": "allow",
-                                             "subject": {"roles": ["workspace-member",
-                                                                   "workspace-owner"]},
-                                             "action": "model:invoke",
-                                             "resource": "model-endpoint",
-                                             },
-                                            ],
-                                  },
-            "audit-retention-policy": {"id": "audit-retention-policy",
-                                       "description": "Audit event retention and integrity policy",
-                                       "rules": [{"effect": "deny",
-                                                  "subject": "*",
-                                                  "action": "audit:delete",
-                                                  "resource": "audit-event",
-                                                  },
-                                                 {"effect": "allow",
-                                                  "subject": {"roles": ["platform-admin",
-                                                                        "auditor"]},
-                                                  "action": "audit:query,audit:verify",
-                                                  "resource": "audit-event",
-                                                  },
-                                                 ],
-                                       },
-            }
+POLICIES = {
+    "default-access-policy": {
+        "id": "default-access-policy",
+        "description": "Default access control policy for platform resources",
+        "rules": [
+            {"effect": "allow", "subject": {"roles": ["platform-admin"]}, "action": "*", "resource": "*"},
+            {"effect": "allow", "subject": {"roles": ["workspace-owner"]}, "action": "*", "resource": "workspace/*"},
+            {"effect": "allow", "subject": {"roles": ["workspace-member"]}, "action": "read,write", "resource": "workspace/*"},
+            {"effect": "allow", "subject": {"roles": ["workspace-viewer"]}, "action": "read", "resource": "workspace/*"},
+        ],
+    },
+    "knowledge-access-policy": {
+        "id": "knowledge-access-policy",
+        "description": "Access policy for knowledge store operations",
+        "rules": [
+            {"effect": "allow", "subject": {"roles": ["workspace-member", "workspace-owner"]}, "action": "knowledge:ingest", "resource": "knowledge/collections/*"},
+            {"effect": "allow", "subject": {"roles": ["workspace-viewer", "workspace-member", "workspace-owner"]}, "action": "knowledge:search", "resource": "knowledge/collections/*"},
+        ],
+    },
+    "memory-dream-policy": {
+        "id": "memory-dream-policy",
+        "description": "Policy for memory dream operations — architecture decisions require review",
+        "rules": [
+            {"effect": "require-review", "subject": {"service": "memory-dream"}, "action": "memory-item-deprecate,memory-item-merge", "resource": "memory-item", "condition": {"memory_type": "decision", "tags_contains": ["architecture"]}},
+            {"effect": "allow", "subject": {"roles": ["workspace-owner", "platform-admin"]}, "action": "dream:run", "resource": "dream-run"},
+            {"effect": "allow", "subject": {"service": "memory-dream"}, "action": "dream:execute", "resource": "dream-run", "condition": {"mode": "proposal"}},
+        ],
+    },
+    "model-byok-policy": {
+        "id": "model-byok-policy",
+        "description": "Policy for BYOK model endpoint management",
+        "rules": [
+            {"effect": "allow", "subject": {"roles": ["workspace-owner"]}, "action": "model:register,model:delete", "resource": "model-endpoint"},
+            {"effect": "allow", "subject": {"roles": ["workspace-member", "workspace-owner"]}, "action": "model:invoke", "resource": "model-endpoint"},
+        ],
+    },
+    "audit-retention-policy": {
+        "id": "audit-retention-policy",
+        "description": "Audit event retention and integrity policy",
+        "rules": [
+            {"effect": "deny", "subject": "*", "action": "audit:delete", "resource": "audit-event"},
+            {"effect": "allow", "subject": {"roles": ["platform-admin", "auditor"]}, "action": "audit:query,audit:verify", "resource": "audit-event"},
+        ],
+    },
+}
 
 for policy_id, cfg in POLICIES.items():
     rules_yaml = ""
     for r in cfg["rules"]:
         cond = ""
         if "condition" in r:
-            cond = "\n    condition:\n" + "\n".join(
-                f"      {k}: {v}" for k, v in r["condition"].items()
-            )
+            cond = f"\n    condition:\n" + "\n".join(f"      {k}: {v}" for k, v in r["condition"].items())
         rules_yaml += f"""
-  - effect: {r["effect"]}
-    subject: {r["subject"]}
-    action: {r["action"]}
-    resource: {r["resource"]}{cond}
+  - effect: {r['effect']}
+    subject: {r['subject']}
+    action: {r['action']}
+    resource: {r['resource']}{cond}
 """
-    write(
-        f"contracts/policies/{policy_id}.yaml",
-        f"""id: {cfg["id"]}
-description: {cfg["description"]}
+    write(f"contracts/policies/{policy_id}.yaml", f"""id: {cfg['id']}
+description: {cfg['description']}
 rules:{rules_yaml}
-""",
-    )
+""")
 
 print("\n✅ Sec.13 — All 5 policy contracts created")
 
@@ -1009,9 +767,7 @@ print("\n✅ Sec.13 — All 5 policy contracts created")
 # Sec.14 — Missing JSON Schemas
 # ═══════════════════════════════════════════════════════════════
 
-write(
-    "contracts/schemas/policy.schema.json",
-    """{
+write("contracts/schemas/policy.schema.json", """{
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://mycodexvantaos.com/schemas/policy.schema.json",
   "title": "Policy",
@@ -1036,12 +792,9 @@ write(
     }
   },
   "required": ["id", "rules"]
-}""",
-)
+}""")
 
-write(
-    "contracts/schemas/knowledge-model.schema.json",
-    """{
+write("contracts/schemas/knowledge-model.schema.json", """{
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://mycodexvantaos.com/schemas/knowledge-model.schema.json",
   "title": "Knowledge Model",
@@ -1080,12 +833,9 @@ write(
       "required": ["id", "displayName"]
     }
   }
-}""",
-)
+}""")
 
-write(
-    "contracts/schemas/memory-model.schema.json",
-    """{
+write("contracts/schemas/memory-model.schema.json", """{
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://mycodexvantaos.com/schemas/memory-model.schema.json",
   "title": "Memory Model",
@@ -1126,12 +876,9 @@ write(
       "required": ["conflictId", "memoryIds", "conflictType"]
     }
   }
-}""",
-)
+}""")
 
-write(
-    "contracts/schemas/runtime-adapter.schema.json",
-    """{
+write("contracts/schemas/runtime-adapter.schema.json", """{
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://mycodexvantaos.com/schemas/runtime-adapter.schema.json",
   "title": "Runtime Adapter",
@@ -1158,8 +905,7 @@ write(
       "required": ["id", "runtimeId", "category"]
     }
   }
-}""",
-)
+}""")
 
 print("\n✅ Sec.14 — All 4 missing JSON schemas created")
 
@@ -1184,7 +930,8 @@ CREATE TABLE IF NOT EXISTS service_definitions (
   updated_at      TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX idx_service_definitions_category ON service_definitions(category);
-""", "0003-resource-registry": """-- Resource Registry Tables
+""",
+    "0003-resource-registry": """-- Resource Registry Tables
 CREATE TABLE IF NOT EXISTS resource_kinds (
   kind            TEXT PRIMARY KEY,
   api_version     TEXT NOT NULL DEFAULT 'mycodexvantaos.io/v1',
@@ -1197,7 +944,8 @@ CREATE TABLE IF NOT EXISTS resource_kinds (
   created_at      TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at      TEXT NOT NULL DEFAULT (datetime('now'))
 );
-""", "0004-policy-model": """-- Policy Model Tables
+""",
+    "0004-policy-model": """-- Policy Model Tables
 CREATE TABLE IF NOT EXISTS policy_definitions (
   id              TEXT PRIMARY KEY,
   description     TEXT,
@@ -1208,14 +956,17 @@ CREATE TABLE IF NOT EXISTS policy_definitions (
   updated_at      TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX idx_policy_definitions_phase ON policy_definitions(phase);
-""", "0005-audit-log": """-- Audit Log Tables (extended from 001_initial_schema)
+""",
+    "0005-audit-log": """-- Audit Log Tables (extended from 001_initial_schema)
 -- audit_events already created in 001, this adds indexes
 CREATE INDEX IF NOT EXISTS idx_audit_events_correlation ON audit_events(correlation_id);
 CREATE INDEX IF NOT EXISTS idx_audit_events_severity ON audit_events(severity);
-""", "0006-usage-meter": """-- Usage Meter Tables (extended from 001_initial_schema)
+""",
+    "0006-usage-meter": """-- Usage Meter Tables (extended from 001_initial_schema)
 -- usage_records already created in 001, this adds indexes
 CREATE INDEX IF NOT EXISTS idx_usage_records_subject ON usage_records(subject_id);
-""", "0007-knowledge-model": """-- Knowledge Model Tables (extended from 001_initial_schema)
+""",
+    "0007-knowledge-model": """-- Knowledge Model Tables (extended from 001_initial_schema)
 -- knowledge_collections, documents, document_chunks already created in 001
 CREATE TABLE IF NOT EXISTS knowledge_issues (
   id              TEXT PRIMARY KEY,
@@ -1229,7 +980,8 @@ CREATE TABLE IF NOT EXISTS knowledge_issues (
   created_at      TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX idx_knowledge_issues_collection ON knowledge_issues(collection_id);
-""", "0008-memory-model": """-- Memory Model Tables
+""",
+    "0008-memory-model": """-- Memory Model Tables
 CREATE TABLE IF NOT EXISTS memory_items (
   id              TEXT PRIMARY KEY,
   content         TEXT NOT NULL,
@@ -1289,7 +1041,8 @@ CREATE TABLE IF NOT EXISTS memory_entity_references (
   PRIMARY KEY (entity_id, memory_id)
 );
 CREATE INDEX idx_memory_entity_refs_entity ON memory_entity_references(entity_id);
-""", "0009-memory-dream": """-- Memory Dream Tables
+""",
+    "0009-memory-dream": """-- Memory Dream Tables
 CREATE TABLE IF NOT EXISTS memory_dream_runs (
   id              TEXT PRIMARY KEY,
   status          TEXT NOT NULL DEFAULT 'pending'
@@ -1326,20 +1079,18 @@ CREATE TABLE IF NOT EXISTS memory_dream_actions (
 );
 CREATE INDEX idx_memory_dream_actions_run ON memory_dream_actions(dream_run_id);
 CREATE INDEX idx_memory_dream_actions_status ON memory_dream_actions(status);
-""", }
+""",
+}
 
 for mig_name, sql in MIGRATIONS.items():
-    write(
-        f"migrations/d1/{mig_name}.sql",
-        f"""-- ═══════════════════════════════════════════════════════════════
+    write(f"migrations/d1/{mig_name}.sql", f"""-- ═══════════════════════════════════════════════════════════════
 -- MyCodeXvantaOS — D1 Migration: {mig_name}
 -- Compatible: Cloudflare D1 (SQLite-based)
 -- ═══════════════════════════════════════════════════════════════
 
 {sql}
 INSERT INTO _migrations (name) VALUES ('{mig_name}');
-""",
-    )
+""")
 
 print("\n✅ Sec.15 — All 8 D1 migration files created")
 
@@ -1351,19 +1102,8 @@ PYTHON_PACKAGES = {
     "mycodexvantaos-knowledge-pipeline": {
         "desc": "Knowledge Pipeline — Document parsing, embedding generation, semantic clustering",
         "deps": ["pydantic>=2.9.0", "pydantic-settings>=2.5.0"],
-        "opt_deps": {
-            "ml": [
-                "scikit-learn>=1.5.0",
-                "numpy>=2.0.0",
-                "sentence-transformers>=3.0.0",
-            ]
-        },
-        "types": [
-            "DocumentInput",
-            "ParsedDocument",
-            "EmbeddingResult",
-            "ClusterResult",
-        ],
+        "opt_deps": {"ml": ["scikit-learn>=1.5.0", "numpy>=2.0.0", "sentence-transformers>=3.0.0"]},
+        "types": ["DocumentInput", "ParsedDocument", "EmbeddingResult", "ClusterResult"],
         "index": """\"\"\"
 MyCodeXvantaOS Knowledge Pipeline
 Document parsing, embedding generation, and semantic clustering.
@@ -1609,18 +1349,13 @@ for pkg_name, cfg in PYTHON_PACKAGES.items():
 
     opt_deps_str = ""
     if cfg.get("opt_deps"):
-        opt_deps_str = "\n".join(
-            f"  {k} = [\n    " + ",\n    ".join(f'"{v}"' for v in vs) + "\n  ]"
-            for k, vs in cfg["opt_deps"].items()
-        )
+        opt_deps_str = "\n".join(f'  {k} = [\n    ' + ",\n    ".join(f'"{v}"' for v in vs) + '\n  ]' for k, vs in cfg["opt_deps"].items())
         opt_deps_str = f"\n[project.optional-dependencies]\n{opt_deps_str}\n"
 
-    write(
-        f"{pkg_dir}/pyproject.toml",
-        f"""[project]
+    write(f"{pkg_dir}/pyproject.toml", f"""[project]
 name = "{pkg_name}"
 version = "0.1.0"
-description = "{cfg["desc"]}"
+description = "{cfg['desc']}"
 readme = "README.md"
 requires-python = ">=3.11"
 license = {{text = "MIT"}}
@@ -1628,7 +1363,7 @@ authors = [
     {{name = "NinjaTeam AI", email = "ai-team@ninjatech.ai"}},
 ]
 dependencies = [
-{chr(10).join(f'    "{d}",' for d in cfg["deps"])}
+{chr(10).join(f'    "{d}",' for d in cfg['deps'])}
 ]
 {opt_deps_str}
 [build-system]
@@ -1645,15 +1380,12 @@ line-length = 100
 [tool.mypy]
 python_version = "3.11"
 strict = true
-""",
-    )
+""")
 
     types_list = "\n".join(f"- `{t}`" for t in cfg["types"])
-    write(
-        f"{pkg_dir}/README.md",
-        f"""# {pkg_name}
+    write(f"{pkg_dir}/README.md", f"""# {pkg_name}
 
-{cfg["desc"]}
+{cfg['desc']}
 
 ## Core Types
 
@@ -1662,8 +1394,7 @@ strict = true
 ## Status
 
 🚧 Skeleton — pydantic models with TODO markers for implementation.
-""",
-    )
+""")
 
     write(f"{pkg_dir}/{mod_name}/__init__.py", cfg["index"])
     write(f"{pkg_dir}/{mod_name}/models.py", cfg["models"])
@@ -1683,12 +1414,10 @@ PYTHON_APPS = {
 for app_name, cfg in PYTHON_APPS.items():
     app_dir = f"python/apps/{app_name}"
 
-    write(
-        f"{app_dir}/pyproject.toml",
-        f"""[project]
+    write(f"{app_dir}/pyproject.toml", f"""[project]
 name = "{app_name}"
 version = "0.1.0"
-description = "{cfg["desc"]}"
+description = "{cfg['desc']}"
 readme = "README.md"
 requires-python = ">=3.11"
 license = {{text = "MIT"}}
@@ -1697,7 +1426,7 @@ authors = [
 ]
 dependencies = [
     "pydantic>=2.9.0",
-    "{cfg["pkg_dep"]}",
+    "{cfg['pkg_dep']}",
 ]
 
 [build-system]
@@ -1711,14 +1440,11 @@ line-length = 100
 [tool.mypy]
 python_version = "3.11"
 strict = true
-""",
-    )
+""")
 
-    write(
-        f"{app_dir}/README.md",
-        f"""# {app_name}
+    write(f"{app_dir}/README.md", f"""# {app_name}
 
-{cfg["desc"]}
+{cfg['desc']}
 
 ## Usage
 
@@ -1733,13 +1459,10 @@ uv run python main.py --job-type ingest --input data.json --dry-run
 ## Status
 
 🚧 Skeleton — CLI entry point with TODO markers.
-""",
-    )
+""")
 
-    write(
-        f"{app_dir}/main.py",
-        f"""\"\"\"
-{app_name} — {cfg["desc"]}
+    write(f"{app_dir}/main.py", f"""\"\"\"
+{app_name} — {cfg['desc']}
 \"\"\"
 
 import argparse
@@ -1753,7 +1476,7 @@ def execute_job(job_type: str, input_path: str, dry_run: bool = False) -> dict:
 
     In production, this would:
     1. Load job configuration from database (authorized by TS control plane)
-    2. Execute the job using {cfg["pkg_dep"]}
+    2. Execute the job using {cfg['pkg_dep']}
     3. Write results back to database / artifact storage
     4. Audit log the completion
 
@@ -1774,7 +1497,7 @@ def execute_job(job_type: str, input_path: str, dry_run: bool = False) -> dict:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="{cfg["desc"]}")
+    parser = argparse.ArgumentParser(description="{cfg['desc']}")
     parser.add_argument("--job-type", required=True, help="Type of job to execute")
     parser.add_argument("--input", required=True, help="Path to input JSON file")
     parser.add_argument("--dry-run", action="store_true", help="Only report what would be done")
@@ -1786,8 +1509,7 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-""",
-    )
+""")
 
 
 print("\n✅ Sec.16 — All 4 new Python packages + 2 new Python apps created")
@@ -1796,9 +1518,7 @@ print("\n✅ Sec.16 — All 4 new Python packages + 2 new Python apps created")
 # Sec.20 — runtimes/local/
 # ═══════════════════════════════════════════════════════════════
 
-write(
-    "runtimes/local/README.md",
-    """# Local Runtime
+write("runtimes/local/README.md", """# Local Runtime
 
 Runtime configuration for local development and testing.
 
@@ -1827,12 +1547,9 @@ docker-compose -f infra/docker-compose/docker-compose.yml up
 ## Self-Hostable
 
 Yes — the local runtime is the primary self-hostable configuration.
-""",
-)
+""")
 
-write(
-    "runtimes/local/runtime.yaml",
-    """id: local
+write("runtimes/local/runtime.yaml", """id: local
 display_name: Local Development Runtime
 description: Local development and testing runtime
 supported_services:
@@ -1858,8 +1575,7 @@ ai_provider_support:
   - openai
   - anthropic
 self_hostable: true
-""",
-)
+""")
 
 print("\n✅ Sec.20 — runtimes/local/ created")
 
@@ -1868,34 +1584,17 @@ print("\n✅ Sec.20 — runtimes/local/ created")
 # ═══════════════════════════════════════════════════════════════
 
 CF_PROVIDERS = {
-    "cloudflare-d1": (
-        "Cloudflare D1 Provider",
-        "SQLite-based database adapter for Cloudflare D1",
-    ),
-    "cloudflare-kv": (
-        "Cloudflare KV Provider",
-        "Key-value cache and session adapter for Cloudflare KV",
-    ),
-    "cloudflare-r2": (
-        "Cloudflare R2 Provider",
-        "Object storage adapter for Cloudflare R2",
-    ),
-    "cloudflare-workers-ai": (
-        "Cloudflare Workers AI Provider",
-        "Chat and embedding model adapter for Workers AI",
-    ),
-    "cloudflare-vectorize": (
-        "Cloudflare Vectorize Provider",
-        "Vector search adapter for Cloudflare Vectorize",
-    ),
+    "cloudflare-d1": ("Cloudflare D1 Provider", "SQLite-based database adapter for Cloudflare D1"),
+    "cloudflare-kv": ("Cloudflare KV Provider", "Key-value cache and session adapter for Cloudflare KV"),
+    "cloudflare-r2": ("Cloudflare R2 Provider", "Object storage adapter for Cloudflare R2"),
+    "cloudflare-workers-ai": ("Cloudflare Workers AI Provider", "Chat and embedding model adapter for Workers AI"),
+    "cloudflare-vectorize": ("Cloudflare Vectorize Provider", "Vector search adapter for Cloudflare Vectorize"),
 }
 
 for prov_name, (display, desc) in CF_PROVIDERS.items():
     prov_dir = f"providers/mycodexvantaos-provider-{prov_name}"
 
-    write(
-        f"{prov_dir}/package.json",
-        f"""{{
+    write(f"{prov_dir}/package.json", f"""{{
   "name": "@mycodexvantaos/provider-{prov_name}",
   "version": "0.1.0",
   "description": "{desc}",
@@ -1918,12 +1617,9 @@ for prov_name, (display, desc) in CF_PROVIDERS.items():
     "@mycodexvantaos/ports": "workspace:*"
   }}
 }}
-""",
-    )
+""")
 
-    write(
-        f"{prov_dir}/tsconfig.json",
-        """{
+    write(f"{prov_dir}/tsconfig.json", """{
   "extends": "../../tsconfig.providers.json",
   "compilerOptions": {
     "outDir": "./dist",
@@ -1931,12 +1627,9 @@ for prov_name, (display, desc) in CF_PROVIDERS.items():
   },
   "include": ["src"]
 }
-""",
-    )
+""")
 
-    write(
-        f"{prov_dir}/README.md",
-        f"""# @mycodexvantaos/provider-{prov_name}
+    write(f"{prov_dir}/README.md", f"""# @mycodexvantaos/provider-{prov_name}
 
 {desc}
 
@@ -1945,22 +1638,16 @@ Part of the Cloudflare runtime provider set.
 ## Status
 
 🚧 Skeleton — implements port interfaces with TODO markers.
-""",
-    )
+""")
 
-    write(
-        f"{prov_dir}/CHANGELOG.md",
-        f"""# @mycodexvantaos/provider-{prov_name}
+    write(f"{prov_dir}/CHANGELOG.md", f"""# @mycodexvantaos/provider-{prov_name}
 
 ## 0.1.0 (2025-05-15)
 
 - Initial skeleton
-""",
-    )
+""")
 
-    write(
-        f"{prov_dir}/src/index.ts",
-        f"""/**
+    write(f"{prov_dir}/src/index.ts", f"""/**
  * @mycodexvantaos/provider-{prov_name}
  * {desc}
  *
@@ -1973,8 +1660,7 @@ Part of the Cloudflare runtime provider set.
 // TODO: Implement adapter class
 
 export {{}};
-""",
-    )
+""")
 
 print("\n✅ Sec.21 — All 5 Cloudflare providers created")
 
@@ -1982,9 +1668,7 @@ print("\n✅ Sec.21 — All 5 Cloudflare providers created")
 # Sec.22 — Missing Apps (api-node, admin-console)
 # ═══════════════════════════════════════════════════════════════
 
-write(
-    "apps/api-node/package.json",
-    """{
+write("apps/api-node/package.json", """{
   "name": "@mycodexvantaos/api-node",
   "version": "0.1.0",
   "private": true,
@@ -2008,12 +1692,9 @@ write(
   },
   "license": "UNLICENSED"
 }
-""",
-)
+""")
 
-write(
-    "apps/api-node/README.md",
-    """# @mycodexvantaos/api-node
+write("apps/api-node/README.md", """# @mycodexvantaos/api-node
 
 Node.js API server for self-hosted / Docker / Kubernetes runtime.
 
@@ -2023,12 +1704,9 @@ instead of Cloudflare Workers.
 ## Status
 
 🚧 Skeleton — route definitions with TODO markers.
-""",
-)
+""")
 
-write(
-    "apps/api-node/index.ts",
-    """/**
+write("apps/api-node/index.ts", """/**
  * @module apps/api-node
  * @description Node.js API server for self-hosted deployment.
  *
@@ -2041,12 +1719,9 @@ write(
 // TODO: Start HTTP server
 
 console.log('MyCodeXvantaOS API Node — TODO: implement');
-""",
-)
+""")
 
-write(
-    "apps/admin-console/package.json",
-    """{
+write("apps/admin-console/package.json", """{
   "name": "@mycodexvantaos/admin-console",
   "version": "0.1.0",
   "private": true,
@@ -2057,20 +1732,16 @@ write(
   },
   "license": "UNLICENSED"
 }
-""",
-)
+""")
 
-write(
-    "apps/admin-console/README.md",
-    """# @mycodexvantaos/admin-console
+write("apps/admin-console/README.md", """# @mycodexvantaos/admin-console
 
 Admin console for platform management — user management, policy configuration, audit review, usage dashboards.
 
 ## Status
 
 🚧 Placeholder — to be implemented.
-""",
-)
+""")
 
 print("\n✅ Sec.22 — apps/api-node + apps/admin-console created")
 

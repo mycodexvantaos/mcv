@@ -22,9 +22,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 BASE_DIR = Path("/workspace/.agent_hooks")
@@ -56,9 +54,7 @@ def execute_hook(hook_path: Path, log_dir: Path):
 
         logger.info(f"Hook {hook_path} completed with exit code {result.returncode}")
     except subprocess.TimeoutExpired:
-        logger.error(
-            f"Hook {hook_path} timed out after {DEFAULT_HOOK_TIMEOUT_MINUTES} minutes"
-        )
+        logger.error(f"Hook {hook_path} timed out after {DEFAULT_HOOK_TIMEOUT_MINUTES} minutes")
     except Exception:
         logger.exception(f"Error running hook {hook_path}")
 
@@ -72,9 +68,7 @@ def run_all_hooks(hook_type: str):
     # Check if the hook directory exists and is a directory
     hook_dir = BASE_DIR / hook_type
     if not hook_dir.exists() or not hook_dir.is_dir():
-        raise FileNotFoundError(
-            f"Hooks for type {hook_type} in directory {hook_dir} do not exist"
-        )
+        raise FileNotFoundError(f"Hooks for type {hook_type} in directory {hook_dir} do not exist")
     # Create log directory if it doesn't exist
     log_dir = hook_dir / LOG_DIR_NAME
     log_dir.mkdir(parents=True, exist_ok=True)

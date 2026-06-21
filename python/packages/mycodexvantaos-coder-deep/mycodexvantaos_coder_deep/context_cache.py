@@ -117,9 +117,7 @@ class ContextCache:
             self._current_size -= evicted.size_bytes
             self._evictions += 1
             logger.debug(
-                "ContextCache evicted: %s (%d bytes)",
-                evicted.entry_id,
-                evicted.size_bytes,
+                "ContextCache evicted: %s (%d bytes)", evicted.entry_id, evicted.size_bytes
             )
 
     def _purge_expired(self) -> int:

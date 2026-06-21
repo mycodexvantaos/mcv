@@ -4,9 +4,9 @@ AI evaluation tools, metrics, and benchmarking.
 """
 
 from mycodexvantaos_evaluation.models import (
+    EvaluationRun,
     EvaluationMetric,
     EvaluationReport,
-    EvaluationRun,
 )
 
 __all__ = [

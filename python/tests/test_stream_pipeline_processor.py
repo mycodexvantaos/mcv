@@ -6,6 +6,7 @@ from datetime import UTC, datetime
 from unittest.mock import AsyncMock, patch
 
 import pytest
+
 from mycodexvantaos_stream_pipeline.models import (
     ConsumerConfig,
     KafkaMessage,

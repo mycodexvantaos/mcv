@@ -7,15 +7,12 @@ Generates a supervisor config file to track the processes in `SUPERVISORD_CONF_F
 Usage:
     python3 00_track_processes_on_ports.py
 """
-
 import logging
 import subprocess
 import sys
 from dataclasses import dataclass
 
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 PROCESS_NAMES_TO_IGNORE = {
@@ -117,9 +114,7 @@ def get_processes_listening_on_ports() -> list[Process]:
 
     logger.info(f"Found {len(processes)} processes listening on ports")
     if len(processes) > 0:
-        logger.info(
-            "\n".join([f"  {process.pid}: {process.port}" for process in processes])
-        )
+        logger.info("\n".join([f"  {process.pid}: {process.port}" for process in processes]))
     return processes
 
 
@@ -147,9 +142,7 @@ def deduplicate_processes_by_port(processes: list[Process]) -> list[Process]:
         f"Deduplicated {len(processes)} processes by port, keeping {len(deduplicated_processes)} processes"
     )
     logger.info(
-        "\n".join(
-            [f"  {process.pid}: {process.port}" for process in deduplicated_processes]
-        )
+        "\n".join([f"  {process.pid}: {process.port}" for process in deduplicated_processes])
     )
     return deduplicated_processes
 

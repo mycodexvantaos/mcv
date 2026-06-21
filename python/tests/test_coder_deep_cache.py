@@ -3,11 +3,8 @@
 import time
 
 import pytest
-from mycodexvantaos_coder_deep.context_cache import (
-    ContextCache,
-    ContextEntry,
-    ContextQuery,
-)
+
+from mycodexvantaos_coder_deep.context_cache import ContextCache, ContextEntry, ContextQuery
 
 
 @pytest.fixture
@@ -23,10 +20,7 @@ class TestContextCachePutAndGet:
     async def test_put_and_get_basic(self, cache: ContextCache) -> None:
         """Store and retrieve a basic context entry."""
         entry = ContextEntry(
-            namespace="test-ns",
-            context_type="general",
-            label="test-label",
-            data="hello world",
+            namespace="test-ns", context_type="general", label="test-label", data="hello world"
         )
         result = await cache.put(entry=entry)
         assert result.namespace == "test-ns"
@@ -48,19 +42,11 @@ class TestContextCachePutAndGet:
     async def test_put_overwrites(self, cache: ContextCache) -> None:
         """Putting an entry with the same entry_id overwrites."""
         entry1 = ContextEntry(
-            entry_id="fixed-id",
-            namespace="ns",
-            context_type="general",
-            label="lbl",
-            data="v1",
+            entry_id="fixed-id", namespace="ns", context_type="general", label="lbl", data="v1"
         )
         await cache.put(entry=entry1)
         entry2 = ContextEntry(
-            entry_id="fixed-id",
-            namespace="ns",
-            context_type="general",
-            label="lbl",
-            data="v2",
+            entry_id="fixed-id", namespace="ns", context_type="general", label="lbl", data="v2"
         )
         await cache.put(entry=entry2)
         retrieved = await cache.get(entry_id="fixed-id")
@@ -71,11 +57,7 @@ class TestContextCachePutAndGet:
     async def test_put_with_tags(self, cache: ContextCache) -> None:
         """Store with tags."""
         entry = ContextEntry(
-            namespace="ns",
-            context_type="general",
-            label="k",
-            data="v",
-            tags=["python", "style"],
+            namespace="ns", context_type="general", label="k", data="v", tags=["python", "style"]
         )
         result = await cache.put(entry=entry)
         assert set(result.tags) == {"python", "style"}
@@ -129,10 +111,7 @@ class TestContextCacheLRU:
         ids = []
         for i in range(5):
             entry = ContextEntry(
-                namespace="ns",
-                context_type="general",
-                label=f"key-{i}",
-                data=f"val-{i}",
+                namespace="ns", context_type="general", label=f"key-{i}", data=f"val-{i}"
             )
             result = await small_cache.put(entry=entry)
             ids.append(result.entry_id)

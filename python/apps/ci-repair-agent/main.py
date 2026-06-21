@@ -26,10 +26,11 @@ from asyncpg.exceptions import (
 )
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel, Field
+
 from mycodexvantaos_ci_repair.database import DatabaseClient
 from mycodexvantaos_ci_repair.github_client import GitHubActionsClient
 from mycodexvantaos_ci_repair.repair_engine import analyze_failure, generate_repair_plan
-from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
 
@@ -627,8 +628,7 @@ async def get_category_stats(
         )
     stats = await db.get_category_statistics(period_days=period_days)
     return _success(
-        request,
-        CategoryStatsData(categories=stats, period_days=period_days).model_dump(),
+        request, CategoryStatsData(categories=stats, period_days=period_days).model_dump()
     )
 
 
@@ -664,9 +664,7 @@ async def _cli_analyze(args: argparse.Namespace) -> None:
     print("\nFailed Jobs Analyses:")
     for analysis in all_analyses:
         print(f"  Job: {analysis['job_name']} (ID: {analysis['job_id']})")
-        print(
-            f"    Error Category: {analysis['error_category']} (Severity: {analysis['severity']})"
-        )
+        print(f"    Error Category: {analysis['error_category']} (Severity: {analysis['severity']})")
         print(f"    Root Cause: {analysis['root_cause']}")
         print(f"    Suggested Fix: {analysis['suggested_fix']}")
         if analysis["affected_files"]:
@@ -687,9 +685,7 @@ async def _cli_analyze(args: argparse.Namespace) -> None:
 
 async def _cli_serve(args: argparse.Namespace) -> None:
     """CLI command to serve the FastAPI application."""
-    config = uvicorn.Config(
-        app, host=args.host, port=args.port, log_level=settings.log_level.lower()
-    )
+    config = uvicorn.Config(app, host=args.host, port=args.port, log_level=settings.log_level.lower())
     server = uvicorn.Server(config)
     await server.serve()
 
