@@ -55,8 +55,7 @@ Step 1.3 — 建立跨分析關聯圖
 
 **質量門控**：
 ```bash
-# TODO: Layer 1 專用驗證器（scripts/validate-layer1-output.py）尚未在本 repo 提供
-# 目前可先執行既有的結構基線驗證
+# Layer 1 專用驗證器尚未在本 repo 提供，先執行既有的結構基線驗證
 python scripts/validate-foundation-structure.py
 ```
 

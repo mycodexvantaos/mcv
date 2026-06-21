@@ -146,14 +146,14 @@ def record_ai_call(
         'chain_hash': None  # 稍後計算
     }
     # 計算與前一條記錄的 hash chain
-    chain_payload = {
-        'timestamp': record['timestamp'],
-        'model': model,
-        'input_hash': input_hash,
-        'output_hash': output_hash,
-        'policy_results': policy_results,
-        'previous_chain_hash': previous_chain_hash,
-    }
+    chain_payload = {k: record[k] for k in (
+        'timestamp',
+        'model',
+        'input_hash',
+        'output_hash',
+        'policy_results',
+        'previous_chain_hash',
+    )}
     record['chain_hash'] = hashlib.sha256(
         json.dumps(chain_payload, sort_keys=True).encode()
     ).hexdigest()
