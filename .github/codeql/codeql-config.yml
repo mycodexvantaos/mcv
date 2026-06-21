@@ -28,6 +28,7 @@ paths-ignore:
   - 'packages/providers/src/observability-native.ts'
   - 'scripts/update-module-manifests.ts'
   - 'services/mycodexvantaos-platform-validation/src/validator.ts'
+  - 'services/mycodexvantaos-platform-validation/src/validator.js'
 
 # Query suite - use security-extended for deeper analysis
 queries:

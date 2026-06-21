@@ -50,17 +50,7 @@ jobs:
           SHELLCHECK_OPTS: '--exclude=SC2086'
 
           # Exclude generated / vendored / data directories
-          FILTER_REGEX_EXCLUDE: |
-            node_modules/.*
-            dist/.*
-            build/.*
-            coverage/.*
-            .next/.*
-            vendor/.*
-            pnpm-lock\.yaml
-            package-lock\.json
-            yarn\.lock
-            python/\.coverage.*
-            project-import/.*
-            todo\.md
-            \.ai/.*
+          FILTER_REGEX_EXCLUDE: >-
+            node_modules/.*|dist/.*|build/.*|coverage/.*|\.next/.*|
+            vendor/.*|pnpm-lock\.yaml|package-lock\.json|yarn\.lock|
+            python/\.coverage.*|project-import/.*|todo\.md|\.ai/.*
