@@ -1,0 +1,31 @@
+# === path: .github/workflows/provenance-attest.yaml ===
+name: Generate Provenance Attestation
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+  actions: read
+
+jobs:
+  generate-provenance:
+    name: Generate SLSA Provenance
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Generate SLSA Provenance
+        uses: slsa-framework/slsa-github-generator@v1.9.0
+        with:
+          upload-assets: true

@@ -1,0 +1,97 @@
+name: CI Repair Agent
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'python/packages/mycodexvantaos-ci-repair/**'
+      - 'python/apps/ci-repair-agent/**'
+      - 'python/tests/test_ci_repair_*'
+      - 'python/pyproject.toml'
+      - 'services/ci-repair-agent/**'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'python/packages/mycodexvantaos-ci-repair/**'
+      - 'python/apps/ci-repair-agent/**'
+      - 'python/tests/test_ci_repair_*'
+      - 'python/pyproject.toml'
+      - 'services/ci-repair-agent/**'
+  workflow_dispatch:
+
+concurrency:
+  group: ci-repair-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lint-and-test:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Install dependencies
+        working-directory: ./python
+        run: uv sync --extra dev --all-packages
+
+      - name: Run ruff check
+        working-directory: ./python
+        run: uv run ruff check packages/mycodexvantaos-ci-repair apps/ci-repair-agent
+
+      - name: Run ruff format check
+        working-directory: ./python
+        run: uv run ruff format --check packages/mycodexvantaos-ci-repair apps/ci-repair-agent
+
+      - name: Run tests
+        working-directory: ./python
+        run: uv run pytest tests/test_ci_repair_log_parser.py tests/test_ci_repair_engine.py -v
+
+      - name: Run tests with coverage
+        working-directory: ./python
+        run: |
+          uv run pytest tests/test_ci_repair_log_parser.py tests/test_ci_repair_engine.py \
+            --cov=packages/mycodexvantaos-ci-repair \
+            --cov-report=term-missing \
+            --cov-report=xml:coverage-ci-repair.xml
+
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-repair-coverage
+          path: python/coverage-ci-repair.xml
+
+  docker-build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: lint-and-test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: services/ci-repair-agent/Dockerfile
+          push: false
+          tags: ci-repair-agent:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

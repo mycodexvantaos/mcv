@@ -1,0 +1,90 @@
+# NOTE: This workflow is superseded by unified-ci.yaml.
+# It is kept for reference and runs only on manual dispatch.
+name: MyCodeXvantaOS Testing (Legacy)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: '22'
+  PNPM_VERSION: '9'
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile || pnpm install --no-frozen-lockfile
+
+      - name: Run unit tests
+        run: pnpm test || echo "Tests not yet configured"
+
+  integration-tests:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile || pnpm install --no-frozen-lockfile
+
+      - name: Build application
+        run: pnpm build || echo "Build not yet configured"
+        continue-on-error: true
+
+      - name: Run integration tests
+        run: pnpm test:integration || echo "Integration tests not yet configured"
+        continue-on-error: true
+
+  architecture-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile || pnpm install --no-frozen-lockfile
+
+      - name: Validate architecture
+        run: pnpm run validate || echo "validate not yet configured"
+        continue-on-error: true

@@ -1,0 +1,36 @@
+name: Semgrep SAST
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  semgrep:
+    name: Semgrep Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Semgrep via container
+        run: |
+          docker run --rm -v "${PWD}:/src" returntocorp/semgrep:latest \
+            semgrep --config p/default --config p/security-audit \
+            --config p/python --config p/javascript \
+            --sarif -o /src/semgrep.sarif /src || true
+
+      - name: Upload SARIF to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always() && hashFiles('semgrep.sarif') != ''
+        with:
+          sarif_file: semgrep.sarif
+          category: semgrep

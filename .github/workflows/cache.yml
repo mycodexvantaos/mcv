@@ -1,0 +1,45 @@
+name: Cache Management
+
+on:
+  schedule:
+    # Run weekly to refresh caches
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  warm-cache:
+    name: 'Warm Cache'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    strategy:
+      matrix:
+        node-version: ['22']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile || pnpm install --no-frozen-lockfile
+
+      - name: Build
+        run: pnpm run build || echo "Build not yet configured"
+
+      - name: Cache Next.js build
+        uses: actions/cache/save@v4
+        if: success()
+        with:
+          path: .next/cache
+          key: nextjs-${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ github.sha }}

@@ -4,11 +4,10 @@ name: Custom CodeQL Configuration
 
 # Path filters for analysis
 paths:
-  - 'python/apps'
-  - 'python/packages'
   - 'services'
   - 'apps'
-  - 'providers'
+  - 'packages'
+  - 'contracts'
   - 'scripts'
   - '.github'
 
@@ -26,8 +25,7 @@ paths-ignore:
   - '**/__pycache__'
   - '**/.venv'
   - '**/venv'
-  - 'project-import'
 
-# Query suite - use security-and-quality for deeper analysis
+# Query suite - use security-extended for deeper analysis
 queries:
   - uses: security-and-quality

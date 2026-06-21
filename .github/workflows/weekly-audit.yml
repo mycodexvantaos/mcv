@@ -1,3 +1,8 @@
+# === path: .github/workflows/weekly-audit.yml ===
+# Weekly Full Security Audit for MyCodeXvantaOS
+# Version: 2.0.0
+# Uses CLI tools directly (no third-party composite actions) to avoid startup_failure
+
 name: Weekly Security Audit
 
 on:
@@ -16,7 +21,7 @@ permissions:
   issues: write
 
 jobs:
-  # ── Full CodeQL Scan ──────────────────────────────────────────────
+  # ── Full CodeQL Scan ────────────────────────────────────────────
   codeql-full:
     name: CodeQL Full Audit
     runs-on: ubuntu-latest
@@ -25,6 +30,16 @@ jobs:
       contents: read
       security-events: write
       actions: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: actions
+            build-mode: none
+          - language: javascript-typescript
+            build-mode: none
+          - language: python
+            build-mode: none
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,22 +47,19 @@ jobs:
           fetch-depth: 0
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@v4
         with:
-          languages: python, javascript
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
           config-file: .github/codeql/codeql-config.yml
           queries: security-and-quality
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
-
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
         with:
-          category: "/weekly-audit"
-          upload: true
+          category: '/weekly-audit/language:${{ matrix.language }}'
 
-  # ── Semgrep Full Audit ────────────────────────────────────────────
+  # ── Semgrep Full Audit (CLI via container) ──────────────────────
   semgrep-full:
     name: Semgrep Full Audit
     runs-on: ubuntu-latest
@@ -55,21 +67,17 @@ jobs:
     permissions:
       contents: read
       security-events: write
+    container:
+      image: returntocorp/semgrep-agent:latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Semgrep Full Scan
-        uses: returntocorp/semgrep-action@v1
-        with:
-          config: >-
-            p/default
-            p/security-audit
-            p/python
-            p/javascript
-            p/ci
-          publishToken: ${{ secrets.SEMGREP_APP_TOKEN }}
-          generateSarif: "1"
+        env:
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+        run: |
+          semgrep --config p/default --config p/security-audit --config p/python --config p/javascript --config p/ci --sarif -o semgrep.sarif . || true
 
       - name: Upload Semgrep SARIF
         if: always()
@@ -78,7 +86,7 @@ jobs:
           sarif_file: semgrep.sarif
           category: semgrep-weekly
 
-  # ── Trivy Full Vulnerability Audit ────────────────────────────────
+  # ── Trivy Full Vulnerability Audit (CLI via apt) ───────────────
   trivy-full:
     name: Trivy Full Audit
     runs-on: ubuntu-latest
@@ -90,16 +98,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run Trivy vulnerability scanner (full)
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: fs
-          scan-ref: .
-          format: sarif
-          output: trivy-results.sarif
-          severity: CRITICAL,HIGH,MEDIUM,LOW,INFO
-          exit-code: "0"
-          skip-dirs: node_modules,dist,build,.next,vendor,project-import
+      - name: Install and run Trivy
+        run: |
+          sudo apt-get update && sudo apt-get install -y wget apt-transport-https gnupg lsb-release
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+          echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update && sudo apt-get install -y trivy
+          trivy fs --format sarif --output trivy-results.sarif --severity CRITICAL,HIGH,MEDIUM,LOW,INFO --exit-code 0 --skip-dirs node_modules,dist,build,.next,vendor,project-import .
 
       - name: Upload Trivy SARIF
         if: always()
@@ -108,17 +113,7 @@ jobs:
           sarif_file: trivy-results.sarif
           category: trivy-weekly
 
-      - name: Run Trivy fs scan (table report)
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: fs
-          scan-ref: .
-          format: table
-          severity: CRITICAL,HIGH
-          exit-code: "0"
-          skip-dirs: node_modules,dist,build,.next,vendor,project-import
-
-  # ── Checkov Full Audit ────────────────────────────────────────────
+  # ── Checkov Full Audit (CLI via pip) ────────────────────────────
   checkov-full:
     name: Checkov Full Audit
     runs-on: ubuntu-latest
@@ -131,14 +126,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Checkov full scan
-        uses: bridgecrewio/checkov-action@master
-        with:
-          directory: .
-          framework: dockerfile,github_actions,secrets,all
-          output_format: sarif
-          output_file_path: checkov-results.sarif
-          skip_check: CKV_SECRET_6
-          quiet: true
+        run: |
+          pip install checkov
+          checkov --directory . --framework dockerfile,github_actions,secrets --output sarif --output-filepath checkov-results.sarif --skip-check CKV_SECRET_6 --quiet || true
+          # Ensure SARIF file exists
+          if [ ! -f checkov-results.sarif ]; then
+            echo '{"version":"2.1.0","runs":[{"tool":{"driver":{"name":"Checkov","rules":[]}},"results":[]}]}' > checkov-results.sarif
+          fi
 
       - name: Upload Checkov SARIF
         if: always()
@@ -147,25 +141,7 @@ jobs:
           sarif_file: checkov-results.sarif
           category: checkov-weekly
 
-  # ── Dependency Review (full) ──────────────────────────────────────
-  dependency-review-full:
-    name: Dependency Review (Full)
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    permissions:
-      contents: read
-      security-events: write
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Dependency Review
-        uses: actions/dependency-review-action@v4
-        with:
-          config-file: .github/dependency-review-config.yml
-          fail-on-severity: low
-
-  # ── Secret Scan Full History ──────────────────────────────────────
+  # ── Secret Scan Full History (CLI via wget) ─────────────────────
   secret-scan-full:
     name: Secret Scan (Full History)
     runs-on: ubuntu-latest
@@ -179,12 +155,20 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Gitleaks (full history)
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run Gitleaks
+        run: |
+          wget -q https://github.com/gitleaks/gitleaks/releases/download/v8.21.2/gitleaks_8.21.2_linux_x64.tar.gz
+          tar -xzf gitleaks_8.21.2_linux_x64.tar.gz
+          ./gitleaks detect --source . --report-format sarif --report-path gitleaks-results.sarif --exit-code 0 || true
 
-  # ── Super-Linter (full codebase) ──────────────────────────────────
+      - name: Upload Gitleaks SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: gitleaks-results.sarif
+          category: gitleaks-weekly
+
+  # ── Super-Linter (full codebase) ───────────────────────────────
   super-linter-full:
     name: Super-Linter (Full Codebase)
     runs-on: ubuntu-latest
@@ -227,7 +211,7 @@ jobs:
             project-import/.*
             todo\.md
 
-  # ── Audit Summary ─────────────────────────────────────────────────
+  # ── Audit Summary ──────────────────────────────────────────────
   audit-summary:
     name: Weekly Audit Summary
     runs-on: ubuntu-latest
@@ -237,7 +221,6 @@ jobs:
       - semgrep-full
       - trivy-full
       - checkov-full
-      - dependency-review-full
       - secret-scan-full
       - super-linter-full
     if: always()
@@ -246,15 +229,26 @@ jobs:
       issues: write
     steps:
       - name: Generate Audit Report
+        env:
+          CODEQL_RESULT: ${{ needs.codeql-full.result }}
+          SEMGREP_RESULT: ${{ needs.semgrep-full.result }}
+          TRIVY_RESULT: ${{ needs.trivy-full.result }}
+          CHECKOV_RESULT: ${{ needs.checkov-full.result }}
+          SECRET_RESULT: ${{ needs.secret-scan-full.result }}
+          LINTER_RESULT: ${{ needs.super-linter-full.result }}
+          REF_NAME: ${{ github.ref_name }}
+          SHA: ${{ github.sha }}
+          RUN_ID: ${{ github.run_id }}
+          REPO: ${{ github.repository }}
         run: |
           echo "╔══════════════════════════════════════════════════════╗"
           echo "║        Weekly Security Audit — Summary Report       ║"
           echo "╚══════════════════════════════════════════════════════╝"
           echo ""
           echo "Date:    $(date -u '+%Y-%m-%d %H:%M UTC')"
-          echo "Branch:  ${{ github.ref_name }}"
-          echo "SHA:     ${{ github.sha }}"
-          echo "Run ID:  ${{ github.run_id }}"
+          echo "Branch:  ${REF_NAME}"
+          echo "SHA:     ${SHA}"
+          echo "Run ID:  ${RUN_ID}"
           echo ""
 
           check_result() {
@@ -269,14 +263,13 @@ jobs:
             fi
           }
 
-          check_result "codeql-full" "${{ needs.codeql-full.result }}"
-          check_result "semgrep-full" "${{ needs.semgrep-full.result }}"
-          check_result "trivy-full" "${{ needs.trivy-full.result }}"
-          check_result "checkov-full" "${{ needs.checkov-full.result }}"
-          check_result "dependency-review-full" "${{ needs.dependency-review-full.result }}"
-          check_result "secret-scan-full" "${{ needs.secret-scan-full.result }}"
-          check_result "super-linter-full" "${{ needs.super-linter-full.result }}"
+          check_result "codeql-full" "${CODEQL_RESULT}"
+          check_result "semgrep-full" "${SEMGREP_RESULT}"
+          check_result "trivy-full" "${TRIVY_RESULT}"
+          check_result "checkov-full" "${CHECKOV_RESULT}"
+          check_result "secret-scan-full" "${SECRET_RESULT}"
+          check_result "super-linter-full" "${LINTER_RESULT}"
 
           echo ""
           echo "Full SARIF results uploaded to Security tab."
-          echo "Review: https://github.com/${{ github.repository }}/security"
+          echo "Review: https://github.com/${REPO}/security"

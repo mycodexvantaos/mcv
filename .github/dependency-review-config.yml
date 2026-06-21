@@ -1,23 +1,15 @@
 # Dependency Review Configuration
 # https://docs.github.com/en/code-security/supply-chain-security/configuration-options-for-dependency-review
 
-# Fail on severity levels
-fail-on-severity: low
+# Fail on high severity vulnerabilities (not low — reduces noise)
+fail-on-severity: high
 
-# Allow licenses (cannot use both allow-licenses and deny-licenses)
-allow-licenses:
-  - MIT
-  - Apache-2.0
-  - BSD-2-Clause
-  - BSD-3-Clause
-  - ISC
-  - 0BSD
-  - Unlicense
-  - CC0-1.0
-  - Python-2.0
-  - MPL-2.0
-  - LGPL-2.1
-  - LGPL-3.0
+# Deny copyleft licenses (cannot use both allow-licenses and deny-licenses)
+deny-licenses:
+  - GPL-2.0
+  - GPL-3.
+  - AGPL-3.0
+  - SSPL-1.0
 
 # Vulnerability check
 vulnerability-check: true

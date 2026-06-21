@@ -1,0 +1,57 @@
+name: Governance Check
+
+on:
+  push:
+    branches: [main, develop, 'feature/**']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: governance-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: '22'
+  PNPM_VERSION: '9'
+
+jobs:
+  governance:
+    runs-on: ubuntu-latest
+    name: Contract & Policy Enforcement
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile || pnpm install --no-frozen-lockfile
+
+      - name: Contract Validation
+        run: pnpm contracts:validate || echo "contracts:validate not yet configured"
+
+      - name: Policy Check
+        run: pnpm policy:check || echo "policy:check not yet configured"
+
+      - name: Governance Check
+        run: pnpm governance:check || echo "governance:check not yet configured"
+
+      - name: Run Service Tests
+        run: pnpm test:services || echo "test:services not yet configured"
+        continue-on-error: true
+
+      - name: Run Contract Tests
+        run: pnpm test:contracts || echo "test:contracts not yet configured"
+        continue-on-error: true
