@@ -61,7 +61,9 @@ export interface ValidationContext {
   serviceIds: string[];
   // Section 6.2 — Paths to module folders (e.g. "modules/mycodexvantaos-core-kernel")
   moduleFolderPaths: string[];
-  // Section 7.1 — Pairs of (serviceId, packageName) for derivation check
+  // Section 7.1 — Pairs of (serviceId, packageName) for derivation check.
+  // serviceId is omitted when discovery can only validate package naming format
+  // and does not have an authoritative service-to-package mapping.
   packageEntries: Array<{ serviceId?: string; packageName: string }>;
   // Section 6.3 — Manifest entries for metadata.name consistency check
   manifestEntries: Array<{
@@ -122,6 +124,25 @@ interface ExceptionRegisterDocument {
   exceptions?: NamingException[];
 }
 
+function isActiveException(exception: NamingException, now: Date = new Date()): boolean {
+  if (!exception.rule || !exception.scope || exception.status === 'revoked') {
+    return false;
+  }
+
+  if (!exception.expiresAt) {
+    return true;
+  }
+
+  const expiresAt = new Date(exception.expiresAt);
+  return !Number.isNaN(expiresAt.valueOf()) && expiresAt >= now;
+}
+
+function hasExactExceptionScope(target: string, exceptions: NamingException[] = []): boolean {
+  return exceptions.some(
+    (exception) => isActiveException(exception) && exception.scope.trim() === target
+  );
+}
+
 export interface ValidationReport {
   timestamp: string;
   totalChecks: number;
@@ -168,12 +189,22 @@ export function discoverContext(rootDir: string = '.'): ValidationContext {
     return parse(fs.readFileSync(filePath, 'utf-8')) as T;
   };
 
+  const exceptions = readYaml<ExceptionRegisterDocument>('governance/exceptions.yaml');
+  if (exceptions?.exceptions?.length) {
+    ctx.exceptions = exceptions.exceptions;
+  }
+
   // Discover service-ids from services/ folder names
   const servicesDir = abs('services');
   if (fs.existsSync(servicesDir)) {
     const entries = fs.readdirSync(servicesDir, { withFileTypes: true });
     for (const e of entries) {
-      if (e.isDirectory() && e.name.startsWith('mycodexvantaos-')) ctx.serviceIds.push(e.name);
+      if (
+        e.isDirectory() &&
+        (validate('service-id', e.name) || hasExactExceptionScope(e.name, ctx.exceptions))
+      ) {
+        ctx.serviceIds.push(e.name);
+      }
     }
   }
 
@@ -327,25 +358,7 @@ export function discoverContext(rootDir: string = '.'): ValidationContext {
     }
   }
 
-  const exceptions = readYaml<ExceptionRegisterDocument>('governance/exceptions.yaml');
-  if (exceptions?.exceptions?.length) {
-    ctx.exceptions = exceptions.exceptions;
-  }
-
   return ctx;
-}
-
-function isActiveException(exception: NamingException, now: Date = new Date()): boolean {
-  if (!exception.rule || !exception.scope || exception.status === 'revoked') {
-    return false;
-  }
-
-  if (!exception.expiresAt) {
-    return true;
-  }
-
-  const expiresAt = new Date(exception.expiresAt);
-  return !Number.isNaN(expiresAt.valueOf()) && expiresAt >= now;
 }
 
 function matchesException(result: RuleResult, exception: NamingException): boolean {
@@ -353,8 +366,7 @@ function matchesException(result: RuleResult, exception: NamingException): boole
     return false;
   }
 
-  const scope = exception.scope.trim();
-  return scope === result.target || scope.endsWith(`/${result.target}`);
+  return exception.scope.trim() === result.target;
 }
 
 function buildIgnoredPackageWarnings(ctx: ValidationContext): RuleResult[] {
