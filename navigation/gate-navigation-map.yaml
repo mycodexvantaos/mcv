@@ -1,0 +1,16 @@
+apiVersion: mycodexvantaos.io/v1
+kind: GateNavigationMap
+metadata:
+  name: gate-navigation-map
+  description: Gate navigation map for MyCodexVantaOS
+
+spec:
+  gatePlanes:
+    - name: quality-gates
+      catalogPath: unified-gates/quality-gates/
+    - name: ai-infra-gates
+      catalogPath: unified-gates/ai-infra-gates/
+    - name: production-gates
+      catalogPath: unified-gates/production-gates/
+  gateIndex:
+    path: unified-gates/unified-gate-index.yaml

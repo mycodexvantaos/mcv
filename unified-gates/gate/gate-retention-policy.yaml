@@ -1,0 +1,5 @@
+apiVersion: mycodexvantaos.io/v1
+kind: GateSpec
+metadata:
+  name: gate-retention-policy
+spec: {}

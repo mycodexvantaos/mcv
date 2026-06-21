@@ -1,0 +1,12 @@
+apiVersion: mycodexvantaos.io/v1
+kind: SbomPolicy
+metadata:
+  name: sbom-policy
+spec:
+  formats:
+    - cyclonedx
+    - spdx
+  required: true
+  minimumVersion:
+    cyclonedx: "1.5"
+    spdx: "2.3"

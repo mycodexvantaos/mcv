@@ -1,0 +1,17 @@
+apiVersion: mycodexvantaos.io/v1
+kind: RootModule
+metadata:
+  name: unified-gates
+  urn: urn:mycodexvantaos:unified-gates:module:unified-gates
+  domain: unified-gates
+  layer: governance
+spec:
+  moduleType: unified-gates
+  description: >
+    Unified quality gates and AI infrastructure gates for MyCodexVantaOS.
+    Owns both quality gate documentation and executable AI infrastructure gates.
+  runtimeCodeAllowed: false
+  deploymentAllowed: false
+  governance:
+    ssot: true
+    authority: unified-gate-governance

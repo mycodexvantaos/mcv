@@ -1,0 +1,33 @@
+apiVersion: mycodexvantaos.io/v1
+kind: ServiceManifest
+metadata:
+  name: mycodexvantaos-agent-runtime
+  urn: urn:mycodexvantaos:service:mycodexvantaos-agent-runtime
+  serviceId: mycodexvantaos-agent-runtime
+  tier: tier-1
+
+spec:
+  serviceId: mycodexvantaos-agent-runtime
+  tier: tier-1
+  packageName: "@mycodexvantaos/agent-runtime"
+  ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-agent-runtime
+  kubernetesResourceName: mycodexvantaos-agent-runtime
+  internalUri: mycodexvantaos://service/mycodexvantaos-agent-runtime
+  urn: urn:mycodexvantaos:service:mycodexvantaos-agent-runtime
+
+  supportedRuntimeModes:
+    - native
+    - connected
+    - hybrid
+
+  deploymentTargets:
+    - kubernetes
+    - docker-compose
+
+  productionReadiness:
+    required: true
+    healthCheckRequired: true
+    auditChainRequired: true
+    sbomRequired: true
+    provenanceRequired: true
+    imagePinningRequired: true

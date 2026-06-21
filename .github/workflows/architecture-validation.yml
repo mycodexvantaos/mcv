@@ -1,0 +1,25 @@
+name: Architecture Validation
+
+on:
+  push:
+    paths:
+      - 'governance/**'
+      - 'platform/**'
+      - 'modules/**'
+      - 'providers/**'
+      - 'foundation/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm tsx ci/validate-architecture.ts --check identity
+      - run: pnpm tsx ci/validate-architecture.ts --check naming
+      - run: pnpm tsx ci/validate-architecture.ts --check manifests
+      - run: pnpm tsx ci/validate-architecture.ts --check providers
+      - run: pnpm tsx ci/validate-architecture.ts --check topology

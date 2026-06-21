@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mycodexvantaos.io/schemas/platform/runtime-topology",
+  "title": "Runtime Topology",
+  "type": "object",
+  "properties": {
+    "apiVersion": { "type": "string" },
+    "kind": { "type": "string" },
+    "metadata": { "type": "object" },
+    "spec": { "type": "object" }
+  },
+  "required": ["apiVersion", "kind", "metadata", "spec"]
+}

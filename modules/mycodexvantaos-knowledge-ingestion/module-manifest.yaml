@@ -1,0 +1,33 @@
+apiVersion: mycodexvantaos.io/v1
+kind: ServiceManifest
+metadata:
+  name: mycodexvantaos-knowledge-ingestion
+  urn: urn:mycodexvantaos:service:mycodexvantaos-knowledge-ingestion
+  serviceId: mycodexvantaos-knowledge-ingestion
+  tier: tier-1
+
+spec:
+  serviceId: mycodexvantaos-knowledge-ingestion
+  tier: tier-1
+  packageName: "@mycodexvantaos/knowledge-ingestion"
+  ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-knowledge-ingestion
+  kubernetesResourceName: mycodexvantaos-knowledge-ingestion
+  internalUri: mycodexvantaos://service/mycodexvantaos-knowledge-ingestion
+  urn: urn:mycodexvantaos:service:mycodexvantaos-knowledge-ingestion
+
+  supportedRuntimeModes:
+    - native
+    - connected
+    - hybrid
+
+  deploymentTargets:
+    - kubernetes
+    - docker-compose
+
+  productionReadiness:
+    required: true
+    healthCheckRequired: true
+    auditChainRequired: true
+    sbomRequired: true
+    provenanceRequired: true
+    imagePinningRequired: true

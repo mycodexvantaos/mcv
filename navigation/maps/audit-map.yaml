@@ -1,0 +1,6 @@
+apiVersion: mycodexvantaos.io/v1
+kind: NavigationMap
+metadata:
+  name: audit-map
+  description: audit-map for MyCodexVantaOS
+spec: {}
