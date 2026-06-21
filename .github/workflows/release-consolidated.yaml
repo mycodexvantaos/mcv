@@ -127,9 +127,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_NAME: ${{ github.ref_name }}
-          PRERELEASE_FLAG: ${{ github.event.inputs.prerelease == 'true' && '--prerelease' || '' }}
+          IS_PRERELEASE: ${{ github.event.inputs.prerelease }}
         run: |
-          gh release create "${TAG_NAME}" \
-            --title "Release ${TAG_NAME}" \
-            --generate-notes \
-            ${PRERELEASE_FLAG}
+          RELEASE_ARGS=(--title "Release ${TAG_NAME}" --generate-notes)
+          if [ "${IS_PRERELEASE}" = "true" ]; then
+            RELEASE_ARGS+=(--prerelease)
+          fi
+          gh release create "${TAG_NAME}" "${RELEASE_ARGS[@]}"
