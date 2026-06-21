@@ -244,8 +244,25 @@ jobs:
 
       - name: Run Gitleaks (working tree scan)
         id: gitleaks
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
-          ./gitleaks dir . \
+          SCAN_DIR="."
+          if [ "${EVENT_NAME}" = "pull_request" ] && [ -n "${BASE_SHA}" ] && [ -n "${HEAD_SHA}" ]; then
+            TMP_SCAN_DIR="$(mktemp -d)"
+            while IFS= read -r changed_file; do
+              [ -z "${changed_file}" ] && continue
+              if [ -f "${changed_file}" ]; then
+                mkdir -p "${TMP_SCAN_DIR}/$(dirname "${changed_file}")"
+                cp -- "${changed_file}" "${TMP_SCAN_DIR}/${changed_file}"
+              fi
+            done < <(git diff --name-only --diff-filter=ACMR "${BASE_SHA}" "${HEAD_SHA}")
+            SCAN_DIR="${TMP_SCAN_DIR}"
+          fi
+
+          ./gitleaks dir "${SCAN_DIR}" \
             --report-format sarif \
             --report-path gitleaks-gate.sarif \
             --exit-code 1
