@@ -252,7 +252,12 @@ jobs:
           SCAN_DIR="."
           if [ "${EVENT_NAME}" = "pull_request" ] && [ -n "${BASE_SHA}" ] && [ -n "${HEAD_SHA}" ]; then
             TMP_SCAN_DIR="$(mktemp -d)"
-            trap 'find "${TMP_SCAN_DIR}" -depth -type f -delete 2>/dev/null || true; find "${TMP_SCAN_DIR}" -depth -type d -empty -delete 2>/dev/null || true; rmdir "${TMP_SCAN_DIR}" 2>/dev/null || true' EXIT
+            cleanup_tmp_scan_dir() {
+              find "${TMP_SCAN_DIR}" -depth -type f -delete 2>/dev/null || true
+              find "${TMP_SCAN_DIR}" -depth -type d -empty -delete 2>/dev/null || true
+              rmdir "${TMP_SCAN_DIR}" 2>/dev/null || true
+            }
+            trap cleanup_tmp_scan_dir EXIT
             while IFS= read -r changed_file; do
               [ -z "${changed_file}" ] && continue
               if [ -f "${changed_file}" ]; then
@@ -263,7 +268,9 @@ jobs:
             SCAN_DIR="${TMP_SCAN_DIR}"
           fi
 
-          # Intentionally use `dir` to scan the prepared working-tree subset for PR-changed files only.
+          # Intentionally use `dir`:
+          # - PR events: scan only prepared changed-file subset to avoid historical baseline false failures.
+          # - non-PR events: SCAN_DIR remains "." so the full working tree is scanned.
           ./gitleaks dir "${SCAN_DIR}" \
             --report-format sarif \
             --report-path gitleaks-gate.sarif \
