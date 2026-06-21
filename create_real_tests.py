@@ -45,7 +45,7 @@ def create_package_test(package_name, exports):
  * Tests for {package_name}
  */
 
-import {{" {", ".join(exports["classes"] + exports["interfaces"])} }} from '../src';
+import {{ {", ".join(exports["classes"] + exports["interfaces"])} }} from "../src";
 
 describe('{package_name}', () => {{
   let instance: any;
