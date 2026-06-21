@@ -1,0 +1,23 @@
+# Observability configuration for Unified Gate System
+metrics:
+  - name: "gate-validation-pass-rate"
+    type: "gauge"
+    description: "Percentage of gates passing validation"
+    labels: ["plane", "layer"]
+
+  - name: "blocking-gate-failure-count"
+    type: "counter"
+    description: "Total count of blocking gate failures"
+    labels: ["gate_id", "layer"]
+
+  - name: "production-closure-pass-rate"
+    type: "gauge"
+    description: "Binary status of production closure (1 for pass, 0 for fail)"
+
+dashboards:
+  - name: "Unified Gate Governance"
+    refresh_interval: "5m"
+    panels:
+      - title: "Mandatory Gate Coverage"
+        type: "bar_chart"
+        query: "sum(mandatory-gate-coverage-score)"
