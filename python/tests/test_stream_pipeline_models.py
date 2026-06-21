@@ -6,6 +6,8 @@ import json
 from datetime import UTC
 
 import pytest
+from pydantic import ValidationError
+
 from mycodexvantaos_stream_pipeline.models import (
     CompressionType,
     ConsumerConfig,
@@ -26,7 +28,6 @@ from mycodexvantaos_stream_pipeline.models import (
     WindowResult,
     WindowType,
 )
-from pydantic import ValidationError
 
 # ---------------------------------------------------------------------------
 # KafkaTopicConfig

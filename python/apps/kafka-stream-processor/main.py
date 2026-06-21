@@ -17,6 +17,8 @@ from typing import Any
 
 import uvicorn
 from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, Field
+
 from mycodexvantaos_stream_pipeline.admin import KafkaAdmin
 from mycodexvantaos_stream_pipeline.consumer import StreamConsumer
 from mycodexvantaos_stream_pipeline.metrics import MetricsCollector
@@ -28,16 +30,15 @@ from mycodexvantaos_stream_pipeline.models import (
     ProcessorConfig,
     ProcessorState,
     ProcessorStatusResponse,
-    ProducerConfig,
     ProduceRequest,
     ProduceResponse,
+    ProducerConfig,
     StreamMetrics,
     WindowConfig,
     WindowType,
 )
 from mycodexvantaos_stream_pipeline.processor import StreamProcessor
 from mycodexvantaos_stream_pipeline.producer import StreamProducer
-from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
 

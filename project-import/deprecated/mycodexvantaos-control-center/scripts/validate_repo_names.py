@@ -1,21 +1,17 @@
 #!/usr/bin/env python3
 import re
 import sys
-from pathlib import Path
-
 import yaml
-
+from pathlib import Path
 
 def fail(msg: str):
     print(f"ERROR: {msg}")
     sys.exit(1)
 
-
 def load_yaml(path: Path):
     if not path.exists():
         fail(f"missing file: {path}")
     return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-
 
 def main():
     policy_path = Path("governance/repo-naming-policy.yaml")
@@ -70,7 +66,6 @@ def main():
             fail(f"repo '{name}' has invalid repo_type: {repo_type}")
 
     print(f"OK: validated {len(repos)} repositories against policy")
-
 
 if __name__ == "__main__":
     main()

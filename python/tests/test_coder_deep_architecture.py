@@ -1,6 +1,7 @@
 """Tests for mycodexvantaos_coder_deep.architecture_sync module."""
 
 import pytest
+
 from mycodexvantaos_coder_deep.architecture_sync import ArchitectureSync
 
 

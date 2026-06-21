@@ -448,11 +448,9 @@ class PipelineCodex:
                 content=r["content"],
                 change_description=r["change_description"],
                 author=r["author"],
-                timestamp=(
-                    r["timestamp"].isoformat()
-                    if hasattr(r["timestamp"], "isoformat")
-                    else str(r["timestamp"])
-                ),
+                timestamp=r["timestamp"].isoformat()
+                if hasattr(r["timestamp"], "isoformat")
+                else str(r["timestamp"]),
             )
             for r in rows
         ]
@@ -504,16 +502,12 @@ class PipelineCodex:
             team=row["team"],
             tags=row["tags"] or [],
             metadata=metadata,
-            created_at=(
-                row["created_at"].isoformat()
-                if hasattr(row["created_at"], "isoformat")
-                else str(row["created_at"])
-            ),
-            updated_at=(
-                row["updated_at"].isoformat()
-                if hasattr(row["updated_at"], "isoformat")
-                else str(row["updated_at"])
-            ),
+            created_at=row["created_at"].isoformat()
+            if hasattr(row["created_at"], "isoformat")
+            else str(row["created_at"]),
+            updated_at=row["updated_at"].isoformat()
+            if hasattr(row["updated_at"], "isoformat")
+            else str(row["updated_at"]),
             parent_id=row["parent_id"],
             references=row["references"] or [],
             scope=row["scope"],

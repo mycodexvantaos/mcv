@@ -7,6 +7,7 @@ schema creation, analysis storage, and retrieval.
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
+
 from mycodexvantaos_ci_repair.database import DatabaseClient
 from mycodexvantaos_ci_repair.models import (
     ErrorCategory,
