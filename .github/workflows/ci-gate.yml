@@ -7,12 +7,17 @@ on:
     branches: ["main"]
   workflow_dispatch:
 
+concurrency:
+  group: ci-gate-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
   security-events: write
   actions: read
 
 jobs:
+  # ── CodeQL Security Scan (satisfies ruleset code_scanning) ─────────
   codeql-python:
     name: CodeQL Python
     runs-on: ubuntu-latest
@@ -66,3 +71,186 @@ jobs:
         with:
           category: "/language:javascript-typescript"
           upload: true
+
+  # ── Semgrep Security Scan (satisfies ruleset code_scanning) ────────
+  semgrep:
+    name: Semgrep Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      security-events: write
+    container:
+      image: returntocorp/semgrep-agent:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Semgrep
+        env:
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+          SEMGREP_SARIF_OUTPUT: semgrep.sarif
+        run: |
+          semgrep --config p/default --config p/security-audit --config p/python --config p/javascript --sarif -o semgrep.sarif .
+
+      - name: Upload Semgrep SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: semgrep.sarif
+          category: semgrep
+
+  # ── Trivy Security Scan (satisfies ruleset code_scanning) ──────────
+  trivy:
+    name: Trivy Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner
+        run: |
+          sudo apt-get update && sudo apt-get install -y wget apt-transport-https gnupg lsb-release
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+          echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update && sudo apt-get install -y trivy
+          trivy fs --format sarif --output trivy-results.sarif --severity CRITICAL,HIGH,MEDIUM,LOW --exit-code 0 .
+
+      - name: Upload Trivy SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-results.sarif
+          category: trivy
+
+  # ── Checkov Security Scan (satisfies ruleset code_scanning) ────────
+  checkov:
+    name: Checkov Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Checkov security scan
+        run: |
+          pip install checkov
+          checkov --directory . --framework dockerfile,github_actions,secrets --output sarif --output-filepath checkov-results.sarif --skip-check CKV_SECRET_6 --quiet || true
+
+      - name: Upload Checkov SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: checkov-results.sarif
+          category: checkov
+
+  # ── Dependency Review ──────────────────────────────────────────────
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          config-file: .github/dependency-review-config.yml
+
+  # ── Secret Scan (gitleaks) ─────────────────────────────────────────
+  secret-scan:
+    name: Secret Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        run: |
+          wget -q https://github.com/gitleaks/gitleaks/releases/download/v8.21.2/gitleaks_8.21.2_linux_x64.tar.gz
+          tar -xzf gitleaks_8.21.2_linux_x64.tar.gz
+          ./gitleaks detect --source . --report-format sarif --report-path gitleaks-results.sarif --exit-code 0 || true
+
+      - name: Upload Gitleaks SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: gitleaks-results.sarif
+          category: gitleaks
+
+  # ── Governance Gate Summary ────────────────────────────────────────
+  governance-gate:
+    name: Governance Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs:
+      - codeql-python
+      - codeql-javascript
+      - semgrep
+      - trivy
+      - checkov
+      - dependency-review
+      - secret-scan
+    if: always()
+    permissions:
+      contents: read
+      checks: write
+    steps:
+      - name: Evaluate Gate Results
+        run: |
+          echo "╔══════════════════════════════════════════════════════╗"
+          echo "║        Unified CI Gate — Governance Summary         ║"
+          echo "╚══════════════════════════════════════════════════════╝"
+          echo ""
+          echo "Branch:  ${{ github.ref_name }}"
+          echo "SHA:     ${{ github.sha }}"
+          echo "Event:   ${{ github.event_name }}"
+          echo "Run ID:  ${{ github.run_id }}"
+          echo ""
+
+          PASS=true
+          check_result() {
+            local job=$1
+            local result=$2
+            if [ "$result" = "success" ]; then
+              echo "  ✅ $job"
+            elif [ "$result" = "skipped" ]; then
+              echo "  ⏭️  $job (skipped)"
+            else
+              echo "  ❌ $job ($result)"
+              PASS=false
+            fi
+          }
+
+          check_result "codeql-python" "${{ needs.codeql-python.result }}"
+          check_result "codeql-javascript" "${{ needs.codeql-javascript.result }}"
+          check_result "semgrep" "${{ needs.semgrep.result }}"
+          check_result "trivy" "${{ needs.trivy.result }}"
+          check_result "checkov" "${{ needs.checkov.result }}"
+          check_result "dependency-review" "${{ needs.dependency-review.result }}"
+          check_result "secret-scan" "${{ needs.secret-scan.result }}"
+
+          echo ""
+          if [ "$PASS" = true ]; then
+            echo "🟢 GATE: PASS — all checks satisfied"
+          else
+            echo "🔴 GATE: FAIL — one or more checks failed"
+            exit 1
+          fi
