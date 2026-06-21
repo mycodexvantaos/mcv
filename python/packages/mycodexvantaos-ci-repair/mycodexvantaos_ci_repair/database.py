@@ -10,11 +10,7 @@ import logging
 from typing import Any
 
 import asyncpg
-
-from mycodexvantaos_ci_repair.models import (
-    FailureAnalysis,
-    RepairPlan,
-)
+from mycodexvantaos_ci_repair.models import FailureAnalysis, RepairPlan
 
 logger = logging.getLogger(__name__)
 
@@ -129,7 +125,10 @@ class DatabaseClient:
                 analysis.metadata,
             )
         logger.debug(
-            "Saved analysis row %d for run %d job %d", row_id, analysis.run_id, analysis.job_id
+            "Saved analysis row %d for run %d job %d",
+            row_id,
+            analysis.run_id,
+            analysis.job_id,
         )
         return row_id
 

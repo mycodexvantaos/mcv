@@ -1,14 +1,11 @@
 """Tests for mycodexvantaos_coder_deep.behavior_tracker module."""
 
 import pytest
-
-from mycodexvantaos_coder_deep.behavior_tracker import (
-    ActionCategory,
-    ActionOutcome,
-    BehaviorAction,
-    BehaviorQuery,
-    BehaviorTracker,
-)
+from mycodexvantaos_coder_deep.behavior_tracker import (ActionCategory,
+                                                        ActionOutcome,
+                                                        BehaviorAction,
+                                                        BehaviorQuery,
+                                                        BehaviorTracker)
 
 
 @pytest.fixture
@@ -141,7 +138,9 @@ class TestBehaviorQuery:
                 outcome=ActionOutcome.FAILURE,
             )
         )
-        result = await tracker.query(params=BehaviorQuery(outcome=ActionOutcome.FAILURE))
+        result = await tracker.query(
+            params=BehaviorQuery(outcome=ActionOutcome.FAILURE)
+        )
         assert len(result) >= 1
 
 

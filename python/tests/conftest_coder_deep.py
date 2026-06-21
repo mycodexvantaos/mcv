@@ -1,7 +1,6 @@
 """Shared test fixtures for Coder-Deep MCP tests."""
 
 import pytest
-
 from mycodexvantaos_coder_deep.architecture_sync import ArchitectureSync
 from mycodexvantaos_coder_deep.behavior_tracker import BehaviorTracker
 from mycodexvantaos_coder_deep.context_cache import ContextCache

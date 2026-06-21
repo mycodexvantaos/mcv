@@ -38,14 +38,26 @@ SKIP_DIRS = {".git", "node_modules", ".venv", "__pycache__", ".next", ".idx"}
 
 # File extensions to process
 PROCESS_EXTENSIONS = {
-    ".md", ".py", ".sh", ".ttl", ".Dockerfile", ".example",
-    ".txt", ".env", ".toml", ".cfg", ".ini", ".rst",
+    ".md",
+    ".py",
+    ".sh",
+    ".ttl",
+    ".Dockerfile",
+    ".example",
+    ".txt",
+    ".env",
+    ".toml",
+    ".cfg",
+    ".ini",
+    ".rst",
 }
 
 # Filenames without extensions to process
 PROCESS_FILENAMES = {
-    "Dockerfile", ".env.example",
+    "Dockerfile",
+    ".env.example",
 }
+
 
 def should_process(filepath):
     """Determine if a file should be processed."""
@@ -70,38 +82,40 @@ def should_process(filepath):
     # Skip binary files
     return False
 
+
 def replace_section_sign(content):
     """Replace Sec. with ASCII-safe alternatives."""
     global replaced_total
 
-    if 'Sec.' not in content:
+    if "Sec." not in content:
         return content, 0
 
     original = content
     # Replace Sec. followed by digits (like Sec.5, Sec.7, Sec.7.2, Sec.10-12)
     # Pattern: Sec.<digits> or Sec.<digits>.<digits> or Sec.<digits>-<digits>
-    content = re.sub(r'Sec.(\d+(?:[.\-]\d+)*)', r'Sec.\1', content)
+    content = re.sub(r"Sec.(\d+(?:[.\-]\d+)*)", r"Sec.\1", content)
 
     # Replace standalone Sec. (not followed by digits)
-    content = re.sub(r'Sec.', 'Sec.', content)
+    content = re.sub(r"Sec.", "Sec.", content)
 
-    actual_count = original.count('Sec.') - content.count('Sec.')
+    actual_count = original.count("Sec.") - content.count("Sec.")
     replaced_total += actual_count
 
     return content, actual_count
+
 
 def process_file(filepath):
     """Process a single file."""
     global files_modified
 
     try:
-        with open(filepath, 'r', encoding='utf-8', errors='replace') as f:
+        with open(filepath, "r", encoding="utf-8", errors="replace") as f:
             content = f.read()
     except (IOError, OSError) as e:
         print(f"  SKIP (read error): {filepath} - {e}")
         return
 
-    if 'Sec.' not in content:
+    if "Sec." not in content:
         return
 
     new_content, count = replace_section_sign(content)
@@ -115,12 +129,13 @@ def process_file(filepath):
         print(f"  WOULD REPLACE: {rel_path} ({count} occurrences)")
     else:
         try:
-            with open(filepath, 'w', encoding='utf-8') as f:
+            with open(filepath, "w", encoding="utf-8") as f:
                 f.write(new_content)
             print(f"  REPLACED: {rel_path} ({count} occurrences)")
             files_modified += 1
         except (IOError, OSError) as e:
             print(f"  FAIL (write error): {filepath} - {e}")
+
 
 def main():
     print(f"{'DRY RUN - ' if DRY_RUN else ''}Sec. Symbol Remediation")
@@ -140,9 +155,9 @@ def main():
 
             # Quick binary check
             try:
-                with open(filepath, 'rb') as f:
+                with open(filepath, "rb") as f:
                     chunk = f.read(1024)
-                    if b'\x00' in chunk:
+                    if b"\x00" in chunk:
                         continue  # Skip binary files
             except (IOError, OSError):
                 continue
@@ -150,10 +165,13 @@ def main():
             process_file(filepath)
 
     print()
-    print(f"{'Would replace' if DRY_RUN else 'Replaced'}: {replaced_total} Sec. symbols in {files_modified} files")
+    print(
+        f"{'Would replace' if DRY_RUN else 'Replaced'}: {replaced_total} Sec. symbols in {files_modified} files"
+    )
 
     if DRY_RUN:
         print("\nRun without --dry-run to apply changes.")
+
 
 if __name__ == "__main__":
     main()

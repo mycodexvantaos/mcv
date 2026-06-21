@@ -4,30 +4,33 @@ Covers failure analysis for all error categories, repair plan generation,
 auto-fix detection, PR body generation, and branch naming.
 """
 
-from mycodexvantaos_ci_repair.models import (
-    ErrorCategory,
-    FailureSeverity,
-    RepairActionType,
-)
-from mycodexvantaos_ci_repair.repair_engine import (
-    _generate_repair_actions,
-    _severity_for_category,
-    analyze_failure,
-    generate_repair_plan,
-)
+from mycodexvantaos_ci_repair.models import (ErrorCategory, FailureSeverity,
+                                             RepairActionType)
+from mycodexvantaos_ci_repair.repair_engine import (_generate_repair_actions,
+                                                    _severity_for_category,
+                                                    analyze_failure,
+                                                    generate_repair_plan)
 
 
 class TestSeverityForCategory:
     """Test severity mapping for error categories."""
 
     def test_deployment_is_critical(self) -> None:
-        assert _severity_for_category(ErrorCategory.DEPLOYMENT_ERROR) == FailureSeverity.CRITICAL
+        assert (
+            _severity_for_category(ErrorCategory.DEPLOYMENT_ERROR)
+            == FailureSeverity.CRITICAL
+        )
 
     def test_dependency_is_high(self) -> None:
-        assert _severity_for_category(ErrorCategory.DEPENDENCY_ERROR) == FailureSeverity.HIGH
+        assert (
+            _severity_for_category(ErrorCategory.DEPENDENCY_ERROR)
+            == FailureSeverity.HIGH
+        )
 
     def test_test_failure_is_medium(self) -> None:
-        assert _severity_for_category(ErrorCategory.TEST_FAILURE) == FailureSeverity.MEDIUM
+        assert (
+            _severity_for_category(ErrorCategory.TEST_FAILURE) == FailureSeverity.MEDIUM
+        )
 
     def test_lint_is_low(self) -> None:
         assert _severity_for_category(ErrorCategory.LINT_ERROR) == FailureSeverity.LOW
@@ -36,19 +39,34 @@ class TestSeverityForCategory:
         assert _severity_for_category(ErrorCategory.BUILD_ERROR) == FailureSeverity.HIGH
 
     def test_docker_build_is_high(self) -> None:
-        assert _severity_for_category(ErrorCategory.DOCKER_BUILD_ERROR) == FailureSeverity.HIGH
+        assert (
+            _severity_for_category(ErrorCategory.DOCKER_BUILD_ERROR)
+            == FailureSeverity.HIGH
+        )
 
     def test_permission_is_high(self) -> None:
-        assert _severity_for_category(ErrorCategory.PERMISSION_ERROR) == FailureSeverity.HIGH
+        assert (
+            _severity_for_category(ErrorCategory.PERMISSION_ERROR)
+            == FailureSeverity.HIGH
+        )
 
     def test_configuration_is_medium(self) -> None:
-        assert _severity_for_category(ErrorCategory.CONFIGURATION_ERROR) == FailureSeverity.MEDIUM
+        assert (
+            _severity_for_category(ErrorCategory.CONFIGURATION_ERROR)
+            == FailureSeverity.MEDIUM
+        )
 
     def test_timeout_is_medium(self) -> None:
-        assert _severity_for_category(ErrorCategory.TIMEOUT_ERROR) == FailureSeverity.MEDIUM
+        assert (
+            _severity_for_category(ErrorCategory.TIMEOUT_ERROR)
+            == FailureSeverity.MEDIUM
+        )
 
     def test_unknown_is_medium(self) -> None:
-        assert _severity_for_category(ErrorCategory.UNKNOWN_ERROR) == FailureSeverity.MEDIUM
+        assert (
+            _severity_for_category(ErrorCategory.UNKNOWN_ERROR)
+            == FailureSeverity.MEDIUM
+        )
 
 
 class TestSuggestFix:
@@ -90,7 +108,8 @@ class TestSuggestFix:
             log_text="ESLint error: unexpected any",
         )
         assert (
-            "format" in analysis.suggested_fix.lower() or "lint" in analysis.suggested_fix.lower()
+            "format" in analysis.suggested_fix.lower()
+            or "lint" in analysis.suggested_fix.lower()
         )
 
     def test_test_failure_suggests_review(self) -> None:
@@ -101,7 +120,8 @@ class TestSuggestFix:
             log_text="FAILED 1 test\nAssertionError: expected True",
         )
         assert (
-            "review" in analysis.suggested_fix.lower() or "test" in analysis.suggested_fix.lower()
+            "review" in analysis.suggested_fix.lower()
+            or "test" in analysis.suggested_fix.lower()
         )
 
     def test_build_error_typescript(self) -> None:
@@ -109,7 +129,7 @@ class TestSuggestFix:
             run_id=1,
             job_id=1,
             job_name="Build",
-            log_text="error TS2322: Type \'string\' is not assignable",
+            log_text="error TS2322: Type 'string' is not assignable",
         )
         assert (
             "typescript" in analysis.suggested_fix.lower()
@@ -123,7 +143,10 @@ class TestSuggestFix:
             job_name="Docker",
             log_text='process "/bin/sh -c npm ci" did not complete successfully',
         )
-        assert "docker" in analysis.suggested_fix.lower() or "Dockerfile" in analysis.suggested_fix
+        assert (
+            "docker" in analysis.suggested_fix.lower()
+            or "Dockerfile" in analysis.suggested_fix
+        )
 
     def test_deployment_error(self) -> None:
         analysis = analyze_failure(
@@ -154,7 +177,8 @@ class TestSuggestFix:
             log_text="config error: invalid workflow file",
         )
         assert (
-            "workflow" in analysis.suggested_fix.lower() or "yaml" in analysis.suggested_fix.lower()
+            "workflow" in analysis.suggested_fix.lower()
+            or "yaml" in analysis.suggested_fix.lower()
         )
 
     def test_timeout_error(self) -> None:
@@ -171,7 +195,7 @@ class TestSuggestFix:
             run_id=1,
             job_id=1,
             job_name="CI",
-            log_text="Something went wrong but we don\'t know what",
+            log_text="Something went wrong but we don't know what",
         )
         assert "manual" in analysis.suggested_fix.lower()
 
@@ -260,7 +284,9 @@ class TestGenerateRepairActions:
             log_text="deploy failed: cloudflare deploy fail",
         )
         actions = _generate_repair_actions(analysis)
-        assert any(a.action_type == RepairActionType.MANUAL_INTERVENTION for a in actions)
+        assert any(
+            a.action_type == RepairActionType.MANUAL_INTERVENTION for a in actions
+        )
         assert actions[0].risk_level == FailureSeverity.CRITICAL
 
     def test_permission_error_generates_update_workflow(self) -> None:
@@ -291,7 +317,9 @@ class TestGenerateRepairActions:
             log_text="Something unexpected happened",
         )
         actions = _generate_repair_actions(analysis)
-        assert any(a.action_type == RepairActionType.MANUAL_INTERVENTION for a in actions)
+        assert any(
+            a.action_type == RepairActionType.MANUAL_INTERVENTION for a in actions
+        )
 
 
 class TestAnalyzeFailure:
@@ -321,7 +349,8 @@ class TestAnalyzeFailure:
         assert analysis.error_category == ErrorCategory.LINT_ERROR
         assert analysis.severity == FailureSeverity.LOW
         assert (
-            "ruff" in analysis.suggested_fix.lower() or "format" in analysis.suggested_fix.lower()
+            "ruff" in analysis.suggested_fix.lower()
+            or "format" in analysis.suggested_fix.lower()
         )
 
     def test_test_failure_analysis(self) -> None:
@@ -461,7 +490,9 @@ class TestGenerateRepairPlan:
             job_name="Lint",
             log_text="ruff check error: I001 in src/main.py",
         )
-        plan = generate_repair_plan(1, "Test Run Critical", "main", [analysis_critical, analysis_lint])
+        plan = generate_repair_plan(
+            1, "Test Run Critical", "main", [analysis_critical, analysis_lint]
+        )
         assert plan.can_auto_fix is False
         assert "Manual review required" in plan.summary
 
@@ -486,6 +517,14 @@ class TestGenerateRepairPlan:
             job_name="Build",
             log_text="npm ERR! ERESOLVE could not resolve dependency: ws",
         )
-        plan = generate_repair_plan(12345, "A very long and complex workflow run name that should be truncated", "main", [analysis])
-        assert "fix/ci-repair-a-very-long-and-complex-workflow-run-name-12345" in plan.branch_name
-        assert len(plan.branch_name) <= 50 # Max length for branch name
+        plan = generate_repair_plan(
+            12345,
+            "A very long and complex workflow run name that should be truncated",
+            "main",
+            [analysis],
+        )
+        assert (
+            "fix/ci-repair-a-very-long-and-complex-workflow-run-name-12345"
+            in plan.branch_name
+        )
+        assert len(plan.branch_name) <= 50  # Max length for branch name

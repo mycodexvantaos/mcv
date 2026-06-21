@@ -108,18 +108,14 @@ class UnifiedGateValidator:
             )
             return False
 
-    def check_blocking_gates(
-        self, index_path: Path, required_count: int = 18
-    ) -> bool:
+    def check_blocking_gates(self, index_path: Path, required_count: int = 18) -> bool:
         # Implementation for Principle 4.3: Production Closure
         try:
             with index_path.open() as f:
                 index = yaml.safe_load(f)
 
             active_blocking_gates = [
-                g
-                for g in index.get("gates", [])
-                if g.get("blocking") is True
+                g for g in index.get("gates", []) if g.get("blocking") is True
             ]
 
             if len(active_blocking_gates) < required_count:
@@ -146,9 +142,7 @@ class UnifiedGateValidator:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="Unified Gate System Validator"
-    )
+    parser = argparse.ArgumentParser(description="Unified Gate System Validator")
     parser.add_argument(
         "--gate-index", required=True, help="Path to unified-gate-index.yaml"
     )
@@ -160,9 +154,7 @@ def main() -> None:
         action="store_true",
         help="Check for mandatory blocking gates",
     )
-    parser.add_argument(
-        "--output", help="Path to output validation report (JSON)"
-    )
+    parser.add_argument("--output", help="Path to output validation report (JSON)")
     parser.add_argument(
         "--fail-on-error",
         action="store_true",

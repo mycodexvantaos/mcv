@@ -4,12 +4,10 @@ Covers all 10 error categories, priority ordering, context extraction,
 file path extraction, and dependency name extraction.
 """
 
-from mycodexvantaos_ci_repair.log_parser import (
-    classify_log,
-    extract_affected_dependencies,
-    extract_affected_files,
-    extract_error_context,
-)
+from mycodexvantaos_ci_repair.log_parser import (classify_log,
+                                                 extract_affected_dependencies,
+                                                 extract_affected_files,
+                                                 extract_error_context)
 from mycodexvantaos_ci_repair.models import ErrorCategory
 
 
@@ -43,11 +41,11 @@ class TestClassifyLog:
         assert classify_log(log) == ErrorCategory.DEPENDENCY_ERROR
 
     def test_dependency_error_module_not_found(self) -> None:
-        log = "ModuleNotFoundError: No module named \'mycodexvantaos_ci_repair\'"
+        log = "ModuleNotFoundError: No module named 'mycodexvantaos_ci_repair'"
         assert classify_log(log) == ErrorCategory.DEPENDENCY_ERROR
 
     def test_dependency_error_import_error(self) -> None:
-        log = "ImportError: cannot import name \'BaseModel\' from \'pydantic\'"
+        log = "ImportError: cannot import name 'BaseModel' from 'pydantic'"
         assert classify_log(log) == ErrorCategory.DEPENDENCY_ERROR
 
     def test_dependency_error_file_not_resolvable(self) -> None:
@@ -111,11 +109,11 @@ class TestClassifyLog:
     # --- Build errors ---
 
     def test_build_error_typescript(self) -> None:
-        log = "error TS2322: Type \'string\' is not assignable to type \'number\'"
+        log = "error TS2322: Type 'string' is not assignable to type 'number'"
         assert classify_log(log) == ErrorCategory.BUILD_ERROR
 
     def test_build_error_type_error(self) -> None:
-        log = "Type error: Property \'foo\' does not exist on type \'Bar\'"
+        log = "Type error: Property 'foo' does not exist on type 'Bar'"
         assert classify_log(log) == ErrorCategory.BUILD_ERROR
 
     def test_build_error_build_failed(self) -> None:
@@ -189,7 +187,7 @@ class TestClassifyLog:
     # --- Unknown / edge cases ---
 
     def test_unknown_error(self) -> None:
-        log = "Something unexpected happened but we don\'t know what"
+        log = "Something unexpected happened but we don't know what"
         assert classify_log(log) == ErrorCategory.UNKNOWN_ERROR
 
     def test_empty_log(self) -> None:
@@ -247,7 +245,7 @@ class TestExtractErrorContext:
         assert len(context.split("\n")) <= 10
 
     def test_traceback_indicator(self) -> None:
-        log = "some output\nTraceback (most recent call last):\n  File \'test.py\', line 1\nerror!"
+        log = "some output\nTraceback (most recent call last):\n  File 'test.py', line 1\nerror!"
         context = extract_error_context(log, max_lines=20)
         assert "Traceback" in context
 
@@ -302,12 +300,12 @@ class TestExtractAffectedDependencies:
         assert "@opentelemetry/sdk-node" in deps
 
     def test_extracts_python_module(self) -> None:
-        log = "ModuleNotFoundError: No module named \'fastapi\'"
+        log = "ModuleNotFoundError: No module named 'fastapi'"
         deps = extract_affected_dependencies(log)
         assert "fastapi" in deps
 
     def test_extracts_import_error_module(self) -> None:
-        log = "ImportError: cannot import name \'Settings\' from \'pydantic\'"
+        log = "ImportError: cannot import name 'Settings' from 'pydantic'"
         deps = extract_affected_dependencies(log)
         assert "pydantic" in deps
 
@@ -317,7 +315,7 @@ class TestExtractAffectedDependencies:
         assert "lodash" in deps
 
     def test_extracts_package_not_found(self) -> None:
-        log = "package \'express\' not found"
+        log = "package 'express' not found"
         deps = extract_affected_dependencies(log)
         assert "express" in deps
 

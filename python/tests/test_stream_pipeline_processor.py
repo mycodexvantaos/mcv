@@ -6,17 +6,14 @@ from datetime import UTC, datetime
 from unittest.mock import AsyncMock, patch
 
 import pytest
-
-from mycodexvantaos_stream_pipeline.models import (
-    ConsumerConfig,
-    KafkaMessage,
-    ProcessorConfig,
-    ProcessorState,
-    ProducerConfig,
-    WindowConfig,
-    WindowType,
-)
-from mycodexvantaos_stream_pipeline.processor import StreamProcessor, WindowState
+from mycodexvantaos_stream_pipeline.models import (ConsumerConfig,
+                                                   KafkaMessage,
+                                                   ProcessorConfig,
+                                                   ProcessorState,
+                                                   ProducerConfig,
+                                                   WindowConfig, WindowType)
+from mycodexvantaos_stream_pipeline.processor import (StreamProcessor,
+                                                      WindowState)
 
 # ---------------------------------------------------------------------------
 # WindowState
@@ -247,7 +244,9 @@ class TestStreamProcessor:
         processor = StreamProcessor(config)
 
         with (
-            patch.object(StreamProcessor, "start", new_callable=AsyncMock) as mock_start,
+            patch.object(
+                StreamProcessor, "start", new_callable=AsyncMock
+            ) as mock_start,
             patch.object(StreamProcessor, "stop", new_callable=AsyncMock) as mock_stop,
         ):
             await processor.start()

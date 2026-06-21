@@ -6,28 +6,23 @@ import json
 from datetime import UTC
 
 import pytest
+from mycodexvantaos_stream_pipeline.models import (CompressionType,
+                                                   ConsumerConfig,
+                                                   ConsumeRequest,
+                                                   DeadLetterMessage,
+                                                   DeliverySemantic,
+                                                   KafkaMessage,
+                                                   KafkaTopicConfig,
+                                                   OffsetResetStrategy,
+                                                   ProcessorConfig,
+                                                   ProcessorState,
+                                                   ProcessorStatusResponse,
+                                                   ProducerConfig,
+                                                   ProduceRequest,
+                                                   ProduceResponse,
+                                                   StreamMetrics, WindowConfig,
+                                                   WindowResult, WindowType)
 from pydantic import ValidationError
-
-from mycodexvantaos_stream_pipeline.models import (
-    CompressionType,
-    ConsumerConfig,
-    ConsumeRequest,
-    DeadLetterMessage,
-    DeliverySemantic,
-    KafkaMessage,
-    KafkaTopicConfig,
-    OffsetResetStrategy,
-    ProcessorConfig,
-    ProcessorState,
-    ProcessorStatusResponse,
-    ProducerConfig,
-    ProduceRequest,
-    ProduceResponse,
-    StreamMetrics,
-    WindowConfig,
-    WindowResult,
-    WindowType,
-)
 
 # ---------------------------------------------------------------------------
 # KafkaTopicConfig

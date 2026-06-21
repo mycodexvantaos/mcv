@@ -2,11 +2,8 @@
 Tests for Memory Dream Processing
 """
 
-from mycodexvantaos_memory_dream.models import (
-    DreamActionType,
-    MemoryItem,
-    MemoryItemType,
-)
+from mycodexvantaos_memory_dream.models import (DreamActionType, MemoryItem,
+                                                MemoryItemType)
 
 
 def test_memory_item_creation():
