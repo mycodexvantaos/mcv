@@ -1,6 +1,7 @@
 """Tests for mycodexvantaos_coder_deep.task_tracker module."""
 
 import pytest
+
 from mycodexvantaos_coder_deep.task_tracker import (
     TaskEntry,
     TaskPriority,
@@ -395,15 +396,3 @@ class TestTaskStatusEnum:
         ]
         for status in expected:
             assert TaskStatus(status) == status
-
-
-def test_coverage_booster_init():
-    from mycodexvantaos_coder_deep.behavior_tracker import BehaviorTracker
-    from mycodexvantaos_coder_deep.task_tracker import TaskTracker
-    from mycodexvantaos_coder_deep.context_cache import ContextCache
-    from mycodexvantaos_coder_deep.memory_store import MemoryStore
-    
-    assert BehaviorTracker() is not None
-    assert TaskTracker() is not None
-    assert ContextCache() is not None
-    assert MemoryStore() is not None

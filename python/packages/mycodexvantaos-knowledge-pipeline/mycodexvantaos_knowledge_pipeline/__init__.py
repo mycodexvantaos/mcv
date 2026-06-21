@@ -4,10 +4,10 @@ Document parsing, embedding generation, and semantic clustering.
 """
 
 from mycodexvantaos_knowledge_pipeline.models import (
-    ClusterResult,
     DocumentInput,
-    EmbeddingResult,
     ParsedDocument,
+    EmbeddingResult,
+    ClusterResult,
 )
 
 __all__ = [

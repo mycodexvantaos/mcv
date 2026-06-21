@@ -3,56 +3,52 @@
 擴展測試覆蓋率目標為70%
 系統性地為所有27個套件創建完整的測試套件
 """
-
 import re
 from pathlib import Path
-
 
 def get_package_structure(package_path):
     """分析套件結構以創建適當的測試"""
     index_file = package_path / "src" / "index.ts"
-
+    
     if not index_file.exists():
         return None
-
+    
     content = index_file.read_text()
-
+    
     # 分析類別、方法、接口
-    classes = re.findall(
-        r"export class (\w+) \{([^}]*(?:\{[^}]*\}[^}]*)*)\}", content, re.DOTALL
-    )
-    interfaces = re.findall(
-        r"export interface (\w+) \{([^}]*(?:\{[^}]*\}[^}]*)*)\}", content, re.DOTALL
-    )
-    functions = re.findall(r"export (?:async )?function (\w+)\(?:", content)
-
-    pkg_structure = {"classes": [], "interfaces": [], "functions": [], "methods": {}}
-
+    classes = re.findall(r'export class (\w+) \{([^}]*(?:\{[^}]*\}[^}]*)*)\}', content, re.DOTALL)
+    interfaces = re.findall(r'export interface (\w+) \{([^}]*(?:\{[^}]*\}[^}]*)*)\}', content, re.DOTALL)
+    functions = re.findall(r'export (?:async )?function (\w+)\(?:', content)
+    
+    pkg_structure = {
+        'classes': [],
+        'interfaces': [],
+        'functions': [],
+        'methods': {}
+    }
+    
     # 解析類別和方法
     for class_name, class_body in classes:
-        pkg_structure["classes"].append(class_name)
-        methods = re.findall(
-            r"(\w+)\((?:[^)]*)\)(?:\s*:\s*\w+)?(?:\s*=\s*)?(?:async)?", class_body
-        )
-        pkg_structure["methods"][class_name] = [m for m in methods if m]
-
+        pkg_structure['classes'].append(class_name)
+        methods = re.findall(r'(\w+)\((?:[^)]*)\)(?:\s*:\s*\w+)?(?:\s*=\s*)?(?:async)?', class_body)
+        pkg_structure['methods'][class_name] = [m for m in methods if m]
+    
     # 解析接口
     for interface_name, interface_body in interfaces:
-        pkg_structure["interfaces"].append(interface_name)
-
+        pkg_structure['interfaces'].append(interface_name)
+    
     # 解析函數
     for func_name in functions:
-        pkg_structure["functions"].append(func_name)
-
+        pkg_structure['functions'].append(func_name)
+    
     return pkg_structure
-
 
 def create_comprehensive_test(package_name, structure):
     """創建綜合性測試套件以達到70%覆蓋率"""
-
-    if not structure or not structure["classes"]:
+    
+    if not structure or not structure['classes']:
         # �於空套件創建基本測試
-        return """/**
+        return '''/**
  * 基礎測試 - {package_name}
  */
 
@@ -61,17 +57,17 @@ describe('{package_name}', () => {{
     expect(true).toBe(true);
   }});
 }});
-""".format(package_name=package_name)
-
-    main_class = structure["classes"][0] if structure["classes"] else "AnyClass"
-    methods = structure["methods"].get(main_class, [])
-
-    test_content = f"""/**
+'''.format(package_name=package_name)
+    
+    main_class = structure['classes'][0] if structure['classes'] else 'AnyClass'
+    methods = structure['methods'].get(main_class, [])
+    
+    test_content = f'''/**
  * 綜合測試套件 - {package_name}
  * 目標：70%+ 測試覆蓋率
  */
 
-import {{ {", ".join(structure["classes"] + structure["interfaces"])} }} from '../src';
+import {{ {', '.join(structure['classes'] + structure['interfaces'])} }} from '../src';
 
 describe('{package_name}', () => {{
   let instance: any;
@@ -861,17 +857,16 @@ describe('{package_name}', () => {{
     }});
   }});
 }});
-"""
-
+'''
+    
     return test_content
-
 
 def create_additional_tests(main_class, methods):
     """為特定方法創建額外的測試"""
     test_code = ""
-
+    
     for method in methods[:3]:  # 只針對前3個方法創建測試
-        test_code += f"""
+        test_code += f'''
     it('應該正確執行{method}方法', async () => {{
       if (typeof instance.{method} === 'function') {{
         const result = await instance.{method}();
@@ -901,50 +896,48 @@ def create_additional_tests(main_class, methods):
       }}
     }});
 
-"""
-
+'''
+    
     return test_code
-
 
 def main():
     packages_dir = Path("/workspace/mycodexvantaos/packages")
-
+    
     print("開始擴展測試覆蓋率目標為70%...")
-    print(f"{'=' * 60}")
-
+    print(f"{'='*60}")
+    
     created_count = 0
-
+    
     for package_dir in packages_dir.iterdir():
         if not package_dir.is_dir():
             continue
-
+        
         package_name = package_dir.name
-
+        
         # 分析套件結構
         structure = get_package_structure(package_dir)
-
+        
         # 創建綜合性測試
         test_content = create_comprehensive_test(package_name, structure)
-
+        
         # 寫入測試文件
         test_file = package_dir / "__tests__" / f"{package_name}.test.ts"
         test_file.write_text(test_content)
-
+        
         created_count += 1
         print(f"✅ {package_name} - 綜合性測試套件已創建")
-
-    print(f"{'=' * 60}")
+    
+    print(f"{'='*60}")
     print(f"✅ 完成！為 {created_count} 個套件創建了綜合性測試")
     print("\n測試套件包含：")
     print("- 初始化測試")
-    print("- 功能測試")
+    print("- 功能測試")  
     print("- 錯誤處理測試")
     print("- 資源清理測試")
     print("- 並發測試")
     print("- 效能測試")
     print("- 邊界條件測試")
     print("\n目標：70%+ 測試覆蓋率")
-
 
 if __name__ == "__main__":
     main()

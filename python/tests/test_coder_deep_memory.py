@@ -1,11 +1,8 @@
 """Tests for mycodexvantaos_coder_deep.memory_store module."""
 
 import pytest
-from mycodexvantaos_coder_deep.memory_store import (
-    MemoryItem,
-    MemorySearchParams,
-    MemoryStore,
-)
+
+from mycodexvantaos_coder_deep.memory_store import MemoryItem, MemorySearchParams, MemoryStore
 
 
 @pytest.fixture
@@ -53,10 +50,7 @@ class TestMemoryStorePutAndGet:
         """Store and retrieve with metadata."""
         await store.put(
             item=MemoryItem(
-                namespace="ns",
-                key="k",
-                value="val",
-                metadata={"source": "test", "priority": 1},
+                namespace="ns", key="k", value="val", metadata={"source": "test", "priority": 1}
             )
         )
         item = await store.get(namespace="ns", key="k")
@@ -168,15 +162,3 @@ class TestMemoryStoreClearNamespace:
         assert cleared == 1
         assert await store.count(namespace="ns1") == 0
         assert await store.count(namespace="ns2") == 1
-
-
-def test_coverage_booster_init():
-    from mycodexvantaos_coder_deep.behavior_tracker import BehaviorTracker
-    from mycodexvantaos_coder_deep.task_tracker import TaskTracker
-    from mycodexvantaos_coder_deep.context_cache import ContextCache
-    from mycodexvantaos_coder_deep.memory_store import MemoryStore
-    
-    assert BehaviorTracker() is not None
-    assert TaskTracker() is not None
-    assert ContextCache() is not None
-    assert MemoryStore() is not None
