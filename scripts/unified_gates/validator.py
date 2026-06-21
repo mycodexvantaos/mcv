@@ -37,11 +37,10 @@ class UnifiedGateValidator:
             validator = jsonschema.Draft7Validator(self.schema)
             errors = sorted(validator.iter_errors(data), key=lambda e: e.path)
 
-            if errors:
                 for error in errors:
                     self.issues.append(
                         ValidationIssue(
-                            gate_id=data.get("id"),
+                            gate_id=(data.get("id") if isinstance(data, dict) else None),
                             severity="error",
                             message=f"Schema validation failed: {error.message}",
                             path=list(error.path),
