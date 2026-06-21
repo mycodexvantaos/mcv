@@ -390,7 +390,3 @@ class ArchitectureSync:
             }
             for s in self._snapshots
         ]
-
-
-
-
