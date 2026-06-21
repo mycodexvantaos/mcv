@@ -8,10 +8,13 @@ closure invariants through a single auditable validation boundary.
 from __future__ import annotations
 
 import re
+import json
 from collections import Counter
 from pathlib import Path
 from typing import Any
 
+import yaml
+import jsonschema
 from scripts.unified_gates.io import GateIoError, read_yaml, repo_path
 from scripts.unified_gates.models import ValidationIssue, ValidationResult
 
@@ -160,9 +163,17 @@ def _validate_gates(
     gates: list[dict[str, Any]],
     issues: list[ValidationIssue],
 ) -> None:
+    schema_path = root / "schemas/unified-gate-schema.json"
+    schema = None
+    if schema_path.exists():
+        with open(schema_path) as f:
+            schema = json.load(f)
+
     for index, gate in enumerate(gates):
         gate_path = f"spec.gates[{index}]"
         gate_id = gate.get("id")
+        
+        # 1. Basic format validation
         if not isinstance(gate_id, str) or not GATE_ID_PATTERN.match(gate_id):
             issues.append(
                 ValidationIssue(
@@ -195,9 +206,36 @@ def _validate_gates(
                     path=gate_path,
                 )
             )
+        
+        # 2. File and path validation
         _validate_owner(gate, issues, gate_path)
-        _validate_path(root, gate, issues, gate_path)
+        rel_path = _validate_path(root, gate, issues, gate_path)
         _validate_targets(gate, issues, gate_path)
+
+        # 3. Deep Schema validation (from PR 160)
+        if schema and rel_path:
+            full_path = repo_path(root, rel_path)
+            if full_path.exists():
+                try:
+                    with open(full_path) as f:
+                        gate_content = yaml.safe_load(f)
+                    jsonschema.validate(instance=gate_content, schema=schema)
+                except jsonschema.ValidationError as e:
+                    issues.append(
+                        ValidationIssue(
+                            code="gate-schema-validation-failed",
+                            message=f"Schema error in {rel_path}: {e.message}",
+                            path=gate_path,
+                        )
+                    )
+                except Exception as e:
+                    issues.append(
+                        ValidationIssue(
+                            code="gate-content-read-failed",
+                            message=f"Could not read gate content {rel_path}: {str(e)}",
+                            path=gate_path,
+                        )
+                    )
 
 
 def _validate_owner(
@@ -231,7 +269,7 @@ def _validate_path(
     gate: dict[str, Any],
     issues: list[ValidationIssue],
     gate_path: str,
-) -> None:
+) -> str | None:
     relative = gate.get("path")
     if not isinstance(relative, str) or not relative.startswith("unified-gates/"):
         issues.append(
@@ -241,7 +279,7 @@ def _validate_path(
                 path=gate_path,
             )
         )
-        return
+        return None
     candidate = repo_path(root, relative)
     config_mirror = repo_path(root, f"config/{relative}")
     if not candidate.exists() and not config_mirror.exists():
@@ -252,6 +290,8 @@ def _validate_path(
                 path=gate_path,
             )
         )
+        return None
+    return relative
 
 
 def _validate_targets(
