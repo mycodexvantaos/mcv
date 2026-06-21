@@ -319,3 +319,27 @@ class TestSSEEndpoint:
         assert data["success"] is True
         assert data["data"]["protocol"] == "sse"
         assert "endpoints" in data["data"]
+
+
+def test_behavior_tracker_init_extra():
+    from mycodexvantaos_coder_deep.behavior_tracker import BehaviorTracker
+    tracker = BehaviorTracker()
+    assert tracker is not None
+
+
+def test_task_tracker_init_extra():
+    from mycodexvantaos_coder_deep.task_tracker import TaskTracker
+    tracker = TaskTracker()
+    assert tracker is not None
+
+
+def test_context_cache_init_extra():
+    from mycodexvantaos_coder_deep.context_cache import ContextCache
+    cache = ContextCache()
+    assert cache is not None
+
+
+def test_memory_store_init_extra():
+    from mycodexvantaos_coder_deep.memory_store import MemoryStore
+    store = MemoryStore()
+    assert store is not None
