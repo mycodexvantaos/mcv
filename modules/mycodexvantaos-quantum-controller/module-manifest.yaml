@@ -9,7 +9,7 @@ metadata:
 spec:
   serviceId: mycodexvantaos-quantum-controller
   tier: tier-2
-  packageName: "@mycodexvantaos/quantum-controller"
+  packageName: '@mycodexvantaos/quantum-controller'
   ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-quantum-controller
   kubernetesResourceName: mycodexvantaos-quantum-controller
   internalUri: mycodexvantaos://service/mycodexvantaos-quantum-controller

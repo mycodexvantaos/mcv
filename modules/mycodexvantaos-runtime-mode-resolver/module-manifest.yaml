@@ -9,7 +9,7 @@ metadata:
 spec:
   serviceId: mycodexvantaos-runtime-mode-resolver
   tier: tier-0
-  packageName: "@mycodexvantaos/runtime-mode-resolver"
+  packageName: '@mycodexvantaos/runtime-mode-resolver'
   ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-runtime-mode-resolver
   kubernetesResourceName: mycodexvantaos-runtime-mode-resolver
   internalUri: mycodexvantaos://service/mycodexvantaos-runtime-mode-resolver

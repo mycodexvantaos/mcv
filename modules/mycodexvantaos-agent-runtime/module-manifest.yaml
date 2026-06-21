@@ -9,7 +9,7 @@ metadata:
 spec:
   serviceId: mycodexvantaos-agent-runtime
   tier: tier-1
-  packageName: "@mycodexvantaos/agent-runtime"
+  packageName: '@mycodexvantaos/agent-runtime'
   ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-agent-runtime
   kubernetesResourceName: mycodexvantaos-agent-runtime
   internalUri: mycodexvantaos://service/mycodexvantaos-agent-runtime

@@ -13,16 +13,16 @@ The `mycodexvantaos-namespace-governance/` directory owns namespace governance c
 
 ## Structure
 
-| Directory | Description |
-|---|---|
-| `governance/codes/` | Governance codes index |
-| `governance/registry/` | Namespace registries |
-| `governance/policies/` | Naming and identity policies |
-| `governance/lifecycle/` | Namespace lifecycle management |
-| `governance/closure/` | Governance closure proofs |
-| `governance/exceptions/` | Exception records |
-| `navigation/` | Namespace navigation maps |
-| `contracts/` | Namespace contracts |
-| `schemas/` | JSON Schema definitions |
-| `scripts/` | Validation scripts |
-| `outputs/` | Generated reports |
+| Directory                | Description                    |
+| ------------------------ | ------------------------------ |
+| `governance/codes/`      | Governance codes index         |
+| `governance/registry/`   | Namespace registries           |
+| `governance/policies/`   | Naming and identity policies   |
+| `governance/lifecycle/`  | Namespace lifecycle management |
+| `governance/closure/`    | Governance closure proofs      |
+| `governance/exceptions/` | Exception records              |
+| `navigation/`            | Namespace navigation maps      |
+| `contracts/`             | Namespace contracts            |
+| `schemas/`               | JSON Schema definitions        |
+| `scripts/`               | Validation scripts             |
+| `outputs/`               | Generated reports              |

@@ -9,7 +9,7 @@ metadata:
 spec:
   serviceId: mycodexvantaos-billing-metering
   tier: tier-1
-  packageName: "@mycodexvantaos/billing-metering"
+  packageName: '@mycodexvantaos/billing-metering'
   ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-billing-metering
   kubernetesResourceName: mycodexvantaos-billing-metering
   internalUri: mycodexvantaos://service/mycodexvantaos-billing-metering

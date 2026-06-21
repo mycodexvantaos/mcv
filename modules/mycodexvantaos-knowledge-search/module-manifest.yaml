@@ -9,7 +9,7 @@ metadata:
 spec:
   serviceId: mycodexvantaos-knowledge-search
   tier: tier-1
-  packageName: "@mycodexvantaos/knowledge-search"
+  packageName: '@mycodexvantaos/knowledge-search'
   ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-knowledge-search
   kubernetesResourceName: mycodexvantaos-knowledge-search
   internalUri: mycodexvantaos://service/mycodexvantaos-knowledge-search

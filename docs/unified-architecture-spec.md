@@ -52,27 +52,27 @@ forbidden_legacy_prefixes:
 
 MyCodexVantaOS is a vertically integrated upstream AI infrastructure platform organized around seven strategic foundations:
 
-| Foundation | Responsibility |
-|---|---|
-| Compute Foundation | AI chips, GPUs, intelligent servers, inference pools, Kubernetes |
-| Data Foundation | datasets, vector databases, embeddings, hybrid search, knowledge graphs |
-| Algorithm Foundation | model routing, BYOK, fine-tuning, evaluation, LLMs, CV, NLP |
-| Agent Foundation | agent runtime, memory, tool calling, MCP, RAG, workflow DAGs |
-| Contract Foundation | module contracts, APIs, events, schemas, resource kinds, URNs |
-| Governance Foundation | policy-as-code, audit chain, compliance, RBAC, CI gates |
-| Business Foundation | billing, metering, quota, workspace, marketplace |
+| Foundation            | Responsibility                                                          |
+| --------------------- | ----------------------------------------------------------------------- |
+| Compute Foundation    | AI chips, GPUs, intelligent servers, inference pools, Kubernetes        |
+| Data Foundation       | datasets, vector databases, embeddings, hybrid search, knowledge graphs |
+| Algorithm Foundation  | model routing, BYOK, fine-tuning, evaluation, LLMs, CV, NLP             |
+| Agent Foundation      | agent runtime, memory, tool calling, MCP, RAG, workflow DAGs            |
+| Contract Foundation   | module contracts, APIs, events, schemas, resource kinds, URNs           |
+| Governance Foundation | policy-as-code, audit chain, compliance, RBAC, CI gates                 |
+| Business Foundation   | billing, metering, quota, workspace, marketplace                        |
 
 ---
 
 ## 3. Manifest Boundary
 
-| File | Scope | Runtime Service |
-|---|---|---|
-| `mycodexvantaos-module.yaml` | root directory | optional |
-| `module-manifest.yaml` | deployable service | yes |
-| `provider-manifest.yaml` | provider instance | provider only |
-| `foundation.yaml` | foundation spec unit | no |
-| `service-catalog.yaml` | global service index | indirect |
+| File                         | Scope                | Runtime Service |
+| ---------------------------- | -------------------- | --------------- |
+| `mycodexvantaos-module.yaml` | root directory       | optional        |
+| `module-manifest.yaml`       | deployable service   | yes             |
+| `provider-manifest.yaml`     | provider instance    | provider only   |
+| `foundation.yaml`            | foundation spec unit | no              |
+| `service-catalog.yaml`       | global service index | indirect        |
 
 Deprecated manifest names (MUST NOT be used):
 
@@ -89,6 +89,7 @@ axiom.module.yaml
 The `foundation/` directory is the strategic specification center for seven platform foundations.
 
 Foundation subdirectories MUST NOT contain:
+
 - runtime source code
 - service implementation
 - provider implementation
@@ -161,12 +162,12 @@ Provider instance naming: `<capability>-<provider>`
 
 ## 8. Runtime Modes
 
-| Mode | Purpose | Production |
-|---|---|---|
-| `native` | local, CI, offline | allowed |
-| `connected` | full external provider | allowed |
-| `hybrid` | partial provider with fallback | allowed |
-| `auto` | startup intent only | FORBIDDEN as final mode |
+| Mode        | Purpose                        | Production              |
+| ----------- | ------------------------------ | ----------------------- |
+| `native`    | local, CI, offline             | allowed                 |
+| `connected` | full external provider         | allowed                 |
+| `hybrid`    | partial provider with fallback | allowed                 |
+| `auto`      | startup intent only            | FORBIDDEN as final mode |
 
 ---
 
@@ -193,4 +194,4 @@ See full consistency remediation specification in the platform constitution.
 
 ---
 
-*This document is the normative source of truth for the MyCodexVantaOS platform architecture.*
+_This document is the normative source of truth for the MyCodexVantaOS platform architecture._

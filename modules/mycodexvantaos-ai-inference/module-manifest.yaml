@@ -9,7 +9,7 @@ metadata:
 spec:
   serviceId: mycodexvantaos-ai-inference
   tier: tier-1
-  packageName: "@mycodexvantaos/ai-inference"
+  packageName: '@mycodexvantaos/ai-inference'
   ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-ai-inference
   kubernetesResourceName: mycodexvantaos-ai-inference
   internalUri: mycodexvantaos://service/mycodexvantaos-ai-inference

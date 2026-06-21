@@ -12,17 +12,17 @@ Navigation indexes provide:
 
 ## Key Indexes
 
-| File | Description |
-|---|---|
-| `directory-index.yaml` | Index of all root directories |
-| `module-index.yaml` | Index of all root modules |
-| `dependency-graph.yaml` | Computed dependency topology |
-| `binding-index.yaml` | Service-to-provider binding index |
-| `service-navigation-map.yaml` | Service navigation map |
-| `provider-navigation-map.yaml` | Provider navigation map |
-| `foundation-navigation-map.yaml` | Foundation navigation map |
-| `gate-navigation-map.yaml` | Gate navigation map |
-| `namespace-navigation-map.yaml` | Namespace navigation map |
+| File                             | Description                       |
+| -------------------------------- | --------------------------------- |
+| `directory-index.yaml`           | Index of all root directories     |
+| `module-index.yaml`              | Index of all root modules         |
+| `dependency-graph.yaml`          | Computed dependency topology      |
+| `binding-index.yaml`             | Service-to-provider binding index |
+| `service-navigation-map.yaml`    | Service navigation map            |
+| `provider-navigation-map.yaml`   | Provider navigation map           |
+| `foundation-navigation-map.yaml` | Foundation navigation map         |
+| `gate-navigation-map.yaml`       | Gate navigation map               |
+| `namespace-navigation-map.yaml`  | Namespace navigation map          |
 
 ## Rules
 
@@ -33,9 +33,9 @@ Navigation indexes provide:
 
 ## Subdirectories
 
-| Directory | Description |
-|---|---|
-| `maps/` | Detailed navigation maps |
-| `graphs/` | Dependency and relationship graphs |
-| `schemas/` | JSON Schema validation for navigation artifacts |
+| Directory  | Description                                      |
+| ---------- | ------------------------------------------------ |
+| `maps/`    | Detailed navigation maps                         |
+| `graphs/`  | Dependency and relationship graphs               |
+| `schemas/` | JSON Schema validation for navigation artifacts  |
 | `outputs/` | Generated navigation reports (derived, not SSOT) |

@@ -9,7 +9,7 @@ metadata:
 spec:
   serviceId: mycodexvantaos-governance-audit-chain
   tier: tier-0
-  packageName: "@mycodexvantaos/governance-audit-chain"
+  packageName: '@mycodexvantaos/governance-audit-chain'
   ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-governance-audit-chain
   kubernetesResourceName: mycodexvantaos-governance-audit-chain
   internalUri: mycodexvantaos://service/mycodexvantaos-governance-audit-chain

@@ -4,5 +4,5 @@ metadata:
   name: mycodexvantaos-config
   namespace: mycodexvantaos
 data:
-  MYCODEXVANTAOS_RUNTIME_MODE: "connected"
-  MYCODEXVANTAOS_DEPLOYMENT_TARGET: "kubernetes"
+  MYCODEXVANTAOS_RUNTIME_MODE: 'connected'
+  MYCODEXVANTAOS_DEPLOYMENT_TARGET: 'kubernetes'

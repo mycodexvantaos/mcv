@@ -8,5 +8,5 @@ spec:
     - spdx
   required: true
   minimumVersion:
-    cyclonedx: "1.5"
-    spdx: "2.3"
+    cyclonedx: '1.5'
+    spdx: '2.3'

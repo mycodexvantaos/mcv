@@ -9,7 +9,7 @@ metadata:
 spec:
   serviceId: mycodexvantaos-governance-policy-engine
   tier: tier-0
-  packageName: "@mycodexvantaos/governance-policy-engine"
+  packageName: '@mycodexvantaos/governance-policy-engine'
   ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-governance-policy-engine
   kubernetesResourceName: mycodexvantaos-governance-policy-engine
   internalUri: mycodexvantaos://service/mycodexvantaos-governance-policy-engine

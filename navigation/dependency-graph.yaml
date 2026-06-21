@@ -58,4 +58,4 @@ spec:
 
   cyclicityCheck:
     status: acyclic
-    lastValidated: "2024-01-01T00:00:00Z"
+    lastValidated: '2024-01-01T00:00:00Z'

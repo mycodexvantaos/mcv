@@ -23,15 +23,15 @@ Foundation directories define:
 
 ## Seven Foundation Specification Units
 
-| Foundation | Alignment |
-|---|---|
-| `compute-foundation` | Deployment Layer, Runtime, Kubernetes, OCI, Compute Resource |
-| `data-foundation` | Provider capability: database, storage, vector-store, graph, search |
-| `algorithm-foundation` | Provider capability: llm, embedding, model-provider, evaluation |
-| `agent-foundation` | Service Layer, workflow, scheduler, agent, automation |
-| `contract-foundation` | Manifest, Schema, URN, Service Catalog, Naming Closure |
-| `governance-foundation` | CI Gate, Exception, Audit, Policy, Supply Chain |
-| `business-foundation` | Billing, Usage Metering, Marketplace, Workspace, Quota |
+| Foundation              | Alignment                                                           |
+| ----------------------- | ------------------------------------------------------------------- |
+| `compute-foundation`    | Deployment Layer, Runtime, Kubernetes, OCI, Compute Resource        |
+| `data-foundation`       | Provider capability: database, storage, vector-store, graph, search |
+| `algorithm-foundation`  | Provider capability: llm, embedding, model-provider, evaluation     |
+| `agent-foundation`      | Service Layer, workflow, scheduler, agent, automation               |
+| `contract-foundation`   | Manifest, Schema, URN, Service Catalog, Naming Closure              |
+| `governance-foundation` | CI Gate, Exception, Audit, Policy, Supply Chain                     |
+| `business-foundation`   | Billing, Usage Metering, Marketplace, Workspace, Quota              |
 
 ## Prohibited Content
 
