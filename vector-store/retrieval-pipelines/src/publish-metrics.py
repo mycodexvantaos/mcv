@@ -47,7 +47,7 @@ class MetricsPublisher:
             start = datetime.fromisoformat(state["created_at"])
             end = datetime.fromisoformat(state["completed_at"])
             duration = (end - start).total_seconds()
-            self.metrics["metrics"]["duration_seconds"] = duration
+            self.metrics["metrics"]["duration_seconds"] = duration  # type: ignore
 
     def publish_to_prometheus(self):
         """Publish metrics to observability-prometheus provider."""
