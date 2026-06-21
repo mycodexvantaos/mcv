@@ -406,16 +406,16 @@ unified-gates/
 
 ### K.3.2 AI Infrastructure Gate Layers
 
-| Range   | Directory                                 | Count | Purpose                                                        |
-| ------- | ----------------------------------------- | ----: | -------------------------------------------------------------- |
-| `01-08` | `l00`                |     8 | naming, registry, lifecycle, binding, dependency, owner, audit |
-| `11-18` | `l10`             |     8 | ai chip, gpu, accelerator, smart server, compute center        |
-| `21-28` | `l20`                |     8 | dataset, vector database, embedding, data quality              |
-| `31-38` | `l30`           |     8 | ai framework, model, training, inference, agent                |
-| `41-48` | `l40`                    |     8 | declarative workload contract, inference, training, rag, agent |
-| `51-58` | `l50`                |     8 | usage event, metering, cost attribution, billing evidence      |
-| `61-64` | `l60`   |     4 | cloud infra, kubernetes, gitops, managed sla                   |
-| `91-99` | `l90` |     9 | sbom, provenance, signature, audit, release closure            |
+| Range   | Directory | Count | Purpose                                                        |
+| ------- | --------- | ----: | -------------------------------------------------------------- |
+| `01-08` | `l00`     |     8 | naming, registry, lifecycle, binding, dependency, owner, audit |
+| `11-18` | `l10`     |     8 | ai chip, gpu, accelerator, smart server, compute center        |
+| `21-28` | `l20`     |     8 | dataset, vector database, embedding, data quality              |
+| `31-38` | `l30`     |     8 | ai framework, model, training, inference, agent                |
+| `41-48` | `l40`     |     8 | declarative workload contract, inference, training, rag, agent |
+| `51-58` | `l50`     |     8 | usage event, metering, cost attribution, billing evidence      |
+| `61-64` | `l60`     |     4 | cloud infra, kubernetes, gitops, managed sla                   |
+| `91-99` | `l90`     |     9 | sbom, provenance, signature, audit, release closure            |
 
 ---
 
@@ -691,16 +691,16 @@ outputs/unified-gate-summary.json
 
 | Business Capability                | Required Gate Layer                                            |
 | ---------------------------------- | -------------------------------------------------------------- |
-| ai compute center hosting          | `l10`                                  |
-| vector database service            | `l20`                                     |
-| ai agent framework                 | `l30` + `l40`       |
+| ai compute center hosting          | `l10`                                                          |
+| vector database service            | `l20`                                                          |
+| ai agent framework                 | `l30` + `l40`                                                  |
 | ai full-chain development platform | `layer-00` + `layer-10` + `layer-20` + `layer-30` + `layer-40` |
-| inference billing                  | `l50`                                     |
+| inference billing                  | `l50`                                                          |
 | training billing                   | `gate-53-training-metering-validation`                         |
 | embedding billing                  | `gate-54-embedding-metering-validation`                        |
 | agent run billing                  | `gate-55-agent-run-metering-validation`                        |
-| cloud managed infrastructure       | `l60`                        |
-| compliance-grade delivery          | `l90`                      |
+| cloud managed infrastructure       | `l60`                                                          |
+| compliance-grade delivery          | `l90`                                                          |
 
 ---
 

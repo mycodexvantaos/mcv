@@ -5,12 +5,12 @@ metadata:
   namespace: argocd
 spec:
   generators:
-  - list:
-      elements:
-      - cluster: in-cluster
-        env: development
-      - cluster: prd-b-cluster
-        env: production
+    - list:
+        elements:
+          - cluster: in-cluster
+            env: development
+          - cluster: prd-b-cluster
+            env: production
   template:
     metadata:
       name: mycodexvantaos-{{env}}
@@ -30,4 +30,4 @@ spec:
           prune: true
           selfHeal: true
         syncOptions:
-        - CreateNamespace=true
+          - CreateNamespace=true

@@ -29,20 +29,20 @@ copilot -p "Run typecheck and fix errors" --allow-tool='shell(npm run typecheck)
 
 ## Configuration Files
 
-| File | Purpose | Loaded |
-|------|---------|--------|
-| `.github/copilot-instructions.md` | Build commands, code style, architecture | Always |
-| `AGENTS.md` | Autopilot behavior, permissions, hooks | Always |
-| `Copilot.md` | Quick start, MCP, memory hints | Always |
-| `CODEX.md` | OpenAI Codex agent instructions | By Codex |
-| `.github/copilot/settings.json` | Permissions and inline hooks | Always |
-| `.github/hooks/quality-gates.json` | Lifecycle quality hooks | Always |
-| `.github/hooks/security.json` | Security preToolUse hooks | Always |
-| `.github/agents/*.agent.md` | Custom agent definitions | On invocation |
-| `.github/instructions/*.instructions.md` | Modular instructions | Always |
-| `.github/skills/*.md` | Reusable skills | On demand |
-| `.agents/skills/*/SKILL.md` | Platform skills | On demand |
-| `.agents/workflows/*.md` | Reusable workflows | On demand |
+| File                                     | Purpose                                  | Loaded        |
+| ---------------------------------------- | ---------------------------------------- | ------------- |
+| `.github/copilot-instructions.md`        | Build commands, code style, architecture | Always        |
+| `AGENTS.md`                              | Autopilot behavior, permissions, hooks   | Always        |
+| `Copilot.md`                             | Quick start, MCP, memory hints           | Always        |
+| `CODEX.md`                               | OpenAI Codex agent instructions          | By Codex      |
+| `.github/copilot/settings.json`          | Permissions and inline hooks             | Always        |
+| `.github/hooks/quality-gates.json`       | Lifecycle quality hooks                  | Always        |
+| `.github/hooks/security.json`            | Security preToolUse hooks                | Always        |
+| `.github/agents/*.agent.md`              | Custom agent definitions                 | On invocation |
+| `.github/instructions/*.instructions.md` | Modular instructions                     | Always        |
+| `.github/skills/*.md`                    | Reusable skills                          | On demand     |
+| `.agents/skills/*/SKILL.md`              | Platform skills                          | On demand     |
+| `.agents/workflows/*.md`                 | Reusable workflows                       | On demand     |
 
 ## Session Management
 
@@ -103,35 +103,35 @@ Review @services/mycodexvantaos-ai-memory/src/index.ts
 
 ## Slash Commands
 
-| Command | Description |
-|---------|-------------|
-| `/plan` | Enter plan mode for complex tasks |
-| `/agent` | Select a custom agent |
-| `/model` | Switch AI model |
-| `/review` | Request code review |
-| `/delegate` | Delegate to sub-agent |
-| `/fleet` | Run parallel sub-agents |
-| `/mcp` | Manage MCP servers |
-| `/compact` | Compress context |
-| `/context` | View token usage |
-| `/usage` | View session statistics |
-| `/clear` | Clear session |
-| `/new` | Start new session |
-| `/session` | View session info |
-| `/add-dir` | Add directory to context |
-| `/cwd` | Change working directory |
-| `/feedback` | Submit feedback |
-| `/help` | Show help |
+| Command     | Description                       |
+| ----------- | --------------------------------- |
+| `/plan`     | Enter plan mode for complex tasks |
+| `/agent`    | Select a custom agent             |
+| `/model`    | Switch AI model                   |
+| `/review`   | Request code review               |
+| `/delegate` | Delegate to sub-agent             |
+| `/fleet`    | Run parallel sub-agents           |
+| `/mcp`      | Manage MCP servers                |
+| `/compact`  | Compress context                  |
+| `/context`  | View token usage                  |
+| `/usage`    | View session statistics           |
+| `/clear`    | Clear session                     |
+| `/new`      | Start new session                 |
+| `/session`  | View session info                 |
+| `/add-dir`  | Add directory to context          |
+| `/cwd`      | Change working directory          |
+| `/feedback` | Submit feedback                   |
+| `/help`     | Show help                         |
 
 ## Environment Variables
 
-| Variable | Description |
-|----------|-------------|
-| `COPILOT_HOME` | Override config directory (default: `~/.copilot`) |
-| `COPILOT_PROVIDER_BASE_URL` | Custom model provider endpoint |
-| `COPILOT_PROVIDER_TYPE` | Provider: `openai`, `azure`, `anthropic` |
-| `COPILOT_PROVIDER_API_KEY` | API key for custom provider |
-| `COPILOT_MODEL` | Override default model |
+| Variable                    | Description                                       |
+| --------------------------- | ------------------------------------------------- |
+| `COPILOT_HOME`              | Override config directory (default: `~/.copilot`) |
+| `COPILOT_PROVIDER_BASE_URL` | Custom model provider endpoint                    |
+| `COPILOT_PROVIDER_TYPE`     | Provider: `openai`, `azure`, `anthropic`          |
+| `COPILOT_PROVIDER_API_KEY`  | API key for custom provider                       |
+| `COPILOT_MODEL`             | Override default model                            |
 
 ## CI/CD Automation Examples
 
@@ -165,22 +165,22 @@ copilot -p "Fix Python linting issues" \
 
 ### Hook Files
 
-| File | Events | Purpose |
-|------|--------|---------|
+| File                               | Events                                                                                                   | Purpose             |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------- | ------------------- |
 | `.github/hooks/quality-gates.json` | sessionStart, preToolUse, postToolUse, agentStop, subagentStart, subagentStop, errorOccurred, sessionEnd | Quality enforcement |
-| `.github/hooks/security.json` | preToolUse, permissionRequest | Security controls |
+| `.github/hooks/security.json`      | preToolUse, permissionRequest                                                                            | Security controls   |
 
 ### Hook Behavior Summary
 
-| Event | Action |
-|-------|--------|
-| Session starts | Load project conventions into context |
-| Before tool use | Security check (block dangerous operations) |
-| After tool use | Track modifications, remind to typecheck |
-| Agent stops | Run typecheck; block if errors found |
-| Sub-agent starts | Inject project conventions |
-| Error occurs | Log error, suggest alternatives |
-| Session ends | Cleanup temporary files |
+| Event            | Action                                      |
+| ---------------- | ------------------------------------------- |
+| Session starts   | Load project conventions into context       |
+| Before tool use  | Security check (block dangerous operations) |
+| After tool use   | Track modifications, remind to typecheck    |
+| Agent stops      | Run typecheck; block if errors found        |
+| Sub-agent starts | Inject project conventions                  |
+| Error occurs     | Log error, suggest alternatives             |
+| Session ends     | Cleanup temporary files                     |
 
 ## Platform Validation Checklist
 

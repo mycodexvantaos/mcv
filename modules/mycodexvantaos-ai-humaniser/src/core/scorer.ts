@@ -41,10 +41,7 @@ export function computeWeightedAiScore(sentences: SentenceAnalysis[]): number {
 /**
  * Compute the improvement score between original and humanised detection results
  */
-export function computeImprovement(
-  original: DetectionResult,
-  humanised: DetectionResult
-): number {
+export function computeImprovement(original: DetectionResult, humanised: DetectionResult): number {
   return Math.max(0, original.aiScore - humanised.aiScore);
 }
 
@@ -153,19 +150,21 @@ function generateRecommendations(result: DetectionResult): string[] {
   }
 
   if (result.stats.aiSentences > result.stats.totalSentences * 0.5) {
-    recommendations.push('More than half the sentences appear AI-generated. A full rewrite may be most effective.');
+    recommendations.push(
+      'More than half the sentences appear AI-generated. A full rewrite may be most effective.'
+    );
   }
 
   const highTransition = result.sentences.filter(
     (s) => s.features.transitionSmoothness > 0.3
   ).length;
   if (highTransition > 2) {
-    recommendations.push('Reduce use of formal transition words (furthermore, consequently, etc.) for a more natural flow.');
+    recommendations.push(
+      'Reduce use of formal transition words (furthermore, consequently, etc.) for a more natural flow.'
+    );
   }
 
-  const lowDiversity = result.sentences.filter(
-    (s) => s.features.lexicalDiversity < 0.4
-  ).length;
+  const lowDiversity = result.sentences.filter((s) => s.features.lexicalDiversity < 0.4).length;
   if (lowDiversity > 2) {
     recommendations.push('Increase vocabulary diversity by using synonyms and varied expressions.');
   }
@@ -174,7 +173,9 @@ function generateRecommendations(result: DetectionResult): string[] {
     (s) => Math.abs(s.features.wordCount - result.sentences[0].features.wordCount) < 5
   );
   if (uniformLength && result.sentences.length > 3) {
-    recommendations.push('Vary sentence lengths more — uniform sentence length is a common AI pattern.');
+    recommendations.push(
+      'Vary sentence lengths more — uniform sentence length is a common AI pattern.'
+    );
   }
 
   if (recommendations.length === 0) {

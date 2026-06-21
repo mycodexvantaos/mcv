@@ -6,7 +6,7 @@ export class AuthenticationService {
     }
     return null;
   }
-  
+
   async verifyToken(token: string): Promise<boolean> {
     return token.startsWith('token_');
   }

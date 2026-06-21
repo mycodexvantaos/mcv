@@ -10,18 +10,19 @@
 
 1. **CLOUDFLARE_API_TOKEN**
 
-   ```
+   ```text
    <redacted-cloudflare-token>
    ```
 
 2. **CLOUDFLARE_ACCOUNT_ID**
 
-   ```
+   ```text
    <your-account-id>
    ```
 
 3. **CLOUDFLARE_ZONE_ID**
-   ```
+
+   ```text
    <your-zone-id>
    ```
 
@@ -62,7 +63,7 @@ gh pr create --title "Add Cloudflare Pages Deployment" --body "Adds Cloudflare P
 - **預覽環境**: https://preview.autoecoops.io
 - **生產環境**: https://admin.autoecoops.io
 
-## ✅ 完成！
+## ✅ 完成
 
 您的應用程式現在已部署到 Cloudflare Pages！
 

@@ -6,179 +6,179 @@ metadata:
   organization: mycodexvantaos
 spec:
   planes:
-  - id: quality-gate-plane
-    path: unified-gates/gate
-    purpose: documentation-governance-coverage
-  - id: ai-infra-gate-plane
-    path: unified-gates/ai-infra-gates
-    purpose: executable-ai-native-infrastructure-gates
+    - id: quality-gate-plane
+      path: unified-gates/gate
+      purpose: documentation-governance-coverage
+    - id: ai-infra-gate-plane
+      path: unified-gates/ai-infra-gates
+      purpose: executable-ai-native-infrastructure-gates
   gates:
-  - id: gate-01-namespace-governance-validation
-    plane: ai-infra-gate-plane
-    path: unified-gates/ai-infra-gates/l00/gate-01-namespace-governance-validation.yaml
-    lifecycle: active
-    blocking: true
-    owner: platform-ai-governance
-    riskLevel: high
-    validates:
-    - namespace
-    - constitutional-governance
-  - id: gate-04-directory-binding-mediator-validation
-    plane: ai-infra-gate-plane
-    path: unified-gates/ai-infra-gates/l00/gate-04-directory-binding-mediator-validation.yaml
-    lifecycle: active
-    blocking: true
-    owner: platform-ai-governance
-    riskLevel: high
-    validates:
-    - directory-binding
-    - mediator-contract
-  - id: gate-05-dependency-graph-acyclic-validation
-    plane: ai-infra-gate-plane
-    path: unified-gates/ai-infra-gates/l00/gate-05-dependency-graph-acyclic-validation.yaml
-    lifecycle: active
-    blocking: true
-    owner: platform-ai-governance
-    riskLevel: critical
-    validates:
-    - dependency-graph
-    - acyclic-boundary
-  - id: gate-15-ai-compute-cluster-readiness
-    plane: ai-infra-gate-plane
-    path: unified-gates/ai-infra-gates/l10/gate-15-ai-compute-cluster-readiness.yaml
-    lifecycle: active
-    blocking: true
-    owner: platform-ai-governance
-    riskLevel: high
-    validates:
-    - compute-cluster
-    - runtime-readiness
-  - id: gate-21-dataset-contract-validation
-    plane: ai-infra-gate-plane
-    path: unified-gates/ai-infra-gates/l20/gate-21-dataset-contract-validation.yaml
-    lifecycle: active
-    blocking: true
-    owner: platform-ai-governance
-    riskLevel: high
-    validates:
-    - dataset-contract
-  - id: gate-25-vector-database-schema-validation
-    plane: ai-infra-gate-plane
-    path: unified-gates/ai-infra-gates/l20/gate-25-vector-database-schema-validation.yaml
-    lifecycle: active
-    blocking: true
-    owner: platform-ai-governance
-    riskLevel: high
-    validates:
-    - vector-index-contract
-  - id: gate-32-model-contract-validation
-    plane: ai-infra-gate-plane
-    path: unified-gates/ai-infra-gates/l30/gate-32-model-contract-validation.yaml
-    lifecycle: active
-    blocking: true
-    owner: platform-ai-governance
-    riskLevel: high
-    validates:
-    - model-contract
-  - id: gate-34-inference-runtime-validation
-    plane: ai-infra-gate-plane
-    path: unified-gates/ai-infra-gates/l30/gate-34-inference-runtime-validation.yaml
-    lifecycle: active
-    blocking: true
-    owner: platform-ai-governance
-    riskLevel: high
-    validates:
-    - inference-runtime
-  - id: gate-41-ai-workload-contract-validation
-    plane: ai-infra-gate-plane
-    path: unified-gates/ai-infra-gates/l40/gate-41-ai-workload-contract-validation.yaml
-    lifecycle: active
-    blocking: true
-    owner: platform-ai-governance
-    riskLevel: high
-    validates:
-    - ai-workload-contract
-    - runtime-policy
-    - resource-declaration
-  - id: gate-47-workload-slo-validation
-    plane: ai-infra-gate-plane
-    path: unified-gates/ai-infra-gates/l40/gate-47-workload-slo-validation.yaml
-    lifecycle: active
-    blocking: true
-    owner: platform-ai-governance
-    riskLevel: high
-    validates:
-    - workload-slo
-  - id: gate-51-usage-event-contract-validation
-    plane: ai-infra-gate-plane
-    path: unified-gates/ai-infra-gates/l50/gate-51-usage-event-contract-validation.yaml
-    lifecycle: active
-    blocking: true
-    owner: platform-ai-governance
-    riskLevel: high
-    validates:
-    - usage-event-contract
-  - id: gate-56-cost-attribution-validation
-    plane: ai-infra-gate-plane
-    path: unified-gates/ai-infra-gates/l50/gate-56-cost-attribution-validation.yaml
-    lifecycle: active
-    blocking: true
-    owner: platform-ai-governance
-    riskLevel: high
-    validates:
-    - cost-attribution
-  - id: gate-62-kubernetes-baseline-validation
-    plane: ai-infra-gate-plane
-    path: unified-gates/ai-infra-gates/l60/gate-62-kubernetes-baseline-validation.yaml
-    lifecycle: active
-    blocking: true
-    owner: platform-ai-governance
-    riskLevel: high
-    validates:
-    - kubernetes-baseline
-  - id: gate-63-gitops-sync-validation
-    plane: ai-infra-gate-plane
-    path: unified-gates/ai-infra-gates/l60/gate-63-gitops-sync-validation.yaml
-    lifecycle: active
-    blocking: true
-    owner: platform-ai-governance
-    riskLevel: high
-    validates:
-    - gitops-sync
-  - id: gate-91-sbom-generation-validation
-    plane: ai-infra-gate-plane
-    path: unified-gates/ai-infra-gates/l90/gate-91-sbom-generation-validation.yaml
-    lifecycle: active
-    blocking: true
-    owner: platform-ai-governance
-    riskLevel: critical
-    validates:
-    - sbom
-  - id: gate-92-provenance-validation
-    plane: ai-infra-gate-plane
-    path: unified-gates/ai-infra-gates/l90/gate-92-provenance-validation.yaml
-    lifecycle: active
-    blocking: true
-    owner: platform-ai-governance
-    riskLevel: critical
-    validates:
-    - provenance
-  - id: gate-93-signature-validation
-    plane: ai-infra-gate-plane
-    path: unified-gates/ai-infra-gates/l90/gate-93-signature-validation.yaml
-    lifecycle: active
-    blocking: true
-    owner: platform-ai-governance
-    riskLevel: critical
-    validates:
-    - signature
-  - id: gate-99-production-closure-validation
-    plane: ai-infra-gate-plane
-    path: unified-gates/ai-infra-gates/l90/gate-99-production-closure-validation.yaml
-    lifecycle: active
-    blocking: true
-    owner: platform-ai-governance
-    riskLevel: critical
-    validates:
-    - production-closure
-    - audit-evidence-chain
+    - id: gate-01-namespace-governance-validation
+      plane: ai-infra-gate-plane
+      path: unified-gates/ai-infra-gates/l00/gate-01-namespace-governance-validation.yaml
+      lifecycle: active
+      blocking: true
+      owner: platform-ai-governance
+      riskLevel: high
+      validates:
+        - namespace
+        - constitutional-governance
+    - id: gate-04-directory-binding-mediator-validation
+      plane: ai-infra-gate-plane
+      path: unified-gates/ai-infra-gates/l00/gate-04-directory-binding-mediator-validation.yaml
+      lifecycle: active
+      blocking: true
+      owner: platform-ai-governance
+      riskLevel: high
+      validates:
+        - directory-binding
+        - mediator-contract
+    - id: gate-05-dependency-graph-acyclic-validation
+      plane: ai-infra-gate-plane
+      path: unified-gates/ai-infra-gates/l00/gate-05-dependency-graph-acyclic-validation.yaml
+      lifecycle: active
+      blocking: true
+      owner: platform-ai-governance
+      riskLevel: critical
+      validates:
+        - dependency-graph
+        - acyclic-boundary
+    - id: gate-15-ai-compute-cluster-readiness
+      plane: ai-infra-gate-plane
+      path: unified-gates/ai-infra-gates/l10/gate-15-ai-compute-cluster-readiness.yaml
+      lifecycle: active
+      blocking: true
+      owner: platform-ai-governance
+      riskLevel: high
+      validates:
+        - compute-cluster
+        - runtime-readiness
+    - id: gate-21-dataset-contract-validation
+      plane: ai-infra-gate-plane
+      path: unified-gates/ai-infra-gates/l20/gate-21-dataset-contract-validation.yaml
+      lifecycle: active
+      blocking: true
+      owner: platform-ai-governance
+      riskLevel: high
+      validates:
+        - dataset-contract
+    - id: gate-25-vector-database-schema-validation
+      plane: ai-infra-gate-plane
+      path: unified-gates/ai-infra-gates/l20/gate-25-vector-database-schema-validation.yaml
+      lifecycle: active
+      blocking: true
+      owner: platform-ai-governance
+      riskLevel: high
+      validates:
+        - vector-index-contract
+    - id: gate-32-model-contract-validation
+      plane: ai-infra-gate-plane
+      path: unified-gates/ai-infra-gates/l30/gate-32-model-contract-validation.yaml
+      lifecycle: active
+      blocking: true
+      owner: platform-ai-governance
+      riskLevel: high
+      validates:
+        - model-contract
+    - id: gate-34-inference-runtime-validation
+      plane: ai-infra-gate-plane
+      path: unified-gates/ai-infra-gates/l30/gate-34-inference-runtime-validation.yaml
+      lifecycle: active
+      blocking: true
+      owner: platform-ai-governance
+      riskLevel: high
+      validates:
+        - inference-runtime
+    - id: gate-41-ai-workload-contract-validation
+      plane: ai-infra-gate-plane
+      path: unified-gates/ai-infra-gates/l40/gate-41-ai-workload-contract-validation.yaml
+      lifecycle: active
+      blocking: true
+      owner: platform-ai-governance
+      riskLevel: high
+      validates:
+        - ai-workload-contract
+        - runtime-policy
+        - resource-declaration
+    - id: gate-47-workload-slo-validation
+      plane: ai-infra-gate-plane
+      path: unified-gates/ai-infra-gates/l40/gate-47-workload-slo-validation.yaml
+      lifecycle: active
+      blocking: true
+      owner: platform-ai-governance
+      riskLevel: high
+      validates:
+        - workload-slo
+    - id: gate-51-usage-event-contract-validation
+      plane: ai-infra-gate-plane
+      path: unified-gates/ai-infra-gates/l50/gate-51-usage-event-contract-validation.yaml
+      lifecycle: active
+      blocking: true
+      owner: platform-ai-governance
+      riskLevel: high
+      validates:
+        - usage-event-contract
+    - id: gate-56-cost-attribution-validation
+      plane: ai-infra-gate-plane
+      path: unified-gates/ai-infra-gates/l50/gate-56-cost-attribution-validation.yaml
+      lifecycle: active
+      blocking: true
+      owner: platform-ai-governance
+      riskLevel: high
+      validates:
+        - cost-attribution
+    - id: gate-62-kubernetes-baseline-validation
+      plane: ai-infra-gate-plane
+      path: unified-gates/ai-infra-gates/l60/gate-62-kubernetes-baseline-validation.yaml
+      lifecycle: active
+      blocking: true
+      owner: platform-ai-governance
+      riskLevel: high
+      validates:
+        - kubernetes-baseline
+    - id: gate-63-gitops-sync-validation
+      plane: ai-infra-gate-plane
+      path: unified-gates/ai-infra-gates/l60/gate-63-gitops-sync-validation.yaml
+      lifecycle: active
+      blocking: true
+      owner: platform-ai-governance
+      riskLevel: high
+      validates:
+        - gitops-sync
+    - id: gate-91-sbom-generation-validation
+      plane: ai-infra-gate-plane
+      path: unified-gates/ai-infra-gates/l90/gate-91-sbom-generation-validation.yaml
+      lifecycle: active
+      blocking: true
+      owner: platform-ai-governance
+      riskLevel: critical
+      validates:
+        - sbom
+    - id: gate-92-provenance-validation
+      plane: ai-infra-gate-plane
+      path: unified-gates/ai-infra-gates/l90/gate-92-provenance-validation.yaml
+      lifecycle: active
+      blocking: true
+      owner: platform-ai-governance
+      riskLevel: critical
+      validates:
+        - provenance
+    - id: gate-93-signature-validation
+      plane: ai-infra-gate-plane
+      path: unified-gates/ai-infra-gates/l90/gate-93-signature-validation.yaml
+      lifecycle: active
+      blocking: true
+      owner: platform-ai-governance
+      riskLevel: critical
+      validates:
+        - signature
+    - id: gate-99-production-closure-validation
+      plane: ai-infra-gate-plane
+      path: unified-gates/ai-infra-gates/l90/gate-99-production-closure-validation.yaml
+      lifecycle: active
+      blocking: true
+      owner: platform-ai-governance
+      riskLevel: critical
+      validates:
+        - production-closure
+        - audit-evidence-chain

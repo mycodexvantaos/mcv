@@ -71,7 +71,7 @@ import { StorageProvider } from '@mycodexvantaos/core-config';
 
 class MyService {
   constructor(private storage: StorageProvider) {}
-  
+
   async save(data: unknown) {
     await this.storage.put('key', data);
   }
@@ -103,17 +103,18 @@ import { S3Client } from '@aws-sdk/client-s3'; // NEVER in business logic
 
 ### Naming Convention (Enforced by CI)
 
-| Type | Pattern | Example |
-|------|---------|---------|
-| Service directory | `mycodexvantaos-<domain>-<capability>` | `mycodexvantaos-ai-memory` |
-| Package scope | `@mycodexvantaos/<capability>` | `@mycodexvantaos/core-gateway` |
-| Module directory | `mycodexvantaos-<domain>-<capability>` | `mycodexvantaos-governance-policy` |
-| Schema file | `<domain>/<entity>.schema.json` | `ai-team/agent-profile.schema.json` |
-| Workflow file | `<descriptive-name>.yml` | `ci-repair-agent.yml` |
+| Type              | Pattern                                | Example                             |
+| ----------------- | -------------------------------------- | ----------------------------------- |
+| Service directory | `mycodexvantaos-<domain>-<capability>` | `mycodexvantaos-ai-memory`          |
+| Package scope     | `@mycodexvantaos/<capability>`         | `@mycodexvantaos/core-gateway`      |
+| Module directory  | `mycodexvantaos-<domain>-<capability>` | `mycodexvantaos-governance-policy`  |
+| Schema file       | `<domain>/<entity>.schema.json`        | `ai-team/agent-profile.schema.json` |
+| Workflow file     | `<descriptive-name>.yml`               | `ci-repair-agent.yml`               |
 
 ### Capability Declaration
 
 Every new service/package that introduces capabilities must:
+
 1. Declare capabilities in `governance.json`
 2. Use URN format: `urn:mycodexvantaos:capability:<name>`
 3. Pass governance check: `npm run governance:check`

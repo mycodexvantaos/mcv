@@ -2,7 +2,11 @@
  * @fileoverview Tests for Feature Extractor
  */
 
-import { extractFeatures, splitIntoSentences, extractFeaturesBatch } from '../core/feature-extractor';
+import {
+  extractFeatures,
+  splitIntoSentences,
+  extractFeaturesBatch,
+} from '../core/feature-extractor';
 
 describe('splitIntoSentences', () => {
   it('should split text on sentence-ending punctuation', () => {
@@ -66,7 +70,9 @@ describe('extractFeatures', () => {
   it('should compute punctuation density', () => {
     const withPunctuation = extractFeatures('Hello, world! How are you?');
     const withoutPunctuation = extractFeatures('Hello world how are you');
-    expect(withPunctuation.punctuationDensity).toBeGreaterThan(withoutPunctuation.punctuationDensity);
+    expect(withPunctuation.punctuationDensity).toBeGreaterThan(
+      withoutPunctuation.punctuationDensity
+    );
   });
 
   it('should detect transition word usage', () => {
@@ -76,7 +82,9 @@ describe('extractFeatures', () => {
     const withoutTransitions = extractFeatures(
       'The results show the approach works. We think you should use it.'
     );
-    expect(withTransitions.transitionSmoothness).toBeGreaterThan(withoutTransitions.transitionSmoothness);
+    expect(withTransitions.transitionSmoothness).toBeGreaterThan(
+      withoutTransitions.transitionSmoothness
+    );
   });
 
   it('should compute perplexity proxy', () => {
@@ -97,9 +105,16 @@ describe('extractFeatures', () => {
   it('should compute all feature fields', () => {
     const features = extractFeatures('This is a test sentence for feature extraction.');
     const requiredFields = [
-      'avgWordLength', 'wordCount', 'lexicalDiversity', 'avgWordFrequency',
-      'punctuationDensity', 'complexity', 'repetitionScore', 'perplexityProxy',
-      'transitionSmoothness', 'vocabularyRichness',
+      'avgWordLength',
+      'wordCount',
+      'lexicalDiversity',
+      'avgWordFrequency',
+      'punctuationDensity',
+      'complexity',
+      'repetitionScore',
+      'perplexityProxy',
+      'transitionSmoothness',
+      'vocabularyRichness',
     ];
     for (const field of requiredFields) {
       expect(features).toHaveProperty(field);

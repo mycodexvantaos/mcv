@@ -18,93 +18,99 @@ All code changes MUST respect these four core principles:
 ### 1. Three-Layer AI Context Model (C.3)
 
 To ensure consistent AI assistance and platform integrity, the repository uses a three-layer context model:
--   **L1 (Semantic)**: Use README and ARCHITECTURE.md for navigation intent. Do NOT treat them as absolute authority.
--   **L2 (Metadata)**: Always prefer manifests (`module-manifest.yaml`), schemas, and indexes (`contracts/INDEX.yaml`) for architectural facts.
--   **L3 (Enforcement)**: Critical rules MUST be enforced by CI validators, policy-as-code, and unified gates.
+
+- **L1 (Semantic)**: Use README and ARCHITECTURE.md for navigation intent. Do NOT treat them as absolute authority.
+- **L2 (Metadata)**: Always prefer manifests (`module-manifest.yaml`), schemas, and indexes (`contracts/INDEX.yaml`) for architectural facts.
+- **L3 (Enforcement)**: Critical rules MUST be enforced by CI validators, policy-as-code, and unified gates.
 
 ### 2. Navigation and Directory Mapping (C.2)
 
 To navigate the 242+ root directories, agents MUST:
--   **Consult Navigation**: Refer to `navigation/module-index.yaml` and `navigation/dependency-graph.yaml` before proposing changes.
--   **Respect Boundaries**: Distinguish between `specification` vs `implementation` and `provider` vs `port`.
--   **Sync Indexes**: Automatically update navigation indexes whenever adding, moving, or changing modules or services.
+
+- **Consult Navigation**: Refer to `navigation/module-index.yaml` and `navigation/dependency-graph.yaml` before proposing changes.
+- **Respect Boundaries**: Distinguish between `specification` vs `implementation` and `provider` vs `port`.
+- **Sync Indexes**: Automatically update navigation indexes whenever adding, moving, or changing modules or services.
 
 ### 3. AI-Assisted Development Principles (C.4)
 
 In Autopilot mode, agents MUST adhere to these development standards:
--   **Task-Driven Workloads**: Wrap any auditable or AI-consuming workload as an `ai-task` resource with a defined lifecycle.
--   **Contract-First**: Propose contract drafts and validate them through schema checks before writing runtime code.
--   **Billing Awareness**: Ensure every billable primitive (inference, tool call, etc.) emits a traceable usage event.
--   **Provider Isolation**: Maintain strict isolation of external SDKs within the `providers/` layer.
+
+- **Task-Driven Workloads**: Wrap any auditable or AI-consuming workload as an `ai-task` resource with a defined lifecycle.
+- **Contract-First**: Propose contract drafts and validate them through schema checks before writing runtime code.
+- **Billing Awareness**: Ensure every billable primitive (inference, tool call, etc.) emits a traceable usage event.
+- **Provider Isolation**: Maintain strict isolation of external SDKs within the `providers/` layer.
 
 ### 4. Memory-Driven Persistence Protocol
 
 Agents MUST operate within a memory-driven persistence loop to ensure continuity, reusability, and unconstrained operation:
--   **Context Fetch (Pre-Task)**: Before initiating any task, agents MUST query the `mycodexvantaos-memory-dream` engine to retrieve relevant `MemoryItem`s as contextual input. This ensures work builds upon past knowledge.
--   **Memory Emission (Post-Task)**: Upon task completion (success or failure), agents MUST emit a `MemoryItem` encapsulating the task's outcome, key decisions, and any generated `DreamReport`. This `MemoryItem` MUST be formatted according to `mycodexvantaos-memory-dream` data models and include `temporal_expressions` and `related_entities`.
--   **Dream Action Resolution**: If the `mycodexvantaos-memory-dream` engine generates `DreamAction`s (e.g., for conflict resolution or orphan detection), agents MUST prioritize executing these actions to maintain memory integrity and consistency.
--   **Semantic Clustering Reuse**: Agents SHOULD leverage semantic clustering from the `mycodexvantaos-memory-dream` engine to identify and reuse best practices or relevant historical contexts from semantically similar modules or tasks.
+
+- **Context Fetch (Pre-Task)**: Before initiating any task, agents MUST query the `mycodexvantaos-memory-dream` engine to retrieve relevant `MemoryItem`s as contextual input. This ensures work builds upon past knowledge.
+- **Memory Emission (Post-Task)**: Upon task completion (success or failure), agents MUST emit a `MemoryItem` encapsulating the task's outcome, key decisions, and any generated `DreamReport`. This `MemoryItem` MUST be formatted according to `mycodexvantaos-memory-dream` data models and include `temporal_expressions` and `related_entities`.
+- **Dream Action Resolution**: If the `mycodexvantaos-memory-dream` engine generates `DreamAction`s (e.g., for conflict resolution or orphan detection), agents MUST prioritize executing these actions to maintain memory integrity and consistency.
+- **Semantic Clustering Reuse**: Agents SHOULD leverage semantic clustering from the `mycodexvantaos-memory-dream` engine to identify and reuse best practices or relevant historical contexts from semantically similar modules or tasks.
 
 ### 5. Document-Driven Development (Artifact-to-App)
 
 Agents MUST prioritize Document-Driven Development, transforming various document formats into structured **Artifacts** and executable code:
--   **Artifact Conversion**: Automatically convert documents (TXT, DOCX, PDF, Markdown) into structured **Artifacts** (YAML, JSON, Markdown, Python, JS/TS, Java/Go modules, JSX/TSX components, OpenAPI specs).
--   **Quality Assurance**: For all generated **Artifacts**, agents MUST perform automated Linting, Schema Validation, and Unit Test Generation (e.g., Pytest, Jest).
--   **Metadata & Traceability**: Extract metadata from source documents and embed it into generated **Artifacts** for enhanced traceability and auditability.
--   **Output Customization**: Utilize template engines (e.g., Jinja2) to ensure generated **Artifacts** conform to team-specific coding styles and formats.
--   **CI/CD Integration**: Integrate **Artifact** conversion and validation into CI/CD pipelines, supporting semantic versioning, cloud storage uploads (S3, GCS), and incremental conversion.
+
+- **Artifact Conversion**: Automatically convert documents (TXT, DOCX, PDF, Markdown) into structured **Artifacts** (YAML, JSON, Markdown, Python, JS/TS, Java/Go modules, JSX/TSX components, OpenAPI specs).
+- **Quality Assurance**: For all generated **Artifacts**, agents MUST perform automated Linting, Schema Validation, and Unit Test Generation (e.g., Pytest, Jest).
+- **Metadata & Traceability**: Extract metadata from source documents and embed it into generated **Artifacts** for enhanced traceability and auditability.
+- **Output Customization**: Utilize template engines (e.g., Jinja2) to ensure generated **Artifacts** conform to team-specific coding styles and formats.
+- **CI/CD Integration**: Integrate **Artifact** conversion and validation into CI/CD pipelines, supporting semantic versioning, cloud storage uploads (S3, GCS), and incremental conversion.
 
 ### 6. Automated Repair & PR Loop
 
 Agents act as "Navigation Guardians":
--   **Detection**: Use `scripts/validate-ai-context.py` and `scripts/validate-directory-context.py` to detect drift.
--   **Remediation**: Automatically update `directory-context.yaml` and `navigation/` files to reflect architectural changes.
--   **Verification**: Ensure the `closure-prover` and `unified-gates` validate the entire governance chain before opening a PR.
+
+- **Detection**: Use `scripts/validate-ai-context.py` and `scripts/validate-directory-context.py` to detect drift.
+- **Remediation**: Automatically update `directory-context.yaml` and `navigation/` files to reflect architectural changes.
+- **Verification**: Ensure the `closure-prover` and `unified-gates` validate the entire governance chain before opening a PR.
 
 ### 7. Normative Behavior
 
--   **No Silent Fallback**: Fallback logic must be declared in manifests and generate audit events.
--   **Local-First**: Prioritize local validation and Docker Compose over remote cloud deployments.
--   **Transparency**: Every autonomous action must be documented with a clear reasoning trace referencing the relevant **Governance Code**.
+- **No Silent Fallback**: Fallback logic must be declared in manifests and generate audit events.
+- **Local-First**: Prioritize local validation and Docker Compose over remote cloud deployments.
+- **Transparency**: Every autonomous action must be documented with a clear reasoning trace referencing the relevant **Governance Code**.
 
 By following these standards, agents ensure the platform's architecture remains transparent, navigable, and constitutionally sound for both AI and human contributors.
 
 ## Build Commands
 
-| Command | Purpose |
-|---------|---------|
-| `npm run build` | Build the Next.js project |
-| `npm run dev` | Start dev server with Turbopack (port 9002) |
-| `npm run typecheck` | TypeScript validation |
-| `npm run lint` | Linting |
-| `npm run format` | Format code with Prettier |
-| `npm run format:check` | Check code formatting |
-| `npm run validate` | Run typecheck validation |
-| `npm run contracts:validate` | Validate contracts SDK |
-| `npm run governance:check` | Run governance/policy checks |
-| `npm run test:services` | Run service unit tests |
-| `npm run test:contracts` | Run contracts SDK tests |
-| `npm run preview` | Build and preview on Cloudflare |
-| `npm run deploy` | Build and deploy to Cloudflare (REQUIRES APPROVAL) |
-| `npm run genkit:dev` | Start Genkit AI development server |
-| `npm run python:test` | Run Python test suite |
-| `npm run python:lint` | Lint Python packages with ruff |
-| `npm run python:typecheck` | Type check Python with mypy |
-| `npm run api:start` | Start API Node server |
-| `npm run rc:verify` | Verify release candidate |
-| `npm run release:artifacts` | Generate release artifacts |
+| Command                      | Purpose                                            |
+| ---------------------------- | -------------------------------------------------- |
+| `npm run build`              | Build the Next.js project                          |
+| `npm run dev`                | Start dev server with Turbopack (port 9002)        |
+| `npm run typecheck`          | TypeScript validation                              |
+| `npm run lint`               | Linting                                            |
+| `npm run format`             | Format code with Prettier                          |
+| `npm run format:check`       | Check code formatting                              |
+| `npm run validate`           | Run typecheck validation                           |
+| `npm run contracts:validate` | Validate contracts SDK                             |
+| `npm run governance:check`   | Run governance/policy checks                       |
+| `npm run test:services`      | Run service unit tests                             |
+| `npm run test:contracts`     | Run contracts SDK tests                            |
+| `npm run preview`            | Build and preview on Cloudflare                    |
+| `npm run deploy`             | Build and deploy to Cloudflare (REQUIRES APPROVAL) |
+| `npm run genkit:dev`         | Start Genkit AI development server                 |
+| `npm run python:test`        | Run Python test suite                              |
+| `npm run python:lint`        | Lint Python packages with ruff                     |
+| `npm run python:typecheck`   | Type check Python with mypy                        |
+| `npm run api:start`          | Start API Node server                              |
+| `npm run rc:verify`          | Verify release candidate                           |
+| `npm run release:artifacts`  | Generate release artifacts                         |
 
 ## Platform Layers
 
-| Layer | Directory | Purpose |
-|-------|-----------|---------|
-| Builder | `packages/builder`, generators in `packages/*-generator` | Code generation from templates |
-| Runtime | `packages/runtime`, `packages/core-*` | Core execution engine |
-| Deployment | `infra/`, `packages/deployment-manifest-generator` | Infrastructure and deployment |
-| Native Services | `packages/service-*`, `services/` | Platform services |
-| Modules | `modules/` | High-level domain modules |
-| AI Layer | `src/ai/`, `packages/ai-*`, `modules/mycodexvantaos-ai-*` | AI/ML capabilities via Genkit |
-| Python Plane | `python/` | Python services (CI repair, dream worker, agent worker) |
+| Layer           | Directory                                                 | Purpose                                                 |
+| --------------- | --------------------------------------------------------- | ------------------------------------------------------- |
+| Builder         | `packages/builder`, generators in `packages/*-generator`  | Code generation from templates                          |
+| Runtime         | `packages/runtime`, `packages/core-*`                     | Core execution engine                                   |
+| Deployment      | `infra/`, `packages/deployment-manifest-generator`        | Infrastructure and deployment                           |
+| Native Services | `packages/service-*`, `services/`                         | Platform services                                       |
+| Modules         | `modules/`                                                | High-level domain modules                               |
+| AI Layer        | `src/ai/`, `packages/ai-*`, `modules/mycodexvantaos-ai-*` | AI/ML capabilities via Genkit                           |
+| Python Plane    | `python/`                                                 | Python services (CI repair, dream worker, agent worker) |
 
 ## Monorepo Structure
 
@@ -138,12 +144,12 @@ By following these standards, agents ensure the platform's architecture remains 
 
 ## Naming Conventions (Governance-Enforced)
 
-| Type | Pattern | Example |
-|------|---------|---------|
-| Service | `mycodexvantaos-<domain>-<capability>` | `mycodexvantaos-ai-memory` |
-| Package | `@mycodexvantaos/<capability>` | `@mycodexvantaos/core-gateway` |
-| Module | `mycodexvantaos-<domain>-<capability>` | `mycodexvantaos-governance-policy` |
-| Schema | `<domain>/<entity>.schema.json` | `ai-team/agent-profile.schema.json` |
+| Type    | Pattern                                | Example                             |
+| ------- | -------------------------------------- | ----------------------------------- |
+| Service | `mycodexvantaos-<domain>-<capability>` | `mycodexvantaos-ai-memory`          |
+| Package | `@mycodexvantaos/<capability>`         | `@mycodexvantaos/core-gateway`      |
+| Module  | `mycodexvantaos-<domain>-<capability>` | `mycodexvantaos-governance-policy`  |
+| Schema  | `<domain>/<entity>.schema.json`        | `ai-team/agent-profile.schema.json` |
 
 ## Workflow
 
@@ -156,12 +162,12 @@ By following these standards, agents ensure the platform's architecture remains 
 
 ## Testing
 
-| Scope | Command | Notes |
-|-------|---------|-------|
-| TypeScript services | `npm run test:services` | Node.js test runner |
-| Contracts SDK | `npm run test:contracts` | Contract validation tests |
-| Python | `npm run python:test` | pytest via uv |
-| Integration | `npm run test:integration` | Not yet configured |
+| Scope               | Command                    | Notes                     |
+| ------------------- | -------------------------- | ------------------------- |
+| TypeScript services | `npm run test:services`    | Node.js test runner       |
+| Contracts SDK       | `npm run test:contracts`   | Contract validation tests |
+| Python              | `npm run python:test`      | pytest via uv             |
+| Integration         | `npm run test:integration` | Not yet configured        |
 
 ## AI Development (Genkit)
 
@@ -244,66 +250,66 @@ shell(curl * | bash)                — Remote script execution
 
 Quality gates and security controls are enforced via hooks:
 
-| File | Purpose |
-|------|---------|
-| `.github/hooks/quality-gates.json` | Lifecycle hooks: sessionStart, agentStop (typecheck gate), errorOccurred |
-| `.github/hooks/security.json` | preToolUse security: blocks rm -rf, force push, secrets exposure, curl\|sh |
-| `.github/copilot/settings.json` | Repository-level permissions and inline hooks |
+| File                               | Purpose                                                                    |
+| ---------------------------------- | -------------------------------------------------------------------------- |
+| `.github/hooks/quality-gates.json` | Lifecycle hooks: sessionStart, agentStop (typecheck gate), errorOccurred   |
+| `.github/hooks/security.json`      | preToolUse security: blocks rm -rf, force push, secrets exposure, curl\|sh |
+| `.github/copilot/settings.json`    | Repository-level permissions and inline hooks                              |
 
 ### Hook Events Active
 
-| Event | Behavior |
-|-------|----------|
-| `sessionStart` | Auto-load project conventions |
-| `preToolUse` | Security validation before every tool execution |
-| `postToolUse` | Track file modifications |
-| `agentStop` | Run typecheck; block completion if errors found |
-| `subagentStop` | Track sub-agent completion |
-| `errorOccurred` | Log errors for debugging |
-| `sessionEnd` | Session cleanup |
+| Event           | Behavior                                        |
+| --------------- | ----------------------------------------------- |
+| `sessionStart`  | Auto-load project conventions                   |
+| `preToolUse`    | Security validation before every tool execution |
+| `postToolUse`   | Track file modifications                        |
+| `agentStop`     | Run typecheck; block completion if errors found |
+| `subagentStop`  | Track sub-agent completion                      |
+| `errorOccurred` | Log errors for debugging                        |
+| `sessionEnd`    | Session cleanup                                 |
 
 ## Custom Agents
 
 ### Repository-Level Agents (`.github/agents/`)
 
-| Agent | File | Purpose | Invocation |
-|-------|------|---------|------------|
-| mycodexvantaos-autopilot | `my-agent.agent.md` | Main autonomous coding agent | `copilot --agent=mycodexvantaos-autopilot` |
-| code-review | `code-review.agent.md` | Bug, security, performance review | `copilot --agent=code-review` |
-| refactor | `refactor.agent.md` | Behavior-preserving refactoring | `copilot --agent=refactor` |
-| docs | `docs.agent.md` | Documentation maintenance | `copilot --agent=docs` |
+| Agent                    | File                   | Purpose                           | Invocation                                 |
+| ------------------------ | ---------------------- | --------------------------------- | ------------------------------------------ |
+| mycodexvantaos-autopilot | `my-agent.agent.md`    | Main autonomous coding agent      | `copilot --agent=mycodexvantaos-autopilot` |
+| code-review              | `code-review.agent.md` | Bug, security, performance review | `copilot --agent=code-review`              |
+| refactor                 | `refactor.agent.md`    | Behavior-preserving refactoring   | `copilot --agent=refactor`                 |
+| docs                     | `docs.agent.md`        | Documentation maintenance         | `copilot --agent=docs`                     |
 
 ### Built-in Sub-Agents (Auto-delegated)
 
-| Agent | Purpose |
-|-------|---------|
-| Explorer | Quick codebase analysis without polluting main context |
-| Task | Execute commands (build, test) with summarized output |
-| General Purpose | Complex multi-step tasks in separate context |
-| Code Review | Focus on real issues, minimize noise |
-| Research | Deep research across codebase and web |
-| Rubber Duck | Constructive criticism for complex decisions |
+| Agent           | Purpose                                                |
+| --------------- | ------------------------------------------------------ |
+| Explorer        | Quick codebase analysis without polluting main context |
+| Task            | Execute commands (build, test) with summarized output  |
+| General Purpose | Complex multi-step tasks in separate context           |
+| Code Review     | Focus on real issues, minimize noise                   |
+| Research        | Deep research across codebase and web                  |
+| Rubber Duck     | Constructive criticism for complex decisions           |
 
 ## Skills Integration
 
 ### Platform Skills (`.agents/skills/`)
 
-| Skill | Path | Purpose |
-|-------|------|---------|
-| Genkit JS | `.agents/skills/developing-genkit-js/` | AI development with Genkit (Node.js/TypeScript) |
-| FBS to AGY Export | `.agents/skills/fbs-to-agy-export/` | Firebase Studio project export to Antigravity |
+| Skill             | Path                                   | Purpose                                         |
+| ----------------- | -------------------------------------- | ----------------------------------------------- |
+| Genkit JS         | `.agents/skills/developing-genkit-js/` | AI development with Genkit (Node.js/TypeScript) |
+| FBS to AGY Export | `.agents/skills/fbs-to-agy-export/`    | Firebase Studio project export to Antigravity   |
 
 ### Copilot Skills (`.github/skills/`)
 
-| Skill | File | Purpose |
-|-------|------|---------|
-| Platform Deploy | `platform-deploy.md` | Cloudflare deployment workflow |
+| Skill               | File                     | Purpose                                |
+| ------------------- | ------------------------ | -------------------------------------- |
+| Platform Deploy     | `platform-deploy.md`     | Cloudflare deployment workflow         |
 | Feature Development | `feature-development.md` | Standard feature development lifecycle |
 
 ### Workflows (`.agents/workflows/`)
 
-| Workflow | File | Purpose |
-|----------|------|---------|
+| Workflow   | File                   | Purpose                         |
+| ---------- | ---------------------- | ------------------------------- |
 | FBS Export | `fbs-to-agy-export.md` | Firebase Studio export workflow |
 
 ## Plan Mode Guidelines

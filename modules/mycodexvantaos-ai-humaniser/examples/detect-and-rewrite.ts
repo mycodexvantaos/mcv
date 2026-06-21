@@ -39,7 +39,9 @@ Additionally, the utilization of best practices demonstrates a commitment to exc
 
     console.log('=== Change Summary ===');
     console.log(`Sentences rewritten: ${humanisation.changeSummary.sentencesRewritten}`);
-    console.log(`Avg score improvement: ${(humanisation.changeSummary.avgScoreImprovement * 100).toFixed(1)}%`);
+    console.log(
+      `Avg score improvement: ${(humanisation.changeSummary.avgScoreImprovement * 100).toFixed(1)}%`
+    );
     console.log(
       `Overall AI score: ${(humanisation.changeSummary.overallScoreChange.before * 100).toFixed(1)}% → ${(humanisation.changeSummary.overallScoreChange.after * 100).toFixed(1)}%`
     );
@@ -57,7 +59,12 @@ Additionally, the utilization of best practices demonstrates a commitment to exc
     console.log('=== Diff View ===');
     humanisation.comparison.diffs.forEach((diff) => {
       const marker = diff.type === 'removed' ? '-' : diff.type === 'added' ? '+' : ' ';
-      const text = diff.type === 'removed' ? diff.original : diff.type === 'added' ? diff.humanised : diff.original;
+      const text =
+        diff.type === 'removed'
+          ? diff.original
+          : diff.type === 'added'
+            ? diff.humanised
+            : diff.original;
       console.log(`${marker} ${text}`);
     });
   } else {

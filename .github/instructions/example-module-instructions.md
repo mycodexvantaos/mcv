@@ -17,14 +17,14 @@ When performing database migrations, agents MUST follow this workflow:
 
 Agents performing migrations require the following specific tool permissions:
 
--   `shell(npm run migration:*)`: Essential for generating, running, and rolling back migrations.
--   `shell(npm run test:integration)`: Required for validating the database state after migration.
--   `write`: For creating new migration files.
--   `read`: For reading existing migration scripts and documentation.
+- `shell(npm run migration:*)`: Essential for generating, running, and rolling back migrations.
+- `shell(npm run test:integration)`: Required for validating the database state after migration.
+- `write`: For creating new migration files.
+- `read`: For reading existing migration scripts and documentation.
 
 ### 3. Best Practices
 
--   **Idempotency**: Ensure all migration scripts are idempotent.
--   **Small Batches**: Prefer smaller, incremental migrations over large, monolithic ones.
--   **Documentation**: Document each migration with its purpose, changes, and potential impact.
--   **Testing**: Thoroughly test migrations in a staging environment before applying to production.
+- **Idempotency**: Ensure all migration scripts are idempotent.
+- **Small Batches**: Prefer smaller, incremental migrations over large, monolithic ones.
+- **Documentation**: Document each migration with its purpose, changes, and potential impact.
+- **Testing**: Thoroughly test migrations in a staging environment before applying to production.

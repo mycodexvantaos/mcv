@@ -35,21 +35,21 @@ const FEATURE_WEIGHTS: Record<keyof SentenceFeatures, number> = {
   avgWordLength: 0.08,
   wordCount: 0.05,
   lexicalDiversity: 0.15,
-  avgWordFrequency: 0.10,
+  avgWordFrequency: 0.1,
   punctuationDensity: 0.08,
-  complexity: 0.10,
+  complexity: 0.1,
   repetitionScore: 0.12,
   perplexityProxy: 0.15,
   transitionSmoothness: 0.07,
-  vocabularyRichness: 0.10,
+  vocabularyRichness: 0.1,
 };
 
 /** Thresholds for AI detection classification */
 const THRESHOLDS = {
-  AI_THRESHOLD: 0.65,        // Score above this → likely AI
-  HUMAN_THRESHOLD: 0.35,     // Score below this → likely human
-  MIN_CONFIDENCE: 0.5,       // Minimum confidence for decisive classification
-  UNCERTAIN_RANGE: 0.15,     // Range around 0.5 considered uncertain
+  AI_THRESHOLD: 0.65, // Score above this → likely AI
+  HUMAN_THRESHOLD: 0.35, // Score below this → likely human
+  MIN_CONFIDENCE: 0.5, // Minimum confidence for decisive classification
+  UNCERTAIN_RANGE: 0.15, // Range around 0.5 considered uncertain
 } as const;
 
 // ─── Native Detection Engine ──────────────────────────────────────────
@@ -132,9 +132,14 @@ function computeAiScore(features: SentenceFeatures): number {
 /**
  * Classify a sentence based on its AI score
  */
-function classifySentence(aiScore: number): { label: ContentLabel; confidence: number; explanation: string } {
+function classifySentence(aiScore: number): {
+  label: ContentLabel;
+  confidence: number;
+  explanation: string;
+} {
   if (aiScore >= THRESHOLDS.AI_THRESHOLD) {
-    const confidence = 0.5 + (aiScore - THRESHOLDS.AI_THRESHOLD) / (1 - THRESHOLDS.AI_THRESHOLD) * 0.5;
+    const confidence =
+      0.5 + ((aiScore - THRESHOLDS.AI_THRESHOLD) / (1 - THRESHOLDS.AI_THRESHOLD)) * 0.5;
     return {
       label: ContentLabel.AI,
       confidence: Math.round(confidence * 1000) / 1000,
@@ -143,7 +148,8 @@ function classifySentence(aiScore: number): { label: ContentLabel; confidence: n
   }
 
   if (aiScore <= THRESHOLDS.HUMAN_THRESHOLD) {
-    const confidence = 0.5 + (THRESHOLDS.HUMAN_THRESHOLD - aiScore) / THRESHOLDS.HUMAN_THRESHOLD * 0.5;
+    const confidence =
+      0.5 + ((THRESHOLDS.HUMAN_THRESHOLD - aiScore) / THRESHOLDS.HUMAN_THRESHOLD) * 0.5;
     return {
       label: ContentLabel.HUMAN,
       confidence: Math.round(confidence * 1000) / 1000,
@@ -178,17 +184,17 @@ function computeStats(sentences: SentenceAnalysis[]): DetectionStats {
     (s) => s.label === ContentLabel.UNCERTAIN || s.label === ContentLabel.MIXED
   ).length;
 
-  const avgConfidence = totalSentences > 0
-    ? sentences.reduce((sum, s) => sum + s.confidence, 0) / totalSentences
-    : 0;
+  const avgConfidence =
+    totalSentences > 0 ? sentences.reduce((sum, s) => sum + s.confidence, 0) / totalSentences : 0;
 
   const maxAiScore = aiScores.length > 0 ? Math.max(...aiScores) : 0;
   const minAiScore = aiScores.length > 0 ? Math.min(...aiScores) : 0;
 
   const mean = aiScores.length > 0 ? aiScores.reduce((a, b) => a + b, 0) / aiScores.length : 0;
-  const stdDevAiScore = aiScores.length > 0
-    ? Math.sqrt(aiScores.reduce((sum, s) => sum + Math.pow(s - mean, 2), 0) / aiScores.length)
-    : 0;
+  const stdDevAiScore =
+    aiScores.length > 0
+      ? Math.sqrt(aiScores.reduce((sum, s) => sum + Math.pow(s - mean, 2), 0) / aiScores.length)
+      : 0;
 
   return {
     totalSentences,
@@ -211,10 +217,7 @@ function computeStats(sentences: SentenceAnalysis[]): DetectionStats {
  * @param source - Input source type (text, file, url)
  * @returns Detection result with per-sentence analysis and overall scoring
  */
-export async function detectNative(
-  text: string,
-  source?: InputSource
-): Promise<DetectionResult> {
+export async function detectNative(text: string, source?: InputSource): Promise<DetectionResult> {
   const startTime = Date.now();
 
   const rawSentences = splitIntoSentences(text);
@@ -237,9 +240,8 @@ export async function detectNative(
   });
 
   // Overall score: weighted average with slight penalty for high-AI clusters
-  const overallAiScore = sentences.length > 0
-    ? sentences.reduce((sum, s) => sum + s.aiScore, 0) / sentences.length
-    : 0;
+  const overallAiScore =
+    sentences.length > 0 ? sentences.reduce((sum, s) => sum + s.aiScore, 0) / sentences.length : 0;
   const overallHumanScore = 1 - overallAiScore;
   const overallLabel = classifySentence(overallAiScore).label;
   const overallConfidence = classifySentence(overallAiScore).confidence;

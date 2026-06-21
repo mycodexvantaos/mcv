@@ -38,15 +38,15 @@ spec:
         source: contracts/
         enforcement: governance-layer
       integrationLayers:
-      - core
-      - ports
-      - application
-      - adapters
-      - infrastructure
-      - release-supply-chain
-      - governance
-      - runtimes
-      - apps
+        - core
+        - ports
+        - application
+        - adapters
+        - infrastructure
+        - release-supply-chain
+        - governance
+        - runtimes
+        - apps
     binding:
       contractsPath: contracts/
       schemasPath: schemas/
@@ -60,9 +60,9 @@ spec:
       kebabCaseOnly: true
       separator: hyphen
       forbiddenSeparators:
-      - underscore
-      - dot
-      - space
+        - underscore
+        - dot
+        - space
       versionInName: forbidden
       environmentMarkerInName: forbidden
     qualityGateDocumentPattern: ^gate-[a-z0-9]+(?:-[a-z0-9]+)*$
@@ -71,115 +71,115 @@ spec:
   architecture:
     model: dual-plane-unified-gate-system
     planes:
-    - id: quality-gate-plane
-      path: unified-gates/gate
-      responsibility:
-      - lifecycle
-      - governance
-      - execution
-      - monitoring
-      - coverage
-      - documentation
-      blockingDefault: false
-    - id: ai-infra-gate-plane
-      path: unified-gates/ai-infra-gates
-      responsibility:
-      - compute
-      - data
-      - algorithm
-      - workload
-      - billing
-      - cloud-infrastructure
-      - attestation-closure
-      blockingDefault: true
+      - id: quality-gate-plane
+        path: unified-gates/gate
+        responsibility:
+          - lifecycle
+          - governance
+          - execution
+          - monitoring
+          - coverage
+          - documentation
+        blockingDefault: false
+      - id: ai-infra-gate-plane
+        path: unified-gates/ai-infra-gates
+        responsibility:
+          - compute
+          - data
+          - algorithm
+          - workload
+          - billing
+          - cloud-infrastructure
+          - attestation-closure
+        blockingDefault: true
     flow:
-    - gate-framework
-    - gate-specification
-    - gate-catalog
-    - gate-composition
-    - ai-infra-gate-execution
-    - coverage-validation
-    - compliance-and-attestation
-    - audit-evidence
-    - release-or-block
+      - gate-framework
+      - gate-specification
+      - gate-catalog
+      - gate-composition
+      - ai-infra-gate-execution
+      - coverage-validation
+      - compliance-and-attestation
+      - audit-evidence
+      - release-or-block
   composition:
     productionReadinessChain:
-    - meta-governance
-    - compute-foundation
-    - data-foundation
-    - algorithm-foundation
-    - ai-workload
-    - ai-task-billing
-    - cloud-managed-infrastructure
-    - attestation-compliance-closure
+      - meta-governance
+      - compute-foundation
+      - data-foundation
+      - algorithm-foundation
+      - ai-workload
+      - ai-task-billing
+      - cloud-managed-infrastructure
+      - attestation-compliance-closure
     minimumBlockingGates:
-    - gate-01-namespace-governance-validation
-    - gate-04-directory-binding-mediator-validation
-    - gate-05-dependency-graph-acyclic-validation
-    - gate-15-ai-compute-cluster-readiness
-    - gate-21-dataset-contract-validation
-    - gate-25-vector-database-schema-validation
-    - gate-32-model-contract-validation
-    - gate-34-inference-runtime-validation
-    - gate-41-ai-workload-contract-validation
-    - gate-47-workload-slo-validation
-    - gate-51-usage-event-contract-validation
-    - gate-56-cost-attribution-validation
-    - gate-62-kubernetes-baseline-validation
-    - gate-63-gitops-sync-validation
-    - gate-91-sbom-generation-validation
-    - gate-92-provenance-validation
-    - gate-93-signature-validation
-    - gate-99-production-closure-validation
+      - gate-01-namespace-governance-validation
+      - gate-04-directory-binding-mediator-validation
+      - gate-05-dependency-graph-acyclic-validation
+      - gate-15-ai-compute-cluster-readiness
+      - gate-21-dataset-contract-validation
+      - gate-25-vector-database-schema-validation
+      - gate-32-model-contract-validation
+      - gate-34-inference-runtime-validation
+      - gate-41-ai-workload-contract-validation
+      - gate-47-workload-slo-validation
+      - gate-51-usage-event-contract-validation
+      - gate-56-cost-attribution-validation
+      - gate-62-kubernetes-baseline-validation
+      - gate-63-gitops-sync-validation
+      - gate-91-sbom-generation-validation
+      - gate-92-provenance-validation
+      - gate-93-signature-validation
+      - gate-99-production-closure-validation
   ci:
     mustValidate:
-    - gate-catalog-schema
-    - ai-infra-gate-schema
-    - gate-id-regex
-    - gate-file-path-existence
-    - gate-lifecycle-state
-    - gate-owner-existence
-    - gate-dependency-graph-acyclic
-    - gate-composition-validity
-    - gate-waiver-policy
-    - gate-evidence-output
-    - coverage-gate-presence
-    - production-blocking-gate-set
+      - gate-catalog-schema
+      - ai-infra-gate-schema
+      - gate-id-regex
+      - gate-file-path-existence
+      - gate-lifecycle-state
+      - gate-owner-existence
+      - gate-dependency-graph-acyclic
+      - gate-composition-validity
+      - gate-waiver-policy
+      - gate-evidence-output
+      - coverage-gate-presence
+      - production-blocking-gate-set
     mustFailWhen:
-    - blocking-gate-missing
-    - gate-id-malformed
-    - gate-references-missing-contract
-    - gate-references-missing-schema
-    - gate-dependency-cycle-exists
-    - active-gate-has-no-owner
-    - high-risk-gate-allows-unrestricted-waiver
-    - production-workload-skips-mandatory-ai-infra-gates
-    - attestation-closure-gates-absent
+      - blocking-gate-missing
+      - gate-id-malformed
+      - gate-references-missing-contract
+      - gate-references-missing-schema
+      - gate-dependency-cycle-exists
+      - active-gate-has-no-owner
+      - high-risk-gate-allows-unrestricted-waiver
+      - production-workload-skips-mandatory-ai-infra-gates
+      - attestation-closure-gates-absent
   observability:
     requiredMetrics:
-    - gate-validation-pass-rate
-    - gate-validation-failure-count
-    - blocking-gate-failure-count
-    - waiver-request-count
-    - waiver-approval-count
-    - waiver-rejection-count
-    - production-closure-pass-rate
-    - production-closure-failure-count
-    - gate-evidence-completeness-score
-    - mandatory-gate-coverage-score
+      - gate-validation-pass-rate
+      - gate-validation-failure-count
+      - blocking-gate-failure-count
+      - waiver-request-count
+      - waiver-approval-count
+      - waiver-rejection-count
+      - production-closure-pass-rate
+      - production-closure-failure-count
+      - gate-evidence-completeness-score
+      - mandatory-gate-coverage-score
   compliance:
     criteria:
-    - every-gate-has-documentation
-    - every-executable-gate-has-machine-readable-yaml-definition
-    - every-gate-has-metadata-owner-lifecycle-risk-level-and-validation-target
-    - every-production-ai-workload-passes-mandatory-compute-data-algorithm-workload-billing-infrastructure-and-attestation-gates
-    - every-gate-result-is-auditable
-    - every-waiver-is-governed
-    - every-coverage-dimension-is-represented
-    - every-gate-catalog-entry-is-ci-verifiable
-    - high-risk-gates-do-not-allow-unrestricted-waiver
-    - gate-dependency-graphs-remain-acyclic
-    - attestation-closure-gates-are-present-for-production-delivery
+      - every-gate-has-documentation
+      - every-executable-gate-has-machine-readable-yaml-definition
+      - every-gate-has-metadata-owner-lifecycle-risk-level-and-validation-target
+      - every-production-ai-workload-passes-mandatory-compute-data-algorithm-workload-billing-infrastructure-and-attestation-gates
+      - every-gate-result-is-auditable
+      - every-waiver-is-governed
+      - every-coverage-dimension-is-represented
+      - every-gate-catalog-entry-is-ci-verifiable
+      - high-risk-gates-do-not-allow-unrestricted-waiver
+      - gate-dependency-graphs-remain-acyclic
+      - attestation-closure-gates-are-present-for-production-delivery
 status:
   phase: unified-gates-normalized
   readiness: ci-verifiable

@@ -82,21 +82,21 @@ uv run kafka-stream-processor serve \
 
 ## API Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/health` | Health check with Kafka connectivity status |
-| GET | `/metrics` | Prometheus-compatible metrics |
-| GET | `/api/topics` | List all Kafka topics |
-| POST | `/api/topics` | Create a new topic |
-| GET | `/api/topics/{name}` | Describe a topic |
-| DELETE | `/api/topics/{name}` | Delete a topic |
-| POST | `/api/produce` | Produce a message to a topic |
-| POST | `/api/consume` | Consume messages from a topic |
-| POST | `/api/processors` | Create a stream processor |
-| POST | `/api/processors/{name}/start` | Start a processor |
-| POST | `/api/processors/{name}/stop` | Stop a processor |
-| GET | `/api/processors/{name}` | Get processor status |
-| GET | `/api/processors` | List all processors |
+| Method | Path                           | Description                                 |
+| ------ | ------------------------------ | ------------------------------------------- |
+| GET    | `/health`                      | Health check with Kafka connectivity status |
+| GET    | `/metrics`                     | Prometheus-compatible metrics               |
+| GET    | `/api/topics`                  | List all Kafka topics                       |
+| POST   | `/api/topics`                  | Create a new topic                          |
+| GET    | `/api/topics/{name}`           | Describe a topic                            |
+| DELETE | `/api/topics/{name}`           | Delete a topic                              |
+| POST   | `/api/produce`                 | Produce a message to a topic                |
+| POST   | `/api/consume`                 | Consume messages from a topic               |
+| POST   | `/api/processors`              | Create a stream processor                   |
+| POST   | `/api/processors/{name}/start` | Start a processor                           |
+| POST   | `/api/processors/{name}/stop`  | Stop a processor                            |
+| GET    | `/api/processors/{name}`       | Get processor status                        |
+| GET    | `/api/processors`              | List all processors                         |
 
 ### Example: Create and Run a Processor
 
@@ -147,30 +147,30 @@ curl -X POST http://localhost:8001/api/consume \
 
 ## Configuration
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `KAFKA_BOOTSTRAP_SERVERS` | `localhost:9092` | Kafka cluster address |
-| `LOG_LEVEL` | `INFO` | Logging level |
-| `HOST` | `0.0.0.0` | HTTP server bind address |
-| `PORT` | `8001` | HTTP server port |
-| `DATABASE_URL` | _(empty)_ | PostgreSQL connection string |
+| Variable                  | Default          | Description                  |
+| ------------------------- | ---------------- | ---------------------------- |
+| `KAFKA_BOOTSTRAP_SERVERS` | `localhost:9092` | Kafka cluster address        |
+| `LOG_LEVEL`               | `INFO`           | Logging level                |
+| `HOST`                    | `0.0.0.0`        | HTTP server bind address     |
+| `PORT`                    | `8001`           | HTTP server port             |
+| `DATABASE_URL`            | _(empty)_        | PostgreSQL connection string |
 
 ## Delivery Semantics
 
-| Semantic | Producer | Consumer | Use Case |
-|----------|----------|----------|----------|
-| At-most-once | No retries | Commit before processing | Metrics, counters (loss acceptable) |
-| At-least-once | Retries with acks=all | Commit after processing | Event sourcing (duplicates tolerable) |
-| Exactly-once | Transactional + idempotent | read_committed isolation | Financial transactions, dedup required |
+| Semantic      | Producer                   | Consumer                 | Use Case                               |
+| ------------- | -------------------------- | ------------------------ | -------------------------------------- |
+| At-most-once  | No retries                 | Commit before processing | Metrics, counters (loss acceptable)    |
+| At-least-once | Retries with acks=all      | Commit after processing  | Event sourcing (duplicates tolerable)  |
+| Exactly-once  | Transactional + idempotent | read_committed isolation | Financial transactions, dedup required |
 
 ## Window Types
 
-| Window | Description | Example |
-|--------|-------------|---------|
-| Tumbling | Fixed-size, non-overlapping | 1-minute count of events |
-| Hopping | Fixed-size, overlapping | 5-minute average every 1 minute |
-| Sliding | Based on data patterns | Session windows by user activity |
-| Session | Grouped by inactivity gap | User sessions with 30-min timeout |
+| Window   | Description                 | Example                           |
+| -------- | --------------------------- | --------------------------------- |
+| Tumbling | Fixed-size, non-overlapping | 1-minute count of events          |
+| Hopping  | Fixed-size, overlapping     | 5-minute average every 1 minute   |
+| Sliding  | Based on data patterns      | Session windows by user activity  |
+| Session  | Grouped by inactivity gap   | User sessions with 30-min timeout |
 
 ## Metrics
 

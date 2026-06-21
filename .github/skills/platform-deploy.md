@@ -39,6 +39,7 @@ npm run rc:verify
 ```
 
 For Python components:
+
 ```bash
 npm run python:lint
 npm run python:typecheck
@@ -125,13 +126,13 @@ npm run deploy
 
 ## Cloudflare Services
 
-| Service | Purpose | Management |
-|---------|---------|------------|
-| Workers | Application runtime | `wrangler` CLI |
-| D1 | SQL database | `wrangler d1` |
-| KV | Key-value store | `wrangler kv` |
-| R2 | Object storage | `wrangler r2` |
-| Queues | Message queues | `wrangler queues` |
+| Service | Purpose             | Management        |
+| ------- | ------------------- | ----------------- |
+| Workers | Application runtime | `wrangler` CLI    |
+| D1      | SQL database        | `wrangler d1`     |
+| KV      | Key-value store     | `wrangler kv`     |
+| R2      | Object storage      | `wrangler r2`     |
+| Queues  | Message queues      | `wrangler queues` |
 
 ## Migration Management
 

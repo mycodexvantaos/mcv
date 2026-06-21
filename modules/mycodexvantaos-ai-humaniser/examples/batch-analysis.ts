@@ -8,11 +8,7 @@
  *   npx ts-node examples/batch-analysis.ts
  */
 
-import {
-  HumaniserEngine,
-  generateReport,
-  computeGrade,
-} from '../src';
+import { HumaniserEngine, generateReport, computeGrade } from '../src';
 
 async function main() {
   const engine = new HumaniserEngine({ mode: 'native' });
@@ -48,7 +44,9 @@ async function main() {
     console.log(`│ AI %:        ${report.aiPercentage}%`);
     console.log(`│ Human %:     ${report.humanPercentage}%`);
     console.log(`│ Naturalness: ${(report.naturalness * 100).toFixed(1)}%`);
-    console.log(`│ Breakdown:   ${report.sentenceBreakdown.ai} AI / ${report.sentenceBreakdown.human} Human / ${report.sentenceBreakdown.mixed} Mixed / ${report.sentenceBreakdown.uncertain} Uncertain`);
+    console.log(
+      `│ Breakdown:   ${report.sentenceBreakdown.ai} AI / ${report.sentenceBreakdown.human} Human / ${report.sentenceBreakdown.mixed} Mixed / ${report.sentenceBreakdown.uncertain} Uncertain`
+    );
     console.log('│');
     console.log('│ Recommendations:');
     report.recommendations.forEach((r) => console.log(`│   • ${r}`));

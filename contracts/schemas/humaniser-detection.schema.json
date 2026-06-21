@@ -4,7 +4,18 @@
   "title": "HumaniserDetectionResult",
   "description": "Schema for AI content detection results from the Humaniser engine",
   "type": "object",
-  "required": ["id", "label", "confidence", "ai_score", "human_score", "sentences", "stats", "explanation", "timestamp", "provider_source"],
+  "required": [
+    "id",
+    "label",
+    "confidence",
+    "ai_score",
+    "human_score",
+    "sentences",
+    "stats",
+    "explanation",
+    "timestamp",
+    "provider_source"
+  ],
   "properties": {
     "id": {
       "type": "string",
@@ -37,7 +48,16 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["text", "index", "label", "confidence", "ai_score", "human_score", "features", "explanation"],
+        "required": [
+          "text",
+          "index",
+          "label",
+          "confidence",
+          "ai_score",
+          "human_score",
+          "features",
+          "explanation"
+        ],
         "properties": {
           "text": { "type": "string" },
           "index": { "type": "integer", "minimum": 0 },
@@ -69,7 +89,13 @@
     },
     "stats": {
       "type": "object",
-      "required": ["total_sentences", "ai_sentences", "human_sentences", "uncertain_sentences", "avg_confidence"],
+      "required": [
+        "total_sentences",
+        "ai_sentences",
+        "human_sentences",
+        "uncertain_sentences",
+        "avg_confidence"
+      ],
       "properties": {
         "total_sentences": { "type": "integer" },
         "ai_sentences": { "type": "integer" },

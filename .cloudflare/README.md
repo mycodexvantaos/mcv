@@ -11,7 +11,7 @@ This directory contains all configuration files and scripts for deploying MyCode
 Add these secrets to your GitHub repository:
 
 ```bash
-CLOUDFLARE_API_TOKEN=<redacted-cloudflare-token>
+CLOUDFLARE_API_TOKEN=YOUR_CLOUDFLARE_API_TOKEN_HERE
 CLOUDFLARE_ACCOUNT_ID=<your-account-id>
 CLOUDFLARE_ZONE_ID=<your-zone-id>
 ```
@@ -37,7 +37,7 @@ git push origin main
 
 ## 📁 File Structure
 
-```
+```text
 .cloudflare/
 ├── wrangler.toml              # Cloudflare Pages configuration
 ├── _middleware.ts             # Security middleware

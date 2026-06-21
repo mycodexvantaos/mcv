@@ -12,7 +12,7 @@ export class ApplicationPipeline {
     this.model = config.model || 'claude-sonnet-4-20250514';
     this.maxTokens = config.maxTokens || 1000;
     this.timeout = config.timeout || 30000;
-    
+
     this.client = new Anthropic({ apiKey: this.apiKey });
     this.projects = [];
     this.analyses = [];
@@ -30,7 +30,7 @@ export class ApplicationPipeline {
 
   emit(event, data) {
     if (this.listeners[event]) {
-      this.listeners[event].forEach(cb => cb(data));
+      this.listeners[event].forEach((cb) => cb(data));
     }
   }
 
@@ -39,14 +39,14 @@ export class ApplicationPipeline {
    */
   async uploadZips(files) {
     const projects = [];
-    
+
     for (const file of files) {
       if (!file.name.endsWith('.zip')) continue;
-      
+
       try {
         const zip = await JSZip.loadAsync(file);
         const fileList = [];
-        
+
         zip.forEach((relativePath, entry) => {
           if (!entry.dir) {
             fileList.push({ name: relativePath });
@@ -62,7 +62,7 @@ export class ApplicationPipeline {
           status: 'pending',
           analysis: null,
           raw: zip,
-          error: null
+          error: null,
         });
       } catch (e) {
         projects.push({
@@ -73,7 +73,7 @@ export class ApplicationPipeline {
           status: 'error',
           analysis: null,
           raw: null,
-          error: e.message
+          error: e.message,
         });
       }
     }
@@ -86,20 +86,21 @@ export class ApplicationPipeline {
    * Detect project type from files
    */
   detectType(files) {
-    const names = files.map(f => f.name.toLowerCase());
-    const exts = names.map(n => n.split('.').pop());
-    
-    const tsCount = exts.filter(e => ['ts', 'tsx'].includes(e)).length;
-    const pyCount = exts.filter(e => e === 'py').length;
-    const goCount = exts.filter(e => e === 'go').length;
-    const rsCount = exts.filter(e => e === 'rs').length;
+    const names = files.map((f) => f.name.toLowerCase());
+    const exts = names.map((n) => n.split('.').pop());
+
+    const tsCount = exts.filter((e) => ['ts', 'tsx'].includes(e)).length;
+    const pyCount = exts.filter((e) => e === 'py').length;
+    const goCount = exts.filter((e) => e === 'go').length;
+    const rsCount = exts.filter((e) => e === 'rs').length;
 
     if (names.includes('cargo.toml') || rsCount > 1) return 'Rust';
     if (names.includes('go.mod') || goCount > 1) return 'Go';
-    if (names.includes('requirements.txt') || names.includes('pyproject.toml') || pyCount > 2) return 'Python';
+    if (names.includes('requirements.txt') || names.includes('pyproject.toml') || pyCount > 2)
+      return 'Python';
     if (tsCount > 2) return names.includes('tsconfig.json') ? 'TypeScript/Node' : 'TypeScript';
     if (names.includes('package.json')) return 'JavaScript/Node';
-    
+
     return 'Mixed';
   }
 
@@ -115,14 +116,21 @@ export class ApplicationPipeline {
     this.emit('analyzing', { projectId: project.id, name: project.name });
 
     try {
-      const fileList = project.files.slice(0, 80).map(f => f.name).join('\n');
+      const fileList = project.files
+        .slice(0, 80)
+        .map((f) => f.name)
+        .join('\n');
       let sampleCode = '';
 
       if (project.raw) {
         const codeExts = ['.ts', '.tsx', '.py', '.go', '.rs', '.js', '.vue'];
         for (const [path, entry] of Object.entries(project.raw.files)) {
-          if (!entry.dir && codeExts.some(e => path.endsWith(e)) && 
-              !path.includes('node_modules') && !path.includes('.min.')) {
+          if (
+            !entry.dir &&
+            codeExts.some((e) => path.endsWith(e)) &&
+            !path.includes('node_modules') &&
+            !path.includes('.min.')
+          ) {
             try {
               const text = await entry.async('string');
               if (text.length > 50) {
@@ -154,7 +162,7 @@ Output ONLY valid JSON (no markdown):
       const message = await this.client.messages.create({
         model: this.model,
         max_tokens: this.maxTokens,
-        messages: [{ role: 'user', content: prompt }]
+        messages: [{ role: 'user', content: prompt }],
       });
 
       const text = message.content[0].text;
@@ -162,7 +170,7 @@ Output ONLY valid JSON (no markdown):
 
       project.status = 'done';
       project.analysis = parsed;
-      
+
       this.emit('analyzed', { projectId: project.id, analysis: parsed });
       return parsed;
     } catch (e) {
@@ -178,7 +186,7 @@ Output ONLY valid JSON (no markdown):
    */
   async analyzeAll(projects = this.projects) {
     const analyses = [];
-    
+
     for (let i = 0; i < projects.length; i++) {
       const project = projects[i];
       if (project.status === 'pending') {
@@ -202,7 +210,7 @@ Output ONLY valid JSON (no markdown):
 
     // Map files across versions
     projects.forEach((project, idx) => {
-      project.files.forEach(file => {
+      project.files.forEach((file) => {
         const key = file.name;
         if (!fileMap.has(key)) {
           fileMap.set(key, []);
@@ -219,7 +227,7 @@ Output ONLY valid JSON (no markdown):
           versions: versions.length,
           severity: this.calculateSeverity(fileName),
           versionDetails: versions,
-          suggestion: this.suggestResolution(fileName, versions)
+          suggestion: this.suggestResolution(fileName, versions),
         });
       }
     });
@@ -236,9 +244,9 @@ Output ONLY valid JSON (no markdown):
     const high = ['.github/workflows', 'Dockerfile', 'docker-compose.yml', 'README.md'];
     const medium = ['src/', 'lib/', 'packages/'];
 
-    if (critical.some(f => fileName.includes(f))) return 3;
-    if (high.some(f => fileName.includes(f))) return 2;
-    if (medium.some(f => fileName.includes(f))) return 1;
+    if (critical.some((f) => fileName.includes(f))) return 3;
+    if (high.some((f) => fileName.includes(f))) return 2;
+    if (medium.some((f) => fileName.includes(f))) return 1;
     return 0;
   }
 
@@ -249,7 +257,8 @@ Output ONLY valid JSON (no markdown):
     if (fileName.endsWith('.json')) return 'merge-json';
     if (fileName.endsWith('.yaml') || fileName.endsWith('.yml')) return 'merge-yaml';
     if (fileName.endsWith('.md')) return 'merge-text';
-    if (['.ts', '.tsx', '.js', '.py', '.go', '.rs'].some(e => fileName.endsWith(e))) return 'keep-latest';
+    if (['.ts', '.tsx', '.js', '.py', '.go', '.rs'].some((e) => fileName.endsWith(e)))
+      return 'keep-latest';
     return 'manual-review';
   }
 
@@ -259,7 +268,7 @@ Output ONLY valid JSON (no markdown):
   mergeJson(versions) {
     const merged = { ...versions[0] };
 
-    versions.slice(1).forEach(v => {
+    versions.slice(1).forEach((v) => {
       Object.entries(v).forEach(([key, value]) => {
         if (key === 'dependencies' || key === 'devDependencies' || key === 'scripts') {
           merged[key] = { ...merged[key], ...value };
@@ -293,7 +302,7 @@ Output ONLY valid JSON (no markdown):
     };
 
     let merged = JSON.parse(JSON.stringify(versions[0]));
-    versions.slice(1).forEach(v => {
+    versions.slice(1).forEach((v) => {
       merged = deepMerge(merged, v);
     });
 
@@ -304,21 +313,26 @@ Output ONLY valid JSON (no markdown):
    * Synthesize merged version
    */
   async synthesize(projects = this.projects, customStrategy = null) {
-    const doneProjects = projects.filter(p => p.status === 'done');
-    
+    const doneProjects = projects.filter((p) => p.status === 'done');
+
     if (doneProjects.length < 2) {
       throw new Error('Need at least 2 analyzed projects to synthesize');
     }
 
     this.emit('synthesizing', { count: doneProjects.length });
 
-    const summaries = doneProjects.map((p, i) => 
-      `[${i+1}] ${p.name} (${p.type})\nOverview: ${p.analysis?.overview || ''}\nArchitecture: ${p.analysis?.architecture || ''}\nValue: ${p.analysis?.value || ''}\nTags: ${(p.analysis?.tags || []).join(', ')}`
-    ).join('\n\n');
+    const summaries = doneProjects
+      .map(
+        (p, i) =>
+          `[${i + 1}] ${p.name} (${p.type})\nOverview: ${p.analysis?.overview || ''}\nArchitecture: ${p.analysis?.architecture || ''}\nValue: ${p.analysis?.value || ''}\nTags: ${(p.analysis?.tags || []).join(', ')}`
+      )
+      .join('\n\n');
 
-    const allPaths = doneProjects.flatMap(p => p.files.map(f => f.name.split('/').pop()));
+    const allPaths = doneProjects.flatMap((p) => p.files.map((f) => f.name.split('/').pop()));
     const counts = {};
-    allPaths.forEach(p => { counts[p] = (counts[p] || 0) + 1; });
+    allPaths.forEach((p) => {
+      counts[p] = (counts[p] || 0) + 1;
+    });
     const conflicts = Object.entries(counts)
       .filter(([, v]) => v >= 2)
       .slice(0, 8)
@@ -353,19 +367,19 @@ Generate synthesis report (Traditional Chinese):
       const message = await this.client.messages.create({
         model: this.model,
         max_tokens: this.maxTokens,
-        messages: [{ role: 'user', content: prompt }]
+        messages: [{ role: 'user', content: prompt }],
       });
 
       const report = message.content[0].text;
-      
+
       this.emit('synthesized', { report });
-      
+
       return {
         strategy: 'intelligent-merge',
         versions: doneProjects.length,
         report,
         conflicts: this.conflicts,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
     } catch (e) {
       this.emit('error', { error: e.message });
@@ -381,7 +395,7 @@ Generate synthesis report (Traditional Chinese):
       isValid: true,
       errors: [],
       warnings: [],
-      fixes: []
+      fixes: [],
     };
 
     // Check for conflict markers
@@ -392,7 +406,7 @@ Generate synthesis report (Traditional Chinese):
 
     // Validate JSON files
     if (merged.files) {
-      merged.files.forEach(file => {
+      merged.files.forEach((file) => {
         if (file.name.endsWith('.json')) {
           try {
             JSON.parse(file.content);
@@ -423,11 +437,11 @@ Generate synthesis report (Traditional Chinese):
       summary: {
         versions: synthesis.versions,
         conflicts: this.conflicts.length,
-        strategy: synthesis.strategy
+        strategy: synthesis.strategy,
       },
       details: synthesis,
       conflicts: this.conflicts,
-      recommendations: this.generateRecommendations()
+      recommendations: this.generateRecommendations(),
     };
   }
 
@@ -440,7 +454,7 @@ Generate synthesis report (Traditional Chinese):
       'Run comprehensive tests on merged version',
       'Update documentation to reflect merged architecture',
       'Consider incremental rollout of merged version',
-      'Monitor for regressions in production'
+      'Monitor for regressions in production',
     ];
   }
 
@@ -449,9 +463,9 @@ Generate synthesis report (Traditional Chinese):
    */
   async exportAsZip(merged) {
     const zip = new JSZip();
-    
+
     if (merged.files) {
-      merged.files.forEach(file => {
+      merged.files.forEach((file) => {
         zip.file(file.name, file.content);
       });
     }
@@ -467,11 +481,11 @@ Generate synthesis report (Traditional Chinese):
       projects: this.projects.length,
       analyzed: this.analyses.length,
       conflicts: this.conflicts.length,
-      projectStatuses: this.projects.map(p => ({
+      projectStatuses: this.projects.map((p) => ({
         name: p.name,
         status: p.status,
-        error: p.error
-      }))
+        error: p.error,
+      })),
     };
   }
 }

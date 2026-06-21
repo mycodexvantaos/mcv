@@ -7,7 +7,8 @@ import { ContentLabel } from '../types';
 
 describe('detectNative', () => {
   it('should classify clearly human-like text as HUMAN', async () => {
-    const text = "I went to the store yesterday and ran into my old friend from college. We hadn't seen each other in ages, so we grabbed coffee and caught up on everything. It was really nice.";
+    const text =
+      "I went to the store yesterday and ran into my old friend from college. We hadn't seen each other in ages, so we grabbed coffee and caught up on everything. It was really nice.";
     const result = await detectNative(text);
     expect(result.label).toBe(ContentLabel.HUMAN);
     expect(result.sentences.length).toBeGreaterThan(0);
@@ -15,7 +16,8 @@ describe('detectNative', () => {
   });
 
   it('should classify AI-typical text with higher AI scores', async () => {
-    const text = 'Furthermore, it is important to note that the implementation of this strategy facilitates optimal outcomes. Consequently, stakeholders should leverage these methodologies to maximize efficiency. Additionally, the utilization of best practices ensures comprehensive coverage of all relevant parameters.';
+    const text =
+      'Furthermore, it is important to note that the implementation of this strategy facilitates optimal outcomes. Consequently, stakeholders should leverage these methodologies to maximize efficiency. Additionally, the utilization of best practices ensures comprehensive coverage of all relevant parameters.';
     const result = await detectNative(text);
     expect(result.aiScore).toBeGreaterThan(0.4);
     expect(result.sentences.length).toBeGreaterThan(0);
@@ -64,9 +66,9 @@ describe('detectNative', () => {
     const text = 'First sentence. Second sentence. Third sentence. Fourth sentence.';
     const result = await detectNative(text);
     expect(result.stats.totalSentences).toBe(4);
-    expect(result.stats.aiSentences + result.stats.humanSentences + result.stats.uncertainSentences).toBe(
-      result.stats.totalSentences
-    );
+    expect(
+      result.stats.aiSentences + result.stats.humanSentences + result.stats.uncertainSentences
+    ).toBe(result.stats.totalSentences);
     expect(result.stats.avgConfidence).toBeGreaterThan(0);
     expect(result.stats.maxAiScore).toBeGreaterThanOrEqual(result.stats.minAiScore);
   });
@@ -94,6 +96,8 @@ describe('detectNative', () => {
 
   it('should generate valid UUIDs for result id', async () => {
     const result = await detectNative('Test sentence for ID generation.');
-    expect(result.id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
+    expect(result.id).toMatch(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+    );
   });
 });

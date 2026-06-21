@@ -19,10 +19,10 @@ spec:
       name: Extract Text
       description: Extract text content from the input source
       input:
-        source: "{{input.source}}"
-        text: "{{input.text}}"
-        file: "{{input.file}}"
-        url: "{{input.url}}"
+        source: '{{input.source}}'
+        text: '{{input.text}}'
+        file: '{{input.file}}'
+        url: '{{input.url}}'
       output: extracted_text
 
     - id: detect
@@ -30,28 +30,28 @@ spec:
       description: Analyze text for AI-generated patterns
       depends_on: [extract]
       input:
-        text: "{{steps.extract.output.extracted_text}}"
-        source: "{{input.source}}"
+        text: '{{steps.extract.output.extracted_text}}'
+        source: '{{input.source}}'
       output: detection_result
 
     - id: evaluate
       name: Evaluate Detection
       description: Check if humanisation is needed based on detection results
       depends_on: [detect]
-      condition: "{{steps.detect.output.detection_result.aiScore > 0.35}}"
+      condition: '{{steps.detect.output.detection_result.aiScore > 0.35}}'
       output: needs_humanisation
 
     - id: humanise
       name: Humanise Content
       description: Rewrite flagged sentences to sound more natural
       depends_on: [evaluate]
-      condition: "{{steps.evaluate.output.needs_humanisation}}"
+      condition: '{{steps.evaluate.output.needs_humanisation}}'
       input:
-        originalText: "{{steps.extract.output.extracted_text}}"
-        detectionResult: "{{steps.detect.output.detection_result}}"
-        style: "{{input.style}}"
-        preserveTechnicalTerms: "{{input.preserveTechnicalTerms}}"
-        formalityLevel: "{{input.formalityLevel}}"
+        originalText: '{{steps.extract.output.extracted_text}}'
+        detectionResult: '{{steps.detect.output.detection_result}}'
+        style: '{{input.style}}'
+        preserveTechnicalTerms: '{{input.preserveTechnicalTerms}}'
+        formalityLevel: '{{input.formalityLevel}}'
       output: humanisation_result
 
     - id: report
@@ -59,14 +59,14 @@ spec:
       description: Generate comparison report and recommendations
       depends_on: [humanise]
       input:
-        detection: "{{steps.detect.output.detection_result}}"
-        humanisation: "{{steps.humanise.output.humanisation_result}}"
+        detection: '{{steps.detect.output.detection_result}}'
+        humanisation: '{{steps.humanise.output.humanisation_result}}'
       output: report
 
   outputs:
-    detection: "{{steps.detect.output.detection_result}}"
-    humanisation: "{{steps.humanise.output.humanisation_result}}"
-    report: "{{steps.report.output.report}}"
+    detection: '{{steps.detect.output.detection_result}}'
+    humanisation: '{{steps.humanise.output.humanisation_result}}'
+    report: '{{steps.report.output.report}}'
 
   error_handling:
     on_step_failure: fallback_to_native

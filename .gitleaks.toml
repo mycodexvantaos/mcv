@@ -1,0 +1,20 @@
+# Gitleaks configuration for MyCodeXvantaOS
+# Allow placeholder values commonly used in documentation and config templates
+
+[allowlist]
+  description = "Allow placeholder values in documentation and config templates"
+  paths = [
+    '''\.cloudflare/README\.md''',
+    '''CLOUDFLARE_CREDENTIALS_CONFIG\.md''',
+    '''QUICK_DEPLOY_STEPS\.md''',
+    '''docs/''',
+    '''engineering-templates/''',
+    '''project-import/''',
+  ]
+  regexes = [
+    '''YOUR_[A-Z_]+_HERE''',
+    '''<your-[a-z-]+>''',
+    '''<redacted[a-z-]*>''',
+    '''example[_-]?token''',
+    '''placeholder[_-]?key''',
+  ]

@@ -61,14 +61,14 @@ Error responses include structured error details:
 ```
 
 The `X-Request-ID` header is propagated from inbound requests or auto-generated as a UUID.
-| Method | Path                            | Description                                  |
+| Method | Path | Description |
 | ------ | ------------------------------- | -------------------------------------------- |
-| `GET`  | `/health`                       | Health check (reports database status)       |
-| `GET`  | `/api/runs`                     | List workflow runs (filter by branch/status) |
-| `GET`  | `/api/runs/{run_id}/analyze`    | Analyze a failed run and get repair plan     |
-| `POST` | `/api/runs/{run_id}/repair`     | Execute repair (optionally create branch/PR) |
-| `GET`  | `/api/history/analyses`         | Retrieve stored analyses from database       |
-| `GET`  | `/api/history/stats/categories` | Get error category distribution statistics   |
+| `GET` | `/health` | Health check (reports database status) |
+| `GET` | `/api/runs` | List workflow runs (filter by branch/status) |
+| `GET` | `/api/runs/{run_id}/analyze` | Analyze a failed run and get repair plan |
+| `POST` | `/api/runs/{run_id}/repair` | Execute repair (optionally create branch/PR) |
+| `GET` | `/api/history/analyses` | Retrieve stored analyses from database |
+| `GET` | `/api/history/stats/categories` | Get error category distribution statistics |
 
 ### Example: Analyze a Failed Run
 
@@ -109,6 +109,7 @@ Response:
   "request_id": "550e8400-e29b-41d4-a716-446655440000"
 }
 ```
+
 ### Example: Trigger Repair with PR Creation
 
 ```bash
@@ -123,6 +124,7 @@ curl -X POST http://localhost:8000/api/runs/12345/repair \
 curl http://localhost:8000/api/runs/12345/analyze \
   -H "X-Request-ID: my-trace-id-123"
 ```
+
 ## CLI Usage
 
 ### Analyze the Latest Failed Run
@@ -209,13 +211,14 @@ GITHUB_TOKEN=$GITHUB_TOKEN DATABASE_URL=postgresql://ci_repair:ci_repair_secret@
 
 The test suite includes 168 tests across 5 test files:
 
-| Test File                         | Tests | Coverage Area                                        |
-| --------------------------------- | ----- | ---------------------------------------------------- |
+| Test File                         | Tests | Coverage Area                                          |
+| --------------------------------- | ----- | ------------------------------------------------------ |
 | `test_ci_repair_log_parser.py`    | 60+   | Log classification, error context, file/dep extraction |
-| `test_ci_repair_engine.py`        | 30+   | Severity mapping, fix suggestions, repair actions     |
-| `test_ci_repair_api.py`           | 28    | All API endpoints, response format, validation        |
-| `test_ci_repair_database.py`      | 10    | Database operations with mocked asyncpg               |
-| `test_ci_repair_github_client.py` | 7     | GitHub API client with mocked httpx                  |
+| `test_ci_repair_engine.py`        | 30+   | Severity mapping, fix suggestions, repair actions      |
+| `test_ci_repair_api.py`           | 28    | All API endpoints, response format, validation         |
+| `test_ci_repair_database.py`      | 10    | Database operations with mocked asyncpg                |
+| `test_ci_repair_github_client.py` | 7     | GitHub API client with mocked httpx                    |
+
 ## Technology Stack
 
 - **Python 3.11** with `uv` package manager
@@ -229,15 +232,15 @@ The test suite includes 168 tests across 5 test files:
 
 The API uses standardized error codes in responses:
 
-| Code                 | HTTP Status | Description                            |
-| -------------------- | ----------- | -------------------------------------- |
-| `VALIDATION_ERROR`   | 400         | Invalid input parameters               |
-| `UNAUTHORIZED`       | 401         | Missing or invalid authentication      |
-| `FORBIDDEN`          | 403         | Insufficient permissions               |
-| `NOT_FOUND`          | 404         | Resource not found                     |
-| `CONFLICT`           | 409         | Resource already exists                |
-| `RATE_LIMITED`       | 429         | Rate limit exceeded                    |
-| `SERVICE_UNAVAILABLE`| 503         | Database or dependency not available    |
-| `GITHUB_API_ERROR`   | 502         | GitHub API request failed              |
-| `DATABASE_ERROR`     | 503         | Database operation failed              |
-| `INTERNAL_ERROR`     | 500         | Unexpected server error                |
+| Code                  | HTTP Status | Description                          |
+| --------------------- | ----------- | ------------------------------------ |
+| `VALIDATION_ERROR`    | 400         | Invalid input parameters             |
+| `UNAUTHORIZED`        | 401         | Missing or invalid authentication    |
+| `FORBIDDEN`           | 403         | Insufficient permissions             |
+| `NOT_FOUND`           | 404         | Resource not found                   |
+| `CONFLICT`            | 409         | Resource already exists              |
+| `RATE_LIMITED`        | 429         | Rate limit exceeded                  |
+| `SERVICE_UNAVAILABLE` | 503         | Database or dependency not available |
+| `GITHUB_API_ERROR`    | 502         | GitHub API request failed            |
+| `DATABASE_ERROR`      | 503         | Database operation failed            |
+| `INTERNAL_ERROR`      | 500         | Unexpected server error              |

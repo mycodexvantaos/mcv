@@ -47,6 +47,7 @@ Add JUnit XML output and `codecov/test-results-action@v1` to all Python CI workf
 ### 4. Configuration File (codecov.yml)
 
 Centralized `codecov.yml` with:
+
 - Coverage targets: 70% with 5% threshold for both project and patch
 - Flags: `coder-deep`, `ci-repair`, `python` (coverage), `nextjs`, `vite` (bundle), `test-results` (test analytics)
 - Ignore paths: test files, scripts, caches, migrations, node_modules, .next, dist

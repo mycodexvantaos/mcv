@@ -5,6 +5,7 @@ This document provides modular instructions for managing the memory persistence 
 ### 1. Memory Persistence Loop
 
 To ensure continuity and reusability, agents must follow this loop for every task:
+
 - **Pre-Task (Fetch)**: Query the memory engine for `MemoryItem`s with matching `tags` or `related_entities`.
 - **Task Execution**: Incorporate retrieved memories into the decision-making process.
 - **Post-Task (Emit)**: Record the task's outcome as a new `MemoryItem`.
@@ -12,6 +13,7 @@ To ensure continuity and reusability, agents must follow this loop for every tas
 ### 2. Formatting MemoryItems
 
 Every emitted memory MUST follow the `mycodexvantaos-memory-dream` schema:
+
 - **`memory_id`**: A unique URN (e.g., `urn:mycodexvantaos:memory:task-456`).
 - **`content`**: A concise summary of the action and its result.
 - **`tags`**: Relevant categories (e.g., `governance`, `ci-cd`, `refactoring`).
@@ -22,6 +24,7 @@ Every emitted memory MUST follow the `mycodexvantaos-memory-dream` schema:
 ### 3. Handling DreamActions
 
 When the `DreamRun` report suggests `DreamAction`s, agents must:
+
 1. **Analyze**: Review the suggested actions for conflict resolution or semantic clustering.
 2. **Execute**: Prioritize these actions before proceeding with new feature development.
 3. **Verify**: Ensure the actions resolve the identified memory conflicts or orphans.

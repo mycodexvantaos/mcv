@@ -69,7 +69,7 @@ class ConsoleTransport implements LogTransport {
     }
   }
 
-  private entry;
+  private entry: LogEntry | null = null;
 }
 
 class FileTransport implements LogTransport {

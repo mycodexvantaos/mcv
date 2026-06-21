@@ -21,7 +21,7 @@ jobs:
 
       - name: Generate SBOM with Syft
         env:
-          SYFT_VERSION: "1.11.0"
+          SYFT_VERSION: '1.11.0'
         run: |
           # Install Syft for SBOM generation
           curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin v${SYFT_VERSION}

@@ -15,30 +15,35 @@ Application Pipeline is a sophisticated framework that enables intelligent analy
 ### Key Features
 
 ✨ **AI-Powered Analysis**
+
 - Automatic project type detection
 - Architecture assessment using Claude
 - Technology stack identification
 - Value proposition extraction
 
 🔍 **Intelligent Conflict Detection**
+
 - File duplication detection
 - Semantic conflict analysis
 - Severity-based prioritization
 - Actionable resolution suggestions
 
 🔄 **Smart Merging**
+
 - JSON-aware merging with dependency handling
 - YAML deep merge with deduplication
 - Code-intelligent merging
 - Text content consolidation
 
 ✅ **Comprehensive Validation**
+
 - Conflict marker detection and removal
 - YAML/JSON syntax validation
 - Code structure verification
 - Auto-fix capabilities
 
 📊 **Detailed Reporting**
+
 - Synthesis strategy documentation
 - Conflict resolution rationale
 - Version contribution tracking
@@ -64,7 +69,7 @@ npm install jszip @anthropic-ai/sdk
 import { ApplicationPipeline } from './skills/application-pipeline/core/pipeline.js';
 
 const pipeline = new ApplicationPipeline({
-  apiKey: process.env.ANTHROPIC_API_KEY
+  apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
 // Upload ZIP files
@@ -145,21 +150,27 @@ export default function App() {
 ## 💡 Use Cases
 
 ### 1. Multi-Version Project Integration
+
 Merge multiple versions of a codebase while preserving best practices from each.
 
 ### 2. Architecture Alignment
+
 Detect and resolve architectural conflicts across different implementations.
 
 ### 3. Code Synthesis
+
 Generate optimized versions by combining strengths from multiple sources.
 
 ### 4. Dependency Conflict Resolution
+
 Intelligently merge package.json, requirements.txt, and other dependency files.
 
 ### 5. Documentation Consolidation
+
 Combine documentation from multiple versions into comprehensive guides.
 
 ### 6. Technology Stack Analysis
+
 Identify and unify technology choices across versions.
 
 ---
@@ -173,7 +184,7 @@ const pipeline = new ApplicationPipeline({
   apiKey: process.env.ANTHROPIC_API_KEY,
   model: 'claude-sonnet-4-20250514',
   maxTokens: 1000,
-  timeout: 30000
+  timeout: 30000,
 });
 ```
 
@@ -184,11 +195,11 @@ const customStrategy = {
   'package.json': (versions) => {
     // Custom merge logic
     const merged = { ...versions[0] };
-    versions.forEach(v => {
+    versions.forEach((v) => {
       merged.dependencies = { ...merged.dependencies, ...v.dependencies };
     });
     return merged;
-  }
+  },
 };
 
 const report = await pipeline.synthesize(projects, customStrategy);
@@ -201,21 +212,27 @@ const report = await pipeline.synthesize(projects, customStrategy);
 ### Core Methods
 
 #### `uploadZips(files: File[]): Promise<ZipProject[]>`
+
 Upload and parse ZIP files.
 
 #### `analyzeOne(project: ZipProject): Promise<Analysis>`
+
 Analyze a single project version.
 
 #### `analyzeAll(projects: ZipProject[]): Promise<Analysis[]>`
+
 Analyze all projects in parallel.
 
 #### `detectConflicts(projects: ZipProject[]): Promise<Conflict[]>`
+
 Detect file and semantic conflicts.
 
 #### `synthesize(projects: ZipProject[], strategy?: MergeStrategy): Promise<SynthesisReport>`
+
 Generate merged version and synthesis report.
 
 #### `validate(merged: MergedProject): Promise<ValidationResult>`
+
 Validate merged project integrity.
 
 ---
@@ -292,12 +309,15 @@ npm run test:watch
 ## 🐛 Troubleshooting
 
 ### API Rate Limit
+
 Implement exponential backoff retry logic.
 
 ### Out of Memory
+
 Process files in chunks.
 
 ### Conflict Markers Remain
+
 Use stronger regex patterns for removal.
 
 See [SKILL.md](SKILL.md) for detailed troubleshooting guide.
@@ -307,6 +327,7 @@ See [SKILL.md](SKILL.md) for detailed troubleshooting guide.
 ## 📝 Examples
 
 See [examples/EXAMPLES.md](examples/EXAMPLES.md) for:
+
 - Multi-version project integration
 - Dependency conflict resolution
 - React component integration
@@ -340,6 +361,7 @@ MIT License - See LICENSE file for details
 ## 🆘 Support
 
 For issues or questions:
+
 - Check [SKILL.md](SKILL.md) for API reference
 - Review [INTEGRATION_GUIDE.md](docs/INTEGRATION_GUIDE.md) for patterns
 - See [examples/EXAMPLES.md](examples/EXAMPLES.md) for usage

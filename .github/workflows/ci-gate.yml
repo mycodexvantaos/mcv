@@ -68,9 +68,9 @@ jobs:
           echo "SHA:    ${SHA}"
           echo "Actor:  ${ACTOR}"
 
-# ─────────────────────────────────────────────────────────────
-# Stage 2: Super-Linter (incremental — changed files only)
-# ─────────────────────────────────────────────────────────────
+  # ─────────────────────────────────────────────────────────────
+  # Stage 2: Super-Linter (incremental — changed files only)
+  # ─────────────────────────────────────────────────────────────
   super-linter:
     name: Super-Linter (Incremental)
     runs-on: ubuntu-latest
@@ -90,7 +90,7 @@ jobs:
         env:
           # Incremental: only lint files changed in this PR/push
           VALIDATE_ALL_CODEBASE: false
-          DEFAULT_BRANCH: "main"
+          DEFAULT_BRANCH: 'main'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LOG_LEVEL: NOTICE
 
@@ -114,9 +114,9 @@ jobs:
             pnpm-lock\.yaml|package-lock\.json|yarn\.lock|
             python/\.coverage.*|todo\.md|.*\.min\.js
 
-# ─────────────────────────────────────────────────────────────
-# Stage 3: Node.js Quality (typecheck + format — fast)
-# ─────────────────────────────────────────────────────────────
+  # ─────────────────────────────────────────────────────────────
+  # Stage 3: Node.js Quality (typecheck + format — fast)
+  # ─────────────────────────────────────────────────────────────
   node-quality:
     name: Node.js Quality
     runs-on: ubuntu-latest
@@ -147,9 +147,9 @@ jobs:
         run: pnpm run format:check || echo "format:check not yet configured"
         continue-on-error: true
 
-# ─────────────────────────────────────────────────────────────
-# Stage 4: Python Quality
-# ─────────────────────────────────────────────────────────────
+  # ─────────────────────────────────────────────────────────────
+  # Stage 4: Python Quality
+  # ─────────────────────────────────────────────────────────────
   python-quality:
     name: Python Quality
     runs-on: ubuntu-latest
@@ -200,9 +200,9 @@ jobs:
           fi
         continue-on-error: true
 
-# ─────────────────────────────────────────────────────────────
-# Stage 5: Dependency Review (pull_request only)
-# ─────────────────────────────────────────────────────────────
+  # ─────────────────────────────────────────────────────────────
+  # Stage 5: Dependency Review (pull_request only)
+  # ─────────────────────────────────────────────────────────────
   dependency-review:
     name: Dependency Review
     runs-on: ubuntu-latest
@@ -218,9 +218,9 @@ jobs:
         with:
           config-file: .github/dependency-review-config.yml
 
-# ─────────────────────────────────────────────────────────────
-# Stage 6: Secret Scan (strict — always runs)
-# ─────────────────────────────────────────────────────────────
+  # ─────────────────────────────────────────────────────────────
+  # Stage 6: Secret Scan (strict — always runs)
+  # ─────────────────────────────────────────────────────────────
   secret-scan:
     name: Secret Scan
     runs-on: ubuntu-latest
@@ -237,7 +237,7 @@ jobs:
 
       - name: Install Gitleaks
         env:
-          GITLEAKS_VERSION: "8.21.2"
+          GITLEAKS_VERSION: '8.21.2'
         run: |
           wget -q "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
           tar -xzf "gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
@@ -294,9 +294,9 @@ jobs:
           echo "::error::Gitleaks detected potential secrets. Review the Security tab."
           exit 1
 
-# ─────────────────────────────────────────────────────────────
-# Stage 7: Governance Gate (aggregator — required status check)
-# ─────────────────────────────────────────────────────────────
+  # ─────────────────────────────────────────────────────────────
+  # Stage 7: Governance Gate (aggregator — required status check)
+  # ─────────────────────────────────────────────────────────────
   governance-gate:
     name: Governance Gate
     runs-on: ubuntu-latest

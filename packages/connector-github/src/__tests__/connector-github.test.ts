@@ -210,7 +210,7 @@ describe('GitHubConnector', () => {
 
   describe('Issue Operations', () => {
     test('should get issues', async () => {
-      const mockIssues = [];
+      const mockIssues: Record<string, unknown>[] = [];
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
@@ -283,7 +283,7 @@ describe('GitHubConnector', () => {
 
   describe('Pull Request Operations', () => {
     test('should get pull requests', async () => {
-      const mockPRs = [];
+      const mockPRs: Record<string, unknown>[] = [];
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
@@ -330,7 +330,7 @@ describe('GitHubConnector', () => {
 
   describe('Commit Operations', () => {
     test('should get commits', async () => {
-      const mockCommits = [];
+      const mockCommits: Record<string, unknown>[] = [];
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
@@ -402,7 +402,7 @@ describe('GitHubConnector', () => {
 
   describe('Branch Operations', () => {
     test('should get branches', async () => {
-      const mockBranches = [];
+      const mockBranches: Record<string, unknown>[] = [];
 
       mockFetch.mockResolvedValueOnce({
         ok: true,

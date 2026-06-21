@@ -7,7 +7,7 @@ name: Weekly Security Audit
 
 on:
   schedule:
-    - cron: "0 2 * * 1"  # Monday 02:00 UTC
+    - cron: '0 2 * * 1' # Monday 02:00 UTC
   workflow_dispatch:
 
 concurrency:
@@ -188,7 +188,7 @@ jobs:
         uses: super-linter/super-linter@12150456a73e248bdc94d0794898f94e23127c88
         env:
           VALIDATE_ALL_CODEBASE: true
-          DEFAULT_BRANCH: "main"
+          DEFAULT_BRANCH: 'main'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LOG_LEVEL: NOTICE
           VALIDATE_GITHUB_ACTIONS: true

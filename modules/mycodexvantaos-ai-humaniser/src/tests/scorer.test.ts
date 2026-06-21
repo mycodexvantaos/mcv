@@ -79,8 +79,16 @@ describe('computeWeightedAiScore', () => {
 
   it('should weight first sentence more heavily', () => {
     const sentences = [
-      makeSentence({ index: 0, aiScore: 0.9, features: { ...makeSentence().features, wordCount: 15 } }),
-      makeSentence({ index: 1, aiScore: 0.1, features: { ...makeSentence().features, wordCount: 5 } }),
+      makeSentence({
+        index: 0,
+        aiScore: 0.9,
+        features: { ...makeSentence().features, wordCount: 15 },
+      }),
+      makeSentence({
+        index: 1,
+        aiScore: 0.1,
+        features: { ...makeSentence().features, wordCount: 5 },
+      }),
     ];
     const weightedScore = computeWeightedAiScore(sentences);
     const simpleAvg = (0.9 + 0.1) / 2;
@@ -117,13 +125,31 @@ describe('computeNaturalnessScore', () => {
       label: ContentLabel.HUMAN,
       aiScore: 0.15,
       humanScore: 0.85,
-      stats: { totalSentences: 5, aiSentences: 0, humanSentences: 5, uncertainSentences: 0, avgConfidence: 0.9, maxAiScore: 0.2, minAiScore: 0.05, stdDevAiScore: 0.05 },
+      stats: {
+        totalSentences: 5,
+        aiSentences: 0,
+        humanSentences: 5,
+        uncertainSentences: 0,
+        avgConfidence: 0.9,
+        maxAiScore: 0.2,
+        minAiScore: 0.05,
+        stdDevAiScore: 0.05,
+      },
     });
     const aiResult = makeDetectionResult({
       label: ContentLabel.AI,
       aiScore: 0.85,
       humanScore: 0.15,
-      stats: { totalSentences: 5, aiSentences: 5, humanSentences: 0, uncertainSentences: 0, avgConfidence: 0.9, maxAiScore: 0.95, minAiScore: 0.7, stdDevAiScore: 0.1 },
+      stats: {
+        totalSentences: 5,
+        aiSentences: 5,
+        humanSentences: 0,
+        uncertainSentences: 0,
+        avgConfidence: 0.9,
+        maxAiScore: 0.95,
+        minAiScore: 0.7,
+        stdDevAiScore: 0.1,
+      },
     });
     expect(computeNaturalnessScore(humanResult)).toBeGreaterThan(computeNaturalnessScore(aiResult));
   });
@@ -154,7 +180,9 @@ describe('computeGrade', () => {
     // Grades should get worse (higher letters = worse)
     const gradeOrder = ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'D'];
     for (let i = 1; i < grades.length; i++) {
-      expect(gradeOrder.indexOf(grades[i])).toBeGreaterThanOrEqual(gradeOrder.indexOf(grades[i - 1]));
+      expect(gradeOrder.indexOf(grades[i])).toBeGreaterThanOrEqual(
+        gradeOrder.indexOf(grades[i - 1])
+      );
     }
   });
 });
@@ -169,7 +197,16 @@ describe('generateReport', () => {
         makeSentence({ index: 0, label: ContentLabel.HUMAN, aiScore: 0.15 }),
         makeSentence({ index: 1, label: ContentLabel.HUMAN, aiScore: 0.25 }),
       ],
-      stats: { totalSentences: 2, aiSentences: 0, humanSentences: 2, uncertainSentences: 0, avgConfidence: 0.85, maxAiScore: 0.25, minAiScore: 0.15, stdDevAiScore: 0.05 },
+      stats: {
+        totalSentences: 2,
+        aiSentences: 0,
+        humanSentences: 2,
+        uncertainSentences: 0,
+        avgConfidence: 0.85,
+        maxAiScore: 0.25,
+        minAiScore: 0.15,
+        stdDevAiScore: 0.05,
+      },
     });
     const report = generateReport(result);
     expect(report).toHaveProperty('grade');
@@ -187,7 +224,16 @@ describe('generateReport', () => {
       label: ContentLabel.AI,
       aiScore: 0.8,
       humanScore: 0.2,
-      stats: { totalSentences: 5, aiSentences: 4, humanSentences: 1, uncertainSentences: 0, avgConfidence: 0.85, maxAiScore: 0.95, minAiScore: 0.6, stdDevAiScore: 0.12 },
+      stats: {
+        totalSentences: 5,
+        aiSentences: 4,
+        humanSentences: 1,
+        uncertainSentences: 0,
+        avgConfidence: 0.85,
+        maxAiScore: 0.95,
+        minAiScore: 0.6,
+        stdDevAiScore: 0.12,
+      },
     });
     const report = generateReport(result);
     expect(report.recommendations.length).toBeGreaterThan(0);
@@ -199,9 +245,20 @@ describe('generateReport', () => {
       aiScore: 0.1,
       humanScore: 0.9,
       sentences: [makeSentence({ label: ContentLabel.HUMAN, aiScore: 0.1 })],
-      stats: { totalSentences: 1, aiSentences: 0, humanSentences: 1, uncertainSentences: 0, avgConfidence: 0.9, maxAiScore: 0.1, minAiScore: 0.1, stdDevAiScore: 0 },
+      stats: {
+        totalSentences: 1,
+        aiSentences: 0,
+        humanSentences: 1,
+        uncertainSentences: 0,
+        avgConfidence: 0.9,
+        maxAiScore: 0.1,
+        minAiScore: 0.1,
+        stdDevAiScore: 0,
+      },
     });
     const report = generateReport(result);
-    expect(report.recommendations).toContain('The text appears natural. No significant changes recommended.');
+    expect(report.recommendations).toContain(
+      'The text appears natural. No significant changes recommended.'
+    );
   });
 });

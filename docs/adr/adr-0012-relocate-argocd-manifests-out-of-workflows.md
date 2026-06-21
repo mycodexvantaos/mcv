@@ -80,11 +80,11 @@ No other changes. No workflow content modified. No dependencies touched. No CI/C
 
 ## Risk
 
-| Risk | Likelihood | Impact | Mitigation |
-|---|---|---|---|
-| Hidden external reference to old path | Low | Low | Verified absent via repo-wide grep; rollback is `git revert` |
-| ArgoCD ApplicationSet pointing to old path | Low | Medium | Inspected `argocd/Applications.yaml`; uses repo-relative paths under `argocd/`, not `.github/workflows/argocd/` |
-| Breaks existing kustomize build | Low | Medium | `kustomization.yaml` uses relative paths to sibling directories; relative resolution unchanged after move |
+| Risk                                       | Likelihood | Impact | Mitigation                                                                                                      |
+| ------------------------------------------ | ---------- | ------ | --------------------------------------------------------------------------------------------------------------- |
+| Hidden external reference to old path      | Low        | Low    | Verified absent via repo-wide grep; rollback is `git revert`                                                    |
+| ArgoCD ApplicationSet pointing to old path | Low        | Medium | Inspected `argocd/Applications.yaml`; uses repo-relative paths under `argocd/`, not `.github/workflows/argocd/` |
+| Breaks existing kustomize build            | Low        | Medium | `kustomization.yaml` uses relative paths to sibling directories; relative resolution unchanged after move       |
 
 ## Rollback
 

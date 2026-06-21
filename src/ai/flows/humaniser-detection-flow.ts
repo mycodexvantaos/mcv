@@ -38,19 +38,9 @@ const HumaniserDetectOutputSchema = z.object({
   overallLabel: z
     .enum(['ai', 'human', 'mixed', 'uncertain'])
     .describe('Overall classification for the text'),
-  overallAiScore: z
-    .number()
-    .min(0)
-    .max(1)
-    .describe('Overall AI probability score (0=human, 1=AI)'),
-  overallConfidence: z
-    .number()
-    .min(0)
-    .max(1)
-    .describe('Confidence in the overall classification'),
-  sentences: z
-    .array(SentenceAnalysisSchema)
-    .describe('Per-sentence analysis results'),
+  overallAiScore: z.number().min(0).max(1).describe('Overall AI probability score (0=human, 1=AI)'),
+  overallConfidence: z.number().min(0).max(1).describe('Confidence in the overall classification'),
+  sentences: z.array(SentenceAnalysisSchema).describe('Per-sentence analysis results'),
   explanation: z.string().describe('Overall explanation of the detection result'),
 });
 export type HumaniserDetectOutput = z.infer<typeof HumaniserDetectOutputSchema>;
@@ -68,9 +58,7 @@ export async function humaniserDetectFlow(
     return await detectFlow(input);
   } catch (e: any) {
     if (e.message?.includes('API key not valid')) {
-      throw new Error(
-        'The provided GEMINI_API_KEY is invalid. Please check your .env file.'
-      );
+      throw new Error('The provided GEMINI_API_KEY is invalid. Please check your .env file.');
     }
     throw e;
   }

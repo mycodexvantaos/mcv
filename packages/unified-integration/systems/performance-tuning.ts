@@ -102,10 +102,14 @@ export class PerformanceTuner {
     }
 
     const recentMetrics = this.metrics.slice(-100);
-    const avgResponseTime = recentMetrics.reduce((sum, m) => sum + m.responseTime, 0) / recentMetrics.length;
-    const avgMemory = recentMetrics.reduce((sum, m) => sum + m.memoryUsage, 0) / recentMetrics.length;
-    const avgErrorRate = recentMetrics.reduce((sum, m) => sum + m.errorRate, 0) / recentMetrics.length;
-    const avgCacheHitRate = recentMetrics.reduce((sum, m) => sum + m.cacheHitRate, 0) / recentMetrics.length;
+    const avgResponseTime =
+      recentMetrics.reduce((sum, m) => sum + m.responseTime, 0) / recentMetrics.length;
+    const avgMemory =
+      recentMetrics.reduce((sum, m) => sum + m.memoryUsage, 0) / recentMetrics.length;
+    const avgErrorRate =
+      recentMetrics.reduce((sum, m) => sum + m.errorRate, 0) / recentMetrics.length;
+    const avgCacheHitRate =
+      recentMetrics.reduce((sum, m) => sum + m.cacheHitRate, 0) / recentMetrics.length;
 
     const changes: Record<string, number> = {};
 
@@ -169,7 +173,9 @@ export class PerformanceTuner {
     return result;
   }
 
-  getTuningHistory(limit: number = 50): Array<{ timestamp: Date; changes: Record<string, number> }> {
+  getTuningHistory(
+    limit: number = 50
+  ): Array<{ timestamp: Date; changes: Record<string, number> }> {
     return this.tuningHistory.slice(-limit);
   }
 

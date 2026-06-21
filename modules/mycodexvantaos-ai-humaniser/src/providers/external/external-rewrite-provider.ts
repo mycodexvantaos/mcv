@@ -5,7 +5,12 @@
  * Provides higher-quality rewrites in connected mode.
  */
 
-import type { IRewriteProvider, HumaniserResult, HumaniserRequest, ProviderSource } from '../../types';
+import type {
+  IRewriteProvider,
+  HumaniserResult,
+  HumaniserRequest,
+  ProviderSource,
+} from '../../types';
 import { humaniseNative } from '../../core/rewriter';
 
 interface ExternalRewriteConfig {
@@ -32,7 +37,7 @@ export class ExternalRewriteProvider implements IRewriteProvider {
     if (!this.config) return false;
     try {
       const response = await fetch(`${this.config.endpoint}/models`, {
-        headers: { 'Authorization': `Bearer ${this.config.apiKey}` },
+        headers: { Authorization: `Bearer ${this.config.apiKey}` },
         signal: AbortSignal.timeout(5000),
       });
       return response.ok;
@@ -99,7 +104,7 @@ async function callRewriteLLM(config: ExternalRewriteConfig, prompt: string): Pr
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${config.apiKey}`,
+      Authorization: `Bearer ${config.apiKey}`,
     },
     body: JSON.stringify({
       model: config.model || 'gpt-4o-mini',

@@ -6,6 +6,6 @@ lifecycle: active
 owner: platform@mycodexvantaos.com
 plane: ai-infra
 validates:
-- dimension: canonical-readiness
-  description: Mandatory readiness for gate-41-ai-workload-contract-validation
-  checks: []
+  - dimension: canonical-readiness
+    description: Mandatory readiness for gate-41-ai-workload-contract-validation
+    checks: []

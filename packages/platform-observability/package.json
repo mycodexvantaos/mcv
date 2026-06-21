@@ -1,5 +1,5 @@
 {
-  "name": "@mycodexvantaos/platform-observability",
+  "name": "@mycodexvantaos/platform-observability-lib",
   "version": "0.0.1",
   "description": "Platform observability and monitoring",
   "main": "dist/index.js",

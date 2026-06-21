@@ -25,10 +25,20 @@
 export { HumaniserEngine } from './core/engine';
 
 // Core utilities
-export { extractFeatures, extractFeaturesBatch, splitIntoSentences } from './core/feature-extractor';
+export {
+  extractFeatures,
+  extractFeaturesBatch,
+  splitIntoSentences,
+} from './core/feature-extractor';
 export { detectNative } from './core/detector';
 export { humaniseNative } from './core/rewriter';
-export { computeWeightedAiScore, computeImprovement, computeNaturalnessScore, computeGrade, generateReport } from './core/scorer';
+export {
+  computeWeightedAiScore,
+  computeImprovement,
+  computeNaturalnessScore,
+  computeGrade,
+  generateReport,
+} from './core/scorer';
 export { extractFromUrl, extractFromFile } from './core/url-extractor';
 
 // Providers
@@ -36,12 +46,7 @@ export { NativeDetectionProvider, NativeRewriteProvider } from './providers/nati
 export { ExternalDetectionProvider, ExternalRewriteProvider } from './providers/external';
 
 // Types (re-export all)
-export {
-  ContentLabel,
-  InputSource,
-  RewriteStyle,
-  FormalityLevel,
-} from './types';
+export { ContentLabel, InputSource, RewriteStyle, FormalityLevel } from './types';
 
 export type {
   SentenceAnalysis,

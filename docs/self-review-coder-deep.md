@@ -12,39 +12,39 @@ This review covers the complete Coder-Deep MCP Server implementation including t
 
 ### Library Modules (`python/packages/mycodexvantaos-coder-deep/`)
 
-| File | Lines | Purpose |
-|------|-------|---------|
-| `memory_store.py` | 358 | Namespace-isolated key-value store with TTL, tags, search |
-| `context_cache.py` | 202 | LRU+TTL cache with hit/miss tracking, stats |
-| `behavior_tracker.py` | 576 | AI action recording, session tracking, 14 categories |
-| `architecture_sync.py` | 385 | File tree scanning, snapshot persistence, diff computation |
-| `pipeline_codex.py` | 493 | Best practice codification, versioning, full-text search |
-| `task_tracker.py` | 624 | Governance task tracking (A–F), lifecycle transitions |
+| File                   | Lines | Purpose                                                    |
+| ---------------------- | ----- | ---------------------------------------------------------- |
+| `memory_store.py`      | 358   | Namespace-isolated key-value store with TTL, tags, search  |
+| `context_cache.py`     | 202   | LRU+TTL cache with hit/miss tracking, stats                |
+| `behavior_tracker.py`  | 576   | AI action recording, session tracking, 14 categories       |
+| `architecture_sync.py` | 385   | File tree scanning, snapshot persistence, diff computation |
+| `pipeline_codex.py`    | 493   | Best practice codification, versioning, full-text search   |
+| `task_tracker.py`      | 624   | Governance task tracking (A–F), lifecycle transitions      |
 
 ### FastAPI Service (`python/apps/coder-deep-mcp/`)
 
-| File | Lines | Purpose |
-|------|-------|---------|
-| `main.py` | 2032 | HTTP API (30+ endpoints), MCP protocol, CLI, SSE |
+| File      | Lines | Purpose                                          |
+| --------- | ----- | ------------------------------------------------ |
+| `main.py` | 2032  | HTTP API (30+ endpoints), MCP protocol, CLI, SSE |
 
 ### Tests (`python/tests/`)
 
-| File | Lines | Tests |
-|------|-------|-------|
-| `conftest_coder_deep.py` | 44 | Shared in-memory fixtures |
-| `test_coder_deep_memory.py` | — | 15 |
-| `test_coder_deep_cache.py` | — | 20 |
-| `test_coder_deep_behavior.py` | — | 15 |
-| `test_coder_deep_architecture.py` | — | 16 |
-| `test_coder_deep_codex.py` | — | 16 |
-| `test_coder_deep_tasks.py` | — | 29 |
-| `test_coder_deep_api.py` | — | 42 |
-| `test_coder_deep_mcp.py` | — | 22 |
+| File                              | Lines | Tests                     |
+| --------------------------------- | ----- | ------------------------- |
+| `conftest_coder_deep.py`          | 44    | Shared in-memory fixtures |
+| `test_coder_deep_memory.py`       | —     | 15                        |
+| `test_coder_deep_cache.py`        | —     | 20                        |
+| `test_coder_deep_behavior.py`     | —     | 15                        |
+| `test_coder_deep_architecture.py` | —     | 16                        |
+| `test_coder_deep_codex.py`        | —     | 16                        |
+| `test_coder_deep_tasks.py`        | —     | 29                        |
+| `test_coder_deep_api.py`          | —     | 42                        |
+| `test_coder_deep_mcp.py`          | —     | 22                        |
 
 ### Documentation
 
-| File | Purpose |
-|------|---------|
+| File                                  | Purpose                      |
+| ------------------------------------- | ---------------------------- |
 | `docs/adr/adr-0012-coder-deep-mcp.md` | Architecture Decision Record |
 
 ## Code Quality Checks
@@ -52,6 +52,7 @@ This review covers the complete Coder-Deep MCP Server implementation including t
 ### Lint (ruff)
 
 All files pass `ruff check` with zero errors. Fixes applied during development:
+
 - F401: Removed unused imports (`json`, `field`, enum types)
 - F821: Fixed `true` → `True` in MCP tool schema (Python boolean, not JSON)
 - UP024: Replaced `(OSError, IOError)` with `OSError`
@@ -77,25 +78,25 @@ Coverage: 70% (meeting the 70%+ threshold)
 
 ## Adherence to Governance Rules
 
-| Rule | Status | Notes |
-|------|--------|-------|
-| Minimal change principle | ✅ | Only reordered routes and fixed test fixtures; no unnecessary refactoring |
-| Language scope (TS/JS + Python) | ✅ | All code is Python; no new languages introduced |
-| CodeQL (javascript-typescript + python) | ✅ | Python service follows same patterns as CI Repair Agent (ADR 0011) |
-| lowercase kebab-case naming | ✅ | Package: `mycodexvantaos-coder-deep`, app: `coder-deep-mcp` |
-| Task type classification (A–F) | ✅ | TaskType enum with A_NEW_FEATURE through F_EMERGENCY_BLOCK |
-| Production-ready engineering | ✅ | Standardized responses, error handling, request ID tracing |
-| ADR documentation | ✅ | `docs/adr/adr-0012-coder-deep-mcp.md` |
-| Self-review | ✅ | This document |
+| Rule                                    | Status | Notes                                                                     |
+| --------------------------------------- | ------ | ------------------------------------------------------------------------- |
+| Minimal change principle                | ✅     | Only reordered routes and fixed test fixtures; no unnecessary refactoring |
+| Language scope (TS/JS + Python)         | ✅     | All code is Python; no new languages introduced                           |
+| CodeQL (javascript-typescript + python) | ✅     | Python service follows same patterns as CI Repair Agent (ADR 0011)        |
+| lowercase kebab-case naming             | ✅     | Package: `mycodexvantaos-coder-deep`, app: `coder-deep-mcp`               |
+| Task type classification (A–F)          | ✅     | TaskType enum with A_NEW_FEATURE through F_EMERGENCY_BLOCK                |
+| Production-ready engineering            | ✅     | Standardized responses, error handling, request ID tracing                |
+| ADR documentation                       | ✅     | `docs/adr/adr-0012-coder-deep-mcp.md`                                     |
+| Self-review                             | ✅     | This document                                                             |
 
 ## Risk Assessment
 
-| Risk | Severity | Mitigation |
-|------|----------|------------|
-| In-memory stores lose data on restart | Medium | Production must configure PostgreSQL DSN |
-| No enum validation at API boundary | Low | Library StrEnum rejects invalid values; API layer accepts strings |
-| Architecture scanner only works locally | Low | Remote scanning requires git clone + scan |
-| Context cache limits not dynamic | Low | Service restart required; acceptable for current use case |
+| Risk                                    | Severity | Mitigation                                                        |
+| --------------------------------------- | -------- | ----------------------------------------------------------------- |
+| In-memory stores lose data on restart   | Medium   | Production must configure PostgreSQL DSN                          |
+| No enum validation at API boundary      | Low      | Library StrEnum rejects invalid values; API layer accepts strings |
+| Architecture scanner only works locally | Low      | Remote scanning requires git clone + scan                         |
+| Context cache limits not dynamic        | Low      | Service restart required; acceptable for current use case         |
 
 ## Conclusion
 

@@ -5,6 +5,7 @@ This document provides modular instructions for managing namespace governance an
 ### 1. Naming and Identification (A.1)
 
 All machine-readable identifiers MUST be normalized:
+
 - **Rule**: `lowercase-kebab-case` only.
 - **Forbidden**: `_`, `.`, ` `, version numbers (`-v1`), environment markers (`-prod`).
 - **Pattern**: `{namespace}-{domain}-{function}`.
@@ -12,12 +13,14 @@ All machine-readable identifiers MUST be normalized:
 ### 2. Governance Code Structure
 
 Codes follow the `mycodexvantaos-ll-d-s-qq` pattern:
+
 - `ll`: Layer group (00-99).
 - `d`: Governance domain (0-9).
 - `s`: Governance subtype (0-9).
 - `qq`: Rule sequence (00-99).
 
 **Era Assignments**:
+
 - Meta-Governance: `00000-09999`
 - Era One (Architecture): `10000-29999`
 - Era Two (Runtime): `30000-59999`
@@ -33,6 +36,7 @@ Codes follow the `mycodexvantaos-ll-d-s-qq` pattern:
 ### 4. Controlled Vocabulary
 
 Only use approved terms for domains and functions:
+
 - **Domains**: `auth`, `policy`, `infra`, `platform`, `compliance`, `rollback`, `scheduler`.
 - **Functions**: `service`, `agent`, `sdk`, `api`, `engine`, `scanner`, `reporter`, `controller`.
 

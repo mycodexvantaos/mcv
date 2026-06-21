@@ -10,12 +10,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import {
-  CheckCircle2,
-  XCircle,
-  AlertTriangle,
-  HelpCircle,
-} from 'lucide-react';
+import { CheckCircle2, XCircle, AlertTriangle, HelpCircle } from 'lucide-react';
 
 interface DetectionResultProps {
   detection: {
@@ -103,9 +98,7 @@ export function DetectionResult({ detection }: DetectionResultProps) {
               <div className="flex items-center gap-2 mt-2">
                 <span className="text-xs text-muted-foreground">AI Score</span>
                 <Progress value={detection.aiScore * 100} className="flex-1 h-2" />
-                <span className="text-xs font-mono">
-                  {(detection.aiScore * 100).toFixed(1)}%
-                </span>
+                <span className="text-xs font-mono">{(detection.aiScore * 100).toFixed(1)}%</span>
               </div>
             </div>
           </div>
@@ -124,16 +117,10 @@ export function DetectionResult({ detection }: DetectionResultProps) {
                 key={s.index}
                 className="flex items-center gap-3 p-2 rounded-md hover:bg-muted/50"
               >
-                <span className="text-xs text-muted-foreground w-6 text-right">
-                  {s.index + 1}
-                </span>
+                <span className="text-xs text-muted-foreground w-6 text-right">{s.index + 1}</span>
                 <Badge
                   variant={
-                    s.label === 'ai'
-                      ? 'destructive'
-                      : s.label === 'human'
-                        ? 'default'
-                        : 'secondary'
+                    s.label === 'ai' ? 'destructive' : s.label === 'human' ? 'default' : 'secondary'
                   }
                   className="text-[10px] min-w-[52px] justify-center"
                 >

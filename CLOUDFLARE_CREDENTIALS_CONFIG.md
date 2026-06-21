@@ -18,7 +18,7 @@
 
 1. 前往 GitHub Secrets 設定頁面：
 
-   ```
+   ```text
    https://github.com/mycodexvantaos/mycodexvantaos/settings/secrets/actions
    ```
 
@@ -97,7 +97,7 @@ gh pr create --title "Add Cloudflare Pages Deployment" --body "Adds Cloudflare P
 
 1. 前往 GitHub Actions 頁面：
 
-   ```
+   ```text
    https://github.com/mycodexvantaos/mycodexvantaos/actions
    ```
 

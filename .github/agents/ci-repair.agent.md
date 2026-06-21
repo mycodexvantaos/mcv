@@ -32,15 +32,15 @@ gh run view <run-id> --log-failed
 
 ### 2. Categorize the Failure
 
-| Category | Indicator | Fix Approach |
-|----------|-----------|--------------|
-| TypeScript error | `error TS` | Fix type issues |
-| Lint failure | `ruff` / `eslint` | Auto-format |
-| Test failure | `FAIL` / `AssertionError` | Fix logic |
-| Governance | `governance:check` failed | Fix naming/structure |
-| Contract | `contracts:validate` failed | Fix contract alignment |
-| Build | `build` failed | Fix compilation issues |
-| Dependency | `npm install` failed | Fix package.json |
+| Category         | Indicator                   | Fix Approach           |
+| ---------------- | --------------------------- | ---------------------- |
+| TypeScript error | `error TS`                  | Fix type issues        |
+| Lint failure     | `ruff` / `eslint`           | Auto-format            |
+| Test failure     | `FAIL` / `AssertionError`   | Fix logic              |
+| Governance       | `governance:check` failed   | Fix naming/structure   |
+| Contract         | `contracts:validate` failed | Fix contract alignment |
+| Build            | `build` failed              | Fix compilation issues |
+| Dependency       | `npm install` failed        | Fix package.json       |
 
 ### 3. Apply Fix
 
