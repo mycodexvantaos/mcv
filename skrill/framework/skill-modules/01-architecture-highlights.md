@@ -46,10 +46,10 @@
 grep -r "from '\.\./\.\." src/ --include="*.ts"
 
 # 驗證 gate 邊界
-node ci/validate-gate-boundaries.js
+pnpm tsx ci/validate-architecture.ts
 
 # 檢查 import matrix 合規
-python scripts/validate-import-policy.py
+python scripts/validate-namespace-governance.py
 ```
 
 **Failure Modes**:

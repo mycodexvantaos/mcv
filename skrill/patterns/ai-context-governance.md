@@ -63,7 +63,6 @@ AI Context Governance Layer
 ```python
 # python/ai_context/redactor.py
 import re
-from typing import str
 
 SENSITIVE_PATTERNS = {
     'email': r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b',
@@ -133,7 +132,8 @@ def record_ai_call(
     input_hash: str,
     output_hash: str,
     model: str,
-    policy_results: dict
+    policy_results: dict,
+    previous_chain_hash: str = ""
 ) -> dict:
     """記錄每次 AI 調用的審計記錄"""
     record = {
@@ -142,11 +142,20 @@ def record_ai_call(
         'input_hash': input_hash,
         'output_hash': output_hash,
         'policy_results': policy_results,
+        'previous_chain_hash': previous_chain_hash,
         'chain_hash': None  # 稍後計算
     }
     # 計算與前一條記錄的 hash chain
+    chain_payload = {
+        'timestamp': record['timestamp'],
+        'model': model,
+        'input_hash': input_hash,
+        'output_hash': output_hash,
+        'policy_results': policy_results,
+        'previous_chain_hash': previous_chain_hash,
+    }
     record['chain_hash'] = hashlib.sha256(
-        json.dumps(record).encode()
+        json.dumps(chain_payload, sort_keys=True).encode()
     ).hexdigest()
     return record
 ```

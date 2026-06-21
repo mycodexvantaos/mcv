@@ -158,3 +158,8 @@ spec:
       path: ./config
       type: configuration
       hasRootModule: false
+
+    - name: skrill
+      path: ./skrill
+      type: documentation
+      hasRootModule: false

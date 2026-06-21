@@ -93,13 +93,13 @@
 **Phase 1 驗證命令**：
 ```bash
 # 驗證所有 patterns 格式正確
-python scripts/validate-pattern-library.py
+python scripts/validate-foundation-structure.py
 
 # 驗證所有 skill modules 完整
-python scripts/validate-skill-modules.py
+python scripts/validate-navigation.py
 
 # 驗證所有 schemas 合法
-npx ajv validate -s schemas/meta-schema.json -d schemas/*.yaml
+python scripts/validate-provider-registry.py
 ```
 
 ---

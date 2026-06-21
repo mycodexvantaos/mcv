@@ -55,11 +55,9 @@ Step 1.3 — 建立跨分析關聯圖
 
 **質量門控**：
 ```bash
-# 驗證 Layer 1 輸出完整性
-python scripts/validate-layer1-output.py \
-  --report <report-file> \
-  --check-all-sections \
-  --require-counts  # 確保 10/5/5/5 的計數都有填寫
+# TODO: Layer 1 專用驗證器（scripts/validate-layer1-output.py）尚未在本 repo 提供
+# 目前可先執行既有的結構基線驗證
+python scripts/validate-foundation-structure.py
 ```
 
 ---
