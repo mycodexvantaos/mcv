@@ -1,6 +1,7 @@
-import yaml
 import os
 from pathlib import Path
+
+import yaml
 
 GATES = [
     "gate-01-namespace-governance-validation",

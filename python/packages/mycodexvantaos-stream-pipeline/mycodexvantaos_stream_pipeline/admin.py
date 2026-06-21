@@ -7,7 +7,6 @@ from typing import Any
 
 from aiokafka.admin import AIOKafkaAdminClient
 from aiokafka.errors import KafkaError, UnknownTopicOrPartitionError
-
 from mycodexvantaos_stream_pipeline.models import KafkaTopicConfig
 
 logger = logging.getLogger(__name__)

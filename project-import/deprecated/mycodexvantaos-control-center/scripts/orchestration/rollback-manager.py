@@ -9,14 +9,15 @@ This script manages rollback operations for:
 - Verifying rollback completion
 """
 
-import json
 import argparse
+import json
 import os
 import sys
-import yaml
+from collections import defaultdict
 from datetime import datetime
 from typing import Dict, List, Optional
-from collections import defaultdict
+
+import yaml
 
 
 class RollbackManager:

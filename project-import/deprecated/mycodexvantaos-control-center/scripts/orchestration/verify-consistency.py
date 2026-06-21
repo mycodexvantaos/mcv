@@ -9,12 +9,13 @@ This script verifies orchestration consistency including:
 - Data integrity checks
 """
 
-import json
 import argparse
+import json
 import os
 import sys
-import yaml
 from typing import Dict, List, Set
+
+import yaml
 
 
 class ConsistencyVerifier:

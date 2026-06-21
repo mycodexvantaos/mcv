@@ -2,9 +2,10 @@
 """
 Fix Jest configuration to properly handle TypeScript tests
 """
-import os
 import json
+import os
 from pathlib import Path
+
 
 def update_package_jest_config():
     """Update package.json files to use proper ts-jest configuration"""

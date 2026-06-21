@@ -5,6 +5,7 @@ Fix test errors systematically
 import os
 from pathlib import Path
 
+
 def add_service_export(package_path):
     """Add Service export to package index.ts if missing"""
     index_file = package_path / "src" / "index.ts"

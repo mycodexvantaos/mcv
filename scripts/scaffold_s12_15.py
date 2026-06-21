@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Generate Sec.12 Event Contracts, Sec.13 Policy Contracts, Sec.14 JSON Schemas, Sec.15 Migrations"""
-import os, json
+import json
+import os
 
 BASE = "/workspace/mycodexvantaos"
 created = 0

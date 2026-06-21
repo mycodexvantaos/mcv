@@ -10,7 +10,6 @@ import logging
 from typing import Any
 
 import asyncpg
-
 from mycodexvantaos_ci_repair.models import (
     FailureAnalysis,
     RepairPlan,

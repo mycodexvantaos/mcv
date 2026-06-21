@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 import re
 import sys
-import yaml
 from pathlib import Path
+
+import yaml
+
 
 def fail(msg: str):
     print(f"ERROR: {msg}")

@@ -4,11 +4,11 @@ Integrates Semantic Core with Python analysis backend
 """
 
 import asyncio
+import json
 import logging
-from typing import Optional, List, Dict, Any
 from dataclasses import dataclass
 from datetime import datetime
-import json
+from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 

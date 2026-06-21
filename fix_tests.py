@@ -5,6 +5,7 @@ Fix malformed test files
 import re
 from pathlib import Path
 
+
 def fix_test_file(test_file):
     """Fix malformed import statements in test files"""
     content = test_file.read_text()

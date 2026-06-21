@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Quick layer coverage counter"""
 
-import os
 import json
+import os
 from pathlib import Path
 
 # Define layer structure

@@ -10,7 +10,6 @@ from typing import Any
 
 from aiokafka import AIOKafkaProducer
 from aiokafka.errors import KafkaError
-
 from mycodexvantaos_stream_pipeline.models import (
     CompressionType,
     DeadLetterMessage,

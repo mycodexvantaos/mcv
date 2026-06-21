@@ -6,7 +6,6 @@ from datetime import datetime
 from unittest.mock import AsyncMock
 
 import pytest
-
 from mycodexvantaos_ci_repair.github_client import GitHubActionsClient
 from mycodexvantaos_ci_repair.models import (
     FailedJob,

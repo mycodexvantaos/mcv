@@ -1,7 +1,6 @@
 """Tests for mycodexvantaos_coder_deep.task_tracker module."""
 
 import pytest
-
 from mycodexvantaos_coder_deep.task_tracker import (
     TaskEntry,
     TaskPriority,

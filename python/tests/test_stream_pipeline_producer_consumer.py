@@ -5,7 +5,6 @@ from __future__ import annotations
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
-
 from mycodexvantaos_stream_pipeline.consumer import StreamConsumer
 from mycodexvantaos_stream_pipeline.models import (
     ConsumerConfig,

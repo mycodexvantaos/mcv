@@ -6,12 +6,13 @@ This script resolves dependencies between repositories and calculates
 the optimal execution order based on planes, tiers, and dependencies.
 """
 
-import yaml
-import json
 import argparse
+import json
 import sys
-from typing import List, Dict, Set
 from collections import defaultdict, deque
+from typing import Dict, List, Set
+
+import yaml
 
 
 class DependencyResolver:

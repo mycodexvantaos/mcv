@@ -1,6 +1,8 @@
-import yaml
 import os
 from pathlib import Path
+
+import yaml
+
 
 # Custom dumper to force 2-space indentation for lists
 class MyDumper(yaml.SafeDumper):

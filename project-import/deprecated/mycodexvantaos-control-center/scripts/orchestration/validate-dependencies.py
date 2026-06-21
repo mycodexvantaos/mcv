@@ -9,11 +9,12 @@ This script validates repository dependencies for:
 - Conflicting dependencies
 """
 
-import yaml
 import argparse
 import sys
-from typing import List, Dict, Set
 from collections import defaultdict
+from typing import Dict, List, Set
+
+import yaml
 
 
 class DependencyValidator:

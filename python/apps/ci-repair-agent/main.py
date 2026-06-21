@@ -26,11 +26,10 @@ from asyncpg.exceptions import (
 )
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field
-
 from mycodexvantaos_ci_repair.database import DatabaseClient
 from mycodexvantaos_ci_repair.github_client import GitHubActionsClient
 from mycodexvantaos_ci_repair.repair_engine import analyze_failure, generate_repair_plan
+from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
 

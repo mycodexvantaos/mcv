@@ -8,11 +8,12 @@ This script publishes execution metrics to:
 - observability-elk
 """
 
-import json
 import argparse
+import json
 import os
 from datetime import datetime
 from typing import Dict, List
+
 
 class MetricsPublisher:
     """Publishes platform execution metrics to observability providers."""

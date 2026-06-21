@@ -3,8 +3,11 @@
 import time
 
 import pytest
-
-from mycodexvantaos_coder_deep.context_cache import ContextCache, ContextEntry, ContextQuery
+from mycodexvantaos_coder_deep.context_cache import (
+    ContextCache,
+    ContextEntry,
+    ContextQuery,
+)
 
 
 @pytest.fixture

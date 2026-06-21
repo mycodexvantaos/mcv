@@ -5,6 +5,7 @@ Setup jest.config.js for all packages and create proper test files
 import json
 from pathlib import Path
 
+
 def create_jest_config(package_dir):
     """Create jest.config.js for a package"""
     config_content = """module.exports = {

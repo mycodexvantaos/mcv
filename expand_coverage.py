@@ -6,6 +6,7 @@
 import re
 from pathlib import Path
 
+
 def get_package_structure(package_path):
     """分析套件結構以創建適當的測試"""
     index_file = package_path / "src" / "index.ts"

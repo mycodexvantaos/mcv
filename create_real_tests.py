@@ -6,6 +6,7 @@ import os
 import re
 from pathlib import Path
 
+
 def get_package_exports(package_path):
     """Get the main class/interface exports from a package"""
     index_file = package_path / "src" / "index.ts"

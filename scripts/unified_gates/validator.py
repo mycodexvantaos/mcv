@@ -342,11 +342,14 @@ def _validate_minimum_blocking_set(
     gates: list[dict[str, Any]],
     issues: list[ValidationIssue],
 ) -> None:
-    blocking = {
-        gate.get("id")
-        for gate in gates
-        if gate.get("blocking") is True and gate.get("lifecycle") == "active"
-    }
+    # Build a set[str] of IDs for active, blocking gates (filter out non-str)
+    blocking: set[str] = set()
+    for gate in gates:
+        if gate.get("blocking") is True and gate.get("lifecycle") == "active":
+            gate_id = gate.get("id")
+            if isinstance(gate_id, str):
+                blocking.add(gate_id)
+
     missing = MINIMUM_BLOCKING_GATES - blocking
     for gate_id in sorted(missing):
         issues.append(

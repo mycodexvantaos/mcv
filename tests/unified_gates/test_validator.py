@@ -1,8 +1,11 @@
 from pathlib import Path
 
 import yaml
-from scripts.unified_gates.validator import (MINIMUM_BLOCKING_GATES,
-                                             validate_unified_gate_index)
+
+from scripts.unified_gates.validator import (
+    MINIMUM_BLOCKING_GATES,
+    validate_unified_gate_index,
+)
 
 
 def write_yaml(path: Path, payload: dict) -> None:

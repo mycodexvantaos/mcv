@@ -1,8 +1,11 @@
 """Tests for mycodexvantaos_coder_deep.memory_store module."""
 
 import pytest
-
-from mycodexvantaos_coder_deep.memory_store import MemoryItem, MemorySearchParams, MemoryStore
+from mycodexvantaos_coder_deep.memory_store import (
+    MemoryItem,
+    MemorySearchParams,
+    MemoryStore,
+)
 
 
 @pytest.fixture

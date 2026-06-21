@@ -2,9 +2,10 @@
 """
 Quick test runner to execute tests for individual packages
 """
-import subprocess
 import json
+import subprocess
 from pathlib import Path
+
 
 def run_package_test(package_name):
     """Run tests for a specific package"""

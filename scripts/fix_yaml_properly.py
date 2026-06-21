@@ -1,6 +1,8 @@
-import yaml
 import os
 from pathlib import Path
+
+import yaml
+
 
 def fix_yaml_file(path):
     with open(path, 'r') as f:
