@@ -32,35 +32,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LOG_LEVEL: NOTICE
 
-          # Enable only linters we actually care about
+          # Only enable linters we actually need - use ONLY
+          # VALIDATE_<LANG>=true (no false values allowed in v7)
           VALIDATE_GITHUB_ACTIONS: true
           VALIDATE_YAML: true
           VALIDATE_JSON: true
           VALIDATE_MARKDOWN: true
           VALIDATE_BASH: true
           VALIDATE_DOCKERFILE_HADOLINT: true
-
-          # Disable problematic Python linters — Python quality is handled
-          # by the dedicated Coder-Deep MCP and Kafka Stream Processor
-          # workflows using ruff (which this repo has adopted).
-          VALIDATE_PYTHON_BLACK: false
-          VALIDATE_PYTHON_PYLINT: false
-          VALIDATE_PYTHON_FLAKE8: false
-          VALIDATE_PYTHON_ISORT: false
-          VALIDATE_PYTHON_MYPY: false
-          VALIDATE_PYTHON_RUFF: false
-          VALIDATE_PYTHON: false
-
-          # Disable JSCPD (copy-paste detector) — threshold 0% is too strict
-          VALIDATE_JSCPD: false
-
-          # Disable JS/TS linting — no package.json at repo root
-          VALIDATE_JAVASCRIPT_ES: false
-          VALIDATE_JAVASCRIPT_STANDARD: false
-          VALIDATE_JAVASCRIPT_PRETTIER: false
-          VALIDATE_TYPESCRIPT_ES: false
-          VALIDATE_TYPESCRIPT_STANDARD: false
-          VALIDATE_TYPESCRIPT_PRETTIER: false
 
           # Exclude generated / vendored / data directories
           FILTER_REGEX_EXCLUDE: |
