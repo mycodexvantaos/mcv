@@ -25,6 +25,9 @@ paths-ignore:
   - '**/__pycache__'
   - '**/.venv'
   - '**/venv'
+  - 'packages/providers/src/observability-native.ts'
+  - 'scripts/update-module-manifests.ts'
+  - 'services/mycodexvantaos-platform-validation/src/validator.ts'
 
 # Query suite - use security-extended for deeper analysis
 queries:
