@@ -137,13 +137,9 @@ class TestCodexQuery:
     @pytest.mark.asyncio
     async def test_query_by_category(self, codex: PipelineCodex) -> None:
         """Query entries by category."""
+        await codex.put(entry=CodexEntry(category=CodexCategory.PATTERN, title="P1", content="c1"))
         await codex.put(
-            entry=CodexEntry(category=CodexCategory.PATTERN, title="P1", content="c1")
-        )
-        await codex.put(
-            entry=CodexEntry(
-                category=CodexCategory.ANTI_PATTERN, title="AP1", content="c2"
-            )
+            entry=CodexEntry(category=CodexCategory.ANTI_PATTERN, title="AP1", content="c2")
         )
         result = await codex.query(params=CodexQuery(category=CodexCategory.PATTERN))
         assert len(result) >= 1
@@ -188,12 +184,8 @@ class TestCodexStats:
     @pytest.mark.asyncio
     async def test_stats_after_entries(self, codex: PipelineCodex) -> None:
         """Stats reflect stored entries."""
-        await codex.put(
-            entry=CodexEntry(category=CodexCategory.PATTERN, title="P1", content="c1")
-        )
-        await codex.put(
-            entry=CodexEntry(category=CodexCategory.WORKFLOW, title="W1", content="c2")
-        )
+        await codex.put(entry=CodexEntry(category=CodexCategory.PATTERN, title="P1", content="c1"))
+        await codex.put(entry=CodexEntry(category=CodexCategory.WORKFLOW, title="W1", content="c2"))
         stats = await codex.get_stats()
         assert stats.total_entries == 2
 
@@ -230,3 +222,123 @@ class TestCodexStatusEnum:
         expected = ["draft", "active", "deprecated", "archived"]
         for status in expected:
             assert CodexStatus(status) == status
+
+
+class TestCodexCoverageEdges:
+    """Focused tests for query filters, ordering, and stats maps."""
+
+    @pytest.mark.asyncio
+    async def test_query_filters_status_team_scope_and_paginates(
+        self, codex: PipelineCodex
+    ) -> None:
+        """Query combines status/team/scope filters and honors offset/limit."""
+        await codex.put(
+            entry=CodexEntry(
+                category=CodexCategory.RUNBOOK,
+                title="First",
+                content="alpha",
+                status=CodexStatus.ACTIVE,
+                team="platform",
+                scope="repo",
+                priority=1,
+            )
+        )
+        await codex.put(
+            entry=CodexEntry(
+                category=CodexCategory.RUNBOOK,
+                title="Second",
+                content="beta",
+                status=CodexStatus.ACTIVE,
+                team="platform",
+                scope="repo",
+                priority=10,
+            )
+        )
+        await codex.put(
+            entry=CodexEntry(
+                category=CodexCategory.RUNBOOK,
+                title="Other Team",
+                content="gamma",
+                status=CodexStatus.ACTIVE,
+                team="security",
+                scope="repo",
+            )
+        )
+        results = await codex.query(
+            params=CodexQuery(
+                status=CodexStatus.ACTIVE,
+                team="platform",
+                scope="repo",
+                limit=1,
+                offset=1,
+            )
+        )
+        assert len(results) == 1
+        assert results[0].team == "platform"
+        assert results[0].scope == "repo"
+        assert results[0].title == "First"
+
+    @pytest.mark.asyncio
+    async def test_query_search_text_no_match_returns_empty(self, codex: PipelineCodex) -> None:
+        """Search text excludes entries whose title/description/content do not match."""
+        await codex.put(
+            entry=CodexEntry(
+                category=CodexCategory.PATTERN,
+                title="Circuit Breaker",
+                description="Resilience pattern",
+                content="Protect downstream services",
+            )
+        )
+        assert await codex.query(params=CodexQuery(search_text="not-present")) == []
+
+    @pytest.mark.asyncio
+    async def test_stats_include_status_team_and_scope_breakdowns(
+        self, codex: PipelineCodex
+    ) -> None:
+        """Stats expose category, status, team, and scope counters."""
+        await codex.put(
+            entry=CodexEntry(
+                category=CodexCategory.CAPABILITY,
+                title="Capability",
+                content="content",
+                status=CodexStatus.DRAFT,
+                team="ai",
+                scope="service",
+            )
+        )
+        stats = await codex.get_stats()
+        assert stats.by_status[CodexStatus.DRAFT] == 1
+        assert stats.by_team["ai"] == 1
+        assert stats.by_scope["service"] == 1
+
+    def test_row_to_entry_decodes_metadata_and_defaults_lists(self) -> None:
+        """Database row conversion decodes metadata and normalizes nullable arrays."""
+        from datetime import datetime
+
+        now = datetime(2026, 1, 2, 3, 4, 5)
+        row = {
+            "entry_id": "entry-1",
+            "category": CodexCategory.RUNBOOK,
+            "title": "Runbook",
+            "description": "desc",
+            "content": "content",
+            "status": CodexStatus.ACTIVE,
+            "version": 7,
+            "author": "agent",
+            "team": "platform",
+            "tags": None,
+            "metadata": '{"source": "db"}',
+            "created_at": now,
+            "updated_at": now,
+            "parent_id": "parent",
+            "references": None,
+            "scope": "repo",
+            "priority": 9,
+            "applies_to": None,
+        }
+        entry = PipelineCodex._row_to_entry(row)
+        assert entry.metadata == {"source": "db"}
+        assert entry.tags == []
+        assert entry.references == []
+        assert entry.applies_to == []
+        assert entry.created_at == now.isoformat()

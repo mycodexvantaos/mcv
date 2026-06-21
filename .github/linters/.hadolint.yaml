@@ -1,0 +1,4 @@
+---
+ignored:
+  - DL3008 # apt package pinning is managed by base image/pipeline policy for these runtime images
+  - DL3059 # consecutive RUN consolidation is an optimization hint, not a correctness or security blocker

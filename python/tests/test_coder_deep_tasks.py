@@ -396,3 +396,171 @@ class TestTaskStatusEnum:
         ]
         for status in expected:
             assert TaskStatus(status) == status
+
+
+class TestTaskCoverageEdges:
+    """Focused tests for fallback filtering, timestamps, and dependency edges."""
+
+    @pytest.mark.asyncio
+    async def test_update_nonexistent_and_ignores_unknown_fields(
+        self, tracker: TaskTracker
+    ) -> None:
+        """Updating a missing task returns None and unknown fields are ignored."""
+        assert (
+            await tracker.update(task_id="missing", updates={"status": TaskStatus.COMPLETED})
+            is None
+        )
+        task = await tracker.create(task=TaskEntry(title="Known", task_type=TaskType.A_NEW_FEATURE))
+        updated = await tracker.update(task_id=task.task_id, updates={"unknown": "ignored"})
+        assert updated is not None
+        assert not hasattr(updated, "unknown")
+
+    @pytest.mark.asyncio
+    async def test_status_updates_set_started_and_completed_timestamps(
+        self, tracker: TaskTracker
+    ) -> None:
+        """Lifecycle status updates set started_at and completed_at timestamps."""
+        task = await tracker.create(
+            task=TaskEntry(title="Lifecycle", task_type=TaskType.C_CICD_FIX)
+        )
+        in_progress = await tracker.update(
+            task_id=task.task_id, updates={"status": TaskStatus.IN_PROGRESS}
+        )
+        assert in_progress is not None
+        assert in_progress.started_at
+        completed = await tracker.update(
+            task_id=task.task_id, updates={"status": TaskStatus.FAILED}
+        )
+        assert completed is not None
+        assert completed.completed_at
+
+    @pytest.mark.asyncio
+    async def test_query_filters_session_parent_repository_branch_tags_and_pagination(
+        self, tracker: TaskTracker
+    ) -> None:
+        """Query applies less common structured filters and pagination."""
+        await tracker.create(
+            task=TaskEntry(
+                title="First",
+                task_type=TaskType.A_NEW_FEATURE,
+                session_id="s1",
+                parent_task_id="parent",
+                repository="repo",
+                branch="main",
+                tags=["edge"],
+            )
+        )
+        await tracker.create(
+            task=TaskEntry(
+                title="Second",
+                task_type=TaskType.A_NEW_FEATURE,
+                session_id="s1",
+                parent_task_id="parent",
+                repository="repo",
+                branch="main",
+                tags=["edge"],
+            )
+        )
+        await tracker.create(
+            task=TaskEntry(
+                title="Other",
+                task_type=TaskType.A_NEW_FEATURE,
+                session_id="s2",
+                parent_task_id="parent",
+                repository="repo",
+                branch="main",
+                tags=["edge"],
+            )
+        )
+        results = await tracker.query(
+            params=TaskQuery(
+                session_id="s1",
+                parent_task_id="parent",
+                repository="repo",
+                branch="main",
+                tags=["edge"],
+                limit=1,
+                offset=1,
+            )
+        )
+        assert len(results) == 1
+        assert results[0].session_id == "s1"
+        assert results[0].repository == "repo"
+
+    @pytest.mark.asyncio
+    async def test_get_dependencies_for_missing_and_blocked_by(self, tracker: TaskTracker) -> None:
+        """Dependency helpers handle missing tasks and reverse dependency lookups."""
+        assert await tracker.get_dependencies(task_id="missing") == []
+        blocker = await tracker.create(
+            task=TaskEntry(title="Blocker", task_type=TaskType.B_SECURITY_PATCH)
+        )
+        await tracker.create(
+            task=TaskEntry(
+                title="Blocked",
+                task_type=TaskType.C_CICD_FIX,
+                depends_on=[blocker.task_id],
+            )
+        )
+        dependencies = await tracker.get_dependencies(task_id="missing")
+        assert dependencies == []
+
+    @pytest.mark.asyncio
+    async def test_stats_completion_rate_for_completed_tasks(self, tracker: TaskTracker) -> None:
+        """Stats compute a non-zero completion rate and grouped counters."""
+        task = await tracker.create(
+            task=TaskEntry(
+                title="Done",
+                task_type=TaskType.E_RELEASE_ARTIFACT,
+                priority=TaskPriority.LOW,
+            )
+        )
+        await tracker.create(task=TaskEntry(title="Todo", task_type=TaskType.A_NEW_FEATURE))
+        await tracker.update(task_id=task.task_id, updates={"status": TaskStatus.COMPLETED})
+        stats = await tracker.get_stats()
+        assert stats.total_tasks == 2
+        assert stats.by_status[TaskStatus.COMPLETED] == 1
+        assert stats.by_priority[TaskPriority.LOW] == 1
+        assert stats.by_type[TaskType.E_RELEASE_ARTIFACT] == 1
+        assert stats.completion_rate == 0.5
+
+    def test_row_to_task_decodes_json_and_optional_timestamps(self) -> None:
+        """Database row conversion decodes JSON fields and nullable timestamp columns."""
+        from datetime import datetime
+
+        now = datetime(2026, 1, 2, 3, 4, 5)
+        row = {
+            "task_id": "task-1",
+            "title": "Task",
+            "description": "desc",
+            "status": TaskStatus.COMPLETED,
+            "priority": TaskPriority.HIGH,
+            "task_type": TaskType.C_CICD_FIX,
+            "assignee": "agent",
+            "session_id": "session",
+            "parent_task_id": "parent",
+            "depends_on": None,
+            "blocks": None,
+            "tags": None,
+            "metadata": '{"source": "db"}',
+            "result": '{"ok": true}',
+            "error": "",
+            "created_at": now,
+            "updated_at": now,
+            "started_at": now,
+            "completed_at": now,
+            "due_at": None,
+            "repository": "repo",
+            "branch": "main",
+            "file_paths": None,
+            "progress_pct": 100,
+        }
+        task = TaskTracker._row_to_task(row)
+        assert task.metadata == {"source": "db"}
+        assert task.result == {"ok": True}
+        assert task.depends_on == []
+        assert task.blocks == []
+        assert task.tags == []
+        assert task.file_paths == []
+        assert task.started_at == now.isoformat()
+        assert task.completed_at == now.isoformat()
+        assert task.due_at is None

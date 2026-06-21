@@ -228,7 +228,8 @@ jobs:
     name: Security Summary
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    needs: [codeql-javascript, codeql-typescript, secrets-scan, sast-semgrep, iac-scan, container-scan]
+    needs:
+      [codeql-javascript, codeql-typescript, secrets-scan, sast-semgrep, iac-scan, container-scan]
     if: always()
     steps:
       - name: Generate Security Summary

@@ -117,24 +117,18 @@ jobs:
 
   security-scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 5
     needs: lint-and-test
     permissions:
       contents: read
-      security-events: write
     steps:
       - name: Checkout code
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
 
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@8aad20d150bbac5944a9f9d289da16a4b0d87c1e
-        with:
-          languages: python
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@8aad20d150bbac5944a9f9d289da16a4b0d87c1e
-        with:
-          category: '/language:python'
+      - name: Verify centralized CodeQL workflow
+        run: |
+          test -f .github/workflows/codeql.yml
+          echo "CodeQL scanning is handled by the centralized CodeQL Advanced workflow."
 
   docker-build:
     runs-on: ubuntu-latest
