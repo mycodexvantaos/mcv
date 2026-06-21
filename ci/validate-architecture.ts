@@ -21,6 +21,7 @@
 import fs from 'fs';
 import path from 'path';
 import { parseArgs } from 'util';
+import { parse } from 'yaml';
 import * as serviceIdRule from './rules/service-id.rule';
 import * as modulePathRule from './rules/module-path.rule';
 import * as packageNameRule from './rules/package-name.rule';
@@ -41,6 +42,7 @@ import * as graphDbIndexIdRule from './rules/graph-db-index-id.rule';
 import * as timestampedIdRule from './rules/timestamped-id.rule';
 import * as contentAddressedIdRule from './rules/content-addressed-id.rule';
 import * as uuidBasedIdRule from './rules/uuid-based-id.rule';
+import { validate } from './utils/regex-table.js';
 
 // ─── Public Types ─────────────────────────────────────────────────────────────
 
@@ -60,7 +62,7 @@ export interface ValidationContext {
   // Section 6.2 — Paths to module folders (e.g. "modules/mycodexvantaos-core-kernel")
   moduleFolderPaths: string[];
   // Section 7.1 — Pairs of (serviceId, packageName) for derivation check
-  packageEntries: Array<{ serviceId: string; packageName: string }>;
+  packageEntries: Array<{ serviceId?: string; packageName: string }>;
   // Section 6.3 — Manifest entries for metadata.name consistency check
   manifestEntries: Array<{
     manifestPath: string;
@@ -93,6 +95,29 @@ export interface ValidationContext {
   contentAddressedIds: string[];
   // Section 9.10
   uuidBasedIds: string[];
+  // Section 15 — approved naming exceptions
+  exceptions?: NamingException[];
+}
+
+interface NamingException {
+  id: string;
+  rule: string;
+  scope: string;
+  createdAt?: string;
+  expiresAt?: string;
+  status?: string;
+}
+
+interface CapabilitySetDocument {
+  capabilities?: Array<{ id?: string }>;
+}
+
+interface ProviderRegistryDocument {
+  providers?: Array<{ name?: string }>;
+}
+
+interface ExceptionRegisterDocument {
+  exceptions?: NamingException[];
 }
 
 export interface ValidationReport {
@@ -129,16 +154,23 @@ export function discoverContext(rootDir: string = '.'): ValidationContext {
     timestampedIds: [],
     contentAddressedIds: [],
     uuidBasedIds: [],
+    exceptions: [],
   };
 
   const abs = (p: string) => path.resolve(rootDir, p);
+  const readYaml = <T>(relativePath: string): T | null => {
+    const filePath = abs(relativePath);
+    if (!fs.existsSync(filePath)) return null;
+
+    return parse(fs.readFileSync(filePath, 'utf-8')) as T;
+  };
 
   // Discover service-ids from services/ folder names
   const servicesDir = abs('services');
   if (fs.existsSync(servicesDir)) {
     const entries = fs.readdirSync(servicesDir, { withFileTypes: true });
     for (const e of entries) {
-      if (e.isDirectory()) ctx.serviceIds.push(e.name);
+      if (e.isDirectory() && e.name.startsWith('mycodexvantaos-')) ctx.serviceIds.push(e.name);
     }
   }
 
@@ -176,26 +208,53 @@ export function discoverContext(rootDir: string = '.'): ValidationContext {
         const pkgJson = path.join(packagesDir, e.name, 'package.json');
         if (fs.existsSync(pkgJson)) {
           const pkg = JSON.parse(fs.readFileSync(pkgJson, 'utf-8'));
+          const packageName = typeof pkg.name === 'string' ? pkg.name : '';
+          if (!validate('package-name', packageName)) {
+            continue;
+          }
+
           ctx.packageEntries.push({
-            serviceId: `mycodexvantaos-${e.name}`,
-            packageName: pkg.name ?? '',
+            serviceId: e.name.startsWith('mycodexvantaos-') ? e.name : undefined,
+            packageName,
           });
         }
       }
     }
   }
 
-  // Discover provider instances from providers/ folder (two-level deep)
-  const providersDir = abs('providers');
-  if (fs.existsSync(providersDir)) {
-    const caps = fs.readdirSync(providersDir, { withFileTypes: true });
-    for (const cap of caps) {
-      if (!cap.isDirectory()) continue;
-      ctx.capabilityIds.push(cap.name);
-      const capDir = path.join(providersDir, cap.name);
-      const provs = fs.readdirSync(capDir, { withFileTypes: true });
-      for (const prov of provs) {
-        if (prov.isDirectory()) ctx.providerInstances.push(prov.name);
+  // Discover capabilities from governance source-of-truth
+  const capabilitySet = readYaml<CapabilitySetDocument>('governance/capability-set.yaml');
+  if (capabilitySet?.capabilities?.length) {
+    ctx.capabilityIds = capabilitySet.capabilities
+      .map((capability) => capability.id?.trim())
+      .filter((capabilityId): capabilityId is string => Boolean(capabilityId));
+  } else {
+    const providersDir = abs('providers');
+    if (fs.existsSync(providersDir)) {
+      const caps = fs.readdirSync(providersDir, { withFileTypes: true });
+      for (const cap of caps) {
+        if (cap.isDirectory()) ctx.capabilityIds.push(cap.name);
+      }
+    }
+  }
+
+  // Discover provider instances from governance source-of-truth
+  const providerRegistry = readYaml<ProviderRegistryDocument>('governance/provider-registry.yaml');
+  if (providerRegistry?.providers?.length) {
+    ctx.providerInstances = providerRegistry.providers
+      .map((provider) => provider.name?.trim())
+      .filter((providerName): providerName is string => Boolean(providerName));
+  } else {
+    const providersDir = abs('providers');
+    if (fs.existsSync(providersDir)) {
+      const caps = fs.readdirSync(providersDir, { withFileTypes: true });
+      for (const cap of caps) {
+        if (!cap.isDirectory()) continue;
+        const capDir = path.join(providersDir, cap.name);
+        const provs = fs.readdirSync(capDir, { withFileTypes: true });
+        for (const prov of provs) {
+          if (prov.isDirectory()) ctx.providerInstances.push(prov.name);
+        }
       }
     }
   }
@@ -260,34 +319,90 @@ export function discoverContext(rootDir: string = '.'): ValidationContext {
     }
   }
 
+  const exceptions = readYaml<ExceptionRegisterDocument>('governance/exceptions.yaml');
+  if (exceptions?.exceptions?.length) {
+    ctx.exceptions = exceptions.exceptions;
+  }
+
   return ctx;
+}
+
+function isActiveException(exception: NamingException, now: Date = new Date()): boolean {
+  if (!exception.rule || !exception.scope || exception.status === 'revoked') {
+    return false;
+  }
+
+  if (!exception.expiresAt) {
+    return true;
+  }
+
+  const expiresAt = new Date(exception.expiresAt);
+  return !Number.isNaN(expiresAt.valueOf()) && expiresAt >= now;
+}
+
+function matchesException(result: RuleResult, exception: NamingException): boolean {
+  if (exception.rule !== result.ruleId) {
+    return false;
+  }
+
+  const scope = exception.scope.trim();
+  return (
+    scope === result.target || scope.endsWith(`/${result.target}`) || result.target.endsWith(scope)
+  );
+}
+
+function applyExceptions(results: RuleResult[], exceptions: NamingException[] = []): RuleResult[] {
+  const activeExceptions = exceptions.filter((exception) => isActiveException(exception));
+  if (activeExceptions.length === 0) {
+    return results;
+  }
+
+  return results.map((result) => {
+    if (result.passed) {
+      return result;
+    }
+
+    const exception = activeExceptions.find((candidate) => matchesException(result, candidate));
+    if (!exception) {
+      return result;
+    }
+
+    return {
+      ...result,
+      passed: true,
+      message: `${result.message} [excepted by ${exception.id}]`,
+    };
+  });
 }
 
 // ─── Runner ───────────────────────────────────────────────────────────────────
 
 export function runValidation(ctx: ValidationContext): ValidationReport {
-  const allResults: RuleResult[] = [
-    ...serviceIdRule.run(ctx),
-    ...modulePathRule.run(ctx),
-    ...packageNameRule.run(ctx),
-    ...manifestNameRule.run(ctx),
-    ...capabilityIdRule.run(ctx),
-    ...providerInstanceRule.run(ctx),
-    ...envVarRule.run(ctx),
-    ...urnRule.run(ctx),
-    ...forbiddenLegacyPrefixRule.run(ctx),
-    ...noVersionInCanonicalRule.run(ctx),
-    ...noEnvironmentInCanonicalRule.run(ctx),
-    ...vectorCollectionRule.run(ctx),
-    ...embeddingModelAliasRule.run(ctx),
-    ...retrievalPipelineIdRule.run(ctx),
-    ...searchIndexIdRule.run(ctx),
-    ...graphNodeIdRule.run(ctx),
-    ...graphDbIndexIdRule.run(ctx),
-    ...timestampedIdRule.run(ctx),
-    ...contentAddressedIdRule.run(ctx),
-    ...uuidBasedIdRule.run(ctx),
-  ];
+  const allResults = applyExceptions(
+    [
+      ...serviceIdRule.run(ctx),
+      ...modulePathRule.run(ctx),
+      ...packageNameRule.run(ctx),
+      ...manifestNameRule.run(ctx),
+      ...capabilityIdRule.run(ctx),
+      ...providerInstanceRule.run(ctx),
+      ...envVarRule.run(ctx),
+      ...urnRule.run(ctx),
+      ...forbiddenLegacyPrefixRule.run(ctx),
+      ...noVersionInCanonicalRule.run(ctx),
+      ...noEnvironmentInCanonicalRule.run(ctx),
+      ...vectorCollectionRule.run(ctx),
+      ...embeddingModelAliasRule.run(ctx),
+      ...retrievalPipelineIdRule.run(ctx),
+      ...searchIndexIdRule.run(ctx),
+      ...graphNodeIdRule.run(ctx),
+      ...graphDbIndexIdRule.run(ctx),
+      ...timestampedIdRule.run(ctx),
+      ...contentAddressedIdRule.run(ctx),
+      ...uuidBasedIdRule.run(ctx),
+    ],
+    ctx.exceptions
+  );
 
   const hardFailures = allResults.filter((r) => !r.passed && r.enforcement === 'hard');
   const softWarnings = allResults.filter((r) => !r.passed && r.enforcement === 'soft');
