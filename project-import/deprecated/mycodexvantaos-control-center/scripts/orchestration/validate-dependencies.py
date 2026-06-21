@@ -12,7 +12,7 @@ This script validates repository dependencies for:
 import argparse
 import sys
 from collections import defaultdict
-from typing import Dict, List, Set
+from typing import Any, Dict, List
 
 import yaml
 

@@ -452,7 +452,9 @@ async def lifespan(app: FastAPI):  # noqa: ARG001
                 await svc.connect()
                 logger.info("Connected %s to database", svc_name)
             except Exception:
-                logger.exception("Failed to connect %s — running in-memory mode", svc_name)
+                logger.exception(
+                    "Failed to connect %s — running in-memory mode", svc_name
+                )
 
     logger.info("All services initialized")
     yield
@@ -624,7 +626,9 @@ async def memory_put(request: Request, body: MemoryPutRequest) -> dict[str, Any]
             metadata=body.metadata,
         )
         result = await store.put(item=item)
-        return _success(request, {"namespace": result.namespace, "key": result.key, "stored": True})
+        return _success(
+            request, {"namespace": result.namespace, "key": result.key, "stored": True}
+        )
     except Exception as exc:
         raise AppException(
             code=ErrorCode.MEMORY_ERROR,
@@ -843,7 +847,9 @@ async def cache_find(request: Request, body: ContextFindRequest) -> dict[str, An
             status_code=500,
         ) from exc
 
-    return _success(request, {"entries": [e.model_dump() for e in entries], "count": len(entries)})
+    return _success(
+        request, {"entries": [e.model_dump() for e in entries], "count": len(entries)}
+    )
 
 
 @app.post("/api/cache/invalidate/{namespace}")
@@ -868,7 +874,9 @@ async def cache_invalidate(request: Request, namespace: str) -> dict[str, Any]:
 
 
 @app.post("/api/behavior/record")
-async def behavior_record(request: Request, body: BehaviorRecordRequest) -> dict[str, Any]:
+async def behavior_record(
+    request: Request, body: BehaviorRecordRequest
+) -> dict[str, Any]:
     """Record an AI behavior action.
 
     Actions are grouped by session and tracked with category, outcome, and duration.
@@ -902,7 +910,9 @@ async def behavior_record(request: Request, body: BehaviorRecordRequest) -> dict
 
 
 @app.post("/api/behavior/query")
-async def behavior_query(request: Request, body: BehaviorQueryRequest) -> dict[str, Any]:
+async def behavior_query(
+    request: Request, body: BehaviorQueryRequest
+) -> dict[str, Any]:
     """Query behavior actions by session, agent, category, or outcome."""
     tracker = _get_behavior()
     try:
@@ -928,7 +938,9 @@ async def behavior_query(request: Request, body: BehaviorQueryRequest) -> dict[s
             status_code=500,
         ) from exc
 
-    return _success(request, {"actions": [a.model_dump() for a in actions], "count": len(actions)})
+    return _success(
+        request, {"actions": [a.model_dump() for a in actions], "count": len(actions)}
+    )
 
 
 @app.get("/api/behavior/stats")
@@ -979,7 +991,9 @@ async def behavior_list_sessions(
 
 
 @app.post("/api/architecture/scan")
-async def architecture_scan(request: Request, body: ArchitectureScanRequest) -> dict[str, Any]:
+async def architecture_scan(
+    request: Request, body: ArchitectureScanRequest
+) -> dict[str, Any]:
     """Scan the project directory tree and produce an architecture snapshot.
 
     The snapshot includes all files with their languages, sizes, and checksums,
@@ -1002,7 +1016,9 @@ async def architecture_scan(request: Request, body: ArchitectureScanRequest) -> 
 
 
 @app.post("/api/architecture/diff")
-async def architecture_diff(request: Request, body: ArchitectureDiffRequest) -> dict[str, Any]:
+async def architecture_diff(
+    request: Request, body: ArchitectureDiffRequest
+) -> dict[str, Any]:
     """Compute the diff between two architecture snapshots.
 
     If from_id is not provided, uses the second-to-last snapshot.
@@ -1138,7 +1154,9 @@ async def codex_query(request: Request, body: CodexQueryRequest) -> dict[str, An
             status_code=500,
         ) from exc
 
-    return _success(request, {"entries": [e.model_dump() for e in entries], "count": len(entries)})
+    return _success(
+        request, {"entries": [e.model_dump() for e in entries], "count": len(entries)}
+    )
 
 
 @app.get("/api/codex/{entry_id}/versions")
@@ -1154,7 +1172,9 @@ async def codex_versions(request: Request, entry_id: str) -> dict[str, Any]:
             status_code=500,
         ) from exc
 
-    return _success(request, {"entry_id": entry_id, "versions": [v.model_dump() for v in versions]})
+    return _success(
+        request, {"entry_id": entry_id, "versions": [v.model_dump() for v in versions]}
+    )
 
 
 # ===========================================================================
@@ -1237,7 +1257,9 @@ async def task_get(request: Request, task_id: str) -> dict[str, Any]:
 
 
 @app.patch("/api/tasks/{task_id}")
-async def task_update(request: Request, task_id: str, body: TaskUpdateRequest) -> dict[str, Any]:
+async def task_update(
+    request: Request, task_id: str, body: TaskUpdateRequest
+) -> dict[str, Any]:
     """Update a task. Status changes are automatically recorded as transitions."""
     tracker = _get_tasks()
     try:
@@ -1318,7 +1340,9 @@ async def task_query(request: Request, body: TaskQueryRequest) -> dict[str, Any]
             status_code=500,
         ) from exc
 
-    return _success(request, {"tasks": [t.model_dump() for t in tasks], "count": len(tasks)})
+    return _success(
+        request, {"tasks": [t.model_dump() for t in tasks], "count": len(tasks)}
+    )
 
 
 @app.get("/api/tasks/{task_id}/transitions")
@@ -1353,7 +1377,9 @@ async def task_dependencies(request: Request, task_id: str) -> dict[str, Any]:
             status_code=500,
         ) from exc
 
-    return _success(request, {"task_id": task_id, "dependencies": [d.model_dump() for d in deps]})
+    return _success(
+        request, {"task_id": task_id, "dependencies": [d.model_dump() for d in deps]}
+    )
 
 
 # ===========================================================================
@@ -1682,78 +1708,59 @@ async def mcp_list_prompts(request: Request) -> dict[str, Any]:
     Prompt templates provide reusable context prompts that AI agents can
     use to quickly access common patterns and workflows.
     """
-    prompts = [
-        {
-            "name": "project_context",
-            "description": "Load full project context including architecture, recent tasks, and active memory",
-            "arguments": [
-                {
-                    "name": "namespace",
-                    "description": "Memory namespace to load",
-                    "required": False,
+    prompts = [{"name": "project_context",
+                "description": "Load full project context including architecture, recent tasks, and active memory",
+                "arguments": [{"name": "namespace",
+                               "description": "Memory namespace to load",
+                               "required": False,
+                               },
+                              ],
                 },
-            ],
-        },
-        {
-            "name": "behavior_summary",
-            "description": "Summarize recent AI behavior actions and identify patterns",
-            "arguments": [
-                {
-                    "name": "session_id",
-                    "description": "Specific session to summarize",
-                    "required": False,
+               {"name": "behavior_summary",
+                "description": "Summarize recent AI behavior actions and identify patterns",
+                "arguments": [{"name": "session_id",
+                               "description": "Specific session to summarize",
+                               "required": False,
+                               },
+                              {"name": "limit",
+                               "description": "Number of recent actions to include",
+                               "required": False,
+                               },
+                              ],
                 },
-                {
-                    "name": "limit",
-                    "description": "Number of recent actions to include",
-                    "required": False,
+               {"name": "task_dashboard",
+                "description": "Generate a task dashboard showing active, blocked, and recently completed tasks",
+                "arguments": [{"name": "assignee",
+                               "description": "Filter by assignee",
+                               "required": False,
+                               },
+                              {"name": "task_type",
+                               "description": "Filter by governance type (A-F)",
+                               "required": False,
+                               },
+                              ],
                 },
-            ],
-        },
-        {
-            "name": "task_dashboard",
-            "description": "Generate a task dashboard showing active, blocked, and recently completed tasks",
-            "arguments": [
-                {
-                    "name": "assignee",
-                    "description": "Filter by assignee",
-                    "required": False,
+               {"name": "best_practices",
+                "description": "Load best practices and conventions for a given category",
+                "arguments": [{"name": "category",
+                               "description": "Codex category (best_practice, pipeline, workflow, etc.)",
+                               "required": True,
+                               },
+                              ],
                 },
-                {
-                    "name": "task_type",
-                    "description": "Filter by governance type (A-F)",
-                    "required": False,
+               {"name": "architecture_review",
+                "description": "Review current architecture and identify drift from baseline",
+                "arguments": [{"name": "from_id",
+                               "description": "Baseline snapshot ID",
+                               "required": False,
+                               },
+                              {"name": "to_id",
+                               "description": "Target snapshot ID",
+                               "required": False,
+                               },
+                              ],
                 },
-            ],
-        },
-        {
-            "name": "best_practices",
-            "description": "Load best practices and conventions for a given category",
-            "arguments": [
-                {
-                    "name": "category",
-                    "description": "Codex category (best_practice, pipeline, workflow, etc.)",
-                    "required": True,
-                },
-            ],
-        },
-        {
-            "name": "architecture_review",
-            "description": "Review current architecture and identify drift from baseline",
-            "arguments": [
-                {
-                    "name": "from_id",
-                    "description": "Baseline snapshot ID",
-                    "required": False,
-                },
-                {
-                    "name": "to_id",
-                    "description": "Target snapshot ID",
-                    "required": False,
-                },
-            ],
-        },
-    ]
+               ]
 
     return _success(request, {"prompts": prompts, "count": len(prompts)})
 
@@ -2045,8 +2052,7 @@ def _run_sync(args: argparse.Namespace) -> None:
 def cli() -> None:
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(
-        description="Coder-Deep MCP Server — persistent memory, context bridging, and AI behavior tracking",
-    )
+        description="Coder-Deep MCP Server — persistent memory, context bridging, and AI behavior tracking", )
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
     # serve subcommand
@@ -2057,7 +2063,9 @@ def cli() -> None:
 
     # cache subcommand
     cache_parser = subparsers.add_parser("cache", help="Manage the context cache")
-    cache_parser.add_argument("cache_action", choices=["stats", "clear"], help="Cache action")
+    cache_parser.add_argument(
+        "cache_action", choices=["stats", "clear"], help="Cache action"
+    )
 
     # track subcommand
     track_parser = subparsers.add_parser("track", help="Record a behavior action")

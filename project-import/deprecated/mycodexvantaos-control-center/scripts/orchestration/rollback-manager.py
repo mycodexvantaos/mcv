@@ -12,12 +12,11 @@ This script manages rollback operations for:
 import argparse
 import json
 import os
-import sys
-from collections import defaultdict
 from datetime import datetime
 from typing import Dict, List, Optional
 
 import yaml
+from collections import defaultdict
 
 
 class RollbackManager:
@@ -166,7 +165,7 @@ class RollbackManager:
             1 for r in results["results"] if r["status"] == "manual_action_required"
         )
 
-        print(f"\nRollback execution complete:")
+        print("\nRollback execution complete:")
         print(f"  Successful: {successful}")
         print(f"  Failed: {failed}")
         print(f"  Manual action required: {manual}")

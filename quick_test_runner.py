@@ -1,11 +1,6 @@
 #!/usr/bin/env python3
-"""
-Quick test runner to execute tests for individual packages
-"""
-
-import json
+# Quick test runner to execute tests for individual packages
 import subprocess
-from pathlib import Path
 
 
 def run_package_test(package_name):
@@ -18,11 +13,11 @@ def run_package_test(package_name):
 
     # Build the TypeScript first
     build_cmd = f"cd {package_dir} && npx tsc --noEmit"
-    print(f"Building TypeScript...")
+    print("Building TypeScript...")
     result = subprocess.run(build_cmd, shell=True, capture_output=True, text=True)
 
     if result.returncode != 0:
-        print(f"❌ TypeScript compilation failed:")
+        print("❌ TypeScript compilation failed:")
         print(result.stderr[:500])
         return False
 
@@ -30,7 +25,7 @@ def run_package_test(package_name):
 
     # Run Jest with simple configuration
     test_cmd = f"cd {package_dir} && npx jest --no-coverage --testTimeout=10000 --passWithNoTests"
-    print(f"Running tests...")
+    print("Running tests...")
 
     try:
         result = subprocess.run(

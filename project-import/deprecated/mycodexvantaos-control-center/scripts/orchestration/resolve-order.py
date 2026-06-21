@@ -10,7 +10,7 @@ import argparse
 import json
 import sys
 from collections import defaultdict, deque
-from typing import Dict, List, Set
+from typing import Dict, List
 
 import yaml
 
@@ -274,7 +274,7 @@ def main():
         with open(args.output, "w") as f:
             json.dump(order, f, indent=2)
 
-        print(f"Execution order calculated successfully")
+        print("Execution order calculated successfully")
         print(f"  Total repositories: {order['total_repositories']}")
         print(f"  Tiers: {order['tiers']}")
         print(f"  Planes: {', '.join(order['metadata']['planes'])}")

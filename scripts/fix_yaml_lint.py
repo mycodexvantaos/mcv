@@ -1,5 +1,4 @@
 import os
-from pathlib import Path
 
 
 def fix_yaml_file(path):

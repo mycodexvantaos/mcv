@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""
-Fix test errors systematically
-"""
-
-import os
+# Fix test errors systematically
 from pathlib import Path
 
 

@@ -1109,8 +1109,7 @@ jobs:
         run: |
           chmod +x tools/validators/validate-schemas.sh
           ./tools/validators/validate-schemas.sh
-""",
-    ".github/workflows/contract-check.yml": """name: Contract Check
+""", ".github/workflows/contract-check.yml": """name: Contract Check
 
 on:
   push:
@@ -1131,8 +1130,7 @@ jobs:
         run: |
           chmod +x tools/validators/validate-contracts.sh
           ./tools/validators/validate-contracts.sh
-""",
-    ".github/workflows/service-catalog-check.yml": """name: Service Catalog Check
+""", ".github/workflows/service-catalog-check.yml": """name: Service Catalog Check
 
 on:
   push:
@@ -1153,8 +1151,7 @@ jobs:
         run: |
           chmod +x tools/validators/validate-service-catalog.sh
           ./tools/validators/validate-service-catalog.sh
-""",
-    ".github/workflows/resource-model-check.yml": """name: Resource Model Check
+""", ".github/workflows/resource-model-check.yml": """name: Resource Model Check
 
 on:
   push:
@@ -1177,8 +1174,7 @@ jobs:
         run: |
           chmod +x tools/validators/validate-resource-kinds.sh
           ./tools/validators/validate-resource-kinds.sh
-""",
-    ".github/workflows/policy-check.yml": """name: Policy Check
+""", ".github/workflows/policy-check.yml": """name: Policy Check
 
 on:
   push:
@@ -1201,8 +1197,7 @@ jobs:
         run: |
           chmod +x tools/validators/validate-policies.sh
           ./tools/validators/validate-policies.sh
-""",
-    ".github/workflows/audit-check.yml": """name: Audit Check
+""", ".github/workflows/audit-check.yml": """name: Audit Check
 
 on:
   push:
@@ -1228,8 +1223,7 @@ jobs:
           echo "Checking audit event schema..."
           python3 -c "import yaml; yaml.safe_load(open('contracts/events/audit-events.yaml'))"
           echo "Audit check passed"
-""",
-    ".github/workflows/memory-dream-check.yml": """name: Memory Dream Check
+""", ".github/workflows/memory-dream-check.yml": """name: Memory Dream Check
 
 on:
   push:
@@ -1258,8 +1252,7 @@ jobs:
         run: |
           cd python/packages/mycodexvantaos-memory-dream
           uv run mypy --strict mycodexvantaos_memory_dream/
-""",
-    ".github/workflows/cross-language-contract-check.yml": """name: Cross-Language Contract Check
+""", ".github/workflows/cross-language-contract-check.yml": """name: Cross-Language Contract Check
 
 on:
   push:
@@ -1297,8 +1290,7 @@ jobs:
             fi
           done
           echo "Cross-language contract check passed"
-""",
-}
+""", }
 
 for path, content in workflows.items():
     write(path, content)

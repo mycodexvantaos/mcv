@@ -6,9 +6,8 @@ Analyzes test coverage for all 27 packages
 
 import json
 import os
-import re
-import subprocess
 from pathlib import Path
+import subprocess
 
 # Package jest config template
 JEST_CONFIG = """module.exports = {
@@ -91,7 +90,8 @@ def parse_coverage(output):
                         float(line_cov) if line_cov and line_cov != "-" else 0
                     )
                 except (ValueError, IndexError):
-                    # Ignore malformed/non-numeric coverage rows and keep searching for a valid summary line.
+                    # Ignore malformed/non-numeric coverage rows and keep searching for
+                    # a valid summary line.
                     continue
                 break
 

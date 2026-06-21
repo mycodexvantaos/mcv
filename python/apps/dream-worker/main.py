@@ -47,7 +47,9 @@ def load_memory_items_from_stdin() -> list[MemoryItem]:
     elif isinstance(data, list):
         return [MemoryItem.model_validate(item) for item in data]
     else:
-        raise ValueError("Expected JSON array of memory items or object with 'memory_items' key")
+        raise ValueError(
+            "Expected JSON array of memory items or object with 'memory_items' key"
+        )
 
 
 def save_report_to_json(report: DreamReport, filepath: str) -> None:
@@ -103,7 +105,9 @@ def print_report_summary(report: DreamReport) -> None:
     memory_types = report.statistics.get("memory_types", {})
     if memory_types:
         print("\n📊 Memory Types:")
-        for mem_type, count in sorted(memory_types.items(), key=lambda x: x[1], reverse=True):
+        for mem_type, count in sorted(
+            memory_types.items(), key=lambda x: x[1], reverse=True
+        ):
             print(f"  - {mem_type}: {count}")
 
     # Print actions

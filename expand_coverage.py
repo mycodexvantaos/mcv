@@ -163,7 +163,7 @@ describe('{package_name}', () => {{
       if (typeof cleanupInstance.initialize === 'function') {{
         await cleanupInstance.initialize();
       }}
-      
+
       if (typeof cleanupInstance.cleanup === 'function') {{
         await expect(cleanupInstance.cleanup()).resolves.not.toThrow();
       }}
@@ -237,7 +237,7 @@ describe('{package_name}', () => {{
     it('應該能夠並發處理多個實例', async () => {{
       const instances: any[] = [];
       const initPromises: Promise<void>[] = [];
-      
+
       for (let i = 0; i < 3; i++) {{
         const instance = new {main_class}();
         instances.push(instance);
@@ -245,16 +245,16 @@ describe('{package_name}', () => {{
           initPromises.push(instance.initialize());
         }}
       }}
-      
+
       await Promise.all(initPromises);
-      
+
       const cleanupPromises: Promise<void>[] = [];
       for (const instance of instances) {{
         if (typeof instance.cleanup === 'function') {{
           cleanupPromises.push(instance.cleanup());
         }}
       }}
-      
+
       await Promise.all(cleanupPromises);
       expect(true).toBe(true);
     }});
@@ -276,7 +276,7 @@ describe('{package_name}', () => {{
 
     it('應該正確處理並發錯誤', async () => {{
       const concurrentErrorPromises: Promise<void>[] = [];
-      
+
       for (let i = 0; i < 5; i++) {{
         const concurrencyErrorInstance = new {main_class}();
         if (typeof concurrencyErrorInstance.initialize === 'function') {{
@@ -316,7 +316,7 @@ describe('{package_name}', () => {{
 
     it('應該能夠處理不同時序的並發操作', async () => {{
       const timingPromises: Promise<void>[] = [];
-      
+
       for (let i = 0; i < 5; i++) {{
         const timingPromise = (async () => {{
           const timingInstance = new {main_class}();
@@ -331,7 +331,7 @@ describe('{package_name}', () => {{
         }})();
         timingPromises.push(timingPromise);
       }}
-      
+
       await Promise.all(timingPromises);
       expect(true).toBe(true);
     }});
@@ -339,7 +339,7 @@ describe('{package_name}', () => {{
     it('應該正確處理資源競爭條件', async () => {{
       const competingPromises: Promise<void>[] = [];
       let sharedCounter = 0;
-      
+
       for (let i = 0; i < 5; i++) {{
         const competingPromise = (async () => {{
           const competingInstance = new {main_class}();
@@ -355,7 +355,7 @@ describe('{package_name}', () => {{
         }})();
         competingPromises.push(competingPromise);
       }}
-      
+
       await Promise.all(competingPromises);
       expect(sharedCounter).toBeGreaterThan(0);
     }});
@@ -378,13 +378,13 @@ describe('{package_name}', () => {{
       if (typeof performanceInstance.initialize === 'function') {{
         await performanceInstance.initialize();
       }}
-      
+
       const startTime = Date.now();
       if (typeof performanceInstance.cleanup === 'function') {{
         await performanceInstance.cleanup();
       }}
       const endTime = Date.now();
-      
+
       const duration = endTime - startTime;
       expect(duration).toBeLessThan(3000); // 應該在3秒內完成
     }});
@@ -401,7 +401,7 @@ describe('{package_name}', () => {{
         }}
       }}
       const endTime = Date.now();
-      
+
       const duration = endTime - startTime;
       expect(duration).toBeLessThan(10000); // 10次操作應該在10秒內完成
     }});
@@ -410,7 +410,7 @@ describe('{package_name}', () => {{
       const maxInstances = 20;
       const instances: any[] = [];
       const initPromises: Promise<void>[] = [];
-      
+
       const startTime = Date.now();
       for (let i = 0; i < maxInstances; i++) {{
         const massInstance = new {main_class}();
@@ -419,26 +419,26 @@ describe('{package_name}', () => {{
           initPromises.push(massInstance.initialize());
         }}
       }}
-      
+
       await Promise.all(initPromises);
-      
+
       const cleanupPromises: Promise<void>[] = [];
       for (const instance of instances) {{
         if (typeof instance.cleanup === 'function') {{
           cleanupPromises.push(instance.cleanup());
         }}
       }}
-      
+
       await Promise.all(cleanupPromises);
       const endTime = Date.now();
-      
+
       const duration = endTime - startTime;
       expect(duration).toBeLessThan(15000); // 20個實例並發應該在15秒內完成
     }});
 
     it('應該具有合理的記憶體使用', async () => {{
       const initialMemory = process.memoryUsage().heapUsed;
-      
+
       const memoryInstances: any[] = [];
       for (let i = 0; i < 5; i++) {{
         const memoryInstance = new {main_class}();
@@ -447,18 +447,18 @@ describe('{package_name}', () => {{
         }}
         memoryInstances.push(memoryInstance);
       }}
-      
+
       const peakMemory = process.memoryUsage().heapUsed;
-      
+
       for (const instance of memoryInstances) {{
         if (typeof instance.cleanup === 'function') {{
           await instance.cleanup();
         }}
       }}
-      
+
       const finalMemory = process.memoryUsage().heapUsed;
       const memoryIncrease = peakMemory - initialMemory;
-      
+
       // 記憶體增長不應該過於顯著
       expect(memoryIncrease).toBeLessThan(50 * 1024 * 1024); // 少於50MB
     }});
@@ -466,7 +466,7 @@ describe('{package_name}', () => {{
     it('應該能夠有效率地處理重複操作', async () => {{
       const startTime = Date.now();
       const operationCount = 5;
-      
+
       for (let i = 0; i < operationCount; i++) {{
         const efficientInstance = new {main_class}();
         if (typeof efficientInstance.initialize === 'function') {{
@@ -476,11 +476,11 @@ describe('{package_name}', () => {{
           await efficientInstance.cleanup();
         }}
       }}
-      
+
       const endTime = Date.now();
       const duration = endTime - startTime;
       const averageTime = duration / operationCount;
-      
+
       // 平均每次操作應該有效率
       expect(averageTime).toBeLessThan(500); // 平均每次少於500ms
     }});
@@ -488,7 +488,7 @@ describe('{package_name}', () => {{
     it('應該能夠處理突發流量', async () => {{
       const burstStartTime = Date.now();
       const burstPromises: Promise<void>[] = [];
-      
+
       // 模擬瞬間突發流量
       for (let i = 0; i < 10; i++) {{
         const burstPromise = (async () => {{
@@ -502,11 +502,11 @@ describe('{package_name}', () => {{
         }})();
         burstPromises.push(burstPromise);
       }}
-      
+
       await Promise.all(burstPromises);
       const burstEndTime = Date.now();
       const burstDuration = burstEndTime - burstStartTime;
-      
+
       // 突發流量應該在被控制的時間內完成
       expect(burstDuration).toBeLessThan(8000); // 10個並發操作在8秒內完成
     }});
@@ -516,18 +516,18 @@ describe('{package_name}', () => {{
       if (typeof longRunningInstance.initialize === 'function') {{
         await longRunningInstance.initialize();
       }}
-      
+
       const loopStartTime = Date.now();
       // 模擬長時間運算
       for (let iteration = 0; iteration < 3; iteration++) {{
         await new Promise(resolve => setTimeout(resolve, 100));
       }}
       const loopEndTime = Date.now();
-      
+
       if (typeof longRunningInstance.cleanup === 'function') {{
         await longRunningInstance.cleanup();
       }}
-      
+
       const loopDuration = loopEndTime - loopStartTime;
       expect(loopDuration).toBeLessThan(1000); // 應該有穩定的執行時間
     }});
@@ -535,7 +535,7 @@ describe('{package_name}', () => {{
     it('應該能夠處理複雜操作流程', async () => {{
       const complexStartTime = Date.now();
       const complexPromises: Promise<void>[] = [];
-      
+
       // 模擬複雜的操作流程
       for (let phase = 0; phase < 3; phase++) {{
         for (let instanceNum = 0; instanceNum < 3; instanceNum++) {{
@@ -553,11 +553,11 @@ describe('{package_name}', () => {{
           complexPromises.push(complexPromise);
         }}
       }}
-      
+
       await Promise.all(complexPromises);
       const complexEndTime = Date.now();
       const complexDuration = complexEndTime - complexStartTime;
-      
+
       // 複雜流程應該有合理的完成時間
       expect(complexDuration).toBeLessThan(5000);
     }});
@@ -565,7 +565,7 @@ describe('{package_name}', () => {{
     it('應該能夠在壓力下保持穩定性', async () => {{
       const stressStartTime = Date.now();
       const stressPromises: Promise<void>[] = [];
-      
+
       // 壓力測試：大量並發操作
       for (let pressure = 0; pressure < 5; pressure++) {{
         for (let stressInstanceCount = 0; stressInstanceCount < 5; stressInstanceCount++) {{
@@ -585,11 +585,11 @@ describe('{package_name}', () => {{
           stressPromises.push(stressPromise);
         }}
       }}
-      
+
       await Promise.all(stressPromises);
       const stressEndTime = Date.now();
       const stressDuration = stressEndTime - stressStartTime;
-      
+
       // 在壓力下應該仍然有合理的效能
       expect(stressDuration).toBeLessThan(10000);
     }});
@@ -597,7 +597,7 @@ describe('{package_name}', () => {{
     it('應該能夠有效率地處理錯誤恢復', async () => {{
       const errorRecoveryStartTime = Date.now();
       const recoveryPromises: Promise<void>[] = [];
-      
+
       for (let i = 0; i < 10; i++) {{
         const recoveryPromise = (async () => {{
           const recoveryInstance = new {main_class}();
@@ -614,11 +614,11 @@ describe('{package_name}', () => {{
         }})();
         recoveryPromises.push(recoveryPromise);
       }}
-      
+
       await Promise.all(recoveryPromises);
       const errorRecoveryEndTime = Date.now();
       const errorRecoveryDuration = errorRecoveryEndTime - errorRecoveryStartTime;
-      
+
       // 錯誤恢復應該有效率
       expect(errorRecoveryDuration).toBeLessThan(8000);
     }});
@@ -652,10 +652,10 @@ describe('{package_name}', () => {{
       if (typeof longRunInstance.initialize === 'function') {{
         await longRunInstance.initialize();
       }}
-      
+
       // 模擬長時間運行
       await new Promise(resolve => setTimeout(resolve, 100));
-      
+
       if (typeof longRunInstance.cleanup === 'function') {{
         await longRunInstance.cleanup();
       }}
@@ -666,14 +666,14 @@ describe('{package_name}', () => {{
       const multiInitInstance = new {main_class}();
       if (typeof multiInitInstance.initialize === 'function') {{
         await multiInitInstance.initialize();
-        
+
         // 嘗試再次初始化
         try {{
           await multiInitInstance.initialize();
         }} catch (e) {{
           // 某些實作可能不允許重新初始化
         }}
-        
+
         if (typeof multiInitInstance.cleanup === 'function') {{
           await multiInitInstance.cleanup();
         }}
@@ -686,10 +686,10 @@ describe('{package_name}', () => {{
       if (typeof multiCleanupInstance.initialize === 'function') {{
         await multiCleanupInstance.initialize();
       }}
-      
+
       if (typeof multiCleanupInstance.cleanup === 'function') {{
         await multiCleanupInstance.cleanup();
-        
+
         // 嘗試再次清理
         try {{
           await multiCleanupInstance.cleanup();
@@ -702,7 +702,7 @@ describe('{package_name}', () => {{
 
     it('應該處理未初始化的操作', async () => {{
       const uninitOpInstance = new {main_class}();
-      
+
       // 在未初始化的情況下嘗試清理
       if (typeof uninitOpInstance.cleanup === 'function') {{
         try {{
@@ -716,7 +716,7 @@ describe('{package_name}', () => {{
 
     it('應該處理初始化過程中的錯誤', async () => {{
       const errorDuringInitInstance = new {main_class}();
-      
+
       try {{
         if (typeof errorDuringInitInstance.initialize === 'function') {{
           await errorDuringInitInstance.initialize();
@@ -732,7 +732,7 @@ describe('{package_name}', () => {{
 
     it('應該處理清理過程中的錯誤', async () => {{
       const errorDuringCleanupInstance = new {main_class}();
-      
+
       try {{
         if (typeof errorDuringCleanupInstance.initialize === 'function') {{
           await errorDuringCleanupInstance.initialize();
@@ -751,7 +751,7 @@ describe('{package_name}', () => {{
       if (typeof noCleanupInstance.initialize === 'function') {{
         await noCleanupInstance.initialize();
       }}
-      
+
       // 不調用清理，讓實例銷毀
       expect(true).toBe(true);
     }});
@@ -764,7 +764,7 @@ describe('{package_name}', () => {{
       if (typeof 重建Instance.cleanup === 'function') {{
         await 重建Instance.cleanup();
       }}
-      
+
       // 重構實例
       重建Instance = new {main_class}();
       if (typeof 重建Instance.initialize === 'function') {{
@@ -773,14 +773,14 @@ describe('{package_name}', () => {{
       if (typeof 重建Instance.cleanup === 'function') {{
         await 重建Instance.cleanup();
       }}
-      
+
       expect(true).toBe(true);
     }});
 
     it('應該處理循環引用', async () => {{
       const循环RefInstance1 = new {main_class}();
       const循环RefInstance2 = new {main_class}();
-      
+
       if (typeof 循环RefInstance1.initialize === 'function') {{
         await 循环RefInstance1.initialize();
         await 循环RefInstance1.cleanup();
@@ -789,13 +789,13 @@ describe('{package_name}', () => {{
         await 循环RefInstance2.initialize();
         await 循环RefInstance2.cleanup();
       }}
-      
+
       expect(true).toBe(true);
     }});
 
     it('應該處理資源耗盡條件', async () => {{
       const resourcePromises: Promise<void>[] = [];
-      
+
       for (let i = 0; i < 15; i++) {{
         const resourcePromise = (async () => {{
           const resourceInstance = new {main_class}();
@@ -812,32 +812,32 @@ describe('{package_name}', () => {{
         }})();
         resourcePromises.push(resourcePromise);
       }}
-      
+
       await Promise.all(resourcePromises);
       expect(true).toBe(true);
     }});
 
     it('應該處理時間邊界條件', async () => {{
       const timeBoundaryInstance = new {main_class}();
-      
+
       const beforeInit = Date.now();
       if (typeof timeBoundaryInstance.initialize === 'function') {{
         await timeBoundaryInstance.initialize();
       }}
       const afterInit = Date.now();
-      
+
       if (typeof timeBoundaryInstance.cleanup === 'function') {{
         await timeBoundaryInstance.cleanup();
       }}
       const afterCleanup = Date.now();
-      
+
       expect(afterInit).toBeGreaterThanOrEqual(beforeInit);
       expect(afterCleanup).toBeGreaterThanOrEqual(afterInit);
     }});
 
     it('應該處理並發邊界條件', async () => {{
       const concurrentBoundaryPromises: Promise<void>[] = [];
-      
+
       // 同時創建大量實例
       for (let i = 0; i < 25; i++) {{
         const concurrentBoundaryPromise = (async () => {{
@@ -855,7 +855,7 @@ describe('{package_name}', () => {{
         }})();
         concurrentBoundaryPromises.push(concurrentBoundaryPromise);
       }}
-      
+
       await Promise.all(concurrentBoundaryPromises);
       expect(true).toBe(true);
     }});

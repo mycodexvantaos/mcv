@@ -115,8 +115,10 @@ class _InMemoryStore:
                 items.append(item)
         items.sort(key=lambda x: x.updated_at, reverse=True)
         total = len(items)
-        page = items[params.offset : params.offset + params.limit]
-        return MemorySearchResult(items=page, total=total, limit=params.limit, offset=params.offset)
+        page = items[params.offset: params.offset + params.limit]
+        return MemorySearchResult(
+            items=page, total=total, limit=params.limit, offset=params.offset
+        )
 
     async def list_namespaces(self) -> list[str]:
         return list(self._data.keys())
@@ -328,7 +330,9 @@ class MemoryStore:
                     namespace,
                 )
             else:
-                row = await conn.fetchrow("SELECT COUNT(*) as cnt FROM coder_deep_memory")
+                row = await conn.fetchrow(
+                    "SELECT COUNT(*) as cnt FROM coder_deep_memory"
+                )
         return row["cnt"]
 
     async def clear_namespace(self, namespace: str) -> int:

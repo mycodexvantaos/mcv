@@ -147,7 +147,9 @@ class WindowState:
         keys_to_remove: list[str] = []
 
         for key, bucket in self._windows.items():
-            window_close_ms = bucket["window_end"].timestamp() * 1000 + self._config.grace_period_ms
+            window_close_ms = (
+                bucket["window_end"].timestamp() * 1000 + self._config.grace_period_ms
+            )
             if now_ms >= window_close_ms:
                 result = WindowResult(
                     window_start=bucket["window_start"],
@@ -297,7 +299,9 @@ class StreamProcessor:
         if self._state != ProcessorState.RUNNING:
             return 0
 
-        messages = await self._consumer.consume(max_records=max_records, timeout_ms=timeout_ms)
+        messages = await self._consumer.consume(
+            max_records=max_records, timeout_ms=timeout_ms
+        )
         if not messages:
             return 0
 
@@ -310,7 +314,9 @@ class StreamProcessor:
             except Exception:
                 self._metrics.messages_errored += 1
                 await self._send_to_dead_letter(msg, "processing_error")
-                logger.exception("Error processing message from %s-%d", msg.topic, msg.partition)
+                logger.exception(
+                    "Error processing message from %s-%d", msg.topic, msg.partition
+                )
 
         # Commit offsets after successful processing (at-least-once)
         if (
@@ -357,7 +363,9 @@ class StreamProcessor:
             logger.info("Stream processor '%s' cancelled", self._config.name)
         except Exception:
             self._state = ProcessorState.ERROR
-            logger.exception("Stream processor '%s' encountered fatal error", self._config.name)
+            logger.exception(
+                "Stream processor '%s' encountered fatal error", self._config.name
+            )
         finally:
             await self.stop()
 
@@ -391,7 +399,9 @@ class StreamProcessor:
 
         # Apply non-windowed aggregation
         if self._aggregate_fn:
-            self._aggregate_initial = self._aggregate_fn(self._aggregate_initial, message)
+            self._aggregate_initial = self._aggregate_fn(
+                self._aggregate_initial, message
+            )
             return True
 
         # Forward to output topic
@@ -406,7 +416,9 @@ class StreamProcessor:
 
         return True
 
-    async def _send_to_dead_letter(self, message: KafkaMessage, error_type: str) -> None:
+    async def _send_to_dead_letter(
+        self, message: KafkaMessage, error_type: str
+    ) -> None:
         """Send a failed message to the dead-letter queue."""
         if not self._producer:
             return

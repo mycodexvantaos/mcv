@@ -3,7 +3,6 @@
 Setup jest.config.js for all packages and create proper test files
 """
 
-import json
 from pathlib import Path
 
 

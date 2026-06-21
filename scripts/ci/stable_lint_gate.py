@@ -135,7 +135,9 @@ def lint_common(path: Path) -> list[Issue]:
     raw = path.as_posix()
 
     if "\\" in raw:
-        issues.append(make_issue(path, "invalid-path-separator", "path must use forward slashes"))
+        issues.append(
+            make_issue(path, "invalid-path-separator", "path must use forward slashes")
+        )
 
     if path.stat().st_size > MAX_TEXT_BYTES and is_text_like(path):
         issues.append(
@@ -167,10 +169,14 @@ def lint_text(path: Path) -> list[Issue]:
         return [make_issue(path, "utf8-invalid", "text-like file must be valid UTF-8")]
 
     if "\r\n" in content:
-        issues.append(make_issue(path, "crlf-line-ending", "file must use LF line endings"))
+        issues.append(
+            make_issue(path, "crlf-line-ending", "file must use LF line endings")
+        )
 
     if content and not content.endswith("\n"):
-        issues.append(make_issue(path, "missing-final-newline", "file must end with newline"))
+        issues.append(
+            make_issue(path, "missing-final-newline", "file must end with newline")
+        )
 
     for number, line in enumerate(content.splitlines(), start=1):
         if line.rstrip() != line:

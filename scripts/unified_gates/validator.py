@@ -1,6 +1,5 @@
 import argparse
 import json
-import os
 import sys
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -125,8 +124,7 @@ class UnifiedGateValidator:
                         severity="error",
                         message=f"Insufficient blocking gates. Found {len(active_blocking_gates)}, required {required_count}.",
                         path=[],
-                    )
-                )
+                    ))
                 return False
             return True
         except Exception as e:

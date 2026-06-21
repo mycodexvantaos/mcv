@@ -884,130 +884,109 @@ print("\n✅ Sec.12 — All 6 event contract files created")
 # Sec.13 — Policy Contracts (5 YAML files)
 # ═══════════════════════════════════════════════════════════════
 
-POLICIES = {
-    "default-access-policy": {
-        "id": "default-access-policy",
-        "description": "Default access control policy for platform resources",
-        "rules": [
-            {
-                "effect": "allow",
-                "subject": {"roles": ["platform-admin"]},
-                "action": "*",
-                "resource": "*",
-            },
-            {
-                "effect": "allow",
-                "subject": {"roles": ["workspace-owner"]},
-                "action": "*",
-                "resource": "workspace/*",
-            },
-            {
-                "effect": "allow",
-                "subject": {"roles": ["workspace-member"]},
-                "action": "read,write",
-                "resource": "workspace/*",
-            },
-            {
-                "effect": "allow",
-                "subject": {"roles": ["workspace-viewer"]},
-                "action": "read",
-                "resource": "workspace/*",
-            },
-        ],
-    },
-    "knowledge-access-policy": {
-        "id": "knowledge-access-policy",
-        "description": "Access policy for knowledge store operations",
-        "rules": [
-            {
-                "effect": "allow",
-                "subject": {"roles": ["workspace-member", "workspace-owner"]},
-                "action": "knowledge:ingest",
-                "resource": "knowledge/collections/*",
-            },
-            {
-                "effect": "allow",
-                "subject": {
-                    "roles": ["workspace-viewer", "workspace-member", "workspace-owner"]
-                },
-                "action": "knowledge:search",
-                "resource": "knowledge/collections/*",
-            },
-        ],
-    },
-    "memory-dream-policy": {
-        "id": "memory-dream-policy",
-        "description": "Policy for memory dream operations — architecture decisions require review",
-        "rules": [
-            {
-                "effect": "require-review",
-                "subject": {"service": "memory-dream"},
-                "action": "memory-item-deprecate,memory-item-merge",
-                "resource": "memory-item",
-                "condition": {
-                    "memory_type": "decision",
-                    "tags_contains": ["architecture"],
-                },
-            },
-            {
-                "effect": "allow",
-                "subject": {"roles": ["workspace-owner", "platform-admin"]},
-                "action": "dream:run",
-                "resource": "dream-run",
-            },
-            {
-                "effect": "allow",
-                "subject": {"service": "memory-dream"},
-                "action": "dream:execute",
-                "resource": "dream-run",
-                "condition": {"mode": "proposal"},
-            },
-        ],
-    },
-    "model-byok-policy": {
-        "id": "model-byok-policy",
-        "description": "Policy for BYOK model endpoint management",
-        "rules": [
-            {
-                "effect": "allow",
-                "subject": {"roles": ["workspace-owner"]},
-                "action": "model:register,model:delete",
-                "resource": "model-endpoint",
-            },
-            {
-                "effect": "allow",
-                "subject": {"roles": ["workspace-member", "workspace-owner"]},
-                "action": "model:invoke",
-                "resource": "model-endpoint",
-            },
-        ],
-    },
-    "audit-retention-policy": {
-        "id": "audit-retention-policy",
-        "description": "Audit event retention and integrity policy",
-        "rules": [
-            {
-                "effect": "deny",
-                "subject": "*",
-                "action": "audit:delete",
-                "resource": "audit-event",
-            },
-            {
-                "effect": "allow",
-                "subject": {"roles": ["platform-admin", "auditor"]},
-                "action": "audit:query,audit:verify",
-                "resource": "audit-event",
-            },
-        ],
-    },
-}
+POLICIES = {"default-access-policy": {"id": "default-access-policy",
+                                      "description": "Default access control policy for platform resources",
+                                      "rules": [{"effect": "allow",
+                                                 "subject": {"roles": ["platform-admin"]},
+                                                 "action": "*",
+                                                 "resource": "*",
+                                                 },
+                                                {"effect": "allow",
+                                                 "subject": {"roles": ["workspace-owner"]},
+                                                 "action": "*",
+                                                 "resource": "workspace/*",
+                                                 },
+                                                {"effect": "allow",
+                                                 "subject": {"roles": ["workspace-member"]},
+                                                 "action": "read,write",
+                                                 "resource": "workspace/*",
+                                                 },
+                                                {"effect": "allow",
+                                                 "subject": {"roles": ["workspace-viewer"]},
+                                                 "action": "read",
+                                                 "resource": "workspace/*",
+                                                 },
+                                                ],
+                                      },
+            "knowledge-access-policy": {"id": "knowledge-access-policy",
+                                        "description": "Access policy for knowledge store operations",
+                                        "rules": [{"effect": "allow",
+                                                   "subject": {"roles": ["workspace-member",
+                                                                         "workspace-owner"]},
+                                                   "action": "knowledge:ingest",
+                                                   "resource": "knowledge/collections/*",
+                                                   },
+                                                  {"effect": "allow",
+                                                   "subject": {"roles": ["workspace-viewer",
+                                                                         "workspace-member",
+                                                                         "workspace-owner"]},
+                                                   "action": "knowledge:search",
+                                                   "resource": "knowledge/collections/*",
+                                                   },
+                                                  ],
+                                        },
+            "memory-dream-policy": {"id": "memory-dream-policy",
+                                    "description": "Policy for memory dream operations — architecture decisions require review",
+                                    "rules": [{"effect": "require-review",
+                                               "subject": {"service": "memory-dream"},
+                                               "action": "memory-item-deprecate,memory-item-merge",
+                                               "resource": "memory-item",
+                                               "condition": {"memory_type": "decision",
+                                                             "tags_contains": ["architecture"],
+                                                             },
+                                               },
+                                              {"effect": "allow",
+                                               "subject": {"roles": ["workspace-owner",
+                                                                     "platform-admin"]},
+                                               "action": "dream:run",
+                                               "resource": "dream-run",
+                                               },
+                                              {"effect": "allow",
+                                               "subject": {"service": "memory-dream"},
+                                               "action": "dream:execute",
+                                               "resource": "dream-run",
+                                               "condition": {"mode": "proposal"},
+                                               },
+                                              ],
+                                    },
+            "model-byok-policy": {"id": "model-byok-policy",
+                                  "description": "Policy for BYOK model endpoint management",
+                                  "rules": [{"effect": "allow",
+                                             "subject": {"roles": ["workspace-owner"]},
+                                             "action": "model:register,model:delete",
+                                             "resource": "model-endpoint",
+                                             },
+                                            {"effect": "allow",
+                                             "subject": {"roles": ["workspace-member",
+                                                                   "workspace-owner"]},
+                                             "action": "model:invoke",
+                                             "resource": "model-endpoint",
+                                             },
+                                            ],
+                                  },
+            "audit-retention-policy": {"id": "audit-retention-policy",
+                                       "description": "Audit event retention and integrity policy",
+                                       "rules": [{"effect": "deny",
+                                                  "subject": "*",
+                                                  "action": "audit:delete",
+                                                  "resource": "audit-event",
+                                                  },
+                                                 {"effect": "allow",
+                                                  "subject": {"roles": ["platform-admin",
+                                                                        "auditor"]},
+                                                  "action": "audit:query,audit:verify",
+                                                  "resource": "audit-event",
+                                                  },
+                                                 ],
+                                       },
+            }
 
 for policy_id, cfg in POLICIES.items():
     rules_yaml = ""
     for r in cfg["rules"]:
         cond = ""
         if "condition" in r:
-            cond = f"\n    condition:\n" + "\n".join(
+            cond = "\n    condition:\n" + "\n".join(
                 f"      {k}: {v}" for k, v in r["condition"].items()
             )
         rules_yaml += f"""
@@ -1205,8 +1184,7 @@ CREATE TABLE IF NOT EXISTS service_definitions (
   updated_at      TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX idx_service_definitions_category ON service_definitions(category);
-""",
-    "0003-resource-registry": """-- Resource Registry Tables
+""", "0003-resource-registry": """-- Resource Registry Tables
 CREATE TABLE IF NOT EXISTS resource_kinds (
   kind            TEXT PRIMARY KEY,
   api_version     TEXT NOT NULL DEFAULT 'mycodexvantaos.io/v1',
@@ -1219,8 +1197,7 @@ CREATE TABLE IF NOT EXISTS resource_kinds (
   created_at      TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at      TEXT NOT NULL DEFAULT (datetime('now'))
 );
-""",
-    "0004-policy-model": """-- Policy Model Tables
+""", "0004-policy-model": """-- Policy Model Tables
 CREATE TABLE IF NOT EXISTS policy_definitions (
   id              TEXT PRIMARY KEY,
   description     TEXT,
@@ -1231,17 +1208,14 @@ CREATE TABLE IF NOT EXISTS policy_definitions (
   updated_at      TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX idx_policy_definitions_phase ON policy_definitions(phase);
-""",
-    "0005-audit-log": """-- Audit Log Tables (extended from 001_initial_schema)
+""", "0005-audit-log": """-- Audit Log Tables (extended from 001_initial_schema)
 -- audit_events already created in 001, this adds indexes
 CREATE INDEX IF NOT EXISTS idx_audit_events_correlation ON audit_events(correlation_id);
 CREATE INDEX IF NOT EXISTS idx_audit_events_severity ON audit_events(severity);
-""",
-    "0006-usage-meter": """-- Usage Meter Tables (extended from 001_initial_schema)
+""", "0006-usage-meter": """-- Usage Meter Tables (extended from 001_initial_schema)
 -- usage_records already created in 001, this adds indexes
 CREATE INDEX IF NOT EXISTS idx_usage_records_subject ON usage_records(subject_id);
-""",
-    "0007-knowledge-model": """-- Knowledge Model Tables (extended from 001_initial_schema)
+""", "0007-knowledge-model": """-- Knowledge Model Tables (extended from 001_initial_schema)
 -- knowledge_collections, documents, document_chunks already created in 001
 CREATE TABLE IF NOT EXISTS knowledge_issues (
   id              TEXT PRIMARY KEY,
@@ -1255,8 +1229,7 @@ CREATE TABLE IF NOT EXISTS knowledge_issues (
   created_at      TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX idx_knowledge_issues_collection ON knowledge_issues(collection_id);
-""",
-    "0008-memory-model": """-- Memory Model Tables
+""", "0008-memory-model": """-- Memory Model Tables
 CREATE TABLE IF NOT EXISTS memory_items (
   id              TEXT PRIMARY KEY,
   content         TEXT NOT NULL,
@@ -1316,8 +1289,7 @@ CREATE TABLE IF NOT EXISTS memory_entity_references (
   PRIMARY KEY (entity_id, memory_id)
 );
 CREATE INDEX idx_memory_entity_refs_entity ON memory_entity_references(entity_id);
-""",
-    "0009-memory-dream": """-- Memory Dream Tables
+""", "0009-memory-dream": """-- Memory Dream Tables
 CREATE TABLE IF NOT EXISTS memory_dream_runs (
   id              TEXT PRIMARY KEY,
   status          TEXT NOT NULL DEFAULT 'pending'
@@ -1354,8 +1326,7 @@ CREATE TABLE IF NOT EXISTS memory_dream_actions (
 );
 CREATE INDEX idx_memory_dream_actions_run ON memory_dream_actions(dream_run_id);
 CREATE INDEX idx_memory_dream_actions_status ON memory_dream_actions(status);
-""",
-}
+""", }
 
 for mig_name, sql in MIGRATIONS.items():
     write(

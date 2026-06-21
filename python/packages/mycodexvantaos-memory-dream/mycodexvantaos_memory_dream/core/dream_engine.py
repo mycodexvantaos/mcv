@@ -60,8 +60,7 @@ class DreamEngine:
                             related_memory_id=primary.memory_id,
                             reason=f"Duplicate of {primary.memory_id} (similarity > 0.95)",
                             confidence=0.95,
-                        )
-                    )
+                        ))
 
         # Resolve actions for conflicts
         for mem1_id, mem2_id, reason in conflict_pairs:
@@ -123,7 +122,9 @@ class DreamEngine:
         executed: list[str] = []
         for action in actions:
             if action.action_type == DreamActionType.MERGE:
-                executed.append(f"Merge {action.target_memory_id} into {action.related_memory_id}")
+                executed.append(
+                    f"Merge {action.target_memory_id} into {action.related_memory_id}"
+                )
             elif action.action_type == DreamActionType.RESOLVE:
                 executed.append(
                     f"Resolve conflict between {action.target_memory_id} and {action.related_memory_id}"

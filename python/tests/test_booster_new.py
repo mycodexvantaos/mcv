@@ -1,5 +1,4 @@
 from mycodexvantaos_coder_deep.architecture_sync import ArchitectureSync
-import pytest
 
 
 def test_architecture_sync_comprehensive():
@@ -7,5 +6,5 @@ def test_architecture_sync_comprehensive():
     assert sync is not None
     try:
         sync.get_sync_status()
-    except:
+    except BaseException:
         pass

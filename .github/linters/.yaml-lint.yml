@@ -1,0 +1,12 @@
+---
+# YAML lint configuration for super-linter
+extends: default
+
+rules:
+  line-length: disable
+  indentation: disable
+  document-start: disable
+  comments: disable
+  empty-lines: disable
+  trailing-spaces: disable
+  new-line-at-end-of-file: disable

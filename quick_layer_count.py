@@ -2,7 +2,6 @@
 """Quick layer coverage counter"""
 
 import json
-import os
 from pathlib import Path
 
 # Define layer structure

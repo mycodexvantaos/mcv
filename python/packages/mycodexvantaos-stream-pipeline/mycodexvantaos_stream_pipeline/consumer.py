@@ -124,14 +124,20 @@ class StreamConsumer:
             topic=record.topic,
             partition=record.partition,
             offset=record.offset,
-            key=(record.key.decode("utf-8") if isinstance(record.key, bytes) else record.key),
+            key=(
+                record.key.decode("utf-8")
+                if isinstance(record.key, bytes)
+                else record.key
+            ),
             value=value,
             headers=headers,
             timestamp=record.timestamp,
             timestamp_type=ts_type_str,
         )
 
-    async def consume(self, max_records: int = 10, timeout_ms: int = 5000) -> list[KafkaMessage]:
+    async def consume(
+        self, max_records: int = 10, timeout_ms: int = 5000
+    ) -> list[KafkaMessage]:
         """Consume up to max_records messages from subscribed topics.
 
         For at-most-once: offsets are committed before processing.
@@ -195,7 +201,9 @@ class StreamConsumer:
             logger.debug("Offsets committed for group %s", self._config.group_id)
         except CommitFailedError:
             self._metrics.messages_errored += 1
-            logger.exception("Failed to commit offsets for group %s", self._config.group_id)
+            logger.exception(
+                "Failed to commit offsets for group %s", self._config.group_id
+            )
         except KafkaError:
             self._metrics.messages_errored += 1
             logger.exception("Kafka error during offset commit")

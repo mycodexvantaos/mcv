@@ -169,7 +169,7 @@ class _InMemoryCodexStore:
                     continue
             results.append(entry)
         results.sort(key=lambda x: (x.priority, x.updated_at), reverse=True)
-        return results[params.offset : params.offset + params.limit]
+        return results[params.offset: params.offset + params.limit]
 
     async def get_versions(self, entry_id: str) -> list[CodexVersion]:
         return self._versions.get(entry_id, [])

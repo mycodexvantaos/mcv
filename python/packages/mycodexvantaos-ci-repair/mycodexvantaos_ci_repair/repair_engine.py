@@ -5,9 +5,14 @@ from __future__ import annotations
 import logging
 import re
 
-from mycodexvantaos_ci_repair.models import (ErrorCategory, FailureAnalysis,
-                                             FailureSeverity, RepairAction,
-                                             RepairActionType, RepairPlan)
+from mycodexvantaos_ci_repair.models import (
+    ErrorCategory,
+    FailureAnalysis,
+    FailureSeverity,
+    RepairAction,
+    RepairActionType,
+    RepairPlan,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -37,13 +42,17 @@ def _suggest_fix(analysis: FailureAnalysis) -> str:
 
     if category == ErrorCategory.DEPENDENCY_ERROR:
         if deps:
-            return f"Update or override dependencies: {\", \".join(deps)}. Run `pnpm install` to update lockfile."
-        return "Check dependency resolution. Run `pnpm install` and verify lockfile sync."
+            return f"Update or override dependencies: {', '.join(deps)}. Run `pnpm install` to update lockfile."
+        return (
+            "Check dependency resolution. Run `pnpm install` and verify lockfile sync."
+        )
 
     if category == ErrorCategory.LINT_ERROR:
         if any("ruff" in f for f in files) or any(".py" in f for f in files):
             return "Run `uv run ruff check --fix .` and `uv run ruff format .` to auto-fix."
-        return "Run `pnpm run format` and `pnpm run lint` to auto-fix formatting issues."
+        return (
+            "Run `pnpm run format` and `pnpm run lint` to auto-fix formatting issues."
+        )
 
     if category == ErrorCategory.TEST_FAILURE:
         return "Review failing test output. Check for import errors, assertion failures, or missing fixtures."
@@ -51,9 +60,7 @@ def _suggest_fix(analysis: FailureAnalysis) -> str:
     if category == ErrorCategory.BUILD_ERROR:
         if "TS" in analysis.log_evidence:
             return "Fix TypeScript errors. Run `npx tsc --noEmit` locally to reproduce."
-        return (
-            "Review build error output. Check for missing imports, type errors, or config issues."
-        )
+        return "Review build error output. Check for missing imports, type errors, or config issues."
 
     if category == ErrorCategory.DOCKER_BUILD_ERROR:
         return "Review Dockerfile. Check for missing COPY targets, failed RUN commands, or base image issues."
@@ -113,8 +120,7 @@ def _generate_repair_actions(analysis: FailureAnalysis) -> list[RepairAction]:
                     command="cd python && uv run ruff check --fix . && uv run ruff format .",
                     risk_level=FailureSeverity.LOW,
                     requires_manual_review=False,
-                )
-            )
+                ))
         else:
             actions.append(
                 RepairAction(
@@ -209,8 +215,11 @@ def analyze_failure(
 ) -> FailureAnalysis:
     """Analyze a single job failure from its log text."""
     from mycodexvantaos_ci_repair.log_parser import (
-        classify_log, extract_affected_dependencies, extract_affected_files,
-        extract_error_context)
+        classify_log,
+        extract_affected_dependencies,
+        extract_affected_files,
+        extract_error_context,
+    )
 
     category = classify_log(log_text)
     severity = _severity_for_category(category)
@@ -224,7 +233,7 @@ def analyze_failure(
         job_name=job_name,
         error_category=category,
         severity=severity,
-        root_cause=f"{category.value} detected in job \'{job_name}\'",
+        root_cause=f"{category.value} detected in job '{job_name}'",
         affected_files=affected_files,
         affected_dependencies=affected_deps,
         log_evidence=log_evidence,

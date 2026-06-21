@@ -21,7 +21,9 @@ class GateIoError(RuntimeError):
 def repo_path(root: Path, relative_path: str) -> Path:
     candidate = (root / relative_path).resolve()
     root_resolved = root.resolve()
-    if root_resolved not in candidate.parents and candidate != root_resolved:  # noqa: E501
+    if (
+        root_resolved not in candidate.parents and candidate != root_resolved
+    ):  # noqa: E501
         raise GateIoError(f"path escapes repository root: {relative_path}")
     return candidate
 

@@ -4,7 +4,6 @@ Fix Jest configuration to properly handle TypeScript tests
 """
 
 import json
-import os
 from pathlib import Path
 
 
