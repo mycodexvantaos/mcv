@@ -62,14 +62,14 @@ Error responses include structured error details:
 
 The `X-Request-ID` header is propagated from inbound requests or auto-generated as a UUID.
 
-| Method | Path | Description |
+| Method | Path                            | Description                                  |
 | ------ | ------------------------------- | -------------------------------------------- |
-| `GET` | `/health` | Health check (reports database status) |
-| `GET` | `/api/runs` | List workflow runs (filter by branch/status) |
-| `GET` | `/api/runs/{run_id}/analyze` | Analyze a failed run and get repair plan |
-| `POST` | `/api/runs/{run_id}/repair` | Execute repair (optionally create branch/PR) |
-| `GET` | `/api/history/analyses` | Retrieve stored analyses from database |
-| `GET` | `/api/history/stats/categories` | Get error category distribution statistics |
+| `GET`  | `/health`                       | Health check (reports database status)       |
+| `GET`  | `/api/runs`                     | List workflow runs (filter by branch/status) |
+| `GET`  | `/api/runs/{run_id}/analyze`    | Analyze a failed run and get repair plan     |
+| `POST` | `/api/runs/{run_id}/repair`     | Execute repair (optionally create branch/PR) |
+| `GET`  | `/api/history/analyses`         | Retrieve stored analyses from database       |
+| `GET`  | `/api/history/stats/categories` | Get error category distribution statistics   |
 
 ### Example: Analyze a Failed Run
 

@@ -18,33 +18,33 @@ The initial implementation (PR #111) provided the core library and a basic FastA
 Implement a GitHub Actions Auto-Repair Agent service with the following architecture:
 
 1. **Core library** (`mycodexvantaos-ci-repair`) providing:
-    - Regex-based log parser that scans CI logs bottom-up for known error patterns
-    - Error classification into 10 categories: dependency_error, test_failure, lint_error, build_error, docker_build_error, deployment_error, permission_error, configuration_error, timeout_error, unknown_error
-    - Repair engine that generates actionable repair plans with auto-fix vs manual review classification
-    - Async GitHub API client (httpx) for fetching workflow runs, jobs, and logs
-    - PostgreSQL persistence (asyncpg) for storing analysis history and statistics
+   - Regex-based log parser that scans CI logs bottom-up for known error patterns
+   - Error classification into 10 categories: dependency_error, test_failure, lint_error, build_error, docker_build_error, deployment_error, permission_error, configuration_error, timeout_error, unknown_error
+   - Repair engine that generates actionable repair plans with auto-fix vs manual review classification
+   - Async GitHub API client (httpx) for fetching workflow runs, jobs, and logs
+   - PostgreSQL persistence (asyncpg) for storing analysis history and statistics
 
 2. **FastAPI service** (`ci-repair-agent`) providing:
-    - HTTP API for listing runs, analyzing failures, and triggering repairs
-    - CLI with `analyze` and `serve` subcommands
-    - Optional branch and PR creation for auto-fixable repairs
-    - Health check endpoint with database status reporting
+   - HTTP API for listing runs, analyzing failures, and triggering repairs
+   - CLI with `analyze` and `serve` subcommands
+   - Optional branch and PR creation for auto-fixable repairs
+   - Health check endpoint with database status reporting
 
 3. **Production hardening** (v0.2.0) adding:
-    - Standardized API response format with `ApiResponse(success, data, error, request_id)` wrapper
-    - `ErrorCode` class with 10 domain-specific error codes mapped to HTTP status codes
-    - `AppException` base class for structured error propagation
-    - Request ID middleware (`X-Request-ID`) for distributed tracing
-    - Global exception handlers (AppException, HTTPException, generic) ensuring all responses conform to the standard format
-    - Input validation (positive run_id, path/body consistency check)
-    - Pydantic v2 domain response models for all endpoints
+   - Standardized API response format with `ApiResponse(success, data, error, request_id)` wrapper
+   - `ErrorCode` class with 10 domain-specific error codes mapped to HTTP status codes
+   - `AppException` base class for structured error propagation
+   - Request ID middleware (`X-Request-ID`) for distributed tracing
+   - Global exception handlers (AppException, HTTPException, generic) ensuring all responses conform to the standard format
+   - Input validation (positive run_id, path/body consistency check)
+   - Pydantic v2 domain response models for all endpoints
 
 4. **Infrastructure**:
-    - Docker multi-stage build with `python:3.11-slim` and non-root user
-    - docker-compose.yml with PostgreSQL 16, bridge network, resource limits, and log rotation
-    - GitHub Actions CI workflow with lint, test, 70% coverage threshold, CodeQL security scan, and Docker build verification
-    - `.dockerignore` for optimized build context
-    - `.env.example` with all configuration options documented
+   - Docker multi-stage build with `python:3.11-slim` and non-root user
+   - docker-compose.yml with PostgreSQL 16, bridge network, resource limits, and log rotation
+   - GitHub Actions CI workflow with lint, test, 70% coverage threshold, CodeQL security scan, and Docker build verification
+   - `.dockerignore` for optimized build context
+   - `.env.example` with all configuration options documented
 
 ## Key Design Choices
 
