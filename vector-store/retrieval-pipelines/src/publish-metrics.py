@@ -12,7 +12,7 @@ import json
 import argparse
 import os
 from datetime import datetime
-from typing import Dict, List
+from typing import Dict
 
 class MetricsPublisher:
     """Publishes platform execution metrics to observability providers."""
