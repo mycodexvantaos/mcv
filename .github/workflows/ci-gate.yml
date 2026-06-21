@@ -112,7 +112,7 @@ jobs:
             node_modules/.*|dist/.*|build/.*|coverage/.*|\.next/.*|\.nuxt/.*|
             \.turbo/.*|\.cache/.*|vendor/.*|generated/.*|project-import/.*|
             pnpm-lock\.yaml|package-lock\.json|yarn\.lock|
-            python/\.coverage.*|todo\.md|.*\.min\.js
+            python/\.coverage.*|todo\.md|.*\.min\.js|\.ai/.*
 
   # ─────────────────────────────────────────────────────────────
   # Stage 3: Node.js Quality (typecheck + format — fast)

@@ -6,12 +6,12 @@ This document provides specific instructions for agents performing database migr
 
 When performing database migrations, agents MUST follow this workflow:
 
-1.  **Backup**: Always ensure a full database backup is performed before initiating any migration. Refer to `docs/database-backup-procedure.md` for detailed steps.
-2.  **Schema Changes**: All schema changes must be defined using Drizzle ORM migrations. Generate new migration files using `npm run migration:generate <migration-name>`.
-3.  **Review**: Migration files MUST be reviewed by a human before execution in any production-like environment.
-4.  **Execution**: Execute migrations using `npm run migration:run`. Always specify the target environment (e.g., `npm run migration:run --env=staging`).
-5.  **Validation**: After migration, run integration tests (`npm run test:integration`) and verify data integrity. Refer to `docs/data-integrity-checks.md`.
-6.  **Rollback Plan**: Always have a rollback plan in place. If a migration fails or causes issues, revert to the previous state using `npm run migration:rollback`.
+1. **Backup**: Always ensure a full database backup is performed before initiating any migration. Refer to `docs/database-backup-procedure.md` for detailed steps.
+2. **Schema Changes**: All schema changes must be defined using Drizzle ORM migrations. Generate new migration files using `npm run migration:generate <migration-name>`.
+3. **Review**: Migration files MUST be reviewed by a human before execution in any production-like environment.
+4. **Execution**: Execute migrations using `npm run migration:run`. Always specify the target environment (e.g., `npm run migration:run --env=staging`).
+5. **Validation**: After migration, run integration tests (`npm run test:integration`) and verify data integrity. Refer to `docs/data-integrity-checks.md`.
+6. **Rollback Plan**: Always have a rollback plan in place. If a migration fails or causes issues, revert to the previous state using `npm run migration:rollback`.
 
 ### 2. Tool Permissions for Migrations
 

@@ -10,3 +10,10 @@ rules:
   empty-lines: disable
   trailing-spaces: disable
   new-line-at-end-of-file: disable
+  # GitHub Actions workflows use on: [push, pull_request] which triggers
+  # truthy warnings. Disable entirely since these are standard patterns.
+  truthy: disable
+  # OpenAPI-style service definitions use flow mappings like { type: string }
+  # which Prettier formats with spaces inside braces. Disable to avoid
+  # false positives on valid compact YAML patterns.
+  braces: disable

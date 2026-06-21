@@ -61,6 +61,7 @@ Error responses include structured error details:
 ```
 
 The `X-Request-ID` header is propagated from inbound requests or auto-generated as a UUID.
+
 | Method | Path | Description |
 | ------ | ------------------------------- | -------------------------------------------- |
 | `GET` | `/health` | Health check (reports database status) |

@@ -1,6 +1,7 @@
 # PR #159 Merge & Complete Workflow Restructuring
 
 ## Phase 1: Create All Reference Workflow Files
+
 - [x] unified-ci.yaml (created)
 - [x] codeql.yml (created - CodeQL Advanced v4 with matrix)
 - [x] security-scan.yaml (created - CLI-based)
@@ -26,6 +27,7 @@
 - [ ] Other reference workflows (ci.yml, cd.yml, testing.yml, etc.)
 
 ## Phase 2: Config & Support Files
+
 - [ ] Update codeql-config.yml to match reference
 - [ ] Update dependency-review-config.yml
 - [ ] Add .github/hooks/ (security.json, quality-gates.json)
@@ -37,23 +39,27 @@
 - [ ] Add .github/release-drafter.yml
 - [ ] Add .github/skills/ (platform-deploy, governance-compliance, feature-development)
 - [ ] Add .github/instructions/ (architecture, security, etc.)
-- [ ] Update super-linter.yml with proper VALIDATE_* settings
+- [ ] Update super-linter.yml with proper VALIDATE\_\* settings
 
 ## Phase 3: Cleanup & Fixes
+
 - [ ] Delete old ci-gate.yml (superseded by unified structure)
 - [ ] Remove quick_test_runner.py (shell=True security issue)
 - [ ] Fix shell injection in remaining workflows
 
 ## Phase 4: Commit, Push & Monitor CI
+
 - [ ] Commit all changes
 - [ ] Push to feat/unified-gate-system branch
 - [ ] Monitor CI results on PR #159
 - [ ] Fix any remaining CI failures
 
 ## Phase 5: Resolve Ruleset Blockers & Merge
+
 - [ ] Verify all ruleset checks pass (copilot_code_review, code_scanning, code_quality)
 - [ ] Address copilot_code_review if still blocked
 - [ ] Confirm PR #159 merge completion
 
 ## Phase 6: Final Report
+
 - [ ] Executive summary and deliverables

@@ -20,3 +20,9 @@ engineering-templates/
 infra/kubernetes/base/init.ts
 scripts/refactor-global-architecture.ts
 services/mycodexvantaos-app-dev-studio/src/components/StudioDashboard.tsx
+
+# Working notes files (not production code)
+todo.md
+
+# AI continuity files (not production code)
+.ai/

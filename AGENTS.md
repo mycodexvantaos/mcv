@@ -10,10 +10,10 @@ MyCodeXvantaOS is a Local-first, Provider-agnostic, Contract-driven full-stack a
 
 All code changes MUST respect these four core principles:
 
-1.  **Local-first** — Never introduce external dependencies without a native fallback
-2.  **Provider-agnostic** — Never couple business logic directly to third-party SDKs
-3.  **Contract-first** — Define interfaces before implementation; validate with `npm run contracts:validate`
-4.  **Governance-enforced** — All rules are machine-enforced via `npm run governance:check`
+1. **Local-first** — Never introduce external dependencies without a native fallback
+2. **Provider-agnostic** — Never couple business logic directly to third-party SDKs
+3. **Contract-first** — Define interfaces before implementation; validate with `npm run contracts:validate`
+4. **Governance-enforced** — All rules are machine-enforced via `npm run governance:check`
 
 ### 1. Three-Layer AI Context Model (C.3)
 

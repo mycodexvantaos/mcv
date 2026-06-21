@@ -17,20 +17,20 @@ The initial implementation (PR #111) provided the core library and a basic FastA
 
 Implement a GitHub Actions Auto-Repair Agent service with the following architecture:
 
-1.  **Core library** (`mycodexvantaos-ci-repair`) providing:
+1. **Core library** (`mycodexvantaos-ci-repair`) providing:
     - Regex-based log parser that scans CI logs bottom-up for known error patterns
     - Error classification into 10 categories: dependency_error, test_failure, lint_error, build_error, docker_build_error, deployment_error, permission_error, configuration_error, timeout_error, unknown_error
     - Repair engine that generates actionable repair plans with auto-fix vs manual review classification
     - Async GitHub API client (httpx) for fetching workflow runs, jobs, and logs
     - PostgreSQL persistence (asyncpg) for storing analysis history and statistics
 
-2.  **FastAPI service** (`ci-repair-agent`) providing:
+2. **FastAPI service** (`ci-repair-agent`) providing:
     - HTTP API for listing runs, analyzing failures, and triggering repairs
     - CLI with `analyze` and `serve` subcommands
     - Optional branch and PR creation for auto-fixable repairs
     - Health check endpoint with database status reporting
 
-3.  **Production hardening** (v0.2.0) adding:
+3. **Production hardening** (v0.2.0) adding:
     - Standardized API response format with `ApiResponse(success, data, error, request_id)` wrapper
     - `ErrorCode` class with 10 domain-specific error codes mapped to HTTP status codes
     - `AppException` base class for structured error propagation
@@ -39,7 +39,7 @@ Implement a GitHub Actions Auto-Repair Agent service with the following architec
     - Input validation (positive run_id, path/body consistency check)
     - Pydantic v2 domain response models for all endpoints
 
-4.  **Infrastructure**:
+4. **Infrastructure**:
     - Docker multi-stage build with `python:3.11-slim` and non-root user
     - docker-compose.yml with PostgreSQL 16, bridge network, resource limits, and log rotation
     - GitHub Actions CI workflow with lint, test, 70% coverage threshold, CodeQL security scan, and Docker build verification
@@ -102,11 +102,11 @@ Key testing techniques employed:
 
 ## Alternatives Considered
 
-1.  **LLM-based classification**: Using an LLM to classify errors from log text. Rejected due to cost, latency, and non-determinism — regex provides instant, free, reproducible results.
-2.  **GitHub Actions reusable workflow**: Building the repair agent as a reusable workflow that runs after failures. Rejected because the service model provides more flexibility (API, CLI, webhooks) and can be triggered on-demand.
-3.  **No persistence (purely stateless)**: Rejected because historical analysis data is valuable for trend identification, recurring failure detection, and measuring repair success rates.
-4.  **Non-standardized response format**: Returning raw Pydantic model dicts from endpoints. Rejected because inconsistent error formats (HTTPException vs domain errors) make client-side error handling fragile. The `ApiResponse` wrapper with `success/data/error/request_id` ensures all responses follow the same contract.
-5.  **`from __future__ import annotations`**: Using the future import for cleaner type hints. Rejected because Pydantic v2 requires runtime type resolution, and the future import causes `PydanticUserError: ApiResponse is not fully defined`. Python 3.11 natively supports `X | None` and `list[X]`, making the import unnecessary.
+1. **LLM-based classification**: Using an LLM to classify errors from log text. Rejected due to cost, latency, and non-determinism — regex provides instant, free, reproducible results.
+2. **GitHub Actions reusable workflow**: Building the repair agent as a reusable workflow that runs after failures. Rejected because the service model provides more flexibility (API, CLI, webhooks) and can be triggered on-demand.
+3. **No persistence (purely stateless)**: Rejected because historical analysis data is valuable for trend identification, recurring failure detection, and measuring repair success rates.
+4. **Non-standardized response format**: Returning raw Pydantic model dicts from endpoints. Rejected because inconsistent error formats (HTTPException vs domain errors) make client-side error handling fragile. The `ApiResponse` wrapper with `success/data/error/request_id` ensures all responses follow the same contract.
+5. **`from __future__ import annotations`**: Using the future import for cleaner type hints. Rejected because Pydantic v2 requires runtime type resolution, and the future import causes `PydanticUserError: ApiResponse is not fully defined`. Python 3.11 natively supports `X | None` and `list[X]`, making the import unnecessary.
 
 ## References
 
