@@ -128,7 +128,7 @@ def main():
     packages_dir = Path("/workspace/mycodexvantaos/packages")
 
     print("Setting up Jest configs for all packages...")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
 
     for package_dir in packages_dir.iterdir():
         if not package_dir.is_dir():
@@ -152,7 +152,7 @@ def main():
         else:
             print(f"⚠️  {package_name} - No exports found, skipped")
 
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
     print("✅ Complete! All packages now have Jest configuration.")
     print("\nNext steps:")
     print("1. Run tests for individual packages: cd packages/<name> && npx jest")

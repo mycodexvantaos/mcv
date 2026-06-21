@@ -66,9 +66,7 @@ class TestMemoryStorePutAndGet:
     @pytest.mark.asyncio
     async def test_put_with_tags(self, store: MemoryStore) -> None:
         """Store and retrieve with tags."""
-        await store.put(
-            item=MemoryItem(namespace="ns", key="k", value="val", tags=["a", "b", "c"])
-        )
+        await store.put(item=MemoryItem(namespace="ns", key="k", value="val", tags=["a", "b", "c"]))
         item = await store.get(namespace="ns", key="k")
         assert item is not None
         assert set(item.tags) == {"a", "b", "c"}
@@ -106,15 +104,9 @@ class TestMemoryStoreSearch:
     @pytest.mark.asyncio
     async def test_search_by_tags(self, store: MemoryStore) -> None:
         """Search finds items matching tags."""
-        await store.put(
-            item=MemoryItem(namespace="ns", key="k1", value="v1", tags=["python"])
-        )
-        await store.put(
-            item=MemoryItem(namespace="ns", key="k2", value="v2", tags=["typescript"])
-        )
-        result = await store.search(
-            params=MemorySearchParams(namespace="ns", tags=["python"])
-        )
+        await store.put(item=MemoryItem(namespace="ns", key="k1", value="v1", tags=["python"]))
+        await store.put(item=MemoryItem(namespace="ns", key="k2", value="v2", tags=["typescript"]))
+        result = await store.search(params=MemorySearchParams(namespace="ns", tags=["python"]))
         assert result.total >= 1
 
     @pytest.mark.asyncio
@@ -122,9 +114,7 @@ class TestMemoryStoreSearch:
         """Search finds items by key prefix."""
         await store.put(item=MemoryItem(namespace="ns", key="prefix-key1", value="v1"))
         await store.put(item=MemoryItem(namespace="ns", key="other-key2", value="v2"))
-        result = await store.search(
-            params=MemorySearchParams(namespace="ns", key_prefix="prefix")
-        )
+        result = await store.search(params=MemorySearchParams(namespace="ns", key_prefix="prefix"))
         assert result.total >= 1
 
     @pytest.mark.asyncio

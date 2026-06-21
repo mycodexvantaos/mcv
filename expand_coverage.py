@@ -71,7 +71,7 @@ describe('{package_name}', () => {{
  * 目標：70%+ 測試覆蓋率
  */
 
-import {{ {', '.join(structure['classes'] + structure['interfaces'])} }} from '../src';
+import {{ {", ".join(structure["classes"] + structure["interfaces"])} }} from '../src';
 
 describe('{package_name}', () => {{
   let instance: any;
@@ -910,7 +910,7 @@ def main():
     packages_dir = Path("/workspace/mycodexvantaos/packages")
 
     print("開始擴展測試覆蓋率目標為70%...")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
 
     created_count = 0
 
@@ -933,7 +933,7 @@ def main():
         created_count += 1
         print(f"✅ {package_name} - 綜合性測試套件已創建")
 
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
     print(f"✅ 完成！為 {created_count} 個套件創建了綜合性測試")
     print("\n測試套件包含：")
     print("- 初始化測試")

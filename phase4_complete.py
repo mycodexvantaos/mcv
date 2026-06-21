@@ -441,7 +441,7 @@ def create_performance_benchmark():
 
 def main():
     print("🚀 Phase 4: Complete Testing Infrastructure and Production Setup")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
 
     # Create production configuration
     create_production_config()
@@ -455,7 +455,7 @@ def main():
     # Create performance benchmarks
     create_performance_benchmark()
 
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
     print("✅ Phase 4 Complete!")
     print("\nCreated:")
     print("- Production environment configuration")

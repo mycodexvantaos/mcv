@@ -171,9 +171,7 @@ class _InMemoryTaskStore:
             if task_id not in self._transitions:
                 self._transitions[task_id] = []
             self._transitions[task_id].append(
-                TaskTransition(
-                    task_id=task_id, from_status=old_status, to_status=updates["status"]
-                )
+                TaskTransition(task_id=task_id, from_status=old_status, to_status=updates["status"])
             )
 
             # Set timestamps
@@ -618,9 +616,7 @@ class TaskTracker:
             by_status=status_map,
             by_priority={r["priority"]: r["cnt"] for r in by_priority},
             by_type={r["task_type"]: r["cnt"] for r in by_type},
-            completion_rate=(
-                round(completed / total_count, 4) if total_count > 0 else 0.0
-            ),
+            completion_rate=(round(completed / total_count, 4) if total_count > 0 else 0.0),
         )
 
     @staticmethod

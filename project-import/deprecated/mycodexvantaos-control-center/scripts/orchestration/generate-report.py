@@ -139,24 +139,24 @@ class ReportGenerator:
     <div class="header">
         <h1>Orchestration Execution Report</h1>
         <p>ID: {self.orchestration_id}</p>
-        <p>Generated: {self.report_data['generated_at']}</p>
+        <p>Generated: {self.report_data["generated_at"]}</p>
     </div>
     
     <div class="summary">
         <div class="metric">
-            <div class="metric-value">{self.report_data['summary'].get('total_repositories', 0)}</div>
+            <div class="metric-value">{self.report_data["summary"].get("total_repositories", 0)}</div>
             <div class="metric-label">Total Repositories</div>
         </div>
         <div class="metric">
-            <div class="metric-value success">{self.report_data['summary'].get('completed_repositories', 0)}</div>
+            <div class="metric-value success">{self.report_data["summary"].get("completed_repositories", 0)}</div>
             <div class="metric-label">Completed</div>
         </div>
         <div class="metric">
-            <div class="metric-value failed">{self.report_data['summary'].get('failed_repositories', 0)}</div>
+            <div class="metric-value failed">{self.report_data["summary"].get("failed_repositories", 0)}</div>
             <div class="metric-label">Failed</div>
         </div>
         <div class="metric">
-            <div class="metric-value">{self.report_data['summary'].get('success_rate', 0)}%</div>
+            <div class="metric-value">{self.report_data["summary"].get("success_rate", 0)}%</div>
             <div class="metric-label">Success Rate</div>
         </div>
     </div>
@@ -184,8 +184,8 @@ class ReportGenerator:
             <tr class="{status_class}">
                 <td>{repo}</td>
                 <td>-</td>
-                <td>{repo_state.get('status', 'unknown')}</td>
-                <td>{repo_state.get('updated_at', '-')}</td>
+                <td>{repo_state.get("status", "unknown")}</td>
+                <td>{repo_state.get("updated_at", "-")}</td>
             </tr>
 """
 
