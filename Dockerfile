@@ -4,11 +4,11 @@
 # Build context: repository root (pnpm monorepo)
 
 # ── Stage 1: base ──────────────────────────────────────────────
-FROM node:22-alpine AS base
+FROM node:26-alpine AS base
 WORKDIR /app
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable && corepack prepare pnpm@9 --activate
+RUN npm install -g corepack@latest && corepack enable && corepack prepare pnpm@9 --activate
 
 # ── Stage 2: install dependencies ─────────────────────────────
 FROM base AS deps
@@ -28,12 +28,12 @@ RUN pnpm run build:modules
 RUN pnpm --filter @mycodexvantaos/api-node run build
 
 # ── Stage 4: production runtime ────────────────────────────────
-FROM node:22-alpine AS runtime
+FROM node:26-alpine AS runtime
 WORKDIR /app
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 ENV NODE_ENV=production
-RUN corepack enable && corepack prepare pnpm@9 --activate
+RUN npm install -g corepack@latest && corepack enable && corepack prepare pnpm@9 --activate
 
 # Copy workspace manifests
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
