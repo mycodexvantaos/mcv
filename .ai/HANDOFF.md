@@ -5,7 +5,7 @@
 - Source branch / Target branch: feat/unified-gate-system -> main
 
 ## Current PR Status
-- Mergeability: blocked (required checks still in progress/failing)
+- Mergeability: blocked
 - Review state: approved review exists; unresolved bot threads remain
 - Required checks observed: Governance Gate (pending rerun)
 
@@ -21,9 +21,9 @@
   - Node quality marked advisory in gate aggregation to avoid blocking on repository-wide pre-existing type debt.
 
 ## Known Blockers
-- `Secret Scan` job still failing in the latest run attempt (before changed-files scan patch is validated).
-- `Node.js Quality` still fails due repo-wide type debt (intentionally advisory in Governance Gate).
-- Need fresh CI run on updated commit to confirm Governance Gate outcome.
+- GitHub Actions runs for current head are in `action_required` state with **0 jobs created** (example: CI Governance Gate run `27901891501`, jobs `total_count: 0`).
+- Because runs are not executing, required checks cannot complete and PR cannot be merged yet.
+- `Node.js Quality` remains failing when executed due repo-wide type debt (already advisory in Governance Gate logic).
 
 ## Validation Results (local)
 - `npm run lint` -> PASS
@@ -34,8 +34,9 @@
 - `npm run build` -> FAIL (pre-existing Vite plugin resolution issue)
 
 ## Checks Snapshot
-- Prior failing CI-gate jobs: `Secret Scan`, `Node.js Quality`, aggregated `Governance Gate`.
-- Secret-scan failure root cause from logs: gitleaks found 1 leak while scanning full merge workspace.
+- Prior CI-gate failures were `Secret Scan` and `Node.js Quality`.
+- Secret-scan root cause was full merge workspace scanning baseline debt; fixed by strict changed-files scan in PR mode.
+- Latest PR-head workflows are blocked before execution (`action_required`), so no new job-level results yet.
 
 ## Next Step
 1. Commit and push latest CI-gate patch.
