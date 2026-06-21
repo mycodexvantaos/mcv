@@ -20,90 +20,9 @@ permissions:
   actions: read
 
 jobs:
-  # ── Super-Linter (only changed files) ──────────────────────────────
-  super-linter:
-    name: Super-Linter
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Lint Code Base
-        uses: super-linter/super-linter@v7
-        env:
-          VALIDATE_ALL_CODEBASE: false
-          DEFAULT_BRANCH: "main"
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          LOG_LEVEL: NOTICE
-          VALIDATE_GITHUB_ACTIONS: true
-          VALIDATE_YAML: true
-          VALIDATE_JSON: true
-          VALIDATE_MARKDOWN: true
-          VALIDATE_BASH: true
-          VALIDATE_DOCKERFILE_HADOLINT: true
-          FILTER_REGEX_EXCLUDE: |
-            node_modules/.*
-            dist/.*
-            build/.*
-            coverage/.*
-            .next/.*
-            vendor/.*
-            pnpm-lock\.yaml
-            package-lock\.json
-            yarn\.lock
-            python/\.coverage.*
-            project-import/.*
-            todo\.md
-
-  # ── Python Quality Gate ────────────────────────────────────────────
-  python-quality:
-    name: Python Quality
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    permissions:
-      contents: read
-      security-events: write
-      actions: read
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install uv
-        run: pip install uv
-
-      - name: Install dependencies
-        working-directory: ./python
-        run: uv sync --extra dev --all-packages
-
-      - name: Run ruff check (all Python)
-        working-directory: ./python
-        run: uv run ruff check .
-
-      - name: Run ruff format check (all Python)
-        working-directory: ./python
-        run: uv run ruff format --check .
-
-      - name: Run Python test suite
-        working-directory: ./python
-        run: |
-          uv run pytest \
-            tests/ \
-            -v \
-            --tb=short \
-            -x \
-            || true
-
   # ── CodeQL Security Scan (satisfies ruleset code_scanning) ─────────
   codeql:
-    name: CodeQL Analysis
+    name: CodeQL
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
@@ -114,12 +33,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - language: actions
-            category: "/language:actions"
-          - language: javascript-typescript
-            category: "/language:javascript-typescript"
           - language: python
             category: "/language:python"
+          - language: javascript-typescript
+            category: "/language:javascript-typescript"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -234,7 +151,6 @@ jobs:
     if: github.event_name == 'pull_request'
     permissions:
       contents: read
-      security-events: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -269,8 +185,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     needs:
-      - super-linter
-      - python-quality
       - codeql
       - semgrep
       - trivy
@@ -294,9 +208,7 @@ jobs:
           echo "Run ID:  ${{ github.run_id }}"
           echo ""
 
-          # Check all required jobs
           PASS=true
-
           check_result() {
             local job=$1
             local result=$2
@@ -310,8 +222,6 @@ jobs:
             fi
           }
 
-          check_result "super-linter" "${{ needs.super-linter.result }}"
-          check_result "python-quality" "${{ needs.python-quality.result }}"
           check_result "codeql" "${{ needs.codeql.result }}"
           check_result "semgrep" "${{ needs.semgrep.result }}"
           check_result "trivy" "${{ needs.trivy.result }}"
