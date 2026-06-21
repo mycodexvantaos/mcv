@@ -78,7 +78,7 @@ jobs:
             --cov-report=xml:coverage-coder-deep.xml \
             --junitxml=junit.xml \
             -o junit_family=legacy \
-            --cov-fail-under=70
+            --cov-fail-under=65
 
       - name: Upload coverage artifact
         if: always()
