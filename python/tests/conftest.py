@@ -7,11 +7,7 @@ from unittest.mock import AsyncMock
 
 import pytest
 from mycodexvantaos_ci_repair.github_client import GitHubActionsClient
-from mycodexvantaos_ci_repair.models import (
-    FailedJob,
-    FailedStep,
-    WorkflowRunSummary,
-)
+from mycodexvantaos_ci_repair.models import FailedJob, FailedStep, WorkflowRunSummary
 
 # ---------------------------------------------------------------------------
 # Plain factory functions (can be called directly from tests)
@@ -197,5 +193,7 @@ def mock_github_client(
     mock_client.get_failed_jobs = AsyncMock(return_value=sample_failed_jobs)
     mock_client.get_branch_sha = AsyncMock(return_value="abc123def456")
     mock_client.create_branch = AsyncMock(return_value=True)
-    mock_client.create_pull_request = AsyncMock(return_value="https://github.com/test/repo/pull/42")
+    mock_client.create_pull_request = AsyncMock(
+        return_value="https://github.com/test/repo/pull/42"
+    )
     return mock_client

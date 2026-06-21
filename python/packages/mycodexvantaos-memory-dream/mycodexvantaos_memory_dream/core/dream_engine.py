@@ -123,7 +123,9 @@ class DreamEngine:
         executed: list[str] = []
         for action in actions:
             if action.action_type == DreamActionType.MERGE:
-                executed.append(f"Merge {action.target_memory_id} into {action.related_memory_id}")
+                executed.append(
+                    f"Merge {action.target_memory_id} into {action.related_memory_id}"
+                )
             elif action.action_type == DreamActionType.RESOLVE:
                 executed.append(
                     f"Resolve conflict between {action.target_memory_id} and {action.related_memory_id}"

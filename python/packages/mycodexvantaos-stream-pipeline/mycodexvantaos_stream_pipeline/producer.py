@@ -60,7 +60,9 @@ class StreamProducer:
 
         if self._config.delivery_semantic == DeliverySemantic.EXACTLY_ONCE:
             if not self._config.transactional_id:
-                raise ValueError("transactional_id is required for exactly-once semantics")
+                raise ValueError(
+                    "transactional_id is required for exactly-once semantics"
+                )
             producer_kwargs["transactional_id"] = self._config.transactional_id
             producer_kwargs["enable_idempotence"] = True
         elif self._config.enable_idempotence:
@@ -186,10 +188,16 @@ class StreamProducer:
                         result = await self._producer.send_and_wait(
                             topic,
                             value=msg.serialized_value(),
-                            key=msg.key.encode("utf-8") if isinstance(msg.key, str) else None,
-                            headers=[(k, v.encode("utf-8")) for k, v in msg.headers.items()]
-                            if msg.headers
-                            else None,
+                            key=(
+                                msg.key.encode("utf-8")
+                                if isinstance(msg.key, str)
+                                else None
+                            ),
+                            headers=(
+                                [(k, v.encode("utf-8")) for k, v in msg.headers.items()]
+                                if msg.headers
+                                else None
+                            ),
                         )
                         results.append((result.partition, result.offset))
                         self._metrics.messages_produced += 1
@@ -216,7 +224,9 @@ class StreamProducer:
         """
         target_topic = topic or f"dlq.{dlq.original_topic}"
         payload = json.loads(dlq.model_dump_json())
-        result = await self.send(topic=target_topic, value=payload, key=dlq.original_key)
+        result = await self.send(
+            topic=target_topic, value=payload, key=dlq.original_key
+        )
         if result:
             self._metrics.dead_letter_count += 1
             logger.info(

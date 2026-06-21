@@ -140,7 +140,9 @@ class TestBehaviorQuery:
                 outcome=ActionOutcome.FAILURE,
             )
         )
-        result = await tracker.query(params=BehaviorQuery(outcome=ActionOutcome.FAILURE))
+        result = await tracker.query(
+            params=BehaviorQuery(outcome=ActionOutcome.FAILURE)
+        )
         assert len(result) >= 1
 
 

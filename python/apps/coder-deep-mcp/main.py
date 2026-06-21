@@ -39,11 +39,7 @@ from mycodexvantaos_coder_deep.pipeline_codex import (
     CodexQuery,
     PipelineCodex,
 )
-from mycodexvantaos_coder_deep.task_tracker import (
-    TaskEntry,
-    TaskQuery,
-    TaskTracker,
-)
+from mycodexvantaos_coder_deep.task_tracker import TaskEntry, TaskQuery, TaskTracker
 from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
@@ -456,7 +452,9 @@ async def lifespan(app: FastAPI):  # noqa: ARG001
                 await svc.connect()
                 logger.info("Connected %s to database", svc_name)
             except Exception:
-                logger.exception("Failed to connect %s — running in-memory mode", svc_name)
+                logger.exception(
+                    "Failed to connect %s — running in-memory mode", svc_name
+                )
 
     logger.info("All services initialized")
     yield
@@ -628,7 +626,9 @@ async def memory_put(request: Request, body: MemoryPutRequest) -> dict[str, Any]
             metadata=body.metadata,
         )
         result = await store.put(item=item)
-        return _success(request, {"namespace": result.namespace, "key": result.key, "stored": True})
+        return _success(
+            request, {"namespace": result.namespace, "key": result.key, "stored": True}
+        )
     except Exception as exc:
         raise AppException(
             code=ErrorCode.MEMORY_ERROR,
@@ -756,7 +756,12 @@ async def cache_put(request: Request, body: ContextPutRequest) -> dict[str, Any]
         )
         result = await cache.put(entry=entry)
         return _success(
-            request, {"entry_id": result.entry_id, "stored": True, "size_bytes": result.size_bytes}
+            request,
+            {
+                "entry_id": result.entry_id,
+                "stored": True,
+                "size_bytes": result.size_bytes,
+            },
         )
     except Exception as exc:
         raise AppException(
@@ -842,7 +847,9 @@ async def cache_find(request: Request, body: ContextFindRequest) -> dict[str, An
             status_code=500,
         ) from exc
 
-    return _success(request, {"entries": [e.model_dump() for e in entries], "count": len(entries)})
+    return _success(
+        request, {"entries": [e.model_dump() for e in entries], "count": len(entries)}
+    )
 
 
 @app.post("/api/cache/invalidate/{namespace}")
@@ -867,7 +874,9 @@ async def cache_invalidate(request: Request, namespace: str) -> dict[str, Any]:
 
 
 @app.post("/api/behavior/record")
-async def behavior_record(request: Request, body: BehaviorRecordRequest) -> dict[str, Any]:
+async def behavior_record(
+    request: Request, body: BehaviorRecordRequest
+) -> dict[str, Any]:
     """Record an AI behavior action.
 
     Actions are grouped by session and tracked with category, outcome, and duration.
@@ -901,7 +910,9 @@ async def behavior_record(request: Request, body: BehaviorRecordRequest) -> dict
 
 
 @app.post("/api/behavior/query")
-async def behavior_query(request: Request, body: BehaviorQueryRequest) -> dict[str, Any]:
+async def behavior_query(
+    request: Request, body: BehaviorQueryRequest
+) -> dict[str, Any]:
     """Query behavior actions by session, agent, category, or outcome."""
     tracker = _get_behavior()
     try:
@@ -927,7 +938,9 @@ async def behavior_query(request: Request, body: BehaviorQueryRequest) -> dict[s
             status_code=500,
         ) from exc
 
-    return _success(request, {"actions": [a.model_dump() for a in actions], "count": len(actions)})
+    return _success(
+        request, {"actions": [a.model_dump() for a in actions], "count": len(actions)}
+    )
 
 
 @app.get("/api/behavior/stats")
@@ -967,7 +980,8 @@ async def behavior_list_sessions(
         ) from exc
 
     return _success(
-        request, {"sessions": [s.model_dump() for s in sessions], "count": len(sessions)}
+        request,
+        {"sessions": [s.model_dump() for s in sessions], "count": len(sessions)},
     )
 
 
@@ -977,7 +991,9 @@ async def behavior_list_sessions(
 
 
 @app.post("/api/architecture/scan")
-async def architecture_scan(request: Request, body: ArchitectureScanRequest) -> dict[str, Any]:
+async def architecture_scan(
+    request: Request, body: ArchitectureScanRequest
+) -> dict[str, Any]:
     """Scan the project directory tree and produce an architecture snapshot.
 
     The snapshot includes all files with their languages, sizes, and checksums,
@@ -1000,7 +1016,9 @@ async def architecture_scan(request: Request, body: ArchitectureScanRequest) -> 
 
 
 @app.post("/api/architecture/diff")
-async def architecture_diff(request: Request, body: ArchitectureDiffRequest) -> dict[str, Any]:
+async def architecture_diff(
+    request: Request, body: ArchitectureDiffRequest
+) -> dict[str, Any]:
     """Compute the diff between two architecture snapshots.
 
     If from_id is not provided, uses the second-to-last snapshot.
@@ -1047,7 +1065,8 @@ async def codex_put(request: Request, body: CodexPutRequest) -> dict[str, Any]:
         )
         result = await codex.put(entry=entry)
         return _success(
-            request, {"entry_id": result.entry_id, "version": result.version, "stored": True}
+            request,
+            {"entry_id": result.entry_id, "version": result.version, "stored": True},
         )
     except Exception as exc:
         raise AppException(
@@ -1135,7 +1154,9 @@ async def codex_query(request: Request, body: CodexQueryRequest) -> dict[str, An
             status_code=500,
         ) from exc
 
-    return _success(request, {"entries": [e.model_dump() for e in entries], "count": len(entries)})
+    return _success(
+        request, {"entries": [e.model_dump() for e in entries], "count": len(entries)}
+    )
 
 
 @app.get("/api/codex/{entry_id}/versions")
@@ -1151,7 +1172,9 @@ async def codex_versions(request: Request, entry_id: str) -> dict[str, Any]:
             status_code=500,
         ) from exc
 
-    return _success(request, {"entry_id": entry_id, "versions": [v.model_dump() for v in versions]})
+    return _success(
+        request, {"entry_id": entry_id, "versions": [v.model_dump() for v in versions]}
+    )
 
 
 # ===========================================================================
@@ -1183,7 +1206,8 @@ async def task_create(request: Request, body: TaskCreateRequest) -> dict[str, An
         )
         result = await tracker.create(task=task)
         return _success(
-            request, {"task_id": result.task_id, "status": result.status, "created": True}
+            request,
+            {"task_id": result.task_id, "status": result.status, "created": True},
         )
     except Exception as exc:
         raise AppException(
@@ -1233,7 +1257,9 @@ async def task_get(request: Request, task_id: str) -> dict[str, Any]:
 
 
 @app.patch("/api/tasks/{task_id}")
-async def task_update(request: Request, task_id: str, body: TaskUpdateRequest) -> dict[str, Any]:
+async def task_update(
+    request: Request, task_id: str, body: TaskUpdateRequest
+) -> dict[str, Any]:
     """Update a task. Status changes are automatically recorded as transitions."""
     tracker = _get_tasks()
     try:
@@ -1314,7 +1340,9 @@ async def task_query(request: Request, body: TaskQueryRequest) -> dict[str, Any]
             status_code=500,
         ) from exc
 
-    return _success(request, {"tasks": [t.model_dump() for t in tasks], "count": len(tasks)})
+    return _success(
+        request, {"tasks": [t.model_dump() for t in tasks], "count": len(tasks)}
+    )
 
 
 @app.get("/api/tasks/{task_id}/transitions")
@@ -1331,7 +1359,8 @@ async def task_transitions(request: Request, task_id: str) -> dict[str, Any]:
         ) from exc
 
     return _success(
-        request, {"task_id": task_id, "transitions": [t.model_dump() for t in transitions]}
+        request,
+        {"task_id": task_id, "transitions": [t.model_dump() for t in transitions]},
     )
 
 
@@ -1348,7 +1377,9 @@ async def task_dependencies(request: Request, task_id: str) -> dict[str, Any]:
             status_code=500,
         ) from exc
 
-    return _success(request, {"task_id": task_id, "dependencies": [d.model_dump() for d in deps]})
+    return _success(
+        request, {"task_id": task_id, "dependencies": [d.model_dump() for d in deps]}
+    )
 
 
 # ===========================================================================
@@ -1374,8 +1405,14 @@ async def mcp_list_tools(request: Request) -> dict[str, Any]:
                         "type": "string",
                         "description": "Memory namespace for isolation",
                     },
-                    "key": {"type": "string", "description": "Unique key within the namespace"},
-                    "value": {"type": "object", "description": "Value to store (any JSON)"},
+                    "key": {
+                        "type": "string",
+                        "description": "Unique key within the namespace",
+                    },
+                    "value": {
+                        "type": "object",
+                        "description": "Value to store (any JSON)",
+                    },
                     "tags": {
                         "type": "array",
                         "items": {"type": "string"},
@@ -1403,8 +1440,14 @@ async def mcp_list_tools(request: Request) -> dict[str, Any]:
             "input_schema": {
                 "type": "object",
                 "properties": {
-                    "namespace": {"type": "string", "description": "Optional namespace filter"},
-                    "key_prefix": {"type": "string", "description": "Filter by key prefix"},
+                    "namespace": {
+                        "type": "string",
+                        "description": "Optional namespace filter",
+                    },
+                    "key_prefix": {
+                        "type": "string",
+                        "description": "Filter by key prefix",
+                    },
                     "tags": {"type": "array", "items": {"type": "string"}},
                     "limit": {"type": "integer", "default": 50},
                 },
@@ -1419,7 +1462,10 @@ async def mcp_list_tools(request: Request) -> dict[str, Any]:
                     "namespace": {"type": "string", "default": "default"},
                     "context_type": {"type": "string", "default": "general"},
                     "label": {"type": "string"},
-                    "data": {"type": "object", "description": "Content to cache (any JSON)"},
+                    "data": {
+                        "type": "object",
+                        "description": "Content to cache (any JSON)",
+                    },
                     "tags": {"type": "array", "items": {"type": "string"}},
                 },
                 "required": ["data"],
@@ -1467,7 +1513,13 @@ async def mcp_list_tools(request: Request) -> dict[str, Any]:
                     },
                     "outcome": {
                         "type": "string",
-                        "enum": ["success", "partial", "failure", "skipped", "rolled_back"],
+                        "enum": [
+                            "success",
+                            "partial",
+                            "failure",
+                            "skipped",
+                            "rolled_back",
+                        ],
                         "default": "success",
                     },
                     "duration_ms": {"type": "integer"},
@@ -1559,8 +1611,14 @@ async def mcp_list_tools(request: Request) -> dict[str, Any]:
                             "deferred",
                         ],
                     },
-                    "task_type": {"type": "string", "enum": ["A", "B", "C", "D", "E", "F"]},
-                    "priority": {"type": "string", "enum": ["critical", "high", "medium", "low"]},
+                    "task_type": {
+                        "type": "string",
+                        "enum": ["A", "B", "C", "D", "E", "F"],
+                    },
+                    "priority": {
+                        "type": "string",
+                        "enum": ["critical", "high", "medium", "low"],
+                    },
                     "assignee": {"type": "string"},
                     "limit": {"type": "integer", "default": 50},
                 },
@@ -1655,7 +1713,11 @@ async def mcp_list_prompts(request: Request) -> dict[str, Any]:
             "name": "project_context",
             "description": "Load full project context including architecture, recent tasks, and active memory",
             "arguments": [
-                {"name": "namespace", "description": "Memory namespace to load", "required": False},
+                {
+                    "name": "namespace",
+                    "description": "Memory namespace to load",
+                    "required": False,
+                },
             ],
         },
         {
@@ -1678,7 +1740,11 @@ async def mcp_list_prompts(request: Request) -> dict[str, Any]:
             "name": "task_dashboard",
             "description": "Generate a task dashboard showing active, blocked, and recently completed tasks",
             "arguments": [
-                {"name": "assignee", "description": "Filter by assignee", "required": False},
+                {
+                    "name": "assignee",
+                    "description": "Filter by assignee",
+                    "required": False,
+                },
                 {
                     "name": "task_type",
                     "description": "Filter by governance type (A-F)",
@@ -1701,8 +1767,16 @@ async def mcp_list_prompts(request: Request) -> dict[str, Any]:
             "name": "architecture_review",
             "description": "Review current architecture and identify drift from baseline",
             "arguments": [
-                {"name": "from_id", "description": "Baseline snapshot ID", "required": False},
-                {"name": "to_id", "description": "Target snapshot ID", "required": False},
+                {
+                    "name": "from_id",
+                    "description": "Baseline snapshot ID",
+                    "required": False,
+                },
+                {
+                    "name": "to_id",
+                    "description": "Target snapshot ID",
+                    "required": False,
+                },
             ],
         },
     ]
@@ -1732,7 +1806,8 @@ async def mcp_invoke_tool(request: Request, tool_name: str) -> dict[str, Any]:
             )
             result = await store.put(item=item)
             return _success(
-                request, {"stored": True, "namespace": result.namespace, "key": result.key}
+                request,
+                {"stored": True, "namespace": result.namespace, "key": result.key},
             )
 
         if tool_name == "memory_get":
@@ -1740,7 +1815,9 @@ async def mcp_invoke_tool(request: Request, tool_name: str) -> dict[str, Any]:
             item = await store.get(namespace=body["namespace"], key=body["key"])
             if item is None:
                 raise AppException(
-                    code=ErrorCode.NOT_FOUND, message="Memory item not found", status_code=404
+                    code=ErrorCode.NOT_FOUND,
+                    message="Memory item not found",
+                    status_code=404,
                 )
             return _success(request, item.model_dump())
 
@@ -1774,7 +1851,9 @@ async def mcp_invoke_tool(request: Request, tool_name: str) -> dict[str, Any]:
             entry = await cache.get(entry_id=body["entry_id"])
             if entry is None:
                 raise AppException(
-                    code=ErrorCode.NOT_FOUND, message="Cache entry not found", status_code=404
+                    code=ErrorCode.NOT_FOUND,
+                    message="Cache entry not found",
+                    status_code=404,
                 )
             return _success(request, entry.model_dump())
 
@@ -1806,7 +1885,12 @@ async def mcp_invoke_tool(request: Request, tool_name: str) -> dict[str, Any]:
             )
             result = await codex.put(entry=entry)
             return _success(
-                request, {"stored": True, "entry_id": result.entry_id, "version": result.version}
+                request,
+                {
+                    "stored": True,
+                    "entry_id": result.entry_id,
+                    "version": result.version,
+                },
             )
 
         if tool_name == "codex_query":
@@ -1819,7 +1903,8 @@ async def mcp_invoke_tool(request: Request, tool_name: str) -> dict[str, Any]:
             )
             entries = await codex.query(params=params)
             return _success(
-                request, {"entries": [e.model_dump() for e in entries], "count": len(entries)}
+                request,
+                {"entries": [e.model_dump() for e in entries], "count": len(entries)},
             )
 
         if tool_name == "task_create":
@@ -1998,7 +2083,9 @@ def cli() -> None:
 
     # cache subcommand
     cache_parser = subparsers.add_parser("cache", help="Manage the context cache")
-    cache_parser.add_argument("cache_action", choices=["stats", "clear"], help="Cache action")
+    cache_parser.add_argument(
+        "cache_action", choices=["stats", "clear"], help="Cache action"
+    )
 
     # track subcommand
     track_parser = subparsers.add_parser("track", help="Record a behavior action")

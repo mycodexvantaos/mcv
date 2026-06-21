@@ -93,7 +93,12 @@ class MetricsCollector:
                 "counter",
                 lambda m: m.dead_letter_count,
             ),
-            ("stream_consumer_lag", "Current consumer lag", "gauge", lambda m: m.consumer_lag),
+            (
+                "stream_consumer_lag",
+                "Current consumer lag",
+                "gauge",
+                lambda m: m.consumer_lag,
+            ),
             (
                 "stream_processing_latency_ms",
                 "Processing latency in ms",
@@ -134,4 +139,6 @@ class MetricsCollector:
         """Compute throughput for all registered processors."""
         for name, metrics in self._processors.items():
             if metrics.uptime_seconds > 0:
-                metrics.throughput_per_second = metrics.messages_consumed / metrics.uptime_seconds
+                metrics.throughput_per_second = (
+                    metrics.messages_consumed / metrics.uptime_seconds
+                )
