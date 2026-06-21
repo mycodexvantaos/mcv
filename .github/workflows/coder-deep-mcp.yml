@@ -134,7 +134,7 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
-          category: coder-deep-mcp
+          category: "/language:python"
 
   docker-build:
     runs-on: ubuntu-latest

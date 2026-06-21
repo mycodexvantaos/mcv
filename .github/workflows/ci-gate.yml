@@ -20,48 +20,11 @@ permissions:
   actions: read
 
 jobs:
-  # ── Preflight: detect which areas changed ──────────────────────────
-  preflight:
-    name: Preflight
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    outputs:
-      python: ${{ steps.filter.outputs.python }}
-      node: ${{ steps.filter.outputs.node }}
-      docker: ${{ steps.filter.outputs.docker }}
-      workflows: ${{ steps.filter.outputs.workflows }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Detect changed paths
-        uses: dorny/paths-filter@v3
-        id: filter
-        with:
-          filters: |
-            python:
-              - 'python/**'
-              - 'services/ci-repair-agent/**'
-              - 'services/kafka-stream-processor/**'
-              - 'requirements*.txt'
-            node:
-              - 'apps/**'
-              - 'providers/**'
-              - 'package.json'
-              - 'pnpm-lock.yaml'
-            docker:
-              - '**/Dockerfile'
-              - '**/Dockerfile.*'
-            workflows:
-              - '.github/workflows/**'
-
   # ── Super-Linter (only changed files) ──────────────────────────────
   super-linter:
     name: Super-Linter
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    needs: preflight
-    if: always()
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -93,14 +56,13 @@ jobs:
             yarn\.lock
             python/\.coverage.*
             project-import/.*
+            todo\.md
 
   # ── Python Quality Gate ────────────────────────────────────────────
   python-quality:
     name: Python Quality
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    needs: preflight
-    if: needs.preflight.outputs.python == 'true'
     permissions:
       contents: read
       security-events: write
@@ -144,12 +106,20 @@ jobs:
     name: CodeQL Analysis
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    needs: preflight
-    if: always()
     permissions:
       contents: read
       security-events: write
       actions: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: actions
+            category: "/language:actions"
+          - language: javascript-typescript
+            category: "/language:javascript-typescript"
+          - language: python
+            category: "/language:python"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -157,7 +127,7 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
-          languages: python, javascript
+          languages: ${{ matrix.language }}
           config-file: .github/codeql/codeql-config.yml
 
       - name: Autobuild
@@ -166,7 +136,7 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
-          category: "/language:python"
+          category: ${{ matrix.category }}
           upload: true
 
   # ── Semgrep Security Scan (satisfies ruleset code_scanning) ────────
@@ -174,8 +144,6 @@ jobs:
     name: Semgrep Scan
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    needs: preflight
-    if: always()
     permissions:
       contents: read
       security-events: write
@@ -191,7 +159,6 @@ jobs:
             p/security-audit
             p/python
             p/javascript
-          publishToken: ${{ secrets.SEMGREP_APP_TOKEN }}
           generateSarif: "1"
 
       - name: Upload Semgrep SARIF
@@ -206,8 +173,6 @@ jobs:
     name: Trivy Scan
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    needs: preflight
-    if: always()
     permissions:
       contents: read
       security-events: write
@@ -237,8 +202,6 @@ jobs:
     name: Checkov Scan
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    needs: preflight
-    if: always()
     permissions:
       contents: read
       security-events: write
@@ -286,7 +249,6 @@ jobs:
     name: Secret Scan
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    if: always()
     permissions:
       contents: read
       security-events: write

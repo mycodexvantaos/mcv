@@ -225,6 +225,7 @@ jobs:
             yarn\.lock
             python/\.coverage.*
             project-import/.*
+            todo\.md
 
   # ── Audit Summary ─────────────────────────────────────────────────
   audit-summary:
