@@ -102,7 +102,9 @@ jobs:
           VALIDATE_BASH: true
           VALIDATE_DOCKERFILE_HADOLINT: true
 
-          # shellcheck: suppress SC2086 (word-splitting on intentional unquoted vars)
+          # shellcheck: suppress SC2086 only for GitHub Actions env vars in super-linter
+          # which uses variable expansion patterns that are intentional and safe within
+          # the super-linter container environment (not user-controlled input).
           SHELLCHECK_OPTS: '--exclude=SC2086'
 
           # Exclude generated / vendored / build artefacts
@@ -139,8 +141,7 @@ jobs:
         run: pnpm install --no-frozen-lockfile
 
       - name: TypeScript type check
-        run: pnpm run typecheck || pnpm run validate || echo "typecheck not yet configured"
-        continue-on-error: false
+        run: pnpm run typecheck || pnpm run validate
 
       - name: Format check
         run: pnpm run format:check || echo "format:check not yet configured"
@@ -168,15 +169,24 @@ jobs:
 
       - name: Install Python dependencies
         working-directory: python
-        run: uv sync --extra dev --all-packages 2>/dev/null || pip install ruff mypy 2>/dev/null || true
+        run: |
+          if uv sync --extra dev --all-packages; then
+            echo "Installed via uv sync"
+          elif pip install ruff mypy; then
+            echo "Installed via pip fallback"
+          else
+            echo "::warning::Python dependency installation failed — lint results may be incomplete"
+          fi
 
       - name: Ruff lint
         working-directory: python
         run: |
           if command -v uv &>/dev/null && [ -f .venv/bin/ruff ]; then
-            .venv/bin/ruff check packages/ apps/ --output-format=github || true
+            .venv/bin/ruff check packages/ apps/ --output-format=github
+          elif command -v python &>/dev/null; then
+            python -m ruff check packages/ apps/ --output-format=github
           else
-            python -m ruff check packages/ apps/ --output-format=github 2>/dev/null || echo "ruff not available"
+            echo "::warning::ruff not available — skipping Python lint"
           fi
         continue-on-error: true
 
@@ -184,9 +194,9 @@ jobs:
         working-directory: python
         run: |
           if command -v uv &>/dev/null && [ -f .venv/bin/mypy ]; then
-            .venv/bin/mypy packages/ --ignore-missing-imports --no-error-summary 2>/dev/null || true
+            .venv/bin/mypy packages/ --ignore-missing-imports --no-error-summary
           else
-            echo "mypy not available — skipping"
+            echo "::warning::mypy not available — skipping Python type check"
           fi
         continue-on-error: true
 
@@ -286,8 +296,8 @@ jobs:
             local name="$1"
             local result="$2"
             local required="$3"
-            if [ "$result" = "failure" ] && [ "$required" = "true" ]; then
-              echo "::error::Required job '${name}' failed (result: ${result})"
+            if { [ "$result" = "failure" ] || [ "$result" = "cancelled" ]; } && [ "$required" = "true" ]; then
+              echo "::error::Required job '${name}' did not pass (result: ${result})"
               FAILED=1
             elif [ "$result" = "skipped" ]; then
               echo "  ⏭️  ${name}: skipped (not required for this event)"
