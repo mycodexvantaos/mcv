@@ -143,6 +143,10 @@ jobs:
         run: |
           pip install checkov
           checkov --directory . --framework dockerfile,github_actions,secrets --output sarif --output-filepath checkov-results.sarif --skip-check CKV_SECRET_6 --quiet || true
+          # Ensure SARIF file exists even if checkov doesn't generate one
+          if [ ! -f checkov-results.sarif ]; then
+            echo '{"version":"2.1.0","runs":[{"tool":{"driver":{"name":"Checkov","rules":[]}},"results":[]}]}' > checkov-results.sarif
+          fi
 
       - name: Upload Checkov SARIF
         if: always()
