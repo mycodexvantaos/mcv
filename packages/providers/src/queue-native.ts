@@ -17,7 +17,7 @@ export class NativeQueueProvider implements QueueCapability {
   }
 
   async healthCheck(): Promise<boolean> {
-    return true; 
+    return true;
   }
 
   async enqueue(topic: string, payload: any): Promise<string> {
@@ -33,7 +33,7 @@ export class NativeQueueProvider implements QueueCapability {
     const q = this.queues.get(topic);
     if (!q) return null;
 
-    const item = q.find(x => x.status === 'pending');
+    const item = q.find((x) => x.status === 'pending');
     if (!item) return null;
 
     item.status = 'processing';
@@ -43,6 +43,9 @@ export class NativeQueueProvider implements QueueCapability {
   async ack(topic: string, id: string): Promise<void> {
     const q = this.queues.get(topic);
     if (!q) return;
-    this.queues.set(topic, q.filter(x => x.id !== id));
+    this.queues.set(
+      topic,
+      q.filter((x) => x.id !== id)
+    );
   }
 }

@@ -1,10 +1,10 @@
 causal_engine:
   enabled: true
-  isolation: "container"          # 與主流水線隔離
+  isolation: 'container' # 與主流水線隔離
   allowed_operations:
-    - "反事實查詢"
-    - "干預預測"
+    - '反事實查詢'
+    - '干預預測'
   input_sources:
-    - "knowledge_graph_export.json"
-    - "test_failure_logs"
-  output_format: "causal_graph.dgml"
+    - 'knowledge_graph_export.json'
+    - 'test_failure_logs'
+  output_format: 'causal_graph.dgml'

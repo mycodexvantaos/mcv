@@ -39,10 +39,13 @@ async function runGlobalSimulation() {
 
   kernel.start();
   console.log('\n🚀 Executing AI Ensemble Process (Token: dev-admin, Task: Code Review)\n');
-  
+
   const agent = new AgentEnsemble(kernel);
   try {
-    const result = await agent.processQuery('dev-admin-token', 'Review the architecture and Continuous Integration');
+    const result = await agent.processQuery(
+      'dev-admin-token',
+      'Review the architecture and Continuous Integration'
+    );
     console.log('\n✨ [FINAL RESULT] ->', result);
   } catch (err) {
     console.error('System crashed:', err);

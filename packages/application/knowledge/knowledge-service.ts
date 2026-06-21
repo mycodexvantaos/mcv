@@ -269,7 +269,7 @@ export class KnowledgeService {
       },
     });
 
-    return { results: response.results, totalDurationMs };
+    return { results: response.results as unknown as SearchResultItem[], totalDurationMs };
   }
 
   // ── Collection Management ────────────────────────────────────────────

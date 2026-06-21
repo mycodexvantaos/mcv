@@ -257,11 +257,7 @@ export default function HumaniserPage() {
               </span>
             </div>
             <div className="flex gap-2">
-              <Button
-                onClick={handleDetect}
-                disabled={detecting || !inputText.trim()}
-                size="sm"
-              >
+              <Button onClick={handleDetect} disabled={detecting || !inputText.trim()} size="sm">
                 {detecting ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : (

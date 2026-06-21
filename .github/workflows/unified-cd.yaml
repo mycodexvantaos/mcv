@@ -1,0 +1,289 @@
+# === path: .github/workflows/unified-cd.yaml ===
+# Unified CD Pipeline for MyCodeXvantaOS
+# Consolidates: cd.yml, cd-dev.yaml
+# Version: 2.1.0
+
+name: Unified CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - 'release/**'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'development'
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+      version:
+        description: 'Version to deploy (leave empty for latest)'
+        required: false
+        type: string
+
+concurrency:
+  group: deploy-${{ github.event.inputs.environment || 'development' }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write
+  packages: write
+  deployments: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  # ====================
+  # Stage 1: Prepare
+  # ====================
+  prepare:
+    name: Prepare Deployment
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      should_deploy: ${{ steps.check.outputs.should_deploy }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Determine version
+        id: version
+        env:
+          INPUT_VERSION: ${{ github.event.inputs.version }}
+          REF_NAME: ${{ github.ref_name }}
+          SHA: ${{ github.sha }}
+        run: |
+          if [ -n "$INPUT_VERSION" ]; then
+            VERSION="$INPUT_VERSION"
+          elif [ "$REF_NAME" = "main" ]; then
+            VERSION="v$(date +%Y%m%d)-${SHA}"
+          else
+            VERSION="${REF_NAME}-${SHA}"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "📦 Version: $VERSION"
+
+      - name: Check deployment conditions
+        id: check
+        run: |
+          # Check if there are changes to deploy
+          if git diff --quiet HEAD~1 HEAD -- 2>/dev/null; then
+            echo "No changes detected"
+            echo "should_deploy=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected, proceeding with deployment"
+            echo "should_deploy=true" >> $GITHUB_OUTPUT
+          fi
+
+  # ====================
+  # Stage 2: Build Artifacts
+  # ====================
+  build:
+    name: Build Artifacts
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: prepare
+    if: ${{ needs.prepare.outputs.should_deploy == 'true' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1
+        with:
+          version: '9'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Build packages
+        run: pnpm run build:packages
+
+      - name: Build modules
+        run: pnpm run build:modules
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: build-artifacts
+          path: |
+            packages/*/dist
+            modules/*/dist
+          retention-days: 7
+
+  # ====================
+  # Stage 3: Build & Push Container Images
+  # ====================
+  container-build:
+    name: Build Container Images
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [prepare, build]
+    if: ${{ needs.prepare.outputs.should_deploy == 'true' }}
+    outputs:
+      image_tag: ${{ steps.meta.outputs.tags }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix=
+            type=raw,value=${{ needs.prepare.outputs.version }}
+
+      - name: Build and push
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: true
+          sbom: true
+
+  # ====================
+  # Stage 4: Deploy to Development
+  # ====================
+  deploy-dev:
+    name: Deploy to Development
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [prepare, container-build]
+    if: ${{ github.event.inputs.environment == 'development' || github.ref == 'refs/heads/main' }}
+    environment:
+      name: development
+      url: https://dev.mycodexvantaos.io
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Check Kubernetes config availability
+        id: kube-guard
+        shell: bash
+        env:
+          KUBE_CONFIG_VALUE: ${{ secrets.KUBE_CONFIG_DEV }}
+        run: |
+          if [ -n "$KUBE_CONFIG_VALUE" ]; then
+            echo "has_kube_config=true" >> "$GITHUB_OUTPUT"
+            echo "Kubernetes config is available."
+          else
+            echo "has_kube_config=false" >> "$GITHUB_OUTPUT"
+            echo "KUBE_CONFIG_DEV is not configured — skipping K8s deployment."
+          fi
+
+      - name: Configure kubectl
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
+        uses: azure/setup-kubectl@901a10e89ea615cf61f57ac05cecdf23e7de06d8
+
+      - name: Set kubeconfig
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
+        shell: bash
+        env:
+          KUBE_CONFIG_VALUE: ${{ secrets.KUBE_CONFIG_DEV }}
+        run: |
+          mkdir -p "$HOME/.kube"
+          echo "$KUBE_CONFIG_VALUE" | base64 -d > "$HOME/.kube/config"
+          chmod 600 "$HOME/.kube/config"
+
+      - name: Validate Kubernetes connection
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
+        shell: bash
+        run: |
+          kubectl cluster-info
+          kubectl get nodes
+
+      - name: Deploy with kubectl
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
+        env:
+          DEPLOY_VERSION: ${{ needs.prepare.outputs.version }}
+        run: |
+          kubectl set image deployment/mycodexvantaos \
+            mycodexvantaos=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${DEPLOY_VERSION} \
+            -n development
+
+      - name: Wait for rollout
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
+        run: |
+          kubectl rollout status deployment/mycodexvantaos -n development --timeout=300s
+
+      - name: Run smoke tests
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
+        run: |
+          # Basic health check
+          kubectl exec -n development deployment/mycodexvantaos -- curl -f http://localhost:8080/health || exit 1
+
+      - name: Mark K8s deployment skipped
+        if: steps.kube-guard.outputs.has_kube_config != 'true'
+        run: |
+          {
+            echo "### K8s Deployment Skipped"
+            echo ""
+            echo "- **Reason:** \`KUBE_CONFIG_DEV\` is not configured"
+            echo "- **Classification:** infrastructure-not-configured"
+            echo "- **Action:** Configure \`KUBE_CONFIG_DEV\` secret (base64-encoded kubeconfig) to enable K8s deployment"
+            echo ""
+            echo "Docker image build and registry push completed successfully."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # ====================
+  # Stage 7: Post-Deployment
+  # ====================
+  post-deploy:
+    name: Post-Deployment Tasks
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: [prepare, container-build, deploy-dev]
+    if: always() && needs.prepare.outputs.should_deploy == 'true'
+    steps:
+      - name: Create deployment summary
+        env:
+          CONTAINER_RESULT: ${{ needs.container-build.result }}
+          DEV_RESULT: ${{ needs.deploy-dev.result }}
+          VERSION: ${{ needs.prepare.outputs.version }}
+        run: |
+          {
+            echo "## Unified CD Summary"
+            echo ""
+            echo "| Stage | Status |"
+            echo "|-------|--------|"
+            echo "| Docker image build | ${CONTAINER_RESULT} |"
+            echo "| Container registry push | ${CONTAINER_RESULT} |"
+            echo "| Development K8s deploy | ${DEV_RESULT} |"
+            echo ""
+            echo "**Version:** ${VERSION}"
+            echo ""
+            echo "_K8s deploy results of 'skipped' indicate the corresponding kubeconfig secret is not configured (infrastructure-not-configured)._"
+          } >> "$GITHUB_STEP_SUMMARY"

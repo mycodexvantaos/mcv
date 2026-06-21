@@ -4,11 +4,11 @@ This document provides modular instructions for managing AI-readable architectur
 
 ### 1. The Three-Layer Context Model (C.3)
 
-| Layer | Type | Artifacts | Purpose |
-|-------|------|-----------|---------|
-| **L1** | Semantic | README, ARCHITECTURE.md, @ai-context | Intent and Guidance |
-| **L2** | Metadata | Manifests, Schemas, INDEX.yaml | Structured Facts |
-| **L3** | Governance | CI Validators, Policies, Unified Gates | Hard Enforcement |
+| Layer  | Type       | Artifacts                              | Purpose             |
+| ------ | ---------- | -------------------------------------- | ------------------- |
+| **L1** | Semantic   | README, ARCHITECTURE.md, @ai-context   | Intent and Guidance |
+| **L2** | Metadata   | Manifests, Schemas, INDEX.yaml         | Structured Facts    |
+| **L3** | Governance | CI Validators, Policies, Unified Gates | Hard Enforcement    |
 
 ### 2. Navigation Protocols (C.2)
 
@@ -19,6 +19,7 @@ This document provides modular instructions for managing AI-readable architectur
 ### 3. AI Development Instructions (C.4.2)
 
 When generating code or documentation, agents MUST:
+
 1. **Be Task-Driven**: Wrap workloads in `ai-task` resources.
 2. **Be Contract-First**: Propose contracts before implementation.
 3. **Be Billing-Aware**: Emit usage events for all billable operations.

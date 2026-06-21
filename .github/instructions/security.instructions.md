@@ -34,18 +34,18 @@ config/                 — Application configuration files
 
 ### Forbidden Operations
 
-| Operation | Reason |
-|-----------|--------|
-| `rm -rf /` | System destruction |
-| `rm -rf *` | Workspace destruction |
-| `rm -rf ~` | Home directory destruction |
-| `git push --force` | History rewriting |
-| `git push --force-with-lease` | History rewriting (still dangerous) |
-| `curl \| sh` | Remote code execution |
-| `curl \| bash` | Remote code execution |
-| `wget -O - \| sh` | Remote code execution |
+| Operation                     | Reason                                 |
+| ----------------------------- | -------------------------------------- |
+| `rm -rf /`                    | System destruction                     |
+| `rm -rf *`                    | Workspace destruction                  |
+| `rm -rf ~`                    | Home directory destruction             |
+| `git push --force`            | History rewriting                      |
+| `git push --force-with-lease` | History rewriting (still dangerous)    |
+| `curl \| sh`                  | Remote code execution                  |
+| `curl \| bash`                | Remote code execution                  |
+| `wget -O - \| sh`             | Remote code execution                  |
 | `npm run deploy` (autonomous) | Production deployment without approval |
-| `npm run upload` (autonomous) | Cloudflare upload without approval |
+| `npm run upload` (autonomous) | Cloudflare upload without approval     |
 
 ## Credential Handling
 

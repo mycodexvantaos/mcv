@@ -116,3 +116,9 @@ export interface GovernanceOverlay {
   knowledgeOperations: string;
   allServicesMust: string[];
 }
+
+/** Access role for service governance */
+export type Role = 'admin' | 'editor' | 'viewer' | 'operator';
+
+/** Service tier for capacity planning */
+export type Tier = 'free' | 'pro' | 'enterprise';

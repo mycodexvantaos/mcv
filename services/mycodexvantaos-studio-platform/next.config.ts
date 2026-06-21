@@ -39,7 +39,7 @@ const nextConfig: NextConfig = {
           enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
           bundleName: 'mycodexvantaos-studio-platform',
           uploadToken: process.env.CODECOV_TOKEN,
-        }),
+        })
       );
     }
     return config;

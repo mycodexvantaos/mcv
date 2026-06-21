@@ -65,24 +65,28 @@ The **Application Pipeline** skill provides a comprehensive framework for analyz
 ### 2. Key Components
 
 #### A. **File Analyzer**
+
 - Detects project type (TypeScript, Python, Go, Rust, etc.)
 - Maps directory structure
 - Identifies key files (package.json, requirements.txt, etc.)
 - Extracts code samples for AI analysis
 
 #### B. **AI Assessor**
+
 - Uses Claude API for intelligent analysis
 - Generates architecture assessment
 - Identifies core value propositions
 - Tags technology stacks
 
 #### C. **Conflict Detector**
+
 - Finds duplicate files across versions
 - Analyzes semantic conflicts
 - Prioritizes conflicts by impact
 - Suggests resolution strategies
 
 #### D. **Smart Merger**
+
 - **JSON Files**: Merges keys and arrays intelligently
 - **YAML Files**: Deep merge with deduplication
 - **Code Files**: Preserves new versions with enhancements
@@ -90,6 +94,7 @@ The **Application Pipeline** skill provides a comprehensive framework for analyz
 - **Binary Files**: Preserves first version
 
 #### E. **Validator**
+
 - Checks for conflict markers
 - Validates YAML/JSON syntax
 - Verifies code structure
@@ -132,7 +137,7 @@ import { ApplicationPipeline } from './skills/application-pipeline/core/pipeline
 
 const pipeline = new ApplicationPipeline({
   apiKey: process.env.ANTHROPIC_API_KEY,
-  model: 'claude-sonnet-4-20250514'
+  model: 'claude-sonnet-4-20250514',
 });
 
 // 1. Upload ZIP files
@@ -160,7 +165,7 @@ const customStrategy = {
   'package.json': (versions) => {
     // Custom merge logic for package.json
     const merged = { ...versions[0] };
-    versions.forEach(v => {
+    versions.forEach((v) => {
       merged.dependencies = { ...merged.dependencies, ...v.dependencies };
       merged.scripts = { ...merged.scripts, ...v.scripts };
     });
@@ -169,7 +174,7 @@ const customStrategy = {
   '*.yaml': (versions) => {
     // Deep merge YAML files
     return deepMergeYaml(versions);
-  }
+  },
 };
 
 const merged = await pipeline.synthesize(analyses, conflicts, customStrategy);
@@ -206,11 +211,13 @@ print(report)
 #### `ApplicationPipeline`
 
 **Constructor**
+
 ```javascript
-new ApplicationPipeline(config)
+new ApplicationPipeline(config);
 ```
 
 **Parameters**:
+
 - `apiKey` (string): Anthropic API key
 - `model` (string): Claude model version (default: 'claude-sonnet-4-20250514')
 - `maxTokens` (number): Max tokens for AI responses (default: 1000)
@@ -219,6 +226,7 @@ new ApplicationPipeline(config)
 **Methods**:
 
 ##### `uploadZips(files: File[]): Promise<ZipProject[]>`
+
 Uploads and parses ZIP files.
 
 ```javascript
@@ -227,6 +235,7 @@ const projects = await pipeline.uploadZips(fileList);
 ```
 
 ##### `analyzeOne(project: ZipProject): Promise<Analysis>`
+
 Analyzes a single project version.
 
 ```javascript
@@ -235,6 +244,7 @@ const analysis = await pipeline.analyzeOne(project);
 ```
 
 ##### `analyzeAll(projects: ZipProject[]): Promise<Analysis[]>`
+
 Analyzes all projects in parallel.
 
 ```javascript
@@ -242,6 +252,7 @@ const analyses = await pipeline.analyzeAll(projects);
 ```
 
 ##### `detectConflicts(analyses: Analysis[]): Promise<Conflict[]>`
+
 Detects file and semantic conflicts.
 
 ```javascript
@@ -250,6 +261,7 @@ const conflicts = await pipeline.detectConflicts(analyses);
 ```
 
 ##### `synthesize(analyses: Analysis[], conflicts: Conflict[], strategy?: MergeStrategy): Promise<SynthesisReport>`
+
 Generates merged version and synthesis report.
 
 ```javascript
@@ -258,6 +270,7 @@ const report = await pipeline.synthesize(analyses, conflicts);
 ```
 
 ##### `validate(merged: MergedProject): Promise<ValidationResult>`
+
 Validates merged project integrity.
 
 ```javascript
@@ -321,23 +334,23 @@ const config = {
   analysis: {
     depth: 3,
     sampleSize: 100,
-    extractCode: true
+    extractCode: true,
   },
   merging: {
     strategy: 'intelligent',
     conflictResolution: 'ai-guided',
-    preserveHistory: true
+    preserveHistory: true,
   },
   validation: {
     checkSyntax: true,
     checkDependencies: true,
-    runTests: false
+    runTests: false,
   },
   output: {
     format: 'zip',
     includeReport: true,
-    includeConflictLog: true
-  }
+    includeConflictLog: true,
+  },
 };
 
 const pipeline = new ApplicationPipeline(config);
@@ -351,17 +364,17 @@ const config = {
   rules: {
     'package.json': {
       strategy: 'union-with-latest',
-      conflictResolution: 'highest-semver'
+      conflictResolution: 'highest-semver',
     },
     'requirements.txt': {
       strategy: 'union',
-      conflictResolution: 'latest-compatible'
+      conflictResolution: 'latest-compatible',
     },
     'go.mod': {
       strategy: 'merge',
-      conflictResolution: 'ai-guided'
-    }
-  }
+      conflictResolution: 'ai-guided',
+    },
+  },
 };
 ```
 
@@ -370,6 +383,7 @@ const config = {
 ## Conflict Resolution Strategies
 
 ### 1. **AI-Guided Resolution**
+
 Uses Claude to analyze conflicts and suggest optimal resolutions.
 
 ```javascript
@@ -381,6 +395,7 @@ Uses Claude to analyze conflicts and suggest optimal resolutions.
 ```
 
 ### 2. **Version-Based Resolution**
+
 Resolves conflicts based on version numbers.
 
 ```javascript
@@ -392,6 +407,7 @@ Resolves conflicts based on version numbers.
 ```
 
 ### 3. **Feature-Based Resolution**
+
 Combines features from all versions.
 
 ```javascript
@@ -404,6 +420,7 @@ Combines features from all versions.
 ```
 
 ### 4. **Manual Resolution**
+
 Requires human review for conflicts.
 
 ```javascript
@@ -436,10 +453,7 @@ Requires human review for conflicts.
         "resolution": "Merged dependencies with latest versions"
       }
     ],
-    "recommendations": [
-      "Recommendation 1",
-      "Recommendation 2"
-    ]
+    "recommendations": ["Recommendation 1", "Recommendation 2"]
   },
   "contributions": {
     "v1": ["Core architecture", "Base utilities"],
@@ -479,14 +493,8 @@ Requires human review for conflicts.
 {
   "isValid": true,
   "errors": [],
-  "warnings": [
-    "2 YAML files have minor formatting issues",
-    "1 JSON file missing optional field"
-  ],
-  "fixes": [
-    "Removed 2 conflict markers",
-    "Fixed 1 YAML indentation"
-  ],
+  "warnings": ["2 YAML files have minor formatting issues", "1 JSON file missing optional field"],
+  "fixes": ["Removed 2 conflict markers", "Fixed 1 YAML indentation"],
   "coverage": {
     "syntax": 100,
     "structure": 98,
@@ -524,17 +532,13 @@ pipeline.on('afterMerge', (file, result) => {
 ### 3. Conflict Prioritization
 
 ```javascript
-const prioritizedConflicts = conflicts
-  .sort((a, b) => b.severity - a.severity)
-  .slice(0, 10);  // Top 10 conflicts
+const prioritizedConflicts = conflicts.sort((a, b) => b.severity - a.severity).slice(0, 10); // Top 10 conflicts
 ```
 
 ### 4. Batch Processing
 
 ```javascript
-const results = await Promise.all(
-  zipGroups.map(group => pipeline.synthesize(group))
-);
+const results = await Promise.all(zipGroups.map((group) => pipeline.synthesize(group)));
 ```
 
 ---
@@ -570,7 +574,7 @@ const analyses = await pipeline.analyzeAll(versions);
 const report = await pipeline.synthesize(analyses);
 
 // Fail if critical conflicts
-if (report.conflicts.filter(c => c.severity === 'critical').length > 0) {
+if (report.conflicts.filter((c) => c.severity === 'critical').length > 0) {
   process.exit(1);
 }
 ```
@@ -592,15 +596,15 @@ const handleSynthesize = async () => {
 ## Best Practices
 
 ### 1. **Version Ordering**
+
 Always process versions in chronological order for better conflict resolution.
 
 ```javascript
-const sortedVersions = versions.sort((a, b) => 
-  new Date(a.date) - new Date(b.date)
-);
+const sortedVersions = versions.sort((a, b) => new Date(a.date) - new Date(b.date));
 ```
 
 ### 2. **Incremental Merging**
+
 For many versions, merge incrementally rather than all at once.
 
 ```javascript
@@ -611,14 +615,16 @@ for (let i = 1; i < versions.length; i++) {
 ```
 
 ### 3. **Conflict Prioritization**
+
 Focus on high-severity conflicts first.
 
 ```javascript
-const criticalConflicts = conflicts.filter(c => c.severity === 'critical');
-const minorConflicts = conflicts.filter(c => c.severity === 'minor');
+const criticalConflicts = conflicts.filter((c) => c.severity === 'critical');
+const minorConflicts = conflicts.filter((c) => c.severity === 'minor');
 ```
 
 ### 4. **Validation Before Deployment**
+
 Always validate merged projects before deployment.
 
 ```javascript
@@ -629,13 +635,14 @@ if (!validation.isValid) {
 ```
 
 ### 5. **Documentation**
+
 Generate comprehensive documentation of merge decisions.
 
 ```javascript
 const report = await pipeline.generateReport(merged, {
   includeDecisions: true,
   includeRationale: true,
-  includeAlternatives: true
+  includeAlternatives: true,
 });
 ```
 
@@ -654,7 +661,7 @@ const retryWithBackoff = async (fn, maxRetries = 3) => {
       return await fn();
     } catch (e) {
       if (i === maxRetries - 1) throw e;
-      await new Promise(r => setTimeout(r, Math.pow(2, i) * 1000));
+      await new Promise((r) => setTimeout(r, Math.pow(2, i) * 1000));
     }
   }
 };
@@ -678,10 +685,7 @@ for (let i = 0; i < files.length; i += chunkSize) {
 
 ```javascript
 const removeConflictMarkers = (content) => {
-  return content.replace(
-    /^<{7}.*?^={7}.*?^>{7}.*?$/gms,
-    ''
-  );
+  return content.replace(/^<{7}.*?^={7}.*?^>{7}.*?$/gms, '');
 };
 ```
 
@@ -690,13 +694,13 @@ const removeConflictMarkers = (content) => {
 ## Performance Optimization
 
 ### 1. Parallel Analysis
+
 ```javascript
-const analyses = await Promise.all(
-  projects.map(p => pipeline.analyzeOne(p))
-);
+const analyses = await Promise.all(projects.map((p) => pipeline.analyzeOne(p)));
 ```
 
 ### 2. Caching
+
 ```javascript
 const cache = new Map();
 const getCachedAnalysis = (projectId) => {
@@ -708,9 +712,10 @@ const getCachedAnalysis = (projectId) => {
 ```
 
 ### 3. Streaming
+
 ```javascript
 const stream = pipeline.synthesizeStream(analyses);
-stream.on('data', chunk => console.log(chunk));
+stream.on('data', (chunk) => console.log(chunk));
 ```
 
 ---
@@ -718,6 +723,7 @@ stream.on('data', chunk => console.log(chunk));
 ## Security Considerations
 
 ### 1. **Input Validation**
+
 Always validate ZIP files before processing.
 
 ```javascript
@@ -728,17 +734,19 @@ const validateZip = (file) => {
 ```
 
 ### 2. **API Key Management**
+
 Never expose API keys in client-side code.
 
 ```javascript
 // ❌ Bad
-const apiKey = 'sk-...';  // Exposed!
+const apiKey = 'sk-...'; // Exposed!
 
 // ✅ Good
-const apiKey = process.env.ANTHROPIC_API_KEY;  // Server-side only
+const apiKey = process.env.ANTHROPIC_API_KEY; // Server-side only
 ```
 
 ### 3. **Sandboxing**
+
 Run merge operations in isolated environments.
 
 ```javascript
@@ -768,6 +776,7 @@ This skill is part of the Manus platform and follows the same license terms.
 ## Support
 
 For issues or questions:
+
 - Check the `examples/` directory for usage patterns
 - Review the `docs/` directory for detailed documentation
 - Refer to the `integrations/` directory for platform-specific guides
@@ -777,6 +786,7 @@ For issues or questions:
 ## Changelog
 
 ### v1.0.0 (2026-05-28)
+
 - Initial release
 - Core pipeline components
 - AI-powered analysis

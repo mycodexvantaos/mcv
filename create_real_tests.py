@@ -3,8 +3,8 @@
 Create real, working tests for all packages based on their actual implementations
 """
 
-import re
 from pathlib import Path
+import re
 
 
 def get_package_exports(package_path):

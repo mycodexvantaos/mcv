@@ -89,9 +89,6 @@ export async function POST(request: NextRequest) {
     });
   } catch (error: any) {
     console.error('[Humaniser Humanise API]', error);
-    return NextResponse.json(
-      { error: error.message || 'Humanisation failed' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error.message || 'Humanisation failed' }, { status: 500 });
   }
 }

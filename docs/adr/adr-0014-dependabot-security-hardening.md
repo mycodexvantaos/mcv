@@ -19,12 +19,12 @@ Prior vulnerability remediation efforts (v0.1.1 through v0.1.3 documented in `do
 
 Replace the stub `dependabot.yml` with a full four-ecosystem configuration:
 
-| Ecosystem | Directory | Schedule | PR Limit | Labels |
-|-----------|-----------|----------|----------|--------|
-| `github-actions` | `/` | Monday | 10 | dependencies, github_actions, security |
-| `npm` | `/` | Tuesday | 15 | dependencies, javascript, security |
-| `pip` | `/python` | Wednesday | 10 | dependencies, security |
-| `docker` | `/` | Thursday | 5 | dependencies, infra, security |
+| Ecosystem        | Directory | Schedule  | PR Limit | Labels                                 |
+| ---------------- | --------- | --------- | -------- | -------------------------------------- |
+| `github-actions` | `/`       | Monday    | 10       | dependencies, github_actions, security |
+| `npm`            | `/`       | Tuesday   | 15       | dependencies, javascript, security     |
+| `pip`            | `/python` | Wednesday | 10       | dependencies, security                 |
+| `docker`         | `/`       | Thursday  | 5        | dependencies, infra, security          |
 
 Key configuration decisions:
 

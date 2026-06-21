@@ -1,8 +1,5 @@
 {
-  "conflict_markers": [
-    "python/PYTHON_CI_TEST_REPORT.md",
-    "scripts/remediate_section_sign.py"
-  ],
+  "conflict_markers": ["python/PYTHON_CI_TEST_REPORT.md", "scripts/remediate_section_sign.py"],
   "yaml_errors": [
     {
       "file": "argocd/Applications.yaml",

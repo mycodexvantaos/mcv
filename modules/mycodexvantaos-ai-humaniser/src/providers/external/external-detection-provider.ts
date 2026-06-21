@@ -34,7 +34,7 @@ export class ExternalDetectionProvider implements IDetectionProvider {
     if (!this.config) return false;
     try {
       const response = await fetch(`${this.config.endpoint}/models`, {
-        headers: { 'Authorization': `Bearer ${this.config.apiKey}` },
+        headers: { Authorization: `Bearer ${this.config.apiKey}` },
         signal: AbortSignal.timeout(5000),
       });
       return response.ok;
@@ -104,7 +104,7 @@ async function callLLM(config: ExternalDetectionConfig, prompt: string): Promise
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${config.apiKey}`,
+      Authorization: `Bearer ${config.apiKey}`,
     },
     body: JSON.stringify({
       model: config.model || 'gpt-4o-mini',
@@ -141,8 +141,14 @@ function parseDetectionResponse(
       id: crypto.randomUUID?.() || String(Date.now()),
       label: parsed.overall_label || ContentLabel.UNCERTAIN,
       confidence: parsed.overall_confidence || 0.5,
-      aiScore: parsed.overall_label === ContentLabel.AI ? parsed.overall_confidence : 1 - parsed.overall_confidence,
-      humanScore: parsed.overall_label === ContentLabel.HUMAN ? parsed.overall_confidence : parsed.overall_confidence * 0.5,
+      aiScore:
+        parsed.overall_label === ContentLabel.AI
+          ? parsed.overall_confidence
+          : 1 - parsed.overall_confidence,
+      humanScore:
+        parsed.overall_label === ContentLabel.HUMAN
+          ? parsed.overall_confidence
+          : parsed.overall_confidence * 0.5,
       sentences: (parsed.sentences || []).map((s: any, i: number) => ({
         text: s.text || '',
         index: i,
@@ -151,9 +157,16 @@ function parseDetectionResponse(
         aiScore: s.label === ContentLabel.AI ? s.confidence : 1 - s.confidence,
         humanScore: s.label === ContentLabel.HUMAN ? s.confidence : 1 - s.confidence,
         features: {
-          avgWordLength: 0, wordCount: 0, lexicalDiversity: 0, avgWordFrequency: 0,
-          punctuationDensity: 0, complexity: 0, repetitionScore: 0, perplexityProxy: 0,
-          transitionSmoothness: 0, vocabularyRichness: 0,
+          avgWordLength: 0,
+          wordCount: 0,
+          lexicalDiversity: 0,
+          avgWordFrequency: 0,
+          punctuationDensity: 0,
+          complexity: 0,
+          repetitionScore: 0,
+          perplexityProxy: 0,
+          transitionSmoothness: 0,
+          vocabularyRichness: 0,
         },
         explanation: s.explanation || '',
       })),
@@ -161,7 +174,9 @@ function parseDetectionResponse(
         totalSentences: parsed.sentences?.length || 0,
         aiSentences: parsed.sentences?.filter((s: any) => s.label === 'ai').length || 0,
         humanSentences: parsed.sentences?.filter((s: any) => s.label === 'human').length || 0,
-        uncertainSentences: parsed.sentences?.filter((s: any) => s.label === 'uncertain' || s.label === 'mixed').length || 0,
+        uncertainSentences:
+          parsed.sentences?.filter((s: any) => s.label === 'uncertain' || s.label === 'mixed')
+            .length || 0,
         avgConfidence: 0,
         maxAiScore: 0,
         minAiScore: 0,

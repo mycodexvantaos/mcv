@@ -13,43 +13,43 @@ export interface Report {
 
 export class ReportingEngine {
   private reports: Report[] = [];
-  
+
   generateDailyReport(data: Record<string, any>): Report {
     const report: Report = {
       id: `rpt_${Date.now()}`,
       type: 'daily',
       generatedAt: new Date(),
       data,
-      content: this.formatReport(data, 'Daily Report')
+      content: this.formatReport(data, 'Daily Report'),
     };
     this.reports.push(report);
     return report;
   }
-  
+
   generateWeeklyReport(data: Record<string, any>): Report {
     const report: Report = {
       id: `rpt_${Date.now()}`,
       type: 'weekly',
       generatedAt: new Date(),
       data,
-      content: this.formatReport(data, 'Weekly Report')
+      content: this.formatReport(data, 'Weekly Report'),
     };
     this.reports.push(report);
     return report;
   }
-  
+
   generateMonthlyReport(data: Record<string, any>): Report {
     const report: Report = {
       id: `rpt_${Date.now()}`,
       type: 'monthly',
       generatedAt: new Date(),
       data,
-      content: this.formatReport(data, 'Monthly Report')
+      content: this.formatReport(data, 'Monthly Report'),
     };
     this.reports.push(report);
     return report;
   }
-  
+
   private formatReport(data: Record<string, any>, title: string): string {
     return `
 # ${title}
@@ -68,7 +68,7 @@ ${JSON.stringify(data, null, 2)}
 ${this.generateRecommendations(data)}
     `.trim();
   }
-  
+
   private generateRecommendations(data: Record<string, any>): string {
     const recommendations = [];
     if ((data.errorRate || 0) > 0.05) {
@@ -82,9 +82,9 @@ ${this.generateRecommendations(data)}
     }
     return recommendations.join('\n') || '- System performing well';
   }
-  
+
   getReports(type?: string): Report[] {
-    return type ? this.reports.filter(r => r.type === type) : this.reports;
+    return type ? this.reports.filter((r) => r.type === type) : this.reports;
   }
 }
 

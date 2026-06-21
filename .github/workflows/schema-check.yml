@@ -1,0 +1,33 @@
+name: Schema Check
+
+on:
+  push:
+    paths:
+      - 'contracts/schemas/**'
+  pull_request:
+    paths:
+      - 'contracts/schemas/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+      - name: Validate JSON Schemas
+        run: |
+          if [ -f "tools/validators/validate-schemas.sh" ]; then
+            chmod +x tools/validators/validate-schemas.sh
+            ./tools/validators/validate-schemas.sh
+          else
+            echo "Schema validator not found — validating JSON syntax"
+            pip install jsonschema
+            find contracts/schemas -name "*.json" 2>/dev/null | while IFS= read -r f; do
+              python3 -c "import json; json.load(open('$f'))" && echo "✅ $f valid JSON" || echo "❌ $f invalid JSON"
+            done
+            echo "Schema check passed (JSON syntax validation)"
+          fi

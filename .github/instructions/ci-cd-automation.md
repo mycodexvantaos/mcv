@@ -5,11 +5,13 @@ This document provides modular instructions for managing the automated repair lo
 ### 1. The Repair Loop (Detect-Classify-Fix-PR)
 
 Agents should autonomously monitor the following triggers:
+
 - **Naming Violations**: Triggered by `naming-guard.yml` or `conftest-naming.yaml`.
 - **Security Vulnerabilities**: Triggered by `trivy-scan.yml` or `gitleaks.yml`.
 - **Dependency Drift**: Triggered by `drift-detection.yml`.
 
 **Remediation Steps**:
+
 1. Identify the violation type and locate the corresponding fixer in `scripts/auto-fix/`.
 2. Apply the fix and verify locally using `npm run validate`.
 3. Create a feature branch and open a PR with the `auto-fix` label.

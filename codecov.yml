@@ -5,7 +5,7 @@
 coverage:
   precision: 2
   round: down
-  range: "70...100"
+  range: '70...100'
   status:
     project:
       default:
@@ -17,7 +17,7 @@ coverage:
         threshold: 5%
 
 comment:
-  layout: "header, diff, files, footer"
+  layout: 'header, diff, files, footer'
   behavior: default
   require_changes: false
 
@@ -55,10 +55,10 @@ flags:
     carryforward: true
 
 ignore:
-  - "python/tests/**"
-  - "python/scripts/**"
-  - "**/__pycache__/**"
-  - "**/migrations/**"
-  - "**/node_modules/**"
-  - "**/.next/**"
-  - "**/dist/**"
+  - 'python/tests/**'
+  - 'python/scripts/**'
+  - '**/__pycache__/**'
+  - '**/migrations/**'
+  - '**/node_modules/**'
+  - '**/.next/**'
+  - '**/dist/**'

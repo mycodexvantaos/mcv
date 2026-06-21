@@ -1,7 +1,7 @@
 /**
  * @mycodexvantaos/semantic-core-client
  * TypeScript/Node.js Client for Semantic Core
- * 
+ *
  * Provides async client for decision-making with vector analysis,
  * parametric optimization, and feedback loops.
  */
@@ -263,10 +263,7 @@ export class SemanticCoreClient {
 /**
  * Factory function
  */
-export function createSemanticCoreClient(
-  baseUrl: string,
-  logger?: Logger
-): SemanticCoreClient {
+export function createSemanticCoreClient(baseUrl: string, logger?: Logger): SemanticCoreClient {
   return new SemanticCoreClient({ baseUrl, logger });
 }
 

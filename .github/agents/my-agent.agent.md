@@ -22,16 +22,16 @@ You are the primary autonomous coding agent for the MyCodeXvantaOS platform — 
 
 ## Platform Structure
 
-| Layer | Location | Purpose |
-|-------|----------|---------|
-| App | `src/` | Next.js application (App Router, Turbopack) |
-| Packages | `packages/` | 70+ shared packages |
-| Modules | `modules/` | 20+ domain modules |
-| Services | `services/` | 40+ microservices |
-| AI | `src/ai/`, `packages/ai-*` | Genkit-powered AI layer |
-| Python | `python/` | FastAPI services (CI repair, dream, agent worker) |
-| Infra | `infra/` | Infrastructure as code |
-| Tools | `tools/` | Governance, migrations, generators |
+| Layer    | Location                   | Purpose                                           |
+| -------- | -------------------------- | ------------------------------------------------- |
+| App      | `src/`                     | Next.js application (App Router, Turbopack)       |
+| Packages | `packages/`                | 70+ shared packages                               |
+| Modules  | `modules/`                 | 20+ domain modules                                |
+| Services | `services/`                | 40+ microservices                                 |
+| AI       | `src/ai/`, `packages/ai-*` | Genkit-powered AI layer                           |
+| Python   | `python/`                  | FastAPI services (CI repair, dream, agent worker) |
+| Infra    | `infra/`                   | Infrastructure as code                            |
+| Tools    | `tools/`                   | Governance, migrations, generators                |
 
 ## Standard Workflow
 

@@ -28,11 +28,13 @@ npm run policy:check
 Pattern: `mycodexvantaos-<domain>-<capability>`
 
 Valid examples:
+
 - `mycodexvantaos-ai-memory`
 - `mycodexvantaos-core-gateway`
 - `mycodexvantaos-platform-scheduler`
 
 Invalid examples:
+
 - `memory-service` (missing prefix)
 - `mycodexvantaos-memory` (missing domain)
 - `MyCodeXvantaOS-AI-Memory` (wrong case)
@@ -42,6 +44,7 @@ Invalid examples:
 Pattern: `@mycodexvantaos/<capability>`
 
 Valid examples:
+
 - `@mycodexvantaos/core-gateway`
 - `@mycodexvantaos/ai-agent`
 - `@mycodexvantaos/security-validation`
@@ -51,6 +54,7 @@ Valid examples:
 Pattern: `urn:mycodexvantaos:capability:<name>`
 
 Examples:
+
 - `urn:mycodexvantaos:capability:builder`
 - `urn:mycodexvantaos:capability:runtime`
 - `urn:mycodexvantaos:capability:service-discovery`

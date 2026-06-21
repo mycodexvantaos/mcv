@@ -56,7 +56,8 @@ export class DataAnalytics {
     const precision = this.calculatePrecision();
     const recall = this.calculateRecall();
     const f1Score = this.calculateF1Score(precision, recall);
-    const averageConfidence = this.decisions.reduce((sum, d) => sum + d.confidence, 0) / totalDecisions;
+    const averageConfidence =
+      this.decisions.reduce((sum, d) => sum + d.confidence, 0) / totalDecisions;
 
     const verdictDistribution: Record<string, number> = {};
     this.decisions.forEach((d) => {
@@ -98,15 +99,27 @@ export class DataAnalytics {
   }
 
   private calculatePrecision(): number {
-    const truePositives = this.decisions.filter((d) => d.verdict === 'ALLOW' && d.outcome === 'correct').length;
-    const falsePositives = this.decisions.filter((d) => d.verdict === 'ALLOW' && d.outcome === 'incorrect').length;
-    return truePositives + falsePositives > 0 ? truePositives / (truePositives + falsePositives) : 0;
+    const truePositives = this.decisions.filter(
+      (d) => d.verdict === 'ALLOW' && d.outcome === 'correct'
+    ).length;
+    const falsePositives = this.decisions.filter(
+      (d) => d.verdict === 'ALLOW' && d.outcome === 'incorrect'
+    ).length;
+    return truePositives + falsePositives > 0
+      ? truePositives / (truePositives + falsePositives)
+      : 0;
   }
 
   private calculateRecall(): number {
-    const truePositives = this.decisions.filter((d) => d.verdict === 'ALLOW' && d.outcome === 'correct').length;
-    const falseNegatives = this.decisions.filter((d) => d.verdict === 'DENY' && d.outcome === 'incorrect').length;
-    return truePositives + falseNegatives > 0 ? truePositives / (truePositives + falseNegatives) : 0;
+    const truePositives = this.decisions.filter(
+      (d) => d.verdict === 'ALLOW' && d.outcome === 'correct'
+    ).length;
+    const falseNegatives = this.decisions.filter(
+      (d) => d.verdict === 'DENY' && d.outcome === 'incorrect'
+    ).length;
+    return truePositives + falseNegatives > 0
+      ? truePositives / (truePositives + falseNegatives)
+      : 0;
   }
 
   private calculateF1Score(precision: number, recall: number): number {

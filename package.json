@@ -104,7 +104,7 @@
       ]
     },
     "overrides": {
-      "@modelcontextprotocol/sdk>hono": "4.12.19",
+      "@modelcontextprotocol/sdk>hono": "4.12.26",
       "ajv>fast-uri": "3.1.2",
       "ws": "^8.20.1",
       "esbuild": "^0.28.1",
@@ -120,10 +120,11 @@
       "js-yaml": "^4.2.0",
       "vite": "^8.0.16",
       "vitest": "^3.2.6",
-      "vite-node": "^8.0.16"
+      "hono": ">=4.12.25"
     }
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260619.1",
     "@codecov/vite-plugin": "^2.0.1",
     "@codecov/webpack-plugin": "^2.0.1",
     "@mycodexvantaos/contracts-sdk": "workspace:*",
@@ -133,14 +134,19 @@
     "@opentelemetry/core": "^2.8.0",
     "@opentelemetry/sdk-node": "^0.219.0",
     "@tailwindcss/vite": "^4.3.1",
+    "@types/axios": "^0.14.4",
+    "@types/jest": "^29.5.14",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20.19.43",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.5.0",
+    "axios": "^1.18.0",
     "cross-spawn": "^7.0.6",
     "eslint": "^8.57.1",
     "genkit-cli": "^1.37.0",
     "js-yaml": "^4.2.0",
+    "pino": "^8.21.0",
     "postcss": "^8.5.15",
     "prettier": "^3.8.4",
     "tailwindcss": "^4.3.1",
@@ -149,7 +155,9 @@
     "typescript": "^5.9.3",
     "uuid": "^14.0.0",
     "vite": "^8.0.16",
-    "wrangler": "^4.103.0"
+    "wrangler": "^4.103.0",
+    "@vitejs/plugin-react": "^6.0.1",
+    "@tailwindcss/postcss": "^4.3.1"
   },
   "workspaces": [
     "services/*",

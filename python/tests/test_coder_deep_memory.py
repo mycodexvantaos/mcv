@@ -162,3 +162,63 @@ class TestMemoryStoreClearNamespace:
         assert cleared == 1
         assert await store.count(namespace="ns1") == 0
         assert await store.count(namespace="ns2") == 1
+
+
+class TestMemoryStoreCoverageEdges:
+    """Focused tests for fallback filtering and conversion edge cases."""
+
+    @pytest.mark.asyncio
+    async def test_get_updates_access_count_and_timestamp(self, store: MemoryStore) -> None:
+        """Retrieving an item increments its access count and refreshes updated_at."""
+        await store.put(item=MemoryItem(namespace="edge", key="k", value="v"))
+        first = await store.get(namespace="edge", key="k")
+        second = await store.get(namespace="edge", key="k")
+        assert first is not None
+        assert second is not None
+        assert second.access_count == 2
+        assert second.updated_at >= first.updated_at
+
+    @pytest.mark.asyncio
+    async def test_search_filters_source_and_paginates(self, store: MemoryStore) -> None:
+        """Search applies source filtering plus limit/offset pagination."""
+        await store.put(item=MemoryItem(namespace="edge", key="a", value="1", source="api"))
+        await store.put(item=MemoryItem(namespace="edge", key="b", value="2", source="agent"))
+        await store.put(item=MemoryItem(namespace="edge", key="c", value="3", source="agent"))
+        result = await store.search(
+            params=MemorySearchParams(namespace="edge", source="agent", limit=1, offset=1)
+        )
+        assert result.total == 2
+        assert result.limit == 1
+        assert result.offset == 1
+        assert len(result.items) == 1
+        assert result.items[0].source == "agent"
+
+    @pytest.mark.asyncio
+    async def test_clear_missing_namespace_returns_zero(self, store: MemoryStore) -> None:
+        """Clearing a namespace that does not exist is a no-op."""
+        assert await store.clear_namespace(namespace="missing") == 0
+
+    def test_row_to_item_decodes_json_and_datetime_like_values(self) -> None:
+        """Database row conversion decodes JSON strings and timestamp objects."""
+        from datetime import datetime
+
+        now = datetime(2026, 1, 2, 3, 4, 5)
+        row = {
+            "memory_id": "m1",
+            "namespace": "ns",
+            "key": "key",
+            "value": '{"answer": 42}',
+            "metadata": '{"kind": "unit"}',
+            "created_at": now,
+            "updated_at": now,
+            "expires_at": now,
+            "access_count": 3,
+            "source": "test",
+            "tags": None,
+        }
+        item = MemoryStore._row_to_item(row)
+        assert item.value == {"answer": 42}
+        assert item.metadata == {"kind": "unit"}
+        assert item.created_at == now.isoformat()
+        assert item.expires_at == now.isoformat()
+        assert item.tags == []

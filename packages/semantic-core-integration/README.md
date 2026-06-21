@@ -9,6 +9,7 @@ Complete integration of Semantic Core with Python backend for advanced decision-
 Full-featured TypeScript/Node.js client for Semantic Core API.
 
 **Features**:
+
 - Async/await support
 - Automatic retry with exponential backoff
 - Comprehensive error handling
@@ -16,6 +17,7 @@ Full-featured TypeScript/Node.js client for Semantic Core API.
 - Type-safe API
 
 **Usage**:
+
 ```typescript
 import { SemanticCoreClient } from '@mycodexvantaos/semantic-core-client';
 
@@ -43,10 +45,12 @@ console.log(decision.verdict); // ALLOW, DENY, or ABSTAIN
 Python integration layer with decision pipeline and feedback loops.
 
 **Modules**:
+
 - `decision_pipeline.py` - Main decision orchestration
 - `feedback_loop.py` - Adaptive learning and optimization
 
 **Usage**:
+
 ```python
 from backend.decision_pipeline import DecisionPipeline, Evidence, DecisionParameters
 from datetime import datetime
@@ -75,12 +79,14 @@ print(result.verdict)  # ALLOW, DENY, or ABSTAIN
 Docker and CI/CD setup for production deployment.
 
 **Services**:
+
 - Semantic Core API (Node.js, port 8001)
 - Python Backend (port 8002)
 - Redis (port 6379)
 - PostgreSQL (port 5432)
 
 **Start services**:
+
 ```bash
 cd infrastructure/docker
 docker-compose up -d
@@ -165,6 +171,7 @@ kubectl apply -f infrastructure/k8s/
 ### Decision Endpoint
 
 **Request**:
+
 ```json
 {
   "hypothesis": "string",
@@ -187,6 +194,7 @@ kubectl apply -f infrastructure/k8s/
 ```
 
 **Response**:
+
 ```json
 {
   "verdict": "ALLOW|DENY|ABSTAIN",
@@ -242,6 +250,7 @@ curl http://localhost:8002/metrics
 ### Connection Issues
 
 If services can't communicate:
+
 1. Verify Docker network: `docker network ls`
 2. Check service health: `docker-compose ps`
 3. Review logs: `docker-compose logs [service-name]`

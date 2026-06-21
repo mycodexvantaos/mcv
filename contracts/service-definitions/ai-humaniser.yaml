@@ -125,8 +125,9 @@ spec:
             description: ID of a previous detection result
           target_sentence_indices:
             type: array
-            items: { type: integer }
-            description: Specific sentence indices to rewrite (default: all AI-flagged)
+            items:
+              type: integer
+            description: 'Specific sentence indices to rewrite (default: all AI-flagged)'
           style:
             type: string
             enum: [conversational, professional, academic, creative, neutral]

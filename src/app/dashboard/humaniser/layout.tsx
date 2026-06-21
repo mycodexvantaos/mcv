@@ -5,10 +5,6 @@ export const metadata: Metadata = {
   description: 'Detect AI-generated content and humanise text to sound more natural',
 };
 
-export default function HumaniserLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function HumaniserLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }

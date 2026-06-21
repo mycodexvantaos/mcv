@@ -125,7 +125,7 @@ def process_file(filepath):
 def main():
     print(f"{'DRY RUN - ' if DRY_RUN else ''}Sec. Symbol Remediation")
     print(f"Base: {BASE}")
-    print(f"Strategy: Sec. → Sec. (e.g., Sec.5 → Sec.5, Sec.7.2 → Sec.7.2)")
+    print("Strategy: Sec. → Sec. (e.g., Sec.5 → Sec.5, Sec.7.2 → Sec.7.2)")
     print()
 
     for root, dirs, files in os.walk(BASE):

@@ -26,6 +26,7 @@ git checkout -b feat/<feature-name>
 ### 2. Explore Existing Code
 
 Before writing code, understand the relevant parts:
+
 - Read related source files
 - Check existing patterns and conventions
 - Identify affected modules and their dependencies
@@ -45,11 +46,13 @@ npm run contracts:validate
 ### 4. Plan Implementation
 
 For complex features, create a plan:
+
 ```
 /plan <description of the feature>
 ```
 
 Consider:
+
 - Which platform layer does this belong to?
 - Which packages/services are affected?
 - Does this need a new service? (Follow naming: `mycodexvantaos-<domain>-<capability>`)

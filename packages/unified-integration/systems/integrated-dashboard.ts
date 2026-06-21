@@ -32,7 +32,11 @@ export interface DashboardMetrics {
 
 export class IntegratedDashboard {
   private metricsHistory: DashboardMetrics[] = [];
-  private alerts: Array<{ timestamp: Date; severity: 'info' | 'warning' | 'critical'; message: string }> = [];
+  private alerts: Array<{
+    timestamp: Date;
+    severity: 'info' | 'warning' | 'critical';
+    message: string;
+  }> = [];
 
   recordMetrics(metrics: DashboardMetrics): void {
     this.metricsHistory.push(metrics);
@@ -49,7 +53,9 @@ export class IntegratedDashboard {
   }
 
   getCurrentMetrics(): DashboardMetrics | null {
-    return this.metricsHistory.length > 0 ? this.metricsHistory[this.metricsHistory.length - 1] : null;
+    return this.metricsHistory.length > 0
+      ? this.metricsHistory[this.metricsHistory.length - 1]
+      : null;
   }
 
   getMetricsTrend(timeWindowMs: number = 3600000): {
@@ -73,11 +79,14 @@ export class IntegratedDashboard {
     }
 
     return {
-      avgResponseTime: relevant.reduce((sum, m) => sum + m.performance.responseTime, 0) / relevant.length,
-      avgThroughput: relevant.reduce((sum, m) => sum + m.performance.throughput, 0) / relevant.length,
+      avgResponseTime:
+        relevant.reduce((sum, m) => sum + m.performance.responseTime, 0) / relevant.length,
+      avgThroughput:
+        relevant.reduce((sum, m) => sum + m.performance.throughput, 0) / relevant.length,
       avgErrorRate: relevant.reduce((sum, m) => sum + m.performance.errorRate, 0) / relevant.length,
       avgAccuracy: relevant.reduce((sum, m) => sum + m.quality.accuracy, 0) / relevant.length,
-      avgCacheHitRate: relevant.reduce((sum, m) => sum + m.optimization.cacheHitRate, 0) / relevant.length,
+      avgCacheHitRate:
+        relevant.reduce((sum, m) => sum + m.optimization.cacheHitRate, 0) / relevant.length,
     };
   }
 
@@ -94,7 +103,9 @@ export class IntegratedDashboard {
     return 'healthy';
   }
 
-  getRecentAlerts(limit: number = 50): Array<{ timestamp: Date; severity: 'info' | 'warning' | 'critical'; message: string }> {
+  getRecentAlerts(
+    limit: number = 50
+  ): Array<{ timestamp: Date; severity: 'info' | 'warning' | 'critical'; message: string }> {
     return this.alerts.slice(-limit);
   }
 

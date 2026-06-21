@@ -20,8 +20,10 @@ export class NativeDeployProvider implements DeployCapability {
   }
 
   async deploy(artifact: any): Promise<any> {
-    console.log('[Native Deploy] 🚀 Executing Internal Publish via docker-compose (Zero-external dependencies)...');
-    
+    console.log(
+      '[Native Deploy] 🚀 Executing Internal Publish via docker-compose (Zero-external dependencies)...'
+    );
+
     // Create a generic docker-compose.yml if we are given artifact details
     const composeContent = `
 version: '3.8'
@@ -40,13 +42,15 @@ services:
 
     try {
       await execAsync('docker-compose up -d', { cwd: deployDir });
-      console.log(`[Native Deploy] Successfully launched artifact locally: ${artifact.name || 'service'}`);
-      return { 
-        status: 'success', 
+      console.log(
+        `[Native Deploy] Successfully launched artifact locally: ${artifact.name || 'service'}`
+      );
+      return {
+        status: 'success',
         provider: 'native',
         url: `http://localhost:${artifact.port || 3000}`,
         versionId: `v-${Date.now()}`,
-        message: 'Self-hosted via Native Deploy Provider'
+        message: 'Self-hosted via Native Deploy Provider',
       };
     } catch (err: any) {
       console.error(`[Native Deploy] Deployment failed: ${err.message}`);

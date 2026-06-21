@@ -21,9 +21,9 @@ identity:
       scope: "\u5E95\u5C64\u5E73\u53F0\u7D44\u4EF6\uFF0C\u70BA\u4E0A\u5C64\u696D\u52D9\
         \u5E73\u53F0\u63D0\u4F9B\u652F\u6490"
       examples:
-      - mycodexvantaos-auth
-      - mycodexvantaos-policy
-      - mycodexvantaos-quantum-controller
+        - mycodexvantaos-auth
+        - mycodexvantaos-policy
+        - mycodexvantaos-quantum-controller
     softwareos:
       role: "\u696D\u52D9\u5E73\u53F0\u547D\u540D\u7A7A\u9593"
       scope: "\u4E0A\u5C64\u696D\u52D9\u61C9\u7528\uFF0C\u4F9D\u8CF4 mycodexvantaos\
@@ -31,12 +31,12 @@ identity:
       note: "\u4FDD\u7559\u70BA\u696D\u52D9\u5E73\u53F0\u7368\u7ACB\u5206\u5C64\uFF0C\
         \u4E0D\u5F97\u8207 mycodexvantaos \u6DF7\u7528"
   forbidden_legacy_prefixes:
-  - mycodexvanta-os
-  - codexvanta-os
-  - codexvanta
-  - KUBO
-  - kubo
-  - codevantaos
+    - mycodexvanta-os
+    - codexvanta-os
+    - codexvanta
+    - KUBO
+    - kubo
+    - codevantaos
   forbidden_legacy_regex: ^(mycodexvanta-os|codexvanta|codexvanta-os|[Kk][Uu][Bb][Oo]|codevantaos)
   migration_script: scripts/rename-mycodexvantaos.sh
   scan_script: scripts/check-legacy-prefix.sh
@@ -56,43 +56,43 @@ naming_closure_model:
     atomic_category_count: 32
     atomic_categories:
       infrastructure:
-      - platform
-      - service
-      - api
-      - component
-      - port
-      - dns
+        - platform
+        - service
+        - api
+        - component
+        - port
+        - dns
       development:
-      - module
-      - directory
-      - file
-      - dependency
-      - branch
-      - tag
+        - module
+        - directory
+        - file
+        - dependency
+        - branch
+        - tag
       organization:
-      - team
-      - org
-      - enterprise
+        - team
+        - org
+        - enterprise
       semantic_governance:
-      - semantic-anchor
-      - governance-rule
-      - event-stream
-      - archive-evidence
-      - spec-doc
-      - path
-      - mapping
-      - reference
-      - metadata
-      - annotation
+        - semantic-anchor
+        - governance-rule
+        - event-stream
+        - archive-evidence
+        - spec-doc
+        - path
+        - mapping
+        - reference
+        - metadata
+        - annotation
       technical_closure:
-      - error
-      - state
-      - transition
-      - policy
-      - metric
-      - contract
+        - error
+        - state
+        - transition
+        - policy
+        - metric
+        - contract
       meta:
-      - meta-naming
+        - meta-naming
   L1_normative:
     layer_id: L1
     label: "\u898F\u7BC4\u547D\u540D\u5C64"
@@ -114,9 +114,9 @@ naming_closure_model:
     multisig_method: hardware_security_module
     source_doc: governance/naming-closure/L2-meta/meta_naming_spec_v1.yaml
     defines:
-    - "\u898F\u7BC4\u6587\u4EF6\u547D\u540D\u898F\u5247"
-    - "\u898F\u7BC4\u7248\u672C\u7B56\u7565\uFF08\u5F37\u5236 SemVer 2.0.0\uFF09"
-    - "L2 \u81EA\u8EAB\u8B8A\u66F4\u7684\u6B0A\u9650\u9589\u74B0"
+      - "\u898F\u7BC4\u6587\u4EF6\u547D\u540D\u898F\u5247"
+      - "\u898F\u7BC4\u7248\u672C\u7B56\u7565\uFF08\u5F37\u5236 SemVer 2.0.0\uFF09"
+      - "L2 \u81EA\u8EAB\u8B8A\u66F4\u7684\u6B0A\u9650\u9589\u74B0"
   closure_prover:
     class: NamingClosureProver
     source_file: ci/utils/naming-closure-prover.ts
@@ -433,23 +433,23 @@ canonical_identifiers:
     ci_rule_file: ci/rules/service-id.rule.ts
     enforcement: hard
     constraints:
-    - "\u5FC5\u9808\u4EE5 mycodexvantaos- \u70BA\u524D\u7DB4"
-    - "domain + capability \u81F3\u5C11\u5169\u6BB5"
-    - "\u4E0D\u542B\u7248\u672C\u865F"
-    - "\u4E0D\u542B\u74B0\u5883\u6A19\u8A18"
+      - "\u5FC5\u9808\u4EE5 mycodexvantaos- \u70BA\u524D\u7DB4"
+      - "domain + capability \u81F3\u5C11\u5169\u6BB5"
+      - "\u4E0D\u542B\u7248\u672C\u865F"
+      - "\u4E0D\u542B\u74B0\u5883\u6A19\u8A18"
     valid_examples:
-    - mycodexvantaos-ai-embedding
-    - mycodexvantaos-core-auth
-    - mycodexvantaos-quantum-controller
+      - mycodexvantaos-ai-embedding
+      - mycodexvantaos-core-auth
+      - mycodexvantaos-quantum-controller
     invalid_examples:
-    - value: mycodexvantaos-ai
-      reason: "\u50C5\u4E00\u6BB5 domain"
-    - value: mycodexvantaos-ai-embedding-v2
-      reason: "\u542B\u7248\u672C\u865F"
-    - value: mycodexvantaos-ai-embedding-prod
-      reason: "\u542B\u74B0\u5883\u6A19\u8A18"
-    - value: mycodexvantaos_ai_embedding
-      reason: "\u5E95\u7DDA\u4E0D\u5141\u8A31"
+      - value: mycodexvantaos-ai
+        reason: "\u50C5\u4E00\u6BB5 domain"
+      - value: mycodexvantaos-ai-embedding-v2
+        reason: "\u542B\u7248\u672C\u865F"
+      - value: mycodexvantaos-ai-embedding-prod
+        reason: "\u542B\u74B0\u5883\u6A19\u8A18"
+      - value: mycodexvantaos_ai_embedding
+        reason: "\u5E95\u7DDA\u4E0D\u5141\u8A31"
   package_short_id:
     format: <domain>-<capability>[-<sub_capability>]
     derivation: service_id.removePrefix('mycodexvantaos-')
@@ -464,33 +464,34 @@ canonical_identifiers:
     source_of_truth: governance/capability-set.yaml
     ci_rule_file: ci/rules/capability-id.rule.ts
     enforcement: hard
-    regex: '^(database|storage|auth|queue|state-store|secrets|repo|deploy| validation|security|observability|notification|scheduler|vector-store|
+    regex:
+      '^(database|storage|auth|queue|state-store|secrets|repo|deploy| validation|security|observability|notification|scheduler|vector-store|
       embedding|llm|graph|cache|search)$
 
       '
     values:
-    - database
-    - storage
-    - auth
-    - queue
-    - state-store
-    - secrets
-    - repo
-    - deploy
-    - validation
-    - security
-    - observability
-    - notification
-    - scheduler
-    - vector-store
-    - embedding
-    - llm
-    - graph
-    - cache
-    - search
-    - ai-ethics
-    - blockchain
-    - event-stream
+      - database
+      - storage
+      - auth
+      - queue
+      - state-store
+      - secrets
+      - repo
+      - deploy
+      - validation
+      - security
+      - observability
+      - notification
+      - scheduler
+      - vector-store
+      - embedding
+      - llm
+      - graph
+      - cache
+      - search
+      - ai-ethics
+      - blockchain
+      - event-stream
 protocol_specific_identifiers:
   package_name:
     format: '@mycodexvantaos/<package_short_id>'
@@ -504,35 +505,36 @@ protocol_specific_identifiers:
     ci_rule_file: ci/rules/env-var.rule.ts
     enforcement: hard
     valid_examples:
-    - MYCODEXVANTAOS_DATABASE_URL
-    - MYCODEXVANTAOS_AUTH_JWT_SECRET
-    - MYCODEXVANTAOS_QUANTUM_MODE
+      - MYCODEXVANTAOS_DATABASE_URL
+      - MYCODEXVANTAOS_AUTH_JWT_SECRET
+      - MYCODEXVANTAOS_QUANTUM_MODE
     invalid_examples:
-    - value: DATABASE_URL
-      reason: "\u7F3A\u5C11 MYCODEXVANTAOS_ \u524D\u7DB4"
-    - value: ORCH_DATABASE_URL
-      reason: "\u820A\u524D\u7DB4\u7981\u7528"
-    - value: KUBO_MODE
-      reason: "\u907A\u7559\u524D\u7DB4\u7981\u7528"
-    - value: MYCODEXVANTAOS_MODE
-      note: "MYCODEXVANTAOS_MODE \u70BA\u5408\u6CD5\u66FF\u4EE3 KUBO_MODE"
+      - value: DATABASE_URL
+        reason: "\u7F3A\u5C11 MYCODEXVANTAOS_ \u524D\u7DB4"
+      - value: ORCH_DATABASE_URL
+        reason: "\u820A\u524D\u7DB4\u7981\u7528"
+      - value: KUBO_MODE
+        reason: "\u907A\u7559\u524D\u7DB4\u7981\u7528"
+      - value: MYCODEXVANTAOS_MODE
+        note: "MYCODEXVANTAOS_MODE \u70BA\u5408\u6CD5\u66FF\u4EE3 KUBO_MODE"
   urn:
     format: urn:mycodexvantaos:<type>:<subtype>:<identifier>
     regex: ^urn:mycodexvantaos:[a-z-]+:[a-z-]+:[a-z0-9-]+$
     ci_rule_file: ci/rules/urn.rule.ts
     enforcement: hard
     examples:
-    - urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-embedding
-    - urn:mycodexvantaos:capability:vector-store:pgvector
+      - urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-embedding
+      - urn:mycodexvantaos:capability:vector-store:pgvector
   internal_uri:
     format: mycodexvantaos://<namespace>/<type>/<id>
     examples:
-    - mycodexvantaos://platform/service/mycodexvantaos-core-kernel
+      - mycodexvantaos://platform/service/mycodexvantaos-core-kernel
 provider_identifiers:
   provider_instance:
     format: <capability>-<provider>
     order: "capability FIRST, provider SECOND \u2014 never inverted"
-    regex: '^(database|storage|auth|queue|state-store|secrets|repo|deploy| validation|security|observability|notification|scheduler|vector-store|
+    regex:
+      '^(database|storage|auth|queue|state-store|secrets|repo|deploy| validation|security|observability|notification|scheduler|vector-store|
       embedding|llm|graph|cache|search)-[a-z0-9-]+$
 
       '
@@ -541,14 +543,14 @@ provider_identifiers:
     source_of_truth: governance/provider-registry.yaml
     directory_pattern: providers/<capability>/<capability>-<provider>/provider-manifest.yaml
     valid_examples:
-    - vector-store-pgvector
-    - database-postgres
-    - llm-openai
+      - vector-store-pgvector
+      - database-postgres
+      - llm-openai
     invalid_examples:
-    - value: postgres-database
-      reason: "\u9806\u5E8F\u5012\u7F6E"
-    - value: openai-llm
-      reason: "\u9806\u5E8F\u5012\u7F6E"
+      - value: postgres-database
+        reason: "\u9806\u5E8F\u5012\u7F6E"
+      - value: openai-llm
+        reason: "\u9806\u5E8F\u5012\u7F6E"
 composite_identifiers:
   separator: --
   rule: "\u96D9\u9023\u5B57\u865F\u50C5\u7528\u65BC composite\uFF1B\u4E0D\u5F97\u51FA\

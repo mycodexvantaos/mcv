@@ -20,7 +20,7 @@ updates:
     groups:
       github-actions:
         patterns:
-          - "*"
+          - '*'
         update-types:
           - minor
           - patch
@@ -42,8 +42,8 @@ updates:
       prefix-development: chore(deps-dev)
     ignore:
       # ESM-only — blocked by http-proxy-agent@5.x CJS (see Issue #99)
-      - dependency-name: "@tootallnate/once"
-        update-types: ["version-update:semver-major"]
+      - dependency-name: '@tootallnate/once'
+        update-types: ['version-update:semver-major']
     groups:
       production:
         dependency-type: production
@@ -97,7 +97,7 @@ updates:
     groups:
       docker:
         patterns:
-          - "*"
+          - '*'
         update-types:
           - minor
           - patch

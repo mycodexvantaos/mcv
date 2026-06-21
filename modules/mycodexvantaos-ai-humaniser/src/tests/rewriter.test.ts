@@ -12,7 +12,8 @@ describe('humaniseNative', () => {
 
   beforeAll(async () => {
     // Use AI-typical text so there are sentences to rewrite
-    const text = 'Furthermore, it is important to note that the implementation of this strategy facilitates optimal outcomes. Consequently, stakeholders should leverage these methodologies to maximize efficiency.';
+    const text =
+      'Furthermore, it is important to note that the implementation of this strategy facilitates optimal outcomes. Consequently, stakeholders should leverage these methodologies to maximize efficiency.';
     detectionResult = await detectNative(text);
   });
 
@@ -55,9 +56,7 @@ describe('humaniseNative', () => {
     const result = await humaniseNative(request);
     expect(result.humanisedText).toBeDefined();
     // Conversational rewrite should replace "Furthermore" with "Plus"
-    const rewriteWithChange = result.sentenceRewrites.find(
-      (r) => r.changes.length > 0
-    );
+    const rewriteWithChange = result.sentenceRewrites.find((r) => r.changes.length > 0);
     if (rewriteWithChange) {
       expect(rewriteWithChange.changes.some((c) => c.includes('formal'))).toBe(true);
     }

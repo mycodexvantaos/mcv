@@ -21,7 +21,7 @@ export const integrationConfig = {
       alertManagement: true,
     },
   },
-  
+
   integrations: {
     semanticCore: {
       enabled: true,
@@ -40,7 +40,7 @@ export const integrationConfig = {
       optimization: true,
     },
   },
-  
+
   monitoring: {
     prometheus: {
       enabled: true,
@@ -51,15 +51,9 @@ export const integrationConfig = {
       severityLevels: ['info', 'warning', 'critical'],
     },
   },
-  
+
   database: {
     type: 'mysql',
-    tables: [
-      'decisions',
-      'feedback',
-      'metrics',
-      'suggestions',
-      'optimization_history',
-    ],
+    tables: ['decisions', 'feedback', 'metrics', 'suggestions', 'optimization_history'],
   },
 };
