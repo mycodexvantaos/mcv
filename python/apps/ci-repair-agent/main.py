@@ -250,9 +250,7 @@ def _get_client() -> GitHubActionsClient:
             message="GITHUB_TOKEN not configured. Set the GITHUB_TOKEN environment variable.",
             status_code=401,
         )
-    return GitHubActionsClient(
-        token=settings.github_token, repository=settings.repository
-    )
+    return GitHubActionsClient(token=settings.github_token, repository=settings.repository)
 
 
 # ---------------------------------------------------------------------------
@@ -288,9 +286,7 @@ async def lifespan(app: FastAPI):  # noqa: ARG001
             OSError,
             asyncio.TimeoutError,
         ):
-            logger.exception(
-                "Failed to connect to database — running without persistence"
-            )
+            logger.exception("Failed to connect to database — running without persistence")
             _db_client = None
         except Exception:
             logger.exception("Unexpected error while connecting to database")
@@ -448,9 +444,7 @@ async def list_runs(
         )
         for run in runs
     ]
-    return _success(
-        request, RunListData(runs=run_data, count=len(run_data)).model_dump()
-    )
+    return _success(request, RunListData(runs=run_data, count=len(run_data)).model_dump())
 
 
 @app.get("/runs/{run_id}/analyze", summary="Analyze a failed workflow run")
@@ -576,9 +570,7 @@ async def trigger_repair(
                 body=repair_plan["pr_body"],
             )
             pr_url = pr["html_url"]
-            message = (
-                f"Repair branch `{new_branch_name}` created and PR opened: {pr_url}"
-            )
+            message = f"Repair branch `{new_branch_name}` created and PR opened: {pr_url}"
 
     repair_data = RepairData(
         run_id=run_id,
@@ -614,9 +606,7 @@ async def get_history(
             status_code=500,
         )
     analyses = await db.get_recent_analyses(limit=limit)
-    return _success(
-        request, HistoryData(analyses=analyses, count=len(analyses)).model_dump()
-    )
+    return _success(request, HistoryData(analyses=analyses, count=len(analyses)).model_dump())
 
 
 @app.get("/stats/categories", summary="Get error category statistics")
@@ -682,9 +672,7 @@ async def _cli_analyze(args: argparse.Namespace) -> None:
         if analysis["affected_files"]:
             print(f"    Affected Files: {', '.join(analysis['affected_files'])}")
         if analysis["affected_dependencies"]:
-            print(
-                f"    Affected Dependencies: {', '.join(analysis['affected_dependencies'])}"
-            )
+            print(f"    Affected Dependencies: {', '.join(analysis['affected_dependencies'])}")
         print(f"    Confidence: {analysis['confidence']:.2f}")
         print("\n")
 
@@ -711,21 +699,13 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="CI Repair Agent CLI")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    analyze_parser = subparsers.add_parser(
-        "analyze", help="Analyze a failed workflow run"
-    )
-    analyze_parser.add_argument(
-        "run_id", type=int, help="ID of the workflow run to analyze"
-    )
+    analyze_parser = subparsers.add_parser("analyze", help="Analyze a failed workflow run")
+    analyze_parser.add_argument("run_id", type=int, help="ID of the workflow run to analyze")
     analyze_parser.set_defaults(func=_cli_analyze)
 
     serve_parser = subparsers.add_parser("serve", help="Serve the FastAPI application")
-    serve_parser.add_argument(
-        "--host", type=str, default=settings.host, help="Host address"
-    )
-    serve_parser.add_argument(
-        "--port", type=int, default=settings.port, help="Port number"
-    )
+    serve_parser.add_argument("--host", type=str, default=settings.host, help="Host address")
+    serve_parser.add_argument("--port", type=int, default=settings.port, help="Port number")
     serve_parser.set_defaults(func=_cli_serve)
 
     args = parser.parse_args()

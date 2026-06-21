@@ -188,9 +188,7 @@ async def lifespan(app: FastAPI):  # noqa: ARG001
         await admin.connect()
         logger.info("Kafka admin client connected")
     except Exception:
-        logger.warning(
-            "Kafka admin client connection failed — topic management unavailable"
-        )
+        logger.warning("Kafka admin client connection failed — topic management unavailable")
 
     yield
 
@@ -345,9 +343,7 @@ async def consume_messages(body: dict[str, Any]) -> dict[str, Any]:
 
     try:
         await consumer.start()
-        messages = await consumer.consume(
-            max_records=max_records, timeout_ms=timeout_ms
-        )
+        messages = await consumer.consume(max_records=max_records, timeout_ms=timeout_ms)
         await consumer.commit()
         return {
             "messages": [m.model_dump(mode="json") for m in messages],
@@ -421,9 +417,7 @@ async def start_processor(name: str) -> ProcessorActionResponse:
             state=processor.state.value,
         )
     except Exception:
-        raise HTTPException(
-            status_code=500, detail=f"Failed to start processor '{name}'"
-        )
+        raise HTTPException(status_code=500, detail=f"Failed to start processor '{name}'")
 
 
 @app.post("/api/processors/{name}/stop", response_model=ProcessorActionResponse)
@@ -495,9 +489,7 @@ def _run_produce(args: argparse.Namespace) -> None:
                 key=args.key,
             )
             if result:
-                print(
-                    f"Produced to {args.topic} partition={result[0]} offset={result[1]}"
-                )
+                print(f"Produced to {args.topic} partition={result[0]} offset={result[1]}")
             else:
                 print("Failed to produce message", file=sys.stderr)
                 sys.exit(1)
@@ -553,14 +545,10 @@ def _run_admin(args: argparse.Namespace) -> None:
                     num_partitions=args.partitions,
                 )
                 success = await admin.create_topic(config)
-                print(
-                    f"Topic '{args.topic_name}': {'created' if success else 'failed'}"
-                )
+                print(f"Topic '{args.topic_name}': {'created' if success else 'failed'}")
             elif args.admin_command == "delete":
                 success = await admin.delete_topic(args.topic_name)
-                print(
-                    f"Topic '{args.topic_name}': {'deleted' if success else 'failed'}"
-                )
+                print(f"Topic '{args.topic_name}': {'deleted' if success else 'failed'}")
             elif args.admin_command == "describe":
                 result = await admin.describe_topic(args.topic_name)
                 if result:
@@ -599,13 +587,9 @@ def cli() -> None:
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
     # produce subcommand
-    produce_parser = subparsers.add_parser(
-        "produce", help="Produce a message to a Kafka topic"
-    )
+    produce_parser = subparsers.add_parser("produce", help="Produce a message to a Kafka topic")
     produce_parser.add_argument("--topic", required=True, help="Target topic")
-    produce_parser.add_argument(
-        "--value", required=True, help="Message value (JSON or string)"
-    )
+    produce_parser.add_argument("--value", required=True, help="Message value (JSON or string)")
     produce_parser.add_argument("--key", default=None, help="Message key")
     produce_parser.add_argument(
         "--bootstrap-servers",
@@ -614,16 +598,10 @@ def cli() -> None:
     )
 
     # consume subcommand
-    consume_parser = subparsers.add_parser(
-        "consume", help="Consume messages from a Kafka topic"
-    )
+    consume_parser = subparsers.add_parser("consume", help="Consume messages from a Kafka topic")
     consume_parser.add_argument("--topic", required=True, help="Source topic")
-    consume_parser.add_argument(
-        "--group-id", default="cli-consumer", help="Consumer group ID"
-    )
-    consume_parser.add_argument(
-        "--max-records", type=int, default=10, help="Max records to fetch"
-    )
+    consume_parser.add_argument("--group-id", default="cli-consumer", help="Consumer group ID")
+    consume_parser.add_argument("--max-records", type=int, default=10, help="Max records to fetch")
     consume_parser.add_argument(
         "--timeout-ms", type=int, default=5000, help="Consume timeout in ms"
     )
@@ -635,15 +613,9 @@ def cli() -> None:
 
     # admin subcommand
     admin_parser = subparsers.add_parser("admin", help="Kafka admin operations")
-    admin_parser.add_argument(
-        "admin_command", choices=["list", "create", "delete", "describe"]
-    )
-    admin_parser.add_argument(
-        "--topic-name", help="Topic name for create/delete/describe"
-    )
-    admin_parser.add_argument(
-        "--partitions", type=int, default=3, help="Number of partitions"
-    )
+    admin_parser.add_argument("admin_command", choices=["list", "create", "delete", "describe"])
+    admin_parser.add_argument("--topic-name", help="Topic name for create/delete/describe")
+    admin_parser.add_argument("--partitions", type=int, default=3, help="Number of partitions")
     admin_parser.add_argument(
         "--bootstrap-servers",
         default="localhost:9092",

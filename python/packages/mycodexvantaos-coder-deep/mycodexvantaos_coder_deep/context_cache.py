@@ -88,9 +88,7 @@ class ContextCache:
     persistence is optional.
     """
 
-    def __init__(
-        self, max_entries: int = 1000, max_size_bytes: int = 50 * 1024 * 1024
-    ) -> None:
+    def __init__(self, max_entries: int = 1000, max_size_bytes: int = 50 * 1024 * 1024) -> None:
         self._max_entries = max_entries
         self._max_size_bytes = max_size_bytes
         self._entries: OrderedDict[str, ContextEntry] = OrderedDict()
@@ -128,9 +126,7 @@ class ContextCache:
         """Remove expired entries. Returns count of purged entries."""
         now = time.time()
         expired_keys = [
-            k
-            for k, v in self._entries.items()
-            if v.expires_at is not None and v.expires_at <= now
+            k for k, v in self._entries.items() if v.expires_at is not None and v.expires_at <= now
         ]
         for k in expired_keys:
             entry = self._entries.pop(k)
@@ -164,9 +160,7 @@ class ContextCache:
         self._current_size += entry.size_bytes
         self._entries.move_to_end(entry.entry_id)
 
-        logger.debug(
-            "ContextCache PUT: %s (%d bytes)", entry.entry_id, entry.size_bytes
-        )
+        logger.debug("ContextCache PUT: %s (%d bytes)", entry.entry_id, entry.size_bytes)
         return entry
 
     async def get(self, entry_id: str) -> ContextEntry | None:

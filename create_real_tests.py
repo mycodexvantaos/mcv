@@ -46,7 +46,7 @@ def create_package_test(package_name, exports):
  * Tests for {package_name}
  */
 
-import {{" {", ".join(exports['classes'] + exports['interfaces'])} }} from '../src';
+import {{" {", ".join(exports["classes"] + exports["interfaces"])} }} from '../src';
 
 describe('{package_name}', () => {{
   let instance: any;
@@ -136,11 +136,11 @@ def update_all_tests():
 
 def main():
     print("Creating real tests for all packages...")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
 
     updated = update_all_tests()
 
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
     print(f"✅ Updated {updated} test files")
     print("\nNext steps:")
     print("1. Run tests to verify they work")

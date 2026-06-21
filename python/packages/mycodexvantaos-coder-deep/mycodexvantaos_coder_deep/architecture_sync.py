@@ -234,11 +234,7 @@ class ArchitectureSync:
                     last_modified = 0.0
 
                 checksum = ""
-                if (
-                    include_checksums
-                    and size_bytes > 0
-                    and size_bytes < 10 * 1024 * 1024
-                ):
+                if include_checksums and size_bytes > 0 and size_bytes < 10 * 1024 * 1024:
                     checksum = self._compute_file_checksum(file_path)
 
                 file_entry = FileEntry(
@@ -285,14 +281,10 @@ class ArchitectureSync:
 
         # Compute snapshot checksum
         all_paths = sorted(f.path for f in files)
-        snapshot_checksum = hashlib.sha256("\n".join(all_paths).encode()).hexdigest()[
-            :16
-        ]
+        snapshot_checksum = hashlib.sha256("\n".join(all_paths).encode()).hexdigest()[:16]
 
         snapshot = ArchitectureSnapshot(
-            snapshot_id=hashlib.sha256(
-                f"{time.time()}:{len(files)}".encode()
-            ).hexdigest()[:16],
+            snapshot_id=hashlib.sha256(f"{time.time()}:{len(files)}".encode()).hexdigest()[:16],
             root_path=self._root_path,
             total_files=len(files),
             total_directories=len(directories),
@@ -313,9 +305,7 @@ class ArchitectureSync:
         )
         return snapshot
 
-    async def diff(
-        self, from_id: str | None = None, to_id: str | None = None
-    ) -> ArchitectureDiff:
+    async def diff(self, from_id: str | None = None, to_id: str | None = None) -> ArchitectureDiff:
         """Compute the diff between two architecture snapshots.
 
         If from_id is None, uses the second-to-last snapshot.
@@ -363,9 +353,7 @@ class ArchitectureSync:
         # Module changes
         from_modules = set(from_snapshot.module_map.keys())
         to_modules = set(to_snapshot.module_map.keys())
-        module_changes = sorted(
-            (from_modules | to_modules) - (from_modules & to_modules)
-        )
+        module_changes = sorted((from_modules | to_modules) - (from_modules & to_modules))
 
         return ArchitectureDiff(
             from_snapshot_id=from_snapshot.snapshot_id,

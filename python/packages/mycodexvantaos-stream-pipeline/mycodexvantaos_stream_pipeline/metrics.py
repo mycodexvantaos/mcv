@@ -139,6 +139,4 @@ class MetricsCollector:
         """Compute throughput for all registered processors."""
         for name, metrics in self._processors.items():
             if metrics.uptime_seconds > 0:
-                metrics.throughput_per_second = (
-                    metrics.messages_consumed / metrics.uptime_seconds
-                )
+                metrics.throughput_per_second = metrics.messages_consumed / metrics.uptime_seconds
