@@ -156,7 +156,6 @@ const parser = (() => {
                     }
                 }
                 position += 2;
-                currentChar = path.charAt(position);
                 return next(prefix); // need this to swallow any following whitespace
             }
             // test for regex
