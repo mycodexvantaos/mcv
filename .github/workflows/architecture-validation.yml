@@ -25,4 +25,8 @@ jobs:
           node-version: '22'
           cache: 'pnpm'
       - run: pnpm install --no-frozen-lockfile
-      - run: pnpm tsx ci/validate-architecture.ts
+      - name: Validate Architecture
+        run: pnpm tsx ci/validate-architecture.ts
+      - name: Validate Foundation Structure
+        run: python3 scripts/validate-foundation-structure.py --root foundation
+        continue-on-error: true
