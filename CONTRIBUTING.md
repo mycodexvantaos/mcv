@@ -217,6 +217,7 @@ pnpm test -- packages/core/shared       # Run tests for specific package
 - [ ] Governance check passes (`pnpm governance:check` passes)
 - [ ] Contract validation passes (`pnpm contracts:validate` passes)
 - [ ] No Section Sign Symbol (U+00A7) in code or documentation
+- [ ] Documentation section headings use `## Spec X：Title` or `### Spec X.Y：Title` format (never `§X`)
 - [ ] Documentation is updated for user-facing changes
 - [ ] Commit messages follow conventional commit format
 
@@ -243,6 +244,7 @@ Brief description of changes
 - [ ] `pnpm governance:check` passes
 - [ ] `pnpm contracts:validate` passes
 - [ ] No Section Sign Symbol (U+00A7) in changes
+- [ ] Section headings use `## Spec X：Title` or `### Spec X.Y：Title` format (never `§X`)
 - [ ] Documentation updated
 
 ## Architecture Compliance
@@ -299,6 +301,28 @@ governance(policy): add dream safety enforcement flag
 
 contract(schemas): add memory-model JSON schema
 ```
+
+## 📝 Documentation Format Rules
+
+### Section Heading Format
+
+All technical documentation **must** use the following Markdown-compatible section heading format:
+
+| Level | Format | Example |
+|-------|--------|---------|
+| Top-level spec | `## Spec X：Title` | `## Spec 3：Compliance Baseline` |
+| Sub-spec | `### Spec X.Y：Title` | `### Spec 4.2：Threat Vectors` |
+
+### Prohibited: Section Sign Symbol (U+00A7)
+
+The `§` symbol is **strictly prohibited** in all documentation. It is not standard Markdown and causes parsing failures on GitLab Wiki, Docsify, and some static site generators (broken TOC and anchor generation).
+
+| Prohibited | Correct |
+|------------|---------|
+| `§3 合規基準` | `## Spec 3：合規基準` |
+| `§4.2 威脅向量` | `### Spec 4.2：威脅向量` |
+
+A pre-commit hook is configured to reject any commit containing `§` (U+00A7).
 
 ## 🏛️ Governance
 
