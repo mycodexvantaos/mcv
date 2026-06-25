@@ -113,17 +113,19 @@ jobs:
           sbom: true
 
   # ====================
-  # Stage 3: Deploy to Staging (main — requires manual approval)
+  # Stage 3: Deploy (main — requires manual approval; environment from input)
   # ====================
   deploy-staging:
-    name: Deploy to Staging
+    name: Deploy to ${{ inputs.environment || 'staging' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     needs: [build, container-build]
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    env:
+      DEPLOY_ENV: ${{ inputs.environment || 'staging' }}
     environment:
-      name: staging
-      url: https://staging.mycodexvantaos.io
+      name: ${{ inputs.environment || 'staging' }}
+      url: ${{ inputs.environment == 'production' && 'https://mycodexvantaos.io' || 'https://staging.mycodexvantaos.io' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
@@ -132,14 +134,14 @@ jobs:
         id: kube-guard
         shell: bash
         env:
-          KUBE_CONFIG_VALUE: ${{ secrets.KUBE_CONFIG_STAGING }}
+          KUBE_CONFIG_VALUE: ${{ inputs.environment == 'production' && secrets.KUBE_CONFIG_PRODUCTION || secrets.KUBE_CONFIG_STAGING }}
         run: |
           if [ -n "$KUBE_CONFIG_VALUE" ]; then
             echo "has_kube_config=true" >> "$GITHUB_OUTPUT"
             echo "Kubernetes config is available."
           else
             echo "has_kube_config=false" >> "$GITHUB_OUTPUT"
-            echo "KUBE_CONFIG_STAGING is not configured — skipping K8s deployment."
+            echo "KUBE_CONFIG_${DEPLOY_ENV^^} is not configured — skipping K8s deployment."
           fi
 
       - name: Configure kubectl
@@ -150,30 +152,30 @@ jobs:
         if: steps.kube-guard.outputs.has_kube_config == 'true'
         shell: bash
         env:
-          KUBE_CONFIG_VALUE: ${{ secrets.KUBE_CONFIG_STAGING }}
+          KUBE_CONFIG_VALUE: ${{ inputs.environment == 'production' && secrets.KUBE_CONFIG_PRODUCTION || secrets.KUBE_CONFIG_STAGING }}
         run: |
           mkdir -p "$HOME/.kube"
           echo "$KUBE_CONFIG_VALUE" | base64 -d > "$HOME/.kube/config"
           chmod 600 "$HOME/.kube/config"
 
-      - name: Deploy to staging
+      - name: Deploy to ${{ inputs.environment || 'staging' }}
         if: steps.kube-guard.outputs.has_kube_config == 'true'
         env:
           IMAGE_TAG: ${{ needs.container-build.outputs.image_tag }}
         run: |
           kubectl set image deployment/mycodexvantaos \
             mycodexvantaos=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:"$(echo "$IMAGE_TAG" | head -1)" \
-            -n staging
+            -n "$DEPLOY_ENV"
 
       - name: Wait for rollout
         if: steps.kube-guard.outputs.has_kube_config == 'true'
         run: |
-          kubectl rollout status deployment/mycodexvantaos -n staging --timeout=300s
+          kubectl rollout status deployment/mycodexvantaos -n "$DEPLOY_ENV" --timeout=300s
 
       - name: Run smoke tests
         if: steps.kube-guard.outputs.has_kube_config == 'true'
         run: |
-          kubectl exec -n staging deployment/mycodexvantaos -- curl -f http://localhost:8080/health || exit 1
+          kubectl exec -n "$DEPLOY_ENV" deployment/mycodexvantaos -- curl -f http://localhost:8080/health || exit 1
 
       - name: Mark K8s deployment skipped
         if: steps.kube-guard.outputs.has_kube_config != 'true'
@@ -181,7 +183,7 @@ jobs:
           {
             echo "### K8s Deployment Skipped"
             echo ""
-            echo "- **Reason:** \`KUBE_CONFIG_STAGING\` is not configured"
+            echo "- **Reason:** \`KUBE_CONFIG_${DEPLOY_ENV^^}\` is not configured"
             echo "- **Classification:** infrastructure-not-configured"
             echo ""
             echo "Docker image build and registry push completed successfully."
@@ -191,14 +193,16 @@ jobs:
   # Stage 4: Deploy to Staging (release/* — automatic)
   # ====================
   deploy-release-staging:
-    name: Deploy Release to Staging
+    name: Deploy Release to ${{ inputs.environment || 'staging' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     needs: [build, container-build]
     if: startsWith(github.ref, 'refs/heads/release/')
+    env:
+      DEPLOY_ENV: ${{ inputs.environment || 'staging' }}
     environment:
-      name: staging
-      url: https://staging.mycodexvantaos.io
+      name: ${{ inputs.environment || 'staging' }}
+      url: ${{ inputs.environment == 'production' && 'https://mycodexvantaos.io' || 'https://staging.mycodexvantaos.io' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
@@ -207,13 +211,13 @@ jobs:
         id: kube-guard
         shell: bash
         env:
-          KUBE_CONFIG_VALUE: ${{ secrets.KUBE_CONFIG_STAGING }}
+          KUBE_CONFIG_VALUE: ${{ inputs.environment == 'production' && secrets.KUBE_CONFIG_PRODUCTION || secrets.KUBE_CONFIG_STAGING }}
         run: |
           if [ -n "$KUBE_CONFIG_VALUE" ]; then
             echo "has_kube_config=true" >> "$GITHUB_OUTPUT"
           else
             echo "has_kube_config=false" >> "$GITHUB_OUTPUT"
-            echo "KUBE_CONFIG_STAGING is not configured — skipping K8s deployment."
+            echo "KUBE_CONFIG_${DEPLOY_ENV^^} is not configured — skipping K8s deployment."
           fi
 
       - name: Configure kubectl
@@ -224,30 +228,30 @@ jobs:
         if: steps.kube-guard.outputs.has_kube_config == 'true'
         shell: bash
         env:
-          KUBE_CONFIG_VALUE: ${{ secrets.KUBE_CONFIG_STAGING }}
+          KUBE_CONFIG_VALUE: ${{ inputs.environment == 'production' && secrets.KUBE_CONFIG_PRODUCTION || secrets.KUBE_CONFIG_STAGING }}
         run: |
           mkdir -p "$HOME/.kube"
           echo "$KUBE_CONFIG_VALUE" | base64 -d > "$HOME/.kube/config"
           chmod 600 "$HOME/.kube/config"
 
-      - name: Deploy to staging
+      - name: Deploy to ${{ inputs.environment || 'staging' }}
         if: steps.kube-guard.outputs.has_kube_config == 'true'
         env:
           IMAGE_TAG: ${{ needs.container-build.outputs.image_tag }}
         run: |
           kubectl set image deployment/mycodexvantaos \
             mycodexvantaos=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:"$(echo "$IMAGE_TAG" | head -1)" \
-            -n staging
+            -n "$DEPLOY_ENV"
 
       - name: Wait for rollout
         if: steps.kube-guard.outputs.has_kube_config == 'true'
         run: |
-          kubectl rollout status deployment/mycodexvantaos -n staging --timeout=300s
+          kubectl rollout status deployment/mycodexvantaos -n "$DEPLOY_ENV" --timeout=300s
 
       - name: Run smoke tests
         if: steps.kube-guard.outputs.has_kube_config == 'true'
         run: |
-          kubectl exec -n staging deployment/mycodexvantaos -- curl -f http://localhost:8080/health || exit 1
+          kubectl exec -n "$DEPLOY_ENV" deployment/mycodexvantaos -- curl -f http://localhost:8080/health || exit 1
 
       - name: Mark K8s deployment skipped
         if: steps.kube-guard.outputs.has_kube_config != 'true'
@@ -255,7 +259,7 @@ jobs:
           {
             echo "### K8s Deployment Skipped"
             echo ""
-            echo "- **Reason:** \`KUBE_CONFIG_STAGING\` is not configured"
+            echo "- **Reason:** \`KUBE_CONFIG_${DEPLOY_ENV^^}\` is not configured"
             echo "- **Classification:** infrastructure-not-configured"
             echo ""
             echo "Docker image build and registry push completed successfully."
