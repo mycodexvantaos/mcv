@@ -1,0 +1,84 @@
+apiVersion: mycodexvantaos.io/v1
+kind: DependencyGraphBaseline
+metadata:
+  name: dependency-graph-baseline
+  organization: mycodexvantaos
+  governanceCode: mycodexvantaos-00000
+edges:
+  # Product-plane → Control-plane (allowed: product MAY depend on control)
+  - from: softwareos-qa-service
+    to: mycodexvantaos-auth-service
+    type: contract
+    mediator: true
+
+  - from: softwareos-qa-service
+    to: mycodexvantaos-memory-hub
+    type: soft
+    mediator: false
+
+  - from: softwareos-iaops-api
+    to: mycodexvantaos-policy-engine
+    type: contract
+    mediator: true
+
+  - from: softwareos-platform-web
+    to: mycodexvantaos-auth-service
+    type: contract
+    mediator: true
+
+  - from: softwareos-machinenativeops-agent
+    to: mycodexvantaos-event-bus
+    type: event
+    mediator: true
+
+  # Control-plane internal (same plane, allowed)
+  - from: mycodexvantaos-rollback-engine
+    to: mycodexvantaos-event-bus
+    type: event
+    mediator: true
+
+  - from: mycodexvantaos-compliance-scanner
+    to: mycodexvantaos-policy-engine
+    type: contract
+    mediator: true
+
+  - from: mycodexvantaos-autotask-engine
+    to: mycodexvantaos-scheduler-service
+    type: contract
+    mediator: true
+
+  - from: mycodexvantaos-prediction-predictor
+    to: mycodexvantaos-event-bus
+    type: event
+    mediator: true
+
+  - from: mycodexvantaos-alertd-service
+    to: mycodexvantaos-event-bus
+    type: event
+    mediator: true
+
+  - from: mycodexvantaos-controller-manager
+    to: mycodexvantaos-signerd-service
+    type: contract
+    mediator: true
+
+  - from: mycodexvantaos-rolloutd-controller
+    to: mycodexvantaos-signerd-service
+    type: contract
+    mediator: true
+
+  - from: mycodexvantaos-rolloutd-controller
+    to: mycodexvantaos-event-bus
+    type: event
+    mediator: true
+
+  # Automation task topology (I.8.2 — binding-mediator pattern)
+  - from: mycodexvantaos-event-bus
+    to: mycodexvantaos-rollback-engine
+    type: event
+    mediator: true
+
+  - from: mycodexvantaos-scheduler-service
+    to: mycodexvantaos-autotask-engine
+    type: event
+    mediator: true

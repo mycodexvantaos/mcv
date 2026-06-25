@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mycodexvantaos.io/schemas/namespace-governance-code",
+  "title": "Namespace Governance Code",
+  "description": "JSON Schema for MyCodexVantaOS namespace governance code records (I.3.1, I.3.2)",
+  "type": "object",
+  "required": ["apiVersion", "kind", "metadata", "spec"],
+  "properties": {
+    "apiVersion": {
+      "type": "string",
+      "const": "mycodexvantaos.io/v1"
+    },
+    "kind": {
+      "type": "string",
+      "const": "NamespaceGovernanceCode"
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["id", "organization"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^mycodexvantaos-[0-9]{5}$",
+          "description": "Canonical governance code matching I.3.2"
+        },
+        "organization": {
+          "type": "string",
+          "const": "mycodexvantaos"
+        }
+      }
+    },
+    "spec": {
+      "type": "object",
+      "required": ["code", "era", "title", "enforceLevel", "lifecycle", "validationSchema", "owner"],
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^[0-9]{5}$",
+          "description": "5-digit numeric governance code"
+        },
+        "era": {
+          "type": "string",
+          "enum": ["meta-governance", "era-one", "era-two", "era-three", "cross-era-governance"],
+          "description": "Governance era classification (I.4.1)"
+        },
+        "family": {
+          "type": "string",
+          "description": "Semantic family grouping"
+        },
+        "category": {
+          "type": "string",
+          "description": "Category within era"
+        },
+        "title": {
+          "type": "object",
+          "required": ["en"],
+          "properties": {
+            "zh-tw": {
+              "type": "string"
+            },
+            "en": {
+              "type": "string"
+            }
+          }
+        },
+        "enforceLevel": {
+          "type": "string",
+          "enum": ["mandatory", "recommended", "optional"]
+        },
+        "lifecycle": {
+          "type": "string",
+          "enum": ["proposed", "active", "deprecated", "archived", "destroyed"],
+          "description": "Lifecycle stage (I.10.1)"
+        },
+        "validationSchema": {
+          "type": "string",
+          "description": "Path to validation schema"
+        },
+        "owner": {
+          "type": "string",
+          "description": "Owning team or role"
+        }
+      }
+    }
+  }
+}
