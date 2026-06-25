@@ -1,0 +1,6 @@
+apiVersion: mycodexvantaos.io/v1
+kind: GateWorkflow
+metadata:
+  name: evidence-generation-workflow
+spec:
+  steps: []

@@ -1,0 +1,10 @@
+apiVersion: mycodexvantaos.io/v1
+kind: RootModule
+metadata:
+  name: infra
+  urn: urn:mycodexvantaos:infra:module:infra
+spec:
+  moduleType: infrastructure
+  description: Infrastructure definitions for MyCodexVantaOS
+  runtimeCodeAllowed: false
+  deploymentAllowed: true

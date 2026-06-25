@@ -1,0 +1,32 @@
+apiVersion: mycodexvantaos.io/v1
+kind: SsotRegistry
+metadata:
+  name: ssot-registry
+  description: Single source of truth registry
+
+spec:
+  ssotArtifacts:
+    - name: identity
+      artifact: governance/identity-policy.yaml
+      ssot: true
+    - name: naming
+      artifact: governance/naming-policy.schema.json
+      ssot: true
+    - name: capabilitySet
+      artifact: governance/capability-set.yaml
+      ssot: true
+    - name: providerRegistry
+      artifact: governance/provider-registry.yaml
+      ssot: true
+    - name: runtimeModePolicy
+      artifact: governance/runtime-mode-policy.yaml
+      ssot: true
+    - name: serviceTopology
+      artifact: platform/service-catalog.yaml
+      ssot: true
+    - name: namespaceGovernance
+      artifact: mycodexvantaos-namespace-governance/governance/registry/namespace-registry.yaml
+      ssot: true
+    - name: gateCatalog
+      artifact: unified-gates/gate/gate-catalog.yaml
+      ssot: true

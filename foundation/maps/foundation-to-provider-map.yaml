@@ -1,0 +1,5 @@
+apiVersion: mycodexvantaos.io/v1
+kind: FoundationMap
+metadata:
+  name: foundation-to-provider-map
+spec: {}

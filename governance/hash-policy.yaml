@@ -1,0 +1,17 @@
+apiVersion: mycodexvantaos.io/v1
+kind: HashPolicy
+metadata:
+  name: hash-policy
+
+spec:
+  runtimeAuditChain:
+    algorithm: sha256
+    purpose: compatibility-with-existing-runtime-audit-chain
+
+  longTermIntegrity:
+    algorithm: sha3-512
+    purpose: canonical-long-term-integrity-proof
+
+  fastCiComparison:
+    algorithm: blake3
+    purpose: high-speed-local-and-ci-comparison

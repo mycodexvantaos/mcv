@@ -1,0 +1,12 @@
+apiVersion: mycodexvantaos.io/v1
+kind: RuntimeConfig
+metadata:
+  name: runtime-config
+spec:
+  defaultRuntimeMode: native
+  productionForbiddenModes:
+    - auto
+  requiredEnvironmentVariables:
+    - MYCODEXVANTAOS_RUNTIME_MODE
+    - MYCODEXVANTAOS_SECRETS_PROVIDER
+    - MYCODEXVANTAOS_DEPLOYMENT_TARGET

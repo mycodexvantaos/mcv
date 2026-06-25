@@ -1,0 +1,6 @@
+apiVersion: mycodexvantaos.io/v1
+kind: FoundationSpec
+metadata:
+  name: package-map
+  foundation: business-foundation
+spec: {}
