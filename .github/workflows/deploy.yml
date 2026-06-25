@@ -1,0 +1,295 @@
+# === path: .github/workflows/deploy.yml ===
+# Controlled Deployment Pipeline for MyCodeXvantaOS
+# IM-MCV-CI-OPT: deploy with manual approval on main, auto-deploy on release/*
+# Version: 1.0.0
+
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+      - 'release/**'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write
+  packages: write
+  deployments: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  NODE_VERSION: '22'
+  PNPM_VERSION: '9'
+
+jobs:
+  # ====================
+  # Stage 1: Build
+  # ====================
+  build:
+    name: Build Artifacts
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Build packages
+        run: pnpm run build:packages || pnpm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: build-artifacts
+          path: |
+            packages/*/dist
+            .next/
+          retention-days: 1
+
+  # ====================
+  # Stage 2: Container Build & Push
+  # ====================
+  container-build:
+    name: Build Container Image
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: build
+    outputs:
+      image_tag: ${{ steps.meta.outputs.tags }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@80c7e94dd9b9319bd5eb7a0e0fe9291e23a2a2e9
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix=
+
+      - name: Build and push
+        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: true
+          sbom: true
+
+  # ====================
+  # Stage 3: Deploy (main — requires manual approval; environment from input)
+  # ====================
+  deploy-staging:
+    name: Deploy to staging
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [build, container-build]
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    env:
+      DEPLOY_ENV: staging
+    environment:
+      name: staging
+      url: https://staging.mycodexvantaos.io
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+
+      - name: Check Kubernetes config availability
+        id: kube-guard
+        shell: bash
+        env:
+          KUBE_CONFIG_VALUE: ${{ secrets.KUBE_CONFIG_STAGING }}
+        run: |
+          if [ -n "$KUBE_CONFIG_VALUE" ]; then
+            echo "has_kube_config=true" >> "$GITHUB_OUTPUT"
+            echo "Kubernetes config is available."
+          else
+            echo "has_kube_config=false" >> "$GITHUB_OUTPUT"
+            echo "KUBE_CONFIG_${DEPLOY_ENV^^} is not configured — skipping K8s deployment."
+          fi
+
+      - name: Configure kubectl
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
+        uses: azure/setup-kubectl@829323503d1be3d00ca8346e5391ca0b07a9ab0d
+
+      - name: Set kubeconfig
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
+        shell: bash
+        env:
+          KUBE_CONFIG_VALUE: ${{ secrets.KUBE_CONFIG_STAGING }}
+        run: |
+          mkdir -p "$HOME/.kube"
+          echo "$KUBE_CONFIG_VALUE" | base64 -d > "$HOME/.kube/config"
+          chmod 600 "$HOME/.kube/config"
+
+      - name: Deploy to staging
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
+        env:
+          IMAGE_TAG: ${{ needs.container-build.outputs.image_tag }}
+        run: |
+          kubectl set image deployment/mycodexvantaos \
+            mycodexvantaos=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:"$(echo "$IMAGE_TAG" | head -1)" \
+            -n "$DEPLOY_ENV"
+
+      - name: Wait for rollout
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
+        run: |
+          kubectl rollout status deployment/mycodexvantaos -n "$DEPLOY_ENV" --timeout=300s
+
+      - name: Run smoke tests
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
+        run: |
+          kubectl exec -n "$DEPLOY_ENV" deployment/mycodexvantaos -- curl -f http://localhost:8080/health || exit 1
+
+      - name: Mark K8s deployment skipped
+        if: steps.kube-guard.outputs.has_kube_config != 'true'
+        run: |
+          {
+            echo "### K8s Deployment Skipped"
+            echo ""
+            echo "- **Reason:** \`KUBE_CONFIG_${DEPLOY_ENV^^}\` is not configured"
+            echo "- **Classification:** infrastructure-not-configured"
+            echo ""
+            echo "Docker image build and registry push completed successfully."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # ====================
+  # Stage 4: Deploy to Staging (release/* — automatic)
+  # ====================
+  deploy-release-staging:
+    name: Deploy Release to staging
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [build, container-build]
+    if: startsWith(github.ref, 'refs/heads/release/')
+    env:
+      DEPLOY_ENV: staging
+    environment:
+      name: staging
+      url: https://staging.mycodexvantaos.io
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+
+      - name: Check Kubernetes config availability
+        id: kube-guard
+        shell: bash
+        env:
+          KUBE_CONFIG_VALUE: ${{ secrets.KUBE_CONFIG_STAGING }}
+        run: |
+          if [ -n "$KUBE_CONFIG_VALUE" ]; then
+            echo "has_kube_config=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_kube_config=false" >> "$GITHUB_OUTPUT"
+            echo "KUBE_CONFIG_${DEPLOY_ENV^^} is not configured — skipping K8s deployment."
+          fi
+
+      - name: Configure kubectl
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
+        uses: azure/setup-kubectl@829323503d1be3d00ca8346e5391ca0b07a9ab0d
+
+      - name: Set kubeconfig
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
+        shell: bash
+        env:
+          KUBE_CONFIG_VALUE: ${{ secrets.KUBE_CONFIG_STAGING }}
+        run: |
+          mkdir -p "$HOME/.kube"
+          echo "$KUBE_CONFIG_VALUE" | base64 -d > "$HOME/.kube/config"
+          chmod 600 "$HOME/.kube/config"
+
+      - name: Deploy to staging
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
+        env:
+          IMAGE_TAG: ${{ needs.container-build.outputs.image_tag }}
+        run: |
+          kubectl set image deployment/mycodexvantaos \
+            mycodexvantaos=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:"$(echo "$IMAGE_TAG" | head -1)" \
+            -n "$DEPLOY_ENV"
+
+      - name: Wait for rollout
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
+        run: |
+          kubectl rollout status deployment/mycodexvantaos -n "$DEPLOY_ENV" --timeout=300s
+
+      - name: Run smoke tests
+        if: steps.kube-guard.outputs.has_kube_config == 'true'
+        run: |
+          kubectl exec -n "$DEPLOY_ENV" deployment/mycodexvantaos -- curl -f http://localhost:8080/health || exit 1
+
+      - name: Mark K8s deployment skipped
+        if: steps.kube-guard.outputs.has_kube_config != 'true'
+        run: |
+          {
+            echo "### K8s Deployment Skipped"
+            echo ""
+            echo "- **Reason:** \`KUBE_CONFIG_${DEPLOY_ENV^^}\` is not configured"
+            echo "- **Classification:** infrastructure-not-configured"
+            echo ""
+            echo "Docker image build and registry push completed successfully."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # ====================
+  # Stage 5: Post-Deployment Summary
+  # ====================
+  post-deploy:
+    name: Post-Deployment Summary
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: [build, container-build, deploy-staging, deploy-release-staging]
+    if: always()
+    steps:
+      - name: Create deployment summary
+        env:
+          CONTAINER_RESULT: ${{ needs.container-build.result }}
+          STAGING_RESULT: ${{ needs.deploy-staging.result }}
+          RELEASE_STAGING_RESULT: ${{ needs.deploy-release-staging.result }}
+        run: |
+          {
+            echo "## Deploy Pipeline Summary"
+            echo ""
+            echo "| Stage | Status |"
+            echo "|-------|--------|"
+            echo "| Build | ${{ needs.build.result }} |"
+            echo "| Container Build & Push | ${CONTAINER_RESULT} |"
+            echo "| Deploy Staging (main) | ${STAGING_RESULT} |"
+            echo "| Deploy Staging (release) | ${RELEASE_STAGING_RESULT} |"
+            echo ""
+            echo "_K8s deploy results of 'skipped' indicate the corresponding kubeconfig secret is not configured (infrastructure-not-configured)._"
+          } >> "$GITHUB_STEP_SUMMARY"

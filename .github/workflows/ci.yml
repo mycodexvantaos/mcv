@@ -1,39 +1,59 @@
-name: MyCodeXvantaOS CI
+# === path: .github/workflows/ci.yml ===
+# Core Validation Pipeline for MyCodeXvantaOS
+# IM-MCV-CI-OPT: lint → test → security scan on all branches; no deployment tasks
+# Version: 1.0.0
+
+name: Core CI
 
 on:
   push:
-    branches: ['main', 'develop']
+    branches:
+      - main
+      - 'feature/**'
+      - 'fix/**'
+      - 'release/**'
+      - develop
   pull_request:
-    branches: ['main', 'develop']
+    branches:
+      - main
+      - 'release/**'
+      - develop
   workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  id-token: write
+  actions: read
+  pull-requests: write
+  checks: write
+
 env:
   NODE_VERSION: '22'
   PNPM_VERSION: '9'
 
-permissions:
-  contents: read
-
 jobs:
-  # ===========================================
-  # Code Quality Checks
-  # ===========================================
-  code-quality:
-    name: 'Code Quality'
+  # ====================
+  # Stage 1: Lint & Format
+  # ====================
+  lint:
+    name: Lint & Format
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+      - name: Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
 
-      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271
+      - name: Setup PNPM
+        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271
         with:
           version: ${{ env.PNPM_VERSION }}
 
-      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+      - name: Setup Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
@@ -41,34 +61,34 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
-      - name: Format Check
-        continue-on-error: true
-        run: pnpm run format:check || echo "format:check not yet configured"
+      - name: Run format check
+        run: pnpm run format:check
 
-      - name: Lint
-        continue-on-error: true
-        run: pnpm run lint || echo "lint not yet configured"
+      - name: Run ESLint / TypeScript check
+        run: pnpm run lint
 
-      - name: Type Check
-        run: pnpm run typecheck || echo "Typecheck completed with warnings"
-        continue-on-error: true
+      - name: TypeScript type check
+        run: pnpm run typecheck
 
-  # ===========================================
-  # Naming & Governance Validation
-  # ===========================================
-  governance-validation:
-    name: 'Governance & Architecture'
+  # ====================
+  # Stage 2: Test
+  # ====================
+  test:
+    name: Test
     runs-on: ubuntu-latest
-    needs: code-quality
     timeout-minutes: 20
+    needs: lint
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+      - name: Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
 
-      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271
+      - name: Setup PNPM
+        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271
         with:
           version: ${{ env.PNPM_VERSION }}
 
-      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+      - name: Setup Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
@@ -76,48 +96,112 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
-      - name: Validate JSON schemas
-        run: pnpm run validate:json || echo "validate:json not yet configured"
-        continue-on-error: true
+      - name: Run tests
+        run: pnpm run test
 
-      - name: Check legacy prefixes
-        run: |
-          if [ -f "./scripts/check-legacy-prefix.sh" ]; then
-            chmod +x ./scripts/check-legacy-prefix.sh
-            ./scripts/check-legacy-prefix.sh . 2>&1 || true
-          else
-            echo "No legacy prefix check script found — skipping"
-          fi
-
-  # ===========================================
-  # Build & Test
-  # ===========================================
-  build-and-test:
-    name: 'Build & Test'
+  # ====================
+  # Stage 3: Python Test
+  # ====================
+  python-test:
+    name: Python Test
     runs-on: ubuntu-latest
-    needs: code-quality
-    timeout-minutes: 30
+    timeout-minutes: 20
+    needs: lint
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/') || github.ref == 'refs/heads/develop'
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+      - name: Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
 
-      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271
+      - name: Set up Python 3.11
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
-          version: ${{ env.PNPM_VERSION }}
+          python-version: '3.11'
 
-      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+      - name: Install uv
+        run: pip install uv
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        working-directory: ./python
+        run: uv sync --extra dev
 
-      - name: Build
-        run: pnpm run build || echo "Build not yet configured"
-        continue-on-error: true
+      - name: Run Python linter
+        working-directory: ./python
+        run: |
+          uv run ruff check .
+          uv run ruff format --check .
+
+      - name: Run Python tests
+        working-directory: ./python
+        run: uv run pytest -v --cov=. --cov-report=xml
+
+  # ====================
+  # Stage 4: Security Scan
+  # ====================
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [lint, test]
+    permissions:
+      security-events: write
+      packages: read
+      actions: read
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@8aad20d150bbac5944a9f9d289da16a4b0d87c1e
+        with:
+          languages: javascript-typescript
+          build-mode: none
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@8aad20d150bbac5944a9f9d289da16a4b0d87c1e
+        with:
+          category: '/language:javascript-typescript'
+
+  # ====================
+  # Stage 5: CI Summary
+  # ====================
+  ci-summary:
+    name: CI Summary
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: [lint, test, python-test, security-scan]
+    if: always()
+    steps:
+      - name: Check overall status
         env:
-          NODE_ENV: production
+          LINT_RESULT: ${{ needs.lint.result }}
+          TEST_RESULT: ${{ needs.test.result }}
+          PYTHON_RESULT: ${{ needs.python-test.result }}
+          SECURITY_RESULT: ${{ needs.security-scan.result }}
+        run: |
+          if [ "$LINT_RESULT" = "failure" ] || \
+             [ "$TEST_RESULT" = "failure" ] || \
+             [ "$PYTHON_RESULT" = "failure" ] || \
+             [ "$SECURITY_RESULT" = "failure" ]; then
+            echo "CI Pipeline failed"
+            exit 1
+          fi
+          echo "CI Pipeline passed"
 
-      - name: Test
-        run: pnpm test || echo "Tests not yet configured"
-        continue-on-error: true
+      - name: Create summary
+        env:
+          LINT_RESULT: ${{ needs.lint.result }}
+          TEST_RESULT: ${{ needs.test.result }}
+          PYTHON_RESULT: ${{ needs.python-test.result }}
+          SECURITY_RESULT: ${{ needs.security-scan.result }}
+        run: |
+          {
+            echo "## Core CI Summary"
+            echo ""
+            echo "| Stage | Status |"
+            echo "|-------|--------|"
+            echo "| Lint & Format | ${LINT_RESULT} |"
+            echo "| Tests (Node) | ${TEST_RESULT} |"
+            echo "| Tests (Python) | ${PYTHON_RESULT} |"
+            echo "| Security Scan | ${SECURITY_RESULT} |"
+          } >> "$GITHUB_STEP_SUMMARY"
