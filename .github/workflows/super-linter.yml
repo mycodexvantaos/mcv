@@ -51,6 +51,4 @@ jobs:
 
           # Exclude generated / vendored / data directories
           FILTER_REGEX_EXCLUDE: >-
-            node_modules/.*|dist/.*|build/.*|coverage/.*|\.next/.*|
-            vendor/.*|pnpm-lock\.yaml|package-lock\.json|yarn\.lock|
-            python/\.coverage.*|project-import/.*|todo\.md|\.ai/.*
+            node_modules/.*|dist/.*|build/.*|coverage/.*|\.next/.*|vendor/.*|pnpm-lock\.yaml|package-lock\.json|yarn\.lock|python/\.coverage.*|project-import/.*|todo\.md|\.ai/.*|packages/jsonata/.*
