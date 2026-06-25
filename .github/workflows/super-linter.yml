@@ -37,8 +37,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LOG_LEVEL: NOTICE
 
-          # Only enable linters we actually need - use ONLY
-          # VALIDATE_<LANG>=true (no false values allowed in v7)
+          # Explicitly enable only required linters (VALIDATE_<LANG>=true)
+          # Do NOT set any linter to false — super-linter v7 ignores false values
           VALIDATE_GITHUB_ACTIONS: true
           VALIDATE_YAML: true
           VALIDATE_JSON: true
