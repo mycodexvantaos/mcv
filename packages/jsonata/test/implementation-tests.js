@@ -1140,14 +1140,14 @@ describe("Tests invalid object creation", () => {
         expect(expr.evaluate()).to.eventually.be.rejected.to.deep.contain({
                 code: "D1013",
             });
-    })
+    });
     it("prevents creating an object mimicking a function", () => {
         const expr = jsonata('($fn = {"_jsonata_function": true}; $fn())');
         expect(expr.evaluate()).to.eventually.be.rejected.to.deep.contain({
                 code: "D1013",
             });
-    })
-})
+    });
+});
 
 describe("Tests that use internal frame push callbacks", () => {
     describe("frame push callback bound to expression", function()  {
