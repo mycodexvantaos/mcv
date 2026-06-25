@@ -32,6 +32,7 @@
 基於 MyCodexVantaOS 分析，識別出以下 20 個核心高階技能：
 
 ### 類別 01: Governed System Boundary Design
+
 ```text
 描述: 設計跨模組門控，定義可審計的 inter-module contract
 應用場景: 大型 monorepo、微服務架構、AI agent 系統
@@ -39,6 +40,7 @@
 ```
 
 ### 類別 02: Architecture Boundary Enforcement
+
 ```text
 描述: 將架構原則轉成 CI 可執行規則，防止架構腐化
 應用場景: 任何需要長期維護的 repo
@@ -46,6 +48,7 @@
 ```
 
 ### 類別 03: AI Context Safety and Governance
+
 ```text
 描述: 建立 AI 輸入/輸出的治理管道，防止敏感資料外洩
 應用場景: 所有整合 LLM 的系統
@@ -53,6 +56,7 @@
 ```
 
 ### 類別 04: Provider-Agnostic Infrastructure Abstraction
+
 ```text
 描述: 解耦應用邏輯與雲廠商 SDK，支援多雲與測試
 應用場景: 企業級系統、需要可測試性的服務
@@ -60,6 +64,7 @@
 ```
 
 ### 類別 05: Production Resilience Engineering
+
 ```text
 描述: 建立生產級韌性工程：Circuit Breaker、Retry、Fallback
 應用場景: 任何依賴外部服務的系統
@@ -67,6 +72,7 @@
 ```
 
 ### 類別 06: Semantic Decision Pipeline Engineering
+
 ```text
 描述: 設計語意驅動的決策流程，整合 similarity scoring 與 context retrieval
 應用場景: AI 決策系統、語意搜索、RAG 系統
@@ -74,6 +80,7 @@
 ```
 
 ### 類別 07: API Contract and SDK Automation
+
 ```text
 描述: OpenAPI-first 設計，自動生成多語言 SDK
 應用場景: 平台化產品、需要多語言客戶端的服務
@@ -81,6 +88,7 @@
 ```
 
 ### 類別 08: Terminology Governance and Semantic Consistency
+
 ```text
 描述: 建立術語字典，防止命名漂移，驗證 AI 輸出用詞
 應用場景: 大型 AI 工程專案、有嚴格命名規範的平台
@@ -88,6 +96,7 @@
 ```
 
 ### 類別 09: Testability and Coupling Complexity Governance
+
 ```text
 描述: 用依賴複雜度衡量服務可測試性，將其轉成 CI gate
 應用場景: 任何需要保持低耦合的系統
@@ -95,6 +104,7 @@
 ```
 
 ### 類別 10: Cloud-Native Deployment and Observability
+
 ```text
 描述: Kubernetes/Helm 部署設計，Prometheus/Loki 可觀測性
 應用場景: 所有需要生產部署的服務
@@ -102,6 +112,7 @@
 ```
 
 ### 類別 11: CI/CD Governance Gate Engineering
+
 ```text
 描述: 設計可組合、可索引、可審計的 CI gate 體系
 應用場景: 任何需要品質把關的 repo
@@ -109,6 +120,7 @@
 ```
 
 ### 類別 12: Architecture Constitution Engineering
+
 ```text
 描述: 將架構原則正規化為憲法，定義 MUST/SHOULD/MAY 規則
 應用場景: 大型平台建設初期
@@ -116,6 +128,7 @@
 ```
 
 ### 類別 13: Canonical Identity Governance
+
 ```text
 描述: 品牌身份與機器身份分離，防止命名漂移
 應用場景: 任何有品牌和機器身份的平台
@@ -123,6 +136,7 @@
 ```
 
 ### 類別 14: Strategic Foundation Specification Engineering
+
 ```text
 描述: 將平台能力拆成戰略規格單元，定義能力邊界
 應用場景: 平台型產品、能力中台設計
@@ -130,6 +144,7 @@
 ```
 
 ### 類別 15: AI-Native Repository Navigation Indexing
+
 ```text
 描述: 建立機器可讀的 repo 全域索引，支援 AI Agent 安全修改
 應用場景: 任何 AI Agent 需要操作的大型 repo
@@ -137,6 +152,7 @@
 ```
 
 ### 類別 16: Namespace Closure Governance
+
 ```text
 描述: 建立命名空間治理閉環，防止依賴腐化
 應用場景: 大型 monorepo、模組化平台
@@ -144,6 +160,7 @@
 ```
 
 ### 類別 17: Multi-Tier Integrity Hash Policy Design
+
 ```text
 描述: 為不同用途設計分層 hash 策略，支援供應鏈安全
 應用場景: 任何需要供應鏈安全的系統
@@ -151,6 +168,7 @@
 ```
 
 ### 類別 18: Security-First AI Engineering
+
 ```text
 描述: 將安全考量融入 AI 工程的每個層面
 應用場景: 所有 AI 系統
@@ -158,6 +176,7 @@
 ```
 
 ### 類別 19: Repository-Scale Engineering Continuity
+
 ```text
 描述: 建立超大型 repo 的可維護性機制，確保長期演進
 應用場景: 超過 50 個模組的 monorepo
@@ -165,6 +184,7 @@
 ```
 
 ### 類別 20: AI Agent Repository Reasoning Governance
+
 ```text
 描述: 治理 AI Agent 對 repo 的理解與修改行為
 應用場景: 任何使用 AI Agent 進行 code generation 的專案
@@ -177,7 +197,7 @@
 
 每個可複用技能模組的完整定義格式：
 
-```markdown
+````markdown
 ## Skill Module: <技能模組名稱>
 
 **ID**: SM-<category>-<number>
@@ -187,46 +207,58 @@
 **Dependencies**: <依賴的其他模組>
 
 ### Problem Statement
+
 <這個模組解決了什麼問題>
 
 ### Inputs
-| Input | Type | Required | Description |
-|-------|------|----------|-------------|
-| <input 1> | <type> | Yes/No | <說明> |
+
+| Input     | Type   | Required | Description |
+| --------- | ------ | -------- | ----------- |
+| <input 1> | <type> | Yes/No   | <說明>      |
 
 ### Required Files
+
 - `<file pattern>` — <說明>
 
 ### Execution Steps
+
 1. <具體步驟>
 2. <具體步驟>
 
 ### Validation Commands
+
 ```bash
 <命令>
 ```
+````
 
 ### Expected Output
+
 ```yaml
 <輸出結構>
 ```
 
 ### Failure Modes & Recovery
-| Failure | Recovery |
-|---------|----------|
+
+| Failure    | Recovery   |
+| ---------- | ---------- |
 | <失敗情境> | <處理方式> |
 
 ### Composition
+
 此模組可與以下模組組合使用：
+
 - `SM-<X>-<N>`: <組合說明>
 
 ### Integration Points
+
 ```text
 → patterns/<name>.md
 → .github/workflows/<name>.yml
 → scripts/<name>.py
 ```
-```
+
+````
 
 ---
 
@@ -250,7 +282,7 @@ COMPOSITION MATRIX:
 ✓ = 強組合（通常一起使用）
 ○ = 弱組合（可以但不必要）
 - = 同一模組
-```
+````
 
 ---
 
@@ -261,15 +293,15 @@ COMPOSITION MATRIX:
 
 ### 高優先級模組（立即可產品化）
 
-| 模組 | Skill Category | Reusability | Effort |
-|------|---------------|-------------|--------|
-| <名稱> | <類別> | Cross-repo | Small |
+| 模組   | Skill Category | Reusability | Effort |
+| ------ | -------------- | ----------- | ------ |
+| <名稱> | <類別>         | Cross-repo  | Small  |
 
 ### 中優先級模組（需要標準化後可複用）
 
-| 模組 | Skill Category | Reusability | Effort |
-|------|---------------|-------------|--------|
-| <名稱> | <類別> | Cross-repo | Medium |
+| 模組   | Skill Category | Reusability | Effort |
+| ------ | -------------- | ----------- | ------ |
+| <名稱> | <類別>         | Cross-repo  | Medium |
 
 ### 模組詳細定義
 
@@ -284,4 +316,4 @@ COMPOSITION MATRIX:
 
 ---
 
-*此模組為 Skrill 框架的輸出類別二（可複用模組）的標準化執行指南。*
+_此模組為 Skrill 框架的輸出類別二（可複用模組）的標準化執行指南。_

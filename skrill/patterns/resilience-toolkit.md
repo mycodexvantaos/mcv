@@ -44,7 +44,11 @@ Resilience Toolkit
 
 ```typescript
 // packages/resilience/circuit-breaker.ts
-enum CircuitState { CLOSED, OPEN, HALF_OPEN }
+enum CircuitState {
+  CLOSED,
+  OPEN,
+  HALF_OPEN,
+}
 
 class CircuitBreaker {
   private state = CircuitState.CLOSED;
@@ -53,7 +57,7 @@ class CircuitBreaker {
 
   constructor(
     private readonly threshold: number = 5,
-    private readonly timeout: number = 60000,
+    private readonly timeout: number = 60000
   ) {}
 
   async execute<T>(fn: () => Promise<T>): Promise<T> {
@@ -118,10 +122,7 @@ async function withRetry<T>(
     } catch (error) {
       lastError = error as Error;
       if (attempt < options.maxAttempts) {
-        const delay = Math.min(
-          options.baseDelayMs * Math.pow(2, attempt - 1),
-          options.maxDelayMs
-        );
+        const delay = Math.min(options.baseDelayMs * Math.pow(2, attempt - 1), options.maxDelayMs);
         const jitter = options.jitter ? Math.random() * delay * 0.1 : 0;
         await sleep(delay + jitter);
       }
@@ -220,4 +221,4 @@ packages/resilience/
 
 ---
 
-*Pattern Score: 88/100 | Priority: High | Related Skill: SM-05-A*
+_Pattern Score: 88/100 | Priority: High | Related Skill: SM-05-A_

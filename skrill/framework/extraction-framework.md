@@ -92,12 +92,12 @@ Step 6: 整合成一張全域地圖
 
 **評分矩陣**：
 
-| 維度 | 權重 | 問題 |
-|------|------|------|
-| 創新性 | 30% | 這個設計有多少人會想到？ |
-| 可複製性 | 25% | 能不能在其他 repo 直接使用？ |
-| 治理價值 | 25% | 能不能轉成 CI rule 或政策？ |
-| 產品化潛力 | 20% | 能不能獨立包裝成交付物？ |
+| 維度       | 權重 | 問題                         |
+| ---------- | ---- | ---------------------------- |
+| 創新性     | 30%  | 這個設計有多少人會想到？     |
+| 可複製性   | 25%  | 能不能在其他 repo 直接使用？ |
+| 治理價值   | 25%  | 能不能轉成 CI rule 或政策？  |
+| 產品化潛力 | 20%  | 能不能獨立包裝成交付物？     |
 
 **每個亮點必須包含**：
 
@@ -118,7 +118,7 @@ Step 6: 整合成一張全域地圖
 
 **技能模組標準格式**：
 
-```markdown
+````markdown
 ## Skill: <技能名稱>
 
 **Category**: <技能類別>
@@ -126,34 +126,43 @@ Step 6: 整合成一張全域地圖
 **Reusability**: Repo-local / Cross-repo / Platform-level
 
 ### Inputs
+
 - <輸入項目 1>
 - <輸入項目 2>
 
 ### Required Files
+
 - <依賴檔案 1>
 - <依賴檔案 2>
 
 ### Execution Steps
+
 1. <步驟 1>
 2. <步驟 2>
 3. <步驟 3>
 
 ### Validation Commands
+
 ```bash
 <驗證指令>
 ```
+````
 
 ### Failure Modes
+
 - <失敗情境 1>: <處理方式>
 - <失敗情境 2>: <處理方式>
 
 ### Output Format
+
 <輸出格式描述>
 
 ### Safety Rules
+
 - <安全限制 1>
 - <安全限制 2>
-```
+
+````
 
 ---
 
@@ -173,7 +182,7 @@ CLI Tools              tools/*.py / tools/*.ts     scripts/<name>
 Governance Validators  scripts/validate-*.py       ci/validators/<name>.py
 Navigation Data        navigation/*.yaml           navigation/
 Foundation Specs       foundation/**/*.yaml        foundation/
-```
+````
 
 ---
 
@@ -431,4 +440,4 @@ QS-7: 代碼庫分析必須覆蓋全部 8 個附加維度
 
 ---
 
-*此方法論為 Skrill 框架的核心，所有分析必須遵循此流程執行。*
+_此方法論為 Skrill 框架的核心，所有分析必須遵循此流程執行。_

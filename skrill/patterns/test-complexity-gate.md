@@ -54,9 +54,7 @@ interface ComplexityReport {
   recommendation?: string;
 }
 
-async function calculateMockBurden(
-  serviceDir: string
-): Promise<ComplexityReport> {
+async function calculateMockBurden(serviceDir: string): Promise<ComplexityReport> {
   const project = new Project();
   project.addSourceFilesFromTsConfig(`${serviceDir}/tsconfig.json`);
 
@@ -124,4 +122,4 @@ ci/
 
 ---
 
-*Pattern Score: 86/100 | Priority: Medium | Related Skill: SM-09-A*
+_Pattern Score: 86/100 | Priority: Medium | Related Skill: SM-09-A_
