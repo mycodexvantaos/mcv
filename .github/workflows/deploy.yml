@@ -116,16 +116,16 @@ jobs:
   # Stage 3: Deploy (main — requires manual approval; environment from input)
   # ====================
   deploy-staging:
-    name: Deploy to ${{ inputs.environment || 'staging' }}
+    name: Deploy to staging
     runs-on: ubuntu-latest
     timeout-minutes: 15
     needs: [build, container-build]
     if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     env:
-      DEPLOY_ENV: ${{ inputs.environment || 'staging' }}
+      DEPLOY_ENV: staging
     environment:
-      name: ${{ inputs.environment || 'staging' }}
-      url: ${{ inputs.environment == 'production' && 'https://mycodexvantaos.io' || 'https://staging.mycodexvantaos.io' }}
+      name: staging
+      url: https://staging.mycodexvantaos.io
     steps:
       - name: Checkout repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
@@ -134,7 +134,7 @@ jobs:
         id: kube-guard
         shell: bash
         env:
-          KUBE_CONFIG_VALUE: ${{ inputs.environment == 'production' && secrets.KUBE_CONFIG_PRODUCTION || secrets.KUBE_CONFIG_STAGING }}
+          KUBE_CONFIG_VALUE: ${{ secrets.KUBE_CONFIG_STAGING }}
         run: |
           if [ -n "$KUBE_CONFIG_VALUE" ]; then
             echo "has_kube_config=true" >> "$GITHUB_OUTPUT"
@@ -152,13 +152,13 @@ jobs:
         if: steps.kube-guard.outputs.has_kube_config == 'true'
         shell: bash
         env:
-          KUBE_CONFIG_VALUE: ${{ inputs.environment == 'production' && secrets.KUBE_CONFIG_PRODUCTION || secrets.KUBE_CONFIG_STAGING }}
+          KUBE_CONFIG_VALUE: ${{ secrets.KUBE_CONFIG_STAGING }}
         run: |
           mkdir -p "$HOME/.kube"
           echo "$KUBE_CONFIG_VALUE" | base64 -d > "$HOME/.kube/config"
           chmod 600 "$HOME/.kube/config"
 
-      - name: Deploy to ${{ inputs.environment || 'staging' }}
+      - name: Deploy to staging
         if: steps.kube-guard.outputs.has_kube_config == 'true'
         env:
           IMAGE_TAG: ${{ needs.container-build.outputs.image_tag }}
@@ -193,16 +193,16 @@ jobs:
   # Stage 4: Deploy to Staging (release/* — automatic)
   # ====================
   deploy-release-staging:
-    name: Deploy Release to ${{ inputs.environment || 'staging' }}
+    name: Deploy Release to staging
     runs-on: ubuntu-latest
     timeout-minutes: 15
     needs: [build, container-build]
     if: startsWith(github.ref, 'refs/heads/release/')
     env:
-      DEPLOY_ENV: ${{ inputs.environment || 'staging' }}
+      DEPLOY_ENV: staging
     environment:
-      name: ${{ inputs.environment || 'staging' }}
-      url: ${{ inputs.environment == 'production' && 'https://mycodexvantaos.io' || 'https://staging.mycodexvantaos.io' }}
+      name: staging
+      url: https://staging.mycodexvantaos.io
     steps:
       - name: Checkout repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
@@ -211,7 +211,7 @@ jobs:
         id: kube-guard
         shell: bash
         env:
-          KUBE_CONFIG_VALUE: ${{ inputs.environment == 'production' && secrets.KUBE_CONFIG_PRODUCTION || secrets.KUBE_CONFIG_STAGING }}
+          KUBE_CONFIG_VALUE: ${{ secrets.KUBE_CONFIG_STAGING }}
         run: |
           if [ -n "$KUBE_CONFIG_VALUE" ]; then
             echo "has_kube_config=true" >> "$GITHUB_OUTPUT"
@@ -228,13 +228,13 @@ jobs:
         if: steps.kube-guard.outputs.has_kube_config == 'true'
         shell: bash
         env:
-          KUBE_CONFIG_VALUE: ${{ inputs.environment == 'production' && secrets.KUBE_CONFIG_PRODUCTION || secrets.KUBE_CONFIG_STAGING }}
+          KUBE_CONFIG_VALUE: ${{ secrets.KUBE_CONFIG_STAGING }}
         run: |
           mkdir -p "$HOME/.kube"
           echo "$KUBE_CONFIG_VALUE" | base64 -d > "$HOME/.kube/config"
           chmod 600 "$HOME/.kube/config"
 
-      - name: Deploy to ${{ inputs.environment || 'staging' }}
+      - name: Deploy to staging
         if: steps.kube-guard.outputs.has_kube_config == 'true'
         env:
           IMAGE_TAG: ${{ needs.container-build.outputs.image_tag }}
