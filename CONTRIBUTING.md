@@ -317,10 +317,10 @@ All technical documentation **must** use the following Markdown-compatible secti
 
 The section sign (U+00A7) is **strictly prohibited** in all documentation. It is not standard Markdown and causes parsing failures on GitLab Wiki, Docsify, and some static site generators (broken TOC and anchor generation).
 
-| Prohibited               | Correct                  |
-| ------------------------ | ------------------------ |
-| `U+00A7 3 合規基準`      | `## Spec 3：合規基準`    |
-| `U+00A7 4.2 威脅向量`    | `### Spec 4.2：威脅向量` |
+| Prohibited            | Correct                  |
+| --------------------- | ------------------------ |
+| `U+00A7 3 合規基準`   | `## Spec 3：合規基準`    |
+| `U+00A7 4.2 威脅向量` | `### Spec 4.2：威脅向量` |
 
 A pre-commit hook is configured to reject any commit containing the section sign (U+00A7).
 
