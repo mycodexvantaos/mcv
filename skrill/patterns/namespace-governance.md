@@ -28,11 +28,11 @@
 
 ## Forces
 
-| 張力 | 說明 |
-|------|------|
+| 張力                 | 說明                           |
+| -------------------- | ------------------------------ |
 | 靈活命名 vs 嚴格規範 | 靈活命名開發快，但長期造成混亂 |
-| 向後相容 vs 清晰命名 | 歷史遺留命名不一定是最好的 |
-| 自動化 vs 人工審查 | 純靠 code review 無法防止漂移 |
+| 向後相容 vs 清晰命名 | 歷史遺留命名不一定是最好的     |
+| 自動化 vs 人工審查   | 純靠 code review 無法防止漂移  |
 
 ## Solution
 
@@ -60,24 +60,24 @@ Layer 3: CI Enforcement
 ```yaml
 # mycodexvantaos-namespace-governance/governance/registry/namespace-registry.yaml
 canonical_identity:
-  machine: mycodexvantaos          # 機器用（全小寫）
-  brand: MyCodexVantaOS            # 品牌用（CamelCase）
+  machine: mycodexvantaos # 機器用（全小寫）
+  brand: MyCodexVantaOS # 品牌用（CamelCase）
   legacy_aliases:
-    - MyCodeXvantaOS               # 歷史名稱（已棄用）
-    - MyCodeXvanta OS              # 歷史名稱（已棄用）
+    - MyCodeXvantaOS # 歷史名稱（已棄用）
+    - MyCodeXvanta OS # 歷史名稱（已棄用）
   forbidden_prefixes:
-    - codex-                       # 禁止使用的前綴
+    - codex- # 禁止使用的前綴
     - vanta-
 ```
 
 ## Tradeoffs
 
-| 優點 | 代價 |
-|------|------|
-| 防止命名腐化 | 需要維護 namespace registry |
-| AI 輸出可驗證 | 新增命名空間需要申請流程 |
-| 跨 repo 命名一致 | 初期需要大量整理工作 |
-| CI 自動強制執行 | 可能阻止合理的快速實驗 |
+| 優點             | 代價                        |
+| ---------------- | --------------------------- |
+| 防止命名腐化     | 需要維護 namespace registry |
+| AI 輸出可驗證    | 新增命名空間需要申請流程    |
+| 跨 repo 命名一致 | 初期需要大量整理工作        |
+| CI 自動強制執行  | 可能阻止合理的快速實驗      |
 
 ## Implementation Guide
 
@@ -245,4 +245,4 @@ Week 7+: 全面執行
 
 ---
 
-*Pattern Score: 92/100 | Priority: Must Implement | Related Skill: SM-16-A*
+_Pattern Score: 92/100 | Priority: Must Implement | Related Skill: SM-16-A_

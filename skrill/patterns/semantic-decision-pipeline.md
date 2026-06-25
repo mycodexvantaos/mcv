@@ -49,7 +49,7 @@ class SemanticDecisionPipeline {
   constructor(
     private similarityClient: SemanticSimilarityClient,
     private contextRetriever: ContextRetrievalAdapter,
-    private orchestrator: DecisionOrchestrator,
+    private orchestrator: DecisionOrchestrator
   ) {}
 
   async decide(context: DecisionContext): Promise<DecisionResult> {
@@ -116,4 +116,4 @@ contracts/openapi/
 
 ---
 
-*Pattern Score: 87/100 | Priority: High | Related Skill: SM-06-A*
+_Pattern Score: 87/100 | Priority: High | Related Skill: SM-06-A_

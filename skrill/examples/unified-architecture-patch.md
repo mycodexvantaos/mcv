@@ -78,6 +78,7 @@ Skill: Architecture Constitution Engineering
 ```
 
 能力包含：
+
 - 將模糊架構原則正規化為 MUST / MUST NOT / SHOULD / MAY
 - 將架構規範轉換為 CI 可驗證規則
 - 定義 root layout、manifest boundary、naming policy
@@ -113,6 +114,7 @@ Skill: Canonical Identity Governance
 ```
 
 能力包含：
+
 - 品牌名稱與機器名稱分離
 - canonical machine identifier 定義
 - legacy alias 隔離
@@ -130,15 +132,15 @@ Skill: Canonical Identity Governance
 
 此規範明確分離了 7 種 Manifest 類型，解決了大型 repo 中極常見的「manifest 語義混淆」問題：
 
-| Manifest | 代表意義 |
-|---|---|
-| `mycodexvantaos-module.yaml` | root module contract |
-| `module-manifest.yaml` | deployable service manifest |
-| `provider-manifest.yaml` | provider instance contract |
-| `foundation.yaml` | foundation specification unit |
-| `service-catalog.yaml` | global service index |
-| `navigation/*.yaml` | AI / human global index |
-| `unified-gate-index.yaml` | gate governance index |
+| Manifest                     | 代表意義                      |
+| ---------------------------- | ----------------------------- |
+| `mycodexvantaos-module.yaml` | root module contract          |
+| `module-manifest.yaml`       | deployable service manifest   |
+| `provider-manifest.yaml`     | provider instance contract    |
+| `foundation.yaml`            | foundation specification unit |
+| `service-catalog.yaml`       | global service index          |
+| `navigation/*.yaml`          | AI / human global index       |
+| `unified-gate-index.yaml`    | gate governance index         |
 
 **可提煉技能**
 
@@ -267,9 +269,9 @@ Skill: Namespace Closure Governance
 將 hash policy 分成三種用途，是成熟供應鏈設計的體現：
 
 ```yaml
-runtime_audit_chain: sha256    # 運行時審計
-long_term_integrity: sha3-512  # 長期存檔完整性
-fast_ci_comparison: blake3     # CI 快速比較
+runtime_audit_chain: sha256 # 運行時審計
+long_term_integrity: sha3-512 # 長期存檔完整性
+fast_ci_comparison: blake3 # CI 快速比較
 ```
 
 **可提煉技能**
@@ -365,18 +367,18 @@ Skill: Lifecycle-Complete Platform Engineering
 
 ## 5. 可產品化模組（含優先排名）
 
-| 排名 | 模組 | 價值 |
-|---:|---|---|
-| 1 | Architecture Constitution Kit | 將架構規範轉成可執行憲法 |
-| 2 | Manifest Boundary Validator | 防止 manifest 語義混淆 |
-| 3 | Foundation Specification Framework | 管理七大戰略能力層 |
-| 4 | Navigation Intelligence Layer | 支援 AI / 人類全域 repo 理解 |
-| 5 | Namespace Governance Engine | 防止命名與依賴漂移 |
-| 6 | Unified Gate Control Plane | 統一品質與 AI infra gates |
-| 7 | Provider Capability Registry | 實現 provider abstraction |
-| 8 | Specification Freeze Controller | 管控 Phase 0 架構凍結 |
-| 9 | Integrity Hash Policy Engine | 支援供應鏈完整性 |
-| 10 | Architecture Validation Reporter | 產出 CI validation reports |
+| 排名 | 模組                               | 價值                         |
+| ---: | ---------------------------------- | ---------------------------- |
+|    1 | Architecture Constitution Kit      | 將架構規範轉成可執行憲法     |
+|    2 | Manifest Boundary Validator        | 防止 manifest 語義混淆       |
+|    3 | Foundation Specification Framework | 管理七大戰略能力層           |
+|    4 | Navigation Intelligence Layer      | 支援 AI / 人類全域 repo 理解 |
+|    5 | Namespace Governance Engine        | 防止命名與依賴漂移           |
+|    6 | Unified Gate Control Plane         | 統一品質與 AI infra gates    |
+|    7 | Provider Capability Registry       | 實現 provider abstraction    |
+|    8 | Specification Freeze Controller    | 管控 Phase 0 架構凍結        |
+|    9 | Integrity Hash Policy Engine       | 支援供應鏈完整性             |
+|   10 | Architecture Validation Reporter   | 產出 CI validation reports   |
 
 ---
 
@@ -560,11 +562,11 @@ report:
   input_level: 1
   highlights_count: 10
   skills_extracted: 20
-  patterns_added: 4  # 建議新增
+  patterns_added: 4 # 建議新增
   ci_candidates: 6
   related_reports:
     - 'mycodexvantaos-v1-extraction.md'
-  cumulative_skills: 20  # v1(15) + 此次新增(5)
-  cumulative_patterns: 12  # v1(8) + 此次建議(4)
+  cumulative_skills: 20 # v1(15) + 此次新增(5)
+  cumulative_patterns: 12 # v1(8) + 此次建議(4)
   next_analysis: '待定（下一份壓縮檔）'
 ```
