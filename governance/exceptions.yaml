@@ -37,3 +37,20 @@ exceptions:
     mitigationPlan: >
       Update deployment pipeline configuration to use canonical service-id path.
       Remove versioned directory reference in ci/deploy.yaml.
+  - id: exception--20260621--dvstud
+    rule: no-environment-in-canonical
+    scope: mycodexvantaos-app-dev-studio
+    reason: >
+      The legacy Dev Studio service identifier is still the stable integration
+      anchor for local-first tooling, generated Docker assets, and existing
+      service references. Renaming it during the ZIP-first consolidation would
+      break retained architecture capabilities before a coordinated migration is
+      ready.
+    approver: arch-committee-lead
+    createdAt: '2026-06-21'
+    expiresAt: '2026-12-31'
+    status: active
+    mitigationPlan: >
+      Complete the planned Dev Studio identifier migration alongside updated
+      service manifests, Docker generation, and navigation indexes so the
+      exception can be removed without capability loss.

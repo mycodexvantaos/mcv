@@ -1,0 +1,25 @@
+apiVersion: mycodexvantaos.io/v1
+kind: ProviderManifest
+metadata:
+  name: queue-cloudflare
+  urn: urn:mycodexvantaos:provider:queue-cloudflare
+
+spec:
+  id: queue-cloudflare
+  capability: queue
+  source: cloudflare-queues
+  status: active
+  criticality: high
+
+  supportsModes:
+    - native
+    - connected
+    - hybrid
+
+  healthCheck:
+    enabled: true
+    endpoint: /health
+
+  observability:
+    metricsEnabled: true
+    tracingEnabled: true

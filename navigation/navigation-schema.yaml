@@ -1,0 +1,14 @@
+apiVersion: mycodexvantaos.io/v1
+kind: NavigationSchema
+metadata:
+  name: navigation-schema
+  description: Schema definitions for navigation artifacts
+
+spec:
+  schemas:
+    - name: navigation-index
+      path: navigation/schemas/navigation-index.schema.json
+    - name: dependency-graph
+      path: navigation/schemas/dependency-graph.schema.json
+    - name: binding-index
+      path: navigation/schemas/binding-index.schema.json

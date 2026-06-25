@@ -1,0 +1,5 @@
+apiVersion: mycodexvantaos.io/v1
+kind: NamingClosureProof
+metadata:
+  name: derived-identity-proof
+spec: {}

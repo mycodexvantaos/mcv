@@ -1,0 +1,6 @@
+apiVersion: mycodexvantaos.io/v1
+kind: GateWorkflow
+metadata:
+  name: ai-infra-gates-workflow
+spec:
+  steps: []

@@ -1,0 +1,8 @@
+apiVersion: mycodexvantaos.io/v1
+kind: GovernancePolicy
+metadata:
+  name: runtime-policy
+  description: runtime-policy for MyCodexVantaOS
+spec:
+  rules: []
+  enforcement: block

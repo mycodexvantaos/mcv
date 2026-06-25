@@ -1,0 +1,13 @@
+apiVersion: mycodexvantaos.io/v1
+kind: CiSeverityConfig
+metadata:
+  name: ci-severity-config
+spec:
+  severityLevels:
+    - critical
+    - high
+    - medium
+    - low
+  blockingLevels:
+    - critical
+    - high

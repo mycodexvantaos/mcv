@@ -1,0 +1,8 @@
+apiVersion: mycodexvantaos.io/v1
+kind: ResourceDefinition
+metadata:
+  name: provider
+spec:
+  kind: Provider
+  group: mycodexvantaos.io
+  version: v1
