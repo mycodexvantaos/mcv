@@ -1,0 +1,19 @@
+apiVersion: mycodexvantaos.io/v1
+kind: ReleasePolicy
+metadata:
+  name: release-policy
+spec:
+  requiredGates:
+    - architecture-validation
+    - foundation-validation
+    - navigation-validation
+    - namespace-governance-validation
+    - unified-gates-validation
+    - provider-capability-validation
+  hashPolicy:
+    primaryDigest: sha3-512
+    auditChainDigest: sha256
+    fastComparisonDigest: blake3
+  imagePinningRequired: true
+  sbomRequired: true
+  provenanceRequired: true

@@ -1,0 +1,6 @@
+apiVersion: mycodexvantaos.io/v1
+kind: EventContract
+metadata:
+  name: provider-events
+spec:
+  events: []

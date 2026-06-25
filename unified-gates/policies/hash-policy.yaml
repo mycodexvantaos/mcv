@@ -1,0 +1,5 @@
+apiVersion: mycodexvantaos.io/v1
+kind: GatePolicy
+metadata:
+  name: hash-policy
+spec: {}

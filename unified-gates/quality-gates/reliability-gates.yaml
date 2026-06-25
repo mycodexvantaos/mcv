@@ -1,0 +1,6 @@
+apiVersion: mycodexvantaos.io/v1
+kind: QualityGates
+metadata:
+  name: reliability-gates
+spec:
+  gates: []

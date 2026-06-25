@@ -1,0 +1,42 @@
+apiVersion: mycodexvantaos.io/v1
+kind: RuntimeModePolicy
+metadata:
+  name: runtime-mode-policy
+  ssot: true
+  authority: runtime-mode-governance
+
+spec:
+  canonicalRuntimeModes:
+    - native
+    - connected
+    - hybrid
+    - auto
+
+  providerSupportedModes:
+    allowed: [native, connected, hybrid]
+    forbidden: [auto]
+    reason: auto is a startup intent, not a provider-supported final runtime mode
+
+  productionRules:
+    allowedFinalModes: [native, connected, hybrid]
+    forbiddenFinalModes: [auto]
+    autoForbiddenInProduction:
+      condition:
+        environment: production
+        requestedRuntimeMode: auto
+      action: fail
+      severity: critical
+      errorCode: MYCODEXVANTAOS_RUNTIME_AUTO_FORBIDDEN_IN_PRODUCTION
+
+  requiredEnvironmentVariables:
+    - MYCODEXVANTAOS_RUNTIME_MODE
+    - MYCODEXVANTAOS_SECRETS_PROVIDER
+    - MYCODEXVANTAOS_DEPLOYMENT_TARGET
+
+  forbiddenEnvironmentVariablePrefixes:
+    - ORCH_
+    - AXM_
+    - AXIOM_
+    - GL_
+    - NG_
+    - KUBO_

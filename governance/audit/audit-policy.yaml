@@ -1,0 +1,10 @@
+apiVersion: mycodexvantaos.io/v1
+kind: AuditPolicy
+metadata:
+  name: audit-policy
+spec:
+  auditChainEnabled: true
+  hashPolicy:
+    algorithm: sha256
+    reason: compatibility-with-existing-runtime-audit-chain
+  retentionDays: 2555
