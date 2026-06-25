@@ -83,6 +83,7 @@ skrill/
 > 找出這份資料中，大多數人看不到但一旦看到就無法忽視的架構設計。
 
 評分標準：
+
 - 解決了哪個困難問題？
 - 是否具備可複製性？
 - 是否具備治理價值？
@@ -92,6 +93,7 @@ skrill/
 > 將亮點抽象成獨立的、可單獨部署的技能模組。
 
 輸出格式：
+
 ```text
 Skill: <技能名稱>
 Inputs: <輸入清單>
@@ -105,6 +107,7 @@ Safety Rules: <安全限制>
 > 識別哪些資產可以被抽取出來，在其他 repo 或專案中直接使用。
 
 類別包含：
+
 - Architecture patterns
 - Governance rules (`.github/workflows/`)
 - Schema contracts (`.yaml`, `.json`)
@@ -117,6 +120,7 @@ Safety Rules: <安全限制>
 > 不只是「閱讀」，而是把這些資產轉成五層可執行資產。
 
 五層資產框架：
+
 ```text
 Layer 1: Knowledge Extraction Layer
 Layer 2: Architecture Pattern Library
@@ -130,6 +134,7 @@ Layer 5: Unified AI Engineering Platform
 > 畫出從現在到最終整合的清晰路線。
 
 輸出格式：
+
 ```text
 Phase 0: 資產識別與整理
 Phase 1: 模組化與標準化
@@ -201,10 +206,10 @@ Phase 4: 跨 repo 治理閉環
 
 ## 版本歷程 (Version History)
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0.0 | 2026-06-21 | Initial framework creation based on MyCodexVantaOS analysis |
+| Version | Date       | Changes                                                     |
+| ------- | ---------- | ----------------------------------------------------------- |
+| 1.0.0   | 2026-06-21 | Initial framework creation based on MyCodexVantaOS analysis |
 
 ---
 
-*此框架由 AI Engineering Guild 維護，作為 MyCodexVantaOS 統一工程治理作業系統的一部分。*
+_此框架由 AI Engineering Guild 維護，作為 MyCodexVantaOS 統一工程治理作業系統的一部分。_

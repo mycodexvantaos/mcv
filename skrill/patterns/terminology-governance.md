@@ -37,12 +37,12 @@ Terminology Governance Engine
 
 ## Canonical Terms
 
-| Canonical Term | Deprecated Terms | Context |
-|---------------|-----------------|---------|
-| `unified-gate` | `api-gateway`, `middleware-gate` | 跨模組通訊治理層 |
-| `provider-adapter` | `cloud-connector`, `vendor-wrapper` | 雲廠商抽象層 |
-| `namespace-governance` | `namespace-management` | 命名空間治理體系 |
-| `capability-id` | `feature-id`, `function-id` | Provider 能力標識符 |
+| Canonical Term         | Deprecated Terms                    | Context             |
+| ---------------------- | ----------------------------------- | ------------------- |
+| `unified-gate`         | `api-gateway`, `middleware-gate`    | 跨模組通訊治理層    |
+| `provider-adapter`     | `cloud-connector`, `vendor-wrapper` | 雲廠商抽象層        |
+| `namespace-governance` | `namespace-management`              | 命名空間治理體系    |
+| `capability-id`        | `feature-id`, `function-id`         | Provider 能力標識符 |
 ```
 
 ### Terminology Linter
@@ -143,4 +143,4 @@ scripts/
 
 ---
 
-*Pattern Score: 85/100 | Priority: High | Related Skill: SM-08-A*
+_Pattern Score: 85/100 | Priority: High | Related Skill: SM-08-A_

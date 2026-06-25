@@ -70,6 +70,7 @@ Observability
 **亮點細節**
 
 Unified Gate System 負責：
+
 - 正規化跨模組輸入
 - 控制模組間依賴邊界
 - 實施安全政策與速率限制
@@ -83,6 +84,7 @@ Skill: Governed System Boundary Design
 ```
 
 能力包含：
+
 - 設計跨模組門控
 - 定義可審計的 inter-module contract
 - 將直接依賴改造成 gate-mediated communication
@@ -296,18 +298,18 @@ Skill: Cloud-Native Deployment and Observability
 
 ## 5. 可產品化模組（含優先排名）
 
-| 排名 | 模組 | 價值 |
-|---:|---|---|
-| 1 | Unified Gate System | 跨模組治理核心 |
-| 2 | Namespace Governance Engine | 防止架構腐化 |
-| 3 | AI Context Governance Layer | AI-native 安全治理 |
-| 4 | Provider Decoupling Framework | 多雲與測試解耦 |
-| 5 | Terminology Governance Engine | 防止語意漂移 |
-| 6 | Test Complexity Gate | 把可測試性變成 CI 指標 |
-| 7 | Semantic Decision Engine | AI 決策流程核心 |
-| 8 | Resilience Toolkit | 生產韌性基礎 |
-| 9 | Observability Stack | 可觀測性基線 |
-| 10 | SDK Automation Platform | 平台產品化能力 |
+| 排名 | 模組                          | 價值                   |
+| ---: | ----------------------------- | ---------------------- |
+|    1 | Unified Gate System           | 跨模組治理核心         |
+|    2 | Namespace Governance Engine   | 防止架構腐化           |
+|    3 | AI Context Governance Layer   | AI-native 安全治理     |
+|    4 | Provider Decoupling Framework | 多雲與測試解耦         |
+|    5 | Terminology Governance Engine | 防止語意漂移           |
+|    6 | Test Complexity Gate          | 把可測試性變成 CI 指標 |
+|    7 | Semantic Decision Engine      | AI 決策流程核心        |
+|    8 | Resilience Toolkit            | 生產韌性基礎           |
+|    9 | Observability Stack           | 可觀測性基線           |
+|   10 | SDK Automation Platform       | 平台產品化能力         |
 
 ---
 

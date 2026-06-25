@@ -54,6 +54,7 @@ Step 1.3 — 建立跨分析關聯圖
 ```
 
 **質量門控**：
+
 ```bash
 # Layer 1 專用驗證器尚未在本 repo 提供，先執行既有的結構基線驗證
 python scripts/validate-foundation-structure.py
@@ -95,7 +96,8 @@ Step 2.4 — 建立 Pattern Registry
 ```
 
 **Pattern 模板（快速複製版）**：
-```markdown
+
+````markdown
 # Pattern: <Pattern Name>
 
 **Category**: Governance / Resilience / Architecture / Security / Platform
@@ -103,43 +105,55 @@ Step 2.4 — 建立 Pattern Registry
 **Source**: <來源專案>
 
 ## Problem
+
 <這個 pattern 解決什麼問題>
 
 ## Context
+
 <在什麼情況下適用>
 
 ## Forces
+
 - <設計張力 1>
 - <設計張力 2>
 
 ## Solution
+
 <具體解決方案>
 
 ## Tradeoffs
-| 優點 | 代價 |
-|------|------|
+
+| 優點   | 代價   |
+| ------ | ------ |
 | <優點> | <代價> |
 
 ## Implementation Guide
+
 <實作步驟>
 
 ## CI Enforcement
+
 ```yaml
 # 在 .github/workflows/ 中加入
 <CI 配置>
 ```
+````
 
 ## Security Considerations
+
 <安全考量>
 
 ## Example Structure
+
 ```text
 <目錄結構範例>
 ```
 
 ## Migration Strategy
+
 <如何從現有代碼遷移到此模式>
-```
+
+````
 
 ---
 
@@ -170,7 +184,7 @@ Step 3.3 — 存入 skill-modules/ 目錄
 Step 3.4 — 建立技能目錄
   維護: skrill/framework/skill-modules/INDEX.md
   包含: 所有技能的 ID、名稱、類別、依賴
-```
+````
 
 **技能分類體系**：
 
@@ -402,36 +416,42 @@ Step P4 — 社群治理
 ## AI 工程團隊吸收路線
 
 ### Layer 1 輸出清單
+
 - [ ] `<project>-architecture-components.md` — 架構組件目錄
 - [ ] 四維評估矩陣（10/5/5/5）
 - [ ] 跨分析關聯圖
 
 ### Layer 2 新增 Patterns
+
 - [ ] `patterns/<name-1>.md`
 - [ ] `patterns/<name-2>.md`
 - [ ] 更新 `patterns/INDEX.md`
 
 ### Layer 3 新增 Skill Modules
+
 - [ ] `framework/skill-modules/<SM-ID>-<name>.md`
 - [ ] 更新 `framework/skill-modules/INDEX.md`
 
 ### Layer 4 新增 CI Gates
+
 - [ ] `.github/workflows/<name-1>.yml`
 - [ ] `.github/workflows/<name-2>.yml`
 - [ ] 更新 `unified-gates/gate/gate-catalog.yaml`
 
 ### Layer 5 平台更新
+
 - [ ] 更新 `docs/unified-architecture-spec.md`
 - [ ] 更新 `navigation/` 索引
 - [ ] 更新 `governance/capability-set.yaml`
 
 ### 產品化計劃
-| 模組 | 產品化步驟 | 預計發布時間 |
-|------|-----------|-------------|
-| <模組 1> | P1 → P2 | <時間> |
-| <模組 2> | P1 → P3 | <時間> |
+
+| 模組     | 產品化步驟 | 預計發布時間 |
+| -------- | ---------- | ------------ |
+| <模組 1> | P1 → P2    | <時間>       |
+| <模組 2> | P1 → P3    | <時間>       |
 ```
 
 ---
 
-*此模組為 Skrill 框架的輸出類別四（團隊吸收策略）的標準化執行指南。*
+_此模組為 Skrill 框架的輸出類別四（團隊吸收策略）的標準化執行指南。_

@@ -27,10 +27,10 @@
 
 ## Forces
 
-| 張力 | 說明 |
-|------|------|
-| 直接使用 vs 抽象 | 直接使用 SDK 最快，但有強耦合 |
-| 性能 vs 靈活 | 抽象層增加一點點延遲 |
+| 張力                 | 說明                                  |
+| -------------------- | ------------------------------------- |
+| 直接使用 vs 抽象     | 直接使用 SDK 最快，但有強耦合         |
+| 性能 vs 靈活         | 抽象層增加一點點延遲                  |
 | 完整功能 vs 通用 API | 通用 adapter 可能無法使用廠商特有功能 |
 
 ## Solution
@@ -66,12 +66,12 @@ providers:
 
 ## Tradeoffs
 
-| 優點 | 代價 |
-|------|------|
-| 本地測試無需雲連線 | 需要維護多個 adapter |
-| 輕鬆切換雲廠商 | 抽象層可能無法使用廠商特有功能 |
-| 多雲支援 | 初期建設成本較高 |
-| 統一的監控和日誌 | 所有 adapter 必須維持相同 API |
+| 優點               | 代價                           |
+| ------------------ | ------------------------------ |
+| 本地測試無需雲連線 | 需要維護多個 adapter           |
+| 輕鬆切換雲廠商     | 抽象層可能無法使用廠商特有功能 |
+| 多雲支援           | 初期建設成本較高               |
+| 統一的監控和日誌   | 所有 adapter 必須維持相同 API  |
 
 ## Implementation Guide
 
@@ -107,11 +107,13 @@ class AWSS3Adapter implements StorageProvider {
   }
 
   async upload(key: string, data: Buffer): Promise<void> {
-    await this.client.send(new PutObjectCommand({
-      Bucket: this.bucket,
-      Key: key,
-      Body: data,
-    }));
+    await this.client.send(
+      new PutObjectCommand({
+        Bucket: this.bucket,
+        Key: key,
+        Body: data,
+      })
+    );
   }
   // ... 其他方法
 }
@@ -256,4 +258,4 @@ Week 9+: CI 強制執行
 
 ---
 
-*Pattern Score: 90/100 | Priority: High | Related Skill: SM-04-A*
+_Pattern Score: 90/100 | Priority: High | Related Skill: SM-04-A_
