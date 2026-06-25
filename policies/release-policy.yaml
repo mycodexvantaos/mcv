@@ -1,0 +1,8 @@
+apiVersion: mycodexvantaos.io/v1
+kind: GovernancePolicy
+metadata:
+  name: release-policy
+  description: release-policy for MyCodexVantaOS
+spec:
+  rules: []
+  enforcement: block

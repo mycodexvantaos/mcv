@@ -1,0 +1,6 @@
+apiVersion: mycodexvantaos.io/v1
+kind: NavigationGraph
+metadata:
+  name: gate-evidence-graph
+  description: gate-evidence-graph for MyCodexVantaOS
+spec: {}

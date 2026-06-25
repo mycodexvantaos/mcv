@@ -1,0 +1,6 @@
+apiVersion: mycodexvantaos.io/v1
+kind: NavigationGraph
+metadata:
+  name: mediator-graph
+  description: mediator-graph for MyCodexVantaOS
+spec: {}

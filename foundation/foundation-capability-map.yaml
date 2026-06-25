@@ -1,0 +1,6 @@
+apiVersion: mycodexvantaos.io/v1
+kind: FoundationSpec
+metadata:
+  name: foundation-capability-map
+  description: foundation-capability-map for MyCodexVantaOS platform foundations
+spec: {}

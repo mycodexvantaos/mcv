@@ -1,0 +1,9 @@
+apiVersion: mycodexvantaos.io/v1
+kind: ArchitectureConfig
+metadata:
+  name: architecture-config
+spec:
+  rootDirectoryCountClass: 242-plus
+  effectiveCanonicalMinimumCount: 245
+  canonicalMachineName: mycodexvantaos
+  canonicalBrandName: MyCodexVantaOS

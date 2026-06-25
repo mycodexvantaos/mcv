@@ -1,0 +1,57 @@
+apiVersion: mycodexvantaos.io/v1
+kind: GateCatalog
+metadata:
+  name: gate-catalog
+  ssot: true
+  authority: gate-catalog-registry
+
+spec:
+  gates:
+    - id: architecture-validation-gate
+      name: Architecture Validation Gate
+      category: architecture
+      criticality: critical
+      evidenceRequired: true
+      blockingOnFailure: true
+
+    - id: foundation-structure-gate
+      name: Foundation Structure Gate
+      category: architecture
+      criticality: critical
+      evidenceRequired: true
+      blockingOnFailure: true
+
+    - id: naming-policy-gate
+      name: Naming Policy Gate
+      category: architecture
+      criticality: critical
+      evidenceRequired: true
+      blockingOnFailure: true
+
+    - id: service-catalog-gate
+      name: Service Catalog Gate
+      category: architecture
+      criticality: critical
+      evidenceRequired: true
+      blockingOnFailure: true
+
+    - id: provider-capability-gate
+      name: Provider Capability Gate
+      category: architecture
+      criticality: high
+      evidenceRequired: true
+      blockingOnFailure: true
+
+    - id: navigation-index-gate
+      name: Navigation Index Gate
+      category: architecture
+      criticality: high
+      evidenceRequired: true
+      blockingOnFailure: true
+
+    - id: namespace-governance-gate
+      name: Namespace Governance Gate
+      category: architecture
+      criticality: high
+      evidenceRequired: true
+      blockingOnFailure: true

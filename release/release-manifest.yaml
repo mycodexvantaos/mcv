@@ -1,0 +1,7 @@
+apiVersion: mycodexvantaos.io/v1
+kind: ReleaseManifest
+metadata:
+  name: release-manifest
+spec:
+  version: 0.1.0
+  artifacts: []

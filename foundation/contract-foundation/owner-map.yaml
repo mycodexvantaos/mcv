@@ -1,0 +1,6 @@
+apiVersion: mycodexvantaos.io/v1
+kind: FoundationSpec
+metadata:
+  name: owner-map
+  foundation: contract-foundation
+spec: {}
