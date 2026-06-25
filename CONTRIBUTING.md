@@ -308,18 +308,18 @@ contract(schemas): add memory-model JSON schema
 
 All technical documentation **must** use the following Markdown-compatible section heading format:
 
-| Level | Format | Example |
-|-------|--------|---------|
-| Top-level spec | `## Spec X：Title` | `## Spec 3：Compliance Baseline` |
-| Sub-spec | `### Spec X.Y：Title` | `### Spec 4.2：Threat Vectors` |
+| Level          | Format                | Example                          |
+| -------------- | --------------------- | -------------------------------- |
+| Top-level spec | `## Spec X：Title`    | `## Spec 3：Compliance Baseline` |
+| Sub-spec       | `### Spec X.Y：Title` | `### Spec 4.2：Threat Vectors`   |
 
 ### Prohibited: Section Sign Symbol (U+00A7)
 
 The `§` symbol is **strictly prohibited** in all documentation. It is not standard Markdown and causes parsing failures on GitLab Wiki, Docsify, and some static site generators (broken TOC and anchor generation).
 
-| Prohibited | Correct |
-|------------|---------|
-| `§3 合規基準` | `## Spec 3：合規基準` |
+| Prohibited      | Correct                  |
+| --------------- | ------------------------ |
+| `§3 合規基準`   | `## Spec 3：合規基準`    |
 | `§4.2 威脅向量` | `### Spec 4.2：威脅向量` |
 
 A pre-commit hook is configured to reject any commit containing `§` (U+00A7).

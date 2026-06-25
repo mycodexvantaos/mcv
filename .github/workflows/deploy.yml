@@ -171,7 +171,7 @@ jobs:
           IMAGE_TAG: ${{ needs.container-build.outputs.image_tag }}
         run: |
           kubectl set image deployment/mycodexvantaos \
-            mycodexvantaos=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$(echo "$IMAGE_TAG" | head -1) \
+            mycodexvantaos=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:"$(echo "$IMAGE_TAG" | head -1)" \
             -n staging
 
       - name: Wait for rollout
@@ -245,7 +245,7 @@ jobs:
           IMAGE_TAG: ${{ needs.container-build.outputs.image_tag }}
         run: |
           kubectl set image deployment/mycodexvantaos \
-            mycodexvantaos=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$(echo "$IMAGE_TAG" | head -1) \
+            mycodexvantaos=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:"$(echo "$IMAGE_TAG" | head -1)" \
             -n staging
 
       - name: Wait for rollout
