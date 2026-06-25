@@ -1,0 +1,8 @@
+apiVersion: mycodexvantaos.io/v1
+kind: ResourceDefinition
+metadata:
+  name: workspace
+spec:
+  kind: Workspace
+  group: mycodexvantaos.io
+  version: v1

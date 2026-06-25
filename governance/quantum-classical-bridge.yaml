@@ -1,0 +1,23 @@
+apiVersion: mycodexvantaos.io/v1
+kind: QuantumClassicalBridge
+metadata:
+  name: quantum-classical-bridge
+  description: Quantum-classical bridge governance specification
+
+spec:
+  kubernetesApiGroup: mycodexvantaos.quantum
+  apiGroupNote: >
+    The dotted value is allowed only because Kubernetes API groups follow DNS-like naming conventions.
+    This exception MUST NOT apply to file basenames, directory names, service IDs, packages, URNs, or OCI names.
+
+  crdPaths:
+    - infra/kubernetes/crds/quantum.mycodexvantaos.io.yaml
+    - infra/kubernetes/crds/aitasks.mycodexvantaos.io.yaml
+    - infra/kubernetes/crds/providers.mycodexvantaos.io.yaml
+
+  quantumProviders:
+    - quantum-runtime-native
+    - quantum-simulator-qiskit
+    - quantum-processor-native
+    - quantum-circuit-native
+    - quantum-observability-native

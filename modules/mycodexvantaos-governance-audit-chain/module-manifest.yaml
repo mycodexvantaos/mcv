@@ -1,0 +1,33 @@
+apiVersion: mycodexvantaos.io/v1
+kind: ServiceManifest
+metadata:
+  name: mycodexvantaos-governance-audit-chain
+  urn: urn:mycodexvantaos:service:mycodexvantaos-governance-audit-chain
+  serviceId: mycodexvantaos-governance-audit-chain
+  tier: tier-0
+
+spec:
+  serviceId: mycodexvantaos-governance-audit-chain
+  tier: tier-0
+  packageName: '@mycodexvantaos/governance-audit-chain'
+  ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-governance-audit-chain
+  kubernetesResourceName: mycodexvantaos-governance-audit-chain
+  internalUri: mycodexvantaos://service/mycodexvantaos-governance-audit-chain
+  urn: urn:mycodexvantaos:service:mycodexvantaos-governance-audit-chain
+
+  supportedRuntimeModes:
+    - native
+    - connected
+    - hybrid
+
+  deploymentTargets:
+    - kubernetes
+    - docker-compose
+
+  productionReadiness:
+    required: true
+    healthCheckRequired: true
+    auditChainRequired: true
+    sbomRequired: true
+    provenanceRequired: true
+    imagePinningRequired: true

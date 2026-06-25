@@ -1,0 +1,10 @@
+apiVersion: mycodexvantaos.io/v1
+kind: RootModule
+metadata:
+  name: policies
+  urn: urn:mycodexvantaos:policies:module:policies
+spec:
+  moduleType: policies
+  description: Platform governance policies
+  runtimeCodeAllowed: false
+  deploymentAllowed: false

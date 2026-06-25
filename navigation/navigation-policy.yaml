@@ -1,0 +1,23 @@
+apiVersion: mycodexvantaos.io/v1
+kind: NavigationPolicy
+metadata:
+  name: navigation-policy
+
+spec:
+  hardDependencyCyclePolicy:
+    action: block
+    severity: critical
+
+  bidirectionalLogicalCouplingPolicy:
+    requiresMediatorArtifact: true
+    approvedMediators:
+      - contracts/
+      - schemas/
+      - contracts/events/
+      - ports/
+      - governance/policies/
+      - platform/service-catalog.yaml
+
+  navigationIndexPolicy:
+    mustNotCreateHardRuntimeDependencies: true
+    mustBeGovernanceArtifacts: true

@@ -1,0 +1,44 @@
+apiVersion: mycodexvantaos.io/v1
+kind: UnifiedGateIndex
+metadata:
+  name: unified-gate-index
+  ssot: true
+  authority: unified-gate-governance
+
+spec:
+  gatePlanes:
+    - name: quality-gates
+      path: ./quality-gates/
+      type: quality
+    - name: ai-infra-gates
+      path: ./ai-infra-gates/
+      type: ai-infrastructure
+    - name: production-gates
+      path: ./production-gates/
+      type: production
+
+  gateCategories:
+    - static-analysis
+    - test-coverage
+    - security
+    - performance
+    - accessibility
+    - reliability
+    - maintainability
+    - architecture
+    - ai-task
+    - agent-runtime
+    - model-provider
+    - embedding
+    - vector-store
+    - rag
+    - evaluation
+    - quantum
+    - outcome-billing
+    - production-readiness
+    - runtime-mode
+    - provider-health
+    - deployment
+    - observability
+    - rollback
+    - release-promotion

@@ -1,0 +1,6 @@
+apiVersion: mycodexvantaos.io/v1
+kind: FoundationSpec
+metadata:
+  name: foundation-roadmap
+  description: foundation-roadmap for MyCodexVantaOS platform foundations
+spec: {}

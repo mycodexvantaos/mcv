@@ -1,0 +1,62 @@
+apiVersion: mycodexvantaos.io/v1
+kind: AiInfraGatesCatalog
+metadata:
+  name: ai-infra-gates-catalog
+  ssot: true
+  authority: ai-infra-gate-registry
+
+spec:
+  gates:
+    - id: ai-task-gate
+      name: AI Task Gate
+      category: ai-task
+      criticality: critical
+      evidenceRequired: true
+
+    - id: agent-runtime-gate
+      name: Agent Runtime Gate
+      category: agent-runtime
+      criticality: high
+      evidenceRequired: true
+
+    - id: model-provider-gate
+      name: Model Provider Gate
+      category: model-provider
+      criticality: high
+      evidenceRequired: true
+
+    - id: embedding-gate
+      name: Embedding Gate
+      category: embedding
+      criticality: high
+      evidenceRequired: true
+
+    - id: vector-store-gate
+      name: Vector Store Gate
+      category: vector-store
+      criticality: high
+      evidenceRequired: true
+
+    - id: rag-gate
+      name: RAG Gate
+      category: rag
+      criticality: medium
+      evidenceRequired: true
+
+    - id: evaluation-gate
+      name: Evaluation Gate
+      category: evaluation
+      criticality: medium
+      evidenceRequired: true
+
+    - id: quantum-gate
+      name: Quantum Gate
+      category: quantum
+      criticality: medium
+      evidenceRequired: true
+
+    - id: outcome-billing-gate
+      name: Outcome Billing Gate
+      category: outcome-billing
+      criticality: high
+      evidenceRequired: true

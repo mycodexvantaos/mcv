@@ -1,0 +1,8 @@
+apiVersion: mycodexvantaos.io/v1
+kind: ReleaseCandidate
+metadata:
+  name: release-candidate
+spec:
+  version: 0.1.0
+  status: draft
+  gates: []

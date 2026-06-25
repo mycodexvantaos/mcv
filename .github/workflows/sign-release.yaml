@@ -22,6 +22,10 @@ permissions:
   id-token: write
   attestations: write
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   sign-provenance:
     name: Sign Release Provenance (cosign keyless)
