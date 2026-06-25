@@ -162,7 +162,7 @@ jobs:
             type=raw,value=${{ needs.prepare.outputs.version }}
 
       - name: Build and push
-        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8
+        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf
         with:
           context: .
           file: ./Dockerfile
@@ -206,7 +206,7 @@ jobs:
 
       - name: Configure kubectl
         if: steps.kube-guard.outputs.has_kube_config == 'true'
-        uses: azure/setup-kubectl@901a10e89ea615cf61f57ac05cecdf23e7de06d8
+        uses: azure/setup-kubectl@829323503d1be3d00ca8346e5391ca0b07a9ab0d
 
       - name: Set kubeconfig
         if: steps.kube-guard.outputs.has_kube_config == 'true'
