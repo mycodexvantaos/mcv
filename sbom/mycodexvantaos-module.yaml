@@ -1,0 +1,10 @@
+apiVersion: mycodexvantaos.io/v1
+kind: RootModule
+metadata:
+  name: sbom
+  urn: urn:mycodexvantaos:sbom:module:sbom
+spec:
+  moduleType: sbom
+  description: Software Bill of Materials management
+  runtimeCodeAllowed: false
+  deploymentAllowed: false

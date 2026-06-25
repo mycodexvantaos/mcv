@@ -1,0 +1,25 @@
+apiVersion: mycodexvantaos.io/v1
+kind: ProviderManifest
+metadata:
+  name: embedding-workers-ai
+  urn: urn:mycodexvantaos:provider:embedding-workers-ai
+
+spec:
+  id: embedding-workers-ai
+  capability: embedding
+  source: cloudflare-workers-ai
+  status: active
+  criticality: high
+
+  supportsModes:
+    - native
+    - connected
+    - hybrid
+
+  healthCheck:
+    enabled: true
+    endpoint: /health
+
+  observability:
+    metricsEnabled: true
+    tracingEnabled: true

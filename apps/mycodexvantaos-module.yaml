@@ -1,0 +1,10 @@
+apiVersion: mycodexvantaos.io/v1
+kind: RootModule
+metadata:
+  name: apps
+  urn: urn:mycodexvantaos:apps:module:apps
+spec:
+  moduleType: applications
+  description: Application entrypoints for MyCodexVantaOS
+  runtimeCodeAllowed: true
+  deploymentAllowed: true

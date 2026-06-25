@@ -1,0 +1,25 @@
+apiVersion: mycodexvantaos.io/v1
+kind: ProviderManifest
+metadata:
+  name: graph-native
+  urn: urn:mycodexvantaos:provider:graph-native
+
+spec:
+  id: graph-native
+  capability: graph
+  source: native
+  status: active
+  criticality: high
+
+  supportsModes:
+    - native
+    - connected
+    - hybrid
+
+  healthCheck:
+    enabled: true
+    endpoint: /health
+
+  observability:
+    metricsEnabled: true
+    tracingEnabled: true

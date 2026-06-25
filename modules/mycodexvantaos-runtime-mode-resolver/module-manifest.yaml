@@ -1,0 +1,33 @@
+apiVersion: mycodexvantaos.io/v1
+kind: ServiceManifest
+metadata:
+  name: mycodexvantaos-runtime-mode-resolver
+  urn: urn:mycodexvantaos:service:mycodexvantaos-runtime-mode-resolver
+  serviceId: mycodexvantaos-runtime-mode-resolver
+  tier: tier-0
+
+spec:
+  serviceId: mycodexvantaos-runtime-mode-resolver
+  tier: tier-0
+  packageName: '@mycodexvantaos/runtime-mode-resolver'
+  ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-runtime-mode-resolver
+  kubernetesResourceName: mycodexvantaos-runtime-mode-resolver
+  internalUri: mycodexvantaos://service/mycodexvantaos-runtime-mode-resolver
+  urn: urn:mycodexvantaos:service:mycodexvantaos-runtime-mode-resolver
+
+  supportedRuntimeModes:
+    - native
+    - connected
+    - hybrid
+
+  deploymentTargets:
+    - kubernetes
+    - docker-compose
+
+  productionReadiness:
+    required: true
+    healthCheckRequired: true
+    auditChainRequired: true
+    sbomRequired: true
+    provenanceRequired: true
+    imagePinningRequired: true

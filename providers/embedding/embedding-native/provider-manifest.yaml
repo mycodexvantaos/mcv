@@ -1,0 +1,25 @@
+apiVersion: mycodexvantaos.io/v1
+kind: ProviderManifest
+metadata:
+  name: embedding-native
+  urn: urn:mycodexvantaos:provider:embedding-native
+
+spec:
+  id: embedding-native
+  capability: embedding
+  source: native
+  status: active
+  criticality: high
+
+  supportsModes:
+    - native
+    - connected
+    - hybrid
+
+  healthCheck:
+    enabled: true
+    endpoint: /health
+
+  observability:
+    metricsEnabled: true
+    tracingEnabled: true

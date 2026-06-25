@@ -1,0 +1,6 @@
+apiVersion: mycodexvantaos.io/v1
+kind: NavigationMap
+metadata:
+  name: service-map
+  description: service-map for MyCodexVantaOS
+spec: {}

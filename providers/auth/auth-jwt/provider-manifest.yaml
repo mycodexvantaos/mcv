@@ -1,0 +1,25 @@
+apiVersion: mycodexvantaos.io/v1
+kind: ProviderManifest
+metadata:
+  name: auth-jwt
+  urn: urn:mycodexvantaos:provider:auth-jwt
+
+spec:
+  id: auth-jwt
+  capability: auth
+  source: jwt
+  status: active
+  criticality: high
+
+  supportsModes:
+    - native
+    - connected
+    - hybrid
+
+  healthCheck:
+    enabled: true
+    endpoint: /health
+
+  observability:
+    metricsEnabled: true
+    tracingEnabled: true
