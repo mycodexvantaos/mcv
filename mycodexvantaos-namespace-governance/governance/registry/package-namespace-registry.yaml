@@ -1,0 +1,6 @@
+apiVersion: mycodexvantaos.io/v1
+kind: NamespaceRegistry
+metadata:
+  name: package-namespace-registry
+spec:
+  entries: []

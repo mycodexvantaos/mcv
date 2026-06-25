@@ -1,0 +1,25 @@
+apiVersion: mycodexvantaos.io/v1
+kind: ProviderManifest
+metadata:
+  name: quantum-simulator-qiskit
+  urn: urn:mycodexvantaos:provider:quantum-simulator-qiskit
+
+spec:
+  id: quantum-simulator-qiskit
+  capability: quantum-simulator
+  source: qiskit
+  status: active
+  criticality: high
+
+  supportsModes:
+    - native
+    - connected
+    - hybrid
+
+  healthCheck:
+    enabled: true
+    endpoint: /health
+
+  observability:
+    metricsEnabled: true
+    tracingEnabled: true

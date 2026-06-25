@@ -1,0 +1,12 @@
+apiVersion: mycodexvantaos.io/v1
+kind: RootModule
+metadata:
+  name: governance
+  urn: urn:mycodexvantaos:governance:module:governance
+  domain: governance
+  layer: governance
+spec:
+  moduleType: governance
+  description: Platform governance specification and policy enforcement
+  runtimeCodeAllowed: false
+  deploymentAllowed: false

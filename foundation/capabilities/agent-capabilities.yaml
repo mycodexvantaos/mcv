@@ -1,0 +1,7 @@
+apiVersion: mycodexvantaos.io/v1
+kind: FoundationCapabilities
+metadata:
+  name: agent-capabilities
+spec:
+  foundation: agent-foundation
+  capabilities: []

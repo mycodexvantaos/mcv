@@ -1,0 +1,10 @@
+apiVersion: mycodexvantaos.io/v1
+kind: RootModule
+metadata:
+  name: packages
+  urn: urn:mycodexvantaos:packages:module:packages
+spec:
+  moduleType: packages
+  description: Shared packages for MyCodexVantaOS
+  runtimeCodeAllowed: true
+  deploymentAllowed: false

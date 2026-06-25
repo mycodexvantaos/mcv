@@ -1,0 +1,7 @@
+apiVersion: mycodexvantaos.io/v1
+kind: NamespaceClosureProof
+metadata:
+  name: derived-identity-closure-proof
+spec:
+  proofStatus: pending
+  validatedAt: null

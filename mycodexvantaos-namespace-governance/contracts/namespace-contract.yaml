@@ -1,0 +1,5 @@
+apiVersion: mycodexvantaos.io/v1
+kind: NamespaceContract
+metadata:
+  name: namespace-contract
+spec: {}

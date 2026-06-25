@@ -1,0 +1,10 @@
+apiVersion: mycodexvantaos.io/v1
+kind: ObservabilityConfig
+metadata:
+  name: observability-config
+spec:
+  provider: observability-opentelemetry
+  metricsEnabled: true
+  tracingEnabled: true
+  loggingEnabled: true
+  otlpEndpoint: http://otel-collector:4317

@@ -1,0 +1,6 @@
+apiVersion: mycodexvantaos.io/v1
+kind: AiInfraGates
+metadata:
+  name: evaluation-gates
+spec:
+  gates: []

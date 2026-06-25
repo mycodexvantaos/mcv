@@ -1,0 +1,13 @@
+apiVersion: mycodexvantaos.io/v1
+kind: AuditRetentionPolicy
+metadata:
+  name: audit-retention-policy
+spec:
+  critical:
+    minimumRetentionDays: 2555
+  high:
+    minimumRetentionDays: 1095
+  medium:
+    minimumRetentionDays: 365
+  low:
+    minimumRetentionDays: 180

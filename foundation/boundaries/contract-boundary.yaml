@@ -1,0 +1,7 @@
+apiVersion: mycodexvantaos.io/v1
+kind: FoundationBoundary
+metadata:
+  name: contract-boundary
+spec:
+  foundation: contract-foundation
+  boundaryType: specification-unit

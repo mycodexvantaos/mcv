@@ -1,0 +1,4 @@
+# Values override for production environment
+global:
+  runtimeMode: connected
+  deploymentTarget: kubernetes
