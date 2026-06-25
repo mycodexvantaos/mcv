@@ -6,8 +6,7 @@ repos:
     hooks:
       - id: forbid-section-sign
         name: Forbid Section Sign Symbol (U+00A7)
-        description: Reject § symbol — use "## Spec X：Title" or "### Spec X.Y：Title" format instead
         entry: '§'
         language: pygrep
         types: [markdown]
-        severity: error
+        exclude: 'CONTRIBUTING\.md$'

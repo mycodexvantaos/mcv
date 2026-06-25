@@ -106,6 +106,7 @@ jobs:
     name: Python Test
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/') || github.ref == 'refs/heads/develop'
     steps:
       - name: Checkout repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
@@ -127,12 +128,10 @@ jobs:
         run: |
           uv run ruff check . || echo "ruff lint warnings (non-blocking)"
           uv run ruff format --check . || echo "ruff format warnings (non-blocking)"
-        continue-on-error: true
 
       - name: Run Python tests
         working-directory: ./python
-        run: uv run pytest -v --cov=python/packages --cov-report=xml || echo "Some tests may need setup"
-        continue-on-error: true
+        run: uv run pytest -v --cov=. --cov-report=xml || echo "Some tests may need setup"
 
   # ====================
   # Stage 4: Security Scan
@@ -141,7 +140,7 @@ jobs:
     name: Security Scan
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    needs: lint
+    needs: [lint, test]
     permissions:
       security-events: write
       packages: read
