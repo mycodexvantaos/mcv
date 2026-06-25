@@ -1,0 +1,14 @@
+{
+  "name": "@mycodexvantaos/sdk",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MyCodexVantaOS sdk package",
+  "license": "UNLICENSED",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "lint": "eslint src/"
+  }
+}

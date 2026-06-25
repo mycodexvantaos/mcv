@@ -1,0 +1,25 @@
+apiVersion: mycodexvantaos.io/v1
+kind: ProviderManifest
+metadata:
+  name: quantum-circuit-native
+  urn: urn:mycodexvantaos:provider:quantum-circuit-native
+
+spec:
+  id: quantum-circuit-native
+  capability: quantum-circuit
+  source: native
+  status: active
+  criticality: high
+
+  supportsModes:
+    - native
+    - connected
+    - hybrid
+
+  healthCheck:
+    enabled: true
+    endpoint: /health
+
+  observability:
+    metricsEnabled: true
+    tracingEnabled: true

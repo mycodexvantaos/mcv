@@ -1,0 +1,11 @@
+apiVersion: mycodexvantaos.io/v1
+kind: ReleaseConfig
+metadata:
+  name: release-config
+spec:
+  primaryDigestAlgorithm: sha3-512
+  auditChainDigestAlgorithm: sha256
+  fastComparisonDigestAlgorithm: blake3
+  imagePinningRequired: true
+  sbomRequired: true
+  provenanceRequired: true

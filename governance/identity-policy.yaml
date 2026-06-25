@@ -1,0 +1,32 @@
+apiVersion: mycodexvantaos.io/v1
+kind: IdentityPolicy
+metadata:
+  name: identity-policy
+  ssot: true
+  authority: canonical-identity-registry
+
+spec:
+  humanFacingFields:
+    allowed:
+      - MyCodexVantaOS
+      - MyCodeXvantaOS
+      - MyCodeXvanta OS
+    preferred: MyCodexVantaOS
+
+  machineFacingFields:
+    allowed:
+      - mycodexvantaos
+    forbidden:
+      - MyCodexVantaOS
+      - MyCodeXvantaOS
+      - MyCodeXvanta OS
+      - mycodexvanta-os
+      - codexvanta-os
+      - codexvanta
+      - codevantaos
+      - KUBO
+      - kubo
+      - AXIOM
+      - axiom
+
+  violationAction: block
