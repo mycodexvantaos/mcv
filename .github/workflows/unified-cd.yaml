@@ -206,7 +206,7 @@ jobs:
 
       - name: Configure kubectl
         if: steps.kube-guard.outputs.has_kube_config == 'true'
-        uses: azure/setup-kubectl@901a10e89ea615cf61f57ac05cecdf23e7de06d8
+        uses: azure/setup-kubectl@829323503d1be3d00ca8346e5391ca0b07a9ab0d
 
       - name: Set kubeconfig
         if: steps.kube-guard.outputs.has_kube_config == 'true'
