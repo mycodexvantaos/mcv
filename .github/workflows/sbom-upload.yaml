@@ -21,7 +21,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Checkout repository
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
 
       - name: Generate SBOM with Syft
         env:
@@ -32,7 +32,7 @@ jobs:
           syft dir:. -o cyclonedx-json > sbom-mycodexvantaos.json
 
       - name: Upload SBOM as release asset
-        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65
+        uses: softprops/action-gh-release@718ea10b132b3b2eba29c1007bb80653f286566b
         if: github.event_name == 'release'
         with:
           files: sbom-mycodexvantaos.json
