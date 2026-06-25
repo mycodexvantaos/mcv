@@ -1,0 +1,9 @@
+apiVersion: mycodexvantaos.io/v1
+kind: ValidationConfig
+metadata:
+  name: validation-config
+spec:
+  blockingLevels:
+    - critical
+    - high
+  reportOutputDirectory: outputs/

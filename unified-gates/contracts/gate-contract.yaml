@@ -1,0 +1,5 @@
+apiVersion: mycodexvantaos.io/v1
+kind: GateContract
+metadata:
+  name: gate-contract
+spec: {}

@@ -1,0 +1,10 @@
+apiVersion: mycodexvantaos.io/v1
+kind: RootModule
+metadata:
+  name: artifacts
+  urn: urn:mycodexvantaos:artifacts:module:artifacts
+spec:
+  moduleType: artifacts
+  description: Release artifact management
+  runtimeCodeAllowed: false
+  deploymentAllowed: false

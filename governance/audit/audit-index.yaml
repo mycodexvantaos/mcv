@@ -1,0 +1,6 @@
+apiVersion: mycodexvantaos.io/v1
+kind: AuditIndex
+metadata:
+  name: audit-index
+spec:
+  auditEvents: []

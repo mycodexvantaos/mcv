@@ -1,0 +1,5 @@
+apiVersion: mycodexvantaos.io/v1
+kind: NamingSpec
+metadata:
+  name: urn-spec
+spec: {}

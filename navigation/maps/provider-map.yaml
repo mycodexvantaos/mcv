@@ -1,0 +1,6 @@
+apiVersion: mycodexvantaos.io/v1
+kind: NavigationMap
+metadata:
+  name: provider-map
+  description: provider-map for MyCodexVantaOS
+spec: {}

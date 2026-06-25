@@ -1,0 +1,11 @@
+apiVersion: mycodexvantaos.io/v1
+kind: GovernanceConfig
+metadata:
+  name: governance-config
+spec:
+  identityPolicyPath: governance/identity-policy.yaml
+  namingPolicyPath: governance/naming-policy.schema.json
+  capabilitySetPath: governance/capability-set.yaml
+  providerRegistryPath: governance/provider-registry.yaml
+  runtimeModePolicyPath: governance/runtime-mode-policy.yaml
+  serviceCatalogPath: platform/service-catalog.yaml

@@ -1,0 +1,6 @@
+apiVersion: mycodexvantaos.io/v1
+kind: NavigationGraph
+metadata:
+  name: foundation-service-graph
+  description: foundation-service-graph for MyCodexVantaOS
+spec: {}
