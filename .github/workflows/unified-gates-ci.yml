@@ -29,9 +29,6 @@ on:
         default: 'all'
         type: string
 
-permissions:
-  contents: read
-
 env:
   PYTHON_VERSION: '3.12'
   GATES_ROOT: './unified-gates'
@@ -41,6 +38,8 @@ jobs:
   namespace-governance:
     name: Namespace Governance Validation
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -95,6 +94,8 @@ jobs:
     name: Schema Validation
     runs-on: ubuntu-latest
     needs: namespace-governance
+    permissions:
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -117,6 +118,8 @@ jobs:
     name: Gate Catalog Validation
     runs-on: ubuntu-latest
     needs: schema-validation
+    permissions:
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -139,6 +142,8 @@ jobs:
     name: AI Infrastructure Gates Validation
     runs-on: ubuntu-latest
     needs: gate-catalog-validation
+    permissions:
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -162,6 +167,8 @@ jobs:
     name: Gate Composition Validation
     runs-on: ubuntu-latest
     needs: ai-infra-gates-validation
+    permissions:
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -185,6 +192,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: gate-composition-validation
     if: always()
+    permissions:
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

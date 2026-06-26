@@ -15,6 +15,8 @@ jobs:
   namespace-check:
     name: Namespace Governance Validation
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
 
