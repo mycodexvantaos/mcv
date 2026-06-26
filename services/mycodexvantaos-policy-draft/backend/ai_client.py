@@ -108,5 +108,7 @@ async def stream_document_generation(
             proc.kill()
             await proc.wait()
         except ProcessLookupError:
+            # The subprocess may have already exited between failure handling and kill().
+            # Ignore this race-condition cleanup error and re-raise the original exception.
             pass
         raise
