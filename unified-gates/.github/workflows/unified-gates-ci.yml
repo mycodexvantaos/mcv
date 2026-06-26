@@ -69,7 +69,7 @@ jobs:
             --verbose
 
       - name: Scan file headers (strict mode)
-        if: ${{ inputs.strict_mode == 'true' }}
+        if: ${{ inputs.strict_mode == true || inputs.strict_mode == 'true' }}
         run: |
           python ci/namespace_check.py \
             --scan-dir unified-gates/ \
@@ -78,7 +78,7 @@ jobs:
             --verbose
 
       - name: Scan file headers (standard mode)
-        if: ${{ inputs.strict_mode != 'true' }}
+        if: ${{ !(inputs.strict_mode == true || inputs.strict_mode == 'true') }}
         run: |
           python ci/namespace_check.py \
             --scan-dir unified-gates/ \
@@ -105,7 +105,7 @@ jobs:
         run: |
           python unified-gates/scripts/validate-gate-schema.py \
             --root ${{ env.GATES_ROOT }} \
-            --output ${{ env.REPORT_DIR }}/gate-validation-report.json
+            --report ${{ env.REPORT_DIR }}/gate-validation-report.json
 
   gate-catalog-validation:
     name: Gate Catalog Validation
@@ -127,7 +127,7 @@ jobs:
         run: |
           python unified-gates/scripts/validate-gate-catalog.py \
             --root ${{ env.GATES_ROOT }} \
-            --output ${{ env.REPORT_DIR }}/gate-catalog-validation.json
+            --report ${{ env.REPORT_DIR }}/gate-catalog-validation.json
 
   ai-infra-gates-validation:
     name: AI Infrastructure Gates Validation
@@ -150,7 +150,7 @@ jobs:
           python unified-gates/scripts/validate-ai-infra-gates.py \
             --root ${{ env.GATES_ROOT }} \
             --layer ${{ inputs.layer || 'all' }} \
-            --output ${{ env.REPORT_DIR }}/ai-infra-gate-validation.json
+            --report ${{ env.REPORT_DIR }}/ai-infra-gate-validation.json
 
   gate-composition-validation:
     name: Gate Composition Validation
@@ -172,7 +172,7 @@ jobs:
         run: |
           python unified-gates/scripts/validate-gate-composition.py \
             --root ${{ env.GATES_ROOT }} \
-            --output ${{ env.REPORT_DIR }}/gate-composition-validation.json
+            --report ${{ env.REPORT_DIR }}/gate-composition-validation.json
 
   generate-reports:
     name: Generate Gate Reports
