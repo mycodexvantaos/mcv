@@ -122,7 +122,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./python
-        run: uv sync --extra dev
+        run: uv sync --all-packages --extra dev
 
       - name: Run Python linter
         working-directory: ./python
