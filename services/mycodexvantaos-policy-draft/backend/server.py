@@ -16,7 +16,6 @@ from doc_filter import get_filter_config
 from file_store import (
     delete_document,
     get_document,
-    get_txt_path,
     list_documents,
     save_document,
 )
