@@ -55,6 +55,7 @@ class WorkflowRunSummary(BaseModel):
     status: str
     conclusion: str | None = None
     head_branch: str
+    head_sha: str = ""
     event: str
     created_at: datetime
     updated_at: datetime
