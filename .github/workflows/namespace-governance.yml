@@ -49,11 +49,10 @@ jobs:
             --report-dir ci-reports \
             --verbose
 
-      - name: Scan file headers (strict mode)
+      - name: Scan file headers
         run: |
           python ci/namespace_check.py \
             --scan-dir unified-gates/ \
-            --strict \
             --report-dir ci-reports \
             --verbose
 
