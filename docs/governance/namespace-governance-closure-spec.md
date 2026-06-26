@@ -8,6 +8,11 @@
 > 品牌識別：`MyCodexVantaOS`  
 > 狀態：normative  
 > 執行語義：MUST / MUST NOT / SHOULD / MAY
+> 規格版本：1.0.0
+> 治理代碼：mycodexvantaos-00000
+> Schema 參照：schemas/namespace-governance-code.schema.json, schemas/namespace-registry-record.schema.json
+> CI 驗證器：ci/namespace_check.py
+> 基線登錄：config/namespace-registry-baseline.yaml
 
 ---
 
@@ -44,6 +49,8 @@ namespace governance is architecture metadata, dependency language, lifecycle st
 
 ## I.1.1 Canonical Naming Constraints
 
+<!-- CI Rule IDs: R-02 (uppercase), R-03 (underscore), R-04 (dot), R-05 (whitespace), R-06 (version suffix), R-07 (env marker) -->
+
 All machine-facing names MUST follow:
 
 ```text
@@ -77,6 +84,8 @@ softwareos-qa-service
 ```
 
 ## I.1.2 Canonical Code Form
+
+<!-- CI Rule IDs: G-02 (space-based form detection) -->
 
 The original human-readable form:
 
@@ -190,6 +199,8 @@ softwareos-github-action
 
 ## I.2.4 Namespace Plane Dependency Rule
 
+<!-- CI Rule IDs: DP-01 (control→product hard dep), DP-02 (bidirectional hard dep), DP-03 (cycle detection) -->
+
 Product-plane services MAY depend on control-plane contracts and platform services.
 
 Control-plane services MUST NOT hard-depend on product-plane runtime implementations.
@@ -278,6 +289,8 @@ semantic family: security / authentication
 ```
 
 ## I.3.2 Canonical Regex
+
+<!-- CI Rule IDs: G-01 (canonical regex match), G-03 (era range classification) -->
 
 The canonical identifier MUST match:
 
@@ -543,6 +556,8 @@ softwareos-qa-service
 
 ## I.6.2 Repository Name Regex
 
+<!-- CI Rule IDs: R-01 (canonical pattern match), R-08 (namespace registration), R-09 (domain vocab), R-10 (function vocab) -->
+
 Repository names MUST match:
 
 ```text
@@ -625,6 +640,10 @@ infra/helm/values-prod.yaml
 | `rollback`         | rollback automation                                     | `mycodexvantaos-rollback-engine`       |
 | `scheduler`        | task scheduling                                         | `mycodexvantaos-scheduler-service`     |
 | `alertd`           | alert routing and notification                          | `mycodexvantaos-alertd-service`        |
+
+> **Disambiguation Note：`controller`** — The term `controller` appears in both the domain vocabulary (I.7.2) and the function vocabulary (I.7.3). In the structural pattern `{namespace}-{domain}-{function}`, disambiguation is by position. Domain `controller` denotes the controller responsibility area; function `controller` denotes the reconciliation controller pattern. Example：`mycodexvantaos-controller-manager` has domain=controller, function=manager; `mycodexvantaos-rolloutd-controller` has domain=rolloutd, function=controller.
+
+<!-- CI Rule IDs: R-09 (domain vocabulary), R-10 (function vocabulary) -->
 
 ## I.7.3 Function Vocabulary
 
@@ -836,6 +855,18 @@ Namespace lifecycle MUST follow:
 proposed → active → deprecated → archived → destroyed
 ```
 
+Valid lifecycle values and transitions:
+
+| From         | To           | Condition                       |
+| ------------ | ------------ | ------------------------------- |
+| `proposed`   | `active`     | validation + approval passed    |
+| `active`     | `deprecated` | inactivity-period-exceeded      |
+| `deprecated` | `archived`   | migration-complete              |
+| `archived`   | `destroyed`  | retention-period-expired        |
+| `destroyed`  | — (terminal) | no outgoing transitions allowed |
+
+<!-- CI Rule IDs: LC-01 (stage validity), LC-02 (transition validity), LC-03 (terminal state), NR-02 (lifecycle stage), NR-06 (destroyed reuse) -->
+
 Canonical lifecycle record:
 
 ```yaml
@@ -907,6 +938,8 @@ Deprecated namespace identifiers SHOULD remain resolvable through compatibility 
 # I.11 Namespace Registry
 
 ## I.11.1 Registry Responsibility
+
+<!-- CI Rule IDs: NR-01 (required fields), NR-05 (uniqueness), NR-06 (destroyed reuse) -->
 
 A namespace registry MUST:
 
@@ -1249,45 +1282,148 @@ Final enforcement MUST block non-compliant names, invalid namespace codes, cycli
 
 # I.17 CI Validation Requirements
 
-CI SHOULD validate:
+## I.17.1 MUST FAIL Conditions
 
-- repository name matches canonical pattern
-- namespace is registered
-- domain is in controlled vocabulary
-- function is in controlled vocabulary
-- governance code matches `^mycodexvantaos-[0-9]{5}$`
-- no space-based governance code remains
-- no environment marker exists in name
-- no version number exists in name
-- lifecycle status is valid
-- cross-era mapping is valid
-- binding mediator exists for bidirectional logical relation
-- hard dependency graph remains acyclic
-- governance exception file is valid
-- destroyed namespace identifiers are not reused
+CI MUST fail when any of the following conditions are detected：
 
-CI MUST fail when:
+| Rule ID | Condition                                                    | Spec Ref     |
+| ------- | ------------------------------------------------------------ | ------------ |
+| R-01    | Repository name does not match canonical pattern             | I.6.2        |
+| R-02    | Repository name contains uppercase characters                | I.1.1        |
+| R-03    | Repository name contains underscore                          | I.1.1        |
+| R-04    | Repository name contains semantic dot                        | I.1.4        |
+| R-05    | Repository name contains whitespace                          | I.1.1        |
+| R-06    | Repository name contains version number suffix               | I.1.1, I.6.3 |
+| R-07    | Repository name contains environment marker                  | I.6.3, I.6.4 |
+| R-08    | Namespace prefix is not registered                           | I.2.1        |
+| R-09    | Domain segment not in controlled vocabulary                  | I.7.2        |
+| R-10    | Function segment not in controlled vocabulary                | I.7.3        |
+| G-01    | Governance code does not match canonical regex               | I.3.2        |
+| G-02    | Governance code uses space separator (forbidden legacy form) | I.1.2        |
+| DP-01   | Control-plane service hard-depends on product-plane          | I.2.4        |
+| DP-02   | Bidirectional hard dependency without binding mediator       | I.8.2        |
+| DP-03   | Cyclic hard dependency detected                              | I.17         |
+| NR-01   | Registry record missing required fields                      | I.11         |
+| NR-02   | Invalid lifecycle stage in registry record                   | I.10.1       |
+| NR-05   | Duplicate registry ID detected                               | I.9.2        |
+| NR-06   | Destroyed namespace identifier reused                        | I.10.2       |
+| LC-01   | Invalid lifecycle stage value                                | I.10.1       |
+| LC-02   | Disallowed lifecycle transition                              | I.10.1       |
+| LC-03   | Transition out of destroyed (terminal state)                 | I.10.1       |
+| F-02    | Path declaration does not start with registered namespace    | I.2.1        |
+| F-05    | File contains space-based governance code                    | I.1.2        |
 
-- repository name violates naming rule
-- governance code uses spaces
-- governance code is malformed
-- namespace is unregistered
-- domain or function is unknown
-- bidirectional hard dependency is detected
-- binding mediator is missing
-- lifecycle transition is invalid
-- destroyed namespace is reused
+## I.17.2 SHOULD Validate Conditions
 
-Recommended CI artifacts:
+CI SHOULD validate the following conditions and emit warnings：
 
-```text
-namespace-governance-report.json
-namespace-registry-drift-report.json
-namespace-closure-proof-report.json
-repository-naming-validation-report.json
+| Rule ID | Condition                                         | Spec Ref |
+| ------- | ------------------------------------------------- | -------- |
+| G-03    | Governance code era range classification          | I.4.1    |
+| F-01    | File missing namespace path declaration in header | I.1, I.6 |
+| F-04    | Declared path contains uppercase characters       | I.1.1    |
+| F-06    | Malformed inline governance code reference        | I.3.2    |
+| NR-03   | Governance code format in registry record         | I.3.2    |
+| NR-04   | Repository name compliance in registry record     | I.6.2    |
+
+## I.17.3 CI Report Artifacts
+
+CI validation MUST produce the following JSON reports：
+
+| Artifact                 | Filename                                   | Description                                                           |
+| ------------------------ | ------------------------------------------ | --------------------------------------------------------------------- |
+| Master governance report | `namespace-governance-report.json`         | Aggregated validation results across all rule categories              |
+| Registry drift report    | `namespace-registry-drift-report.json`     | Namespace registry consistency and drift detection                    |
+| Closure proof report     | `namespace-closure-proof-report.json`      | Namespace closure validation (completeness, consistency, termination) |
+| Repository naming report | `repository-naming-validation-report.json` | File header path and repository naming validation                     |
+
+Report JSON schema：
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "NamespaceGovernanceValidationReport",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "spec_version",
+    "tool_version",
+    "overall_status",
+    "summary",
+    "results"
+  ],
+  "properties": {
+    "generated_at": { "type": "string", "format": "date-time" },
+    "spec_version": { "type": "string", "const": "mycodexvantaos-00000" },
+    "tool_version": { "type": "string" },
+    "overall_status": { "type": "string", "enum": ["PASS", "FAIL"] },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "total": { "type": "integer" },
+        "passed": { "type": "integer" },
+        "failed": { "type": "integer" },
+        "warnings": { "type": "integer" }
+      }
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["rule_id", "level", "status", "subject", "message"],
+        "properties": {
+          "rule_id": { "type": "string" },
+          "level": { "type": "string", "enum": ["MUST", "SHOULD", "MAY"] },
+          "status": { "type": "string", "enum": ["PASS", "FAIL", "WARN", "SKIP"] },
+          "subject": { "type": "string" },
+          "message": { "type": "string" },
+          "detail": { "type": "string" }
+        }
+      }
+    }
+  }
+}
 ```
 
----
+## I.17.4 Exit Code Convention
+
+| Exit Code | Meaning                                                  |
+| --------- | -------------------------------------------------------- |
+| 0         | All MUST checks passed (warnings MAY exist)              |
+| 1         | One or more MUST checks failed                           |
+| 2         | Internal error (invalid arguments, file not found, etc.) |
+
+## I.17.5 File Header Path Convention
+
+Source files SHOULD declare their namespace path within the first 10 lines using one of the following formats：
+
+```text
+# path: mycodexvantaos-auth-service/src/main.py
+# mycodexvantaos-auth-service/src/main.py
+// path: softwareos-qa-service/lib/query.ts
+/* path: mycodexvantaos-policy-engine/core/engine.go */
+```
+
+YAML/TOML key-value path declaration：
+
+```yaml
+path: mycodexvantaos-auth-service/src/config.yaml
+source: softwareos-qa-service/lib/queries.yaml
+```
+
+<!-- CI Rule IDs: F-01 (declaration exists), F-02 (namespace prefix), F-03 (repo name validation), F-04 (no uppercase), F-05 (no space-based codes), F-06 (inline code references) -->
+
+## I.17.6 Forbidden Pattern Summary
+
+| Pattern              | Regex                                              | Forbidden In                             | Rule IDs |
+| -------------------- | -------------------------------------------------- | ---------------------------------------- | -------- |
+| Underscore           | `_`                                                | All machine-facing names                 | R-03     |
+| Semantic dot         | `.`                                                | Repository names, dir names, service IDs | R-04     |
+| Whitespace           | `\s`                                               | All machine-facing names                 | R-05     |
+| Uppercase            | `[A-Z]`                                            | All machine-facing names                 | R-02     |
+| Version suffix       | `-v[0-9]+(\.[0-9]+)*`                              | Resource names                           | R-06     |
+| Environment marker   | `(dev\|prod\|staging\|test\|uat)` as kebab segment | Repository names                         | R-07     |
+| Space-based gov code | `mycodexvantaos\s+[0-9]{5}`                        | All content                              | G-02     |
 
 # I.18 Compliance Criteria
 
