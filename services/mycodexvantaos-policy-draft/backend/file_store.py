@@ -14,6 +14,16 @@ def _validate_id(doc_id: str) -> bool:
     return bool(_VALID_ID.match(doc_id))
 
 
+def _safe_store_path(filename: str) -> Path:
+    candidate = (STORE_DIR / filename).resolve()
+    store_root = STORE_DIR.resolve()
+    try:
+        candidate.relative_to(store_root)
+    except ValueError:
+        raise ValueError("Invalid path")
+    return candidate
+
+
 def save_document(doc_id: str, html_content: str, plain_text: str, meta: dict, explanations: str = "") -> str:
     if not _validate_id(doc_id):
         raise ValueError("Invalid document ID")
@@ -67,7 +77,7 @@ def delete_document(doc_id: str) -> bool:
         return False
     deleted = False
     for ext in (".html", ".txt", ".json", ".explain.json"):
-        path = STORE_DIR / f"{doc_id}{ext}"
+        path = _safe_store_path(f"{doc_id}{ext}")
         if path.exists():
             path.unlink()
             deleted = True
