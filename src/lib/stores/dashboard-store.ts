@@ -25,7 +25,7 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
     try {
       const response = await fetch('/api/overview');
       if (!response.ok) throw new Error('Failed to fetch overview');
-      const data = await response.json();
+      const data: SystemOverview & { alerts?: Alert[] } = await response.json();
       set({
         overview: data,
         activeAlerts: data.alerts || [],

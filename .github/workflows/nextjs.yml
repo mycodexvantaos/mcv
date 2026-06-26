@@ -26,7 +26,7 @@ concurrency:
 
 env:
   PNPM_VERSION: '9'
-  NODE_VERSION: '20'
+  NODE_VERSION: '22'
 
 jobs:
   # Build job
@@ -65,7 +65,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
       - name: Build with Next.js
-        run: pnpm exec next build
+        run: pnpm exec next build --webpack
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

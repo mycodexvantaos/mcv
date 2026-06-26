@@ -166,18 +166,18 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const body = await request.json();
+  const body: Record<string, unknown> = await request.json();
 
   const newConnector: ConnectorInstance = {
     id: `connector-${Date.now()}`,
-    name: body.name || 'New Connector',
-    type: body.type || 'custom',
+    name: (body.name as string) || 'New Connector',
+    type: (body.type as ConnectorInstance['type']) || 'custom',
     status: 'initializing',
-    config: body.config || {},
+    config: (body.config as Record<string, string>) || {},
     health: {
       latency: 0,
       connections: 0,
-      maxConnections: body.maxConnections || 50,
+      maxConnections: (body.maxConnections as number) || 50,
       uptime: '0%',
       lastHealthCheck: new Date().toISOString(),
       errorRate: 0,
@@ -202,8 +202,8 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  const body = await request.json();
-  const { id, ...updates } = body;
+  const body: Record<string, unknown> = await request.json();
+  const { id, ...updates } = body as { id: string; [key: string]: unknown };
 
   const connector = connectors.find((c) => c.id === id);
   if (!connector) {

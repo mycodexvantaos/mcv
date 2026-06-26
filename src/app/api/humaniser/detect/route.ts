@@ -10,7 +10,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const body: { text?: string; source?: string; useLLM?: boolean } = await request.json();
     const { text, source = 'text', useLLM = false } = body;
 
     if (!text || typeof text !== 'string') {
