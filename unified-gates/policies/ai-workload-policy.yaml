@@ -3,6 +3,7 @@ kind: AIWorkloadPolicy
 metadata:
   name: ai-workload-policy
   version: 1.0.0
+  authority: platform-governance-root
   governanceCode: mycodexvantaos-60700
 spec:
   mandatoryGates:

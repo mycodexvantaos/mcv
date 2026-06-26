@@ -3,6 +3,7 @@ kind: GateRiskPolicy
 metadata:
   name: gate-risk-policy
   version: 1.0.0
+  authority: platform-governance-root
   governanceCode: mycodexvantaos-00800
 spec:
   riskLevels:

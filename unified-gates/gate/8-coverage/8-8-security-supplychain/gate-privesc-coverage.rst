@@ -1,9 +1,9 @@
 .. path: unified-gates/gate/8-coverage/8-8-security-supplychain/gate-privesc-coverage.rst
 .. governanceCode: mycodexvantaos-00000
 
-==========================
+==============================
 Privilege Escalation Coverage
-==========================
+==============================
 
 :Version: 1.0.0
 :Status: normative

@@ -3,6 +3,7 @@ kind: AIBillingPolicy
 metadata:
   name: ai-billing-policy
   version: 1.0.0
+  authority: platform-governance-root
   governanceCode: mycodexvantaos-30400
 spec:
   meteringRequired: true
