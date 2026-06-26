@@ -2,6 +2,9 @@
 # governanceCode: mycodexvantaos-00000
 name: Namespace Governance CI
 
+permissions:
+  contents: read
+
 on:
   push:
     branches: [main, develop]
