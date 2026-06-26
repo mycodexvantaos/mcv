@@ -857,13 +857,13 @@ proposed → active → deprecated → archived → destroyed
 
 Valid lifecycle values and transitions:
 
-| From          | To            | Condition                       |
-| ------------- | ------------- | ------------------------------- |
-| `proposed`    | `active`      | validation + approval passed    |
-| `active`      | `deprecated`  | inactivity-period-exceeded      |
-| `deprecated` | `archived`    | migration-complete              |
-| `archived`    | `destroyed`   | retention-period-expired        |
-| `destroyed`   | — (terminal)  | no outgoing transitions allowed |
+| From         | To           | Condition                       |
+| ------------ | ------------ | ------------------------------- |
+| `proposed`   | `active`     | validation + approval passed    |
+| `active`     | `deprecated` | inactivity-period-exceeded      |
+| `deprecated` | `archived`   | migration-complete              |
+| `archived`   | `destroyed`  | retention-period-expired        |
+| `destroyed`  | — (terminal) | no outgoing transitions allowed |
 
 <!-- CI Rule IDs: LC-01 (stage validity), LC-02 (transition validity), LC-03 (terminal state), NR-02 (lifecycle stage), NR-06 (destroyed reuse) -->
 
@@ -1286,56 +1286,56 @@ Final enforcement MUST block non-compliant names, invalid namespace codes, cycli
 
 CI MUST fail when any of the following conditions are detected：
 
-| Rule ID | Condition | Spec Ref |
-| ------- | --------- | -------- |
-| R-01    | Repository name does not match canonical pattern | I.6.2 |
-| R-02    | Repository name contains uppercase characters | I.1.1 |
-| R-03    | Repository name contains underscore | I.1.1 |
-| R-04    | Repository name contains semantic dot | I.1.4 |
-| R-05    | Repository name contains whitespace | I.1.1 |
-| R-06    | Repository name contains version number suffix | I.1.1, I.6.3 |
-| R-07    | Repository name contains environment marker | I.6.3, I.6.4 |
-| R-08    | Namespace prefix is not registered | I.2.1 |
-| R-09    | Domain segment not in controlled vocabulary | I.7.2 |
-| R-10    | Function segment not in controlled vocabulary | I.7.3 |
-| G-01    | Governance code does not match canonical regex | I.3.2 |
-| G-02    | Governance code uses space separator (forbidden legacy form) | I.1.2 |
-| DP-01   | Control-plane service hard-depends on product-plane | I.2.4 |
-| DP-02   | Bidirectional hard dependency without binding mediator | I.8.2 |
-| DP-03   | Cyclic hard dependency detected | I.17 |
-| NR-01   | Registry record missing required fields | I.11 |
-| NR-02   | Invalid lifecycle stage in registry record | I.10.1 |
-| NR-05   | Duplicate registry ID detected | I.9.2 |
-| NR-06   | Destroyed namespace identifier reused | I.10.2 |
-| LC-01   | Invalid lifecycle stage value | I.10.1 |
-| LC-02   | Disallowed lifecycle transition | I.10.1 |
-| LC-03   | Transition out of destroyed (terminal state) | I.10.1 |
-| F-02    | Path declaration does not start with registered namespace | I.2.1 |
-| F-05    | File contains space-based governance code | I.1.2 |
+| Rule ID | Condition                                                    | Spec Ref     |
+| ------- | ------------------------------------------------------------ | ------------ |
+| R-01    | Repository name does not match canonical pattern             | I.6.2        |
+| R-02    | Repository name contains uppercase characters                | I.1.1        |
+| R-03    | Repository name contains underscore                          | I.1.1        |
+| R-04    | Repository name contains semantic dot                        | I.1.4        |
+| R-05    | Repository name contains whitespace                          | I.1.1        |
+| R-06    | Repository name contains version number suffix               | I.1.1, I.6.3 |
+| R-07    | Repository name contains environment marker                  | I.6.3, I.6.4 |
+| R-08    | Namespace prefix is not registered                           | I.2.1        |
+| R-09    | Domain segment not in controlled vocabulary                  | I.7.2        |
+| R-10    | Function segment not in controlled vocabulary                | I.7.3        |
+| G-01    | Governance code does not match canonical regex               | I.3.2        |
+| G-02    | Governance code uses space separator (forbidden legacy form) | I.1.2        |
+| DP-01   | Control-plane service hard-depends on product-plane          | I.2.4        |
+| DP-02   | Bidirectional hard dependency without binding mediator       | I.8.2        |
+| DP-03   | Cyclic hard dependency detected                              | I.17         |
+| NR-01   | Registry record missing required fields                      | I.11         |
+| NR-02   | Invalid lifecycle stage in registry record                   | I.10.1       |
+| NR-05   | Duplicate registry ID detected                               | I.9.2        |
+| NR-06   | Destroyed namespace identifier reused                        | I.10.2       |
+| LC-01   | Invalid lifecycle stage value                                | I.10.1       |
+| LC-02   | Disallowed lifecycle transition                              | I.10.1       |
+| LC-03   | Transition out of destroyed (terminal state)                 | I.10.1       |
+| F-02    | Path declaration does not start with registered namespace    | I.2.1        |
+| F-05    | File contains space-based governance code                    | I.1.2        |
 
 ## I.17.2 SHOULD Validate Conditions
 
 CI SHOULD validate the following conditions and emit warnings：
 
-| Rule ID | Condition | Spec Ref |
-| ------- | --------- | -------- |
-| G-03    | Governance code era range classification | I.4.1 |
+| Rule ID | Condition                                         | Spec Ref |
+| ------- | ------------------------------------------------- | -------- |
+| G-03    | Governance code era range classification          | I.4.1    |
 | F-01    | File missing namespace path declaration in header | I.1, I.6 |
-| F-04    | Declared path contains uppercase characters | I.1.1 |
-| F-06    | Malformed inline governance code reference | I.3.2 |
-| NR-03   | Governance code format in registry record | I.3.2 |
-| NR-04   | Repository name compliance in registry record | I.6.2 |
+| F-04    | Declared path contains uppercase characters       | I.1.1    |
+| F-06    | Malformed inline governance code reference        | I.3.2    |
+| NR-03   | Governance code format in registry record         | I.3.2    |
+| NR-04   | Repository name compliance in registry record     | I.6.2    |
 
 ## I.17.3 CI Report Artifacts
 
 CI validation MUST produce the following JSON reports：
 
-| Artifact | Filename | Description |
-| -------- | -------- | ----------- |
-| Master governance report | `namespace-governance-report.json` | Aggregated validation results across all rule categories |
-| Registry drift report | `namespace-registry-drift-report.json` | Namespace registry consistency and drift detection |
-| Closure proof report | `namespace-closure-proof-report.json` | Namespace closure validation (completeness, consistency, termination) |
-| Repository naming report | `repository-naming-validation-report.json` | File header path and repository naming validation |
+| Artifact                 | Filename                                   | Description                                                           |
+| ------------------------ | ------------------------------------------ | --------------------------------------------------------------------- |
+| Master governance report | `namespace-governance-report.json`         | Aggregated validation results across all rule categories              |
+| Registry drift report    | `namespace-registry-drift-report.json`     | Namespace registry consistency and drift detection                    |
+| Closure proof report     | `namespace-closure-proof-report.json`      | Namespace closure validation (completeness, consistency, termination) |
+| Repository naming report | `repository-naming-validation-report.json` | File header path and repository naming validation                     |
 
 Report JSON schema：
 
@@ -1344,7 +1344,14 @@ Report JSON schema：
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "NamespaceGovernanceValidationReport",
   "type": "object",
-  "required": ["generated_at", "spec_version", "tool_version", "overall_status", "summary", "results"],
+  "required": [
+    "generated_at",
+    "spec_version",
+    "tool_version",
+    "overall_status",
+    "summary",
+    "results"
+  ],
   "properties": {
     "generated_at": { "type": "string", "format": "date-time" },
     "spec_version": { "type": "string", "const": "mycodexvantaos-00000" },
@@ -1380,10 +1387,10 @@ Report JSON schema：
 
 ## I.17.4 Exit Code Convention
 
-| Exit Code | Meaning |
-| --------- | ------- |
-| 0         | All MUST checks passed (warnings MAY exist) |
-| 1         | One or more MUST checks failed |
+| Exit Code | Meaning                                                  |
+| --------- | -------------------------------------------------------- |
+| 0         | All MUST checks passed (warnings MAY exist)              |
+| 1         | One or more MUST checks failed                           |
 | 2         | Internal error (invalid arguments, file not found, etc.) |
 
 ## I.17.5 File Header Path Convention
@@ -1408,15 +1415,15 @@ source: softwareos-qa-service/lib/queries.yaml
 
 ## I.17.6 Forbidden Pattern Summary
 
-| Pattern | Regex | Forbidden In | Rule IDs |
-| ------- | ----- | ------------ | -------- |
-| Underscore | `_` | All machine-facing names | R-03 |
-| Semantic dot | `.` | Repository names, dir names, service IDs | R-04 |
-| Whitespace | `\s` | All machine-facing names | R-05 |
-| Uppercase | `[A-Z]` | All machine-facing names | R-02 |
-| Version suffix | `-v[0-9]+(\.[0-9]+)*` | Resource names | R-06 |
-| Environment marker | `(dev|prod|staging|test|uat)` as kebab segment | Repository names | R-07 |
-| Space-based gov code | `mycodexvantaos\s+[0-9]{5}` | All content | G-02 |
+| Pattern              | Regex                                              | Forbidden In                             | Rule IDs |
+| -------------------- | -------------------------------------------------- | ---------------------------------------- | -------- |
+| Underscore           | `_`                                                | All machine-facing names                 | R-03     |
+| Semantic dot         | `.`                                                | Repository names, dir names, service IDs | R-04     |
+| Whitespace           | `\s`                                               | All machine-facing names                 | R-05     |
+| Uppercase            | `[A-Z]`                                            | All machine-facing names                 | R-02     |
+| Version suffix       | `-v[0-9]+(\.[0-9]+)*`                              | Resource names                           | R-06     |
+| Environment marker   | `(dev\|prod\|staging\|test\|uat)` as kebab segment | Repository names                         | R-07     |
+| Space-based gov code | `mycodexvantaos\s+[0-9]{5}`                        | All content                              | G-02     |
 
 # I.18 Compliance Criteria
 

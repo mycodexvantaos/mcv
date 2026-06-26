@@ -31,7 +31,15 @@
     },
     "spec": {
       "type": "object",
-      "required": ["code", "era", "title", "enforceLevel", "lifecycle", "validationSchema", "owner"],
+      "required": [
+        "code",
+        "era",
+        "title",
+        "enforceLevel",
+        "lifecycle",
+        "validationSchema",
+        "owner"
+      ],
       "properties": {
         "code": {
           "type": "string",

@@ -41,19 +41,51 @@
         "domain": {
           "type": "string",
           "enum": [
-            "auth", "policy", "memory", "event", "infra", "platform",
-            "iaops", "machinenativeops", "toolkit", "contracts", "signerd",
-            "controller", "rolloutd", "db-schemas", "autotask", "compliance",
-            "prediction", "qa", "rollback", "scheduler", "alertd"
+            "auth",
+            "policy",
+            "memory",
+            "event",
+            "infra",
+            "platform",
+            "iaops",
+            "machinenativeops",
+            "toolkit",
+            "contracts",
+            "signerd",
+            "controller",
+            "rolloutd",
+            "db-schemas",
+            "autotask",
+            "compliance",
+            "prediction",
+            "qa",
+            "rollback",
+            "scheduler",
+            "alertd"
           ],
           "description": "Controlled domain vocabulary (I.7.2)"
         },
         "function": {
           "type": "string",
           "enum": [
-            "service", "agent", "sdk", "cli", "web", "api", "worker",
-            "manager", "hub", "bus", "engine", "scanner", "reporter",
-            "predictor", "action", "plugin", "controller", "repository"
+            "service",
+            "agent",
+            "sdk",
+            "cli",
+            "web",
+            "api",
+            "worker",
+            "manager",
+            "hub",
+            "bus",
+            "engine",
+            "scanner",
+            "reporter",
+            "predictor",
+            "action",
+            "plugin",
+            "controller",
+            "repository"
           ],
           "description": "Controlled function vocabulary (I.7.3)"
         },

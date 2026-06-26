@@ -12,7 +12,7 @@ CI_SCRIPT="${REPO_ROOT}/ci/namespace_check.py"
 REPORT_DIR="${REPO_ROOT}/ci-reports"
 REGISTRY="${REPO_ROOT}/config/namespace-registry-baseline.yaml"
 DEP_GRAPH="${REPO_ROOT}/config/dependency-graph-baseline.yaml"
-STRICT="${NAMESPACE_CI_STRICT:-}"
+
 VERBOSE="${NAMESPACE_CI_VERBOSE:---verbose}"
 
 # Ensure Python is available
