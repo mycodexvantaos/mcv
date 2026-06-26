@@ -30,16 +30,16 @@ mycodexvantaos-policy-draft/
 
 ## API Endpoints
 
-| Endpoint | Method | Description |
-|---|---|---|
-| `/api/health` | GET | Health check |
-| `/api/filters/{doc_type}` | GET | Filter config for document type |
-| `/api/generate` | POST | Generate document (SSE streaming) |
-| `/api/documents` | GET | List generated documents |
-| `/api/documents/{doc_id}` | GET | Get document by ID |
-| `/api/documents/{doc_id}/download` | GET | Download as PDF |
-| `/api/documents/{doc_id}` | DELETE | Delete document |
-| `/api/export-pdf` | POST | Export HTML as PDF |
+| Endpoint                           | Method | Description                       |
+| ---------------------------------- | ------ | --------------------------------- |
+| `/api/health`                      | GET    | Health check                      |
+| `/api/filters/{doc_type}`          | GET    | Filter config for document type   |
+| `/api/generate`                    | POST   | Generate document (SSE streaming) |
+| `/api/documents`                   | GET    | List generated documents          |
+| `/api/documents/{doc_id}`          | GET    | Get document by ID                |
+| `/api/documents/{doc_id}/download` | GET    | Download as PDF                   |
+| `/api/documents/{doc_id}`          | DELETE | Delete document                   |
+| `/api/export-pdf`                  | POST   | Export HTML as PDF                |
 
 ## Supported Document Types
 

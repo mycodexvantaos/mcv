@@ -29,12 +29,16 @@ fi
 # WeasyPrint system libraries (needed for PDF generation)
 if command -v apt-get &>/dev/null; then
   echo "    Installing WeasyPrint system libs (apt)..."
-  apt-get update -qq && apt-get install -y -qq \
+  if apt-get update -qq && apt-get install -y -qq \
     libpango-1.0-0 libpangocairo-1.0-0 libgdk-pixbuf2.0-0 \
-    libffi-dev libcairo2 2>/dev/null || true
+    libffi-dev libcairo2 2>/dev/null; then
+    true
+  fi
 elif command -v yum &>/dev/null; then
   echo "    Installing WeasyPrint system libs (yum)..."
-  yum install -y -q pango cairo gdk-pixbuf2 libffi-devel 2>/dev/null || true
+  if yum install -y -q pango cairo gdk-pixbuf2 libffi-devel 2>/dev/null; then
+    true
+  fi
 fi
 
 # Verify Claude Code CLI is available
