@@ -75,7 +75,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["mycodexvantaos_memory_dream", "mycodexvantaos_ci_repair", "mycodexvantaos_coder_deep"]
+known-first-party = ["mycodexvantaos_memory_dream", "mycodexvantaos_ci_repair", "mycodexvantaos_coder_deep", "mycodexvantaos_stream_pipeline", "mycodexvantaos_knowledge_pipeline", "mycodexvantaos_vector_tools", "mycodexvantaos_evaluation"]
 
 [tool.mypy]
 python_version = "3.11"

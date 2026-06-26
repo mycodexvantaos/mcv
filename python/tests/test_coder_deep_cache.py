@@ -65,9 +65,7 @@ class TestContextCachePutAndGet:
     @pytest.mark.asyncio
     async def test_put_auto_generates_entry_id(self, cache: ContextCache) -> None:
         """If no entry_id is given, one is auto-generated."""
-        entry = ContextEntry(
-            namespace="ns", context_type="general", label="auto", data="v"
-        )
+        entry = ContextEntry(namespace="ns", context_type="general", label="auto", data="v")
         result = await cache.put(entry=entry)
         assert result.entry_id != ""
 
@@ -93,9 +91,7 @@ class TestContextCacheTTL:
     @pytest.mark.asyncio
     async def test_no_ttl_stays(self, cache: ContextCache) -> None:
         """Entries without TTL do not expire."""
-        entry = ContextEntry(
-            namespace="ns", context_type="general", label="no-ttl", data="forever"
-        )
+        entry = ContextEntry(namespace="ns", context_type="general", label="no-ttl", data="forever")
         result = await cache.put(entry=entry)
         retrieved = await cache.get(entry_id=result.entry_id)
         assert retrieved is not None
@@ -131,14 +127,10 @@ class TestContextCacheFind:
     async def test_find_by_namespace(self, cache: ContextCache) -> None:
         """Find entries by namespace."""
         await cache.put(
-            entry=ContextEntry(
-                namespace="ns1", context_type="general", label="k1", data="v1"
-            )
+            entry=ContextEntry(namespace="ns1", context_type="general", label="k1", data="v1")
         )
         await cache.put(
-            entry=ContextEntry(
-                namespace="ns2", context_type="general", label="k2", data="v2"
-            )
+            entry=ContextEntry(namespace="ns2", context_type="general", label="k2", data="v2")
         )
         entries = await cache.find(query=ContextQuery(namespace="ns1"))
         assert len(entries) >= 1
@@ -148,14 +140,10 @@ class TestContextCacheFind:
     async def test_find_by_context_type(self, cache: ContextCache) -> None:
         """Find entries by context type."""
         await cache.put(
-            entry=ContextEntry(
-                namespace="ns", context_type="text", label="k1", data="v1"
-            )
+            entry=ContextEntry(namespace="ns", context_type="text", label="k1", data="v1")
         )
         await cache.put(
-            entry=ContextEntry(
-                namespace="ns", context_type="json", label="k2", data="v2"
-            )
+            entry=ContextEntry(namespace="ns", context_type="json", label="k2", data="v2")
         )
         entries = await cache.find(query=ContextQuery(context_type="json"))
         assert len(entries) >= 1
@@ -165,9 +153,7 @@ class TestContextCacheFind:
     async def test_find_by_label(self, cache: ContextCache) -> None:
         """Find entries by label."""
         await cache.put(
-            entry=ContextEntry(
-                namespace="ns", context_type="general", label="find-me", data="v1"
-            )
+            entry=ContextEntry(namespace="ns", context_type="general", label="find-me", data="v1")
         )
         entries = await cache.find(query=ContextQuery(label="find-me"))
         assert len(entries) >= 1
@@ -179,9 +165,7 @@ class TestContextCacheDelete:
     @pytest.mark.asyncio
     async def test_delete_existing(self, cache: ContextCache) -> None:
         """Delete an existing entry returns True."""
-        entry = ContextEntry(
-            namespace="ns", context_type="general", label="k", data="v"
-        )
+        entry = ContextEntry(namespace="ns", context_type="general", label="k", data="v")
         result = await cache.put(entry=entry)
         deleted = await cache.delete(entry_id=result.entry_id)
         assert deleted is True
@@ -207,14 +191,10 @@ class TestContextCacheStats:
     async def test_stats_after_put(self, cache: ContextCache) -> None:
         """Stats reflect entries after put."""
         await cache.put(
-            entry=ContextEntry(
-                namespace="ns1", context_type="general", label="k1", data="v1"
-            )
+            entry=ContextEntry(namespace="ns1", context_type="general", label="k1", data="v1")
         )
         await cache.put(
-            entry=ContextEntry(
-                namespace="ns2", context_type="general", label="k2", data="v2"
-            )
+            entry=ContextEntry(namespace="ns2", context_type="general", label="k2", data="v2")
         )
         stats = await cache.stats()
         assert stats.total_entries == 2
@@ -223,9 +203,7 @@ class TestContextCacheStats:
     @pytest.mark.asyncio
     async def test_hit_rate(self, cache: ContextCache) -> None:
         """Hit rate is computed from hits and misses."""
-        entry = ContextEntry(
-            namespace="ns", context_type="general", label="k", data="v"
-        )
+        entry = ContextEntry(namespace="ns", context_type="general", label="k", data="v")
         result = await cache.put(entry=entry)
         await cache.get(entry_id=result.entry_id)  # hit
         await cache.get(entry_id="missing-id")  # miss
@@ -240,14 +218,10 @@ class TestContextCacheClear:
     async def test_clear(self, cache: ContextCache) -> None:
         """Clear removes all entries."""
         await cache.put(
-            entry=ContextEntry(
-                namespace="ns", context_type="general", label="k1", data="v1"
-            )
+            entry=ContextEntry(namespace="ns", context_type="general", label="k1", data="v1")
         )
         await cache.put(
-            entry=ContextEntry(
-                namespace="ns", context_type="general", label="k2", data="v2"
-            )
+            entry=ContextEntry(namespace="ns", context_type="general", label="k2", data="v2")
         )
         count = await cache.clear()
         assert count == 2
@@ -261,9 +235,7 @@ class TestContextCacheRefresh:
     @pytest.mark.asyncio
     async def test_refresh_updates_data(self, cache: ContextCache) -> None:
         """Refresh updates the data and increments version."""
-        entry = ContextEntry(
-            namespace="ns", context_type="general", label="k", data="original"
-        )
+        entry = ContextEntry(namespace="ns", context_type="general", label="k", data="original")
         result = await cache.put(entry=entry)
         refreshed = await cache.refresh(entry_id=result.entry_id, data="updated")
         assert refreshed is not None
@@ -284,14 +256,10 @@ class TestContextCacheInvalidate:
     async def test_invalidate_namespace(self, cache: ContextCache) -> None:
         """Invalidate removes all entries in a namespace."""
         await cache.put(
-            entry=ContextEntry(
-                namespace="ns1", context_type="general", label="k1", data="v1"
-            )
+            entry=ContextEntry(namespace="ns1", context_type="general", label="k1", data="v1")
         )
         await cache.put(
-            entry=ContextEntry(
-                namespace="ns2", context_type="general", label="k2", data="v2"
-            )
+            entry=ContextEntry(namespace="ns2", context_type="general", label="k2", data="v2")
         )
         count = await cache.invalidate(namespace="ns1")
         assert count == 1

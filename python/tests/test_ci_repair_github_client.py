@@ -37,9 +37,7 @@ class TestListWorkflowRuns:
     """Test list_workflow_runs method."""
 
     @pytest.mark.asyncio
-    async def test_returns_workflow_summaries(
-        self, client: GitHubActionsClient
-    ) -> None:
+    async def test_returns_workflow_summaries(self, client: GitHubActionsClient) -> None:
         mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.raise_for_status = MagicMock()
@@ -149,9 +147,7 @@ class TestCreateBranch:
         assert result is True
 
     @pytest.mark.asyncio
-    async def test_returns_true_on_422_already_exists(
-        self, client: GitHubActionsClient
-    ) -> None:
+    async def test_returns_true_on_422_already_exists(self, client: GitHubActionsClient) -> None:
         mock_response = MagicMock()
         mock_response.status_code = 422
 
@@ -195,9 +191,7 @@ class TestCreatePullRequest:
     async def test_returns_pr_url(self, client: GitHubActionsClient) -> None:
         mock_response = MagicMock()
         mock_response.raise_for_status = MagicMock()
-        mock_response.json.return_value = {
-            "html_url": "https://github.com/test/repo/pull/42"
-        }
+        mock_response.json.return_value = {"html_url": "https://github.com/test/repo/pull/42"}
 
         mock_http_client = AsyncMock()
         mock_http_client.post = AsyncMock(return_value=mock_response)

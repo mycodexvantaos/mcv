@@ -14,8 +14,8 @@ from mycodexvantaos_stream_pipeline.models import (
     WindowConfig,
     WindowType,
 )
-from mycodexvantaos_stream_pipeline.producer import StreamProducer
 from mycodexvantaos_stream_pipeline.processor import StreamProcessor
+from mycodexvantaos_stream_pipeline.producer import StreamProducer
 
 __all__ = [
     "KafkaAdmin",
