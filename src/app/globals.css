@@ -1,56 +1,86 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@plugin "tailwindcss-animate";
 
-@layer base {
-  :root {
-    /* MyCodeXvantaOS 品牌色系 - 專業深邃版 */
-    --background: 222 61% 3%;
-    --foreground: 210 40% 98%;
-    --card: 222 47% 5%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222 47% 5%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 221 70% 50%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 222 30% 10%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 222 30% 10%;
-    --muted-foreground: 215 20% 60%;
-    --accent: 160 68% 60%;
-    --accent-foreground: 222 61% 3%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 222 30% 15%;
-    --input: 222 30% 15%;
-    --ring: 221 70% 50%;
-    --radius: 0.75rem;
-  }
+@theme {
+  --color-background: hsl(222 61% 3%);
+  --color-foreground: hsl(210 40% 98%);
+  --color-card: hsl(222 47% 5%);
+  --color-card-foreground: hsl(210 40% 98%);
+  --color-popover: hsl(222 47% 5%);
+  --color-popover-foreground: hsl(210 40% 98%);
+  --color-primary: hsl(221 70% 50%);
+  --color-primary-foreground: hsl(210 40% 98%);
+  --color-secondary: hsl(222 30% 10%);
+  --color-secondary-foreground: hsl(210 40% 98%);
+  --color-muted: hsl(222 30% 10%);
+  --color-muted-foreground: hsl(215 20% 60%);
+  --color-accent: hsl(160 68% 60%);
+  --color-accent-foreground: hsl(222 61% 3%);
+  --color-destructive: hsl(0 84% 60%);
+  --color-destructive-foreground: hsl(210 40% 98%);
+  --color-border: hsl(222 30% 15%);
+  --color-input: hsl(222 30% 15%);
+  --color-ring: hsl(221 70% 50%);
+  --radius-lg: 0.75rem;
+  --radius-md: calc(0.75rem - 2px);
+  --radius-sm: calc(0.75rem - 4px);
+
+  --font-body: Inter, sans-serif;
+  --font-headline: Inter, sans-serif;
+  --font-code: 'Source Code Pro', monospace;
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
 }
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: var(--color-border);
   }
   body {
-    @apply bg-background text-foreground font-body antialiased;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   code,
   pre {
-    @apply font-code;
+    font-family: var(--font-code);
+  }
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
   }
 }
 
 .glass-panel {
-  @apply bg-card/60 backdrop-blur-xl border border-white/5 shadow-2xl;
+  background-color: color-mix(in srgb, var(--color-card) 60%, transparent);
+  backdrop-filter: blur(24px);
+  border: 1px solid color-mix(in srgb, white 5%, transparent);
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
 }
 
 .neon-glow {
-  text-shadow: 0 0 15px hsl(var(--accent) / 0.6);
+  text-shadow: 0 0 15px hsl(160 68% 60% / 0.6);
 }
 
 .primary-glow {
-  box-shadow: 0 0 30px hsl(var(--primary) / 0.25);
+  box-shadow: 0 0 30px hsl(221 70% 50% / 0.25);
 }
 
 .animate-spin-slow {

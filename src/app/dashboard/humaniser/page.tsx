@@ -116,11 +116,11 @@ export default function HumaniserPage() {
       });
 
       if (!res.ok) {
-        const err = await res.json();
+        const err: { error?: string } = await res.json();
         throw new Error(err.error || 'Detection failed');
       }
 
-      const data = await res.json();
+      const data: DetectionData = await res.json();
       setDetectionData(data);
       setActiveTab('results');
     } catch (e: any) {
@@ -148,11 +148,11 @@ export default function HumaniserPage() {
       });
 
       if (!res.ok) {
-        const err = await res.json();
+        const err: { error?: string } = await res.json();
         throw new Error(err.error || 'Humanisation failed');
       }
 
-      const data = await res.json();
+      const data: HumaniserData = await res.json();
       setHumaniserData(data);
       setActiveTab('comparison');
     } catch (e: any) {

@@ -28,6 +28,7 @@ def make_sample_workflow_runs() -> list[WorkflowRunSummary]:
             status="completed",
             conclusion="failure",
             head_branch="main",
+            head_sha="abc123def456",
             event="push",
             created_at=datetime(2025, 1, 15, 10, 0, 0),
             updated_at=datetime(2025, 1, 15, 10, 15, 0),
@@ -39,6 +40,7 @@ def make_sample_workflow_runs() -> list[WorkflowRunSummary]:
             status="completed",
             conclusion="success",
             head_branch="develop",
+            head_sha="def789ghi012",
             event="push",
             created_at=datetime(2025, 1, 15, 11, 0, 0),
             updated_at=datetime(2025, 1, 15, 11, 10, 0),
@@ -120,7 +122,8 @@ def make_sample_docker_failed_jobs() -> list[FailedJob]:
                 "Step 5/8 : RUN npm ci\n"
                 'process "/bin/sh -c npm ci" did not complete successfully\n'
                 "COPY failed: file not found in build context\n"
-                "Error: Docker build failed"),
+                "Error: Docker build failed"
+            ),
         ),
     ]
 
@@ -197,7 +200,5 @@ def mock_github_client(
     mock_client.get_failed_jobs = AsyncMock(return_value=sample_failed_jobs)
     mock_client.get_branch_sha = AsyncMock(return_value="abc123def456")
     mock_client.create_branch = AsyncMock(return_value=True)
-    mock_client.create_pull_request = AsyncMock(
-        return_value="https://github.com/test/repo/pull/42"
-    )
+    mock_client.create_pull_request = AsyncMock(return_value="https://github.com/test/repo/pull/42")
     return mock_client

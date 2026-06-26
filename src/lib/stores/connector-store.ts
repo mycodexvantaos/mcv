@@ -28,7 +28,7 @@ export const useConnectorStore = create<ConnectorState>((set, get) => ({
     try {
       const response = await fetch('/api/connectors');
       if (!response.ok) throw new Error('Failed to fetch connectors');
-      const data = await response.json();
+      const data: ConnectorInstance[] = await response.json();
       set({ connectors: data, isLoading: false });
     } catch (error) {
       set({
@@ -50,7 +50,7 @@ export const useConnectorStore = create<ConnectorState>((set, get) => ({
         body: JSON.stringify(connector),
       });
       if (!response.ok) throw new Error('Failed to add connector');
-      const newConnector = await response.json();
+      const newConnector: ConnectorInstance = await response.json();
       set((state) => ({ connectors: [...state.connectors, newConnector] }));
     } catch (error) {
       set({ error: error instanceof Error ? error.message : 'Unknown error' });
@@ -65,7 +65,7 @@ export const useConnectorStore = create<ConnectorState>((set, get) => ({
         body: JSON.stringify(updates),
       });
       if (!response.ok) throw new Error('Failed to update connector');
-      const updated = await response.json();
+      const updated: ConnectorInstance = await response.json();
       set((state) => ({
         connectors: state.connectors.map((c) => (c.id === id ? updated : c)),
         selectedConnector: state.selectedConnector?.id === id ? updated : state.selectedConnector,
@@ -92,11 +92,11 @@ export const useConnectorStore = create<ConnectorState>((set, get) => ({
     try {
       const response = await fetch(`/api/connectors/${id}/health`);
       if (!response.ok) throw new Error('Health check failed');
-      const result = await response.json();
+      const result: { status?: string; metrics?: any } = await response.json();
       set((state) => ({
         connectors: state.connectors.map((c) =>
           c.id === id
-            ? { ...c, status: result.status, metrics: { ...c.metrics, ...result.metrics } }
+            ? { ...c, status: result.status as any, metrics: { ...c.metrics, ...result.metrics } }
             : c
         ),
       }));

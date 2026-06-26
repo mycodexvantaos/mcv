@@ -1,0 +1,94 @@
+{
+  "generated_at": "2026-06-26T01:55:54.823677+00:00",
+  "spec_version": "mycodexvantaos-00000",
+  "tool_version": "1.0.0",
+  "overall_status": "PASS",
+  "summary": {
+    "total": 10,
+    "passed": 10,
+    "failed": 0,
+    "warnings": 0
+  },
+  "results": [
+    {
+      "rule_id": "R-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-draft",
+      "message": "Repository name matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "R-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-draft",
+      "message": "No uppercase characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "R-03",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-draft",
+      "message": "No underscore characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "R-04",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-draft",
+      "message": "No dot characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "R-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-draft",
+      "message": "No whitespace found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "R-06",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-draft",
+      "message": "No version number suffix found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "R-07",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-draft",
+      "message": "No environment marker found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "R-08",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-draft",
+      "message": "Namespace 'mycodexvantaos' is registered (control-plane).",
+      "detail": ""
+    },
+    {
+      "rule_id": "R-09",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-draft",
+      "message": "Domain 'policy' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "R-10",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-draft",
+      "message": "Function 'draft' is in controlled vocabulary.",
+      "detail": ""
+    }
+  ]
+}

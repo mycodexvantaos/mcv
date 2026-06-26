@@ -6,13 +6,12 @@ workflow runs, classifying errors, and generating repair plans.
 
 import argparse
 import asyncio
+import logging
 import sys
 import uuid
 from contextlib import asynccontextmanager
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
-
-import logging
 
 import uvicorn
 from asyncpg.exceptions import (
@@ -24,13 +23,14 @@ from asyncpg.exceptions import (
     InvalidPasswordError,
     PostgresConnectionError,
 )
-from fastapi import FastAPI, HTTPException, Query, Request
+from fastapi import Body, FastAPI, HTTPException, Path, Query, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field
-
 from mycodexvantaos_ci_repair.database import DatabaseClient
 from mycodexvantaos_ci_repair.github_client import GitHubActionsClient
+from mycodexvantaos_ci_repair.models import FailureAnalysis
 from mycodexvantaos_ci_repair.repair_engine import analyze_failure, generate_repair_plan
+from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
 
@@ -364,6 +364,27 @@ async def http_exception_handler(request: Request, exc: HTTPException) -> JSONRe
     )
 
 
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(
+    request: Request, exc: RequestValidationError
+) -> JSONResponse:
+    """Handle FastAPI validation errors (422) as 400 VALIDATION_ERROR."""
+    request_id = getattr(request.state, "request_id", str(uuid.uuid4()))
+    errors = exc.errors()
+    detail = "; ".join(f"{'.'.join(str(loc) for loc in e['loc'])}: {e['msg']}" for e in errors)
+    return JSONResponse(
+        status_code=400,
+        content=ApiResponse(
+            success=False,
+            error={
+                "code": ErrorCode.VALIDATION_ERROR,
+                "message": detail,
+            },
+            request_id=request_id,
+        ).model_dump(),
+    )
+
+
 @app.exception_handler(Exception)
 async def generic_exception_handler(request: Request, exc: Exception) -> JSONResponse:
     """Handle unexpected exceptions with standardized format."""
@@ -416,42 +437,44 @@ async def health_check(request: Request) -> dict[str, Any]:
             version="0.2.0",
             repository=settings.repository,
             database=db_status,
-            timestamp=datetime.now().isoformat(),
+            timestamp=datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
         ).model_dump(),
     )
 
 
-@app.get("/runs", summary="List recent workflow runs")
+@app.get("/api/runs", summary="List recent workflow runs")
 async def list_runs(
     request: Request,
     limit: int = Query(10, ge=1, le=100),
+    per_page: int = Query(10, ge=1, le=100),
     branch: str | None = Query(None),
+    status: str | None = Query(None),
 ) -> dict[str, Any]:
     """List recent GitHub Actions workflow runs for the configured repository.
 
-    Optionally filter by branch.
+    Optionally filter by branch and status.
     """
     client = _get_client()
-    runs = await client.list_workflow_runs(branch=branch, limit=limit)
+    runs = await client.list_workflow_runs(branch=branch, status=status, per_page=per_page)
     run_data = [
         RunData(
-            run_id=run["id"],
-            run_name=run["name"],
-            status=run["status"],
-            conclusion=run["conclusion"],
-            head_branch=run["head_branch"],
-            event=run["event"],
-            html_url=run["html_url"],
+            run_id=run.run_id,
+            run_name=run.run_name,
+            status=run.status,
+            conclusion=run.conclusion,
+            head_branch=run.head_branch,
+            event=run.event,
+            html_url=run.html_url,
         )
         for run in runs
     ]
     return _success(request, RunListData(runs=run_data, count=len(run_data)).model_dump())
 
 
-@app.get("/runs/{run_id}/analyze", summary="Analyze a failed workflow run")
+@app.get("/api/runs/{run_id}/analyze", summary="Analyze a failed workflow run")
 async def analyze_run(
     request: Request,
-    run_id: int = Field(..., gt=0),
+    run_id: int = Path(..., gt=0),
 ) -> dict[str, Any]:
     """Analyze a specific failed GitHub Actions workflow run for root causes and repair suggestions.
 
@@ -474,57 +497,65 @@ async def analyze_run(
             status_code=404,
         )
 
-    all_analyses = []
+    failure_analyses: list[FailureAnalysis] = []
+    analysis_data_list: list[dict[str, Any]] = []
     for job in jobs:
-        if job["conclusion"] == "failure":
-            logs = await client.get_job_logs(job["id"])
-            analysis_result = analyze_failure(logs)
-            all_analyses.append(
+        if job.conclusion == "failure":
+            logs = await client.get_job_logs(job.job_id)
+            analysis_result = analyze_failure(run_id, job.job_id, job.job_name, logs)
+            failure_analyses.append(analysis_result)
+            analysis_data_list.append(
                 AnalysisData(
-                    job_id=job["id"],
-                    job_name=job["name"],
-                    error_category=analysis_result["error_category"],
-                    severity=analysis_result["severity"],
-                    root_cause=analysis_result["root_cause"],
-                    affected_files=analysis_result["affected_files"],
-                    affected_dependencies=analysis_result["affected_dependencies"],
-                    suggested_fix=analysis_result["suggested_fix"],
-                    confidence=analysis_result["confidence"],
+                    job_id=job.job_id,
+                    job_name=job.job_name,
+                    error_category=analysis_result.error_category.value,
+                    severity=analysis_result.severity.value,
+                    root_cause=analysis_result.root_cause,
+                    affected_files=analysis_result.affected_files,
+                    affected_dependencies=analysis_result.affected_dependencies,
+                    suggested_fix=analysis_result.suggested_fix,
+                    confidence=analysis_result.confidence,
                 ).model_dump()
             )
 
-    repair_plan = generate_repair_plan(all_analyses, run["head_branch"])
+    repair_plan = generate_repair_plan(run_id, run.run_name, run.head_branch, failure_analyses)
     repair_plan_data = RepairPlanData(
-        branch_name=repair_plan["branch_name"],
-        pr_title=repair_plan["pr_title"],
-        pr_body=repair_plan["pr_body"],
-        can_auto_fix=repair_plan["can_auto_fix"],
-        summary=repair_plan["summary"],
+        branch_name=repair_plan.branch_name,
+        pr_title=repair_plan.pr_title,
+        pr_body=repair_plan.pr_body,
+        can_auto_fix=repair_plan.can_auto_fix,
+        summary=repair_plan.summary,
     )
 
     return _success(
         request,
         AnalyzeData(
             run_id=run_id,
-            run_name=run["name"],
-            branch=run["head_branch"],
-            analyses=all_analyses,
+            run_name=run.run_name,
+            branch=run.head_branch,
+            analyses=analysis_data_list,
             repair_plan=repair_plan_data,
         ).model_dump(),
     )
 
 
-@app.post("/runs/{run_id}/repair", summary="Trigger a repair for a failed workflow run")
+@app.post("/api/runs/{run_id}/repair", summary="Trigger a repair for a failed workflow run")
 async def trigger_repair(
     request: Request,
-    run_id: int = Field(..., gt=0),
-    repair_request: RepairRequest | None = None,
+    run_id: int = Path(..., gt=0),
+    repair_request: RepairRequest = Body(...),
 ) -> dict[str, Any]:
     """Trigger a repair process for a given workflow run.
 
     If `create_branch` is true, a new branch will be created with proposed fixes.
     If `create_pr` is true, a pull request will also be opened.
     """
+    if repair_request and repair_request.run_id != run_id:
+        raise AppException(
+            code=ErrorCode.VALIDATION_ERROR,
+            message=f"run_id in URL ({run_id}) does not match run_id in body ({repair_request.run_id}).",
+            status_code=400,
+        )
     client = _get_client()
     run = await client.get_workflow_run(run_id)
     if not run:
@@ -542,45 +573,63 @@ async def trigger_repair(
             status_code=404,
         )
 
-    all_analyses = []
+    failure_analyses: list[FailureAnalysis] = []
     for job in jobs:
-        if job["conclusion"] == "failure":
-            logs = await client.get_job_logs(job["id"])
-            analysis_result = analyze_failure(logs)
-            all_analyses.append(analysis_result)
+        if job.conclusion == "failure":
+            logs = await client.get_job_logs(job.job_id)
+            analysis_result = analyze_failure(run_id, job.job_id, job.job_name, logs)
+            failure_analyses.append(analysis_result)
 
-    repair_plan = generate_repair_plan(all_analyses, run["head_branch"])
+    if not failure_analyses:
+        return _success(
+            request,
+            RepairData(
+                run_id=run_id,
+                repair_plan=RepairPlanData(
+                    branch_name="",
+                    pr_title="",
+                    pr_body="",
+                    can_auto_fix=False,
+                    summary="No failures found to repair.",
+                ),
+                branch_created=False,
+                pr_url="",
+                message="Nothing to repair: no failed jobs found.",
+            ).model_dump(),
+        )
+
+    repair_plan = generate_repair_plan(run_id, run.run_name, run.head_branch, failure_analyses)
 
     branch_created = False
     pr_url = ""
     message = "Repair plan generated."
 
-    if repair_request and repair_request.create_branch and repair_plan["can_auto_fix"]:
+    if repair_request and repair_request.create_branch and repair_plan.can_auto_fix:
         # In a real scenario, this would involve applying fixes and committing
         # For now, we just simulate branch/PR creation
-        new_branch_name = repair_plan["branch_name"]
-        await client.create_branch(new_branch_name, run["head_sha"])
+        new_branch_name = repair_plan.branch_name
+        await client.create_branch(new_branch_name, run.head_sha)
         branch_created = True
         message = f"Repair branch `{new_branch_name}` created."
 
         if repair_request.create_pr:
             pr = await client.create_pull_request(
-                base_branch=run["head_branch"],
+                base_branch=run.head_branch,
                 head_branch=new_branch_name,
-                title=repair_plan["pr_title"],
-                body=repair_plan["pr_body"],
+                title=repair_plan.pr_title,
+                body=repair_plan.pr_body,
             )
-            pr_url = pr["html_url"]
+            pr_url = pr
             message = f"Repair branch `{new_branch_name}` created and PR opened: {pr_url}"
 
     repair_data = RepairData(
         run_id=run_id,
         repair_plan=RepairPlanData(
-            branch_name=repair_plan["branch_name"],
-            pr_title=repair_plan["pr_title"],
-            pr_body=repair_plan["pr_body"],
-            can_auto_fix=repair_plan["can_auto_fix"],
-            summary=repair_plan["summary"],
+            branch_name=repair_plan.branch_name,
+            pr_title=repair_plan.pr_title,
+            pr_body=repair_plan.pr_body,
+            can_auto_fix=repair_plan.can_auto_fix,
+            summary=repair_plan.summary,
         ),
         branch_created=branch_created,
         pr_url=pr_url,
@@ -590,7 +639,7 @@ async def trigger_repair(
     return _success(request, repair_data.model_dump())
 
 
-@app.get("/history", summary="Get repair history")
+@app.get("/api/history/analyses", summary="Get repair history")
 async def get_history(
     request: Request,
     limit: int = Query(10, ge=1, le=100),
@@ -602,15 +651,15 @@ async def get_history(
     db = _get_db()
     if not db:
         raise AppException(
-            code=ErrorCode.DATABASE_ERROR,
+            code=ErrorCode.SERVICE_UNAVAILABLE,
             message="Database not configured. Cannot retrieve history.",
-            status_code=500,
+            status_code=503,
         )
     analyses = await db.get_recent_analyses(limit=limit)
     return _success(request, HistoryData(analyses=analyses, count=len(analyses)).model_dump())
 
 
-@app.get("/stats/categories", summary="Get error category statistics")
+@app.get("/api/history/stats/categories", summary="Get error category statistics")
 async def get_category_stats(
     request: Request,
     period_days: int = Query(30, ge=1, le=365),
@@ -622,9 +671,9 @@ async def get_category_stats(
     db = _get_db()
     if not db:
         raise AppException(
-            code=ErrorCode.DATABASE_ERROR,
+            code=ErrorCode.SERVICE_UNAVAILABLE,
             message="Database not configured. Cannot retrieve category statistics.",
-            status_code=500,
+            status_code=503,
         )
     stats = await db.get_category_statistics(period_days=period_days)
     return _success(
@@ -650,42 +699,46 @@ async def _cli_analyze(args: argparse.Namespace) -> None:
         print(f"Error: No jobs found for workflow run {args.run_id}.")
         sys.exit(1)
 
-    all_analyses = []
+    failure_analyses: list[FailureAnalysis] = []
     for job in jobs:
-        if job["conclusion"] == "failure":
-            logs = await client.get_job_logs(job["id"])
-            analysis_result = analyze_failure(logs)
-            all_analyses.append(analysis_result)
+        if job.conclusion == "failure":
+            logs = await client.get_job_logs(job.job_id)
+            analysis_result = analyze_failure(args.run_id, job.job_id, job.job_name, logs)
+            failure_analyses.append(analysis_result)
 
-    repair_plan = generate_repair_plan(all_analyses, run["head_branch"])
+    repair_plan = generate_repair_plan(args.run_id, run.run_name, run.head_branch, failure_analyses)
 
-    print(f"\n--- Analysis for Run {args.run_id} ({run['name']}) ---")
-    print(f"Branch: {run['head_branch']}")
+    print(f"\n--- Analysis for Run {args.run_id} ({run.run_name}) ---")
+    print(f"Branch: {run.head_branch}")
     print("\nFailed Jobs Analyses:")
-    for analysis in all_analyses:
-        print(f"  Job: {analysis['job_name']} (ID: {analysis['job_id']})")
-        print(f"    Error Category: {analysis['error_category']} (Severity: {analysis['severity']})")
-        print(f"    Root Cause: {analysis['root_cause']}")
-        print(f"    Suggested Fix: {analysis['suggested_fix']}")
-        if analysis["affected_files"]:
-            print(f"    Affected Files: {', '.join(analysis['affected_files'])}")
-        if analysis["affected_dependencies"]:
-            print(f"    Affected Dependencies: {', '.join(analysis['affected_dependencies'])}")
-        print(f"    Confidence: {analysis['confidence']:.2f}")
+    for analysis in failure_analyses:
+        print(f"  Job: {analysis.job_name} (ID: {analysis.job_id})")
+        print(
+            f"    Error Category: {analysis.error_category.value} (Severity: {analysis.severity.value})"
+        )
+        print(f"    Root Cause: {analysis.root_cause}")
+        print(f"    Suggested Fix: {analysis.suggested_fix}")
+        if analysis.affected_files:
+            print(f"    Affected Files: {', '.join(analysis.affected_files)}")
+        if analysis.affected_dependencies:
+            print(f"    Affected Dependencies: {', '.join(analysis.affected_dependencies)}")
+        print(f"    Confidence: {analysis.confidence:.2f}")
         print("\n")
 
     print("--- Repair Plan ---")
-    print(f"Summary: {repair_plan['summary']}")
-    print(f"Can Auto-Fix: {repair_plan['can_auto_fix']}")
-    if repair_plan["can_auto_fix"]:
-        print(f"  Proposed Branch: {repair_plan['branch_name']}")
-        print(f"  Proposed PR Title: {repair_plan['pr_title']}")
-        print(f"  Proposed PR Body: {repair_plan['pr_body']}")
+    print(f"Summary: {repair_plan.summary}")
+    print(f"Can Auto-Fix: {repair_plan.can_auto_fix}")
+    if repair_plan.can_auto_fix:
+        print(f"  Proposed Branch: {repair_plan.branch_name}")
+        print(f"  Proposed PR Title: {repair_plan.pr_title}")
+        print(f"  Proposed PR Body: {repair_plan.pr_body}")
 
 
 async def _cli_serve(args: argparse.Namespace) -> None:
     """CLI command to serve the FastAPI application."""
-    config = uvicorn.Config(app, host=args.host, port=args.port, log_level=settings.log_level.lower())
+    config = uvicorn.Config(
+        app, host=args.host, port=args.port, log_level=settings.log_level.lower()
+    )
     server = uvicorn.Server(config)
     await server.serve()
 

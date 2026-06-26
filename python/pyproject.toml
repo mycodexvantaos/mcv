@@ -23,7 +23,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = {text = "MIT"}
 authors = [
-    {name = "NinjaTeam AI", email = "ai-team@ninjatech.ai"},
+    {name = "MyCodeXvantaOS Team AI", email = "ai-team@mycodexvantaos.io"},
 ]
 keywords = [
     "memory-dream",
@@ -75,7 +75,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["mycodexvantaos_memory_dream", "mycodexvantaos_ci_repair", "mycodexvantaos_coder_deep"]
+known-first-party = ["mycodexvantaos_memory_dream", "mycodexvantaos_ci_repair", "mycodexvantaos_coder_deep", "mycodexvantaos_stream_pipeline", "mycodexvantaos_knowledge_pipeline", "mycodexvantaos_vector_tools", "mycodexvantaos_evaluation"]
 
 [tool.mypy]
 python_version = "3.11"

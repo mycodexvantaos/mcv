@@ -1,11 +1,44 @@
 ---
-blocking: true
-id: gate-34-inference-runtime-validation
-layer: meta-governance
-lifecycle: active
-owner: platform@mycodexvantaos.com
-plane: ai-infra
-validates:
-  - dimension: canonical-readiness
-    description: Mandatory readiness for gate-34-inference-runtime-validation
-    checks: []
+apiVersion: mycodexvantaos.io/v1
+kind: AIInfraGate
+metadata:
+  id: gate-34-inference-runtime-validation
+  version: 1.0.0
+  layer: l30
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: critical
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-60700
+  createdAt: 2026-01-01T00:00:00Z
+  tags:
+    - l30
+    - inference
+  sloTarget: 30
+  evidenceRetentionDays: 2555
+spec:
+  description: >
+    Validates that the inference runtime is correctly configured and meets latency and throughput SLOs.
+  validates:
+    - dimension: runtime-readiness
+      description: Inference runtime is ready and meets SLOs.
+      checks:
+        - id: chk-runtime-healthy
+          description: Inference runtime health check passes
+          rule: 'health:inference-runtime'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-latency-slo
+          description: p99 inference latency meets SLO target
+          rule: 'threshold:latency-p99<=contract.maxLatencyMs'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-throughput-slo
+          description: Throughput meets SLO target
+          rule: 'threshold:throughput>=contract.minThroughput'
+          severity: high
+          evidenceRequired: true
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml

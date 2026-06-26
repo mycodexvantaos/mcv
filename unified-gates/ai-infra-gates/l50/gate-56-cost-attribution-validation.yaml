@@ -1,11 +1,44 @@
 ---
-blocking: true
-id: gate-56-cost-attribution-validation
-layer: meta-governance
-lifecycle: active
-owner: platform@mycodexvantaos.com
-plane: ai-infra
-validates:
-  - dimension: canonical-readiness
-    description: Mandatory readiness for gate-56-cost-attribution-validation
-    checks: []
+apiVersion: mycodexvantaos.io/v1
+kind: AIInfraGate
+metadata:
+  id: gate-56-cost-attribution-validation
+  version: 1.0.0
+  layer: l50
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: critical
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-30400
+  createdAt: 2026-01-01T00:00:00Z
+  tags:
+    - l50
+    - cost
+  sloTarget: 30
+  evidenceRetentionDays: 2555
+spec:
+  description: >
+    Validates that cost attribution records are complete and accurate for all usage events.
+  validates:
+    - dimension: attribution-completeness
+      description: Cost attribution is complete.
+      checks:
+        - id: chk-workspace-attributed
+          description: Every usage event is attributed to a workspace
+          rule: 'field-not-empty:workspaceId'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-project-attributed
+          description: Every usage event is attributed to a project
+          rule: 'field-not-empty:projectId'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-billing-account-attributed
+          description: Every usage event is attributed to a billing account
+          rule: 'field-not-empty:billingAccountId'
+          severity: critical
+          evidenceRequired: true
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml

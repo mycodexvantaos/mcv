@@ -15,9 +15,11 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const { action, nodeId = 'local-kernel-root' } = await req
-    .json()
-    .catch(() => ({ action: 'heartbeat' }));
+  const body = (await req.json().catch(() => ({ action: 'heartbeat' }))) as {
+    action?: string;
+    nodeId?: string;
+  };
+  const { action = 'heartbeat', nodeId = 'local-kernel-root' } = body;
   const validationService = NativeValidationService.getInstance();
 
   let result;

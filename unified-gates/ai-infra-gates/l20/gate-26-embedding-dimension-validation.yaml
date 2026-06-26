@@ -1,0 +1,44 @@
+---
+apiVersion: mycodexvantaos.io/v1
+kind: AIInfraGate
+metadata:
+  id: gate-26-embedding-dimension-validation
+  version: 1.0.0
+  layer: l20
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: high
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-70800
+  createdAt: 2026-01-01T00:00:00Z
+  tags:
+    - l20
+    - embedding
+  sloTarget: 30
+  evidenceRetentionDays: 1095
+spec:
+  description: >
+    Validates that all vectors in the index have the correct embedding dimension as declared in the contract.
+  validates:
+    - dimension: dimension-consistency
+      description: All vectors have consistent embedding dimensions.
+      checks:
+        - id: chk-dimension-declared
+          description: Embedding dimension is declared in the vector index contract
+          rule: 'field-not-empty:embeddingDimension'
+          severity: high
+          evidenceRequired: true
+        - id: chk-dimension-consistent
+          description: All vectors in the index match the declared dimension
+          rule: 'vector:dimension-consistent'
+          severity: high
+          evidenceRequired: true
+        - id: chk-model-dimension-match
+          description: Embedding model output dimension matches index dimension
+          rule: 'compatibility:model-index-dimension'
+          severity: high
+          evidenceRequired: true
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml

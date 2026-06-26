@@ -250,7 +250,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const body = await request.json();
+  const body: { action?: string; alertId?: string } = await request.json();
 
   if (body.action === 'acknowledge_alert' && body.alertId) {
     const alert = mockAlerts.find((a) => a.id === body.alertId);

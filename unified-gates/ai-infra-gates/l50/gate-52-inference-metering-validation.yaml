@@ -1,0 +1,44 @@
+---
+apiVersion: mycodexvantaos.io/v1
+kind: AIInfraGate
+metadata:
+  id: gate-52-inference-metering-validation
+  version: 1.0.0
+  layer: l50
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: critical
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-30400
+  createdAt: 2026-01-01T00:00:00Z
+  tags:
+    - l50
+    - inference
+  sloTarget: 30
+  evidenceRetentionDays: 2555
+spec:
+  description: >
+    Validates that inference usage is accurately metered and attributed.
+  validates:
+    - dimension: metering-accuracy
+      description: Inference metering is accurate.
+      checks:
+        - id: chk-token-count-accurate
+          description: Reported token count matches runtime within 0.1%
+          rule: 'threshold:token-count-error<0.001'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-model-id-present
+          description: Model ID is present in every inference usage event
+          rule: 'field-not-empty:modelId'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-workspace-id-present
+          description: Workspace ID is present for cost attribution
+          rule: 'field-not-empty:workspaceId'
+          severity: critical
+          evidenceRequired: true
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml

@@ -1,0 +1,10 @@
+generated_documents/
+outputs/
+.agent_hooks/
+.psiphon_data/
+.claude/
+__pycache__/
+*.pyc
+test_screenshot_wkhtml.png
+/var/log/
+*.log

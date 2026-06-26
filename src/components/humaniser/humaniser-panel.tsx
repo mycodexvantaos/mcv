@@ -32,11 +32,11 @@ export function HumaniserPanel() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text, source: 'text' }),
       });
-      const data = await res.json();
+      const data: { label?: string; aiScore?: number; confidence?: number } = await res.json();
       setResult({
-        label: data.label,
-        aiScore: data.aiScore,
-        confidence: data.confidence,
+        label: data.label || 'unknown',
+        aiScore: data.aiScore ?? 0,
+        confidence: data.confidence ?? 0,
       });
     } catch {
       setResult(null);
@@ -54,15 +54,18 @@ export function HumaniserPanel() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text, source: 'text' }),
       });
-      const detection = await detectRes.json();
+      const detection: any = await detectRes.json();
 
       const res = await fetch('/api/humaniser/humanise', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text, detectionResult: detection, style: 'neutral' }),
       });
-      const data = await res.json();
-      setText(data.humanisedText);
+      const data: {
+        humanisedText?: string;
+        updatedDetection?: { label?: string; aiScore?: number; confidence?: number };
+      } = await res.json();
+      setText(data.humanisedText || text);
       setResult({
         label: data.updatedDetection?.label || 'human',
         aiScore: data.updatedDetection?.aiScore || 0,

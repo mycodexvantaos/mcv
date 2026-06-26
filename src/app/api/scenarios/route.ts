@@ -124,7 +124,13 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const body = await request.json();
+  const body: {
+    name?: string;
+    domain?: string;
+    description?: string;
+    requirements?: any[];
+    constraints?: any[];
+  } = await request.json();
 
   const scenario: Scenario = {
     id: `scenario-${Date.now()}`,
@@ -144,7 +150,7 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  const body = await request.json();
+  const body: { id?: string; [key: string]: any } = await request.json();
   const { id, ...updates } = body;
 
   const scenario = scenarios.find((s) => s.id === id);

@@ -17,8 +17,8 @@ import sys
 from pathlib import Path
 
 from mycodexvantaos_memory_dream import (
-    DreamRun,
     DreamReport,
+    DreamRun,
     MemoryItem,
 )
 

@@ -26,3 +26,8 @@ todo.md
 
 # AI continuity files (not production code)
 .ai/
+
+# JSONata upstream source — uses 4-space indent + JSDoc conventions incompatible with our Prettier config
+packages/jsonata/src/
+packages/jsonata/test/
+packages/jsonata/polyfill.js

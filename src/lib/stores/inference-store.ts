@@ -29,7 +29,7 @@ export const useInferenceStore = create<InferenceState>((set, get) => ({
     try {
       const response = await fetch('/api/inference/models');
       if (!response.ok) throw new Error('Failed to fetch models');
-      const data = await response.json();
+      const data: ModelInstance[] = await response.json();
       set({ models: data, isLoading: false });
     } catch (error) {
       set({ isLoading: false, error: error instanceof Error ? error.message : 'Unknown error' });
@@ -41,7 +41,7 @@ export const useInferenceStore = create<InferenceState>((set, get) => ({
     try {
       const response = await fetch(`/api/inference/metrics?range=${range}`);
       if (!response.ok) throw new Error('Failed to fetch metrics');
-      const data = await response.json();
+      const data: InferenceMetricsPoint[] = await response.json();
       set({ metrics: data });
     } catch (error) {
       set({ error: error instanceof Error ? error.message : 'Unknown error' });
@@ -52,7 +52,7 @@ export const useInferenceStore = create<InferenceState>((set, get) => ({
     try {
       const response = await fetch('/api/inference/routing');
       if (!response.ok) throw new Error('Failed to fetch routing');
-      const data = await response.json();
+      const data: ModelRouting[] = await response.json();
       set({ routing: data });
     } catch (error) {
       set({ error: error instanceof Error ? error.message : 'Unknown error' });

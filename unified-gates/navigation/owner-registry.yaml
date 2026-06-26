@@ -1,0 +1,126 @@
+---
+# path: unified-gates/navigation/owner-registry.yaml
+# governanceCode: mycodexvantaos-00000
+apiVersion: mycodexvantaos.io/v1
+kind: OwnerRegistry
+metadata:
+  name: unified-gates-owner-registry
+  version: 1.0.0
+  governanceCode: mycodexvantaos-00000
+  lifecycle: active
+
+spec:
+  description: >
+    Authoritative owner registry for all gates, policies, and governance
+    artifacts in the unified-gates module. Every gate MUST have a registered
+    owner. Gates without a registered owner are treated as blocking:true
+    with criticality:critical until an owner is assigned.
+
+  owners:
+    - urn: urn:mycodexvantaos:team:platform-governance-council
+      email: platform-governance-council@mycodexvantaos.com
+      displayName: Platform Governance Council
+      role: governance-authority
+      gates:
+        - gate-01-namespace-governance-validation
+        - gate-02-repository-naming-validation
+        - gate-03-governance-code-validation
+        - gate-04-directory-binding-mediator-validation
+        - gate-05-dependency-graph-acyclic-validation
+        - gate-06-lifecycle-state-validation
+        - gate-07-owner-registry-validation
+        - gate-08-audit-evidence-validation
+        - gate-94-policy-attestation-validation
+        - gate-95-audit-evidence-chain-validation
+        - gate-98-compliance-report-validation
+        - gate-99-production-closure-validation
+
+    - urn: urn:mycodexvantaos:team:platform-infra
+      email: platform@mycodexvantaos.com
+      displayName: Platform Infrastructure Team
+      role: gate-owner
+      gates:
+        - gate-11-ai-chip-capability-validation
+        - gate-12-gpu-driver-validation
+        - gate-13-accelerator-topology-validation
+        - gate-14-smart-server-baseline-validation
+        - gate-15-ai-compute-cluster-readiness
+        - gate-16-distributed-training-runtime-validation
+        - gate-17-resource-quota-and-scheduler-validation
+        - gate-18-compute-cost-metering-validation
+        - gate-61-cloud-infra-readiness-validation
+        - gate-62-kubernetes-baseline-validation
+        - gate-63-gitops-sync-validation
+        - gate-64-managed-service-sla-validation
+
+    - urn: urn:mycodexvantaos:team:data-platform
+      email: data-platform@mycodexvantaos.com
+      displayName: Data Platform Team
+      role: gate-owner
+      gates:
+        - gate-21-dataset-contract-validation
+        - gate-22-dataset-lineage-validation
+        - gate-23-dataset-license-validation
+        - gate-24-pii-and-sensitive-data-scan
+        - gate-25-vector-database-schema-validation
+        - gate-26-embedding-dimension-validation
+        - gate-27-data-quality-threshold-validation
+        - gate-28-data-access-policy-validation
+
+    - urn: urn:mycodexvantaos:team:ai-platform
+      email: ai-platform@mycodexvantaos.com
+      displayName: AI Platform Team
+      role: gate-owner
+      gates:
+        - gate-31-ai-framework-compatibility-validation
+        - gate-32-model-contract-validation
+        - gate-33-training-pipeline-validation
+        - gate-34-inference-runtime-validation
+        - gate-35-ai-agent-framework-validation
+        - gate-36-tool-calling-contract-validation
+        - gate-37-model-registry-validation
+        - gate-38-algorithm-safety-policy-validation
+        - gate-41-ai-workload-contract-validation
+        - gate-42-inference-task-validation
+        - gate-43-training-task-validation
+        - gate-44-rag-pipeline-validation
+        - gate-45-agent-task-policy-validation
+        - gate-46-workload-resource-estimation
+        - gate-47-workload-slo-validation
+        - gate-48-workload-runtime-sandbox-validation
+
+    - urn: urn:mycodexvantaos:team:billing-platform
+      email: billing@mycodexvantaos.com
+      displayName: Billing Platform Team
+      role: gate-owner
+      gates:
+        - gate-51-usage-event-contract-validation
+        - gate-52-inference-metering-validation
+        - gate-53-training-metering-validation
+        - gate-54-embedding-metering-validation
+        - gate-55-agent-run-metering-validation
+        - gate-56-cost-attribution-validation
+        - gate-57-billing-policy-validation
+        - gate-58-invoice-evidence-validation
+
+    - urn: urn:mycodexvantaos:team:platform-security
+      email: platform-security@mycodexvantaos.com
+      displayName: Platform Security Team
+      role: gate-owner
+      gates:
+        - gate-91-sbom-generation-validation
+        - gate-92-provenance-validation
+        - gate-93-signature-validation
+        - gate-96-release-readiness-validation
+        - gate-97-rollback-readiness-validation
+
+  escalationChain:
+    - level: 1
+      urn: urn:mycodexvantaos:team:gate-owner
+      responseTimeSla: 4h
+    - level: 2
+      urn: urn:mycodexvantaos:team:platform-governance-council
+      responseTimeSla: 1h
+    - level: 3
+      urn: urn:mycodexvantaos:role:cto
+      responseTimeSla: 30m

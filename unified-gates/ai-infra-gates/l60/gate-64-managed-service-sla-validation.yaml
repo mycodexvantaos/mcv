@@ -1,0 +1,44 @@
+---
+apiVersion: mycodexvantaos.io/v1
+kind: AIInfraGate
+metadata:
+  id: gate-64-managed-service-sla-validation
+  version: 1.0.0
+  layer: l60
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: high
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-30100
+  createdAt: 2026-01-01T00:00:00Z
+  tags:
+    - l60
+    - managed
+  sloTarget: 30
+  evidenceRetentionDays: 1095
+spec:
+  description: >
+    Validates that managed cloud services (databases, object storage, message queues) meet their SLA requirements.
+  validates:
+    - dimension: sla-compliance
+      description: Managed services meet SLA requirements.
+      checks:
+        - id: chk-db-availability
+          description: Managed database availability meets SLA
+          rule: 'threshold:db-availability>=0.9999'
+          severity: high
+          evidenceRequired: false
+        - id: chk-storage-availability
+          description: Object storage availability meets SLA
+          rule: 'threshold:storage-availability>=0.99999'
+          severity: high
+          evidenceRequired: false
+        - id: chk-queue-availability
+          description: Message queue availability meets SLA
+          rule: 'threshold:queue-availability>=0.9999'
+          severity: medium
+          evidenceRequired: false
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import {
   Database,
-  Github,
+  GitFork,
   HardDrive,
   Cloud,
   Plus,
@@ -104,7 +104,7 @@ const mockConnectors: ConnectorCardData[] = [
 const connectorIcons: Record<ConnectorType, typeof Database> = {
   postgresql: Database,
   redis: HardDrive,
-  github: Github,
+  github: GitFork,
   s3: Cloud,
   custom: Database,
 };
