@@ -18,8 +18,6 @@ from typing import Any
 import uvicorn
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field
-
 from mycodexvantaos_coder_deep.architecture_sync import ArchitectureSync
 from mycodexvantaos_coder_deep.behavior_tracker import (
     BehaviorAction,
@@ -46,6 +44,7 @@ from mycodexvantaos_coder_deep.task_tracker import (
     TaskQuery,
     TaskTracker,
 )
+from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
 

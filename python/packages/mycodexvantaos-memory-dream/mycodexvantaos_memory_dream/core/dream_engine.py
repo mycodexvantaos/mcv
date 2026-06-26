@@ -4,17 +4,17 @@ Core Dream Engine — Orchestrate memory processing
 
 from datetime import datetime
 
+from mycodexvantaos_memory_dream.detectors import (
+    detect_conflicts,
+    detect_duplicates,
+    detect_orphans,
+)
 from mycodexvantaos_memory_dream.models import (
     DreamAction,
     DreamActionType,
     DreamReport,
     DreamRun,
     MemoryItem,
-)
-from mycodexvantaos_memory_dream.detectors import (
-    detect_duplicates,
-    detect_conflicts,
-    detect_orphans,
 )
 
 
