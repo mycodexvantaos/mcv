@@ -494,5 +494,5 @@ class TestGenerateRepairPlan:
             "main",
             [analysis],
         )
-        assert "fix/ci-repair-a-very-long-and-complex-workflow-run-name-12345" in plan.branch_name
-        assert len(plan.branch_name) <= 50  # Max length for branch name
+        assert "fix/ci-repair-a-very-long-and-complex-workflow-run-nam-12345" in plan.branch_name
+        assert len(plan.branch_name) <= 70  # Max length for branch name (prefix+40+suffix)
