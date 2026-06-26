@@ -1,11 +1,44 @@
 ---
-blocking: true
-id: gate-04-directory-binding-mediator-validation
-layer: meta-governance
-lifecycle: active
-owner: platform@mycodexvantaos.com
-plane: ai-infra
-validates:
-  - dimension: canonical-readiness
-    description: Mandatory readiness for gate-04-directory-binding-mediator-validation
-    checks: []
+apiVersion: mycodexvantaos.io/v1
+kind: AIInfraGate
+metadata:
+  id: gate-04-directory-binding-mediator-validation
+  version: 1.0.0
+  layer: l00
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: critical
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-00000
+  createdAt: 2026-01-01T00:00:00Z
+  tags:
+    - l00
+    - directory
+  sloTarget: 30
+  evidenceRetentionDays: 2555
+spec:
+  description: >
+    Validates that bidirectional logical relations between services use binding mediator artifacts in navigation/bindings/.
+  validates:
+    - dimension: mediator-existence
+      description: Binding mediator artifacts exist for all bidirectional relations.
+      checks:
+        - id: chk-binding-file-exists
+          description: navigation/bindings/*.yaml exists for each bidirectional relation
+          rule: 'file-exists:navigation/bindings/*.yaml'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-binding-schema-valid
+          description: Binding manifest conforms to DirectoryBinding schema
+          rule: 'schema:DirectoryBinding'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-no-hard-bidirectional
+          description: No hard bidirectional dependency without mediator
+          rule: 'dep-graph:no-hard-bidirectional-without-mediator'
+          severity: critical
+          evidenceRequired: true
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml

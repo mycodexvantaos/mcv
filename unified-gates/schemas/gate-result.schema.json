@@ -2,12 +2,72 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://mycodexvantaos.io/schemas/unified-gates/gate-result",
   "title": "Gate Result",
+  "description": "Schema for gate evaluation result records.",
   "type": "object",
   "properties": {
-    "apiVersion": { "type": "string" },
-    "kind": { "type": "string" },
-    "metadata": { "type": "object" },
-    "spec": { "type": "object" }
+    "gateId": {
+      "type": "string",
+      "pattern": "^gate-[0-9]{2}-[a-z0-9-]+$"
+    },
+    "gateVersion": {
+      "type": "string"
+    },
+    "pipelineRunId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "artifactRef": {
+      "type": "string"
+    },
+    "evaluatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "evaluatedBy": {
+      "type": "string"
+    },
+    "overallStatus": {
+      "type": "string",
+      "enum": ["PASS", "FAIL", "WARN", "SKIP", "ERROR"]
+    },
+    "dimensions": {
+      "type": "array"
+    },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "sha3512": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{128}$"
+        },
+        "blake3": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "signedBy": {
+          "type": "string"
+        },
+        "waiverRef": {
+          "type": ["string", "null"]
+        }
+      },
+      "required": ["sha256", "sha3512", "blake3"]
+    }
   },
-  "required": ["apiVersion", "kind", "metadata", "spec"]
+  "required": [
+    "gateId",
+    "gateVersion",
+    "pipelineRunId",
+    "artifactRef",
+    "evaluatedAt",
+    "evaluatedBy",
+    "overallStatus",
+    "dimensions",
+    "evidence"
+  ],
+  "additionalProperties": false
 }

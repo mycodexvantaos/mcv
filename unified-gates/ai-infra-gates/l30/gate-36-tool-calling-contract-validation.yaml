@@ -1,0 +1,44 @@
+---
+apiVersion: mycodexvantaos.io/v1
+kind: AIInfraGate
+metadata:
+  id: gate-36-tool-calling-contract-validation
+  version: 1.0.0
+  layer: l30
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: high
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-60700
+  createdAt: 2026-01-01T00:00:00Z
+  tags:
+    - l30
+    - tool
+  sloTarget: 30
+  evidenceRetentionDays: 1095
+spec:
+  description: >
+    Validates that all tool-calling definitions conform to the tool-calling contract schema.
+  validates:
+    - dimension: contract-conformance
+      description: Tool-calling definitions are valid.
+      checks:
+        - id: chk-tool-schema-valid
+          description: Tool definition conforms to JSON Schema
+          rule: 'schema:tool-definition'
+          severity: high
+          evidenceRequired: true
+        - id: chk-tool-idempotent
+          description: Tool execution is idempotent or has idempotency key
+          rule: 'property:idempotent'
+          severity: medium
+          evidenceRequired: false
+        - id: chk-tool-timeout-defined
+          description: Tool timeout is defined and reasonable
+          rule: 'field-not-empty:timeout'
+          severity: medium
+          evidenceRequired: false
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml

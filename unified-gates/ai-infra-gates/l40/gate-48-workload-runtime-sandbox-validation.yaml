@@ -1,0 +1,44 @@
+---
+apiVersion: mycodexvantaos.io/v1
+kind: AIInfraGate
+metadata:
+  id: gate-48-workload-runtime-sandbox-validation
+  version: 1.0.0
+  layer: l40
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: critical
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-60700
+  createdAt: 2026-01-01T00:00:00Z
+  tags:
+    - l40
+    - workload
+  sloTarget: 30
+  evidenceRetentionDays: 2555
+spec:
+  description: >
+    Validates that AI workloads run in properly isolated runtime sandboxes.
+  validates:
+    - dimension: sandbox-isolation
+      description: Workload is running in an isolated sandbox.
+      checks:
+        - id: chk-namespace-isolated
+          description: Workload runs in an isolated Kubernetes namespace
+          rule: 'k8s:namespace-isolated'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-network-policy-enforced
+          description: Network policy restricts cross-tenant traffic
+          rule: 'k8s:network-policy-enforced'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-seccomp-profile
+          description: Seccomp profile is applied to workload pods
+          rule: 'k8s:seccomp-profile-applied'
+          severity: high
+          evidenceRequired: true
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml

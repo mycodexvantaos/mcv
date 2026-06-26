@@ -1,0 +1,44 @@
+---
+apiVersion: mycodexvantaos.io/v1
+kind: AIInfraGate
+metadata:
+  id: gate-58-invoice-evidence-validation
+  version: 1.0.0
+  layer: l50
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: critical
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-30400
+  createdAt: 2026-01-01T00:00:00Z
+  tags:
+    - l50
+    - invoice
+  sloTarget: 30
+  evidenceRetentionDays: 2555
+spec:
+  description: >
+    Validates that invoice evidence records exist and reconcile with usage events.
+  validates:
+    - dimension: invoice-reconciliation
+      description: Invoice reconciles with usage events.
+      checks:
+        - id: chk-invoice-generated
+          description: Invoice has been generated for the billing period
+          rule: 'billing:invoice-generated'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-reconciliation-passes
+          description: Invoice total reconciles with usage events within 0.01%
+          rule: 'threshold:invoice-reconciliation-error<0.0001'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-invoice-signed
+          description: Invoice is digitally signed by the billing service
+          rule: 'signature:invoice-signed'
+          severity: critical
+          evidenceRequired: true
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml

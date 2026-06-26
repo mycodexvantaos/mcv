@@ -1,11 +1,44 @@
 ---
-blocking: true
-id: gate-41-ai-workload-contract-validation
-layer: meta-governance
-lifecycle: active
-owner: platform@mycodexvantaos.com
-plane: ai-infra
-validates:
-  - dimension: canonical-readiness
-    description: Mandatory readiness for gate-41-ai-workload-contract-validation
-    checks: []
+apiVersion: mycodexvantaos.io/v1
+kind: AIInfraGate
+metadata:
+  id: gate-41-ai-workload-contract-validation
+  version: 1.0.0
+  layer: l40
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: critical
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-60700
+  createdAt: 2026-01-01T00:00:00Z
+  tags:
+    - l40
+    - ai
+  sloTarget: 30
+  evidenceRetentionDays: 2555
+spec:
+  description: >
+    Validates that AI workload definitions conform to the workload contract schema.
+  validates:
+    - dimension: contract-conformance
+      description: Workload conforms to its contract.
+      checks:
+        - id: chk-workload-contract-exists
+          description: Workload contract exists in contracts/ai-workload-contract.yaml
+          rule: 'file-exists:contracts/ai-workload-contract.yaml'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-workload-schema-valid
+          description: Workload definition conforms to workload contract schema
+          rule: 'schema:ai-workload-contract'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-resource-limits-defined
+          description: CPU, memory, and GPU resource limits are defined
+          rule: 'field-not-empty:resourceLimits'
+          severity: critical
+          evidenceRequired: true
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml

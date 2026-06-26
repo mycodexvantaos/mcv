@@ -1,11 +1,44 @@
 ---
-blocking: true
-id: gate-93-signature-validation
-layer: meta-governance
-lifecycle: active
-owner: platform@mycodexvantaos.com
-plane: ai-infra
-validates:
-  - dimension: canonical-readiness
-    description: Mandatory readiness for gate-93-signature-validation
-    checks: []
+apiVersion: mycodexvantaos.io/v1
+kind: AIInfraGate
+metadata:
+  id: gate-93-signature-validation
+  version: 1.0.0
+  layer: l90
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: critical
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-50400
+  createdAt: 2026-01-01T00:00:00Z
+  tags:
+    - l90
+    - signature
+  sloTarget: 30
+  evidenceRetentionDays: 2555
+spec:
+  description: >
+    Validates that all release artifacts are cryptographically signed by the platform signing service.
+  validates:
+    - dimension: signature-validity
+      description: Artifacts are signed and signatures are valid.
+      checks:
+        - id: chk-signature-exists
+          description: Signature file exists for the artifact
+          rule: 'file-exists:artifact.sig'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-signature-valid
+          description: Signature verifies against the artifact using the platform public key
+          rule: 'signature:verify-platform-key'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-signing-key-not-revoked
+          description: Signing key has not been revoked
+          rule: 'pki:key-not-revoked'
+          severity: critical
+          evidenceRequired: true
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml

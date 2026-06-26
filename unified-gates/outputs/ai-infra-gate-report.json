@@ -1,0 +1,2204 @@
+{
+  "generatedAt": "2026-06-25T16:04:20.428994+00:00",
+  "validator": "validate-ai-infra-gates",
+  "layer": "all",
+  "overallStatus": "PASS",
+  "results": [
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-01-namespace-governance-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-01-namespace-governance-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-01-namespace-governance-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-01-namespace-governance-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-01-namespace-governance-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-01-namespace-governance-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-02-repository-naming-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-02-repository-naming-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-02-repository-naming-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-02-repository-naming-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-02-repository-naming-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-02-repository-naming-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-03-governance-code-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-03-governance-code-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-03-governance-code-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-03-governance-code-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-03-governance-code-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-03-governance-code-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-04-directory-binding-mediator-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-04-directory-binding-mediator-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-04-directory-binding-mediator-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-04-directory-binding-mediator-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-04-directory-binding-mediator-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-04-directory-binding-mediator-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-05-dependency-graph-acyclic-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-05-dependency-graph-acyclic-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-05-dependency-graph-acyclic-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-05-dependency-graph-acyclic-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-05-dependency-graph-acyclic-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-05-dependency-graph-acyclic-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-06-lifecycle-state-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-06-lifecycle-state-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-06-lifecycle-state-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-06-lifecycle-state-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-06-lifecycle-state-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-06-lifecycle-state-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-07-owner-registry-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-07-owner-registry-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-07-owner-registry-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-07-owner-registry-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-07-owner-registry-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-07-owner-registry-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-08-audit-evidence-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-08-audit-evidence-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-08-audit-evidence-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-08-audit-evidence-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-08-audit-evidence-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l00/gate-08-audit-evidence-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-11-ai-chip-capability-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-11-ai-chip-capability-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-11-ai-chip-capability-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-11-ai-chip-capability-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-11-ai-chip-capability-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-11-ai-chip-capability-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-12-gpu-driver-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-12-gpu-driver-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-12-gpu-driver-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-12-gpu-driver-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-12-gpu-driver-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-12-gpu-driver-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-13-accelerator-topology-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-13-accelerator-topology-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-13-accelerator-topology-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-13-accelerator-topology-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-13-accelerator-topology-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-13-accelerator-topology-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-14-smart-server-baseline-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-14-smart-server-baseline-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-14-smart-server-baseline-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-14-smart-server-baseline-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-14-smart-server-baseline-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-14-smart-server-baseline-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-15-ai-compute-cluster-readiness.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-15-ai-compute-cluster-readiness.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-15-ai-compute-cluster-readiness.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-15-ai-compute-cluster-readiness.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-15-ai-compute-cluster-readiness.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-15-ai-compute-cluster-readiness.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-16-distributed-training-runtime-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-16-distributed-training-runtime-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-16-distributed-training-runtime-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-16-distributed-training-runtime-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-16-distributed-training-runtime-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-16-distributed-training-runtime-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-17-resource-quota-and-scheduler-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-17-resource-quota-and-scheduler-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-17-resource-quota-and-scheduler-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-17-resource-quota-and-scheduler-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-17-resource-quota-and-scheduler-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-17-resource-quota-and-scheduler-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-18-compute-cost-metering-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-18-compute-cost-metering-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-18-compute-cost-metering-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-18-compute-cost-metering-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-18-compute-cost-metering-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l10/gate-18-compute-cost-metering-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-21-dataset-contract-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-21-dataset-contract-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-21-dataset-contract-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-21-dataset-contract-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-21-dataset-contract-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-21-dataset-contract-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-22-dataset-lineage-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-22-dataset-lineage-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-22-dataset-lineage-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-22-dataset-lineage-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-22-dataset-lineage-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-22-dataset-lineage-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-23-dataset-license-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-23-dataset-license-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-23-dataset-license-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-23-dataset-license-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-23-dataset-license-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-23-dataset-license-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-24-pii-and-sensitive-data-scan.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-24-pii-and-sensitive-data-scan.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-24-pii-and-sensitive-data-scan.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-24-pii-and-sensitive-data-scan.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-24-pii-and-sensitive-data-scan.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-24-pii-and-sensitive-data-scan.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-25-vector-database-schema-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-25-vector-database-schema-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-25-vector-database-schema-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-25-vector-database-schema-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-25-vector-database-schema-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-25-vector-database-schema-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-26-embedding-dimension-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-26-embedding-dimension-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-26-embedding-dimension-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-26-embedding-dimension-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-26-embedding-dimension-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-26-embedding-dimension-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-27-data-quality-threshold-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-27-data-quality-threshold-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-27-data-quality-threshold-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-27-data-quality-threshold-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-27-data-quality-threshold-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-27-data-quality-threshold-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-28-data-access-policy-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-28-data-access-policy-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-28-data-access-policy-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-28-data-access-policy-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-28-data-access-policy-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l20/gate-28-data-access-policy-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-31-ai-framework-compatibility-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-31-ai-framework-compatibility-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-31-ai-framework-compatibility-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-31-ai-framework-compatibility-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-31-ai-framework-compatibility-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-31-ai-framework-compatibility-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-32-model-contract-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-32-model-contract-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-32-model-contract-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-32-model-contract-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-32-model-contract-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-32-model-contract-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-33-training-pipeline-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-33-training-pipeline-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-33-training-pipeline-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-33-training-pipeline-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-33-training-pipeline-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-33-training-pipeline-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-34-inference-runtime-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-34-inference-runtime-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-34-inference-runtime-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-34-inference-runtime-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-34-inference-runtime-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-34-inference-runtime-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-35-ai-agent-framework-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-35-ai-agent-framework-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-35-ai-agent-framework-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-35-ai-agent-framework-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-35-ai-agent-framework-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-35-ai-agent-framework-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-36-tool-calling-contract-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-36-tool-calling-contract-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-36-tool-calling-contract-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-36-tool-calling-contract-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-36-tool-calling-contract-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-36-tool-calling-contract-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-37-model-registry-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-37-model-registry-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-37-model-registry-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-37-model-registry-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-37-model-registry-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-37-model-registry-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-38-algorithm-safety-policy-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-38-algorithm-safety-policy-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-38-algorithm-safety-policy-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-38-algorithm-safety-policy-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-38-algorithm-safety-policy-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l30/gate-38-algorithm-safety-policy-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-41-ai-workload-contract-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-41-ai-workload-contract-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-41-ai-workload-contract-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-41-ai-workload-contract-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-41-ai-workload-contract-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-41-ai-workload-contract-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-42-inference-task-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-42-inference-task-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-42-inference-task-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-42-inference-task-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-42-inference-task-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-42-inference-task-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-43-training-task-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-43-training-task-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-43-training-task-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-43-training-task-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-43-training-task-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-43-training-task-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-44-rag-pipeline-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-44-rag-pipeline-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-44-rag-pipeline-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-44-rag-pipeline-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-44-rag-pipeline-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-44-rag-pipeline-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-45-agent-task-policy-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-45-agent-task-policy-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-45-agent-task-policy-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-45-agent-task-policy-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-45-agent-task-policy-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-45-agent-task-policy-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-46-workload-resource-estimation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-46-workload-resource-estimation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-46-workload-resource-estimation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-46-workload-resource-estimation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-46-workload-resource-estimation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-46-workload-resource-estimation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-47-workload-slo-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-47-workload-slo-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-47-workload-slo-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-47-workload-slo-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-47-workload-slo-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-47-workload-slo-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-48-workload-runtime-sandbox-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-48-workload-runtime-sandbox-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-48-workload-runtime-sandbox-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-48-workload-runtime-sandbox-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-48-workload-runtime-sandbox-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l40/gate-48-workload-runtime-sandbox-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-51-usage-event-contract-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-51-usage-event-contract-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-51-usage-event-contract-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-51-usage-event-contract-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-51-usage-event-contract-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-51-usage-event-contract-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-52-inference-metering-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-52-inference-metering-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-52-inference-metering-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-52-inference-metering-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-52-inference-metering-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-52-inference-metering-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-53-training-metering-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-53-training-metering-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-53-training-metering-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-53-training-metering-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-53-training-metering-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-53-training-metering-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-54-embedding-metering-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-54-embedding-metering-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-54-embedding-metering-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-54-embedding-metering-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-54-embedding-metering-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-54-embedding-metering-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-55-agent-run-metering-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-55-agent-run-metering-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-55-agent-run-metering-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-55-agent-run-metering-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-55-agent-run-metering-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-55-agent-run-metering-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-56-cost-attribution-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-56-cost-attribution-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-56-cost-attribution-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-56-cost-attribution-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-56-cost-attribution-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-56-cost-attribution-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-57-billing-policy-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-57-billing-policy-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-57-billing-policy-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-57-billing-policy-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-57-billing-policy-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-57-billing-policy-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-58-invoice-evidence-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-58-invoice-evidence-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-58-invoice-evidence-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-58-invoice-evidence-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-58-invoice-evidence-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l50/gate-58-invoice-evidence-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-61-cloud-infra-readiness-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-61-cloud-infra-readiness-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-61-cloud-infra-readiness-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-61-cloud-infra-readiness-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-61-cloud-infra-readiness-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-61-cloud-infra-readiness-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-62-kubernetes-baseline-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-62-kubernetes-baseline-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-62-kubernetes-baseline-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-62-kubernetes-baseline-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-62-kubernetes-baseline-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-62-kubernetes-baseline-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-63-gitops-sync-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-63-gitops-sync-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-63-gitops-sync-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-63-gitops-sync-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-63-gitops-sync-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-63-gitops-sync-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-64-managed-service-sla-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-64-managed-service-sla-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-64-managed-service-sla-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-64-managed-service-sla-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-64-managed-service-sla-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l60/gate-64-managed-service-sla-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-91-sbom-generation-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-91-sbom-generation-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-91-sbom-generation-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-91-sbom-generation-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-91-sbom-generation-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-91-sbom-generation-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-92-provenance-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-92-provenance-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-92-provenance-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-92-provenance-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-92-provenance-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-92-provenance-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-93-signature-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-93-signature-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-93-signature-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-93-signature-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-93-signature-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-93-signature-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-94-policy-attestation-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-94-policy-attestation-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-94-policy-attestation-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-94-policy-attestation-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-94-policy-attestation-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-94-policy-attestation-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-95-audit-evidence-chain-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-95-audit-evidence-chain-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-95-audit-evidence-chain-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-95-audit-evidence-chain-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-95-audit-evidence-chain-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-95-audit-evidence-chain-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-96-release-readiness-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-96-release-readiness-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-96-release-readiness-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-96-release-readiness-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-96-release-readiness-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-96-release-readiness-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-97-rollback-readiness-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-97-rollback-readiness-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-97-rollback-readiness-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-97-rollback-readiness-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-97-rollback-readiness-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-97-rollback-readiness-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-98-compliance-report-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-98-compliance-report-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-98-compliance-report-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-98-compliance-report-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-98-compliance-report-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-98-compliance-report-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    },
+    {
+      "rule": "AIIG-01",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-99-production-closure-validation.yaml",
+      "message": "apiVersion OK"
+    },
+    {
+      "rule": "AIIG-02",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-99-production-closure-validation.yaml",
+      "message": "Gate ID OK"
+    },
+    {
+      "rule": "AIIG-03",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-99-production-closure-validation.yaml",
+      "message": "governanceCode OK"
+    },
+    {
+      "rule": "AIIG-04",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-99-production-closure-validation.yaml",
+      "message": "Lifecycle 'active' OK"
+    },
+    {
+      "rule": "AIIG-05",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-99-production-closure-validation.yaml",
+      "message": "Owner present"
+    },
+    {
+      "rule": "AIIG-06",
+      "status": "PASS",
+      "subject": "ai-infra-gates/l90/gate-99-production-closure-validation.yaml",
+      "message": "spec.validates has 1 dimension(s)"
+    }
+  ]
+}

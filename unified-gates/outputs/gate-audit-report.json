@@ -1,0 +1,18 @@
+{
+  "apiVersion": "mycodexvantaos.io/v1",
+  "kind": "GateAuditReport",
+  "generatedAt": "2026-06-25T16:02:45.928621+00:00",
+  "specVersion": "mycodexvantaos-00000",
+  "overallStatus": "PASS",
+  "chainIntegrity": "validated",
+  "evidenceRecordCount": 0,
+  "hashAlgorithms": ["sha-256", "sha3-512", "blake3"],
+  "complianceStatus": {
+    "catalogCompleteness": "PENDING",
+    "schemaConformance": "PENDING",
+    "lifecycleCompliance": "PENDING",
+    "ownerRegistryCompleteness": "PENDING",
+    "waiverCompliance": "PENDING"
+  },
+  "notes": "This is a template report. Populate with actual audit results."
+}

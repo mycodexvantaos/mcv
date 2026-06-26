@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mycodexvantaos.io/schemas/unified-gates/dataset-contract",
+  "title": "Dataset Contract",
+  "description": "Schema for AI dataset contract definitions.",
+  "type": "object",
+  "properties": {
+    "datasetId": {
+      "type": "string"
+    },
+    "datasetVersion": {
+      "type": "string"
+    },
+    "datasetType": {
+      "type": "string",
+      "enum": ["training", "evaluation", "fine-tuning", "rag-corpus", "synthetic"]
+    },
+    "license": {
+      "type": "string"
+    },
+    "sourceRef": {
+      "type": "string"
+    },
+    "lineageRef": {
+      "type": "string"
+    },
+    "schema": {
+      "type": "object"
+    },
+    "qualityThresholds": {
+      "type": "object",
+      "properties": {
+        "maxNullRate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "maxDuplicateRate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": ["maxNullRate", "maxDuplicateRate"]
+    },
+    "accessPolicy": {
+      "type": "string"
+    },
+    "piiScanRef": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "datasetId",
+    "datasetVersion",
+    "datasetType",
+    "license",
+    "sourceRef",
+    "lineageRef",
+    "schema",
+    "qualityThresholds",
+    "accessPolicy",
+    "piiScanRef"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,44 @@
+---
+apiVersion: mycodexvantaos.io/v1
+kind: AIInfraGate
+metadata:
+  id: gate-38-algorithm-safety-policy-validation
+  version: 1.0.0
+  layer: l30
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: critical
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-60600
+  createdAt: 2026-01-01T00:00:00Z
+  tags:
+    - l30
+    - algorithm
+  sloTarget: 30
+  evidenceRetentionDays: 2555
+spec:
+  description: >
+    Validates that AI algorithms comply with the platform's algorithm safety policy.
+  validates:
+    - dimension: safety-compliance
+      description: Algorithm complies with safety policy.
+      checks:
+        - id: chk-safety-policy-attested
+          description: Algorithm safety policy attestation exists
+          rule: 'attestation:safety-policy'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-harmful-output-rate
+          description: Harmful output rate is below 0.1%
+          rule: 'threshold:harmful-output-rate<0.001'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-alignment-verified
+          description: Alignment verification suite passes
+          rule: 'functional:alignment-suite'
+          severity: critical
+          evidenceRequired: true
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml

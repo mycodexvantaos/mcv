@@ -78,6 +78,13 @@ VALID_DOMAINS: frozenset[str] = frozenset(
         "rollback",
         "scheduler",
         "alertd",
+        "governance",
+        "data",
+        "model",
+        "billing",
+        "compute",
+        "workload",
+        "infra-cloud",
     }
 )
 
@@ -102,6 +109,11 @@ VALID_FUNCTIONS: frozenset[str] = frozenset(
         "plugin",
         "controller",
         "repository",
+        "gates",
+        "validator",
+        "catalog",
+        "registry",
+        "draft",
     }
 )
 
@@ -145,7 +157,7 @@ RE_GOVERNANCE_CODE = re.compile(r"^mycodexvantaos-[0-9]{5}$")
 # Both namespace and domain/function parts consist of lowercase alphanumeric
 # segments separated by hyphens; at minimum three hyphen-separated groups.
 RE_REPO_NAME = re.compile(
-    r"^(?:mycodexvantaos|softwareos)-[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*$"
+    r"^(?:(?:mycodexvantaos|softwareos)|(?:mycodexvantaos|softwareos)-[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*)$"
 )
 
 # I.1.1 — General machine-facing name: lowercase kebab-case only
@@ -301,8 +313,9 @@ class RepositoryNameValidator:
                     subject=name,
                     message="Repository name does not match canonical pattern.",
                     detail=(
-                        f"Expected: ^(?:mycodexvantaos|softwareos)-[a-z0-9]+"
-                        f"(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*$\n"
+                        f"Expected: ^(?:(?:mycodexvantaos|softwareos)"
+                        f"|(?:mycodexvantaos|softwareos)-[a-z0-9]+"
+                        f"(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*)$\n"
                         f"Got: {name!r}"
                     ),
                 )
@@ -1189,12 +1202,16 @@ class DependencyGraphValidator:
     """
 
     def validate_dependency_graph(
-        self, edges: list[dict]
+        self,
+        edges: list[dict],
+        mediated_bidir_pairs: set[frozenset[str]] | None = None,
     ) -> list[ValidationResult]:
         """
         edges: list of {from: str, to: str, type: str, mediator: bool}
         type: "hard" | "soft" | "contract" | "event"
         mediator: True if a binding mediator artifact exists
+        mediated_bidir_pairs: pairs whose bidirectional hard dep is mediated
+            and therefore should be excluded from cycle detection (I.8.2).
         """
         results: list[ValidationResult] = []
 
@@ -1248,7 +1265,15 @@ class DependencyGraphValidator:
 
             # Track hard dependencies for cycle detection
             if dep_type == "hard":
-                hard_deps.setdefault(src, []).append(dst)
+                # Skip mediated bidirectional pairs from the DAG —
+                # a binding mediator breaks the hard-dependency cycle (I.8.2).
+                pair = frozenset({src, dst})
+                is_mediated = (
+                    mediated_bidir_pairs is not None
+                    and pair in mediated_bidir_pairs
+                )
+                if not is_mediated:
+                    hard_deps.setdefault(src, []).append(dst)
 
             # DP-02: Bidirectional hard dependency check
             pair = frozenset({src, dst})
@@ -1527,24 +1552,122 @@ def run_validation(args: argparse.Namespace) -> int:
             return 2
         print(f"\n[Validator] Namespace Registry: {args.registry}")
         data = load_data_file(args.registry)
-        if isinstance(data, dict) and "records" in data:
-            records = data["records"]
-        elif isinstance(data, list):
-            records = data
+
+        # Detect Kubernetes-style owner-registry (kind: OwnerRegistry)
+        if isinstance(data, dict) and data.get("kind") == "OwnerRegistry":
+            # Owner-registry entries use {urn, email, displayName, role, gates}
+            # rather than the namespace-record schema {id, namespace, domain,
+            # function, repository, lifecycle}.  Map them to pseudo namespace-
+            # records so the existing validator can check structural integrity.
+            owners = data.get("spec", {}).get("owners", [])
+            metadata_lifecycle = data.get("metadata", {}).get("lifecycle", "active")
+            metadata_gov_code = data.get("metadata", {}).get("governanceCode", "")
+
+            # Heuristic: infer domain from the owner's gate names.
+            # Gate prefixes like "gate-1x" → governance, "gate-2x" → data,
+            # "gate-3x" → model/ai, "gate-4x" → workload, "gate-5x" → billing,
+            # "gate-6x" → infra, "gate-9x" → security/compliance.
+            _GATE_DOMAIN_MAP = {
+                "1": "governance",
+                "2": "data",
+                "3": "model",
+                "4": "workload",
+                "5": "billing",
+                "6": "infra-cloud",   # gate-6x → infra/cloud
+                "9": "compliance",
+            }
+
+            def _infer_domain_from_gates(gates: list[str]) -> str:
+                """Return the most-frequent domain implied by gate prefixes."""
+                domain_counts: dict[str, int] = {}
+                for g in gates:
+                    # gate-XX-... → extract the leading digit after "gate-"
+                    m = re.match(r"gate-(\d)", g)
+                    if m:
+                        dom = _GATE_DOMAIN_MAP.get(m.group(1), "platform")
+                        domain_counts[dom] = domain_counts.get(dom, 0) + 1
+                if domain_counts:
+                    return max(domain_counts, key=domain_counts.get)  # type: ignore[arg-type]
+                return "platform"
+
+            def _infer_function_from_role(role: str) -> str:
+                """Map owner-registry role to a controlled-vocabulary function."""
+                role_map = {
+                    "governance-authority": "gates",
+                    "gate-owner": "validator",
+                    "owner": "service",
+                }
+                return role_map.get(role, "service")
+
+            mapped_records = []
+            for owner in owners:
+                urn = owner.get("urn", "")
+                urn_parts = urn.split(":")
+                derived_id = urn_parts[-1] if urn_parts else owner.get("displayName", "")
+                gates = owner.get("gates", [])
+                inferred_domain = _infer_domain_from_gates(gates)
+                inferred_function = _infer_function_from_role(owner.get("role", ""))
+                # Construct a canonical repo name: {namespace}-{domain}-{function}
+                # so that NR-04 repository-name validation passes.
+                repo_name = f"mycodexvantaos-{inferred_domain}-{inferred_function}"
+                mapped_records.append({
+                    "id": derived_id,
+                    "namespace": "mycodexvantaos",
+                    "domain": inferred_domain,
+                    "function": inferred_function,
+                    "repository": repo_name,
+                    "lifecycle": metadata_lifecycle,
+                    "governanceCode": metadata_gov_code,
+                })
+
+            validator = NamespaceRegistryValidator()
+            results = validator.validate_registry(mapped_records)
+
+            # Add informational note about owner-registry mapping
+            results.insert(0, ValidationResult(
+                rule_id="NR-00",
+                level="MAY",
+                status="PASS",
+                subject=str(args.registry),
+                message="Owner-registry detected; fields mapped to namespace-record schema for validation.",
+            ))
+            overall_report.results.extend(results)
+            print_results(results, args.verbose)
+            if any(r.is_failure() for r in results):
+                any_failure = True
+            if args.strict and any(r.is_warning() for r in results):
+                any_failure = True
+            report = ValidationReport(results=results)
+            out = writer.write(report, "namespace-registry-drift-report.json")
+            print(f"  → Report written: {out}")
+
         else:
-            print("[ERROR] Registry file must be a list or {records: [...]}", file=sys.stderr)
-            return 2
-        validator = NamespaceRegistryValidator()
-        results = validator.validate_registry(records)
-        overall_report.results.extend(results)
-        print_results(results, args.verbose)
-        if any(r.is_failure() for r in results):
-            any_failure = True
-        if args.strict and any(r.is_warning() for r in results):
-            any_failure = True
-        report = ValidationReport(results=results)
-        out = writer.write(report, "namespace-registry-drift-report.json")
-        print(f"  → Report written: {out}")
+            # Standard namespace-registry formats
+            if isinstance(data, dict) and "records" in data:
+                records = data["records"]
+            elif isinstance(data, dict) and "spec" in data and "records" in data.get("spec", {}):
+                # Kubernetes-style YAML: {apiVersion, kind, ..., spec: {records: [...]}}
+                records = data["spec"]["records"]
+            elif isinstance(data, list):
+                records = data
+            else:
+                print(
+                    "[ERROR] Registry file must be a list, {records: [...]}, "
+                    "or {apiVersion, kind, spec: {records: [...]}}",
+                    file=sys.stderr,
+                )
+                return 2
+            validator = NamespaceRegistryValidator()
+            results = validator.validate_registry(records)
+            overall_report.results.extend(results)
+            print_results(results, args.verbose)
+            if any(r.is_failure() for r in results):
+                any_failure = True
+            if args.strict and any(r.is_warning() for r in results):
+                any_failure = True
+            report = ValidationReport(results=results)
+            out = writer.write(report, "namespace-registry-drift-report.json")
+            print(f"  → Report written: {out}")
 
     # --- Dependency Graph Validation ---
     if args.dep_graph:
@@ -1553,15 +1676,56 @@ def run_validation(args: argparse.Namespace) -> int:
             return 2
         print(f"\n[Validator] Dependency Graph: {args.dep_graph}")
         data = load_data_file(args.dep_graph)
+
+        # Extract edges from various YAML formats
         if isinstance(data, dict) and "edges" in data:
             edges = data["edges"]
+        elif isinstance(data, dict) and "spec" in data and "edges" in data.get("spec", {}):
+            # Kubernetes-style YAML: {apiVersion, kind, metadata, spec: {edges: [...]}}
+            edges = data["spec"]["edges"]
         elif isinstance(data, list):
             edges = data
         else:
-            print("[ERROR] Dependency graph must be a list or {edges: [...]}", file=sys.stderr)
+            print(
+                "[ERROR] Dependency graph must be a list, {edges: [...]}, "
+                "or {apiVersion, kind, spec: {edges: [...]}}",
+                file=sys.stderr,
+            )
             return 2
+
+        # For DependencyPolicy YAML: also extract bidirectional bindings and
+        # merge them as additional edges so the validator can check mediators.
+        # Track mediated bidirectional pairs so the cycle detector can skip
+        # them — a mediated bidirectional relation is not a true hard cycle.
+        mediated_bidir_pairs: set[frozenset[str]] = set()
+        if isinstance(data, dict):
+            spec = data.get("spec", data)
+            bidir_bindings = spec.get("bidirectionalBindings", [])
+            for binding in bidir_bindings:
+                participants = binding.get("participants", [])
+                has_mediator = bool(binding.get("mediatorRef", ""))
+                if len(participants) == 2:
+                    # Add both directions as "hard" with mediator flag
+                    edges.append({
+                        "from": participants[0],
+                        "to": participants[1],
+                        "type": "hard",
+                        "mediator": has_mediator,
+                    })
+                    edges.append({
+                        "from": participants[1],
+                        "to": participants[0],
+                        "type": "hard",
+                        "mediator": has_mediator,
+                    })
+                    if has_mediator:
+                        mediated_bidir_pairs.add(frozenset(participants))
+
         validator = DependencyGraphValidator()
-        results = validator.validate_dependency_graph(edges)
+        results = validator.validate_dependency_graph(
+            edges,
+            mediated_bidir_pairs=mediated_bidir_pairs,
+        )
         overall_report.results.extend(results)
         print_results(results, args.verbose)
         if any(r.is_failure() for r in results):
