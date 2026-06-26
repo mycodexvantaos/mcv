@@ -1,0 +1,44 @@
+---
+apiVersion: mycodexvantaos.io/v1
+kind: AIInfraGate
+metadata:
+  id: gate-98-compliance-report-validation
+  version: 1.0.0
+  layer: l90
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: critical
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-51000
+  createdAt: 2026-01-01T00:00:00Z
+  tags:
+    - l90
+    - compliance
+  sloTarget: 30
+  evidenceRetentionDays: 2555
+spec:
+  description: >
+    Validates that a compliance report has been generated and approved for the release.
+  validates:
+    - dimension: compliance-report
+      description: Compliance report is present and approved.
+      checks:
+        - id: chk-report-generated
+          description: Compliance report has been generated
+          rule: 'file-exists:outputs/gate-audit-report.json'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-report-approved
+          description: Compliance report has been approved by the governance council
+          rule: 'approval:governance-council'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-no-open-compliance-issues
+          description: No open compliance issues in the report
+          rule: 'report:no-open-issues'
+          severity: critical
+          evidenceRequired: true
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml

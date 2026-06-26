@@ -1,0 +1,44 @@
+---
+apiVersion: mycodexvantaos.io/v1
+kind: AIInfraGate
+metadata:
+  id: gate-96-release-readiness-validation
+  version: 1.0.0
+  layer: l90
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: critical
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-00000
+  createdAt: 2026-01-01T00:00:00Z
+  tags:
+    - l90
+    - release
+  sloTarget: 30
+  evidenceRetentionDays: 2555
+spec:
+  description: >
+    Validates that all pre-release requirements are met before the artifact is promoted to production.
+  validates:
+    - dimension: release-readiness
+      description: Artifact is ready for release.
+      checks:
+        - id: chk-all-gates-passed
+          description: All mandatory gates in l00–l60 have passed
+          rule: 'gate:all-mandatory-passed'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-no-open-p1-issues
+          description: No open P1 issues are associated with this release
+          rule: 'issue-tracker:no-open-p1'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-release-notes-present
+          description: Release notes are present and approved
+          rule: 'field-not-empty:releaseNotes'
+          severity: high
+          evidenceRequired: true
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml

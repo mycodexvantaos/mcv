@@ -1,0 +1,36 @@
+{
+  "apiVersion": "mycodexvantaos.io/v1",
+  "kind": "GateValidationReport",
+  "generatedAt": "2026-06-25T16:04:21.081425+00:00",
+  "specVersion": "mycodexvantaos-00000",
+  "toolVersion": "1.0.0",
+  "overallStatus": "PASS",
+  "summary": {
+    "totalGateFiles": 61,
+    "layerBreakdown": {
+      "l00": 8,
+      "l10": 8,
+      "l20": 8,
+      "l30": 8,
+      "l40": 8,
+      "l50": 8,
+      "l60": 4,
+      "l90": 9
+    },
+    "passed": 1281,
+    "failed": 0,
+    "warnings": 0
+  },
+  "evidenceSummary": {
+    "hashAlgorithms": [
+      "sha-256",
+      "sha3-512",
+      "blake3"
+    ],
+    "chainIntegrity": "validated"
+  },
+  "waiverSummary": {
+    "activeWaivers": 0,
+    "expiringWithin7Days": 0
+  }
+}

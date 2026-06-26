@@ -1,0 +1,16 @@
+apiVersion: mycodexvantaos.io/v1
+kind: GateWaiverPolicy
+metadata:
+  name: gate-waiver-policy
+  version: 1.0.0
+  governanceCode: mycodexvantaos-00000
+spec:
+  maxDurationDays: 30
+  renewalProhibited: false
+  maxRenewals: 2
+  criticalGateRequiresCouncilApproval: true
+  justificationMinLength: 50
+  remediationPlanRequired: true
+  riskAcknowledgementRequired: true
+  expiryAlertLeadTimeDays: 7
+  expiredWaiverTreatment: fail

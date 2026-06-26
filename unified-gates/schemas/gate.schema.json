@@ -1,0 +1,195 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mycodexvantaos.io/schemas/unified-gates/gate",
+  "title": "Gate Definition",
+  "description": "Schema for AI infrastructure gate YAML definitions.",
+  "type": "object",
+  "properties": {
+    "apiVersion": {
+      "type": "string",
+      "const": "mycodexvantaos.io/v1"
+    },
+    "kind": {
+      "type": "string",
+      "const": "AIInfraGate"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^gate-[0-9]{2}-[a-z0-9-]+$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "layer": {
+          "type": "string",
+          "enum": [
+            "l00",
+            "l10",
+            "l20",
+            "l30",
+            "l40",
+            "l50",
+            "l60",
+            "l90"
+          ]
+        },
+        "plane": {
+          "type": "string",
+          "enum": [
+            "ai-infra",
+            "quality",
+            "production"
+          ]
+        },
+        "blocking": {
+          "type": "boolean"
+        },
+        "lifecycle": {
+          "type": "string",
+          "enum": [
+            "proposed",
+            "active",
+            "deprecated",
+            "archived",
+            "destroyed"
+          ]
+        },
+        "criticality": {
+          "type": "string",
+          "enum": [
+            "critical",
+            "high",
+            "medium",
+            "low"
+          ]
+        },
+        "owner": {
+          "type": "string"
+        },
+        "governanceCode": {
+          "type": "string",
+          "pattern": "^mycodexvantaos-[0-9]{5}$"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sloTarget": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "evidenceRetentionDays": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "layer",
+        "plane",
+        "blocking",
+        "lifecycle",
+        "owner",
+        "governanceCode"
+      ]
+    },
+    "spec": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "validates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "dimension": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "checks": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "pattern": "^chk-[a-z0-9-]+$"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "rule": {
+                      "type": "string"
+                    },
+                    "severity": {
+                      "type": "string",
+                      "enum": [
+                        "critical",
+                        "high",
+                        "medium",
+                        "low"
+                      ]
+                    },
+                    "evidenceRequired": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "description",
+                    "rule",
+                    "severity",
+                    "evidenceRequired"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "dimension",
+              "description",
+              "checks"
+            ]
+          }
+        },
+        "dependsOn": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "waiverPolicy": {
+          "type": "string"
+        },
+        "escalationPolicy": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "description",
+        "validates"
+      ]
+    }
+  },
+  "required": [
+    "apiVersion",
+    "kind",
+    "metadata",
+    "spec"
+  ],
+  "additionalProperties": false
+}

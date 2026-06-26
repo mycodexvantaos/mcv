@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mycodexvantaos.io/schemas/unified-gates/vector-index",
+  "title": "Vector Index Contract",
+  "description": "Schema for vector database index contract definitions.",
+  "type": "object",
+  "properties": {
+    "indexId": {
+      "type": "string"
+    },
+    "indexVersion": {
+      "type": "string"
+    },
+    "embeddingModelRef": {
+      "type": "string"
+    },
+    "embeddingDimension": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "distanceMetric": {
+      "type": "string",
+      "enum": [
+        "cosine",
+        "euclidean",
+        "dot-product"
+      ]
+    },
+    "freshnessWindowHours": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "recallAtK": {
+      "type": "object",
+      "properties": {
+        "k": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "minRecall": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "k",
+        "minRecall"
+      ]
+    },
+    "maxQueryLatencyMs": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "accessPolicy": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "indexId",
+    "indexVersion",
+    "embeddingModelRef",
+    "embeddingDimension",
+    "distanceMetric",
+    "freshnessWindowHours",
+    "recallAtK",
+    "maxQueryLatencyMs",
+    "accessPolicy"
+  ],
+  "additionalProperties": false
+}

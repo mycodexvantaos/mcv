@@ -1,0 +1,65 @@
+{
+  "apiVersion": "mycodexvantaos.io/v1",
+  "kind": "GateCoverageReport",
+  "generatedAt": "2026-06-25T16:02:45.928598+00:00",
+  "specVersion": "mycodexvantaos-00000",
+  "overallStatus": "PASS",
+  "coverageDimensions": {
+    "8-1-code": {
+      "lineCoverage": 0.0,
+      "branchCoverage": 0.0,
+      "status": "PENDING"
+    },
+    "8-2-structure": {
+      "functionCoverage": 0.0,
+      "classCoverage": 0.0,
+      "status": "PENDING"
+    },
+    "8-3-requirements": {
+      "requirementCoverage": 0.0,
+      "acceptanceCoverage": 0.0,
+      "status": "PENDING"
+    },
+    "8-4-workflow": {
+      "stepCoverage": 0.0,
+      "triggerCoverage": 0.0,
+      "status": "PENDING"
+    },
+    "8-5-artifacts": {
+      "artifactCoverage": 0.0,
+      "ruleCoverage": 0.0,
+      "status": "PENDING"
+    },
+    "8-6-resilience": {
+      "errorCoverage": 0.0,
+      "rollbackCoverage": 0.0,
+      "status": "PENDING"
+    },
+    "8-7-observability": {
+      "metricsCoverage": 0.0,
+      "alertCoverage": 0.0,
+      "status": "PENDING"
+    },
+    "8-8-security": {
+      "policyCoverage": 0.0,
+      "scanCoverage": 0.0,
+      "status": "PENDING"
+    },
+    "8-9-api-contract": {
+      "endpointCoverage": 0.0,
+      "contractCoverage": 0.0,
+      "status": "PENDING"
+    },
+    "8-10-change": {
+      "changeTypeCoverage": 0.0,
+      "regressionCoverage": 0.0,
+      "status": "PENDING"
+    },
+    "8-11-state-data": {
+      "stateCoverage": 0.0,
+      "transitionCoverage": 0.0,
+      "status": "PENDING"
+    }
+  },
+  "notes": "Coverage metrics are populated by the CI test runner. This is a template."
+}

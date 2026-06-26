@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mycodexvantaos.io/schemas/unified-gates/gate-waiver",
+  "title": "Gate Waiver",
+  "description": "Schema for gate waiver records.",
+  "type": "object",
+  "properties": {
+    "apiVersion": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string",
+      "const": "GateWaiver"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "gateId": {
+          "type": "string"
+        },
+        "artifactRef": {
+          "type": "string"
+        },
+        "requestedBy": {
+          "type": "string"
+        },
+        "approvedBy": {
+          "type": "string"
+        },
+        "approvedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "maxDurationDays": {
+          "type": "integer",
+          "maximum": 30
+        }
+      },
+      "required": [
+        "id",
+        "gateId",
+        "artifactRef",
+        "requestedBy",
+        "approvedBy",
+        "approvedAt",
+        "expiresAt"
+      ]
+    },
+    "spec": {
+      "type": "object",
+      "properties": {
+        "justification": {
+          "type": "string",
+          "minLength": 50
+        },
+        "remediationPlan": {
+          "type": "string",
+          "minLength": 50
+        },
+        "riskAcknowledgement": {
+          "type": "boolean",
+          "const": true
+        },
+        "reviewedRisks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "justification",
+        "remediationPlan",
+        "riskAcknowledgement"
+      ]
+    }
+  },
+  "required": [
+    "apiVersion",
+    "kind",
+    "metadata",
+    "spec"
+  ],
+  "additionalProperties": false
+}

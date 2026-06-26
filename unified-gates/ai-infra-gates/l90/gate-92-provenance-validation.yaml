@@ -1,11 +1,44 @@
 ---
-blocking: true
-id: gate-92-provenance-validation
-layer: meta-governance
-lifecycle: active
-owner: platform@mycodexvantaos.com
-plane: ai-infra
-validates:
-  - dimension: canonical-readiness
-    description: Mandatory readiness for gate-92-provenance-validation
-    checks: []
+apiVersion: mycodexvantaos.io/v1
+kind: AIInfraGate
+metadata:
+  id: gate-92-provenance-validation
+  version: 1.0.0
+  layer: l90
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: critical
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-00000
+  createdAt: 2026-01-01T00:00:00Z
+  tags:
+    - l90
+    - provenance
+  sloTarget: 30
+  evidenceRetentionDays: 2555
+spec:
+  description: >
+    Validates that artifact provenance records exist and are traceable to the source repository and CI pipeline.
+  validates:
+    - dimension: provenance-completeness
+      description: Provenance is complete and traceable.
+      checks:
+        - id: chk-provenance-exists
+          description: SLSA provenance record exists for the artifact
+          rule: 'slsa:provenance-exists'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-provenance-level
+          description: SLSA provenance level meets minimum requirement (SLSA Level 2)
+          rule: 'slsa:level>=2'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-source-ref-valid
+          description: Source repository reference in provenance is valid
+          rule: 'slsa:source-ref-valid'
+          severity: critical
+          evidenceRequired: true
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml

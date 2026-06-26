@@ -1,11 +1,49 @@
 ---
-blocking: true
-id: gate-62-kubernetes-baseline-validation
-layer: meta-governance
-lifecycle: active
-owner: platform@mycodexvantaos.com
-plane: ai-infra
-validates:
-  - dimension: canonical-readiness
-    description: Mandatory readiness for gate-62-kubernetes-baseline-validation
-    checks: []
+apiVersion: mycodexvantaos.io/v1
+kind: AIInfraGate
+metadata:
+  id: gate-62-kubernetes-baseline-validation
+  version: 1.0.0
+  layer: l60
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: critical
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-30100
+  createdAt: 2026-01-01T00:00:00Z
+  tags:
+    - l60
+    - kubernetes
+  sloTarget: 30
+  evidenceRetentionDays: 2555
+spec:
+  description: >
+    Validates that the Kubernetes cluster meets the platform baseline requirements.
+  validates:
+    - dimension: k8s-baseline
+      description: Kubernetes cluster meets baseline requirements.
+      checks:
+        - id: chk-k8s-version
+          description: Kubernetes version is in the approved version matrix
+          rule: 'semver:k8s-version-approved'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-node-ready
+          description: All nodes are in Ready state
+          rule: 'k8s:all-nodes-ready'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-rbac-enabled
+          description: RBAC is enabled on the cluster
+          rule: 'k8s:rbac-enabled'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-pod-security-standards
+          description: Pod Security Standards are enforced
+          rule: 'k8s:pod-security-standards'
+          severity: high
+          evidenceRequired: true
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml

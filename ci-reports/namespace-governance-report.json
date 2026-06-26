@@ -1,0 +1,2830 @@
+{
+  "generated_at": "2026-06-25T16:40:29.600214+00:00",
+  "spec_version": "mycodexvantaos-00000",
+  "tool_version": "1.0.0",
+  "overall_status": "PASS",
+  "summary": {
+    "total": 352,
+    "passed": 352,
+    "failed": 0,
+    "warnings": 0
+  },
+  "results": [
+    {
+      "rule_id": "NR-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-auth-service",
+      "message": "All required fields present.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-auth-service",
+      "message": "Lifecycle stage 'active' is valid.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-auth-service",
+      "message": "Governance code matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-auth-service",
+      "message": "No space-based governance code form detected.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-03",
+      "level": "SHOULD",
+      "status": "PASS",
+      "subject": "mycodexvantaos-auth-service",
+      "message": "Governance code falls within era 'era-two'.",
+      "detail": "Numeric value: 50100"
+    },
+    {
+      "rule_id": "NR-04/R-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-auth-service",
+      "message": "Repository name matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-auth-service",
+      "message": "No uppercase characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-03",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-auth-service",
+      "message": "No underscore characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-04",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-auth-service",
+      "message": "No dot characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-auth-service",
+      "message": "No whitespace found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-06",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-auth-service",
+      "message": "No version number suffix found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-07",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-auth-service",
+      "message": "No environment marker found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-08",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-auth-service",
+      "message": "Namespace 'mycodexvantaos' is registered (control-plane).",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-09",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-auth-service",
+      "message": "Domain 'auth' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-10",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-auth-service",
+      "message": "Function 'service' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-auth-service",
+      "message": "Registry ID is unique.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-engine",
+      "message": "All required fields present.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-engine",
+      "message": "Lifecycle stage 'active' is valid.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-engine",
+      "message": "Governance code matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-engine",
+      "message": "No space-based governance code form detected.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-03",
+      "level": "SHOULD",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-engine",
+      "message": "Governance code falls within era 'era-two'.",
+      "detail": "Numeric value: 50500"
+    },
+    {
+      "rule_id": "NR-04/R-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-engine",
+      "message": "Repository name matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-engine",
+      "message": "No uppercase characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-03",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-engine",
+      "message": "No underscore characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-04",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-engine",
+      "message": "No dot characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-engine",
+      "message": "No whitespace found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-06",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-engine",
+      "message": "No version number suffix found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-07",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-engine",
+      "message": "No environment marker found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-08",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-engine",
+      "message": "Namespace 'mycodexvantaos' is registered (control-plane).",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-09",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-engine",
+      "message": "Domain 'policy' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-10",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-engine",
+      "message": "Function 'engine' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-policy-engine",
+      "message": "Registry ID is unique.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-memory-hub",
+      "message": "All required fields present.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-memory-hub",
+      "message": "Lifecycle stage 'active' is valid.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-memory-hub",
+      "message": "Governance code matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-memory-hub",
+      "message": "No space-based governance code form detected.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-03",
+      "level": "SHOULD",
+      "status": "PASS",
+      "subject": "mycodexvantaos-memory-hub",
+      "message": "Governance code falls within era 'era-two'.",
+      "detail": "Numeric value: 30100"
+    },
+    {
+      "rule_id": "NR-04/R-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-memory-hub",
+      "message": "Repository name matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-memory-hub",
+      "message": "No uppercase characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-03",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-memory-hub",
+      "message": "No underscore characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-04",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-memory-hub",
+      "message": "No dot characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-memory-hub",
+      "message": "No whitespace found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-06",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-memory-hub",
+      "message": "No version number suffix found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-07",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-memory-hub",
+      "message": "No environment marker found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-08",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-memory-hub",
+      "message": "Namespace 'mycodexvantaos' is registered (control-plane).",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-09",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-memory-hub",
+      "message": "Domain 'memory' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-10",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-memory-hub",
+      "message": "Function 'hub' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-memory-hub",
+      "message": "Registry ID is unique.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-event-bus",
+      "message": "All required fields present.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-event-bus",
+      "message": "Lifecycle stage 'active' is valid.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-event-bus",
+      "message": "Governance code matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-event-bus",
+      "message": "No space-based governance code form detected.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-03",
+      "level": "SHOULD",
+      "status": "PASS",
+      "subject": "mycodexvantaos-event-bus",
+      "message": "Governance code falls within era 'era-two'.",
+      "detail": "Numeric value: 30300"
+    },
+    {
+      "rule_id": "NR-04/R-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-event-bus",
+      "message": "Repository name matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-event-bus",
+      "message": "No uppercase characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-03",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-event-bus",
+      "message": "No underscore characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-04",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-event-bus",
+      "message": "No dot characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-event-bus",
+      "message": "No whitespace found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-06",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-event-bus",
+      "message": "No version number suffix found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-07",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-event-bus",
+      "message": "No environment marker found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-08",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-event-bus",
+      "message": "Namespace 'mycodexvantaos' is registered (control-plane).",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-09",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-event-bus",
+      "message": "Domain 'event' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-10",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-event-bus",
+      "message": "Function 'bus' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-event-bus",
+      "message": "Registry ID is unique.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-infra-manager",
+      "message": "All required fields present.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-infra-manager",
+      "message": "Lifecycle stage 'active' is valid.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-infra-manager",
+      "message": "Governance code matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-infra-manager",
+      "message": "No space-based governance code form detected.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-03",
+      "level": "SHOULD",
+      "status": "PASS",
+      "subject": "mycodexvantaos-infra-manager",
+      "message": "Governance code falls within era 'era-one'.",
+      "detail": "Numeric value: 20100"
+    },
+    {
+      "rule_id": "NR-04/R-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-infra-manager",
+      "message": "Repository name matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-infra-manager",
+      "message": "No uppercase characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-03",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-infra-manager",
+      "message": "No underscore characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-04",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-infra-manager",
+      "message": "No dot characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-infra-manager",
+      "message": "No whitespace found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-06",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-infra-manager",
+      "message": "No version number suffix found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-07",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-infra-manager",
+      "message": "No environment marker found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-08",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-infra-manager",
+      "message": "Namespace 'mycodexvantaos' is registered (control-plane).",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-09",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-infra-manager",
+      "message": "Domain 'infra' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-10",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-infra-manager",
+      "message": "Function 'manager' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-infra-manager",
+      "message": "Registry ID is unique.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-signerd-service",
+      "message": "All required fields present.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-signerd-service",
+      "message": "Lifecycle stage 'active' is valid.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-signerd-service",
+      "message": "Governance code matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-signerd-service",
+      "message": "No space-based governance code form detected.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-03",
+      "level": "SHOULD",
+      "status": "PASS",
+      "subject": "mycodexvantaos-signerd-service",
+      "message": "Governance code falls within era 'era-two'.",
+      "detail": "Numeric value: 50400"
+    },
+    {
+      "rule_id": "NR-04/R-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-signerd-service",
+      "message": "Repository name matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-signerd-service",
+      "message": "No uppercase characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-03",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-signerd-service",
+      "message": "No underscore characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-04",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-signerd-service",
+      "message": "No dot characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-signerd-service",
+      "message": "No whitespace found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-06",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-signerd-service",
+      "message": "No version number suffix found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-07",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-signerd-service",
+      "message": "No environment marker found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-08",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-signerd-service",
+      "message": "Namespace 'mycodexvantaos' is registered (control-plane).",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-09",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-signerd-service",
+      "message": "Domain 'signerd' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-10",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-signerd-service",
+      "message": "Function 'service' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-signerd-service",
+      "message": "Registry ID is unique.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-controller-manager",
+      "message": "All required fields present.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-controller-manager",
+      "message": "Lifecycle stage 'active' is valid.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-controller-manager",
+      "message": "Governance code matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-controller-manager",
+      "message": "No space-based governance code form detected.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-03",
+      "level": "SHOULD",
+      "status": "PASS",
+      "subject": "mycodexvantaos-controller-manager",
+      "message": "Governance code falls within era 'era-one'.",
+      "detail": "Numeric value: 20400"
+    },
+    {
+      "rule_id": "NR-04/R-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-controller-manager",
+      "message": "Repository name matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-controller-manager",
+      "message": "No uppercase characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-03",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-controller-manager",
+      "message": "No underscore characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-04",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-controller-manager",
+      "message": "No dot characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-controller-manager",
+      "message": "No whitespace found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-06",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-controller-manager",
+      "message": "No version number suffix found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-07",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-controller-manager",
+      "message": "No environment marker found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-08",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-controller-manager",
+      "message": "Namespace 'mycodexvantaos' is registered (control-plane).",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-09",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-controller-manager",
+      "message": "Domain 'controller' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-10",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-controller-manager",
+      "message": "Function 'manager' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-controller-manager",
+      "message": "Registry ID is unique.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rolloutd-controller",
+      "message": "All required fields present.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rolloutd-controller",
+      "message": "Lifecycle stage 'active' is valid.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rolloutd-controller",
+      "message": "Governance code matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rolloutd-controller",
+      "message": "No space-based governance code form detected.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-03",
+      "level": "SHOULD",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rolloutd-controller",
+      "message": "Governance code falls within era 'era-one'.",
+      "detail": "Numeric value: 20400"
+    },
+    {
+      "rule_id": "NR-04/R-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rolloutd-controller",
+      "message": "Repository name matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rolloutd-controller",
+      "message": "No uppercase characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-03",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rolloutd-controller",
+      "message": "No underscore characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-04",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rolloutd-controller",
+      "message": "No dot characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rolloutd-controller",
+      "message": "No whitespace found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-06",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rolloutd-controller",
+      "message": "No version number suffix found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-07",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rolloutd-controller",
+      "message": "No environment marker found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-08",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rolloutd-controller",
+      "message": "Namespace 'mycodexvantaos' is registered (control-plane).",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-09",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rolloutd-controller",
+      "message": "Domain 'rolloutd' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-10",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rolloutd-controller",
+      "message": "Function 'controller' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rolloutd-controller",
+      "message": "Registry ID is unique.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-db-schemas-repository",
+      "message": "All required fields present.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-db-schemas-repository",
+      "message": "Lifecycle stage 'active' is valid.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-db-schemas-repository",
+      "message": "Governance code matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-db-schemas-repository",
+      "message": "No space-based governance code form detected.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-03",
+      "level": "SHOULD",
+      "status": "PASS",
+      "subject": "mycodexvantaos-db-schemas-repository",
+      "message": "Governance code falls within era 'era-two'.",
+      "detail": "Numeric value: 40200"
+    },
+    {
+      "rule_id": "NR-04/R-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-db-schemas-repository",
+      "message": "Repository name matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-db-schemas-repository",
+      "message": "No uppercase characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-03",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-db-schemas-repository",
+      "message": "No underscore characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-04",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-db-schemas-repository",
+      "message": "No dot characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-db-schemas-repository",
+      "message": "No whitespace found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-06",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-db-schemas-repository",
+      "message": "No version number suffix found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-07",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-db-schemas-repository",
+      "message": "No environment marker found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-08",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-db-schemas-repository",
+      "message": "Namespace 'mycodexvantaos' is registered (control-plane).",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-09",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-db-schemas-repository",
+      "message": "Domain 'db-schemas' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-10",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-db-schemas-repository",
+      "message": "Function 'repository' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-db-schemas-repository",
+      "message": "Registry ID is unique.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-autotask-engine",
+      "message": "All required fields present.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-autotask-engine",
+      "message": "Lifecycle stage 'active' is valid.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-autotask-engine",
+      "message": "Governance code matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-autotask-engine",
+      "message": "No space-based governance code form detected.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-03",
+      "level": "SHOULD",
+      "status": "PASS",
+      "subject": "mycodexvantaos-autotask-engine",
+      "message": "Governance code falls within era 'era-three'.",
+      "detail": "Numeric value: 60800"
+    },
+    {
+      "rule_id": "NR-04/R-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-autotask-engine",
+      "message": "Repository name matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-autotask-engine",
+      "message": "No uppercase characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-03",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-autotask-engine",
+      "message": "No underscore characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-04",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-autotask-engine",
+      "message": "No dot characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-autotask-engine",
+      "message": "No whitespace found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-06",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-autotask-engine",
+      "message": "No version number suffix found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-07",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-autotask-engine",
+      "message": "No environment marker found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-08",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-autotask-engine",
+      "message": "Namespace 'mycodexvantaos' is registered (control-plane).",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-09",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-autotask-engine",
+      "message": "Domain 'autotask' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-10",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-autotask-engine",
+      "message": "Function 'engine' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-autotask-engine",
+      "message": "Registry ID is unique.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-compliance-scanner",
+      "message": "All required fields present.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-compliance-scanner",
+      "message": "Lifecycle stage 'active' is valid.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-compliance-scanner",
+      "message": "Governance code matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-compliance-scanner",
+      "message": "No space-based governance code form detected.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-03",
+      "level": "SHOULD",
+      "status": "PASS",
+      "subject": "mycodexvantaos-compliance-scanner",
+      "message": "Governance code falls within era 'era-two'.",
+      "detail": "Numeric value: 51000"
+    },
+    {
+      "rule_id": "NR-04/R-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-compliance-scanner",
+      "message": "Repository name matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-compliance-scanner",
+      "message": "No uppercase characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-03",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-compliance-scanner",
+      "message": "No underscore characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-04",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-compliance-scanner",
+      "message": "No dot characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-compliance-scanner",
+      "message": "No whitespace found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-06",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-compliance-scanner",
+      "message": "No version number suffix found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-07",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-compliance-scanner",
+      "message": "No environment marker found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-08",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-compliance-scanner",
+      "message": "Namespace 'mycodexvantaos' is registered (control-plane).",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-09",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-compliance-scanner",
+      "message": "Domain 'compliance' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-10",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-compliance-scanner",
+      "message": "Function 'scanner' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-compliance-scanner",
+      "message": "Registry ID is unique.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-prediction-predictor",
+      "message": "All required fields present.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-prediction-predictor",
+      "message": "Lifecycle stage 'active' is valid.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-prediction-predictor",
+      "message": "Governance code matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-prediction-predictor",
+      "message": "No space-based governance code form detected.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-03",
+      "level": "SHOULD",
+      "status": "PASS",
+      "subject": "mycodexvantaos-prediction-predictor",
+      "message": "Governance code falls within era 'era-three'.",
+      "detail": "Numeric value: 60600"
+    },
+    {
+      "rule_id": "NR-04/R-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-prediction-predictor",
+      "message": "Repository name matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-prediction-predictor",
+      "message": "No uppercase characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-03",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-prediction-predictor",
+      "message": "No underscore characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-04",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-prediction-predictor",
+      "message": "No dot characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-prediction-predictor",
+      "message": "No whitespace found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-06",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-prediction-predictor",
+      "message": "No version number suffix found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-07",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-prediction-predictor",
+      "message": "No environment marker found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-08",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-prediction-predictor",
+      "message": "Namespace 'mycodexvantaos' is registered (control-plane).",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-09",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-prediction-predictor",
+      "message": "Domain 'prediction' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-10",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-prediction-predictor",
+      "message": "Function 'predictor' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-prediction-predictor",
+      "message": "Registry ID is unique.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rollback-engine",
+      "message": "All required fields present.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rollback-engine",
+      "message": "Lifecycle stage 'active' is valid.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rollback-engine",
+      "message": "Governance code matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rollback-engine",
+      "message": "No space-based governance code form detected.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-03",
+      "level": "SHOULD",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rollback-engine",
+      "message": "Governance code falls within era 'era-three'.",
+      "detail": "Numeric value: 60800"
+    },
+    {
+      "rule_id": "NR-04/R-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rollback-engine",
+      "message": "Repository name matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rollback-engine",
+      "message": "No uppercase characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-03",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rollback-engine",
+      "message": "No underscore characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-04",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rollback-engine",
+      "message": "No dot characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rollback-engine",
+      "message": "No whitespace found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-06",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rollback-engine",
+      "message": "No version number suffix found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-07",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rollback-engine",
+      "message": "No environment marker found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-08",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rollback-engine",
+      "message": "Namespace 'mycodexvantaos' is registered (control-plane).",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-09",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rollback-engine",
+      "message": "Domain 'rollback' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-10",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rollback-engine",
+      "message": "Function 'engine' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rollback-engine",
+      "message": "Registry ID is unique.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-scheduler-service",
+      "message": "All required fields present.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-scheduler-service",
+      "message": "Lifecycle stage 'active' is valid.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-scheduler-service",
+      "message": "Governance code matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-scheduler-service",
+      "message": "No space-based governance code form detected.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-03",
+      "level": "SHOULD",
+      "status": "PASS",
+      "subject": "mycodexvantaos-scheduler-service",
+      "message": "Governance code falls within era 'era-two'.",
+      "detail": "Numeric value: 30600"
+    },
+    {
+      "rule_id": "NR-04/R-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-scheduler-service",
+      "message": "Repository name matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-scheduler-service",
+      "message": "No uppercase characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-03",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-scheduler-service",
+      "message": "No underscore characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-04",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-scheduler-service",
+      "message": "No dot characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-scheduler-service",
+      "message": "No whitespace found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-06",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-scheduler-service",
+      "message": "No version number suffix found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-07",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-scheduler-service",
+      "message": "No environment marker found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-08",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-scheduler-service",
+      "message": "Namespace 'mycodexvantaos' is registered (control-plane).",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-09",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-scheduler-service",
+      "message": "Domain 'scheduler' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-10",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-scheduler-service",
+      "message": "Function 'service' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-scheduler-service",
+      "message": "Registry ID is unique.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-alertd-service",
+      "message": "All required fields present.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-alertd-service",
+      "message": "Lifecycle stage 'active' is valid.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-alertd-service",
+      "message": "Governance code matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-alertd-service",
+      "message": "No space-based governance code form detected.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-03",
+      "level": "SHOULD",
+      "status": "PASS",
+      "subject": "mycodexvantaos-alertd-service",
+      "message": "Governance code falls within era 'era-two'.",
+      "detail": "Numeric value: 50600"
+    },
+    {
+      "rule_id": "NR-04/R-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-alertd-service",
+      "message": "Repository name matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-alertd-service",
+      "message": "No uppercase characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-03",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-alertd-service",
+      "message": "No underscore characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-04",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-alertd-service",
+      "message": "No dot characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-alertd-service",
+      "message": "No whitespace found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-06",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-alertd-service",
+      "message": "No version number suffix found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-07",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-alertd-service",
+      "message": "No environment marker found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-08",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-alertd-service",
+      "message": "Namespace 'mycodexvantaos' is registered (control-plane).",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-09",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-alertd-service",
+      "message": "Domain 'alertd' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-10",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-alertd-service",
+      "message": "Function 'service' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-alertd-service",
+      "message": "Registry ID is unique.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-iaops-api",
+      "message": "All required fields present.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-iaops-api",
+      "message": "Lifecycle stage 'active' is valid.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-iaops-api",
+      "message": "Governance code matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-iaops-api",
+      "message": "No space-based governance code form detected.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-03",
+      "level": "SHOULD",
+      "status": "PASS",
+      "subject": "softwareos-iaops-api",
+      "message": "Governance code falls within era 'era-two'.",
+      "detail": "Numeric value: 30100"
+    },
+    {
+      "rule_id": "NR-04/R-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-iaops-api",
+      "message": "Repository name matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-iaops-api",
+      "message": "No uppercase characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-03",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-iaops-api",
+      "message": "No underscore characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-04",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-iaops-api",
+      "message": "No dot characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-iaops-api",
+      "message": "No whitespace found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-06",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-iaops-api",
+      "message": "No version number suffix found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-07",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-iaops-api",
+      "message": "No environment marker found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-08",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-iaops-api",
+      "message": "Namespace 'softwareos' is registered (product-plane).",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-09",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-iaops-api",
+      "message": "Domain 'iaops' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-10",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-iaops-api",
+      "message": "Function 'api' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-iaops-api",
+      "message": "Registry ID is unique.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-platform-web",
+      "message": "All required fields present.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-platform-web",
+      "message": "Lifecycle stage 'active' is valid.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-platform-web",
+      "message": "Governance code matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-platform-web",
+      "message": "No space-based governance code form detected.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-03",
+      "level": "SHOULD",
+      "status": "PASS",
+      "subject": "softwareos-platform-web",
+      "message": "Governance code falls within era 'era-one'.",
+      "detail": "Numeric value: 20100"
+    },
+    {
+      "rule_id": "NR-04/R-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-platform-web",
+      "message": "Repository name matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-platform-web",
+      "message": "No uppercase characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-03",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-platform-web",
+      "message": "No underscore characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-04",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-platform-web",
+      "message": "No dot characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-platform-web",
+      "message": "No whitespace found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-06",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-platform-web",
+      "message": "No version number suffix found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-07",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-platform-web",
+      "message": "No environment marker found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-08",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-platform-web",
+      "message": "Namespace 'softwareos' is registered (product-plane).",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-09",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-platform-web",
+      "message": "Domain 'platform' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-10",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-platform-web",
+      "message": "Function 'web' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-platform-web",
+      "message": "Registry ID is unique.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-qa-service",
+      "message": "All required fields present.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-qa-service",
+      "message": "Lifecycle stage 'active' is valid.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-qa-service",
+      "message": "Governance code matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-qa-service",
+      "message": "No space-based governance code form detected.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-03",
+      "level": "SHOULD",
+      "status": "PASS",
+      "subject": "softwareos-qa-service",
+      "message": "Governance code falls within era 'era-three'.",
+      "detail": "Numeric value: 60700"
+    },
+    {
+      "rule_id": "NR-04/R-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-qa-service",
+      "message": "Repository name matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-qa-service",
+      "message": "No uppercase characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-03",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-qa-service",
+      "message": "No underscore characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-04",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-qa-service",
+      "message": "No dot characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-qa-service",
+      "message": "No whitespace found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-06",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-qa-service",
+      "message": "No version number suffix found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-07",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-qa-service",
+      "message": "No environment marker found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-08",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-qa-service",
+      "message": "Namespace 'softwareos' is registered (product-plane).",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-09",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-qa-service",
+      "message": "Domain 'qa' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-10",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-qa-service",
+      "message": "Function 'service' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-qa-service",
+      "message": "Registry ID is unique.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-cli",
+      "message": "All required fields present.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-cli",
+      "message": "Lifecycle stage 'active' is valid.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-cli",
+      "message": "Governance code matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-cli",
+      "message": "No space-based governance code form detected.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-03",
+      "level": "SHOULD",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-cli",
+      "message": "Governance code falls within era 'era-one'.",
+      "detail": "Numeric value: 10100"
+    },
+    {
+      "rule_id": "NR-04/R-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-cli",
+      "message": "Repository name matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-cli",
+      "message": "No uppercase characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-03",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-cli",
+      "message": "No underscore characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-04",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-cli",
+      "message": "No dot characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-cli",
+      "message": "No whitespace found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-06",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-cli",
+      "message": "No version number suffix found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-07",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-cli",
+      "message": "No environment marker found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-08",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-cli",
+      "message": "Namespace 'softwareos' is registered (product-plane).",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-09",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-cli",
+      "message": "Domain 'toolkit' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-10",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-cli",
+      "message": "Function 'cli' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-cli",
+      "message": "Registry ID is unique.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-machinenativeops-agent",
+      "message": "All required fields present.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-machinenativeops-agent",
+      "message": "Lifecycle stage 'active' is valid.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-machinenativeops-agent",
+      "message": "Governance code matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-machinenativeops-agent",
+      "message": "No space-based governance code form detected.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-03",
+      "level": "SHOULD",
+      "status": "PASS",
+      "subject": "softwareos-machinenativeops-agent",
+      "message": "Governance code falls within era 'era-three'.",
+      "detail": "Numeric value: 80100"
+    },
+    {
+      "rule_id": "NR-04/R-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-machinenativeops-agent",
+      "message": "Repository name matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-machinenativeops-agent",
+      "message": "No uppercase characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-03",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-machinenativeops-agent",
+      "message": "No underscore characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-04",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-machinenativeops-agent",
+      "message": "No dot characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-machinenativeops-agent",
+      "message": "No whitespace found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-06",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-machinenativeops-agent",
+      "message": "No version number suffix found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-07",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-machinenativeops-agent",
+      "message": "No environment marker found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-08",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-machinenativeops-agent",
+      "message": "Namespace 'softwareos' is registered (product-plane).",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-09",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-machinenativeops-agent",
+      "message": "Domain 'machinenativeops' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-10",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-machinenativeops-agent",
+      "message": "Function 'agent' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-machinenativeops-agent",
+      "message": "Registry ID is unique.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-action",
+      "message": "All required fields present.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-action",
+      "message": "Lifecycle stage 'active' is valid.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-action",
+      "message": "Governance code matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-action",
+      "message": "No space-based governance code form detected.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-03/G-03",
+      "level": "SHOULD",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-action",
+      "message": "Governance code falls within era 'era-one'.",
+      "detail": "Numeric value: 10100"
+    },
+    {
+      "rule_id": "NR-04/R-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-action",
+      "message": "Repository name matches canonical pattern.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-02",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-action",
+      "message": "No uppercase characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-03",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-action",
+      "message": "No underscore characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-04",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-action",
+      "message": "No dot characters found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-action",
+      "message": "No whitespace found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-06",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-action",
+      "message": "No version number suffix found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-07",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-action",
+      "message": "No environment marker found.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-08",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-action",
+      "message": "Namespace 'softwareos' is registered (product-plane).",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-09",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-action",
+      "message": "Domain 'toolkit' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-04/R-10",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-action",
+      "message": "Function 'action' is in controlled vocabulary.",
+      "detail": ""
+    },
+    {
+      "rule_id": "NR-05",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-toolkit-action",
+      "message": "Registry ID is unique.",
+      "detail": ""
+    },
+    {
+      "rule_id": "DP-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-qa-service → mycodexvantaos-auth-service",
+      "message": "No forbidden control-plane → product-plane hard dependency.",
+      "detail": ""
+    },
+    {
+      "rule_id": "DP-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-qa-service → mycodexvantaos-memory-hub",
+      "message": "No forbidden control-plane → product-plane hard dependency.",
+      "detail": ""
+    },
+    {
+      "rule_id": "DP-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-iaops-api → mycodexvantaos-policy-engine",
+      "message": "No forbidden control-plane → product-plane hard dependency.",
+      "detail": ""
+    },
+    {
+      "rule_id": "DP-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-platform-web → mycodexvantaos-auth-service",
+      "message": "No forbidden control-plane → product-plane hard dependency.",
+      "detail": ""
+    },
+    {
+      "rule_id": "DP-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "softwareos-machinenativeops-agent → mycodexvantaos-event-bus",
+      "message": "No forbidden control-plane → product-plane hard dependency.",
+      "detail": ""
+    },
+    {
+      "rule_id": "DP-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rollback-engine → mycodexvantaos-event-bus",
+      "message": "No forbidden control-plane → product-plane hard dependency.",
+      "detail": ""
+    },
+    {
+      "rule_id": "DP-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-compliance-scanner → mycodexvantaos-policy-engine",
+      "message": "No forbidden control-plane → product-plane hard dependency.",
+      "detail": ""
+    },
+    {
+      "rule_id": "DP-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-autotask-engine → mycodexvantaos-scheduler-service",
+      "message": "No forbidden control-plane → product-plane hard dependency.",
+      "detail": ""
+    },
+    {
+      "rule_id": "DP-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-prediction-predictor → mycodexvantaos-event-bus",
+      "message": "No forbidden control-plane → product-plane hard dependency.",
+      "detail": ""
+    },
+    {
+      "rule_id": "DP-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-alertd-service → mycodexvantaos-event-bus",
+      "message": "No forbidden control-plane → product-plane hard dependency.",
+      "detail": ""
+    },
+    {
+      "rule_id": "DP-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-controller-manager → mycodexvantaos-signerd-service",
+      "message": "No forbidden control-plane → product-plane hard dependency.",
+      "detail": ""
+    },
+    {
+      "rule_id": "DP-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rolloutd-controller → mycodexvantaos-signerd-service",
+      "message": "No forbidden control-plane → product-plane hard dependency.",
+      "detail": ""
+    },
+    {
+      "rule_id": "DP-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-rolloutd-controller → mycodexvantaos-event-bus",
+      "message": "No forbidden control-plane → product-plane hard dependency.",
+      "detail": ""
+    },
+    {
+      "rule_id": "DP-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-event-bus → mycodexvantaos-rollback-engine",
+      "message": "No forbidden control-plane → product-plane hard dependency.",
+      "detail": ""
+    },
+    {
+      "rule_id": "DP-01",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "mycodexvantaos-scheduler-service → mycodexvantaos-autotask-engine",
+      "message": "No forbidden control-plane → product-plane hard dependency.",
+      "detail": ""
+    },
+    {
+      "rule_id": "DP-03",
+      "level": "MUST",
+      "status": "PASS",
+      "subject": "hard-dependency-graph",
+      "message": "Hard dependency graph is acyclic.",
+      "detail": ""
+    }
+  ]
+}

@@ -1,11 +1,49 @@
 ---
-blocking: true
-id: gate-32-model-contract-validation
-layer: meta-governance
-lifecycle: active
-owner: platform@mycodexvantaos.com
-plane: ai-infra
-validates:
-  - dimension: canonical-readiness
-    description: Mandatory readiness for gate-32-model-contract-validation
-    checks: []
+apiVersion: mycodexvantaos.io/v1
+kind: AIInfraGate
+metadata:
+  id: gate-32-model-contract-validation
+  version: 1.0.0
+  layer: l30
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: critical
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-60600
+  createdAt: 2026-01-01T00:00:00Z
+  tags:
+    - l30
+    - model
+  sloTarget: 30
+  evidenceRetentionDays: 2555
+spec:
+  description: >
+    Validates that AI model artifacts conform to their registered model contracts.
+  validates:
+    - dimension: contract-conformance
+      description: Model conforms to its registered contract.
+      checks:
+        - id: chk-model-contract-exists
+          description: Model contract exists in contracts/model-contract.yaml
+          rule: 'file-exists:contracts/model-contract.yaml'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-model-schema-valid
+          description: Model metadata conforms to model contract schema
+          rule: 'schema:model-contract'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-accuracy-threshold
+          description: Model accuracy meets threshold defined in contract
+          rule: 'threshold:accuracy>=contract.minAccuracy'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-model-card-present
+          description: Model card is present and complete
+          rule: 'field-not-empty:modelCard'
+          severity: high
+          evidenceRequired: true
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml

@@ -1,0 +1,61 @@
+# path: unified-gates/.github/workflows/namespace-governance.yml
+# governanceCode: mycodexvantaos-00000
+name: Namespace Governance CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  namespace-check:
+    name: Namespace Governance Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Validate repository name
+        run: |
+          python ci/namespace_check.py \
+            --repo-name "${{ github.event.repository.name }}" \
+            --report-dir ci-reports \
+            --verbose
+
+      - name: Validate namespace registry
+        run: |
+          python ci/namespace_check.py \
+            --registry unified-gates/navigation/owner-registry.yaml \
+            --report-dir ci-reports \
+            --verbose
+
+      - name: Validate dependency graph
+        run: |
+          python ci/namespace_check.py \
+            --dep-graph unified-gates/navigation/dependency-policy.yaml \
+            --report-dir ci-reports \
+            --verbose
+
+      - name: Scan file headers (strict mode)
+        run: |
+          python ci/namespace_check.py \
+            --scan-dir unified-gates/ \
+            --strict \
+            --report-dir ci-reports \
+            --verbose
+
+      - name: Upload governance reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: namespace-governance-reports
+          path: ci-reports/
+          retention-days: 90

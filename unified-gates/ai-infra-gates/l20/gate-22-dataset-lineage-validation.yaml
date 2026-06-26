@@ -1,0 +1,44 @@
+---
+apiVersion: mycodexvantaos.io/v1
+kind: AIInfraGate
+metadata:
+  id: gate-22-dataset-lineage-validation
+  version: 1.0.0
+  layer: l20
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: high
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-40100
+  createdAt: 2026-01-01T00:00:00Z
+  tags:
+    - l20
+    - dataset
+  sloTarget: 30
+  evidenceRetentionDays: 1095
+spec:
+  description: >
+    Validates that dataset lineage records exist and trace the dataset back to its original source.
+  validates:
+    - dimension: lineage-completeness
+      description: Dataset lineage is complete and traceable.
+      checks:
+        - id: chk-lineage-record-exists
+          description: Lineage record exists for the dataset
+          rule: 'lineage:record-exists'
+          severity: high
+          evidenceRequired: true
+        - id: chk-source-traceable
+          description: Dataset can be traced back to its original source
+          rule: 'lineage:source-traceable'
+          severity: high
+          evidenceRequired: true
+        - id: chk-transformation-logged
+          description: All data transformations are logged in the lineage record
+          rule: 'lineage:transformations-logged'
+          severity: medium
+          evidenceRequired: false
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml

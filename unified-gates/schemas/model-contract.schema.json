@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mycodexvantaos.io/schemas/unified-gates/model-contract",
+  "title": "Model Contract",
+  "description": "Schema for AI model contract definitions.",
+  "type": "object",
+  "properties": {
+    "modelId": {
+      "type": "string"
+    },
+    "modelVersion": {
+      "type": "string"
+    },
+    "modelType": {
+      "type": "string",
+      "enum": [
+        "llm",
+        "embedding",
+        "classifier",
+        "regressor",
+        "diffusion",
+        "multimodal"
+      ]
+    },
+    "framework": {
+      "type": "string"
+    },
+    "frameworkVersion": {
+      "type": "string"
+    },
+    "inputSchema": {
+      "type": "object"
+    },
+    "outputSchema": {
+      "type": "object"
+    },
+    "minAccuracy": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "maxLatencyMs": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "modelCard": {
+      "type": "string"
+    },
+    "safetyPolicyRef": {
+      "type": "string"
+    },
+    "trainingDatasetRef": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "modelId",
+    "modelVersion",
+    "modelType",
+    "framework",
+    "frameworkVersion",
+    "inputSchema",
+    "outputSchema",
+    "minAccuracy",
+    "maxLatencyMs",
+    "modelCard",
+    "safetyPolicyRef",
+    "trainingDatasetRef"
+  ],
+  "additionalProperties": false
+}

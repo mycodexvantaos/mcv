@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mycodexvantaos.io/schemas/unified-gates/gate-policy",
+  "title": "Gate Policy",
+  "description": "Schema for gate governance policy YAML files.",
+  "type": "object",
+  "properties": {
+    "apiVersion": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "authority": {
+          "type": "string"
+        },
+        "governanceCode": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version",
+        "authority"
+      ]
+    },
+    "spec": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "apiVersion",
+    "kind",
+    "metadata",
+    "spec"
+  ],
+  "additionalProperties": false
+}

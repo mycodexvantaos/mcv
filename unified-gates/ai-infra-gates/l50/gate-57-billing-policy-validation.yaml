@@ -1,0 +1,44 @@
+---
+apiVersion: mycodexvantaos.io/v1
+kind: AIInfraGate
+metadata:
+  id: gate-57-billing-policy-validation
+  version: 1.0.0
+  layer: l50
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: critical
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-30400
+  createdAt: 2026-01-01T00:00:00Z
+  tags:
+    - l50
+    - billing
+  sloTarget: 30
+  evidenceRetentionDays: 2555
+spec:
+  description: >
+    Validates that billing policies are defined, enforced, and compliant.
+  validates:
+    - dimension: policy-compliance
+      description: Billing policies are compliant.
+      checks:
+        - id: chk-billing-policy-exists
+          description: Billing policy exists in policies/ai-billing-policy.yaml
+          rule: 'file-exists:policies/ai-billing-policy.yaml'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-rate-card-current
+          description: Rate card is current and approved
+          rule: 'registry:rate-card-current'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-overage-policy-defined
+          description: Overage policy is defined for all resource types
+          rule: 'field-not-empty:overagePolicy'
+          severity: high
+          evidenceRequired: true
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml

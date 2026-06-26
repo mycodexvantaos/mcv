@@ -1,0 +1,44 @@
+---
+apiVersion: mycodexvantaos.io/v1
+kind: AIInfraGate
+metadata:
+  id: gate-12-gpu-driver-validation
+  version: 1.0.0
+  layer: l10
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: critical
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-00000
+  createdAt: 2026-01-01T00:00:00Z
+  tags:
+    - l10
+    - gpu
+  sloTarget: 30
+  evidenceRetentionDays: 2555
+spec:
+  description: >
+    Validates that GPU drivers are at the required version and are compatible with the AI framework stack.
+  validates:
+    - dimension: driver-compatibility
+      description: GPU drivers are valid and compatible.
+      checks:
+        - id: chk-driver-version
+          description: NVIDIA/AMD driver version meets minimum requirement
+          rule: 'semver:>=525.0.0'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-cuda-version
+          description: CUDA toolkit version is compatible with framework
+          rule: 'compatibility:cuda-framework'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-driver-signed
+          description: Driver binary is signed by vendor
+          rule: 'signature:vendor-signed'
+          severity: high
+          evidenceRequired: true
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml

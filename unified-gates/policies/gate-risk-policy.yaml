@@ -1,0 +1,28 @@
+apiVersion: mycodexvantaos.io/v1
+kind: GateRiskPolicy
+metadata:
+  name: gate-risk-policy
+  version: 1.0.0
+  governanceCode: mycodexvantaos-00800
+spec:
+  riskLevels:
+    - id: P1-Critical
+      condition: criticality == critical AND status == FAIL
+      sloMinutes: 60
+      escalationRequired: true
+    - id: P2-High
+      condition: criticality == high AND status == FAIL
+      sloHours: 24
+      escalationRequired: true
+    - id: P3-Medium
+      condition: criticality == medium AND status == FAIL
+      sloDays: 7
+      escalationRequired: false
+    - id: P4-Low
+      condition: criticality == low AND status == FAIL
+      sloDays: 30
+      escalationRequired: false
+  riskRegisterRequired: true
+  riskRegisterReviewFrequency: weekly
+  postIncidentReviewRequired:
+    - P1-Critical

@@ -1,0 +1,44 @@
+---
+apiVersion: mycodexvantaos.io/v1
+kind: AIInfraGate
+metadata:
+  id: gate-43-training-task-validation
+  version: 1.0.0
+  layer: l40
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: critical
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-60600
+  createdAt: 2026-01-01T00:00:00Z
+  tags:
+    - l40
+    - training
+  sloTarget: 30
+  evidenceRetentionDays: 2555
+spec:
+  description: >
+    Validates that training task definitions are correct and that all required resources are available.
+  validates:
+    - dimension: task-readiness
+      description: Training task is ready for execution.
+      checks:
+        - id: chk-dataset-ref-valid
+          description: Dataset reference resolves to a validated dataset
+          rule: 'registry:dataset-ref-valid'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-compute-available
+          description: Required GPU resources are available in the cluster
+          rule: 'resource:gpu-available'
+          severity: critical
+          evidenceRequired: true
+        - id: chk-checkpoint-storage-ready
+          description: Checkpoint storage is ready and has sufficient capacity
+          rule: 'storage:checkpoint-ready'
+          severity: high
+          evidenceRequired: true
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml

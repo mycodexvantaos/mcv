@@ -1,11 +1,44 @@
 ---
-blocking: true
-id: gate-63-gitops-sync-validation
-layer: meta-governance
-lifecycle: active
-owner: platform@mycodexvantaos.com
-plane: ai-infra
-validates:
-  - dimension: canonical-readiness
-    description: Mandatory readiness for gate-63-gitops-sync-validation
-    checks: []
+apiVersion: mycodexvantaos.io/v1
+kind: AIInfraGate
+metadata:
+  id: gate-63-gitops-sync-validation
+  version: 1.0.0
+  layer: l60
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: high
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-00000
+  createdAt: 2026-01-01T00:00:00Z
+  tags:
+    - l60
+    - gitops
+  sloTarget: 30
+  evidenceRetentionDays: 1095
+spec:
+  description: >
+    Validates that GitOps synchronization is healthy and that the cluster state matches the desired state in the repository.
+  validates:
+    - dimension: gitops-sync
+      description: GitOps sync is healthy.
+      checks:
+        - id: chk-argocd-healthy
+          description: ArgoCD application is in Healthy and Synced state
+          rule: 'argocd:app-healthy-synced'
+          severity: high
+          evidenceRequired: true
+        - id: chk-no-drift
+          description: No configuration drift between cluster and repository
+          rule: 'gitops:no-drift'
+          severity: high
+          evidenceRequired: true
+        - id: chk-sync-policy-defined
+          description: Sync policy is defined for all applications
+          rule: 'argocd:sync-policy-defined'
+          severity: medium
+          evidenceRequired: false
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml
