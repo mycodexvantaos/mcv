@@ -10,7 +10,15 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const body: {
+      text?: string;
+      detectionResult?: any;
+      style?: string;
+      targetSentenceIndices?: number[];
+      preserveTechnicalTerms?: boolean;
+      formalityLevel?: string;
+      useLLM?: boolean;
+    } = await request.json();
     const {
       text,
       detectionResult,
@@ -58,10 +66,10 @@ export async function POST(request: NextRequest) {
         const { humaniserRewriteFlow } = await import('@/ai/flows/humaniser-rewrite-flow');
         const llmResult = await humaniserRewriteFlow({
           text,
-          style,
+          style: style as 'neutral' | 'conversational' | 'professional' | 'academic' | 'creative',
           targetSentenceIndices,
           preserveTechnicalTerms,
-          formalityLevel,
+          formalityLevel: formalityLevel as 'casual' | 'semi-formal' | 'formal',
         });
 
         await engine.shutdown();

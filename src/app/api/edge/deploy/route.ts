@@ -109,13 +109,19 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const body = await request.json();
+  const body: {
+    nodeId?: string;
+    nodeName?: string;
+    model?: string;
+    version?: string;
+    initiatedBy?: string;
+  } = await request.json();
 
   const deployment: Deployment = {
     id: `deploy-${Date.now()}`,
-    nodeId: body.nodeId,
+    nodeId: body.nodeId || 'unknown',
     nodeName: body.nodeName || 'Unknown Node',
-    model: body.model,
+    model: body.model || 'unknown',
     version: body.version || 'latest',
     status: 'initiated',
     steps: [
@@ -146,7 +152,7 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  const body = await request.json();
+  const body: { action?: string; deploymentId?: string } = await request.json();
 
   if (body.action === 'rollback' && body.deploymentId) {
     const deployment = recentDeployments.find((d) => d.id === body.deploymentId);

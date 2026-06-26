@@ -39,7 +39,7 @@ export function Header() {
       try {
         const response = await fetch('/api/user/profile');
         if (response.ok) {
-          const data = await response.json();
+          const data: UserProfile = await response.json();
           setUserProfile(data);
         }
       } catch (error) {

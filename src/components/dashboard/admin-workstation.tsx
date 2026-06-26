@@ -30,7 +30,7 @@ export function AdminWorkstation() {
     try {
       const response = await fetch('/api/admin/metrics');
       if (response.ok) {
-        const json = await response.json();
+        const json: { data?: any } = await response.json();
         setMetrics(json.data);
       }
     } catch (e) {}

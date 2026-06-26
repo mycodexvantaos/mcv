@@ -110,7 +110,7 @@ export async function GET() {
 }
 
 export async function PATCH(request: Request) {
-  const body = await request.json();
+  const body: { ruleId?: string; [key: string]: any } = await request.json();
   const { ruleId, ...updates } = body;
 
   const rule = routingRules.find((r) => r.id === ruleId);
@@ -123,7 +123,16 @@ export async function PATCH(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const body = await request.json();
+  const body: {
+    name?: string;
+    model?: string;
+    provider?: string;
+    weight?: number;
+    priority?: number;
+    enabled?: boolean;
+    conditions?: any[];
+    fallbackModel?: string | null;
+  } = await request.json();
 
   const newRule: RoutingRule = {
     id: `route-${Date.now()}`,
