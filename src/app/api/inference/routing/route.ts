@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-static';
+
 // MyCodeXvantaOS Admin Dashboard - Inference Routing API
 // Model routing configuration and load balancing rules
 
