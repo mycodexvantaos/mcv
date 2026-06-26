@@ -13,7 +13,7 @@ Self-host the governance-hardened platform with Docker Compose.
 
 ```bash
 # Clone the repository
-git clone https://github.com/ninjatech-ai/mycodexvantaos.git
+git clone https://github.com/ai-software-engineering-guild/mycodexvantaos.git
 cd mycodexvantaos
 
 # Start all services (api-node + dream-worker + postgres)

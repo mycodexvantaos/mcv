@@ -11,7 +11,7 @@ on your own infrastructure without depending on any cloud service.
 
 ```bash
 # Clone the repository
-git clone https://github.com/ninjatech-ai/mycodexvantaos.git
+git clone https://github.com/ai-software-engineering-guild/mycodexvantaos.git
 cd mycodexvantaos
 
 # Start all services

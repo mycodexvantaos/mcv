@@ -1,0 +1,54 @@
+apiVersion: mycodexvantaos.io/v1
+kind: ServiceModule
+metadata:
+  name: mycodexvantaos-policy-draft
+  urn: urn:mycodexvantaos:services:policy-draft:module:v1
+spec:
+  moduleType: service
+  description: 'AI-powered legal policy document generator — produces privacy policies, terms of service, cookie policies, disclaimers, refund policies, and EULAs with plain-English explanations and PDF export.'
+  runtimeCodeAllowed: true
+  deploymentAllowed: true
+  capabilities:
+    - cap.legal.generate
+    - cap.legal.explain
+    - cap.legal.export-pdf
+  consumes:
+    - capability: cap.llm.invoke
+      from: adapters
+  techStack:
+    language: python
+    framework: fastapi
+    runtime: uvicorn
+    aiClient: claude-code-cli
+  endpoints:
+    - path: /api/health
+      method: GET
+      description: Health check
+    - path: /api/filters/{doc_type}
+      method: GET
+      description: Filter configuration for document type
+    - path: /api/generate
+      method: POST
+      description: Generate legal document (SSE streaming)
+    - path: /api/documents
+      method: GET
+      description: List generated documents
+    - path: /api/documents/{doc_id}
+      method: GET
+      description: Get document by ID
+    - path: /api/documents/{doc_id}/download
+      method: GET
+      description: Download document as PDF
+    - path: /api/documents/{doc_id}
+      method: DELETE
+      description: Delete document
+    - path: /api/export-pdf
+      method: POST
+      description: Export HTML content as PDF
+  documentTypes:
+    - privacy
+    - terms
+    - cookie
+    - disclaimer
+    - refund
+    - eula
