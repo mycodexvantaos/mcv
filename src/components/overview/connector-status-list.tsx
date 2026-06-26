@@ -1,6 +1,6 @@
 'use client';
 
-import { Database, Github, HardDrive, Cloud, Circle } from 'lucide-react';
+import { Database, GitFork, HardDrive, Cloud, Circle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import type { ConnectorType, ConnectorHealthStatus } from '@/types/connector';
@@ -22,7 +22,7 @@ const mockConnectors: ConnectorStatus[] = [
 const connectorIcons: Record<ConnectorType, typeof Database> = {
   postgresql: Database,
   redis: HardDrive,
-  github: Github,
+  github: GitFork,
   s3: Cloud,
   custom: Database,
 };

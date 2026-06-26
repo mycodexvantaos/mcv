@@ -127,6 +127,7 @@
     "@cloudflare/workers-types": "^4.20260619.1",
     "@codecov/vite-plugin": "^2.0.1",
     "@codecov/webpack-plugin": "^2.0.1",
+    "@mycodexvantaos/ai-humaniser": "workspace:*",
     "@mycodexvantaos/contracts-sdk": "workspace:*",
     "@mycodexvantaos/policy-model": "workspace:*",
     "@mycodexvantaos/service-policy-engine": "workspace:*",
