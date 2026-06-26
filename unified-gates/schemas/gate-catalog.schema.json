@@ -31,12 +31,7 @@
           "pattern": "^mycodexvantaos-[0-9]{5}$"
         }
       },
-      "required": [
-        "name",
-        "version",
-        "authority",
-        "governanceCode"
-      ]
+      "required": ["name", "version", "authority", "governanceCode"]
     },
     "spec": {
       "type": "object",
@@ -56,11 +51,6 @@
       }
     }
   },
-  "required": [
-    "apiVersion",
-    "kind",
-    "metadata",
-    "spec"
-  ],
+  "required": ["apiVersion", "kind", "metadata", "spec"],
   "additionalProperties": false
 }

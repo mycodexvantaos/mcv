@@ -26,46 +26,22 @@
         },
         "layer": {
           "type": "string",
-          "enum": [
-            "l00",
-            "l10",
-            "l20",
-            "l30",
-            "l40",
-            "l50",
-            "l60",
-            "l90"
-          ]
+          "enum": ["l00", "l10", "l20", "l30", "l40", "l50", "l60", "l90"]
         },
         "plane": {
           "type": "string",
-          "enum": [
-            "ai-infra",
-            "quality",
-            "production"
-          ]
+          "enum": ["ai-infra", "quality", "production"]
         },
         "blocking": {
           "type": "boolean"
         },
         "lifecycle": {
           "type": "string",
-          "enum": [
-            "proposed",
-            "active",
-            "deprecated",
-            "archived",
-            "destroyed"
-          ]
+          "enum": ["proposed", "active", "deprecated", "archived", "destroyed"]
         },
         "criticality": {
           "type": "string",
-          "enum": [
-            "critical",
-            "high",
-            "medium",
-            "low"
-          ]
+          "enum": ["critical", "high", "medium", "low"]
         },
         "owner": {
           "type": "string"
@@ -138,32 +114,17 @@
                     },
                     "severity": {
                       "type": "string",
-                      "enum": [
-                        "critical",
-                        "high",
-                        "medium",
-                        "low"
-                      ]
+                      "enum": ["critical", "high", "medium", "low"]
                     },
                     "evidenceRequired": {
                       "type": "boolean"
                     }
                   },
-                  "required": [
-                    "id",
-                    "description",
-                    "rule",
-                    "severity",
-                    "evidenceRequired"
-                  ]
+                  "required": ["id", "description", "rule", "severity", "evidenceRequired"]
                 }
               }
             },
-            "required": [
-              "dimension",
-              "description",
-              "checks"
-            ]
+            "required": ["dimension", "description", "checks"]
           }
         },
         "dependsOn": {
@@ -179,17 +140,9 @@
           "type": "string"
         }
       },
-      "required": [
-        "description",
-        "validates"
-      ]
+      "required": ["description", "validates"]
     }
   },
-  "required": [
-    "apiVersion",
-    "kind",
-    "metadata",
-    "spec"
-  ],
+  "required": ["apiVersion", "kind", "metadata", "spec"],
   "additionalProperties": false
 }

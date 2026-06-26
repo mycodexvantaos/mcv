@@ -6,11 +6,7 @@
   "overallStatus": "PASS",
   "chainIntegrity": "validated",
   "evidenceRecordCount": 0,
-  "hashAlgorithms": [
-    "sha-256",
-    "sha3-512",
-    "blake3"
-  ],
+  "hashAlgorithms": ["sha-256", "sha3-512", "blake3"],
   "complianceStatus": {
     "catalogCompleteness": "PENDING",
     "schemaConformance": "PENDING",

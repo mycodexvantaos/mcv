@@ -25,46 +25,22 @@
         },
         "layer": {
           "type": "string",
-          "enum": [
-            "l00",
-            "l10",
-            "l20",
-            "l30",
-            "l40",
-            "l50",
-            "l60",
-            "l90"
-          ]
+          "enum": ["l00", "l10", "l20", "l30", "l40", "l50", "l60", "l90"]
         },
         "plane": {
           "type": "string",
-          "enum": [
-            "ai-infra",
-            "quality",
-            "production"
-          ]
+          "enum": ["ai-infra", "quality", "production"]
         },
         "blocking": {
           "type": "boolean"
         },
         "lifecycle": {
           "type": "string",
-          "enum": [
-            "proposed",
-            "active",
-            "deprecated",
-            "archived",
-            "destroyed"
-          ]
+          "enum": ["proposed", "active", "deprecated", "archived", "destroyed"]
         },
         "criticality": {
           "type": "string",
-          "enum": [
-            "critical",
-            "high",
-            "medium",
-            "low"
-          ]
+          "enum": ["critical", "high", "medium", "low"]
         },
         "owner": {
           "type": "string"
@@ -87,17 +63,9 @@
     },
     "spec": {
       "type": "object",
-      "required": [
-        "description",
-        "validates"
-      ]
+      "required": ["description", "validates"]
     }
   },
-  "required": [
-    "apiVersion",
-    "kind",
-    "metadata",
-    "spec"
-  ],
+  "required": ["apiVersion", "kind", "metadata", "spec"],
   "additionalProperties": false
 }

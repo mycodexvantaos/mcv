@@ -75,18 +75,9 @@
           }
         }
       },
-      "required": [
-        "justification",
-        "remediationPlan",
-        "riskAcknowledgement"
-      ]
+      "required": ["justification", "remediationPlan", "riskAcknowledgement"]
     }
   },
-  "required": [
-    "apiVersion",
-    "kind",
-    "metadata",
-    "spec"
-  ],
+  "required": ["apiVersion", "kind", "metadata", "spec"],
   "additionalProperties": false
 }

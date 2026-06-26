@@ -13,14 +13,7 @@
     },
     "modelType": {
       "type": "string",
-      "enum": [
-        "llm",
-        "embedding",
-        "classifier",
-        "regressor",
-        "diffusion",
-        "multimodal"
-      ]
+      "enum": ["llm", "embedding", "classifier", "regressor", "diffusion", "multimodal"]
     },
     "framework": {
       "type": "string"

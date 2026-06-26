@@ -21,10 +21,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name",
-        "version"
-      ]
+      "required": ["name", "version"]
     },
     "spec": {
       "type": "object",
@@ -41,11 +38,6 @@
       }
     }
   },
-  "required": [
-    "apiVersion",
-    "kind",
-    "metadata",
-    "spec"
-  ],
+  "required": ["apiVersion", "kind", "metadata", "spec"],
   "additionalProperties": false
 }

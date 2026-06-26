@@ -22,11 +22,7 @@
     "warnings": 0
   },
   "evidenceSummary": {
-    "hashAlgorithms": [
-      "sha-256",
-      "sha3-512",
-      "blake3"
-    ],
+    "hashAlgorithms": ["sha-256", "sha3-512", "blake3"],
     "chainIntegrity": "validated"
   },
   "waiverSummary": {

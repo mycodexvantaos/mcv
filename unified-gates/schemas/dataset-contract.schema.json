@@ -13,13 +13,7 @@
     },
     "datasetType": {
       "type": "string",
-      "enum": [
-        "training",
-        "evaluation",
-        "fine-tuning",
-        "rag-corpus",
-        "synthetic"
-      ]
+      "enum": ["training", "evaluation", "fine-tuning", "rag-corpus", "synthetic"]
     },
     "license": {
       "type": "string"
@@ -47,10 +41,7 @@
           "maximum": 1
         }
       },
-      "required": [
-        "maxNullRate",
-        "maxDuplicateRate"
-      ]
+      "required": ["maxNullRate", "maxDuplicateRate"]
     },
     "accessPolicy": {
       "type": "string"

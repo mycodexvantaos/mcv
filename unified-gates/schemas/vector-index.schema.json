@@ -20,11 +20,7 @@
     },
     "distanceMetric": {
       "type": "string",
-      "enum": [
-        "cosine",
-        "euclidean",
-        "dot-product"
-      ]
+      "enum": ["cosine", "euclidean", "dot-product"]
     },
     "freshnessWindowHours": {
       "type": "integer",
@@ -43,10 +39,7 @@
           "maximum": 1
         }
       },
-      "required": [
-        "k",
-        "minRecall"
-      ]
+      "required": ["k", "minRecall"]
     },
     "maxQueryLatencyMs": {
       "type": "integer",

@@ -16,7 +16,7 @@ metadata:
 
 spec:
   documents:
-    - section: "1-core"
+    - section: '1-core'
       files:
         - id: gate-overview
           path: 1-core/gate-overview.rst
@@ -35,7 +35,7 @@ spec:
           dimension: core
           normative: true
 
-    - section: "2-lifecycle"
+    - section: '2-lifecycle'
       files:
         - id: gate-lifecycle
           path: 2-lifecycle/gate-lifecycle.rst
@@ -50,7 +50,7 @@ spec:
           dimension: lifecycle
           normative: true
 
-    - section: "3-technical"
+    - section: '3-technical'
       files:
         - id: gate-framework
           path: 3-technical/gate-framework.rst
@@ -85,7 +85,7 @@ spec:
           dimension: technical
           normative: false
 
-    - section: "4-execution"
+    - section: '4-execution'
       files:
         - id: gate-execution
           path: 4-execution/gate-execution.rst
@@ -116,7 +116,7 @@ spec:
           dimension: execution
           normative: true
 
-    - section: "5-governance"
+    - section: '5-governance'
       files:
         - id: gate-governance
           path: 5-governance/gate-governance.rst
@@ -151,7 +151,7 @@ spec:
           dimension: governance
           normative: false
 
-    - section: "6-domain-ai"
+    - section: '6-domain-ai'
       files:
         - id: gate-model-quality
           path: 6-domain-ai/gate-model-quality.rst
@@ -186,7 +186,7 @@ spec:
           dimension: ai-domain
           normative: true
 
-    - section: "7-evolution"
+    - section: '7-evolution'
       files:
         - id: gate-experiments
           path: 7-evolution/gate-experiments.rst

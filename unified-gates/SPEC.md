@@ -39,16 +39,16 @@ This specification applies to:
 
 ## 2. Normative References
 
-| Reference | Description |
-|-----------|-------------|
-| `mycodexvantaos-00000` | Namespace Governance Closure Specification (baseline) |
-| `mycodexvantaos-00100` | Repository Naming Canonical Specification |
-| `mycodexvantaos-00200` | Lifecycle State Machine Specification |
-| `mycodexvantaos-00700` | Audit Evidence Chain Specification |
-| `mycodexvantaos-40100` | Dataset Contract Specification |
-| `mycodexvantaos-51000` | Compliance Reporting Specification |
-| RFC 2119 | Key words for use in RFCs to Indicate Requirement Levels |
-| ISO 8601 | Date and time format standard |
+| Reference              | Description                                              |
+| ---------------------- | -------------------------------------------------------- |
+| `mycodexvantaos-00000` | Namespace Governance Closure Specification (baseline)    |
+| `mycodexvantaos-00100` | Repository Naming Canonical Specification                |
+| `mycodexvantaos-00200` | Lifecycle State Machine Specification                    |
+| `mycodexvantaos-00700` | Audit Evidence Chain Specification                       |
+| `mycodexvantaos-40100` | Dataset Contract Specification                           |
+| `mycodexvantaos-51000` | Compliance Reporting Specification                       |
+| RFC 2119               | Key words for use in RFCs to Indicate Requirement Levels |
+| ISO 8601               | Date and time format standard                            |
 
 ---
 
@@ -107,16 +107,16 @@ Every gate MUST reference a valid governance code in `metadata.governanceCode` c
 
 The gate system is organized into eight layers. Each layer covers a distinct infrastructure concern and MUST be evaluated in ascending layer order.
 
-| Layer | Code Range | Domain | Default Criticality |
-|-------|-----------|--------|---------------------|
-| `l00` | 01–08 | Meta-governance & namespace | critical |
-| `l10` | 11–18 | AI compute infrastructure | critical |
-| `l20` | 21–28 | Data & vector layer | critical |
-| `l30` | 31–38 | AI framework & model layer | critical |
-| `l40` | 41–48 | Workload execution | critical |
-| `l50` | 51–58 | Billing & metering | critical |
-| `l60` | 61–64 | Cloud infrastructure | critical |
-| `l90` | 91–99 | Supply chain & production closure | critical |
+| Layer | Code Range | Domain                            | Default Criticality |
+| ----- | ---------- | --------------------------------- | ------------------- |
+| `l00` | 01–08      | Meta-governance & namespace       | critical            |
+| `l10` | 11–18      | AI compute infrastructure         | critical            |
+| `l20` | 21–28      | Data & vector layer               | critical            |
+| `l30` | 31–38      | AI framework & model layer        | critical            |
+| `l40` | 41–48      | Workload execution                | critical            |
+| `l50` | 51–58      | Billing & metering                | critical            |
+| `l60` | 61–64      | Cloud infrastructure              | critical            |
+| `l90` | 91–99      | Supply chain & production closure | critical            |
 
 ### 5.1 Layer Ordering Invariant
 
@@ -132,21 +132,21 @@ Each layer MUST contain at least one gate. A layer with no active gates is consi
 
 The `metadata` block of every gate MUST contain the following fields:
 
-| Field | Type | Requirement | Description |
-|-------|------|-------------|-------------|
-| `id` | string | MUST | Unique gate identifier |
-| `version` | string | MUST | Semantic version |
-| `layer` | string | MUST | Layer code (`l00`–`l90`) |
-| `plane` | string | MUST | Always `ai-infra` for this module |
-| `blocking` | boolean | MUST | Whether gate halts pipeline on failure |
-| `lifecycle` | string | MUST | One of: `proposed`, `active`, `deprecated`, `archived`, `destroyed` |
-| `criticality` | string | MUST | One of: `critical`, `high`, `medium`, `low` |
-| `owner` | string | MUST | Owner email or URN |
-| `governanceCode` | string | MUST | Governance code reference |
-| `createdAt` | string | MUST | ISO 8601 UTC creation timestamp |
-| `tags` | array | SHOULD | Searchable tags |
-| `sloTarget` | integer | MUST | Maximum evaluation time in seconds |
-| `evidenceRetentionDays` | integer | MUST | Minimum evidence retention period |
+| Field                   | Type    | Requirement | Description                                                         |
+| ----------------------- | ------- | ----------- | ------------------------------------------------------------------- |
+| `id`                    | string  | MUST        | Unique gate identifier                                              |
+| `version`               | string  | MUST        | Semantic version                                                    |
+| `layer`                 | string  | MUST        | Layer code (`l00`–`l90`)                                            |
+| `plane`                 | string  | MUST        | Always `ai-infra` for this module                                   |
+| `blocking`              | boolean | MUST        | Whether gate halts pipeline on failure                              |
+| `lifecycle`             | string  | MUST        | One of: `proposed`, `active`, `deprecated`, `archived`, `destroyed` |
+| `criticality`           | string  | MUST        | One of: `critical`, `high`, `medium`, `low`                         |
+| `owner`                 | string  | MUST        | Owner email or URN                                                  |
+| `governanceCode`        | string  | MUST        | Governance code reference                                           |
+| `createdAt`             | string  | MUST        | ISO 8601 UTC creation timestamp                                     |
+| `tags`                  | array   | SHOULD      | Searchable tags                                                     |
+| `sloTarget`             | integer | MUST        | Maximum evaluation time in seconds                                  |
+| `evidenceRetentionDays` | integer | MUST        | Minimum evidence retention period                                   |
 
 ---
 
@@ -154,13 +154,13 @@ The `metadata` block of every gate MUST contain the following fields:
 
 The `spec` block of every gate MUST contain:
 
-| Field | Type | Requirement | Description |
-|-------|------|-------------|-------------|
-| `description` | string | MUST | Human-readable gate description |
-| `validates` | array | MUST | One or more validation dimensions |
-| `dependsOn` | array | MUST | List of gate IDs this gate depends on |
-| `waiverPolicy` | string | MUST | Path to the applicable waiver policy |
-| `escalationPolicy` | string | MUST | Path to the applicable escalation policy |
+| Field              | Type   | Requirement | Description                              |
+| ------------------ | ------ | ----------- | ---------------------------------------- |
+| `description`      | string | MUST        | Human-readable gate description          |
+| `validates`        | array  | MUST        | One or more validation dimensions        |
+| `dependsOn`        | array  | MUST        | List of gate IDs this gate depends on    |
+| `waiverPolicy`     | string | MUST        | Path to the applicable waiver policy     |
+| `escalationPolicy` | string | MUST        | Path to the applicable escalation policy |
 
 ### 7.1 Validation Dimension Requirements
 
@@ -191,7 +191,7 @@ Every gate evaluation MUST produce an evidence record containing:
 ```yaml
 gateId: gate-NN-name
 gateVersion: 1.0.0
-evaluatedAt: "2026-01-01T00:00:00Z"
+evaluatedAt: '2026-01-01T00:00:00Z'
 result: PASS | FAIL | WARN | SKIP
 artifactRef: <artifact URN or path>
 hashes:
@@ -209,12 +209,12 @@ Evidence records MUST be linked via `previousRecordHash` to form an unbroken cha
 
 ### 8.3 Evidence Retention
 
-| Criticality | Minimum Retention |
-|-------------|-------------------|
-| `critical` | 2555 days (7 years) |
-| `high` | 1095 days (3 years) |
-| `medium` | 365 days (1 year) |
-| `low` | 180 days (6 months) |
+| Criticality | Minimum Retention   |
+| ----------- | ------------------- |
+| `critical`  | 2555 days (7 years) |
+| `high`      | 1095 days (3 years) |
+| `medium`    | 365 days (1 year)   |
+| `low`       | 180 days (6 months) |
 
 ---
 
@@ -232,13 +232,13 @@ A gate MUST be in one of the following lifecycle states:
 
 ### 9.2 Allowed Transitions
 
-| From | To | Requirement |
-|------|----|-------------|
-| `proposed` | `active` | Governance council approval |
-| `active` | `deprecated` | Owner request + council review |
-| `deprecated` | `archived` | 30-day deprecation notice period |
-| `archived` | `destroyed` | Permanent retirement decision |
-| Any | `destroyed` | MUST NOT transition back |
+| From         | To           | Requirement                      |
+| ------------ | ------------ | -------------------------------- |
+| `proposed`   | `active`     | Governance council approval      |
+| `active`     | `deprecated` | Owner request + council review   |
+| `deprecated` | `archived`   | 30-day deprecation notice period |
+| `archived`   | `destroyed`  | Permanent retirement decision    |
+| Any          | `destroyed`  | MUST NOT transition back         |
 
 ---
 
@@ -334,13 +334,13 @@ Where `{NN}` is the two-digit gate number and `{name}` is the kebab-case gate na
 
 ## Appendix B: Governance Code Era Mapping
 
-| Era Range | Domain |
-|-----------|--------|
-| `00000–09999` | Platform governance & namespace |
-| `10000–19999` | AI compute infrastructure |
-| `20000–29999` | Data & vector layer |
-| `30000–39999` | AI framework & model layer |
-| `40000–49999` | Dataset & contract governance |
-| `50000–59999` | Billing, metering & compliance |
-| `60000–69999` | Cloud infrastructure |
+| Era Range     | Domain                            |
+| ------------- | --------------------------------- |
+| `00000–09999` | Platform governance & namespace   |
+| `10000–19999` | AI compute infrastructure         |
+| `20000–29999` | Data & vector layer               |
+| `30000–39999` | AI framework & model layer        |
+| `40000–49999` | Dataset & contract governance     |
+| `50000–59999` | Billing, metering & compliance    |
+| `60000–69999` | Cloud infrastructure              |
 | `90000–99999` | Supply chain & production closure |

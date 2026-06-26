@@ -28,13 +28,7 @@
     },
     "overallStatus": {
       "type": "string",
-      "enum": [
-        "PASS",
-        "FAIL",
-        "WARN",
-        "SKIP",
-        "ERROR"
-      ]
+      "enum": ["PASS", "FAIL", "WARN", "SKIP", "ERROR"]
     },
     "dimensions": {
       "type": "array"
@@ -58,17 +52,10 @@
           "type": "string"
         },
         "waiverRef": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": ["string", "null"]
         }
       },
-      "required": [
-        "sha256",
-        "sha3512",
-        "blake3"
-      ]
+      "required": ["sha256", "sha3512", "blake3"]
     }
   },
   "required": [

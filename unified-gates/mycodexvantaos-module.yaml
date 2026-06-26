@@ -13,8 +13,8 @@ metadata:
   governanceCode: mycodexvantaos-00000
   lifecycle: active
   owner: platform-governance-council@mycodexvantaos.com
-  createdAt: "2026-01-01T00:00:00Z"
-  updatedAt: "2026-01-01T00:00:00Z"
+  createdAt: '2026-01-01T00:00:00Z'
+  updatedAt: '2026-01-01T00:00:00Z'
   labels:
     tier: platform
     scope: unified
@@ -24,7 +24,7 @@ metadata:
       Single source of truth for the MyCodexVantaOS Unified Gate System.
       Defines, catalogs, and enforces quality gates across all AI infrastructure
       layers from namespace governance through production closure.
-    ssot: "true"
+    ssot: 'true'
     authority: unified-gate-governance
 
 spec:
@@ -99,35 +99,35 @@ spec:
 
   gateLayers:
     - layer: l00
-      codeRange: "01-08"
+      codeRange: '01-08'
       domain: meta-governance
       gateCount: 8
     - layer: l10
-      codeRange: "11-18"
+      codeRange: '11-18'
       domain: ai-compute-infrastructure
       gateCount: 8
     - layer: l20
-      codeRange: "21-28"
+      codeRange: '21-28'
       domain: data-and-vector
       gateCount: 8
     - layer: l30
-      codeRange: "31-38"
+      codeRange: '31-38'
       domain: ai-framework-and-model
       gateCount: 8
     - layer: l40
-      codeRange: "41-48"
+      codeRange: '41-48'
       domain: workload-execution
       gateCount: 8
     - layer: l50
-      codeRange: "51-58"
+      codeRange: '51-58'
       domain: billing-and-metering
       gateCount: 8
     - layer: l60
-      codeRange: "61-64"
+      codeRange: '61-64'
       domain: cloud-infrastructure
       gateCount: 4
     - layer: l90
-      codeRange: "91-99"
+      codeRange: '91-99'
       domain: supply-chain-and-production-closure
       gateCount: 9
 

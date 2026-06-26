@@ -113,6 +113,7 @@ VALID_FUNCTIONS: frozenset[str] = frozenset(
         "validator",
         "catalog",
         "registry",
+        "draft",
     }
 )
 
@@ -156,7 +157,7 @@ RE_GOVERNANCE_CODE = re.compile(r"^mycodexvantaos-[0-9]{5}$")
 # Both namespace and domain/function parts consist of lowercase alphanumeric
 # segments separated by hyphens; at minimum three hyphen-separated groups.
 RE_REPO_NAME = re.compile(
-    r"^(?:mycodexvantaos|softwareos)-[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*$"
+    r"^(?:(?:mycodexvantaos|softwareos)|(?:mycodexvantaos|softwareos)-[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*)$"
 )
 
 # I.1.1 — General machine-facing name: lowercase kebab-case only
@@ -312,8 +313,9 @@ class RepositoryNameValidator:
                     subject=name,
                     message="Repository name does not match canonical pattern.",
                     detail=(
-                        f"Expected: ^(?:mycodexvantaos|softwareos)-[a-z0-9]+"
-                        f"(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*$\n"
+                        f"Expected: ^(?:(?:mycodexvantaos|softwareos)"
+                        f"|(?:mycodexvantaos|softwareos)-[a-z0-9]+"
+                        f"(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*)$\n"
                         f"Got: {name!r}"
                     ),
                 )

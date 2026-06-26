@@ -11,12 +11,7 @@
     },
     "eventType": {
       "type": "string",
-      "enum": [
-        "inference-usage",
-        "training-usage",
-        "embedding-usage",
-        "agent-run-usage"
-      ]
+      "enum": ["inference-usage", "training-usage", "embedding-usage", "agent-run-usage"]
     },
     "timestamp": {
       "type": "string",

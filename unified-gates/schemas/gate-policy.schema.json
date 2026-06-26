@@ -27,21 +27,12 @@
           "type": "string"
         }
       },
-      "required": [
-        "name",
-        "version",
-        "authority"
-      ]
+      "required": ["name", "version", "authority"]
     },
     "spec": {
       "type": "object"
     }
   },
-  "required": [
-    "apiVersion",
-    "kind",
-    "metadata",
-    "spec"
-  ],
+  "required": ["apiVersion", "kind", "metadata", "spec"],
   "additionalProperties": false
 }

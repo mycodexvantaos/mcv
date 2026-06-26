@@ -58,16 +58,16 @@ unified-gates/
 
 ## Gate Layer Model
 
-| Layer | Code Range | Domain | Blocking |
-|-------|-----------|--------|----------|
-| `l00` | 01–08 | Meta-governance & namespace | MUST |
-| `l10` | 11–18 | AI compute infrastructure | MUST |
-| `l20` | 21–28 | Data & vector layer | MUST |
-| `l30` | 31–38 | AI framework & model layer | MUST |
-| `l40` | 41–48 | Workload execution | MUST |
-| `l50` | 51–58 | Billing & metering | MUST |
-| `l60` | 61–64 | Cloud infrastructure | MUST |
-| `l90` | 91–99 | Supply chain & production closure | MUST |
+| Layer | Code Range | Domain                            | Blocking |
+| ----- | ---------- | --------------------------------- | -------- |
+| `l00` | 01–08      | Meta-governance & namespace       | MUST     |
+| `l10` | 11–18      | AI compute infrastructure         | MUST     |
+| `l20` | 21–28      | Data & vector layer               | MUST     |
+| `l30` | 31–38      | AI framework & model layer        | MUST     |
+| `l40` | 41–48      | Workload execution                | MUST     |
+| `l50` | 51–58      | Billing & metering                | MUST     |
+| `l60` | 61–64      | Cloud infrastructure              | MUST     |
+| `l90` | 91–99      | Supply chain & production closure | MUST     |
 
 ---
 
@@ -104,12 +104,12 @@ python scripts/generate-production-closure-report.py --root . --output outputs/p
 
 ## Evidence Retention Policy
 
-| Criticality | Minimum Retention |
-|-------------|-------------------|
-| `critical` | 2555 days (7 years) |
-| `high` | 1095 days (3 years) |
-| `medium` | 365 days (1 year) |
-| `low` | 180 days (6 months) |
+| Criticality | Minimum Retention   |
+| ----------- | ------------------- |
+| `critical`  | 2555 days (7 years) |
+| `high`      | 1095 days (3 years) |
+| `medium`    | 365 days (1 year)   |
+| `low`       | 180 days (6 months) |
 
 ---
 

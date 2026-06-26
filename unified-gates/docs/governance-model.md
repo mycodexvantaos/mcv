@@ -26,14 +26,14 @@ The **Platform Governance Council** (`platform-governance-council@mycodexvantaos
 
 ## 2. Role Hierarchy
 
-| Role | Permissions | Assigned To |
-|------|-------------|-------------|
-| `gate-reader` | Read gate definitions and reports | All engineers |
-| `gate-evaluator` | Execute gate evaluations, write results | CI runners |
-| `gate-owner` | Modify gate definitions, approve P3/P4 waivers | Team leads |
-| `gate-approver` | Approve lifecycle transitions, P2 waivers | Senior engineers |
-| `governance-council` | Approve P1 waivers, cross-layer changes | Council members |
-| `gate-admin` | Full access (requires root approval) | Platform admins |
+| Role                 | Permissions                                    | Assigned To      |
+| -------------------- | ---------------------------------------------- | ---------------- |
+| `gate-reader`        | Read gate definitions and reports              | All engineers    |
+| `gate-evaluator`     | Execute gate evaluations, write results        | CI runners       |
+| `gate-owner`         | Modify gate definitions, approve P3/P4 waivers | Team leads       |
+| `gate-approver`      | Approve lifecycle transitions, P2 waivers      | Senior engineers |
+| `governance-council` | Approve P1 waivers, cross-layer changes        | Council members  |
+| `gate-admin`         | Full access (requires root approval)           | Platform admins  |
 
 ---
 
@@ -41,12 +41,12 @@ The **Platform Governance Council** (`platform-governance-council@mycodexvantaos
 
 Every gate lifecycle transition MUST be approved by the appropriate authority:
 
-| Transition | Required Approver |
-|-----------|------------------|
-| `proposed` → `active` | Governance council |
-| `active` → `deprecated` | Gate owner + council review |
+| Transition                | Required Approver                |
+| ------------------------- | -------------------------------- |
+| `proposed` → `active`     | Governance council               |
+| `active` → `deprecated`   | Gate owner + council review      |
 | `deprecated` → `archived` | Gate owner (after 30-day notice) |
-| `archived` → `destroyed` | Governance council |
+| `archived` → `destroyed`  | Governance council               |
 
 ---
 
@@ -54,12 +54,12 @@ Every gate lifecycle transition MUST be approved by the appropriate authority:
 
 Waivers are time-limited exceptions that permit a gate to be skipped. The waiver process is defined in `workflows/gate-waiver-workflow.yaml` and governed by `policies/gate-waiver-policy.yaml`.
 
-| Gate Criticality | Waiver Approver | Max Duration | Max Renewals |
-|-----------------|-----------------|--------------|--------------|
-| `critical` | Governance council | 30 days | 2 |
-| `high` | Gate owner | 30 days | 2 |
-| `medium` | Gate owner | 30 days | 2 |
-| `low` | Gate evaluator | 30 days | 2 |
+| Gate Criticality | Waiver Approver    | Max Duration | Max Renewals |
+| ---------------- | ------------------ | ------------ | ------------ |
+| `critical`       | Governance council | 30 days      | 2            |
+| `high`           | Gate owner         | 30 days      | 2            |
+| `medium`         | Gate owner         | 30 days      | 2            |
+| `low`            | Gate evaluator     | 30 days      | 2            |
 
 ---
 

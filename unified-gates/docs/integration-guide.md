@@ -78,14 +78,14 @@ cp unified-gates/.github/workflows/namespace-governance.yml .github/workflows/
 
 The `unified-gates-ci.yml` workflow runs five sequential jobs:
 
-| Job | Depends On | Description |
-|-----|-----------|-------------|
-| `namespace-governance` | — | Validates namespace, registry, and file headers |
-| `schema-validation` | `namespace-governance` | Validates gate YAML against JSON schemas |
-| `gate-catalog-validation` | `schema-validation` | Validates catalog completeness |
-| `ai-infra-gates-validation` | `gate-catalog-validation` | Validates all gate definitions |
-| `gate-composition-validation` | `ai-infra-gates-validation` | Validates gate dependencies |
-| `generate-reports` | `gate-composition-validation` | Generates all output reports |
+| Job                           | Depends On                    | Description                                     |
+| ----------------------------- | ----------------------------- | ----------------------------------------------- |
+| `namespace-governance`        | —                             | Validates namespace, registry, and file headers |
+| `schema-validation`           | `namespace-governance`        | Validates gate YAML against JSON schemas        |
+| `gate-catalog-validation`     | `schema-validation`           | Validates catalog completeness                  |
+| `ai-infra-gates-validation`   | `gate-catalog-validation`     | Validates all gate definitions                  |
+| `gate-composition-validation` | `ai-infra-gates-validation`   | Validates gate dependencies                     |
+| `generate-reports`            | `gate-composition-validation` | Generates all output reports                    |
 
 ---
 
@@ -109,14 +109,14 @@ Gate YAML files are located at `unified-gates/ai-infra-gates/{layer}/gate-{NN}-{
 
 All reports are written to `unified-gates/outputs/`:
 
-| Report File | Description |
-|-------------|-------------|
-| `gate-validation-report.json` | Full gate validation results |
-| `gate-audit-report.json` | Evidence chain records |
-| `gate-coverage-report.json` | Coverage taxonomy results |
-| `gate-waiver-report.json` | Active waivers summary |
-| `production-closure-report.json` | Production closure gate results |
-| `unified-gate-summary.json` | High-level summary across all planes |
+| Report File                      | Description                          |
+| -------------------------------- | ------------------------------------ |
+| `gate-validation-report.json`    | Full gate validation results         |
+| `gate-audit-report.json`         | Evidence chain records               |
+| `gate-coverage-report.json`      | Coverage taxonomy results            |
+| `gate-waiver-report.json`        | Active waivers summary               |
+| `production-closure-report.json` | Production closure gate results      |
+| `unified-gate-summary.json`      | High-level summary across all planes |
 
 ---
 
@@ -150,10 +150,10 @@ To create a waiver for a blocking gate failure:
 
 ## 9. Troubleshooting
 
-| Error | Cause | Resolution |
-|-------|-------|-----------|
-| `R-01: Repository name does not match canonical pattern` | Repository name violates naming rules | Rename repository per `mycodexvantaos-00100` |
-| `G-01: Governance code format invalid` | Governance code does not match `^mycodexvantaos-[0-9]{5}$` | Correct the governance code |
-| `DP-03: Cycle detected in hard dependency graph` | Circular dependency in service graph | Remove the cycle or introduce a mediator |
-| `Schema validation failed` | Gate YAML does not conform to schema | Fix the YAML fields per `schemas/gate.schema.json` |
-| `Gate catalog incomplete` | A gate is defined but not registered in the catalog | Add the gate to `ai-infra-gate-catalog.yaml` |
+| Error                                                    | Cause                                                      | Resolution                                         |
+| -------------------------------------------------------- | ---------------------------------------------------------- | -------------------------------------------------- |
+| `R-01: Repository name does not match canonical pattern` | Repository name violates naming rules                      | Rename repository per `mycodexvantaos-00100`       |
+| `G-01: Governance code format invalid`                   | Governance code does not match `^mycodexvantaos-[0-9]{5}$` | Correct the governance code                        |
+| `DP-03: Cycle detected in hard dependency graph`         | Circular dependency in service graph                       | Remove the cycle or introduce a mediator           |
+| `Schema validation failed`                               | Gate YAML does not conform to schema                       | Fix the YAML fields per `schemas/gate.schema.json` |
+| `Gate catalog incomplete`                                | A gate is defined but not registered in the catalog        | Add the gate to `ai-infra-gate-catalog.yaml`       |
