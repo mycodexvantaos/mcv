@@ -184,6 +184,6 @@ TypeScript API → Database Jobs → Python Worker → Dream Report → TypeScri
 
 ## 📞 支援
 
-MyCodeXvantaOS 是 NinjaTeam AI 的開源平台。
+MyCodeXvantaOS 是 MyCodeXvantaOS Team AI 的開源平台。
 
 🔗 GitHub: https://github.com/mycodexvantaos/mycodexvantaos

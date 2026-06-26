@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PolicyDraft – AI Legal Document Generator</title>
+<style>
+  /* ===== RESET & BASE ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg-900: #111827;
+    --bg-800: #1F2937;
+    --bg-700: #374151;
+    --bg-600: #4B5563;
+    --bg-500: #6B7280;
+    --blue-600: #2563EB;
+    --blue-500: #3B82F6;
+    --blue-400: #60A5FA;
+    --blue-300: #93C5FD;
+    --green-500: #22C55E;
+    --green-400: #4ADE80;
+    --yellow-400: #FACC15;
+    --red-400: #F87171;
+    --text-100: #F9FAFB;
+    --text-200: #E5E7EB;
+    --text-300: #D1D5DB;
+    --text-400: #9CA3AF;
+    --radius: 10px;
+    --radius-lg: 16px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.4);
+    --transition: 0.2s ease;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg-900);
+    color: var(--text-200);
+    min-height: 100vh;
+    line-height: 1.6;
+    font-size: 15px;
+  }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-800); }
+  ::-webkit-scrollbar-thumb { background: var(--bg-600); border-radius: 3px; }
+
+  /* ===== HEADER ===== */
+  .header {
+    background: var(--bg-800);
+    border-bottom: 1px solid var(--bg-700);
+    padding: 0 32px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text-100);
+    letter-spacing: -0.5px;
+  }
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: var(--blue-500);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo span { color: var(--blue-400); }
+  .header-actions { display: flex; gap: 12px; align-items: center; }
+  .badge {
+    background: linear-gradient(135deg, var(--blue-600), var(--blue-500));
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* ===== LAYOUT ===== */
+  .app-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px 24px;
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 28px;
+    align-items: start;
+  }
+
+  /* ===== PANEL ===== */
+  .panel {
+    background: var(--bg-800);
+    border: 1px solid var(--bg-700);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .panel-header {
+    background: var(--bg-700);
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--bg-600);
+  }
+  .panel-header h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-100);
+    letter-spacing: 0.2px;
+  }
+  .panel-header .step-num {
+    width: 26px; height: 26px;
+    background: var(--blue-500);
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .panel-body { padding: 24px; }
+
+  /* ===== DOCUMENT TYPE SELECTOR ===== */
+  .doc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .doc-type-btn {
+    background: var(--bg-700);
+    border: 2px solid var(--bg-600);
+    border-radius: var(--radius);
+    padding: 14px 12px;
+    cursor: pointer;
+    transition: all var(--transition);
+    text-align: left;
+    color: var(--text-300);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .doc-type-btn:hover {
+    border-color: var(--blue-500);
+    background: rgba(59,130,246,0.08);
+    color: var(--text-100);
+  }
+  .doc-type-btn.active {
+    border-color: var(--blue-500);
+    background: rgba(59,130,246,0.15);
+    color: var(--blue-300);
+  }
+  .doc-type-btn svg { flex-shrink: 0; }
+  .doc-type-name { font-size: 12px; font-weight: 700; line-height: 1.2; }
+
+  /* ===== FORM ELEMENTS ===== */
+  .form-section { margin-bottom: 24px; }
+  .section-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--blue-400);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--bg-600);
+  }
+  .form-group { margin-bottom: 14px; }
+  .form-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-300);
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+  }
+  .form-label .required { color: var(--red-400); margin-left: 2px; }
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    background: var(--bg-900);
+    border: 1.5px solid var(--bg-600);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--text-100);
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    outline: none;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--blue-500);
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+  }
+  .form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239CA3AF' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    cursor: pointer;
+  }
+  .form-select option { background: var(--bg-700); }
+  .form-textarea { min-height: 80px; resize: vertical; line-height: 1.5; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* ===== CHECKBOXES ===== */
+  .checkbox-group { display: flex; flex-direction: column; gap: 8px; }
+  .checkbox-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--bg-700);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background var(--transition);
+    border: 1.5px solid transparent;
+  }
+  .checkbox-item:hover { background: var(--bg-600); }
+  .checkbox-item.checked {
+    border-color: var(--blue-500);
+    background: rgba(59,130,246,0.1);
+  }
+  .checkbox-item input[type="checkbox"] { display: none; }
+  .custom-checkbox {
+    width: 18px; height: 18px;
+    min-width: 18px;
+    border: 2px solid var(--bg-500);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all var(--transition);
+    margin-top: 1px;
+  }
+  .checked .custom-checkbox { background: var(--blue-500); border-color: var(--blue-500); }
+  .checkbox-text { flex: 1; }
+  .checkbox-label { font-size: 13px; font-weight: 600; color: var(--text-200); line-height: 1.3; }
+  .checkbox-desc { font-size: 11px; color: var(--text-400); margin-top: 2px; line-height: 1.4; }
+
+  /* ===== COMPLIANCE TAGS ===== */
+  .compliance-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .comp-tag {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    border: 1.5px solid;
+    cursor: pointer;
+    transition: all var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .comp-tag.gdpr { color: #60A5FA; border-color: #3B82F6; background: rgba(59,130,246,0.1); }
+  .comp-tag.ccpa { color: #4ADE80; border-color: #22C55E; background: rgba(34,197,94,0.1); }
+  .comp-tag.gdpr.active { background: rgba(59,130,246,0.3); }
+  .comp-tag.ccpa.active { background: rgba(34,197,94,0.3); }
+  .comp-tag.coppa { color: #FBBF24; border-color: #F59E0B; background: rgba(245,158,11,0.1); }
+  .comp-tag.coppa.active { background: rgba(245,158,11,0.3); }
+  .comp-tag.pipeda { color: #C084FC; border-color: #A855F7; background: rgba(168,85,247,0.1); }
+  .comp-tag.pipeda.active { background: rgba(168,85,247,0.3); }
+
+  /* ===== MULTI-SELECT TAGS ===== */
+  .tag-select { display: flex; flex-wrap: wrap; gap: 7px; }
+  .tag-option {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1.5px solid var(--bg-600);
+    color: var(--text-400);
+    cursor: pointer;
+    transition: all var(--transition);
+    background: var(--bg-700);
+  }
+  .tag-option:hover { border-color: var(--blue-400); color: var(--blue-300); }
+  .tag-option.active { border-color: var(--blue-500); background: rgba(59,130,246,0.2); color: var(--blue-300); }
+
+  /* ===== BUTTONS ===== */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition);
+    border: none;
+    font-family: inherit;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--blue-600), var(--blue-500));
+    color: white;
+    box-shadow: 0 4px 14px rgba(59,130,246,0.35);
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(59,130,246,0.45); }
+  .btn-secondary { background: var(--bg-700); color: var(--text-200); border: 1.5px solid var(--bg-600); }
+  .btn-secondary:hover { background: var(--bg-600); border-color: var(--bg-500); }
+  .btn-ghost { background: transparent; color: var(--blue-400); border: 1.5px solid var(--blue-500); }
+  .btn-ghost:hover { background: rgba(59,130,246,0.1); }
+  .btn-full { width: 100%; justify-content: center; }
+  .btn-lg { padding: 14px 28px; font-size: 15px; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+  /* ===== ACTIONS ROW ===== */
+  .actions-row { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+  .demo-btn {
+    background: rgba(250,204,21,0.1);
+    border: 1.5px solid rgba(250,204,21,0.4);
+    color: var(--yellow-400);
+    border-radius: 8px;
+    padding: 11px 18px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: inherit;
+  }
+  .demo-btn:hover { background: rgba(250,204,21,0.2); }
+
+  /* ===== TABS ===== */
+  .tabs {
+    display: flex;
+    gap: 2px;
+    background: var(--bg-900);
+    padding: 6px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 9px 14px;
+    border-radius: 7px;
+    border: none;
+    background: transparent;
+    color: var(--text-400);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--text-200); background: var(--bg-700); }
+  .tab-btn.active { background: var(--blue-600); color: white; box-shadow: 0 2px 8px rgba(59,130,246,0.35); }
+
+  /* ===== DOCUMENT OUTPUT ===== */
+  .doc-output-wrap { background: var(--bg-900); border: 1.5px solid var(--bg-700); border-radius: var(--radius); overflow: hidden; }
+  .doc-toolbar {
+    background: var(--bg-700);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--bg-600);
+    gap: 12px;
+  }
+  .doc-title-display { font-size: 13px; font-weight: 700; color: var(--text-200); display: flex; align-items: center; gap: 8px; }
+  .doc-actions { display: flex; gap: 8px; }
+  .icon-btn {
+    width: 34px; height: 34px;
+    border-radius: 7px;
+    border: 1.5px solid var(--bg-500);
+    background: var(--bg-600);
+    color: var(--text-300);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+  .icon-btn:hover { background: var(--bg-500); color: var(--text-100); border-color: var(--bg-400); }
+  .icon-btn.copy-success { background: rgba(34,197,94,0.2); border-color: var(--green-500); color: var(--green-400); }
+  .doc-content {
+    padding: 32px;
+    max-height: 520px;
+    overflow-y: auto;
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: var(--text-200);
+  }
+  .doc-content h1 { font-size: 20px; font-weight: 800; color: var(--text-100); margin-bottom: 6px; line-height: 1.3; }
+  .doc-meta { font-size: 12px; color: var(--text-400); margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid var(--bg-700); }
+  .doc-section { margin-bottom: 22px; }
+  .doc-section h2 { font-size: 15px; font-weight: 700; color: var(--blue-300); margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--bg-700); }
+  .doc-section p { color: var(--text-300); margin-bottom: 8px; }
+  .doc-section ul { list-style: none; margin: 8px 0; }
+  .doc-section ul li { padding: 3px 0 3px 18px; position: relative; color: var(--text-300); }
+  .doc-section ul li::before { content: ''; position: absolute; left: 4px; top: 12px; width: 5px; height: 5px; background: var(--blue-500); border-radius: 50%; }
+
+  /* ===== PLACEHOLDER ===== */
+  .placeholder-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 32px;
+    text-align: center;
+    gap: 16px;
+  }
+  .placeholder-icon { width: 72px; height: 72px; background: var(--bg-700); border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0.5; }
+  .placeholder-state h3 { font-size: 17px; font-weight: 700; color: var(--text-300); }
+  .placeholder-state p { font-size: 13px; color: var(--text-400); max-width: 280px; }
+
+  /* ===== COMPLIANCE SCORE ===== */
+  .score-panel { padding: 24px; }
+  .score-overview { display: flex; align-items: center; gap: 24px; margin-bottom: 28px; padding: 20px; background: var(--bg-700); border-radius: var(--radius); }
+  .score-circle { width: 90px; height: 90px; flex-shrink: 0; position: relative; }
+  .score-circle svg { width: 90px; height: 90px; }
+  .score-circle-bg { fill: none; stroke: var(--bg-600); stroke-width: 7; }
+  .score-circle-fill { fill: none; stroke-width: 7; stroke-linecap: round; transition: stroke-dashoffset 1s ease; }
+  .score-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+  .score-num { font-size: 22px; font-weight: 900; color: var(--text-100); line-height: 1; display: block; }
+  .score-pct { font-size: 11px; color: var(--text-400); }
+  .score-info { flex: 1; }
+  .score-grade { font-size: 24px; font-weight: 900; margin-bottom: 4px; }
+  .score-label { font-size: 13px; font-weight: 600; color: var(--text-300); margin-bottom: 8px; }
+  .score-desc { font-size: 12px; color: var(--text-400); line-height: 1.5; }
+  .score-items { display: flex; flex-direction: column; gap: 10px; }
+  .score-item { display: flex; align-items: center; gap: 14px; padding: 12px 14px; background: var(--bg-700); border-radius: 8px; border-left: 3px solid transparent; }
+  .score-item.pass { border-left-color: var(--green-500); }
+  .score-item.warn { border-left-color: var(--yellow-400); }
+  .score-item.fail { border-left-color: var(--red-400); }
+  .score-item-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .pass .score-item-icon { background: rgba(34,197,94,0.15); }
+  .warn .score-item-icon { background: rgba(250,204,21,0.15); }
+  .fail .score-item-icon { background: rgba(248,113,113,0.15); }
+  .score-item-text { flex: 1; }
+  .score-item-name { font-size: 13px; font-weight: 600; color: var(--text-200); margin-bottom: 2px; }
+  .score-item-detail { font-size: 11px; color: var(--text-400); }
+  .score-pts { font-size: 12px; font-weight: 700; }
+  .pass .score-pts { color: var(--green-400); }
+  .warn .score-pts { color: var(--yellow-400); }
+  .fail .score-pts { color: var(--red-400); }
+
+  /* ===== PLAIN ENGLISH ===== */
+  .explain-panel { padding: 24px; }
+  .explain-item { padding: 16px; background: var(--bg-700); border-radius: var(--radius); margin-bottom: 12px; border-left: 3px solid var(--blue-500); }
+  .explain-item h4 { font-size: 13px; font-weight: 700; color: var(--blue-300); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .explain-item p { font-size: 12.5px; color: var(--text-300); line-height: 1.6; }
+  .explain-item .tip { margin-top: 8px; padding: 8px 12px; background: rgba(59,130,246,0.1); border-radius: 6px; font-size: 12px; color: var(--blue-300); display: flex; align-items: flex-start; gap: 6px; }
+
+  /* ===== GENERATING ===== */
+  .generating { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 32px; gap: 20px; text-align: center; }
+  .gen-spinner { width: 50px; height: 50px; border: 3px solid var(--bg-600); border-top-color: var(--blue-500); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .gen-text { font-size: 15px; font-weight: 600; color: var(--text-300); }
+  .gen-steps { display: flex; flex-direction: column; gap: 8px; }
+  .gen-step { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-400); }
+  .gen-step.done { color: var(--green-400); }
+  .gen-step.active { color: var(--blue-300); }
+  .step-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--bg-500); flex-shrink: 0; }
+  .gen-step.done .step-dot { background: var(--green-500); }
+  .gen-step.active .step-dot { background: var(--blue-500); box-shadow: 0 0 8px var(--blue-500); animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  /* ===== MISC ===== */
+  .divider { height: 1px; background: var(--bg-600); margin: 20px 0; }
+  .info-box { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.25); border-radius: 8px; padding: 12px 14px; font-size: 12px; color: var(--blue-300); line-height: 1.55; display: flex; gap: 10px; align-items: flex-start; margin-top: 12px; }
+  .info-box svg { flex-shrink: 0; margin-top: 1px; }
+  .doc-stats { display: flex; gap: 16px; padding: 10px 16px; background: var(--bg-800); border-top: 1px solid var(--bg-700); font-size: 11px; color: var(--text-400); flex-wrap: wrap; }
+  .doc-stat { display: flex; align-items: center; gap: 5px; }
+  .doc-stat strong { color: var(--text-300); }
+  .output-panel { position: sticky; top: 88px; }
+  .hidden { display: none !important; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .fade-in { animation: fadeIn 0.35s ease forwards; }
+
+  /* ===== TOAST ===== */
+  .toast { position: fixed; bottom: 28px; right: 28px; background: var(--bg-700); border: 1.5px solid var(--bg-500); border-radius: var(--radius); padding: 14px 20px; display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 600; color: var(--text-100); box-shadow: var(--shadow); z-index: 1000; transform: translateY(80px); opacity: 0; transition: all 0.3s ease; pointer-events: none; max-width: 340px; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { border-color: var(--green-500); }
+  .toast.info { border-color: var(--blue-500); }
+
+  /* ===== FOOTER ===== */
+  .footer { text-align: center; padding: 28px; font-size: 12px; color: var(--text-400); border-top: 1px solid var(--bg-700); margin-top: 40px; }
+
+  /* ===== PRINT ===== */
+  @media print {
+    .header, .app-container > div:first-child, .tabs, .doc-toolbar, .doc-stats, .footer { display: none !important; }
+    body { background: white; color: #111; font-size: 12pt; }
+    .app-container { display: block; padding: 0; }
+    .output-panel { position: static; }
+    .panel { border: none; background: white; }
+    .doc-content { max-height: none; padding: 0; color: #111; font-size: 11pt; }
+    .doc-content h1 { color: #111; font-size: 18pt; }
+    .doc-section h2 { color: #333; font-size: 13pt; border-bottom-color: #ccc; }
+    .doc-section p, .doc-section li { color: #222; }
+    .doc-meta { color: #555; border-bottom-color: #ccc; }
+    .doc-section ul li::before { background: #333; }
+    .panel-body { padding: 0; }
+    .panel-header { display: none !important; }
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 1100px) { .app-container { grid-template-columns: 360px 1fr; gap: 20px; padding: 20px 16px; } }
+  @media (max-width: 900px) { .app-container { grid-template-columns: 1fr; } .output-panel { position: static; } .doc-grid { grid-template-columns: 1fr 1fr 1fr; } .header { padding: 0 16px; } }
+  @media (max-width: 640px) { .doc-grid { grid-template-columns: 1fr 1fr; } .form-row { grid-template-columns: 1fr; } .tabs { flex-wrap: wrap; } .tab-btn { font-size: 12px; padding: 8px 10px; } }
+  @media (max-width: 420px) { .doc-grid { grid-template-columns: 1fr; } }
+</style>
+<script src="https://sites.super.betamyninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo">
+    <div class="logo-icon">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M4 3h8l4 4v10a1 1 0 01-1 1H4a1 1 0 01-1-1V4a1 1 0 011-1z" stroke="white" stroke-width="1.5" fill="none"/>
+        <path d="M12 3v4h4" stroke="white" stroke-width="1.5" fill="none"/>
+        <path d="M7 10h6M7 13h4" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    Policy<span>Draft</span>
+  </div>
+  <div class="header-actions">
+    <div class="badge">AI-Powered</div>
+    <button class="btn btn-ghost" onclick="loadDemo()" style="padding:8px 16px;font-size:13px;display:flex;align-items:center;gap:6px;">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><polygon points="6.5,5.5 11,8 6.5,10.5" fill="currentColor"/></svg>
+      Demo
+    </button>
+    <button class="btn btn-primary" onclick="generateDoc()" style="padding:8px 18px;font-size:13px;">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2v10M3 9l5 4 5-4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Generate
+    </button>
+  </div>
+</header>
+
+<!-- MAIN -->
+<div class="app-container">
+
+  <!-- LEFT: FORM -->
+  <div>
+
+    <!-- STEP 1 -->
+    <div class="panel" style="margin-bottom:20px;">
+      <div class="panel-header">
+        <div class="step-num">1</div>
+        <h2>Document Type</h2>
+      </div>
+      <div class="panel-body">
+        <div class="doc-grid" id="docTypeGrid">
+          <button class="doc-type-btn active" data-type="privacy" onclick="selectDocType(this)">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L3 5v6c0 4 3.5 6.5 7 7.5 3.5-1 7-3.5 7-7.5V5L10 2z" stroke="#60A5FA" stroke-width="1.5" fill="none"/><path d="M7 10l2 2 4-4" stroke="#60A5FA" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span class="doc-type-name">Privacy Policy</span>
+          </button>
+          <button class="doc-type-btn" data-type="terms" onclick="selectDocType(this)">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 3h10a1 1 0 011 1v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4a1 1 0 011-1z" stroke="#60A5FA" stroke-width="1.5" fill="none"/><path d="M7 7h6M7 10h6M7 13h3" stroke="#60A5FA" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span class="doc-type-name">Terms of Service</span>
+          </button>
+          <button class="doc-type-btn" data-type="cookie" onclick="selectDocType(this)">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="#60A5FA" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="1.2" fill="#60A5FA"/><circle cx="12" cy="9" r="1" fill="#60A5FA"/><circle cx="9" cy="13" r="1" fill="#60A5FA"/><circle cx="13" cy="13" r="0.8" fill="#60A5FA"/></svg>
+            <span class="doc-type-name">Cookie Policy</span>
+          </button>
+          <button class="doc-type-btn" data-type="disclaimer" onclick="selectDocType(this)">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3L2 17h16L10 3z" stroke="#60A5FA" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M10 9v4M10 14.5v.5" stroke="#60A5FA" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span class="doc-type-name">Disclaimer</span>
+          </button>
+          <button class="doc-type-btn" data-type="refund" onclick="selectDocType(this)">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 8h12M4 8l3-3M4 8l3 3" stroke="#60A5FA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 16a6 6 0 006-6" stroke="#60A5FA" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+            <span class="doc-type-name">Refund Policy</span>
+          </button>
+          <button class="doc-type-btn" data-type="eula" onclick="selectDocType(this)">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="2" stroke="#60A5FA" stroke-width="1.5" fill="none"/><path d="M7 10l2 2 4-4" stroke="#60A5FA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="doc-type-name">EULA</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="panel" style="margin-bottom:20px;">
+      <div class="panel-header">
+        <div class="step-num">2</div>
+        <h2>Company Details</h2>
+      </div>
+      <div class="panel-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Company Name <span class="required">*</span></label>
+            <input type="text" class="form-input" id="companyName" placeholder="Acme Inc." />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Website URL <span class="required">*</span></label>
+            <input type="text" class="form-input" id="websiteUrl" placeholder="https://example.com" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Contact Email <span class="required">*</span></label>
+            <input type="email" class="form-input" id="contactEmail" placeholder="privacy@example.com" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Industry</label>
+            <select class="form-select" id="industry">
+              <option value="">Select industry...</option>
+              <option value="saas">SaaS / Software</option>
+              <option value="ecommerce">E-Commerce</option>
+              <option value="healthcare">Healthcare</option>
+              <option value="fintech">Fintech / Finance</option>
+              <option value="education">Education</option>
+              <option value="media">Media / Publishing</option>
+              <option value="marketplace">Marketplace</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Business Address</label>
+            <input type="text" class="form-input" id="address" placeholder="123 Main St, City, State" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Jurisdiction <span class="required">*</span></label>
+            <select class="form-select" id="jurisdiction">
+              <option value="">Select jurisdiction...</option>
+              <option value="us">United States</option>
+              <option value="eu">European Union</option>
+              <option value="uk">United Kingdom</option>
+              <option value="ca">Canada</option>
+              <option value="au">Australia</option>
+              <option value="global">Global</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Product / Service Description</label>
+          <textarea class="form-textarea" id="productDesc" placeholder="Briefly describe your product or service..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="panel" style="margin-bottom:20px;">
+      <div class="panel-header">
+        <div class="step-num">3</div>
+        <h2>Data Collected & Third-Party Services</h2>
+      </div>
+      <div class="panel-body">
+        <div class="section-title">Data Types Collected</div>
+        <div class="tag-select" id="dataTypes">
+          <div class="tag-option active" data-val="name">Full Name</div>
+          <div class="tag-option active" data-val="email">Email Address</div>
+          <div class="tag-option" data-val="phone">Phone Number</div>
+          <div class="tag-option" data-val="address">Physical Address</div>
+          <div class="tag-option active" data-val="usage">Usage Data</div>
+          <div class="tag-option" data-val="device">Device Info</div>
+          <div class="tag-option" data-val="location">Location Data</div>
+          <div class="tag-option" data-val="cookies">Cookies</div>
+          <div class="tag-option" data-val="payment">Payment Info</div>
+          <div class="tag-option" data-val="health">Health Data</div>
+          <div class="tag-option" data-val="biometric">Biometric Data</div>
+          <div class="tag-option" data-val="children">Children's Data</div>
+        </div>
+        <div class="divider"></div>
+        <div class="section-title">Third-Party Services</div>
+        <div class="tag-select" id="thirdParties">
+          <div class="tag-option active" data-val="analytics">Google Analytics</div>
+          <div class="tag-option" data-val="ads">Ad Networks</div>
+          <div class="tag-option active" data-val="payment_proc">Payment Processors</div>
+          <div class="tag-option" data-val="cloud">Cloud Storage</div>
+          <div class="tag-option" data-val="email_svc">Email Services</div>
+          <div class="tag-option" data-val="crm">CRM / Support</div>
+          <div class="tag-option" data-val="social">Social Media</div>
+          <div class="tag-option" data-val="cdn">CDN</div>
+          <div class="tag-option" data-val="auth">Authentication</div>
+          <div class="tag-option" data-val="ml">AI / ML Services</div>
+        </div>
+        <div class="divider"></div>
+        <div class="section-title">Data Practices</div>
+        <div class="checkbox-group" id="dataPractices">
+          <label class="checkbox-item checked" onclick="toggleCheck(this)">
+            <input type="checkbox" checked>
+            <div class="custom-checkbox"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div>
+            <div class="checkbox-text">
+              <div class="checkbox-label">Data Retention Policy</div>
+              <div class="checkbox-desc">Specify how long user data is retained</div>
+            </div>
+          </label>
+          <label class="checkbox-item checked" onclick="toggleCheck(this)">
+            <input type="checkbox" checked>
+            <div class="custom-checkbox"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div>
+            <div class="checkbox-text">
+              <div class="checkbox-label">Data Encryption</div>
+              <div class="checkbox-desc">Data is encrypted in transit and at rest</div>
+            </div>
+          </label>
+          <label class="checkbox-item" onclick="toggleCheck(this)">
+            <input type="checkbox">
+            <div class="custom-checkbox"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div>
+            <div class="checkbox-text">
+              <div class="checkbox-label">Data Selling / Sharing for Ads</div>
+              <div class="checkbox-desc">User data is sold or shared with advertising partners</div>
+            </div>
+          </label>
+          <label class="checkbox-item" onclick="toggleCheck(this)">
+            <input type="checkbox">
+            <div class="custom-checkbox"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div>
+            <div class="checkbox-text">
+              <div class="checkbox-label">Cross-Border Data Transfers</div>
+              <div class="checkbox-desc">Data is transferred outside user's country</div>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="panel" style="margin-bottom:20px;">
+      <div class="panel-header">
+        <div class="step-num">4</div>
+        <h2>Compliance & Regulations</h2>
+      </div>
+      <div class="panel-body">
+        <div class="section-title">Regulations to Include</div>
+        <div class="compliance-tags" id="complianceTags" style="margin-top:0;">
+          <div class="comp-tag gdpr active" data-reg="gdpr" onclick="toggleCompTag(this)">
+            <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M3 5l1.5 1.5L7 3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>
+            GDPR
+          </div>
+          <div class="comp-tag ccpa active" data-reg="ccpa" onclick="toggleCompTag(this)">
+            <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M3 5l1.5 1.5L7 3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>
+            CCPA
+          </div>
+          <div class="comp-tag coppa" data-reg="coppa" onclick="toggleCompTag(this)">
+            <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M5 3v2l1.5 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>
+            COPPA
+          </div>
+          <div class="comp-tag pipeda" data-reg="pipeda" onclick="toggleCompTag(this)">
+            <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M5 3v2l1.5 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>
+            PIPEDA
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="section-title">User Rights</div>
+        <div class="checkbox-group" id="userRights">
+          <label class="checkbox-item checked" onclick="toggleCheck(this)">
+            <input type="checkbox" checked>
+            <div class="custom-checkbox"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div>
+            <div class="checkbox-text">
+              <div class="checkbox-label">Right to Access</div>
+              <div class="checkbox-desc">Users can request a copy of their data</div>
+            </div>
+          </label>
+          <label class="checkbox-item checked" onclick="toggleCheck(this)">
+            <input type="checkbox" checked>
+            <div class="custom-checkbox"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div>
+            <div class="checkbox-text">
+              <div class="checkbox-label">Right to Deletion</div>
+              <div class="checkbox-desc">Users can request their data be deleted</div>
+            </div>
+          </label>
+          <label class="checkbox-item checked" onclick="toggleCheck(this)">
+            <input type="checkbox" checked>
+            <div class="custom-checkbox"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div>
+            <div class="checkbox-text">
+              <div class="checkbox-label">Right to Opt-Out</div>
+              <div class="checkbox-desc">Users can opt out of data sale / marketing</div>
+            </div>
+          </label>
+          <label class="checkbox-item" onclick="toggleCheck(this)">
+            <input type="checkbox">
+            <div class="custom-checkbox"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div>
+            <div class="checkbox-text">
+              <div class="checkbox-label">Right to Data Portability</div>
+              <div class="checkbox-desc">Users can export their data in machine-readable format</div>
+            </div>
+          </label>
+          <label class="checkbox-item" onclick="toggleCheck(this)">
+            <input type="checkbox">
+            <div class="custom-checkbox"><svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div>
+            <div class="checkbox-text">
+              <div class="checkbox-label">Right to Rectification</div>
+              <div class="checkbox-desc">Users can correct inaccurate data</div>
+            </div>
+          </label>
+        </div>
+        <div class="info-box">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M8 7v5M8 5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span>Enabling GDPR + CCPA compliance increases your legal protection and builds user trust. All generated clauses reflect current regulatory requirements.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="actions-row">
+      <button class="btn btn-primary btn-lg" onclick="generateDoc()" style="flex:1;">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2v10M4 8l5 5 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 14h14" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+        Generate Document
+      </button>
+      <button class="demo-btn" onclick="loadDemo()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><polygon points="6,5 12,8 6,11" fill="currentColor"/></svg>
+        Try Demo
+      </button>
+    </div>
+
+  </div><!-- /left -->
+
+  <!-- RIGHT: OUTPUT -->
+  <div class="output-panel">
+    <div class="panel" id="outputPanel">
+      <div class="panel-header">
+        <div class="step-num" style="background:var(--bg-500);">5</div>
+        <h2>Generated Document</h2>
+        <div style="flex:1;"></div>
+        <div id="complianceBadges" class="compliance-tags" style="margin:0;"></div>
+      </div>
+      <div class="panel-body" style="padding:20px 24px 8px;">
+
+        <!-- TABS -->
+        <div class="tabs">
+          <button class="tab-btn active" onclick="switchTab('document',this)">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 2h6l2 2v8H3V2z" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M5 6h4M5 8.5h2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Document
+          </button>
+          <button class="tab-btn" onclick="switchTab('score',this)">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M7 4v3l2 1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Compliance Score
+          </button>
+          <button class="tab-btn" onclick="switchTab('explain',this)">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M7 7v3M7 4.5v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Plain English
+          </button>
+        </div>
+
+        <!-- TAB: DOCUMENT -->
+        <div id="tab-document">
+          <div id="docPlaceholder" class="placeholder-state">
+            <div class="placeholder-icon">
+              <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M9 6h12l6 6v18H9V6z" stroke="#6B7280" stroke-width="2" fill="none"/><path d="M21 6v6h6" stroke="#6B7280" stroke-width="2" fill="none"/><path d="M14 17h8M14 21h8M14 25h5" stroke="#6B7280" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <h3>No Document Yet</h3>
+            <p>Fill in your company details and click "Generate Document" to create your legal policy.</p>
+            <button class="btn btn-primary" onclick="loadDemo()" style="margin-top:8px;">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="white" stroke-width="1.3"/><polygon points="5.5,4.5 10,7 5.5,9.5" fill="white"/></svg>
+              Load Demo
+            </button>
+          </div>
+          <div id="docGenerating" class="generating hidden">
+            <div class="gen-spinner"></div>
+            <div class="gen-text">Generating your document...</div>
+            <div class="gen-steps" id="genSteps"></div>
+          </div>
+          <div id="docOutputWrap" class="hidden">
+            <div class="doc-output-wrap">
+              <div class="doc-toolbar">
+                <div class="doc-title-display" id="docTitleBar">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 2h6l2 2v8H3V2z" stroke="currentColor" stroke-width="1.3" fill="none"/></svg>
+                  Privacy Policy
+                </div>
+                <div class="doc-actions">
+                  <button class="icon-btn" title="Copy to Clipboard" onclick="copyDoc(this)">
+                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="4" y="4" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M2 11V2h9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                  </button>
+                  <button class="icon-btn" title="Export as Text" onclick="exportTxt()">
+                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M7.5 2v8M4 7l3.5 3.5L11 7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12h11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                  </button>
+                  <button class="icon-btn" title="Print Document" onclick="window.print()">
+                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="3" y="1" width="9" height="5" rx="1" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M3 6H1.5a.5.5 0 00-.5.5v5a.5.5 0 00.5.5H4V10h7v2h2.5a.5.5 0 00.5-.5v-5a.5.5 0 00-.5-.5H12" stroke="currentColor" stroke-width="1.3" fill="none"/><rect x="4" y="10" width="7" height="4" rx="0.5" stroke="currentColor" stroke-width="1.3" fill="none"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="doc-content" id="docContent"></div>
+              <div class="doc-stats" id="docStats"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: SCORE -->
+        <div id="tab-score" class="hidden">
+          <div id="scorePlaceholder" class="placeholder-state">
+            <div class="placeholder-icon">
+              <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="13" stroke="#6B7280" stroke-width="2.5" fill="none"/><path d="M18 10v8l5 3" stroke="#6B7280" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <h3>Compliance Score</h3>
+            <p>Generate a document first to see your compliance score and recommendations.</p>
+          </div>
+          <div id="scoreContent" class="score-panel hidden"></div>
+        </div>
+
+        <!-- TAB: EXPLAIN -->
+        <div id="tab-explain" class="hidden">
+          <div id="explainPlaceholder" class="placeholder-state">
+            <div class="placeholder-icon">
+              <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="13" stroke="#6B7280" stroke-width="2.5" fill="none"/><path d="M18 18v6M18 11v4" stroke="#6B7280" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <h3>Plain English Explanations</h3>
+            <p>Generate a document first to see plain-language explanations for each section.</p>
+          </div>
+          <div id="explainContent" class="explain-panel hidden"></div>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- /right -->
+
+</div><!-- /app-container -->
+
+<footer class="footer">
+  PolicyDraft &mdash; AI-Powered Legal Document Generator &bull; <strong>Not a substitute for professional legal advice.</strong> Always consult a qualified attorney for your specific needs.
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span id="toastIcon"></span>
+  <span id="toastMsg"></span>
+</div>
+
+<script>
+/* ===== STATE ===== */
+let selectedDocType = 'privacy';
+let generatedDocText = '';
+
+const DOC_TYPES = {
+  privacy: 'Privacy Policy',
+  terms: 'Terms of Service',
+  cookie: 'Cookie Policy',
+  disclaimer: 'Disclaimer',
+  refund: 'Refund Policy',
+  eula: 'End User License Agreement'
+};
+
+const DATA_LABELS = {
+  name: 'full name', email: 'email address', phone: 'phone number',
+  address: 'physical address', usage: 'usage and behavioral data',
+  device: 'device and browser information', location: 'location data',
+  cookies: 'cookies and tracking technologies', payment: 'payment and billing information',
+  health: 'health and medical data', biometric: 'biometric data', children: "children's data"
+};
+
+const PARTY_LABELS = {
+  analytics: 'Google Analytics (web analytics)',
+  ads: 'advertising networks and ad partners',
+  payment_proc: 'payment processors (e.g., Stripe, PayPal)',
+  cloud: 'cloud storage and hosting providers',
+  email_svc: 'email delivery services (e.g., SendGrid, Mailchimp)',
+  crm: 'customer relationship management and support tools',
+  social: 'social media platforms',
+  cdn: 'content delivery networks (CDN)',
+  auth: 'authentication providers (e.g., Auth0, Firebase)',
+  ml: 'AI and machine learning service providers'
+};
+
+const JURISDICTION_NAMES = {
+  us: 'Delaware, United States', eu: 'European Union', uk: 'United Kingdom',
+  ca: 'Ontario, Canada', au: 'New South Wales, Australia', global: 'multiple jurisdictions'
+};
+
+/* ===== UI HELPERS ===== */
+function selectDocType(btn) {
+  document.querySelectorAll('.doc-type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedDocType = btn.dataset.type;
+}
+
+function toggleCheck(label) {
+  const cb = label.querySelector('input[type=checkbox]');
+  const box = label.querySelector('.custom-checkbox');
+  cb.checked = !cb.checked;
+  if (cb.checked) {
+    label.classList.add('checked');
+    box.innerHTML = '<svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>';
+  } else {
+    label.classList.remove('checked');
+    box.innerHTML = '<svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>';
+  }
+}
+
+function toggleCompTag(el) { el.classList.toggle('active'); }
+
+document.querySelectorAll('.tag-option').forEach(tag => {
+  tag.addEventListener('click', () => tag.classList.toggle('active'));
+});
+
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  ['document','score','explain'].forEach(t => {
+    document.getElementById('tab-'+t).classList.toggle('hidden', t !== name);
+  });
+}
+
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  const icons = {
+    success: '<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="#4ADE80" stroke-width="1.5"/><path d="M5.5 9l2.5 2.5 4-4" stroke="#4ADE80" stroke-width="1.5" stroke-linecap="round"/></svg>',
+    info: '<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="#60A5FA" stroke-width="1.5"/><path d="M9 8v5M9 6v.5" stroke="#60A5FA" stroke-width="1.5" stroke-linecap="round"/></svg>',
+    error: '<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="#F87171" stroke-width="1.5"/><path d="M9 6v4M9 12v.5" stroke="#F87171" stroke-width="1.5" stroke-linecap="round"/></svg>'
+  };
+  t.className = 'toast ' + type;
+  document.getElementById('toastIcon').innerHTML = icons[type] || icons.info;
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+/* ===== FORM DATA ===== */
+function getFormData() {
+  return {
+    docType: selectedDocType,
+    docTypeName: DOC_TYPES[selectedDocType],
+    companyName: document.getElementById('companyName').value.trim() || 'Your Company',
+    websiteUrl: document.getElementById('websiteUrl').value.trim() || 'https://yourwebsite.com',
+    contactEmail: document.getElementById('contactEmail').value.trim() || 'privacy@yourcompany.com',
+    industry: document.getElementById('industry').value || 'software',
+    address: document.getElementById('address').value.trim() || '',
+    jurisdiction: document.getElementById('jurisdiction').value || 'us',
+    productDesc: document.getElementById('productDesc').value.trim() || '',
+    dataTypes: [...document.querySelectorAll('#dataTypes .tag-option.active')].map(t => t.dataset.val),
+    thirdParties: [...document.querySelectorAll('#thirdParties .tag-option.active')].map(t => t.dataset.val),
+    dataPractices: {
+      retention: document.querySelector('#dataPractices label:nth-child(1) input').checked,
+      encryption: document.querySelector('#dataPractices label:nth-child(2) input').checked,
+      selling: document.querySelector('#dataPractices label:nth-child(3) input').checked,
+      crossBorder: document.querySelector('#dataPractices label:nth-child(4) input').checked,
+    },
+    compliance: {
+      gdpr: document.querySelector('[data-reg="gdpr"]').classList.contains('active'),
+      ccpa: document.querySelector('[data-reg="ccpa"]').classList.contains('active'),
+      coppa: document.querySelector('[data-reg="coppa"]').classList.contains('active'),
+      pipeda: document.querySelector('[data-reg="pipeda"]').classList.contains('active'),
+    },
+    userRights: {
+      access: document.querySelector('#userRights label:nth-child(1) input').checked,
+      deletion: document.querySelector('#userRights label:nth-child(2) input').checked,
+      optout: document.querySelector('#userRights label:nth-child(3) input').checked,
+      portability: document.querySelector('#userRights label:nth-child(4) input').checked,
+      rectification: document.querySelector('#userRights label:nth-child(5) input').checked,
+    }
+  };
+}
+
+/* ===== DOCUMENT GENERATORS ===== */
+function generatePrivacyPolicy(d) {
+  const date = new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+  const dataList = d.dataTypes.map(k => DATA_LABELS[k] || k);
+  const partyList = d.thirdParties.map(k => PARTY_LABELS[k] || k);
+  const jurisdiction = JURISDICTION_NAMES[d.jurisdiction] || d.jurisdiction;
+  const compRegs = [];
+  if (d.compliance.gdpr) compRegs.push('General Data Protection Regulation (GDPR)');
+  if (d.compliance.ccpa) compRegs.push('California Consumer Privacy Act (CCPA)');
+  if (d.compliance.coppa) compRegs.push("Children's Online Privacy Protection Act (COPPA)");
+  if (d.compliance.pipeda) compRegs.push('Personal Information Protection and Electronic Documents Act (PIPEDA)');
+
+  const rights = [];
+  if (d.userRights.access) rights.push({name:'Right to Access', desc:`You have the right to request a copy of the personal information ${d.companyName} holds about you. We will respond to verified requests within 30 days.`});
+  if (d.userRights.deletion) rights.push({name:'Right to Erasure', desc:'You may request the deletion of your personal data. We will comply unless we have a legal obligation to retain it.'});
+  if (d.userRights.optout) rights.push({name:'Right to Opt-Out', desc:'You may opt out of the sale or sharing of your personal information and marketing communications at any time by contacting us or using the unsubscribe link in emails.'});
+  if (d.userRights.portability) rights.push({name:'Right to Data Portability', desc:'You have the right to receive your personal data in a structured, commonly used, machine-readable format.'});
+  if (d.userRights.rectification) rights.push({name:'Right to Rectification', desc:'You may request correction of inaccurate or incomplete personal information we hold about you.'});
+
+  const sections = [
+    { num:1, title:'Introduction and Scope',
+      body:`<p>${d.companyName} ("we," "our," or "us") operates ${d.websiteUrl} and is committed to protecting the privacy of our users. This Privacy Policy describes how we collect, use, disclose, and safeguard your information when you visit our website or use our services.</p>
+      <p>This policy applies to all users of our platform${d.productDesc ? ' — ' + d.productDesc : ''}. By using our Services, you agree to the collection and use of information in accordance with this policy.</p>
+      ${compRegs.length ? `<p>This policy has been prepared in compliance with: ${compRegs.join(', ')}.</p>` : ''}`
+    },
+    { num:2, title:'Information We Collect',
+      body:`<p>We collect several types of information for various purposes to provide and improve our Services. The categories of personal information we collect include:</p>
+      <ul>${dataList.map(item => `<li>${capitalize(item)}</li>`).join('')}</ul>
+      <p>We collect this information through direct interactions, automated technologies (cookies, log files, web beacons), and third-party sources.</p>`
+    },
+    { num:3, title:'How We Use Your Information',
+      body:`<p>We use the information we collect for the following lawful purposes:</p>
+      <ul>
+        <li>To provide, operate, and maintain our Services</li>
+        <li>To process transactions and send related information including purchase confirmations and invoices</li>
+        <li>To send administrative information, updates, and security alerts</li>
+        <li>To respond to comments, questions, and requests and provide customer support</li>
+        <li>To send marketing and promotional communications where you have opted in</li>
+        <li>To monitor and analyze trends, usage, and activities to improve our Services</li>
+        <li>To detect, investigate, and prevent fraudulent transactions and other illegal activities</li>
+        <li>To comply with legal obligations and enforce our terms</li>
+      </ul>
+      ${d.compliance.gdpr ? '<p>Under GDPR, our lawful bases for processing include performance of a contract, compliance with legal obligations, legitimate interests, and/or your explicit consent.</p>' : ''}`
+    },
+    { num:4, title:'Sharing and Disclosure of Information',
+      body:`<p>${d.companyName} does not sell your personal data to third parties${!d.dataPractices.selling ? ' for monetary consideration' : ''}. We may share your information with the following categories of third parties:</p>
+      ${partyList.length ? `<ul>${partyList.map(p => `<li>${capitalize(p)}</li>`).join('')}</ul>` : '<p>We work with carefully selected service providers who assist us in operating our business.</p>'}
+      <p>All third-party service providers are contractually bound to use your data only as necessary to provide their services.</p>
+      ${d.dataPractices.crossBorder ? `<p><strong>International Transfers:</strong> Your information may be transferred outside your jurisdiction. ${d.compliance.gdpr ? 'Where we transfer data outside the EEA, we ensure appropriate safeguards are in place, including Standard Contractual Clauses approved by the European Commission.' : ''}</p>` : ''}`
+    },
+    { num:5, title:'Cookies and Tracking Technologies',
+      body:`<p>${d.companyName} uses cookies and similar tracking technologies to track activity on our Services. We use the following types of cookies:</p>
+      <ul>
+        <li><strong>Essential Cookies:</strong> Necessary for the website to function properly.</li>
+        <li><strong>Analytics Cookies:</strong> Help us understand how visitors interact with our website.${d.thirdParties.includes('analytics') ? ' We use Google Analytics for this purpose.' : ''}</li>
+        <li><strong>Preference Cookies:</strong> Allow our website to remember choices you make.</li>
+        ${d.thirdParties.includes('ads') ? '<li><strong>Marketing Cookies:</strong> Used to track visitors and display relevant advertisements.</li>' : ''}
+      </ul>
+      <p>You can instruct your browser to refuse all cookies or indicate when a cookie is being sent. However, certain features may not function properly without cookies.</p>`
+    },
+    { num:6, title:'Data Security',
+      body:`<p>We implement appropriate technical and organizational security measures to protect your personal information. These measures include:</p>
+      <ul>
+        ${d.dataPractices.encryption ? '<li>Encryption of data in transit using TLS/SSL protocols and encryption at rest using AES-256</li>' : ''}
+        <li>Access controls limiting data access to authorized personnel only</li>
+        <li>Regular security assessments and vulnerability testing</li>
+        <li>Employee training on data protection and security practices</li>
+      </ul>
+      <p>In the event of a data breach that affects your rights and freedoms, we will notify you and applicable regulatory authorities within the timeframes required by law${d.compliance.gdpr ? ' (72 hours under GDPR)' : ''}.</p>`
+    },
+    { num:7, title:'Data Retention',
+      body:`<p>${d.dataPractices.retention ? 'We retain personal information for as long as necessary to fulfill the purposes outlined in this Privacy Policy. Criteria we use to determine retention periods include:' : 'We retain your personal data for the duration of our business relationship and as required by applicable law.'}</p>
+      ${d.dataPractices.retention ? `<ul>
+        <li>The duration of our ongoing relationship with you</li>
+        <li>Whether there is a legal obligation to retain the data</li>
+        <li>Account data: retained for the life of the account plus 90 days after closure</li>
+        <li>Transaction records: retained for 7 years for tax and legal compliance</li>
+        <li>Log data: retained for 12 months from collection</li>
+      </ul>` : ''}`
+    },
+    { num:8, title:'Your Rights and Choices',
+      body:`<p>Depending on your location and applicable laws, you may have the following rights regarding your personal information:</p>
+      ${rights.length ? `<ul>${rights.map(r => `<li><strong>${r.name}:</strong> ${r.desc}</li>`).join('')}</ul>` : '<p>You may contact us to exercise any available rights regarding your personal data.</p>'}
+      ${d.compliance.gdpr ? `<p><strong>EU/EEA Residents:</strong> If you are located in the European Economic Area, you have specific rights under GDPR and the right to lodge a complaint with your local data protection authority.</p>` : ''}
+      ${d.compliance.ccpa ? `<p><strong>California Residents:</strong> Under CCPA, California residents have the right to know about personal information we collect, the right to delete personal information, and the right to non-discrimination for exercising CCPA rights.</p>` : ''}
+      <p>To exercise any of your rights, please contact us at <strong>${d.contactEmail}</strong>. We will respond within 30 days as required by applicable law.</p>`
+    },
+    { num:9, title:"Children's Privacy",
+      body:`<p>Our Services are not directed to individuals under the age of 16${d.compliance.coppa ? ' (or 13 under COPPA)' : ''}. We do not knowingly collect personal information from children under these ages. If you are a parent or guardian and believe your child has provided us with personal information, please contact us at ${d.contactEmail} immediately.</p>`
+    },
+    { num:10, title:'Links to Third-Party Websites',
+      body:`<p>Our Services may contain links to third-party websites. We do not control these third-party websites and are not responsible for their privacy statements. We encourage you to read the privacy policy of every website you visit. This Privacy Policy applies only to information collected by ${d.companyName}.</p>`
+    },
+    { num:11, title:'Changes to This Privacy Policy',
+      body:`<p>We may update this Privacy Policy from time to time. When we make material changes, we will notify you by posting the updated policy with a new "Last Updated" date and by sending an email notification to your registered email address. Your continued use of our Services after the effective date constitutes your acceptance of the revised policy.</p>`
+    },
+    { num:12, title:'Contact Us',
+      body:`<p>If you have questions, concerns, or requests regarding this Privacy Policy, please contact our Privacy Team:</p>
+      <ul>
+        <li><strong>Company:</strong> ${d.companyName}</li>
+        <li><strong>Email:</strong> ${d.contactEmail}</li>
+        <li><strong>Website:</strong> ${d.websiteUrl}</li>
+        ${d.address ? `<li><strong>Address:</strong> ${d.address}</li>` : ''}
+        <li><strong>Governing Law:</strong> ${jurisdiction}</li>
+      </ul>
+      ${d.compliance.gdpr ? `<p>If you are located in the EU/EEA and believe your data protection rights have been violated, you also have the right to lodge a complaint with your local data protection supervisory authority.</p>` : ''}`
+    }
+  ];
+  return { sections, date, docType: 'Privacy Policy' };
+}
+
+function generateTermsOfService(d) {
+  const date = new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+  const jurisdiction = JURISDICTION_NAMES[d.jurisdiction] || d.jurisdiction;
+  const sections = [
+    { num:1, title:'Agreement to Terms',
+      body:`<p>By accessing or using the services provided by ${d.companyName} ("Company," "we," "us," or "our") at ${d.websiteUrl}, you agree to be bound by these Terms of Service ("Terms"). If you disagree with any part of these terms, you do not have permission to access our Services.</p>
+      <p>These Terms constitute a legally binding agreement. You represent that you are at least 18 years of age and have the legal authority to enter into this agreement.</p>`
+    },
+    { num:2, title:'Description of Services',
+      body:`<p>${d.companyName} provides ${d.productDesc || 'software services and related tools'} (collectively, the "Services"). The Services are subject to change without notice, and we reserve the right to modify or discontinue the Services at any time.</p>
+      <p>Access to certain features may require registration. You are responsible for maintaining the confidentiality of your account credentials.</p>`
+    },
+    { num:3, title:'User Responsibilities and Acceptable Use',
+      body:`<p>You agree to use our Services only for lawful purposes. You agree NOT to:</p>
+      <ul>
+        <li>Use the Services in any way that violates applicable law or regulation</li>
+        <li>Transmit unsolicited or unauthorized advertising or promotional material</li>
+        <li>Impersonate the Company, an employee, or another user</li>
+        <li>Attempt to gain unauthorized access to any systems or networks</li>
+        <li>Use automated tools to access the Services without permission</li>
+        <li>Reverse engineer, decompile, or disassemble any portion of the Services</li>
+        <li>Upload or transmit viruses, malware, or other malicious code</li>
+      </ul>`
+    },
+    { num:4, title:'Intellectual Property Rights',
+      body:`<p>The Services and all contents are owned by ${d.companyName} and protected by copyright, trademark, patent, and trade secret laws. We grant you a limited, non-exclusive, non-transferable, revocable license to use the Services for your personal, non-commercial use. You may not copy, modify, distribute, sell, or lease any part of our Services.</p>`
+    },
+    { num:5, title:'Payment Terms',
+      body:`<p>Certain aspects of our Services require payment of fees. All fees are non-refundable except as provided in our Refund Policy. For subscription services, your subscription will automatically renew unless you cancel prior to the renewal date.</p>`
+    },
+    { num:6, title:'Disclaimer of Warranties',
+      body:`<p>THE SERVICES ARE PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTIES OF ANY KIND. TO THE FULLEST EXTENT PERMITTED BY LAW, ${d.companyName.toUpperCase()} DISCLAIMS ALL WARRANTIES, INCLUDING WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.</p>`
+    },
+    { num:7, title:'Limitation of Liability',
+      body:`<p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, ${d.companyName.toUpperCase()} SHALL NOT BE LIABLE FOR INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES. Our total liability shall not exceed the amount you paid us in the twelve months preceding the claim.</p>`
+    },
+    { num:8, title:'Governing Law and Dispute Resolution',
+      body:`<p>These Terms shall be governed by the laws of ${jurisdiction}. Any disputes shall be resolved through binding arbitration, except that either party may seek injunctive relief in a court of competent jurisdiction. You waive any right to a jury trial or class action participation.</p>`
+    },
+    { num:9, title:'Termination',
+      body:`<p>We may terminate or suspend your access immediately, without prior notice or liability, if you breach these Terms. Upon termination, your right to use the Services will immediately cease. All provisions which by their nature should survive termination shall survive.</p>`
+    },
+    { num:10, title:'Changes to Terms',
+      body:`<p>We reserve the right to modify these Terms at any time. When we make material changes, we will provide notice through our Services or by email. Your continued use after such notice constitutes acceptance of the new Terms.</p>`
+    },
+    { num:11, title:'Contact Information',
+      body:`<p>If you have any questions about these Terms, please contact us:</p>
+      <ul>
+        <li><strong>Company:</strong> ${d.companyName}</li>
+        <li><strong>Email:</strong> ${d.contactEmail}</li>
+        <li><strong>Website:</strong> ${d.websiteUrl}</li>
+        ${d.address ? `<li><strong>Address:</strong> ${d.address}</li>` : ''}
+      </ul>`
+    }
+  ];
+  return { sections, date, docType: 'Terms of Service' };
+}
+
+function generateCookiePolicy(d) {
+  const date = new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+  const sections = [
+    { num:1, title:'What Are Cookies',
+      body:`<p>Cookies are small text files placed on your device when you visit a website. ${d.companyName} uses cookies and similar tracking technologies on ${d.websiteUrl} to enhance your experience. This Cookie Policy explains how and why we use these technologies.</p>`
+    },
+    { num:2, title:'Types of Cookies We Use',
+      body:`<p>We use the following categories of cookies:</p>
+      <ul>
+        <li><strong>Strictly Necessary Cookies:</strong> Required for the operation of our website and cannot be switched off.</li>
+        <li><strong>Performance / Analytics Cookies:</strong> Allow us to count visits and traffic sources to measure and improve website performance.${d.thirdParties.includes('analytics') ? ' We use Google Analytics for this purpose.' : ''}</li>
+        <li><strong>Functional Cookies:</strong> Enable enhanced functionality and personalization.</li>
+        ${d.thirdParties.includes('ads') ? '<li><strong>Targeting / Advertising Cookies:</strong> Used to build a profile of your interests and show relevant advertisements.</li>' : ''}
+        <li><strong>Social Media Cookies:</strong> Set by social media services to enable content sharing.</li>
+      </ul>`
+    },
+    { num:3, title:'How We Use Cookies',
+      body:`<p>We use cookies to:</p>
+      <ul>
+        <li>Keep you signed in and remember your preferences</li>
+        <li>Understand how you use our website and improve its performance</li>
+        <li>Analyze traffic patterns and usage statistics</li>
+        <li>Provide personalized content and recommendations</li>
+        <li>Measure the effectiveness of marketing campaigns</li>
+        <li>Detect and prevent security threats and fraudulent activity</li>
+      </ul>`
+    },
+    { num:4, title:'Third-Party Cookies',
+      body:`<p>We may also use third-party cookies to report usage statistics and deliver advertisements:</p>
+      <ul>
+        ${d.thirdParties.includes('analytics') ? '<li><strong>Google Analytics</strong> — Analytical cookies to track website performance.</li>' : ''}
+        ${d.thirdParties.includes('ads') ? '<li><strong>Advertising Partners</strong> — Targeting cookies for personalized advertisements.</li>' : ''}
+        ${d.thirdParties.includes('social') ? '<li><strong>Social Media Platforms</strong> — Cookies enabling social sharing features.</li>' : ''}
+      </ul>
+      <p>We do not control third-party cookies and are not responsible for their practices.</p>`
+    },
+    { num:5, title:'Managing Cookies',
+      body:`<p>You have several options for managing cookies:</p>
+      <ul>
+        <li><strong>Browser Settings:</strong> Most browsers allow you to refuse or delete cookies.</li>
+        <li><strong>Cookie Preference Center:</strong> Use our cookie banner to manage consent for non-essential cookies.</li>
+        <li><strong>Opt-Out Tools:</strong> For analytics, you may use the Google Analytics Opt-Out Browser Add-on.</li>
+      </ul>
+      <p>Blocking all cookies may impact your ability to use our Services, as some features depend on cookies to function.</p>`
+    },
+    { num:6, title:'Cookie Retention Periods',
+      body:`<p>Session cookies expire when you close your browser. Persistent cookies remain on your device for a set period (typically 1-24 months) or until you delete them. You can view specific retention periods through our Cookie Preference Center.</p>`
+    },
+    { num:7, title:'Updates to This Cookie Policy',
+      body:`<p>We may update this Cookie Policy periodically. The date at the top indicates when it was last revised. For questions about our use of cookies, contact us at <strong>${d.contactEmail}</strong>.</p>`
+    }
+  ];
+  return { sections, date, docType: 'Cookie Policy' };
+}
+
+function generateDisclaimer(d) {
+  const date = new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+  const sections = [
+    { num:1, title:'Website Disclaimer',
+      body:`<p>The information contained on ${d.websiteUrl} is for general information purposes only. ${d.companyName} assumes no responsibility for errors or omissions in the contents of the Services.</p>
+      <p>In no event shall ${d.companyName} be liable for any special, direct, indirect, consequential, or incidental damages arising out of or in connection with the use of the Service or its contents.</p>`
+    },
+    { num:2, title:'No Professional Advice',
+      body:`<p>The Service is not intended to provide legal, financial, medical, or other professional advice. Information provided is for general informational purposes only. Always seek the advice of a qualified professional regarding any questions you may have. Never disregard professional advice because of something you have read on our website.</p>`
+    },
+    { num:3, title:'Accuracy of Information',
+      body:`<p>While we strive to keep information up to date and correct, we make no representations or warranties of any kind about the completeness, accuracy, reliability, suitability, or availability of the information contained on the website. Any reliance you place on such information is strictly at your own risk.</p>`
+    },
+    { num:4, title:'External Links Disclaimer',
+      body:`<p>Our Services may contain links to external websites. We have no control over the nature, content, and availability of those sites. The inclusion of any links does not necessarily imply a recommendation or endorsement. ${d.companyName} is not responsible for the content of linked websites.</p>`
+    },
+    { num:5, title:'Fair Use Disclaimer',
+      body:`<p>This website may contain copyrighted material used for educational and informational purposes. We believe this constitutes fair use of any copyrighted material. If you wish to use copyrighted material from this site, you must obtain permission from the copyright owner.</p>`
+    },
+    { num:6, title:'Contact Information',
+      body:`<p>If you have any questions about this disclaimer, please contact us at <strong>${d.contactEmail}</strong> or visit ${d.websiteUrl}.${d.address ? ' Address: ' + d.address : ''}</p>`
+    }
+  ];
+  return { sections, date, docType: 'Disclaimer' };
+}
+
+function generateRefundPolicy(d) {
+  const date = new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+  const sections = [
+    { num:1, title:'Overview',
+      body:`<p>At ${d.companyName}, we want to ensure you are completely satisfied with our Services. This Refund Policy outlines when and how you may request a refund for purchases made on ${d.websiteUrl}. By purchasing our Services, you agree to this policy.</p>`
+    },
+    { num:2, title:'Eligibility for Refunds',
+      body:`<p>You may be eligible for a refund under the following circumstances:</p>
+      <ul>
+        <li>The Service is significantly different from what was described at the time of purchase</li>
+        <li>Technical issues prevent you from accessing the Service and we cannot resolve them within a reasonable timeframe</li>
+        <li>Duplicate charges were made for the same purchase</li>
+        <li>A refund request is submitted within 30 days of the original purchase date</li>
+      </ul>`
+    },
+    { num:3, title:'Non-Refundable Items',
+      body:`<p>The following are generally not eligible for refunds:</p>
+      <ul>
+        <li>Services that have been substantially used or consumed</li>
+        <li>Digital downloads once accessed or downloaded</li>
+        <li>Monthly subscription fees for periods already used</li>
+        <li>Customized or personalized services</li>
+        <li>Purchases made more than 30 days prior to the refund request</li>
+        <li>Promotional or discounted purchases unless otherwise stated</li>
+      </ul>`
+    },
+    { num:4, title:'How to Request a Refund',
+      body:`<p>To request a refund:</p>
+      <ul>
+        <li>Email us at <strong>${d.contactEmail}</strong> with the subject line "Refund Request"</li>
+        <li>Include your order number, purchase date, and reason for the refund request</li>
+        <li>Attach any supporting documentation</li>
+        <li>We will acknowledge your request within 2 business days</li>
+      </ul>
+      <p>Once approved, refunds will be processed within 5-10 business days and credited to your original payment method.</p>`
+    },
+    { num:5, title:'Subscription Cancellations',
+      body:`<p>You may cancel your subscription at any time. Upon cancellation, your access continues until the end of the current billing period, and you will not be charged for the next cycle. Partial-month refunds are not provided for monthly subscriptions. Annual subscription refunds are prorated based on unused months, subject to a processing fee.</p>`
+    },
+    { num:6, title:'Chargebacks',
+      body:`<p>If you initiate a chargeback without first contacting us, we reserve the right to suspend your account and contest the chargeback. We encourage you to contact us directly to resolve billing concerns. Fraudulent chargebacks may result in permanent account termination.</p>`
+    },
+    { num:7, title:'Contact Us',
+      body:`<p>For refund requests or questions:</p>
+      <ul>
+        <li><strong>Email:</strong> ${d.contactEmail}</li>
+        <li><strong>Website:</strong> ${d.websiteUrl}</li>
+        ${d.address ? `<li><strong>Address:</strong> ${d.address}</li>` : ''}
+      </ul>`
+    }
+  ];
+  return { sections, date, docType: 'Refund Policy' };
+}
+
+function generateEULA(d) {
+  const date = new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+  const jurisdiction = JURISDICTION_NAMES[d.jurisdiction] || d.jurisdiction;
+  const sections = [
+    { num:1, title:'License Grant',
+      body:`<p>Subject to the terms of this End User License Agreement ("EULA"), ${d.companyName} grants you a limited, non-exclusive, non-transferable, revocable license to install and use the software application ("Software") solely for your personal, non-commercial purposes. The Software is licensed, not sold.</p>`
+    },
+    { num:2, title:'Restrictions',
+      body:`<p>You may not:</p>
+      <ul>
+        <li>Copy, modify, or distribute the Software</li>
+        <li>Reverse engineer, decompile, or disassemble the Software</li>
+        <li>Rent, lease, lend, sell, or sublicense the Software</li>
+        <li>Create derivative works based on the Software</li>
+        <li>Use the Software for any unlawful purpose</li>
+        <li>Remove or alter any proprietary notices or marks</li>
+        <li>Use the Software to build a competing product or service</li>
+      </ul>`
+    },
+    { num:3, title:'Intellectual Property',
+      body:`<p>The Software and all copies are proprietary to ${d.companyName}. All rights to patents, copyrights, trademarks, and trade secrets in the Software remain with ${d.companyName}. Your use of the Software does not grant you any intellectual property rights.</p>`
+    },
+    { num:4, title:'Updates and Upgrades',
+      body:`<p>${d.companyName} may provide updates, patches, or upgrades to the Software. Continued use after an update constitutes acceptance of any new terms. We reserve the right to discontinue the Software or any features at any time.</p>`
+    },
+    { num:5, title:'Data Collection',
+      body:`<p>The Software may collect certain data about your device and usage patterns to improve the Software and provide better services. Please review our Privacy Policy at ${d.websiteUrl} for information about how we collect, use, and share your data.${d.dataPractices.encryption ? ' All data transmitted by the Software is encrypted using industry-standard protocols.' : ''}</p>`
+    },
+    { num:6, title:'Term and Termination',
+      body:`<p>This EULA is effective until terminated. Your rights will terminate automatically without notice if you fail to comply with any terms. Upon termination, you must cease all use of the Software and destroy all copies in your possession. ${d.companyName} may also terminate this EULA with 30 days written notice.</p>`
+    },
+    { num:7, title:'Disclaimer and Limitation of Liability',
+      body:`<p>THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. TO THE MAXIMUM EXTENT PERMITTED BY LAW, ${d.companyName.toUpperCase()} DISCLAIMS ALL WARRANTIES INCLUDING WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.</p>
+      <p>IN NO EVENT SHALL ${d.companyName.toUpperCase()} BE LIABLE FOR INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING FROM YOUR USE OR INABILITY TO USE THE SOFTWARE.</p>`
+    },
+    { num:8, title:'Governing Law',
+      body:`<p>This EULA is governed by the laws of ${jurisdiction}. Any dispute arising under this EULA is subject to the exclusive jurisdiction of the courts in ${jurisdiction}. If any provision is held unenforceable, it shall be modified to the minimum extent necessary, and remaining provisions remain in full force.</p>`
+    },
+    { num:9, title:'Contact Information',
+      body:`<p>Questions about this EULA? Contact:</p>
+      <ul>
+        <li><strong>${d.companyName}</strong></li>
+        <li><strong>Email:</strong> ${d.contactEmail}</li>
+        <li><strong>Website:</strong> ${d.websiteUrl}</li>
+        ${d.address ? `<li><strong>Address:</strong> ${d.address}</li>` : ''}
+      </ul>`
+    }
+  ];
+  return { sections, date, docType: 'End User License Agreement (EULA)' };
+}
+
+/* ===== GENERATE DOC ===== */
+function generateDoc() {
+  const d = getFormData();
+  if (!d.companyName || d.companyName === 'Your Company') {
+    showToast('Please enter your company name', 'error'); return;
+  }
+
+  document.getElementById('docPlaceholder').classList.add('hidden');
+  document.getElementById('docGenerating').classList.remove('hidden');
+  document.getElementById('docOutputWrap').classList.add('hidden');
+
+  const steps = [
+    'Analyzing company details...',
+    'Applying regulatory requirements...',
+    'Generating document sections...',
+    'Running compliance checks...',
+    'Finalizing document...'
+  ];
+  const genSteps = document.getElementById('genSteps');
+  genSteps.innerHTML = steps.map((s,i) => `<div class="gen-step" id="gstep${i}"><div class="step-dot"></div>${s}</div>`).join('');
+
+  let step = 0;
+  const interval = setInterval(() => {
+    if (step > 0) document.getElementById('gstep'+(step-1)).className = 'gen-step done';
+    if (step < steps.length) {
+      document.getElementById('gstep'+step).className = 'gen-step active';
+      step++;
+    } else {
+      clearInterval(interval);
+      setTimeout(() => renderDocument(d), 400);
+    }
+  }, 340);
+}
+
+function renderDocument(d) {
+  let docData;
+  switch(d.docType) {
+    case 'privacy': docData = generatePrivacyPolicy(d); break;
+    case 'terms': docData = generateTermsOfService(d); break;
+    case 'cookie': docData = generateCookiePolicy(d); break;
+    case 'disclaimer': docData = generateDisclaimer(d); break;
+    case 'refund': docData = generateRefundPolicy(d); break;
+    case 'eula': docData = generateEULA(d); break;
+    default: docData = generatePrivacyPolicy(d);
+  }
+
+  let html = `<h1>${docData.docType}</h1>
+  <div class="doc-meta">
+    <strong>${d.companyName}</strong> &bull; ${d.websiteUrl} &bull; Last Updated: ${docData.date}
+  </div>`;
+
+  docData.sections.forEach(s => {
+    html += `<div class="doc-section"><h2>${s.num}. ${s.title}</h2>${s.body}</div>`;
+  });
+
+  document.getElementById('docContent').innerHTML = html;
+  document.getElementById('docTitleBar').innerHTML = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 2h6l2 2v8H3V2z" stroke="currentColor" stroke-width="1.3" fill="none"/></svg> ${docData.docType} — ${d.companyName}`;
+
+  const text = document.getElementById('docContent').innerText;
+  const words = text.split(/\s+/).filter(Boolean).length;
+  document.getElementById('docStats').innerHTML = `
+    <div class="doc-stat"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 3h8M2 6h8M2 9h5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg><strong>${words.toLocaleString()}</strong> words</div>
+    <div class="doc-stat"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 4h6M3 6h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg><strong>${docData.sections.length}</strong> sections</div>
+    <div class="doc-stat"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M6 3.5v2.5l1.5 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg><strong>${docData.date}</strong></div>
+  `;
+
+  const badges = [];
+  if (d.compliance.gdpr) badges.push('<div class="comp-tag gdpr active" style="font-size:10px;padding:2px 8px;">GDPR</div>');
+  if (d.compliance.ccpa) badges.push('<div class="comp-tag ccpa active" style="font-size:10px;padding:2px 8px;">CCPA</div>');
+  if (d.compliance.coppa) badges.push('<div class="comp-tag coppa active" style="font-size:10px;padding:2px 8px;">COPPA</div>');
+  if (d.compliance.pipeda) badges.push('<div class="comp-tag pipeda active" style="font-size:10px;padding:2px 8px;">PIPEDA</div>');
+  document.getElementById('complianceBadges').innerHTML = badges.join('');
+
+  generatedDocText = buildPlainText(d.companyName, docData);
+
+  document.getElementById('docGenerating').classList.add('hidden');
+  document.getElementById('docOutputWrap').classList.remove('hidden');
+  document.getElementById('docOutputWrap').classList.add('fade-in');
+
+  buildScore(d);
+  buildExplain(d, docData);
+
+  showToast(docData.docType + ' generated successfully!', 'success');
+}
+
+/* ===== PLAIN TEXT ===== */
+function buildPlainText(company, docData) {
+  let txt = `${docData.docType}\n${'='.repeat(docData.docType.length)}\n${company}\nLast Updated: ${docData.date}\n\n`;
+  docData.sections.forEach(s => {
+    txt += `${s.num}. ${s.title}\n${'-'.repeat(s.title.length + 3)}\n`;
+    const div = document.createElement('div');
+    div.innerHTML = s.body;
+    txt += div.innerText.trim() + '\n\n';
+  });
+  return txt;
+}
+
+/* ===== COMPLIANCE SCORE ===== */
+function buildScore(d) {
+  const checks = [
+    { name:'Contact Information Provided', detail:'Valid email and website URL present', pass:!!(d.contactEmail && d.websiteUrl), pts:10 },
+    { name:'GDPR Compliance', detail:'General Data Protection Regulation (EU)', pass:d.compliance.gdpr, pts:15 },
+    { name:'CCPA Compliance', detail:'California Consumer Privacy Act (US)', pass:d.compliance.ccpa, pts:12 },
+    { name:'Data Encryption Stated', detail:'Encryption policy disclosed to users', pass:d.dataPractices.encryption, pts:10 },
+    { name:'Data Retention Policy', detail:'Retention periods specified', pass:d.dataPractices.retention, pts:8 },
+    { name:'Right to Access', detail:'Users can request their data', pass:d.userRights.access, pts:8 },
+    { name:'Right to Deletion', detail:'"Right to be forgotten" included', pass:d.userRights.deletion, pts:8 },
+    { name:'Right to Opt-Out', detail:'Marketing and data sale opt-out', pass:d.userRights.optout, pts:7 },
+    { name:'Third-Party Disclosure', detail:'Third-party services listed', pass:d.thirdParties.length > 0, pts:8 },
+    { name:'Data Types Disclosed', detail:'Categories of collected data listed', pass:d.dataTypes.length > 1, pts:7 },
+    { name:'Cookie Policy Addressed', detail:'Cookie usage explained', pass:d.thirdParties.includes('analytics') || d.docType === 'cookie', pts:7 },
+  ];
+
+  const total = checks.reduce((s,c) => s+c.pts, 0);
+  const earned = checks.filter(c=>c.pass).reduce((s,c) => s+c.pts, 0);
+  const pct = Math.round((earned/total)*100);
+
+  let grade, gradeColor, gradeDesc;
+  if (pct >= 85) { grade='A'; gradeColor='#4ADE80'; gradeDesc='Excellent compliance coverage.'; }
+  else if (pct >= 70) { grade='B'; gradeColor='#A3E635'; gradeDesc='Good coverage with minor gaps.'; }
+  else if (pct >= 55) { grade='C'; gradeColor='#FACC15'; gradeDesc='Acceptable but needs improvement.'; }
+  else { grade='D'; gradeColor='#F87171'; gradeDesc='Significant compliance gaps found.'; }
+
+  const r = 36;
+  const circumference = 2 * Math.PI * r;
+  const offset = circumference - (pct/100)*circumference;
+
+  let html = `<div class="score-overview">
+    <div class="score-circle">
+      <svg viewBox="0 0 90 90">
+        <circle class="score-circle-bg" cx="45" cy="45" r="${r}"/>
+        <circle class="score-circle-fill" cx="45" cy="45" r="${r}" stroke="${gradeColor}" stroke-dasharray="${circumference.toFixed(2)}" stroke-dashoffset="${offset.toFixed(2)}" style="transform-origin:center;transform:rotate(-90deg);"/>
+      </svg>
+      <div class="score-center"><span class="score-num">${pct}</span><span class="score-pct">/ 100</span></div>
+    </div>
+    <div class="score-info">
+      <div class="score-grade" style="color:${gradeColor}">Grade ${grade}</div>
+      <div class="score-label">Compliance Score</div>
+      <div class="score-desc">${gradeDesc} ${earned}/${total} points across ${checks.filter(c=>c.pass).length}/${checks.length} checks passed.</div>
+    </div>
+  </div>
+  <div class="score-items">`;
+
+  checks.forEach(c => {
+    const status = c.pass ? 'pass' : 'fail';
+    const icon = c.pass
+      ? '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#4ADE80" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#4ADE80" stroke-width="1.5" stroke-linecap="round"/></svg>'
+      : '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#F87171" stroke-width="1.5"/><path d="M6 6l4 4M10 6l-4 4" stroke="#F87171" stroke-width="1.5" stroke-linecap="round"/></svg>';
+    html += `<div class="score-item ${status}">
+      <div class="score-item-icon">${icon}</div>
+      <div class="score-item-text">
+        <div class="score-item-name">${c.name}</div>
+        <div class="score-item-detail">${c.detail}</div>
+      </div>
+      <div class="score-pts">${c.pass ? '+' + c.pts : '0'}/${c.pts}</div>
+    </div>`;
+  });
+
+  html += '</div>';
+
+  const sc = document.getElementById('scoreContent');
+  sc.innerHTML = html;
+  sc.classList.remove('hidden');
+  document.getElementById('scorePlaceholder').classList.add('hidden');
+}
+
+/* ===== PLAIN ENGLISH EXPLANATIONS ===== */
+function buildExplain(d, docData) {
+  const explanations = {
+    'Introduction and Scope': {
+      plain: 'This section tells users who you are, what the document covers, and that by using your service they agree to these terms.',
+      tip: 'Keep this section concise. Clearly identify your company and briefly describe your service so users immediately know this policy applies to them.'
+    },
+    'Information We Collect': {
+      plain: 'This section lists all the types of personal information you gather from users, such as their name, email, and browsing behavior.',
+      tip: 'Be comprehensive here. Regulators require you to disclose ALL data you collect. Missing categories can result in non-compliance fines.'
+    },
+    'How We Use Your Information': {
+      plain: 'This explains why you collect data and what you do with it — for example, to send emails, improve your product, or prevent fraud.',
+      tip: 'GDPR requires a "lawful basis" for each use. Common bases are legitimate interest, contract performance, and user consent.'
+    },
+    'Sharing and Disclosure of Information': {
+      plain: 'This tells users who else can see their data — like analytics services, payment processors, or advertising partners.',
+      tip: 'Under CCPA, if you share data with advertising partners, this counts as a "sale" and you must provide an opt-out mechanism.'
+    },
+    'Cookies and Tracking Technologies': {
+      plain: 'This covers the small tracking files placed on users\' devices and how they are used to remember preferences or analyze site traffic.',
+      tip: 'Under GDPR and ePrivacy rules, you need explicit consent for non-essential cookies (analytics, advertising). A cookie banner is required.'
+    },
+    'Data Security': {
+      plain: 'This explains what technical measures you take to keep user data safe from hackers or accidental leaks.',
+      tip: 'Always mention encryption, access controls, and your breach notification process. This builds trust and satisfies regulatory requirements.'
+    },
+    'Data Retention': {
+      plain: 'This tells users how long you keep their data and when you delete it.',
+      tip: 'GDPR requires you to not keep data longer than necessary. Specific retention periods (e.g., "7 years for financial records") add credibility.'
+    },
+    'Your Rights and Choices': {
+      plain: 'This lists the legal rights users have over their personal data — like requesting a copy, asking for deletion, or opting out.',
+      tip: 'This is one of the most critical sections. GDPR and CCPA both require clear rights disclosures with contact information for exercising them.'
+    },
+    "Children's Privacy": {
+      plain: 'This clarifies that your service is not intended for children and that you do not knowingly collect their data.',
+      tip: 'If your service might attract users under 13, you need COPPA compliance, including verifiable parental consent mechanisms.'
+    },
+    'Links to Third-Party Websites': {
+      plain: 'This disclaims responsibility for external websites your site might link to — their own privacy rules apply.',
+      tip: 'This section protects you legally if a user follows a link to an external site and their data is mishandled there.'
+    },
+    'Changes to This Privacy Policy': {
+      plain: 'This explains how and when you will notify users if this policy is updated.',
+      tip: 'GDPR requires you to notify users of material changes. Email notification is the gold standard, especially for significant policy updates.'
+    },
+    'Contact Us': {
+      plain: 'This gives users a way to reach you with privacy questions, data requests, or complaints.',
+      tip: 'Always provide both an email address and a physical address (or mailing address) to satisfy GDPR and CCPA requirements for a "Data Controller" identity.'
+    },
+    'Agreement to Terms': {
+      plain: 'This states that by using your service, users agree to be bound by your terms — forming a legal contract.',
+      tip: 'Make this easy to find. Courts may reject Terms if users had no reasonable opportunity to read them before agreeing.'
+    },
+    'License Grant': {
+      plain: 'This specifies the limited permission you give users to use your software — they can use it, but they do not own it.',
+      tip: 'Use "non-exclusive, non-transferable, revocable" language to retain full control over who can use your software and under what circumstances.'
+    },
+    'Disclaimer of Warranties': {
+      plain: 'This says your service is provided "as is" and you make no guarantees about it working perfectly.',
+      tip: 'This section reduces your liability for software bugs or downtime. It must be written in ALL CAPS in some jurisdictions to be legally effective.'
+    },
+    'Limitation of Liability': {
+      plain: 'This caps how much money you could owe if something goes wrong — usually limited to what the user paid you.',
+      tip: 'Caps are typically enforceable in B2C contracts, but courts may void them if they are unconscionable or violate consumer protection laws in certain states.'
+    }
+  };
+
+  let html = '';
+  docData.sections.forEach((s, i) => {
+    const exp = explanations[s.title] || {
+      plain: `This section covers ${s.title.toLowerCase()} and establishes the relevant rights and obligations for both parties.`,
+      tip: 'Review this section with a legal professional to ensure it meets requirements specific to your industry and jurisdiction.'
+    };
+
+    html += `<div class="explain-item">
+      <h4>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M4 5h6M4 7.5h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        ${s.num}. ${s.title}
+      </h4>
+      <p>${exp.plain}</p>
+      <div class="tip">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;margin-top:1px;"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.2"/><path d="M6 5.5v3M6 4v.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        <span><strong>Pro tip:</strong> ${exp.tip}</span>
+      </div>
+    </div>`;
+  });
+
+  const ec = document.getElementById('explainContent');
+  ec.innerHTML = html;
+  ec.classList.remove('hidden');
+  document.getElementById('explainPlaceholder').classList.add('hidden');
+}
+
+/* ===== COPY & EXPORT ===== */
+function copyDoc(btn) {
+  if (!generatedDocText) { showToast('Generate a document first', 'error'); return; }
+  navigator.clipboard.writeText(generatedDocText).then(() => {
+    btn.classList.add('copy-success');
+    btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M3 7.5l3 3 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+    showToast('Document copied to clipboard!', 'success');
+    setTimeout(() => {
+      btn.classList.remove('copy-success');
+      btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="4" y="4" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M2 11V2h9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>';
+    }, 2000);
+  }).catch(() => showToast('Copy failed. Please try again.', 'error'));
+}
+
+function exportTxt() {
+  if (!generatedDocText) { showToast('Generate a document first', 'error'); return; }
+  const blob = new Blob([generatedDocText], {type:'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const d = getFormData();
+  a.download = (d.companyName.replace(/\s+/g,'-') + '-' + DOC_TYPES[d.docType].replace(/\s+/g,'-') + '.txt').toLowerCase();
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Document exported as text file!', 'success');
+}
+
+/* ===== DEMO MODE ===== */
+function loadDemo() {
+  // Select Privacy Policy
+  document.querySelectorAll('.doc-type-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('[data-type="privacy"]').classList.add('active');
+  selectedDocType = 'privacy';
+
+  // Fill form
+  document.getElementById('companyName').value = 'TechStartup Inc.';
+  document.getElementById('websiteUrl').value = 'https://techstartup.io';
+  document.getElementById('contactEmail').value = 'privacy@techstartup.io';
+  document.getElementById('industry').value = 'saas';
+  document.getElementById('address').value = '100 Innovation Drive, San Francisco, CA 94105';
+  document.getElementById('jurisdiction').value = 'us';
+  document.getElementById('productDesc').value = 'A cloud-based project management and team collaboration platform for growing businesses.';
+
+  // Data types
+  const dataVals = ['name','email','usage','device','cookies','payment'];
+  document.querySelectorAll('#dataTypes .tag-option').forEach(t => {
+    t.classList.toggle('active', dataVals.includes(t.dataset.val));
+  });
+
+  // Third parties
+  const partyVals = ['analytics','payment_proc','cloud','email_svc','auth'];
+  document.querySelectorAll('#thirdParties .tag-option').forEach(t => {
+    t.classList.toggle('active', partyVals.includes(t.dataset.val));
+  });
+
+  // Data practices - set all to checked state
+  const practices = document.querySelectorAll('#dataPractices label');
+  [true, true, false, true].forEach((val, i) => {
+    const label = practices[i];
+    const cb = label.querySelector('input');
+    const box = label.querySelector('.custom-checkbox');
+    cb.checked = val;
+    if (val) {
+      label.classList.add('checked');
+      box.innerHTML = '<svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>';
+    } else {
+      label.classList.remove('checked');
+      box.innerHTML = '<svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>';
+    }
+  });
+
+  // Compliance
+  document.querySelector('[data-reg="gdpr"]').classList.add('active');
+  document.querySelector('[data-reg="ccpa"]').classList.add('active');
+  document.querySelector('[data-reg="coppa"]').classList.remove('active');
+  document.querySelector('[data-reg="pipeda"]').classList.remove('active');
+
+  // User rights
+  const rights = document.querySelectorAll('#userRights label');
+  [true, true, true, true, false].forEach((val, i) => {
+    const label = rights[i];
+    const cb = label.querySelector('input');
+    const box = label.querySelector('.custom-checkbox');
+    cb.checked = val;
+    if (val) {
+      label.classList.add('checked');
+      box.innerHTML = '<svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>';
+    } else {
+      label.classList.remove('checked');
+      box.innerHTML = '<svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>';
+    }
+  });
+
+  showToast('Demo loaded! Generating TechStartup Inc. policy...', 'info');
+  setTimeout(() => generateDoc(), 600);
+}
+</script>
+</body>
+</html>

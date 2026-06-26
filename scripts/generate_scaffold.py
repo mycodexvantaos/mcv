@@ -1360,7 +1360,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = {{text = "MIT"}}
 authors = [
-    {{name = "NinjaTeam AI", email = "ai-team@ninjatech.ai"}},
+    {{name = "MyCodeXvantaOS Team AI", email = "ai-team@mycodexvantaos.io"}},
 ]
 dependencies = [
 {chr(10).join(f'    "{d}",' for d in cfg['deps'])}
@@ -1422,7 +1422,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = {{text = "MIT"}}
 authors = [
-    {{name = "NinjaTeam AI", email = "ai-team@ninjatech.ai"}},
+    {{name = "MyCodeXvantaOS Team AI", email = "ai-team@mycodexvantaos.io"}},
 ]
 dependencies = [
     "pydantic>=2.9.0",

@@ -2,7 +2,7 @@
 """
 Track processes running on ports on the sandbox.
 Filters out processes that are managed by the sandbox itself. (e.g. TTY terminal, VSCode server, etc.)
-Generates a supervisor config file to track the processes in `SUPERVISORD_CONF_FILE` (default: /etc/supervisor/conf.d/_superninja_startup.conf).
+Generates a supervisor config file to track the processes in `SUPERVISORD_CONF_FILE` (default: /etc/supervisor/conf.d/_mcxos_startup.conf).
 
 Usage:
     python3 00_track_processes_on_ports.py
@@ -35,7 +35,7 @@ PROCESS_PORTS_TO_IGNORE = {
 
 # Supervisor config file
 # This is the file that will be used to track the processes
-SUPERVISORD_CONF_FILE = "/etc/supervisor/conf.d/_superninja_startup.conf"
+SUPERVISORD_CONF_FILE = "/etc/supervisor/conf.d/_mcxos_startup.conf"
 
 # Supervisor config template
 # This is the template that will be used to generate each process entry in the supervisor config file
