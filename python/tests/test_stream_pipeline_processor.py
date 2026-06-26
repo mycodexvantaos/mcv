@@ -247,9 +247,7 @@ class TestStreamProcessor:
         processor = StreamProcessor(config)
 
         with (
-            patch.object(
-                StreamProcessor, "start", new_callable=AsyncMock
-            ) as mock_start,
+            patch.object(StreamProcessor, "start", new_callable=AsyncMock) as mock_start,
             patch.object(StreamProcessor, "stop", new_callable=AsyncMock) as mock_stop,
         ):
             await processor.start()
