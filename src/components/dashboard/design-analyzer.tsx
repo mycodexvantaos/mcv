@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, Sparkles, ShieldCheck, AlertCircle, Info, Cpu } from 'lucide-react';
 import { designDocsContent } from '@/lib/design-docs';
-import { summarizeResearchData } from '@/ai/flows/ai-research-data-summarization';
+import { summarizeResearchData } from '@/ai/client-stubs';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { performNativeAnalysis, type NativeAnalysisResult } from '@/lib/architecture-engine';

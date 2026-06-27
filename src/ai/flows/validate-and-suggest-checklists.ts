@@ -1,4 +1,3 @@
-'use server';
 /**
  * @fileOverview A Genkit flow for validating architectural and CI/CD configurations against custom 'zero-failure' checklists and suggesting new policy items.
  *

@@ -15,7 +15,7 @@ import {
   FileText,
 } from 'lucide-react';
 import { researchData as defaultResearchData } from '@/lib/research-data';
-import { summarizeResearchData } from '@/ai/flows/ai-research-data-summarization';
+import { summarizeResearchData } from '@/ai/client-stubs';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import {

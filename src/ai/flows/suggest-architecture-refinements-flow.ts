@@ -1,4 +1,3 @@
-'use server';
 /**
  * @fileOverview This file implements a Genkit flow for generating AI-powered suggestions
  * for architectural improvements and resilience patterns, tailored to GitLab's capabilities.

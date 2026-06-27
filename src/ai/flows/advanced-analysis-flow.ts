@@ -1,4 +1,3 @@
-'use server';
 /**
  * @fileOverview Sentinel 高級分析與情報合成引擎。
  * 處理跨維度文件索引、OCR 提取、法律/學術分析及多源數據清洗。

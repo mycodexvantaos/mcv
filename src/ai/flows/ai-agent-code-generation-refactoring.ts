@@ -1,4 +1,3 @@
-'use server';
 /**
  * @fileOverview A Genkit flow for delegating specific coding tasks to specialized AI agents.
  *

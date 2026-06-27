@@ -1,4 +1,3 @@
-'use server';
 /**
  * @fileOverview An AI agent for analyzing system architectures and CI/CD pipelines for risks, vulnerabilities, and compliance issues.
  *

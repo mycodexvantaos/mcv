@@ -1,4 +1,3 @@
-'use server';
 /**
  * @fileOverview AI flow for Month 3: Global Pulse Sensing & Autonomous Task Generation.
  * Sensing global data streams, detecting anomalies, and self-generating tasks.

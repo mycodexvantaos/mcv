@@ -1,4 +1,3 @@
-'use server';
 /**
  * @fileOverview A Genkit flow for providing context-aware code completions.
  *
