@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-static';
+
 // MyCodeXvantaOS Admin Dashboard - Audit Trail API
 // Governance audit log with search and filtering
 

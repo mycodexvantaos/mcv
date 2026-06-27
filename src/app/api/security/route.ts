@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-static';
+
 // MyCodeXvantaOS Admin Dashboard - Security & Compliance API
 // Security score, compliance tracking, secret rotation, and vulnerability data
 

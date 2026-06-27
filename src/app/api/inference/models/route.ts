@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-static';
+
 // MyCodeXvantaOS Admin Dashboard - Inference Models API
 // Lists all registered LM models and their status
 

@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-static';
+
 // MyCodeXvantaOS Admin Dashboard - Scenario Matrix API
 // Application scenario matrix generation and management
 
