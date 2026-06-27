@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import {
   validateAndSuggestChecklists,
-  ValidateAndSuggestChecklistsOutput,
-} from '@/ai/flows/validate-and-suggest-checklists';
+  type ValidateAndSuggestChecklistsOutput,
+} from '@/ai/client-stubs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';

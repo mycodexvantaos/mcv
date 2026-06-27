@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import {
   analyzeArchitectureForRisks,
-  AnalyzeArchitectureForRisksOutput,
-} from '@/ai/flows/analyze-architecture-for-risks';
+  type AnalyzeArchitectureForRisksOutput,
+} from '@/ai/client-stubs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';

@@ -1,4 +1,3 @@
-'use server';
 /**
  * @fileOverview A Genkit flow for summarizing large volumes of research data, market trends, and editor ecosystem metrics.
  *

@@ -1,4 +1,3 @@
-'use server';
 /**
  * @fileOverview A Genkit flow that provides a conversational AI assistant for developers.
  *

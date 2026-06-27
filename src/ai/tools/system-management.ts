@@ -1,4 +1,3 @@
-'use server';
 /**
  * @fileOverview MyCodeXvantaOS Agentic Tools.
  * 提供 Agent 對全專案文件的監測、讀取與維護權限。

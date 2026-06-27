@@ -1,10 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  generateCiCdPipeline,
-  GenerateCiCdPipelineOutput,
-} from '@/ai/flows/generate-ci-cd-pipeline';
+import { generateCiCdPipeline, type GenerateCiCdPipelineOutput } from '@/ai/client-stubs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';

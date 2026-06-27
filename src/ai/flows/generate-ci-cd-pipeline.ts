@@ -1,4 +1,3 @@
-'use server';
 /**
  * @fileOverview A Genkit flow that generates GitLab CI/CD pipeline configurations
  * based on architectural descriptions and deployment strategies, ensuring best practices.

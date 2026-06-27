@@ -24,10 +24,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import {
-  delegateCodingTask,
-  type DelegateCodingTaskOutput,
-} from '@/ai/flows/ai-agent-code-generation-refactoring';
+import { delegateCodingTask, type DelegateCodingTaskOutput } from '@/ai/client-stubs';
 import { useToast } from '@/hooks/use-toast';
 import { useConnectivity } from '@/lib/connectivity-manager';
 import { NLUEngine, type NLUAnalysisResult } from '@/services/native/nlu-engine';

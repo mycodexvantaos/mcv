@@ -1,4 +1,3 @@
-'use server';
 /**
  * @fileOverview AI flow for Month 2: Zero-Shot Tool Forge with Self-Correction.
  * Generates executable code based on novel environments and performs self-audit.

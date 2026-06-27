@@ -1,4 +1,3 @@
-'use server';
 /**
  * @fileOverview Genkit flow for AI-powered content humanisation/rewriting.
  *

@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { scanForVulnerabilities } from '@/ai/flows/vulnerability-scanner-flow';
+import { scanForVulnerabilities } from '@/ai/client-stubs';
 import { packageJsonContent } from '@/lib/project-files';
 import { useConnectivity } from '@/lib/connectivity-manager';
 

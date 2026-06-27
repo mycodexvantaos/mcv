@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { forgeDynamicTool, ToolForgeOutput } from '@/ai/flows/zero-shot-tool-forge';
+import { forgeDynamicTool, type ToolForgeOutput } from '@/ai/client-stubs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
