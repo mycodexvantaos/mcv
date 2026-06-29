@@ -1,6 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
 kind: GovernanceCodes
 metadata:
-  name: mycodexvantaos-service-codes
+  name: service-codes
   version: 1.0.0
+spec:
+  codes: []
 platform: mycodexvantaos

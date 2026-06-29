@@ -1,8 +1,9 @@
 apiVersion: mycodexvantaos.io/v1
 kind: NamingSpec
 metadata:
-  name: mycodexvantaos-oci-name-spec
+  name: oci-name-spec
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
+spec: {}
 platform: mycodexvantaos

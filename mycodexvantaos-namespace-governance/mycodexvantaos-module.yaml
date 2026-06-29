@@ -2,5 +2,20 @@ apiVersion: mycodexvantaos.io/v1
 kind: RootModule
 metadata:
   name: mycodexvantaos-namespace-governance
+  urn: urn:mycodexvantaos:namespace-governance:module:mycodexvantaos-namespace-governance
+  domain: namespace-governance
+  layer: governance
   version: 1.0.0
+spec:
+  moduleType: namespace-governance
+  description: 'Namespace governance closure root for MyCodexVantaOS. Owns namespace
+    naming rules, governance codes, lifecycle registry, repository naming validation,
+    dependency binding policies, and governance closure proof.
+
+    '
+  runtimeCodeAllowed: false
+  deploymentAllowed: false
+  governance:
+    ssot: true
+    authority: namespace-governance-closure
 platform: mycodexvantaos

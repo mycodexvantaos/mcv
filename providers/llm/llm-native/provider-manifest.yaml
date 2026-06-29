@@ -1,15 +1,36 @@
-apiVersion: mycodexvantaos.io/v1
-kind: ProviderManifest
+apiVersion: mycodexvantaos.org/v1
+kind: Provider
 metadata:
-  name: mycodexvantaos-llm-native
+  name: llm-native
+  capability: llm
+  labels:
+    mycodexvantaos.org/managed-by: naming-spec-v1
+    mycodexvantaos.org/specRef: '8.1'
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
-
+spec:
+  providerName: native
+  isNative: true
+  lifecycle:
+    stage: stable
+  envVarPrefix: MYCODEXVANTAOS_LLM_NATIVE
+  configSchemaRef: ./config.schema.json
+  description: Native LLM provider with zero external dependencies. Provides basic
+    text processing and template-based responses as fallback.
+  capabilities:
+  - text-generation
+  - text-completion
+  - code-assistance
+  - summarization
+  limitations:
+  - No advanced reasoning without external model
+  - Template-based responses only
+  priority: 100
 provider-id: mycodexvantaos-llm-native
 capability: llm
 platform: mycodexvantaos
 runtime-modes:
-  - native
-  - connected
-  - hybrid
+- native
+- connected
+- hybrid

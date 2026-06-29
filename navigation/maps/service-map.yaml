@@ -1,6 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
 kind: NavigationMap
 metadata:
-  name: mycodexvantaos-service-map
+  name: service-map
+  description: service-map for MyCodexVantaOS
   version: 1.0.0
+spec: {}
 platform: mycodexvantaos

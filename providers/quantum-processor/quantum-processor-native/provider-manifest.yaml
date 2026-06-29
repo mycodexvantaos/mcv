@@ -1,15 +1,31 @@
 apiVersion: mycodexvantaos.io/v1
 kind: ProviderManifest
 metadata:
-  name: mycodexvantaos-quantum-processor-native
+  name: quantum-processor-native
+  urn: urn:mycodexvantaos:provider:quantum-processor-native
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
-
+spec:
+  id: quantum-processor-native
+  capability: quantum-processor
+  source: native
+  status: active
+  criticality: high
+  supportsModes:
+  - native
+  - connected
+  - hybrid
+  healthCheck:
+    enabled: true
+    endpoint: /health
+  observability:
+    metricsEnabled: true
+    tracingEnabled: true
 provider-id: mycodexvantaos-quantum-processor-native
 capability: quantum-processor
 platform: mycodexvantaos
 runtime-modes:
-  - native
-  - connected
-  - hybrid
+- native
+- connected
+- hybrid

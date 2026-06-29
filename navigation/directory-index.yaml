@@ -1,9 +1,142 @@
 apiVersion: mycodexvantaos.io/v1
-kind: NavigationArtifact
+kind: DirectoryIndex
 metadata:
-  name: mycodexvantaos-directory-index
+  name: directory-index
+  ssot: false
+  generated: false
+  description: Global directory index for MyCodexVantaOS root modules
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
+spec:
+  rootDirectoryCountClass: 242-plus
+  effectiveCanonicalMinimumCount: 245
+  directories:
+  - name: docs
+    path: ./docs
+    type: documentation
+    hasRootModule: false
+  - name: navigation
+    path: ./navigation
+    type: navigation-index
+    hasRootModule: true
+    rootModulePath: ./navigation/mycodexvantaos-module.yaml
+  - name: mycodexvantaos-namespace-governance
+    path: ./mycodexvantaos-namespace-governance
+    type: namespace-governance
+    hasRootModule: true
+    rootModulePath: ./mycodexvantaos-namespace-governance/mycodexvantaos-module.yaml
+  - name: unified-gates
+    path: ./unified-gates
+    type: unified-gates
+    hasRootModule: true
+    rootModulePath: ./unified-gates/mycodexvantaos-module.yaml
+  - name: foundation
+    path: ./foundation
+    type: foundation-spec
+    hasRootModule: true
+    rootModulePath: ./foundation/mycodexvantaos-module.yaml
+  - name: governance
+    path: ./governance
+    type: governance
+    hasRootModule: true
+    rootModulePath: ./governance/mycodexvantaos-module.yaml
+  - name: platform
+    path: ./platform
+    type: platform
+    hasRootModule: true
+    rootModulePath: ./platform/mycodexvantaos-module.yaml
+  - name: ci
+    path: ./ci
+    type: ci
+    hasRootModule: true
+    rootModulePath: ./ci/mycodexvantaos-module.yaml
+  - name: modules
+    path: ./modules
+    type: service-modules
+    hasRootModule: false
+  - name: services
+    path: ./services
+    type: service-implementations
+    hasRootModule: false
+  - name: providers
+    path: ./providers
+    type: provider-implementations
+    hasRootModule: false
+  - name: packages
+    path: ./packages
+    type: packages
+    hasRootModule: true
+    rootModulePath: ./packages/mycodexvantaos-module.yaml
+  - name: apps
+    path: ./apps
+    type: applications
+    hasRootModule: true
+    rootModulePath: ./apps/mycodexvantaos-module.yaml
+  - name: contracts
+    path: ./contracts
+    type: contracts
+    hasRootModule: true
+    rootModulePath: ./contracts/mycodexvantaos-module.yaml
+  - name: schemas
+    path: ./schemas
+    type: schemas
+    hasRootModule: false
+  - name: policies
+    path: ./policies
+    type: policies
+    hasRootModule: true
+    rootModulePath: ./policies/mycodexvantaos-module.yaml
+  - name: rego
+    path: ./rego
+    type: rego-policies
+    hasRootModule: false
+  - name: infra
+    path: ./infra
+    type: infrastructure
+    hasRootModule: true
+    rootModulePath: ./infra/mycodexvantaos-module.yaml
+  - name: release
+    path: ./release
+    type: release
+    hasRootModule: true
+    rootModulePath: ./release/mycodexvantaos-module.yaml
+  - name: supply-chain
+    path: ./supply-chain
+    type: supply-chain
+    hasRootModule: true
+    rootModulePath: ./supply-chain/mycodexvantaos-module.yaml
+  - name: sbom
+    path: ./sbom
+    type: sbom
+    hasRootModule: true
+    rootModulePath: ./sbom/mycodexvantaos-module.yaml
+  - name: artifacts
+    path: ./artifacts
+    type: artifacts
+    hasRootModule: true
+    rootModulePath: ./artifacts/mycodexvantaos-module.yaml
+  - name: outputs
+    path: ./outputs
+    type: outputs
+    hasRootModule: false
+    ssot: false
+    generated: true
+  - name: scripts
+    path: ./scripts
+    type: scripts
+    hasRootModule: false
+  - name: tests
+    path: ./tests
+    type: tests
+    hasRootModule: false
+  - name: config
+    path: ./config
+    type: configuration
+    hasRootModule: false
+  - name: skrill
+    path: ./skrill
+    type: documentation
+    hasRootModule: false
 platform: mycodexvantaos
-canonical-url: "https://mycodexvantaos.com"
+canonical-url: https://mycodexvantaos.com

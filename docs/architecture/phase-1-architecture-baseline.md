@@ -1,14 +1,26 @@
-# MyCodexVantaOS — phase-1-architecture-baseline
+# Phase 1 Architecture Baseline
 
-Machine Identity: `mycodexvantaos`
-Canonical URL: https://mycodexvantaos.com
+> Status: Normative
+> Phase: 1 — Architecture Baseline
 
 ## Overview
 
-This document describes the phase-1-architecture-baseline specification for MyCodexVantaOS.
+Phase 1 establishes the canonical architecture baseline for MyCodexVantaOS, including:
 
-## References
+- Root module governance structure
+- Manifest boundary definitions
+- Foundation specification layer
+- Navigation index layer
+- Namespace governance layer
+- Unified gates layer
+- Provider abstraction layer
+- Runtime mode resolution
+- CI enforcement gates
 
-- [Identity Policy](../../governance/identity-policy.yaml)
-- [Platform Governance Spec](../../governance/platform-governance-spec.yaml)
-- [Unified Architecture Spec](../unified-architecture-spec.md)
+## Deliverables
+
+All Phase 1 deliverables are listed in `docs/unified-architecture-spec.md` under the Phase 0 Specification Freeze section.
+
+## Freeze Criteria
+
+Phase 1 is considered complete when all 25 freeze criteria defined in the Unified Architecture Constitution are satisfied.

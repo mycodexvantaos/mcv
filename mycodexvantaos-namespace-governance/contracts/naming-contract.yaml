@@ -1,8 +1,9 @@
 apiVersion: mycodexvantaos.io/v1
 kind: NamespaceContract
 metadata:
-  name: mycodexvantaos-naming-contract
+  name: naming-contract
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
+spec: {}
 platform: mycodexvantaos

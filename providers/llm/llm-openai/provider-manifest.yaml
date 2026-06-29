@@ -1,15 +1,26 @@
-apiVersion: mycodexvantaos.io/v1
-kind: ProviderManifest
+apiVersion: mycodexvantaos.org/v1
+kind: Provider
 metadata:
-  name: mycodexvantaos-llm-openai
+  name: llm-openai
+  capability: llm
+  labels:
+    mycodexvantaos.org/managed-by: naming-spec-v1
+    mycodexvantaos.org/specRef: '8.1'
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
-
+spec:
+  providerName: openai
+  isNative: false
+  lifecycle:
+    stage: stable
+  envVarPrefix: MYCODEXVANTAOS_LLM
+  configSchemaRef: ./config.schema.json
+  description: OpenAI GPT models LLM provider.
 provider-id: mycodexvantaos-llm-openai
 capability: llm
 platform: mycodexvantaos
 runtime-modes:
-  - native
-  - connected
-  - hybrid
+- native
+- connected
+- hybrid

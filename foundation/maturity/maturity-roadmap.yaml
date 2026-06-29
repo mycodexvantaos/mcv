@@ -1,6 +1,7 @@
 apiVersion: mycodexvantaos.io/v1
-kind: MaturityArtifact
+kind: FoundationMaturity
 metadata:
-  name: mycodexvantaos-maturity-roadmap
+  name: maturity-roadmap
   version: 1.0.0
-platform: mycodexvantaos
+spec:
+  platform: mycodexvantaos

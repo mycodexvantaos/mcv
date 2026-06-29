@@ -1,8 +1,15 @@
 apiVersion: mycodexvantaos.io/v1
-kind: ArtifactRegistry
+kind: ArtifactPolicy
 metadata:
-  name: mycodexvantaos-artifact-policy
+  name: artifact-policy
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
+spec:
+  digestPolicy:
+    primary: sha3-512
+    auditChain: sha256
+    fastComparison: blake3
+  imagePinningRequired: true
+  signatureRequired: true
 platform: mycodexvantaos

@@ -1,8 +1,9 @@
 apiVersion: mycodexvantaos.io/v1
-kind: FoundationCapability-map
+kind: FoundationSpec
 metadata:
-  name: mycodexvantaos-governance-foundation-capability-map
+  name: capability-map
+  foundation: governance-foundation
   version: 1.0.0
-  foundation: mycodexvantaos-governance-foundation
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
+spec: {}

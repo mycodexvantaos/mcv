@@ -1,9 +1,12 @@
 apiVersion: mycodexvantaos.io/v1
-kind: ReleaseArtifact
+kind: ReleaseManifest
 metadata:
-  name: mycodexvantaos-release-manifest
+  name: release-manifest
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
+spec:
+  version: 0.1.0
+  artifacts: []
 platform: mycodexvantaos
-canonical-url: "https://mycodexvantaos.com"
+canonical-url: https://mycodexvantaos.com

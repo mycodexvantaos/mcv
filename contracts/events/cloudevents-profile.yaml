@@ -1,8 +1,12 @@
 apiVersion: mycodexvantaos.io/v1
-kind: EventContract
+kind: CloudEventsProfile
 metadata:
-  name: mycodexvantaos-cloudevents-profile
+  name: cloudevents-profile
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
+spec:
+  specVersion: '1.0'
+  sourcePattern: mycodexvantaos://service/{service-id}
+  typePattern: io.mycodexvantaos.{domain}.{event-type}.{version}
 platform: mycodexvantaos

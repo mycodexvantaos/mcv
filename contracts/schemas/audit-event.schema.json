@@ -1,12 +1,119 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mycodexvantaos.com/schemas/audit-event.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:mycodexvantaos:schema:audit-event",
   "title": "AuditEvent",
+  "description": "Schema for a single audit event in the MyCodeXvantaOS integrity chain",
   "type": "object",
-  "required": ["id", "type", "timestamp"],
   "properties": {
-    "id": { "type": "string" },
-    "type": { "type": "string" },
-    "timestamp": { "type": "string", "format": "date-time" }
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "event_type": {
+      "type": "string",
+      "pattern": "^[a-z]+\\.[a-z-]+\\.[a-z-]+$",
+      "description": "Dot-notation event type: category.domain.action"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["identity", "workspace", "knowledge", "ai", "model", "governance"]
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["debug", "info", "warning", "error", "critical"]
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 1024
+    },
+    "subject_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "workspace_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "resource_urn": {
+      "type": "string",
+      "pattern": "^urn:mycodexvantaos:"
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "correlation_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "parent_event_id": {
+      "type": ["string", "null"],
+      "format": "uuid"
+    },
+    "integrity": {
+      "$ref": "#/definitions/IntegrityFields"
+    },
+    "retention": {
+      "type": "string",
+      "enum": ["standard", "extended", "permanent"]
+    },
+    "closed_loop": {
+      "$ref": "#/definitions/ClosedLoopFields"
+    }
+  },
+  "required": [
+    "id",
+    "event_type",
+    "category",
+    "severity",
+    "subject_id",
+    "workspace_id",
+    "timestamp",
+    "integrity"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "IntegrityFields": {
+      "type": "object",
+      "properties": {
+        "hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "SHA-256 hash of this event"
+        },
+        "previous_hash": {
+          "type": ["string", "null"],
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "SHA-256 hash of the previous event in the chain (null for genesis)"
+        },
+        "chain_index": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Monotonically increasing position in the integrity chain"
+        }
+      },
+      "required": ["hash", "previous_hash", "chain_index"]
+    },
+    "ClosedLoopFields": {
+      "type": "object",
+      "properties": {
+        "pair_id": {
+          "type": "string",
+          "description": "Links request ↔ completion events"
+        },
+        "pair_role": {
+          "type": "string",
+          "enum": ["request", "completion", "failure"]
+        },
+        "timeout_seconds": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    }
   }
 }

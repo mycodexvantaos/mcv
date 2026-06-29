@@ -1,8 +1,10 @@
 apiVersion: mycodexvantaos.io/v1
-kind: ArtifactRegistry
+kind: ArtifactIndex
 metadata:
-  name: mycodexvantaos-artifact-index
+  name: artifact-index
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
+spec:
+  artifacts: []
 platform: mycodexvantaos

@@ -1,6 +1,7 @@
 apiVersion: mycodexvantaos.io/v1
 kind: FoundationMap
 metadata:
-  name: mycodexvantaos-foundation-to-revenue-map
+  name: foundation-to-revenue-map
   version: 1.0.0
-platform: mycodexvantaos
+spec:
+  platform: mycodexvantaos

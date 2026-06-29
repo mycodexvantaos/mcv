@@ -1,11 +1,8 @@
-openapi: "3.1.0"
+openapi: 3.1.0
 info:
-  title: "MyCodexVantaOS Knowledge API"
-  version: "1.0.0"
-  description: "MyCodexVantaOS knowledge API — https://api.mycodexvantaos.com"
-servers:
-  - url: "https://api.mycodexvantaos.com/v1"
-    description: Production
+  title: MyCodexVantaOS knowledge API
+  version: 1.0.0
+  description: OpenAPI specification for MyCodexVantaOS knowledge
 paths: {}
 components:
   securitySchemes:
@@ -13,3 +10,6 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+servers:
+- url: https://api.mycodexvantaos.com/v1
+  description: Production

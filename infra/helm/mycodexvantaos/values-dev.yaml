@@ -1,4 +1,10 @@
-# MyCodexVantaOS Helm Values — values-dev
-# Canonical URL: https://mycodexvantaos.com
 global:
+  imageTag: latest
   platform: mycodexvantaos
+services:
+  mycodexvantaos-core-kernel:
+    replicas: 1
+  mycodexvantaos-ai-embedding:
+    replicas: 1
+  mycodexvantaos-ai-llm:
+    replicas: 1

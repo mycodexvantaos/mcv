@@ -1,7 +1,9 @@
 apiVersion: mycodexvantaos.io/v1
 kind: NamespaceRegistry
 metadata:
-  name: mycodexvantaos-service-namespace-registry
+  name: service-namespace-registry
   version: 1.0.0
+spec:
+  entries: []
 platform: mycodexvantaos
 entries: []

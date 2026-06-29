@@ -10,3 +10,7 @@ repos:
         language: pygrep
         types: [markdown]
         exclude: 'CONTRIBUTING\.md$'
+
+
+# --- Platform v1.0 additions ---
+        entry: "\xc2\xa7"

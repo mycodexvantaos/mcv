@@ -1,8 +1,9 @@
 apiVersion: mycodexvantaos.io/v1
-kind: FoundationReference-architecture
+kind: FoundationSpec
 metadata:
-  name: mycodexvantaos-data-foundation-reference-architecture
+  name: reference-architecture
+  foundation: data-foundation
   version: 1.0.0
-  foundation: mycodexvantaos-data-foundation
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
+spec: {}

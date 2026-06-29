@@ -1,6 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
 kind: NavigationMap
 metadata:
-  name: mycodexvantaos-root-directory-map
+  name: root-directory-map
+  description: root-directory-map for MyCodexVantaOS
   version: 1.0.0
+spec: {}
 platform: mycodexvantaos

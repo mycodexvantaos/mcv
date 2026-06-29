@@ -1,172 +1,406 @@
-apiVersion: mycodexvantaos.io/v1
+apiVersion: mycodexvantaos.org/v1
 kind: ProviderRegistry
 metadata:
-  name: mycodexvantaos-provider-registry
+  name: platform-provider-registry
+  labels:
+    managed-by: naming-spec-v1
+    specRef: '8'
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
   authoritative: true
-
 providers:
-  # Authentication
-  - provider-id: mycodexvantaos-auth-jwt
-    capability: auth
-    runtime-modes: [native, connected, hybrid]
-    manifest: providers/auth/auth-jwt/provider-manifest.yaml
-
-  # Cache
-  - provider-id: mycodexvantaos-cache-kv
-    capability: cache
-    runtime-modes: [connected, hybrid]
-    manifest: providers/cache/cache-kv/provider-manifest.yaml
-
-  - provider-id: mycodexvantaos-cache-redis
-    capability: cache
-    runtime-modes: [native, connected, hybrid]
-    manifest: providers/cache/cache-redis/provider-manifest.yaml
-
-  # Database
-  - provider-id: mycodexvantaos-database-d1
-    capability: database
-    runtime-modes: [connected, hybrid]
-    manifest: providers/database/database-d1/provider-manifest.yaml
-
-  - provider-id: mycodexvantaos-database-postgres
-    capability: database
-    runtime-modes: [native, connected, hybrid]
-    manifest: providers/database/database-postgres/provider-manifest.yaml
-
-  # Embedding
-  - provider-id: mycodexvantaos-embedding-native
-    capability: embedding
-    runtime-modes: [native, hybrid]
-    manifest: providers/embedding/embedding-native/provider-manifest.yaml
-
-  - provider-id: mycodexvantaos-embedding-openai
-    capability: embedding
-    runtime-modes: [connected, hybrid]
-    manifest: providers/embedding/embedding-openai/provider-manifest.yaml
-
-  - provider-id: mycodexvantaos-embedding-workers-ai
-    capability: embedding
-    runtime-modes: [connected, hybrid]
-    manifest: providers/embedding/embedding-workers-ai/provider-manifest.yaml
-
-  # Graph
-  - provider-id: mycodexvantaos-graph-native
-    capability: graph
-    runtime-modes: [native, connected, hybrid]
-    manifest: providers/graph/graph-native/provider-manifest.yaml
-
-  # LLM
-  - provider-id: mycodexvantaos-llm-native
-    capability: llm
-    runtime-modes: [native, hybrid]
-    manifest: providers/llm/llm-native/provider-manifest.yaml
-
-  - provider-id: mycodexvantaos-llm-openai
-    capability: llm
-    runtime-modes: [connected, hybrid]
-    manifest: providers/llm/llm-openai/provider-manifest.yaml
-
-  - provider-id: mycodexvantaos-llm-openrouter
-    capability: llm
-    runtime-modes: [connected, hybrid]
-    manifest: providers/llm/llm-openrouter/provider-manifest.yaml
-
-  - provider-id: mycodexvantaos-llm-workers-ai
-    capability: llm
-    runtime-modes: [connected, hybrid]
-    manifest: providers/llm/llm-workers-ai/provider-manifest.yaml
-
-  # Observability
-  - provider-id: mycodexvantaos-observability-opentelemetry
-    capability: observability
-    runtime-modes: [native, connected, hybrid]
-    manifest: providers/observability/observability-opentelemetry/provider-manifest.yaml
-
-  # Quantum
-  - provider-id: mycodexvantaos-quantum-circuit-native
-    capability: quantum-circuit
-    runtime-modes: [native, hybrid]
-    manifest: providers/quantum-circuit/quantum-circuit-native/provider-manifest.yaml
-
-  - provider-id: mycodexvantaos-quantum-observability-native
-    capability: quantum-observability
-    runtime-modes: [native, hybrid]
-    manifest: providers/quantum-observability/quantum-observability-native/provider-manifest.yaml
-
-  - provider-id: mycodexvantaos-quantum-processor-native
-    capability: quantum-processor
-    runtime-modes: [native, hybrid]
-    manifest: providers/quantum-processor/quantum-processor-native/provider-manifest.yaml
-
-  - provider-id: mycodexvantaos-quantum-runtime-native
-    capability: quantum-runtime
-    runtime-modes: [native, hybrid]
-    manifest: providers/quantum-runtime/quantum-runtime-native/provider-manifest.yaml
-
-  - provider-id: mycodexvantaos-quantum-simulator-qiskit
-    capability: quantum-simulator
-    runtime-modes: [native, connected, hybrid]
-    manifest: providers/quantum-simulator/quantum-simulator-qiskit/provider-manifest.yaml
-
-  # Queue
-  - provider-id: mycodexvantaos-queue-cloudflare
-    capability: queue
-    runtime-modes: [connected, hybrid]
-    manifest: providers/queue/queue-cloudflare/provider-manifest.yaml
-
-  - provider-id: mycodexvantaos-queue-rabbitmq
-    capability: queue
-    runtime-modes: [native, connected, hybrid]
-    manifest: providers/queue/queue-rabbitmq/provider-manifest.yaml
-
-  # Search
-  - provider-id: mycodexvantaos-search-native
-    capability: search
-    runtime-modes: [native, connected, hybrid]
-    manifest: providers/search/search-native/provider-manifest.yaml
-
-  # Secrets
-  - provider-id: mycodexvantaos-secrets-local
-    capability: secrets
-    runtime-modes: [native, hybrid]
-    manifest: providers/secrets/secrets-local/provider-manifest.yaml
-
-  - provider-id: mycodexvantaos-secrets-vault
-    capability: secrets
-    runtime-modes: [native, connected, hybrid]
-    manifest: providers/secrets/secrets-vault/provider-manifest.yaml
-
-  # Storage
-  - provider-id: mycodexvantaos-storage-minio
-    capability: storage
-    runtime-modes: [native, connected, hybrid]
-    manifest: providers/storage/storage-minio/provider-manifest.yaml
-
-  - provider-id: mycodexvantaos-storage-r2
-    capability: storage
-    runtime-modes: [connected, hybrid]
-    manifest: providers/storage/storage-r2/provider-manifest.yaml
-
-  # Vector Store
-  - provider-id: mycodexvantaos-vector-store-pgvector
-    capability: vector-store
-    runtime-modes: [native, connected, hybrid]
-    manifest: providers/vector-store/vector-store-pgvector/provider-manifest.yaml
-
-  - provider-id: mycodexvantaos-vector-store-qdrant
-    capability: vector-store
-    runtime-modes: [native, connected, hybrid]
-    manifest: providers/vector-store/vector-store-qdrant/provider-manifest.yaml
-
-  - provider-id: mycodexvantaos-vector-store-vectorize
-    capability: vector-store
-    runtime-modes: [connected, hybrid]
-    manifest: providers/vector-store/vector-store-vectorize/provider-manifest.yaml
-
-# Statistics
+- name: database-postgres
+  capability: database
+  providerName: postgres
+  isNative: false
+  lifecycle: stable
+- name: database-sqlite
+  capability: database
+  providerName: sqlite
+  isNative: true
+  lifecycle: stable
+- name: vector-store-pgvector
+  capability: vector-store
+  providerName: pgvector
+  isNative: false
+  lifecycle: stable
+- name: vector-store-qdrant
+  capability: vector-store
+  providerName: qdrant
+  isNative: false
+  lifecycle: stable
+- name: llm-openai
+  capability: llm
+  providerName: openai
+  isNative: false
+  lifecycle: stable
+- name: llm-ollama
+  capability: llm
+  providerName: ollama
+  isNative: true
+  lifecycle: stable
+- name: llm-anthropic
+  capability: llm
+  providerName: anthropic
+  isNative: false
+  lifecycle: beta
+- name: embedding-openai
+  capability: embedding
+  providerName: openai
+  isNative: false
+  lifecycle: stable
+- name: embedding-cohere
+  capability: embedding
+  providerName: cohere
+  isNative: false
+  lifecycle: stable
+- name: embedding-ollama
+  capability: embedding
+  providerName: ollama
+  isNative: true
+  lifecycle: stable
+- name: cache-redis
+  capability: cache
+  providerName: redis
+  isNative: false
+  lifecycle: stable
+- name: graph-neo4j
+  capability: graph
+  providerName: neo4j
+  isNative: false
+  lifecycle: stable
+- name: graph-memgraph
+  capability: graph
+  providerName: memgraph
+  isNative: false
+  lifecycle: beta
+- name: storage-s3
+  capability: storage
+  providerName: s3
+  isNative: false
+  lifecycle: stable
+- name: storage-minio
+  capability: storage
+  providerName: minio
+  isNative: true
+  lifecycle: stable
+- name: auth-keycloak
+  capability: auth
+  providerName: keycloak
+  isNative: false
+  lifecycle: stable
+- name: auth-jwt-native
+  capability: auth
+  providerName: jwt-native
+  isNative: true
+  lifecycle: stable
+- name: queue-rabbitmq
+  capability: queue
+  providerName: rabbitmq
+  isNative: false
+  lifecycle: stable
+- name: queue-kafka
+  capability: queue
+  providerName: kafka
+  isNative: false
+  lifecycle: stable
+- name: secrets-vault
+  capability: secrets
+  providerName: vault
+  isNative: false
+  lifecycle: stable
+- name: secrets-k8s-native
+  capability: secrets
+  providerName: k8s-native
+  isNative: true
+  lifecycle: stable
+- name: observability-opentelemetry
+  capability: observability
+  providerName: opentelemetry
+  isNative: false
+  lifecycle: stable
+- name: observability-prometheus
+  capability: observability
+  providerName: prometheus
+  isNative: false
+  lifecycle: stable
+- name: search-elasticsearch
+  capability: search
+  providerName: elasticsearch
+  isNative: false
+  lifecycle: stable
+- name: search-typesense
+  capability: search
+  providerName: typesense
+  isNative: false
+  lifecycle: stable
+- name: state-store-redis
+  capability: state-store
+  providerName: redis
+  isNative: false
+  lifecycle: stable
+- name: notification-sendgrid
+  capability: notification
+  providerName: sendgrid
+  isNative: false
+  lifecycle: stable
+- name: scheduler-temporal
+  capability: scheduler
+  providerName: temporal
+  isNative: false
+  lifecycle: stable
+- name: repo-github
+  capability: repo
+  providerName: github
+  isNative: false
+  lifecycle: stable
+- name: deploy-argocd
+  capability: deploy
+  providerName: argocd
+  isNative: false
+  lifecycle: stable
+- name: validation-zod
+  capability: validation
+  providerName: zod
+  isNative: true
+  lifecycle: stable
+- name: security-trivy
+  capability: security
+  providerName: trivy
+  isNative: false
+  lifecycle: stable
+- name: ai-ethics-fairlearn
+  capability: ai-ethics
+  providerName: fairlearn
+  isNative: false
+  lifecycle: stable
+- name: ai-ethics-ai-fairness-360
+  capability: ai-ethics
+  providerName: ai-fairness-360
+  isNative: false
+  lifecycle: beta
+- name: ai-ethics-native-auditor
+  capability: ai-ethics
+  providerName: native-auditor
+  isNative: true
+  lifecycle: stable
+- name: blockchain-hyperledger
+  capability: blockchain
+  providerName: hyperledger
+  isNative: false
+  lifecycle: stable
+- name: blockchain-ethereum
+  capability: blockchain
+  providerName: ethereum
+  isNative: false
+  lifecycle: beta
+- name: blockchain-native-ledger
+  capability: blockchain
+  providerName: native-ledger
+  isNative: true
+  lifecycle: stable
+- name: event-stream-kafka
+  capability: event-stream
+  providerName: kafka
+  isNative: false
+  lifecycle: stable
+- name: event-stream-cloudevents
+  capability: event-stream
+  providerName: cloudevents
+  isNative: false
+  lifecycle: stable
+- name: event-stream-native-governance
+  capability: event-stream
+  providerName: native-governance
+  isNative: true
+  lifecycle: stable
+- provider-id: mycodexvantaos-auth-jwt
+  capability: auth
+  runtime-modes:
+  - native
+  - connected
+  - hybrid
+  manifest: providers/auth/auth-jwt/provider-manifest.yaml
+- provider-id: mycodexvantaos-cache-kv
+  capability: cache
+  runtime-modes:
+  - connected
+  - hybrid
+  manifest: providers/cache/cache-kv/provider-manifest.yaml
+- provider-id: mycodexvantaos-cache-redis
+  capability: cache
+  runtime-modes:
+  - native
+  - connected
+  - hybrid
+  manifest: providers/cache/cache-redis/provider-manifest.yaml
+- provider-id: mycodexvantaos-database-d1
+  capability: database
+  runtime-modes:
+  - connected
+  - hybrid
+  manifest: providers/database/database-d1/provider-manifest.yaml
+- provider-id: mycodexvantaos-database-postgres
+  capability: database
+  runtime-modes:
+  - native
+  - connected
+  - hybrid
+  manifest: providers/database/database-postgres/provider-manifest.yaml
+- provider-id: mycodexvantaos-embedding-native
+  capability: embedding
+  runtime-modes:
+  - native
+  - hybrid
+  manifest: providers/embedding/embedding-native/provider-manifest.yaml
+- provider-id: mycodexvantaos-embedding-openai
+  capability: embedding
+  runtime-modes:
+  - connected
+  - hybrid
+  manifest: providers/embedding/embedding-openai/provider-manifest.yaml
+- provider-id: mycodexvantaos-embedding-workers-ai
+  capability: embedding
+  runtime-modes:
+  - connected
+  - hybrid
+  manifest: providers/embedding/embedding-workers-ai/provider-manifest.yaml
+- provider-id: mycodexvantaos-graph-native
+  capability: graph
+  runtime-modes:
+  - native
+  - connected
+  - hybrid
+  manifest: providers/graph/graph-native/provider-manifest.yaml
+- provider-id: mycodexvantaos-llm-native
+  capability: llm
+  runtime-modes:
+  - native
+  - hybrid
+  manifest: providers/llm/llm-native/provider-manifest.yaml
+- provider-id: mycodexvantaos-llm-openai
+  capability: llm
+  runtime-modes:
+  - connected
+  - hybrid
+  manifest: providers/llm/llm-openai/provider-manifest.yaml
+- provider-id: mycodexvantaos-llm-openrouter
+  capability: llm
+  runtime-modes:
+  - connected
+  - hybrid
+  manifest: providers/llm/llm-openrouter/provider-manifest.yaml
+- provider-id: mycodexvantaos-llm-workers-ai
+  capability: llm
+  runtime-modes:
+  - connected
+  - hybrid
+  manifest: providers/llm/llm-workers-ai/provider-manifest.yaml
+- provider-id: mycodexvantaos-observability-opentelemetry
+  capability: observability
+  runtime-modes:
+  - native
+  - connected
+  - hybrid
+  manifest: providers/observability/observability-opentelemetry/provider-manifest.yaml
+- provider-id: mycodexvantaos-quantum-circuit-native
+  capability: quantum-circuit
+  runtime-modes:
+  - native
+  - hybrid
+  manifest: providers/quantum-circuit/quantum-circuit-native/provider-manifest.yaml
+- provider-id: mycodexvantaos-quantum-observability-native
+  capability: quantum-observability
+  runtime-modes:
+  - native
+  - hybrid
+  manifest: providers/quantum-observability/quantum-observability-native/provider-manifest.yaml
+- provider-id: mycodexvantaos-quantum-processor-native
+  capability: quantum-processor
+  runtime-modes:
+  - native
+  - hybrid
+  manifest: providers/quantum-processor/quantum-processor-native/provider-manifest.yaml
+- provider-id: mycodexvantaos-quantum-runtime-native
+  capability: quantum-runtime
+  runtime-modes:
+  - native
+  - hybrid
+  manifest: providers/quantum-runtime/quantum-runtime-native/provider-manifest.yaml
+- provider-id: mycodexvantaos-quantum-simulator-qiskit
+  capability: quantum-simulator
+  runtime-modes:
+  - native
+  - connected
+  - hybrid
+  manifest: providers/quantum-simulator/quantum-simulator-qiskit/provider-manifest.yaml
+- provider-id: mycodexvantaos-queue-cloudflare
+  capability: queue
+  runtime-modes:
+  - connected
+  - hybrid
+  manifest: providers/queue/queue-cloudflare/provider-manifest.yaml
+- provider-id: mycodexvantaos-queue-rabbitmq
+  capability: queue
+  runtime-modes:
+  - native
+  - connected
+  - hybrid
+  manifest: providers/queue/queue-rabbitmq/provider-manifest.yaml
+- provider-id: mycodexvantaos-search-native
+  capability: search
+  runtime-modes:
+  - native
+  - connected
+  - hybrid
+  manifest: providers/search/search-native/provider-manifest.yaml
+- provider-id: mycodexvantaos-secrets-local
+  capability: secrets
+  runtime-modes:
+  - native
+  - hybrid
+  manifest: providers/secrets/secrets-local/provider-manifest.yaml
+- provider-id: mycodexvantaos-secrets-vault
+  capability: secrets
+  runtime-modes:
+  - native
+  - connected
+  - hybrid
+  manifest: providers/secrets/secrets-vault/provider-manifest.yaml
+- provider-id: mycodexvantaos-storage-minio
+  capability: storage
+  runtime-modes:
+  - native
+  - connected
+  - hybrid
+  manifest: providers/storage/storage-minio/provider-manifest.yaml
+- provider-id: mycodexvantaos-storage-r2
+  capability: storage
+  runtime-modes:
+  - connected
+  - hybrid
+  manifest: providers/storage/storage-r2/provider-manifest.yaml
+- provider-id: mycodexvantaos-vector-store-pgvector
+  capability: vector-store
+  runtime-modes:
+  - native
+  - connected
+  - hybrid
+  manifest: providers/vector-store/vector-store-pgvector/provider-manifest.yaml
+- provider-id: mycodexvantaos-vector-store-qdrant
+  capability: vector-store
+  runtime-modes:
+  - native
+  - connected
+  - hybrid
+  manifest: providers/vector-store/vector-store-qdrant/provider-manifest.yaml
+- provider-id: mycodexvantaos-vector-store-vectorize
+  capability: vector-store
+  runtime-modes:
+  - connected
+  - hybrid
+  manifest: providers/vector-store/vector-store-vectorize/provider-manifest.yaml
 statistics:
   total-providers: 28
   by-capability:

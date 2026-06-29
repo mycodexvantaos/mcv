@@ -1,8 +1,26 @@
 apiVersion: mycodexvantaos.io/v1
-kind: GateWorkflow
+kind: GateReleaseWorkflow
 metadata:
-  name: mycodexvantaos-gate-release-workflow
-  version: 1.0.0
+  version: "1.0.0"
   date: "2026-06-29"
-  status: active
-platform: mycodexvantaos
+  status: "active"
+  name: gate-release-workflow
+  version: 1.0.0
+  governanceCode: mycodexvantaos-00000
+spec:
+  description: >
+    Defines the gate-gated release workflow. An artifact may only be promoted
+    to production after all mandatory gates pass and the production closure
+    gate (gate-99) is satisfied.
+  stages:
+    - id: development
+      requiredGates: [l00]
+      promotion: staging
+    - id: staging
+      requiredGates: [l00, l10, l20, l30, l40, l50, l60]
+      promotion: production
+    - id: production
+      requiredGates: [l00, l10, l20, l30, l40, l50, l60, l90]
+      finalGate: gate-99-production-closure-validation
+      approvalRequired: true
+      approvalAuthority: release-authority

@@ -4,18 +4,19 @@ metadata:
   name: aitasks.mycodexvantaos.io
 spec:
   group: mycodexvantaos.io
-  versions:
-    - name: v1
-      served: true
-      storage: true
-      schema:
-        openAPIV3Schema:
-          type: object
-          properties:
-            spec:
-              type: object
-  scope: Namespaced
   names:
+    kind: AiTask
+    listKind: AiTaskList
     plural: aitasks
     singular: aitask
-    kind: Aitask
+  scope: Namespaced
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object

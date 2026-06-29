@@ -1,12 +1,48 @@
+---
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
-  name: mycodexvantaos-gate-08-audit-evidence-validation
+  id: gate-08-audit-evidence-validation
   version: 1.0.0
-  date: "2026-06-29"
+  layer: l00
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: critical
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-00700
+  createdAt: 2026-01-01 00:00:00+00:00
+  tags:
+  - l00
+  - audit
+  sloTarget: 30
+  evidenceRetentionDays: 2555
+  date: '2026-06-29'
   status: active
-gate-id: gate-08-audit-evidence-validation
-level: l00
-platform: mycodexvantaos
-severity: critical
-blocking: true
+spec:
+  description: 'Validates that all state mutations have corresponding audit evidence
+    records and that the evidence chain is intact.
+
+    '
+  validates:
+  - dimension: evidence-completeness
+    description: Audit evidence records exist and chain is intact.
+    checks:
+    - id: chk-evidence-exists
+      description: Every gate evaluation has a corresponding evidence record
+      rule: evidence:exists
+      severity: critical
+      evidenceRequired: true
+    - id: chk-hash-valid
+      description: Evidence SHA-256, SHA3-512, and BLAKE3 hashes are valid
+      rule: evidence:hash-valid
+      severity: critical
+      evidenceRequired: true
+    - id: chk-chain-intact
+      description: Evidence chain previousRecordHash links are unbroken
+      rule: evidence:chain-intact
+      severity: critical
+      evidenceRequired: true
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml

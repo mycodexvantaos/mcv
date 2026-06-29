@@ -1,20 +1,75 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mycodexvantaos.com/schemas/gate/ai-workload-contract.schema.json",
-  "title": "AiWorkloadContract",
-  "description": "MyCodexVantaOS gate ai-workload-contract schema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mycodexvantaos.io/schemas/unified-gates/ai-workload-contract",
+  "title": "AI Workload Contract",
+  "description": "Schema for AI workload contract definitions.",
   "type": "object",
-  "required": ["apiVersion", "kind", "metadata"],
   "properties": {
-    "apiVersion": { "type": "string", "const": "mycodexvantaos.io/v1" },
-    "kind": { "type": "string" },
-    "metadata": {
+    "workloadId": {
+      "type": "string"
+    },
+    "workloadType": {
+      "type": "string",
+      "enum": ["inference", "training", "embedding", "rag", "agent-run"]
+    },
+    "namespace": {
+      "type": "string",
+      "enum": ["mycodexvantaos", "softwareos"]
+    },
+    "modelRef": {
+      "type": "string"
+    },
+    "resourceLimits": {
       "type": "object",
-      "required": ["name", "version"],
       "properties": {
-        "name": { "type": "string" },
-        "version": { "type": "string" }
-      }
+        "cpu": {
+          "type": "string"
+        },
+        "memory": {
+          "type": "string"
+        },
+        "gpu": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": ["cpu", "memory"]
+    },
+    "slo": {
+      "type": "object",
+      "properties": {
+        "maxLatencyMs": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "minAvailability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": ["maxLatencyMs", "minAvailability"]
+    },
+    "billingAccountId": {
+      "type": "string"
+    },
+    "workspaceId": {
+      "type": "string"
+    },
+    "projectId": {
+      "type": "string"
     }
-  }
+  },
+  "required": [
+    "workloadId",
+    "workloadType",
+    "namespace",
+    "modelRef",
+    "resourceLimits",
+    "slo",
+    "billingAccountId",
+    "workspaceId",
+    "projectId"
+  ],
+  "additionalProperties": false
 }

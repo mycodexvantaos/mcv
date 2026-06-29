@@ -3,19 +3,15 @@ kind: RuntimeConfig
 metadata:
   name: mycodexvantaos-runtime-config
   version: 1.0.0
-  date: "2026-06-29"
-
-# Runtime mode resolution
+  date: '2026-06-29'
 runtime-mode:
   policy: governance/runtime-mode-policy.yaml
   default: native
   resolution-order:
-    - environment-variable
-    - config-file
-    - default
+  - environment-variable
+  - config-file
+  - default
   environment-variable: MYCODEXVANTAOS_RUNTIME_MODE
-
-# Provider resolution
 provider-resolution:
   strategy: capability-first
   fallback-to-native: true
@@ -24,74 +20,62 @@ provider-resolution:
     max-attempts: 3
     backoff-ms: 1000
     backoff-multiplier: 2.0
-
-# Service topology
 service-topology:
   catalog: platform/service-catalog.yaml
   topology: platform/service-topology.yaml
-
-# Domain configuration (Domain & Deployment Contract)
 domains:
   production:
-    apex: "mycodexvantaos.com"
-    canonical-url: "https://mycodexvantaos.com"
+    apex: mycodexvantaos.com
+    canonical-url: https://mycodexvantaos.com
     preferred-host: apex
-    www-redirect: "https://mycodexvantaos.com"
+    www-redirect: https://mycodexvantaos.com
   staging:
-    canonical-url: "https://staging.mycodexvantaos.com"
+    canonical-url: https://staging.mycodexvantaos.com
   development:
-    canonical-url: "http://localhost:3000"
+    canonical-url: http://localhost:3000
   subdomains:
-    app: "https://app.mycodexvantaos.com"
-    api: "https://api.mycodexvantaos.com"
-    admin: "https://admin.mycodexvantaos.com"
-    docs: "https://docs.mycodexvantaos.com"
-
-# Forbidden vendor URLs (must not be used as production canonical URLs)
+    app: https://app.mycodexvantaos.com
+    api: https://api.mycodexvantaos.com
+    admin: https://admin.mycodexvantaos.com
+    docs: https://docs.mycodexvantaos.com
 forbidden-production-urls:
   patterns:
-    - "*.github.io"
-    - "*.pages.dev"
-    - "*.vercel.app"
-    - "*.netlify.app"
-    - "*.run.app"
-    - "*.appspot.com"
-    - "*.cloudfunctions.net"
-    - "*.web.app"
-    - "*.firebaseapp.com"
-    - "storage.googleapis.com"
-
-# CORS configuration
+  - '*.github.io'
+  - '*.pages.dev'
+  - '*.vercel.app'
+  - '*.netlify.app'
+  - '*.run.app'
+  - '*.appspot.com'
+  - '*.cloudfunctions.net'
+  - '*.web.app'
+  - '*.firebaseapp.com'
+  - storage.googleapis.com
 cors:
   production-allowlist:
-    - "https://mycodexvantaos.com"
-    - "https://www.mycodexvantaos.com"
-    - "https://app.mycodexvantaos.com"
-    - "https://admin.mycodexvantaos.com"
-    - "https://docs.mycodexvantaos.com"
+  - https://mycodexvantaos.com
+  - https://www.mycodexvantaos.com
+  - https://app.mycodexvantaos.com
+  - https://admin.mycodexvantaos.com
+  - https://docs.mycodexvantaos.com
   allow-credentials: true
   allow-methods:
-    - GET
-    - POST
-    - PUT
-    - PATCH
-    - DELETE
-    - OPTIONS
+  - GET
+  - POST
+  - PUT
+  - PATCH
+  - DELETE
+  - OPTIONS
   allow-headers:
-    - Content-Type
-    - Authorization
-    - X-Request-ID
-    - X-Trace-ID
-
-# Security headers
+  - Content-Type
+  - Authorization
+  - X-Request-ID
+  - X-Trace-ID
 security-headers:
-  strict-transport-security: "max-age=31536000; includeSubDomains; preload"
-  x-frame-options: "DENY"
-  x-content-type-options: "nosniff"
-  referrer-policy: "strict-origin-when-cross-origin"
-  permissions-policy: "camera=(), microphone=(), geolocation=()"
-
-# Cookie configuration
+  strict-transport-security: max-age=31536000; includeSubDomains; preload
+  x-frame-options: DENY
+  x-content-type-options: nosniff
+  referrer-policy: strict-origin-when-cross-origin
+  permissions-policy: camera=(), microphone=(), geolocation=()
 cookies:
   session:
     secure: true
@@ -102,8 +86,6 @@ cookies:
     secure: true
     http-only: false
     same-site: Strict
-
-# Rate limiting
 rate-limiting:
   enabled: true
   default:
@@ -115,3 +97,11 @@ rate-limiting:
   agent:
     requests-per-minute: 100
     burst: 200
+spec:
+  defaultRuntimeMode: native
+  productionForbiddenModes:
+  - auto
+  requiredEnvironmentVariables:
+  - MYCODEXVANTAOS_RUNTIME_MODE
+  - MYCODEXVANTAOS_SECRETS_PROVIDER
+  - MYCODEXVANTAOS_DEPLOYMENT_TARGET

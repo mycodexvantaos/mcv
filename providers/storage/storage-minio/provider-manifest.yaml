@@ -1,15 +1,26 @@
-apiVersion: mycodexvantaos.io/v1
-kind: ProviderManifest
+apiVersion: mycodexvantaos.org/v1
+kind: Provider
 metadata:
-  name: mycodexvantaos-storage-minio
+  name: storage-minio
+  capability: storage
+  labels:
+    mycodexvantaos.org/managed-by: naming-spec-v1
+    mycodexvantaos.org/specRef: '8.1'
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
-
+spec:
+  providerName: minio
+  isNative: true
+  lifecycle:
+    stage: stable
+  envVarPrefix: MYCODEXVANTAOS_STORAGE_MINIO
+  configSchemaRef: ./config.schema.json
+  description: MinIO object storage provider (native, self-hosted).
 provider-id: mycodexvantaos-storage-minio
 capability: storage
 platform: mycodexvantaos
 runtime-modes:
-  - native
-  - connected
-  - hybrid
+- native
+- connected
+- hybrid

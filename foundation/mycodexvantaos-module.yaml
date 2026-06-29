@@ -1,6 +1,44 @@
 apiVersion: mycodexvantaos.io/v1
 kind: RootModule
 metadata:
-  name: mycodexvantaos-foundation
+  name: foundation
+  urn: urn:mycodexvantaos:foundation:module:foundation
+  domain: foundation
+  layer: strategic-specification
   version: 1.0.0
-platform: mycodexvantaos
+spec:
+  moduleType: foundation-spec
+  description: 'Strategic specification center for the seven platform foundations
+    of MyCodexVantaOS. This module owns capability boundaries, product boundaries,
+    capability maps, commercial models, maturity models, and cross-module mapping.
+
+    '
+  runtimeCodeAllowed: false
+  deploymentAllowed: false
+  metadataOnly: true
+  exports:
+  - type: foundation-spec
+    name: compute-foundation
+    path: ./compute-foundation/foundation.yaml
+  - type: foundation-spec
+    name: data-foundation
+    path: ./data-foundation/foundation.yaml
+  - type: foundation-spec
+    name: algorithm-foundation
+    path: ./algorithm-foundation/foundation.yaml
+  - type: foundation-spec
+    name: agent-foundation
+    path: ./agent-foundation/foundation.yaml
+  - type: foundation-spec
+    name: contract-foundation
+    path: ./contract-foundation/foundation.yaml
+  - type: foundation-spec
+    name: governance-foundation
+    path: ./governance-foundation/foundation.yaml
+  - type: foundation-spec
+    name: business-foundation
+    path: ./business-foundation/foundation.yaml
+  governance:
+    ssot: true
+    authority: foundation-strategic-specification
+  platform: mycodexvantaos

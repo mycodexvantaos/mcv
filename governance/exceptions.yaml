@@ -1,39 +1,47 @@
-apiVersion: mycodexvantaos.io/v1
-kind: ExceptionRegistry
+apiVersion: mycodexvantaos.org/v1
+kind: ExceptionRegister
 metadata:
-  name: mycodexvantaos-exceptions
+  name: platform-exception-register
+  labels:
+    managed-by: naming-spec-v1
+    specRef: '15'
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
+exceptions:
+- id: exception--20260418--example
+  rule: no-version-in-canonical
+  scope: services/mycodexvantaos-core-kernel
+  reason: 'Temporary migration period: legacy deployment pipeline still references
+    a versioned directory name. Migration to naming-spec-v1 path derivation is tracked
+    in backlog item CORE-142 and scheduled for completion by 2026-06-01.
 
-# Active exceptions
-exceptions: []
+    '
+  approver: arch-committee-lead
+  createdAt: '2026-04-18'
+  expiresAt: '2026-06-01'
+  status: revoked
+  mitigationPlan: 'Update deployment pipeline configuration to use canonical service-id
+    path. Remove versioned directory reference in ci/deploy.yaml.
 
-# Exception schema
-# Each exception must have:
-# - id: unique exception identifier (EXC-YYYYMMDD-NNN)
-# - rule: the governance rule being excepted
-# - reason: justification for the exception
-# - approved-by: approver identity
-# - approved-at: ISO 8601 timestamp
-# - expires-at: ISO 8601 timestamp (max 90 days from approval)
-# - scope: specific files or patterns affected
-# - review-date: scheduled review date
+    '
+- id: exception--20260621--dvstud
+  rule: no-environment-in-canonical
+  scope: mycodexvantaos-app-dev-studio
+  reason: 'The legacy Dev Studio service identifier is still the stable integration
+    anchor for local-first tooling, generated Docker assets, and existing service
+    references. Renaming it during the ZIP-first consolidation would break retained
+    architecture capabilities before a coordinated migration is ready.
 
-# Example exception (commented out):
-# - id: EXC-20260629-001
-#   rule: naming-rule
-#   reason: "Legacy compatibility requirement for external integration"
-#   approved-by: platform-governance-team
-#   approved-at: "2026-06-29T00:00:00Z"
-#   expires-at: "2026-09-27T00:00:00Z"
-#   scope:
-#     - legacy/old-module-name/
-#   review-date: "2026-07-29"
-#   status: active
+    '
+  approver: arch-committee-lead
+  createdAt: '2026-06-21'
+  expiresAt: '2026-12-31'
+  status: active
+  mitigationPlan: 'Complete the planned Dev Studio identifier migration alongside
+    updated service manifests, Docker generation, and navigation indexes so the exception
+    can be removed without capability loss.
 
-# Expired exceptions (historical record)
+    '
 expired: []
-
-# Revoked exceptions (historical record)
 revoked: []

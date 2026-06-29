@@ -1,6 +1,22 @@
 apiVersion: mycodexvantaos.io/v1
 kind: GovernanceCodeIndex
 metadata:
-  name: mycodexvantaos-governance-code-index
+  name: governance-code-index
+  ssot: true
+  authority: namespace-governance-codes
   version: 1.0.0
+spec:
+  codeFiles:
+  - path: ./root-module-codes.yaml
+    type: root-module
+  - path: ./service-codes.yaml
+    type: service
+  - path: ./provider-codes.yaml
+    type: provider
+  - path: ./foundation-codes.yaml
+    type: foundation
+  - path: ./gate-codes.yaml
+    type: gate
+  - path: ./exception-codes.yaml
+    type: exception
 platform: mycodexvantaos

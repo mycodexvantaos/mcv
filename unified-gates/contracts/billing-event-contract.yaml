@@ -1,8 +1,28 @@
 apiVersion: mycodexvantaos.io/v1
-kind: GateContract
+kind: BillingEventContract
 metadata:
-  name: mycodexvantaos-billing-event-contract
-  version: 1.0.0
+  version: "1.0.0"
   date: "2026-06-29"
-  status: active
-platform: mycodexvantaos
+  status: "active"
+  name: billing-event-contract
+  version: 1.0.0
+  governanceCode: mycodexvantaos-30400
+spec:
+  description: >
+    Defines the canonical contract for billing events. Billing events are
+    derived from usage events and represent chargeable actions.
+  requiredFields:
+    - billingEventId
+    - usageEventRef
+    - billingAccountId
+    - workspaceId
+    - projectId
+    - chargeAmount
+    - currency
+    - rateCardRef
+    - billingPeriod
+    - invoiceRef
+  constraints:
+    currency: USD
+    chargeAmountPrecision: 6
+  schemaRef: ../schemas/usage-event.schema.json

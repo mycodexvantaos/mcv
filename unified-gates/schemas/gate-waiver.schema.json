@@ -1,20 +1,83 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mycodexvantaos.com/schemas/gate/gate-waiver.schema.json",
-  "title": "GateWaiver",
-  "description": "MyCodexVantaOS gate gate-waiver schema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mycodexvantaos.io/schemas/unified-gates/gate-waiver",
+  "title": "Gate Waiver",
+  "description": "Schema for gate waiver records.",
   "type": "object",
-  "required": ["apiVersion", "kind", "metadata"],
   "properties": {
-    "apiVersion": { "type": "string", "const": "mycodexvantaos.io/v1" },
-    "kind": { "type": "string" },
+    "apiVersion": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string",
+      "const": "GateWaiver"
+    },
     "metadata": {
       "type": "object",
-      "required": ["name", "version"],
       "properties": {
-        "name": { "type": "string" },
-        "version": { "type": "string" }
-      }
+        "id": {
+          "type": "string"
+        },
+        "gateId": {
+          "type": "string"
+        },
+        "artifactRef": {
+          "type": "string"
+        },
+        "requestedBy": {
+          "type": "string"
+        },
+        "approvedBy": {
+          "type": "string"
+        },
+        "approvedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "maxDurationDays": {
+          "type": "integer",
+          "maximum": 30
+        }
+      },
+      "required": [
+        "id",
+        "gateId",
+        "artifactRef",
+        "requestedBy",
+        "approvedBy",
+        "approvedAt",
+        "expiresAt"
+      ]
+    },
+    "spec": {
+      "type": "object",
+      "properties": {
+        "justification": {
+          "type": "string",
+          "minLength": 50
+        },
+        "remediationPlan": {
+          "type": "string",
+          "minLength": 50
+        },
+        "riskAcknowledgement": {
+          "type": "boolean",
+          "const": true
+        },
+        "reviewedRisks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["justification", "remediationPlan", "riskAcknowledgement"]
     }
-  }
+  },
+  "required": ["apiVersion", "kind", "metadata", "spec"],
+  "additionalProperties": false
 }

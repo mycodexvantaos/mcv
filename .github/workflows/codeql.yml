@@ -1,23 +1,23 @@
 name: CodeQL Security Scan
-
-on:
+true:
   push:
-    branches: [main, develop]
+    branches:
+    - main
+    - develop
   pull_request:
-    branches: [main, develop]
+    branches:
+    - main
+    - develop
   schedule:
-    - cron: "0 2 * * 1"
-  workflow_dispatch:
-
+  - cron: 0 2 * * 1
+  workflow_dispatch: null
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
 permissions:
   actions: read
   contents: read
   security-events: write
-
 jobs:
   analyze:
     name: CodeQL Analysis
@@ -26,132 +26,98 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [javascript-typescript, python]
-
+        language:
+        - javascript-typescript
+        - python
+        include:
+        - language: actions
+          build-mode: none
+        - language: javascript-typescript
+          build-mode: none
+        - language: python
+          build-mode: none
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: ${{ matrix.language }}
-          queries: security-extended,security-and-quality
-          config: |
-            paths:
-              - src
-              - packages
-              - apps
-              - services
-              - ci
-              - scripts
-              - unified-gates/scripts
-              - mcv_auditor
-            paths-ignore:
-              - node_modules
-              - dist
-              - build
-              - outputs
-              - "**/*.test.ts"
-              - "**/*.spec.ts"
-
-      - name: Setup Node.js (for JS/TS analysis)
-        if: matrix.language == 'javascript-typescript'
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-
-      - name: Setup pnpm (for JS/TS analysis)
-        if: matrix.language == 'javascript-typescript'
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
-      - name: Install JS dependencies
-        if: matrix.language == 'javascript-typescript'
-        run: pnpm install --frozen-lockfile
-
-      - name: Build TypeScript (for JS/TS analysis)
-        if: matrix.language == 'javascript-typescript'
-        run: pnpm run build --if-present
-        continue-on-error: true
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
-        with:
-          category: "/language:${{ matrix.language }}"
-          upload: true
-
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+        queries: security-extended,security-and-quality
+        config: "paths:\n  - src\n  - packages\n  - apps\n  - services\n  - ci\n \
+          \ - scripts\n  - unified-gates/scripts\n  - mcv_auditor\npaths-ignore:\n\
+          \  - node_modules\n  - dist\n  - build\n  - outputs\n  - \"**/*.test.ts\"\
+          \n  - \"**/*.spec.ts\"\n"
+        build-mode: ${{ matrix.build-mode }}
+        config-file: .github/codeql/codeql-config.yml
+    - name: Setup Node.js (for JS/TS analysis)
+      if: matrix.language == 'javascript-typescript'
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+    - name: Setup pnpm (for JS/TS analysis)
+      if: matrix.language == 'javascript-typescript'
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9
+    - name: Install JS dependencies
+      if: matrix.language == 'javascript-typescript'
+      run: pnpm install --frozen-lockfile
+    - name: Build TypeScript (for JS/TS analysis)
+      if: matrix.language == 'javascript-typescript'
+      run: pnpm run build --if-present
+      continue-on-error: true
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: /language:${{ matrix.language }}
+        upload: true
+    - name: Run manual build steps
+      if: matrix.build-mode == 'manual'
+      shell: bash
+      run: "echo 'If you are using a \"manual\" build mode for one of the' \\\n  'languages\
+        \ you are analyzing, replace this with the commands to build' \\\n  'your\
+        \ code, for example:'\necho '  make bootstrap'\necho '  make release'\nexit\
+        \ 1\n"
+    permissions:
+      security-events: write
+      packages: read
+      actions: read
+      contents: read
   secret-scan:
     name: Secret Scanning
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Scan for hardcoded secrets
-        run: |
-          # Check for common secret patterns
-          echo "Scanning for hardcoded secrets..."
-
-          # Check for private keys
-          if grep -r "BEGIN PRIVATE KEY\|BEGIN RSA PRIVATE KEY\|BEGIN EC PRIVATE KEY" \
-            --include="*.ts" --include="*.js" --include="*.py" --include="*.yaml" \
-            --exclude-dir=node_modules --exclude-dir=.git .; then
-            echo "ERROR: Private key found in source code"
-            exit 1
-          fi
-
-          # Check for hardcoded passwords (simple patterns)
-          if grep -rE "password\s*=\s*['\"][^'\"]{8,}['\"]" \
-            --include="*.ts" --include="*.js" --include="*.py" \
-            --exclude-dir=node_modules --exclude-dir=.git \
-            --exclude="*.test.*" --exclude="*.spec.*" .; then
-            echo "WARNING: Potential hardcoded password found"
-          fi
-
-          echo "Secret scan completed"
-
-      - name: Check for forbidden vendor URLs in production config
-        run: |
-          python3 -c "
-          import re, os, sys
-
-          forbidden_patterns = [
-              r'\.github\.io',
-              r'\.pages\.dev',
-              r'\.vercel\.app',
-              r'\.netlify\.app',
-              r'\.run\.app',
-              r'\.appspot\.com',
-              r'\.cloudfunctions\.net',
-              r'\.web\.app',
-              r'\.firebaseapp\.com',
-          ]
-
-          production_config_files = [
-              'config/architecture.config.yaml',
-              'config/runtime.config.yaml',
-          ]
-
-          violations = []
-          for filepath in production_config_files:
-              if not os.path.exists(filepath):
-                  continue
-              with open(filepath) as f:
-                  content = f.read()
-              for pattern in forbidden_patterns:
-                  if re.search(pattern, content):
-                      violations.append(f'{filepath}: matches {pattern}')
-
-          if violations:
-              for v in violations:
-                  print(f'VIOLATION: {v}')
-              sys.exit(1)
-          print('Vendor URL check: PASSED')
-          "
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Scan for hardcoded secrets
+      run: "# Check for common secret patterns\necho \"Scanning for hardcoded secrets...\"\
+        \n\n# Check for private keys\nif grep -r \"BEGIN PRIVATE KEY\\|BEGIN RSA PRIVATE\
+        \ KEY\\|BEGIN EC PRIVATE KEY\" \\\n  --include=\"*.ts\" --include=\"*.js\"\
+        \ --include=\"*.py\" --include=\"*.yaml\" \\\n  --exclude-dir=node_modules\
+        \ --exclude-dir=.git .; then\n  echo \"ERROR: Private key found in source\
+        \ code\"\n  exit 1\nfi\n\n# Check for hardcoded passwords (simple patterns)\n\
+        if grep -rE \"password\\s*=\\s*['\\\"][^'\\\"]{8,}['\\\"]\" \\\n  --include=\"\
+        *.ts\" --include=\"*.js\" --include=\"*.py\" \\\n  --exclude-dir=node_modules\
+        \ --exclude-dir=.git \\\n  --exclude=\"*.test.*\" --exclude=\"*.spec.*\" .;\
+        \ then\n  echo \"WARNING: Potential hardcoded password found\"\nfi\n\necho\
+        \ \"Secret scan completed\"\n"
+    - name: Check for forbidden vendor URLs in production config
+      run: "python3 -c \"\nimport re, os, sys\n\nforbidden_patterns = [\n    r'\\\
+        .github\\.io',\n    r'\\.pages\\.dev',\n    r'\\.vercel\\.app',\n    r'\\\
+        .netlify\\.app',\n    r'\\.run\\.app',\n    r'\\.appspot\\.com',\n    r'\\\
+        .cloudfunctions\\.net',\n    r'\\.web\\.app',\n    r'\\.firebaseapp\\.com',\n\
+        ]\n\nproduction_config_files = [\n    'config/architecture.config.yaml',\n\
+        \    'config/runtime.config.yaml',\n]\n\nviolations = []\nfor filepath in\
+        \ production_config_files:\n    if not os.path.exists(filepath):\n       \
+        \ continue\n    with open(filepath) as f:\n        content = f.read()\n  \
+        \  for pattern in forbidden_patterns:\n        if re.search(pattern, content):\n\
+        \            violations.append(f'{filepath}: matches {pattern}')\n\nif violations:\n\
+        \    for v in violations:\n        print(f'VIOLATION: {v}')\n    sys.exit(1)\n\
+        print('Vendor URL check: PASSED')\n\"\n"
+metadata: {}

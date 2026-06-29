@@ -1,15 +1,35 @@
-apiVersion: mycodexvantaos.io/v1
-kind: ModuleManifest
+apiVersion: mycodexvantaos.org/v1
+kind: Module
 metadata:
   name: mycodexvantaos-core-auth
+  labels:
+    mycodexvantaos.org/domain: core
+    mycodexvantaos.org/managed-by: naming-spec-v1
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
-
+spec:
+  domain: core
+  capabilities:
+  - auth
+  - database
+  - cache
+  - secrets
+  providers:
+    auth: auth-keycloak
+    database: database-postgres
+    cache: cache-redis
+    secrets: secrets-vault
+  lifecycle:
+    stage: stable
+    since: v1.0.0
+  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-core-auth
+  packageName: '@mycodexvantaos/core-auth'
+  description: Core authentication and authorization service.
 service-id: mycodexvantaos-core-auth
 platform: mycodexvantaos
 runtime-modes:
-  - native
-  - connected
-  - hybrid
+- native
+- connected
+- hybrid
 service-path: services/mycodexvantaos-core-auth

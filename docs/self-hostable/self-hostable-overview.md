@@ -1,23 +1,54 @@
-# MyCodexVantaOS Self-Hostable Overview
+# Self-Hostable Overview
 
-MyCodexVantaOS supports three runtime modes:
+## Philosophy
 
-## Native Mode
+MyCodeXvantaOS is designed to be self-hostable. You can run the entire platform
+on your own infrastructure without depending on any cloud service.
 
-Fully self-hosted, no external providers required.
-All capabilities use native providers.
+## Quick Start
 
-## Connected Mode
+### Docker Compose (Recommended)
 
-Cloud-connected with external provider integrations.
-Uses OpenAI, Cloudflare, and other external services.
+```bash
+# Clone the repository
+git clone https://github.com/ai-software-engineering-guild/mycodexvantaos.git
+cd mycodexvantaos
 
-## Hybrid Mode
+# Start all services
+docker compose up -d
 
-Mix of native and connected providers.
-Selective cloud usage for specific capabilities.
+# Access the platform
+open http://localhost:8787
+```
 
-## Deployment
+### From Source
 
-Regardless of deployment mode, the canonical URL remains:
-https://mycodexvantaos.com
+```bash
+# Install dependencies
+pnpm install
+uv sync
+
+# Run migrations
+pnpm --filter @mycodexvantaos/cli migrate
+
+# Start services
+pnpm --filter @mycodexvantaos/cli dev:local
+```
+
+## Runtime Options
+
+| Runtime    | Difficulty | Use Case    |
+| ---------- | ---------- | ----------- |
+| Local      | Easy       | Development |
+| Docker     | Medium     | Self-hosted |
+| Kubernetes | Advanced   | Production  |
+
+## Configuration
+
+All configuration is via environment variables or YAML files. No cloud-specific
+API keys are required for the local or Docker runtime.
+
+## Data Ownership
+
+When self-hosted, all data remains on your infrastructure. The platform does not
+phone home or require external services for core functionality.

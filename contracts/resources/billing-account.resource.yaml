@@ -1,6 +1,10 @@
 apiVersion: mycodexvantaos.io/v1
 kind: ResourceDefinition
 metadata:
-  name: mycodexvantaos-billing-account-resource
+  name: billing-account
   version: 1.0.0
+spec:
+  kind: BillingAccount
+  group: mycodexvantaos.io
+  version: v1
 platform: mycodexvantaos

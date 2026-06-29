@@ -1,20 +1,64 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mycodexvantaos.com/schemas/gate/vector-index.schema.json",
-  "title": "VectorIndex",
-  "description": "MyCodexVantaOS gate vector-index schema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mycodexvantaos.io/schemas/unified-gates/vector-index",
+  "title": "Vector Index Contract",
+  "description": "Schema for vector database index contract definitions.",
   "type": "object",
-  "required": ["apiVersion", "kind", "metadata"],
   "properties": {
-    "apiVersion": { "type": "string", "const": "mycodexvantaos.io/v1" },
-    "kind": { "type": "string" },
-    "metadata": {
+    "indexId": {
+      "type": "string"
+    },
+    "indexVersion": {
+      "type": "string"
+    },
+    "embeddingModelRef": {
+      "type": "string"
+    },
+    "embeddingDimension": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "distanceMetric": {
+      "type": "string",
+      "enum": ["cosine", "euclidean", "dot-product"]
+    },
+    "freshnessWindowHours": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "recallAtK": {
       "type": "object",
-      "required": ["name", "version"],
       "properties": {
-        "name": { "type": "string" },
-        "version": { "type": "string" }
-      }
+        "k": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "minRecall": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": ["k", "minRecall"]
+    },
+    "maxQueryLatencyMs": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "accessPolicy": {
+      "type": "string"
     }
-  }
+  },
+  "required": [
+    "indexId",
+    "indexVersion",
+    "embeddingModelRef",
+    "embeddingDimension",
+    "distanceMetric",
+    "freshnessWindowHours",
+    "recallAtK",
+    "maxQueryLatencyMs",
+    "accessPolicy"
+  ],
+  "additionalProperties": false
 }

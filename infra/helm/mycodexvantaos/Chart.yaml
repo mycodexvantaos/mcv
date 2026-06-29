@@ -1,12 +1,12 @@
 apiVersion: v2
 name: mycodexvantaos
-description: MyCodexVantaOS Platform Helm Chart
+description: MyCodeXvantaOS platform Helm chart
 type: application
 version: 1.0.0
-appVersion: "1.0.0"
+appVersion: 1.0.0
 home: https://mycodexvantaos.com
 sources:
-  - https://github.com/mycodexvantaos/mycodexvantaos
+- https://github.com/mycodexvantaos/mycodexvantaos
 maintainers:
-  - name: MyCodexVantaOS Platform Team
-    url: https://mycodexvantaos.com
+- name: MyCodexVantaOS Platform Team
+  url: https://mycodexvantaos.com

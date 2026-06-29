@@ -1,6 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
 kind: NavigationMap
 metadata:
-  name: mycodexvantaos-governance-map
+  name: governance-map
+  description: governance-map for MyCodexVantaOS
   version: 1.0.0
+spec: {}
 platform: mycodexvantaos

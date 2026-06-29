@@ -1,6 +1,10 @@
 apiVersion: mycodexvantaos.io/v1
 kind: ResourceDefinition
 metadata:
-  name: mycodexvantaos-workspace-resource
+  name: workspace
   version: 1.0.0
+spec:
+  kind: Workspace
+  group: mycodexvantaos.io
+  version: v1
 platform: mycodexvantaos

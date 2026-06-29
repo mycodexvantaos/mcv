@@ -1,15 +1,26 @@
-apiVersion: mycodexvantaos.io/v1
-kind: ProviderManifest
+apiVersion: mycodexvantaos.org/v1
+kind: Provider
 metadata:
-  name: mycodexvantaos-cache-redis
+  name: cache-redis
+  capability: cache
+  labels:
+    mycodexvantaos.org/managed-by: naming-spec-v1
+    mycodexvantaos.org/specRef: '8.1'
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
-
+spec:
+  providerName: redis
+  isNative: false
+  lifecycle:
+    stage: stable
+  envVarPrefix: MYCODEXVANTAOS_CACHE
+  configSchemaRef: ./config.schema.json
+  description: Redis in-memory cache provider.
 provider-id: mycodexvantaos-cache-redis
 capability: cache
 platform: mycodexvantaos
 runtime-modes:
-  - native
-  - connected
-  - hybrid
+- native
+- connected
+- hybrid

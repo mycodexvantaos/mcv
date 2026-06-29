@@ -1,7 +1,9 @@
 apiVersion: mycodexvantaos.io/v1
-kind: ExceptionRegistry
+kind: NamespaceExceptions
 metadata:
-  name: mycodexvantaos-exception-index
+  name: exception-index
   version: 1.0.0
+spec:
+  exceptions: []
 platform: mycodexvantaos
 exceptions: []

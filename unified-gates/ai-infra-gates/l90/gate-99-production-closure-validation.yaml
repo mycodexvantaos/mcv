@@ -1,13 +1,53 @@
+---
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
-  name: mycodexvantaos-gate-99-production-closure-validation
+  id: gate-99-production-closure-validation
   version: 1.0.0
-  date: "2026-06-29"
+  layer: l90
+  plane: ai-infra
+  blocking: true
+  lifecycle: active
+  criticality: critical
+  owner: platform@mycodexvantaos.com
+  governanceCode: mycodexvantaos-00000
+  createdAt: 2026-01-01 00:00:00+00:00
+  tags:
+  - l90
+  - production
+  sloTarget: 30
+  evidenceRetentionDays: 2555
+  date: '2026-06-29'
   status: active
-gate-id: gate-99-production-closure-validation
-level: l90
-platform: mycodexvantaos
-severity: critical
-blocking: true
-final-gate: true
+spec:
+  description: 'Final production closure gate. Validates that all l90 gates have passed
+    and the artifact is approved for production promotion.
+
+    '
+  validates:
+  - dimension: production-closure
+    description: All production closure requirements are met.
+    checks:
+    - id: chk-all-l90-gates-passed
+      description: All l90 gates (91–98) have passed
+      rule: gate:l90-all-passed
+      severity: critical
+      evidenceRequired: true
+    - id: chk-production-approval
+      description: Production promotion has been approved by the release authority
+      rule: approval:release-authority
+      severity: critical
+      evidenceRequired: true
+    - id: chk-deployment-window
+      description: Deployment is within the approved deployment window
+      rule: schedule:deployment-window
+      severity: high
+      evidenceRequired: true
+    - id: chk-on-call-confirmed
+      description: On-call engineer has confirmed readiness
+      rule: oncall:confirmed
+      severity: high
+      evidenceRequired: true
+  dependsOn: []
+  waiverPolicy: ./policies/gate-waiver-policy.yaml
+  escalationPolicy: ./policies/gate-risk-policy.yaml

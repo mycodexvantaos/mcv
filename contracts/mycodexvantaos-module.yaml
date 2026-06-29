@@ -1,6 +1,12 @@
 apiVersion: mycodexvantaos.io/v1
 kind: RootModule
 metadata:
-  name: mycodexvantaos-contracts
+  name: contracts
+  urn: urn:mycodexvantaos:contracts:module:contracts
   version: 1.0.0
+spec:
+  moduleType: contracts
+  description: API contracts, event contracts, schemas, and resource definitions
+  runtimeCodeAllowed: false
+  deploymentAllowed: false
 platform: mycodexvantaos

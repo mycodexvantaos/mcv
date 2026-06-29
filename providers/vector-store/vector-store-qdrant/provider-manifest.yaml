@@ -1,15 +1,26 @@
-apiVersion: mycodexvantaos.io/v1
-kind: ProviderManifest
+apiVersion: mycodexvantaos.org/v1
+kind: Provider
 metadata:
-  name: mycodexvantaos-vector-store-qdrant
+  name: vector-store-qdrant
+  capability: vector-store
+  labels:
+    mycodexvantaos.org/managed-by: naming-spec-v1
+    mycodexvantaos.org/specRef: '8.1'
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
-
+spec:
+  providerName: qdrant
+  isNative: false
+  lifecycle:
+    stage: stable
+  envVarPrefix: MYCODEXVANTAOS_VECTOR_STORE_QDRANT
+  configSchemaRef: ./config.schema.json
+  description: Qdrant vector database provider.
 provider-id: mycodexvantaos-vector-store-qdrant
 capability: vector-store
 platform: mycodexvantaos
 runtime-modes:
-  - native
-  - connected
-  - hybrid
+- native
+- connected
+- hybrid

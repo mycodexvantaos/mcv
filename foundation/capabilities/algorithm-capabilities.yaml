@@ -1,7 +1,9 @@
 apiVersion: mycodexvantaos.io/v1
 kind: FoundationCapabilities
 metadata:
-  name: mycodexvantaos-algorithm-capabilities
+  name: algorithm-capabilities
   version: 1.0.0
-platform: mycodexvantaos
-foundation: algorithm-foundation
+spec:
+  foundation: algorithm-foundation
+  capabilities: []
+  platform: mycodexvantaos

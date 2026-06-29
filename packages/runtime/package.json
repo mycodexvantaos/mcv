@@ -1,23 +1,32 @@
 {
   "name": "@mycodexvantaos/runtime",
-  "version": "1.0.0",
-  "description": "MyCodexVantaOS runtime package",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "version": "0.0.1",
+  "description": "Application runtime execution environment",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "test": "vitest run",
-    "typecheck": "tsc --noEmit",
-    "clean": "rm -rf dist"
-  },
-  "dependencies": {
-    "@mycodexvantaos/core": "workspace:*"
+    "build": "tsc",
+    "test": "jest --config ../../jest.config.js",
+    "clean": "rm -rf dist",
+    "lint": "eslint src/**/*.ts"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0",
-    "typescript": "^5.5.0",
-    "vitest": "^2.0.0"
+    "@types/jest": "^29.5.14",
+    "@types/node": "^20.19.43",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.4.11",
+    "typescript": "^5.9.3"
   },
-  "license": "UNLICENSED",
-  "private": false
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mycodexvantaos/platform.git",
+    "directory": "packages/runtime"
+  },
+  "author": "MyCodeXvantaOS Team",
+  "keywords": [
+    "mycodexvantaos",
+    "runtime",
+    "runtime"
+  ]
 }

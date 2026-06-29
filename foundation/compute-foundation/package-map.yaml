@@ -1,8 +1,9 @@
 apiVersion: mycodexvantaos.io/v1
-kind: FoundationPackage-map
+kind: FoundationSpec
 metadata:
-  name: mycodexvantaos-compute-foundation-package-map
+  name: package-map
+  foundation: compute-foundation
   version: 1.0.0
-  foundation: mycodexvantaos-compute-foundation
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
+spec: {}

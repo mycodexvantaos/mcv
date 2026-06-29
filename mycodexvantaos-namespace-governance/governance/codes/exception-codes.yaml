@@ -1,6 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
 kind: GovernanceCodes
 metadata:
-  name: mycodexvantaos-exception-codes
+  name: exception-codes
   version: 1.0.0
+spec:
+  codes: []
 platform: mycodexvantaos

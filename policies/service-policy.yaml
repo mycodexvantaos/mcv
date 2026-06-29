@@ -1,8 +1,12 @@
 apiVersion: mycodexvantaos.io/v1
-kind: Policy
+kind: GovernancePolicy
 metadata:
-  name: mycodexvantaos-service-policy
+  name: service-policy
+  description: service-policy for MyCodexVantaOS
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
+spec:
+  rules: []
+  enforcement: block
 platform: mycodexvantaos

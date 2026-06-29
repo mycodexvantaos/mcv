@@ -1,8 +1,16 @@
+category: audit
+description: Event contracts for audit domain
+events:
+- audit.event-recorded
+- audit.chain-verified
+- audit.chain-violation-detected
+- audit.event-queried
+- audit.integrity-check-completed
 apiVersion: mycodexvantaos.io/v1
 kind: EventContract
 metadata:
   name: mycodexvantaos-audit-events
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
 platform: mycodexvantaos

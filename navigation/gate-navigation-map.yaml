@@ -1,9 +1,20 @@
 apiVersion: mycodexvantaos.io/v1
-kind: NavigationArtifact
+kind: GateNavigationMap
 metadata:
-  name: mycodexvantaos-gate-navigation-map
+  name: gate-navigation-map
+  description: Gate navigation map for MyCodexVantaOS
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
+spec:
+  gatePlanes:
+  - name: quality-gates
+    catalogPath: unified-gates/quality-gates/
+  - name: ai-infra-gates
+    catalogPath: unified-gates/ai-infra-gates/
+  - name: production-gates
+    catalogPath: unified-gates/production-gates/
+  gateIndex:
+    path: unified-gates/unified-gate-index.yaml
 platform: mycodexvantaos
-canonical-url: "https://mycodexvantaos.com"
+canonical-url: https://mycodexvantaos.com

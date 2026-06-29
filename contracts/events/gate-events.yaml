@@ -1,8 +1,10 @@
 apiVersion: mycodexvantaos.io/v1
 kind: EventContract
 metadata:
-  name: mycodexvantaos-gate-events
+  name: gate-events
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
+spec:
+  events: []
 platform: mycodexvantaos

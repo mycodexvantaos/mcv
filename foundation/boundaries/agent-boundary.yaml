@@ -1,7 +1,9 @@
 apiVersion: mycodexvantaos.io/v1
 kind: FoundationBoundary
 metadata:
-  name: mycodexvantaos-agent-boundary
+  name: agent-boundary
   version: 1.0.0
-platform: mycodexvantaos
-foundation: agent-foundation
+spec:
+  foundation: agent-foundation
+  boundaryType: specification-unit
+  platform: mycodexvantaos

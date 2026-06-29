@@ -3,5 +3,6 @@ kind: Namespace
 metadata:
   name: mycodexvantaos
   labels:
+    app.kubernetes.io/managed-by: mycodexvantaos
+    mycodexvantaos/module: platform
     platform: mycodexvantaos
-    app.kubernetes.io/managed-by: helm

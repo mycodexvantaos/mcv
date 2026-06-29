@@ -1,15 +1,31 @@
 apiVersion: mycodexvantaos.io/v1
 kind: ProviderManifest
 metadata:
-  name: mycodexvantaos-database-postgres
+  name: database-postgres
+  urn: urn:mycodexvantaos:provider:database-postgres
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
-
+spec:
+  id: database-postgres
+  capability: database
+  source: postgres
+  status: active
+  criticality: high
+  supportsModes:
+  - native
+  - connected
+  - hybrid
+  healthCheck:
+    enabled: true
+    endpoint: /health
+  observability:
+    metricsEnabled: true
+    tracingEnabled: true
 provider-id: mycodexvantaos-database-postgres
 capability: database
 platform: mycodexvantaos
 runtime-modes:
-  - native
-  - connected
-  - hybrid
+- native
+- connected
+- hybrid

@@ -1,12 +1,22 @@
 apiVersion: mycodexvantaos.io/v1
 kind: Foundation
 metadata:
-  name: mycodexvantaos-governance-foundation
+  name: governance-foundation
+  urn: urn:mycodexvantaos:foundation:spec:governance-foundation
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
-
-foundation-id: mycodexvantaos-governance-foundation
-platform: mycodexvantaos
-category: governance
-description: "MyCodexVantaOS governance Foundation — strategic foundation specification"
+spec:
+  boundary:
+    boundaryType: specification-unit
+    parentModule: foundation
+    parentModuleUrn: urn:mycodexvantaos:foundation:module:foundation
+    independentRootModule: false
+    requiresModuleContract: false
+    runtimeCodeAllowed: false
+    serviceCodeAllowed: false
+    deploymentManifestAllowed: false
+  description: Strategic specification unit for governance-foundation
+  foundation-id: mycodexvantaos-governance-foundation
+  platform: mycodexvantaos
+  category: governance

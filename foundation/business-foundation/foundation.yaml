@@ -1,12 +1,22 @@
 apiVersion: mycodexvantaos.io/v1
 kind: Foundation
 metadata:
-  name: mycodexvantaos-business-foundation
+  name: business-foundation
+  urn: urn:mycodexvantaos:foundation:spec:business-foundation
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
-
-foundation-id: mycodexvantaos-business-foundation
-platform: mycodexvantaos
-category: business
-description: "MyCodexVantaOS business Foundation — strategic foundation specification"
+spec:
+  boundary:
+    boundaryType: specification-unit
+    parentModule: foundation
+    parentModuleUrn: urn:mycodexvantaos:foundation:module:foundation
+    independentRootModule: false
+    requiresModuleContract: false
+    runtimeCodeAllowed: false
+    serviceCodeAllowed: false
+    deploymentManifestAllowed: false
+  description: Strategic specification unit for business-foundation
+  foundation-id: mycodexvantaos-business-foundation
+  platform: mycodexvantaos
+  category: business

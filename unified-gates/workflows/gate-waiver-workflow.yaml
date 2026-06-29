@@ -1,8 +1,38 @@
 apiVersion: mycodexvantaos.io/v1
-kind: GateWorkflow
+kind: GateWaiverWorkflow
 metadata:
-  name: mycodexvantaos-gate-waiver-workflow
-  version: 1.0.0
+  version: "1.0.0"
   date: "2026-06-29"
-  status: active
-platform: mycodexvantaos
+  status: "active"
+  name: gate-waiver-workflow
+  version: 1.0.0
+  governanceCode: mycodexvantaos-00000
+spec:
+  description: >
+    Defines the approval workflow for gate waiver requests.
+  steps:
+    - id: submit
+      actor: requestor
+      action: submit-waiver-request
+      output: waiver-draft
+    - id: owner-review
+      actor: gate-owner
+      action: review-waiver-request
+      sloHours: 4
+      onApprove: council-review
+      onReject: reject
+    - id: council-review
+      actor: platform-governance-council
+      condition: gate.criticality == critical
+      action: review-waiver-request
+      sloHours: 8
+      onApprove: activate
+      onReject: reject
+    - id: activate
+      actor: system
+      action: activate-waiver
+      maxDurationDays: 30
+    - id: reject
+      actor: system
+      action: reject-waiver
+      notify: requestor

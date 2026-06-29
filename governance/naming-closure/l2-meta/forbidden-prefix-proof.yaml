@@ -1,9 +1,10 @@
 apiVersion: mycodexvantaos.io/v1
-kind: NamingProof
+kind: NamingClosureProof
 metadata:
-  name: mycodexvantaos-forbidden-prefix-proof
+  name: forbidden-prefix-proof
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: proven
+spec: {}
 platform: mycodexvantaos
 proven: true

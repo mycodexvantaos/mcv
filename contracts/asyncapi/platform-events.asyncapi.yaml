@@ -1,10 +1,10 @@
-asyncapi: "3.0.0"
+asyncapi: 2.6.0
 info:
-  title: "MyCodexVantaOS platform-events"
-  version: "1.0.0"
-  description: "MyCodexVantaOS platform-events AsyncAPI specification"
+  title: MyCodexVantaOS platform-events
+  version: 1.0.0
+  description: MyCodexVantaOS platform-events AsyncAPI specification
+channels: {}
 servers:
   production:
-    host: "api.mycodexvantaos.com"
-    protocol: "amqp"
-channels: {}
+    host: api.mycodexvantaos.com
+    protocol: amqp

@@ -1,16 +1,23 @@
 apiVersion: mycodexvantaos.io/v1
 kind: AuditRetentionPolicy
 metadata:
-  name: mycodexvantaos-audit-retention-policy
+  name: audit-retention-policy
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
-
+spec:
+  critical:
+    minimumRetentionDays: 2555
+  high:
+    minimumRetentionDays: 1095
+  medium:
+    minimumRetentionDays: 365
+  low:
+    minimumRetentionDays: 180
 retention:
   default-days: 365
   minimum-days: 90
-  maximum-days: 2555  # 7 years for compliance
-
+  maximum-days: 2555
   by-event-type:
     governance-policy-change: 2555
     identity-policy-change: 2555
@@ -29,14 +36,12 @@ retention:
     api-key-created: 365
     api-key-revoked: 365
     permission-change: 730
-
 storage:
   primary: governance/audit/
   immutable: true
   encryption: AES-256-GCM
   backup-enabled: true
   backup-frequency: daily
-
 deletion:
   auto-delete-expired: false
   require-manual-approval: true

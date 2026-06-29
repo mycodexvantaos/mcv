@@ -1,8 +1,10 @@
 apiVersion: mycodexvantaos.io/v1
-kind: DependencyGraph
+kind: NavigationGraph
 metadata:
-  name: mycodexvantaos-hard-dependency-graph
+  name: hard-dependency-graph
+  description: hard-dependency-graph for MyCodexVantaOS
   version: 1.0.0
+spec: {}
 platform: mycodexvantaos
 nodes: []
 edges: []

@@ -1,12 +1,22 @@
 apiVersion: mycodexvantaos.io/v1
 kind: Foundation
 metadata:
-  name: mycodexvantaos-algorithm-foundation
+  name: algorithm-foundation
+  urn: urn:mycodexvantaos:foundation:spec:algorithm-foundation
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
-
-foundation-id: mycodexvantaos-algorithm-foundation
-platform: mycodexvantaos
-category: algorithm
-description: "MyCodexVantaOS algorithm Foundation — strategic foundation specification"
+spec:
+  boundary:
+    boundaryType: specification-unit
+    parentModule: foundation
+    parentModuleUrn: urn:mycodexvantaos:foundation:module:foundation
+    independentRootModule: false
+    requiresModuleContract: false
+    runtimeCodeAllowed: false
+    serviceCodeAllowed: false
+    deploymentManifestAllowed: false
+  description: Strategic specification unit for algorithm-foundation
+  foundation-id: mycodexvantaos-algorithm-foundation
+  platform: mycodexvantaos
+  category: algorithm

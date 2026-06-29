@@ -1,15 +1,34 @@
-apiVersion: mycodexvantaos.io/v1
-kind: ModuleManifest
+apiVersion: mycodexvantaos.org/v1
+kind: Module
 metadata:
   name: mycodexvantaos-ai-embedding
+  labels:
+    mycodexvantaos.org/domain: ai
+    mycodexvantaos.org/managed-by: naming-spec-v1
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
-
+spec:
+  domain: ai
+  capabilities:
+  - embedding
+  - vector-store
+  - cache
+  providers:
+    embedding: embedding-openai
+    vector-store: vector-store-pgvector
+    cache: cache-redis
+  lifecycle:
+    stage: stable
+    since: v1.0.0
+  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-embedding
+  packageName: '@mycodexvantaos/ai-embedding'
+  description: AI embedding generation service. Produces dense vector representations
+    from text using configurable embedding providers.
 service-id: mycodexvantaos-ai-embedding
 platform: mycodexvantaos
 runtime-modes:
-  - native
-  - connected
-  - hybrid
+- native
+- connected
+- hybrid
 service-path: services/mycodexvantaos-ai-embedding

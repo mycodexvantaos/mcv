@@ -1,8 +1,10 @@
 apiVersion: mycodexvantaos.io/v1
-kind: FoundationIndex
+kind: FoundationSpec
 metadata:
-  name: mycodexvantaos-foundation-roadmap
+  name: foundation-roadmap
+  description: foundation-roadmap for MyCodexVantaOS platform foundations
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   status: active
-platform: mycodexvantaos
+spec:
+  platform: mycodexvantaos

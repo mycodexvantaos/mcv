@@ -1,8 +1,35 @@
 apiVersion: mycodexvantaos.io/v1
-kind: GateWorkflow
+kind: AIWorkloadProductionReadinessWorkflow
 metadata:
-  name: mycodexvantaos-ai-workload-production-readiness-workflow
-  version: 1.0.0
+  version: "1.0.0"
   date: "2026-06-29"
-  status: active
-platform: mycodexvantaos
+  status: "active"
+  name: ai-workload-production-readiness-workflow
+  version: 1.0.0
+  governanceCode: mycodexvantaos-60700
+spec:
+  description: >
+    Defines the production readiness workflow for AI workloads. This workflow
+    orchestrates all AI-specific gates before a workload is promoted to production.
+  prerequisites:
+    - gate-01-namespace-governance-validation
+    - gate-03-governance-code-validation
+  workloadGates:
+    - gate-21-dataset-contract-validation
+    - gate-22-dataset-lineage-validation
+    - gate-23-dataset-license-validation
+    - gate-24-pii-and-sensitive-data-scan
+    - gate-31-ai-framework-compatibility-validation
+    - gate-32-model-contract-validation
+    - gate-37-model-registry-validation
+    - gate-38-algorithm-safety-policy-validation
+    - gate-41-ai-workload-contract-validation
+    - gate-47-workload-slo-validation
+    - gate-48-workload-runtime-sandbox-validation
+    - gate-51-usage-event-contract-validation
+    - gate-56-cost-attribution-validation
+    - gate-91-sbom-generation-validation
+    - gate-93-signature-validation
+    - gate-94-policy-attestation-validation
+    - gate-99-production-closure-validation
+  reportOutput: outputs/ai-infra-gate-report.json

@@ -1,8 +1,29 @@
 apiVersion: mycodexvantaos.io/v1
-kind: GateContract
+kind: ModelContract
 metadata:
-  name: mycodexvantaos-model-contract
-  version: 1.0.0
+  version: "1.0.0"
   date: "2026-06-29"
-  status: active
-platform: mycodexvantaos
+  status: "active"
+  name: model-contract
+  version: 1.0.0
+  governanceCode: mycodexvantaos-60600
+spec:
+  description: >
+    Defines the canonical contract for AI model artifacts. All models
+    registered in the model registry MUST conform to this contract.
+  requiredFields:
+    - modelId
+    - modelVersion
+    - modelType
+    - framework
+    - frameworkVersion
+    - inputSchema
+    - outputSchema
+    - minAccuracy
+    - maxLatencyMs
+    - modelCard
+    - safetyPolicyRef
+    - trainingDatasetRef
+  validValues:
+    modelType: [llm, embedding, classifier, regressor, diffusion, multimodal]
+  schemaRef: ../schemas/model-contract.schema.json

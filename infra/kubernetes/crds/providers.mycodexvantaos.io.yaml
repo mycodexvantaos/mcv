@@ -4,18 +4,19 @@ metadata:
   name: providers.mycodexvantaos.io
 spec:
   group: mycodexvantaos.io
-  versions:
-    - name: v1
-      served: true
-      storage: true
-      schema:
-        openAPIV3Schema:
-          type: object
-          properties:
-            spec:
-              type: object
-  scope: Namespaced
   names:
+    kind: Provider
+    listKind: ProviderList
     plural: providers
     singular: provider
-    kind: Provider
+  scope: Namespaced
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object

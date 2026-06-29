@@ -1,2 +1,74 @@
-PROPRIETARY — MyCodexVantaOS. All rights reserved.
-Canonical URL: https://mycodexvantaos.com
+MyCodexVantaOS Unified Gate System
+Proprietary Software License — Internal Use Only
+
+Copyright (c) 2026 MyCodexVantaOS Platform Team
+Governance Code: mycodexvantaos-00000
+
+NOTICE: This software and all associated specifications, schemas, contracts,
+policies, workflows, and documentation (collectively, the "Software") are the
+proprietary and confidential property of the MyCodexVantaOS Platform Team.
+
+GRANT OF LICENSE
+
+Subject to the terms and conditions of this License, the MyCodexVantaOS Platform
+Team grants to authorized personnel within the organization a non-exclusive,
+non-transferable, revocable license to:
+
+  (a) Use the Software solely for internal AI engineering and platform governance
+      purposes within the MyCodexVantaOS and softwareos namespaces;
+
+  (b) Modify the Software for internal use, provided that all modifications are
+      submitted to the unified-gate-governance council for review and that all
+      modified files retain this license header and the applicable governance code;
+
+  (c) Distribute the Software internally to other authorized personnel within the
+      organization who require access for legitimate platform engineering purposes.
+
+RESTRICTIONS
+
+You MUST NOT:
+
+  (a) Distribute, sublicense, sell, or otherwise transfer the Software or any
+      derivative works to any third party outside the organization;
+
+  (b) Remove, alter, or obscure any proprietary notices, governance codes, or
+      license headers from any part of the Software;
+
+  (c) Use the Software in any manner that violates the Namespace Governance
+      Closure Specification (mycodexvantaos-00000) or any applicable governance
+      policy;
+
+  (d) Reverse engineer, decompile, or disassemble any compiled components of
+      the Software except to the extent expressly permitted by applicable law.
+
+GOVERNANCE COMPLIANCE
+
+All use of this Software MUST comply with:
+
+  - Namespace Governance Closure Specification (mycodexvantaos-00000)
+  - Repository Naming Canonical Specification (mycodexvantaos-00100)
+  - Lifecycle State Machine Specification (mycodexvantaos-00200)
+  - Audit Evidence Chain Specification (mycodexvantaos-00700)
+
+DISCLAIMER OF WARRANTIES
+
+THE SOFTWARE IS PROVIDED "AS IS" FOR INTERNAL PLATFORM ENGINEERING USE.
+THE MYCODEXVANTAOS PLATFORM TEAM MAKES NO WARRANTIES, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
+
+LIMITATION OF LIABILITY
+
+IN NO EVENT SHALL THE MYCODEXVANTAOS PLATFORM TEAM BE LIABLE FOR ANY INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES ARISING OUT OF OR IN
+CONNECTION WITH THE USE OF THIS SOFTWARE.
+
+CONTACT
+
+For licensing inquiries or governance council review requests, contact:
+  platform-governance-council@mycodexvantaos.com
+
+---
+Governance Code: mycodexvantaos-00000
+Version: 1.0.0
+Effective: 2026-01-01

@@ -1,7 +1,9 @@
 apiVersion: mycodexvantaos.io/v1
 kind: FoundationCapabilities
 metadata:
-  name: mycodexvantaos-governance-capabilities
+  name: governance-capabilities
   version: 1.0.0
-platform: mycodexvantaos
-foundation: governance-foundation
+spec:
+  foundation: governance-foundation
+  capabilities: []
+  platform: mycodexvantaos
