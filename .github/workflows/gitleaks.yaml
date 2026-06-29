@@ -46,4 +46,3 @@ jobs:
         with:
           sarif_file: gitleaks-report.sarif
           category: gitleaks
-        continue-on-error: true
