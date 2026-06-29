@@ -1,5 +1,5 @@
 name: Architecture Validation
-true:
+'on':
   push:
     branches:
       - main

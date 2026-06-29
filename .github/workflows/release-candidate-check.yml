@@ -1,5 +1,5 @@
 name: Release Candidate Check
-true:
+'on':
   push:
     branches:
       - main
