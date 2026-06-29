@@ -9,7 +9,7 @@
  * Machine Identity: mycodexvantaos
  */
 
-import { createHmac, randomBytes } from 'node:crypto';
+import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
 
 export const SERVICE_ID = 'mycodexvantaos-core-auth';
 export const SERVICE_VERSION = '1.0.0';
@@ -126,11 +126,19 @@ export class JWTTokenManager {
     const [headerB64, payloadB64, signatureB64] = parts;
     const expectedSignature = this.computeSignature(`${headerB64}.${payloadB64}`);
 
-    if (signatureB64 !== expectedSignature) {
+    // Timing-safe comparison to prevent timing attacks
+    const sigBuf = Buffer.from(signatureB64, 'base64url');
+    const expectedBuf = Buffer.from(expectedSignature, 'base64url');
+    if (sigBuf.length !== expectedBuf.length || !timingSafeEqual(sigBuf, expectedBuf)) {
       throw new Error('Invalid JWT signature');
     }
 
-    const payload = JSON.parse(Buffer.from(payloadB64, 'base64url').toString()) as JWTPayload;
+    let payload: JWTPayload;
+    try {
+      payload = JSON.parse(Buffer.from(payloadB64, 'base64url').toString()) as JWTPayload;
+    } catch {
+      throw new Error('Malformed JWT payload');
+    }
     const now = Math.floor(Date.now() / 1000);
 
     if (payload.exp < now) {
