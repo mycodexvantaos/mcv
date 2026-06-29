@@ -1,6 +1,6 @@
 name: Service Catalog Check
 
-on:
+'on':
   push:
     paths:
       - 'services/**'

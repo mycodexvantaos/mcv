@@ -1,6 +1,6 @@
 name: Schema Check
 
-on:
+'on':
   push:
     paths:
       - 'contracts/schemas/**'

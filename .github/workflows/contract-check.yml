@@ -1,6 +1,6 @@
 name: Contract Check
 
-on:
+'on':
   push:
     paths:
       - 'contracts/**'

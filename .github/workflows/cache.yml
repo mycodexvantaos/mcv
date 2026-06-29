@@ -1,6 +1,6 @@
 name: Cache Management
 
-on:
+'on':
   schedule:
     # Run weekly to refresh caches
     - cron: '0 0 * * 0'

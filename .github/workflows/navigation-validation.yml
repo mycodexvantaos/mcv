@@ -1,6 +1,6 @@
 name: Navigation Validation
 
-on:
+'on':
   push:
     branches: [main, develop]
     paths:

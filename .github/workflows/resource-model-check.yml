@@ -1,6 +1,6 @@
 name: Resource Model Check
 
-on:
+'on':
   push:
     paths:
       - 'contracts/resource-kinds/**'

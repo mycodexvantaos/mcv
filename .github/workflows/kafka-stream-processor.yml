@@ -1,6 +1,6 @@
 name: Kafka Stream Processor
 
-on:
+'on':
   push:
     branches: [main, develop]
     paths:

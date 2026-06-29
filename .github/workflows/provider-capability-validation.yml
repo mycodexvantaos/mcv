@@ -1,6 +1,6 @@
 name: Provider Capability Validation
 
-on:
+'on':
   push:
     branches: [main, develop]
     paths:

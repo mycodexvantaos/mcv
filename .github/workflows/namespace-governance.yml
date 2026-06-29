@@ -5,7 +5,7 @@ name: Namespace Governance CI
 permissions:
   contents: read
 
-on:
+'on':
   push:
     branches: [main, develop]
   pull_request:

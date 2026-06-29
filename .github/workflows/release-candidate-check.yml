@@ -209,4 +209,3 @@ jobs:
           name: release-candidate-report
           path: outputs/release-candidate-report.json
           retention-days: 90
-

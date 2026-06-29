@@ -1,6 +1,6 @@
 name: Audit Check
 
-on:
+'on':
   push:
     paths:
       - 'contracts/events/audit-events.yaml'

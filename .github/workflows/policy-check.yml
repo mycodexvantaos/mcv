@@ -1,6 +1,6 @@
 name: Policy Check
 
-on:
+'on':
   push:
     paths:
       - 'contracts/policies/**'

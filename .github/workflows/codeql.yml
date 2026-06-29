@@ -120,4 +120,3 @@ jobs:
           \            violations.append(f'{filepath}: matches {pattern}')\n\nif violations:\n\
           \    for v in violations:\n        print(f'VIOLATION: {v}')\n    sys.exit(1)\n\
           print('Vendor URL check: PASSED')\n\"\n"
-

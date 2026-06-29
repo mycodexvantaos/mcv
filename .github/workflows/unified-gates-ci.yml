@@ -5,7 +5,7 @@ name: Unified Gates CI
 permissions:
   contents: read
 
-on:
+'on':
   push:
     branches: [main, develop]
     paths:

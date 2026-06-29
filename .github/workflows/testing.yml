@@ -2,7 +2,7 @@
 # It is kept for reference and runs only on manual dispatch.
 name: MyCodeXvantaOS Testing (Legacy)
 
-on:
+'on':
   workflow_dispatch:
 
 permissions:

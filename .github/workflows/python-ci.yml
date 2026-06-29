@@ -1,6 +1,6 @@
 name: Python CI
 
-on:
+'on':
   push:
     branches: [main, develop]
     paths:
