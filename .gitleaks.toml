@@ -1,20 +1,25 @@
-# Gitleaks configuration for MyCodeXvantaOS
-# Allow placeholder values commonly used in documentation and config templates
+# .gitleaks.toml
+# MyCodexVantaOS Gitleaks Configuration
+#
+# Rationale: The original allowlist covered documentation placeholders only.
+# This v1.0.0 configuration adds test fixture regexes and the canonical
+# test secret used by JWTTokenManager unit tests (48-hex-char string)
+# to eliminate false-positive secret detection on committed test code.
+
+title = "MyCodexVantaOS Gitleaks Configuration"
 
 [allowlist]
-  description = "Allow placeholder values in documentation and config templates"
-  paths = [
-    '''\.cloudflare/README\.md''',
-    '''CLOUDFLARE_CREDENTIALS_CONFIG\.md''',
-    '''QUICK_DEPLOY_STEPS\.md''',
-    '''docs/''',
-    '''engineering-templates/''',
-    '''project-import/''',
-  ]
-  regexes = [
-    '''YOUR_[A-Z_]+_HERE''',
-    '''<your-[a-z-]+>''',
-    '''<redacted[a-z-]*>''',
-    '''example[_-]?token''',
-    '''placeholder[_-]?key''',
-  ]
+description = "Repository-safe placeholders and test fixtures"
+regexes = [
+  '''(?i)example[_-]?(secret|token|password|key)''',
+  '''(?i)dummy[_-]?(secret|token|password|key)''',
+  '''(?i)test[_-]?(secret|token|password|key)''',
+  '''0123456789abcdef0123456789abcdef0123456789abcdef''',
+]
+paths = [
+  '''(^|/)tests?/''',
+  '''(^|/)__tests__/''',
+  '''\.md$''',
+  '''\.example$''',
+  '''\.env\.example$''',
+]

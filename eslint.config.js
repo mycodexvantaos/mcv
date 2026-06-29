@@ -1,9 +1,15 @@
 /**
  * ESLint flat config — MyCodexVantaOS monorepo
  *
- * Compatible with ESLint v8.x (flat config mode).
- * Rule severities aligned with original .eslintrc.json to avoid
- * introducing new failures.  Incremental tightening tracked in tech debt.
+ * Rationale:
+ * - Keeps production-domain hardcoding guard active without blocking the domain SSOT.
+ * - Prevents false-positive cascade caused by legitimate canonical domain registry.
+ * - Applies strict TypeScript safety while allowing generated/config/governance artifacts
+ *   to be handled by JSON/YAML/Python dedicated validators.
+ * - Uses js.configs.recommended as the JavaScript base, then overlays
+ *   TypeScript-specific rules from @typescript-eslint plugin.
+ *
+ * Document ID: IM-ESLINT-001
  */
 
 import js from '@eslint/js';
@@ -12,7 +18,6 @@ import tsParser from '@typescript-eslint/parser';
 
 /** @type {import("eslint").Linter.FlatConfig[]} */
 const config = [
-  // Global ignores
   {
     ignores: [
       'node_modules/**',
@@ -21,75 +26,70 @@ const config = [
       '.next/**',
       'coverage/**',
       'outputs/**',
+      'reports/**',
+      '.turbo/**',
       '*.config.js',
-      '*.config.ts',
+      '*.config.cjs',
       '*.config.mjs',
-      // Domain SSOT — this file IS the canonical source; hardcoding is intentional
-      'packages/core/src/config/domains.ts',
-      // Python / YAML / JSON — not processed by ESLint
-      '**/*.py',
+      '*.config.ts',
+      '**/*.json',
       '**/*.yaml',
       '**/*.yml',
-      '**/*.json',
+      '**/*.md',
+      '**/*.py',
+
+      // Domain SSOT — this file intentionally owns canonical production domains.
+      'packages/core/src/config/domains.ts',
+
+      // Generated governance/catalog surfaces are validated by schema-specific CI.
+      'governance/**',
+      'unified-gates/**',
+      'policies/**',
+      'provider-registry/**',
+      'service-catalog/**',
+      'capability-set/**',
+
       // Project import / generated / vendored code
       'project-import/**',
+
       // Cloudflare Worker bundles (generated, not source)
       'web-deploy/**',
+
       // Legacy JS service files (pre-existing, tracked in tech debt)
       'packages/providers/src/*.js',
       'services/mycodexvantaos-platform-validation/src/*.js',
       'services/mycodexvantaos-ai-ensemble/src/*.js',
       'ci/validate-architecture.js',
+
       // Legacy jest configs
       '**/jest.config.js',
       '**/jest.preset.js',
+
       // Modules (pre-existing, not yet migrated)
       'modules/**',
+
       // Engineering templates (generated, use require())
       'engineering-templates/**',
+
       // Kubernetes init (generated)
       'infra/kubernetes/base/init.ts',
+
       // Scripts (standalone, use require())
       'scripts/**',
+
       // Legacy tailwind configs (CommonJS require)
       '**/tailwind.config.ts',
+
       // Legacy app-dev-studio (pre-existing React code)
       'services/mycodexvantaos-app-dev-studio/**',
+
       // Legacy studio platform (pre-existing React code, missing react-hooks plugin)
       'services/mycodexvantaos-studio-platform/**',
     ],
   },
 
-  // Base JS rules (relaxed for monorepo compatibility)
-  {
-    rules: {
-      'no-var': 'warn',
-      'no-undef': 'off',
-      'no-empty': 'warn',
-      'no-dupe-keys': 'error',
-      'no-duplicate-case': 'error',
-      'no-func-assign': 'error',
-      'no-irregular-whitespace': 'error',
-      'no-sparse-arrays': 'warn',
-      'no-unreachable': 'error',
-      'no-unsafe-negation': 'error',
-      'valid-typeof': 'error',
-      curly: ['warn', 'multi-line'],
-      'no-cond-assign': ['error', 'except-parens'],
-      'no-constant-condition': 'warn',
-      'no-debugger': 'error',
-      'no-extra-boolean-cast': 'warn',
-      'no-extra-semi': 'error',
-      'no-inner-declarations': 'error',
-      'no-prototype-builtins': 'warn',
-      'no-shadow-restricted-names': 'error',
-      'no-useless-catch': 'warn',
-      'no-with': 'error',
-      'prefer-const': 'warn',
-    },
-  },
+  js.configs.recommended,
 
-  // TypeScript rules (aligned with original .eslintrc.json severities)
   {
     files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
@@ -97,6 +97,7 @@ const config = [
       parserOptions: {
         ecmaVersion: 2022,
         sourceType: 'module',
+        project: ['./tsconfig.base.json'],
       },
       globals: {
         // Node.js globals
@@ -122,7 +123,7 @@ const config = [
         clearInterval: 'readonly',
         atob: 'readonly',
         btoa: 'readonly',
-        // Jest globals
+        // Test globals
         describe: 'readonly',
         it: 'readonly',
         test: 'readonly',
@@ -132,27 +133,50 @@ const config = [
         beforeAll: 'readonly',
         afterAll: 'readonly',
         jest: 'readonly',
+        vi: 'readonly',
       },
     },
     plugins: {
       '@typescript-eslint': tsPlugin,
     },
     rules: {
-      ...tsPlugin.configs['recommended'].rules,
-      // Aligned with original .eslintrc.json
-      '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/explicit-function-return-type': 'off',
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      ...tsPlugin.configs.recommended.rules,
+
+      // Strict TypeScript safety
+      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/consistent-type-imports': 'error',
+      '@typescript-eslint/no-floating-promises': 'error',
+      '@typescript-eslint/no-misused-promises': 'error',
+      '@typescript-eslint/require-await': 'warn',
+      '@typescript-eslint/explicit-function-return-type': [
+        'warn',
+        {
+          allowExpressions: true,
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+
+      // Migration bridge warnings (pre-existing code, not yet fully migrated)
       '@typescript-eslint/no-require-imports': 'warn',
       '@typescript-eslint/ban-ts-comment': 'warn',
       '@typescript-eslint/no-unsafe-function-type': 'warn',
       '@typescript-eslint/no-unused-expressions': 'warn',
-      'no-console': 'off',
 
-      // New rules for PR #200
-      '@typescript-eslint/consistent-type-imports': 'warn',
+      // Strict equality and control flow
+      eqeqeq: ['error', 'always'],
+      curly: ['error', 'all'],
 
-      // Domain hardcoding guard — WARN during migration
+      // Security
+      'no-eval': 'error',
+      'no-implied-eval': 'error',
+      'no-new-func': 'error',
+
+      // Console discipline
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
+
+      // Domain hardcoding guard — warns when mycodexvantaos.com is hardcoded
+      // outside the designated domain SSOT file.
       'no-restricted-syntax': [
         'warn',
         {
@@ -161,21 +185,15 @@ const config = [
             'Do not hardcode production domain strings. Use getDomainConfig() from @mycodexvantaos/core instead.',
         },
       ],
-
-      // Security
-      'no-eval': 'error',
-      'no-implied-eval': 'error',
-      'no-new-func': 'error',
-
-      // Style
-      eqeqeq: ['warn', 'always'],
     },
   },
 
   // Service entry files — allow domain literals (issuer/audience are structural)
   {
-    files: ['services/**/src/index.ts'],
+    files: ['services/**/src/index.ts', 'apps/**/index.ts'],
     rules: {
+      // Migration bridge: service entrypoints may contain issuer/audience/callback
+      // strings until all services consume DomainConfig through dependency injection.
       'no-restricted-syntax': 'off',
     },
   },
@@ -183,9 +201,19 @@ const config = [
   // Test files — relaxed rules
   {
     files: ['**/__tests__/**/*.ts', '**/*.test.ts', '**/*.spec.ts'],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: 2022,
+        sourceType: 'module',
+      },
+    },
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/no-floating-promises': 'off',
       'no-restricted-syntax': 'off',
+      'no-console': 'off',
     },
   },
 ];

@@ -1,0 +1,12 @@
+# .trivyignore
+# MyCodexVantaOS Trivy ignore file.
+#
+# Rationale: intentionally empty by default. Add CVE IDs only with
+# ADR-backed risk acceptance and expiry metadata. Every entry must
+# reference an Architecture Decision Record that documents:
+#   - The vulnerability and its assessed risk
+#   - Why the risk is acceptable (compensating controls, false positive, etc.)
+#   - An expiry date after which the ignore must be re-evaluated
+#
+# Format:
+#   CVE-YYYY-NNNN [expiry:YYYY-MM-DD] [adr:ADR-NNN]

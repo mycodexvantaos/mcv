@@ -1,0 +1,29 @@
+# .semgrep.yml
+# MyCodexVantaOS custom Semgrep rules for deterministic security enforcement.
+#
+# These rules complement the existing Semgrep SAST workflow (semgrep.yaml)
+# which runs the p/default + p/security-audit rule sets. This local config
+# adds MyCodexVantaOS-specific guardrails that the community rulesets cannot
+# express: production secret hardcoding, CORS wildcard in production, and
+# non-timing-safe JWT signature comparison.
+
+rules:
+  - id: mcv-no-hardcoded-production-secret
+    languages: [typescript, javascript, python]
+    severity: ERROR
+    message: "Do not hardcode production secrets. Use secret manager or environment injection."
+    patterns:
+      - pattern-regex: '(?i)(secret|password|api[_-]?key|token)\s*[:=]\s*["\x27][^"\x27]{20,}["\x27]'
+      - pattern-not-regex: '(?i)(example|dummy|test|fixture|placeholder)'
+
+  - id: mcv-no-cors-wildcard-production
+    languages: [typescript, javascript]
+    severity: ERROR
+    message: "Do not use wildcard CORS in production response headers."
+    pattern-regex: 'Access-Control-Allow-Origin["\x27]?\s*:\s*["\x27]\*["\x27]'
+
+  - id: mcv-no-jwt-plain-signature-compare
+    languages: [typescript, javascript]
+    severity: WARNING
+    message: "JWT signature comparisons must be timing-safe. Use crypto.timingSafeEqual instead of !== or ===."
+    pattern-regex: 'signature\w*\s*!==\s*expected\w*'
