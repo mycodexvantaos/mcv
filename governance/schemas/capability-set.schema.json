@@ -14,10 +14,7 @@
     },
     "metadata": {
       "type": "object",
-      "required": [
-        "name",
-        "version"
-      ],
+      "required": ["name", "version"],
       "properties": {
         "name": {
           "type": "string"
@@ -37,11 +34,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": [
-          "id",
-          "description",
-          "category"
-        ],
+        "required": ["id", "description", "category"],
         "properties": {
           "id": {
             "type": "string",
@@ -91,11 +84,6 @@
       }
     }
   },
-  "required": [
-    "apiVersion",
-    "kind",
-    "metadata",
-    "capabilities"
-  ],
+  "required": ["apiVersion", "kind", "metadata", "capabilities"],
   "description": "Schema for MyCodexVantaOS capability set"
 }

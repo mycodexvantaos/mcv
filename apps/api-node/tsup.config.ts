@@ -4,6 +4,7 @@ export default defineConfig({
   entry: ['index.ts'],
   format: ['esm'],
   outDir: 'dist',
-  external: [/^@mycodexvantaos\//],
+  // Do NOT externalize @mycodexvantaos/* packages — bundle them into dist
+  // so the Docker runtime does not need workspace resolution at start time.
   dts: false,
 });

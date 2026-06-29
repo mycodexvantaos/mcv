@@ -47,17 +47,8 @@ domains:
     admin: https://admin.mycodexvantaos.com
     docs: https://docs.mycodexvantaos.com
 forbidden-production-urls:
-  patterns:
-    - '*.github.io'
-    - '*.pages.dev'
-    - '*.vercel.app'
-    - '*.netlify.app'
-    - '*.run.app'
-    - '*.appspot.com'
-    - '*.cloudfunctions.net'
-    - '*.web.app'
-    - '*.firebaseapp.com'
-    - storage.googleapis.com
+  policy: governance/forbidden-production-urls.yaml
+  enforcement: strict
 cors:
   production-allowlist:
     - https://mycodexvantaos.com
