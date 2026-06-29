@@ -53,6 +53,8 @@ import {
 
 import { validateAllContracts } from '@mycodexvantaos/contracts-sdk';
 
+import { getCorsAllowlist, resolveEnvironment } from '@mycodexvantaos/core';
+
 import {
   createSearchReceipt as createReceipt,
   getReceipt as getRetrievalReceipt,
@@ -110,19 +112,33 @@ async function readBody(req: IncomingMessage): Promise<string> {
   return Buffer.concat(chunks).toString('utf-8');
 }
 
-function sendJson(res: ServerResponse, status: number, data: unknown): void {
+function getCorsOrigin(req: IncomingMessage): string {
+  const origin = req.headers.origin ?? '';
+  const allowlist = getCorsAllowlist();
+  if (allowlist.includes(origin)) return origin;
+  // Development fallback: allow localhost origins
+  if (resolveEnvironment() === 'development' && origin.includes('localhost')) return origin;
+  return '';  // No CORS header = browser blocks the request
+}
+
+function sendJson(res: ServerResponse, status: number, data: unknown, req?: IncomingMessage): void {
   const body = JSON.stringify(data, null, 2);
-  res.writeHead(status, {
+  const corsOrigin = req ? getCorsOrigin(req) : '';
+  const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  });
+  };
+  if (corsOrigin) {
+    headers['Access-Control-Allow-Origin'] = corsOrigin;
+    headers['Vary'] = 'Origin';
+  }
+  res.writeHead(status, headers);
   res.end(body);
 }
 
-function sendError(res: ServerResponse, status: number, message: string): void {
-  sendJson(res, status, { error: message });
+function sendError(res: ServerResponse, status: number, message: string, req?: IncomingMessage): void {
+  sendJson(res, status, { error: message }, req);
 }
 
 // ── Route matching ───────────────────────────────────────────────────────
@@ -1330,12 +1346,17 @@ const PORT = Number(process.env.PORT ?? 9100);
 const server = createServer(async (req, res) => {
   // Handle CORS preflight
   if (req.method === 'OPTIONS') {
-    res.writeHead(204, {
-      'Access-Control-Allow-Origin': '*',
+    const corsOrigin = getCorsOrigin(req);
+    const headers: Record<string, string> = {
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       'Access-Control-Max-Age': '86400',
-    });
+    };
+    if (corsOrigin) {
+      headers['Access-Control-Allow-Origin'] = corsOrigin;
+      headers['Vary'] = 'Origin';
+    }
+    res.writeHead(204, headers);
     res.end();
     return;
   }
