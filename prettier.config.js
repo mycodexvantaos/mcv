@@ -1,7 +1,7 @@
 /** @type {import("prettier").Config} */
 const config = {
   semi: true,
-  singleQuote: false,
+  singleQuote: true,
   trailingComma: 'es5',
   printWidth: 100,
   tabWidth: 2,
@@ -14,7 +14,7 @@ const config = {
       files: ['*.yaml', '*.yml'],
       options: {
         tabWidth: 2,
-        singleQuote: false,
+        singleQuote: true,
       },
     },
     {
