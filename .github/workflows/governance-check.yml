@@ -39,7 +39,8 @@ jobs:
           python - <<'PYEOF'
           import yaml, sys, pathlib
 
-          REQUIRED_KEYS = {"version", "kind", "metadata", "spec"}
+          REQUIRED_KEYS = {"kind", "metadata", "spec"}
+          OPTIONAL_VERSION_KEYS = {"version", "apiVersion"}
           audit_files = list(pathlib.Path("policies").glob("*audit*.yaml"))
           if not audit_files:
               print("::warning::No audit policy files found in policies/")
@@ -48,6 +49,8 @@ jobs:
           for f in audit_files:
               doc = yaml.safe_load(f.read_text())
               missing = REQUIRED_KEYS - set(doc.keys())
+              if not (OPTIONAL_VERSION_KEYS & set(doc.keys())):
+                  errors.append(f"{f}: missing version key (expected one of {OPTIONAL_VERSION_KEYS})")
               if missing:
                   errors.append(f"{f}: missing keys {missing}")
           if errors:
