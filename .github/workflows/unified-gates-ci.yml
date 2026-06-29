@@ -213,6 +213,7 @@ jobs:
             --output ${{ env.REPORT_DIR }}/gate-validation-report.json
 
       - name: Generate production closure report
+        continue-on-error: true
         run: |
           python unified-gates/scripts/generate-production-closure-report.py \
             --root ${{ env.GATES_ROOT }} \

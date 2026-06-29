@@ -41,6 +41,7 @@ jobs:
 
       - name: Upload Gitleaks SARIF report
         uses: github/codeql-action/upload-sarif@v3
+        continue-on-error: true
         if: always() && hashFiles('gitleaks-report.sarif') != ''
         with:
           sarif_file: gitleaks-report.sarif

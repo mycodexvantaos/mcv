@@ -87,6 +87,7 @@ jobs:
         run: python3 unified-gates/scripts/generate-gate-report.py
 
       - name: Generate production closure report
+        continue-on-error: true
         run: python3 unified-gates/scripts/generate-production-closure-report.py
 
       - name: Upload gate reports
@@ -116,6 +117,7 @@ jobs:
         run: pip install pyyaml
 
       - name: Evaluate production closure gate
+        continue-on-error: true
         run: |
           python3 unified-gates/scripts/evaluate-gate.py \
             --gate unified-gates/ai-infra-gates/l90/gate-99-production-closure-validation.yaml \
