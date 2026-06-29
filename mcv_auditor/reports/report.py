@@ -11,7 +11,7 @@ import datetime
 from dataclasses import asdict, dataclass, field
 from typing import Any
 
-from ..core.analyzers import AnalyzerResult, AnalyzerFinding
+from ..core.analyzers import AnalyzerResult
 
 CANONICAL_URL = "https://mycodexvantaos.com"
 MACHINE_IDENTITY = "mycodexvantaos"
