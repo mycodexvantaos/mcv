@@ -1,12 +1,25 @@
-apiVersion: mycodexvantaos.io/v1
-kind: RootModule
-metadata:
-  name: policies
-  urn: urn:mycodexvantaos:policies:module:policies
-  version: 1.0.0
-spec:
-  moduleType: policies
-  description: Platform governance policies
-  runtimeCodeAllowed: false
-  deploymentAllowed: false
-platform: mycodexvantaos
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - RootModule
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - policies
+        - - urn
+          - urn:mycodexvantaos:policies:module:policies
+        - - version
+          - 1.0.0
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - moduleType
+          - policies
+        - - description
+          - Platform governance policies
+        - - runtimeCodeAllowed
+          - false
+        - - deploymentAllowed
+          - false
+  - - platform
+    - mycodexvantaos

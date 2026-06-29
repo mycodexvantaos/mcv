@@ -1,38 +1,65 @@
-apiVersion: platform.mymycodexvantaos.org/v1
-kind: ModuleManifest
-metadata:
-  name: mycodexvantaos-core-kernel
-  labels:
-    mycodexvantaos.org/domain: core
-    mycodexvantaos.org/managed-by: naming-spec-v1
-spec:
-  domain: core
-  capabilities:
-    - database
-    - cache
-    - observability
-    - secrets
-    - kernel
-  providers:
-    database: database-postgres
-    cache: cache-redis
-    observability: observability-opentelemetry
-    secrets: secrets-k8s-native
-  lifecycle:
-    stage: stable
-    since: v1.0.0
-  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-core-kernel
-  packageName: '@mycodexvantaos/core-kernel'
-  description: Core kernel capabilities.
-  capability: kernel
-  id: mycodexvantaos-core-kernel
-  tier: 0
-  requiredProviders:
-    - auth
-  supportedModes:
-    - native
-    - connected
-    - hybrid
-  deployment:
-    type: container
-service-id: mycodexvantaos-core-kernel
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - platform.mymycodexvantaos.org/v1
+  - - kind
+    - ModuleManifest
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - mycodexvantaos-core-kernel
+        - - labels
+          - !!python/object/apply:collections.OrderedDict
+            - - - mycodexvantaos.org/domain
+                - core
+              - - mycodexvantaos.org/managed-by
+                - naming-spec-v1
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - domain
+          - core
+        - - capabilities
+          - - database
+            - cache
+            - observability
+            - secrets
+            - kernel
+        - - providers
+          - !!python/object/apply:collections.OrderedDict
+            - - - database
+                - database-postgres
+              - - cache
+                - cache-redis
+              - - observability
+                - observability-opentelemetry
+              - - secrets
+                - secrets-k8s-native
+        - - lifecycle
+          - !!python/object/apply:collections.OrderedDict
+            - - - stage
+                - stable
+              - - since
+                - v1.0.0
+        - - urn
+          - urn:mycodexvantaos:manifest:service:mycodexvantaos-core-kernel
+        - - packageName
+          - '@mycodexvantaos/core-kernel'
+        - - description
+          - Core kernel capabilities.
+        - - capability
+          - kernel
+        - - id
+          - mycodexvantaos-core-kernel
+        - - tier
+          - 0
+        - - requiredProviders
+          - - auth
+        - - supportedModes
+          - - native
+            - connected
+            - hybrid
+        - - deployment
+          - !!python/object/apply:collections.OrderedDict
+            - - - type
+                - container
+  - - service-id
+    - mycodexvantaos-core-kernel

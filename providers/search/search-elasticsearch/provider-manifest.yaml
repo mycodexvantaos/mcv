@@ -1,18 +1,37 @@
-apiVersion: mycodexvantaos.org/v1
-kind: Provider
-metadata:
-  name: mycodexvantaos-search-elasticsearch
-  capability: search
-  labels:
-    mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: '8.1'
-spec:
-  providerName: elasticsearch
-  isNative: false
-  lifecycle:
-    stage: stable
-  envVarPrefix: MYCODEXVANTAOS_SEARCH
-  configSchemaRef: ./config.schema.json
-  description: Elasticsearch full-text search provider.
-provider-id: mycodexvantaos-search-elasticsearch
-capability: search
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.org/v1
+  - - kind
+    - Provider
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - mycodexvantaos-search-elasticsearch
+        - - capability
+          - search
+        - - labels
+          - !!python/object/apply:collections.OrderedDict
+            - - - mycodexvantaos.org/managed-by
+                - naming-spec-v1
+              - - mycodexvantaos.org/specRef
+                - '8.1'
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - providerName
+          - elasticsearch
+        - - isNative
+          - false
+        - - lifecycle
+          - !!python/object/apply:collections.OrderedDict
+            - - - stage
+                - stable
+        - - envVarPrefix
+          - MYCODEXVANTAOS_SEARCH
+        - - configSchemaRef
+          - ./config.schema.json
+        - - description
+          - Elasticsearch full-text search provider.
+  - - provider-id
+    - mycodexvantaos-search-elasticsearch
+  - - capability
+    - search

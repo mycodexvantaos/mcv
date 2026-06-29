@@ -1,22 +1,42 @@
-apiVersion: mycodexvantaos.org/v1
-kind: Module
-metadata:
-  name: mycodexvantaos-security-secrets
-  labels:
-    mycodexvantaos.org/domain: security
-    mycodexvantaos.org/managed-by: naming-spec-v1
-spec:
-  domain: security
-  capabilities:
-    - secrets
-    - database
-  providers:
-    secrets: secrets-vault
-    database: database-postgres
-  lifecycle:
-    stage: stable
-    since: v1.0.0
-  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-security-secrets
-  packageName: '@mycodexvantaos/security-secrets'
-  description: Secret and credential management service.
-service-id: mycodexvantaos-security-secrets
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.org/v1
+  - - kind
+    - Module
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - mycodexvantaos-security-secrets
+        - - labels
+          - !!python/object/apply:collections.OrderedDict
+            - - - mycodexvantaos.org/domain
+                - security
+              - - mycodexvantaos.org/managed-by
+                - naming-spec-v1
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - domain
+          - security
+        - - capabilities
+          - - secrets
+            - database
+        - - providers
+          - !!python/object/apply:collections.OrderedDict
+            - - - secrets
+                - secrets-vault
+              - - database
+                - database-postgres
+        - - lifecycle
+          - !!python/object/apply:collections.OrderedDict
+            - - - stage
+                - stable
+              - - since
+                - v1.0.0
+        - - urn
+          - urn:mycodexvantaos:manifest:service:mycodexvantaos-security-secrets
+        - - packageName
+          - '@mycodexvantaos/security-secrets'
+        - - description
+          - Secret and credential management service.
+  - - service-id
+    - mycodexvantaos-security-secrets

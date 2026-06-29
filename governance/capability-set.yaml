@@ -1,153 +1,277 @@
-apiVersion: mycodexvantaos.org/v1
-kind: CapabilitySet
-metadata:
-  name: canonical-capability-set
-  labels:
-    managed-by: naming-spec-v1
-    specRef: '5.5'
-  version: 1.0.0
-  date: '2026-06-29'
-  status: active
-  authoritative: true
-  spec-authority: docs/spec/l1-constitution/constitution.yaml
-  description: L1 Constitution canonical capability set — 24 capabilities
-capabilities:
-  - id: database
-    description: Relational database access and management.
-    category: data
-    stable: true
-  - id: storage
-    description: Object or file storage (blobs, assets, artifacts).
-    category: data
-    stable: true
-  - id: auth
-    description: Identity authentication and authorization.
-    category: security
-    stable: true
-  - id: queue
-    description: Message queue and event streaming.
-    category: infra
-    stable: true
-  - id: state-store
-    description: Key-value or distributed state storage.
-    category: data
-    stable: true
-  - id: secrets
-    description: Secret and credential management.
-    category: security
-    stable: true
-  - id: repo
-    description: Source code repository operations.
-    category: platform
-    stable: true
-  - id: deploy
-    description: Deployment execution and orchestration.
-    category: platform
-    stable: true
-  - id: validation
-    description: Data schema validation and enforcement.
-    category: governance
-    stable: true
-  - id: security
-    description: Security scanning, SAST, and vulnerability detection.
-    category: security
-    stable: true
-  - id: observability
-    description: Logging, metrics, and distributed tracing.
-    category: platform
-    stable: true
-  - id: notification
-    description: Outbound notification delivery (email, SMS, push).
-    category: platform
-    stable: true
-  - id: scheduler
-    description: Job scheduling and workflow orchestration.
-    category: platform
-    stable: true
-  - id: vector-store
-    description: Vector storage and approximate nearest-neighbor retrieval.
-    category: ai
-    stable: true
-  - id: embedding
-    description: Text or multimodal embedding generation.
-    category: ai
-    stable: true
-  - id: llm
-    description: Large language model inference and completions.
-    category: ai
-    stable: true
-  - id: graph
-    description: Knowledge graph storage and query.
-    category: data
-    stable: true
-  - id: cache
-    description: In-memory caching layer.
-    category: infra
-    stable: true
-  - id: search
-    description: Full-text search and indexing.
-    category: data
-    stable: true
-  - id: ai-ethics
-    description: AI ethics governance, bias detection, fairness auditing, and responsible
-      AI compliance enforcement.
-    category: governance
-    stable: true
-  - id: blockchain
-    description: Distributed ledger, smart contract execution, consensus verification,
-      and immutable audit trail.
-    category: governance
-    stable: true
-  - id: event-stream
-    description: Mandatory governance event stream for closed-loop compliance verification
-      and audit trail propagation.
-    category: governance
-    stable: true
-  - id: quantum-runtime
-    description: Quantum computing runtime environment
-    category: quantum
-    providers:
-      - quantum-runtime-native
-  - id: quantum-simulator
-    description: Quantum circuit simulation
-    category: quantum
-    providers:
-      - quantum-simulator-qiskit
-  - id: quantum-processor
-    description: Quantum processor access
-    category: quantum
-    providers:
-      - quantum-processor-native
-  - id: quantum-circuit
-    description: Quantum circuit definition and execution
-    category: quantum
-    providers:
-      - quantum-circuit-native
-  - id: quantum-observability
-    description: Quantum computation observability
-    category: quantum
-    providers:
-      - quantum-observability-native
-  - id: audio
-    description: Audio processing, speech-to-text, and text-to-speech.
-    category: ai
-    stable: false
-  - id: image
-    description: Image generation and visual content creation.
-    category: ai
-    stable: false
-  - id: realtime
-    description: Real-time messaging and event push infrastructure.
-    category: infra
-    stable: false
-validation:
-  capability-name-pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
-  forbidden-vendor-prefixes:
-    - openai
-    - anthropic
-    - google
-    - aws
-    - azure
-    - cloudflare
-    - qiskit
-  total-count: 30
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.org/v1
+  - - kind
+    - CapabilitySet
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - canonical-capability-set
+        - - labels
+          - !!python/object/apply:collections.OrderedDict
+            - - - managed-by
+                - naming-spec-v1
+              - - specRef
+                - '5.5'
+        - - version
+          - 1.0.0
+        - - date
+          - '2026-06-29'
+        - - status
+          - active
+        - - authoritative
+          - true
+        - - spec-authority
+          - docs/spec/l1-constitution/constitution.yaml
+        - - description
+          - L1 Constitution canonical capability set — 24 capabilities
+  - - capabilities
+    - - !!python/object/apply:collections.OrderedDict
+        - - - id
+            - database
+          - - description
+            - Relational database access and management.
+          - - category
+            - data
+          - - stable
+            - true
+      - !!python/object/apply:collections.OrderedDict
+        - - - id
+            - storage
+          - - description
+            - Object or file storage (blobs, assets, artifacts).
+          - - category
+            - data
+          - - stable
+            - true
+      - !!python/object/apply:collections.OrderedDict
+        - - - id
+            - auth
+          - - description
+            - Identity authentication and authorization.
+          - - category
+            - security
+          - - stable
+            - true
+      - !!python/object/apply:collections.OrderedDict
+        - - - id
+            - queue
+          - - description
+            - Message queue and event streaming.
+          - - category
+            - infra
+          - - stable
+            - true
+      - !!python/object/apply:collections.OrderedDict
+        - - - id
+            - state-store
+          - - description
+            - Key-value or distributed state storage.
+          - - category
+            - data
+          - - stable
+            - true
+      - !!python/object/apply:collections.OrderedDict
+        - - - id
+            - secrets
+          - - description
+            - Secret and credential management.
+          - - category
+            - security
+          - - stable
+            - true
+      - !!python/object/apply:collections.OrderedDict
+        - - - id
+            - repo
+          - - description
+            - Source code repository operations.
+          - - category
+            - platform
+          - - stable
+            - true
+      - !!python/object/apply:collections.OrderedDict
+        - - - id
+            - deploy
+          - - description
+            - Deployment execution and orchestration.
+          - - category
+            - platform
+          - - stable
+            - true
+      - !!python/object/apply:collections.OrderedDict
+        - - - id
+            - validation
+          - - description
+            - Data schema validation and enforcement.
+          - - category
+            - governance
+          - - stable
+            - true
+      - !!python/object/apply:collections.OrderedDict
+        - - - id
+            - security
+          - - description
+            - Security scanning, SAST, and vulnerability detection.
+          - - category
+            - security
+          - - stable
+            - true
+      - !!python/object/apply:collections.OrderedDict
+        - - - id
+            - observability
+          - - description
+            - Logging, metrics, and distributed tracing.
+          - - category
+            - platform
+          - - stable
+            - true
+      - !!python/object/apply:collections.OrderedDict
+        - - - id
+            - notification
+          - - description
+            - Outbound notification delivery (email, SMS, push).
+          - - category
+            - platform
+          - - stable
+            - true
+      - !!python/object/apply:collections.OrderedDict
+        - - - id
+            - scheduler
+          - - description
+            - Job scheduling and workflow orchestration.
+          - - category
+            - platform
+          - - stable
+            - true
+      - !!python/object/apply:collections.OrderedDict
+        - - - id
+            - vector-store
+          - - description
+            - Vector storage and approximate nearest-neighbor retrieval.
+          - - category
+            - ai
+          - - stable
+            - true
+      - !!python/object/apply:collections.OrderedDict
+        - - - id
+            - embedding
+          - - description
+            - Text or multimodal embedding generation.
+          - - category
+            - ai
+          - - stable
+            - true
+      - !!python/object/apply:collections.OrderedDict
+        - - - id
+            - llm
+          - - description
+            - Large language model inference and completions.
+          - - category
+            - ai
+          - - stable
+            - true
+      - !!python/object/apply:collections.OrderedDict
+        - - - id
+            - graph
+          - - description
+            - Knowledge graph storage and query.
+          - - category
+            - data
+          - - stable
+            - true
+      - !!python/object/apply:collections.OrderedDict
+        - - - id
+            - cache
+          - - description
+            - In-memory caching layer.
+          - - category
+            - infra
+          - - stable
+            - true
+      - !!python/object/apply:collections.OrderedDict
+        - - - id
+            - search
+          - - description
+            - Full-text search and indexing.
+          - - category
+            - data
+          - - stable
+            - true
+      - !!python/object/apply:collections.OrderedDict
+        - - - id
+            - ai-ethics
+          - - description
+            - AI ethics governance, bias detection, fairness auditing, and responsible
+              AI compliance enforcement.
+          - - category
+            - governance
+          - - stable
+            - true
+      - !!python/object/apply:collections.OrderedDict
+        - - - id
+            - blockchain
+          - - description
+            - Distributed ledger, smart contract execution, consensus verification,
+              and immutable audit trail.
+          - - category
+            - governance
+          - - stable
+            - true
+      - !!python/object/apply:collections.OrderedDict
+        - - - id
+            - event-stream
+          - - description
+            - Mandatory governance event stream for closed-loop compliance verification
+              and audit trail propagation.
+          - - category
+            - governance
+          - - stable
+            - true
+      - id: quantum-runtime
+        description: Quantum computing runtime environment
+        category: quantum
+        providers:
+        - quantum-runtime-native
+      - id: quantum-simulator
+        description: Quantum circuit simulation
+        category: quantum
+        providers:
+        - quantum-simulator-qiskit
+      - id: quantum-processor
+        description: Quantum processor access
+        category: quantum
+        providers:
+        - quantum-processor-native
+      - id: quantum-circuit
+        description: Quantum circuit definition and execution
+        category: quantum
+        providers:
+        - quantum-circuit-native
+      - id: quantum-observability
+        description: Quantum computation observability
+        category: quantum
+        providers:
+        - quantum-observability-native
+      - id: audio
+        description: Audio processing, speech-to-text, and text-to-speech.
+        category: ai
+        stable: false
+      - id: image
+        description: Image generation and visual content creation.
+        category: ai
+        stable: false
+      - id: realtime
+        description: Real-time messaging and event push infrastructure.
+        category: infra
+        stable: false
+  - - validation
+    - capability-name-pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
+      forbidden-vendor-prefixes:
+      - openai
+      - anthropic
+      - google
+      - aws
+      - azure
+      - cloudflare
+      - qiskit
+      total-count: 30

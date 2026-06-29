@@ -1,25 +1,46 @@
-apiVersion: mycodexvantaos.org/v1
-kind: Module
-metadata:
-  name: mycodexvantaos-data-vector-store
-  labels:
-    mycodexvantaos.org/domain: data
-    mycodexvantaos.org/managed-by: naming-spec-v1
-spec:
-  domain: data
-  capabilities:
-    - vector-store
-    - embedding
-    - search
-  providers:
-    vector-store: vector-store-pgvector
-    embedding: embedding-openai
-    search: search-elasticsearch
-  lifecycle:
-    stage: stable
-    since: v1.0.0
-  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-data-vector-store
-  packageName: '@mycodexvantaos/data-vector-store'
-  description: Data domain vector storage and retrieval service. Manages vector collections,
-    retrieval pipelines, and embedding model aliases.
-service-id: mycodexvantaos-data-vector-store
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.org/v1
+  - - kind
+    - Module
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - mycodexvantaos-data-vector-store
+        - - labels
+          - !!python/object/apply:collections.OrderedDict
+            - - - mycodexvantaos.org/domain
+                - data
+              - - mycodexvantaos.org/managed-by
+                - naming-spec-v1
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - domain
+          - data
+        - - capabilities
+          - - vector-store
+            - embedding
+            - search
+        - - providers
+          - !!python/object/apply:collections.OrderedDict
+            - - - vector-store
+                - vector-store-pgvector
+              - - embedding
+                - embedding-openai
+              - - search
+                - search-elasticsearch
+        - - lifecycle
+          - !!python/object/apply:collections.OrderedDict
+            - - - stage
+                - stable
+              - - since
+                - v1.0.0
+        - - urn
+          - urn:mycodexvantaos:manifest:service:mycodexvantaos-data-vector-store
+        - - packageName
+          - '@mycodexvantaos/data-vector-store'
+        - - description
+          - Data domain vector storage and retrieval service. Manages vector collections,
+            retrieval pipelines, and embedding model aliases.
+  - - service-id
+    - mycodexvantaos-data-vector-store

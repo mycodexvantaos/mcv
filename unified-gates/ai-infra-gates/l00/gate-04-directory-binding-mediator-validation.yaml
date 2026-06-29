@@ -1,48 +1,72 @@
----
-apiVersion: mycodexvantaos.io/v1
-kind: AIInfraGate
-metadata:
-  id: gate-04-directory-binding-mediator-validation
-  version: 1.0.0
-  layer: l00
-  plane: ai-infra
-  blocking: true
-  lifecycle: active
-  criticality: critical
-  owner: platform@mycodexvantaos.com
-  governanceCode: mycodexvantaos-00000
-  createdAt: 2026-01-01 00:00:00+00:00
-  tags:
-    - l00
-    - directory
-  sloTarget: 30
-  evidenceRetentionDays: 2555
-  date: '2026-06-29'
-  status: active
-spec:
-  description: 'Validates that bidirectional logical relations between services use
-    binding mediator artifacts in navigation/bindings/.
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - AIInfraGate
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - id
+          - gate-04-directory-binding-mediator-validation
+        - - version
+          - 1.0.0
+        - - layer
+          - l00
+        - - plane
+          - ai-infra
+        - - blocking
+          - true
+        - - lifecycle
+          - active
+        - - criticality
+          - critical
+        - - owner
+          - platform@mycodexvantaos.com
+        - - governanceCode
+          - mycodexvantaos-00000
+        - - createdAt
+          - 2026-01-01 00:00:00+00:00
+        - - tags
+          - - l00
+            - directory
+        - - sloTarget
+          - 30
+        - - evidenceRetentionDays
+          - 2555
+        - - date
+          - '2026-06-29'
+        - - status
+          - active
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - description
+          - 'Validates that bidirectional logical relations between services use binding
+            mediator artifacts in navigation/bindings/.
 
-    '
-  validates:
-    - dimension: mediator-existence
-      description: Binding mediator artifacts exist for all bidirectional relations.
-      checks:
-        - id: chk-binding-file-exists
-          description: navigation/bindings/*.yaml exists for each bidirectional relation
-          rule: file-exists:navigation/bindings/*.yaml
-          severity: critical
-          evidenceRequired: true
-        - id: chk-binding-schema-valid
-          description: Binding manifest conforms to DirectoryBinding schema
-          rule: schema:DirectoryBinding
-          severity: critical
-          evidenceRequired: true
-        - id: chk-no-hard-bidirectional
-          description: No hard bidirectional dependency without mediator
-          rule: dep-graph:no-hard-bidirectional-without-mediator
-          severity: critical
-          evidenceRequired: true
-  dependsOn: []
-  waiverPolicy: ./policies/gate-waiver-policy.yaml
-  escalationPolicy: ./policies/gate-risk-policy.yaml
+            '
+        - - validates
+          - - dimension: mediator-existence
+              description: Binding mediator artifacts exist for all bidirectional
+                relations.
+              checks:
+              - id: chk-binding-file-exists
+                description: navigation/bindings/*.yaml exists for each bidirectional
+                  relation
+                rule: file-exists:navigation/bindings/*.yaml
+                severity: critical
+                evidenceRequired: true
+              - id: chk-binding-schema-valid
+                description: Binding manifest conforms to DirectoryBinding schema
+                rule: schema:DirectoryBinding
+                severity: critical
+                evidenceRequired: true
+              - id: chk-no-hard-bidirectional
+                description: No hard bidirectional dependency without mediator
+                rule: dep-graph:no-hard-bidirectional-without-mediator
+                severity: critical
+                evidenceRequired: true
+        - - dependsOn
+          - []
+        - - waiverPolicy
+          - ./policies/gate-waiver-policy.yaml
+        - - escalationPolicy
+          - ./policies/gate-risk-policy.yaml

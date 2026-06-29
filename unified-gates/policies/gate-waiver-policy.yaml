@@ -1,19 +1,39 @@
-apiVersion: mycodexvantaos.io/v1
-kind: GateWaiverPolicy
-metadata:
-  version: '1.0.0'
-  date: '2026-06-29'
-  status: 'active'
-  name: gate-waiver-policy
-  authority: platform-governance-root
-  governanceCode: mycodexvantaos-00000
-spec:
-  maxDurationDays: 30
-  renewalProhibited: false
-  maxRenewals: 2
-  criticalGateRequiresCouncilApproval: true
-  justificationMinLength: 50
-  remediationPlanRequired: true
-  riskAcknowledgementRequired: true
-  expiryAlertLeadTimeDays: 7
-  expiredWaiverTreatment: fail
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - GateWaiverPolicy
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - gate-waiver-policy
+        - - version
+          - 1.0.0
+        - - authority
+          - platform-governance-root
+        - - governanceCode
+          - mycodexvantaos-00000
+        - - date
+          - '2026-06-29'
+        - - status
+          - active
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - maxDurationDays
+          - 30
+        - - renewalProhibited
+          - false
+        - - maxRenewals
+          - 2
+        - - criticalGateRequiresCouncilApproval
+          - true
+        - - justificationMinLength
+          - 50
+        - - remediationPlanRequired
+          - true
+        - - riskAcknowledgementRequired
+          - true
+        - - expiryAlertLeadTimeDays
+          - 7
+        - - expiredWaiverTreatment
+          - fail

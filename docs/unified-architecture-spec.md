@@ -1,5 +1,4 @@
-# MyCodexVantaOS — Unified Architecture Specification
-
+## MyCodexVantaOS — Unified Architecture Specification
 > **Document ID:** MCXOS-UNIFIED-SPEC-v1.0.0  
 > **Document Location:** `docs/unified-architecture-spec.md`  
 > **Specification Level:** Platform Mother Specification / Architecture Constitution / CI-Executable Governance Basis  
@@ -17,11 +16,9 @@
 ---
 
 ## Overview
-
 MyCodexVantaOS is an upstream software infrastructure platform purpose-built for the AI era. It vertically integrates compute, data, algorithms, agents, declarative contracts, executable governance, and outcome-based billing into a single contract-first operating system.
 
 ## Identity Boundary
-
 | Context                                                                                                  | Canonical Value              |
 | -------------------------------------------------------------------------------------------------------- | ---------------------------- |
 | Machine Identity                                                                                         | `mycodexvantaos`             |
@@ -30,7 +27,6 @@ MyCodexVantaOS is an upstream software infrastructure platform purpose-built for
 | **Forbidden Prefixes:** `mycodexvanta-os`, `codexvanta-os`, `codexvanta`, `codevantaos`, `kubo`, `axiom` |
 
 ## Specification Hierarchy
-
 ```
 L0  docs/spec/l0-meta/formalized-specification-architecture.yaml
 L1  docs/spec/l1-constitution/constitution.yaml
@@ -41,7 +37,6 @@ L2  docs/spec/l2-structure/capability-architecture-addendum.yaml
 ```
 
 ## 1. Platform Identity
-
 ### 1.1 Canonical Machine Identity
 
 ```text
@@ -78,7 +73,6 @@ forbidden_legacy_prefixes:
 ---
 
 ## 2. Platform Architecture
-
 MyCodexVantaOS is a vertically integrated upstream AI infrastructure platform organized around seven strategic foundations:
 
 | Foundation            | Responsibility                                                          |
@@ -94,7 +88,6 @@ MyCodexVantaOS is a vertically integrated upstream AI infrastructure platform or
 ---
 
 ## 3. Manifest Boundary
-
 | File                         | Scope                | Runtime Service |
 | ---------------------------- | -------------------- | --------------- |
 | `mycodexvantaos-module.yaml` | root directory       | optional        |
@@ -114,7 +107,6 @@ axiom.module.yaml
 ---
 
 ## 4. Foundation Directory Governance
-
 The `foundation/` directory is the strategic specification center for seven platform foundations.
 
 Foundation subdirectories MUST NOT contain:
@@ -141,7 +133,6 @@ foundation/business-foundation/
 ---
 
 ## 5. Canonical Root Layout
-
 The canonical root layout MUST include:
 
 ```text
@@ -162,7 +153,6 @@ rootDirectoryCount:
 ---
 
 ## 6. Naming Rules
-
 - Lowercase kebab-case for all machine-readable identifiers
 - No underscores, dots (except Kubernetes API groups), spaces
 - No version markers in canonical names
@@ -175,7 +165,6 @@ Service ID format: `mycodexvantaos-<domain>-<capability>[-<sub-capability>...]`
 ---
 
 ## 7. Provider Capability Set
-
 Canonical capabilities:
 
 ```yaml
@@ -190,7 +179,6 @@ Provider instance naming: `<capability>-<provider>`
 ---
 
 ## 8. Runtime Modes
-
 | Mode        | Purpose                        | Production              |
 | ----------- | ------------------------------ | ----------------------- |
 | `native`    | local, CI, offline             | allowed                 |
@@ -201,7 +189,6 @@ Provider instance naming: `<capability>-<provider>`
 ---
 
 ## 9. Hash Policy
-
 ```yaml
 hash_policy:
   runtime_audit_chain: sha256
@@ -212,13 +199,11 @@ hash_policy:
 ---
 
 ## Appendix A — Unified Architecture Normalization Amendment
-
 See full normalization specification in the platform constitution.
 
 ---
 
 ## Appendix B — Consistency Remediation Amendment
-
 See full consistency remediation specification in the platform constitution.
 
 ---
@@ -226,7 +211,6 @@ See full consistency remediation specification in the platform constitution.
 _This document is the normative source of truth for the MyCodexVantaOS platform architecture._
 
 ## Seven Strategic Foundations
-
 | Foundation            | Scope                                                                       |
 | --------------------- | --------------------------------------------------------------------------- |
 | Compute Foundation    | AI chips, GPU, smart servers, inference/training pools, Kubernetes          |
@@ -238,7 +222,6 @@ _This document is the normative source of truth for the MyCodexVantaOS platform 
 | Business Foundation   | Usage metering, quota, billing, pricing, workspace, marketplace             |
 
 ## Domain & Deployment Contract
-
 **Production Canonical URL:** `https://mycodexvantaos.com`
 All frontend sites, API callbacks, OAuth redirect URIs, webhook endpoints, CORS allowlists, cookie domains, canonical URLs, OpenGraph URLs, sitemaps, and robots.txt MUST use `mycodexvantaos.com` as the production domain baseline.
 
@@ -269,14 +252,12 @@ The following vendor-generated URLs MUST NOT be used as production canonical URL
 - `storage.googleapis.com`
 
 ## CI Governance
-
 - **CI Rules:** 18 TypeScript validation rules
 - **CI Workflows:** 29 GitHub Actions workflows
 - **Gates:** 61 AI infrastructure gates (L00–L90)
 - **Validation Scripts:** 16 Python scripts
 
 ## References
-
 - [Domain & Deployment Contract](../contracts/domain-deployment-contract.md)
 - [Identity Policy](../governance/identity-policy.yaml)
 - [Platform Governance Spec](../governance/platform-governance-spec.yaml)

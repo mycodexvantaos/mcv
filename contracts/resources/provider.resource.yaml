@@ -1,10 +1,21 @@
-apiVersion: mycodexvantaos.io/v1
-kind: ResourceDefinition
-metadata:
-  name: provider
-  version: 1.0.0
-spec:
-  kind: Provider
-  group: mycodexvantaos.io
-  version: v1
-platform: mycodexvantaos
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - ResourceDefinition
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - provider
+        - - version
+          - 1.0.0
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - kind
+          - Provider
+        - - group
+          - mycodexvantaos.io
+        - - version
+          - v1
+  - - platform
+    - mycodexvantaos

@@ -1,9 +1,7 @@
-# MyCodeXvantaOS Persona Engine
-
+## MyCodeXvantaOS Persona Engine
 A sophisticated persona engine for the MyCodeXvantaOS AI Team system, providing intelligent persona management with semantic mask detection, root cause analysis, and solution generation.
 
 ## Overview
-
 The Persona Engine implements a unique "Disrupter" persona system that challenges surface-level thinking and helps users uncover deeper truths. It features:
 
 - **Semantic Mask Detection**: Identifies 8 types of comforting but misleading language patterns
@@ -13,13 +11,11 @@ The Persona Engine implements a unique "Disrupter" persona system that challenge
 - **Orchestrator Integration**: Seamless integration with AI Team Orchestrator
 
 ## Installation
-
 ```bash
 npm install @mycodexvantaos/persona-engine
 ```
 
 ## Quick Start
-
 ```typescript
 import { PersonaManager, PersonaEngine, OrchestratorAdapter } from '@mycodexvantaos/persona-engine';
 
@@ -45,7 +41,6 @@ console.log(result.response.content);
 ```
 
 ## Architecture
-
 ### Core Components
 
 ```
@@ -82,7 +77,6 @@ The engine supports multiple persona archetypes:
 | **Synthesizer**      | Integration and patterns                    | High integrative thinking, high pattern recognition  |
 
 ## Usage Examples
-
 ### Semantic Mask Detection
 
 ```typescript
@@ -207,7 +201,6 @@ const response = await adapter.processRequest({
 ```
 
 ## Configuration
-
 ### Persona Profile Schema
 
 Each persona is configured with a YAML file following this structure:
@@ -252,7 +245,6 @@ governance:
 | 3    | Maximum      | + Full audit trail                   |
 
 ## Semantic Mask Types
-
 The engine detects 8 types of semantic masks:
 
 1. **Comforting Platitude** - Generic positive statements without substance
@@ -265,17 +257,16 @@ The engine detects 8 types of semantic masks:
 8. **Performance Optimization Framing** - Repackaging discomfort as inefficiency
 
 ## Testing
-
 ```bash
-# Run all tests
+
+## Run all tests
 npm test
 
-# Run with coverage
+## Run with coverage
 npm run test:coverage
 ```
 
 ## API Reference
-
 Full API documentation is available in the `docs/` directory.
 
 ### Key Interfaces
@@ -304,7 +295,6 @@ interface BehavioralParameters {
 ```
 
 ## Integration with AI Team Orchestrator
-
 The Persona Engine integrates with the MyCodeXvantaOS AI Team Orchestrator through the `OrchestratorAdapter`:
 
 ```
@@ -334,15 +324,12 @@ The Persona Engine integrates with the MyCodeXvantaOS AI Team Orchestrator throu
 ```
 
 ## Contributing
-
 Please read the contributing guidelines in `CONTRIBUTING.md` before submitting PRs.
 
 ## License
-
 MIT License - see `LICENSE` file for details.
 
 ## Version History
-
 - **1.0.0** - Initial release with core persona engine functionality
   - Semantic mask detection (8 types)
   - Root cause analysis (6 layers)

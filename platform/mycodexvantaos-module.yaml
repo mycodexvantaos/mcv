@@ -1,14 +1,29 @@
-apiVersion: mycodexvantaos.io/v1
-kind: RootModule
-metadata:
-  name: platform
-  urn: urn:mycodexvantaos:platform:module:platform
-  domain: platform
-  layer: platform
-  version: 1.0.0
-spec:
-  moduleType: platform
-  description: Platform service catalog and topology
-  runtimeCodeAllowed: false
-  deploymentAllowed: false
-platform: mycodexvantaos
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - RootModule
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - platform
+        - - urn
+          - urn:mycodexvantaos:platform:module:platform
+        - - domain
+          - platform
+        - - layer
+          - platform
+        - - version
+          - 1.0.0
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - moduleType
+          - platform
+        - - description
+          - Platform service catalog and topology
+        - - runtimeCodeAllowed
+          - false
+        - - deploymentAllowed
+          - false
+  - - platform
+    - mycodexvantaos

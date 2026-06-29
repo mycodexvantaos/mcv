@@ -1,18 +1,37 @@
-apiVersion: mycodexvantaos.org/v1
-kind: Provider
-metadata:
-  name: mycodexvantaos-llm-anthropic
-  capability: llm
-  labels:
-    mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: '8.1'
-spec:
-  providerName: anthropic
-  isNative: false
-  lifecycle:
-    stage: beta
-  envVarPrefix: MYCODEXVANTAOS_LLM_ANTHROPIC
-  configSchemaRef: ./config.schema.json
-  description: Anthropic Claude LLM provider.
-provider-id: mycodexvantaos-llm-anthropic
-capability: llm
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.org/v1
+  - - kind
+    - Provider
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - mycodexvantaos-llm-anthropic
+        - - capability
+          - llm
+        - - labels
+          - !!python/object/apply:collections.OrderedDict
+            - - - mycodexvantaos.org/managed-by
+                - naming-spec-v1
+              - - mycodexvantaos.org/specRef
+                - '8.1'
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - providerName
+          - anthropic
+        - - isNative
+          - false
+        - - lifecycle
+          - !!python/object/apply:collections.OrderedDict
+            - - - stage
+                - beta
+        - - envVarPrefix
+          - MYCODEXVANTAOS_LLM_ANTHROPIC
+        - - configSchemaRef
+          - ./config.schema.json
+        - - description
+          - Anthropic Claude LLM provider.
+  - - provider-id
+    - mycodexvantaos-llm-anthropic
+  - - capability
+    - llm

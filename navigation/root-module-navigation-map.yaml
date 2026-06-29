@@ -1,16 +1,29 @@
-apiVersion: mycodexvantaos.io/v1
-kind: RootModuleNavigationMap
-metadata:
-  name: root-module-navigation-map
-  description: Root module navigation map for MyCodexVantaOS
-  version: 1.0.0
-  date: '2026-06-29'
-  status: active
-spec:
-  rootModuleContractName: mycodexvantaos-module.yaml
-  deprecatedNames:
-    - mycodexvantaos.module.yaml
-    - module.yaml
-    - axiom.module.yaml
-platform: mycodexvantaos
-canonical-url: https://mycodexvantaos.com
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - RootModuleNavigationMap
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - root-module-navigation-map
+        - - description
+          - Root module navigation map for MyCodexVantaOS
+        - - version
+          - 1.0.0
+        - - date
+          - '2026-06-29'
+        - - status
+          - active
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - rootModuleContractName
+          - mycodexvantaos-module.yaml
+        - - deprecatedNames
+          - - mycodexvantaos.module.yaml
+            - module.yaml
+            - axiom.module.yaml
+  - - platform
+    - mycodexvantaos
+  - - canonical-url
+    - https://mycodexvantaos.com

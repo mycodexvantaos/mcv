@@ -1,22 +1,42 @@
-apiVersion: mycodexvantaos.org/v1
-kind: Module
-metadata:
-  name: mycodexvantaos-data-graph
-  labels:
-    mycodexvantaos.org/domain: data
-    mycodexvantaos.org/managed-by: naming-spec-v1
-spec:
-  domain: data
-  capabilities:
-    - graph
-    - database
-  providers:
-    graph: graph-neo4j
-    database: database-postgres
-  lifecycle:
-    stage: stable
-    since: v1.0.0
-  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-data-graph
-  packageName: '@mycodexvantaos/data-graph'
-  description: Knowledge graph storage and query service.
-service-id: mycodexvantaos-data-graph
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.org/v1
+  - - kind
+    - Module
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - mycodexvantaos-data-graph
+        - - labels
+          - !!python/object/apply:collections.OrderedDict
+            - - - mycodexvantaos.org/domain
+                - data
+              - - mycodexvantaos.org/managed-by
+                - naming-spec-v1
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - domain
+          - data
+        - - capabilities
+          - - graph
+            - database
+        - - providers
+          - !!python/object/apply:collections.OrderedDict
+            - - - graph
+                - graph-neo4j
+              - - database
+                - database-postgres
+        - - lifecycle
+          - !!python/object/apply:collections.OrderedDict
+            - - - stage
+                - stable
+              - - since
+                - v1.0.0
+        - - urn
+          - urn:mycodexvantaos:manifest:service:mycodexvantaos-data-graph
+        - - packageName
+          - '@mycodexvantaos/data-graph'
+        - - description
+          - Knowledge graph storage and query service.
+  - - service-id
+    - mycodexvantaos-data-graph

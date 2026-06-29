@@ -1,31 +1,53 @@
-apiVersion: mycodexvantaos.org/v1
-kind: Provider
-metadata:
-  name: mycodexvantaos-llm-gemini
-  capability: llm
-  labels:
-    mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: '8.1'
-    mycodexvantaos.org/provider-type: external
-spec:
-  providerName: gemini
-  isNative: false
-  lifecycle:
-    stage: stable
-  envVarPrefix: MYCODEXVANTAOS_LLM_GEMINI
-  configSchemaRef: ./config.schema.json
-  description: Google Gemini LLM provider (external, requires API key). Optional connector
-    for advanced AI capabilities.
-  capabilities:
-    - text-generation
-    - text-completion
-    - code-generation
-    - chat-completion
-    - function-calling
-    - multimodal
-  requirements:
-    - GOOGLE_GENAI_API_KEY or MYCODEXVANTAOS_LLM_GEMINI_API_KEY
-  fallbackProvider: llm-native
-  priority: 50
-provider-id: mycodexvantaos-llm-gemini
-capability: llm
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.org/v1
+  - - kind
+    - Provider
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - mycodexvantaos-llm-gemini
+        - - capability
+          - llm
+        - - labels
+          - !!python/object/apply:collections.OrderedDict
+            - - - mycodexvantaos.org/managed-by
+                - naming-spec-v1
+              - - mycodexvantaos.org/specRef
+                - '8.1'
+              - - mycodexvantaos.org/provider-type
+                - external
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - providerName
+          - gemini
+        - - isNative
+          - false
+        - - lifecycle
+          - !!python/object/apply:collections.OrderedDict
+            - - - stage
+                - stable
+        - - envVarPrefix
+          - MYCODEXVANTAOS_LLM_GEMINI
+        - - configSchemaRef
+          - ./config.schema.json
+        - - description
+          - Google Gemini LLM provider (external, requires API key). Optional connector
+            for advanced AI capabilities.
+        - - capabilities
+          - - text-generation
+            - text-completion
+            - code-generation
+            - chat-completion
+            - function-calling
+            - multimodal
+        - - requirements
+          - - GOOGLE_GENAI_API_KEY or MYCODEXVANTAOS_LLM_GEMINI_API_KEY
+        - - fallbackProvider
+          - llm-native
+        - - priority
+          - 50
+  - - provider-id
+    - mycodexvantaos-llm-gemini
+  - - capability
+    - llm

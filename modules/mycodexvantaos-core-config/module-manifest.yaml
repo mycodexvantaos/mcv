@@ -1,24 +1,45 @@
-apiVersion: mycodexvantaos.org/v1
-kind: Module
-metadata:
-  name: mycodexvantaos-core-config
-  labels:
-    mycodexvantaos.org/domain: core
-    mycodexvantaos.org/managed-by: naming-spec-v1
-spec:
-  domain: core
-  capabilities:
-    - database
-    - cache
-    - secrets
-  providers:
-    database: database-postgres
-    cache: cache-redis
-    secrets: secrets-vault
-  lifecycle:
-    stage: stable
-    since: v1.0.0
-  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-core-config
-  packageName: '@mycodexvantaos/core-config'
-  description: Centralized configuration management service.
-service-id: mycodexvantaos-core-config
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.org/v1
+  - - kind
+    - Module
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - mycodexvantaos-core-config
+        - - labels
+          - !!python/object/apply:collections.OrderedDict
+            - - - mycodexvantaos.org/domain
+                - core
+              - - mycodexvantaos.org/managed-by
+                - naming-spec-v1
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - domain
+          - core
+        - - capabilities
+          - - database
+            - cache
+            - secrets
+        - - providers
+          - !!python/object/apply:collections.OrderedDict
+            - - - database
+                - database-postgres
+              - - cache
+                - cache-redis
+              - - secrets
+                - secrets-vault
+        - - lifecycle
+          - !!python/object/apply:collections.OrderedDict
+            - - - stage
+                - stable
+              - - since
+                - v1.0.0
+        - - urn
+          - urn:mycodexvantaos:manifest:service:mycodexvantaos-core-config
+        - - packageName
+          - '@mycodexvantaos/core-config'
+        - - description
+          - Centralized configuration management service.
+  - - service-id
+    - mycodexvantaos-core-config

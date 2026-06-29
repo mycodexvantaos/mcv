@@ -1,91 +1,108 @@
-apiVersion: mycodexvantaos.io/v1
-kind: IdentityPolicy
-metadata:
-  name: identity-policy
-  ssot: true
-  authority: canonical-identity-registry
-  version: 1.0.0
-  date: '2026-06-29'
-  status: active
-  authoritative: true
-  spec-authority: docs/spec/l1-constitution/constitution.yaml
-spec:
-  humanFacingFields:
-    allowed:
-      - MyCodexVantaOS
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - IdentityPolicy
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - identity-policy
+        - - ssot
+          - true
+        - - authority
+          - canonical-identity-registry
+        - - version
+          - 1.0.0
+        - - date
+          - '2026-06-29'
+        - - status
+          - active
+        - - authoritative
+          - true
+        - - spec-authority
+          - docs/spec/l1-constitution/constitution.yaml
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - humanFacingFields
+          - !!python/object/apply:collections.OrderedDict
+            - - - allowed
+                - - MyCodexVantaOS
+                  - MyCodeXvantaOS
+                  - MyCodeXvanta OS
+              - - preferred
+                - MyCodexVantaOS
+        - - machineFacingFields
+          - !!python/object/apply:collections.OrderedDict
+            - - - allowed
+                - - mycodexvantaos
+              - - forbidden
+                - - MyCodexVantaOS
+                  - MyCodeXvantaOS
+                  - MyCodeXvanta OS
+                  - mycodexvanta-os
+                  - codexvanta-os
+                  - codexvanta
+                  - codevantaos
+                  - KUBO
+                  - kubo
+                  - AXIOM
+                  - axiom
+        - - violationAction
+          - block
+  - - identity
+    - machine: mycodexvantaos
+      brand: MyCodexVantaOS
+      legacy-aliases:
       - MyCodeXvantaOS
       - MyCodeXvanta OS
-    preferred: MyCodexVantaOS
-  machineFacingFields:
-    allowed:
-      - mycodexvantaos
-    forbidden:
-      - MyCodexVantaOS
-      - MyCodeXvantaOS
-      - MyCodeXvanta OS
+      forbidden-prefixes:
       - mycodexvanta-os
       - codexvanta-os
       - codexvanta
       - codevantaos
-      - KUBO
       - kubo
-      - AXIOM
       - axiom
-  violationAction: block
-identity:
-  machine: mycodexvantaos
-  brand: MyCodexVantaOS
-  legacy-aliases:
-    - MyCodeXvantaOS
-    - MyCodeXvanta OS
-  forbidden-prefixes:
-    - mycodexvanta-os
-    - codexvanta-os
-    - codexvanta
-    - codevantaos
-    - kubo
-    - axiom
-deployment:
-  canonical-url: https://mycodexvantaos.com
-  domains:
-    production:
-      apex: mycodexvantaos.com
-      canonical-url: https://mycodexvantaos.com
-      www: https://www.mycodexvantaos.com
-      www-redirect: 301 -> https://mycodexvantaos.com
-    subdomains:
-      app: https://app.mycodexvantaos.com
-      api: https://api.mycodexvantaos.com
-      admin: https://admin.mycodexvantaos.com
-      docs: https://docs.mycodexvantaos.com
-    staging:
-      canonical-url: https://staging.mycodexvantaos.com
-    development:
-      canonical-url: http://localhost:3000
-  forbidden-production-urls:
-    - '*.github.io'
-    - '*.pages.dev'
-    - '*.vercel.app'
-    - '*.netlify.app'
-    - '*.run.app'
-    - '*.appspot.com'
-    - '*.cloudfunctions.net'
-    - '*.web.app'
-    - '*.firebaseapp.com'
-    - storage.googleapis.com
-naming:
-  machine-identifier-pattern: ^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)*$
-  service-id-pattern: ^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*$
-  provider-id-pattern: ^mycodexvantaos-[a-z0-9]+-[a-z0-9]+(?:-[a-z0-9]+)*$
-  case: kebab-case
-  enforce-in-ci: true
-enforcement:
-  ci-failure-on-violation: true
-  violation-severity: critical
-  auto-remediation: false
-  require-human-approval-for-exception: true
-audit:
-  log-all-policy-reads: false
-  log-all-policy-writes: true
-  log-violations: true
-  retention-days: 365
+  - - deployment
+    - canonical-url: https://mycodexvantaos.com
+      domains:
+        production:
+          apex: mycodexvantaos.com
+          canonical-url: https://mycodexvantaos.com
+          www: https://www.mycodexvantaos.com
+          www-redirect: 301 -> https://mycodexvantaos.com
+        subdomains:
+          app: https://app.mycodexvantaos.com
+          api: https://api.mycodexvantaos.com
+          admin: https://admin.mycodexvantaos.com
+          docs: https://docs.mycodexvantaos.com
+        staging:
+          canonical-url: https://staging.mycodexvantaos.com
+        development:
+          canonical-url: http://localhost:3000
+      forbidden-production-urls:
+      - '*.github.io'
+      - '*.pages.dev'
+      - '*.vercel.app'
+      - '*.netlify.app'
+      - '*.run.app'
+      - '*.appspot.com'
+      - '*.cloudfunctions.net'
+      - '*.web.app'
+      - '*.firebaseapp.com'
+      - storage.googleapis.com
+  - - naming
+    - machine-identifier-pattern: ^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)*$
+      service-id-pattern: ^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*$
+      provider-id-pattern: ^mycodexvantaos-[a-z0-9]+-[a-z0-9]+(?:-[a-z0-9]+)*$
+      case: kebab-case
+      enforce-in-ci: true
+  - - enforcement
+    - ci-failure-on-violation: true
+      violation-severity: critical
+      auto-remediation: false
+      require-human-approval-for-exception: true
+  - - audit
+    - log-all-policy-reads: false
+      log-all-policy-writes: true
+      log-violations: true
+      retention-days: 365

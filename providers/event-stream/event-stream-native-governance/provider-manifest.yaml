@@ -1,19 +1,38 @@
-apiVersion: mycodexvantaos.org/v1
-kind: Provider
-metadata:
-  name: mycodexvantaos-event-stream-native-governance
-  capability: event-stream
-  labels:
-    mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: '8.1'
-spec:
-  providerName: native-governance
-  isNative: true
-  lifecycle:
-    stage: stable
-  envVarPrefix: MYCODEXVANTAOS_EVENT_STREAM
-  configSchemaRef: ./config.schema.json
-  description: Native governance event stream provider for mandatory closed-loop compliance
-    verification, audit trail propagation, and Merkle-anchored event integrity.
-provider-id: mycodexvantaos-event-stream-native-governance
-capability: queue
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.org/v1
+  - - kind
+    - Provider
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - mycodexvantaos-event-stream-native-governance
+        - - capability
+          - event-stream
+        - - labels
+          - !!python/object/apply:collections.OrderedDict
+            - - - mycodexvantaos.org/managed-by
+                - naming-spec-v1
+              - - mycodexvantaos.org/specRef
+                - '8.1'
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - providerName
+          - native-governance
+        - - isNative
+          - true
+        - - lifecycle
+          - !!python/object/apply:collections.OrderedDict
+            - - - stage
+                - stable
+        - - envVarPrefix
+          - MYCODEXVANTAOS_EVENT_STREAM
+        - - configSchemaRef
+          - ./config.schema.json
+        - - description
+          - Native governance event stream provider for mandatory closed-loop compliance
+            verification, audit trail propagation, and Merkle-anchored event integrity.
+  - - provider-id
+    - mycodexvantaos-event-stream-native-governance
+  - - capability
+    - queue

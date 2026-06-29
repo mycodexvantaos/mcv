@@ -2,20 +2,42 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://mycodexvantaos.com/schemas/quantum-classical-bridge.schema.json",
   "title": "QuantumClassicalBridge",
-  "description": "MyCodexVantaOS quantum-classical-bridge schema",
   "type": "object",
-  "required": ["apiVersion", "kind", "metadata"],
   "properties": {
-    "apiVersion": { "type": "string", "const": "mycodexvantaos.io/v1" },
-    "kind": { "type": "string" },
+    "apiVersion": {
+      "type": "string",
+      "const": "mycodexvantaos.io/v1"
+    },
+    "kind": {
+      "type": "string"
+    },
     "metadata": {
       "type": "object",
-      "required": ["name", "version"],
+      "required": [
+        "name",
+        "version"
+      ],
       "properties": {
-        "name": { "type": "string" },
-        "version": { "type": "string" },
-        "status": { "type": "string" }
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
       }
+    },
+    "spec": {
+      "type": "object"
     }
-  }
+  },
+  "required": [
+    "apiVersion",
+    "kind",
+    "metadata",
+    "spec"
+  ],
+  "description": "MyCodexVantaOS quantum-classical-bridge schema"
 }

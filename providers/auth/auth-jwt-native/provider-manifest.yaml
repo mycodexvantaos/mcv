@@ -1,18 +1,37 @@
-apiVersion: mycodexvantaos.org/v1
-kind: Provider
-metadata:
-  name: mycodexvantaos-auth-jwt-native
-  capability: auth
-  labels:
-    mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: '8.1'
-spec:
-  providerName: jwt-native
-  isNative: true
-  lifecycle:
-    stage: stable
-  envVarPrefix: MYCODEXVANTAOS_AUTH_JWT
-  configSchemaRef: ./config.schema.json
-  description: Native JWT-based authentication provider (no external IdP required).
-provider-id: mycodexvantaos-auth-jwt-native
-capability: auth
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.org/v1
+  - - kind
+    - Provider
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - mycodexvantaos-auth-jwt-native
+        - - capability
+          - auth
+        - - labels
+          - !!python/object/apply:collections.OrderedDict
+            - - - mycodexvantaos.org/managed-by
+                - naming-spec-v1
+              - - mycodexvantaos.org/specRef
+                - '8.1'
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - providerName
+          - jwt-native
+        - - isNative
+          - true
+        - - lifecycle
+          - !!python/object/apply:collections.OrderedDict
+            - - - stage
+                - stable
+        - - envVarPrefix
+          - MYCODEXVANTAOS_AUTH_JWT
+        - - configSchemaRef
+          - ./config.schema.json
+        - - description
+          - Native JWT-based authentication provider (no external IdP required).
+  - - provider-id
+    - mycodexvantaos-auth-jwt-native
+  - - capability
+    - auth

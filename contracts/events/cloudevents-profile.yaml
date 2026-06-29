@@ -1,12 +1,25 @@
-apiVersion: mycodexvantaos.io/v1
-kind: CloudEventsProfile
-metadata:
-  name: cloudevents-profile
-  version: 1.0.0
-  date: '2026-06-29'
-  status: active
-spec:
-  specVersion: '1.0'
-  sourcePattern: mycodexvantaos://service/{service-id}
-  typePattern: io.mycodexvantaos.{domain}.{event-type}.{version}
-platform: mycodexvantaos
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - CloudEventsProfile
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - cloudevents-profile
+        - - version
+          - 1.0.0
+        - - date
+          - '2026-06-29'
+        - - status
+          - active
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - specVersion
+          - '1.0'
+        - - sourcePattern
+          - mycodexvantaos://service/{service-id}
+        - - typePattern
+          - io.mycodexvantaos.{domain}.{event-type}.{version}
+  - - platform
+    - mycodexvantaos

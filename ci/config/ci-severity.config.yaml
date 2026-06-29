@@ -1,14 +1,21 @@
-apiVersion: mycodexvantaos.io/v1
-kind: CiSeverityConfig
-metadata:
-  version: '1.0.0'
-  name: ci-severity-config
-spec:
-  severityLevels:
-    - critical
-    - high
-    - medium
-    - low
-  blockingLevels:
-    - critical
-    - high
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - CiSeverityConfig
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - ci-severity-config
+        - - version
+          - 1.0.0
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - severityLevels
+          - - critical
+            - high
+            - medium
+            - low
+        - - blockingLevels
+          - - critical
+            - high

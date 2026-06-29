@@ -1,18 +1,37 @@
-apiVersion: mycodexvantaos.org/v1
-kind: Provider
-metadata:
-  name: mycodexvantaos-embedding-openai
-  capability: embedding
-  labels:
-    mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: '8.1'
-spec:
-  providerName: openai
-  isNative: false
-  lifecycle:
-    stage: stable
-  envVarPrefix: MYCODEXVANTAOS_EMBEDDING
-  configSchemaRef: ./config.schema.json
-  description: OpenAI text embedding provider.
-provider-id: mycodexvantaos-embedding-openai
-capability: embedding
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.org/v1
+  - - kind
+    - Provider
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - mycodexvantaos-embedding-openai
+        - - capability
+          - embedding
+        - - labels
+          - !!python/object/apply:collections.OrderedDict
+            - - - mycodexvantaos.org/managed-by
+                - naming-spec-v1
+              - - mycodexvantaos.org/specRef
+                - '8.1'
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - providerName
+          - openai
+        - - isNative
+          - false
+        - - lifecycle
+          - !!python/object/apply:collections.OrderedDict
+            - - - stage
+                - stable
+        - - envVarPrefix
+          - MYCODEXVANTAOS_EMBEDDING
+        - - configSchemaRef
+          - ./config.schema.json
+        - - description
+          - OpenAI text embedding provider.
+  - - provider-id
+    - mycodexvantaos-embedding-openai
+  - - capability
+    - embedding

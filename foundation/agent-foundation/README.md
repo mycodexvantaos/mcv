@@ -1,14 +1,11 @@
-# MyCodexVantaOS Agent-foundation
-
+## MyCodexVantaOS Agent-foundation
 Foundation ID: `mycodexvantaos-agent-foundation`
 Version: 1.0.0
 
 ## Overview
-
 This directory contains the specification for the MyCodexVantaOS agent Foundation.
 
 ## Files
-
 | File                          | Description                    |
 | ----------------------------- | ------------------------------ |
 | `foundation.yaml`             | Foundation specification       |
@@ -24,3 +21,9 @@ This directory contains the specification for the MyCodexVantaOS agent Foundatio
 | `roadmap.yaml`                | Foundation roadmap             |
 | `service-map.yaml`            | Service mapping                |
 | `urn-map.yaml`                | URN mapping                    |
+
+## Agent Foundation
+Strategic specification unit for MyCodexVantaOS agent-foundation.
+
+This is a specification-unit under the `foundation` root module.
+It MUST NOT contain runtime source code, service implementation, or deployment manifests.

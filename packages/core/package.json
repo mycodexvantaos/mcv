@@ -2,8 +2,8 @@
   "name": "@mycodexvantaos/core",
   "version": "1.0.0",
   "description": "MyCodexVantaOS core configuration and utilities",
+  "type": "module",
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
@@ -11,6 +11,12 @@
       "require": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
+    "./shared": "./shared/index.ts",
+    "./service-catalog": "./service-catalog/index.ts",
+    "./resource-model": "./resource-model/index.ts",
+    "./policy-model": "./policy-model/index.ts",
+    "./audit-model": "./audit-model/index.ts",
+    "./knowledge-model": "./knowledge-model/index.ts",
     "./config/domains": {
       "import": "./dist/config/domains.mjs",
       "require": "./dist/config/domains.js",
@@ -53,15 +59,27 @@
     }
   },
   "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts",
     "build": "tsup src/index.ts --format cjs,esm --dts --clean",
     "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "typecheck": "tsc --noEmit",
-    "lint": "eslint src --ext .ts",
     "clean": "rm -rf dist"
   },
+  "keywords": [
+    "platform",
+    "constitution",
+    "service-catalog",
+    "resource-model",
+    "policy-model",
+    "audit-model",
+    "knowledge-model"
+  ],
+  "license": "UNLICENSED",
+  "private": false,
+  "module": "./dist/index.mjs",
   "dependencies": {},
   "devDependencies": {
     "@types/node": "^22.0.0",
@@ -70,7 +88,5 @@
     "vitest": "^2.0.0"
   },
   "peerDependencies": {},
-  "sideEffects": false,
-  "license": "UNLICENSED",
-  "private": false
+  "sideEffects": false
 }

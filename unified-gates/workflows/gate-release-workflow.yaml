@@ -1,25 +1,64 @@
-apiVersion: mycodexvantaos.io/v1
-kind: GateReleaseWorkflow
-metadata:
-  version: '1.0.0'
-  date: '2026-06-29'
-  status: 'active'
-  name: gate-release-workflow
-  governanceCode: mycodexvantaos-00000
-spec:
-  description: >
-    Defines the gate-gated release workflow. An artifact may only be promoted
-    to production after all mandatory gates pass and the production closure
-    gate (gate-99) is satisfied.
-  stages:
-    - id: development
-      requiredGates: [l00]
-      promotion: staging
-    - id: staging
-      requiredGates: [l00, l10, l20, l30, l40, l50, l60]
-      promotion: production
-    - id: production
-      requiredGates: [l00, l10, l20, l30, l40, l50, l60, l90]
-      finalGate: gate-99-production-closure-validation
-      approvalRequired: true
-      approvalAuthority: release-authority
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - GateReleaseWorkflow
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - gate-release-workflow
+        - - version
+          - 1.0.0
+        - - governanceCode
+          - mycodexvantaos-00000
+        - - date
+          - '2026-06-29'
+        - - status
+          - active
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - description
+          - 'Defines the gate-gated release workflow. An artifact may only be promoted
+            to production after all mandatory gates pass and the production closure
+            gate (gate-99) is satisfied.
+
+            '
+        - - stages
+          - - !!python/object/apply:collections.OrderedDict
+              - - - id
+                  - development
+                - - requiredGates
+                  - - l00
+                - - promotion
+                  - staging
+            - !!python/object/apply:collections.OrderedDict
+              - - - id
+                  - staging
+                - - requiredGates
+                  - - l00
+                    - l10
+                    - l20
+                    - l30
+                    - l40
+                    - l50
+                    - l60
+                - - promotion
+                  - production
+            - !!python/object/apply:collections.OrderedDict
+              - - - id
+                  - production
+                - - requiredGates
+                  - - l00
+                    - l10
+                    - l20
+                    - l30
+                    - l40
+                    - l50
+                    - l60
+                    - l90
+                - - finalGate
+                  - gate-99-production-closure-validation
+                - - approvalRequired
+                  - true
+                - - approvalAuthority
+                  - release-authority

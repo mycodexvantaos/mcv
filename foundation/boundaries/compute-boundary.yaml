@@ -1,9 +1,19 @@
-apiVersion: mycodexvantaos.io/v1
-kind: FoundationBoundary
-metadata:
-  name: compute-boundary
-  version: 1.0.0
-spec:
-  foundation: compute-foundation
-  boundaryType: specification-unit
-  platform: mycodexvantaos
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - FoundationBoundary
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - compute-boundary
+        - - version
+          - 1.0.0
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - foundation
+          - compute-foundation
+        - - boundaryType
+          - specification-unit
+        - - platform
+          - mycodexvantaos

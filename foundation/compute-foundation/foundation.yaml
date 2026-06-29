@@ -1,22 +1,45 @@
-apiVersion: mycodexvantaos.io/v1
-kind: Foundation
-metadata:
-  name: compute-foundation
-  urn: urn:mycodexvantaos:foundation:spec:compute-foundation
-  version: 1.0.0
-  date: '2026-06-29'
-  status: active
-spec:
-  boundary:
-    boundaryType: specification-unit
-    parentModule: foundation
-    parentModuleUrn: urn:mycodexvantaos:foundation:module:foundation
-    independentRootModule: false
-    requiresModuleContract: false
-    runtimeCodeAllowed: false
-    serviceCodeAllowed: false
-    deploymentManifestAllowed: false
-  description: Strategic specification unit for compute-foundation
-  foundation-id: mycodexvantaos-compute-foundation
-  platform: mycodexvantaos
-  category: compute
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - Foundation
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - compute-foundation
+        - - urn
+          - urn:mycodexvantaos:foundation:spec:compute-foundation
+        - - version
+          - 1.0.0
+        - - date
+          - '2026-06-29'
+        - - status
+          - active
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - boundary
+          - !!python/object/apply:collections.OrderedDict
+            - - - boundaryType
+                - specification-unit
+              - - parentModule
+                - foundation
+              - - parentModuleUrn
+                - urn:mycodexvantaos:foundation:module:foundation
+              - - independentRootModule
+                - false
+              - - requiresModuleContract
+                - false
+              - - runtimeCodeAllowed
+                - false
+              - - serviceCodeAllowed
+                - false
+              - - deploymentManifestAllowed
+                - false
+        - - description
+          - Strategic specification unit for compute-foundation
+        - - foundation-id
+          - mycodexvantaos-compute-foundation
+        - - platform
+          - mycodexvantaos
+        - - category
+          - compute

@@ -3,10 +3,21 @@
   "$id": "https://mycodexvantaos.com/schemas/usage-event.schema.json",
   "title": "UsageEvent",
   "type": "object",
-  "required": ["id", "type", "timestamp"],
   "properties": {
-    "id": { "type": "string" },
-    "type": { "type": "string" },
-    "timestamp": { "type": "string", "format": "date-time" }
-  }
+    "id": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "id",
+    "type",
+    "timestamp"
+  ]
 }

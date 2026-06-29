@@ -1,28 +1,50 @@
-apiVersion: mycodexvantaos.org/v1
-kind: Module
-metadata:
-  name: mycodexvantaos-ai-humaniser
-  labels:
-    mycodexvantaos.org/domain: ai
-    mycodexvantaos.org/managed-by: naming-spec-v1
-spec:
-  domain: ai
-  capabilities:
-    - llm
-    - embedding
-    - validation
-    - observability
-  providers:
-    llm: llm-openai
-    embedding: embedding-openai
-    validation: validation-zod
-    observability: observability-opentelemetry
-  lifecycle:
-    stage: stable
-    since: v1.0.0
-  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-humaniser
-  packageName: '@mycodexvantaos/ai-humaniser'
-  description: AI content detection and humanisation engine. Detects AI-generated
-    text, provides confidence scoring, and rewrites flagged content to sound more
-    natural.
-service-id: mycodexvantaos-ai-humaniser
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.org/v1
+  - - kind
+    - Module
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - mycodexvantaos-ai-humaniser
+        - - labels
+          - !!python/object/apply:collections.OrderedDict
+            - - - mycodexvantaos.org/domain
+                - ai
+              - - mycodexvantaos.org/managed-by
+                - naming-spec-v1
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - domain
+          - ai
+        - - capabilities
+          - - llm
+            - embedding
+            - validation
+            - observability
+        - - providers
+          - !!python/object/apply:collections.OrderedDict
+            - - - llm
+                - llm-openai
+              - - embedding
+                - embedding-openai
+              - - validation
+                - validation-zod
+              - - observability
+                - observability-opentelemetry
+        - - lifecycle
+          - !!python/object/apply:collections.OrderedDict
+            - - - stage
+                - stable
+              - - since
+                - v1.0.0
+        - - urn
+          - urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-humaniser
+        - - packageName
+          - '@mycodexvantaos/ai-humaniser'
+        - - description
+          - AI content detection and humanisation engine. Detects AI-generated text,
+            provides confidence scoring, and rewrites flagged content to sound more
+            natural.
+  - - service-id
+    - mycodexvantaos-ai-humaniser

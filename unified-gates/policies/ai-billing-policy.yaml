@@ -1,23 +1,42 @@
-apiVersion: mycodexvantaos.io/v1
-kind: AIBillingPolicy
-metadata:
-  version: '1.0.0'
-  date: '2026-06-29'
-  status: 'active'
-  name: ai-billing-policy
-  authority: platform-governance-root
-  governanceCode: mycodexvantaos-30400
-spec:
-  meteringRequired: true
-  costAttributionRequired: true
-  invoiceReconciliationRequired: true
-  invoiceReconciliationToleranceRate: 0.0001
-  tokenCountToleranceRate: 0.001
-  gpuHoursToleranceRate: 0.01
-  rateCardApprovalRequired: true
-  billingEventRetentionDays: 2555
-  mandatoryGates:
-    - gate-51-usage-event-contract-validation
-    - gate-56-cost-attribution-validation
-    - gate-57-billing-policy-validation
-    - gate-58-invoice-evidence-validation
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - AIBillingPolicy
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - ai-billing-policy
+        - - version
+          - 1.0.0
+        - - authority
+          - platform-governance-root
+        - - governanceCode
+          - mycodexvantaos-30400
+        - - date
+          - '2026-06-29'
+        - - status
+          - active
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - meteringRequired
+          - true
+        - - costAttributionRequired
+          - true
+        - - invoiceReconciliationRequired
+          - true
+        - - invoiceReconciliationToleranceRate
+          - 0.0001
+        - - tokenCountToleranceRate
+          - 0.001
+        - - gpuHoursToleranceRate
+          - 0.01
+        - - rateCardApprovalRequired
+          - true
+        - - billingEventRetentionDays
+          - 2555
+        - - mandatoryGates
+          - - gate-51-usage-event-contract-validation
+            - gate-56-cost-attribution-validation
+            - gate-57-billing-policy-validation
+            - gate-58-invoice-evidence-validation

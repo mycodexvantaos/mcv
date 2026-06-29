@@ -1,39 +1,68 @@
-apiVersion: mycodexvantaos.io/v1
-kind: ServiceManifest
-metadata:
-  name: mycodexvantaos-billing-metering
-  urn: urn:mycodexvantaos:service:mycodexvantaos-billing-metering
-  serviceId: mycodexvantaos-billing-metering
-  tier: tier-1
-  version: 1.0.0
-  date: '2026-06-29'
-  status: active
-spec:
-  serviceId: mycodexvantaos-billing-metering
-  tier: tier-1
-  packageName: '@mycodexvantaos/billing-metering'
-  ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-billing-metering
-  kubernetesResourceName: mycodexvantaos-billing-metering
-  internalUri: mycodexvantaos://service/mycodexvantaos-billing-metering
-  urn: urn:mycodexvantaos:service:mycodexvantaos-billing-metering
-  supportedRuntimeModes:
-    - native
-    - connected
-    - hybrid
-  deploymentTargets:
-    - kubernetes
-    - docker-compose
-  productionReadiness:
-    required: true
-    healthCheckRequired: true
-    auditChainRequired: true
-    sbomRequired: true
-    provenanceRequired: true
-    imagePinningRequired: true
-service-id: mycodexvantaos-billing-metering
-platform: mycodexvantaos
-runtime-modes:
-  - native
-  - connected
-  - hybrid
-service-path: services/mycodexvantaos-billing-metering
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - ServiceManifest
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - mycodexvantaos-billing-metering
+        - - urn
+          - urn:mycodexvantaos:service:mycodexvantaos-billing-metering
+        - - serviceId
+          - mycodexvantaos-billing-metering
+        - - tier
+          - tier-1
+        - - version
+          - 1.0.0
+        - - date
+          - '2026-06-29'
+        - - status
+          - active
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - serviceId
+          - mycodexvantaos-billing-metering
+        - - tier
+          - tier-1
+        - - packageName
+          - '@mycodexvantaos/billing-metering'
+        - - ociImageRepo
+          - ghcr.io/mycodexvantaos/mycodexvantaos-billing-metering
+        - - kubernetesResourceName
+          - mycodexvantaos-billing-metering
+        - - internalUri
+          - mycodexvantaos://service/mycodexvantaos-billing-metering
+        - - urn
+          - urn:mycodexvantaos:service:mycodexvantaos-billing-metering
+        - - supportedRuntimeModes
+          - - native
+            - connected
+            - hybrid
+        - - deploymentTargets
+          - - kubernetes
+            - docker-compose
+        - - productionReadiness
+          - !!python/object/apply:collections.OrderedDict
+            - - - required
+                - true
+              - - healthCheckRequired
+                - true
+              - - auditChainRequired
+                - true
+              - - sbomRequired
+                - true
+              - - provenanceRequired
+                - true
+              - - imagePinningRequired
+                - true
+  - - service-id
+    - mycodexvantaos-billing-metering
+  - - platform
+    - mycodexvantaos
+  - - runtime-modes
+    - - native
+      - connected
+      - hybrid
+  - - service-path
+    - services/mycodexvantaos-billing-metering

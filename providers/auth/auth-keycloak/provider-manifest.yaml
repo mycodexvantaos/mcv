@@ -1,18 +1,37 @@
-apiVersion: mycodexvantaos.org/v1
-kind: Provider
-metadata:
-  name: mycodexvantaos-auth-keycloak
-  capability: auth
-  labels:
-    mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: '8.1'
-spec:
-  providerName: keycloak
-  isNative: false
-  lifecycle:
-    stage: stable
-  envVarPrefix: MYCODEXVANTAOS_AUTH
-  configSchemaRef: ./config.schema.json
-  description: Keycloak identity and access management provider.
-provider-id: mycodexvantaos-auth-keycloak
-capability: auth
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.org/v1
+  - - kind
+    - Provider
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - mycodexvantaos-auth-keycloak
+        - - capability
+          - auth
+        - - labels
+          - !!python/object/apply:collections.OrderedDict
+            - - - mycodexvantaos.org/managed-by
+                - naming-spec-v1
+              - - mycodexvantaos.org/specRef
+                - '8.1'
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - providerName
+          - keycloak
+        - - isNative
+          - false
+        - - lifecycle
+          - !!python/object/apply:collections.OrderedDict
+            - - - stage
+                - stable
+        - - envVarPrefix
+          - MYCODEXVANTAOS_AUTH
+        - - configSchemaRef
+          - ./config.schema.json
+        - - description
+          - Keycloak identity and access management provider.
+  - - provider-id
+    - mycodexvantaos-auth-keycloak
+  - - capability
+    - auth

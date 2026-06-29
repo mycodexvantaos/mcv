@@ -1,9 +1,20 @@
-apiVersion: mycodexvantaos.io/v1
-kind: NamingSpec
-metadata:
-  name: service-id-spec
-  version: 1.0.0
-  date: '2026-06-29'
-  status: active
-spec: {}
-platform: mycodexvantaos
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - NamingSpec
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - service-id-spec
+        - - version
+          - 1.0.0
+        - - date
+          - '2026-06-29'
+        - - status
+          - active
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - []
+  - - platform
+    - mycodexvantaos

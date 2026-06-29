@@ -1,24 +1,45 @@
-apiVersion: mycodexvantaos.org/v1
-kind: Module
-metadata:
-  name: mycodexvantaos-platform-scheduler
-  labels:
-    mycodexvantaos.org/domain: platform
-    mycodexvantaos.org/managed-by: naming-spec-v1
-spec:
-  domain: platform
-  capabilities:
-    - scheduler
-    - database
-    - queue
-  providers:
-    scheduler: scheduler-temporal
-    database: database-postgres
-    queue: queue-rabbitmq
-  lifecycle:
-    stage: stable
-    since: v1.0.0
-  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-platform-scheduler
-  packageName: '@mycodexvantaos/platform-scheduler'
-  description: Job scheduling and workflow orchestration service.
-service-id: mycodexvantaos-platform-scheduler
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.org/v1
+  - - kind
+    - Module
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - mycodexvantaos-platform-scheduler
+        - - labels
+          - !!python/object/apply:collections.OrderedDict
+            - - - mycodexvantaos.org/domain
+                - platform
+              - - mycodexvantaos.org/managed-by
+                - naming-spec-v1
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - domain
+          - platform
+        - - capabilities
+          - - scheduler
+            - database
+            - queue
+        - - providers
+          - !!python/object/apply:collections.OrderedDict
+            - - - scheduler
+                - scheduler-temporal
+              - - database
+                - database-postgres
+              - - queue
+                - queue-rabbitmq
+        - - lifecycle
+          - !!python/object/apply:collections.OrderedDict
+            - - - stage
+                - stable
+              - - since
+                - v1.0.0
+        - - urn
+          - urn:mycodexvantaos:manifest:service:mycodexvantaos-platform-scheduler
+        - - packageName
+          - '@mycodexvantaos/platform-scheduler'
+        - - description
+          - Job scheduling and workflow orchestration service.
+  - - service-id
+    - mycodexvantaos-platform-scheduler

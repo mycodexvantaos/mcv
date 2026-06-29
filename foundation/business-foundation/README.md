@@ -1,14 +1,11 @@
-# MyCodexVantaOS Business-foundation
-
+## MyCodexVantaOS Business-foundation
 Foundation ID: `mycodexvantaos-business-foundation`
 Version: 1.0.0
 
 ## Overview
-
 This directory contains the specification for the MyCodexVantaOS business Foundation.
 
 ## Files
-
 | File                          | Description                    |
 | ----------------------------- | ------------------------------ |
 | `foundation.yaml`             | Foundation specification       |
@@ -24,3 +21,9 @@ This directory contains the specification for the MyCodexVantaOS business Founda
 | `roadmap.yaml`                | Foundation roadmap             |
 | `service-map.yaml`            | Service mapping                |
 | `urn-map.yaml`                | URN mapping                    |
+
+## Business Foundation
+Strategic specification unit for MyCodexVantaOS business-foundation.
+
+This is a specification-unit under the `foundation` root module.
+It MUST NOT contain runtime source code, service implementation, or deployment manifests.

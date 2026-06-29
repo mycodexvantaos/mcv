@@ -1,18 +1,37 @@
-apiVersion: mycodexvantaos.org/v1
-kind: Provider
-metadata:
-  name: mycodexvantaos-scheduler-temporal
-  capability: scheduler
-  labels:
-    mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: '8.1'
-spec:
-  providerName: temporal
-  isNative: false
-  lifecycle:
-    stage: stable
-  envVarPrefix: MYCODEXVANTAOS_SCHEDULER
-  configSchemaRef: ./config.schema.json
-  description: Temporal workflow orchestration provider.
-provider-id: mycodexvantaos-scheduler-temporal
-capability: scheduler
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.org/v1
+  - - kind
+    - Provider
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - mycodexvantaos-scheduler-temporal
+        - - capability
+          - scheduler
+        - - labels
+          - !!python/object/apply:collections.OrderedDict
+            - - - mycodexvantaos.org/managed-by
+                - naming-spec-v1
+              - - mycodexvantaos.org/specRef
+                - '8.1'
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - providerName
+          - temporal
+        - - isNative
+          - false
+        - - lifecycle
+          - !!python/object/apply:collections.OrderedDict
+            - - - stage
+                - stable
+        - - envVarPrefix
+          - MYCODEXVANTAOS_SCHEDULER
+        - - configSchemaRef
+          - ./config.schema.json
+        - - description
+          - Temporal workflow orchestration provider.
+  - - provider-id
+    - mycodexvantaos-scheduler-temporal
+  - - capability
+    - scheduler

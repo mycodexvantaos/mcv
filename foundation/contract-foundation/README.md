@@ -1,14 +1,11 @@
-# MyCodexVantaOS Contract-foundation
-
+## MyCodexVantaOS Contract-foundation
 Foundation ID: `mycodexvantaos-contract-foundation`
 Version: 1.0.0
 
 ## Overview
-
 This directory contains the specification for the MyCodexVantaOS contract Foundation.
 
 ## Files
-
 | File                          | Description                    |
 | ----------------------------- | ------------------------------ |
 | `foundation.yaml`             | Foundation specification       |
@@ -24,3 +21,9 @@ This directory contains the specification for the MyCodexVantaOS contract Founda
 | `roadmap.yaml`                | Foundation roadmap             |
 | `service-map.yaml`            | Service mapping                |
 | `urn-map.yaml`                | URN mapping                    |
+
+## Contract Foundation
+Strategic specification unit for MyCodexVantaOS contract-foundation.
+
+This is a specification-unit under the `foundation` root module.
+It MUST NOT contain runtime source code, service implementation, or deployment manifests.

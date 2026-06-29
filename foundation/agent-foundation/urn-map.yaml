@@ -1,9 +1,20 @@
-apiVersion: mycodexvantaos.io/v1
-kind: FoundationSpec
-metadata:
-  name: urn-map
-  foundation: agent-foundation
-  version: 1.0.0
-  date: '2026-06-29'
-  status: active
-spec: {}
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - FoundationSpec
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - urn-map
+        - - foundation
+          - agent-foundation
+        - - version
+          - 1.0.0
+        - - date
+          - '2026-06-29'
+        - - status
+          - active
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - []

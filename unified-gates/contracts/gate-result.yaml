@@ -1,27 +1,46 @@
-apiVersion: mycodexvantaos.io/v1
-kind: GateResultContract
-metadata:
-  version: '1.0.0'
-  date: '2026-06-29'
-  status: 'active'
-  name: gate-result-contract
-  governanceCode: mycodexvantaos-00000
-spec:
-  description: >
-    Defines the canonical contract for a gate evaluation result. All gate
-    result records MUST conform to this contract.
-  requiredFields:
-    - gateId
-    - gateVersion
-    - pipelineRunId
-    - artifactRef
-    - evaluatedAt
-    - evaluatedBy
-    - overallStatus
-    - dimensions
-    - evidence.sha256
-    - evidence.sha3512
-    - evidence.blake3
-  validValues:
-    overallStatus: [PASS, FAIL, WARN, SKIP, ERROR]
-  schemaRef: ../schemas/gate-result.schema.json
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - GateResultContract
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - gate-result-contract
+        - - version
+          - 1.0.0
+        - - governanceCode
+          - mycodexvantaos-00000
+        - - date
+          - '2026-06-29'
+        - - status
+          - active
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - description
+          - 'Defines the canonical contract for a gate evaluation result. All gate
+            result records MUST conform to this contract.
+
+            '
+        - - requiredFields
+          - - gateId
+            - gateVersion
+            - pipelineRunId
+            - artifactRef
+            - evaluatedAt
+            - evaluatedBy
+            - overallStatus
+            - dimensions
+            - evidence.sha256
+            - evidence.sha3512
+            - evidence.blake3
+        - - validValues
+          - !!python/object/apply:collections.OrderedDict
+            - - - overallStatus
+                - - PASS
+                  - FAIL
+                  - WARN
+                  - SKIP
+                  - ERROR
+        - - schemaRef
+          - ../schemas/gate-result.schema.json

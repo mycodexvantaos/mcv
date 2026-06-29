@@ -1,19 +1,38 @@
-apiVersion: mycodexvantaos.org/v1
-kind: Provider
-metadata:
-  name: mycodexvantaos-blockchain-native-ledger
-  capability: blockchain
-  labels:
-    mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: '8.1'
-spec:
-  providerName: native-ledger
-  isNative: true
-  lifecycle:
-    stage: stable
-  envVarPrefix: MYCODEXVANTAOS_BLOCKCHAIN
-  configSchemaRef: ./config.schema.json
-  description: Native immutable ledger provider for platform-internal governance event
-    anchoring, Merkle proof generation, and compliance audit trails.
-provider-id: mycodexvantaos-blockchain-native-ledger
-capability: database
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.org/v1
+  - - kind
+    - Provider
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - mycodexvantaos-blockchain-native-ledger
+        - - capability
+          - blockchain
+        - - labels
+          - !!python/object/apply:collections.OrderedDict
+            - - - mycodexvantaos.org/managed-by
+                - naming-spec-v1
+              - - mycodexvantaos.org/specRef
+                - '8.1'
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - providerName
+          - native-ledger
+        - - isNative
+          - true
+        - - lifecycle
+          - !!python/object/apply:collections.OrderedDict
+            - - - stage
+                - stable
+        - - envVarPrefix
+          - MYCODEXVANTAOS_BLOCKCHAIN
+        - - configSchemaRef
+          - ./config.schema.json
+        - - description
+          - Native immutable ledger provider for platform-internal governance event
+            anchoring, Merkle proof generation, and compliance audit trails.
+  - - provider-id
+    - mycodexvantaos-blockchain-native-ledger
+  - - capability
+    - database

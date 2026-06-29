@@ -1,39 +1,68 @@
-apiVersion: mycodexvantaos.io/v1
-kind: ServiceManifest
-metadata:
-  name: mycodexvantaos-knowledge-search
-  urn: urn:mycodexvantaos:service:mycodexvantaos-knowledge-search
-  serviceId: mycodexvantaos-knowledge-search
-  tier: tier-1
-  version: 1.0.0
-  date: '2026-06-29'
-  status: active
-spec:
-  serviceId: mycodexvantaos-knowledge-search
-  tier: tier-1
-  packageName: '@mycodexvantaos/knowledge-search'
-  ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-knowledge-search
-  kubernetesResourceName: mycodexvantaos-knowledge-search
-  internalUri: mycodexvantaos://service/mycodexvantaos-knowledge-search
-  urn: urn:mycodexvantaos:service:mycodexvantaos-knowledge-search
-  supportedRuntimeModes:
-    - native
-    - connected
-    - hybrid
-  deploymentTargets:
-    - kubernetes
-    - docker-compose
-  productionReadiness:
-    required: true
-    healthCheckRequired: true
-    auditChainRequired: true
-    sbomRequired: true
-    provenanceRequired: true
-    imagePinningRequired: true
-service-id: mycodexvantaos-knowledge-search
-platform: mycodexvantaos
-runtime-modes:
-  - native
-  - connected
-  - hybrid
-service-path: services/mycodexvantaos-knowledge-search
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - ServiceManifest
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - mycodexvantaos-knowledge-search
+        - - urn
+          - urn:mycodexvantaos:service:mycodexvantaos-knowledge-search
+        - - serviceId
+          - mycodexvantaos-knowledge-search
+        - - tier
+          - tier-1
+        - - version
+          - 1.0.0
+        - - date
+          - '2026-06-29'
+        - - status
+          - active
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - serviceId
+          - mycodexvantaos-knowledge-search
+        - - tier
+          - tier-1
+        - - packageName
+          - '@mycodexvantaos/knowledge-search'
+        - - ociImageRepo
+          - ghcr.io/mycodexvantaos/mycodexvantaos-knowledge-search
+        - - kubernetesResourceName
+          - mycodexvantaos-knowledge-search
+        - - internalUri
+          - mycodexvantaos://service/mycodexvantaos-knowledge-search
+        - - urn
+          - urn:mycodexvantaos:service:mycodexvantaos-knowledge-search
+        - - supportedRuntimeModes
+          - - native
+            - connected
+            - hybrid
+        - - deploymentTargets
+          - - kubernetes
+            - docker-compose
+        - - productionReadiness
+          - !!python/object/apply:collections.OrderedDict
+            - - - required
+                - true
+              - - healthCheckRequired
+                - true
+              - - auditChainRequired
+                - true
+              - - sbomRequired
+                - true
+              - - provenanceRequired
+                - true
+              - - imagePinningRequired
+                - true
+  - - service-id
+    - mycodexvantaos-knowledge-search
+  - - platform
+    - mycodexvantaos
+  - - runtime-modes
+    - - native
+      - connected
+      - hybrid
+  - - service-path
+    - services/mycodexvantaos-knowledge-search

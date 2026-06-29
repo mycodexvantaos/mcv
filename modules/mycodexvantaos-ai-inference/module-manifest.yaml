@@ -1,39 +1,68 @@
-apiVersion: mycodexvantaos.io/v1
-kind: ServiceManifest
-metadata:
-  name: mycodexvantaos-ai-inference
-  urn: urn:mycodexvantaos:service:mycodexvantaos-ai-inference
-  serviceId: mycodexvantaos-ai-inference
-  tier: tier-1
-  version: 1.0.0
-  date: '2026-06-29'
-  status: active
-spec:
-  serviceId: mycodexvantaos-ai-inference
-  tier: tier-1
-  packageName: '@mycodexvantaos/ai-inference'
-  ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-ai-inference
-  kubernetesResourceName: mycodexvantaos-ai-inference
-  internalUri: mycodexvantaos://service/mycodexvantaos-ai-inference
-  urn: urn:mycodexvantaos:service:mycodexvantaos-ai-inference
-  supportedRuntimeModes:
-    - native
-    - connected
-    - hybrid
-  deploymentTargets:
-    - kubernetes
-    - docker-compose
-  productionReadiness:
-    required: true
-    healthCheckRequired: true
-    auditChainRequired: true
-    sbomRequired: true
-    provenanceRequired: true
-    imagePinningRequired: true
-service-id: mycodexvantaos-ai-inference
-platform: mycodexvantaos
-runtime-modes:
-  - native
-  - connected
-  - hybrid
-service-path: services/mycodexvantaos-ai-inference
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - ServiceManifest
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - mycodexvantaos-ai-inference
+        - - urn
+          - urn:mycodexvantaos:service:mycodexvantaos-ai-inference
+        - - serviceId
+          - mycodexvantaos-ai-inference
+        - - tier
+          - tier-1
+        - - version
+          - 1.0.0
+        - - date
+          - '2026-06-29'
+        - - status
+          - active
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - serviceId
+          - mycodexvantaos-ai-inference
+        - - tier
+          - tier-1
+        - - packageName
+          - '@mycodexvantaos/ai-inference'
+        - - ociImageRepo
+          - ghcr.io/mycodexvantaos/mycodexvantaos-ai-inference
+        - - kubernetesResourceName
+          - mycodexvantaos-ai-inference
+        - - internalUri
+          - mycodexvantaos://service/mycodexvantaos-ai-inference
+        - - urn
+          - urn:mycodexvantaos:service:mycodexvantaos-ai-inference
+        - - supportedRuntimeModes
+          - - native
+            - connected
+            - hybrid
+        - - deploymentTargets
+          - - kubernetes
+            - docker-compose
+        - - productionReadiness
+          - !!python/object/apply:collections.OrderedDict
+            - - - required
+                - true
+              - - healthCheckRequired
+                - true
+              - - auditChainRequired
+                - true
+              - - sbomRequired
+                - true
+              - - provenanceRequired
+                - true
+              - - imagePinningRequired
+                - true
+  - - service-id
+    - mycodexvantaos-ai-inference
+  - - platform
+    - mycodexvantaos
+  - - runtime-modes
+    - - native
+      - connected
+      - hybrid
+  - - service-path
+    - services/mycodexvantaos-ai-inference

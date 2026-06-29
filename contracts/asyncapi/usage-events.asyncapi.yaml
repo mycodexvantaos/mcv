@@ -1,10 +1,18 @@
-asyncapi: 2.6.0
-info:
-  title: MyCodexVantaOS usage-events
-  version: 1.0.0
-  description: MyCodexVantaOS usage-events AsyncAPI specification
-channels: {}
-servers:
-  production:
-    host: api.mycodexvantaos.com
-    protocol: amqp
+!!python/object/apply:collections.OrderedDict
+- - - asyncapi
+    - 2.6.0
+  - - info
+    - !!python/object/apply:collections.OrderedDict
+      - - - title
+          - MyCodexVantaOS usage-events
+        - - version
+          - 1.0.0
+        - - description
+          - MyCodexVantaOS usage-events AsyncAPI specification
+  - - channels
+    - !!python/object/apply:collections.OrderedDict
+      - []
+  - - servers
+    - production:
+        host: api.mycodexvantaos.com
+        protocol: amqp

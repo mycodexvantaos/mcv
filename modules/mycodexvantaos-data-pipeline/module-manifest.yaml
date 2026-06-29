@@ -1,26 +1,48 @@
-apiVersion: mycodexvantaos.org/v1
-kind: Module
-metadata:
-  name: mycodexvantaos-data-pipeline
-  labels:
-    mycodexvantaos.org/domain: data
-    mycodexvantaos.org/managed-by: naming-spec-v1
-spec:
-  domain: data
-  capabilities:
-    - database
-    - queue
-    - storage
-    - observability
-  providers:
-    database: database-postgres
-    queue: queue-rabbitmq
-    storage: storage-s3
-    observability: observability-opentelemetry
-  lifecycle:
-    stage: stable
-    since: v1.0.0
-  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-data-pipeline
-  packageName: '@mycodexvantaos/data-pipeline'
-  description: Data ingestion and transformation pipeline service.
-service-id: mycodexvantaos-data-pipeline
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.org/v1
+  - - kind
+    - Module
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - mycodexvantaos-data-pipeline
+        - - labels
+          - !!python/object/apply:collections.OrderedDict
+            - - - mycodexvantaos.org/domain
+                - data
+              - - mycodexvantaos.org/managed-by
+                - naming-spec-v1
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - domain
+          - data
+        - - capabilities
+          - - database
+            - queue
+            - storage
+            - observability
+        - - providers
+          - !!python/object/apply:collections.OrderedDict
+            - - - database
+                - database-postgres
+              - - queue
+                - queue-rabbitmq
+              - - storage
+                - storage-s3
+              - - observability
+                - observability-opentelemetry
+        - - lifecycle
+          - !!python/object/apply:collections.OrderedDict
+            - - - stage
+                - stable
+              - - since
+                - v1.0.0
+        - - urn
+          - urn:mycodexvantaos:manifest:service:mycodexvantaos-data-pipeline
+        - - packageName
+          - '@mycodexvantaos/data-pipeline'
+        - - description
+          - Data ingestion and transformation pipeline service.
+  - - service-id
+    - mycodexvantaos-data-pipeline

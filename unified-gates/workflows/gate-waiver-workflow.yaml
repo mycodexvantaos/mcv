@@ -1,37 +1,79 @@
-apiVersion: mycodexvantaos.io/v1
-kind: GateWaiverWorkflow
-metadata:
-  version: '1.0.0'
-  date: '2026-06-29'
-  status: 'active'
-  name: gate-waiver-workflow
-  governanceCode: mycodexvantaos-00000
-spec:
-  description: >
-    Defines the approval workflow for gate waiver requests.
-  steps:
-    - id: submit
-      actor: requestor
-      action: submit-waiver-request
-      output: waiver-draft
-    - id: owner-review
-      actor: gate-owner
-      action: review-waiver-request
-      sloHours: 4
-      onApprove: council-review
-      onReject: reject
-    - id: council-review
-      actor: platform-governance-council
-      condition: gate.criticality == critical
-      action: review-waiver-request
-      sloHours: 8
-      onApprove: activate
-      onReject: reject
-    - id: activate
-      actor: system
-      action: activate-waiver
-      maxDurationDays: 30
-    - id: reject
-      actor: system
-      action: reject-waiver
-      notify: requestor
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - GateWaiverWorkflow
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - gate-waiver-workflow
+        - - version
+          - 1.0.0
+        - - governanceCode
+          - mycodexvantaos-00000
+        - - date
+          - '2026-06-29'
+        - - status
+          - active
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - description
+          - 'Defines the approval workflow for gate waiver requests.
+
+            '
+        - - steps
+          - - !!python/object/apply:collections.OrderedDict
+              - - - id
+                  - submit
+                - - actor
+                  - requestor
+                - - action
+                  - submit-waiver-request
+                - - output
+                  - waiver-draft
+            - !!python/object/apply:collections.OrderedDict
+              - - - id
+                  - owner-review
+                - - actor
+                  - gate-owner
+                - - action
+                  - review-waiver-request
+                - - sloHours
+                  - 4
+                - - onApprove
+                  - council-review
+                - - onReject
+                  - reject
+            - !!python/object/apply:collections.OrderedDict
+              - - - id
+                  - council-review
+                - - actor
+                  - platform-governance-council
+                - - condition
+                  - gate.criticality == critical
+                - - action
+                  - review-waiver-request
+                - - sloHours
+                  - 8
+                - - onApprove
+                  - activate
+                - - onReject
+                  - reject
+            - !!python/object/apply:collections.OrderedDict
+              - - - id
+                  - activate
+                - - actor
+                  - system
+                - - action
+                  - activate-waiver
+                - - maxDurationDays
+                  - 30
+            - !!python/object/apply:collections.OrderedDict
+              - - - id
+                  - reject
+                - - actor
+                  - system
+                - - action
+                  - reject-waiver
+                - - notify
+                  - requestor

@@ -1,12 +1,25 @@
-apiVersion: mycodexvantaos.io/v1
-kind: GovernancePolicy
-metadata:
-  name: contract-policy
-  description: contract-policy for MyCodexVantaOS
-  version: 1.0.0
-  date: '2026-06-29'
-  status: active
-spec:
-  rules: []
-  enforcement: block
-platform: mycodexvantaos
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - GovernancePolicy
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - contract-policy
+        - - description
+          - contract-policy for MyCodexVantaOS
+        - - version
+          - 1.0.0
+        - - date
+          - '2026-06-29'
+        - - status
+          - active
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - rules
+          - []
+        - - enforcement
+          - block
+  - - platform
+    - mycodexvantaos

@@ -1,39 +1,78 @@
-apiVersion: mycodexvantaos.io/v1
-kind: RootModule
-metadata:
-  name: navigation
-  urn: urn:mycodexvantaos:navigation:module:navigation
-  domain: navigation
-  layer: governance
-  version: 1.0.0
-  date: '2026-06-29'
-spec:
-  moduleType: navigation-index
-  description: 'Global AI and human navigation index root for MyCodexVantaOS. Owns
-    discovery indexes, dependency graphs, binding indexes, and service navigation
-    maps.
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - RootModule
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - navigation
+        - - urn
+          - urn:mycodexvantaos:navigation:module:navigation
+        - - domain
+          - navigation
+        - - layer
+          - governance
+        - - version
+          - 1.0.0
+        - - date
+          - '2026-06-29'
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - moduleType
+          - navigation-index
+        - - description
+          - 'Global AI and human navigation index root for MyCodexVantaOS. Owns discovery
+            indexes, dependency graphs, binding indexes, and service navigation maps.
 
-    '
-  runtimeCodeAllowed: false
-  deploymentAllowed: false
-  metadataOnly: true
-  exports:
-    - type: navigation-index
-      name: directory-index
-      path: ./directory-index.yaml
-    - type: navigation-index
-      name: module-index
-      path: ./module-index.yaml
-    - type: navigation-index
-      name: dependency-graph
-      path: ./dependency-graph.yaml
-    - type: navigation-index
-      name: binding-index
-      path: ./binding-index.yaml
-    - type: navigation-index
-      name: service-navigation-map
-      path: ./service-navigation-map.yaml
-  governance:
-    ssot: true
-    authority: global-navigation-index
-platform: mycodexvantaos
+            '
+        - - runtimeCodeAllowed
+          - false
+        - - deploymentAllowed
+          - false
+        - - metadataOnly
+          - true
+        - - exports
+          - - !!python/object/apply:collections.OrderedDict
+              - - - type
+                  - navigation-index
+                - - name
+                  - directory-index
+                - - path
+                  - ./directory-index.yaml
+            - !!python/object/apply:collections.OrderedDict
+              - - - type
+                  - navigation-index
+                - - name
+                  - module-index
+                - - path
+                  - ./module-index.yaml
+            - !!python/object/apply:collections.OrderedDict
+              - - - type
+                  - navigation-index
+                - - name
+                  - dependency-graph
+                - - path
+                  - ./dependency-graph.yaml
+            - !!python/object/apply:collections.OrderedDict
+              - - - type
+                  - navigation-index
+                - - name
+                  - binding-index
+                - - path
+                  - ./binding-index.yaml
+            - !!python/object/apply:collections.OrderedDict
+              - - - type
+                  - navigation-index
+                - - name
+                  - service-navigation-map
+                - - path
+                  - ./service-navigation-map.yaml
+        - - governance
+          - !!python/object/apply:collections.OrderedDict
+            - - - ssot
+                - true
+              - - authority
+                - global-navigation-index
+  - - platform
+    - mycodexvantaos

@@ -1,401 +1,409 @@
-openapi: 3.1.0
-info:
-  title: MyCodexVantaOS platform-api API
-  version: 1.0.0
-  description: OpenAPI specification for MyCodexVantaOS platform-api
-  contact:
-    name: MyCodexVantaOS Platform Team
-    url: https://mycodexvantaos.com/contact
-  license:
-    name: Proprietary
-    url: https://mycodexvantaos.com/terms
-paths:
-  /health/live:
-    get:
-      operationId: getLiveness
-      summary: Liveness check
-      tags:
-        - Health
-      security: []
-      responses:
-        '200':
-          description: Service is alive
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HealthResponse'
-  /health/ready:
-    get:
-      operationId: getReadiness
-      summary: Readiness check
-      tags:
-        - Health
-      security: []
-      responses:
-        '200':
-          description: Service is ready
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HealthResponse'
-  /agents:
-    get:
-      operationId: listAgents
-      summary: List agent runtimes
-      tags:
-        - Agents
-      parameters:
-        - name: workspaceId
-          in: query
-          required: true
-          schema:
-            type: string
-        - name: status
-          in: query
-          schema:
-            type: string
-            enum:
-              - idle
-              - running
-              - paused
-              - completed
-              - failed
-      responses:
-        '200':
-          description: List of agents
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AgentRuntime'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-    post:
-      operationId: createAgent
-      summary: Create a new agent runtime
-      tags:
-        - Agents
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateAgentRequest'
-      responses:
-        '201':
-          description: Agent created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AgentRuntime'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-  /agents/{agentId}/tasks:
-    post:
-      operationId: submitAgentTask
-      summary: Submit a task to an agent
-      tags:
-        - Agents
-      parameters:
-        - name: agentId
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SubmitTaskRequest'
-      responses:
-        '202':
-          description: Task accepted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AgentTask'
-        '404':
-          $ref: '#/components/responses/NotFound'
-  /inference:
-    post:
-      operationId: runInference
-      summary: Run LLM inference
-      tags:
-        - Inference
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/InferenceRequest'
-      responses:
-        '200':
-          description: Inference result
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InferenceResponse'
-  /webhooks/github:
-    post:
-      operationId: githubWebhook
-      summary: GitHub webhook endpoint
-      description: Webhook endpoint at https://api.mycodexvantaos.com/webhooks/github
-      tags:
-        - Webhooks
-      security: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
+!!python/object/apply:collections.OrderedDict
+- - - openapi
+    - 3.1.0
+  - - info
+    - !!python/object/apply:collections.OrderedDict
+      - - - title
+          - MyCodexVantaOS platform-api API
+        - - version
+          - 1.0.0
+        - - description
+          - OpenAPI specification for MyCodexVantaOS platform-api
+        - - contact
+          - name: MyCodexVantaOS Platform Team
+            url: https://mycodexvantaos.com/contact
+        - - license
+          - name: Proprietary
+            url: https://mycodexvantaos.com/terms
+  - - paths
+    - !!python/object/apply:collections.OrderedDict
+      - - - /health/live
+          - get:
+              operationId: getLiveness
+              summary: Liveness check
+              tags:
+              - Health
+              security: []
+              responses:
+                '200':
+                  description: Service is alive
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/HealthResponse'
+        - - /health/ready
+          - get:
+              operationId: getReadiness
+              summary: Readiness check
+              tags:
+              - Health
+              security: []
+              responses:
+                '200':
+                  description: Service is ready
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/HealthResponse'
+        - - /agents
+          - get:
+              operationId: listAgents
+              summary: List agent runtimes
+              tags:
+              - Agents
+              parameters:
+              - name: workspaceId
+                in: query
+                required: true
+                schema:
+                  type: string
+              - name: status
+                in: query
+                schema:
+                  type: string
+                  enum:
+                  - idle
+                  - running
+                  - paused
+                  - completed
+                  - failed
+              responses:
+                '200':
+                  description: List of agents
+                  content:
+                    application/json:
+                      schema:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/AgentRuntime'
+                '401':
+                  $ref: '#/components/responses/Unauthorized'
+            post:
+              operationId: createAgent
+              summary: Create a new agent runtime
+              tags:
+              - Agents
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/CreateAgentRequest'
+              responses:
+                '201':
+                  description: Agent created
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/AgentRuntime'
+                '400':
+                  $ref: '#/components/responses/BadRequest'
+                '401':
+                  $ref: '#/components/responses/Unauthorized'
+        - - /agents/{agentId}/tasks
+          - post:
+              operationId: submitAgentTask
+              summary: Submit a task to an agent
+              tags:
+              - Agents
+              parameters:
+              - name: agentId
+                in: path
+                required: true
+                schema:
+                  type: string
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/SubmitTaskRequest'
+              responses:
+                '202':
+                  description: Task accepted
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/AgentTask'
+                '404':
+                  $ref: '#/components/responses/NotFound'
+        - - /inference
+          - post:
+              operationId: runInference
+              summary: Run LLM inference
+              tags:
+              - Inference
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/InferenceRequest'
+              responses:
+                '200':
+                  description: Inference result
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/InferenceResponse'
+        - - /webhooks/github
+          - post:
+              operationId: githubWebhook
+              summary: GitHub webhook endpoint
+              description: Webhook endpoint at https://api.mycodexvantaos.com/webhooks/github
+              tags:
+              - Webhooks
+              security: []
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      type: object
+              responses:
+                '200':
+                  description: Webhook received
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/WebhookResponse'
+  - - components
+    - !!python/object/apply:collections.OrderedDict
+      - - - securitySchemes
+          - BearerAuth:
+              type: http
+              scheme: bearer
+              bearerFormat: JWT
+              description: JWT token issued by https://mycodexvantaos.com/api/auth
+        - - schemas
+          - HealthResponse:
               type: object
-      responses:
-        '200':
-          description: Webhook received
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WebhookResponse'
-components:
-  securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-      description: JWT token issued by https://mycodexvantaos.com/api/auth
-  schemas:
-    HealthResponse:
-      type: object
-      required:
-        - status
-        - service
-        - timestamp
-      properties:
-        status:
-          type: string
-          enum:
-            - ok
-            - ready
-            - degraded
-        service:
-          type: string
-          example: mycodexvantaos-api
-        timestamp:
-          type: string
-          format: date-time
-    AgentRuntime:
-      type: object
-      required:
-        - agentId
-        - status
-        - startedAt
-      properties:
-        agentId:
-          type: string
-        status:
-          type: string
-          enum:
-            - idle
-            - running
-            - paused
-            - completed
-            - failed
-        startedAt:
-          type: string
-          format: date-time
-        lastActivityAt:
-          type: string
-          format: date-time
-    CreateAgentRequest:
-      type: object
-      required:
-        - agentId
-        - workspaceId
-      properties:
-        agentId:
-          type: string
-        workspaceId:
-          type: string
-    AgentTask:
-      type: object
-      required:
-        - taskId
-        - agentId
-        - type
-        - status
-        - createdAt
-      properties:
-        taskId:
-          type: string
-        agentId:
-          type: string
-        type:
-          type: string
-        status:
-          type: string
-          enum:
-            - idle
-            - running
-            - paused
-            - completed
-            - failed
-        createdAt:
-          type: string
-          format: date-time
-    SubmitTaskRequest:
-      type: object
-      required:
-        - taskId
-        - type
-        - input
-        - workspaceId
-      properties:
-        taskId:
-          type: string
-        type:
-          type: string
-        input:
-          type: object
-        priority:
-          type: string
-          enum:
-            - low
-            - normal
-            - high
-            - critical
-          default: normal
-        workspaceId:
-          type: string
-    InferenceRequest:
-      type: object
-      required:
-        - requestId
-        - model
-        - messages
-        - workspaceId
-      properties:
-        requestId:
-          type: string
-        model:
-          type: string
-        provider:
-          type: string
-          enum:
-            - native
-            - openai
-            - openrouter
-            - workers-ai
-        messages:
-          type: array
-          items:
-            type: object
-            required:
-              - role
-              - content
-            properties:
-              role:
-                type: string
-                enum:
-                  - system
-                  - user
-                  - assistant
+              required:
+              - status
+              - service
+              - timestamp
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - ok
+                  - ready
+                  - degraded
+                service:
+                  type: string
+                  example: mycodexvantaos-api
+                timestamp:
+                  type: string
+                  format: date-time
+            AgentRuntime:
+              type: object
+              required:
+              - agentId
+              - status
+              - startedAt
+              properties:
+                agentId:
+                  type: string
+                status:
+                  type: string
+                  enum:
+                  - idle
+                  - running
+                  - paused
+                  - completed
+                  - failed
+                startedAt:
+                  type: string
+                  format: date-time
+                lastActivityAt:
+                  type: string
+                  format: date-time
+            CreateAgentRequest:
+              type: object
+              required:
+              - agentId
+              - workspaceId
+              properties:
+                agentId:
+                  type: string
+                workspaceId:
+                  type: string
+            AgentTask:
+              type: object
+              required:
+              - taskId
+              - agentId
+              - type
+              - status
+              - createdAt
+              properties:
+                taskId:
+                  type: string
+                agentId:
+                  type: string
+                type:
+                  type: string
+                status:
+                  type: string
+                  enum:
+                  - idle
+                  - running
+                  - paused
+                  - completed
+                  - failed
+                createdAt:
+                  type: string
+                  format: date-time
+            SubmitTaskRequest:
+              type: object
+              required:
+              - taskId
+              - type
+              - input
+              - workspaceId
+              properties:
+                taskId:
+                  type: string
+                type:
+                  type: string
+                input:
+                  type: object
+                priority:
+                  type: string
+                  enum:
+                  - low
+                  - normal
+                  - high
+                  - critical
+                  default: normal
+                workspaceId:
+                  type: string
+            InferenceRequest:
+              type: object
+              required:
+              - requestId
+              - model
+              - messages
+              - workspaceId
+              properties:
+                requestId:
+                  type: string
+                model:
+                  type: string
+                provider:
+                  type: string
+                  enum:
+                  - native
+                  - openai
+                  - openrouter
+                  - workers-ai
+                messages:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                    - role
+                    - content
+                    properties:
+                      role:
+                        type: string
+                        enum:
+                        - system
+                        - user
+                        - assistant
+                      content:
+                        type: string
+                maxTokens:
+                  type: integer
+                temperature:
+                  type: number
+                  minimum: 0
+                  maximum: 2
+                workspaceId:
+                  type: string
+            InferenceResponse:
+              type: object
+              required:
+              - requestId
+              - model
+              - provider
+              - message
+              - usage
+              - finishReason
+              properties:
+                requestId:
+                  type: string
+                model:
+                  type: string
+                provider:
+                  type: string
+                message:
+                  type: object
+                usage:
+                  type: object
+                  properties:
+                    promptTokens:
+                      type: integer
+                    completionTokens:
+                      type: integer
+                    totalTokens:
+                      type: integer
+                finishReason:
+                  type: string
+                  enum:
+                  - stop
+                  - length
+                  - tool_calls
+                  - content_filter
+                  - error
+                latencyMs:
+                  type: number
+            WebhookResponse:
+              type: object
+              required:
+              - received
+              properties:
+                received:
+                  type: boolean
+                webhook:
+                  type: string
+            Error:
+              type: object
+              required:
+              - error
+              - message
+              properties:
+                error:
+                  type: string
+                message:
+                  type: string
+                requestId:
+                  type: string
+        - - responses
+          - Unauthorized:
+              description: Unauthorized
               content:
-                type: string
-        maxTokens:
-          type: integer
-        temperature:
-          type: number
-          minimum: 0
-          maximum: 2
-        workspaceId:
-          type: string
-    InferenceResponse:
-      type: object
-      required:
-        - requestId
-        - model
-        - provider
-        - message
-        - usage
-        - finishReason
-      properties:
-        requestId:
-          type: string
-        model:
-          type: string
-        provider:
-          type: string
-        message:
-          type: object
-        usage:
-          type: object
-          properties:
-            promptTokens:
-              type: integer
-            completionTokens:
-              type: integer
-            totalTokens:
-              type: integer
-        finishReason:
-          type: string
-          enum:
-            - stop
-            - length
-            - tool_calls
-            - content_filter
-            - error
-        latencyMs:
-          type: number
-    WebhookResponse:
-      type: object
-      required:
-        - received
-      properties:
-        received:
-          type: boolean
-        webhook:
-          type: string
-    Error:
-      type: object
-      required:
-        - error
-        - message
-      properties:
-        error:
-          type: string
-        message:
-          type: string
-        requestId:
-          type: string
-  responses:
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-servers:
-  - url: https://api.mycodexvantaos.com/v1
-    description: Production API
-  - url: https://api.staging.mycodexvantaos.com/v1
-    description: Staging API
-  - url: http://localhost:3001/v1
-    description: Development API
-security:
-  - BearerAuth: []
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Error'
+            BadRequest:
+              description: Bad Request
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Error'
+            NotFound:
+              description: Not Found
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Error'
+  - - servers
+    - - url: https://api.mycodexvantaos.com/v1
+        description: Production API
+      - url: https://api.staging.mycodexvantaos.com/v1
+        description: Staging API
+      - url: http://localhost:3001/v1
+        description: Development API
+  - - security
+    - - BearerAuth: []

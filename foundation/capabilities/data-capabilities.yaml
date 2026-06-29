@@ -1,9 +1,19 @@
-apiVersion: mycodexvantaos.io/v1
-kind: FoundationCapabilities
-metadata:
-  name: data-capabilities
-  version: 1.0.0
-spec:
-  foundation: data-foundation
-  capabilities: []
-  platform: mycodexvantaos
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - FoundationCapabilities
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - data-capabilities
+        - - version
+          - 1.0.0
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - foundation
+          - data-foundation
+        - - capabilities
+          - []
+        - - platform
+          - mycodexvantaos

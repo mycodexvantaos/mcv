@@ -2,32 +2,54 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://mycodexvantaos.com/schemas/capability-set.schema.json",
   "title": "CapabilitySet",
-  "description": "Schema for MyCodexVantaOS capability set",
   "type": "object",
-  "required": ["apiVersion", "kind", "metadata", "capabilities"],
   "properties": {
-    "apiVersion": { "type": "string", "const": "mycodexvantaos.io/v1" },
-    "kind": { "type": "string", "const": "CapabilitySet" },
+    "apiVersion": {
+      "type": "string",
+      "const": "mycodexvantaos.io/v1"
+    },
+    "kind": {
+      "type": "string",
+      "const": "CapabilitySet"
+    },
     "metadata": {
       "type": "object",
-      "required": ["name", "version"],
+      "required": [
+        "name",
+        "version"
+      ],
       "properties": {
-        "name": { "type": "string" },
-        "version": { "type": "string" },
-        "authoritative": { "type": "boolean" }
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "authoritative": {
+          "type": "boolean"
+        }
       }
+    },
+    "spec": {
+      "type": "object"
     },
     "capabilities": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "description", "category"],
+        "required": [
+          "id",
+          "description",
+          "category"
+        ],
         "properties": {
           "id": {
             "type": "string",
             "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
           },
-          "description": { "type": "string" },
+          "description": {
+            "type": "string"
+          },
           "category": {
             "type": "string",
             "enum": [
@@ -43,7 +65,9 @@
           },
           "providers": {
             "type": "array",
-            "items": { "type": "string" }
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -53,10 +77,28 @@
     "validation": {
       "type": "object",
       "properties": {
-        "capability-name-pattern": { "type": "string" },
-        "forbidden-vendor-prefixes": { "type": "array", "items": { "type": "string" } },
-        "total-count": { "type": "integer", "const": 24 }
+        "capability-name-pattern": {
+          "type": "string"
+        },
+        "forbidden-vendor-prefixes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "total-count": {
+          "type": "integer",
+          "const": 24
+        }
       }
     }
-  }
+  },
+  "required": [
+    "apiVersion",
+    "kind",
+    "metadata",
+    "spec",
+    "capabilities"
+  ],
+  "description": "Schema for MyCodexVantaOS capability set"
 }

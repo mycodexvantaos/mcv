@@ -1,48 +1,69 @@
----
-apiVersion: mycodexvantaos.io/v1
-kind: AIInfraGate
-metadata:
-  id: gate-97-rollback-readiness-validation
-  version: 1.0.0
-  layer: l90
-  plane: ai-infra
-  blocking: true
-  lifecycle: active
-  criticality: critical
-  owner: platform@mycodexvantaos.com
-  governanceCode: mycodexvantaos-00000
-  createdAt: 2026-01-01 00:00:00+00:00
-  tags:
-    - l90
-    - rollback
-  sloTarget: 30
-  evidenceRetentionDays: 2555
-  date: '2026-06-29'
-  status: active
-spec:
-  description: 'Validates that a rollback plan exists and has been tested for the
-    release.
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - AIInfraGate
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - id
+          - gate-97-rollback-readiness-validation
+        - - version
+          - 1.0.0
+        - - layer
+          - l90
+        - - plane
+          - ai-infra
+        - - blocking
+          - true
+        - - lifecycle
+          - active
+        - - criticality
+          - critical
+        - - owner
+          - platform@mycodexvantaos.com
+        - - governanceCode
+          - mycodexvantaos-00000
+        - - createdAt
+          - 2026-01-01 00:00:00+00:00
+        - - tags
+          - - l90
+            - rollback
+        - - sloTarget
+          - 30
+        - - evidenceRetentionDays
+          - 2555
+        - - date
+          - '2026-06-29'
+        - - status
+          - active
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - description
+          - 'Validates that a rollback plan exists and has been tested for the release.
 
-    '
-  validates:
-    - dimension: rollback-readiness
-      description: Rollback plan exists and is tested.
-      checks:
-        - id: chk-rollback-plan-exists
-          description: Rollback plan is documented and approved
-          rule: field-not-empty:rollbackPlan
-          severity: critical
-          evidenceRequired: true
-        - id: chk-rollback-tested
-          description: Rollback procedure has been tested in staging
-          rule: test:rollback-tested-in-staging
-          severity: critical
-          evidenceRequired: true
-        - id: chk-previous-version-available
-          description: Previous stable version is available for rollback
-          rule: registry:previous-version-available
-          severity: high
-          evidenceRequired: true
-  dependsOn: []
-  waiverPolicy: ./policies/gate-waiver-policy.yaml
-  escalationPolicy: ./policies/gate-risk-policy.yaml
+            '
+        - - validates
+          - - dimension: rollback-readiness
+              description: Rollback plan exists and is tested.
+              checks:
+              - id: chk-rollback-plan-exists
+                description: Rollback plan is documented and approved
+                rule: field-not-empty:rollbackPlan
+                severity: critical
+                evidenceRequired: true
+              - id: chk-rollback-tested
+                description: Rollback procedure has been tested in staging
+                rule: test:rollback-tested-in-staging
+                severity: critical
+                evidenceRequired: true
+              - id: chk-previous-version-available
+                description: Previous stable version is available for rollback
+                rule: registry:previous-version-available
+                severity: high
+                evidenceRequired: true
+        - - dependsOn
+          - []
+        - - waiverPolicy
+          - ./policies/gate-waiver-policy.yaml
+        - - escalationPolicy
+          - ./policies/gate-risk-policy.yaml

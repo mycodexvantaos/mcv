@@ -1,19 +1,38 @@
-apiVersion: mycodexvantaos.org/v1
-kind: Provider
-metadata:
-  name: mycodexvantaos-ai-ethics-ai-fairness-360
-  capability: ai-ethics
-  labels:
-    mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: '8.1'
-spec:
-  providerName: ai-fairness-360
-  isNative: false
-  lifecycle:
-    stage: beta
-  envVarPrefix: MYCODEXVANTAOS_AI_ETHICS
-  configSchemaRef: ./config.schema.json
-  description: IBM AI Fairness 360 toolkit provider for comprehensive bias detection
-    and mitigation.
-provider-id: mycodexvantaos-ai-ethics-ai-fairness-360
-capability: security
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.org/v1
+  - - kind
+    - Provider
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - mycodexvantaos-ai-ethics-ai-fairness-360
+        - - capability
+          - ai-ethics
+        - - labels
+          - !!python/object/apply:collections.OrderedDict
+            - - - mycodexvantaos.org/managed-by
+                - naming-spec-v1
+              - - mycodexvantaos.org/specRef
+                - '8.1'
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - providerName
+          - ai-fairness-360
+        - - isNative
+          - false
+        - - lifecycle
+          - !!python/object/apply:collections.OrderedDict
+            - - - stage
+                - beta
+        - - envVarPrefix
+          - MYCODEXVANTAOS_AI_ETHICS
+        - - configSchemaRef
+          - ./config.schema.json
+        - - description
+          - IBM AI Fairness 360 toolkit provider for comprehensive bias detection
+            and mitigation.
+  - - provider-id
+    - mycodexvantaos-ai-ethics-ai-fairness-360
+  - - capability
+    - security

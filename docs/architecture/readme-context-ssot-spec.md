@@ -1,5 +1,4 @@
-# MyCodexVantaOS — README Context SSOT and Drift Control Specification
-
+## MyCodexVantaOS — README Context SSOT and Drift Control Specification
 > 文件定位：`docs/architecture/readme-context-ssot-spec.md`  
 > 建議母規格章節：`Appendix D — README Context SSOT and Drift Control Specification`  
 > 規格等級：平台母規格 / AI 導航文件治理規範 / CI 可執行治理依據  
@@ -12,7 +11,6 @@
 ---
 
 ## D.0 Purpose
-
 This specification defines how MyCodexVantaOS prevents README redundancy and documentation drift while still providing high-quality AI and human navigation context across a repository with `242-plus` root-level capability modules.
 
 The core strategy is:
@@ -40,10 +38,10 @@ CI / generator is the synchronization and governance layer.
 
 ---
 
-# D.1 Core Rule
+## D.1 Core Rule
+
 
 ## D.1.1 README Is Not the Source of Truth
-
 README files MUST NOT be treated as the single source of truth for platform governance, directory boundaries, service contracts, provider contracts, foundation mappings, namespace governance, gate definitions, or architecture rules.
 
 README files MAY provide:
@@ -72,7 +70,6 @@ README files MUST NOT replace:
 - policy-as-code
 
 ## D.1.2 Authoritative Sources
-
 The following files are authoritative, depending on scope:
 
 | Scope                        | Authoritative File                                                      |
@@ -92,7 +89,6 @@ The following files are authoritative, depending on scope:
 | Gate governance              | `unified-gates/**`                                                      |
 
 ## D.1.3 README Duplication Prohibition
-
 Local README files MUST NOT duplicate global architecture principles in full.
 
 The following content MUST NOT be copied into every local README:
@@ -112,8 +108,7 @@ Instead, local README files MUST reference authoritative global documents.
 
 ---
 
-# D.2 Three-Level README Model
-
+## D.2 Three-Level README Model
 MyCodexVantaOS defines a three-level README model:
 
 ```text
@@ -123,7 +118,6 @@ L2: Local Directory README
 ```
 
 ## D.2.1 L0 — Global README
-
 L0 files:
 
 ```text
@@ -149,7 +143,6 @@ L0 README and architecture files SHOULD contain:
 These concepts SHOULD be written once at L0 and referenced by lower-level README files.
 
 ## D.2.2 L1 — Domain / Foundation README
-
 L1 files include:
 
 ```text
@@ -183,7 +176,6 @@ They SHOULD include:
 L1 README files MUST NOT restate the entire platform constitution.
 
 ## D.2.3 L2 — Local Directory README
-
 L2 files include:
 
 ```text
@@ -210,26 +202,25 @@ L2 README files SHOULD NOT exceed 120 lines unless explicitly justified.
 
 ---
 
-# D.3 Local README Template
+## D.3 Local README Template
+
 
 ## D.3.1 Required Template
-
 Local README files SHOULD use the following structure:
 
 ```markdown
-# <directory-name>
+
+## <directory-name>
+
 
 ## Role
-
 This directory is responsible for: <one sentence>.
 
 ## Foundation
-
 - Primary: `<foundation-name>`
 - Secondary: `<optional-foundation-name>`
 
 ## Authority
-
 Authoritative sources for this directory:
 
 - Module contract: `<path>`
@@ -240,17 +231,14 @@ Authoritative sources for this directory:
 - Related navigation index: `<path>`
 
 ## Allowed Content
-
 - <allowed item>
 - <allowed item>
 
 ## Forbidden Content
-
 - <forbidden item>
 - <forbidden item>
 
 ## AI Guidance
-
 Before modifying this directory:
 
 1. Read the authority files above.
@@ -260,16 +248,31 @@ Before modifying this directory:
 5. Update `navigation/` if directory relationships change.
 
 ## Generated Context
-
 <!-- BEGIN:MYCODEXVANTAOS-GENERATED-CONTEXT -->
 
-This section is generated from manifests. Do not edit manually.
+Generated from:
+
+- directory-context.yaml
+- mycodexvantaos-module.yaml
+- foundation/\*/module-map.yaml
+- navigation/module-index.yaml
+
+Primary foundation: data-foundation
+
+Allowed content:
+
+- vector store contracts
+- provider-neutral vector storage abstractions
+
+Forbidden content:
+
+- provider SDK implementation
+- deployment manifests
 
 <!-- END:MYCODEXVANTAOS-GENERATED-CONTEXT -->
 ```
 
 ## D.3.2 Local README Maximum Size
-
 Local README files SHOULD remain between:
 
 ```text
@@ -287,16 +290,15 @@ If more detail is required, it SHOULD be moved to:
 
 ---
 
-# D.4 Directory Context SSOT
+## D.4 Directory Context SSOT
+
 
 ## D.4.1 Required Role
-
 `directory-context.yaml` is the machine-readable single source of truth for local AI navigation context.
 
 It SHOULD exist in every high-value directory and MAY be extended to all root modules.
 
 ## D.4.2 Recommended Location
-
 ```text
 <directory>/directory-context.yaml
 ```
@@ -316,7 +318,6 @@ mycodexvantaos-namespace-governance/directory-context.yaml
 ```
 
 ## D.4.3 Canonical Directory Context Example
-
 ```yaml
 apiVersion: mycodexvantaos.io/v1
 kind: DirectoryContext
@@ -367,7 +368,6 @@ spec:
 ```
 
 ## D.4.4 Directory Context Requirements
-
 `directory-context.yaml` SHOULD include:
 
 - `apiVersion`
@@ -397,10 +397,10 @@ It MAY include:
 
 ---
 
-# D.5 Reference-Based README Rule
+## D.5 Reference-Based README Rule
+
 
 ## D.5.1 Reference Instead of Copy
-
 README files MUST reference authoritative files instead of duplicating their contents.
 
 Incorrect:
@@ -424,17 +424,16 @@ This directory follows the global architecture rules defined in:
 ```
 
 ## D.5.2 Local Difference Rule
-
 A local README SHOULD only define local differences, local responsibilities, and local constraints.
 
 It MUST NOT duplicate global policy text unless required for a generated summary block.
 
 ---
 
-# D.6 Generated README Context Blocks
+## D.6 Generated README Context Blocks
+
 
 ## D.6.1 Generated Block Format
-
 README files MAY contain generated context blocks.
 
 Canonical block markers:
@@ -448,11 +447,9 @@ Canonical block markers:
 ```
 
 ## D.6.2 Edit Rule
-
 Content between generated block markers MUST NOT be manually edited.
 
 ## D.6.3 Generated Content Sources
-
 Generated README context blocks SHOULD be derived from:
 
 - `directory-context.yaml`
@@ -467,44 +464,17 @@ Generated README context blocks SHOULD be derived from:
 - `unified-gates/unified-gate-index.yaml`
 
 ## D.6.4 Example Generated Block
-
 ```markdown
-## Generated Context
-
-<!-- BEGIN:MYCODEXVANTAOS-GENERATED-CONTEXT -->
-
-Generated from:
-
-- directory-context.yaml
-- mycodexvantaos-module.yaml
-- foundation/\*/module-map.yaml
-- navigation/module-index.yaml
-
-Primary foundation: data-foundation
-
-Allowed content:
-
-- vector store contracts
-- provider-neutral vector storage abstractions
-
-Forbidden content:
-
-- provider SDK implementation
-- deployment manifests
-
-<!-- END:MYCODEXVANTAOS-GENERATED-CONTEXT -->
-```
 
 ## D.6.5 Drift Rule
-
 CI MUST be able to verify that generated README blocks match their authoritative sources.
 
 ---
 
-# D.7 README Generation Tooling
+## D.7 README Generation Tooling
+
 
 ## D.7.1 Recommended Generator
-
 A README context generator SHOULD be provided.
 
 Recommended paths:
@@ -520,7 +490,6 @@ scripts/generate-directory-readmes.py
 ```
 
 ## D.7.2 Generator Inputs
-
 The generator SHOULD read:
 
 ```text
@@ -537,7 +506,6 @@ unified-gates/unified-gate-index.yaml
 ```
 
 ## D.7.3 Generator Outputs
-
 The generator SHOULD update:
 
 ```text
@@ -552,7 +520,6 @@ or only update the generated block inside:
 ```
 
 ## D.7.4 Recommended Commands
-
 ```bash
 pnpm generate:directory-context
 ```
@@ -564,7 +531,6 @@ python3 scripts/generate-directory-readmes.py
 ```
 
 ## D.7.5 Check Mode
-
 The generator SHOULD support a check-only mode:
 
 ```bash
@@ -581,10 +547,10 @@ Check mode MUST fail when generated blocks are outdated.
 
 ---
 
-# D.8 README Drift Validation
+## D.8 README Drift Validation
+
 
 ## D.8.1 Required Drift Checks
-
 CI SHOULD check:
 
 - README generated block matches `directory-context.yaml`
@@ -600,7 +566,6 @@ CI SHOULD check:
 - generated block markers are valid and balanced
 
 ## D.8.2 Recommended Commands
-
 ```bash
 pnpm validate:directory-context
 pnpm generate:directory-context --check
@@ -614,7 +579,6 @@ python3 scripts/generate-directory-readmes.py --check
 ```
 
 ## D.8.3 CI Step Example
-
 ```yaml
 - name: Validate Directory Context
   run: pnpm validate:directory-context
@@ -625,10 +589,10 @@ python3 scripts/generate-directory-readmes.py --check
 
 ---
 
-# D.9 Short README + Long Specification Model
+## D.9 Short README + Long Specification Model
+
 
 ## D.9.1 Content Placement Matrix
-
 | Type                     | Location                                    | Content                         |
 | ------------------------ | ------------------------------------------- | ------------------------------- |
 | Global principles        | `docs/unified-architecture-spec.md`         | Platform mother specification   |
@@ -645,7 +609,6 @@ python3 scripts/generate-directory-readmes.py --check
 | Repeated summary         | README generated block                      | Auto-generated summary          |
 
 ## D.9.2 Canonical Principle
-
 ```text
 Short README.
 Long specification.
@@ -657,10 +620,10 @@ CI-enforced drift control.
 
 ---
 
-# D.10 Anti-Redundancy Rules
+## D.10 Anti-Redundancy Rules
+
 
 ## Rule 1 — Global Principles Written Once
-
 Global principles MUST be written in:
 
 ```text
@@ -671,19 +634,15 @@ docs/unified-architecture-spec.md
 They MUST NOT be copied into every local README.
 
 ## Rule 2 — Local README Only Describes Local Responsibility
-
 Local README files MUST focus on local directory responsibility.
 
 ## Rule 3 — Authority Belongs in YAML / Manifest / Schema
-
 README files MUST NOT be the authoritative source for architecture facts.
 
 ## Rule 4 — README References Authority
-
 README files SHOULD link to authoritative files.
 
 ## Rule 5 — Repeated Content Is Generated
-
 Repeated content SHOULD be generated, especially:
 
 - allowed content
@@ -697,15 +656,12 @@ Repeated content SHOULD be generated, especially:
 - related gates
 
 ## Rule 6 — Generated Blocks Are Protected
-
 Generated blocks MUST NOT be manually edited.
 
 ## Rule 7 — CI Checks README Drift
-
 CI SHOULD fail when README generated blocks drift from authoritative metadata.
 
 ## Rule 8 — Local README Length Is Limited
-
 Local README files SHOULD remain short.
 
 Recommended size:
@@ -715,23 +671,20 @@ Recommended size:
 ```
 
 ## Rule 9 — Contracts Are Indexed
-
 `contracts/INDEX.yaml` SHOULD exist so local README files do not need to list every contract manually.
 
 ## Rule 10 — Foundation Maps Are Indexed
-
 `foundation/maps/` SHOULD exist so local README files do not need to manually duplicate module mappings.
 
 ## Rule 11 — Navigation Owns Discovery
-
 `navigation/` SHOULD own global discovery indexes so local README files do not need to duplicate repository-wide maps.
 
 ---
 
-# D.11 Recommended Directory Context Layouts
+## D.11 Recommended Directory Context Layouts
+
 
 ## D.11.1 Root Directory Layout
-
 For root directories:
 
 ```text
@@ -742,7 +695,6 @@ For root directories:
 ```
 
 ## D.11.2 Deployable Service Layout
-
 For deployable services:
 
 ```text
@@ -753,7 +705,6 @@ modules/<service-id>/
 ```
 
 ## D.11.3 Provider Layout
-
 For providers:
 
 ```text
@@ -764,7 +715,6 @@ providers/<capability>/<capability>-<provider>/
 ```
 
 ## D.11.4 Foundation Specification Unit Layout
-
 For foundation specification units:
 
 ```text
@@ -778,7 +728,6 @@ foundation/compute-foundation/
 ```
 
 ## D.11.5 Navigation Root Layout
-
 For navigation root:
 
 ```text
@@ -795,10 +744,10 @@ navigation/
 
 ---
 
-# D.12 Minimum Rollout Plan
+## D.12 Minimum Rollout Plan
+
 
 ## D.12.1 Phase 1 — High-Value README Coverage
-
 First create local README files for:
 
 ```text
@@ -821,7 +770,6 @@ ci/README.md
 ```
 
 ## D.12.2 Phase 2 — Directory Context Coverage
-
 First create `directory-context.yaml` for:
 
 ```text
@@ -839,7 +787,6 @@ foundation/
 ```
 
 ## D.12.3 Phase 3 — Generator and CI
-
 Add:
 
 ```text
@@ -859,8 +806,7 @@ validate navigation indexes
 
 ---
 
-# D.13 Final Operating Model
-
+## D.13 Final Operating Model
 The final documentation governance flow is:
 
 ```text
@@ -897,8 +843,7 @@ CI prevents drift.
 
 ---
 
-# D.14 Compliance Criteria
-
+## D.14 Compliance Criteria
 This specification is implemented when:
 
 1. Global principles are written once at L0.

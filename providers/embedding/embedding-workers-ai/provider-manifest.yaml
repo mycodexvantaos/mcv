@@ -1,31 +1,55 @@
-apiVersion: mycodexvantaos.io/v1
-kind: ProviderManifest
-metadata:
-  name: embedding-workers-ai
-  urn: urn:mycodexvantaos:provider:embedding-workers-ai
-  version: 1.0.0
-  date: '2026-06-29'
-  status: active
-spec:
-  id: embedding-workers-ai
-  capability: embedding
-  source: cloudflare-workers-ai
-  status: active
-  criticality: high
-  supportsModes:
-    - native
-    - connected
-    - hybrid
-  healthCheck:
-    enabled: true
-    endpoint: /health
-  observability:
-    metricsEnabled: true
-    tracingEnabled: true
-provider-id: mycodexvantaos-embedding-workers-ai
-capability: embedding
-platform: mycodexvantaos
-runtime-modes:
-  - native
-  - connected
-  - hybrid
+!!python/object/apply:collections.OrderedDict
+- - - apiVersion
+    - mycodexvantaos.io/v1
+  - - kind
+    - ProviderManifest
+  - - metadata
+    - !!python/object/apply:collections.OrderedDict
+      - - - name
+          - embedding-workers-ai
+        - - urn
+          - urn:mycodexvantaos:provider:embedding-workers-ai
+        - - version
+          - 1.0.0
+        - - date
+          - '2026-06-29'
+        - - status
+          - active
+  - - spec
+    - !!python/object/apply:collections.OrderedDict
+      - - - id
+          - embedding-workers-ai
+        - - capability
+          - embedding
+        - - source
+          - cloudflare-workers-ai
+        - - status
+          - active
+        - - criticality
+          - high
+        - - supportsModes
+          - - native
+            - connected
+            - hybrid
+        - - healthCheck
+          - !!python/object/apply:collections.OrderedDict
+            - - - enabled
+                - true
+              - - endpoint
+                - /health
+        - - observability
+          - !!python/object/apply:collections.OrderedDict
+            - - - metricsEnabled
+                - true
+              - - tracingEnabled
+                - true
+  - - provider-id
+    - mycodexvantaos-embedding-workers-ai
+  - - capability
+    - embedding
+  - - platform
+    - mycodexvantaos
+  - - runtime-modes
+    - - native
+      - connected
+      - hybrid
