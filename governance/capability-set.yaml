@@ -128,6 +128,18 @@ capabilities:
     category: quantum
     providers:
       - quantum-observability-native
+  - id: audio
+    description: Audio processing, speech-to-text, and text-to-speech.
+    category: ai
+    stable: false
+  - id: image
+    description: Image generation and visual content creation.
+    category: ai
+    stable: false
+  - id: realtime
+    description: Real-time messaging and event push infrastructure.
+    category: infra
+    stable: false
 validation:
   capability-name-pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
   forbidden-vendor-prefixes:
@@ -138,4 +150,4 @@ validation:
     - azure
     - cloudflare
     - qiskit
-  total-count: 24
+  total-count: 30
