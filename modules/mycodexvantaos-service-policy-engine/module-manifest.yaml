@@ -1,0 +1,19 @@
+apiVersion: mycodexvantaos.io/v1
+kind: Module
+service-id: mycodexvantaos-service-policy-engine
+metadata:
+  name: mycodexvantaos-service-policy-engine
+  capability: database
+  version: 1.0.0
+  tier: tier-0
+  foundation: governance-foundation
+spec:
+  description: Policy engine service for governance rule evaluation, enforcement,
+    and compliance reporting.
+  category: governance
+  runtime-modes:
+    - native
+    - connected
+    - hybrid
+  implementationPath: services/mycodexvantaos-service-policy-engine/
+  packageName: '@mycodexvantaos/service-policy-engine'

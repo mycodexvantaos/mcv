@@ -1,0 +1,18 @@
+apiVersion: mycodexvantaos.org/v1
+kind: Provider
+metadata:
+  name: mycodexvantaos-external-openai
+  capability: llm
+  labels:
+    mycodexvantaos.org/managed-by: naming-spec-v1
+    mycodexvantaos.org/specRef: '8.1'
+spec:
+  providerName: openai
+  isNative: false
+  lifecycle:
+    stage: beta
+  envVarPrefix: MYCODEXVANTAOS_LLM
+  configSchemaRef: ./config.schema.json
+  description: OpenAI external model provider for GPT API access.
+provider-id: mycodexvantaos-external-openai
+capability: llm

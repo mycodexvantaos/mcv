@@ -1,0 +1,19 @@
+apiVersion: mycodexvantaos.io/v1
+kind: Module
+service-id: mycodexvantaos-service-knowledge-search
+metadata:
+  name: mycodexvantaos-service-knowledge-search
+  capability: search
+  version: 1.0.0
+  tier: tier-1
+  foundation: data-foundation
+spec:
+  description: Knowledge search service for semantic retrieval, hybrid search, and
+    result ranking.
+  category: knowledge
+  runtime-modes:
+    - native
+    - connected
+    - hybrid
+  implementationPath: services/mycodexvantaos-service-knowledge-search/
+  packageName: '@mycodexvantaos/service-knowledge-search'

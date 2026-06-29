@@ -1,0 +1,19 @@
+apiVersion: mycodexvantaos.io/v1
+kind: Module
+service-id: mycodexvantaos-platform-validation
+metadata:
+  name: mycodexvantaos-platform-validation
+  capability: validation
+  version: 1.0.0
+  tier: tier-0
+  foundation: governance-foundation
+spec:
+  description: Platform validation service for gate enforcement, policy verification,
+    and architecture compliance.
+  category: governance
+  runtime-modes:
+    - native
+    - connected
+    - hybrid
+  implementationPath: services/mycodexvantaos-platform-validation/
+  packageName: '@mycodexvantaos/platform-validation'

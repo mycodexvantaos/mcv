@@ -1,0 +1,19 @@
+apiVersion: mycodexvantaos.io/v1
+kind: Module
+service-id: mycodexvantaos-policy-draft
+metadata:
+  name: mycodexvantaos-policy-draft
+  capability: validation
+  version: 1.0.0
+  tier: tier-1
+  foundation: governance-foundation
+spec:
+  description: Policy drafting service for governance rule creation, review, and version
+    management.
+  category: governance
+  runtime-modes:
+    - native
+    - connected
+    - hybrid
+  implementationPath: services/mycodexvantaos-policy-draft/
+  packageName: '@mycodexvantaos/policy-draft'

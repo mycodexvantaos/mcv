@@ -1,0 +1,19 @@
+apiVersion: mycodexvantaos.io/v1
+kind: Module
+service-id: mycodexvantaos-service-resource-registry
+metadata:
+  name: mycodexvantaos-service-resource-registry
+  capability: database
+  version: 1.0.0
+  tier: tier-0
+  foundation: contract-foundation
+spec:
+  description: Resource registry service for resource kind management, schema enforcement,
+    and catalog operations.
+  category: platform
+  runtime-modes:
+    - native
+    - connected
+    - hybrid
+  implementationPath: services/mycodexvantaos-service-resource-registry/
+  packageName: '@mycodexvantaos/service-resource-registry'

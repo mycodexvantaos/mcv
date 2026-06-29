@@ -1,0 +1,19 @@
+apiVersion: mycodexvantaos.io/v1
+kind: Module
+service-id: mycodexvantaos-ai-team-service
+metadata:
+  name: mycodexvantaos-ai-team-service
+  capability: llm
+  version: 1.0.0
+  tier: tier-1
+  foundation: agent-foundation
+spec:
+  description: AI team coordination service for multi-agent collaboration and task
+    distribution.
+  category: ai
+  runtime-modes:
+    - native
+    - connected
+    - hybrid
+  implementationPath: services/mycodexvantaos-ai-team-service/
+  packageName: '@mycodexvantaos/ai-team-service'

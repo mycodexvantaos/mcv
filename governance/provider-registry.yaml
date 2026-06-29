@@ -30,6 +30,20 @@ providers:
       - native
       - hybrid
     manifest: providers/ai-ethics/ai-ethics-native-auditor/provider-manifest.yaml
+  - provider-id: mycodexvantaos-audio-google
+    capability: audio
+    runtime-modes:
+      - native
+      - connected
+      - hybrid
+    manifest: providers/audio/audio-google/provider-manifest.yaml
+  - provider-id: mycodexvantaos-audio-openai
+    capability: audio
+    runtime-modes:
+      - native
+      - connected
+      - hybrid
+    manifest: providers/audio/audio-openai/provider-manifest.yaml
   - provider-id: mycodexvantaos-auth-jwt-native
     capability: auth
     runtime-modes:
@@ -172,6 +186,20 @@ providers:
       - native
       - hybrid
     manifest: providers/event-stream/event-stream-native-governance/provider-manifest.yaml
+  - provider-id: mycodexvantaos-external-openai
+    capability: llm
+    runtime-modes:
+      - native
+      - connected
+      - hybrid
+    manifest: providers/external/openai/provider-manifest.yaml
+  - provider-id: mycodexvantaos-external-workers-ai
+    capability: llm
+    runtime-modes:
+      - native
+      - connected
+      - hybrid
+    manifest: providers/external/workers-ai/provider-manifest.yaml
   - provider-id: mycodexvantaos-graph-memgraph
     capability: graph
     runtime-modes:
@@ -213,6 +241,13 @@ providers:
       - connected
       - hybrid
     manifest: providers/hybrid/embedding/embedding-openai/provider-manifest.yaml
+  - provider-id: mycodexvantaos-image-dalle
+    capability: image
+    runtime-modes:
+      - native
+      - connected
+      - hybrid
+    manifest: providers/image/image-dalle/provider-manifest.yaml
   - provider-id: mycodexvantaos-llm-anthropic
     capability: llm
     runtime-modes:
@@ -260,6 +295,18 @@ providers:
       - connected
       - hybrid
     manifest: providers/llm/llm-workers-ai/provider-manifest.yaml
+  - provider-id: mycodexvantaos-native-memory-cache
+    capability: cache
+    runtime-modes:
+      - native
+      - hybrid
+    manifest: providers/native/memory-cache/provider-manifest.yaml
+  - provider-id: mycodexvantaos-native-memory-vector-store
+    capability: vector-store
+    runtime-modes:
+      - native
+      - hybrid
+    manifest: providers/native/memory-vector-store/provider-manifest.yaml
   - provider-id: mycodexvantaos-notification-sendgrid
     capability: notification
     runtime-modes:
@@ -337,6 +384,20 @@ providers:
       - connected
       - hybrid
     manifest: providers/queue/queue-rabbitmq/provider-manifest.yaml
+  - provider-id: mycodexvantaos-realtime-ably
+    capability: realtime
+    runtime-modes:
+      - native
+      - connected
+      - hybrid
+    manifest: providers/realtime/realtime-ably/provider-manifest.yaml
+  - provider-id: mycodexvantaos-realtime-pusher
+    capability: realtime
+    runtime-modes:
+      - native
+      - connected
+      - hybrid
+    manifest: providers/realtime/realtime-pusher/provider-manifest.yaml
   - provider-id: mycodexvantaos-repo-github
     capability: repo
     runtime-modes:
@@ -453,16 +514,39 @@ providers:
       - connected
       - hybrid
     manifest: providers/vector-store/vector-store-vectorize/provider-manifest.yaml
+  - provider-id: mycodexvantaos-vector-chroma
+    capability: vector-store
+    runtime-modes:
+      - native
+      - connected
+      - hybrid
+    manifest: providers/vector/vector-chroma/provider-manifest.yaml
+  - provider-id: mycodexvantaos-vector-pinecone
+    capability: vector-store
+    runtime-modes:
+      - native
+      - connected
+      - hybrid
+    manifest: providers/vector/vector-pinecone/provider-manifest.yaml
+  - provider-id: mycodexvantaos-vector-weaviate
+    capability: vector-store
+    runtime-modes:
+      - native
+      - connected
+      - hybrid
+    manifest: providers/vector/vector-weaviate/provider-manifest.yaml
 statistics:
-  total-providers: 65
+  total-providers: 77
   by-capability:
+    audio: 2
     auth: 3
-    cache: 2
+    cache: 3
     database: 5
     deploy: 3
     embedding: 8
     graph: 3
-    llm: 7
+    image: 1
+    llm: 9
     notification: 1
     observability: 2
     quantum-circuit: 1
@@ -471,6 +555,7 @@ statistics:
     quantum-runtime: 1
     quantum-simulator: 1
     queue: 6
+    realtime: 2
     repo: 1
     scheduler: 1
     search: 3
@@ -479,4 +564,4 @@ statistics:
     state-store: 1
     storage: 3
     validation: 1
-    vector-store: 3
+    vector-store: 7

@@ -1,0 +1,18 @@
+apiVersion: mycodexvantaos.org/v1
+kind: Provider
+metadata:
+  name: mycodexvantaos-vector-weaviate
+  capability: vector-store
+  labels:
+    mycodexvantaos.org/managed-by: naming-spec-v1
+    mycodexvantaos.org/specRef: '8.1'
+spec:
+  providerName: weaviate
+  isNative: false
+  lifecycle:
+    stage: beta
+  envVarPrefix: MYCODEXVANTAOS_VECTOR_STORE
+  configSchemaRef: ./config.schema.json
+  description: Weaviate vector store provider for semantic search and retrieval.
+provider-id: mycodexvantaos-vector-weaviate
+capability: vector-store

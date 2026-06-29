@@ -1,0 +1,19 @@
+apiVersion: mycodexvantaos.io/v1
+kind: Module
+service-id: mycodexvantaos-service-workspace
+metadata:
+  name: mycodexvantaos-service-workspace
+  capability: database
+  version: 1.0.0
+  tier: tier-1
+  foundation: contract-foundation
+spec:
+  description: Workspace service for tenant management, workspace isolation, and resource
+    allocation.
+  category: platform
+  runtime-modes:
+    - native
+    - connected
+    - hybrid
+  implementationPath: services/mycodexvantaos-service-workspace/
+  packageName: '@mycodexvantaos/service-workspace'

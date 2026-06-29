@@ -1,0 +1,18 @@
+apiVersion: mycodexvantaos.org/v1
+kind: Provider
+metadata:
+  name: mycodexvantaos-audio-google
+  capability: audio
+  labels:
+    mycodexvantaos.org/managed-by: naming-spec-v1
+    mycodexvantaos.org/specRef: '8.1'
+spec:
+  providerName: google
+  isNative: false
+  lifecycle:
+    stage: beta
+  envVarPrefix: MYCODEXVANTAOS_AUDIO
+  configSchemaRef: ./config.schema.json
+  description: Google Cloud audio provider for speech-to-text and text-to-speech.
+provider-id: mycodexvantaos-audio-google
+capability: audio

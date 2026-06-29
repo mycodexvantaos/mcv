@@ -18,6 +18,7 @@ ALLOWED_CAPABILITIES = [
     "notification", "scheduler", "vector-store", "embedding", "llm",
     "graph", "cache", "search", "quantum-runtime", "quantum-simulator",
     "quantum-processor", "quantum-circuit", "quantum-observability",
+    "ai-ethics", "blockchain", "event-stream", "audio", "image", "realtime",
 ]
 
 violations = []

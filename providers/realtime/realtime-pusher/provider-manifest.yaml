@@ -1,0 +1,18 @@
+apiVersion: mycodexvantaos.org/v1
+kind: Provider
+metadata:
+  name: mycodexvantaos-realtime-pusher
+  capability: realtime
+  labels:
+    mycodexvantaos.org/managed-by: naming-spec-v1
+    mycodexvantaos.org/specRef: '8.1'
+spec:
+  providerName: pusher
+  isNative: false
+  lifecycle:
+    stage: beta
+  envVarPrefix: MYCODEXVANTAOS_REALTIME
+  configSchemaRef: ./config.schema.json
+  description: Pusher realtime messaging provider for event push infrastructure.
+provider-id: mycodexvantaos-realtime-pusher
+capability: realtime

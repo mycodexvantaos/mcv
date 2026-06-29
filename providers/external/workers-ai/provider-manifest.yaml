@@ -1,0 +1,18 @@
+apiVersion: mycodexvantaos.org/v1
+kind: Provider
+metadata:
+  name: mycodexvantaos-external-workers-ai
+  capability: llm
+  labels:
+    mycodexvantaos.org/managed-by: naming-spec-v1
+    mycodexvantaos.org/specRef: '8.1'
+spec:
+  providerName: workers-ai
+  isNative: false
+  lifecycle:
+    stage: beta
+  envVarPrefix: MYCODEXVANTAOS_LLM
+  configSchemaRef: ./config.schema.json
+  description: Cloudflare Workers AI external model provider.
+provider-id: mycodexvantaos-external-workers-ai
+capability: llm

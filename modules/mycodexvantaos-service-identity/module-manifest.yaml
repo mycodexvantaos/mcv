@@ -1,0 +1,19 @@
+apiVersion: mycodexvantaos.io/v1
+kind: Module
+service-id: mycodexvantaos-service-identity
+metadata:
+  name: mycodexvantaos-service-identity
+  capability: auth
+  version: 1.0.0
+  tier: tier-0
+  foundation: governance-foundation
+spec:
+  description: Identity service for machine identity management, authentication, and
+    authorization enforcement.
+  category: security
+  runtime-modes:
+    - native
+    - connected
+    - hybrid
+  implementationPath: services/mycodexvantaos-service-identity/
+  packageName: '@mycodexvantaos/service-identity'

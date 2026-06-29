@@ -1,0 +1,19 @@
+apiVersion: mycodexvantaos.io/v1
+kind: Module
+service-id: mycodexvantaos-service-audit-log
+metadata:
+  name: mycodexvantaos-service-audit-log
+  capability: database
+  version: 1.0.0
+  tier: tier-0
+  foundation: governance-foundation
+spec:
+  description: Audit log service for event recording, compliance trail generation,
+    and evidence chain management.
+  category: governance
+  runtime-modes:
+    - native
+    - connected
+    - hybrid
+  implementationPath: services/mycodexvantaos-service-audit-log/
+  packageName: '@mycodexvantaos/service-audit-log'

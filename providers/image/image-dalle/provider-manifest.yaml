@@ -1,0 +1,18 @@
+apiVersion: mycodexvantaos.org/v1
+kind: Provider
+metadata:
+  name: mycodexvantaos-image-dalle
+  capability: image
+  labels:
+    mycodexvantaos.org/managed-by: naming-spec-v1
+    mycodexvantaos.org/specRef: '8.1'
+spec:
+  providerName: dalle
+  isNative: false
+  lifecycle:
+    stage: beta
+  envVarPrefix: MYCODEXVANTAOS_IMAGE
+  configSchemaRef: ./config.schema.json
+  description: DALL-E image generation provider for visual content creation.
+provider-id: mycodexvantaos-image-dalle
+capability: image
