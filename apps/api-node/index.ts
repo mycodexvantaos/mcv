@@ -243,6 +243,60 @@ const handleGetAuditEvents: RouteHandler = async (_req, res, _params) => {
 type Route = { method: string; pattern: RegExp; handler: RouteHandler };
 
 const routes: Route[] = [
+  // ── Operational endpoints (health, version, readiness) ──
+  {
+    method: 'GET',
+    pattern: /^\/$/,
+    handler: async (_req, res, _params) => {
+      sendJson(res, 200, {
+        name: 'MyCodeXvantaOS',
+        version: process.env['npm_package_version'] ?? '0.1.0',
+        api: 'v1',
+        timestamp: new Date().toISOString(),
+      });
+    },
+  },
+  {
+    method: 'GET',
+    pattern: /^\/v1\/health$/,
+    handler: async (_req, res, _params) => {
+      sendJson(res, 200, { status: 'ok', timestamp: new Date().toISOString() });
+    },
+  },
+  {
+    method: 'GET',
+    pattern: /^\/v1\/version$/,
+    handler: async (_req, res, _params) => {
+      sendJson(res, 200, {
+        version: process.env['npm_package_version'] ?? '0.1.0',
+        nodeVersion: process.version,
+        timestamp: new Date().toISOString(),
+      });
+    },
+  },
+  {
+    method: 'GET',
+    pattern: /^\/v1\/runtime$/,
+    handler: async (_req, res, _params) => {
+      sendJson(res, 200, {
+        nodeVersion: process.version,
+        platform: process.platform,
+        arch: process.arch,
+        pid: process.pid,
+        uptimeSeconds: Math.floor(process.uptime()),
+        memoryUsage: process.memoryUsage(),
+        timestamp: new Date().toISOString(),
+      });
+    },
+  },
+  {
+    method: 'GET',
+    pattern: /^\/v1\/ready$/,
+    handler: async (_req, res, _params) => {
+      sendJson(res, 200, { ready: true, timestamp: new Date().toISOString() });
+    },
+  },
+  // ── Service catalog ──
   {
     method: 'GET',
     pattern: /^\/v1\/services$/,
