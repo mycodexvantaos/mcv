@@ -1,22 +1,22 @@
 name: Kafka Stream Processor
 
-'on':
+"on":
   push:
     branches: [main, develop]
     paths:
-      - 'python/packages/mycodexvantaos-stream-pipeline/**'
-      - 'python/apps/kafka-stream-processor/**'
-      - 'python/tests/test_stream_pipeline_*'
-      - 'python/pyproject.toml'
-      - 'services/kafka-stream-processor/**'
+      - "python/packages/mycodexvantaos-stream-pipeline/**"
+      - "python/apps/kafka-stream-processor/**"
+      - "python/tests/test_stream_pipeline_*"
+      - "python/pyproject.toml"
+      - "services/kafka-stream-processor/**"
   pull_request:
     branches: [main, develop]
     paths:
-      - 'python/packages/mycodexvantaos-stream-pipeline/**'
-      - 'python/apps/kafka-stream-processor/**'
-      - 'python/tests/test_stream_pipeline_*'
-      - 'python/pyproject.toml'
-      - 'services/kafka-stream-processor/**'
+      - "python/packages/mycodexvantaos-stream-pipeline/**"
+      - "python/apps/kafka-stream-processor/**"
+      - "python/tests/test_stream_pipeline_*"
+      - "python/pyproject.toml"
+      - "services/kafka-stream-processor/**"
   workflow_dispatch:
 
 concurrency:
@@ -39,7 +39,7 @@ jobs:
       - name: Set up Python 3.11
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install uv
         run: pip install uv

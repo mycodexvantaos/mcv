@@ -1,12 +1,12 @@
 name: Schema Check
 
-'on':
+"on":
   push:
     paths:
-      - 'contracts/schemas/**'
+      - "contracts/schemas/**"
   pull_request:
     paths:
-      - 'contracts/schemas/**'
+      - "contracts/schemas/**"
   workflow_dispatch:
 
 permissions:

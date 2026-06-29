@@ -1,22 +1,22 @@
 name: CI Repair Agent
 
-'on':
+"on":
   push:
     branches: [main, develop]
     paths:
-      - 'python/packages/mycodexvantaos-ci-repair/**'
-      - 'python/apps/ci-repair-agent/**'
-      - 'python/tests/test_ci_repair_*'
-      - 'python/pyproject.toml'
-      - 'services/ci-repair-agent/**'
+      - "python/packages/mycodexvantaos-ci-repair/**"
+      - "python/apps/ci-repair-agent/**"
+      - "python/tests/test_ci_repair_*"
+      - "python/pyproject.toml"
+      - "services/ci-repair-agent/**"
   pull_request:
     branches: [main, develop]
     paths:
-      - 'python/packages/mycodexvantaos-ci-repair/**'
-      - 'python/apps/ci-repair-agent/**'
-      - 'python/tests/test_ci_repair_*'
-      - 'python/pyproject.toml'
-      - 'services/ci-repair-agent/**'
+      - "python/packages/mycodexvantaos-ci-repair/**"
+      - "python/apps/ci-repair-agent/**"
+      - "python/tests/test_ci_repair_*"
+      - "python/pyproject.toml"
+      - "services/ci-repair-agent/**"
   workflow_dispatch:
 
 concurrency:
@@ -38,7 +38,7 @@ jobs:
       - name: Set up Python 3.11
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install uv
         run: pip install uv

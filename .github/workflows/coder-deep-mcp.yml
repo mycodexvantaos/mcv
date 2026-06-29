@@ -1,22 +1,22 @@
 name: Coder-Deep MCP
 
-'on':
+"on":
   push:
     branches: [main, develop]
     paths:
-      - 'python/packages/mycodexvantaos-coder-deep/**'
-      - 'python/apps/coder-deep-mcp/**'
-      - 'python/tests/test_coder_deep_*'
-      - 'python/tests/conftest.py'
-      - 'python/pyproject.toml'
+      - "python/packages/mycodexvantaos-coder-deep/**"
+      - "python/apps/coder-deep-mcp/**"
+      - "python/tests/test_coder_deep_*"
+      - "python/tests/conftest.py"
+      - "python/pyproject.toml"
   pull_request:
     branches: [main, develop]
     paths:
-      - 'python/packages/mycodexvantaos-coder-deep/**'
-      - 'python/apps/coder-deep-mcp/**'
-      - 'python/tests/test_coder_deep_*'
-      - 'python/tests/conftest.py'
-      - 'python/pyproject.toml'
+      - "python/packages/mycodexvantaos-coder-deep/**"
+      - "python/apps/coder-deep-mcp/**"
+      - "python/tests/test_coder_deep_*"
+      - "python/tests/conftest.py"
+      - "python/pyproject.toml"
   workflow_dispatch:
 
 concurrency:
@@ -40,7 +40,7 @@ jobs:
       - name: Set up Python 3.11
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install uv
         run: pip install uv

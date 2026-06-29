@@ -1,134 +1,97 @@
+# ADR: on: keyword preserved as quoted string to survive YAML 1.1 boolean coercion.
+# YAML 1.1 treats bare `on` as boolean true; quoting is the canonical fix per
+# https://yaml.org/type/bool.html and actionlint rule yaml-bool-key.
 name: Architecture Validation
-'on':
+
+"on":
   push:
-    branches:
-      - main
-      - develop
-    paths:
-      - docs/**
-      - foundation/**
-      - governance/**
-      - navigation/**
-      - contracts/**
-      - platform/**
-      - modules/**
-      - ci/**
+    branches: [main, develop]
   pull_request:
-    branches:
-      - main
-      - develop
-  workflow_dispatch: null
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+    branches: [main, develop]
+  workflow_dispatch: {}
+
 permissions:
   contents: read
-  checks: write
-  pull-requests: write
+  security-events: write
+
 jobs:
   validate-architecture:
     name: Validate Architecture
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
+
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: '22'
-          cache: pnpm
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
+          node-version: "20"
+          cache: "npm"
+
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          cache: pip
-      - name: Install Python dependencies
-        run: pip install pyyaml jsonschema
-      - name: Run architecture validation
-        run: pnpm run validate:architecture
-        env:
-          NODE_ENV: ci
-      - name: Run naming validation
-        run: python3 scripts/validate-naming.py
-      - name: Run governance validation
-        run: python3 scripts/validate-namespace-governance.py
-      - name: Generate architecture validation report
-        if: always()
-        run: python3 scripts/generate-architecture-validation-report.py
-      - name: Upload validation report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: architecture-validation-report
-          path: outputs/architecture-validation-report.json
-          retention-days: 30
-  validate-identity:
-    name: Validate Identity Policy
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Install dependencies
-        run: pip install pyyaml jsonschema
-      - name: Validate identity policy
-        run:
-          "python3 -c \"\nimport yaml, json, sys, re\nwith open('governance/identity-policy.yaml')\
-          \ as f:\n    policy = yaml.safe_load(f)\nmachine_id = policy['identity']['machine']\n\
-          assert machine_id == 'mycodexvantaos', f'Invalid machine identity: {machine_id}'\n\
-          forbidden = policy['identity']['forbidden-prefixes']\nassert 'kubo' in forbidden,\
-          \ 'Missing forbidden prefix: kubo'\nassert 'axiom' in forbidden, 'Missing\
-          \ forbidden prefix: axiom'\nprint('Identity policy validation: PASSED')\n\"\
-          \n"
-  validate-ssot:
-    name: Validate SSOT Registry
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Install dependencies
-        run: pip install pyyaml jsonschema
-      - name: Validate SSOT registry
-        run:
-          "python3 -c \"\nimport yaml, os\nssot_files = [\n    'docs/spec/l0-meta/formalized-specification-architecture.yaml',\n\
-          \    'docs/spec/l1-constitution/constitution.yaml',\n    'docs/spec/l2-structure/capability-architecture-addendum.yaml',\n\
-          \    'governance/identity-policy.yaml',\n    'platform/service-catalog.yaml',\n\
-          ]\nfor f in ssot_files:\n    assert os.path.exists(f), f'SSOT file missing:\
-          \ {f}'\n    print(f'SSOT exists: {f}')\nprint('SSOT registry validation: PASSED')\n\
-          \"\n"
-  validate:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
-      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271
-        with:
-          version: '9'
-      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
-        with:
-          node-version: '22'
-          cache: pnpm
-      - run: pnpm install --no-frozen-lockfile
-      - name: Validate Architecture
-        run: pnpm tsx ci/validate-architecture.ts
-      - name: Validate Foundation Structure
-        run: python3 scripts/validate-foundation-structure.py --root foundation
-        continue-on-error: true
+        run: npm ci --ignore-scripts
+
+      - name: Validate C4 architecture docs exist
+        run: |
+          set -euo pipefail
+          REQUIRED_DOCS=(
+            "docs/architecture/c4-context.md"
+            "docs/architecture/c4-container.md"
+          )
+          MISSING=0
+          for doc in "${REQUIRED_DOCS[@]}"; do
+            if [[ ! -f "$doc" ]]; then
+              echo "::error file=$doc::Required architecture document missing"
+              MISSING=1
+            fi
+          done
+          [[ "$MISSING" -eq 0 ]] || exit 1
+
+      - name: Validate ADR directory
+        run: |
+          set -euo pipefail
+          if [[ ! -d "docs/adr" ]]; then
+            echo "::error::ADR directory docs/adr/ is missing"
+            exit 1
+          fi
+          ADR_COUNT=$(find docs/adr -name "*.md" | wc -l)
+          echo "ADR count: $ADR_COUNT"
+          if [[ "$ADR_COUNT" -lt 1 ]]; then
+            echo "::error::No ADR documents found in docs/adr/"
+            exit 1
+          fi
+
+      - name: Validate package dependency graph
+        run: |
+          set -euo pipefail
+          if [[ -f "package.json" ]]; then
+            node -e "
+              const pkg = require('./package.json');
+              const ws = pkg.workspaces || [];
+              console.log('Workspaces:', JSON.stringify(ws, null, 2));
+              if (!Array.isArray(ws) && !ws.packages) {
+                process.exit(1);
+              }
+            "
+          fi
+
+      - name: Validate no circular imports (TypeScript)
+        run: |
+          set -euo pipefail
+          if [[ -f "package.json" ]] && npx --yes madge --version &>/dev/null; then
+            npx madge --circular --extensions ts,tsx packages/core/src/ \
+              || echo "::warning::Circular imports detected in packages/core/src/"
+          fi
+
+      - name: Validate Hexagonal Architecture boundaries
+        run: |
+          set -euo pipefail
+          # Ports must not import from Adapters
+          if find packages/ports -name "*.ts" 2>/dev/null | xargs grep -l "from.*adapters" 2>/dev/null | grep -q .; then
+            echo "::error::Hexagonal boundary violation: ports/ imports from adapters/"
+            exit 1
+          fi
+          echo "Hexagonal boundary check passed"

@@ -408,10 +408,7 @@ export class PlatformNotificationService {
     this.eventBus = eventBus;
   }
 
-  async notify(
-    userId: string,
-    notification: Omit<Notification, 'id' | 'timestamp' | 'read'>
-  ): Promise<Notification> {
+  async notify(userId: string, notification: Omit<Notification, 'id' | 'timestamp' | 'read'>): Promise<Notification> {
     const fullNotification: Notification = {
       ...notification,
       id: `notif-${Date.now()}`,
@@ -460,9 +457,7 @@ export class SecuritySecretsService {
   private algorithm = 'aes-256-gcm';
 
   constructor(masterKey?: string) {
-    this.encryptionKey = masterKey
-      ? createHash('sha256').update(masterKey).digest()
-      : randomBytes(32);
+    this.encryptionKey = masterKey ? createHash('sha256').update(masterKey).digest() : randomBytes(32);
   }
 
   async store(key: string, value: string, encrypt: boolean = true): Promise<void> {

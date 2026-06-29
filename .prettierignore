@@ -31,3 +31,55 @@ todo.md
 packages/jsonata/src/
 packages/jsonata/test/
 packages/jsonata/polyfill.js
+
+# No Prettier parser for Dockerfiles
+Dockerfile
+
+# Python files — use ruff/black instead
+*.py
+
+# Pre-existing unformatted data/governance/policy/service directories
+# These are YAML/JSON/MD data files not subject to code formatting standards
+# Tracked in separate tech-debt issue for bulk reformat
+argocd/
+artifacts/
+capabilities/
+catalog/
+ci/fixtures/
+config/
+contracts/
+docs/
+experiments/
+foundation/
+governance/
+infra/
+mcv_auditor/
+modules/
+mycodexvantaos-namespace-governance/
+navigation/
+packages/advanced-integration/
+packages/mycodexvantaos-resource-model/
+packages/mycodexvantaos-service-catalog/
+packages/semantic-core-integration/
+packages/unified-integration/
+platform/
+policies/
+project-import/
+providers/
+python/
+release/
+sbom/
+schemas/
+search-indexes/
+services/ci-repair-agent/
+services/kafka-stream-processor/
+services/mycodexvantaos-*/
+staging/
+supply-chain/
+unified-gates/
+vector-store/
+
+# Service manifests (generated data, not source code)
+**/service-manifest.yaml
+**/mycodexvantaos-module.yaml
+

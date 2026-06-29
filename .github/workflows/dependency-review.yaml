@@ -1,8 +1,8 @@
 name: Dependency Review
 
-on:
+"on":
   pull_request:
-    branches: ['main']
+    branches: ["main"]
 
 concurrency:
   group: dep-review-${{ github.ref }}
@@ -17,9 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: 'Checkout Repository'
+      - name: "Checkout Repository"
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
-      - name: 'Dependency Review'
+      - name: "Dependency Review"
         uses: actions/dependency-review-action@4901385134134e04cec5fbe5ddfe3b2c5bd5d976
         with:
           config-file: .github/dependency-review-config.yml

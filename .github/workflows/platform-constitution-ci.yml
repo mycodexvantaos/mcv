@@ -1,12 +1,12 @@
 name: Platform Constitution CI
 
-'on':
+"on":
   push:
     branches: [main]
     paths:
-      - 'docs/spec/**'
-      - 'governance/identity-policy.yaml'
-      - 'governance/platform-governance-spec.yaml'
+      - "docs/spec/**"
+      - "governance/identity-policy.yaml"
+      - "governance/platform-governance-spec.yaml"
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -31,8 +31,8 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-          cache: 'pip'
+          python-version: "3.12"
+          cache: "pip"
 
       - name: Install dependencies
         run: pip install pyyaml jsonschema
@@ -97,7 +97,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install dependencies
         run: pip install pyyaml

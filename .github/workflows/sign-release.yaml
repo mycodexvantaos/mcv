@@ -6,14 +6,14 @@
 
 name: Sign Release Provenance
 
-on:
+"on":
   push:
     tags:
-      - 'v*.*.*'
+      - "v*.*.*"
   workflow_dispatch:
     inputs:
       version:
-        description: 'Release version to sign (e.g., v0.1.0)'
+        description: "Release version to sign (e.g., v0.1.0)"
         required: true
         type: string
 
@@ -56,7 +56,7 @@ jobs:
       - name: Install cosign
         uses: sigstore/cosign-installer@d7d6bc7722e3daa8354c50bcb52f4837da5e9b6a
         with:
-          cosign-release: 'v2.4.3'
+          cosign-release: "v2.4.3"
 
       - name: Verify cosign installation
         run: cosign version
@@ -82,7 +82,7 @@ jobs:
       - name: Sign provenance with cosign keyless
         id: sign
         env:
-          COSIGN_EXPERIMENTAL: '1'
+          COSIGN_EXPERIMENTAL: "1"
           PROVENANCE_PATH: ${{ steps.locate.outputs.provenance_path }}
           ARTIFACTS_DIR_PATH: ${{ steps.locate.outputs.artifacts_dir_path }}
         run: |
@@ -94,6 +94,6 @@ jobs:
 
       - name: Verify signature
         env:
-          COSIGN_EXPERIMENTAL: '1'
+          COSIGN_EXPERIMENTAL: "1"
         run: |
           echo "Signature verification step — may be expected to skip for new entries"

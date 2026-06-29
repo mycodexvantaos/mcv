@@ -1,14 +1,14 @@
 name: Service Catalog Check
 
-'on':
+"on":
   push:
     paths:
-      - 'services/**'
-      - 'contracts/service-definitions/**'
+      - "services/**"
+      - "contracts/service-definitions/**"
   pull_request:
     paths:
-      - 'services/**'
-      - 'contracts/service-definitions/**'
+      - "services/**"
+      - "contracts/service-definitions/**"
   workflow_dispatch:
 
 permissions:

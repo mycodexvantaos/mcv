@@ -18,7 +18,8 @@
     "@mycodexvantaos/service-memory-dream": "workspace:*",
     "@mycodexvantaos/service-policy-engine": "workspace:*",
     "@mycodexvantaos/service-resource-registry": "workspace:*",
-    "@mycodexvantaos/service-service-catalog": "workspace:*"
+    "@mycodexvantaos/service-service-catalog": "workspace:*",
+    "@mycodexvantaos/core": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.19.43",

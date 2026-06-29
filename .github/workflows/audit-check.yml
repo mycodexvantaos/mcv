@@ -1,16 +1,16 @@
 name: Audit Check
 
-'on':
+"on":
   push:
     paths:
-      - 'contracts/events/audit-events.yaml'
-      - 'packages/mycodexvantaos-audit-model/**'
-      - 'services/mycodexvantaos-service-audit-log/**'
+      - "contracts/events/audit-events.yaml"
+      - "packages/mycodexvantaos-audit-model/**"
+      - "services/mycodexvantaos-service-audit-log/**"
   pull_request:
     paths:
-      - 'contracts/events/audit-events.yaml'
-      - 'packages/mycodexvantaos-audit-model/**'
-      - 'services/mycodexvantaos-service-audit-log/**'
+      - "contracts/events/audit-events.yaml"
+      - "packages/mycodexvantaos-audit-model/**"
+      - "services/mycodexvantaos-service-audit-log/**"
   workflow_dispatch:
 
 permissions:

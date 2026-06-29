@@ -1,12 +1,61 @@
-apiVersion: mycodexvantaos.io/v1
-kind: GovernancePolicy
+# ADR: This policy is the canonical registry of gates required for production
+# deployment authorisation. governance-check.yml validates that
+# gate-99-production-closure-validation is present in requiredGates.
+apiVersion: mcv.mycodexvantaos.com/v1
+kind: ProductionReadinessPolicy
 metadata:
   name: production-readiness-policy
-  description: production-readiness-policy for MyCodexVantaOS
-  version: 1.0.0
-  date: '2026-06-29'
-  status: active
+  urn: "urn:mcv:policy:production-readiness-policy"
+  version: "1.0.0"
+  labels:
+    category: governance
+    severity: critical
+  annotations:
+    description: >
+      Defines the minimum set of gates that must pass before any artifact
+      may be promoted to the production environment.
+    owner: platform-governance
+    lastReviewed: "2026-06-29T00:00:00Z"
+
 spec:
-  rules: []
-  enforcement: block
-platform: mycodexvantaos
+  slsaLevel: 2
+  requiredGates:
+    # Foundation layer
+    - gate-10-foundation-structure-validation
+    - gate-10-namespace-governance-validation
+    # Infrastructure layer
+    - gate-20-dependency-audit
+    - gate-20-sbom-validation
+    # Platform layer
+    - gate-30-provider-capability-validation
+    - gate-30-service-catalog-validation
+    # Application layer
+    - gate-40-api-contract-validation
+    - gate-40-security-headers-validation
+    # AI infrastructure layer
+    - gate-50-ai-infrastructure-validation
+    - gate-50-guardrail-validation
+    # Integration layer
+    - gate-60-integration-validation
+    # Production closure (terminal)
+    - gate-99-production-closure-validation
+
+  blockers:
+    - id: codeql-zero-critical
+      description: CodeQL must report zero Critical severity findings
+      enforced: true
+    - id: trivy-zero-critical
+      description: Trivy must report zero Critical CVEs in container images
+      enforced: true
+    - id: gitleaks-clean
+      description: Gitleaks must report zero secret leaks
+      enforced: true
+    - id: checkov-zero-critical
+      description: Checkov must report zero Critical IaC misconfigurations
+      enforced: true
+
+  approvals:
+    minimumReviewers: 2
+    requireCodeOwnerReview: true
+    dismissStaleReviews: true
+    requireSignedCommits: true

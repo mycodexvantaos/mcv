@@ -5,9 +5,9 @@
 
 name: Weekly Security Audit
 
-'on':
+"on":
   schedule:
-    - cron: '0 2 * * 1' # Monday 02:00 UTC
+    - cron: "0 2 * * 1" # Monday 02:00 UTC
   workflow_dispatch:
 
 concurrency:
@@ -57,7 +57,7 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@8aad20d150bbac5944a9f9d289da16a4b0d87c1e
         with:
-          category: '/weekly-audit/language:${{ matrix.language }}'
+          category: "/weekly-audit/language:${{ matrix.language }}"
 
   # ── Semgrep Full Audit (CLI via container) ──────────────────────
   semgrep-full:
@@ -188,7 +188,7 @@ jobs:
         uses: super-linter/super-linter@12150456a73e248bdc94d0794898f94e23127c88
         env:
           VALIDATE_ALL_CODEBASE: true
-          DEFAULT_BRANCH: 'main'
+          DEFAULT_BRANCH: "main"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LOG_LEVEL: NOTICE
           VALIDATE_GITHUB_ACTIONS: true

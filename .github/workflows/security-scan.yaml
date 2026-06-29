@@ -8,23 +8,23 @@
 
 name: Security Scan
 
-on:
+"on":
   push:
     branches:
       - main
-      - 'release/**'
+      - "release/**"
   pull_request:
     branches:
       - main
   schedule:
     # Run daily at 2 AM UTC
-    - cron: '0 2 * * *'
+    - cron: "0 2 * * *"
   workflow_dispatch:
     inputs:
       scan_type:
-        description: 'Type of scan to run'
+        description: "Type of scan to run"
         required: false
-        default: 'all'
+        default: "all"
         type: choice
         options:
           - all
@@ -72,7 +72,7 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@8aad20d150bbac5944a9f9d289da16a4b0d87c1e
         with:
-          category: '/language:javascript'
+          category: "/language:javascript"
 
   codeql-typescript:
     name: CodeQL TypeScript
@@ -98,7 +98,7 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@8aad20d150bbac5944a9f9d289da16a4b0d87c1e
         with:
-          category: '/language:typescript'
+          category: "/language:typescript"
 
     # ====================
   # Secret Scanning (Gitleaks via CLI)
@@ -228,8 +228,7 @@ jobs:
     name: Security Summary
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    needs:
-      [codeql-javascript, codeql-typescript, secrets-scan, sast-semgrep, iac-scan, container-scan]
+    needs: [codeql-javascript, codeql-typescript, secrets-scan, sast-semgrep, iac-scan, container-scan]
     if: always()
     steps:
       - name: Generate Security Summary

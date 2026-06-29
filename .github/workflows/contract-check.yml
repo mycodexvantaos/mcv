@@ -1,12 +1,12 @@
 name: Contract Check
 
-'on':
+"on":
   push:
     paths:
-      - 'contracts/**'
+      - "contracts/**"
   pull_request:
     paths:
-      - 'contracts/**'
+      - "contracts/**"
   workflow_dispatch:
 
 permissions:

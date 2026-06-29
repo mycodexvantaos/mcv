@@ -528,11 +528,7 @@ mycodexvantaos/
      'code-synthesis': {
        native: () => new NativeCodeSynthesis(),
        external: (config) => new ExternalCodeSynthesis(config.apiKey),
-       hybrid: (config) =>
-         new HybridCodeSynthesis(
-           new NativeCodeSynthesis(),
-           new ExternalCodeSynthesis(config.apiKey)
-         ),
+       hybrid: (config) => new HybridCodeSynthesis(new NativeCodeSynthesis(), new ExternalCodeSynthesis(config.apiKey)),
      },
      storage: {
        /* ... */

@@ -16,6 +16,7 @@ export * from './lib/csp';
 export * from './lib/cookies';
 export * from './lib/redirects';
 export * from './lib/security-headers';
+export * from './lib/logger';
 
 // Package metadata
 export const PACKAGE_NAME = '@mycodexvantaos/core';

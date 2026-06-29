@@ -1,52 +1,63 @@
-apiVersion: mycodexvantaos.io/v1
-kind: AIInfraGate
+# ADR: Production closure gate is the terminal L90 gate. It PASSES only when
+# all L10-L60 prerequisite layers have zero FAIL/MISSING results.
+# generate-production-closure-report.py evaluates this gate programmatically;
+# this YAML is the declarative specification and audit anchor.
+apiVersion: mcv.mycodexvantaos.com/v1
+kind: UnifiedGate
 metadata:
-  id: gate-99-production-closure-validation
-  version: 1.0.0
-  layer: l90
-  plane: ai-infra
-  blocking: true
-  lifecycle: active
-  criticality: critical
-  owner: platform@mycodexvantaos.com
-  governanceCode: mycodexvantaos-00000
-  createdAt: 2026-01-01 00:00:00+00:00
-  tags:
-    - l90
-    - production
-  sloTarget: 30
-  evidenceRetentionDays: 2555
-  date: '2026-06-29'
-  status: active
-spec:
-  description: 'Final production closure gate. Validates that all l90 gates have passed
-    and the artifact is approved for production promotion.
+  name: gate-99-production-closure-validation
+  layer: L90
+  urn: "urn:mcv:gate:gate-99-production-closure-validation"
+  labels:
+    layer: L90
+    category: production-closure
+    severity: critical
+    blocking: "true"
+  annotations:
+    description: >
+      Terminal production closure gate. Validates that all upstream gate layers
+      (L10-L60) have passed before authorising a production deployment.
+    rationale: >
+      A single terminal gate provides an unambiguous, machine-auditable signal
+      that the full governance chain has been satisfied. Without this gate,
+      partial layer failures could be silently ignored during release.
+    owner: platform-governance
+    reviewCycle: per-release
 
-    '
-  validates:
-    - dimension: production-closure
-      description: All production closure requirements are met.
-      checks:
-        - id: chk-all-l90-gates-passed
-          description: All l90 gates (91–98) have passed
-          rule: gate:l90-all-passed
-          severity: critical
-          evidenceRequired: true
-        - id: chk-production-approval
-          description: Production promotion has been approved by the release authority
-          rule: approval:release-authority
-          severity: critical
-          evidenceRequired: true
-        - id: chk-deployment-window
-          description: Deployment is within the approved deployment window
-          rule: schedule:deployment-window
-          severity: high
-          evidenceRequired: true
-        - id: chk-on-call-confirmed
-          description: On-call engineer has confirmed readiness
-          rule: oncall:confirmed
-          severity: high
-          evidenceRequired: true
-  dependsOn: []
-  waiverPolicy: ./policies/gate-waiver-policy.yaml
-  escalationPolicy: ./policies/gate-risk-policy.yaml
+spec:
+  status: active
+  enabled: true
+  blocking: true
+  layer: L90
+  prerequisiteLayers:
+    - L10
+    - L20
+    - L30
+    - L40
+    - L50
+    - L60
+  criteria:
+    - id: all-prerequisite-layers-pass
+      name: All prerequisite gate layers pass
+      required: true
+      met: false
+      description: >
+        Every gate in layers L10-L60 must have status PASS or SKIP.
+        Any FAIL or MISSING result blocks production closure.
+    - id: production-readiness-policy-registered
+      name: production-readiness-policy.yaml registers this gate
+      required: true
+      met: false
+      description: >
+        policies/production-readiness-policy.yaml must include
+        gate-99-production-closure-validation in spec.requiredGates.
+    - id: audit-trail-complete
+      name: JSONL audit trail emitted for all evaluated gates
+      required: true
+      met: false
+      description: >
+        unified-gates/reports/production-closure-audit.jsonl must exist
+        and contain one entry per evaluated gate.
+  outputs:
+    reportPath: unified-gates/reports/production-closure-report.json
+    auditPath: unified-gates/reports/production-closure-audit.jsonl

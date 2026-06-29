@@ -16,14 +16,7 @@
     },
     "types": ["jest", "@cloudflare/workers-types", "node"]
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "services/**/*.ts",
-    "packages/**/*.ts",
-    "ci/**/*.ts",
-    "simulation.ts"
-  ],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "services/**/*.ts", "packages/**/*.ts", "ci/**/*.ts", "simulation.ts"],
   "exclude": [
     "node_modules",
     "dist",
