@@ -8,10 +8,10 @@ metadata:
 spec:
   domain: ai
   capabilities:
-  - llm
-  - embedding
-  - vector-store
-  - scheduler
+    - llm
+    - embedding
+    - vector-store
+    - scheduler
   providers:
     llm: llm-openai
     embedding: embedding-openai

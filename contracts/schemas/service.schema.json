@@ -15,9 +15,5 @@
       "format": "date-time"
     }
   },
-  "required": [
-    "id",
-    "type",
-    "timestamp"
-  ]
+  "required": ["id", "type", "timestamp"]
 }

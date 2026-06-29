@@ -1,11 +1,14 @@
 ## MyCodexVantaOS Data-foundation
+
 Foundation ID: `mycodexvantaos-data-foundation`
 Version: 1.0.0
 
 ## Overview
+
 This directory contains the specification for the MyCodexVantaOS data Foundation.
 
 ## Files
+
 | File                          | Description                    |
 | ----------------------------- | ------------------------------ |
 | `foundation.yaml`             | Foundation specification       |
@@ -23,6 +26,7 @@ This directory contains the specification for the MyCodexVantaOS data Foundation
 | `urn-map.yaml`                | URN mapping                    |
 
 ## Data Foundation
+
 Strategic specification unit for MyCodexVantaOS data-foundation.
 
 This is a specification-unit under the `foundation` root module.

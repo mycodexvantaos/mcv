@@ -157,7 +157,7 @@ The platform organizes all capabilities into **8 categories** following an AWS-l
 | 🔬 **Knowledge**  | Document ingestion, vector search, collections | knowledge-store, knowledge-search | knowledge-trace, knowledge-repair, knowledge-cockpit |
 | 🤖 **Agent**      | Conversational AI, autonomous agents           | agent-chat                        | agent-router, agent-mode, agent-memory               |
 | 🏢 **Workspace**  | Multi-tenant collaboration                     | workspace                         | workspace-analytics, workspace-templates             |
-| 🛠 **Developer**   | Developer tooling and SDK                      | —                                 | dev-portal, sdk-playground                           |
+| 🛠 **Developer**  | Developer tooling and SDK                      | —                                 | dev-portal, sdk-playground                           |
 | 🔒 **Security**   | Authentication, authorization, secrets         | identity                          | mfa-service, token-rotation                          |
 | 📦 **Storage**    | Object storage, file management                | (via adapters)                    | backup-service, lifecycle-policies                   |
 | 🧠 **Model**      | LLM endpoints, BYOK gateway                    | model-byok                        | model-fine-tune, model-evaluator                     |

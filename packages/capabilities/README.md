@@ -1,7 +1,7 @@
 ## 🏢 MyCodeXvantaOS - Capabilities Layer
 
-
 ## 📋 概述
+
 Capabilities Layer 是 MyCodeXvantaOS 的核心抽象層，提供統一的 Provider 管理和 Runtime Mode 自動切換能力。它確保平台在各種運行時環境下都能正常運作：
 
 - **完全離線**（使用 Native Provider）
@@ -10,6 +10,7 @@ Capabilities Layer 是 MyCodeXvantaOS 的核心抽象層，提供統一的 Provi
 - **自動模式**（根據網絡狀態動態切換）
 
 ## 🎯 設計目標
+
 1. **Platform Independence**: 平台可完全獨立運行，零外部依賴
 2. **Offline-First**: 優先保證離線可用性
 3. **Flexible Runtime**: 支持四種 Runtime Mode 自動切換
@@ -18,6 +19,7 @@ Capabilities Layer 是 MyCodeXvantaOS 的核心抽象層，提供統一的 Provi
 6. **Health Monitoring**: 內置健康檢查和指標收集
 
 ## 📁 目錄結構
+
 ```
 packages/capabilities/
 ├── base/           # CapabilityBase 抽象基類
@@ -29,6 +31,7 @@ packages/capabilities/
 ```
 
 ## 🏛️ 核心組件
+
 ### 1. CapabilityBase<T>
 
 Provider 抽象基類，所有 Provider 必須實現：
@@ -82,6 +85,7 @@ class ProviderFactory<T extends CapabilityBase> {
 - **`AUTO`**: 自動模式，根據網絡狀態動態選擇最佳模式
 
 ## 🚀 快速開始
+
 ### 步驟 1: 創建 Native Provider
 
 ```typescript
@@ -196,6 +200,7 @@ await factory.shutdown();
 ```
 
 ## 🎛️ Runtime Mode 選擇邏輯
+
 ### NATIVE 模式
 
 - ✅ 僅使用 NATIVE Provider
@@ -223,6 +228,7 @@ await factory.shutdown();
 - 🌐 適合動態環境
 
 ## 📊 監控和指標
+
 ### Provider 指標
 
 每個 Provider 自動收集以下指標：
@@ -256,6 +262,7 @@ await factory.shutdown();
 ```
 
 ## 📝 日誌輸出
+
 所有關鍵事件都有結構化日誌：
 
 ```
@@ -266,6 +273,7 @@ await factory.shutdown();
 ```
 
 ## 🧪 測試
+
 ### 測試 Native Provider
 
 ```typescript
@@ -296,8 +304,12 @@ describe('NativeVectorStore', () => {
 describe('HybridVectorStore', () => {
   it('should fallback to native on failure', async () => {
     const factory = new ProviderFactory('test', RuntimeMode.HYBRID);
-    factory.registerProvider({/* external config */});
-    factory.registerProvider({/* native config */});
+    factory.registerProvider({
+      /* external config */
+    });
+    factory.registerProvider({
+      /* native config */
+    });
 
     const hybridProvider = await factory.createProvider(
       'vector-store',
@@ -315,12 +327,14 @@ describe('HybridVectorStore', () => {
 ```
 
 ## 📚 相關文檔
+
 - [Platform Architecture](../../PLATFORM_ARCHITECTURE.md)
 - [Architecture Principles Validation](../../ARCHITECTURE_PRINCIPLES_VALIDATION.md)
 - [Runtime Mode Guide](../runtime-mode.md)（待創建）
 - [Provider Development Guide](../provider-development.md)（待創建）
 
 ## 🚨 注意事項
+
 1. **必須實現 CapabilityBase**: 所有 Provider 必須繼承 `CapabilityBase`
 2. **Native Provider 零依賴**: Native Provider 不能有任何外部依賴
 3. **External Provider 有 fallback**: External Provider 必須有 Native fallback
@@ -328,16 +342,19 @@ describe('HybridVectorStore', () => {
 5. **日誌必須結構化**: 使用 `this.log()` 方法記錄所有關鍵事件
 
 ## 🔗 相關模塊
+
 - [`packages/ports`](..//packages/ports/) - Platform-neutral interfaces
 - [`providers`](../../providers/) - Provider 實現目錄
 - [`runtimes`](../../runtimes/) - Runtime configuration
 
 ## 📞 支持
+
 - GitHub Issues: https://github.com/mycodexvantaos/mycodexvantaos/issues
 - Documentation: `docs/`
 - Architecture: `docs/architecture/`
 
 ## 📝 版本歷史
+
 - **1.0.0** (2024-05-15): 初始版本
   - CapabilityBase 抽象基類
   - ProviderFactory 工廠類

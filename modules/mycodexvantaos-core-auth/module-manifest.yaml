@@ -11,10 +11,10 @@ metadata:
 spec:
   domain: core
   capabilities:
-  - auth
-  - database
-  - cache
-  - secrets
+    - auth
+    - database
+    - cache
+    - secrets
   providers:
     auth: auth-keycloak
     database: database-postgres
@@ -29,7 +29,7 @@ spec:
 service-id: mycodexvantaos-core-auth
 platform: mycodexvantaos
 runtime-modes:
-- native
-- connected
-- hybrid
+  - native
+  - connected
+  - hybrid
 service-path: services/mycodexvantaos-core-auth

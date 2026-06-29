@@ -24,7 +24,13 @@ export type DeploymentStatus =
   | 'rolled_back';
 
 export type DeployTarget =
-  'local' | 'docker' | 'kubernetes' | 'serverless' | 'static' | 'vm' | 'custom';
+  | 'local'
+  | 'docker'
+  | 'kubernetes'
+  | 'serverless'
+  | 'static'
+  | 'vm'
+  | 'custom';
 
 export interface DeploymentInfo {
   id: string;

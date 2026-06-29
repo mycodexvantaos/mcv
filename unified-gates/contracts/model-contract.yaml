@@ -12,24 +12,24 @@ spec:
 
     '
   requiredFields:
-  - modelId
-  - modelVersion
-  - modelType
-  - framework
-  - frameworkVersion
-  - inputSchema
-  - outputSchema
-  - minAccuracy
-  - maxLatencyMs
-  - modelCard
-  - safetyPolicyRef
-  - trainingDatasetRef
+    - modelId
+    - modelVersion
+    - modelType
+    - framework
+    - frameworkVersion
+    - inputSchema
+    - outputSchema
+    - minAccuracy
+    - maxLatencyMs
+    - modelCard
+    - safetyPolicyRef
+    - trainingDatasetRef
   validValues:
     modelType:
-    - llm
-    - embedding
-    - classifier
-    - regressor
-    - diffusion
-    - multimodal
+      - llm
+      - embedding
+      - classifier
+      - regressor
+      - diffusion
+      - multimodal
   schemaRef: ../schemas/model-contract.schema.json

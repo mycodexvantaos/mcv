@@ -79,14 +79,14 @@ spec:
   gateSchema: ./schemas/ai-infra-gate.schema.json
   contractSchema: ./schemas/ai-workload-contract.schema.json
   executionOrder:
-  - l00
-  - l10
-  - l20
-  - l30
-  - l40
-  - l50
-  - l60
-  - l90
+    - l00
+    - l10
+    - l20
+    - l30
+    - l40
+    - l50
+    - l60
+    - l90
   blockingPolicy:
     default: true
     overrideRequiresWaiver: true
@@ -94,9 +94,9 @@ spec:
     waiverMaxDurationDays: 30
   evidenceRequirements:
     hashAlgorithms:
-    - sha-256
-    - sha3-512
-    - blake3
+      - sha-256
+      - sha3-512
+      - blake3
     signatureRequired: true
     attestationRequired: true
     auditChainRequired: true

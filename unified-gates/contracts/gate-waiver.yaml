@@ -12,16 +12,16 @@ spec:
 
     '
   requiredFields:
-  - id
-  - gateId
-  - artifactRef
-  - requestedBy
-  - approvedBy
-  - approvedAt
-  - expiresAt
-  - spec.justification
-  - spec.remediationPlan
-  - spec.riskAcknowledgement
+    - id
+    - gateId
+    - artifactRef
+    - requestedBy
+    - approvedBy
+    - approvedAt
+    - expiresAt
+    - spec.justification
+    - spec.remediationPlan
+    - spec.riskAcknowledgement
   constraints:
     maxDurationDays: 30
     criticalGateRequiresCouncilApproval: true

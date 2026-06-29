@@ -7,6 +7,7 @@ sidebar_label: Simple Queries
 To support the extraction of values from a JSON structure, a location path syntax is defined. In common with XPath, this will select all possible values in the document that match the specified location path. The two structural constructs of JSON are objects and arrays.
 
 ## Navigating JSON Objects
+
 A JSON object is an associative array (a.k.a map or hash). The location path syntax to navigate into an arbitrarily deeply nested structure of JSON objects comprises the field names separated by dot '.' delimiters. The expression returns the JSON value referenced after navigating to the last step in the location path. If during the navigation of the location path, a field is not found, then the expression returns nothing (represented by Javascript _undefined_). No errors are thrown as a result of non-existing data in the input document.
 
 The following sample JSON document is used by examples throughout this guide, unless otherwise indicated:
@@ -102,6 +103,7 @@ Here are some example expressions and their results when applied to the above JS
   </div>
 
 ## Navigating JSON Arrays
+
 JSON arrays are used when an ordered collection of values is required. Each value in the array is associated with an index (position) rather than a name, so in order to address individual values in an array, extra syntax is required to specify the index. This is done using square brackets after the field name of the array. If the square brackets contains a number, or an expression that evaluates to a number, then the number represents the index of the value to select. Indexes are zero offset, i.e. the first value in an array `arr` is `arr[0]`. If the number is not an integer, then it is rounded _down_ to an integer. If the expression in square brackets is non-numeric, or is an expression that doesn't evaluate to a number, then it is treated as a [predicate](predicate#predicates).
 
 Negative indexes count from the end of the array, for example, `arr[-1]` will select the last value, `arr[-2]` the second to last, etc. If an index is specified that exceeds the size of the array, then nothing is selected.
@@ -172,15 +174,15 @@ If no index is specified for an array (i.e. no square brackets after the field r
   { "type": "office", "number": "01962 001234" }
 
 ]</div>
+
   </div>
 
 ## Result sequences
 
-
 ## Sequence flattening
 
-
 ## Empty sequences and singleton sequences
+
 ### Top level arrays, nested arrays and array flattening
 
 Consider the JSON document:

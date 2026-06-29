@@ -7,24 +7,24 @@ metadata:
   version: 1.0.0
   author: MyCodeXvantaOS Team
   tags:
-  - deployment
-  - native
-  - local
-  - docker
-  - zero-dependencies
+    - deployment
+    - native
+    - local
+    - docker
+    - zero-dependencies
 spec:
   providerName: native
   isNative: true
   priority: 100
   capabilities:
-  - local-deployment
-  - docker-deployment
-  - static-site-hosting
-  - process-management
+    - local-deployment
+    - docker-deployment
+    - static-site-hosting
+    - process-management
   requirements:
     external: []
     runtime:
-    - nodejs >= 18.0.0
+      - nodejs >= 18.0.0
   configuration:
     type: object
     properties:

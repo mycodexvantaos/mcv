@@ -16,9 +16,9 @@ spec:
   defaultCriticality: critical
   evidenceRequired: true
   hashAlgorithms:
-  - sha-256
-  - sha3-512
-  - blake3
+    - sha-256
+    - sha3-512
+    - blake3
   waiverMaxDurationDays: 30
   criticalGateWaiverRequiresCouncilApproval: true
   destroyedGateIdReuseProhibited: true

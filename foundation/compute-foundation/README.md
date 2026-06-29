@@ -1,11 +1,14 @@
 ## MyCodexVantaOS Compute-foundation
+
 Foundation ID: `mycodexvantaos-compute-foundation`
 Version: 1.0.0
 
 ## Overview
+
 This directory contains the specification for the MyCodexVantaOS compute Foundation.
 
 ## Files
+
 | File                          | Description                    |
 | ----------------------------- | ------------------------------ |
 | `foundation.yaml`             | Foundation specification       |
@@ -23,6 +26,7 @@ This directory contains the specification for the MyCodexVantaOS compute Foundat
 | `urn-map.yaml`                | URN mapping                    |
 
 ## Compute Foundation
+
 Strategic specification unit for MyCodexVantaOS compute-foundation.
 
 This is a specification-unit under the `foundation` root module.

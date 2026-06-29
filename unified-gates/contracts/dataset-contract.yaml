@@ -12,22 +12,22 @@ spec:
 
     '
   requiredFields:
-  - datasetId
-  - datasetVersion
-  - datasetType
-  - license
-  - sourceRef
-  - lineageRef
-  - schema
-  - qualityThresholds.maxNullRate
-  - qualityThresholds.maxDuplicateRate
-  - accessPolicy
-  - piiScanRef
+    - datasetId
+    - datasetVersion
+    - datasetType
+    - license
+    - sourceRef
+    - lineageRef
+    - schema
+    - qualityThresholds.maxNullRate
+    - qualityThresholds.maxDuplicateRate
+    - accessPolicy
+    - piiScanRef
   validValues:
     datasetType:
-    - training
-    - evaluation
-    - fine-tuning
-    - rag-corpus
-    - synthetic
+      - training
+      - evaluation
+      - fine-tuning
+      - rag-corpus
+      - synthetic
   schemaRef: ../schemas/dataset-contract.schema.json

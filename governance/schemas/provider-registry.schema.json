@@ -14,10 +14,7 @@
     },
     "metadata": {
       "type": "object",
-      "required": [
-        "name",
-        "version"
-      ],
+      "required": ["name", "version"],
       "properties": {
         "name": {
           "type": "string"
@@ -34,12 +31,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": [
-          "provider-id",
-          "capability",
-          "runtime-modes",
-          "manifest"
-        ],
+        "required": ["provider-id", "capability", "runtime-modes", "manifest"],
         "properties": {
           "provider-id": {
             "type": "string",
@@ -52,11 +44,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": [
-                "native",
-                "connected",
-                "hybrid"
-              ]
+              "enum": ["native", "connected", "hybrid"]
             },
             "minItems": 1
           },
@@ -67,12 +55,6 @@
       }
     }
   },
-  "required": [
-    "apiVersion",
-    "kind",
-    "metadata",
-    "spec",
-    "providers"
-  ],
+  "required": ["apiVersion", "kind", "metadata", "spec", "providers"],
   "description": "Schema for MyCodexVantaOS provider registry"
 }

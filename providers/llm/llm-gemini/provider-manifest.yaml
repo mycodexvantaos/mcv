@@ -17,14 +17,14 @@ spec:
   description: Google Gemini LLM provider (external, requires API key). Optional connector
     for advanced AI capabilities.
   capabilities:
-  - text-generation
-  - text-completion
-  - code-generation
-  - chat-completion
-  - function-calling
-  - multimodal
+    - text-generation
+    - text-completion
+    - code-generation
+    - chat-completion
+    - function-calling
+    - multimodal
   requirements:
-  - GOOGLE_GENAI_API_KEY or MYCODEXVANTAOS_LLM_GEMINI_API_KEY
+    - GOOGLE_GENAI_API_KEY or MYCODEXVANTAOS_LLM_GEMINI_API_KEY
   fallbackProvider: llm-native
   priority: 50
 provider-id: mycodexvantaos-llm-gemini

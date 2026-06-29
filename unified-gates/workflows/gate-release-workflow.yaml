@@ -13,30 +13,30 @@ spec:
 
     '
   stages:
-  - id: development
-    requiredGates:
-    - l00
-    promotion: staging
-  - id: staging
-    requiredGates:
-    - l00
-    - l10
-    - l20
-    - l30
-    - l40
-    - l50
-    - l60
-    promotion: production
-  - id: production
-    requiredGates:
-    - l00
-    - l10
-    - l20
-    - l30
-    - l40
-    - l50
-    - l60
-    - l90
-    finalGate: gate-99-production-closure-validation
-    approvalRequired: true
-    approvalAuthority: release-authority
+    - id: development
+      requiredGates:
+        - l00
+      promotion: staging
+    - id: staging
+      requiredGates:
+        - l00
+        - l10
+        - l20
+        - l30
+        - l40
+        - l50
+        - l60
+      promotion: production
+    - id: production
+      requiredGates:
+        - l00
+        - l10
+        - l20
+        - l30
+        - l40
+        - l50
+        - l60
+        - l90
+      finalGate: gate-99-production-closure-validation
+      approvalRequired: true
+      approvalAuthority: release-authority

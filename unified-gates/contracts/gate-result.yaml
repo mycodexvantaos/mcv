@@ -12,22 +12,22 @@ spec:
 
     '
   requiredFields:
-  - gateId
-  - gateVersion
-  - pipelineRunId
-  - artifactRef
-  - evaluatedAt
-  - evaluatedBy
-  - overallStatus
-  - dimensions
-  - evidence.sha256
-  - evidence.sha3512
-  - evidence.blake3
+    - gateId
+    - gateVersion
+    - pipelineRunId
+    - artifactRef
+    - evaluatedAt
+    - evaluatedBy
+    - overallStatus
+    - dimensions
+    - evidence.sha256
+    - evidence.sha3512
+    - evidence.blake3
   validValues:
     overallStatus:
-    - PASS
-    - FAIL
-    - WARN
-    - SKIP
-    - ERROR
+      - PASS
+      - FAIL
+      - WARN
+      - SKIP
+      - ERROR
   schemaRef: ../schemas/gate-result.schema.json

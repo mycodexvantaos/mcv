@@ -17,12 +17,12 @@ spec:
   internalUri: mycodexvantaos://service/mycodexvantaos-governance-policy-engine
   urn: urn:mycodexvantaos:service:mycodexvantaos-governance-policy-engine
   supportedRuntimeModes:
-  - native
-  - connected
-  - hybrid
+    - native
+    - connected
+    - hybrid
   deploymentTargets:
-  - kubernetes
-  - docker-compose
+    - kubernetes
+    - docker-compose
   productionReadiness:
     required: true
     healthCheckRequired: true
@@ -33,7 +33,7 @@ spec:
 service-id: mycodexvantaos-governance-policy-engine
 platform: mycodexvantaos
 runtime-modes:
-- native
-- connected
-- hybrid
+  - native
+  - connected
+  - hybrid
 service-path: services/mycodexvantaos-governance-policy-engine

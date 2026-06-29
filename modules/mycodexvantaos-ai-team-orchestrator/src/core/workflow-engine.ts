@@ -20,7 +20,12 @@ import { MessageBus } from './message-bus';
  * Workflow execution status
  */
 export type WorkflowStatus =
-  'pending' | 'running' | 'paused' | 'completed' | 'failed' | 'cancelled';
+  | 'pending'
+  | 'running'
+  | 'paused'
+  | 'completed'
+  | 'failed'
+  | 'cancelled';
 
 /**
  * Node execution status

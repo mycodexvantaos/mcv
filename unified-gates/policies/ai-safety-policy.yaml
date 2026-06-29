@@ -15,5 +15,5 @@ spec:
   safetyAttestationRequired: true
   safetyTestSuiteRef: tests/ai-safety/
   mandatoryGates:
-  - gate-38-algorithm-safety-policy-validation
-  - gate-94-policy-attestation-validation
+    - gate-38-algorithm-safety-policy-validation
+    - gate-94-policy-attestation-validation

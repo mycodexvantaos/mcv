@@ -8,10 +8,10 @@ metadata:
 spec:
   domain: ai
   capabilities:
-  - llm
-  - embedding
-  - validation
-  - observability
+    - llm
+    - embedding
+    - validation
+    - observability
   providers:
     llm: llm-openai
     embedding: embedding-openai

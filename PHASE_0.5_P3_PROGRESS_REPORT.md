@@ -371,7 +371,9 @@ return {
   isHealthy: true,
   status: ProviderHealthStatus.HEALTHY,
   checkTime: new Date().toISOString(),
-  metrics: {/* implementation-specific */},
+  metrics: {
+    /* implementation-specific */
+  },
 };
 ```
 

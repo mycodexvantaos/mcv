@@ -19,18 +19,18 @@ spec:
     purpose: high-speed-local-and-ci-comparison
 algorithms:
   allowed:
-  - SHA-256
-  - SHA3-512
-  - BLAKE3
+    - SHA-256
+    - SHA3-512
+    - BLAKE3
   default: SHA-256
   artifact-integrity: SHA-256
   audit-chain: SHA-256
   supply-chain: SHA3-512
   forbidden:
-  - MD5
-  - SHA-1
-  - CRC32
-  - RIPEMD-160
+    - MD5
+    - SHA-1
+    - CRC32
+    - RIPEMD-160
 usage:
   artifact-digests:
     algorithm: SHA-256

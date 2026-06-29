@@ -14,11 +14,7 @@
     },
     "metadata": {
       "type": "object",
-      "required": [
-        "name",
-        "version",
-        "status"
-      ],
+      "required": ["name", "version", "status"],
       "properties": {
         "name": {
           "type": "string"
@@ -28,11 +24,7 @@
         },
         "status": {
           "type": "string",
-          "enum": [
-            "active",
-            "deprecated",
-            "draft"
-          ]
+          "enum": ["active", "deprecated", "draft"]
         },
         "authoritative": {
           "type": "boolean"
@@ -47,11 +39,7 @@
     },
     "identity": {
       "type": "object",
-      "required": [
-        "machine",
-        "brand",
-        "forbidden-prefixes"
-      ],
+      "required": ["machine", "brand", "forbidden-prefixes"],
       "properties": {
         "machine": {
           "type": "string",
@@ -78,9 +66,7 @@
     },
     "deployment": {
       "type": "object",
-      "required": [
-        "canonical-url"
-      ],
+      "required": ["canonical-url"],
       "properties": {
         "canonical-url": {
           "type": "string",

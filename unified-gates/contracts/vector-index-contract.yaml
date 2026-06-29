@@ -12,19 +12,19 @@ spec:
 
     '
   requiredFields:
-  - indexId
-  - indexVersion
-  - embeddingModelRef
-  - embeddingDimension
-  - distanceMetric
-  - freshnessWindowHours
-  - recallAtK.k
-  - recallAtK.minRecall
-  - maxQueryLatencyMs
-  - accessPolicy
+    - indexId
+    - indexVersion
+    - embeddingModelRef
+    - embeddingDimension
+    - distanceMetric
+    - freshnessWindowHours
+    - recallAtK.k
+    - recallAtK.minRecall
+    - maxQueryLatencyMs
+    - accessPolicy
   validValues:
     distanceMetric:
-    - cosine
-    - euclidean
-    - dot-product
+      - cosine
+      - euclidean
+      - dot-product
   schemaRef: ../schemas/vector-index.schema.json

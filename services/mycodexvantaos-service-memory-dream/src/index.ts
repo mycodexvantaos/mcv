@@ -30,14 +30,27 @@ export interface MemoryItem {
   related_entities?: string[];
   temporal_expressions?: string[];
   memory_type?:
-    'observation' | 'reflection' | 'decision' | 'event' | 'fact' | 'opinion' | 'plan' | 'system';
+    | 'observation'
+    | 'reflection'
+    | 'decision'
+    | 'event'
+    | 'fact'
+    | 'opinion'
+    | 'plan'
+    | 'system';
   conflicts_with?: string[];
   created_at?: string;
   metadata?: Record<string, unknown>;
 }
 
 export type DreamActionType =
-  'merge' | 'resolve' | 'mark_orphan' | 'delete' | 'tag_add' | 'tag_remove' | 'no_action';
+  | 'merge'
+  | 'resolve'
+  | 'mark_orphan'
+  | 'delete'
+  | 'tag_add'
+  | 'tag_remove'
+  | 'no_action';
 
 export interface DreamAction {
   action_type: DreamActionType;

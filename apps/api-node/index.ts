@@ -118,7 +118,7 @@ function getCorsOrigin(req: IncomingMessage): string {
   if (allowlist.includes(origin)) return origin;
   // Development fallback: allow localhost origins
   if (resolveEnvironment() === 'development' && origin.includes('localhost')) return origin;
-  return '';  // No CORS header = browser blocks the request
+  return ''; // No CORS header = browser blocks the request
 }
 
 function sendJson(res: ServerResponse, status: number, data: unknown, req?: IncomingMessage): void {
@@ -137,7 +137,12 @@ function sendJson(res: ServerResponse, status: number, data: unknown, req?: Inco
   res.end(body);
 }
 
-function sendError(res: ServerResponse, status: number, message: string, req?: IncomingMessage): void {
+function sendError(
+  res: ServerResponse,
+  status: number,
+  message: string,
+  req?: IncomingMessage
+): void {
   sendJson(res, status, { error: message }, req);
 }
 
@@ -885,7 +890,10 @@ addRoute(
           receiptId: answerReq.receiptId,
           answer: answerReq.answer,
           evidenceLevel: answerReq.evidenceLevel as
-            'knowledge-assisted' | 'knowledge-verified' | 'knowledge-grounded' | undefined,
+            | 'knowledge-assisted'
+            | 'knowledge-verified'
+            | 'knowledge-grounded'
+            | undefined,
           citations: answerReq.citations,
         });
         sendJson(res, 201, { trace });
@@ -954,7 +962,8 @@ addRoute(
         const result = createDreamRunSync({
           mode,
           memory_items: dreamReq.memory_items as
-            import('@mycodexvantaos/service-memory-dream').MemoryItem[] | undefined,
+            | import('@mycodexvantaos/service-memory-dream').MemoryItem[]
+            | undefined,
         });
 
         sendJson(res, 202, {

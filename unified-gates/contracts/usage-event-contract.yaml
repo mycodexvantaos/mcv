@@ -12,19 +12,19 @@ spec:
 
     '
   requiredFields:
-  - eventId
-  - eventType
-  - timestamp
-  - workloadId
-  - workspaceId
-  - projectId
-  - billingAccountId
-  - modelId
-  - usageMetrics
+    - eventId
+    - eventType
+    - timestamp
+    - workloadId
+    - workspaceId
+    - projectId
+    - billingAccountId
+    - modelId
+    - usageMetrics
   validValues:
     eventType:
-    - inference-usage
-    - training-usage
-    - embedding-usage
-    - agent-run-usage
+      - inference-usage
+      - training-usage
+      - embedding-usage
+      - agent-run-usage
   schemaRef: ../schemas/usage-event.schema.json

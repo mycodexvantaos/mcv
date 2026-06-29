@@ -1,11 +1,14 @@
 ## MyCodexVantaOS Governance-foundation
+
 Foundation ID: `mycodexvantaos-governance-foundation`
 Version: 1.0.0
 
 ## Overview
+
 This directory contains the specification for the MyCodexVantaOS governance Foundation.
 
 ## Files
+
 | File                          | Description                    |
 | ----------------------------- | ------------------------------ |
 | `foundation.yaml`             | Foundation specification       |
@@ -23,6 +26,7 @@ This directory contains the specification for the MyCodexVantaOS governance Foun
 | `urn-map.yaml`                | URN mapping                    |
 
 ## Governance Foundation
+
 Strategic specification unit for MyCodexVantaOS governance-foundation.
 
 This is a specification-unit under the `foundation` root module.

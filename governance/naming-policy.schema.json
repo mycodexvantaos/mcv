@@ -35,14 +35,7 @@
       "description": "Forbidden identifier prefixes",
       "contains": {
         "type": "string",
-        "enum": [
-          "mycodexvanta-os",
-          "codexvanta-os",
-          "codexvanta",
-          "codevantaos",
-          "kubo",
-          "axiom"
-        ]
+        "enum": ["mycodexvanta-os", "codexvanta-os", "codexvanta", "codevantaos", "kubo", "axiom"]
       }
     },
     "spec-id": {

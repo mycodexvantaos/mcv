@@ -2,6 +2,7 @@
   "name": "mycodexvantaos",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "genkit:dev": "genkit start -- tsx src/ai/dev.ts",

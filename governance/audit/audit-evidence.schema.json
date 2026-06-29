@@ -37,21 +37,13 @@
     },
     "result": {
       "type": "string",
-      "enum": [
-        "pass",
-        "fail",
-        "waived",
-        "skipped"
-      ]
+      "enum": ["pass", "fail", "waived", "skipped"]
     },
     "artifacts": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": [
-          "name",
-          "digest"
-        ],
+        "required": ["name", "digest"],
         "properties": {
           "name": {
             "type": "string"

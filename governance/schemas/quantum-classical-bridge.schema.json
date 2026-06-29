@@ -13,10 +13,7 @@
     },
     "metadata": {
       "type": "object",
-      "required": [
-        "name",
-        "version"
-      ],
+      "required": ["name", "version"],
       "properties": {
         "name": {
           "type": "string"
@@ -33,11 +30,6 @@
       "type": "object"
     }
   },
-  "required": [
-    "apiVersion",
-    "kind",
-    "metadata",
-    "spec"
-  ],
+  "required": ["apiVersion", "kind", "metadata", "spec"],
   "description": "MyCodexVantaOS quantum-classical-bridge schema"
 }

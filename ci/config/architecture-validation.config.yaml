@@ -5,15 +5,15 @@ metadata:
   version: 1.0.0
 spec:
   checks:
-  - identity
-  - naming
-  - manifests
-  - providers
-  - topology
-  - runtime
-  - drift
-  - navigation
-  - namespace-governance
-  - unified-gates
-  - foundation
-  - release-candidate
+    - identity
+    - naming
+    - manifests
+    - providers
+    - topology
+    - runtime
+    - drift
+    - navigation
+    - namespace-governance
+    - unified-gates
+    - foundation
+    - release-candidate

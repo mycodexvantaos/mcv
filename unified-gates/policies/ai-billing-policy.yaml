@@ -17,7 +17,7 @@ spec:
   rateCardApprovalRequired: true
   billingEventRetentionDays: 2555
   mandatoryGates:
-  - gate-51-usage-event-contract-validation
-  - gate-56-cost-attribution-validation
-  - gate-57-billing-policy-validation
-  - gate-58-invoice-evidence-validation
+    - gate-51-usage-event-contract-validation
+    - gate-56-cost-attribution-validation
+    - gate-57-billing-policy-validation
+    - gate-58-invoice-evidence-validation

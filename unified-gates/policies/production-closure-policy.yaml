@@ -13,23 +13,23 @@ spec:
 
     '
   requirements:
-  - id: all-mandatory-gates-passed
-    description: All mandatory gates in l00-l90 must have passed.
-    rule: gate:all-mandatory-passed
-  - id: no-open-p1-issues
-    description: No open P1 issues associated with this release.
-    rule: issue-tracker:no-open-p1
-  - id: compliance-report-approved
-    description: Compliance report approved by governance council.
-    rule: approval:governance-council
-  - id: rollback-plan-tested
-    description: Rollback procedure tested in staging.
-    rule: test:rollback-tested
-  - id: on-call-confirmed
-    description: On-call engineer confirmed readiness.
-    rule: oncall:confirmed
-  - id: deployment-window-approved
-    description: Deployment within approved window.
-    rule: schedule:deployment-window
+    - id: all-mandatory-gates-passed
+      description: All mandatory gates in l00-l90 must have passed.
+      rule: gate:all-mandatory-passed
+    - id: no-open-p1-issues
+      description: No open P1 issues associated with this release.
+      rule: issue-tracker:no-open-p1
+    - id: compliance-report-approved
+      description: Compliance report approved by governance council.
+      rule: approval:governance-council
+    - id: rollback-plan-tested
+      description: Rollback procedure tested in staging.
+      rule: test:rollback-tested
+    - id: on-call-confirmed
+      description: On-call engineer confirmed readiness.
+      rule: oncall:confirmed
+    - id: deployment-window-approved
+      description: Deployment within approved window.
+      rule: schedule:deployment-window
   approvalAuthority: release-authority
   deploymentWindowRequired: true

@@ -12,16 +12,16 @@ spec:
 
     '
   requiredFields:
-  - billingEventId
-  - usageEventRef
-  - billingAccountId
-  - workspaceId
-  - projectId
-  - chargeAmount
-  - currency
-  - rateCardRef
-  - billingPeriod
-  - invoiceRef
+    - billingEventId
+    - usageEventRef
+    - billingAccountId
+    - workspaceId
+    - projectId
+    - chargeAmount
+    - currency
+    - rateCardRef
+    - billingPeriod
+    - invoiceRef
   constraints:
     currency: USD
     chargeAmountPrecision: 6

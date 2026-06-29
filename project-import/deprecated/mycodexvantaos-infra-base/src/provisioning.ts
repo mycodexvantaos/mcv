@@ -7,7 +7,12 @@ import type { ProvisionResult } from './types';
 
 export type ResourceType = 'database' | 'storage' | 'queue' | 'cache' | 'compute' | 'network';
 export type ResourceStatus =
-  'provisioning' | 'ready' | 'degraded' | 'destroying' | 'destroyed' | 'error';
+  | 'provisioning'
+  | 'ready'
+  | 'degraded'
+  | 'destroying'
+  | 'destroyed'
+  | 'error';
 
 export interface Resource {
   id: string;

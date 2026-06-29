@@ -12,23 +12,23 @@ spec:
 
     '
   requiredFields:
-  - recordId
-  - gateId
-  - gateVersion
-  - pipelineRunId
-  - artifactRef
-  - artifactSha256
-  - evaluatedAt
-  - evaluatedBy
-  - result
-  - evidence.sha256
-  - evidence.sha3512
-  - evidence.blake3
-  - previousRecordHash
+    - recordId
+    - gateId
+    - gateVersion
+    - pipelineRunId
+    - artifactRef
+    - artifactSha256
+    - evaluatedAt
+    - evaluatedBy
+    - result
+    - evidence.sha256
+    - evidence.sha3512
+    - evidence.blake3
+    - previousRecordHash
   hashAlgorithms:
-  - sha-256
-  - sha3-512
-  - blake3
+    - sha-256
+    - sha3-512
+    - blake3
   immutable: true
   appendOnly: true
   schemaRef: ../schemas/gate-result.schema.json

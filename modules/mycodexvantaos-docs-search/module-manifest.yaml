@@ -8,9 +8,9 @@ metadata:
 spec:
   domain: docs
   capabilities:
-  - search
-  - vector-store
-  - embedding
+    - search
+    - vector-store
+    - embedding
   providers:
     search: search-elasticsearch
     vector-store: vector-store-pgvector

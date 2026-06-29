@@ -16,35 +16,35 @@ spec:
 
     '
   participants:
-  - id: mycodexvantaos-governance-gates
-    role: evidence-producer
-    namespace: mycodexvantaos
-    plane: control-plane
-  - id: mycodexvantaos-audit-hub
-    role: evidence-store
-    namespace: mycodexvantaos
-    plane: control-plane
+    - id: mycodexvantaos-governance-gates
+      role: evidence-producer
+      namespace: mycodexvantaos
+      plane: control-plane
+    - id: mycodexvantaos-audit-hub
+      role: evidence-store
+      namespace: mycodexvantaos
+      plane: control-plane
   interfaces:
-  - direction: governance-gates -> audit-hub
-    type: write
-    contract: ../contracts/gate-evidence.yaml
-    protocol: grpc
-    endpoint: audit-hub.mycodexvantaos.svc:50051
-    method: AppendEvidenceRecord
-    authentication: mtls
-    retryPolicy:
-      maxAttempts: 3
-      backoffMs: 500
-  - direction: audit-hub -> governance-gates
-    type: read
-    contract: ../contracts/gate-evidence.yaml
-    protocol: grpc
-    endpoint: audit-hub.mycodexvantaos.svc:50051
-    method: GetEvidenceChain
-    authentication: mtls
-    cachePolicy:
-      ttlSeconds: 0
-      strategy: no-cache
+    - direction: governance-gates -> audit-hub
+      type: write
+      contract: ../contracts/gate-evidence.yaml
+      protocol: grpc
+      endpoint: audit-hub.mycodexvantaos.svc:50051
+      method: AppendEvidenceRecord
+      authentication: mtls
+      retryPolicy:
+        maxAttempts: 3
+        backoffMs: 500
+    - direction: audit-hub -> governance-gates
+      type: read
+      contract: ../contracts/gate-evidence.yaml
+      protocol: grpc
+      endpoint: audit-hub.mycodexvantaos.svc:50051
+      method: GetEvidenceChain
+      authentication: mtls
+      cachePolicy:
+        ttlSeconds: 0
+        strategy: no-cache
   mediatorPolicy:
     failureIsolation: true
     circuitBreakerEnabled: true

@@ -8,9 +8,9 @@ metadata:
 spec:
   domain: governance
   capabilities:
-  - database
-  - secrets
-  - observability
+    - database
+    - secrets
+    - observability
   providers:
     database: database-postgres
     secrets: secrets-vault

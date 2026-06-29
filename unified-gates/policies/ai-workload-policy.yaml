@@ -9,9 +9,9 @@ metadata:
   status: active
 spec:
   mandatoryGates:
-  - gate-41-ai-workload-contract-validation
-  - gate-47-workload-slo-validation
-  - gate-48-workload-runtime-sandbox-validation
+    - gate-41-ai-workload-contract-validation
+    - gate-47-workload-slo-validation
+    - gate-48-workload-runtime-sandbox-validation
   resourceLimitsRequired: true
   sloDefinitionRequired: true
   billingAttributionRequired: true

@@ -57,22 +57,14 @@
     },
     "actor": {
       "type": "object",
-      "required": [
-        "id",
-        "type"
-      ],
+      "required": ["id", "type"],
       "properties": {
         "id": {
           "type": "string"
         },
         "type": {
           "type": "string",
-          "enum": [
-            "user",
-            "service",
-            "ci-pipeline",
-            "governance-engine"
-          ]
+          "enum": ["user", "service", "ci-pipeline", "governance-engine"]
         },
         "display-name": {
           "type": "string"
@@ -81,10 +73,7 @@
     },
     "resource": {
       "type": "object",
-      "required": [
-        "id",
-        "type"
-      ],
+      "required": ["id", "type"],
       "properties": {
         "id": {
           "type": "string"
@@ -113,24 +102,10 @@
     },
     "severity": {
       "type": "string",
-      "enum": [
-        "info",
-        "warning",
-        "error",
-        "critical"
-      ]
+      "enum": ["info", "warning", "error", "critical"]
     }
   },
-  "required": [
-    "id",
-    "type",
-    "timestamp",
-    "event-id",
-    "event-type",
-    "actor",
-    "resource",
-    "hash"
-  ],
+  "required": ["id", "type", "timestamp", "event-id", "event-type", "actor", "resource", "hash"],
   "description": "MyCodexVantaOS audit event schema",
   "additionalProperties": false
 }

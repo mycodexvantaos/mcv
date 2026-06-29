@@ -12,20 +12,20 @@ spec:
 
     '
   requiredFields:
-  - resultId
-  - workloadId
-  - modelId
-  - modelVersion
-  - requestId
-  - completedAt
-  - latencyMs
-  - inputTokens
-  - outputTokens
-  - status
+    - resultId
+    - workloadId
+    - modelId
+    - modelVersion
+    - requestId
+    - completedAt
+    - latencyMs
+    - inputTokens
+    - outputTokens
+    - status
   validValues:
     status:
-    - success
-    - error
-    - timeout
-    - filtered
+      - success
+      - error
+      - timeout
+      - filtered
   schemaRef: ../schemas/ai-workload-contract.schema.json

@@ -13,9 +13,9 @@ spec:
   status: active
   criticality: high
   supportsModes:
-  - native
-  - connected
-  - hybrid
+    - native
+    - connected
+    - hybrid
   healthCheck:
     enabled: true
     endpoint: /health
@@ -26,6 +26,6 @@ provider-id: mycodexvantaos-database-d1
 capability: database
 platform: mycodexvantaos
 runtime-modes:
-- native
-- connected
-- hybrid
+  - native
+  - connected
+  - hybrid

@@ -12,25 +12,25 @@ spec:
 
     '
   requiredFields:
-  - workloadId
-  - workloadType
-  - namespace
-  - modelRef
-  - resourceLimits.cpu
-  - resourceLimits.memory
-  - slo.maxLatencyMs
-  - slo.minAvailability
-  - billingAccountId
-  - workspaceId
-  - projectId
+    - workloadId
+    - workloadType
+    - namespace
+    - modelRef
+    - resourceLimits.cpu
+    - resourceLimits.memory
+    - slo.maxLatencyMs
+    - slo.minAvailability
+    - billingAccountId
+    - workspaceId
+    - projectId
   validValues:
     workloadType:
-    - inference
-    - training
-    - embedding
-    - rag
-    - agent-run
+      - inference
+      - training
+      - embedding
+      - rag
+      - agent-run
     namespace:
-    - mycodexvantaos
-    - softwareos
+      - mycodexvantaos
+      - softwareos
   schemaRef: ../schemas/ai-workload-contract.schema.json

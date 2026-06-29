@@ -8,9 +8,9 @@ metadata:
 spec:
   domain: platform
   capabilities:
-  - notification
-  - queue
-  - observability
+    - notification
+    - queue
+    - observability
   providers:
     notification: notification-sendgrid
     queue: queue-rabbitmq

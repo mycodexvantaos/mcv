@@ -7,6 +7,7 @@ sidebar_label: Functional Programming
 So far, we have introduced all the parts of the language that allow us to extract data from an input JSON document, combine the data using string and numeric operators, and format the structure of the output JSON document. What follows are the parts that turn this into a Turing complete, functional programming language.
 
 ## Comments
+
 JSONata expressions can be interleaved with comments using 'C' style comment delimeters. For example,
 
 ```
@@ -39,6 +40,7 @@ JSONata expressions can be interleaved with comments using 'C' style comment del
 Produces [this](http://try.jsonata.org/ryYn78Q0m), if you're interested!
 
 ## Conditional logic
+
 ### Ternary operator (`? :`)
 
 If/then/else constructs can be written using the ternary operator "? :".
@@ -148,6 +150,7 @@ The coalescing operator is useful for providing fallback values only when the le
 </div>
 
 ## Variables
+
 Any name that starts with a dollar '$' is a variable. A variable is a named reference to a value. The value can be one of any type in the language's [type system](processing#the-jsonata-type-system).
 
 ### Built-in variables
@@ -177,6 +180,7 @@ Invoice.(
 Returns Price multiplied by Quantity for the Product in the Invoice.
 
 ## Functions
+
 The function is a first-class type, and can be stored in a variable just like any other data type. A library of built-in functions is provided (link) and assigned to variables in the global scope. For example, `$uppercase` contains a function which, when invoked with a string argument, `str`, will return a string with all the characters in `str` changed to uppercase.
 
 ### Invoking a function
@@ -366,6 +370,7 @@ e.g. bound to a variable, passed to a higher-order function, etc.
   $first5("Hello, World")
 
 )</div>
+
 <div>"Hello"</div>
   </div>
 
@@ -377,6 +382,7 @@ e.g. bound to a variable, passed to a higher-order function, etc.
   $first5("Hello, World")
 
 )</div>
+
 <div>"Hello"</div>
   </div>
 
@@ -416,6 +422,7 @@ is equivalent to\
    $normalize("   Some   Words   ")
 
 )</div>
+
 <div>"SOME WORDS"</div>
   </div>
 
@@ -433,6 +440,7 @@ functions.
   $first5Capitalized(Address.City)
 
 )</div>
+
 <div>"WINCH"</div>
   </div>
 

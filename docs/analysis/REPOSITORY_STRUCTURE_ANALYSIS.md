@@ -1,4 +1,5 @@
 ## MyCodeXvantaOS 倉庫深度結構分析報告
+
 **分析日期**: 2026-05-05  
 **倉庫**: https://github.com/mycodexvantaos/mycodexvantaos.git  
 **版本**: v1.0.0  
@@ -7,6 +8,7 @@
 ---
 
 ## 一、全域概覽
+
 MyCodeXvantaOS 是一個量子感知（Quantum-Aware）的企業級平台作業系統，採用六層架構模型設計，涵蓋從應用建構到治理合規的完整生命週期。倉庫規模龐大，包含 **66 個套件**、**21 個模組**、**24 個服務**、**36 個提供者**，以及 **37 個 GitHub Actions 工作流程**。
 
 ### 核心身份
@@ -24,6 +26,7 @@ MyCodeXvantaOS 是一個量子感知（Quantum-Aware）的企業級平台作業�
 ---
 
 ## 二、六層架構模型 (Six-Layer Architecture)
+
 ### Layer A: 建構層 (Builder Layer)
 
 **職責**: 應用開發、UI 生成、開發工作室
@@ -190,6 +193,7 @@ MyCodeXvantaOS 是一個量子感知（Quantum-Aware）的企業級平台作業�
 ---
 
 ## 三、AI 流程體系 (Genkit AI Flows)
+
 平台整合 Google Genkit AI 框架，使用 Gemini 2.5 Flash 模型，共實現 **11 個 AI 流程**：
 
 | 流程                                   | 用途                       | 輸入                       | 輸出                      |
@@ -210,6 +214,7 @@ MyCodeXvantaOS 是一個量子感知（Quantum-Aware）的企業級平台作業�
 ---
 
 ## 四、知識圖譜與向量存儲
+
 ### 知識圖譜
 
 ```
@@ -270,6 +275,7 @@ vector-store/
 ---
 
 ## 五、CI/CD 與安全工作流 (37 個)
+
 ### 統一 CI 管線 (`unified-ci.yaml`)
 
 7 階段流水線: Lint & Format → Architecture Validation → Build → Test → Module Tests → Service Tests → CI Summary
@@ -306,6 +312,7 @@ vector-store/
 ---
 
 ## 六、GitOps 控制平面
+
 ### 證據驗證器 (Evidence Verifier)
 
 - CI/CD 管線證據收集與驗證
@@ -327,6 +334,7 @@ vector-store/
 ---
 
 ## 七、Schema 與目錄體系
+
 ### 標準化 Schema (15 個)
 
 ```
@@ -362,6 +370,7 @@ catalog/
 ---
 
 ## 八、架構設計特徵分析
+
 ### 優勢
 
 1. **嚴格的命名閉環模型**: 三層終止模型確保命名一致性，禁止舊版前綴防止退化
@@ -385,6 +394,7 @@ catalog/
 ---
 
 ## 九、架構依賴圖
+
 ```
                     ┌─────────────────────┐
                     │   Admin Dashboard   │  ← Next.js 15.5 + React 19
@@ -424,6 +434,7 @@ catalog/
 ---
 
 ## 十、技術棧摘要
+
 | 層級     | 技術                                                                  |
 | -------- | --------------------------------------------------------------------- |
 | 前端     | Next.js 15.5.9, React 19, Tailwind CSS, shadcn/ui, Radix UI, Recharts |

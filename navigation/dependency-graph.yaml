@@ -13,19 +13,19 @@ metadata:
   status: active
 spec:
   hardDependencies:
-  - from: mycodexvantaos-billing-metering
-    to: mycodexvantaos-core-auth
-    type: hard-runtime-dependency
-    reason: Requires authentication for billing operations
+    - from: mycodexvantaos-billing-metering
+      to: mycodexvantaos-core-auth
+      type: hard-runtime-dependency
+      reason: Requires authentication for billing operations
   logicalDependencies:
-  - from: mycodexvantaos-governance-policy-engine
-    to: mycodexvantaos-governance-audit-chain
-    type: logical-pair
-    reason: Policy evaluation produces audit events
-  - from: mycodexvantaos-agent-runtime
-    to: mycodexvantaos-knowledge-search
-    type: semantic-alignment
-    reason: Agent uses knowledge search for RAG
+    - from: mycodexvantaos-governance-policy-engine
+      to: mycodexvantaos-governance-audit-chain
+      type: logical-pair
+      reason: Policy evaluation produces audit events
+    - from: mycodexvantaos-agent-runtime
+      to: mycodexvantaos-knowledge-search
+      type: semantic-alignment
+      reason: Agent uses knowledge search for RAG
   cyclicityCheck:
     status: acyclic
     lastValidated: '2024-01-01T00:00:00Z'
