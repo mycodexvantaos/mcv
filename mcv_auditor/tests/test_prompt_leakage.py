@@ -2,7 +2,6 @@
 MyCodexVantaOS MCV Auditor — Prompt Leakage Tests (7 tests)
 """
 
-import pytest
 from mcv_auditor.core.analyzers import PromptAnalyzer
 
 
