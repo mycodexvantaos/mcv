@@ -595,12 +595,8 @@ mycodexvantaos/
            new ExternalCodeSynthesis(config.apiKey)
          ),
      },
-     storage: {
-       /* ... */
-     },
-     authentication: {
-       /* ... */
-     },
+     storage: {/* ... */},
+     authentication: {/* ... */},
    };
    ```
 

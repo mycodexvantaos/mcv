@@ -14,14 +14,7 @@
 export type ValidationSeverity = 'error' | 'warning' | 'info' | 'hint';
 
 export type ValidationCategory =
-  | 'schema'
-  | 'lint'
-  | 'security'
-  | 'dependency'
-  | 'config'
-  | 'artifact'
-  | 'convention'
-  | 'custom';
+  'schema' | 'lint' | 'security' | 'dependency' | 'config' | 'artifact' | 'convention' | 'custom';
 
 export interface ValidationIssue {
   id: string;

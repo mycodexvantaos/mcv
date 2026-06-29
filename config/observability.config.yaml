@@ -3,20 +3,20 @@ kind: ObservabilityConfig
 metadata:
   name: mycodexvantaos-observability-config
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
 
 # OpenTelemetry configuration
 opentelemetry:
   service-name: mycodexvantaos
-  service-version: "1.0.0"
+  service-version: '1.0.0'
   service-namespace: mycodexvantaos
-  deployment-environment: "${APP_ENV:-development}"
+  deployment-environment: '${APP_ENV:-development}'
 
   # Traces
   traces:
     enabled: true
     exporter: otlp
-    endpoint: "${OTEL_EXPORTER_OTLP_ENDPOINT:-http://localhost:4317}"
+    endpoint: '${OTEL_EXPORTER_OTLP_ENDPOINT:-http://localhost:4317}'
     sampling-rate: 1.0
     propagators:
       - tracecontext
@@ -26,15 +26,15 @@ opentelemetry:
   metrics:
     enabled: true
     exporter: otlp
-    endpoint: "${OTEL_EXPORTER_OTLP_ENDPOINT:-http://localhost:4317}"
+    endpoint: '${OTEL_EXPORTER_OTLP_ENDPOINT:-http://localhost:4317}'
     interval-ms: 60000
 
   # Logs
   logs:
     enabled: true
     exporter: otlp
-    endpoint: "${OTEL_EXPORTER_OTLP_ENDPOINT:-http://localhost:4317}"
-    level: "${LOG_LEVEL:-info}"
+    endpoint: '${OTEL_EXPORTER_OTLP_ENDPOINT:-http://localhost:4317}'
+    level: '${LOG_LEVEL:-info}'
 
 # Health checks
 health:
@@ -86,9 +86,9 @@ alerting:
       condition: "rate(mycodexvantaos_agent_task_total{status='error'}[5m]) > 0.1"
       severity: critical
       annotations:
-        summary: "High agent task failure rate detected"
+        summary: 'High agent task failure rate detected'
     - name: GateEvaluationFailure
       condition: "mycodexvantaos_gate_evaluation_total{result='fail'} > 0"
       severity: warning
       annotations:
-        summary: "Gate evaluation failure detected"
+        summary: 'Gate evaluation failure detected'

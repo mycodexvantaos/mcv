@@ -14,8 +14,8 @@ See `modules/mycodexvantaos-billing-metering/module-manifest.yaml` for the servi
 
 `ghcr.io/mycodexvantaos/mycodexvantaos-billing-metering`
 
-
 <!-- Platform v1.0 additions -->
+
 Service ID: `mycodexvantaos-billing-metering`
 Version: 1.0.0
 Machine Identity: mycodexvantaos

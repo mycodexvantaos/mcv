@@ -125,12 +125,7 @@ export interface AgentProfile {
  * Supported topology types for agent communication
  */
 export type TopologyType =
-  | 'sequential'
-  | 'hierarchical'
-  | 'broadcast'
-  | 'mesh'
-  | 'dag'
-  | 'state_machine';
+  'sequential' | 'hierarchical' | 'broadcast' | 'mesh' | 'dag' | 'state_machine';
 
 /**
  * Message routing strategies

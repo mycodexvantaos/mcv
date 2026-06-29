@@ -8,31 +8,31 @@
  * Machine Identity: mycodexvantaos
  */
 
-import { createHash } from "node:crypto";
+import { createHash } from 'node:crypto';
 
-export const SERVICE_ID = "mycodexvantaos-governance-audit-chain";
-export const SERVICE_VERSION = "1.0.0";
+export const SERVICE_ID = 'mycodexvantaos-governance-audit-chain';
+export const SERVICE_VERSION = '1.0.0';
 
 export type AuditEventType =
-  | "governance-policy-change"
-  | "identity-policy-change"
-  | "exception-grant"
-  | "exception-revoke"
-  | "provider-registration"
-  | "module-registration"
-  | "gate-evaluation-complete"
-  | "gate-evaluation-fail"
-  | "release-promoted"
-  | "release-rolled-back"
-  | "security-scan-complete"
-  | "vulnerability-detected"
-  | "user-login"
-  | "api-key-created"
-  | "permission-change";
+  | 'governance-policy-change'
+  | 'identity-policy-change'
+  | 'exception-grant'
+  | 'exception-revoke'
+  | 'provider-registration'
+  | 'module-registration'
+  | 'gate-evaluation-complete'
+  | 'gate-evaluation-fail'
+  | 'release-promoted'
+  | 'release-rolled-back'
+  | 'security-scan-complete'
+  | 'vulnerability-detected'
+  | 'user-login'
+  | 'api-key-created'
+  | 'permission-change';
 
 export interface AuditActor {
   id: string;
-  type: "user" | "service" | "ci-pipeline" | "governance-engine";
+  type: 'user' | 'service' | 'ci-pipeline' | 'governance-engine';
   displayName?: string;
 }
 
@@ -51,12 +51,12 @@ export interface AuditEvent {
   payload?: Record<string, unknown>;
   hash: string;
   previousHash?: string;
-  severity: "info" | "warning" | "error" | "critical";
+  severity: 'info' | 'warning' | 'error' | 'critical';
 }
 
 export interface AuditChain {
   chainId: string;
-  platform: "mycodexvantaos";
+  platform: 'mycodexvantaos';
   createdAt: Date;
   events: AuditEvent[];
   headHash: string;
@@ -67,10 +67,7 @@ export interface AuditChain {
 /**
  * Compute SHA-256 hash of an audit event's content.
  */
-function computeEventHash(
-  event: Omit<AuditEvent, "hash">,
-  previousHash?: string
-): string {
+function computeEventHash(event: Omit<AuditEvent, 'hash'>, previousHash?: string): string {
   const content = JSON.stringify({
     eventId: event.eventId,
     eventType: event.eventType,
@@ -81,7 +78,7 @@ function computeEventHash(
     previousHash,
   });
 
-  return `sha256:${createHash("sha256").update(content).digest("hex")}`;
+  return `sha256:${createHash('sha256').update(content).digest('hex')}`;
 }
 
 /**
@@ -92,7 +89,9 @@ function generateEventId(): string {
   for (let i = 0; i < 16; i++) {
     bytes[i] = Math.floor(Math.random() * 256);
   }
-  const hex = Array.from(bytes).map((b) => b.toString(16).padStart(2, "0")).join("");
+  const hex = Array.from(bytes)
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
   return `evt-${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
 }
 
@@ -106,10 +105,10 @@ export class AuditChainManager {
   constructor(chainId?: string) {
     this.chain = {
       chainId: chainId ?? `chain-${Date.now()}`,
-      platform: "mycodexvantaos",
+      platform: 'mycodexvantaos',
       createdAt: new Date(),
       events: [],
-      headHash: "",
+      headHash: '',
       eventCount: 0,
       integrityVerified: true,
     };
@@ -125,13 +124,13 @@ export class AuditChainManager {
     resource: AuditResource,
     options?: {
       payload?: Record<string, unknown>;
-      severity?: AuditEvent["severity"];
+      severity?: AuditEvent['severity'];
     }
   ): AuditEvent {
     const eventId = generateEventId();
     const previousHash = this.chain.headHash || undefined;
 
-    const partialEvent: Omit<AuditEvent, "hash"> = {
+    const partialEvent: Omit<AuditEvent, 'hash'> = {
       eventId,
       eventType,
       timestamp: new Date(),
@@ -139,7 +138,7 @@ export class AuditChainManager {
       resource,
       payload: options?.payload,
       previousHash,
-      severity: options?.severity ?? "info",
+      severity: options?.severity ?? 'info',
     };
 
     const hash = computeEventHash(partialEvent, previousHash);
@@ -168,7 +167,9 @@ export class AuditChainManager {
       const expectedHash = computeEventHash(eventWithoutHash, previousHash);
 
       if (hash !== expectedHash) {
-        errors.push(`Event ${event.eventId} at index ${i}: hash mismatch. Expected ${expectedHash}, got ${hash}`);
+        errors.push(
+          `Event ${event.eventId} at index ${i}: hash mismatch. Expected ${expectedHash}, got ${hash}`
+        );
       }
 
       // Verify chain linkage
@@ -202,9 +203,7 @@ export class AuditChainManager {
    * Get events in a time range.
    */
   getEventsByTimeRange(from: Date, to: Date): AuditEvent[] {
-    return this.chain.events.filter(
-      (e) => e.timestamp >= from && e.timestamp <= to
-    );
+    return this.chain.events.filter((e) => e.timestamp >= from && e.timestamp <= to);
   }
 
   /**
@@ -227,4 +226,4 @@ export class AuditChainManager {
 }
 
 // Default audit chain instance
-export const auditChain = new AuditChainManager("mycodexvantaos-main-chain");
+export const auditChain = new AuditChainManager('mycodexvantaos-main-chain');

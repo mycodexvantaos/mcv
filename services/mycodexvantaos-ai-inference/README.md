@@ -14,8 +14,8 @@ See `modules/mycodexvantaos-ai-inference/module-manifest.yaml` for the service c
 
 `ghcr.io/mycodexvantaos/mycodexvantaos-ai-inference`
 
-
 <!-- Platform v1.0 additions -->
+
 Service ID: `mycodexvantaos-ai-inference`
 Version: 1.0.0
 Machine Identity: mycodexvantaos

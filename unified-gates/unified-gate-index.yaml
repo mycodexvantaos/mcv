@@ -1,11 +1,10 @@
 apiVersion: mycodexvantaos.io/v1
 kind: UnifiedGateIndex
 metadata:
-  version: "1.0.0"
-  date: "2026-06-29"
-  status: "active"
+  version: '1.0.0'
+  date: '2026-06-29'
+  status: 'active'
   name: unified-gate-index
-  version: 1.0.0
   ssot: true
   authority: unified-gate-governance
   governanceCode: mycodexvantaos-00000
@@ -19,8 +18,6 @@ metadata:
       single entry point for gate discovery and CI orchestration.
 
 spec:
-  version: 1.0.0
-
   gatePlanes:
     - id: gate-documentation
       name: Gate Specification Documentation
@@ -30,7 +27,6 @@ spec:
       description: RST-format gate specifications covering core model, lifecycle, technical framework, execution, governance, AI domains, evolution, and coverage taxonomy.
 
     - id: ai-infra-gates
-      name: AI Infrastructure Gates
       path: ./ai-infra-gates/
       type: ai-infrastructure
       catalog: ./ai-infra-gate-catalog.yaml

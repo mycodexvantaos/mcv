@@ -3,14 +3,14 @@ kind: PhaseOneConfig
 metadata:
   name: mycodexvantaos-phase-one-config
   version: 1.0.0
-  date: "2026-06-29"
-  description: "Phase 1 Architecture Baseline — Freeze Configuration"
+  date: '2026-06-29'
+  description: 'Phase 1 Architecture Baseline — Freeze Configuration'
 
 # Phase 1 freeze status
 freeze:
   enabled: true
   status: frozen
-  frozen-at: "2026-06-29T00:00:00Z"
+  frozen-at: '2026-06-29T00:00:00Z'
   frozen-by: platform-governance
 
 # Frozen artifacts (MUST NOT be modified without governance approval)

@@ -181,9 +181,7 @@ console.log('Applied rules:', result.appliedRules);
 ```typescript
 import { OrchestratorAdapter, PersonaManager } from '@mycodexvantaos/persona-engine';
 
-const manager = new PersonaManager({
-  /* config */
-});
+const manager = new PersonaManager({/* config */});
 const adapter = new OrchestratorAdapter(
   {
     urn: 'urn:mycodexvantaos:adapter:persona-orchestrator',

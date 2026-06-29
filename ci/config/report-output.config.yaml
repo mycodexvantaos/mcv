@@ -1,7 +1,7 @@
 apiVersion: mycodexvantaos.io/v1
 kind: ReportOutputConfig
 metadata:
-  version: "1.0.0"
+  version: '1.0.0'
   name: report-output-config
 spec:
   outputDirectory: outputs/

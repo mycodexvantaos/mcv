@@ -11,7 +11,7 @@
  * USE: import { domains, getCanonicalUrl, buildApiUrl } from '@mycodexvantaos/core/config/domains'
  */
 
-export type AppEnvironment = "production" | "staging" | "development" | "test";
+export type AppEnvironment = 'production' | 'staging' | 'development' | 'test';
 
 export interface DomainConfig {
   apex: string;
@@ -25,8 +25,8 @@ export interface DomainConfig {
 
 export interface DomainsConfig {
   production: DomainConfig;
-  staging: Pick<DomainConfig, "canonicalUrl">;
-  development: Pick<DomainConfig, "canonicalUrl">;
+  staging: Pick<DomainConfig, 'canonicalUrl'>;
+  development: Pick<DomainConfig, 'canonicalUrl'>;
 }
 
 /**
@@ -35,19 +35,19 @@ export interface DomainsConfig {
  */
 export const domains: DomainsConfig = {
   production: {
-    apex: "mycodexvantaos.com",
-    canonicalUrl: "https://mycodexvantaos.com",
-    wwwUrl: "https://www.mycodexvantaos.com",
-    appUrl: "https://app.mycodexvantaos.com",
-    apiUrl: "https://api.mycodexvantaos.com",
-    adminUrl: "https://admin.mycodexvantaos.com",
-    docsUrl: "https://docs.mycodexvantaos.com",
+    apex: 'mycodexvantaos.com',
+    canonicalUrl: 'https://mycodexvantaos.com',
+    wwwUrl: 'https://www.mycodexvantaos.com',
+    appUrl: 'https://app.mycodexvantaos.com',
+    apiUrl: 'https://api.mycodexvantaos.com',
+    adminUrl: 'https://admin.mycodexvantaos.com',
+    docsUrl: 'https://docs.mycodexvantaos.com',
   },
   staging: {
-    canonicalUrl: "https://staging.mycodexvantaos.com",
+    canonicalUrl: 'https://staging.mycodexvantaos.com',
   },
   development: {
-    canonicalUrl: "http://localhost:3000",
+    canonicalUrl: 'http://localhost:3000',
   },
 };
 
@@ -76,12 +76,17 @@ export function resolveEnvironment(): AppEnvironment {
   const appEnv = process.env.APP_ENV;
   const nodeEnv = process.env.NODE_ENV;
 
-  if (appEnv === "production" || appEnv === "staging" || appEnv === "development" || appEnv === "test") {
+  if (
+    appEnv === 'production' ||
+    appEnv === 'staging' ||
+    appEnv === 'development' ||
+    appEnv === 'test'
+  ) {
     return appEnv;
   }
-  if (nodeEnv === "production") return "production";
-  if (nodeEnv === "test") return "test";
-  return "development";
+  if (nodeEnv === 'production') return 'production';
+  if (nodeEnv === 'test') return 'test';
+  return 'development';
 }
 
 /**
@@ -93,17 +98,17 @@ export function getCanonicalUrl(env?: AppEnvironment): string {
 
   // Environment variable overrides (must be validated)
   const envUrl = process.env.PUBLIC_CANONICAL_URL || process.env.PUBLIC_SITE_URL;
-  if (envUrl && resolvedEnv !== "production") {
+  if (envUrl && resolvedEnv !== 'production') {
     return envUrl;
   }
 
   switch (resolvedEnv) {
-    case "production":
+    case 'production':
       return domains.production.canonicalUrl;
-    case "staging":
+    case 'staging':
       return domains.staging.canonicalUrl;
-    case "development":
-    case "test":
+    case 'development':
+    case 'test':
     default:
       return domains.development.canonicalUrl;
   }
@@ -115,11 +120,11 @@ export function getCanonicalUrl(env?: AppEnvironment): string {
 export function getApiUrl(env?: AppEnvironment): string {
   const resolvedEnv = env ?? resolveEnvironment();
   const envUrl = process.env.PUBLIC_API_URL;
-  if (envUrl && resolvedEnv !== "production") return envUrl;
+  if (envUrl && resolvedEnv !== 'production') return envUrl;
 
-  if (resolvedEnv === "production") return domains.production.apiUrl;
-  if (resolvedEnv === "staging") return `https://api.staging.mycodexvantaos.com`;
-  return "http://localhost:3001";
+  if (resolvedEnv === 'production') return domains.production.apiUrl;
+  if (resolvedEnv === 'staging') return `https://api.staging.mycodexvantaos.com`;
+  return 'http://localhost:3001';
 }
 
 /**
@@ -128,11 +133,11 @@ export function getApiUrl(env?: AppEnvironment): string {
 export function getAppUrl(env?: AppEnvironment): string {
   const resolvedEnv = env ?? resolveEnvironment();
   const envUrl = process.env.PUBLIC_APP_URL;
-  if (envUrl && resolvedEnv !== "production") return envUrl;
+  if (envUrl && resolvedEnv !== 'production') return envUrl;
 
-  if (resolvedEnv === "production") return domains.production.appUrl;
-  if (resolvedEnv === "staging") return `https://app.staging.mycodexvantaos.com`;
-  return "http://localhost:3000";
+  if (resolvedEnv === 'production') return domains.production.appUrl;
+  if (resolvedEnv === 'staging') return `https://app.staging.mycodexvantaos.com`;
+  return 'http://localhost:3000';
 }
 
 /**
@@ -140,7 +145,7 @@ export function getAppUrl(env?: AppEnvironment): string {
  */
 export function buildCanonicalUrl(path: string, env?: AppEnvironment): string {
   const base = getCanonicalUrl(env);
-  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
   return `${base}${normalizedPath}`;
 }
 
@@ -149,7 +154,7 @@ export function buildCanonicalUrl(path: string, env?: AppEnvironment): string {
  */
 export function buildApiUrl(path: string, env?: AppEnvironment): string {
   const base = getApiUrl(env);
-  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
   return `${base}${normalizedPath}`;
 }
 
@@ -186,7 +191,7 @@ export function isProductionSafeUrl(url: string): boolean {
 export function getCorsAllowlist(env?: AppEnvironment): string[] {
   const resolvedEnv = env ?? resolveEnvironment();
 
-  if (resolvedEnv === "production") {
+  if (resolvedEnv === 'production') {
     return [
       domains.production.canonicalUrl,
       domains.production.wwwUrl,
@@ -196,7 +201,7 @@ export function getCorsAllowlist(env?: AppEnvironment): string[] {
     ];
   }
 
-  if (resolvedEnv === "staging") {
+  if (resolvedEnv === 'staging') {
     return [
       domains.staging.canonicalUrl,
       `https://app.staging.mycodexvantaos.com`,
@@ -206,10 +211,10 @@ export function getCorsAllowlist(env?: AppEnvironment): string[] {
 
   // Development — allow localhost variants
   return [
-    "http://localhost:3000",
-    "http://localhost:3001",
-    "http://localhost:4000",
-    "http://127.0.0.1:3000",
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://localhost:4000',
+    'http://127.0.0.1:3000',
   ];
 }
 
@@ -219,7 +224,7 @@ export function getCorsAllowlist(env?: AppEnvironment): string[] {
  */
 export function getCookieDomain(env?: AppEnvironment): string | undefined {
   const resolvedEnv = env ?? resolveEnvironment();
-  if (resolvedEnv === "production") return ".mycodexvantaos.com";
-  if (resolvedEnv === "staging") return ".staging.mycodexvantaos.com";
+  if (resolvedEnv === 'production') return '.mycodexvantaos.com';
+  if (resolvedEnv === 'staging') return '.staging.mycodexvantaos.com';
   return undefined;
 }

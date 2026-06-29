@@ -1,10 +1,7 @@
-# providers/scheduler/scheduler-temporal/provider-manifest.yaml
-# 8.1 — provider instance: scheduler-temporal
-# 8.2 — capability (scheduler) precedes provider name (temporal)
 apiVersion: mycodexvantaos.org/v1
 kind: Provider
 metadata:
-  name: scheduler-temporal
+  name: mycodexvantaos-scheduler-temporal
   capability: scheduler
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
@@ -16,4 +13,6 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_SCHEDULER
   configSchemaRef: ./config.schema.json
-  description: 'Temporal workflow orchestration provider.'
+  description: Temporal workflow orchestration provider.
+provider-id: mycodexvantaos-scheduler-temporal
+capability: scheduler

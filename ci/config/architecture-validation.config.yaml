@@ -1,7 +1,7 @@
 apiVersion: mycodexvantaos.io/v1
 kind: ArchitectureValidationConfig
 metadata:
-  version: "1.0.0"
+  version: '1.0.0'
   name: architecture-validation-config
 spec:
   checks:

@@ -13,8 +13,8 @@ metadata:
   governanceCode: mycodexvantaos-50400
   createdAt: 2026-01-01 00:00:00+00:00
   tags:
-  - l90
-  - signature
+    - l90
+    - signature
   sloTarget: 30
   evidenceRetentionDays: 2555
   date: '2026-06-29'
@@ -25,25 +25,25 @@ spec:
 
     '
   validates:
-  - dimension: signature-validity
-    description: Artifacts are signed and signatures are valid.
-    checks:
-    - id: chk-signature-exists
-      description: Signature file exists for the artifact
-      rule: file-exists:artifact.sig
-      severity: critical
-      evidenceRequired: true
-    - id: chk-signature-valid
-      description: Signature verifies against the artifact using the platform public
-        key
-      rule: signature:verify-platform-key
-      severity: critical
-      evidenceRequired: true
-    - id: chk-signing-key-not-revoked
-      description: Signing key has not been revoked
-      rule: pki:key-not-revoked
-      severity: critical
-      evidenceRequired: true
+    - dimension: signature-validity
+      description: Artifacts are signed and signatures are valid.
+      checks:
+        - id: chk-signature-exists
+          description: Signature file exists for the artifact
+          rule: file-exists:artifact.sig
+          severity: critical
+          evidenceRequired: true
+        - id: chk-signature-valid
+          description: Signature verifies against the artifact using the platform public
+            key
+          rule: signature:verify-platform-key
+          severity: critical
+          evidenceRequired: true
+        - id: chk-signing-key-not-revoked
+          description: Signing key has not been revoked
+          rule: pki:key-not-revoked
+          severity: critical
+          evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

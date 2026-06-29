@@ -1,11 +1,10 @@
 apiVersion: mycodexvantaos.io/v1
 kind: AISafetyPolicy
 metadata:
-  version: "1.0.0"
-  date: "2026-06-29"
-  status: "active"
+  version: '1.0.0'
+  date: '2026-06-29'
+  status: 'active'
   name: ai-safety-policy
-  version: 1.0.0
   authority: platform-governance-root
   governanceCode: mycodexvantaos-60600
 spec:

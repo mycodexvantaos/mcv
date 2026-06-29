@@ -1,10 +1,7 @@
-# providers/state-store/state-store-redis/provider-manifest.yaml
-# 8.1 — provider instance: state-store-redis
-# 8.2 — capability (state-store) precedes provider name (redis)
 apiVersion: mycodexvantaos.org/v1
 kind: Provider
 metadata:
-  name: state-store-redis
+  name: mycodexvantaos-state-store-redis
   capability: state-store
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
@@ -16,4 +13,6 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_STATE_STORE
   configSchemaRef: ./config.schema.json
-  description: 'Redis key-value state store provider.'
+  description: Redis key-value state store provider.
+provider-id: mycodexvantaos-state-store-redis
+capability: state-store

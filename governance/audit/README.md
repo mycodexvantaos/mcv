@@ -8,14 +8,14 @@ All governance-significant events are recorded as audit events with SHA-256 hash
 
 ## Files
 
-| File | Description |
-|---|---|
-| `audit-policy.yaml` | Audit policy — retention, events, evidence requirements |
-| `audit-retention-policy.yaml` | Retention periods by event type |
-| `audit-index.yaml` | Index of audit schemas and current chain state |
-| `audit-event.schema.json` | JSON Schema for audit events |
-| `audit-chain.schema.json` | JSON Schema for the audit chain |
-| `audit-evidence.schema.json` | JSON Schema for gate evidence artifacts |
+| File                          | Description                                             |
+| ----------------------------- | ------------------------------------------------------- |
+| `audit-policy.yaml`           | Audit policy — retention, events, evidence requirements |
+| `audit-retention-policy.yaml` | Retention periods by event type                         |
+| `audit-index.yaml`            | Index of audit schemas and current chain state          |
+| `audit-event.schema.json`     | JSON Schema for audit events                            |
+| `audit-chain.schema.json`     | JSON Schema for the audit chain                         |
+| `audit-evidence.schema.json`  | JSON Schema for gate evidence artifacts                 |
 
 ## Audit Chain
 

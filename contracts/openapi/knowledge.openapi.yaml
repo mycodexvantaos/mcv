@@ -11,5 +11,5 @@ components:
       scheme: bearer
       bearerFormat: JWT
 servers:
-- url: https://api.mycodexvantaos.com/v1
-  description: Production
+  - url: https://api.mycodexvantaos.com/v1
+    description: Production

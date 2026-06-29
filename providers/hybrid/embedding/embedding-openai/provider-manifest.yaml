@@ -1,10 +1,7 @@
-# providers/embedding/embedding-openai/provider-manifest.yaml
-# 8.1 — provider instance: embedding-openai
-# 8.2 — capability (embedding) precedes provider name (openai)
 apiVersion: mycodexvantaos.org/v1
 kind: Provider
 metadata:
-  name: embedding-openai
+  name: mycodexvantaos-embedding-openai
   capability: embedding
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
@@ -16,4 +13,6 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_EMBEDDING
   configSchemaRef: ./config.schema.json
-  description: 'OpenAI text embedding provider.'
+  description: OpenAI text embedding provider.
+provider-id: mycodexvantaos-embedding-openai
+capability: embedding

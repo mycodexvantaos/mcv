@@ -8,11 +8,12 @@
  * Machine Identity: mycodexvantaos
  */
 
-export const SERVICE_ID = "mycodexvantaos-billing-metering";
-export const SERVICE_VERSION = "1.0.0";
+export const SERVICE_ID = 'mycodexvantaos-billing-metering';
+export const SERVICE_VERSION = '1.0.0';
 
-export type BillingUnit = "token" | "request" | "compute-second" | "storage-gb" | "embedding" | "agent-run";
-export type BillingTier = "free" | "starter" | "professional" | "enterprise";
+export type BillingUnit =
+  'token' | 'request' | 'compute-second' | 'storage-gb' | 'embedding' | 'agent-run';
+export type BillingTier = 'free' | 'starter' | 'professional' | 'enterprise';
 
 export interface UsageEvent {
   eventId: string;
@@ -29,7 +30,7 @@ export interface QuotaLimit {
   workspaceId: string;
   tier: BillingTier;
   limits: Record<BillingUnit, number>;
-  period: "daily" | "monthly";
+  period: 'daily' | 'monthly';
   resetAt: Date;
 }
 
@@ -39,7 +40,7 @@ export interface UsageSummary {
   usage: Record<BillingUnit, number>;
   cost: Record<BillingUnit, number>;
   totalCost: number;
-  currency: "USD";
+  currency: 'USD';
 }
 
 export interface PricingModel {
@@ -53,79 +54,79 @@ export interface PricingModel {
  */
 export const PRICING_MODELS: Record<BillingTier, PricingModel> = {
   free: {
-    tier: "free",
+    tier: 'free',
     prices: {
       token: 0,
       request: 0,
-      "compute-second": 0,
-      "storage-gb": 0,
+      'compute-second': 0,
+      'storage-gb': 0,
       embedding: 0,
-      "agent-run": 0,
+      'agent-run': 0,
     },
     includedUnits: {
       token: 100000,
       request: 1000,
-      "compute-second": 3600,
-      "storage-gb": 1,
+      'compute-second': 3600,
+      'storage-gb': 1,
       embedding: 1000,
-      "agent-run": 100,
+      'agent-run': 100,
     },
   },
   starter: {
-    tier: "starter",
+    tier: 'starter',
     prices: {
       token: 0.000002,
       request: 0.001,
-      "compute-second": 0.0001,
-      "storage-gb": 0.02,
+      'compute-second': 0.0001,
+      'storage-gb': 0.02,
       embedding: 0.0001,
-      "agent-run": 0.01,
+      'agent-run': 0.01,
     },
     includedUnits: {
       token: 1000000,
       request: 10000,
-      "compute-second": 36000,
-      "storage-gb": 10,
+      'compute-second': 36000,
+      'storage-gb': 10,
       embedding: 10000,
-      "agent-run": 1000,
+      'agent-run': 1000,
     },
   },
   professional: {
-    tier: "professional",
+    tier: 'professional',
     prices: {
       token: 0.0000015,
       request: 0.0008,
-      "compute-second": 0.00008,
-      "storage-gb": 0.015,
+      'compute-second': 0.00008,
+      'storage-gb': 0.015,
       embedding: 0.00008,
-      "agent-run": 0.008,
+      'agent-run': 0.008,
     },
     includedUnits: {
       token: 10000000,
       request: 100000,
-      "compute-second": 360000,
-      "storage-gb": 100,
+      'compute-second': 360000,
+      'storage-gb': 100,
       embedding: 100000,
-      "agent-run": 10000,
+      'agent-run': 10000,
     },
   },
   enterprise: {
-    tier: "enterprise",
+    tier: 'enterprise',
     prices: {
       token: 0.000001,
       request: 0.0005,
-      "compute-second": 0.00005,
-      "storage-gb": 0.01,
+      'compute-second': 0.00005,
+      'storage-gb': 0.01,
       embedding: 0.00005,
-      "agent-run": 0.005,
+      'agent-run': 0.005,
     },
     includedUnits: {
       token: 100000000,
       request: 1000000,
-      "compute-second": 3600000,
-      "storage-gb": 1000,
+      'compute-second': 3600000,
+      'storage-gb': 1000,
       embedding: 1000000,
-      "agent-run": 100000,
+      'agent-run': 100000,
     },
   },
 };
@@ -141,7 +142,7 @@ export class BillingMeteringEngine {
   /**
    * Record a usage event for billing.
    */
-  recordUsage(event: Omit<UsageEvent, "eventId" | "timestamp">): UsageEvent {
+  recordUsage(event: Omit<UsageEvent, 'eventId' | 'timestamp'>): UsageEvent {
     const fullEvent: UsageEvent = {
       ...event,
       eventId: `evt-${Date.now()}-${Math.random().toString(36).slice(2)}`,
@@ -158,7 +159,11 @@ export class BillingMeteringEngine {
   /**
    * Check if a workspace has exceeded its quota.
    */
-  checkQuota(workspaceId: string, unit: BillingUnit, requestedQuantity: number): {
+  checkQuota(
+    workspaceId: string,
+    unit: BillingUnit,
+    requestedQuantity: number
+  ): {
     allowed: boolean;
     remaining: number;
     limit: number;
@@ -184,9 +189,7 @@ export class BillingMeteringEngine {
    */
   private getCurrentUsage(workspaceId: string, unit: BillingUnit): number {
     const events = this.usageEvents.get(workspaceId) ?? [];
-    return events
-      .filter((e) => e.unit === unit)
-      .reduce((sum, e) => sum + e.quantity, 0);
+    return events.filter((e) => e.unit === unit).reduce((sum, e) => sum + e.quantity, 0);
   }
 
   /**
@@ -196,7 +199,7 @@ export class BillingMeteringEngine {
     workspaceId: string,
     from: Date,
     to: Date,
-    tier: BillingTier = "starter"
+    tier: BillingTier = 'starter'
   ): UsageSummary {
     const events = (this.usageEvents.get(workspaceId) ?? []).filter(
       (e) => e.timestamp >= from && e.timestamp <= to
@@ -206,10 +209,10 @@ export class BillingMeteringEngine {
     const usage: Record<BillingUnit, number> = {
       token: 0,
       request: 0,
-      "compute-second": 0,
-      "storage-gb": 0,
+      'compute-second': 0,
+      'storage-gb': 0,
       embedding: 0,
-      "agent-run": 0,
+      'agent-run': 0,
     };
 
     for (const event of events) {
@@ -233,7 +236,7 @@ export class BillingMeteringEngine {
       usage,
       cost,
       totalCost: Math.round(totalCost * 100) / 100,
-      currency: "USD",
+      currency: 'USD',
     };
   }
 

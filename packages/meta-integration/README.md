@@ -56,9 +56,7 @@ The MetaIntegrationOrchestrator coordinates all phases:
 const orchestrator = new MetaIntegrationOrchestrator();
 
 // Register systems
-orchestrator.registerSystem('system-1', {
-  /* ... */
-});
+orchestrator.registerSystem('system-1', {/* ... */});
 
 // Discover and integrate
 orchestrator.discoverAndIntegrate();

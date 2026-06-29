@@ -10,7 +10,8 @@ repos:
         language: pygrep
         types: [markdown]
         exclude: 'CONTRIBUTING\.md$'
-
-
-# --- Platform v1.0 additions ---
+      - id: forbid-section-sign-code
+        name: Forbid Section Sign Symbol in Code (U+00A7)
         entry: "\xc2\xa7"
+        language: pygrep
+        types: [python, ts, tsx, js, yaml, json]

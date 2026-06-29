@@ -1,11 +1,10 @@
 apiVersion: mycodexvantaos.io/v1
 kind: GateRBACPolicy
 metadata:
-  version: "1.0.0"
-  date: "2026-06-29"
-  status: "active"
+  version: '1.0.0'
+  date: '2026-06-29'
+  status: 'active'
   name: gate-rbac-policy
-  version: 1.0.0
   authority: platform-governance-root
   governanceCode: mycodexvantaos-00600
 spec:

@@ -11,9 +11,9 @@ metadata:
 spec:
   domain: ai
   capabilities:
-  - embedding
-  - vector-store
-  - cache
+    - embedding
+    - vector-store
+    - cache
   providers:
     embedding: embedding-openai
     vector-store: vector-store-pgvector
@@ -28,7 +28,7 @@ spec:
 service-id: mycodexvantaos-ai-embedding
 platform: mycodexvantaos
 runtime-modes:
-- native
-- connected
-- hybrid
+  - native
+  - connected
+  - hybrid
 service-path: services/mycodexvantaos-ai-embedding

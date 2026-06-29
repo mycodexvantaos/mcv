@@ -1,5 +1,3 @@
-# modules/mycodexvantaos-ai-memory/module-manifest.yaml
-# 6.3 — metadata.name MUST equal the directory name and service-id exactly (6.4)
 apiVersion: mycodexvantaos.org/v1
 kind: Module
 metadata:
@@ -19,7 +17,8 @@ spec:
     state-store: state-store-redis
   lifecycle:
     stage: stable
-    since: 'v1.0.0'
-  urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-memory'
+    since: v1.0.0
+  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-memory
   packageName: '@mycodexvantaos/ai-memory'
-  description: 'AI memory service. Stores and retrieves semantic memories.'
+  description: AI memory service. Stores and retrieves semantic memories.
+service-id: mycodexvantaos-ai-memory

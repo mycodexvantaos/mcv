@@ -24,6 +24,7 @@ Array constructors can also be used within location paths for making multiple se
   "fsmith@my-work.com",
   "freddy@my-social.com",
   "frederic.smith@very-serious.com"
+
 ]</div>
   </div>
 
@@ -33,6 +34,7 @@ Array constructors can also be used within location paths for making multiple se
     <div>[
   [ "fred.smith@my-work.com",  "fsmith@my-work.com" ],
   [ "freddy@my-social.com", "frederic.smith@very-serious.com" ]
+
 ]</div>
   </div>
 
@@ -57,7 +59,8 @@ When an object constructor follows an expression that selects multiple values, t
   { "home": "0203 544 1234" }, 
   { "office": "01962 001234" }, 
   { "office": "01962 001235" }, 
-  { "mobile": "077 7700 1234"  } 
+  { "mobile": "077 7700 1234"  }
+
 ]</div>
   </div>
 
@@ -71,6 +74,7 @@ When an object constructor follows an expression that selects multiple values, t
     "01962 001235"
   ],
   "mobile": "077 7700 1234"
+
 }</div>
   </div>
 
@@ -88,6 +92,7 @@ When an object constructor follows an expression that selects multiple values, t
   "mobile": [
     "077 7700 1234"
   ]
+
 }</div>
   </div>
 

@@ -17,12 +17,12 @@ spec:
   internalUri: mycodexvantaos://service/mycodexvantaos-quantum-controller
   urn: urn:mycodexvantaos:service:mycodexvantaos-quantum-controller
   supportedRuntimeModes:
-  - native
-  - connected
-  - hybrid
+    - native
+    - connected
+    - hybrid
   deploymentTargets:
-  - kubernetes
-  - docker-compose
+    - kubernetes
+    - docker-compose
   productionReadiness:
     required: true
     healthCheckRequired: true
@@ -33,7 +33,7 @@ spec:
 service-id: mycodexvantaos-quantum-controller
 platform: mycodexvantaos
 runtime-modes:
-- native
-- connected
-- hybrid
+  - native
+  - connected
+  - hybrid
 service-path: services/mycodexvantaos-quantum-controller

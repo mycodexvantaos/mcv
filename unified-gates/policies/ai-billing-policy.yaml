@@ -1,11 +1,10 @@
 apiVersion: mycodexvantaos.io/v1
 kind: AIBillingPolicy
 metadata:
-  version: "1.0.0"
-  date: "2026-06-29"
-  status: "active"
+  version: '1.0.0'
+  date: '2026-06-29'
+  status: 'active'
   name: ai-billing-policy
-  version: 1.0.0
   authority: platform-governance-root
   governanceCode: mycodexvantaos-30400
 spec:

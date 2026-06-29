@@ -53,15 +53,15 @@ Provider Decoupling Framework
 ```yaml
 # 正確：capability-first 命名
 providers:
-  - id: llm-openai         # capability-vendor 格式
+  - id: llm-openai # capability-vendor 格式
   - id: database-postgres
   - id: storage-s3
   - id: compute-lambda
 
 # 錯誤：vendor-first 命名
 providers:
-  - id: openai-llm         # ✗ 不應以 vendor 開頭
-  - id: postgres-database  # ✗
+  - id: openai-llm # ✗ 不應以 vendor 開頭
+  - id: postgres-database # ✗
 ```
 
 ## Tradeoffs

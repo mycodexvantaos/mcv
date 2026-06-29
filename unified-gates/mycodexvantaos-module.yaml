@@ -4,9 +4,8 @@
 apiVersion: mycodexvantaos.io/v1
 kind: ModuleManifest
 metadata:
-  version: "1.0.0"
+  version: '1.0.0'
   name: unified-gates
-  version: 1.0.0
   namespace: mycodexvantaos
   domain: governance
   function: gates

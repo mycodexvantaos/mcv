@@ -12,7 +12,13 @@
     },
     "evidence-type": {
       "type": "string",
-      "enum": ["gate-evaluation", "release-promotion", "exception-grant", "policy-change", "security-scan"]
+      "enum": [
+        "gate-evaluation",
+        "release-promotion",
+        "exception-grant",
+        "policy-change",
+        "security-scan"
+      ]
     },
     "created-at": {
       "type": "string",

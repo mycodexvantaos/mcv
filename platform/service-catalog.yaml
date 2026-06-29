@@ -11,273 +11,273 @@ metadata:
   description: Global service catalog — Single Source of Truth for all platform services
 spec:
   services:
-  - serviceId: mycodexvantaos-core-auth
-    tier: tier-0
-    category: security
-    manifestPath: modules/mycodexvantaos-core-auth/module-manifest.yaml
-    implementationPath: services/mycodexvantaos-core-auth/
-    packageName: '@mycodexvantaos/core-auth'
-    ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-core-auth
-    kubernetesResourceName: mycodexvantaos-core-auth
-    urn: urn:mycodexvantaos:service:mycodexvantaos-core-auth
-    internalUri: mycodexvantaos://service/mycodexvantaos-core-auth
-  - serviceId: mycodexvantaos-ai-embedding
-    tier: tier-1
-    category: algorithm
-    manifestPath: modules/mycodexvantaos-ai-embedding/module-manifest.yaml
-    implementationPath: services/mycodexvantaos-ai-embedding/
-    packageName: '@mycodexvantaos/ai-embedding'
-    ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-ai-embedding
-    kubernetesResourceName: mycodexvantaos-ai-embedding
-    urn: urn:mycodexvantaos:service:mycodexvantaos-ai-embedding
-    internalUri: mycodexvantaos://service/mycodexvantaos-ai-embedding
-  - serviceId: mycodexvantaos-ai-inference
-    tier: tier-1
-    category: algorithm
-    manifestPath: modules/mycodexvantaos-ai-inference/module-manifest.yaml
-    implementationPath: services/mycodexvantaos-ai-inference/
-    packageName: '@mycodexvantaos/ai-inference'
-    ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-ai-inference
-    kubernetesResourceName: mycodexvantaos-ai-inference
-    urn: urn:mycodexvantaos:service:mycodexvantaos-ai-inference
-    internalUri: mycodexvantaos://service/mycodexvantaos-ai-inference
-  - serviceId: mycodexvantaos-agent-runtime
-    tier: tier-1
-    category: agent
-    manifestPath: modules/mycodexvantaos-agent-runtime/module-manifest.yaml
-    implementationPath: services/mycodexvantaos-agent-runtime/
-    packageName: '@mycodexvantaos/agent-runtime'
-    ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-agent-runtime
-    kubernetesResourceName: mycodexvantaos-agent-runtime
-    urn: urn:mycodexvantaos:service:mycodexvantaos-agent-runtime
-    internalUri: mycodexvantaos://service/mycodexvantaos-agent-runtime
-  - serviceId: mycodexvantaos-knowledge-ingestion
-    tier: tier-1
-    category: knowledge
-    manifestPath: modules/mycodexvantaos-knowledge-ingestion/module-manifest.yaml
-    implementationPath: services/mycodexvantaos-knowledge-ingestion/
-    packageName: '@mycodexvantaos/knowledge-ingestion'
-    ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-knowledge-ingestion
-    kubernetesResourceName: mycodexvantaos-knowledge-ingestion
-    urn: urn:mycodexvantaos:service:mycodexvantaos-knowledge-ingestion
-    internalUri: mycodexvantaos://service/mycodexvantaos-knowledge-ingestion
-  - serviceId: mycodexvantaos-knowledge-search
-    tier: tier-1
-    category: knowledge
-    manifestPath: modules/mycodexvantaos-knowledge-search/module-manifest.yaml
-    implementationPath: services/mycodexvantaos-knowledge-search/
-    packageName: '@mycodexvantaos/knowledge-search'
-    ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-knowledge-search
-    kubernetesResourceName: mycodexvantaos-knowledge-search
-    urn: urn:mycodexvantaos:service:mycodexvantaos-knowledge-search
-    internalUri: mycodexvantaos://service/mycodexvantaos-knowledge-search
-  - serviceId: mycodexvantaos-governance-policy-engine
-    tier: tier-0
-    category: governance
-    manifestPath: modules/mycodexvantaos-governance-policy-engine/module-manifest.yaml
-    implementationPath: services/mycodexvantaos-governance-policy-engine/
-    packageName: '@mycodexvantaos/governance-policy-engine'
-    ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-governance-policy-engine
-    kubernetesResourceName: mycodexvantaos-governance-policy-engine
-    urn: urn:mycodexvantaos:service:mycodexvantaos-governance-policy-engine
-    internalUri: mycodexvantaos://service/mycodexvantaos-governance-policy-engine
-  - serviceId: mycodexvantaos-governance-audit-chain
-    tier: tier-0
-    category: governance
-    manifestPath: modules/mycodexvantaos-governance-audit-chain/module-manifest.yaml
-    implementationPath: services/mycodexvantaos-governance-audit-chain/
-    packageName: '@mycodexvantaos/governance-audit-chain'
-    ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-governance-audit-chain
-    kubernetesResourceName: mycodexvantaos-governance-audit-chain
-    urn: urn:mycodexvantaos:service:mycodexvantaos-governance-audit-chain
-    internalUri: mycodexvantaos://service/mycodexvantaos-governance-audit-chain
-  - serviceId: mycodexvantaos-billing-metering
-    tier: tier-1
-    category: business
-    manifestPath: modules/mycodexvantaos-billing-metering/module-manifest.yaml
-    implementationPath: services/mycodexvantaos-billing-metering/
-    packageName: '@mycodexvantaos/billing-metering'
-    ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-billing-metering
-    kubernetesResourceName: mycodexvantaos-billing-metering
-    urn: urn:mycodexvantaos:service:mycodexvantaos-billing-metering
-    internalUri: mycodexvantaos://service/mycodexvantaos-billing-metering
-  - serviceId: mycodexvantaos-runtime-mode-resolver
-    tier: tier-0
-    category: platform
-    manifestPath: modules/mycodexvantaos-runtime-mode-resolver/module-manifest.yaml
-    implementationPath: services/mycodexvantaos-runtime-mode-resolver/
-    packageName: '@mycodexvantaos/runtime-mode-resolver'
-    ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-runtime-mode-resolver
-    kubernetesResourceName: mycodexvantaos-runtime-mode-resolver
-    urn: urn:mycodexvantaos:service:mycodexvantaos-runtime-mode-resolver
-    internalUri: mycodexvantaos://service/mycodexvantaos-runtime-mode-resolver
-  - serviceId: mycodexvantaos-quantum-controller
-    tier: tier-2
-    category: quantum
-    manifestPath: modules/mycodexvantaos-quantum-controller/module-manifest.yaml
-    implementationPath: services/mycodexvantaos-quantum-controller/
-    packageName: '@mycodexvantaos/quantum-controller'
-    ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-quantum-controller
-    kubernetesResourceName: mycodexvantaos-quantum-controller
-    urn: urn:mycodexvantaos:service:mycodexvantaos-quantum-controller
-    internalUri: mycodexvantaos://service/mycodexvantaos-quantum-controller
+    - serviceId: mycodexvantaos-core-auth
+      tier: tier-0
+      category: security
+      manifestPath: modules/mycodexvantaos-core-auth/module-manifest.yaml
+      implementationPath: services/mycodexvantaos-core-auth/
+      packageName: '@mycodexvantaos/core-auth'
+      ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-core-auth
+      kubernetesResourceName: mycodexvantaos-core-auth
+      urn: urn:mycodexvantaos:service:mycodexvantaos-core-auth
+      internalUri: mycodexvantaos://service/mycodexvantaos-core-auth
+    - serviceId: mycodexvantaos-ai-embedding
+      tier: tier-1
+      category: algorithm
+      manifestPath: modules/mycodexvantaos-ai-embedding/module-manifest.yaml
+      implementationPath: services/mycodexvantaos-ai-embedding/
+      packageName: '@mycodexvantaos/ai-embedding'
+      ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-ai-embedding
+      kubernetesResourceName: mycodexvantaos-ai-embedding
+      urn: urn:mycodexvantaos:service:mycodexvantaos-ai-embedding
+      internalUri: mycodexvantaos://service/mycodexvantaos-ai-embedding
+    - serviceId: mycodexvantaos-ai-inference
+      tier: tier-1
+      category: algorithm
+      manifestPath: modules/mycodexvantaos-ai-inference/module-manifest.yaml
+      implementationPath: services/mycodexvantaos-ai-inference/
+      packageName: '@mycodexvantaos/ai-inference'
+      ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-ai-inference
+      kubernetesResourceName: mycodexvantaos-ai-inference
+      urn: urn:mycodexvantaos:service:mycodexvantaos-ai-inference
+      internalUri: mycodexvantaos://service/mycodexvantaos-ai-inference
+    - serviceId: mycodexvantaos-agent-runtime
+      tier: tier-1
+      category: agent
+      manifestPath: modules/mycodexvantaos-agent-runtime/module-manifest.yaml
+      implementationPath: services/mycodexvantaos-agent-runtime/
+      packageName: '@mycodexvantaos/agent-runtime'
+      ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-agent-runtime
+      kubernetesResourceName: mycodexvantaos-agent-runtime
+      urn: urn:mycodexvantaos:service:mycodexvantaos-agent-runtime
+      internalUri: mycodexvantaos://service/mycodexvantaos-agent-runtime
+    - serviceId: mycodexvantaos-knowledge-ingestion
+      tier: tier-1
+      category: knowledge
+      manifestPath: modules/mycodexvantaos-knowledge-ingestion/module-manifest.yaml
+      implementationPath: services/mycodexvantaos-knowledge-ingestion/
+      packageName: '@mycodexvantaos/knowledge-ingestion'
+      ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-knowledge-ingestion
+      kubernetesResourceName: mycodexvantaos-knowledge-ingestion
+      urn: urn:mycodexvantaos:service:mycodexvantaos-knowledge-ingestion
+      internalUri: mycodexvantaos://service/mycodexvantaos-knowledge-ingestion
+    - serviceId: mycodexvantaos-knowledge-search
+      tier: tier-1
+      category: knowledge
+      manifestPath: modules/mycodexvantaos-knowledge-search/module-manifest.yaml
+      implementationPath: services/mycodexvantaos-knowledge-search/
+      packageName: '@mycodexvantaos/knowledge-search'
+      ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-knowledge-search
+      kubernetesResourceName: mycodexvantaos-knowledge-search
+      urn: urn:mycodexvantaos:service:mycodexvantaos-knowledge-search
+      internalUri: mycodexvantaos://service/mycodexvantaos-knowledge-search
+    - serviceId: mycodexvantaos-governance-policy-engine
+      tier: tier-0
+      category: governance
+      manifestPath: modules/mycodexvantaos-governance-policy-engine/module-manifest.yaml
+      implementationPath: services/mycodexvantaos-governance-policy-engine/
+      packageName: '@mycodexvantaos/governance-policy-engine'
+      ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-governance-policy-engine
+      kubernetesResourceName: mycodexvantaos-governance-policy-engine
+      urn: urn:mycodexvantaos:service:mycodexvantaos-governance-policy-engine
+      internalUri: mycodexvantaos://service/mycodexvantaos-governance-policy-engine
+    - serviceId: mycodexvantaos-governance-audit-chain
+      tier: tier-0
+      category: governance
+      manifestPath: modules/mycodexvantaos-governance-audit-chain/module-manifest.yaml
+      implementationPath: services/mycodexvantaos-governance-audit-chain/
+      packageName: '@mycodexvantaos/governance-audit-chain'
+      ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-governance-audit-chain
+      kubernetesResourceName: mycodexvantaos-governance-audit-chain
+      urn: urn:mycodexvantaos:service:mycodexvantaos-governance-audit-chain
+      internalUri: mycodexvantaos://service/mycodexvantaos-governance-audit-chain
+    - serviceId: mycodexvantaos-billing-metering
+      tier: tier-1
+      category: business
+      manifestPath: modules/mycodexvantaos-billing-metering/module-manifest.yaml
+      implementationPath: services/mycodexvantaos-billing-metering/
+      packageName: '@mycodexvantaos/billing-metering'
+      ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-billing-metering
+      kubernetesResourceName: mycodexvantaos-billing-metering
+      urn: urn:mycodexvantaos:service:mycodexvantaos-billing-metering
+      internalUri: mycodexvantaos://service/mycodexvantaos-billing-metering
+    - serviceId: mycodexvantaos-runtime-mode-resolver
+      tier: tier-0
+      category: platform
+      manifestPath: modules/mycodexvantaos-runtime-mode-resolver/module-manifest.yaml
+      implementationPath: services/mycodexvantaos-runtime-mode-resolver/
+      packageName: '@mycodexvantaos/runtime-mode-resolver'
+      ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-runtime-mode-resolver
+      kubernetesResourceName: mycodexvantaos-runtime-mode-resolver
+      urn: urn:mycodexvantaos:service:mycodexvantaos-runtime-mode-resolver
+      internalUri: mycodexvantaos://service/mycodexvantaos-runtime-mode-resolver
+    - serviceId: mycodexvantaos-quantum-controller
+      tier: tier-2
+      category: quantum
+      manifestPath: modules/mycodexvantaos-quantum-controller/module-manifest.yaml
+      implementationPath: services/mycodexvantaos-quantum-controller/
+      packageName: '@mycodexvantaos/quantum-controller'
+      ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-quantum-controller
+      kubernetesResourceName: mycodexvantaos-quantum-controller
+      urn: urn:mycodexvantaos:service:mycodexvantaos-quantum-controller
+      internalUri: mycodexvantaos://service/mycodexvantaos-quantum-controller
 platform: mycodexvantaos
 canonical-url: https://mycodexvantaos.com
 services:
-- service-id: mycodexvantaos-agent-runtime
-  name: Agent Runtime
-  foundation: agent-foundation
-  tier: high
-  capabilities:
-  - llm
-  - embedding
-  - vector-store
-  runtime-modes:
-  - native
-  - connected
-  - hybrid
-  module: modules/mycodexvantaos-agent-runtime
-  service: services/mycodexvantaos-agent-runtime
-  status: active
-- service-id: mycodexvantaos-ai-embedding
-  name: AI Embedding
-  foundation: algorithm-foundation
-  tier: high
-  capabilities:
-  - embedding
-  runtime-modes:
-  - native
-  - connected
-  - hybrid
-  module: modules/mycodexvantaos-ai-embedding
-  service: services/mycodexvantaos-ai-embedding
-  status: active
-- service-id: mycodexvantaos-ai-inference
-  name: AI Inference
-  foundation: algorithm-foundation
-  tier: high
-  capabilities:
-  - llm
-  runtime-modes:
-  - native
-  - connected
-  - hybrid
-  module: modules/mycodexvantaos-ai-inference
-  service: services/mycodexvantaos-ai-inference
-  status: active
-- service-id: mycodexvantaos-billing-metering
-  name: Billing & Metering
-  foundation: business-foundation
-  tier: standard
-  capabilities:
-  - database
-  - queue
-  runtime-modes:
-  - native
-  - connected
-  - hybrid
-  module: modules/mycodexvantaos-billing-metering
-  service: services/mycodexvantaos-billing-metering
-  status: active
-- service-id: mycodexvantaos-core-auth
-  name: Core Auth
-  foundation: governance-foundation
-  tier: critical
-  capabilities:
-  - auth
-  - secrets
-  runtime-modes:
-  - native
-  - connected
-  - hybrid
-  module: modules/mycodexvantaos-core-auth
-  service: services/mycodexvantaos-core-auth
-  status: active
-- service-id: mycodexvantaos-governance-audit-chain
-  name: Governance Audit Chain
-  foundation: governance-foundation
-  tier: critical
-  capabilities:
-  - database
-  - storage
-  runtime-modes:
-  - native
-  - connected
-  - hybrid
-  module: modules/mycodexvantaos-governance-audit-chain
-  service: services/mycodexvantaos-governance-audit-chain
-  status: active
-- service-id: mycodexvantaos-governance-policy-engine
-  name: Governance Policy Engine
-  foundation: governance-foundation
-  tier: critical
-  capabilities:
-  - database
-  - cache
-  runtime-modes:
-  - native
-  - connected
-  - hybrid
-  module: modules/mycodexvantaos-governance-policy-engine
-  service: services/mycodexvantaos-governance-policy-engine
-  status: active
-- service-id: mycodexvantaos-knowledge-ingestion
-  name: Knowledge Ingestion
-  foundation: data-foundation
-  tier: standard
-  capabilities:
-  - embedding
-  - vector-store
-  - database
-  - queue
-  runtime-modes:
-  - native
-  - connected
-  - hybrid
-  module: modules/mycodexvantaos-knowledge-ingestion
-  service: services/mycodexvantaos-knowledge-ingestion
-  status: active
-- service-id: mycodexvantaos-knowledge-search
-  name: Knowledge Search
-  foundation: data-foundation
-  tier: high
-  capabilities:
-  - vector-store
-  - search
-  runtime-modes:
-  - native
-  - connected
-  - hybrid
-  module: modules/mycodexvantaos-knowledge-search
-  service: services/mycodexvantaos-knowledge-search
-  status: active
-- service-id: mycodexvantaos-quantum-controller
-  name: Quantum Controller
-  foundation: compute-foundation
-  tier: experimental
-  capabilities:
-  - quantum-runtime
-  - quantum-circuit
-  - quantum-observability
-  runtime-modes:
-  - native
-  - hybrid
-  module: modules/mycodexvantaos-quantum-controller
-  service: services/mycodexvantaos-quantum-controller
-  status: experimental
-- service-id: mycodexvantaos-runtime-mode-resolver
-  name: Runtime Mode Resolver
-  foundation: contract-foundation
-  tier: standard
-  capabilities:
-  - validation
-  runtime-modes:
-  - native
-  - connected
-  - hybrid
-  module: modules/mycodexvantaos-runtime-mode-resolver
-  service: services/mycodexvantaos-runtime-mode-resolver
-  status: active
+  - service-id: mycodexvantaos-agent-runtime
+    name: Agent Runtime
+    foundation: agent-foundation
+    tier: high
+    capabilities:
+      - llm
+      - embedding
+      - vector-store
+    runtime-modes:
+      - native
+      - connected
+      - hybrid
+    module: modules/mycodexvantaos-agent-runtime
+    service: services/mycodexvantaos-agent-runtime
+    status: active
+  - service-id: mycodexvantaos-ai-embedding
+    name: AI Embedding
+    foundation: algorithm-foundation
+    tier: high
+    capabilities:
+      - embedding
+    runtime-modes:
+      - native
+      - connected
+      - hybrid
+    module: modules/mycodexvantaos-ai-embedding
+    service: services/mycodexvantaos-ai-embedding
+    status: active
+  - service-id: mycodexvantaos-ai-inference
+    name: AI Inference
+    foundation: algorithm-foundation
+    tier: high
+    capabilities:
+      - llm
+    runtime-modes:
+      - native
+      - connected
+      - hybrid
+    module: modules/mycodexvantaos-ai-inference
+    service: services/mycodexvantaos-ai-inference
+    status: active
+  - service-id: mycodexvantaos-billing-metering
+    name: Billing & Metering
+    foundation: business-foundation
+    tier: standard
+    capabilities:
+      - database
+      - queue
+    runtime-modes:
+      - native
+      - connected
+      - hybrid
+    module: modules/mycodexvantaos-billing-metering
+    service: services/mycodexvantaos-billing-metering
+    status: active
+  - service-id: mycodexvantaos-core-auth
+    name: Core Auth
+    foundation: governance-foundation
+    tier: critical
+    capabilities:
+      - auth
+      - secrets
+    runtime-modes:
+      - native
+      - connected
+      - hybrid
+    module: modules/mycodexvantaos-core-auth
+    service: services/mycodexvantaos-core-auth
+    status: active
+  - service-id: mycodexvantaos-governance-audit-chain
+    name: Governance Audit Chain
+    foundation: governance-foundation
+    tier: critical
+    capabilities:
+      - database
+      - storage
+    runtime-modes:
+      - native
+      - connected
+      - hybrid
+    module: modules/mycodexvantaos-governance-audit-chain
+    service: services/mycodexvantaos-governance-audit-chain
+    status: active
+  - service-id: mycodexvantaos-governance-policy-engine
+    name: Governance Policy Engine
+    foundation: governance-foundation
+    tier: critical
+    capabilities:
+      - database
+      - cache
+    runtime-modes:
+      - native
+      - connected
+      - hybrid
+    module: modules/mycodexvantaos-governance-policy-engine
+    service: services/mycodexvantaos-governance-policy-engine
+    status: active
+  - service-id: mycodexvantaos-knowledge-ingestion
+    name: Knowledge Ingestion
+    foundation: data-foundation
+    tier: standard
+    capabilities:
+      - embedding
+      - vector-store
+      - database
+      - queue
+    runtime-modes:
+      - native
+      - connected
+      - hybrid
+    module: modules/mycodexvantaos-knowledge-ingestion
+    service: services/mycodexvantaos-knowledge-ingestion
+    status: active
+  - service-id: mycodexvantaos-knowledge-search
+    name: Knowledge Search
+    foundation: data-foundation
+    tier: high
+    capabilities:
+      - vector-store
+      - search
+    runtime-modes:
+      - native
+      - connected
+      - hybrid
+    module: modules/mycodexvantaos-knowledge-search
+    service: services/mycodexvantaos-knowledge-search
+    status: active
+  - service-id: mycodexvantaos-quantum-controller
+    name: Quantum Controller
+    foundation: compute-foundation
+    tier: experimental
+    capabilities:
+      - quantum-runtime
+      - quantum-circuit
+      - quantum-observability
+    runtime-modes:
+      - native
+      - hybrid
+    module: modules/mycodexvantaos-quantum-controller
+    service: services/mycodexvantaos-quantum-controller
+    status: experimental
+  - service-id: mycodexvantaos-runtime-mode-resolver
+    name: Runtime Mode Resolver
+    foundation: contract-foundation
+    tier: standard
+    capabilities:
+      - validation
+    runtime-modes:
+      - native
+      - connected
+      - hybrid
+    module: modules/mycodexvantaos-runtime-mode-resolver
+    service: services/mycodexvantaos-runtime-mode-resolver
+    status: active
 statistics:
   total-services: 11
   by-tier:

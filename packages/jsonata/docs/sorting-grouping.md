@@ -29,6 +29,7 @@ If the evaluation of any key expression results in a key that is already in the 
   "Bowler Hat": [ 34.45, 34.45 ],
   "Trilby hat": 21.67,
   "Cloak": 107.99
+
 }</div>
   </div>
 
@@ -36,14 +37,15 @@ If the evaluation of any key expression results in a key that is already in the 
   <div class="jsonata-ex">
     <div>Account.Order.Product {
   `Product Name`: {"Price": Price, "Qty": Quantity}
+
 }</div>
-    <div>{
-  "Bowler Hat": {
-    "Price": [ 34.45, 34.45 ],
-    "Qty": [ 2, 4 ]
-  },
-  "Trilby hat": { "Price": 21.67, "Qty": 1 },
-  "Cloak": { "Price": 107.99, "Qty": 1 }
+<div>{
+"Bowler Hat": {
+"Price": [ 34.45, 34.45 ],
+"Qty": [ 2, 4 ]
+},
+"Trilby hat": { "Price": 21.67, "Qty": 1 },
+"Cloak": { "Price": 107.99, "Qty": 1 }
 }</div>
   </div>
 
@@ -53,14 +55,15 @@ Note in the above example, the value expression grouped all of the prices togeth
   <div class="jsonata-ex">
     <div>Account.Order.Product {
   `Product Name`: $.{"Price": Price, "Qty": Quantity}
+
 }</div>
-    <div>{
-  "Bowler Hat": [
-    { "Price": 34.45, "Qty": 2 },
-    { "Price": 34.45, "Qty": 4 }
-  ],
-  "Trilby hat": { "Price": 21.67, "Qty": 1 },
-  "Cloak": { "Price": 107.99, "Qty": 1 }
+<div>{
+"Bowler Hat": [
+{ "Price": 34.45, "Qty": 2 },
+{ "Price": 34.45, "Qty": 4 }
+],
+"Trilby hat": { "Price": 21.67, "Qty": 1 },
+"Cloak": { "Price": 107.99, "Qty": 1 }
 }</div>
   </div>
 
@@ -71,6 +74,7 @@ Note in the above example, the value expression grouped all of the prices togeth
   "Bowler Hat": [ 68.9, 137.8 ],
   "Trilby hat": 21.67,
   "Cloak": 107.99
+
 }</div>
   </div>
 
@@ -81,6 +85,7 @@ Note in the above example, the value expression grouped all of the prices togeth
   "Bowler Hat": 206.7,
   "Trilby hat": 21.67,
   "Cloak": 107.99
+
 }</div>
   </div>
 

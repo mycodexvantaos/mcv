@@ -1,11 +1,10 @@
-# mycodexvantaos/providers/deploy/deploy-firebase/provider-manifest.yaml
 apiVersion: mycodexvantaos.org/v1
 kind: Provider
 metadata:
-  name: deploy-firebase
+  name: mycodexvantaos-deploy-firebase
   capability: deployment
   description: Firebase App Hosting deployment provider - optional connector
-  version: '1.0.0'
+  version: 1.0.0
   author: MyCodeXvantaOS Team
   tags:
     - deployment
@@ -13,19 +12,16 @@ metadata:
     - gcp
     - cloud
     - optional
-
 spec:
   providerName: firebase
   isNative: false
   fallbackProvider: deploy-native
-  priority: 50 # Lower priority than native - used only when configured
-
+  priority: 50
   capabilities:
     - firebase-app-hosting
     - firebase-hosting
     - cloud-functions
     - gcp-integration
-
   requirements:
     external:
       - firebase-tools
@@ -35,7 +31,6 @@ spec:
     credentials:
       - FIREBASE_PROJECT_ID
       - GOOGLE_APPLICATION_CREDENTIALS (optional)
-
   configuration:
     type: object
     properties:
@@ -44,7 +39,7 @@ spec:
         description: Firebase project ID
       region:
         type: string
-        default: 'us-central1'
+        default: us-central1
         description: GCP region for deployment
       hosting:
         type: object
@@ -54,11 +49,12 @@ spec:
             description: Firebase Hosting site name
           public:
             type: string
-            default: 'public'
+            default: public
             description: Public directory for static hosting
-
   availability:
     always: false
     requires:
       - FIREBASE_PROJECT_ID
-    healthCheck: 'firebase projects list'
+    healthCheck: firebase projects list
+provider-id: mycodexvantaos-deploy-firebase
+capability: deploy

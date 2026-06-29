@@ -8,7 +8,7 @@
  * FORBIDDEN: Using vendor-generated URLs as redirect targets.
  */
 
-import { AppEnvironment, domains, resolveEnvironment } from "../config/domains";
+import { AppEnvironment, domains, resolveEnvironment } from '../config/domains';
 
 export interface RedirectRule {
   source: string | RegExp;
@@ -64,7 +64,7 @@ export function getProductionRedirectRules(): RedirectRule[] {
 export function evaluateRedirect(requestUrl: string, env?: AppEnvironment): RedirectResult {
   const resolvedEnv = env ?? resolveEnvironment();
 
-  if (resolvedEnv !== "production") {
+  if (resolvedEnv !== 'production') {
     return { shouldRedirect: false };
   }
 
@@ -72,22 +72,20 @@ export function evaluateRedirect(requestUrl: string, env?: AppEnvironment): Redi
 
   for (const rule of rules) {
     let matches = false;
-    let pathMatch = "";
+    let pathMatch = '';
 
     if (rule.source instanceof RegExp) {
       const match = requestUrl.match(rule.source);
       if (match) {
         matches = true;
-        pathMatch = match[1] ?? "";
+        pathMatch = match[1] ?? '';
       }
     } else {
       matches = requestUrl === rule.source;
     }
 
     if (matches) {
-      const destination = pathMatch
-        ? `${rule.destination}${pathMatch}`
-        : rule.destination;
+      const destination = pathMatch ? `${rule.destination}${pathMatch}` : rule.destination;
 
       return {
         shouldRedirect: true,
@@ -104,14 +102,14 @@ export function evaluateRedirect(requestUrl: string, env?: AppEnvironment): Redi
  * Check if a request is from the www subdomain and should be redirected.
  */
 export function isWwwRedirect(host: string): boolean {
-  return host === "www.mycodexvantaos.com" || host.startsWith("www.");
+  return host === 'www.mycodexvantaos.com' || host.startsWith('www.');
 }
 
 /**
  * Check if a request is HTTP and should be redirected to HTTPS.
  */
 export function isHttpRedirect(protocol: string): boolean {
-  return protocol === "http" || protocol === "http:";
+  return protocol === 'http' || protocol === 'http:';
 }
 
 /**
@@ -119,14 +117,14 @@ export function isHttpRedirect(protocol: string): boolean {
  */
 export function getCanonicalRedirectDestination(
   host: string,
-  path: string = "/",
+  path: string = '/',
   env?: AppEnvironment
 ): string | null {
   const resolvedEnv = env ?? resolveEnvironment();
-  if (resolvedEnv !== "production") return null;
+  if (resolvedEnv !== 'production') return null;
 
-  const canonicalHost = "mycodexvantaos.com";
-  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  const canonicalHost = 'mycodexvantaos.com';
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
 
   if (host === `www.${canonicalHost}` || host === `www.${canonicalHost}:443`) {
     return `https://${canonicalHost}${normalizedPath}`;
@@ -148,10 +146,10 @@ export function getNextJsRedirects(): Array<{
   return [
     // www → apex
     {
-      source: "/:path*",
-      destination: "https://mycodexvantaos.com/:path*",
+      source: '/:path*',
+      destination: 'https://mycodexvantaos.com/:path*',
       permanent: true,
-      has: [{ type: "host", key: "host", value: "www.mycodexvantaos.com" }],
+      has: [{ type: 'host', key: 'host', value: 'www.mycodexvantaos.com' }],
     },
   ];
 }
@@ -161,14 +159,14 @@ export function getNextJsRedirects(): Array<{
  */
 export function getCloudflareRedirects(): string {
   return [
-    "# MyCodexVantaOS Redirect Rules",
-    "# Domain & Deployment Contract: https://mycodexvantaos.com",
-    "",
-    "# www → apex (301 permanent)",
-    "https://www.mycodexvantaos.com/* https://mycodexvantaos.com/:splat 301",
-    "",
-    "# HTTP → HTTPS (handled by Cloudflare edge, but defined here for completeness)",
-    "http://mycodexvantaos.com/* https://mycodexvantaos.com/:splat 301",
-    "http://www.mycodexvantaos.com/* https://mycodexvantaos.com/:splat 301",
-  ].join("\n");
+    '# MyCodexVantaOS Redirect Rules',
+    '# Domain & Deployment Contract: https://mycodexvantaos.com',
+    '',
+    '# www → apex (301 permanent)',
+    'https://www.mycodexvantaos.com/* https://mycodexvantaos.com/:splat 301',
+    '',
+    '# HTTP → HTTPS (handled by Cloudflare edge, but defined here for completeness)',
+    'http://mycodexvantaos.com/* https://mycodexvantaos.com/:splat 301',
+    'http://www.mycodexvantaos.com/* https://mycodexvantaos.com/:splat 301',
+  ].join('\n');
 }

@@ -4,9 +4,9 @@ on:
   push:
     branches: [main, develop]
     paths:
-      - "providers/**"
-      - "governance/capability-set.yaml"
-      - "governance/provider-registry.yaml"
+      - 'providers/**'
+      - 'governance/capability-set.yaml'
+      - 'governance/provider-registry.yaml'
   pull_request:
     branches: [main, develop]
   workflow_dispatch:
@@ -30,8 +30,8 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
-          cache: "pip"
+          python-version: '3.12'
+          cache: 'pip'
 
       - name: Install dependencies
         run: pip install pyyaml jsonschema

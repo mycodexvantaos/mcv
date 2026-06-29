@@ -13,8 +13,8 @@ metadata:
   governanceCode: mycodexvantaos-00000
   createdAt: 2026-01-01 00:00:00+00:00
   tags:
-  - l00
-  - namespace
+    - l00
+    - namespace
   sloTarget: 30
   evidenceRetentionDays: 2555
   date: '2026-06-29'
@@ -26,34 +26,34 @@ spec:
 
     '
   validates:
-  - dimension: canonical-readiness
-    description: All identifiers match canonical kebab-case and governance code patterns.
-    checks:
-    - id: chk-repo-name-pattern
-      description: Repository name matches ^(?:mycodexvantaos|softwareos)-[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*$
-      rule: regex:^(?:mycodexvantaos|softwareos)-[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*$
-      severity: critical
-      evidenceRequired: true
-    - id: chk-no-uppercase
-      description: No uppercase characters in name
-      rule: regex-not:[A-Z]
-      severity: critical
-      evidenceRequired: true
-    - id: chk-no-underscore
-      description: No underscore in name
-      rule: regex-not:_
-      severity: critical
-      evidenceRequired: true
-    - id: chk-no-env-marker
-      description: No environment markers (dev/prod/staging)
-      rule: regex-not:(?:^|-)(?:dev|prod|staging|test|uat)(?:-|$)
-      severity: critical
-      evidenceRequired: true
-    - id: chk-no-version-suffix
-      description: No version number suffix
-      rule: regex-not:-v[0-9]+
-      severity: critical
-      evidenceRequired: true
+    - dimension: canonical-readiness
+      description: All identifiers match canonical kebab-case and governance code patterns.
+      checks:
+        - id: chk-repo-name-pattern
+          description: Repository name matches ^(?:mycodexvantaos|softwareos)-[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*$
+          rule: regex:^(?:mycodexvantaos|softwareos)-[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*$
+          severity: critical
+          evidenceRequired: true
+        - id: chk-no-uppercase
+          description: No uppercase characters in name
+          rule: regex-not:[A-Z]
+          severity: critical
+          evidenceRequired: true
+        - id: chk-no-underscore
+          description: No underscore in name
+          rule: regex-not:_
+          severity: critical
+          evidenceRequired: true
+        - id: chk-no-env-marker
+          description: No environment markers (dev/prod/staging)
+          rule: regex-not:(?:^|-)(?:dev|prod|staging|test|uat)(?:-|$)
+          severity: critical
+          evidenceRequired: true
+        - id: chk-no-version-suffix
+          description: No version number suffix
+          rule: regex-not:-v[0-9]+
+          severity: critical
+          evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

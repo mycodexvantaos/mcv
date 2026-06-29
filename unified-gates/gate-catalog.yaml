@@ -1,11 +1,10 @@
 apiVersion: mycodexvantaos.io/v1
 kind: GateCatalog
 metadata:
-  version: "1.0.0"
-  date: "2026-06-29"
-  status: "active"
+  version: '1.0.0'
+  date: '2026-06-29'
+  status: 'active'
   name: unified-gate-catalog
-  version: 1.0.0
   ssot: true
   authority: unified-gate-governance
   governanceCode: mycodexvantaos-00000

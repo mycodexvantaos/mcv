@@ -3,15 +3,15 @@ kind: RootModule
 metadata:
   name: mycodexvantaos
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
   classification: INTERNAL
   status: active
-  spec-authority: "docs/spec/l0-meta/formalized-specification-architecture.yaml"
+  spec-authority: 'docs/spec/l0-meta/formalized-specification-architecture.yaml'
 
 identity:
   machine: mycodexvantaos
   brand: MyCodexVantaOS
-  canonical-url: "https://mycodexvantaos.com"
+  canonical-url: 'https://mycodexvantaos.com'
   forbidden-prefixes:
     - mycodexvanta-os
     - codexvanta-os

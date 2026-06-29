@@ -1,10 +1,7 @@
-# providers/llm/llm-gemini/provider-manifest.yaml
-# Google Gemini LLM Provider - Optional external connector
-# Requires GOOGLE_GENAI_API_KEY or MYCODEXVANTAOS_LLM_GEMINI_API_KEY
 apiVersion: mycodexvantaos.org/v1
 kind: Provider
 metadata:
-  name: llm-gemini
+  name: mycodexvantaos-llm-gemini
   capability: llm
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
@@ -17,7 +14,8 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_LLM_GEMINI
   configSchemaRef: ./config.schema.json
-  description: 'Google Gemini LLM provider (external, requires API key). Optional connector for advanced AI capabilities.'
+  description: Google Gemini LLM provider (external, requires API key). Optional connector
+    for advanced AI capabilities.
   capabilities:
     - text-generation
     - text-completion
@@ -29,3 +27,5 @@ spec:
     - GOOGLE_GENAI_API_KEY or MYCODEXVANTAOS_LLM_GEMINI_API_KEY
   fallbackProvider: llm-native
   priority: 50
+provider-id: mycodexvantaos-llm-gemini
+capability: llm

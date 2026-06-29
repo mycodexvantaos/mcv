@@ -9,8 +9,8 @@ metadata:
 spec:
   rootModuleContractName: mycodexvantaos-module.yaml
   deprecatedNames:
-  - mycodexvantaos.module.yaml
-  - module.yaml
-  - axiom.module.yaml
+    - mycodexvantaos.module.yaml
+    - module.yaml
+    - axiom.module.yaml
 platform: mycodexvantaos
 canonical-url: https://mycodexvantaos.com

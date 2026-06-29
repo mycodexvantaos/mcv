@@ -1,7 +1,7 @@
 apiVersion: mycodexvantaos.io/v1
 kind: PhaseOneValidationConfig
 metadata:
-  version: "1.0.0"
+  version: '1.0.0'
   name: phase-one-validation-config
 spec:
   requiredDeliverables:

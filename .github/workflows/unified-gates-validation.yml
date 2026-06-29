@@ -4,8 +4,8 @@ on:
   push:
     branches: [main, develop]
     paths:
-      - "unified-gates/**"
-      - "governance/**"
+      - 'unified-gates/**'
+      - 'governance/**'
   pull_request:
     branches: [main, develop]
   workflow_dispatch:
@@ -30,8 +30,8 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
-          cache: "pip"
+          python-version: '3.12'
+          cache: 'pip'
 
       - name: Install dependencies
         run: pip install pyyaml jsonschema
@@ -57,7 +57,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: '3.12'
 
       - name: Install dependencies
         run: pip install pyyaml jsonschema networkx
@@ -78,7 +78,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: '3.12'
 
       - name: Install dependencies
         run: pip install pyyaml jsonschema
@@ -110,7 +110,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: '3.12'
 
       - name: Install dependencies
         run: pip install pyyaml

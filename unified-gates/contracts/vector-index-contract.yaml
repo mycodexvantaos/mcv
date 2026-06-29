@@ -1,11 +1,10 @@
 apiVersion: mycodexvantaos.io/v1
 kind: VectorIndexContract
 metadata:
-  version: "1.0.0"
-  date: "2026-06-29"
-  status: "active"
+  version: '1.0.0'
+  date: '2026-06-29'
+  status: 'active'
   name: vector-index-contract
-  version: 1.0.0
   governanceCode: mycodexvantaos-70900
 spec:
   description: >

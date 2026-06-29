@@ -4,9 +4,8 @@
 apiVersion: mycodexvantaos.io/v1
 kind: DependencyPolicy
 metadata:
-  version: "1.0.0"
+  version: '1.0.0'
   name: unified-gates-dependency-policy
-  version: 1.0.0
   governanceCode: mycodexvantaos-00000
   lifecycle: active
   owner: platform-governance-council@mycodexvantaos.com

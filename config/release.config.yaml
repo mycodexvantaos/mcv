@@ -3,7 +3,7 @@ kind: ReleaseConfig
 metadata:
   name: mycodexvantaos-release-config
   version: 1.0.0
-  date: "2026-06-29"
+  date: '2026-06-29'
 
 # Release policy reference
 policy: release/release-policy.yaml
@@ -60,13 +60,13 @@ sbom:
 # Deployment targets
 deployment-targets:
   production:
-    canonical-url: "https://mycodexvantaos.com"
+    canonical-url: 'https://mycodexvantaos.com'
     platforms:
       - cloudflare-pages
       - cloud-run
       - gke
       - firebase-hosting
   staging:
-    canonical-url: "https://staging.mycodexvantaos.com"
+    canonical-url: 'https://staging.mycodexvantaos.com'
   development:
-    canonical-url: "http://localhost:3000"
+    canonical-url: 'http://localhost:3000'

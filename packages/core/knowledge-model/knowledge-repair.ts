@@ -10,12 +10,7 @@ import type { ResourceCondition } from '../shared';
 import type { KnowledgeIssueType } from './knowledge-issue';
 
 export type KnowledgeRepairType =
-  | 're-ingest'
-  | 're-embed'
-  | 're-chunk'
-  | 'delete'
-  | 'merge'
-  | 'supplement';
+  're-ingest' | 're-embed' | 're-chunk' | 'delete' | 'merge' | 'supplement';
 
 export interface KnowledgeRepairSpec {
   /** The issue this repair addresses */
@@ -40,9 +35,4 @@ export interface KnowledgeRepairStatus {
 }
 
 export type KnowledgeRepairPhase =
-  | 'pending'
-  | 'approved'
-  | 'executing'
-  | 'completed'
-  | 'failed'
-  | 'rolled-back';
+  'pending' | 'approved' | 'executing' | 'completed' | 'failed' | 'rolled-back';

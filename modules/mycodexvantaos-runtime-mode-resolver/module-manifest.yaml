@@ -17,12 +17,12 @@ spec:
   internalUri: mycodexvantaos://service/mycodexvantaos-runtime-mode-resolver
   urn: urn:mycodexvantaos:service:mycodexvantaos-runtime-mode-resolver
   supportedRuntimeModes:
-  - native
-  - connected
-  - hybrid
+    - native
+    - connected
+    - hybrid
   deploymentTargets:
-  - kubernetes
-  - docker-compose
+    - kubernetes
+    - docker-compose
   productionReadiness:
     required: true
     healthCheckRequired: true
@@ -33,7 +33,7 @@ spec:
 service-id: mycodexvantaos-runtime-mode-resolver
 platform: mycodexvantaos
 runtime-modes:
-- native
-- connected
-- hybrid
+  - native
+  - connected
+  - hybrid
 service-path: services/mycodexvantaos-runtime-mode-resolver

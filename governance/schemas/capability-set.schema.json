@@ -30,7 +30,16 @@
           "description": { "type": "string" },
           "category": {
             "type": "string",
-            "enum": ["data", "security", "messaging", "platform", "ai", "quantum", "devops", "governance"]
+            "enum": [
+              "data",
+              "security",
+              "messaging",
+              "platform",
+              "ai",
+              "quantum",
+              "devops",
+              "governance"
+            ]
           },
           "providers": {
             "type": "array",

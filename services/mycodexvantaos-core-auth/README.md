@@ -14,8 +14,8 @@ See `modules/mycodexvantaos-core-auth/module-manifest.yaml` for the service cont
 
 `ghcr.io/mycodexvantaos/mycodexvantaos-core-auth`
 
-
 <!-- Platform v1.0 additions -->
+
 Service ID: `mycodexvantaos-core-auth`
 Version: 1.0.0
 Machine Identity: mycodexvantaos

@@ -172,6 +172,7 @@ If no index is specified for an array (i.e. no square brackets after the field r
     <div>[
   { "type": "home", "number": "0203 544 1234" },
   { "type": "office", "number": "01962 001234" }
+
 ]</div>
   </div>
 

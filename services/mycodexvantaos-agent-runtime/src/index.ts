@@ -9,11 +9,11 @@
  * Canonical URL: https://mycodexvantaos.com
  */
 
-export const SERVICE_ID = "mycodexvantaos-agent-runtime";
-export const SERVICE_VERSION = "1.0.0";
+export const SERVICE_ID = 'mycodexvantaos-agent-runtime';
+export const SERVICE_VERSION = '1.0.0';
 
-export type AgentStatus = "idle" | "running" | "paused" | "completed" | "failed";
-export type TaskPriority = "low" | "normal" | "high" | "critical";
+export type AgentStatus = 'idle' | 'running' | 'paused' | 'completed' | 'failed';
+export type TaskPriority = 'low' | 'normal' | 'high' | 'critical';
 
 export interface AgentTask {
   taskId: string;
@@ -32,7 +32,7 @@ export interface AgentTask {
 
 export interface AgentMemory {
   agentId: string;
-  shortTerm: Array<{ role: "user" | "assistant" | "system"; content: string; timestamp: Date }>;
+  shortTerm: Array<{ role: 'user' | 'assistant' | 'system'; content: string; timestamp: Date }>;
   longTerm: Array<{ key: string; value: unknown; createdAt: Date; expiresAt?: Date }>;
 }
 
@@ -74,7 +74,7 @@ export class AgentRuntimeManager {
 
     const runtime: AgentRuntime = {
       agentId,
-      status: "idle",
+      status: 'idle',
       memory: {
         agentId,
         shortTerm: [],
@@ -92,11 +92,11 @@ export class AgentRuntimeManager {
   /**
    * Submit a task to the agent runtime queue.
    */
-  submitTask(task: Omit<AgentTask, "createdAt" | "status">): AgentTask {
+  submitTask(task: Omit<AgentTask, 'createdAt' | 'status'>): AgentTask {
     const fullTask: AgentTask = {
       ...task,
       createdAt: new Date(),
-      status: "idle",
+      status: 'idle',
     };
 
     this.taskQueue.push(fullTask);
@@ -112,29 +112,29 @@ export class AgentRuntimeManager {
       throw new Error(`Agent ${agentId} not found`);
     }
 
-    if (runtime.status === "running") {
+    if (runtime.status === 'running') {
       throw new Error(`Agent ${agentId} is already running a task`);
     }
 
-    runtime.status = "running";
-    runtime.currentTask = { ...task, status: "running", startedAt: new Date() };
+    runtime.status = 'running';
+    runtime.currentTask = { ...task, status: 'running', startedAt: new Date() };
     runtime.lastActivityAt = new Date();
 
     try {
       // Simulate task execution
       const result = await this.processTask(runtime, task);
 
-      runtime.currentTask.status = "completed";
+      runtime.currentTask.status = 'completed';
       runtime.currentTask.completedAt = new Date();
       runtime.currentTask.result = result;
-      runtime.status = "idle";
+      runtime.status = 'idle';
 
       return runtime.currentTask;
     } catch (error) {
-      runtime.currentTask.status = "failed";
+      runtime.currentTask.status = 'failed';
       runtime.currentTask.completedAt = new Date();
       runtime.currentTask.error = error instanceof Error ? error.message : String(error);
-      runtime.status = "idle";
+      runtime.status = 'idle';
 
       return runtime.currentTask;
     }
@@ -156,11 +156,7 @@ export class AgentRuntimeManager {
   /**
    * Add a message to the agent's short-term memory.
    */
-  addToMemory(
-    agentId: string,
-    role: "user" | "assistant" | "system",
-    content: string
-  ): void {
+  addToMemory(agentId: string, role: 'user' | 'assistant' | 'system', content: string): void {
     const runtime = this.agents.get(agentId);
     if (!runtime) throw new Error(`Agent ${agentId} not found`);
 
@@ -195,7 +191,7 @@ export class AgentRuntimeManager {
    * Get all active agents.
    */
   getActiveAgents(): AgentRuntime[] {
-    return Array.from(this.agents.values()).filter((a) => a.status === "running");
+    return Array.from(this.agents.values()).filter((a) => a.status === 'running');
   }
 
   /**
@@ -205,7 +201,7 @@ export class AgentRuntimeManager {
     const runtime = this.agents.get(agentId);
     if (!runtime) throw new Error(`Agent ${agentId} not found`);
 
-    if (runtime.status === "running") {
+    if (runtime.status === 'running') {
       throw new Error(`Cannot terminate running agent ${agentId}. Pause it first.`);
     }
 

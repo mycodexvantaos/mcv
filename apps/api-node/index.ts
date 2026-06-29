@@ -869,10 +869,7 @@ addRoute(
           receiptId: answerReq.receiptId,
           answer: answerReq.answer,
           evidenceLevel: answerReq.evidenceLevel as
-            | 'knowledge-assisted'
-            | 'knowledge-verified'
-            | 'knowledge-grounded'
-            | undefined,
+            'knowledge-assisted' | 'knowledge-verified' | 'knowledge-grounded' | undefined,
           citations: answerReq.citations,
         });
         sendJson(res, 201, { trace });
@@ -941,8 +938,7 @@ addRoute(
         const result = createDreamRunSync({
           mode,
           memory_items: dreamReq.memory_items as
-            | import('@mycodexvantaos/service-memory-dream').MemoryItem[]
-            | undefined,
+            import('@mycodexvantaos/service-memory-dream').MemoryItem[] | undefined,
         });
 
         sendJson(res, 202, {

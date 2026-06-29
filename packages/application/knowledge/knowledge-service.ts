@@ -40,13 +40,7 @@ export interface KnowledgeServiceDeps {
 
 export type DocumentFormat = 'pdf' | 'txt' | 'md' | 'html' | 'json' | 'csv' | 'docx';
 export type DocumentPhase =
-  | 'uploaded'
-  | 'ingesting'
-  | 'ready'
-  | 'failed'
-  | 'stale'
-  | 'archived'
-  | 'deleted';
+  'uploaded' | 'ingesting' | 'ready' | 'failed' | 'stale' | 'archived' | 'deleted';
 
 export interface IngestDocumentInput {
   title: string;
@@ -131,11 +125,7 @@ export interface SearchResultItem {
 // ── Issue & Repair Types ───────────────────────────────────────────────
 
 export type KnowledgeIssueType =
-  | 'stale'
-  | 'contradiction'
-  | 'gap'
-  | 'hallucination'
-  | 'broken-reference';
+  'stale' | 'contradiction' | 'gap' | 'hallucination' | 'broken-reference';
 
 export interface KnowledgeAuditEvent {
   eventType: string;

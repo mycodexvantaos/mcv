@@ -14,8 +14,8 @@ See `modules/mycodexvantaos-governance-policy-engine/module-manifest.yaml` for t
 
 `ghcr.io/mycodexvantaos/mycodexvantaos-governance-policy-engine`
 
-
 <!-- Platform v1.0 additions -->
+
 Service ID: `mycodexvantaos-governance-policy-engine`
 Version: 1.0.0
 Machine Identity: mycodexvantaos

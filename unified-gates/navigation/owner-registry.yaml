@@ -4,9 +4,8 @@
 apiVersion: mycodexvantaos.io/v1
 kind: OwnerRegistry
 metadata:
-  version: "1.0.0"
+  version: '1.0.0'
   name: unified-gates-owner-registry
-  version: 1.0.0
   governanceCode: mycodexvantaos-00000
   lifecycle: active
 

@@ -14,29 +14,29 @@ spec:
 
     '
   crdPaths:
-  - infra/kubernetes/crds/quantum.mycodexvantaos.io.yaml
-  - infra/kubernetes/crds/aitasks.mycodexvantaos.io.yaml
-  - infra/kubernetes/crds/providers.mycodexvantaos.io.yaml
+    - infra/kubernetes/crds/quantum.mycodexvantaos.io.yaml
+    - infra/kubernetes/crds/aitasks.mycodexvantaos.io.yaml
+    - infra/kubernetes/crds/providers.mycodexvantaos.io.yaml
   quantumProviders:
-  - quantum-runtime-native
-  - quantum-simulator-qiskit
-  - quantum-processor-native
-  - quantum-circuit-native
-  - quantum-observability-native
+    - quantum-runtime-native
+    - quantum-simulator-qiskit
+    - quantum-processor-native
+    - quantum-circuit-native
+    - quantum-observability-native
 bridge:
   enabled: true
   version: 1.0.0
 quantum-capabilities:
-- quantum-runtime
-- quantum-simulator
-- quantum-processor
-- quantum-circuit
-- quantum-observability
+  - quantum-runtime
+  - quantum-simulator
+  - quantum-processor
+  - quantum-circuit
+  - quantum-observability
 classical-interfaces:
-- llm
-- embedding
-- vector-store
-- observability
+  - llm
+  - embedding
+  - vector-store
+  - observability
 protocol:
   serialization: protobuf
   transport: grpc
@@ -49,20 +49,20 @@ circuit-interface:
   max-qubits: 127
   max-depth: 1000
   supported-gates:
-  - H
-  - X
-  - Y
-  - Z
-  - CNOT
-  - CZ
-  - T
-  - S
-  - RX
-  - RY
-  - RZ
-  - SWAP
-  - Toffoli
-  - Fredkin
+    - H
+    - X
+    - Y
+    - Z
+    - CNOT
+    - CZ
+    - T
+    - S
+    - RX
+    - RY
+    - RZ
+    - SWAP
+    - Toffoli
+    - Fredkin
 result-interface:
   format: json
   include-statevector: false
@@ -73,14 +73,14 @@ result-interface:
 error-mitigation:
   enabled: true
   strategies:
-  - zero-noise-extrapolation
-  - probabilistic-error-cancellation
-  - measurement-error-mitigation
+    - zero-noise-extrapolation
+    - probabilistic-error-cancellation
+    - measurement-error-mitigation
 observability:
   metrics:
-  - quantum_circuit_execution_total
-  - quantum_circuit_execution_duration_seconds
-  - quantum_circuit_error_rate
-  - quantum_qubit_fidelity
+    - quantum_circuit_execution_total
+    - quantum_circuit_execution_duration_seconds
+    - quantum_circuit_error_rate
+    - quantum_qubit_fidelity
   tracing: true
   logging-level: info

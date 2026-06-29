@@ -13,8 +13,8 @@ metadata:
   governanceCode: mycodexvantaos-50500
   createdAt: 2026-01-01 00:00:00+00:00
   tags:
-  - l90
-  - policy
+    - l90
+    - policy
   sloTarget: 30
   evidenceRetentionDays: 2555
   date: '2026-06-29'
@@ -25,24 +25,24 @@ spec:
 
     '
   validates:
-  - dimension: attestation-completeness
-    description: Policy attestations are complete.
-    checks:
-    - id: chk-safety-policy-attested
-      description: AI safety policy attestation exists
-      rule: attestation:ai-safety-policy
-      severity: critical
-      evidenceRequired: true
-    - id: chk-governance-policy-attested
-      description: Gate governance policy attestation exists
-      rule: attestation:gate-governance-policy
-      severity: critical
-      evidenceRequired: true
-    - id: chk-attestation-signed
-      description: All attestations are signed by authorized principals
-      rule: signature:attestation-signed
-      severity: critical
-      evidenceRequired: true
+    - dimension: attestation-completeness
+      description: Policy attestations are complete.
+      checks:
+        - id: chk-safety-policy-attested
+          description: AI safety policy attestation exists
+          rule: attestation:ai-safety-policy
+          severity: critical
+          evidenceRequired: true
+        - id: chk-governance-policy-attested
+          description: Gate governance policy attestation exists
+          rule: attestation:gate-governance-policy
+          severity: critical
+          evidenceRequired: true
+        - id: chk-attestation-signed
+          description: All attestations are signed by authorized principals
+          rule: signature:attestation-signed
+          severity: critical
+          evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

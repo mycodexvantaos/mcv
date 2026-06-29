@@ -167,8 +167,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Fixed` for any bug fixes
 - `Security` in case of vulnerabilities
 
-
 <!-- Platform v1.0 additions -->
+
 - Section markers normalized: all `Spec-X` replaced with `## Spec X：` and `Spec-X.Y` with `### Spec X.Y：` for Markdown compatibility across GitLab Wiki, Docsify, and static site generators
 - CONTRIBUTING.md updated with section-symbol prohibition and Spec format documentation rule
 - Pre-commit hook added to prevent U+00A7 from entering the repository

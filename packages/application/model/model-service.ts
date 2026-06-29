@@ -41,13 +41,7 @@ export interface ModelServiceDeps {
 // ── Types ──────────────────────────────────────────────────────────────
 
 export type ModelProvider =
-  | 'openai'
-  | 'anthropic'
-  | 'google'
-  | 'ollama'
-  | 'openrouter'
-  | 'workers-ai'
-  | 'custom';
+  'openai' | 'anthropic' | 'google' | 'ollama' | 'openrouter' | 'workers-ai' | 'custom';
 export type ModelEndpointPhase = 'registering' | 'active' | 'degraded' | 'revoked';
 
 export interface RegisterEndpointInput {

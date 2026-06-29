@@ -12,7 +12,7 @@
 > **Historical Brand Aliases:** `MyCodeXvantaOS`  
 > **Canonical URL:** https://mycodexvantaos.com  
 > **Spec Authority:** FSA (L0) → Constitution (L1) → Capability Addendum (L2)  
-> **Execution Semantics:** MUST / MUST NOT / SHOULD / MAY  
+> **Execution Semantics:** MUST / MUST NOT / SHOULD / MAY
 
 ---
 
@@ -22,12 +22,12 @@ MyCodexVantaOS is an upstream software infrastructure platform purpose-built for
 
 ## Identity Boundary
 
-| Context | Canonical Value |
-|---|---|
-| Machine Identity | `mycodexvantaos` |
-| Brand Identity | `MyCodexVantaOS` |
-| Canonical URL | `https://mycodexvantaos.com` |
-**Forbidden Prefixes:** `mycodexvanta-os`, `codexvanta-os`, `codexvanta`, `codevantaos`, `kubo`, `axiom`
+| Context                                                                                                  | Canonical Value              |
+| -------------------------------------------------------------------------------------------------------- | ---------------------------- |
+| Machine Identity                                                                                         | `mycodexvantaos`             |
+| Brand Identity                                                                                           | `MyCodexVantaOS`             |
+| Canonical URL                                                                                            | `https://mycodexvantaos.com` |
+| **Forbidden Prefixes:** `mycodexvanta-os`, `codexvanta-os`, `codexvanta`, `codevantaos`, `kubo`, `axiom` |
 
 ## Specification Hierarchy
 
@@ -225,34 +225,38 @@ See full consistency remediation specification in the platform constitution.
 
 _This document is the normative source of truth for the MyCodexVantaOS platform architecture._
 
-
 ## Seven Strategic Foundations
 
-| Foundation | Scope |
-|---|---|
-| Compute Foundation | AI chips, GPU, smart servers, inference/training pools, Kubernetes |
-| Data Foundation | Datasets, pipelines, vector DB, embeddings, hybrid search, knowledge graphs |
-| Algorithm Foundation | Model routing, BYOK gateway, fine-tuning, evaluation, LLM/CV/NLP |
-| Agent Foundation | AI Agent runtime, memory, tool calling, MCP, RAG, workflow DAG |
-| Contract Foundation | Declarative AI task contracts, module contracts, API, events, Schema, URN |
-| Governance Foundation | Policy-as-code, audit chain, compliance, RBAC, zero-trust, supply chain |
-| Business Foundation | Usage metering, quota, billing, pricing, workspace, marketplace |
+| Foundation            | Scope                                                                       |
+| --------------------- | --------------------------------------------------------------------------- |
+| Compute Foundation    | AI chips, GPU, smart servers, inference/training pools, Kubernetes          |
+| Data Foundation       | Datasets, pipelines, vector DB, embeddings, hybrid search, knowledge graphs |
+| Algorithm Foundation  | Model routing, BYOK gateway, fine-tuning, evaluation, LLM/CV/NLP            |
+| Agent Foundation      | AI Agent runtime, memory, tool calling, MCP, RAG, workflow DAG              |
+| Contract Foundation   | Declarative AI task contracts, module contracts, API, events, Schema, URN   |
+| Governance Foundation | Policy-as-code, audit chain, compliance, RBAC, zero-trust, supply chain     |
+| Business Foundation   | Usage metering, quota, billing, pricing, workspace, marketplace             |
 
 ## Domain & Deployment Contract
 
 **Production Canonical URL:** `https://mycodexvantaos.com`
 All frontend sites, API callbacks, OAuth redirect URIs, webhook endpoints, CORS allowlists, cookie domains, canonical URLs, OpenGraph URLs, sitemaps, and robots.txt MUST use `mycodexvantaos.com` as the production domain baseline.
+
 ### Subdomain Strategy
-| Subdomain | URL | Purpose |
-|---|---|---|
-| apex | `https://mycodexvantaos.com` | Brand / Landing / SEO |
-| www | `https://www.mycodexvantaos.com` | 301 redirect to apex |
-| app | `https://app.mycodexvantaos.com` | Application Console |
-| api | `https://api.mycodexvantaos.com` | API / Webhooks / BFF |
-| admin | `https://admin.mycodexvantaos.com` | Admin Console |
-| docs | `https://docs.mycodexvantaos.com` | Documentation |
+
+| Subdomain | URL                                | Purpose               |
+| --------- | ---------------------------------- | --------------------- |
+| apex      | `https://mycodexvantaos.com`       | Brand / Landing / SEO |
+| www       | `https://www.mycodexvantaos.com`   | 301 redirect to apex  |
+| app       | `https://app.mycodexvantaos.com`   | Application Console   |
+| api       | `https://api.mycodexvantaos.com`   | API / Webhooks / BFF  |
+| admin     | `https://admin.mycodexvantaos.com` | Admin Console         |
+| docs      | `https://docs.mycodexvantaos.com`  | Documentation         |
+
 ### Forbidden Production URLs
+
 The following vendor-generated URLs MUST NOT be used as production canonical URLs, OAuth redirect URIs, webhook endpoints, or public API server URLs:
+
 - `*.github.io`
 - `*.pages.dev`
 - `*.vercel.app`

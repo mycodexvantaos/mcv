@@ -19,20 +19,20 @@ identity:
       role: 核心基礎設施 / 共享服務 / 控制平面
       scope: 底層平台組件，為上層業務平台提供支撐
       examples:
-      - mycodexvantaos-auth
-      - mycodexvantaos-policy
-      - mycodexvantaos-quantum-controller
+        - mycodexvantaos-auth
+        - mycodexvantaos-policy
+        - mycodexvantaos-quantum-controller
     softwareos:
       role: 業務平台命名空間
       scope: 上層業務應用，依賴 mycodexvantaos 提供的基礎服務
       note: 保留為業務平台獨立分層，不得與 mycodexvantaos 混用
   forbidden_legacy_prefixes:
-  - mycodexvanta-os
-  - codexvanta-os
-  - codexvanta
-  - KUBO
-  - kubo
-  - codevantaos
+    - mycodexvanta-os
+    - codexvanta-os
+    - codexvanta
+    - KUBO
+    - kubo
+    - codevantaos
   forbidden_legacy_regex: ^(mycodexvanta-os|codexvanta|codexvanta-os|[Kk][Uu][Bb][Oo]|codevantaos)
   migration_script: scripts/rename-mycodexvantaos.sh
   scan_script: scripts/check-legacy-prefix.sh
@@ -50,43 +50,43 @@ naming_closure_model:
     atomic_category_count: 32
     atomic_categories:
       infrastructure:
-      - platform
-      - service
-      - api
-      - component
-      - port
-      - dns
+        - platform
+        - service
+        - api
+        - component
+        - port
+        - dns
       development:
-      - module
-      - directory
-      - file
-      - dependency
-      - branch
-      - tag
+        - module
+        - directory
+        - file
+        - dependency
+        - branch
+        - tag
       organization:
-      - team
-      - org
-      - enterprise
+        - team
+        - org
+        - enterprise
       semantic_governance:
-      - semantic-anchor
-      - governance-rule
-      - event-stream
-      - archive-evidence
-      - spec-doc
-      - path
-      - mapping
-      - reference
-      - metadata
-      - annotation
+        - semantic-anchor
+        - governance-rule
+        - event-stream
+        - archive-evidence
+        - spec-doc
+        - path
+        - mapping
+        - reference
+        - metadata
+        - annotation
       technical_closure:
-      - error
-      - state
-      - transition
-      - policy
-      - metric
-      - contract
+        - error
+        - state
+        - transition
+        - policy
+        - metric
+        - contract
       meta:
-      - meta-naming
+        - meta-naming
   L1_normative:
     layer_id: L1
     label: 規範命名層
@@ -108,9 +108,9 @@ naming_closure_model:
     multisig_method: hardware_security_module
     source_doc: governance/naming-closure/L2-meta/meta_naming_spec_v1.yaml
     defines:
-    - 規範文件命名規則
-    - 規範版本策略（強制 SemVer 2.0.0）
-    - L2 自身變更的權限閉環
+      - 規範文件命名規則
+      - 規範版本策略（強制 SemVer 2.0.0）
+      - L2 自身變更的權限閉環
   closure_prover:
     class: NamingClosureProver
     source_file: ci/utils/naming-closure-prover.ts
@@ -418,23 +418,23 @@ canonical_identifiers:
     ci_rule_file: ci/rules/service-id.rule.ts
     enforcement: hard
     constraints:
-    - 必須以 mycodexvantaos- 為前綴
-    - domain + capability 至少兩段
-    - 不含版本號
-    - 不含環境標記
+      - 必須以 mycodexvantaos- 為前綴
+      - domain + capability 至少兩段
+      - 不含版本號
+      - 不含環境標記
     valid_examples:
-    - mycodexvantaos-ai-embedding
-    - mycodexvantaos-core-auth
-    - mycodexvantaos-quantum-controller
+      - mycodexvantaos-ai-embedding
+      - mycodexvantaos-core-auth
+      - mycodexvantaos-quantum-controller
     invalid_examples:
-    - value: mycodexvantaos-ai
-      reason: 僅一段 domain
-    - value: mycodexvantaos-ai-embedding-v2
-      reason: 含版本號
-    - value: mycodexvantaos-ai-embedding-prod
-      reason: 含環境標記
-    - value: mycodexvantaos_ai_embedding
-      reason: 底線不允許
+      - value: mycodexvantaos-ai
+        reason: 僅一段 domain
+      - value: mycodexvantaos-ai-embedding-v2
+        reason: 含版本號
+      - value: mycodexvantaos-ai-embedding-prod
+        reason: 含環境標記
+      - value: mycodexvantaos_ai_embedding
+        reason: 底線不允許
   package_short_id:
     format: <domain>-<capability>[-<sub_capability>]
     derivation: service_id.removePrefix('mycodexvantaos-')
@@ -448,33 +448,34 @@ canonical_identifiers:
     source_of_truth: governance/capability-set.yaml
     ci_rule_file: ci/rules/capability-id.rule.ts
     enforcement: hard
-    regex: '^(database|storage|auth|queue|state-store|secrets|repo|deploy| validation|security|observability|notification|scheduler|vector-store|
+    regex:
+      '^(database|storage|auth|queue|state-store|secrets|repo|deploy| validation|security|observability|notification|scheduler|vector-store|
       embedding|llm|graph|cache|search)$
 
       '
     values:
-    - database
-    - storage
-    - auth
-    - queue
-    - state-store
-    - secrets
-    - repo
-    - deploy
-    - validation
-    - security
-    - observability
-    - notification
-    - scheduler
-    - vector-store
-    - embedding
-    - llm
-    - graph
-    - cache
-    - search
-    - ai-ethics
-    - blockchain
-    - event-stream
+      - database
+      - storage
+      - auth
+      - queue
+      - state-store
+      - secrets
+      - repo
+      - deploy
+      - validation
+      - security
+      - observability
+      - notification
+      - scheduler
+      - vector-store
+      - embedding
+      - llm
+      - graph
+      - cache
+      - search
+      - ai-ethics
+      - blockchain
+      - event-stream
 protocol_specific_identifiers:
   package_name:
     format: '@mycodexvantaos/<package_short_id>'
@@ -488,35 +489,36 @@ protocol_specific_identifiers:
     ci_rule_file: ci/rules/env-var.rule.ts
     enforcement: hard
     valid_examples:
-    - MYCODEXVANTAOS_DATABASE_URL
-    - MYCODEXVANTAOS_AUTH_JWT_SECRET
-    - MYCODEXVANTAOS_QUANTUM_MODE
+      - MYCODEXVANTAOS_DATABASE_URL
+      - MYCODEXVANTAOS_AUTH_JWT_SECRET
+      - MYCODEXVANTAOS_QUANTUM_MODE
     invalid_examples:
-    - value: DATABASE_URL
-      reason: 缺少 MYCODEXVANTAOS_ 前綴
-    - value: ORCH_DATABASE_URL
-      reason: 舊前綴禁用
-    - value: KUBO_MODE
-      reason: 遺留前綴禁用
-    - value: MYCODEXVANTAOS_MODE
-      note: MYCODEXVANTAOS_MODE 為合法替代 KUBO_MODE
+      - value: DATABASE_URL
+        reason: 缺少 MYCODEXVANTAOS_ 前綴
+      - value: ORCH_DATABASE_URL
+        reason: 舊前綴禁用
+      - value: KUBO_MODE
+        reason: 遺留前綴禁用
+      - value: MYCODEXVANTAOS_MODE
+        note: MYCODEXVANTAOS_MODE 為合法替代 KUBO_MODE
   urn:
     format: urn:mycodexvantaos:<type>:<subtype>:<identifier>
     regex: ^urn:mycodexvantaos:[a-z-]+:[a-z-]+:[a-z0-9-]+$
     ci_rule_file: ci/rules/urn.rule.ts
     enforcement: hard
     examples:
-    - urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-embedding
-    - urn:mycodexvantaos:capability:vector-store:pgvector
+      - urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-embedding
+      - urn:mycodexvantaos:capability:vector-store:pgvector
   internal_uri:
     format: mycodexvantaos://<namespace>/<type>/<id>
     examples:
-    - mycodexvantaos://platform/service/mycodexvantaos-core-kernel
+      - mycodexvantaos://platform/service/mycodexvantaos-core-kernel
 provider_identifiers:
   provider_instance:
     format: <capability>-<provider>
     order: capability FIRST, provider SECOND — never inverted
-    regex: '^(database|storage|auth|queue|state-store|secrets|repo|deploy| validation|security|observability|notification|scheduler|vector-store|
+    regex:
+      '^(database|storage|auth|queue|state-store|secrets|repo|deploy| validation|security|observability|notification|scheduler|vector-store|
       embedding|llm|graph|cache|search)-[a-z0-9-]+$
 
       '
@@ -525,14 +527,14 @@ provider_identifiers:
     source_of_truth: governance/provider-registry.yaml
     directory_pattern: providers/<capability>/<capability>-<provider>/provider-manifest.yaml
     valid_examples:
-    - vector-store-pgvector
-    - database-postgres
-    - llm-openai
+      - vector-store-pgvector
+      - database-postgres
+      - llm-openai
     invalid_examples:
-    - value: postgres-database
-      reason: 順序倒置
-    - value: openai-llm
-      reason: 順序倒置
+      - value: postgres-database
+        reason: 順序倒置
+      - value: openai-llm
+        reason: 順序倒置
 composite_identifiers:
   separator: --
   rule: 雙連字號僅用於 composite；不得出現在 canonical identifier 中
@@ -639,15 +641,15 @@ model:
   type: policy-as-code
   enforcement: ci-pipeline
   authority-chain:
-  - layer: 0
-    spec: docs/spec/l0-meta/formalized-specification-architecture.yaml
-    description: Meta-governance specification
-  - layer: 1
-    spec: docs/spec/l1-constitution/constitution.yaml
-    description: Constitutional specification
-  - layer: 2
-    spec: docs/spec/l2-structure/capability-architecture-addendum.yaml
-    description: Structural specification
+    - layer: 0
+      spec: docs/spec/l0-meta/formalized-specification-architecture.yaml
+      description: Meta-governance specification
+    - layer: 1
+      spec: docs/spec/l1-constitution/constitution.yaml
+      description: Constitutional specification
+    - layer: 2
+      spec: docs/spec/l2-structure/capability-architecture-addendum.yaml
+      description: Structural specification
 domains:
   identity:
     policy: governance/identity-policy.yaml
@@ -698,11 +700,11 @@ exceptions:
   max-duration-days: 90
   require-approval: true
   approvers:
-  - platform-governance-team
+    - platform-governance-team
   review-cycle-days: 30
 reporting:
   output-dir: governance/reports
   schedule: on-ci-run
   formats:
-  - json
-  - yaml
+    - json
+    - yaml

@@ -1,5 +1,3 @@
-# modules/mycodexvantaos-platform-notification/module-manifest.yaml
-# 6.3 — metadata.name MUST equal the directory name and service-id exactly (6.4)
 apiVersion: mycodexvantaos.org/v1
 kind: Module
 metadata:
@@ -19,7 +17,8 @@ spec:
     observability: observability-opentelemetry
   lifecycle:
     stage: stable
-    since: 'v1.0.0'
-  urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-platform-notification'
+    since: v1.0.0
+  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-platform-notification
   packageName: '@mycodexvantaos/platform-notification'
-  description: 'Outbound notification delivery (email, SMS, push).'
+  description: Outbound notification delivery (email, SMS, push).
+service-id: mycodexvantaos-platform-notification

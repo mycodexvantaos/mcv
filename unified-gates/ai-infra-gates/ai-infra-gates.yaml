@@ -1,15 +1,13 @@
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGateIndex
 metadata:
-  version: "1.0.0"
-  date: "2026-06-29"
+  version: '1.0.0'
+  date: '2026-06-29'
   name: ai-infra-gates
-  version: 1.0.0
   ssot: true
   authority: unified-gate-governance
   governanceCode: mycodexvantaos-00000
 spec:
-  version: 1.0.0
   totalGates: 61
   layers:
     - id: l00

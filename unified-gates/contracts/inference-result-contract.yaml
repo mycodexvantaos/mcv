@@ -1,11 +1,10 @@
 apiVersion: mycodexvantaos.io/v1
 kind: InferenceResultContract
 metadata:
-  version: "1.0.0"
-  date: "2026-06-29"
-  status: "active"
+  version: '1.0.0'
+  date: '2026-06-29'
+  status: 'active'
   name: inference-result-contract
-  version: 1.0.0
   governanceCode: mycodexvantaos-60700
 spec:
   description: >

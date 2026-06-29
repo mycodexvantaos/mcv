@@ -14,22 +14,22 @@
  *   upgrade-insecure-requests;
  */
 
-import { AppEnvironment, domains, resolveEnvironment } from "../config/domains";
+import { AppEnvironment, domains, resolveEnvironment } from '../config/domains';
 
 export interface CspDirectives {
-  "default-src": string[];
-  "script-src": string[];
-  "style-src": string[];
-  "img-src": string[];
-  "font-src": string[];
-  "connect-src": string[];
-  "frame-src": string[];
-  "frame-ancestors": string[];
-  "object-src": string[];
-  "base-uri": string[];
-  "form-action": string[];
-  "upgrade-insecure-requests": boolean;
-  "block-all-mixed-content": boolean;
+  'default-src': string[];
+  'script-src': string[];
+  'style-src': string[];
+  'img-src': string[];
+  'font-src': string[];
+  'connect-src': string[];
+  'frame-src': string[];
+  'frame-ancestors': string[];
+  'object-src': string[];
+  'base-uri': string[];
+  'form-action': string[];
+  'upgrade-insecure-requests': boolean;
+  'block-all-mixed-content': boolean;
   [key: string]: string[] | boolean;
 }
 
@@ -41,15 +41,15 @@ export function buildProductionCsp(): CspDirectives {
   const { canonicalUrl, appUrl, apiUrl, adminUrl, docsUrl } = domains.production;
 
   return {
-    "default-src": ["'self'"],
-    "script-src": [
+    'default-src': ["'self'"],
+    'script-src': [
       "'self'",
       // Nonce-based scripts are added at request time
     ],
-    "style-src": ["'self'", "'unsafe-inline'"], // unsafe-inline needed for CSS-in-JS
-    "img-src": ["'self'", "data:", "blob:", canonicalUrl, apiUrl],
-    "font-src": ["'self'", "data:"],
-    "connect-src": [
+    'style-src': ["'self'", "'unsafe-inline'"], // unsafe-inline needed for CSS-in-JS
+    'img-src': ["'self'", 'data:', 'blob:', canonicalUrl, apiUrl],
+    'font-src': ["'self'", 'data:'],
+    'connect-src': [
       "'self'",
       canonicalUrl,
       appUrl,
@@ -57,15 +57,15 @@ export function buildProductionCsp(): CspDirectives {
       adminUrl,
       docsUrl,
       // OpenTelemetry collector
-      "https://otel.mycodexvantaos.com",
+      'https://otel.mycodexvantaos.com',
     ],
-    "frame-src": ["'none'"],
-    "frame-ancestors": ["'none'"],
-    "object-src": ["'none'"],
-    "base-uri": ["'self'"],
-    "form-action": ["'self'", canonicalUrl, appUrl],
-    "upgrade-insecure-requests": true,
-    "block-all-mixed-content": false, // upgrade-insecure-requests handles this
+    'frame-src': ["'none'"],
+    'frame-ancestors': ["'none'"],
+    'object-src': ["'none'"],
+    'base-uri': ["'self'"],
+    'form-action': ["'self'", canonicalUrl, appUrl],
+    'upgrade-insecure-requests': true,
+    'block-all-mixed-content': false, // upgrade-insecure-requests handles this
   };
 }
 
@@ -74,24 +74,24 @@ export function buildProductionCsp(): CspDirectives {
  */
 export function buildDevelopmentCsp(): CspDirectives {
   return {
-    "default-src": ["'self'"],
-    "script-src": ["'self'", "'unsafe-eval'", "'unsafe-inline'"], // Allow HMR
-    "style-src": ["'self'", "'unsafe-inline'"],
-    "img-src": ["'self'", "data:", "blob:", "http://localhost:*"],
-    "font-src": ["'self'", "data:"],
-    "connect-src": [
+    'default-src': ["'self'"],
+    'script-src': ["'self'", "'unsafe-eval'", "'unsafe-inline'"], // Allow HMR
+    'style-src': ["'self'", "'unsafe-inline'"],
+    'img-src': ["'self'", 'data:', 'blob:', 'http://localhost:*'],
+    'font-src': ["'self'", 'data:'],
+    'connect-src': [
       "'self'",
-      "http://localhost:*",
-      "ws://localhost:*", // WebSocket for HMR
-      "http://127.0.0.1:*",
+      'http://localhost:*',
+      'ws://localhost:*', // WebSocket for HMR
+      'http://127.0.0.1:*',
     ],
-    "frame-src": ["'none'"],
-    "frame-ancestors": ["'none'"],
-    "object-src": ["'none'"],
-    "base-uri": ["'self'"],
-    "form-action": ["'self'"],
-    "upgrade-insecure-requests": false,
-    "block-all-mixed-content": false,
+    'frame-src': ["'none'"],
+    'frame-ancestors': ["'none'"],
+    'object-src': ["'none'"],
+    'base-uri': ["'self'"],
+    'form-action': ["'self'"],
+    'upgrade-insecure-requests': false,
+    'block-all-mixed-content': false,
   };
 }
 
@@ -100,7 +100,7 @@ export function buildDevelopmentCsp(): CspDirectives {
  */
 export function buildCspDirectives(env?: AppEnvironment): CspDirectives {
   const resolvedEnv = env ?? resolveEnvironment();
-  if (resolvedEnv === "production" || resolvedEnv === "staging") {
+  if (resolvedEnv === 'production' || resolvedEnv === 'staging') {
     return buildProductionCsp();
   }
   return buildDevelopmentCsp();
@@ -113,16 +113,16 @@ export function serializeCsp(directives: CspDirectives): string {
   const parts: string[] = [];
 
   for (const [directive, value] of Object.entries(directives)) {
-    if (typeof value === "boolean") {
+    if (typeof value === 'boolean') {
       if (value) {
         parts.push(directive);
       }
     } else if (Array.isArray(value) && value.length > 0) {
-      parts.push(`${directive} ${value.join(" ")}`);
+      parts.push(`${directive} ${value.join(' ')}`);
     }
   }
 
-  return parts.join("; ");
+  return parts.join('; ');
 }
 
 /**
@@ -138,12 +138,12 @@ export function getCspHeader(env?: AppEnvironment): string {
  * Use this for inline scripts that cannot be moved to external files.
  */
 export function addNonceToCsp(directives: CspDirectives, nonce: string): CspDirectives {
-  const scriptSrc = [...(directives["script-src"] as string[])];
+  const scriptSrc = [...(directives['script-src'] as string[])];
   const nonceValue = `'nonce-${nonce}'`;
   if (!scriptSrc.includes(nonceValue)) {
     scriptSrc.push(nonceValue);
   }
-  return { ...directives, "script-src": scriptSrc };
+  return { ...directives, 'script-src': scriptSrc };
 }
 
 /**
@@ -152,7 +152,7 @@ export function addNonceToCsp(directives: CspDirectives, nonce: string): CspDire
 export function validateCsp(directives: CspDirectives): string[] {
   const warnings: string[] = [];
 
-  const scriptSrc = directives["script-src"] as string[];
+  const scriptSrc = directives['script-src'] as string[];
   if (scriptSrc.includes("'unsafe-eval'")) {
     warnings.push("CSP: 'unsafe-eval' in script-src is a security risk. Remove in production.");
   }
@@ -160,16 +160,16 @@ export function validateCsp(directives: CspDirectives): string[] {
     warnings.push("CSP: 'unsafe-inline' without nonce in script-src weakens XSS protection.");
   }
 
-  const defaultSrc = directives["default-src"] as string[];
-  if (defaultSrc.includes("*")) {
-    warnings.push("CSP: Wildcard (*) in default-src is forbidden.");
+  const defaultSrc = directives['default-src'] as string[];
+  if (defaultSrc.includes('*')) {
+    warnings.push('CSP: Wildcard (*) in default-src is forbidden.');
   }
 
-  if (!(directives["upgrade-insecure-requests"] as boolean)) {
-    warnings.push("CSP: upgrade-insecure-requests should be enabled in production.");
+  if (!(directives['upgrade-insecure-requests'] as boolean)) {
+    warnings.push('CSP: upgrade-insecure-requests should be enabled in production.');
   }
 
-  const frameAncestors = directives["frame-ancestors"] as string[];
+  const frameAncestors = directives['frame-ancestors'] as string[];
   if (!frameAncestors.includes("'none'") && !frameAncestors.includes("'self'")) {
     warnings.push("CSP: frame-ancestors should be 'none' or 'self' to prevent clickjacking.");
   }

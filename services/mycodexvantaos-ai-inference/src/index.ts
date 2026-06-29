@@ -8,11 +8,11 @@
  * Machine Identity: mycodexvantaos
  */
 
-export const SERVICE_ID = "mycodexvantaos-ai-inference";
-export const SERVICE_VERSION = "1.0.0";
+export const SERVICE_ID = 'mycodexvantaos-ai-inference';
+export const SERVICE_VERSION = '1.0.0';
 
-export type LLMProvider = "native" | "openai" | "openrouter" | "workers-ai";
-export type MessageRole = "system" | "user" | "assistant" | "tool";
+export type LLMProvider = 'native' | 'openai' | 'openrouter' | 'workers-ai';
+export type MessageRole = 'system' | 'user' | 'assistant' | 'tool';
 
 export interface ChatMessage {
   role: MessageRole;
@@ -44,7 +44,7 @@ export interface InferenceResponse {
     completionTokens: number;
     totalTokens: number;
   };
-  finishReason: "stop" | "length" | "tool_calls" | "content_filter" | "error";
+  finishReason: 'stop' | 'length' | 'tool_calls' | 'content_filter' | 'error';
   latencyMs: number;
   createdAt: Date;
 }
@@ -53,7 +53,7 @@ export interface ToolDefinition {
   name: string;
   description: string;
   parameters: {
-    type: "object";
+    type: 'object';
     properties: Record<string, { type: string; description: string }>;
     required?: string[];
   };
@@ -62,7 +62,7 @@ export interface ToolDefinition {
 export interface ModelRouterConfig {
   defaultProvider: LLMProvider;
   fallbackProviders: LLMProvider[];
-  routingStrategy: "cost" | "latency" | "quality" | "round-robin";
+  routingStrategy: 'cost' | 'latency' | 'quality' | 'round-robin';
   providerEndpoints: Record<LLMProvider, string>;
 }
 
@@ -113,16 +113,16 @@ export class AIInferenceEngine {
     if (request.provider) return request.provider;
 
     switch (this.config.routingStrategy) {
-      case "round-robin":
+      case 'round-robin':
         this.requestCount++;
-        const providers: LLMProvider[] = ["native", "openai", "openrouter", "workers-ai"];
+        const providers: LLMProvider[] = ['native', 'openai', 'openrouter', 'workers-ai'];
         return providers[this.requestCount % providers.length];
-      case "cost":
-        return "native"; // Native is cheapest
-      case "latency":
+      case 'cost':
+        return 'native'; // Native is cheapest
+      case 'latency':
         return this.config.defaultProvider;
-      case "quality":
-        return "openai"; // Highest quality
+      case 'quality':
+        return 'openai'; // Highest quality
       default:
         return this.config.defaultProvider;
     }
@@ -134,7 +134,7 @@ export class AIInferenceEngine {
   private async executeInference(
     request: InferenceRequest,
     provider: LLMProvider
-  ): Promise<Omit<InferenceResponse, "latencyMs">> {
+  ): Promise<Omit<InferenceResponse, 'latencyMs'>> {
     // Provider-specific execution logic
     const endpoint = this.config.providerEndpoints[provider];
 
@@ -144,7 +144,7 @@ export class AIInferenceEngine {
       model: request.model,
       provider,
       message: {
-        role: "assistant",
+        role: 'assistant',
         content: `[${provider}] Response for request ${request.requestId}`,
       },
       usage: {
@@ -152,7 +152,7 @@ export class AIInferenceEngine {
         completionTokens: 100,
         totalTokens: request.messages.reduce((acc, m) => acc + m.content.length / 4, 0) + 100,
       },
-      finishReason: "stop",
+      finishReason: 'stop',
       createdAt: new Date(),
     };
   }
@@ -162,10 +162,10 @@ export class AIInferenceEngine {
    */
   getAvailableModels(provider: LLMProvider): string[] {
     const models: Record<LLMProvider, string[]> = {
-      native: ["mycodexvantaos-llm-v1", "mycodexvantaos-llm-v1-mini"],
-      openai: ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-3.5-turbo"],
-      openrouter: ["anthropic/claude-3-5-sonnet", "google/gemini-pro", "meta-llama/llama-3-70b"],
-      "workers-ai": ["@cf/meta/llama-3-8b-instruct", "@cf/mistral/mistral-7b-instruct-v0.1"],
+      native: ['mycodexvantaos-llm-v1', 'mycodexvantaos-llm-v1-mini'],
+      openai: ['gpt-4o', 'gpt-4o-mini', 'gpt-4-turbo', 'gpt-3.5-turbo'],
+      openrouter: ['anthropic/claude-3-5-sonnet', 'google/gemini-pro', 'meta-llama/llama-3-70b'],
+      'workers-ai': ['@cf/meta/llama-3-8b-instruct', '@cf/mistral/mistral-7b-instruct-v0.1'],
     };
     return models[provider] ?? [];
   }
@@ -175,14 +175,14 @@ export class AIInferenceEngine {
  * Default inference engine configuration.
  */
 export const defaultInferenceConfig: ModelRouterConfig = {
-  defaultProvider: "native",
-  fallbackProviders: ["openai", "openrouter"],
-  routingStrategy: "latency",
+  defaultProvider: 'native',
+  fallbackProviders: ['openai', 'openrouter'],
+  routingStrategy: 'latency',
   providerEndpoints: {
-    native: "http://localhost:8080/v1",
-    openai: "https://api.openai.com/v1",
-    openrouter: "https://openrouter.ai/api/v1",
-    "workers-ai": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run",
+    native: 'http://localhost:8080/v1',
+    openai: 'https://api.openai.com/v1',
+    openrouter: 'https://openrouter.ai/api/v1',
+    'workers-ai': 'https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run',
   },
 };
 

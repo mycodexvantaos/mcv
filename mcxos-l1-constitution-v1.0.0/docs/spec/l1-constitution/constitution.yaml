@@ -1,10 +1,10 @@
 spec-id: mycodexvantaos-spec-l1-constitution-v1.0.0
 layer: 1
 version: 1.0.0
-date: "2026-06-29"
+date: '2026-06-29'
 status: active
 authoritative: true
-title: "MyCodexVantaOS Constitutional Specification (L1)"
+title: 'MyCodexVantaOS Constitutional Specification (L1)'
 description: >
   Layer 1 constitutional specification. Defines canonical identity, forbidden prefixes,
   manifest boundary, foundation boundary, hash policy, naming closure, service ID format,
@@ -16,7 +16,7 @@ identity:
   brand: MyCodexVantaOS
   legacy-aliases:
     - MyCodeXvantaOS
-    - "MyCodeXvanta OS"
+    - 'MyCodeXvanta OS'
   forbidden-prefixes:
     - mycodexvanta-os
     - codexvanta-os
@@ -30,8 +30,8 @@ identity:
 
 # Service ID format
 service-id:
-  format: "mycodexvantaos-<domain>-<capability>[-<sub-capability>]"
-  pattern: "^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*(?:-[a-z0-9]+(?:-[a-z0-9]+)*)?$"
+  format: 'mycodexvantaos-<domain>-<capability>[-<sub-capability>]'
+  pattern: '^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*(?:-[a-z0-9]+(?:-[a-z0-9]+)*)?$'
   rules:
     - capability MUST come from provider capability registry
     - MUST NOT use vendor-first capability names

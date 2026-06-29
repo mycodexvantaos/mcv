@@ -8,7 +8,7 @@
  * FORBIDDEN: Hardcoded domain strings outside this module.
  */
 
-import { AppEnvironment, getCorsAllowlist, resolveEnvironment } from "../config/domains";
+import { AppEnvironment, getCorsAllowlist, resolveEnvironment } from '../config/domains';
 
 export interface CorsOptions {
   allowedOrigins: string[];
@@ -24,24 +24,24 @@ export interface CorsResult {
   headers: Record<string, string>;
 }
 
-const DEFAULT_ALLOWED_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"];
+const DEFAULT_ALLOWED_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'];
 
 const DEFAULT_ALLOWED_HEADERS = [
-  "Content-Type",
-  "Authorization",
-  "X-Request-ID",
-  "X-Trace-ID",
-  "X-Api-Key",
-  "Accept",
-  "Accept-Language",
+  'Content-Type',
+  'Authorization',
+  'X-Request-ID',
+  'X-Trace-ID',
+  'X-Api-Key',
+  'Accept',
+  'Accept-Language',
 ];
 
 const DEFAULT_EXPOSED_HEADERS = [
-  "X-Request-ID",
-  "X-Trace-ID",
-  "X-RateLimit-Limit",
-  "X-RateLimit-Remaining",
-  "X-RateLimit-Reset",
+  'X-Request-ID',
+  'X-Trace-ID',
+  'X-RateLimit-Limit',
+  'X-RateLimit-Remaining',
+  'X-RateLimit-Reset',
 ];
 
 /**
@@ -85,16 +85,16 @@ export function evaluateCors(origin: string | undefined, env?: AppEnvironment): 
   }
 
   const headers: Record<string, string> = {
-    "Access-Control-Allow-Origin": origin,
-    "Access-Control-Allow-Methods": options.allowedMethods.join(", "),
-    "Access-Control-Allow-Headers": options.allowedHeaders.join(", "),
-    "Access-Control-Expose-Headers": options.exposedHeaders.join(", "),
-    "Access-Control-Max-Age": String(options.maxAgeSeconds),
-    "Vary": "Origin",
+    'Access-Control-Allow-Origin': origin,
+    'Access-Control-Allow-Methods': options.allowedMethods.join(', '),
+    'Access-Control-Allow-Headers': options.allowedHeaders.join(', '),
+    'Access-Control-Expose-Headers': options.exposedHeaders.join(', '),
+    'Access-Control-Max-Age': String(options.maxAgeSeconds),
+    Vary: 'Origin',
   };
 
   if (options.allowCredentials) {
-    headers["Access-Control-Allow-Credentials"] = "true";
+    headers['Access-Control-Allow-Credentials'] = 'true';
   }
 
   return { allowed: true, headers };
@@ -119,10 +119,13 @@ export function createCorsMiddleware(env?: AppEnvironment) {
 
   return function corsMiddleware(
     req: { headers: Record<string, string | string[] | undefined> },
-    res: { setHeader: (name: string, value: string) => void; status: (code: number) => { end: () => void } },
+    res: {
+      setHeader: (name: string, value: string) => void;
+      status: (code: number) => { end: () => void };
+    },
     next: () => void
   ): void {
-    const origin = req.headers["origin"] as string | undefined;
+    const origin = req.headers['origin'] as string | undefined;
     const result = evaluateCors(origin, env);
 
     for (const [key, value] of Object.entries(result.headers)) {
@@ -130,7 +133,7 @@ export function createCorsMiddleware(env?: AppEnvironment) {
     }
 
     // Handle preflight OPTIONS request
-    if (req.headers["access-control-request-method"]) {
+    if (req.headers['access-control-request-method']) {
       res.status(204).end();
       return;
     }
@@ -147,24 +150,28 @@ export function validateCorsConfig(options: CorsOptions): string[] {
   const errors: string[] = [];
 
   // Check for wildcard origin with credentials
-  if (options.allowedOrigins.includes("*") && options.allowCredentials) {
+  if (options.allowedOrigins.includes('*') && options.allowCredentials) {
     errors.push(
-      "CORS violation: Access-Control-Allow-Origin: * cannot be used with credentials. " +
-        "Use explicit origin allowlist from domain configuration."
+      'CORS violation: Access-Control-Allow-Origin: * cannot be used with credentials. ' +
+        'Use explicit origin allowlist from domain configuration.'
     );
   }
 
   // Check for wildcard origin in production
-  if (options.allowedOrigins.includes("*")) {
+  if (options.allowedOrigins.includes('*')) {
     errors.push(
-      "CORS violation: Wildcard origin (*) is forbidden in production. " +
-        "Use explicit origin allowlist from getCorsAllowlist()."
+      'CORS violation: Wildcard origin (*) is forbidden in production. ' +
+        'Use explicit origin allowlist from getCorsAllowlist().'
     );
   }
 
   // Validate all origins use HTTPS (except localhost)
   for (const origin of options.allowedOrigins) {
-    if (!origin.startsWith("https://") && !origin.startsWith("http://localhost") && !origin.startsWith("http://127.0.0.1")) {
+    if (
+      !origin.startsWith('https://') &&
+      !origin.startsWith('http://localhost') &&
+      !origin.startsWith('http://127.0.0.1')
+    ) {
       errors.push(`CORS violation: Origin "${origin}" must use HTTPS in production.`);
     }
   }

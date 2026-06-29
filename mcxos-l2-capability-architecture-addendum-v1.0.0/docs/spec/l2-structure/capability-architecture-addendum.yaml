@@ -1,10 +1,10 @@
 spec-id: mycodexvantaos-spec-l2-capability-architecture-addendum-v1.0.0
 layer: 2
 version: 1.0.0
-date: "2026-06-29"
+date: '2026-06-29'
 status: active
 authoritative: true
-title: "MyCodexVantaOS Capability Architecture Addendum (L2)"
+title: 'MyCodexVantaOS Capability Architecture Addendum (L2)'
 description: >
   Layer 2 structural specification. Defines directory governance, module/service/provider/
   foundation structure, navigation module, namespace governance, and gate system.
@@ -98,12 +98,12 @@ navigation-module:
     - dependency-graph.yaml
     - module-index.yaml
     - navigation-policy.yaml
-  purpose: "Central navigation hub for all platform components"
+  purpose: 'Central navigation hub for all platform components'
 
 # Namespace governance
 namespace-governance:
   location: mycodexvantaos-namespace-governance/
-  purpose: "Namespace lifecycle management and closure proofs"
+  purpose: 'Namespace lifecycle management and closure proofs'
   required-subsystems:
     - contracts
     - governance
@@ -116,14 +116,14 @@ gate-system:
   location: unified-gates/
   gate-count: 61
   levels:
-    - l00: "Meta-governance and namespace (8 gates)"
-    - l10: "AI compute infrastructure (8 gates)"
-    - l20: "Data and vector layer (8 gates)"
-    - l30: "Algorithm and model layer (8 gates)"
-    - l40: "Agent and runtime layer (8 gates)"
-    - l50: "Business and billing layer (8 gates)"
-    - l60: "Cloud infrastructure (4 gates)"
-    - l90: "Supply chain and production closure (9 gates)"
+    - l00: 'Meta-governance and namespace (8 gates)'
+    - l10: 'AI compute infrastructure (8 gates)'
+    - l20: 'Data and vector layer (8 gates)'
+    - l30: 'Algorithm and model layer (8 gates)'
+    - l40: 'Agent and runtime layer (8 gates)'
+    - l50: 'Business and billing layer (8 gates)'
+    - l60: 'Cloud infrastructure (4 gates)'
+    - l90: 'Supply chain and production closure (9 gates)'
   final-gate: gate-99-production-closure-validation
 
 # Persistent runtime

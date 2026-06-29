@@ -8,7 +8,7 @@
  * FORBIDDEN: Do not put secrets in PUBLIC_ prefixed variables.
  */
 
-import { AppEnvironment, resolveEnvironment } from "./domains";
+import { AppEnvironment, resolveEnvironment } from './domains';
 
 export interface EnvironmentConfig {
   nodeEnv: string;
@@ -36,46 +36,46 @@ export interface EnvironmentConfig {
  */
 export function loadEnvironmentConfig(): EnvironmentConfig {
   const appEnv = resolveEnvironment();
-  const isProduction = appEnv === "production";
+  const isProduction = appEnv === 'production';
 
   // Public URLs — derive from canonical domain if not set
   const publicSiteUrl =
     process.env.PUBLIC_SITE_URL ??
-    (isProduction ? "https://mycodexvantaos.com" : "http://localhost:3000");
+    (isProduction ? 'https://mycodexvantaos.com' : 'http://localhost:3000');
 
   const publicCanonicalUrl =
     process.env.PUBLIC_CANONICAL_URL ??
-    (isProduction ? "https://mycodexvantaos.com" : publicSiteUrl);
+    (isProduction ? 'https://mycodexvantaos.com' : publicSiteUrl);
 
   const publicApiUrl =
     process.env.PUBLIC_API_URL ??
-    (isProduction ? "https://api.mycodexvantaos.com" : "http://localhost:3001");
+    (isProduction ? 'https://api.mycodexvantaos.com' : 'http://localhost:3001');
 
   const publicAppUrl =
     process.env.PUBLIC_APP_URL ??
-    (isProduction ? "https://app.mycodexvantaos.com" : "http://localhost:3000");
+    (isProduction ? 'https://app.mycodexvantaos.com' : 'http://localhost:3000');
 
   const publicAdminUrl =
     process.env.PUBLIC_ADMIN_URL ??
-    (isProduction ? "https://admin.mycodexvantaos.com" : "http://localhost:3002");
+    (isProduction ? 'https://admin.mycodexvantaos.com' : 'http://localhost:3002');
 
   const publicDocsUrl =
     process.env.PUBLIC_DOCS_URL ??
-    (isProduction ? "https://docs.mycodexvantaos.com" : "http://localhost:3003");
+    (isProduction ? 'https://docs.mycodexvantaos.com' : 'http://localhost:3003');
 
   const publicWwwUrl =
     process.env.PUBLIC_WWW_URL ??
-    (isProduction ? "https://www.mycodexvantaos.com" : "http://localhost:3000");
+    (isProduction ? 'https://www.mycodexvantaos.com' : 'http://localhost:3000');
 
   // Validate production URLs
   if (isProduction) {
-    validateProductionUrl("PUBLIC_CANONICAL_URL", publicCanonicalUrl);
-    validateProductionUrl("PUBLIC_API_URL", publicApiUrl);
-    validateProductionUrl("PUBLIC_APP_URL", publicAppUrl);
+    validateProductionUrl('PUBLIC_CANONICAL_URL', publicCanonicalUrl);
+    validateProductionUrl('PUBLIC_API_URL', publicApiUrl);
+    validateProductionUrl('PUBLIC_APP_URL', publicAppUrl);
   }
 
   return {
-    nodeEnv: process.env.NODE_ENV ?? "development",
+    nodeEnv: process.env.NODE_ENV ?? 'development',
     appEnv,
     publicSiteUrl,
     publicCanonicalUrl,
@@ -84,11 +84,11 @@ export function loadEnvironmentConfig(): EnvironmentConfig {
     publicAdminUrl,
     publicDocsUrl,
     publicWwwUrl,
-    port: parseInt(process.env.PORT ?? "3000", 10),
-    logLevel: process.env.LOG_LEVEL ?? "info",
-    enableQuantum: process.env.ENABLE_QUANTUM === "true",
-    enableBilling: process.env.ENABLE_BILLING !== "false",
-    enableAuditChain: process.env.ENABLE_AUDIT_CHAIN !== "false",
+    port: parseInt(process.env.PORT ?? '3000', 10),
+    logLevel: process.env.LOG_LEVEL ?? 'info',
+    enableQuantum: process.env.ENABLE_QUANTUM === 'true',
+    enableBilling: process.env.ENABLE_BILLING !== 'false',
+    enableAuditChain: process.env.ENABLE_AUDIT_CHAIN !== 'false',
   };
 }
 
@@ -119,7 +119,7 @@ function validateProductionUrl(varName: string, url: string): void {
     }
   }
 
-  if (!url.startsWith("https://")) {
+  if (!url.startsWith('https://')) {
     throw new Error(
       `[Domain Contract Violation] ${varName}="${url}" must use HTTPS in production.`
     );
@@ -165,11 +165,11 @@ export function getSecretEnvVar(key: string): string {
   const value = process.env[key];
   if (!value) {
     const appEnv = resolveEnvironment();
-    if (appEnv === "production") {
+    if (appEnv === 'production') {
       throw new Error(`Required secret environment variable ${key} is not set in production`);
     }
     // Return empty string in non-production for graceful degradation
-    return "";
+    return '';
   }
   return value;
 }

@@ -2,21 +2,21 @@ name: Architecture Validation
 true:
   push:
     branches:
-    - main
-    - develop
+      - main
+      - develop
     paths:
-    - docs/**
-    - foundation/**
-    - governance/**
-    - navigation/**
-    - contracts/**
-    - platform/**
-    - modules/**
-    - ci/**
+      - docs/**
+      - foundation/**
+      - governance/**
+      - navigation/**
+      - contracts/**
+      - platform/**
+      - modules/**
+      - ci/**
   pull_request:
     branches:
-    - main
-    - develop
+      - main
+      - develop
   workflow_dispatch: null
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -31,103 +31,105 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '22'
-        cache: pnpm
-    - name: Setup pnpm
-      uses: pnpm/action-setup@v4
-      with:
-        version: 9
-    - name: Install dependencies
-      run: pnpm install --frozen-lockfile
-    - name: Setup Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
-        cache: pip
-    - name: Install Python dependencies
-      run: pip install pyyaml jsonschema
-    - name: Run architecture validation
-      run: pnpm run validate:architecture
-      env:
-        NODE_ENV: ci
-    - name: Run naming validation
-      run: python3 scripts/validate-naming.py
-    - name: Run governance validation
-      run: python3 scripts/validate-namespace-governance.py
-    - name: Generate architecture validation report
-      if: always()
-      run: python3 scripts/generate-architecture-validation-report.py
-    - name: Upload validation report
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: architecture-validation-report
-        path: outputs/architecture-validation-report.json
-        retention-days: 30
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install Python dependencies
+        run: pip install pyyaml jsonschema
+      - name: Run architecture validation
+        run: pnpm run validate:architecture
+        env:
+          NODE_ENV: ci
+      - name: Run naming validation
+        run: python3 scripts/validate-naming.py
+      - name: Run governance validation
+        run: python3 scripts/validate-namespace-governance.py
+      - name: Generate architecture validation report
+        if: always()
+        run: python3 scripts/generate-architecture-validation-report.py
+      - name: Upload validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: architecture-validation-report
+          path: outputs/architecture-validation-report.json
+          retention-days: 30
   validate-identity:
     name: Validate Identity Policy
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-    - name: Setup Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
-    - name: Install dependencies
-      run: pip install pyyaml jsonschema
-    - name: Validate identity policy
-      run: "python3 -c \"\nimport yaml, json, sys, re\nwith open('governance/identity-policy.yaml')\
-        \ as f:\n    policy = yaml.safe_load(f)\nmachine_id = policy['identity']['machine']\n\
-        assert machine_id == 'mycodexvantaos', f'Invalid machine identity: {machine_id}'\n\
-        forbidden = policy['identity']['forbidden-prefixes']\nassert 'kubo' in forbidden,\
-        \ 'Missing forbidden prefix: kubo'\nassert 'axiom' in forbidden, 'Missing\
-        \ forbidden prefix: axiom'\nprint('Identity policy validation: PASSED')\n\"\
-        \n"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install pyyaml jsonschema
+      - name: Validate identity policy
+        run:
+          "python3 -c \"\nimport yaml, json, sys, re\nwith open('governance/identity-policy.yaml')\
+          \ as f:\n    policy = yaml.safe_load(f)\nmachine_id = policy['identity']['machine']\n\
+          assert machine_id == 'mycodexvantaos', f'Invalid machine identity: {machine_id}'\n\
+          forbidden = policy['identity']['forbidden-prefixes']\nassert 'kubo' in forbidden,\
+          \ 'Missing forbidden prefix: kubo'\nassert 'axiom' in forbidden, 'Missing\
+          \ forbidden prefix: axiom'\nprint('Identity policy validation: PASSED')\n\"\
+          \n"
   validate-ssot:
     name: Validate SSOT Registry
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-    - name: Setup Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
-    - name: Install dependencies
-      run: pip install pyyaml jsonschema
-    - name: Validate SSOT registry
-      run: "python3 -c \"\nimport yaml, os\nssot_files = [\n    'docs/spec/l0-meta/formalized-specification-architecture.yaml',\n\
-        \    'docs/spec/l1-constitution/constitution.yaml',\n    'docs/spec/l2-structure/capability-architecture-addendum.yaml',\n\
-        \    'governance/identity-policy.yaml',\n    'platform/service-catalog.yaml',\n\
-        ]\nfor f in ssot_files:\n    assert os.path.exists(f), f'SSOT file missing:\
-        \ {f}'\n    print(f'SSOT exists: {f}')\nprint('SSOT registry validation: PASSED')\n\
-        \"\n"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install pyyaml jsonschema
+      - name: Validate SSOT registry
+        run:
+          "python3 -c \"\nimport yaml, os\nssot_files = [\n    'docs/spec/l0-meta/formalized-specification-architecture.yaml',\n\
+          \    'docs/spec/l1-constitution/constitution.yaml',\n    'docs/spec/l2-structure/capability-architecture-addendum.yaml',\n\
+          \    'governance/identity-policy.yaml',\n    'platform/service-catalog.yaml',\n\
+          ]\nfor f in ssot_files:\n    assert os.path.exists(f), f'SSOT file missing:\
+          \ {f}'\n    print(f'SSOT exists: {f}')\nprint('SSOT registry validation: PASSED')\n\
+          \"\n"
   validate:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-    - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
-    - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271
-      with:
-        version: '9'
-    - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
-      with:
-        node-version: '22'
-        cache: pnpm
-    - run: pnpm install --no-frozen-lockfile
-    - name: Validate Architecture
-      run: pnpm tsx ci/validate-architecture.ts
-    - name: Validate Foundation Structure
-      run: python3 scripts/validate-foundation-structure.py --root foundation
-      continue-on-error: true
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271
+        with:
+          version: '9'
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+        with:
+          node-version: '22'
+          cache: pnpm
+      - run: pnpm install --no-frozen-lockfile
+      - name: Validate Architecture
+        run: pnpm tsx ci/validate-architecture.ts
+      - name: Validate Foundation Structure
+        run: python3 scripts/validate-foundation-structure.py --root foundation
+        continue-on-error: true
 metadata: {}

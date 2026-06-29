@@ -1,11 +1,10 @@
 apiVersion: mycodexvantaos.io/v1
 kind: GateRiskPolicy
 metadata:
-  version: "1.0.0"
-  date: "2026-06-29"
-  status: "active"
+  version: '1.0.0'
+  date: '2026-06-29'
+  status: 'active'
   name: gate-risk-policy
-  version: 1.0.0
   authority: platform-governance-root
   governanceCode: mycodexvantaos-00800
 spec:

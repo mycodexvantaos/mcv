@@ -4,7 +4,13 @@
   "title": "NamingPolicy",
   "description": "MyCodexVantaOS naming policy schema — L1 Constitution enforcement",
   "type": "object",
-  "required": ["machine-identifier", "service-id", "provider-id", "directory-name", "forbidden-prefixes"],
+  "required": [
+    "machine-identifier",
+    "service-id",
+    "provider-id",
+    "directory-name",
+    "forbidden-prefixes"
+  ],
   "properties": {
     "machine-identifier": {
       "type": "string",

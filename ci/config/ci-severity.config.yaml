@@ -1,7 +1,7 @@
 apiVersion: mycodexvantaos.io/v1
 kind: CiSeverityConfig
 metadata:
-  version: "1.0.0"
+  version: '1.0.0'
   name: ci-severity-config
 spec:
   severityLevels:

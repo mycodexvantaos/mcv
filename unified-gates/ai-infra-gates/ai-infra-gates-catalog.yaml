@@ -1,14 +1,12 @@
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGateCatalogDetail
 metadata:
-  version: "1.0.0"
+  version: '1.0.0'
   name: ai-infra-gates-catalog
-  version: 1.0.0
   ssot: true
   authority: unified-gate-governance
   governanceCode: mycodexvantaos-00000
 spec:
-  version: 1.0.0
   gates:
     - id: gate-01-namespace-governance-validation
       layer: l00

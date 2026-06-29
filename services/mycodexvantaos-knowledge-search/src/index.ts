@@ -8,11 +8,11 @@
  * Machine Identity: mycodexvantaos
  */
 
-export const SERVICE_ID = "mycodexvantaos-knowledge-search";
-export const SERVICE_VERSION = "1.0.0";
+export const SERVICE_ID = 'mycodexvantaos-knowledge-search';
+export const SERVICE_VERSION = '1.0.0';
 
-export type SearchMode = "vector" | "full-text" | "hybrid";
-export type SearchProvider = "native" | "pgvector" | "qdrant" | "vectorize";
+export type SearchMode = 'vector' | 'full-text' | 'hybrid';
+export type SearchProvider = 'native' | 'pgvector' | 'qdrant' | 'vectorize';
 
 export interface SearchQuery {
   queryId: string;
@@ -90,13 +90,13 @@ export class KnowledgeSearchEngine {
     let results: SearchResult[] = [];
 
     switch (query.mode) {
-      case "vector":
+      case 'vector':
         results = this.vectorSearch(docs, query);
         break;
-      case "full-text":
+      case 'full-text':
         results = this.fullTextSearch(docs, query);
         break;
-      case "hybrid":
+      case 'hybrid':
         results = this.hybridSearch(docs, query);
         break;
     }
@@ -115,7 +115,7 @@ export class KnowledgeSearchEngine {
       totalFound: results.length,
       latencyMs: Date.now() - startTime,
       searchMode: query.mode,
-      provider: "native",
+      provider: 'native',
       createdAt: new Date(),
     };
   }
@@ -194,7 +194,9 @@ export class KnowledgeSearchEngine {
    */
   private cosineSimilarity(a: number[], b: number[]): number {
     if (a.length !== b.length) return 0;
-    let dot = 0, normA = 0, normB = 0;
+    let dot = 0,
+      normA = 0,
+      normB = 0;
     for (let i = 0; i < a.length; i++) {
       dot += a[i] * b[i];
       normA += a[i] * a[i];
@@ -220,7 +222,10 @@ export class KnowledgeSearchEngine {
   /**
    * Get collection statistics.
    */
-  getCollectionStats(workspaceId: string, collectionId: string): {
+  getCollectionStats(
+    workspaceId: string,
+    collectionId: string
+  ): {
     documentCount: number;
     embeddingDimensions: number;
   } {

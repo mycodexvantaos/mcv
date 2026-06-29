@@ -1,11 +1,10 @@
 apiVersion: mycodexvantaos.io/v1
 kind: AIWorkloadPolicy
 metadata:
-  version: "1.0.0"
-  date: "2026-06-29"
-  status: "active"
+  version: '1.0.0'
+  date: '2026-06-29'
+  status: 'active'
   name: ai-workload-policy
-  version: 1.0.0
   authority: platform-governance-root
   governanceCode: mycodexvantaos-60700
 spec:

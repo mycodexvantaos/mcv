@@ -8,11 +8,11 @@
  * Machine Identity: mycodexvantaos
  */
 
-export const SERVICE_ID = "mycodexvantaos-governance-policy-engine";
-export const SERVICE_VERSION = "1.0.0";
+export const SERVICE_ID = 'mycodexvantaos-governance-policy-engine';
+export const SERVICE_VERSION = '1.0.0';
 
-export type PolicyRuleResult = "pass" | "fail" | "warning" | "skip";
-export type PolicySeverity = "critical" | "error" | "warning" | "info";
+export type PolicyRuleResult = 'pass' | 'fail' | 'warning' | 'skip';
+export type PolicySeverity = 'critical' | 'error' | 'warning' | 'info';
 
 export interface PolicyRule {
   ruleId: string;
@@ -23,10 +23,10 @@ export interface PolicyRule {
 }
 
 export interface PolicyContext {
-  platform: "mycodexvantaos";
+  platform: 'mycodexvantaos';
   environment: string;
   subject: {
-    type: "service" | "provider" | "module" | "namespace" | "identifier" | "url";
+    type: 'service' | 'provider' | 'module' | 'namespace' | 'identifier' | 'url';
     id: string;
     value: unknown;
   };
@@ -52,7 +52,7 @@ export interface PolicyEvaluationReport {
     warnings: number;
     skipped: number;
   };
-  overallResult: "pass" | "fail";
+  overallResult: 'pass' | 'fail';
 }
 
 /**
@@ -60,40 +60,40 @@ export interface PolicyEvaluationReport {
  * Validates that machine identifiers use the correct prefix.
  */
 const identityRule: PolicyRule = {
-  ruleId: "identity-rule",
-  name: "Identity Policy Rule",
-  description: "Validates machine identity compliance with L1 Constitution",
-  severity: "critical",
+  ruleId: 'identity-rule',
+  name: 'Identity Policy Rule',
+  description: 'Validates machine identity compliance with L1 Constitution',
+  severity: 'critical',
   evaluate(context: PolicyContext): PolicyRuleEvaluation {
-    if (context.subject.type !== "identifier") {
-      return { ruleId: this.ruleId, result: "skip", message: "Not an identifier subject" };
+    if (context.subject.type !== 'identifier') {
+      return { ruleId: this.ruleId, result: 'skip', message: 'Not an identifier subject' };
     }
 
     const id = String(context.subject.value);
     const FORBIDDEN_PREFIXES = [
-      "mycodexvanta-os",
-      "codexvanta-os",
-      "codexvanta",
-      "codevantaos",
-      "kubo",
-      "axiom",
+      'mycodexvanta-os',
+      'codexvanta-os',
+      'codexvanta',
+      'codevantaos',
+      'kubo',
+      'axiom',
     ];
 
     for (const prefix of FORBIDDEN_PREFIXES) {
       if (id.startsWith(prefix)) {
         return {
           ruleId: this.ruleId,
-          result: "fail",
+          result: 'fail',
           message: `Identifier "${id}" uses forbidden prefix "${prefix}"`,
           details: { forbiddenPrefix: prefix, identifier: id },
         };
       }
     }
 
-    if (!id.startsWith("mycodexvantaos")) {
+    if (!id.startsWith('mycodexvantaos')) {
       return {
         ruleId: this.ruleId,
-        result: "fail",
+        result: 'fail',
         message: `Identifier "${id}" must start with "mycodexvantaos"`,
         details: { identifier: id },
       };
@@ -101,7 +101,7 @@ const identityRule: PolicyRule = {
 
     return {
       ruleId: this.ruleId,
-      result: "pass",
+      result: 'pass',
       message: `Identifier "${id}" complies with identity policy`,
     };
   },
@@ -112,20 +112,24 @@ const identityRule: PolicyRule = {
  * Validates that production URLs use the canonical domain.
  */
 const domainContractRule: PolicyRule = {
-  ruleId: "domain-contract-rule",
-  name: "Domain Contract Rule",
-  description: "Validates URL compliance with Domain & Deployment Contract",
-  severity: "critical",
+  ruleId: 'domain-contract-rule',
+  name: 'Domain Contract Rule',
+  description: 'Validates URL compliance with Domain & Deployment Contract',
+  severity: 'critical',
   evaluate(context: PolicyContext): PolicyRuleEvaluation {
-    if (context.subject.type !== "url") {
-      return { ruleId: this.ruleId, result: "skip", message: "Not a URL subject" };
+    if (context.subject.type !== 'url') {
+      return { ruleId: this.ruleId, result: 'skip', message: 'Not a URL subject' };
     }
 
     const url = String(context.subject.value);
-    const isProduction = context.environment === "production";
+    const isProduction = context.environment === 'production';
 
     if (!isProduction) {
-      return { ruleId: this.ruleId, result: "skip", message: "Domain contract only enforced in production" };
+      return {
+        ruleId: this.ruleId,
+        result: 'skip',
+        message: 'Domain contract only enforced in production',
+      };
     }
 
     const FORBIDDEN_PATTERNS = [
@@ -144,17 +148,17 @@ const domainContractRule: PolicyRule = {
       if (pattern.test(url)) {
         return {
           ruleId: this.ruleId,
-          result: "fail",
+          result: 'fail',
           message: `URL "${url}" matches forbidden vendor URL pattern ${pattern}. Use https://mycodexvantaos.com`,
           details: { url, pattern: pattern.toString() },
         };
       }
     }
 
-    if (!url.startsWith("https://")) {
+    if (!url.startsWith('https://')) {
       return {
         ruleId: this.ruleId,
-        result: "fail",
+        result: 'fail',
         message: `URL "${url}" must use HTTPS in production`,
         details: { url },
       };
@@ -162,7 +166,7 @@ const domainContractRule: PolicyRule = {
 
     return {
       ruleId: this.ruleId,
-      result: "pass",
+      result: 'pass',
       message: `URL "${url}" complies with domain contract`,
     };
   },
@@ -173,13 +177,17 @@ const domainContractRule: PolicyRule = {
  * Validates kebab-case naming convention.
  */
 const namingRule: PolicyRule = {
-  ruleId: "naming-rule",
-  name: "Naming Policy Rule",
-  description: "Validates kebab-case naming convention",
-  severity: "error",
+  ruleId: 'naming-rule',
+  name: 'Naming Policy Rule',
+  description: 'Validates kebab-case naming convention',
+  severity: 'error',
   evaluate(context: PolicyContext): PolicyRuleEvaluation {
-    if (context.subject.type !== "identifier" && context.subject.type !== "namespace") {
-      return { ruleId: this.ruleId, result: "skip", message: "Not an identifier or namespace subject" };
+    if (context.subject.type !== 'identifier' && context.subject.type !== 'namespace') {
+      return {
+        ruleId: this.ruleId,
+        result: 'skip',
+        message: 'Not an identifier or namespace subject',
+      };
     }
 
     const name = String(context.subject.value);
@@ -188,7 +196,7 @@ const namingRule: PolicyRule = {
     if (!KEBAB_PATTERN.test(name)) {
       return {
         ruleId: this.ruleId,
-        result: "fail",
+        result: 'fail',
         message: `"${name}" does not comply with kebab-case naming convention`,
         details: { name, pattern: KEBAB_PATTERN.toString() },
       };
@@ -196,7 +204,7 @@ const namingRule: PolicyRule = {
 
     return {
       ruleId: this.ruleId,
-      result: "pass",
+      result: 'pass',
       message: `"${name}" complies with naming convention`,
     };
   },
@@ -237,7 +245,7 @@ export class GovernancePolicyEngine {
       } catch (error) {
         results.push({
           ruleId: rule.ruleId,
-          result: "fail",
+          result: 'fail',
           message: `Rule evaluation error: ${error instanceof Error ? error.message : String(error)}`,
         });
       }
@@ -245,16 +253,16 @@ export class GovernancePolicyEngine {
 
     const summary = {
       total: results.length,
-      passed: results.filter((r) => r.result === "pass").length,
-      failed: results.filter((r) => r.result === "fail").length,
-      warnings: results.filter((r) => r.result === "warning").length,
-      skipped: results.filter((r) => r.result === "skip").length,
+      passed: results.filter((r) => r.result === 'pass').length,
+      failed: results.filter((r) => r.result === 'fail').length,
+      warnings: results.filter((r) => r.result === 'warning').length,
+      skipped: results.filter((r) => r.result === 'skip').length,
     };
 
     const criticalFailures = results.filter((r) => {
-      if (r.result !== "fail") return false;
+      if (r.result !== 'fail') return false;
       const rule = this.rules.get(r.ruleId);
-      return rule?.severity === "critical" || rule?.severity === "error";
+      return rule?.severity === 'critical' || rule?.severity === 'error';
     });
 
     return {
@@ -263,7 +271,7 @@ export class GovernancePolicyEngine {
       context,
       results,
       summary,
-      overallResult: criticalFailures.length > 0 ? "fail" : "pass",
+      overallResult: criticalFailures.length > 0 ? 'fail' : 'pass',
     };
   }
 

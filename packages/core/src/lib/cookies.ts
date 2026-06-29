@@ -8,9 +8,9 @@
  * FORBIDDEN: Overly broad cookie domain without explicit cross-subdomain design.
  */
 
-import { AppEnvironment, getCookieDomain, resolveEnvironment } from "../config/domains";
+import { AppEnvironment, getCookieDomain, resolveEnvironment } from '../config/domains';
 
-export type SameSitePolicy = "Strict" | "Lax" | "None";
+export type SameSitePolicy = 'Strict' | 'Lax' | 'None';
 
 export interface CookieOptions {
   name: string;
@@ -49,17 +49,17 @@ export interface CsrfCookieConfig {
  */
 export function getSessionCookieConfig(env?: AppEnvironment): SessionCookieConfig {
   const resolvedEnv = env ?? resolveEnvironment();
-  const isProduction = resolvedEnv === "production" || resolvedEnv === "staging";
+  const isProduction = resolvedEnv === 'production' || resolvedEnv === 'staging';
   const cookieDomain = getCookieDomain(resolvedEnv);
 
   return {
-    name: "mcxos-session",
+    name: 'mcxos-session',
     maxAgeSeconds: 86400, // 24 hours
     secure: isProduction,
     httpOnly: true,
-    sameSite: "Lax",
+    sameSite: 'Lax',
     domain: cookieDomain,
-    path: "/",
+    path: '/',
   };
 }
 
@@ -69,15 +69,15 @@ export function getSessionCookieConfig(env?: AppEnvironment): SessionCookieConfi
  */
 export function getCsrfCookieConfig(env?: AppEnvironment): CsrfCookieConfig {
   const resolvedEnv = env ?? resolveEnvironment();
-  const isProduction = resolvedEnv === "production" || resolvedEnv === "staging";
+  const isProduction = resolvedEnv === 'production' || resolvedEnv === 'staging';
 
   return {
-    name: "mcxos-csrf",
+    name: 'mcxos-csrf',
     maxAgeSeconds: 3600, // 1 hour
     secure: isProduction,
     httpOnly: false, // Must be readable by JavaScript for CSRF token submission
-    sameSite: "Strict",
-    path: "/",
+    sameSite: 'Strict',
+    path: '/',
   };
 }
 
@@ -104,16 +104,16 @@ export function serializeCookie(options: CookieOptions): string {
   }
 
   if (options.secure) {
-    parts.push("Secure");
+    parts.push('Secure');
   }
 
   if (options.httpOnly) {
-    parts.push("HttpOnly");
+    parts.push('HttpOnly');
   }
 
   parts.push(`SameSite=${options.sameSite}`);
 
-  return parts.join("; ");
+  return parts.join('; ');
 }
 
 /**
@@ -124,10 +124,10 @@ export function parseCookies(cookieHeader: string): Record<string, string> {
 
   if (!cookieHeader) return cookies;
 
-  for (const pair of cookieHeader.split(";")) {
-    const [key, ...valueParts] = pair.trim().split("=");
+  for (const pair of cookieHeader.split(';')) {
+    const [key, ...valueParts] = pair.trim().split('=');
     if (key) {
-      cookies[key.trim()] = decodeURIComponent(valueParts.join("=").trim());
+      cookies[key.trim()] = decodeURIComponent(valueParts.join('=').trim());
     }
   }
 
@@ -144,20 +144,16 @@ export function validateCookieConfig(config: SessionCookieConfig | CsrfCookieCon
   if (!config.secure) {
     violations.push(
       `Cookie "${config.name}": Secure flag must be true in production. ` +
-        "Session cookies MUST NOT be sent over non-HTTPS connections."
+        'Session cookies MUST NOT be sent over non-HTTPS connections.'
     );
   }
 
-  if ("httpOnly" in config && !config.httpOnly && config.name === "mcxos-session") {
-    violations.push(
-      `Cookie "${config.name}": HttpOnly flag must be true for session cookies.`
-    );
+  if ('httpOnly' in config && !config.httpOnly && config.name === 'mcxos-session') {
+    violations.push(`Cookie "${config.name}": HttpOnly flag must be true for session cookies.`);
   }
 
-  if (config.sameSite === "None" && !config.secure) {
-    violations.push(
-      `Cookie "${config.name}": SameSite=None requires Secure=true.`
-    );
+  if (config.sameSite === 'None' && !config.secure) {
+    violations.push(`Cookie "${config.name}": SameSite=None requires Secure=true.`);
   }
 
   return violations;
@@ -185,18 +181,18 @@ export function createSessionCookie(sessionToken: string, env?: AppEnvironment):
  */
 export function createDeleteCookie(name: string, env?: AppEnvironment): string {
   const resolvedEnv = env ?? resolveEnvironment();
-  const isProduction = resolvedEnv === "production" || resolvedEnv === "staging";
+  const isProduction = resolvedEnv === 'production' || resolvedEnv === 'staging';
   const cookieDomain = getCookieDomain(resolvedEnv);
 
   return serializeCookie({
     name,
-    value: "",
+    value: '',
     maxAge: 0,
     expires: new Date(0),
-    path: "/",
+    path: '/',
     domain: cookieDomain,
     secure: isProduction,
     httpOnly: true,
-    sameSite: "Lax",
+    sameSite: 'Lax',
   });
 }

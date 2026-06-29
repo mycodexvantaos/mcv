@@ -1,11 +1,10 @@
 apiVersion: mycodexvantaos.io/v1
 kind: GateWaiverWorkflow
 metadata:
-  version: "1.0.0"
-  date: "2026-06-29"
-  status: "active"
+  version: '1.0.0'
+  date: '2026-06-29'
+  status: 'active'
   name: gate-waiver-workflow
-  version: 1.0.0
   governanceCode: mycodexvantaos-00000
 spec:
   description: >

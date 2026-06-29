@@ -7,7 +7,7 @@
  * Domain & Deployment Contract: https://mycodexvantaos.com
  */
 
-import { getCanonicalUrl, resolveEnvironment } from "@mycodexvantaos/core/config/domains";
+import { getCanonicalUrl, resolveEnvironment } from '@mycodexvantaos/core/config/domains';
 
 export interface RobotsConfig {
   rules: RobotsRule[];
@@ -31,9 +31,9 @@ export function generateRobotsConfig(): RobotsConfig {
   const canonicalUrl = getCanonicalUrl(env);
 
   // In non-production environments, disallow all crawling
-  if (env !== "production") {
+  if (env !== 'production') {
     return {
-      rules: [{ userAgent: "*", disallow: "/" }],
+      rules: [{ userAgent: '*', disallow: '/' }],
       sitemap: `${canonicalUrl}/sitemap.xml`,
       host: canonicalUrl,
     };
@@ -42,33 +42,25 @@ export function generateRobotsConfig(): RobotsConfig {
   return {
     rules: [
       {
-        userAgent: "*",
-        allow: "/",
-        disallow: [
-          "/api/",
-          "/admin/",
-          "/_next/",
-          "/private/",
-          "/internal/",
-          "/*.json$",
-          "/auth/",
-        ],
+        userAgent: '*',
+        allow: '/',
+        disallow: ['/api/', '/admin/', '/_next/', '/private/', '/internal/', '/*.json$', '/auth/'],
       },
       {
-        userAgent: "GPTBot",
-        disallow: "/",
+        userAgent: 'GPTBot',
+        disallow: '/',
       },
       {
-        userAgent: "ChatGPT-User",
-        disallow: "/",
+        userAgent: 'ChatGPT-User',
+        disallow: '/',
       },
       {
-        userAgent: "CCBot",
-        disallow: "/",
+        userAgent: 'CCBot',
+        disallow: '/',
       },
       {
-        userAgent: "anthropic-ai",
-        disallow: "/",
+        userAgent: 'anthropic-ai',
+        disallow: '/',
       },
     ],
     sitemap: `${canonicalUrl}/sitemap.xml`,
@@ -84,7 +76,7 @@ export function serializeRobots(config: RobotsConfig): string {
     `# MyCodexVantaOS robots.txt`,
     `# Canonical URL: ${config.host}`,
     `# Generated: ${new Date().toISOString()}`,
-    "",
+    '',
   ];
 
   for (const rule of config.rules) {
@@ -111,13 +103,13 @@ export function serializeRobots(config: RobotsConfig): string {
       lines.push(`Crawl-delay: ${rule.crawlDelay}`);
     }
 
-    lines.push("");
+    lines.push('');
   }
 
   lines.push(`Sitemap: ${config.sitemap}`);
   lines.push(`Host: ${config.host}`);
 
-  return lines.join("\n");
+  return lines.join('\n');
 }
 
 /**
@@ -134,9 +126,9 @@ export default function robots() {
   const env = resolveEnvironment();
   const canonicalUrl = getCanonicalUrl(env);
 
-  if (env !== "production") {
+  if (env !== 'production') {
     return {
-      rules: { userAgent: "*", disallow: "/" },
+      rules: { userAgent: '*', disallow: '/' },
       sitemap: `${canonicalUrl}/sitemap.xml`,
     };
   }
@@ -144,14 +136,14 @@ export default function robots() {
   return {
     rules: [
       {
-        userAgent: "*",
-        allow: "/",
-        disallow: ["/api/", "/admin/", "/_next/", "/private/", "/internal/", "/auth/"],
+        userAgent: '*',
+        allow: '/',
+        disallow: ['/api/', '/admin/', '/_next/', '/private/', '/internal/', '/auth/'],
       },
-      { userAgent: "GPTBot", disallow: "/" },
-      { userAgent: "ChatGPT-User", disallow: "/" },
-      { userAgent: "CCBot", disallow: "/" },
-      { userAgent: "anthropic-ai", disallow: "/" },
+      { userAgent: 'GPTBot', disallow: '/' },
+      { userAgent: 'ChatGPT-User', disallow: '/' },
+      { userAgent: 'CCBot', disallow: '/' },
+      { userAgent: 'anthropic-ai', disallow: '/' },
     ],
     sitemap: `${canonicalUrl}/sitemap.xml`,
     host: canonicalUrl,

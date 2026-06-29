@@ -8,16 +8,16 @@
  * Machine Identity: mycodexvantaos
  */
 
-export const SERVICE_ID = "mycodexvantaos-ai-embedding";
-export const SERVICE_VERSION = "1.0.0";
+export const SERVICE_ID = 'mycodexvantaos-ai-embedding';
+export const SERVICE_VERSION = '1.0.0';
 
-export type EmbeddingProvider = "native" | "openai" | "workers-ai";
+export type EmbeddingProvider = 'native' | 'openai' | 'workers-ai';
 export type EmbeddingModel =
-  | "mycodexvantaos-embed-v1"
-  | "text-embedding-3-small"
-  | "text-embedding-3-large"
-  | "@cf/baai/bge-small-en-v1.5"
-  | "@cf/baai/bge-large-en-v1.5";
+  | 'mycodexvantaos-embed-v1'
+  | 'text-embedding-3-small'
+  | 'text-embedding-3-large'
+  | '@cf/baai/bge-small-en-v1.5'
+  | '@cf/baai/bge-large-en-v1.5';
 
 export interface EmbeddingRequest {
   requestId: string;
@@ -56,8 +56,8 @@ export class AIEmbeddingEngine {
   private defaultModel: EmbeddingModel;
 
   constructor(options?: { provider?: EmbeddingProvider; model?: EmbeddingModel }) {
-    this.defaultProvider = options?.provider ?? "native";
-    this.defaultModel = options?.model ?? "mycodexvantaos-embed-v1";
+    this.defaultProvider = options?.provider ?? 'native';
+    this.defaultModel = options?.model ?? 'mycodexvantaos-embed-v1';
   }
 
   /**
@@ -137,9 +137,9 @@ export class AIEmbeddingEngine {
    */
   getAvailableModels(provider: EmbeddingProvider): EmbeddingModel[] {
     const models: Record<EmbeddingProvider, EmbeddingModel[]> = {
-      native: ["mycodexvantaos-embed-v1"],
-      openai: ["text-embedding-3-small", "text-embedding-3-large"],
-      "workers-ai": ["@cf/baai/bge-small-en-v1.5", "@cf/baai/bge-large-en-v1.5"],
+      native: ['mycodexvantaos-embed-v1'],
+      openai: ['text-embedding-3-small', 'text-embedding-3-large'],
+      'workers-ai': ['@cf/baai/bge-small-en-v1.5', '@cf/baai/bge-large-en-v1.5'],
     };
     return models[provider] ?? [];
   }

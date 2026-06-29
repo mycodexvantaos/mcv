@@ -25,52 +25,52 @@ chain:
   include-resource: true
 events:
   governance:
-  - governance-policy-change
-  - identity-policy-change
-  - exception-grant
-  - exception-revoke
-  - exception-expire
+    - governance-policy-change
+    - identity-policy-change
+    - exception-grant
+    - exception-revoke
+    - exception-expire
   providers:
-  - provider-registration
-  - provider-deregistration
-  - provider-capability-change
+    - provider-registration
+    - provider-deregistration
+    - provider-capability-change
   modules:
-  - module-registration
-  - module-deregistration
-  - module-version-change
+    - module-registration
+    - module-deregistration
+    - module-version-change
   gates:
-  - gate-evaluation-start
-  - gate-evaluation-complete
-  - gate-evaluation-fail
-  - gate-waiver-grant
-  - gate-waiver-revoke
+    - gate-evaluation-start
+    - gate-evaluation-complete
+    - gate-evaluation-fail
+    - gate-waiver-grant
+    - gate-waiver-revoke
   releases:
-  - release-candidate-created
-  - release-promoted
-  - release-rolled-back
-  - release-rejected
+    - release-candidate-created
+    - release-promoted
+    - release-rolled-back
+    - release-rejected
   security:
-  - security-scan-complete
-  - vulnerability-detected
-  - secret-exposure-detected
-  - forbidden-url-detected
+    - security-scan-complete
+    - vulnerability-detected
+    - secret-exposure-detected
+    - forbidden-url-detected
   auth:
-  - user-login
-  - user-logout
-  - api-key-created
-  - api-key-revoked
-  - permission-change
+    - user-login
+    - user-logout
+    - api-key-created
+    - api-key-revoked
+    - permission-change
 evidence:
   required-for:
-  - gate-evaluation
-  - release-promotion
-  - exception-grant
-  - governance-policy-change
+    - gate-evaluation
+    - release-promotion
+    - exception-grant
+    - governance-policy-change
   schema: governance/audit/audit-evidence.schema.json
   storage: governance/audit/
 compliance:
   standards:
-  - SOC2-Type2
-  - ISO27001
+    - SOC2-Type2
+    - ISO27001
   audit-log-integrity: cryptographic-hash-chain
   tamper-detection: true

@@ -1,10 +1,7 @@
-# providers/deploy/deploy-argocd/provider-manifest.yaml
-# 8.1 — provider instance: deploy-argocd
-# 8.2 — capability (deploy) precedes provider name (argocd)
 apiVersion: mycodexvantaos.org/v1
 kind: Provider
 metadata:
-  name: deploy-argocd
+  name: mycodexvantaos-deploy-argocd
   capability: deploy
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
@@ -16,4 +13,6 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_DEPLOY
   configSchemaRef: ./config.schema.json
-  description: 'Argo CD GitOps deployment provider.'
+  description: Argo CD GitOps deployment provider.
+provider-id: mycodexvantaos-deploy-argocd
+capability: deploy
