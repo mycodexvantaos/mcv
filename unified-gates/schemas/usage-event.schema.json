@@ -1,69 +1,20 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://mycodexvantaos.io/schemas/unified-gates/usage-event",
-  "title": "Usage Event",
-  "description": "Schema for AI workload usage events.",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mycodexvantaos.com/schemas/gate/usage-event.schema.json",
+  "title": "UsageEvent",
+  "description": "MyCodexVantaOS gate usage-event schema",
   "type": "object",
+  "required": ["apiVersion", "kind", "metadata"],
   "properties": {
-    "eventId": {
-      "type": "string",
-      "format": "uuid"
-    },
-    "eventType": {
-      "type": "string",
-      "enum": ["inference-usage", "training-usage", "embedding-usage", "agent-run-usage"]
-    },
-    "timestamp": {
-      "type": "string",
-      "format": "date-time"
-    },
-    "workloadId": {
-      "type": "string"
-    },
-    "workspaceId": {
-      "type": "string"
-    },
-    "projectId": {
-      "type": "string"
-    },
-    "billingAccountId": {
-      "type": "string"
-    },
-    "modelId": {
-      "type": "string"
-    },
-    "usageMetrics": {
+    "apiVersion": { "type": "string", "const": "mycodexvantaos.io/v1" },
+    "kind": { "type": "string" },
+    "metadata": {
       "type": "object",
+      "required": ["name", "version"],
       "properties": {
-        "inputTokens": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "outputTokens": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "gpuHours": {
-          "type": "number",
-          "minimum": 0
-        },
-        "latencyMs": {
-          "type": "integer",
-          "minimum": 0
-        }
+        "name": { "type": "string" },
+        "version": { "type": "string" }
       }
     }
-  },
-  "required": [
-    "eventId",
-    "eventType",
-    "timestamp",
-    "workloadId",
-    "workspaceId",
-    "projectId",
-    "billingAccountId",
-    "modelId",
-    "usageMetrics"
-  ],
-  "additionalProperties": false
+  }
 }

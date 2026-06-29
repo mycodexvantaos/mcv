@@ -15,11 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Section markers normalized: all `§X` replaced with `## Spec X：` and `§X.Y` with `### Spec X.Y：` for Markdown compatibility across GitLab Wiki, Docsify, and static site generators
+- Section markers normalized: all `Spec-X` replaced with `## Spec X：` and `Spec-X.Y` with `### Spec X.Y：` for Markdown compatibility across GitLab Wiki, Docsify, and static site generators
 - Version baseline established as `v1.0.0` per SemVer convention; prior `v1.1.0` references corrected to `v1.0.0`
 - CHANGELOG.md cleaned: removed duplicate entries and non-changelog sections (roadmap, benchmarks, known issues, deprecation notices, security updates, performance improvements, contributors, support)
-- CONTRIBUTING.md updated with § symbol prohibition and Spec format documentation rule
-- Pre-commit hook added to prevent § (U+00A7) from entering the repository
+- CONTRIBUTING.md updated with section-symbol prohibition and Spec format documentation rule
+- Pre-commit hook added to prevent U+00A7 from entering the repository
 
 ## [0.1.3] - 2026-07-21
 

@@ -1,6 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
-kind: FoundationSpec
+kind: FoundationUrn-map
 metadata:
-  name: urn-map
-  foundation: governance-foundation
-spec: {}
+  name: mycodexvantaos-governance-foundation-urn-map
+  version: 1.0.0
+  foundation: mycodexvantaos-governance-foundation
+  date: "2026-06-29"
+  status: active

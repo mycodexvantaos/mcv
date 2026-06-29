@@ -1,4 +1,4 @@
-# Values override for production environment
+# MyCodexVantaOS Helm Values — values-production
+# Canonical URL: https://mycodexvantaos.com
 global:
-  runtimeMode: connected
-  deploymentTarget: kubernetes
+  platform: mycodexvantaos

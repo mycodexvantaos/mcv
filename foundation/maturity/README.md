@@ -1,3 +1,1 @@
-# Foundation Maturity
-
-Maturity model and assessment for MyCodexVantaOS foundations.
+# MyCodexVantaOS Foundation Maturity

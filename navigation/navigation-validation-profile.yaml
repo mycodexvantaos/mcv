@@ -1,22 +1,9 @@
 apiVersion: mycodexvantaos.io/v1
-kind: NavigationValidationProfile
+kind: NavigationArtifact
 metadata:
-  name: navigation-validation-profile
-
-spec:
-  validations:
-    - name: directory-index-completeness
-      severity: critical
-      check: all-root-modules-indexed
-
-    - name: dependency-graph-acyclicity
-      severity: critical
-      check: hard-dependency-graph-acyclic
-
-    - name: binding-index-coverage
-      severity: high
-      check: all-services-have-provider-bindings
-
-    - name: navigation-no-runtime-deps
-      severity: critical
-      check: navigation-indexes-have-no-hard-runtime-dependencies
+  name: mycodexvantaos-navigation-validation-profile
+  version: 1.0.0
+  date: "2026-06-29"
+  status: active
+platform: mycodexvantaos
+canonical-url: "https://mycodexvantaos.com"

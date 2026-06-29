@@ -1,5 +1,6 @@
 apiVersion: mycodexvantaos.io/v1
 kind: NamespaceLifecycle
 metadata:
-  name: namespace-approval-flow
-spec: {}
+  name: mycodexvantaos-namespace-approval-flow
+  version: 1.0.0
+platform: mycodexvantaos

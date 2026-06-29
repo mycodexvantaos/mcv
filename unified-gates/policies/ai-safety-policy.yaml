@@ -1,17 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
-kind: AISafetyPolicy
+kind: GatePolicy
 metadata:
-  name: ai-safety-policy
+  name: mycodexvantaos-ai-safety-policy
   version: 1.0.0
-  authority: platform-governance-root
-  governanceCode: mycodexvantaos-60600
-spec:
-  harmfulOutputRateThreshold: 0.001
-  promptInjectionTestRequired: true
-  dataLeakageTestRequired: true
-  alignmentVerificationRequired: true
-  safetyAttestationRequired: true
-  safetyTestSuiteRef: tests/ai-safety/
-  mandatoryGates:
-    - gate-38-algorithm-safety-policy-validation
-    - gate-94-policy-attestation-validation
+  date: "2026-06-29"
+  status: active
+platform: mycodexvantaos

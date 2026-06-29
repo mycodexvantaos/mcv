@@ -1,0 +1,13 @@
+From: MyCodexVantaOS Platform Team <platform@mycodexvantaos.com>
+Date: 2026-06-29
+Subject: [PATCH 0003] ci: harden workflow hygiene (concurrency, timeouts, actions SHA)
+
+Add concurrency groups with cancel-in-progress to 13 workflows.
+Add timeout-minutes to all jobs.
+Pin all GitHub Actions to specific SHA for supply chain security.
+Align CodeQL action to v3 SHA.
+
+Signed-off-by: MyCodexVantaOS Platform Team <platform@mycodexvantaos.com>
+---
+ .github/workflows/*.yml | 156 +++++++++++++++++++++++++++++++++++++++
+ 13 files changed, 156 insertions(+)

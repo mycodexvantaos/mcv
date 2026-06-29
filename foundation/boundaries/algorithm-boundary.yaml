@@ -1,7 +1,7 @@
 apiVersion: mycodexvantaos.io/v1
 kind: FoundationBoundary
 metadata:
-  name: algorithm-boundary
-spec:
-  foundation: algorithm-foundation
-  boundaryType: specification-unit
+  name: mycodexvantaos-algorithm-boundary
+  version: 1.0.0
+platform: mycodexvantaos
+foundation: algorithm-foundation

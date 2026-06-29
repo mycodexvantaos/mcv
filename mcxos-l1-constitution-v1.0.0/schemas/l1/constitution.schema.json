@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mycodexvantaos.com/schemas/l1/constitution.schema.json",
+  "title": "L1Constitution",
+  "type": "object",
+  "required": ["spec-id", "layer", "identity"],
+  "properties": {
+    "spec-id": { "type": "string" },
+    "layer": { "type": "integer", "const": 1 },
+    "identity": {
+      "type": "object",
+      "required": ["machine", "brand"],
+      "properties": {
+        "machine": { "type": "string", "const": "mycodexvantaos" },
+        "brand": { "type": "string", "const": "MyCodexVantaOS" }
+      }
+    }
+  }
+}

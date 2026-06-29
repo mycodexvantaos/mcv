@@ -1,6 +1,6 @@
 apiVersion: mycodexvantaos.io/v1
 kind: NavigationMap
 metadata:
-  name: supply-chain-map
-  description: supply-chain-map for MyCodexVantaOS
-spec: {}
+  name: mycodexvantaos-supply-chain-map
+  version: 1.0.0
+platform: mycodexvantaos

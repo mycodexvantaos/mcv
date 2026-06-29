@@ -1,6 +1,7 @@
 apiVersion: mycodexvantaos.io/v1
-kind: NamespaceExceptions
+kind: ExceptionRegistry
 metadata:
-  name: namespace-exceptions
-spec:
-  exceptions: []
+  name: mycodexvantaos-namespace-exceptions
+  version: 1.0.0
+platform: mycodexvantaos
+exceptions: []

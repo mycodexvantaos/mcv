@@ -1,8 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
-kind: GovernancePolicy
+kind: Policy
 metadata:
-  name: architecture-policy
-  description: architecture-policy for MyCodexVantaOS
-spec:
-  rules: []
-  enforcement: block
+  name: mycodexvantaos-architecture-policy
+  version: 1.0.0
+  date: "2026-06-29"
+  status: active
+platform: mycodexvantaos

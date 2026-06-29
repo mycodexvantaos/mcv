@@ -1,180 +1,136 @@
-# ── Release Candidate Verification Workflow ────────────────────────
-# Verifies release candidate readiness without deploying or requiring
-# infrastructure secrets (no K8s, Terraform, GCP, or Cloudflare).
-#
-# path: .github/workflows/release-candidate-check.yml
-
 name: Release Candidate Check
 
 on:
   push:
-    branches: [main, 'release/**']
-  pull_request:
-    branches: [main, 'release/**']
+    tags:
+      - "v*.*.*-rc.*"
+      - "v*.*.*"
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version (e.g., v1.0.0)"
+        required: true
+        type: string
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
   contents: read
-
-env:
-  NODE_VERSION: '22'
-  PNPM_VERSION: '9'
+  checks: write
+  id-token: write
 
 jobs:
-  # ── Governance & Contracts ──────────────────────────────────────
-  governance:
-    name: Governance & Contracts
+  pre-release-validation:
+    name: Pre-Release Validation
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
       - name: Checkout repository
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
-
-      - name: Setup PNPM
-        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271
+        uses: actions/checkout@v4
         with:
-          version: ${{ env.PNPM_VERSION }}
+          fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+        uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
+          node-version: "22"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
-      - name: Contract validation
-        continue-on-error: true
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        run: pip install pyyaml jsonschema networkx
+
+      - name: Run full architecture validation
+        run: pnpm run validate:all
+
+      - name: Run all tests
+        run: pnpm run test
+
+      - name: Validate release manifest
         run: |
-          if pnpm run --filter . contracts:validate 2>/dev/null; then
-            echo "✅ Contract validation passed"
-          else
-            echo "⚠️ contracts:validate not yet configured — skipping"
-          fi
+          python3 -c "
+          import yaml
+          with open('release/release-manifest.yaml') as f:
+              manifest = yaml.safe_load(f)
+          assert manifest.get('platform') == 'mycodexvantaos', 'Invalid platform in release manifest'
+          assert manifest.get('status') in ['candidate', 'stable'], 'Invalid release status'
+          print('Release manifest validation: PASSED')
+          "
 
-      - name: Policy check
-        continue-on-error: true
+      - name: Check production readiness policy
         run: |
-          if pnpm run --filter . policy:check 2>/dev/null; then
-            echo "✅ Policy check passed"
-          else
-            echo "⚠️ policy:check not yet configured — skipping"
-          fi
+          python3 -c "
+          import yaml
+          with open('policies/production-readiness-policy.yaml') as f:
+              policy = yaml.safe_load(f)
+          gates = policy.get('required-gates', [])
+          required = ['gate-99-production-closure-validation']
+          for g in required:
+              assert g in gates, f'Required gate missing from production readiness: {g}'
+          print('Production readiness policy: PASSED')
+          "
 
-      - name: Governance check
-        continue-on-error: true
-        run: |
-          if pnpm run --filter . governance:check 2>/dev/null; then
-            echo "✅ Governance check passed"
-          else
-            echo "⚠️ governance:check not yet configured — skipping"
-          fi
-
-  # ── Tests ────────────────────────────────────────────────────────
-  tests:
-    name: Tests
+  supply-chain-attestation:
+    name: Supply Chain Attestation
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
+    needs: pre-release-validation
     steps:
       - name: Checkout repository
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        uses: actions/checkout@v4
 
-      - name: Setup PNPM
-        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          version: ${{ env.PNPM_VERSION }}
-
-      - name: Setup Node.js
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
+          python-version: "3.12"
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pip install pyyaml
 
-      - name: Service tests
-        run: pnpm test:services || echo "test:services not yet configured"
-        continue-on-error: true
+      - name: Validate SLSA policy
+        run: |
+          python3 -c "
+          import yaml
+          with open('supply-chain/slsa-policy.yaml') as f:
+              policy = yaml.safe_load(f)
+          level = policy.get('slsa', {}).get('level', 0)
+          assert level >= 2, f'SLSA level must be >= 2, got {level}'
+          print(f'SLSA policy validation: PASSED (level {level})')
+          "
 
-      - name: Contract tests
-        run: pnpm test:contracts || echo "test:contracts not yet configured"
-        continue-on-error: true
+      - name: Generate release report
+        run: |
+          python3 -c "
+          import json, yaml, datetime
+          report = {
+              'timestamp': datetime.datetime.utcnow().isoformat() + 'Z',
+              'platform': 'mycodexvantaos',
+              'status': 'release-candidate-validated',
+              'canonical-url': 'https://mycodexvantaos.com',
+              'gates-passed': True,
+              'supply-chain-validated': True
+          }
+          with open('outputs/release-candidate-report.json', 'w') as f:
+              json.dump(report, f, indent=2)
+          print('Release candidate report generated')
+          "
 
-      - name: Unit tests
-        run: pnpm test || echo "test not yet configured"
-        continue-on-error: true
-
-  # ── Python ──────────────────────────────────────────────────────
-  python:
-    name: Python CI
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
-
-      - name: Set up Python 3.11
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+      - name: Upload release report
+        uses: actions/upload-artifact@v4
         with:
-          python-version: '3.11'
-
-      - name: Install uv
-        run: pip install uv
-
-      - name: Install dependencies
-        working-directory: ./python
-        run: uv sync --extra dev || echo "Python deps install skipped"
-
-      - name: Run linter
-        working-directory: ./python
-        run: |
-          uv run ruff check . || echo "ruff lint warnings (non-blocking)"
-          uv run ruff format --check . || echo "ruff format warnings (non-blocking)"
-        continue-on-error: true
-
-      - name: Run tests
-        working-directory: ./python
-        run: uv run pytest -v --cov=python/packages --cov-report=xml || echo "Some tests may need setup"
-        continue-on-error: true
-
-  # ── RC Verification Summary ──────────────────────────────────────
-  rc-summary:
-    name: RC Verification Summary
-    runs-on: ubuntu-latest
-    needs: [governance, tests, python]
-    if: always()
-    timeout-minutes: 5
-    steps:
-      - name: Determine overall status
-        env:
-          GOV_RESULT: ${{ needs.governance.result }}
-          TEST_RESULT: ${{ needs.tests.result }}
-          PYTHON_RESULT: ${{ needs.python.result }}
-        run: |
-          {
-            echo "## Release Candidate Verification Summary"
-            echo ""
-            echo "| Category | Status |"
-            echo "|----------|--------|"
-            echo "| Governance & Contracts | $GOV_RESULT |"
-            echo "| Tests | $TEST_RESULT |"
-            echo "| Python CI | $PYTHON_RESULT |"
-            echo ""
-          } >> "$GITHUB_STEP_SUMMARY"
-
-          if [ "$GOV_RESULT" = "failure" ]; then
-            echo "❌ Release candidate NOT ready — governance failed" >> $GITHUB_STEP_SUMMARY
-            exit 1
-          fi
-
-          if [ "$TEST_RESULT" = "failure" ]; then
-            echo "⚠️ Release candidate ready with test warnings" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "✅ Release candidate verification passed" >> $GITHUB_STEP_SUMMARY
-          fi
+          name: release-candidate-report
+          path: outputs/release-candidate-report.json
+          retention-days: 90

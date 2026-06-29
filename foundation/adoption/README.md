@@ -1,3 +1,3 @@
-# Foundation Adoption
+# MyCodexVantaOS Foundation Adoption
 
-Adoption model and onboarding for MyCodexVantaOS foundations.
+Adoption model and onboarding documentation.

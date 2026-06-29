@@ -1,6 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
-kind: NavigationGraph
+kind: DependencyGraph
 metadata:
-  name: mediator-graph
-  description: mediator-graph for MyCodexVantaOS
-spec: {}
+  name: mycodexvantaos-mediator-graph
+  version: 1.0.0
+platform: mycodexvantaos
+nodes: []
+edges: []

@@ -4,12 +4,6 @@ metadata:
   name: providers.mycodexvantaos.io
 spec:
   group: mycodexvantaos.io
-  names:
-    kind: Provider
-    listKind: ProviderList
-    plural: providers
-    singular: provider
-  scope: Namespaced
   versions:
     - name: v1
       served: true
@@ -20,3 +14,8 @@ spec:
           properties:
             spec:
               type: object
+  scope: Namespaced
+  names:
+    plural: providers
+    singular: provider
+    kind: Provider

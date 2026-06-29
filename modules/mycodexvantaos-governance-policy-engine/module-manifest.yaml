@@ -1,33 +1,15 @@
 apiVersion: mycodexvantaos.io/v1
-kind: ServiceManifest
+kind: ModuleManifest
 metadata:
   name: mycodexvantaos-governance-policy-engine
-  urn: urn:mycodexvantaos:service:mycodexvantaos-governance-policy-engine
-  serviceId: mycodexvantaos-governance-policy-engine
-  tier: tier-0
+  version: 1.0.0
+  date: "2026-06-29"
+  status: active
 
-spec:
-  serviceId: mycodexvantaos-governance-policy-engine
-  tier: tier-0
-  packageName: '@mycodexvantaos/governance-policy-engine'
-  ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-governance-policy-engine
-  kubernetesResourceName: mycodexvantaos-governance-policy-engine
-  internalUri: mycodexvantaos://service/mycodexvantaos-governance-policy-engine
-  urn: urn:mycodexvantaos:service:mycodexvantaos-governance-policy-engine
-
-  supportedRuntimeModes:
-    - native
-    - connected
-    - hybrid
-
-  deploymentTargets:
-    - kubernetes
-    - docker-compose
-
-  productionReadiness:
-    required: true
-    healthCheckRequired: true
-    auditChainRequired: true
-    sbomRequired: true
-    provenanceRequired: true
-    imagePinningRequired: true
+service-id: mycodexvantaos-governance-policy-engine
+platform: mycodexvantaos
+runtime-modes:
+  - native
+  - connected
+  - hybrid
+service-path: services/mycodexvantaos-governance-policy-engine

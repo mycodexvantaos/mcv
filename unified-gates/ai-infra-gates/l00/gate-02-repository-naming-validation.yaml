@@ -1,44 +1,12 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
-  id: gate-02-repository-naming-validation
+  name: mycodexvantaos-gate-02-repository-naming-validation
   version: 1.0.0
-  layer: l00
-  plane: ai-infra
-  blocking: true
-  lifecycle: active
-  criticality: critical
-  owner: platform@mycodexvantaos.com
-  governanceCode: mycodexvantaos-00100
-  createdAt: 2026-01-01T00:00:00Z
-  tags:
-    - l00
-    - repository
-  sloTarget: 30
-  evidenceRetentionDays: 2555
-spec:
-  description: >
-    Validates that repository names follow the {namespace}-{domain}-{function} canonical pattern and that domain and function are from the controlled vocabulary.
-  validates:
-    - dimension: vocabulary-compliance
-      description: Domain and function are in the controlled vocabulary.
-      checks:
-        - id: chk-namespace-registered
-          description: Namespace prefix is mycodexvantaos or softwareos
-          rule: 'enum:mycodexvantaos,softwareos'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-domain-in-vocabulary
-          description: Domain segment is in the controlled domain vocabulary
-          rule: 'vocabulary:domains'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-function-in-vocabulary
-          description: Function segment is in the controlled function vocabulary
-          rule: 'vocabulary:functions'
-          severity: critical
-          evidenceRequired: true
-  dependsOn: []
-  waiverPolicy: ./policies/gate-waiver-policy.yaml
-  escalationPolicy: ./policies/gate-risk-policy.yaml
+  date: "2026-06-29"
+  status: active
+gate-id: gate-02-repository-naming-validation
+level: l00
+platform: mycodexvantaos
+severity: critical
+blocking: true

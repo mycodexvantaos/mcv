@@ -1,5 +1,6 @@
 apiVersion: mycodexvantaos.io/v1
 kind: NamespaceLifecycle
 metadata:
-  name: namespace-lifecycle
-spec: {}
+  name: mycodexvantaos-namespace-lifecycle
+  version: 1.0.0
+platform: mycodexvantaos

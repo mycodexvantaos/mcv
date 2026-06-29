@@ -1,12 +1,6 @@
 apiVersion: mycodexvantaos.io/v1
 kind: RootModule
 metadata:
-  name: platform
-  urn: urn:mycodexvantaos:platform:module:platform
-  domain: platform
-  layer: platform
-spec:
-  moduleType: platform
-  description: Platform service catalog and topology
-  runtimeCodeAllowed: false
-  deploymentAllowed: false
+  name: mycodexvantaos-platform
+  version: 1.0.0
+platform: mycodexvantaos

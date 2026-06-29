@@ -1,6 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
-kind: NavigationGraph
+kind: DependencyGraph
 metadata:
-  name: foundation-service-graph
-  description: foundation-service-graph for MyCodexVantaOS
-spec: {}
+  name: mycodexvantaos-foundation-service-graph
+  version: 1.0.0
+platform: mycodexvantaos
+nodes: []
+edges: []

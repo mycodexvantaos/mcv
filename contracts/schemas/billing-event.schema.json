@@ -1,11 +1,12 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://mycodexvantaos.io/schemas/contracts/billing-event",
-  "title": "Billing Event",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mycodexvantaos.com/schemas/billing-event.schema.json",
+  "title": "BillingEvent",
   "type": "object",
+  "required": ["id", "type", "timestamp"],
   "properties": {
     "id": { "type": "string" },
-    "type": { "type": "string" }
-  },
-  "required": ["id", "type"]
+    "type": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" }
+  }
 }

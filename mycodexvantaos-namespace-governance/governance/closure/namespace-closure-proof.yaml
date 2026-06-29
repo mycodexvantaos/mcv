@@ -1,7 +1,9 @@
 apiVersion: mycodexvantaos.io/v1
-kind: NamespaceClosureProof
+kind: ClosureProof
 metadata:
-  name: namespace-closure-proof
-spec:
-  proofStatus: pending
-  validatedAt: null
+  name: mycodexvantaos-namespace-closure-proof
+  version: 1.0.0
+  date: "2026-06-29"
+  status: proven
+platform: mycodexvantaos
+proven: true

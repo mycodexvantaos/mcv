@@ -1,19 +1,15 @@
-# providers/queue/queue-rabbitmq/provider-manifest.yaml
-# 8.1 — provider instance: queue-rabbitmq
-# 8.2 — capability (queue) precedes provider name (rabbitmq)
-apiVersion: mycodexvantaos.org/v1
-kind: Provider
+apiVersion: mycodexvantaos.io/v1
+kind: ProviderManifest
 metadata:
-  name: queue-rabbitmq
-  capability: queue
-  labels:
-    mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: '8.1'
-spec:
-  providerName: rabbitmq
-  isNative: false
-  lifecycle:
-    stage: stable
-  envVarPrefix: MYCODEXVANTAOS_QUEUE
-  configSchemaRef: ./config.schema.json
-  description: 'RabbitMQ message queue provider.'
+  name: mycodexvantaos-queue-rabbitmq
+  version: 1.0.0
+  date: "2026-06-29"
+  status: active
+
+provider-id: mycodexvantaos-queue-rabbitmq
+capability: queue
+platform: mycodexvantaos
+runtime-modes:
+  - native
+  - connected
+  - hybrid

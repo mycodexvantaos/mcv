@@ -1,13 +1,6 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://mycodexvantaos.io/schemas/navigation/navigation-index",
-  "title": "Navigation Index",
-  "type": "object",
-  "properties": {
-    "apiVersion": { "type": "string", "const": "mycodexvantaos.io/v1" },
-    "kind": { "type": "string" },
-    "metadata": { "type": "object" },
-    "spec": { "type": "object" }
-  },
-  "required": ["apiVersion", "kind", "metadata", "spec"]
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mycodexvantaos.com/schemas/navigation/navigation-index.schema.json",
+  "title": "NavigationIndex",
+  "type": "object"
 }

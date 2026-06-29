@@ -1,0 +1,9 @@
+apiVersion: mycodexvantaos.io/v1
+kind: SpecIndex
+metadata:
+  name: mcxos-l1-spec-index
+  version: 1.0.0
+specs:
+  - spec-id: mycodexvantaos-spec-l1-constitution-v1.0.0
+    layer: 1
+    status: active

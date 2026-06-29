@@ -1,5 +1,6 @@
 apiVersion: mycodexvantaos.io/v1
-kind: FoundationAdoption
+kind: AdoptionArtifact
 metadata:
-  name: onboarding-model
-spec: {}
+  name: mycodexvantaos-onboarding-model
+  version: 1.0.0
+platform: mycodexvantaos

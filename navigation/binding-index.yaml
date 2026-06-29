@@ -1,75 +1,9 @@
 apiVersion: mycodexvantaos.io/v1
-kind: BindingIndex
+kind: NavigationArtifact
 metadata:
-  name: binding-index
-  description: Service-to-provider binding index for MyCodexVantaOS
-
-spec:
-  bindings:
-    - serviceId: mycodexvantaos-core-auth
-      providers:
-        - capability: auth
-          providerId: auth-jwt
-          required: true
-
-    - serviceId: mycodexvantaos-ai-embedding
-      providers:
-        - capability: embedding
-          providerId: embedding-native
-          required: true
-          fallback: embedding-openai
-
-    - serviceId: mycodexvantaos-ai-inference
-      providers:
-        - capability: llm
-          providerId: llm-native
-          required: true
-          fallback: llm-openai
-
-    - serviceId: mycodexvantaos-agent-runtime
-      providers:
-        - capability: llm
-          providerId: llm-native
-          required: true
-        - capability: vector-store
-          providerId: vector-store-pgvector
-          required: true
-
-    - serviceId: mycodexvantaos-knowledge-ingestion
-      providers:
-        - capability: embedding
-          providerId: embedding-native
-          required: true
-        - capability: vector-store
-          providerId: vector-store-pgvector
-          required: true
-        - capability: storage
-          providerId: storage-minio
-          required: true
-
-    - serviceId: mycodexvantaos-knowledge-search
-      providers:
-        - capability: vector-store
-          providerId: vector-store-pgvector
-          required: true
-        - capability: embedding
-          providerId: embedding-native
-          required: true
-
-    - serviceId: mycodexvantaos-billing-metering
-      providers:
-        - capability: database
-          providerId: database-postgres
-          required: true
-        - capability: queue
-          providerId: queue-rabbitmq
-          required: true
-
-    - serviceId: mycodexvantaos-quantum-controller
-      providers:
-        - capability: quantum-runtime
-          providerId: quantum-runtime-native
-          required: true
-        - capability: quantum-simulator
-          providerId: quantum-simulator-qiskit
-          required: false
+  name: mycodexvantaos-binding-index
+  version: 1.0.0
+  date: "2026-06-29"
+  status: active
+platform: mycodexvantaos
+canonical-url: "https://mycodexvantaos.com"

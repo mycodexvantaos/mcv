@@ -1,11 +1,72 @@
 apiVersion: mycodexvantaos.io/v1
 kind: ReleaseConfig
 metadata:
-  name: release-config
-spec:
-  primaryDigestAlgorithm: sha3-512
-  auditChainDigestAlgorithm: sha256
-  fastComparisonDigestAlgorithm: blake3
-  imagePinningRequired: true
-  sbomRequired: true
-  provenanceRequired: true
+  name: mycodexvantaos-release-config
+  version: 1.0.0
+  date: "2026-06-29"
+
+# Release policy reference
+policy: release/release-policy.yaml
+
+# Versioning
+versioning:
+  scheme: semver
+  pattern: "^v\\d+\\.\\d+\\.\\d+$"
+  pre-release-pattern: "^v\\d+\\.\\d+\\.\\d+-rc\\.\\d+$"
+
+# Release stages
+stages:
+  - name: development
+    auto-promote: true
+    required-gates: []
+  - name: staging
+    auto-promote: false
+    required-gates:
+      - gate-91-sbom-generation-validation
+      - gate-92-provenance-validation
+      - gate-93-signature-validation
+  - name: production
+    auto-promote: false
+    required-gates:
+      - gate-91-sbom-generation-validation
+      - gate-92-provenance-validation
+      - gate-93-signature-validation
+      - gate-94-policy-attestation-validation
+      - gate-95-audit-evidence-chain-validation
+      - gate-96-release-readiness-validation
+      - gate-97-rollback-readiness-validation
+      - gate-98-compliance-report-validation
+      - gate-99-production-closure-validation
+
+# Rollback policy
+rollback:
+  enabled: true
+  max-rollback-versions: 3
+  auto-rollback-on-health-failure: true
+  health-check-timeout-seconds: 300
+
+# Artifact signing
+signing:
+  enabled: true
+  algorithm: ECDSA-P256
+  key-management: secrets-vault
+
+# SBOM
+sbom:
+  enabled: true
+  format: cyclonedx
+  include-dev-dependencies: false
+
+# Deployment targets
+deployment-targets:
+  production:
+    canonical-url: "https://mycodexvantaos.com"
+    platforms:
+      - cloudflare-pages
+      - cloud-run
+      - gke
+      - firebase-hosting
+  staging:
+    canonical-url: "https://staging.mycodexvantaos.com"
+  development:
+    canonical-url: "http://localhost:3000"

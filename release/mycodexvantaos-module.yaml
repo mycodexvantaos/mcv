@@ -1,10 +1,6 @@
 apiVersion: mycodexvantaos.io/v1
 kind: RootModule
 metadata:
-  name: release
-  urn: urn:mycodexvantaos:release:module:release
-spec:
-  moduleType: release
-  description: Release management and promotion policies
-  runtimeCodeAllowed: false
-  deploymentAllowed: false
+  name: mycodexvantaos-release
+  version: 1.0.0
+platform: mycodexvantaos

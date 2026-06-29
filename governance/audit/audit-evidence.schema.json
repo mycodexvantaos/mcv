@@ -1,12 +1,48 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://mycodexvantaos.io/schemas/governance/audit-evidence",
-  "title": "Audit Evidence",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mycodexvantaos.com/schemas/audit-evidence.schema.json",
+  "title": "AuditEvidence",
+  "description": "Evidence artifact for gate evaluations and governance decisions",
   "type": "object",
+  "required": ["evidence-id", "evidence-type", "created-at", "gate-id", "result", "artifacts"],
   "properties": {
-    "id": { "type": "string" },
-    "type": { "type": "string" },
-    "timestamp": { "type": "string", "format": "date-time" }
+    "evidence-id": {
+      "type": "string",
+      "pattern": "^evd-[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}$"
+    },
+    "evidence-type": {
+      "type": "string",
+      "enum": ["gate-evaluation", "release-promotion", "exception-grant", "policy-change", "security-scan"]
+    },
+    "created-at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "gate-id": {
+      "type": "string"
+    },
+    "result": {
+      "type": "string",
+      "enum": ["pass", "fail", "waived", "skipped"]
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "digest"],
+        "properties": {
+          "name": { "type": "string" },
+          "digest": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "url": { "type": "string", "format": "uri" }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object"
+    }
   },
-  "required": ["id", "type", "timestamp"]
+  "additionalProperties": false
 }

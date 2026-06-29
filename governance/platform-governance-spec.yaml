@@ -1,649 +1,89 @@
-id: mycodexvantaos-platform-governance
-spec_version: v1.0.0
-effective_date: '2026-04-23T00:00:00Z'
-immutable_after: '2026-01-01T00:00:00Z'
-status: stable
-enforce_level: mandatory
-identity:
-  org_identity: mycodexvantaos
-  root_prefix: mycodexvantaos
-  backend_prefix: mycodexvantaos-quantum
-  npm_scope: '@mycodexvantaos'
-  urn_namespace: urn:mycodexvantaos
-  internal_scheme: mycodexvantaos://
-  oci_registry_org: mycodexvantaos
-  k8s_api_group: mycodexvantaos.quantum
-  crd_group: mycodexvantaos.quantum
-  namespace_lexicon:
-    mycodexvantaos:
-      role: "\u6838\u5FC3\u57FA\u790E\u8A2D\u65BD / \u5171\u4EAB\u670D\u52D9 / \u63A7\
-        \u5236\u5E73\u9762"
-      scope: "\u5E95\u5C64\u5E73\u53F0\u7D44\u4EF6\uFF0C\u70BA\u4E0A\u5C64\u696D\u52D9\
-        \u5E73\u53F0\u63D0\u4F9B\u652F\u6490"
-      examples:
-        - mycodexvantaos-auth
-        - mycodexvantaos-policy
-        - mycodexvantaos-quantum-controller
-    softwareos:
-      role: "\u696D\u52D9\u5E73\u53F0\u547D\u540D\u7A7A\u9593"
-      scope: "\u4E0A\u5C64\u696D\u52D9\u61C9\u7528\uFF0C\u4F9D\u8CF4 mycodexvantaos\
-        \ \u63D0\u4F9B\u7684\u57FA\u790E\u670D\u52D9"
-      note: "\u4FDD\u7559\u70BA\u696D\u52D9\u5E73\u53F0\u7368\u7ACB\u5206\u5C64\uFF0C\
-        \u4E0D\u5F97\u8207 mycodexvantaos \u6DF7\u7528"
-  forbidden_legacy_prefixes:
-    - mycodexvanta-os
-    - codexvanta-os
-    - codexvanta
-    - KUBO
-    - kubo
-    - codevantaos
-  forbidden_legacy_regex: ^(mycodexvanta-os|codexvanta|codexvanta-os|[Kk][Uu][Bb][Oo]|codevantaos)
-  migration_script: scripts/rename-mycodexvantaos.sh
-  scan_script: scripts/check-legacy-prefix.sh
-naming_closure_model:
-  name: mycodexvantaos Naming Closure Model
-  version: v3.0
-  termination_layers: 3
-  recursion_prevention: "\u6709\u9650\u5C64\u7D1A\u7D42\u6B62 + L2 \u7269\u7406\u591A\
-    \u7C3D\u8B8A\u66F4\u9396"
-  L0_atomic:
-    layer_id: L0
-    label: "\u539F\u5B50\u547D\u540D\u5C64"
-    mutability: immutable
-    change_mechanism: "\u7CFB\u7D71\u91CD\u751F\u4E8B\u4EF6\uFF08\u975E\u5E38\u898F\
-      \u6D41\u7A0B\u4E0D\u53EF\u89F8\u767C\uFF09"
-    source_doc: governance/naming-closure/L0-atomic-categories.yaml
-    atomic_category_count: 32
-    atomic_categories:
-      infrastructure:
-        - platform
-        - service
-        - api
-        - component
-        - port
-        - dns
-      development:
-        - module
-        - directory
-        - file
-        - dependency
-        - branch
-        - tag
-      organization:
-        - team
-        - org
-        - enterprise
-      semantic_governance:
-        - semantic-anchor
-        - governance-rule
-        - event-stream
-        - archive-evidence
-        - spec-doc
-        - path
-        - mapping
-        - reference
-        - metadata
-        - annotation
-      technical_closure:
-        - error
-        - state
-        - transition
-        - policy
-        - metric
-        - contract
-      meta:
-        - meta-naming
-  L1_normative:
-    layer_id: L1
-    label: "\u898F\u7BC4\u547D\u540D\u5C64"
-    mutability: requires_L2_reference
-    source_doc: governance/naming-closure/L1-specs/
-    spec_file_pattern: mycodexvantaos_spec_{category}_v{semver}.yaml
-    spec_count: 32
-    canonical_identifier_rules:
-      spec_key: canonical_identifiers
-    composite_identifier_rules:
-      spec_key: composite_identifiers
-    protocol_specific_rules:
-      spec_key: protocol_specific_identifiers
-  L2_meta:
-    layer_id: L2
-    label: "\u5143\u547D\u540D\u5C64\uFF08\u7D42\u6B62\u9EDE\uFF09"
-    mutability: requires_physical_multisig
-    multisig_threshold: 3/5
-    multisig_method: hardware_security_module
-    source_doc: governance/naming-closure/L2-meta/meta_naming_spec_v1.yaml
-    defines:
-      - "\u898F\u7BC4\u6587\u4EF6\u547D\u540D\u898F\u5247"
-      - "\u898F\u7BC4\u7248\u672C\u7B56\u7565\uFF08\u5F37\u5236 SemVer 2.0.0\uFF09"
-      - "L2 \u81EA\u8EAB\u8B8A\u66F4\u7684\u6B0A\u9650\u9589\u74B0"
-  closure_prover:
-    class: NamingClosureProver
-    source_file: ci/utils/naming-closure-prover.ts
-    assertions:
-      completeness: has_category_for_all_names()
-      consistency: naming_spec_is_named()
-      termination: no_undefined_dependencies() && has_termination_layer()
-      self_reference: L2_change_mechanism_is_defined()
-    output:
-      type: formal_proof
-      archive_namespace: archive-evidence
-      replay_enabled: true
-namespace_governance_coding:
-  version: '3.0'
-  source_doc: governance/ns-coding-system.yaml
-  code_structure:
-    format: "mycodexvantaos {\u5C64\u7D1A:00-99}{\u9818\u57DF:0-9}{\u5B50\u985E:0-9}{\u5E8F\
-      \u5217:00-99}"
-    fields:
-      tier_range: 00~99
-      domain: 0~9
-      sub_domain: 0~9
-      sequence: 00~99
-  era_mapping:
-    era_1:
-      label: "\u4EE3\u78BC\u5C64\uFF08\u975C\u614B\u7D50\u69CB\u5316\uFF09"
-      code_range: mycodexvantaos 100~299
-      governance_focus: "\u4EE3\u78BC\u7D44\u7E54\u3001\u6A21\u584A\u5283\u5206\u3001\
-        \u90E8\u7F72\u62D3\u64B2"
-      user_need_mapping: "\u7A0B\u5F0F\u78BC\u751F\u6210\u3001\u4EE3\u78BC\u67B6\u69CB\
-        \u90E8\u7F72"
-    era_2:
-      label: "\u5FAE\u78BC\u5C64\uFF08\u52D5\u614B\u5206\u4F48\u5F0F\uFF09"
-      code_range: mycodexvantaos 300~599
-      governance_focus: "\u670D\u52D9\u7DB2\u683C\u3001\u6578\u64DA\u6D41\u3001\u6B0A\
-        \u91CD\u5206\u767C"
-      user_need_mapping: "\u6578\u78BC\u5316\u67B6\u69CB\u3001\u6B0A\u91CD\u5316\u53C3\
-        \u6578\u914D\u7F6E\uFF08\u904B\u884C\u614B\uFF09"
-    era_3:
-      label: "\u610F\u5716\u8207\u6F14\u7B97\u5C64\uFF08\u610F\u5716\u9A45\u52D5\uFF09"
-      code_range: mycodexvantaos 600~799
-      governance_focus: "\u8A9E\u7FA9\u610F\u5716\u3001AI \u4EE3\u7406\u3001\u6F14\
-        \u7B97\u6CD5\u610F\u5716"
-      user_need_mapping: "\u6F14\u7B97\u6CD5\u751F\u6210\u3001\u795E\u7D93\u7DB2\u8DEF\
-        \u63A8\u8AD6"
-    era_q:
-      label: "\u91CF\u5B50\u64F4\u5C55\u5C64"
-      code_range: mycodexvantaos 800~899
-      governance_focus: "\u91CF\u5B50\u758A\u52A0\u3001\u7CFE\u7E8F\u3001\u91CF\u5B50\
-        \u9580\u3001\u6DF7\u5408\u67B6\u69CB"
-      user_need_mapping: "\u91CF\u5B50\u904B\u7B97\u3001\u91CF\u5B50-\u7D93\u5178\u6DF7\
-        \u5408\u67B6\u69CB"
-    cross_era:
-      label: "\u8DE8\u5C64\u6CBB\u7406\uFF08\u7D71\u4E00\u9589\u74B0\uFF09"
-      code_range: mycodexvantaos 900~999
-      governance_focus: "\u8DE8 Era \u4E00\u81F4\u6027\u6620\u5C04"
-      user_need_mapping: "\u5168\u68E7\u6578\u5B57\u5316\u67B6\u69CB\u4E00\u81F4\u6027"
-  domain_registry:
-    meta_framework:
-      '00000':
-        name: "\u547D\u540D\u7A7A\u9593\u6CBB\u7406\u57FA\u7DDA\u898F\u7BC4"
-        en: Namespace Governance Baseline Specification
-        enforce_level: mandatory
-        source_doc: governance/ns-baseline.yaml
-      '00100':
-        name: "\u547D\u540D\u7A7A\u9593\u6A19\u8B58\u898F\u7BC4"
-      '00200':
-        name: "\u547D\u540D\u7A7A\u9593\u751F\u547D\u5468\u671F"
-      '00300':
-        name: "\u547D\u540D\u7A7A\u9593\u7E7C\u627F\u9AD4\u7CFB"
-      '00400':
-        name: "\u8DE8\u547D\u540D\u7A7A\u9593\u5F15\u7528\u898F\u7BC4"
-      '00500':
-        name: "\u547D\u540D\u7A7A\u9593\u7248\u672C\u63A7\u5236"
-      '00600':
-        name: "\u547D\u540D\u7A7A\u9593\u6B0A\u9650\u6A21\u578B"
-      '00700':
-        name: "\u547D\u540D\u7A7A\u9593\u5BE9\u8A08\u8FFD\u8E64"
-      00800:
-        name: "\u547D\u540D\u7A7A\u9593\u885D\u7A81\u89E3\u6C7A"
-      00900:
-        name: "\u547D\u540D\u7A7A\u9593\u9077\u79FB\u898F\u7BC4"
-    era1_code:
-      '10100':
-        name: "\u4EE3\u78BC\u5305\u547D\u540D\u7A7A\u9593"
-      '10200':
-        name: "\u985E/\u63A5\u53E3\u547D\u540D\u7A7A\u9593"
-      '10300':
-        name: "\u65B9\u6CD5/\u51FD\u6578\u547D\u540D\u7A7A\u9593"
-      '10400':
-        name: "\u8B8A\u91CF\u547D\u540D\u7A7A\u9593"
-      '10500':
-        name: "\u5E38\u91CF\u547D\u540D\u7A7A\u9593"
-      '10600':
-        name: "\u8A3B\u89E3\u547D\u540D\u7A7A\u9593"
-      '10700':
-        name: "\u914D\u7F6E\u547D\u540D\u7A7A\u9593"
-      '10800':
-        name: "\u8CC7\u6E90\u6587\u4EF6\u547D\u540D\u7A7A\u9593"
-      '10900':
-        name: "\u6E2C\u8A66\u547D\u540D\u7A7A\u9593"
-      '11000':
-        name: "\u69CB\u5EFA\u547D\u540D\u7A7A\u9593"
-      '11100':
-        name: "\u7A0B\u5F0F\u78BC\u751F\u6210\u5668\u6A21\u677F\u7A7A\u9593"
-        user_need: "\u7A0B\u5F0F\u78BC\u751F\u6210"
-      '11200':
-        name: "\u90E8\u7F72\u62D3\u64B2\u63CF\u8FF0\u7A7A\u9593"
-        user_need: "\u4EE3\u78BC\u67B6\u69CB\u90E8\u7F72"
-    era1_arch:
-      '20100':
-        name: "\u6A21\u584A\u547D\u540D\u7A7A\u9593"
-      '20200':
-        name: "\u7D44\u4EF6\u547D\u540D\u7A7A\u9593"
-      '20300':
-        name: "\u5C64\u7D1A\u547D\u540D\u7A7A\u9593"
-      '20400':
-        name: "\u670D\u52D9\u547D\u540D\u7A7A\u9593"
-      '20500':
-        name: "API\u7AEF\u9EDE\u547D\u540D\u7A7A\u9593"
-      '20600':
-        name: "\u6578\u64DA\u5EAB\u8868\u547D\u540D\u7A7A\u9593"
-      '20700':
-        name: "\u6D88\u606F\u968A\u5217\u547D\u540D\u7A7A\u9593"
-      '20800':
-        name: "\u7DE9\u5B58\u9375\u547D\u540D\u7A7A\u9593"
-      '20900':
-        name: "\u6587\u4EF6\u7CFB\u7D71\u547D\u540D\u7A7A\u9593"
-      '21000':
-        name: "\u7DB2\u7D61\u7AEF\u9EDE\u547D\u540D\u7A7A\u9593"
-      '21100':
-        name: "\u6A21\u584A\u5316\u67B6\u69CB\u7D04\u675F\u7A7A\u9593"
-        user_need: "\u4EE3\u78BC\u67B6\u69CB\u90E8\u7F72"
-      '21200':
-        name: "\u69CB\u5EFA\u6D41\u6C34\u7DDA\u5DE5\u4EF6\u7A7A\u9593"
-        user_need: "CI/CD \u5DE5\u4EF6\u6CBB\u7406"
-    era2_microservice:
-      '30100':
-        name: "\u5FAE\u670D\u52D9\u908A\u754C\u547D\u540D\u7A7A\u9593"
-      '30200':
-        name: "\u670D\u52D9\u7DB2\u683C\u547D\u540D\u7A7A\u9593"
-      '30300':
-        name: "\u4E8B\u4EF6\u6D41\u547D\u540D\u7A7A\u9593"
-      '30400':
-        name: "\u6578\u64DA\u7BA1\u9053\u547D\u540D\u7A7A\u9593"
-      '30500':
-        name: "\u72C0\u614B\u6A5F\u547D\u540D\u7A7A\u9593"
-      '30600':
-        name: "\u5DE5\u4F5C\u6D41\u547D\u540D\u7A7A\u9593"
-      '30700':
-        name: "\u5206\u4F48\u5F0F\u9396\u547D\u540D\u7A7A\u9593"
-      '30800':
-        name: "\u914D\u7F6E\u4E2D\u5FC3\u547D\u540D\u7A7A\u9593"
-      '30900':
-        name: "\u8A3B\u518A\u4E2D\u5FC3\u547D\u540D\u7A7A\u9593"
-      '31000':
-        name: "\u7194\u65B7\u5668\u547D\u540D\u7A7A\u9593"
-      '31100':
-        name: "\u53C3\u6578\u6B0A\u91CD\u77E9\u9663\u7A7A\u9593"
-        user_need: "\u6B0A\u91CD\u5316\u53C3\u6578\u914D\u7F6E"
-      '31200':
-        name: "\u6578\u4F4D\u5B7F\u751F\u6578\u64DA\u6D41\u7A7A\u9593"
-        user_need: "\u6578\u78BC\u5316\u67B6\u69CB"
-    era2_data:
-      '40100':
-        name: "\u6578\u64DA\u5EAB\u547D\u540D\u7A7A\u9593"
-      '40200':
-        name: "\u6578\u64DA\u8868\u547D\u540D\u7A7A\u9593"
-      '40300':
-        name: "\u6578\u64DA\u5206\u7247\u547D\u540D\u7A7A\u9593"
-      '40400':
-        name: "\u6578\u64DA\u7D22\u5F15\u547D\u540D\u7A7A\u9593"
-      '40500':
-        name: "\u6578\u64DA\u8996\u5716\u547D\u540D\u7A7A\u9593"
-      '40600':
-        name: "\u6578\u64DA\u5099\u4EFD\u547D\u540D\u7A7A\u9593"
-      '40700':
-        name: "\u6578\u64DA\u9077\u79FB\u547D\u540D\u7A7A\u9593"
-      '40800':
-        name: "\u6578\u64DA\u7DE9\u5B58\u547D\u540D\u7A7A\u9593"
-      '40900':
-        name: "\u6578\u64DA\u5009\u5EAB\u547D\u540D\u7A7A\u9593"
-      '41000':
-        name: "\u6578\u64DA\u6E56\u547D\u540D\u7A7A\u9593"
-      '41100':
-        name: "\u5411\u91CF\u5B58\u5132\u8207\u7D22\u5F15\u7A7A\u9593"
-        user_need: "\u5411\u91CF RAG \u6CBB\u7406"
-      '41200':
-        name: "\u52D5\u614B\u6B0A\u91CD\u71B1\u52A0\u8F09\u7A7A\u9593"
-        user_need: "A/B \u6E2C\u8A66 / \u6F14\u7B97\u6CD5\u958B\u95DC"
-    era2_security:
-      '50100':
-        name: "\u8A8D\u8B49\u547D\u540D\u7A7A\u9593"
-      '50200':
-        name: "\u6388\u6B0A\u547D\u540D\u7A7A\u9593"
-      '50300':
-        name: "\u6191\u8B49\u547D\u540D\u7A7A\u9593"
-      '50400':
-        name: "\u5BC6\u9470\u547D\u540D\u7A7A\u9593"
-      '50500':
-        name: "\u6B0A\u9650\u7B56\u7565\u547D\u540D\u7A7A\u9593"
-      '50600':
-        name: "\u5BE9\u8A08\u65E5\u8A8C\u547D\u540D\u7A7A\u9593"
-      '50700':
-        name: "\u9632\u706B\u7246\u898F\u5247\u547D\u540D\u7A7A\u9593"
-      '50800':
-        name: "\u7DB2\u7D61\u7B56\u7565\u547D\u540D\u7A7A\u9593"
-      '50900':
-        name: "\u5B89\u5168\u7D44\u547D\u540D\u7A7A\u9593"
-      '51000':
-        name: "\u5408\u898F\u6AA2\u67E5\u547D\u540D\u7A7A\u9593"
-    era3_intent:
-      '60100':
-        name: "\u696D\u52D9\u610F\u5716\u547D\u540D\u7A7A\u9593"
-      '60200':
-        name: "\u7528\u6236\u610F\u5716\u547D\u540D\u7A7A\u9593"
-      '60300':
-        name: "\u7CFB\u7D71\u610F\u5716\u547D\u540D\u7A7A\u9593"
-      '60400':
-        name: "\u8A9E\u7FA9\u610F\u5716\u547D\u540D\u7A7A\u9593"
-      '60500':
-        name: "\u795E\u7D93\u7DB2\u7D61\u610F\u5716\u547D\u540D\u7A7A\u9593"
-      '60600':
-        name: "\u6A5F\u5668\u5B78\u7FD2\u6A21\u578B\u547D\u540D\u7A7A\u9593"
-      '60700':
-        name: "AI\u4EE3\u7406\u547D\u540D\u7A7A\u9593"
-      '60800':
-        name: "\u81EA\u52D5\u5316\u7B56\u7565\u547D\u540D\u7A7A\u9593"
-      '60900':
-        name: "\u81EA\u9069\u61C9\u898F\u5247\u547D\u540D\u7A7A\u9593"
-      '61000':
-        name: "\u8A8D\u77E5\u8A08\u7B97\u547D\u540D\u7A7A\u9593"
-      '61100':
-        name: "\u6838\u5FC3\u6F14\u7B97\u6CD5\u5716\u8B5C\u7A7A\u9593"
-        user_need: "\u6F14\u7B97\u6CD5\u552F\u4E00\u6A19\u8B58"
-      '61200':
-        name: "\u63D0\u793A\u8A5E\u5DE5\u7A0B\u6A21\u677F\u7A7A\u9593"
-        user_need: "\u7A0B\u5F0F\u78BC\u751F\u6210 System Prompt"
-    era3_semantic:
-      '70100':
-        name: "\u8A9E\u7FA9\u5BE6\u9AD4\u547D\u540D\u7A7A\u9593"
-      '70200':
-        name: "\u8A9E\u7FA9\u95DC\u4FC2\u547D\u540D\u7A7A\u9593"
-      '70300':
-        name: "\u8A9E\u7FA9\u5C6C\u6027\u547D\u540D\u7A7A\u9593"
-      '70400':
-        name: "\u8A9E\u7FA9\u4E0A\u4E0B\u6587\u547D\u540D\u7A7A\u9593"
-      '70500':
-        name: "\u8A9E\u7FA9\u9328\u9EDE\u547D\u540D\u7A7A\u9593"
-      '70600':
-        name: "\u8A9E\u7FA9\u5716\u8B5C\u547D\u540D\u7A7A\u9593"
-      '70700':
-        name: "\u8A9E\u7FA9\u5411\u91CF\u547D\u540D\u7A7A\u9593"
-      '70800':
-        name: "\u8A9E\u7FA9\u5D4C\u5165\u547D\u540D\u7A7A\u9593"
-      '70900':
-        name: "\u8A9E\u7FA9\u7D22\u5F15\u547D\u540D\u7A7A\u9593"
-      '71000':
-        name: "\u8A9E\u7FA9\u67E5\u8A62\u547D\u540D\u7A7A\u9593"
-      '71100':
-        name: "\u908F\u8F2F\u63A8\u7406\u93C8\u7A7A\u9593"
-        user_need: "CoT / ToT \u4E2D\u9593\u614B\u7DE9\u5B58"
-    era_q_quantum:
-      '80100':
-        name: "\u91CF\u5B50\u4F4D\u5143\u66AB\u5B58\u5668\u7A7A\u9593"
-        user_need: "\u7269\u7406/\u908F\u8F2F Qubit \u62D3\u64B2\u6620\u5C04"
-      '80200':
-        name: "\u91CF\u5B50\u96FB\u8DEF\u6A21\u677F\u7A7A\u9593"
-        user_need: "Shor/Grover \u6A19\u6E96\u5316\u96FB\u8DEF\u5FA9\u7528"
-      '80300':
-        name: "\u91CF\u5B50-\u7D93\u5178\u6DF7\u5408\u8B8A\u5206\u7A7A\u9593"
-        user_need: "VQE/QAOA \u8B8A\u91CF\u6620\u5C04"
-      '80400':
-        name: "\u91CF\u5B50\u7CFE\u932F\u78BC\u7A7A\u9593"
-        user_need: "Surface Code \u6821\u9A57\u5B50\u5B9A\u7FA9"
-      '80500':
-        name: "\u758A\u52A0\u614B\u6B0A\u91CD\u7A7A\u9593"
-        user_need: "\u91CF\u5B50\u614B\u632F\u5E45\u53C3\u6578\u5316\u914D\u7F6E"
-      '80600':
-        name: "\u81EA\u4E3B\u4EE3\u7406\u547D\u540D\u7A7A\u9593"
-      '80700':
-        name: "\u591A\u4EE3\u7406\u7CFB\u7D71\u547D\u540D\u7A7A\u9593"
-      '80800':
-        name: "\u7FA4\u9AD4\u667A\u80FD\u547D\u540D\u7A7A\u9593"
-      '80900':
-        name: "\u9032\u5316\u7B97\u6CD5\u547D\u540D\u7A7A\u9593"
-      '81000':
-        name: "\u5143\u5B78\u7FD2\u547D\u540D\u7A7A\u9593"
-    cross_era:
-      '90100':
-        name: "\u8DE8 Era \u547D\u540D\u7A7A\u9593\u6620\u5C04"
-      '90200':
-        name: "\u547D\u540D\u7A7A\u9593\u8F49\u63DB\u5F15\u64CE"
-      '90300':
-        name: "\u547D\u540D\u7A7A\u9593\u517C\u5BB9\u6027\u6AA2\u67E5"
-      '90400':
-        name: "\u547D\u540D\u7A7A\u9593\u9077\u79FB\u8DEF\u5F91"
-      '90500':
-        name: "\u547D\u540D\u7A7A\u9593\u6027\u80FD\u76E3\u63A7"
-      '90600':
-        name: "\u547D\u540D\u7A7A\u9593\u6210\u672C\u512A\u5316"
-      '90700':
-        name: "\u547D\u540D\u7A7A\u9593\u5BB9\u91CF\u898F\u5283"
-      '90800':
-        name: "\u547D\u540D\u7A7A\u9593\u707D\u96E3\u6062\u5FA9"
-      '90900':
-        name: "\u547D\u540D\u7A7A\u9593\u6B78\u6A94\u7BA1\u7406"
-      '91000':
-        name: "\u547D\u540D\u7A7A\u9593\u92B7\u6BC0\u5354\u8B70"
-canonical_identifiers:
-  service_id:
-    format: mycodexvantaos-<domain>-<capability>[-<sub_capability>]
-    regex: ^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)+$
-    ci_rule_file: ci/rules/service-id.rule.ts
-    enforcement: hard
-    constraints:
-      - "\u5FC5\u9808\u4EE5 mycodexvantaos- \u70BA\u524D\u7DB4"
-      - "domain + capability \u81F3\u5C11\u5169\u6BB5"
-      - "\u4E0D\u542B\u7248\u672C\u865F"
-      - "\u4E0D\u542B\u74B0\u5883\u6A19\u8A18"
-    valid_examples:
-      - mycodexvantaos-ai-embedding
-      - mycodexvantaos-core-auth
-      - mycodexvantaos-quantum-controller
-    invalid_examples:
-      - value: mycodexvantaos-ai
-        reason: "\u50C5\u4E00\u6BB5 domain"
-      - value: mycodexvantaos-ai-embedding-v2
-        reason: "\u542B\u7248\u672C\u865F"
-      - value: mycodexvantaos-ai-embedding-prod
-        reason: "\u542B\u74B0\u5883\u6A19\u8A18"
-      - value: mycodexvantaos_ai_embedding
-        reason: "\u5E95\u7DDA\u4E0D\u5141\u8A31"
-  package_short_id:
-    format: <domain>-<capability>[-<sub_capability>]
-    derivation: service_id.removePrefix('mycodexvantaos-')
-    regex: ^[a-z0-9]+(?:-[a-z0-9]+)+$
-  k8s_resource_name:
-    derivation: service_id
-    note: "\u6240\u6709 base manifest \u7684 metadata.name \u56B4\u683C\u7B49\u65BC\
-      \ service_id"
-    ci_rule_file: ci/rules/manifest-name.rule.ts
-    enforcement: hard
-  canonical_capability_set:
-    source_of_truth: governance/capability-set.yaml
-    ci_rule_file: ci/rules/capability-id.rule.ts
-    enforcement: hard
-    regex:
-      '^(database|storage|auth|queue|state-store|secrets|repo|deploy| validation|security|observability|notification|scheduler|vector-store|
-      embedding|llm|graph|cache|search)$
+apiVersion: mycodexvantaos.io/v1
+kind: PlatformGovernanceSpec
+metadata:
+  name: mycodexvantaos-platform-governance-spec
+  version: 1.0.0
+  date: "2026-06-29"
+  status: active
+  authoritative: true
 
-      '
-    values:
-      - database
-      - storage
-      - auth
-      - queue
-      - state-store
-      - secrets
-      - repo
-      - deploy
-      - validation
-      - security
-      - observability
-      - notification
-      - scheduler
-      - vector-store
-      - embedding
-      - llm
-      - graph
-      - cache
-      - search
-      - ai-ethics
-      - blockchain
-      - event-stream
-protocol_specific_identifiers:
-  package_name:
-    format: '@mycodexvantaos/<package_short_id>'
-    regex: ^@mycodexvantaos/[a-z0-9]+(?:-[a-z0-9]+)+$
-    ci_rule_file: ci/rules/package-name.rule.ts
-    enforcement: hard
-  env_var:
-    format: MYCODEXVANTAOS_<SUBSYSTEM>_<KEY>
-    regex: ^MYCODEXVANTAOS_[A-Z0-9_]+$
-    forbidden_prefix: ORCH_
-    ci_rule_file: ci/rules/env-var.rule.ts
-    enforcement: hard
-    valid_examples:
-      - MYCODEXVANTAOS_DATABASE_URL
-      - MYCODEXVANTAOS_AUTH_JWT_SECRET
-      - MYCODEXVANTAOS_QUANTUM_MODE
-    invalid_examples:
-      - value: DATABASE_URL
-        reason: "\u7F3A\u5C11 MYCODEXVANTAOS_ \u524D\u7DB4"
-      - value: ORCH_DATABASE_URL
-        reason: "\u820A\u524D\u7DB4\u7981\u7528"
-      - value: KUBO_MODE
-        reason: "\u907A\u7559\u524D\u7DB4\u7981\u7528"
-      - value: MYCODEXVANTAOS_MODE
-        note: "MYCODEXVANTAOS_MODE \u70BA\u5408\u6CD5\u66FF\u4EE3 KUBO_MODE"
-  urn:
-    format: urn:mycodexvantaos:<type>:<subtype>:<identifier>
-    regex: ^urn:mycodexvantaos:[a-z-]+:[a-z-]+:[a-z0-9-]+$
-    ci_rule_file: ci/rules/urn.rule.ts
-    enforcement: hard
-    examples:
-      - urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-embedding
-      - urn:mycodexvantaos:capability:vector-store:pgvector
-  internal_uri:
-    format: mycodexvantaos://<namespace>/<type>/<id>
-    examples:
-      - mycodexvantaos://platform/service/mycodexvantaos-core-kernel
-provider_identifiers:
-  provider_instance:
-    format: <capability>-<provider>
-    order: "capability FIRST, provider SECOND \u2014 never inverted"
-    regex:
-      '^(database|storage|auth|queue|state-store|secrets|repo|deploy| validation|security|observability|notification|scheduler|vector-store|
-      embedding|llm|graph|cache|search)-[a-z0-9-]+$
+# Governance model
+model:
+  type: policy-as-code
+  enforcement: ci-pipeline
+  authority-chain:
+    - layer: 0
+      spec: docs/spec/l0-meta/formalized-specification-architecture.yaml
+      description: Meta-governance specification
+    - layer: 1
+      spec: docs/spec/l1-constitution/constitution.yaml
+      description: Constitutional specification
+    - layer: 2
+      spec: docs/spec/l2-structure/capability-architecture-addendum.yaml
+      description: Structural specification
 
-      '
-    ci_rule_file: ci/rules/provider-instance.rule.ts
-    enforcement: hard
-    source_of_truth: governance/provider-registry.yaml
-    directory_pattern: providers/<capability>/<capability>-<provider>/provider-manifest.yaml
-    valid_examples:
-      - vector-store-pgvector
-      - database-postgres
-      - llm-openai
-    invalid_examples:
-      - value: postgres-database
-        reason: "\u9806\u5E8F\u5012\u7F6E"
-      - value: openai-llm
-        reason: "\u9806\u5E8F\u5012\u7F6E"
-composite_identifiers:
-  separator: --
-  rule: "\u96D9\u9023\u5B57\u865F\u50C5\u7528\u65BC composite\uFF1B\u4E0D\u5F97\u51FA\
-    \u73FE\u5728 canonical identifier \u4E2D"
-  definitions:
-    vector_collection:
-      format: <service-id>--<purpose>--<model-alias>
-      regex: ^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)+--[a-z0-9-]+--[a-z0-9-]+$
-      directory: vector-store/collections/<id>.yaml
-      ci_rule_file: ci/rules/vector-collection.rule.ts
-      enforcement: soft
-      example: mycodexvantaos-memory--docs--bge-small-384
-    embedding_model_alias:
-      format: <provider>--<model>--<dim>d
-      regex: ^[a-z0-9-]+--[a-z0-9-]+--[0-9]+d$
-      directory: vector-store/embedding-model-aliases/<alias>.yaml
-      ci_rule_file: ci/rules/embedding-model-alias.rule.ts
-      enforcement: soft
-      example: openai--text-embedding-3-small--1536d
-    retrieval_pipeline_id:
-      format: retrieval--<strategy>--<store>
-      regex: ^retrieval--[a-z0-9-]+--[a-z0-9-]+$
-      directory: vector-store/retrieval-pipelines/<id>.yaml
-      ci_rule_file: ci/rules/retrieval-pipeline-id.rule.ts
-      enforcement: soft
-      example: retrieval--hybrid--pgvector
-    search_index_id:
-      format: idx--<service-id>--<field>--<analyzer>
-      regex: ^idx--mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)+--[a-z0-9-]+--[a-z0-9-]+$
-      directory: search-indexes/<id>.yaml
-      ci_rule_file: ci/rules/search-index-id.rule.ts
-      enforcement: soft
-      example: idx--mycodexvantaos-docs-search--content--cjk
-    graph_node_id:
-      format: <service-id>--<entity>--<natural-key>
-      regex: ^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)+--[a-z0-9-]+--[a-z0-9-]+$
-      ci_rule_file: ci/rules/graph-node-id.rule.ts
-      enforcement: soft
-      example: mycodexvantaos-core-kernel--user--alice
-    graph_db_index_id:
-      format: graph-idx--<service-id>--<label>--<property>
-      regex: ^graph-idx--mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)+--[a-z0-9-]+--[a-z0-9-]+$
-      directory: knowledge-graph/indexes/<id>.yaml
-      ci_rule_file: ci/rules/graph-db-index-id.rule.ts
-      enforcement: soft
-      example: graph-idx--mycodexvantaos-governance--policy--name
-    timestamped_id:
-      format: <prefix>--<YYYYMMDD>--<random6>
-      regex: ^[a-z0-9-]+--[0-9]{8}--[a-z0-9]{6}$
-      ci_rule_file: ci/rules/timestamped-id.rule.ts
-      enforcement: soft
-      example: job--20260423--a1b2c3
-    content_addressed_id:
-      format: <prefix>--sha256-<first12hex>
-      regex: ^[a-z0-9-]+--sha256-[a-f0-9]{12}$
-      ci_rule_file: ci/rules/content-addressed-id.rule.ts
-      enforcement: soft
-      example: dataset--sha256-3f4a8b9c1d2e
-    uuid_based_id:
-      format: <prefix>--<uuid-nodash>
-      regex: ^[a-z0-9-]+--[a-f0-9]{32}$
-      ci_rule_file: ci/rules/uuid-based-id.rule.ts
-      enforcement: soft
-      example: session--550e8400e29b41d4a716446655440000
-    exception_record_id:
-      format: exception--<YYYYMMDD>--<random6>
-      regex: ^exception--[0-9]{8}--[a-z0-9]{6}$
-      directory: governance/exceptions.yaml
-      note: "\u4F8B\u5916\u767B\u9304\u8A18\u9304\u7684\u552F\u4E00\u8B58\u5225\u7B26"
-path_derivation:
-  rule: "\u6240\u6709\u8DEF\u5F91\u7531 service_id \u6A5F\u68B0\u63A8\u5C0E\uFF1B\u7981\
-    \u6B62\u624B\u52D5\u81EA\u8A02\u5225\u540D"
-  source_of_truth: ci/utils/service-id-parser.ts
-  ci_rule_file: ci/rules/module-path.rule.ts
-  enforcement: hard
-  derivations:
-    service_path:
-      formula: services/{service_id}/
-      example: services/mycodexvantaos-ai-embedding/
-    module_path:
-      formula: modules/{service_id}/
-      example: modules/mycodexvantaos-ai-embedding/
-    manifest_path:
-      formula: modules/{service_id}/module-manifest.yaml
-      example: modules/mycodexvantaos-ai-embedding/module-manifest.yaml
-    package_short_id:
-      formula: service_id.removePrefix('mycodexvantaos-')
-      example: ai-embedding
-    package_name:
-      formula: '@mycodexvantaos/{package_short_id}'
-      example: '@mycodexvantaos/ai-embedding'
-    k8s_logical_name:
-      formula: '{service_id}'
-      example: mycodexvantaos-ai-embedding
-    k8s_base_path:
-      formula: infra/kubernetes/base/{service_id}/
+# Governance domains
+domains:
+  identity:
+    policy: governance/identity-policy.yaml
+    enforced-by: ci/rules/identity-rule.ts
+  naming:
+    policy: governance/naming-policy.schema.json
+    enforced-by: ci/rules/naming-rule.ts
+  manifest-boundary:
+    policy: docs/spec/l1-constitution/constitution.yaml
+    enforced-by: ci/rules/manifest-boundary-rule.ts
+  foundation:
+    policy: foundation/
+    enforced-by: ci/rules/foundation-rule.ts
+  provider-capability:
+    policy: governance/capability-set.yaml
+    enforced-by: ci/rules/provider-capability-rule.ts
+  service-catalog:
+    policy: platform/service-catalog.yaml
+    enforced-by: ci/rules/service-catalog-rule.ts
+  namespace-governance:
+    policy: mycodexvantaos-namespace-governance/
+    enforced-by: ci/rules/namespace-governance-rule.ts
+  navigation:
+    policy: navigation/
+    enforced-by: ci/rules/navigation-rule.ts
+  ssot-drift:
+    policy: governance/ssot-registry.yaml
+    enforced-by: ci/rules/ssot-drift-rule.ts
+  unified-gates:
+    policy: unified-gates/
+    enforced-by: ci/rules/unified-gates-rule.ts
+  hash-policy:
+    policy: governance/hash-policy.yaml
+    enforced-by: ci/rules/hash-policy-rule.ts
+  runtime-mode:
+    policy: governance/runtime-mode-policy.yaml
+    enforced-by: ci/rules/runtime-mode-rule.ts
+  quantum-bridge:
+    policy: governance/quantum-classical-bridge.yaml
+    enforced-by: ci/rules/quantum-bridge-rule.ts
+
+# Conflict resolution
+conflict-resolution:
+  algorithm: layer-priority
+  tiebreaker: authoritative-flag
+  final-tiebreaker: semantic-version
+  unresolvable: ci-failure-with-human-review
+
+# Exception management
+exceptions:
+  registry: governance/exceptions.yaml
+  max-duration-days: 90
+  require-approval: true
+  approvers:
+    - platform-governance-team
+  review-cycle-days: 30
+
+# Reporting
+reporting:
+  output-dir: governance/reports
+  schedule: on-ci-run
+  formats:
+    - json
+    - yaml

@@ -1,6 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
-kind: FoundationSpec
+kind: FoundationService-map
 metadata:
-  name: service-map
-  foundation: agent-foundation
-spec: {}
+  name: mycodexvantaos-agent-foundation-service-map
+  version: 1.0.0
+  foundation: mycodexvantaos-agent-foundation
+  date: "2026-06-29"
+  status: active

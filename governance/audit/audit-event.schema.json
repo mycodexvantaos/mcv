@@ -1,12 +1,95 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://mycodexvantaos.io/schemas/governance/audit-event",
-  "title": "Audit Event",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mycodexvantaos.com/schemas/audit-event.schema.json",
+  "title": "AuditEvent",
+  "description": "MyCodexVantaOS audit event schema",
   "type": "object",
+  "required": ["event-id", "event-type", "timestamp", "actor", "resource", "hash"],
   "properties": {
-    "id": { "type": "string" },
-    "type": { "type": "string" },
-    "timestamp": { "type": "string", "format": "date-time" }
+    "event-id": {
+      "type": "string",
+      "pattern": "^evt-[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}$",
+      "description": "Unique event identifier (UUID v4 with evt- prefix)"
+    },
+    "event-type": {
+      "type": "string",
+      "description": "Type of audit event",
+      "enum": [
+        "governance-policy-change",
+        "identity-policy-change",
+        "exception-grant",
+        "exception-revoke",
+        "exception-expire",
+        "provider-registration",
+        "provider-deregistration",
+        "provider-capability-change",
+        "module-registration",
+        "module-deregistration",
+        "module-version-change",
+        "gate-evaluation-start",
+        "gate-evaluation-complete",
+        "gate-evaluation-fail",
+        "gate-waiver-grant",
+        "gate-waiver-revoke",
+        "release-candidate-created",
+        "release-promoted",
+        "release-rolled-back",
+        "release-rejected",
+        "security-scan-complete",
+        "vulnerability-detected",
+        "secret-exposure-detected",
+        "forbidden-url-detected",
+        "user-login",
+        "user-logout",
+        "api-key-created",
+        "api-key-revoked",
+        "permission-change"
+      ]
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 UTC timestamp"
+    },
+    "actor": {
+      "type": "object",
+      "required": ["id", "type"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": {
+          "type": "string",
+          "enum": ["user", "service", "ci-pipeline", "governance-engine"]
+        },
+        "display-name": { "type": "string" }
+      }
+    },
+    "resource": {
+      "type": "object",
+      "required": ["id", "type"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string" },
+        "path": { "type": "string" }
+      }
+    },
+    "payload": {
+      "type": "object",
+      "description": "Event-specific payload data"
+    },
+    "hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "SHA-256 hash of the event content"
+    },
+    "previous-hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "SHA-256 hash of the previous event in the chain"
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["info", "warning", "error", "critical"]
+    }
   },
-  "required": ["id", "type", "timestamp"]
+  "additionalProperties": false
 }

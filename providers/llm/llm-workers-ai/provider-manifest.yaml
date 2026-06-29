@@ -1,25 +1,15 @@
 apiVersion: mycodexvantaos.io/v1
 kind: ProviderManifest
 metadata:
-  name: llm-workers-ai
-  urn: urn:mycodexvantaos:provider:llm-workers-ai
-
-spec:
-  id: llm-workers-ai
-  capability: llm
-  source: cloudflare-workers-ai
+  name: mycodexvantaos-llm-workers-ai
+  version: 1.0.0
+  date: "2026-06-29"
   status: active
-  criticality: high
 
-  supportsModes:
-    - native
-    - connected
-    - hybrid
-
-  healthCheck:
-    enabled: true
-    endpoint: /health
-
-  observability:
-    metricsEnabled: true
-    tracingEnabled: true
+provider-id: mycodexvantaos-llm-workers-ai
+capability: llm
+platform: mycodexvantaos
+runtime-modes:
+  - native
+  - connected
+  - hybrid

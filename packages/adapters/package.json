@@ -1,27 +1,23 @@
 {
   "name": "@mycodexvantaos/adapters",
-  "version": "0.1.0",
-  "private": true,
-  "description": "Adapter implementations for the MyCodeXvantaOS platform — concrete ports for Cloudflare, OpenAI, OpenRouter, etc.",
-  "type": "module",
-  "main": "./index.ts",
-  "types": "./index.ts",
-  "exports": {
-    ".": "./index.ts",
-    "./cloudflare-d1": "./cloudflare-d1/index.ts",
-    "./cloudflare-kv": "./cloudflare-kv/index.ts",
-    "./cloudflare-r2": "./cloudflare-r2/index.ts",
-    "./d1-full-text-search": "./d1-full-text-search/index.ts",
-    "./openai": "./openai/index.ts",
-    "./openrouter": "./openrouter/index.ts",
-    "./workers-ai": "./workers-ai/index.ts"
+  "version": "1.0.0",
+  "description": "MyCodexVantaOS adapters package",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@mycodexvantaos/core": "workspace:*",
-    "@mycodexvantaos/ports": "workspace:*"
+    "@mycodexvantaos/core": "workspace:*"
   },
   "devDependencies": {
-    "typescript": "^5.9.3"
+    "@types/node": "^22.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
   },
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "private": false
 }

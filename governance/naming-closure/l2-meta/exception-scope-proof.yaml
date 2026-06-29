@@ -1,5 +1,9 @@
 apiVersion: mycodexvantaos.io/v1
-kind: NamingClosureProof
+kind: NamingProof
 metadata:
-  name: exception-scope-proof
-spec: {}
+  name: mycodexvantaos-exception-scope-proof
+  version: 1.0.0
+  date: "2026-06-29"
+  status: proven
+platform: mycodexvantaos
+proven: true

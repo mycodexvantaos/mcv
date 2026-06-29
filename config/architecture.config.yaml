@@ -1,9 +1,141 @@
 apiVersion: mycodexvantaos.io/v1
 kind: ArchitectureConfig
 metadata:
-  name: architecture-config
-spec:
-  rootDirectoryCountClass: 242-plus
-  effectiveCanonicalMinimumCount: 245
-  canonicalMachineName: mycodexvantaos
-  canonicalBrandName: MyCodexVantaOS
+  name: mycodexvantaos-architecture-config
+  version: 1.0.0
+  date: "2026-06-29"
+  spec-authority: docs/spec/l0-meta/formalized-specification-architecture.yaml
+
+# Platform identity
+identity:
+  machine: mycodexvantaos
+  brand: MyCodexVantaOS
+  canonical-url: "https://mycodexvantaos.com"
+
+# Architecture validation settings
+validation:
+  strict-mode: true
+  fail-on-warning: false
+  rules:
+    - identity-rule
+    - naming-rule
+    - manifest-boundary-rule
+    - foundation-rule
+    - provider-capability-rule
+    - service-catalog-rule
+    - namespace-governance-rule
+    - navigation-rule
+    - ssot-drift-rule
+    - unified-gates-rule
+    - hash-policy-rule
+    - runtime-mode-rule
+    - quantum-bridge-rule
+    - root-module-rule
+    - exception-rule
+    - derived-identity-rule
+    - deprecated-manifest-rule
+    - phase-one-freeze-rule
+
+# Foundation configuration
+foundations:
+  count: 7
+  required:
+    - compute-foundation
+    - data-foundation
+    - algorithm-foundation
+    - agent-foundation
+    - contract-foundation
+    - governance-foundation
+    - business-foundation
+  required-files-per-foundation:
+    - foundation.yaml
+    - README.md
+    - boundary.yaml
+    - capability-map.yaml
+    - commercial-model.yaml
+    - maturity.yaml
+    - module-map.yaml
+    - owner-map.yaml
+    - package-map.yaml
+    - product-boundary.yaml
+    - reference-architecture.yaml
+    - roadmap.yaml
+    - service-map.yaml
+    - urn-map.yaml
+
+# Module configuration
+modules:
+  count: 11
+  required:
+    - mycodexvantaos-agent-runtime
+    - mycodexvantaos-ai-embedding
+    - mycodexvantaos-ai-inference
+    - mycodexvantaos-billing-metering
+    - mycodexvantaos-core-auth
+    - mycodexvantaos-governance-audit-chain
+    - mycodexvantaos-governance-policy-engine
+    - mycodexvantaos-knowledge-ingestion
+    - mycodexvantaos-knowledge-search
+    - mycodexvantaos-quantum-controller
+    - mycodexvantaos-runtime-mode-resolver
+
+# Provider configuration
+providers:
+  count: 22
+  capability-set:
+    - database
+    - storage
+    - auth
+    - queue
+    - state-store
+    - secrets
+    - repo
+    - deploy
+    - validation
+    - security
+    - observability
+    - notification
+    - scheduler
+    - vector-store
+    - embedding
+    - llm
+    - graph
+    - cache
+    - search
+    - quantum-runtime
+    - quantum-simulator
+    - quantum-processor
+    - quantum-circuit
+    - quantum-observability
+
+# Naming policy
+naming:
+  pattern: "^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)*$"
+  forbidden-prefixes:
+    - mycodexvanta-os
+    - codexvanta-os
+    - codexvanta
+    - codevantaos
+    - kubo
+    - axiom
+  case: kebab-case
+
+# Hash policy
+hash:
+  algorithms:
+    allowed:
+      - SHA-256
+      - SHA3-512
+      - BLAKE3
+    default: SHA-256
+    forbidden:
+      - MD5
+      - SHA-1
+
+# Runtime modes
+runtime:
+  modes:
+    - native
+    - connected
+    - hybrid
+  default: native

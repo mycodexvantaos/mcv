@@ -1,13 +1,4 @@
-# infra/helm/mycodexvantaos/values-prod.yaml
-# Environment-specific overrides for prod.
-# 12.2 — 'dev'/'staging'/'prod' appears ONLY in this file and namespace names.
+# MyCodexVantaOS Helm Values — values-prod
+# Canonical URL: https://mycodexvantaos.com
 global:
-  imageTag: 'latest'
-
-services:
-  mycodexvantaos-core-kernel:
-    replicas: 3
-  mycodexvantaos-ai-embedding:
-    replicas: 3
-  mycodexvantaos-ai-llm:
-    replicas: 3
+  platform: mycodexvantaos

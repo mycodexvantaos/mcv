@@ -1,25 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
-kind: GateResultContract
+kind: GateContract
 metadata:
-  name: gate-result-contract
+  name: mycodexvantaos-gate-result
   version: 1.0.0
-  governanceCode: mycodexvantaos-00000
-spec:
-  description: >
-    Defines the canonical contract for a gate evaluation result. All gate
-    result records MUST conform to this contract.
-  requiredFields:
-    - gateId
-    - gateVersion
-    - pipelineRunId
-    - artifactRef
-    - evaluatedAt
-    - evaluatedBy
-    - overallStatus
-    - dimensions
-    - evidence.sha256
-    - evidence.sha3512
-    - evidence.blake3
-  validValues:
-    overallStatus: [PASS, FAIL, WARN, SKIP, ERROR]
-  schemaRef: ../schemas/gate-result.schema.json
+  date: "2026-06-29"
+  status: active
+platform: mycodexvantaos

@@ -1,6 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
-kind: FoundationSpec
+kind: FoundationProduct-boundary
 metadata:
-  name: product-boundary
-  foundation: contract-foundation
-spec: {}
+  name: mycodexvantaos-contract-foundation-product-boundary
+  version: 1.0.0
+  foundation: mycodexvantaos-contract-foundation
+  date: "2026-06-29"
+  status: active

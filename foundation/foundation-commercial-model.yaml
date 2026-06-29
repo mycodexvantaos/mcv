@@ -1,6 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
-kind: FoundationSpec
+kind: FoundationIndex
 metadata:
-  name: foundation-commercial-model
-  description: foundation-commercial-model for MyCodexVantaOS platform foundations
-spec: {}
+  name: mycodexvantaos-foundation-commercial-model
+  version: 1.0.0
+  date: "2026-06-29"
+  status: active
+platform: mycodexvantaos

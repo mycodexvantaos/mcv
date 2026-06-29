@@ -1,11 +1,12 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://mycodexvantaos.io/schemas/contracts/ai-task",
-  "title": "Ai Task",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mycodexvantaos.com/schemas/ai-task.schema.json",
+  "title": "AiTask",
   "type": "object",
+  "required": ["id", "type", "timestamp"],
   "properties": {
     "id": { "type": "string" },
-    "type": { "type": "string" }
-  },
-  "required": ["id", "type"]
+    "type": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" }
+  }
 }

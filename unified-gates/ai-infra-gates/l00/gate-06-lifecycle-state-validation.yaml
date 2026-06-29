@@ -1,44 +1,12 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
-  id: gate-06-lifecycle-state-validation
+  name: mycodexvantaos-gate-06-lifecycle-state-validation
   version: 1.0.0
-  layer: l00
-  plane: ai-infra
-  blocking: true
-  lifecycle: active
-  criticality: critical
-  owner: platform@mycodexvantaos.com
-  governanceCode: mycodexvantaos-00200
-  createdAt: 2026-01-01T00:00:00Z
-  tags:
-    - l00
-    - lifecycle
-  sloTarget: 30
-  evidenceRetentionDays: 2555
-spec:
-  description: >
-    Validates that all namespace and gate lifecycle states are valid and that transitions follow the allowed state machine.
-  validates:
-    - dimension: lifecycle-validity
-      description: Lifecycle states and transitions are valid.
-      checks:
-        - id: chk-stage-valid
-          description: 'Lifecycle stage is one of: proposed, active, deprecated, archived, destroyed'
-          rule: 'enum:proposed,active,deprecated,archived,destroyed'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-transition-valid
-          description: Lifecycle transition follows the allowed state machine
-          rule: 'lifecycle:valid-transition'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-destroyed-not-reused
-          description: Destroyed namespace IDs are not reused
-          rule: 'registry:no-destroyed-reuse'
-          severity: critical
-          evidenceRequired: true
-  dependsOn: []
-  waiverPolicy: ./policies/gate-waiver-policy.yaml
-  escalationPolicy: ./policies/gate-risk-policy.yaml
+  date: "2026-06-29"
+  status: active
+gate-id: gate-06-lifecycle-state-validation
+level: l00
+platform: mycodexvantaos
+severity: critical
+blocking: true

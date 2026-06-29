@@ -1,15 +1,18 @@
 # mycodexvantaos-runtime-mode-resolver
 
-Service implementation for `mycodexvantaos-runtime-mode-resolver`.
+Service ID: `mycodexvantaos-runtime-mode-resolver`
+Version: 1.0.0
+Machine Identity: mycodexvantaos
+Canonical URL: https://mycodexvantaos.com
 
-## Manifest
+## Overview
 
-See `modules/mycodexvantaos-runtime-mode-resolver/module-manifest.yaml` for the service contract.
+This service is part of the MyCodexVantaOS platform.
 
-## URN
+## Structure
 
-`urn:mycodexvantaos:service:mycodexvantaos-runtime-mode-resolver`
-
-## OCI Image
-
-`ghcr.io/mycodexvantaos/mycodexvantaos-runtime-mode-resolver`
+```
+mycodexvantaos-runtime-mode-resolver/
+├── src/        # Service implementation
+└── tests/      # Service tests
+```

@@ -1,15 +1,18 @@
 # mycodexvantaos-quantum-controller
 
-Service implementation for `mycodexvantaos-quantum-controller`.
+Service ID: `mycodexvantaos-quantum-controller`
+Version: 1.0.0
+Machine Identity: mycodexvantaos
+Canonical URL: https://mycodexvantaos.com
 
-## Manifest
+## Overview
 
-See `modules/mycodexvantaos-quantum-controller/module-manifest.yaml` for the service contract.
+This service is part of the MyCodexVantaOS platform.
 
-## URN
+## Structure
 
-`urn:mycodexvantaos:service:mycodexvantaos-quantum-controller`
-
-## OCI Image
-
-`ghcr.io/mycodexvantaos/mycodexvantaos-quantum-controller`
+```
+mycodexvantaos-quantum-controller/
+├── src/        # Service implementation
+└── tests/      # Service tests
+```

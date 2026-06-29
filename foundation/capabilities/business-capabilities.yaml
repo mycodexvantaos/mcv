@@ -1,7 +1,7 @@
 apiVersion: mycodexvantaos.io/v1
 kind: FoundationCapabilities
 metadata:
-  name: business-capabilities
-spec:
-  foundation: business-foundation
-  capabilities: []
+  name: mycodexvantaos-business-capabilities
+  version: 1.0.0
+platform: mycodexvantaos
+foundation: business-foundation

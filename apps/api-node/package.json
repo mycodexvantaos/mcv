@@ -1,29 +1,30 @@
 {
   "name": "@mycodexvantaos/api-node",
-  "version": "0.1.0",
-  "private": true,
-  "description": "Node.js API server for self-hosted / Docker / Kubernetes runtime",
-  "type": "module",
-  "main": "index.ts",
+  "version": "1.0.0",
+  "description": "MyCodexVantaOS Node.js API service — https://api.mycodexvantaos.com",
+  "main": "./dist/index.js",
   "scripts": {
-    "dev": "npx tsx watch index.ts",
-    "build": "tsup index.ts --format esm --outDir dist",
+    "build": "tsc -p tsconfig.json",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "start": "node dist/index.js",
-    "typecheck": "tsc --noEmit"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@mycodexvantaos/contracts-sdk": "workspace:*",
-    "@mycodexvantaos/service-audit-log": "workspace:*",
-    "@mycodexvantaos/service-knowledge-trace": "workspace:*",
-    "@mycodexvantaos/service-memory-dream": "workspace:*",
-    "@mycodexvantaos/service-policy-engine": "workspace:*",
-    "@mycodexvantaos/service-resource-registry": "workspace:*",
-    "@mycodexvantaos/service-service-catalog": "workspace:*"
+    "@mycodexvantaos/core": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^20.19.43",
-    "tsup": "^8.5.1",
-    "typescript": "^5.9.3"
+    "@types/node": "^22.0.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
   },
-  "license": "UNLICENSED"
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "license": "UNLICENSED",
+  "private": true
 }

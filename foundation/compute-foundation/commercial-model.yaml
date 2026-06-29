@@ -1,6 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
-kind: FoundationSpec
+kind: FoundationCommercial-model
 metadata:
-  name: commercial-model
-  foundation: compute-foundation
-spec: {}
+  name: mycodexvantaos-compute-foundation-commercial-model
+  version: 1.0.0
+  foundation: mycodexvantaos-compute-foundation
+  date: "2026-06-29"
+  status: active

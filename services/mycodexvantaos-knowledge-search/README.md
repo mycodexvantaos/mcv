@@ -1,15 +1,18 @@
 # mycodexvantaos-knowledge-search
 
-Service implementation for `mycodexvantaos-knowledge-search`.
+Service ID: `mycodexvantaos-knowledge-search`
+Version: 1.0.0
+Machine Identity: mycodexvantaos
+Canonical URL: https://mycodexvantaos.com
 
-## Manifest
+## Overview
 
-See `modules/mycodexvantaos-knowledge-search/module-manifest.yaml` for the service contract.
+This service is part of the MyCodexVantaOS platform.
 
-## URN
+## Structure
 
-`urn:mycodexvantaos:service:mycodexvantaos-knowledge-search`
-
-## OCI Image
-
-`ghcr.io/mycodexvantaos/mycodexvantaos-knowledge-search`
+```
+mycodexvantaos-knowledge-search/
+├── src/        # Service implementation
+└── tests/      # Service tests
+```

@@ -1,13 +1,12 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://mycodexvantaos.io/schemas/namespace-governance/namespace-registry",
-  "title": "Namespace Registry",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mycodexvantaos.com/schemas/namespace/namespace-registry.schema.json",
+  "title": "NamespaceRegistry",
   "type": "object",
+  "required": ["apiVersion", "kind", "metadata"],
   "properties": {
     "apiVersion": { "type": "string" },
     "kind": { "type": "string" },
-    "metadata": { "type": "object" },
-    "spec": { "type": "object" }
-  },
-  "required": ["apiVersion", "kind", "metadata", "spec"]
+    "metadata": { "type": "object" }
+  }
 }

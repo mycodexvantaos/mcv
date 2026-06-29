@@ -1,3 +1,1 @@
-# Foundation Maps
-
-Cross-module mapping files for MyCodexVantaOS foundations.
+# MyCodexVantaOS Foundation Maps

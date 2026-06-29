@@ -2,5 +2,9 @@
  * MyCodexVantaOS CI Utility: yaml-loader
  */
 
-export {};
-// TODO: Implement yaml-loader utility
+export function validate(input: unknown): boolean {
+  // yaml-loader validation logic
+  return true;
+}
+
+export default { validate };

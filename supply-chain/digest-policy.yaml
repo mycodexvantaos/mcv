@@ -1,5 +1,10 @@
 apiVersion: mycodexvantaos.io/v1
 kind: SupplyChainPolicy
 metadata:
-  name: digest-policy
-spec: {}
+  name: mycodexvantaos-digest-policy
+  version: 1.0.0
+  date: "2026-06-29"
+  status: active
+platform: mycodexvantaos
+slsa:
+  level: 2

@@ -1,48 +1,9 @@
 apiVersion: mycodexvantaos.io/v1
-kind: ProviderNavigationMap
+kind: NavigationArtifact
 metadata:
-  name: provider-navigation-map
-  description: Provider navigation map for MyCodexVantaOS
-
-spec:
-  providers:
-    - capability: database
-      instances:
-        - id: database-postgres
-          path: providers/database/database-postgres/provider-manifest.yaml
-        - id: database-d1
-          path: providers/database/database-d1/provider-manifest.yaml
-    - capability: storage
-      instances:
-        - id: storage-minio
-          path: providers/storage/storage-minio/provider-manifest.yaml
-        - id: storage-r2
-          path: providers/storage/storage-r2/provider-manifest.yaml
-    - capability: embedding
-      instances:
-        - id: embedding-native
-          path: providers/embedding/embedding-native/provider-manifest.yaml
-        - id: embedding-openai
-          path: providers/embedding/embedding-openai/provider-manifest.yaml
-    - capability: llm
-      instances:
-        - id: llm-native
-          path: providers/llm/llm-native/provider-manifest.yaml
-        - id: llm-openai
-          path: providers/llm/llm-openai/provider-manifest.yaml
-        - id: llm-openrouter
-          path: providers/llm/llm-openrouter/provider-manifest.yaml
-        - id: llm-workers-ai
-          path: providers/llm/llm-workers-ai/provider-manifest.yaml
-    - capability: vector-store
-      instances:
-        - id: vector-store-pgvector
-          path: providers/vector-store/vector-store-pgvector/provider-manifest.yaml
-        - id: vector-store-qdrant
-          path: providers/vector-store/vector-store-qdrant/provider-manifest.yaml
-        - id: vector-store-vectorize
-          path: providers/vector-store/vector-store-vectorize/provider-manifest.yaml
-    - capability: quantum-runtime
-      instances:
-        - id: quantum-runtime-native
-          path: providers/quantum-runtime/quantum-runtime-native/provider-manifest.yaml
+  name: mycodexvantaos-provider-navigation-map
+  version: 1.0.0
+  date: "2026-06-29"
+  status: active
+platform: mycodexvantaos
+canonical-url: "https://mycodexvantaos.com"

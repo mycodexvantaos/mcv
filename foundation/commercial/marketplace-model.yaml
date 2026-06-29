@@ -1,5 +1,6 @@
 apiVersion: mycodexvantaos.io/v1
-kind: FoundationCommercial
+kind: CommercialModel
 metadata:
-  name: marketplace-model
-spec: {}
+  name: mycodexvantaos-marketplace-model
+  version: 1.0.0
+platform: mycodexvantaos

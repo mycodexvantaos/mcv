@@ -1,12 +1,14 @@
-# Namespace Governance
+# MyCodexVantaOS — namespace-governance
 
-> Status: Normative
-> Document: docs/architecture/namespace-governance.md
+Machine Identity: `mycodexvantaos`
+Canonical URL: https://mycodexvantaos.com
 
 ## Overview
 
-This document specifies the Namespace Governance for MyCodexVantaOS.
+This document describes the namespace-governance specification for MyCodexVantaOS.
 
-## Normative Reference
+## References
 
-See `docs/unified-architecture-spec.md` for the canonical normative specification.
+- [Identity Policy](../../governance/identity-policy.yaml)
+- [Platform Governance Spec](../../governance/platform-governance-spec.yaml)
+- [Unified Architecture Spec](../unified-architecture-spec.md)

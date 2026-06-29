@@ -1,31 +1,17 @@
-# ══════════════════════════════════════════════════════════════════════════
-# MyCodeXvantaOS — Docker Compose Integration Testing
-# Lightweight stack for integration testing.
-# Run: docker compose -f docker-compose.integration.yaml up
-# ══════════════════════════════════════════════════════════════════════════
-version: '3.8'
+version: "3.9"
+name: mycodexvantaos-integration
 
 services:
   postgres:
-    image: postgres:15-alpine
+    image: postgres:16-alpine
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-mycodexvantaos}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
-      POSTGRES_DB: ${POSTGRES_DB:-mycodexvantaos_test}
+      POSTGRES_DB: mycodexvantaos_test
+      POSTGRES_USER: mycodexvantaos
+      POSTGRES_PASSWORD: integration_test_password
     ports:
-      - '5433:5432'
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U mycodexvantaos']
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      - "5433:5432"
 
   redis:
     image: redis:7-alpine
     ports:
-      - '6380:6379'
-    healthcheck:
-      test: ['CMD', 'redis-cli', 'ping']
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      - "6380:6379"

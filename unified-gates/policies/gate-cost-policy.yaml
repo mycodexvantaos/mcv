@@ -1,14 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
-kind: GateCostPolicy
+kind: GatePolicy
 metadata:
-  name: gate-cost-policy
+  name: mycodexvantaos-gate-cost-policy
   version: 1.0.0
-  authority: platform-governance-root
-  governanceCode: mycodexvantaos-00000
-spec:
-  maxCostPerRunUSD: 0.10
-  parallelEvaluationEnabled: true
-  resultCachingEnabled: true
-  resultCacheTtlHours: 24
-  costAttributionRequired: true
-  costReportingFrequency: per-run
+  date: "2026-06-29"
+  status: active
+platform: mycodexvantaos

@@ -1,5 +1,6 @@
 apiVersion: mycodexvantaos.io/v1
-kind: FoundationMaturity
+kind: MaturityArtifact
 metadata:
-  name: maturity-model
-spec: {}
+  name: mycodexvantaos-maturity-model
+  version: 1.0.0
+platform: mycodexvantaos

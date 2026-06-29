@@ -1,5 +1,6 @@
 apiVersion: mycodexvantaos.io/v1
-kind: NamespaceNavigationMap
+kind: NamespaceNavigation
 metadata:
-  name: namespace-binding-map
-spec: {}
+  name: mycodexvantaos-namespace-binding-map
+  version: 1.0.0
+platform: mycodexvantaos

@@ -1,29 +1,9 @@
 apiVersion: mycodexvantaos.io/v1
-kind: FoundationNavigationMap
+kind: NavigationArtifact
 metadata:
-  name: foundation-navigation-map
-  description: Foundation navigation map for MyCodexVantaOS
-
-spec:
-  foundations:
-    - name: compute-foundation
-      path: foundation/compute-foundation/foundation.yaml
-      urn: urn:mycodexvantaos:foundation:spec:compute-foundation
-    - name: data-foundation
-      path: foundation/data-foundation/foundation.yaml
-      urn: urn:mycodexvantaos:foundation:spec:data-foundation
-    - name: algorithm-foundation
-      path: foundation/algorithm-foundation/foundation.yaml
-      urn: urn:mycodexvantaos:foundation:spec:algorithm-foundation
-    - name: agent-foundation
-      path: foundation/agent-foundation/foundation.yaml
-      urn: urn:mycodexvantaos:foundation:spec:agent-foundation
-    - name: contract-foundation
-      path: foundation/contract-foundation/foundation.yaml
-      urn: urn:mycodexvantaos:foundation:spec:contract-foundation
-    - name: governance-foundation
-      path: foundation/governance-foundation/foundation.yaml
-      urn: urn:mycodexvantaos:foundation:spec:governance-foundation
-    - name: business-foundation
-      path: foundation/business-foundation/foundation.yaml
-      urn: urn:mycodexvantaos:foundation:spec:business-foundation
+  name: mycodexvantaos-foundation-navigation-map
+  version: 1.0.0
+  date: "2026-06-29"
+  status: active
+platform: mycodexvantaos
+canonical-url: "https://mycodexvantaos.com"

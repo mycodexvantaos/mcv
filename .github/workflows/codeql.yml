@@ -1,68 +1,157 @@
-# CodeQL Advanced — primary security scanning workflow
-# Covers: actions, javascript-typescript, python
-# Supersedes: codeql-analysis.yml (removed — that file used v3 actions and only javascript)
-# Version: 2.0.0
-
-name: 'CodeQL Advanced'
+name: CodeQL Security Scan
 
 on:
   push:
-    branches: ['main', 'feature/**', 'fix/**']
+    branches: [main, develop]
   pull_request:
-    branches: ['main']
+    branches: [main, develop]
   schedule:
-    - cron: '36 19 * * 0'
+    - cron: "0 2 * * 1"
   workflow_dispatch:
 
 concurrency:
-  group: codeql-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
+permissions:
+  actions: read
+  contents: read
+  security-events: write
 
 jobs:
   analyze:
-    name: Analyze (${{ matrix.language }})
-    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
     timeout-minutes: 30
-    permissions:
-      security-events: write
-      packages: read
-      actions: read
-      contents: read
-
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - language: actions
-            build-mode: none
-          - language: javascript-typescript
-            build-mode: none
-          - language: python
-            build-mode: none
+        language: [javascript-typescript, python]
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@8aad20d150bbac5944a9f9d289da16a4b0d87c1e
+        uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
-          build-mode: ${{ matrix.build-mode }}
-          config-file: .github/codeql/codeql-config.yml
+          queries: security-extended,security-and-quality
+          config: |
+            paths:
+              - src
+              - packages
+              - apps
+              - services
+              - ci
+              - scripts
+              - unified-gates/scripts
+              - mcv_auditor
+            paths-ignore:
+              - node_modules
+              - dist
+              - build
+              - outputs
+              - "**/*.test.ts"
+              - "**/*.spec.ts"
 
-      - name: Run manual build steps
-        if: matrix.build-mode == 'manual'
-        shell: bash
-        run: |
-          echo 'If you are using a "manual" build mode for one of the' \
-            'languages you are analyzing, replace this with the commands to build' \
-            'your code, for example:'
-          echo '  make bootstrap'
-          echo '  make release'
-          exit 1
+      - name: Setup Node.js (for JS/TS analysis)
+        if: matrix.language == 'javascript-typescript'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Setup pnpm (for JS/TS analysis)
+        if: matrix.language == 'javascript-typescript'
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install JS dependencies
+        if: matrix.language == 'javascript-typescript'
+        run: pnpm install --frozen-lockfile
+
+      - name: Build TypeScript (for JS/TS analysis)
+        if: matrix.language == 'javascript-typescript'
+        run: pnpm run build --if-present
+        continue-on-error: true
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@8aad20d150bbac5944a9f9d289da16a4b0d87c1e
+        uses: github/codeql-action/analyze@v3
         with:
-          category: '/language:${{ matrix.language }}'
+          category: "/language:${{ matrix.language }}"
+          upload: true
+
+  secret-scan:
+    name: Secret Scanning
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Scan for hardcoded secrets
+        run: |
+          # Check for common secret patterns
+          echo "Scanning for hardcoded secrets..."
+
+          # Check for private keys
+          if grep -r "BEGIN PRIVATE KEY\|BEGIN RSA PRIVATE KEY\|BEGIN EC PRIVATE KEY" \
+            --include="*.ts" --include="*.js" --include="*.py" --include="*.yaml" \
+            --exclude-dir=node_modules --exclude-dir=.git .; then
+            echo "ERROR: Private key found in source code"
+            exit 1
+          fi
+
+          # Check for hardcoded passwords (simple patterns)
+          if grep -rE "password\s*=\s*['\"][^'\"]{8,}['\"]" \
+            --include="*.ts" --include="*.js" --include="*.py" \
+            --exclude-dir=node_modules --exclude-dir=.git \
+            --exclude="*.test.*" --exclude="*.spec.*" .; then
+            echo "WARNING: Potential hardcoded password found"
+          fi
+
+          echo "Secret scan completed"
+
+      - name: Check for forbidden vendor URLs in production config
+        run: |
+          python3 -c "
+          import re, os, sys
+
+          forbidden_patterns = [
+              r'\.github\.io',
+              r'\.pages\.dev',
+              r'\.vercel\.app',
+              r'\.netlify\.app',
+              r'\.run\.app',
+              r'\.appspot\.com',
+              r'\.cloudfunctions\.net',
+              r'\.web\.app',
+              r'\.firebaseapp\.com',
+          ]
+
+          production_config_files = [
+              'config/architecture.config.yaml',
+              'config/runtime.config.yaml',
+          ]
+
+          violations = []
+          for filepath in production_config_files:
+              if not os.path.exists(filepath):
+                  continue
+              with open(filepath) as f:
+                  content = f.read()
+              for pattern in forbidden_patterns:
+                  if re.search(pattern, content):
+                      violations.append(f'{filepath}: matches {pattern}')
+
+          if violations:
+              for v in violations:
+                  print(f'VIOLATION: {v}')
+              sys.exit(1)
+          print('Vendor URL check: PASSED')
+          "

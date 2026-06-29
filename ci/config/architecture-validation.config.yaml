@@ -1,18 +1,6 @@
 apiVersion: mycodexvantaos.io/v1
-kind: ArchitectureValidationConfig
+kind: CIConfig
 metadata:
-  name: architecture-validation-config
-spec:
-  checks:
-    - identity
-    - naming
-    - manifests
-    - providers
-    - topology
-    - runtime
-    - drift
-    - navigation
-    - namespace-governance
-    - unified-gates
-    - foundation
-    - release-candidate
+  name: mycodexvantaos-architecture-validation
+  version: 1.0.0
+platform: mycodexvantaos

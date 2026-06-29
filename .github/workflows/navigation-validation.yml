@@ -1,0 +1,68 @@
+name: Navigation Validation
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - "navigation/**"
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate-navigation:
+    name: Validate Navigation Maps
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install pyyaml jsonschema networkx
+
+      - name: Validate navigation
+        run: python3 scripts/validate-navigation.py
+
+      - name: Validate dependency graph is acyclic
+        run: |
+          python3 -c "
+          import yaml, networkx as nx, sys
+          with open('navigation/dependency-graph.yaml') as f:
+              graph_data = yaml.safe_load(f)
+          G = nx.DiGraph()
+          for node in graph_data.get('nodes', []):
+              G.add_node(node['id'])
+          for edge in graph_data.get('edges', []):
+              G.add_edge(edge['from'], edge['to'])
+          if not nx.is_directed_acyclic_graph(G):
+              cycles = list(nx.simple_cycles(G))
+              print(f'ERROR: Dependency graph has cycles: {cycles}')
+              sys.exit(1)
+          print(f'Dependency graph is acyclic: PASSED ({G.number_of_nodes()} nodes, {G.number_of_edges()} edges)')
+          "
+
+      - name: Generate navigation validation report
+        if: always()
+        run: python3 scripts/generate-navigation-validation-report.py
+
+      - name: Upload navigation validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: navigation-validation-report
+          path: outputs/navigation-validation-report.json
+          retention-days: 30

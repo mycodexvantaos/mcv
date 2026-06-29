@@ -1,12 +1,14 @@
-# Manifest Boundary
+# MyCodexVantaOS — manifest-boundary
 
-> Status: Normative
-> Document: docs/architecture/manifest-boundary.md
+Machine Identity: `mycodexvantaos`
+Canonical URL: https://mycodexvantaos.com
 
 ## Overview
 
-This document specifies the Manifest Boundary for MyCodexVantaOS.
+This document describes the manifest-boundary specification for MyCodexVantaOS.
 
-## Normative Reference
+## References
 
-See `docs/unified-architecture-spec.md` for the canonical normative specification.
+- [Identity Policy](../../governance/identity-policy.yaml)
+- [Platform Governance Spec](../../governance/platform-governance-spec.yaml)
+- [Unified Architecture Spec](../unified-architecture-spec.md)

@@ -1,44 +1,12 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
-  id: gate-03-governance-code-validation
+  name: mycodexvantaos-gate-03-governance-code-validation
   version: 1.0.0
-  layer: l00
-  plane: ai-infra
-  blocking: true
-  lifecycle: active
-  criticality: critical
-  owner: platform@mycodexvantaos.com
-  governanceCode: mycodexvantaos-00000
-  createdAt: 2026-01-01T00:00:00Z
-  tags:
-    - l00
-    - governance
-  sloTarget: 30
-  evidenceRetentionDays: 2555
-spec:
-  description: >
-    Validates that all governance codes match ^mycodexvantaos-[0-9]{5}$ and that no space-based legacy forms exist.
-  validates:
-    - dimension: code-format
-      description: Governance codes are well-formed.
-      checks:
-        - id: chk-code-regex
-          description: Code matches ^mycodexvantaos-[0-9]{5}$
-          rule: 'regex:^mycodexvantaos-[0-9]{5}$'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-no-space-form
-          description: No space-based governance code (mycodexvantaos 00000)
-          rule: 'regex-not:mycodexvantaos\s+[0-9]{5}'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-era-range
-          description: Code numeric value falls within a known era range
-          rule: 'era-range:00000-99999'
-          severity: high
-          evidenceRequired: false
-  dependsOn: []
-  waiverPolicy: ./policies/gate-waiver-policy.yaml
-  escalationPolicy: ./policies/gate-risk-policy.yaml
+  date: "2026-06-29"
+  status: active
+gate-id: gate-03-governance-code-validation
+level: l00
+platform: mycodexvantaos
+severity: critical
+blocking: true

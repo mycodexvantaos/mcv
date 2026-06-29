@@ -1,8 +1,6 @@
 apiVersion: mycodexvantaos.io/v1
 kind: ResourceDefinition
 metadata:
-  name: service
-spec:
-  kind: Service
-  group: mycodexvantaos.io
-  version: v1
+  name: mycodexvantaos-service-resource
+  version: 1.0.0
+platform: mycodexvantaos

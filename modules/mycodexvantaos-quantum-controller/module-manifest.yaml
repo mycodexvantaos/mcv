@@ -1,33 +1,15 @@
 apiVersion: mycodexvantaos.io/v1
-kind: ServiceManifest
+kind: ModuleManifest
 metadata:
   name: mycodexvantaos-quantum-controller
-  urn: urn:mycodexvantaos:service:mycodexvantaos-quantum-controller
-  serviceId: mycodexvantaos-quantum-controller
-  tier: tier-2
+  version: 1.0.0
+  date: "2026-06-29"
+  status: active
 
-spec:
-  serviceId: mycodexvantaos-quantum-controller
-  tier: tier-2
-  packageName: '@mycodexvantaos/quantum-controller'
-  ociImageRepo: ghcr.io/mycodexvantaos/mycodexvantaos-quantum-controller
-  kubernetesResourceName: mycodexvantaos-quantum-controller
-  internalUri: mycodexvantaos://service/mycodexvantaos-quantum-controller
-  urn: urn:mycodexvantaos:service:mycodexvantaos-quantum-controller
-
-  supportedRuntimeModes:
-    - native
-    - connected
-    - hybrid
-
-  deploymentTargets:
-    - kubernetes
-    - docker-compose
-
-  productionReadiness:
-    required: true
-    healthCheckRequired: true
-    auditChainRequired: true
-    sbomRequired: true
-    provenanceRequired: true
-    imagePinningRequired: true
+service-id: mycodexvantaos-quantum-controller
+platform: mycodexvantaos
+runtime-modes:
+  - native
+  - connected
+  - hybrid
+service-path: services/mycodexvantaos-quantum-controller

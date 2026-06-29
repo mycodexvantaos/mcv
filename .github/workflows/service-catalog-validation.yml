@@ -1,0 +1,77 @@
+name: Service Catalog Validation
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - "platform/**"
+      - "modules/**"
+      - "services/**"
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate-service-catalog:
+    name: Validate Service Catalog
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install pyyaml jsonschema
+
+      - name: Validate service catalog
+        run: python3 scripts/validate-service-catalog.py
+
+      - name: Validate module manifests
+        run: |
+          python3 -c "
+          import yaml, os, sys, glob, re
+
+          SERVICE_ID_PATTERN = re.compile(
+              r'^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*$'
+          )
+
+          manifests = glob.glob('modules/**/module-manifest.yaml', recursive=True)
+          errors = []
+          for manifest_path in manifests:
+              with open(manifest_path) as f:
+                  manifest = yaml.safe_load(f)
+              service_id = manifest.get('service-id', '')
+              if not SERVICE_ID_PATTERN.match(service_id):
+                  errors.append(f'{manifest_path}: invalid service-id \"{service_id}\"')
+
+          if errors:
+              for e in errors:
+                  print(f'ERROR: {e}')
+              sys.exit(1)
+          print(f'Module manifest validation: PASSED ({len(manifests)} modules)')
+          "
+
+      - name: Generate service catalog report
+        if: always()
+        run: python3 scripts/generate-architecture-validation-report.py
+
+      - name: Upload service catalog report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: service-catalog-report
+          path: outputs/service-catalog-validation-report.json
+          retention-days: 30

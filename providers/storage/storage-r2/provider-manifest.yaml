@@ -1,25 +1,15 @@
 apiVersion: mycodexvantaos.io/v1
 kind: ProviderManifest
 metadata:
-  name: storage-r2
-  urn: urn:mycodexvantaos:provider:storage-r2
-
-spec:
-  id: storage-r2
-  capability: storage
-  source: cloudflare-r2
+  name: mycodexvantaos-storage-r2
+  version: 1.0.0
+  date: "2026-06-29"
   status: active
-  criticality: high
 
-  supportsModes:
-    - native
-    - connected
-    - hybrid
-
-  healthCheck:
-    enabled: true
-    endpoint: /health
-
-  observability:
-    metricsEnabled: true
-    tracingEnabled: true
+provider-id: mycodexvantaos-storage-r2
+capability: storage
+platform: mycodexvantaos
+runtime-modes:
+  - native
+  - connected
+  - hybrid

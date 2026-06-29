@@ -1,19 +1,15 @@
-# providers/cache/cache-redis/provider-manifest.yaml
-# 8.1 — provider instance: cache-redis
-# 8.2 — capability (cache) precedes provider name (redis)
-apiVersion: mycodexvantaos.org/v1
-kind: Provider
+apiVersion: mycodexvantaos.io/v1
+kind: ProviderManifest
 metadata:
-  name: cache-redis
-  capability: cache
-  labels:
-    mycodexvantaos.org/managed-by: naming-spec-v1
-    mycodexvantaos.org/specRef: '8.1'
-spec:
-  providerName: redis
-  isNative: false
-  lifecycle:
-    stage: stable
-  envVarPrefix: MYCODEXVANTAOS_CACHE
-  configSchemaRef: ./config.schema.json
-  description: 'Redis in-memory cache provider.'
+  name: mycodexvantaos-cache-redis
+  version: 1.0.0
+  date: "2026-06-29"
+  status: active
+
+provider-id: mycodexvantaos-cache-redis
+capability: cache
+platform: mycodexvantaos
+runtime-modes:
+  - native
+  - connected
+  - hybrid

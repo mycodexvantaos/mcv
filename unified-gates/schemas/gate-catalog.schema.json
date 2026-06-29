@@ -1,56 +1,20 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://mycodexvantaos.io/schemas/unified-gates/gate-catalog",
-  "title": "Gate Catalog",
-  "description": "Schema for gate catalog YAML files.",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mycodexvantaos.com/schemas/gate/gate-catalog.schema.json",
+  "title": "GateCatalog",
+  "description": "MyCodexVantaOS gate gate-catalog schema",
   "type": "object",
+  "required": ["apiVersion", "kind", "metadata"],
   "properties": {
-    "apiVersion": {
-      "type": "string"
-    },
-    "kind": {
-      "type": "string"
-    },
+    "apiVersion": { "type": "string", "const": "mycodexvantaos.io/v1" },
+    "kind": { "type": "string" },
     "metadata": {
       "type": "object",
+      "required": ["name", "version"],
       "properties": {
-        "name": {
-          "type": "string"
-        },
-        "version": {
-          "type": "string"
-        },
-        "ssot": {
-          "type": "boolean"
-        },
-        "authority": {
-          "type": "string"
-        },
-        "governanceCode": {
-          "type": "string",
-          "pattern": "^mycodexvantaos-[0-9]{5}$"
-        }
-      },
-      "required": ["name", "version", "authority", "governanceCode"]
-    },
-    "spec": {
-      "type": "object",
-      "properties": {
-        "planes": {
-          "type": "array"
-        },
-        "gates": {
-          "type": "array"
-        },
-        "evidencePolicy": {
-          "type": "object"
-        },
-        "lifecycleStages": {
-          "type": "array"
-        }
+        "name": { "type": "string" },
+        "version": { "type": "string" }
       }
     }
-  },
-  "required": ["apiVersion", "kind", "metadata", "spec"],
-  "additionalProperties": false
+  }
 }

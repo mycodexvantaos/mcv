@@ -1,17 +1,44 @@
 apiVersion: mycodexvantaos.io/v1
 kind: HashPolicy
 metadata:
-  name: hash-policy
+  name: mycodexvantaos-hash-policy
+  version: 1.0.0
+  date: "2026-06-29"
+  status: active
+  authoritative: true
+  spec-authority: docs/spec/l1-constitution/constitution.yaml
 
-spec:
-  runtimeAuditChain:
-    algorithm: sha256
-    purpose: compatibility-with-existing-runtime-audit-chain
+algorithms:
+  allowed:
+    - SHA-256
+    - SHA3-512
+    - BLAKE3
+  default: SHA-256
+  artifact-integrity: SHA-256
+  audit-chain: SHA-256
+  supply-chain: SHA3-512
+  forbidden:
+    - MD5
+    - SHA-1
+    - CRC32
+    - RIPEMD-160
 
-  longTermIntegrity:
-    algorithm: sha3-512
-    purpose: canonical-long-term-integrity-proof
+usage:
+  artifact-digests:
+    algorithm: SHA-256
+    format: "sha256:{hex}"
+  audit-events:
+    algorithm: SHA-256
+    include-timestamp: true
+  supply-chain-attestations:
+    algorithm: SHA3-512
+    format: "sha3-512:{hex}"
+  provider-manifests:
+    algorithm: SHA-256
+  module-manifests:
+    algorithm: SHA-256
 
-  fastCiComparison:
-    algorithm: blake3
-    purpose: high-speed-local-and-ci-comparison
+enforcement:
+  ci-failure-on-forbidden-algorithm: true
+  require-digest-in-artifact-index: true
+  verify-digest-on-load: true

@@ -1,12 +1,14 @@
-# Provider Abstraction
+# MyCodexVantaOS — provider-abstraction
 
-> Status: Normative
-> Document: docs/architecture/provider-abstraction.md
+Machine Identity: `mycodexvantaos`
+Canonical URL: https://mycodexvantaos.com
 
 ## Overview
 
-This document specifies the Provider Abstraction for MyCodexVantaOS.
+This document describes the provider-abstraction specification for MyCodexVantaOS.
 
-## Normative Reference
+## References
 
-See `docs/unified-architecture-spec.md` for the canonical normative specification.
+- [Identity Policy](../../governance/identity-policy.yaml)
+- [Platform Governance Spec](../../governance/platform-governance-spec.yaml)
+- [Unified Architecture Spec](../unified-architecture-spec.md)

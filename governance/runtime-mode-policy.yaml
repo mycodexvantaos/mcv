@@ -1,42 +1,80 @@
 apiVersion: mycodexvantaos.io/v1
 kind: RuntimeModePolicy
 metadata:
-  name: runtime-mode-policy
-  ssot: true
-  authority: runtime-mode-governance
+  name: mycodexvantaos-runtime-mode-policy
+  version: 1.0.0
+  date: "2026-06-29"
+  status: active
+  authoritative: true
 
-spec:
-  canonicalRuntimeModes:
-    - native
-    - connected
-    - hybrid
-    - auto
+modes:
+  native:
+    description: "Fully self-hosted, no external providers required"
+    external-dependencies: none
+    providers:
+      llm: llm-native
+      embedding: embedding-native
+      vector-store: vector-store-pgvector
+      database: database-postgres
+      cache: cache-redis
+      queue: queue-rabbitmq
+      storage: storage-minio
+      secrets: secrets-local
+      graph: graph-native
+      search: search-native
+    use-cases:
+      - air-gapped environments
+      - on-premises deployment
+      - maximum data sovereignty
+      - development and testing
 
-  providerSupportedModes:
-    allowed: [native, connected, hybrid]
-    forbidden: [auto]
-    reason: auto is a startup intent, not a provider-supported final runtime mode
+  connected:
+    description: "Cloud-connected with external provider integrations"
+    external-dependencies: allowed
+    providers:
+      llm:
+        - llm-openai
+        - llm-openrouter
+        - llm-workers-ai
+      embedding:
+        - embedding-openai
+        - embedding-workers-ai
+      vector-store:
+        - vector-store-qdrant
+        - vector-store-vectorize
+      database:
+        - database-d1
+        - database-postgres
+      cache:
+        - cache-kv
+        - cache-redis
+      queue:
+        - queue-cloudflare
+        - queue-rabbitmq
+      storage:
+        - storage-r2
+        - storage-minio
+      secrets:
+        - secrets-vault
+    use-cases:
+      - cloud-native deployment
+      - SaaS applications
+      - high-scale production
 
-  productionRules:
-    allowedFinalModes: [native, connected, hybrid]
-    forbiddenFinalModes: [auto]
-    autoForbiddenInProduction:
-      condition:
-        environment: production
-        requestedRuntimeMode: auto
-      action: fail
-      severity: critical
-      errorCode: MYCODEXVANTAOS_RUNTIME_AUTO_FORBIDDEN_IN_PRODUCTION
+  hybrid:
+    description: "Mix of native and connected providers based on capability"
+    external-dependencies: selective
+    use-cases:
+      - regulated industries with selective cloud usage
+      - gradual cloud migration
+      - cost optimization
 
-  requiredEnvironmentVariables:
-    - MYCODEXVANTAOS_RUNTIME_MODE
-    - MYCODEXVANTAOS_SECRETS_PROVIDER
-    - MYCODEXVANTAOS_DEPLOYMENT_TARGET
+resolution:
+  environment-variable: MYCODEXVANTAOS_RUNTIME_MODE
+  config-key: runtime-mode
+  default: native
+  validation: strict
 
-  forbiddenEnvironmentVariablePrefixes:
-    - ORCH_
-    - AXM_
-    - AXIOM_
-    - GL_
-    - NG_
-    - KUBO_
+enforcement:
+  ci-failure-on-invalid-mode: true
+  require-mode-declaration: true

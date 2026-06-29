@@ -1,66 +1,20 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://mycodexvantaos.io/schemas/unified-gates/dataset-contract",
-  "title": "Dataset Contract",
-  "description": "Schema for AI dataset contract definitions.",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mycodexvantaos.com/schemas/gate/dataset-contract.schema.json",
+  "title": "DatasetContract",
+  "description": "MyCodexVantaOS gate dataset-contract schema",
   "type": "object",
+  "required": ["apiVersion", "kind", "metadata"],
   "properties": {
-    "datasetId": {
-      "type": "string"
-    },
-    "datasetVersion": {
-      "type": "string"
-    },
-    "datasetType": {
-      "type": "string",
-      "enum": ["training", "evaluation", "fine-tuning", "rag-corpus", "synthetic"]
-    },
-    "license": {
-      "type": "string"
-    },
-    "sourceRef": {
-      "type": "string"
-    },
-    "lineageRef": {
-      "type": "string"
-    },
-    "schema": {
-      "type": "object"
-    },
-    "qualityThresholds": {
+    "apiVersion": { "type": "string", "const": "mycodexvantaos.io/v1" },
+    "kind": { "type": "string" },
+    "metadata": {
       "type": "object",
+      "required": ["name", "version"],
       "properties": {
-        "maxNullRate": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1
-        },
-        "maxDuplicateRate": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1
-        }
-      },
-      "required": ["maxNullRate", "maxDuplicateRate"]
-    },
-    "accessPolicy": {
-      "type": "string"
-    },
-    "piiScanRef": {
-      "type": "string"
+        "name": { "type": "string" },
+        "version": { "type": "string" }
+      }
     }
-  },
-  "required": [
-    "datasetId",
-    "datasetVersion",
-    "datasetType",
-    "license",
-    "sourceRef",
-    "lineageRef",
-    "schema",
-    "qualityThresholds",
-    "accessPolicy",
-    "piiScanRef"
-  ],
-  "additionalProperties": false
+  }
 }

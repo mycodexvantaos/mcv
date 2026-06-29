@@ -1,25 +1,15 @@
 apiVersion: mycodexvantaos.io/v1
 kind: ProviderManifest
 metadata:
-  name: vector-store-vectorize
-  urn: urn:mycodexvantaos:provider:vector-store-vectorize
-
-spec:
-  id: vector-store-vectorize
-  capability: vector-store
-  source: cloudflare-vectorize
+  name: mycodexvantaos-vector-store-vectorize
+  version: 1.0.0
+  date: "2026-06-29"
   status: active
-  criticality: high
 
-  supportsModes:
-    - native
-    - connected
-    - hybrid
-
-  healthCheck:
-    enabled: true
-    endpoint: /health
-
-  observability:
-    metricsEnabled: true
-    tracingEnabled: true
+provider-id: mycodexvantaos-vector-store-vectorize
+capability: vector-store
+platform: mycodexvantaos
+runtime-modes:
+  - native
+  - connected
+  - hybrid

@@ -1,12 +1,14 @@
-# Runtime Mode Resolution
+# MyCodexVantaOS — runtime-mode-resolution
 
-> Status: Normative
-> Document: docs/architecture/runtime-mode-resolution.md
+Machine Identity: `mycodexvantaos`
+Canonical URL: https://mycodexvantaos.com
 
 ## Overview
 
-This document specifies the Runtime Mode Resolution for MyCodexVantaOS.
+This document describes the runtime-mode-resolution specification for MyCodexVantaOS.
 
-## Normative Reference
+## References
 
-See `docs/unified-architecture-spec.md` for the canonical normative specification.
+- [Identity Policy](../../governance/identity-policy.yaml)
+- [Platform Governance Spec](../../governance/platform-governance-spec.yaml)
+- [Unified Architecture Spec](../unified-architecture-spec.md)

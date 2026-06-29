@@ -1,15 +1,18 @@
 # mycodexvantaos-ai-embedding
 
-Service implementation for `mycodexvantaos-ai-embedding`.
+Service ID: `mycodexvantaos-ai-embedding`
+Version: 1.0.0
+Machine Identity: mycodexvantaos
+Canonical URL: https://mycodexvantaos.com
 
-## Manifest
+## Overview
 
-See `modules/mycodexvantaos-ai-embedding/module-manifest.yaml` for the service contract.
+This service is part of the MyCodexVantaOS platform.
 
-## URN
+## Structure
 
-`urn:mycodexvantaos:service:mycodexvantaos-ai-embedding`
-
-## OCI Image
-
-`ghcr.io/mycodexvantaos/mycodexvantaos-ai-embedding`
+```
+mycodexvantaos-ai-embedding/
+├── src/        # Service implementation
+└── tests/      # Service tests
+```

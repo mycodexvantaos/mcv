@@ -1,25 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
-kind: DatasetContract
+kind: GateContract
 metadata:
-  name: dataset-contract
+  name: mycodexvantaos-dataset-contract
   version: 1.0.0
-  governanceCode: mycodexvantaos-40100
-spec:
-  description: >
-    Defines the canonical contract for datasets used in AI workloads.
-    All datasets MUST conform to this contract before use.
-  requiredFields:
-    - datasetId
-    - datasetVersion
-    - datasetType
-    - license
-    - sourceRef
-    - lineageRef
-    - schema
-    - qualityThresholds.maxNullRate
-    - qualityThresholds.maxDuplicateRate
-    - accessPolicy
-    - piiScanRef
-  validValues:
-    datasetType: [training, evaluation, fine-tuning, rag-corpus, synthetic]
-  schemaRef: ../schemas/dataset-contract.schema.json
+  date: "2026-06-29"
+  status: active
+platform: mycodexvantaos

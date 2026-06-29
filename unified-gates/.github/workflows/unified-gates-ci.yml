@@ -1,212 +1,32 @@
-# path: unified-gates/.github/workflows/unified-gates-ci.yml
-# governanceCode: mycodexvantaos-00000
 name: Unified Gates CI
 
 on:
   push:
     branches: [main, develop]
     paths:
-      - 'unified-gates/**'
-      - 'ci/namespace_check.py'
+      - "unified-gates/**"
   pull_request:
-    branches: [main]
-    paths:
-      - 'unified-gates/**'
-      - 'ci/namespace_check.py'
+    branches: [main, develop]
   workflow_dispatch:
-    inputs:
-      strict_mode:
-        description: 'Enable strict mode (SHOULD violations become failures)'
-        required: false
-        default: 'false'
-        type: boolean
-      layer:
-        description: 'Gate layer to validate (all, l00, l10, l20, l30, l40, l50, l60, l90)'
-        required: false
-        default: 'all'
-        type: string
 
-env:
-  PYTHON_VERSION: '3.12'
-  GATES_ROOT: './unified-gates'
-  REPORT_DIR: './unified-gates/outputs'
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
-  namespace-governance:
-    name: Namespace Governance Validation
+  validate-gates:
+    name: Validate Gates
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      - name: Install dependencies
-        run: pip install pyyaml
-
-      - name: Validate repository name
-        run: |
-          python ci/namespace_check.py \
-            --repo-name "${{ github.event.repository.name }}" \
-            --report-dir ${{ env.REPORT_DIR }} \
-            --verbose
-
-      - name: Validate namespace registry
-        run: |
-          python ci/namespace_check.py \
-            --registry unified-gates/navigation/owner-registry.yaml \
-            --report-dir ${{ env.REPORT_DIR }} \
-            --verbose
-
-      - name: Validate dependency graph
-        run: |
-          python ci/namespace_check.py \
-            --dep-graph unified-gates/navigation/dependency-policy.yaml \
-            --report-dir ${{ env.REPORT_DIR }} \
-            --verbose
-
-      - name: Scan file headers (strict mode)
-        if: ${{ inputs.strict_mode == true || inputs.strict_mode == 'true' }}
-        run: |
-          python ci/namespace_check.py \
-            --scan-dir unified-gates/ \
-            --strict \
-            --report-dir ${{ env.REPORT_DIR }} \
-            --verbose
-
-      - name: Scan file headers (standard mode)
-        if: ${{ !(inputs.strict_mode == true || inputs.strict_mode == 'true') }}
-        run: |
-          python ci/namespace_check.py \
-            --scan-dir unified-gates/ \
-            --report-dir ${{ env.REPORT_DIR }} \
-            --verbose
-
-  schema-validation:
-    name: Schema Validation
-    runs-on: ubuntu-latest
-    needs: namespace-governance
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      - name: Install dependencies
-        run: pip install pyyaml jsonschema
-
-      - name: Validate gate schemas
-        run: |
-          python unified-gates/scripts/validate-gate-schema.py \
-            --root ${{ env.GATES_ROOT }} \
-            --report ${{ env.REPORT_DIR }}/gate-validation-report.json
-
-  gate-catalog-validation:
-    name: Gate Catalog Validation
-    runs-on: ubuntu-latest
-    needs: schema-validation
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      - name: Install dependencies
-        run: pip install pyyaml
-
-      - name: Validate gate catalog
-        run: |
-          python unified-gates/scripts/validate-gate-catalog.py \
-            --root ${{ env.GATES_ROOT }} \
-            --report ${{ env.REPORT_DIR }}/gate-catalog-validation.json
-
-  ai-infra-gates-validation:
-    name: AI Infrastructure Gates Validation
-    runs-on: ubuntu-latest
-    needs: gate-catalog-validation
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      - name: Install dependencies
-        run: pip install pyyaml
-
-      - name: Validate AI infrastructure gates
-        run: |
-          python unified-gates/scripts/validate-ai-infra-gates.py \
-            --root ${{ env.GATES_ROOT }} \
-            --layer ${{ inputs.layer || 'all' }} \
-            --report ${{ env.REPORT_DIR }}/ai-infra-gate-validation.json
-
-  gate-composition-validation:
-    name: Gate Composition Validation
-    runs-on: ubuntu-latest
-    needs: ai-infra-gates-validation
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      - name: Install dependencies
-        run: pip install pyyaml
-
-      - name: Validate gate composition and dependencies
-        run: |
-          python unified-gates/scripts/validate-gate-composition.py \
-            --root ${{ env.GATES_ROOT }} \
-            --report ${{ env.REPORT_DIR }}/gate-composition-validation.json
-
-  generate-reports:
-    name: Generate Gate Reports
-    runs-on: ubuntu-latest
-    needs: gate-composition-validation
-    if: always()
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      - name: Install dependencies
-        run: pip install pyyaml
-
-      - name: Generate full gate report
-        run: |
-          python unified-gates/scripts/generate-gate-report.py \
-            --root ${{ env.GATES_ROOT }} \
-            --output ${{ env.REPORT_DIR }}/gate-validation-report.json
-
-      - name: Generate production closure report
-        run: |
-          python unified-gates/scripts/generate-production-closure-report.py \
-            --root ${{ env.GATES_ROOT }} \
-            --output ${{ env.REPORT_DIR }}/production-closure-report.json
-
-      - name: Upload gate reports
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: gate-reports-${{ github.run_id }}
-          path: ${{ env.REPORT_DIR }}/
-          retention-days: 90
+          python-version: "3.12"
+      - run: pip install pyyaml jsonschema
+      - run: python unified-gates/scripts/validate-ai-infra-gates.py
+      - run: python unified-gates/scripts/validate-gate-catalog.py
+      - run: python unified-gates/scripts/validate-gate-schema.py

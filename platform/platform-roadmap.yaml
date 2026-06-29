@@ -1,5 +1,9 @@
 apiVersion: mycodexvantaos.io/v1
-kind: PlatformSpec
+kind: PlatformArtifact
 metadata:
-  name: platform-roadmap
-spec: {}
+  name: mycodexvantaos-platform-roadmap
+  version: 1.0.0
+  date: "2026-06-29"
+  status: active
+platform: mycodexvantaos
+canonical-url: "https://mycodexvantaos.com"

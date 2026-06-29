@@ -1,0 +1,139 @@
+spec-id: mycodexvantaos-spec-l1-constitution-v1.0.0
+layer: 1
+version: 1.0.0
+date: "2026-06-29"
+status: active
+authoritative: true
+title: "MyCodexVantaOS Constitutional Specification (L1)"
+description: >
+  Layer 1 constitutional specification. Defines canonical identity, forbidden prefixes,
+  manifest boundary, foundation boundary, hash policy, naming closure, service ID format,
+  and provider capability set. All platform artifacts MUST comply with this specification.
+
+# Canonical identity
+identity:
+  machine: mycodexvantaos
+  brand: MyCodexVantaOS
+  legacy-aliases:
+    - MyCodeXvantaOS
+    - "MyCodeXvanta OS"
+  forbidden-prefixes:
+    - mycodexvanta-os
+    - codexvanta-os
+    - codexvanta
+    - codevantaos
+    - kubo
+    - axiom
+  enforcement:
+    ci-failure-on-violation: true
+    severity: critical
+
+# Service ID format
+service-id:
+  format: "mycodexvantaos-<domain>-<capability>[-<sub-capability>]"
+  pattern: "^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*(?:-[a-z0-9]+(?:-[a-z0-9]+)*)?$"
+  rules:
+    - capability MUST come from provider capability registry
+    - MUST NOT use vendor-first capability names
+
+# Provider capability set (24 capabilities)
+capability-set:
+  count: 24
+  capabilities:
+    - database
+    - storage
+    - auth
+    - queue
+    - state-store
+    - secrets
+    - repo
+    - deploy
+    - validation
+    - security
+    - observability
+    - notification
+    - scheduler
+    - vector-store
+    - embedding
+    - llm
+    - graph
+    - cache
+    - search
+    - quantum-runtime
+    - quantum-simulator
+    - quantum-processor
+    - quantum-circuit
+    - quantum-observability
+  naming-rules:
+    - MUST be capability-first kebab-case
+    - MUST NOT contain vendor prefixes
+
+# Manifest boundary
+manifest-boundary:
+  types:
+    - file: mycodexvantaos-module.yaml
+      scope: root-module
+      runtime-services: optional
+      required-for: every-root-module
+    - file: module-manifest.yaml
+      scope: service-module
+      runtime-services: yes
+      required-for: deployable-services
+    - file: provider-manifest.yaml
+      scope: provider-instance
+      runtime-services: provider-only
+      required-for: provider-implementations
+    - file: foundation.yaml
+      scope: foundation-spec
+      runtime-services: no
+      required-for: foundation-directories
+    - file: navigation-index.yaml
+      scope: navigation
+      runtime-services: no
+      required-for: navigation-module
+
+# Foundation boundary
+foundation-boundary:
+  count: 7
+  foundations:
+    - compute-foundation
+    - data-foundation
+    - algorithm-foundation
+    - agent-foundation
+    - contract-foundation
+    - governance-foundation
+    - business-foundation
+  rules:
+    - MUST NOT contain runtime source code
+    - MUST NOT contain service implementations
+    - MUST NOT contain deployment manifests
+
+# Hash policy
+hash-policy:
+  algorithms:
+    allowed:
+      - SHA-256
+      - SHA3-512
+      - BLAKE3
+    default: SHA-256
+    forbidden:
+      - MD5
+      - SHA-1
+
+# Naming closure
+naming-closure:
+  proven: true
+  proof-location: governance/naming-closure/l2-meta/naming-closure-proof.yaml
+  rules:
+    - all identifiers MUST be lowercase kebab-case
+    - all identifiers MUST start with mycodexvantaos
+    - no identifier MUST use forbidden prefixes
+    - directory names MUST be kebab-case
+
+# Runtime modes
+runtime-modes:
+  allowed:
+    - native
+    - connected
+    - hybrid
+  default: native

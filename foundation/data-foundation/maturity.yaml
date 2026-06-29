@@ -1,6 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
-kind: FoundationSpec
+kind: FoundationMaturity
 metadata:
-  name: maturity
-  foundation: data-foundation
-spec: {}
+  name: mycodexvantaos-data-foundation-maturity
+  version: 1.0.0
+  foundation: mycodexvantaos-data-foundation
+  date: "2026-06-29"
+  status: active

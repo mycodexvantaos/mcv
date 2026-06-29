@@ -6,7 +6,7 @@ repos:
     hooks:
       - id: forbid-section-sign
         name: Forbid Section Sign Symbol (U+00A7)
-        entry: '§'
+        entry: "\xc2\xa7"
         language: pygrep
         types: [markdown]
         exclude: 'CONTRIBUTING\.md$'

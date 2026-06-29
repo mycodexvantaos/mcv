@@ -1,3 +1,1 @@
-# Foundation Diagrams
-
-Architecture diagrams for MyCodexVantaOS foundations.
+# MyCodexVantaOS Foundation Diagrams

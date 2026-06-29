@@ -1,25 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
-kind: GateWaiverContract
+kind: GateContract
 metadata:
-  name: gate-waiver-contract
+  name: mycodexvantaos-gate-waiver
   version: 1.0.0
-  governanceCode: mycodexvantaos-00000
-spec:
-  description: >
-    Defines the canonical contract for a gate waiver. All waiver records
-    MUST conform to this contract.
-  requiredFields:
-    - id
-    - gateId
-    - artifactRef
-    - requestedBy
-    - approvedBy
-    - approvedAt
-    - expiresAt
-    - spec.justification
-    - spec.remediationPlan
-    - spec.riskAcknowledgement
-  constraints:
-    maxDurationDays: 30
-    criticalGateRequiresCouncilApproval: true
-  schemaRef: ../schemas/gate-waiver.schema.json
+  date: "2026-06-29"
+  status: active
+platform: mycodexvantaos

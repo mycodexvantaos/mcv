@@ -1,10 +1,8 @@
 {
-  "report": "navigation-validation-report",
-  "generatedAt": "2024-01-01T00:00:00Z",
+  "report-id": "navigation-validation-initial",
+  "platform": "mycodexvantaos",
+  "canonical-url": "https://mycodexvantaos.com",
+  "generated-at": "2026-06-29T00:00:00Z",
   "status": "pending",
-  "ssot": false,
-  "generated": true,
-  "manualEditAllowed": false,
-  "generatedFrom": [],
-  "results": []
+  "note": "Run CI to generate actual report"
 }

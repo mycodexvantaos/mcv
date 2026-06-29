@@ -1,32 +1,76 @@
 {
   "name": "@mycodexvantaos/core",
-  "version": "1.0.0-constitution",
-  "description": "MyCodeXvantaOS platform constitution — five divine models that define what IS",
-  "type": "module",
-  "main": "./index.ts",
-  "types": "./index.ts",
+  "version": "1.0.0",
+  "description": "MyCodexVantaOS core configuration and utilities",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./index.ts",
-    "./shared": "./shared/index.ts",
-    "./service-catalog": "./service-catalog/index.ts",
-    "./resource-model": "./resource-model/index.ts",
-    "./policy-model": "./policy-model/index.ts",
-    "./audit-model": "./audit-model/index.ts",
-    "./knowledge-model": "./knowledge-model/index.ts"
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./config/domains": {
+      "import": "./dist/config/domains.mjs",
+      "require": "./dist/config/domains.js",
+      "types": "./dist/config/domains.d.ts"
+    },
+    "./config/environment": {
+      "import": "./dist/config/environment.mjs",
+      "require": "./dist/config/environment.js",
+      "types": "./dist/config/environment.d.ts"
+    },
+    "./lib/url-builder": {
+      "import": "./dist/lib/url-builder.mjs",
+      "require": "./dist/lib/url-builder.js",
+      "types": "./dist/lib/url-builder.d.ts"
+    },
+    "./lib/cors": {
+      "import": "./dist/lib/cors.mjs",
+      "require": "./dist/lib/cors.js",
+      "types": "./dist/lib/cors.d.ts"
+    },
+    "./lib/csp": {
+      "import": "./dist/lib/csp.mjs",
+      "require": "./dist/lib/csp.js",
+      "types": "./dist/lib/csp.d.ts"
+    },
+    "./lib/cookies": {
+      "import": "./dist/lib/cookies.mjs",
+      "require": "./dist/lib/cookies.js",
+      "types": "./dist/lib/cookies.d.ts"
+    },
+    "./lib/redirects": {
+      "import": "./dist/lib/redirects.mjs",
+      "require": "./dist/lib/redirects.js",
+      "types": "./dist/lib/redirects.d.ts"
+    },
+    "./lib/security-headers": {
+      "import": "./dist/lib/security-headers.mjs",
+      "require": "./dist/lib/security-headers.js",
+      "types": "./dist/lib/security-headers.d.ts"
+    }
   },
   "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src/"
+    "lint": "eslint src --ext .ts",
+    "clean": "rm -rf dist"
   },
-  "keywords": [
-    "platform",
-    "constitution",
-    "service-catalog",
-    "resource-model",
-    "policy-model",
-    "audit-model",
-    "knowledge-model"
-  ],
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  },
+  "peerDependencies": {},
+  "sideEffects": false,
   "license": "UNLICENSED",
-  "private": true
+  "private": false
 }

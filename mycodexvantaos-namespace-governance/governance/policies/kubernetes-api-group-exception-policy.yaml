@@ -1,5 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
 kind: NamespacePolicy
 metadata:
-  name: kubernetes-api-group-exception-policy
-spec: {}
+  name: mycodexvantaos-kubernetes-api-group-exception-policy
+  version: 1.0.0
+  date: "2026-06-29"
+  status: active
+platform: mycodexvantaos

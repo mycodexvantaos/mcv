@@ -1,19 +1,9 @@
 apiVersion: mycodexvantaos.io/v1
-kind: ReleasePolicy
+kind: ReleaseArtifact
 metadata:
-  name: release-policy
-spec:
-  requiredGates:
-    - architecture-validation
-    - foundation-validation
-    - navigation-validation
-    - namespace-governance-validation
-    - unified-gates-validation
-    - provider-capability-validation
-  hashPolicy:
-    primaryDigest: sha3-512
-    auditChainDigest: sha256
-    fastComparisonDigest: blake3
-  imagePinningRequired: true
-  sbomRequired: true
-  provenanceRequired: true
+  name: mycodexvantaos-release-policy
+  version: 1.0.0
+  date: "2026-06-29"
+  status: active
+platform: mycodexvantaos
+canonical-url: "https://mycodexvantaos.com"

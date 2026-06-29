@@ -1,12 +1,9 @@
 apiVersion: mycodexvantaos.io/v1
-kind: RootModuleNavigationMap
+kind: NavigationArtifact
 metadata:
-  name: root-module-navigation-map
-  description: Root module navigation map for MyCodexVantaOS
-
-spec:
-  rootModuleContractName: mycodexvantaos-module.yaml
-  deprecatedNames:
-    - mycodexvantaos.module.yaml
-    - module.yaml
-    - axiom.module.yaml
+  name: mycodexvantaos-root-module-navigation-map
+  version: 1.0.0
+  date: "2026-06-29"
+  status: active
+platform: mycodexvantaos
+canonical-url: "https://mycodexvantaos.com"

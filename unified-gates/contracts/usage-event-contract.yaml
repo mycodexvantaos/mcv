@@ -1,23 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
-kind: UsageEventContract
+kind: GateContract
 metadata:
-  name: usage-event-contract
+  name: mycodexvantaos-usage-event-contract
   version: 1.0.0
-  governanceCode: mycodexvantaos-30400
-spec:
-  description: >
-    Defines the canonical contract for usage events emitted by AI workloads.
-    All usage events MUST conform to this contract.
-  requiredFields:
-    - eventId
-    - eventType
-    - timestamp
-    - workloadId
-    - workspaceId
-    - projectId
-    - billingAccountId
-    - modelId
-    - usageMetrics
-  validValues:
-    eventType: [inference-usage, training-usage, embedding-usage, agent-run-usage]
-  schemaRef: ../schemas/usage-event.schema.json
+  date: "2026-06-29"
+  status: active
+platform: mycodexvantaos

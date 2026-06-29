@@ -1,5 +1,6 @@
 apiVersion: mycodexvantaos.io/v1
-kind: FoundationCommercial
+kind: CommercialModel
 metadata:
-  name: packaging-model
-spec: {}
+  name: mycodexvantaos-packaging-model
+  version: 1.0.0
+platform: mycodexvantaos

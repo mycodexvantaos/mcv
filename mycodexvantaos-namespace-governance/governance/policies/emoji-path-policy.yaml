@@ -1,5 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
 kind: NamespacePolicy
 metadata:
-  name: emoji-path-policy
-spec: {}
+  name: mycodexvantaos-emoji-path-policy
+  version: 1.0.0
+  date: "2026-06-29"
+  status: active
+platform: mycodexvantaos

@@ -1,8 +1,6 @@
 apiVersion: mycodexvantaos.io/v1
 kind: ResourceDefinition
 metadata:
-  name: quota
-spec:
-  kind: Quota
-  group: mycodexvantaos.io
-  version: v1
+  name: mycodexvantaos-quota-resource
+  version: 1.0.0
+platform: mycodexvantaos

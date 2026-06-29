@@ -1,8 +1,6 @@
 apiVersion: mycodexvantaos.io/v1
 kind: ResourceDefinition
 metadata:
-  name: ai-task
-spec:
-  kind: AiTask
-  group: mycodexvantaos.io
-  version: v1
+  name: mycodexvantaos-ai-task-resource
+  version: 1.0.0
+platform: mycodexvantaos

@@ -1,7 +1,7 @@
 apiVersion: mycodexvantaos.io/v1
 kind: FoundationCapabilities
 metadata:
-  name: contract-capabilities
-spec:
-  foundation: contract-foundation
-  capabilities: []
+  name: mycodexvantaos-contract-capabilities
+  version: 1.0.0
+platform: mycodexvantaos
+foundation: contract-foundation

@@ -1,6 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
-kind: NavigationGraph
+kind: DependencyGraph
 metadata:
-  name: logical-dependency-graph
-  description: logical-dependency-graph for MyCodexVantaOS
-spec: {}
+  name: mycodexvantaos-logical-dependency-graph
+  version: 1.0.0
+platform: mycodexvantaos
+nodes: []
+edges: []

@@ -1,17 +1,30 @@
-Copyright (c) 2024 MyCodexVantaOS
+PROPRIETARY SOFTWARE LICENSE
 
-All rights reserved.
+Copyright (c) 2026 MyCodexVantaOS. All rights reserved.
 
 This software and associated documentation files (the "Software") are proprietary
-and confidential. No part of this Software may be reproduced, distributed, or
-transmitted in any form or by any means, including photocopying, recording, or
-other electronic or mechanical methods, without the prior written permission of
-the copyright holder.
+and confidential to MyCodexVantaOS. The Software is protected by copyright laws
+and international treaty provisions.
 
+RESTRICTIONS:
+1. You may not copy, modify, merge, publish, distribute, sublicense, or sell
+   copies of the Software without explicit written permission from MyCodexVantaOS.
+2. You may not reverse engineer, decompile, or disassemble the Software.
+3. You may not remove or alter any proprietary notices or labels on the Software.
+4. You may not use the Software for any commercial purpose without a valid license.
+
+PERMITTED USES:
+- Internal evaluation and development by authorized personnel only.
+- Use within the scope of a valid enterprise license agreement.
+
+DISCLAIMER:
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+MYCODEXVANTAOS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+IN THE SOFTWARE.
+
+Machine Identity: mycodexvantaos
+Brand Identity: MyCodexVantaOS
+Canonical URL: https://mycodexvantaos.com

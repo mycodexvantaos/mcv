@@ -1,11 +1,65 @@
 apiVersion: mycodexvantaos.io/v1
 kind: ServiceTierPolicy
 metadata:
-  name: service-tier-policy
+  name: mycodexvantaos-service-tier-policy
+  version: 1.0.0
+  date: "2026-06-29"
+  status: active
 
-spec:
-  allowedTiers:
-    - tier-0
-    - tier-1
-    - tier-2
-    - tier-3
+tiers:
+  - tier: critical
+    description: "Core platform services — zero downtime tolerance"
+    sla:
+      availability: "99.99%"
+      rto-minutes: 5
+      rpo-minutes: 1
+    services:
+      - mycodexvantaos-core-auth
+      - mycodexvantaos-governance-audit-chain
+      - mycodexvantaos-governance-policy-engine
+    requirements:
+      - multi-region-deployment
+      - active-active-replication
+      - automated-failover
+      - health-check-interval-seconds: 10
+
+  - tier: high
+    description: "High-priority AI services"
+    sla:
+      availability: "99.9%"
+      rto-minutes: 15
+      rpo-minutes: 5
+    services:
+      - mycodexvantaos-ai-inference
+      - mycodexvantaos-ai-embedding
+      - mycodexvantaos-agent-runtime
+      - mycodexvantaos-knowledge-search
+    requirements:
+      - single-region-with-standby
+      - automated-failover
+      - health-check-interval-seconds: 30
+
+  - tier: standard
+    description: "Standard platform services"
+    sla:
+      availability: "99.5%"
+      rto-minutes: 60
+      rpo-minutes: 15
+    services:
+      - mycodexvantaos-billing-metering
+      - mycodexvantaos-knowledge-ingestion
+      - mycodexvantaos-runtime-mode-resolver
+    requirements:
+      - single-region
+      - health-check-interval-seconds: 60
+
+  - tier: experimental
+    description: "Experimental services — no SLA guarantee"
+    sla:
+      availability: "best-effort"
+      rto-minutes: null
+      rpo-minutes: null
+    services:
+      - mycodexvantaos-quantum-controller
+    requirements:
+      - health-check-interval-seconds: 120

@@ -1,7 +1,7 @@
 apiVersion: mycodexvantaos.io/v1
 kind: FoundationBoundary
 metadata:
-  name: data-boundary
-spec:
-  foundation: data-foundation
-  boundaryType: specification-unit
+  name: mycodexvantaos-data-boundary
+  version: 1.0.0
+platform: mycodexvantaos
+foundation: data-foundation

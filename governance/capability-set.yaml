@@ -1,124 +1,176 @@
-# governance/capability-set.yaml
-# Canonical capability set for mycodexvantaos platform.
-# Based on naming-spec-v1.md 5.5
-# This file is the authoritative source for all CI validators checking capability-id legality.
-# DO NOT add vendor names here — only abstract capability identifiers.
-
-apiVersion: mycodexvantaos.org/v1
+apiVersion: mycodexvantaos.io/v1
 kind: CapabilitySet
 metadata:
-  name: canonical-capability-set
-  labels:
-    managed-by: naming-spec-v1
-    specRef: '5.5'
+  name: mycodexvantaos-capability-set
+  version: 1.0.0
+  date: "2026-06-29"
+  status: active
+  authoritative: true
+  spec-authority: docs/spec/l1-constitution/constitution.yaml
+  description: "L1 Constitution canonical capability set — 24 capabilities"
 
+# Canonical capability definitions
+# All capability names MUST be capability-first kebab-case
+# MUST NOT contain vendor prefixes
 capabilities:
   - id: database
-    description: Relational database access and management.
+    description: Relational and document database storage
     category: data
-    stable: true
+    providers:
+      - database-d1
+      - database-postgres
 
   - id: storage
-    description: Object or file storage (blobs, assets, artifacts).
+    description: Object and blob storage
     category: data
-    stable: true
+    providers:
+      - storage-minio
+      - storage-r2
 
   - id: auth
-    description: Identity authentication and authorization.
+    description: Authentication and authorization
     category: security
-    stable: true
+    providers:
+      - auth-jwt
 
   - id: queue
-    description: Message queue and event streaming.
-    category: infra
-    stable: true
+    description: Message queue and event streaming
+    category: messaging
+    providers:
+      - queue-cloudflare
+      - queue-rabbitmq
 
   - id: state-store
-    description: Key-value or distributed state storage.
+    description: Distributed state storage
     category: data
-    stable: true
+    providers: []
 
   - id: secrets
-    description: Secret and credential management.
+    description: Secret and credential management
     category: security
-    stable: true
+    providers:
+      - secrets-local
+      - secrets-vault
 
   - id: repo
-    description: Source code repository operations.
-    category: platform
-    stable: true
+    description: Source code repository
+    category: devops
+    providers: []
 
   - id: deploy
-    description: Deployment execution and orchestration.
-    category: platform
-    stable: true
+    description: Deployment and release management
+    category: devops
+    providers: []
 
   - id: validation
-    description: Data schema validation and enforcement.
+    description: Schema and policy validation
     category: governance
-    stable: true
+    providers: []
 
   - id: security
-    description: Security scanning, SAST, and vulnerability detection.
+    description: Security scanning and enforcement
     category: security
-    stable: true
+    providers: []
 
   - id: observability
-    description: Logging, metrics, and distributed tracing.
+    description: Metrics, traces, and logs
     category: platform
-    stable: true
+    providers:
+      - observability-opentelemetry
 
   - id: notification
-    description: Outbound notification delivery (email, SMS, push).
+    description: Notification and alerting
     category: platform
-    stable: true
+    providers: []
 
   - id: scheduler
-    description: Job scheduling and workflow orchestration.
+    description: Task scheduling and cron
     category: platform
-    stable: true
+    providers: []
 
   - id: vector-store
-    description: Vector storage and approximate nearest-neighbor retrieval.
+    description: Vector embedding storage and retrieval
     category: ai
-    stable: true
+    providers:
+      - vector-store-pgvector
+      - vector-store-qdrant
+      - vector-store-vectorize
 
   - id: embedding
-    description: Text or multimodal embedding generation.
+    description: Text and multimodal embedding generation
     category: ai
-    stable: true
+    providers:
+      - embedding-native
+      - embedding-openai
+      - embedding-workers-ai
 
   - id: llm
-    description: Large language model inference and completions.
+    description: Large language model inference
     category: ai
-    stable: true
+    providers:
+      - llm-native
+      - llm-openai
+      - llm-openrouter
+      - llm-workers-ai
 
   - id: graph
-    description: Knowledge graph storage and query.
+    description: Graph database and knowledge graph
     category: data
-    stable: true
+    providers:
+      - graph-native
 
   - id: cache
-    description: In-memory caching layer.
-    category: infra
-    stable: true
+    description: In-memory caching
+    category: data
+    providers:
+      - cache-kv
+      - cache-redis
 
   - id: search
-    description: Full-text search and indexing.
+    description: Full-text and semantic search
     category: data
-    stable: true
+    providers:
+      - search-native
 
-  - id: ai-ethics
-    description: AI ethics governance, bias detection, fairness auditing, and responsible AI compliance enforcement.
-    category: governance
-    stable: true
+  - id: quantum-runtime
+    description: Quantum computing runtime environment
+    category: quantum
+    providers:
+      - quantum-runtime-native
 
-  - id: blockchain
-    description: Distributed ledger, smart contract execution, consensus verification, and immutable audit trail.
-    category: governance
-    stable: true
+  - id: quantum-simulator
+    description: Quantum circuit simulation
+    category: quantum
+    providers:
+      - quantum-simulator-qiskit
 
-  - id: event-stream
-    description: Mandatory governance event stream for closed-loop compliance verification and audit trail propagation.
-    category: governance
-    stable: true
+  - id: quantum-processor
+    description: Quantum processor access
+    category: quantum
+    providers:
+      - quantum-processor-native
+
+  - id: quantum-circuit
+    description: Quantum circuit definition and execution
+    category: quantum
+    providers:
+      - quantum-circuit-native
+
+  - id: quantum-observability
+    description: Quantum computation observability
+    category: quantum
+    providers:
+      - quantum-observability-native
+
+# Validation rules
+validation:
+  capability-name-pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+  forbidden-vendor-prefixes:
+    - openai
+    - anthropic
+    - google
+    - aws
+    - azure
+    - cloudflare
+    - qiskit
+  total-count: 24

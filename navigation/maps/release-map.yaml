@@ -1,6 +1,6 @@
 apiVersion: mycodexvantaos.io/v1
 kind: NavigationMap
 metadata:
-  name: release-map
-  description: release-map for MyCodexVantaOS
-spec: {}
+  name: mycodexvantaos-release-map
+  version: 1.0.0
+platform: mycodexvantaos

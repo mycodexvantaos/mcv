@@ -1,7 +1,7 @@
 apiVersion: mycodexvantaos.io/v1
 kind: FoundationCapabilities
 metadata:
-  name: compute-capabilities
-spec:
-  foundation: compute-foundation
-  capabilities: []
+  name: mycodexvantaos-compute-capabilities
+  version: 1.0.0
+platform: mycodexvantaos
+foundation: compute-foundation

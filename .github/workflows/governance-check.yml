@@ -2,56 +2,138 @@ name: Governance Check
 
 on:
   push:
-    branches: [main, develop, 'feature/**']
+    branches: [main, develop]
+    paths:
+      - "governance/**"
+      - "policies/**"
+      - "supply-chain/**"
   pull_request:
-    branches: [main]
+    branches: [main, develop]
+  schedule:
+    - cron: "0 6 * * 1"
   workflow_dispatch:
 
 concurrency:
-  group: governance-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
   contents: read
-
-env:
-  NODE_VERSION: '22'
-  PNPM_VERSION: '9'
+  security-events: write
 
 jobs:
-  governance:
+  governance-policy-check:
+    name: Governance Policy Check
     runs-on: ubuntu-latest
-    name: Contract & Policy Enforcement
-    timeout-minutes: 30
-
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          version: ${{ env.PNPM_VERSION }}
-
-      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
+          python-version: "3.12"
+          cache: "pip"
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pip install pyyaml jsonschema
 
-      - name: Contract Validation
-        run: pnpm contracts:validate || echo "contracts:validate not yet configured"
+      - name: Validate governance schemas
+        run: |
+          python3 -c "
+          import yaml, json, jsonschema, os, glob
 
-      - name: Policy Check
-        run: pnpm policy:check || echo "policy:check not yet configured"
+          schema_dir = 'governance/schemas'
+          policy_files = {
+              'governance/capability-set.yaml': f'{schema_dir}/capability-set.schema.json',
+              'governance/identity-policy.yaml': f'{schema_dir}/identity-policy.schema.json',
+              'governance/provider-registry.yaml': f'{schema_dir}/provider-registry.schema.json',
+          }
 
-      - name: Governance Check
-        run: pnpm governance:check || echo "governance:check not yet configured"
+          for policy_file, schema_file in policy_files.items():
+              if os.path.exists(policy_file) and os.path.exists(schema_file):
+                  with open(policy_file) as pf, open(schema_file) as sf:
+                      policy = yaml.safe_load(pf)
+                      schema = json.load(sf)
+                  try:
+                      jsonschema.validate(policy, schema)
+                      print(f'PASS: {policy_file}')
+                  except jsonschema.ValidationError as e:
+                      print(f'FAIL: {policy_file}: {e.message}')
+                      exit(1)
+              else:
+                  print(f'SKIP (file not found): {policy_file}')
+          print('Governance schema validation: PASSED')
+          "
 
-      - name: Run Service Tests
-        run: pnpm test:services || echo "test:services not yet configured"
-        continue-on-error: true
+      - name: Check audit policy compliance
+        run: |
+          python3 -c "
+          import yaml
+          with open('governance/audit/audit-policy.yaml') as f:
+              policy = yaml.safe_load(f)
+          assert policy.get('retention', {}).get('days', 0) >= 90, 'Audit retention must be >= 90 days'
+          print('Audit policy compliance: PASSED')
+          "
 
-      - name: Run Contract Tests
-        run: pnpm test:contracts || echo "test:contracts not yet configured"
-        continue-on-error: true
+      - name: Check supply chain policy
+        run: |
+          python3 -c "
+          import yaml
+          with open('supply-chain/supply-chain-policy.yaml') as f:
+              policy = yaml.safe_load(f)
+          assert policy.get('slsa', {}).get('level', 0) >= 2, 'SLSA level must be >= 2'
+          print('Supply chain policy: PASSED')
+          "
+
+  naming-governance:
+    name: Naming Governance Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Run naming governance validation
+        run: python3 scripts/validate-naming.py
+
+      - name: Run namespace governance validation
+        run: python3 scripts/validate-namespace-governance.py
+
+  hash-policy-check:
+    name: Hash Policy Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Validate hash policy
+        run: |
+          python3 -c "
+          import yaml
+          with open('governance/hash-policy.yaml') as f:
+              policy = yaml.safe_load(f)
+          allowed = policy.get('algorithms', {}).get('allowed', [])
+          required = ['SHA-256', 'SHA3-512', 'BLAKE3']
+          for algo in required:
+              assert algo in allowed, f'Required hash algorithm missing: {algo}'
+          print('Hash policy validation: PASSED')
+          "

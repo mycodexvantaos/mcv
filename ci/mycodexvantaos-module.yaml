@@ -1,12 +1,6 @@
 apiVersion: mycodexvantaos.io/v1
 kind: RootModule
 metadata:
-  name: ci
-  urn: urn:mycodexvantaos:ci:module:ci
-  domain: ci
-  layer: ci
-spec:
-  moduleType: ci
-  description: CI architecture validation and enforcement
-  runtimeCodeAllowed: true
-  deploymentAllowed: false
+  name: mycodexvantaos-ci
+  version: 1.0.0
+platform: mycodexvantaos

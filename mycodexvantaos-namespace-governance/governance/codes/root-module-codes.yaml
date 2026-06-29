@@ -1,6 +1,6 @@
 apiVersion: mycodexvantaos.io/v1
 kind: GovernanceCodes
 metadata:
-  name: root-module-codes
-spec:
-  codes: []
+  name: mycodexvantaos-root-module-codes
+  version: 1.0.0
+platform: mycodexvantaos

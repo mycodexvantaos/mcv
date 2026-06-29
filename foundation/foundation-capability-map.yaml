@@ -1,6 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
-kind: FoundationSpec
+kind: FoundationIndex
 metadata:
-  name: foundation-capability-map
-  description: foundation-capability-map for MyCodexVantaOS platform foundations
-spec: {}
+  name: mycodexvantaos-foundation-capability-map
+  version: 1.0.0
+  date: "2026-06-29"
+  status: active
+platform: mycodexvantaos
