@@ -14,7 +14,10 @@
     },
     "metadata": {
       "type": "object",
-      "required": ["name", "version"],
+      "required": [
+        "name",
+        "version"
+      ],
       "properties": {
         "name": {
           "type": "string"
@@ -34,7 +37,11 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "description", "category"],
+        "required": [
+          "id",
+          "description",
+          "category"
+        ],
         "properties": {
           "id": {
             "type": "string",
@@ -53,7 +60,8 @@
               "ai",
               "quantum",
               "devops",
-              "governance"
+              "governance",
+              "infra"
             ]
           },
           "providers": {
@@ -63,9 +71,7 @@
             }
           }
         }
-      },
-      "minItems": 24,
-      "maxItems": 24
+      }
     },
     "validation": {
       "type": "object",
@@ -80,12 +86,16 @@
           }
         },
         "total-count": {
-          "type": "integer",
-          "const": 24
+          "type": "integer"
         }
       }
     }
   },
-  "required": ["apiVersion", "kind", "metadata", "spec", "capabilities"],
+  "required": [
+    "apiVersion",
+    "kind",
+    "metadata",
+    "capabilities"
+  ],
   "description": "Schema for MyCodexVantaOS capability set"
 }
