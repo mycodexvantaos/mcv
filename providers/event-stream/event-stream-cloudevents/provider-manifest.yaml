@@ -1,38 +1,19 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.org/v1
-  - - kind
-    - Provider
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - mycodexvantaos-event-stream-cloudevents
-        - - capability
-          - event-stream
-        - - labels
-          - !!python/object/apply:collections.OrderedDict
-            - - - mycodexvantaos.org/managed-by
-                - naming-spec-v1
-              - - mycodexvantaos.org/specRef
-                - '8.1'
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - providerName
-          - cloudevents
-        - - isNative
-          - false
-        - - lifecycle
-          - !!python/object/apply:collections.OrderedDict
-            - - - stage
-                - stable
-        - - envVarPrefix
-          - MYCODEXVANTAOS_EVENT_STREAM
-        - - configSchemaRef
-          - ./config.schema.json
-        - - description
-          - CloudEvents CNCF specification provider for standardized governance event
-            envelope formatting and cross-platform event interoperability.
-  - - provider-id
-    - mycodexvantaos-event-stream-cloudevents
-  - - capability
-    - queue
+apiVersion: mycodexvantaos.org/v1
+kind: Provider
+metadata:
+  name: mycodexvantaos-event-stream-cloudevents
+  capability: event-stream
+  labels:
+    mycodexvantaos.org/managed-by: naming-spec-v1
+    mycodexvantaos.org/specRef: '8.1'
+spec:
+  providerName: cloudevents
+  isNative: false
+  lifecycle:
+    stage: stable
+  envVarPrefix: MYCODEXVANTAOS_EVENT_STREAM
+  configSchemaRef: ./config.schema.json
+  description: CloudEvents CNCF specification provider for standardized governance
+    event envelope formatting and cross-platform event interoperability.
+provider-id: mycodexvantaos-event-stream-cloudevents
+capability: queue

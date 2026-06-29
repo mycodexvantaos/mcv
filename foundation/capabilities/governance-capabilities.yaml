@@ -1,19 +1,9 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - FoundationCapabilities
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - governance-capabilities
-        - - version
-          - 1.0.0
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - foundation
-          - governance-foundation
-        - - capabilities
-          - []
-        - - platform
-          - mycodexvantaos
+apiVersion: mycodexvantaos.io/v1
+kind: FoundationCapabilities
+metadata:
+  name: governance-capabilities
+  version: 1.0.0
+spec:
+  foundation: governance-foundation
+  capabilities: []
+  platform: mycodexvantaos

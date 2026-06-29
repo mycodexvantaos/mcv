@@ -1,67 +1,53 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - GateContract
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - gate-contract
-        - - version
-          - 1.0.0
-        - - governanceCode
-          - mycodexvantaos-00000
-        - - authority
-          - unified-gate-governance
-        - - date
-          - '2026-06-29'
-        - - status
-          - active
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - description
-          - 'Defines the canonical contract for a gate definition. All gate YAML files
-            in ai-infra-gates/ MUST conform to this contract.
+apiVersion: mycodexvantaos.io/v1
+kind: GateContract
+metadata:
+  name: gate-contract
+  version: 1.0.0
+  governanceCode: mycodexvantaos-00000
+  authority: unified-gate-governance
+  date: '2026-06-29'
+  status: active
+spec:
+  description: 'Defines the canonical contract for a gate definition. All gate YAML
+    files in ai-infra-gates/ MUST conform to this contract.
 
-            '
-        - - requiredFields
-          - - apiVersion
-            - kind
-            - metadata.id
-            - metadata.version
-            - metadata.layer
-            - metadata.plane
-            - metadata.blocking
-            - metadata.lifecycle
-            - metadata.owner
-            - metadata.governanceCode
-            - spec.description
-            - spec.validates
-        - - validValues
-          - !!python/object/apply:collections.OrderedDict
-            - - - metadata.lifecycle
-                - - proposed
-                  - active
-                  - deprecated
-                  - archived
-                  - destroyed
-              - - metadata.plane
-                - - ai-infra
-                  - quality
-                  - production
-              - - metadata.criticality
-                - - critical
-                  - high
-                  - medium
-                  - low
-              - - metadata.layer
-                - - l00
-                  - l10
-                  - l20
-                  - l30
-                  - l40
-                  - l50
-                  - l60
-                  - l90
-        - - schemaRef
-          - ../schemas/gate.schema.json
+    '
+  requiredFields:
+  - apiVersion
+  - kind
+  - metadata.id
+  - metadata.version
+  - metadata.layer
+  - metadata.plane
+  - metadata.blocking
+  - metadata.lifecycle
+  - metadata.owner
+  - metadata.governanceCode
+  - spec.description
+  - spec.validates
+  validValues:
+    metadata.lifecycle:
+    - proposed
+    - active
+    - deprecated
+    - archived
+    - destroyed
+    metadata.plane:
+    - ai-infra
+    - quality
+    - production
+    metadata.criticality:
+    - critical
+    - high
+    - medium
+    - low
+    metadata.layer:
+    - l00
+    - l10
+    - l20
+    - l30
+    - l40
+    - l50
+    - l60
+    - l90
+  schemaRef: ../schemas/gate.schema.json

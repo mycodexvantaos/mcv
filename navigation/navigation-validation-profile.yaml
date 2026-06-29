@@ -1,50 +1,23 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - NavigationValidationProfile
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - navigation-validation-profile
-        - - version
-          - 1.0.0
-        - - date
-          - '2026-06-29'
-        - - status
-          - active
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - validations
-          - - !!python/object/apply:collections.OrderedDict
-              - - - name
-                  - directory-index-completeness
-                - - severity
-                  - critical
-                - - check
-                  - all-root-modules-indexed
-            - !!python/object/apply:collections.OrderedDict
-              - - - name
-                  - dependency-graph-acyclicity
-                - - severity
-                  - critical
-                - - check
-                  - hard-dependency-graph-acyclic
-            - !!python/object/apply:collections.OrderedDict
-              - - - name
-                  - binding-index-coverage
-                - - severity
-                  - high
-                - - check
-                  - all-services-have-provider-bindings
-            - !!python/object/apply:collections.OrderedDict
-              - - - name
-                  - navigation-no-runtime-deps
-                - - severity
-                  - critical
-                - - check
-                  - navigation-indexes-have-no-hard-runtime-dependencies
-  - - platform
-    - mycodexvantaos
-  - - canonical-url
-    - https://mycodexvantaos.com
+apiVersion: mycodexvantaos.io/v1
+kind: NavigationValidationProfile
+metadata:
+  name: navigation-validation-profile
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
+spec:
+  validations:
+  - name: directory-index-completeness
+    severity: critical
+    check: all-root-modules-indexed
+  - name: dependency-graph-acyclicity
+    severity: critical
+    check: hard-dependency-graph-acyclic
+  - name: binding-index-coverage
+    severity: high
+    check: all-services-have-provider-bindings
+  - name: navigation-no-runtime-deps
+    severity: critical
+    check: navigation-indexes-have-no-hard-runtime-dependencies
+platform: mycodexvantaos
+canonical-url: https://mycodexvantaos.com

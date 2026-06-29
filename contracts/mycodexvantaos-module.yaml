@@ -1,25 +1,12 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - RootModule
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - contracts
-        - - urn
-          - urn:mycodexvantaos:contracts:module:contracts
-        - - version
-          - 1.0.0
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - moduleType
-          - contracts
-        - - description
-          - API contracts, event contracts, schemas, and resource definitions
-        - - runtimeCodeAllowed
-          - false
-        - - deploymentAllowed
-          - false
-  - - platform
-    - mycodexvantaos
+apiVersion: mycodexvantaos.io/v1
+kind: RootModule
+metadata:
+  name: contracts
+  urn: urn:mycodexvantaos:contracts:module:contracts
+  version: 1.0.0
+spec:
+  moduleType: contracts
+  description: API contracts, event contracts, schemas, and resource definitions
+  runtimeCodeAllowed: false
+  deploymentAllowed: false
+platform: mycodexvantaos

@@ -1,42 +1,22 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.org/v1
-  - - kind
-    - Module
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - mycodexvantaos-security-validation
-        - - labels
-          - !!python/object/apply:collections.OrderedDict
-            - - - mycodexvantaos.org/domain
-                - security
-              - - mycodexvantaos.org/managed-by
-                - naming-spec-v1
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - domain
-          - security
-        - - capabilities
-          - - validation
-            - observability
-        - - providers
-          - !!python/object/apply:collections.OrderedDict
-            - - - validation
-                - validation-zod
-              - - observability
-                - observability-opentelemetry
-        - - lifecycle
-          - !!python/object/apply:collections.OrderedDict
-            - - - stage
-                - stable
-              - - since
-                - v1.0.0
-        - - urn
-          - urn:mycodexvantaos:manifest:service:mycodexvantaos-security-validation
-        - - packageName
-          - '@mycodexvantaos/security-validation'
-        - - description
-          - Data schema validation and enforcement service.
-  - - service-id
-    - mycodexvantaos-security-validation
+apiVersion: mycodexvantaos.org/v1
+kind: Module
+metadata:
+  name: mycodexvantaos-security-validation
+  labels:
+    mycodexvantaos.org/domain: security
+    mycodexvantaos.org/managed-by: naming-spec-v1
+spec:
+  domain: security
+  capabilities:
+  - validation
+  - observability
+  providers:
+    validation: validation-zod
+    observability: observability-opentelemetry
+  lifecycle:
+    stage: stable
+    since: v1.0.0
+  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-security-validation
+  packageName: '@mycodexvantaos/security-validation'
+  description: Data schema validation and enforcement service.
+service-id: mycodexvantaos-security-validation

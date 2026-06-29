@@ -1,19 +1,9 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - FoundationCapabilities
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - business-capabilities
-        - - version
-          - 1.0.0
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - foundation
-          - business-foundation
-        - - capabilities
-          - []
-        - - platform
-          - mycodexvantaos
+apiVersion: mycodexvantaos.io/v1
+kind: FoundationCapabilities
+metadata:
+  name: business-capabilities
+  version: 1.0.0
+spec:
+  foundation: business-foundation
+  capabilities: []
+  platform: mycodexvantaos

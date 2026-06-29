@@ -1,36 +1,19 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - AISafetyPolicy
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - ai-safety-policy
-        - - version
-          - 1.0.0
-        - - authority
-          - platform-governance-root
-        - - governanceCode
-          - mycodexvantaos-60600
-        - - date
-          - '2026-06-29'
-        - - status
-          - active
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - harmfulOutputRateThreshold
-          - 0.001
-        - - promptInjectionTestRequired
-          - true
-        - - dataLeakageTestRequired
-          - true
-        - - alignmentVerificationRequired
-          - true
-        - - safetyAttestationRequired
-          - true
-        - - safetyTestSuiteRef
-          - tests/ai-safety/
-        - - mandatoryGates
-          - - gate-38-algorithm-safety-policy-validation
-            - gate-94-policy-attestation-validation
+apiVersion: mycodexvantaos.io/v1
+kind: AISafetyPolicy
+metadata:
+  name: ai-safety-policy
+  version: 1.0.0
+  authority: platform-governance-root
+  governanceCode: mycodexvantaos-60600
+  date: '2026-06-29'
+  status: active
+spec:
+  harmfulOutputRateThreshold: 0.001
+  promptInjectionTestRequired: true
+  dataLeakageTestRequired: true
+  alignmentVerificationRequired: true
+  safetyAttestationRequired: true
+  safetyTestSuiteRef: tests/ai-safety/
+  mandatoryGates:
+  - gate-38-algorithm-safety-policy-validation
+  - gate-94-policy-attestation-validation

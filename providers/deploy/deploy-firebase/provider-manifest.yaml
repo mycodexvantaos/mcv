@@ -1,100 +1,60 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.org/v1
-  - - kind
-    - Provider
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - mycodexvantaos-deploy-firebase
-        - - capability
-          - deployment
-        - - description
-          - Firebase App Hosting deployment provider - optional connector
-        - - version
-          - 1.0.0
-        - - author
-          - MyCodeXvantaOS Team
-        - - tags
-          - - deployment
-            - firebase
-            - gcp
-            - cloud
-            - optional
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - providerName
-          - firebase
-        - - isNative
-          - false
-        - - fallbackProvider
-          - deploy-native
-        - - priority
-          - 50
-        - - capabilities
-          - - firebase-app-hosting
-            - firebase-hosting
-            - cloud-functions
-            - gcp-integration
-        - - requirements
-          - !!python/object/apply:collections.OrderedDict
-            - - - external
-                - - firebase-tools
-                  - gcloud-cli
-              - - runtime
-                - - nodejs >= 18.0.0
-              - - credentials
-                - - FIREBASE_PROJECT_ID
-                  - GOOGLE_APPLICATION_CREDENTIALS (optional)
-        - - configuration
-          - !!python/object/apply:collections.OrderedDict
-            - - - type
-                - object
-              - - properties
-                - !!python/object/apply:collections.OrderedDict
-                  - - - projectId
-                      - !!python/object/apply:collections.OrderedDict
-                        - - - type
-                            - string
-                          - - description
-                            - Firebase project ID
-                    - - region
-                      - !!python/object/apply:collections.OrderedDict
-                        - - - type
-                            - string
-                          - - default
-                            - us-central1
-                          - - description
-                            - GCP region for deployment
-                    - - hosting
-                      - !!python/object/apply:collections.OrderedDict
-                        - - - type
-                            - object
-                          - - properties
-                            - !!python/object/apply:collections.OrderedDict
-                              - - - site
-                                  - !!python/object/apply:collections.OrderedDict
-                                    - - - type
-                                        - string
-                                      - - description
-                                        - Firebase Hosting site name
-                                - - public
-                                  - !!python/object/apply:collections.OrderedDict
-                                    - - - type
-                                        - string
-                                      - - default
-                                        - public
-                                      - - description
-                                        - Public directory for static hosting
-        - - availability
-          - !!python/object/apply:collections.OrderedDict
-            - - - always
-                - false
-              - - requires
-                - - FIREBASE_PROJECT_ID
-              - - healthCheck
-                - firebase projects list
-  - - provider-id
-    - mycodexvantaos-deploy-firebase
-  - - capability
-    - deploy
+apiVersion: mycodexvantaos.org/v1
+kind: Provider
+metadata:
+  name: mycodexvantaos-deploy-firebase
+  capability: deployment
+  description: Firebase App Hosting deployment provider - optional connector
+  version: 1.0.0
+  author: MyCodeXvantaOS Team
+  tags:
+  - deployment
+  - firebase
+  - gcp
+  - cloud
+  - optional
+spec:
+  providerName: firebase
+  isNative: false
+  fallbackProvider: deploy-native
+  priority: 50
+  capabilities:
+  - firebase-app-hosting
+  - firebase-hosting
+  - cloud-functions
+  - gcp-integration
+  requirements:
+    external:
+    - firebase-tools
+    - gcloud-cli
+    runtime:
+    - nodejs >= 18.0.0
+    credentials:
+    - FIREBASE_PROJECT_ID
+    - GOOGLE_APPLICATION_CREDENTIALS (optional)
+  configuration:
+    type: object
+    properties:
+      projectId:
+        type: string
+        description: Firebase project ID
+      region:
+        type: string
+        default: us-central1
+        description: GCP region for deployment
+      hosting:
+        type: object
+        properties:
+          site:
+            type: string
+            description: Firebase Hosting site name
+          public:
+            type: string
+            default: public
+            description: Public directory for static hosting
+  availability:
+    always: false
+    requires:
+    - FIREBASE_PROJECT_ID
+    healthCheck: firebase projects list
+provider-id: mycodexvantaos-deploy-firebase
+capability: deploy

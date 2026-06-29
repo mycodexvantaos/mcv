@@ -1,64 +1,35 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - GateGovernancePolicy
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - gate-governance-policy
-        - - version
-          - 1.0.0
-        - - governanceCode
-          - mycodexvantaos-00000
-        - - authority
-          - platform-governance-root
-        - - date
-          - '2026-06-29'
-        - - status
-          - active
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - description
-          - 'Master governance policy for the unified gate system. Defines default
-            blocking behavior, evidence requirements, and escalation rules.
+apiVersion: mycodexvantaos.io/v1
+kind: GateGovernancePolicy
+metadata:
+  name: gate-governance-policy
+  version: 1.0.0
+  governanceCode: mycodexvantaos-00000
+  authority: platform-governance-root
+  date: '2026-06-29'
+  status: active
+spec:
+  description: 'Master governance policy for the unified gate system. Defines default
+    blocking behavior, evidence requirements, and escalation rules.
 
-            '
-        - - defaultBlocking
-          - true
-        - - defaultCriticality
-          - critical
-        - - evidenceRequired
-          - true
-        - - hashAlgorithms
-          - - sha-256
-            - sha3-512
-            - blake3
-        - - waiverMaxDurationDays
-          - 30
-        - - criticalGateWaiverRequiresCouncilApproval
-          - true
-        - - destroyedGateIdReuseProhibited
-          - true
-        - - ownerRegistryRequired
-          - true
-        - - auditRetentionDays
-          - !!python/object/apply:collections.OrderedDict
-            - - - critical
-                - 2555
-              - - high
-                - 1095
-              - - medium
-                - 365
-              - - low
-                - 180
-        - - sloTargets
-          - !!python/object/apply:collections.OrderedDict
-            - - - evaluationLatencyP99Seconds
-                - 60
-              - - passRateMinimum
-                - 0.95
-              - - evidenceChainIntegrity
-                - 1.0
-              - - ownerRegistryCompleteness
-                - 1.0
+    '
+  defaultBlocking: true
+  defaultCriticality: critical
+  evidenceRequired: true
+  hashAlgorithms:
+  - sha-256
+  - sha3-512
+  - blake3
+  waiverMaxDurationDays: 30
+  criticalGateWaiverRequiresCouncilApproval: true
+  destroyedGateIdReuseProhibited: true
+  ownerRegistryRequired: true
+  auditRetentionDays:
+    critical: 2555
+    high: 1095
+    medium: 365
+    low: 180
+  sloTargets:
+    evaluationLatencyP99Seconds: 60
+    passRateMinimum: 0.95
+    evidenceChainIntegrity: 1.0
+    ownerRegistryCompleteness: 1.0

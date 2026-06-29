@@ -1,11 +1,6 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - v1
-  - - kind
-    - Namespace
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - observability
-        - - labels
-          - platform: mycodexvantaos
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: observability
+  labels:
+    platform: mycodexvantaos

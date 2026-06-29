@@ -1,25 +1,12 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - GovernancePolicy
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - release-policy
-        - - description
-          - release-policy for MyCodexVantaOS
-        - - version
-          - 1.0.0
-        - - date
-          - '2026-06-29'
-        - - status
-          - active
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - rules
-          - []
-        - - enforcement
-          - block
-  - - platform
-    - mycodexvantaos
+apiVersion: mycodexvantaos.io/v1
+kind: GovernancePolicy
+metadata:
+  name: release-policy
+  description: release-policy for MyCodexVantaOS
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
+spec:
+  rules: []
+  enforcement: block
+platform: mycodexvantaos

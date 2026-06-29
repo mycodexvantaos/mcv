@@ -1,19 +1,9 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - FoundationBoundary
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - business-boundary
-        - - version
-          - 1.0.0
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - foundation
-          - business-foundation
-        - - boundaryType
-          - specification-unit
-        - - platform
-          - mycodexvantaos
+apiVersion: mycodexvantaos.io/v1
+kind: FoundationBoundary
+metadata:
+  name: business-boundary
+  version: 1.0.0
+spec:
+  foundation: business-foundation
+  boundaryType: specification-unit
+  platform: mycodexvantaos

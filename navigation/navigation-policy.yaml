@@ -1,44 +1,25 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - NavigationPolicy
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - navigation-policy
-        - - version
-          - 1.0.0
-        - - date
-          - '2026-06-29'
-        - - status
-          - active
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - hardDependencyCyclePolicy
-          - !!python/object/apply:collections.OrderedDict
-            - - - action
-                - block
-              - - severity
-                - critical
-        - - bidirectionalLogicalCouplingPolicy
-          - !!python/object/apply:collections.OrderedDict
-            - - - requiresMediatorArtifact
-                - true
-              - - approvedMediators
-                - - contracts/
-                  - schemas/
-                  - contracts/events/
-                  - ports/
-                  - governance/policies/
-                  - platform/service-catalog.yaml
-        - - navigationIndexPolicy
-          - !!python/object/apply:collections.OrderedDict
-            - - - mustNotCreateHardRuntimeDependencies
-                - true
-              - - mustBeGovernanceArtifacts
-                - true
-  - - platform
-    - mycodexvantaos
-  - - canonical-url
-    - https://mycodexvantaos.com
+apiVersion: mycodexvantaos.io/v1
+kind: NavigationPolicy
+metadata:
+  name: navigation-policy
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
+spec:
+  hardDependencyCyclePolicy:
+    action: block
+    severity: critical
+  bidirectionalLogicalCouplingPolicy:
+    requiresMediatorArtifact: true
+    approvedMediators:
+    - contracts/
+    - schemas/
+    - contracts/events/
+    - ports/
+    - governance/policies/
+    - platform/service-catalog.yaml
+  navigationIndexPolicy:
+    mustNotCreateHardRuntimeDependencies: true
+    mustBeGovernanceArtifacts: true
+platform: mycodexvantaos
+canonical-url: https://mycodexvantaos.com

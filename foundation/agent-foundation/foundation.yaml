@@ -1,45 +1,22 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - Foundation
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - agent-foundation
-        - - urn
-          - urn:mycodexvantaos:foundation:spec:agent-foundation
-        - - version
-          - 1.0.0
-        - - date
-          - '2026-06-29'
-        - - status
-          - active
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - boundary
-          - !!python/object/apply:collections.OrderedDict
-            - - - boundaryType
-                - specification-unit
-              - - parentModule
-                - foundation
-              - - parentModuleUrn
-                - urn:mycodexvantaos:foundation:module:foundation
-              - - independentRootModule
-                - false
-              - - requiresModuleContract
-                - false
-              - - runtimeCodeAllowed
-                - false
-              - - serviceCodeAllowed
-                - false
-              - - deploymentManifestAllowed
-                - false
-        - - description
-          - Strategic specification unit for agent-foundation
-        - - foundation-id
-          - mycodexvantaos-agent-foundation
-        - - platform
-          - mycodexvantaos
-        - - category
-          - agent
+apiVersion: mycodexvantaos.io/v1
+kind: Foundation
+metadata:
+  name: agent-foundation
+  urn: urn:mycodexvantaos:foundation:spec:agent-foundation
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
+spec:
+  boundary:
+    boundaryType: specification-unit
+    parentModule: foundation
+    parentModuleUrn: urn:mycodexvantaos:foundation:module:foundation
+    independentRootModule: false
+    requiresModuleContract: false
+    runtimeCodeAllowed: false
+    serviceCodeAllowed: false
+    deploymentManifestAllowed: false
+  description: Strategic specification unit for agent-foundation
+  foundation-id: mycodexvantaos-agent-foundation
+  platform: mycodexvantaos
+  category: agent

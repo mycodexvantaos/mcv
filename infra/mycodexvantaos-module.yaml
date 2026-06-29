@@ -1,25 +1,12 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - RootModule
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - infra
-        - - urn
-          - urn:mycodexvantaos:infra:module:infra
-        - - version
-          - 1.0.0
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - moduleType
-          - infrastructure
-        - - description
-          - Infrastructure definitions for MyCodexVantaOS
-        - - runtimeCodeAllowed
-          - false
-        - - deploymentAllowed
-          - true
-  - - platform
-    - mycodexvantaos
+apiVersion: mycodexvantaos.io/v1
+kind: RootModule
+metadata:
+  name: infra
+  urn: urn:mycodexvantaos:infra:module:infra
+  version: 1.0.0
+spec:
+  moduleType: infrastructure
+  description: Infrastructure definitions for MyCodexVantaOS
+  runtimeCodeAllowed: false
+  deploymentAllowed: true
+platform: mycodexvantaos

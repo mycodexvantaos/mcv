@@ -1,17 +1,8 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - v1
-  - - kind
-    - Namespace
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - mycodexvantaos
-        - - labels
-          - !!python/object/apply:collections.OrderedDict
-            - - - app.kubernetes.io/managed-by
-                - mycodexvantaos
-              - - mycodexvantaos/module
-                - platform
-              - - platform
-                - mycodexvantaos
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mycodexvantaos
+  labels:
+    app.kubernetes.io/managed-by: mycodexvantaos
+    mycodexvantaos/module: platform
+    platform: mycodexvantaos

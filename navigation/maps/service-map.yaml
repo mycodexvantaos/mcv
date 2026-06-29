@@ -1,18 +1,8 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - NavigationMap
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - service-map
-        - - description
-          - service-map for MyCodexVantaOS
-        - - version
-          - 1.0.0
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - []
-  - - platform
-    - mycodexvantaos
+apiVersion: mycodexvantaos.io/v1
+kind: NavigationMap
+metadata:
+  name: service-map
+  description: service-map for MyCodexVantaOS
+  version: 1.0.0
+spec: {}
+platform: mycodexvantaos

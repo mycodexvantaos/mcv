@@ -1,815 +1,377 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - AIInfraGateCatalogDetail
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - ai-infra-gates-catalog
-        - - version
-          - 1.0.0
-        - - ssot
-          - true
-        - - authority
-          - unified-gate-governance
-        - - governanceCode
-          - mycodexvantaos-00000
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - version
-          - 1.0.0
-        - - gates
-          - - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-01-namespace-governance-validation
-                - - layer
-                  - l00
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-00000
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-02-repository-naming-validation
-                - - layer
-                  - l00
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-00100
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-03-governance-code-validation
-                - - layer
-                  - l00
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-00000
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-04-directory-binding-mediator-validation
-                - - layer
-                  - l00
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-00000
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-05-dependency-graph-acyclic-validation
-                - - layer
-                  - l00
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-00000
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-06-lifecycle-state-validation
-                - - layer
-                  - l00
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-00200
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-07-owner-registry-validation
-                - - layer
-                  - l00
-                - - criticality
-                  - high
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-00000
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-08-audit-evidence-validation
-                - - layer
-                  - l00
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-00700
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-11-ai-chip-capability-validation
-                - - layer
-                  - l10
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-00000
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-12-gpu-driver-validation
-                - - layer
-                  - l10
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-00000
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-13-accelerator-topology-validation
-                - - layer
-                  - l10
-                - - criticality
-                  - high
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-00000
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-14-smart-server-baseline-validation
-                - - layer
-                  - l10
-                - - criticality
-                  - high
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-00000
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-15-ai-compute-cluster-readiness
-                - - layer
-                  - l10
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-00000
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-16-distributed-training-runtime-validation
-                - - layer
-                  - l10
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-00000
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-17-resource-quota-and-scheduler-validation
-                - - layer
-                  - l10
-                - - criticality
-                  - high
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-00000
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-18-compute-cost-metering-validation
-                - - layer
-                  - l10
-                - - criticality
-                  - high
-                - - blocking
-                  - false
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-00000
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-21-dataset-contract-validation
-                - - layer
-                  - l20
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-40100
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-22-dataset-lineage-validation
-                - - layer
-                  - l20
-                - - criticality
-                  - high
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-40100
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-23-dataset-license-validation
-                - - layer
-                  - l20
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-40100
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-24-pii-and-sensitive-data-scan
-                - - layer
-                  - l20
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-50300
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-25-vector-database-schema-validation
-                - - layer
-                  - l20
-                - - criticality
-                  - high
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-70900
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-26-embedding-dimension-validation
-                - - layer
-                  - l20
-                - - criticality
-                  - high
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-70800
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-27-data-quality-threshold-validation
-                - - layer
-                  - l20
-                - - criticality
-                  - high
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-40100
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-28-data-access-policy-validation
-                - - layer
-                  - l20
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-50200
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-31-ai-framework-compatibility-validation
-                - - layer
-                  - l30
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-60600
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-32-model-contract-validation
-                - - layer
-                  - l30
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-60600
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-33-training-pipeline-validation
-                - - layer
-                  - l30
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-60600
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-34-inference-runtime-validation
-                - - layer
-                  - l30
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-60700
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-35-ai-agent-framework-validation
-                - - layer
-                  - l30
-                - - criticality
-                  - high
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-60700
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-36-tool-calling-contract-validation
-                - - layer
-                  - l30
-                - - criticality
-                  - high
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-60700
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-37-model-registry-validation
-                - - layer
-                  - l30
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-60600
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-38-algorithm-safety-policy-validation
-                - - layer
-                  - l30
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-60600
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-41-ai-workload-contract-validation
-                - - layer
-                  - l40
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-60700
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-42-inference-task-validation
-                - - layer
-                  - l40
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-60700
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-43-training-task-validation
-                - - layer
-                  - l40
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-60600
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-44-rag-pipeline-validation
-                - - layer
-                  - l40
-                - - criticality
-                  - high
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-60700
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-45-agent-task-policy-validation
-                - - layer
-                  - l40
-                - - criticality
-                  - high
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-60700
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-46-workload-resource-estimation
-                - - layer
-                  - l40
-                - - criticality
-                  - medium
-                - - blocking
-                  - false
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-60700
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-47-workload-slo-validation
-                - - layer
-                  - l40
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-60700
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-48-workload-runtime-sandbox-validation
-                - - layer
-                  - l40
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-60700
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-51-usage-event-contract-validation
-                - - layer
-                  - l50
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-30400
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-52-inference-metering-validation
-                - - layer
-                  - l50
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-30400
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-53-training-metering-validation
-                - - layer
-                  - l50
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-30400
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-54-embedding-metering-validation
-                - - layer
-                  - l50
-                - - criticality
-                  - high
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-30400
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-55-agent-run-metering-validation
-                - - layer
-                  - l50
-                - - criticality
-                  - high
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-30400
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-56-cost-attribution-validation
-                - - layer
-                  - l50
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-30400
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-57-billing-policy-validation
-                - - layer
-                  - l50
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-30400
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-58-invoice-evidence-validation
-                - - layer
-                  - l50
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-30400
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-61-cloud-infra-readiness-validation
-                - - layer
-                  - l60
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-30100
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-62-kubernetes-baseline-validation
-                - - layer
-                  - l60
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-30100
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-63-gitops-sync-validation
-                - - layer
-                  - l60
-                - - criticality
-                  - high
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-00000
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-64-managed-service-sla-validation
-                - - layer
-                  - l60
-                - - criticality
-                  - high
-                - - blocking
-                  - false
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-30100
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-91-sbom-generation-validation
-                - - layer
-                  - l90
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-00000
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-92-provenance-validation
-                - - layer
-                  - l90
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-00000
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-93-signature-validation
-                - - layer
-                  - l90
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-50400
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-94-policy-attestation-validation
-                - - layer
-                  - l90
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-50500
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-95-audit-evidence-chain-validation
-                - - layer
-                  - l90
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-00700
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-96-release-readiness-validation
-                - - layer
-                  - l90
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-00000
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-97-rollback-readiness-validation
-                - - layer
-                  - l90
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-00000
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-98-compliance-report-validation
-                - - layer
-                  - l90
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-51000
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-99-production-closure-validation
-                - - layer
-                  - l90
-                - - criticality
-                  - critical
-                - - blocking
-                  - true
-                - - lifecycle
-                  - active
-                - - governanceCode
-                  - mycodexvantaos-00000
+apiVersion: mycodexvantaos.io/v1
+kind: AIInfraGateCatalogDetail
+metadata:
+  name: ai-infra-gates-catalog
+  version: 1.0.0
+  ssot: true
+  authority: unified-gate-governance
+  governanceCode: mycodexvantaos-00000
+spec:
+  version: 1.0.0
+  gates:
+  - id: gate-01-namespace-governance-validation
+    layer: l00
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-00000
+  - id: gate-02-repository-naming-validation
+    layer: l00
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-00100
+  - id: gate-03-governance-code-validation
+    layer: l00
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-00000
+  - id: gate-04-directory-binding-mediator-validation
+    layer: l00
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-00000
+  - id: gate-05-dependency-graph-acyclic-validation
+    layer: l00
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-00000
+  - id: gate-06-lifecycle-state-validation
+    layer: l00
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-00200
+  - id: gate-07-owner-registry-validation
+    layer: l00
+    criticality: high
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-00000
+  - id: gate-08-audit-evidence-validation
+    layer: l00
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-00700
+  - id: gate-11-ai-chip-capability-validation
+    layer: l10
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-00000
+  - id: gate-12-gpu-driver-validation
+    layer: l10
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-00000
+  - id: gate-13-accelerator-topology-validation
+    layer: l10
+    criticality: high
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-00000
+  - id: gate-14-smart-server-baseline-validation
+    layer: l10
+    criticality: high
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-00000
+  - id: gate-15-ai-compute-cluster-readiness
+    layer: l10
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-00000
+  - id: gate-16-distributed-training-runtime-validation
+    layer: l10
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-00000
+  - id: gate-17-resource-quota-and-scheduler-validation
+    layer: l10
+    criticality: high
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-00000
+  - id: gate-18-compute-cost-metering-validation
+    layer: l10
+    criticality: high
+    blocking: false
+    lifecycle: active
+    governanceCode: mycodexvantaos-00000
+  - id: gate-21-dataset-contract-validation
+    layer: l20
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-40100
+  - id: gate-22-dataset-lineage-validation
+    layer: l20
+    criticality: high
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-40100
+  - id: gate-23-dataset-license-validation
+    layer: l20
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-40100
+  - id: gate-24-pii-and-sensitive-data-scan
+    layer: l20
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-50300
+  - id: gate-25-vector-database-schema-validation
+    layer: l20
+    criticality: high
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-70900
+  - id: gate-26-embedding-dimension-validation
+    layer: l20
+    criticality: high
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-70800
+  - id: gate-27-data-quality-threshold-validation
+    layer: l20
+    criticality: high
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-40100
+  - id: gate-28-data-access-policy-validation
+    layer: l20
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-50200
+  - id: gate-31-ai-framework-compatibility-validation
+    layer: l30
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-60600
+  - id: gate-32-model-contract-validation
+    layer: l30
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-60600
+  - id: gate-33-training-pipeline-validation
+    layer: l30
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-60600
+  - id: gate-34-inference-runtime-validation
+    layer: l30
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-60700
+  - id: gate-35-ai-agent-framework-validation
+    layer: l30
+    criticality: high
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-60700
+  - id: gate-36-tool-calling-contract-validation
+    layer: l30
+    criticality: high
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-60700
+  - id: gate-37-model-registry-validation
+    layer: l30
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-60600
+  - id: gate-38-algorithm-safety-policy-validation
+    layer: l30
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-60600
+  - id: gate-41-ai-workload-contract-validation
+    layer: l40
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-60700
+  - id: gate-42-inference-task-validation
+    layer: l40
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-60700
+  - id: gate-43-training-task-validation
+    layer: l40
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-60600
+  - id: gate-44-rag-pipeline-validation
+    layer: l40
+    criticality: high
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-60700
+  - id: gate-45-agent-task-policy-validation
+    layer: l40
+    criticality: high
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-60700
+  - id: gate-46-workload-resource-estimation
+    layer: l40
+    criticality: medium
+    blocking: false
+    lifecycle: active
+    governanceCode: mycodexvantaos-60700
+  - id: gate-47-workload-slo-validation
+    layer: l40
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-60700
+  - id: gate-48-workload-runtime-sandbox-validation
+    layer: l40
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-60700
+  - id: gate-51-usage-event-contract-validation
+    layer: l50
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-30400
+  - id: gate-52-inference-metering-validation
+    layer: l50
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-30400
+  - id: gate-53-training-metering-validation
+    layer: l50
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-30400
+  - id: gate-54-embedding-metering-validation
+    layer: l50
+    criticality: high
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-30400
+  - id: gate-55-agent-run-metering-validation
+    layer: l50
+    criticality: high
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-30400
+  - id: gate-56-cost-attribution-validation
+    layer: l50
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-30400
+  - id: gate-57-billing-policy-validation
+    layer: l50
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-30400
+  - id: gate-58-invoice-evidence-validation
+    layer: l50
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-30400
+  - id: gate-61-cloud-infra-readiness-validation
+    layer: l60
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-30100
+  - id: gate-62-kubernetes-baseline-validation
+    layer: l60
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-30100
+  - id: gate-63-gitops-sync-validation
+    layer: l60
+    criticality: high
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-00000
+  - id: gate-64-managed-service-sla-validation
+    layer: l60
+    criticality: high
+    blocking: false
+    lifecycle: active
+    governanceCode: mycodexvantaos-30100
+  - id: gate-91-sbom-generation-validation
+    layer: l90
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-00000
+  - id: gate-92-provenance-validation
+    layer: l90
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-00000
+  - id: gate-93-signature-validation
+    layer: l90
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-50400
+  - id: gate-94-policy-attestation-validation
+    layer: l90
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-50500
+  - id: gate-95-audit-evidence-chain-validation
+    layer: l90
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-00700
+  - id: gate-96-release-readiness-validation
+    layer: l90
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-00000
+  - id: gate-97-rollback-readiness-validation
+    layer: l90
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-00000
+  - id: gate-98-compliance-report-validation
+    layer: l90
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-51000
+  - id: gate-99-production-closure-validation
+    layer: l90
+    criticality: critical
+    blocking: true
+    lifecycle: active
+    governanceCode: mycodexvantaos-00000

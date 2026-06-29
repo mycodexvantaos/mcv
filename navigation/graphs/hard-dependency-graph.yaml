@@ -1,22 +1,10 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - NavigationGraph
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - hard-dependency-graph
-        - - description
-          - hard-dependency-graph for MyCodexVantaOS
-        - - version
-          - 1.0.0
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - []
-  - - platform
-    - mycodexvantaos
-  - - nodes
-    - []
-  - - edges
-    - []
+apiVersion: mycodexvantaos.io/v1
+kind: NavigationGraph
+metadata:
+  name: hard-dependency-graph
+  description: hard-dependency-graph for MyCodexVantaOS
+  version: 1.0.0
+spec: {}
+platform: mycodexvantaos
+nodes: []
+edges: []

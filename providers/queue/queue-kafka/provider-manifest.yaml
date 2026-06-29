@@ -1,37 +1,18 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.org/v1
-  - - kind
-    - Provider
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - mycodexvantaos-queue-kafka
-        - - capability
-          - queue
-        - - labels
-          - !!python/object/apply:collections.OrderedDict
-            - - - mycodexvantaos.org/managed-by
-                - naming-spec-v1
-              - - mycodexvantaos.org/specRef
-                - '8.1'
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - providerName
-          - kafka
-        - - isNative
-          - false
-        - - lifecycle
-          - !!python/object/apply:collections.OrderedDict
-            - - - stage
-                - stable
-        - - envVarPrefix
-          - MYCODEXVANTAOS_QUEUE_KAFKA
-        - - configSchemaRef
-          - ./config.schema.json
-        - - description
-          - Apache Kafka event streaming provider.
-  - - provider-id
-    - mycodexvantaos-queue-kafka
-  - - capability
-    - queue
+apiVersion: mycodexvantaos.org/v1
+kind: Provider
+metadata:
+  name: mycodexvantaos-queue-kafka
+  capability: queue
+  labels:
+    mycodexvantaos.org/managed-by: naming-spec-v1
+    mycodexvantaos.org/specRef: '8.1'
+spec:
+  providerName: kafka
+  isNative: false
+  lifecycle:
+    stage: stable
+  envVarPrefix: MYCODEXVANTAOS_QUEUE_KAFKA
+  configSchemaRef: ./config.schema.json
+  description: Apache Kafka event streaming provider.
+provider-id: mycodexvantaos-queue-kafka
+capability: queue

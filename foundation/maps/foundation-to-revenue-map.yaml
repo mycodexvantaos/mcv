@@ -1,15 +1,7 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - FoundationMap
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - foundation-to-revenue-map
-        - - version
-          - 1.0.0
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - platform
-          - mycodexvantaos
+apiVersion: mycodexvantaos.io/v1
+kind: FoundationMap
+metadata:
+  name: foundation-to-revenue-map
+  version: 1.0.0
+spec:
+  platform: mycodexvantaos

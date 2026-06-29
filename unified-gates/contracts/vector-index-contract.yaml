@@ -1,43 +1,30 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - VectorIndexContract
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - vector-index-contract
-        - - version
-          - 1.0.0
-        - - governanceCode
-          - mycodexvantaos-70900
-        - - date
-          - '2026-06-29'
-        - - status
-          - active
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - description
-          - 'Defines the canonical contract for vector database indexes. All vector
-            indexes MUST conform to this contract.
+apiVersion: mycodexvantaos.io/v1
+kind: VectorIndexContract
+metadata:
+  name: vector-index-contract
+  version: 1.0.0
+  governanceCode: mycodexvantaos-70900
+  date: '2026-06-29'
+  status: active
+spec:
+  description: 'Defines the canonical contract for vector database indexes. All vector
+    indexes MUST conform to this contract.
 
-            '
-        - - requiredFields
-          - - indexId
-            - indexVersion
-            - embeddingModelRef
-            - embeddingDimension
-            - distanceMetric
-            - freshnessWindowHours
-            - recallAtK.k
-            - recallAtK.minRecall
-            - maxQueryLatencyMs
-            - accessPolicy
-        - - validValues
-          - !!python/object/apply:collections.OrderedDict
-            - - - distanceMetric
-                - - cosine
-                  - euclidean
-                  - dot-product
-        - - schemaRef
-          - ../schemas/vector-index.schema.json
+    '
+  requiredFields:
+  - indexId
+  - indexVersion
+  - embeddingModelRef
+  - embeddingDimension
+  - distanceMetric
+  - freshnessWindowHours
+  - recallAtK.k
+  - recallAtK.minRecall
+  - maxQueryLatencyMs
+  - accessPolicy
+  validValues:
+    distanceMetric:
+    - cosine
+    - euclidean
+    - dot-product
+  schemaRef: ../schemas/vector-index.schema.json

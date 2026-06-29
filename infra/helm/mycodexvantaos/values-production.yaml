@@ -1,9 +1,4 @@
-!!python/object/apply:collections.OrderedDict
-- - - global
-    - !!python/object/apply:collections.OrderedDict
-      - - - runtimeMode
-          - connected
-        - - deploymentTarget
-          - kubernetes
-        - - platform
-          - mycodexvantaos
+global:
+  runtimeMode: connected
+  deploymentTarget: kubernetes
+  platform: mycodexvantaos

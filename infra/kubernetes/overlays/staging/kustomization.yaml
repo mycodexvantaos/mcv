@@ -1,39 +1,32 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - kustomize.config.k8s.io/v1beta1
-  - - kind
-    - Kustomization
-  - - namespace
-    - mycodexvantaos-staging
-  - - resources
-    - - ../../base/mycodexvantaos-core-kernel
-      - ../../base/mycodexvantaos-core-auth
-      - ../../base/mycodexvantaos-core-gateway
-      - ../../base/mycodexvantaos-core-config
-      - ../../base/mycodexvantaos-ai-embedding
-      - ../../base/mycodexvantaos-ai-llm
-      - ../../base/mycodexvantaos-ai-memory
-      - ../../base/mycodexvantaos-ai-agent
-      - ../../base/mycodexvantaos-data-vector-store
-      - ../../base/mycodexvantaos-data-pipeline
-      - ../../base/mycodexvantaos-data-graph
-      - ../../base/mycodexvantaos-platform-notification
-      - ../../base/mycodexvantaos-platform-scheduler
-      - ../../base/mycodexvantaos-platform-observability
-      - ../../base/mycodexvantaos-security-secrets
-      - ../../base/mycodexvantaos-security-validation
-      - ../../base/mycodexvantaos-docs-search
-      - ../../base/mycodexvantaos-governance-policy
-  - - commonLabels
-    - !!python/object/apply:collections.OrderedDict
-      - - - mycodexvantaos.org/environment
-          - staging
-        - - environment
-          - staging
-  - - patches
-    - - patch: "- op: replace\n  path: /spec/replicas\n  value: 2"
-        target:
-          kind: Deployment
-          labelSelector: app.kubernetes.io/managed-by=mycodexvantaos
-  - - bases
-    - - ../../base
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: mycodexvantaos-staging
+resources:
+- ../../base/mycodexvantaos-core-kernel
+- ../../base/mycodexvantaos-core-auth
+- ../../base/mycodexvantaos-core-gateway
+- ../../base/mycodexvantaos-core-config
+- ../../base/mycodexvantaos-ai-embedding
+- ../../base/mycodexvantaos-ai-llm
+- ../../base/mycodexvantaos-ai-memory
+- ../../base/mycodexvantaos-ai-agent
+- ../../base/mycodexvantaos-data-vector-store
+- ../../base/mycodexvantaos-data-pipeline
+- ../../base/mycodexvantaos-data-graph
+- ../../base/mycodexvantaos-platform-notification
+- ../../base/mycodexvantaos-platform-scheduler
+- ../../base/mycodexvantaos-platform-observability
+- ../../base/mycodexvantaos-security-secrets
+- ../../base/mycodexvantaos-security-validation
+- ../../base/mycodexvantaos-docs-search
+- ../../base/mycodexvantaos-governance-policy
+commonLabels:
+  mycodexvantaos.org/environment: staging
+  environment: staging
+patches:
+- patch: "- op: replace\n  path: /spec/replicas\n  value: 2"
+  target:
+    kind: Deployment
+    labelSelector: app.kubernetes.io/managed-by=mycodexvantaos
+bases:
+- ../../base

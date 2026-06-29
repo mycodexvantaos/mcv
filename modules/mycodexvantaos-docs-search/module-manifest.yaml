@@ -1,45 +1,24 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.org/v1
-  - - kind
-    - Module
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - mycodexvantaos-docs-search
-        - - labels
-          - !!python/object/apply:collections.OrderedDict
-            - - - mycodexvantaos.org/domain
-                - docs
-              - - mycodexvantaos.org/managed-by
-                - naming-spec-v1
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - domain
-          - docs
-        - - capabilities
-          - - search
-            - vector-store
-            - embedding
-        - - providers
-          - !!python/object/apply:collections.OrderedDict
-            - - - search
-                - search-elasticsearch
-              - - vector-store
-                - vector-store-pgvector
-              - - embedding
-                - embedding-openai
-        - - lifecycle
-          - !!python/object/apply:collections.OrderedDict
-            - - - stage
-                - stable
-              - - since
-                - v1.0.0
-        - - urn
-          - urn:mycodexvantaos:manifest:service:mycodexvantaos-docs-search
-        - - packageName
-          - '@mycodexvantaos/docs-search'
-        - - description
-          - Full-text and semantic search for platform documentation.
-  - - service-id
-    - mycodexvantaos-docs-search
+apiVersion: mycodexvantaos.org/v1
+kind: Module
+metadata:
+  name: mycodexvantaos-docs-search
+  labels:
+    mycodexvantaos.org/domain: docs
+    mycodexvantaos.org/managed-by: naming-spec-v1
+spec:
+  domain: docs
+  capabilities:
+  - search
+  - vector-store
+  - embedding
+  providers:
+    search: search-elasticsearch
+    vector-store: vector-store-pgvector
+    embedding: embedding-openai
+  lifecycle:
+    stage: stable
+    since: v1.0.0
+  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-docs-search
+  packageName: '@mycodexvantaos/docs-search'
+  description: Full-text and semantic search for platform documentation.
+service-id: mycodexvantaos-docs-search

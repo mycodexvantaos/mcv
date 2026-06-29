@@ -1,90 +1,51 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.org/v1
-  - - kind
-    - Provider
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - mycodexvantaos-deploy-native
-        - - capability
-          - deployment
-        - - description
-          - Native deployment provider for local and Docker deployments
-        - - version
-          - 1.0.0
-        - - author
-          - MyCodeXvantaOS Team
-        - - tags
-          - - deployment
-            - native
-            - local
-            - docker
-            - zero-dependencies
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - providerName
-          - native
-        - - isNative
-          - true
-        - - priority
-          - 100
-        - - capabilities
-          - - local-deployment
-            - docker-deployment
-            - static-site-hosting
-            - process-management
-        - - requirements
-          - !!python/object/apply:collections.OrderedDict
-            - - - external
-                - []
-              - - runtime
-                - - nodejs >= 18.0.0
-        - - configuration
-          - !!python/object/apply:collections.OrderedDict
-            - - - type
-                - object
-              - - properties
-                - !!python/object/apply:collections.OrderedDict
-                  - - - port
-                      - !!python/object/apply:collections.OrderedDict
-                        - - - type
-                            - number
-                          - - default
-                            - 3000
-                          - - description
-                            - Default port for local deployments
-                    - - host
-                      - !!python/object/apply:collections.OrderedDict
-                        - - - type
-                            - string
-                          - - default
-                            - localhost
-                          - - description
-                            - Host address for local deployments
-                    - - dockerEnabled
-                      - !!python/object/apply:collections.OrderedDict
-                        - - - type
-                            - boolean
-                          - - default
-                            - false
-                          - - description
-                            - Enable Docker container deployment
-                    - - autoReload
-                      - !!python/object/apply:collections.OrderedDict
-                        - - - type
-                            - boolean
-                          - - default
-                            - true
-                          - - description
-                            - Enable auto-reload for development
-        - - availability
-          - !!python/object/apply:collections.OrderedDict
-            - - - always
-                - true
-              - - healthCheck
-                - internal
-  - - provider-id
-    - mycodexvantaos-deploy-native
-  - - capability
-    - deploy
+apiVersion: mycodexvantaos.org/v1
+kind: Provider
+metadata:
+  name: mycodexvantaos-deploy-native
+  capability: deployment
+  description: Native deployment provider for local and Docker deployments
+  version: 1.0.0
+  author: MyCodeXvantaOS Team
+  tags:
+  - deployment
+  - native
+  - local
+  - docker
+  - zero-dependencies
+spec:
+  providerName: native
+  isNative: true
+  priority: 100
+  capabilities:
+  - local-deployment
+  - docker-deployment
+  - static-site-hosting
+  - process-management
+  requirements:
+    external: []
+    runtime:
+    - nodejs >= 18.0.0
+  configuration:
+    type: object
+    properties:
+      port:
+        type: number
+        default: 3000
+        description: Default port for local deployments
+      host:
+        type: string
+        default: localhost
+        description: Host address for local deployments
+      dockerEnabled:
+        type: boolean
+        default: false
+        description: Enable Docker container deployment
+      autoReload:
+        type: boolean
+        default: true
+        description: Enable auto-reload for development
+  availability:
+    always: true
+    healthCheck: internal
+provider-id: mycodexvantaos-deploy-native
+capability: deploy

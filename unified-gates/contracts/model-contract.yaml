@@ -1,48 +1,35 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - ModelContract
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - model-contract
-        - - version
-          - 1.0.0
-        - - governanceCode
-          - mycodexvantaos-60600
-        - - date
-          - '2026-06-29'
-        - - status
-          - active
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - description
-          - 'Defines the canonical contract for AI model artifacts. All models registered
-            in the model registry MUST conform to this contract.
+apiVersion: mycodexvantaos.io/v1
+kind: ModelContract
+metadata:
+  name: model-contract
+  version: 1.0.0
+  governanceCode: mycodexvantaos-60600
+  date: '2026-06-29'
+  status: active
+spec:
+  description: 'Defines the canonical contract for AI model artifacts. All models
+    registered in the model registry MUST conform to this contract.
 
-            '
-        - - requiredFields
-          - - modelId
-            - modelVersion
-            - modelType
-            - framework
-            - frameworkVersion
-            - inputSchema
-            - outputSchema
-            - minAccuracy
-            - maxLatencyMs
-            - modelCard
-            - safetyPolicyRef
-            - trainingDatasetRef
-        - - validValues
-          - !!python/object/apply:collections.OrderedDict
-            - - - modelType
-                - - llm
-                  - embedding
-                  - classifier
-                  - regressor
-                  - diffusion
-                  - multimodal
-        - - schemaRef
-          - ../schemas/model-contract.schema.json
+    '
+  requiredFields:
+  - modelId
+  - modelVersion
+  - modelType
+  - framework
+  - frameworkVersion
+  - inputSchema
+  - outputSchema
+  - minAccuracy
+  - maxLatencyMs
+  - modelCard
+  - safetyPolicyRef
+  - trainingDatasetRef
+  validValues:
+    modelType:
+    - llm
+    - embedding
+    - classifier
+    - regressor
+    - diffusion
+    - multimodal
+  schemaRef: ../schemas/model-contract.schema.json

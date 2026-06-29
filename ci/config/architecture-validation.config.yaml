@@ -1,26 +1,19 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - ArchitectureValidationConfig
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - architecture-validation-config
-        - - version
-          - 1.0.0
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - checks
-          - - identity
-            - naming
-            - manifests
-            - providers
-            - topology
-            - runtime
-            - drift
-            - navigation
-            - namespace-governance
-            - unified-gates
-            - foundation
-            - release-candidate
+apiVersion: mycodexvantaos.io/v1
+kind: ArchitectureValidationConfig
+metadata:
+  name: architecture-validation-config
+  version: 1.0.0
+spec:
+  checks:
+  - identity
+  - naming
+  - manifests
+  - providers
+  - topology
+  - runtime
+  - drift
+  - navigation
+  - namespace-governance
+  - unified-gates
+  - foundation
+  - release-candidate

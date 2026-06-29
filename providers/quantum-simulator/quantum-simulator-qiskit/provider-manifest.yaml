@@ -1,55 +1,31 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - ProviderManifest
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - quantum-simulator-qiskit
-        - - urn
-          - urn:mycodexvantaos:provider:quantum-simulator-qiskit
-        - - version
-          - 1.0.0
-        - - date
-          - '2026-06-29'
-        - - status
-          - active
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - id
-          - quantum-simulator-qiskit
-        - - capability
-          - quantum-simulator
-        - - source
-          - qiskit
-        - - status
-          - active
-        - - criticality
-          - high
-        - - supportsModes
-          - - native
-            - connected
-            - hybrid
-        - - healthCheck
-          - !!python/object/apply:collections.OrderedDict
-            - - - enabled
-                - true
-              - - endpoint
-                - /health
-        - - observability
-          - !!python/object/apply:collections.OrderedDict
-            - - - metricsEnabled
-                - true
-              - - tracingEnabled
-                - true
-  - - provider-id
-    - mycodexvantaos-quantum-simulator-qiskit
-  - - capability
-    - quantum-simulator
-  - - platform
-    - mycodexvantaos
-  - - runtime-modes
-    - - native
-      - connected
-      - hybrid
+apiVersion: mycodexvantaos.io/v1
+kind: ProviderManifest
+metadata:
+  name: quantum-simulator-qiskit
+  urn: urn:mycodexvantaos:provider:quantum-simulator-qiskit
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
+spec:
+  id: quantum-simulator-qiskit
+  capability: quantum-simulator
+  source: qiskit
+  status: active
+  criticality: high
+  supportsModes:
+  - native
+  - connected
+  - hybrid
+  healthCheck:
+    enabled: true
+    endpoint: /health
+  observability:
+    metricsEnabled: true
+    tracingEnabled: true
+provider-id: mycodexvantaos-quantum-simulator-qiskit
+capability: quantum-simulator
+platform: mycodexvantaos
+runtime-modes:
+- native
+- connected
+- hybrid

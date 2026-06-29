@@ -1,13 +1,8 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - kustomize.config.k8s.io/v1beta1
-  - - kind
-    - Kustomization
-  - - bases
-    - - ../../base
-  - - patches
-    - []
-  - - namespace
-    - mycodexvantaos
-  - - commonLabels
-    - environment: production
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+bases:
+- ../../base
+patches: []
+namespace: mycodexvantaos
+commonLabels:
+  environment: production

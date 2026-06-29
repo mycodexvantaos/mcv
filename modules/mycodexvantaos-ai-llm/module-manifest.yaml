@@ -1,45 +1,24 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.org/v1
-  - - kind
-    - Module
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - mycodexvantaos-ai-llm
-        - - labels
-          - !!python/object/apply:collections.OrderedDict
-            - - - mycodexvantaos.org/domain
-                - ai
-              - - mycodexvantaos.org/managed-by
-                - naming-spec-v1
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - domain
-          - ai
-        - - capabilities
-          - - llm
-            - cache
-            - observability
-        - - providers
-          - !!python/object/apply:collections.OrderedDict
-            - - - llm
-                - llm-openai
-              - - cache
-                - cache-redis
-              - - observability
-                - observability-opentelemetry
-        - - lifecycle
-          - !!python/object/apply:collections.OrderedDict
-            - - - stage
-                - stable
-              - - since
-                - v1.0.0
-        - - urn
-          - urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-llm
-        - - packageName
-          - '@mycodexvantaos/ai-llm'
-        - - description
-          - Large language model inference and completion service.
-  - - service-id
-    - mycodexvantaos-ai-llm
+apiVersion: mycodexvantaos.org/v1
+kind: Module
+metadata:
+  name: mycodexvantaos-ai-llm
+  labels:
+    mycodexvantaos.org/domain: ai
+    mycodexvantaos.org/managed-by: naming-spec-v1
+spec:
+  domain: ai
+  capabilities:
+  - llm
+  - cache
+  - observability
+  providers:
+    llm: llm-openai
+    cache: cache-redis
+    observability: observability-opentelemetry
+  lifecycle:
+    stage: stable
+    since: v1.0.0
+  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-llm
+  packageName: '@mycodexvantaos/ai-llm'
+  description: Large language model inference and completion service.
+service-id: mycodexvantaos-ai-llm

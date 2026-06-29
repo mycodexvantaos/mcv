@@ -1,15 +1,7 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - FoundationAdoption
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - onboarding-model
-        - - version
-          - 1.0.0
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - platform
-          - mycodexvantaos
+apiVersion: mycodexvantaos.io/v1
+kind: FoundationAdoption
+metadata:
+  name: onboarding-model
+  version: 1.0.0
+spec:
+  platform: mycodexvantaos

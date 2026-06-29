@@ -1,48 +1,34 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - GateEvidenceContract
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - gate-evidence-contract
-        - - version
-          - 1.0.0
-        - - governanceCode
-          - mycodexvantaos-00700
-        - - date
-          - '2026-06-29'
-        - - status
-          - active
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - description
-          - 'Defines the canonical contract for gate audit evidence records. All evidence
-            records MUST conform to this contract.
+apiVersion: mycodexvantaos.io/v1
+kind: GateEvidenceContract
+metadata:
+  name: gate-evidence-contract
+  version: 1.0.0
+  governanceCode: mycodexvantaos-00700
+  date: '2026-06-29'
+  status: active
+spec:
+  description: 'Defines the canonical contract for gate audit evidence records. All
+    evidence records MUST conform to this contract.
 
-            '
-        - - requiredFields
-          - - recordId
-            - gateId
-            - gateVersion
-            - pipelineRunId
-            - artifactRef
-            - artifactSha256
-            - evaluatedAt
-            - evaluatedBy
-            - result
-            - evidence.sha256
-            - evidence.sha3512
-            - evidence.blake3
-            - previousRecordHash
-        - - hashAlgorithms
-          - - sha-256
-            - sha3-512
-            - blake3
-        - - immutable
-          - true
-        - - appendOnly
-          - true
-        - - schemaRef
-          - ../schemas/gate-result.schema.json
+    '
+  requiredFields:
+  - recordId
+  - gateId
+  - gateVersion
+  - pipelineRunId
+  - artifactRef
+  - artifactSha256
+  - evaluatedAt
+  - evaluatedBy
+  - result
+  - evidence.sha256
+  - evidence.sha3512
+  - evidence.blake3
+  - previousRecordHash
+  hashAlgorithms:
+  - sha-256
+  - sha3-512
+  - blake3
+  immutable: true
+  appendOnly: true
+  schemaRef: ../schemas/gate-result.schema.json

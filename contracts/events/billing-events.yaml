@@ -1,21 +1,10 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - EventContract
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - billing-events
-        - - version
-          - 1.0.0
-        - - date
-          - '2026-06-29'
-        - - status
-          - active
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - events
-          - []
-  - - platform
-    - mycodexvantaos
+apiVersion: mycodexvantaos.io/v1
+kind: EventContract
+metadata:
+  name: billing-events
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
+spec:
+  events: []
+platform: mycodexvantaos

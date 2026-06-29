@@ -1,20 +1,9 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - FoundationSpec
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - owner-map
-        - - foundation
-          - business-foundation
-        - - version
-          - 1.0.0
-        - - date
-          - '2026-06-29'
-        - - status
-          - active
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - []
+apiVersion: mycodexvantaos.io/v1
+kind: FoundationSpec
+metadata:
+  name: owner-map
+  foundation: business-foundation
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
+spec: {}

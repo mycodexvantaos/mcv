@@ -1,18 +1,10 @@
-!!python/object/apply:collections.OrderedDict
-- - - asyncapi
-    - 2.6.0
-  - - info
-    - !!python/object/apply:collections.OrderedDict
-      - - - title
-          - MyCodexVantaOS ai-task-events
-        - - version
-          - 1.0.0
-        - - description
-          - MyCodexVantaOS ai-task-events AsyncAPI specification
-  - - channels
-    - !!python/object/apply:collections.OrderedDict
-      - []
-  - - servers
-    - production:
-        host: api.mycodexvantaos.com
-        protocol: amqp
+asyncapi: 2.6.0
+info:
+  title: MyCodexVantaOS ai-task-events
+  version: 1.0.0
+  description: MyCodexVantaOS ai-task-events AsyncAPI specification
+channels: {}
+servers:
+  production:
+    host: api.mycodexvantaos.com
+    protocol: amqp

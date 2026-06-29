@@ -1,71 +1,46 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - GateRBACPolicy
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - gate-rbac-policy
-        - - version
-          - 1.0.0
-        - - authority
-          - platform-governance-root
-        - - governanceCode
-          - mycodexvantaos-00600
-        - - date
-          - '2026-06-29'
-        - - status
-          - active
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - roles
-          - - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-reader
-                - - permissions
-                  - - read:gate-definitions
-                    - read:gate-results
-                    - read:gate-reports
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-evaluator
-                - - permissions
-                  - - read:gate-definitions
-                    - execute:gate-evaluation
-                    - write:gate-results
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-owner
-                - - permissions
-                  - - read:gate-definitions
-                    - write:gate-definitions
-                    - execute:gate-evaluation
-                    - approve:waivers
-                    - write:gate-results
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-approver
-                - - permissions
-                  - - read:gate-definitions
-                    - approve:waivers
-                    - approve:lifecycle-transitions
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - gate-admin
-                - - permissions
-                  - - all
-                - - requiresRootApproval
-                  - true
-            - !!python/object/apply:collections.OrderedDict
-              - - - id
-                  - governance-council
-                - - permissions
-                  - - approve:cross-layer-changes
-                    - approve:escalations
-                    - approve:waiver-overrides
-        - - roleAssignmentAudit
-          - true
-        - - quarterlyReviewRequired
-          - - gate-admin
-            - governance-council
+apiVersion: mycodexvantaos.io/v1
+kind: GateRBACPolicy
+metadata:
+  name: gate-rbac-policy
+  version: 1.0.0
+  authority: platform-governance-root
+  governanceCode: mycodexvantaos-00600
+  date: '2026-06-29'
+  status: active
+spec:
+  roles:
+  - id: gate-reader
+    permissions:
+    - read:gate-definitions
+    - read:gate-results
+    - read:gate-reports
+  - id: gate-evaluator
+    permissions:
+    - read:gate-definitions
+    - execute:gate-evaluation
+    - write:gate-results
+  - id: gate-owner
+    permissions:
+    - read:gate-definitions
+    - write:gate-definitions
+    - execute:gate-evaluation
+    - approve:waivers
+    - write:gate-results
+  - id: gate-approver
+    permissions:
+    - read:gate-definitions
+    - approve:waivers
+    - approve:lifecycle-transitions
+  - id: gate-admin
+    permissions:
+    - all
+    requiresRootApproval: true
+  - id: governance-council
+    permissions:
+    - approve:cross-layer-changes
+    - approve:escalations
+    - approve:waiver-overrides
+  roleAssignmentAudit: true
+  quarterlyReviewRequired:
+  - gate-admin
+  - governance-council

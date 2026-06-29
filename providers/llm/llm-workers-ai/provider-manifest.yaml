@@ -1,55 +1,31 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - ProviderManifest
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - llm-workers-ai
-        - - urn
-          - urn:mycodexvantaos:provider:llm-workers-ai
-        - - version
-          - 1.0.0
-        - - date
-          - '2026-06-29'
-        - - status
-          - active
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - id
-          - llm-workers-ai
-        - - capability
-          - llm
-        - - source
-          - cloudflare-workers-ai
-        - - status
-          - active
-        - - criticality
-          - high
-        - - supportsModes
-          - - native
-            - connected
-            - hybrid
-        - - healthCheck
-          - !!python/object/apply:collections.OrderedDict
-            - - - enabled
-                - true
-              - - endpoint
-                - /health
-        - - observability
-          - !!python/object/apply:collections.OrderedDict
-            - - - metricsEnabled
-                - true
-              - - tracingEnabled
-                - true
-  - - provider-id
-    - mycodexvantaos-llm-workers-ai
-  - - capability
-    - llm
-  - - platform
-    - mycodexvantaos
-  - - runtime-modes
-    - - native
-      - connected
-      - hybrid
+apiVersion: mycodexvantaos.io/v1
+kind: ProviderManifest
+metadata:
+  name: llm-workers-ai
+  urn: urn:mycodexvantaos:provider:llm-workers-ai
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
+spec:
+  id: llm-workers-ai
+  capability: llm
+  source: cloudflare-workers-ai
+  status: active
+  criticality: high
+  supportsModes:
+  - native
+  - connected
+  - hybrid
+  healthCheck:
+    enabled: true
+    endpoint: /health
+  observability:
+    metricsEnabled: true
+    tracingEnabled: true
+provider-id: mycodexvantaos-llm-workers-ai
+capability: llm
+platform: mycodexvantaos
+runtime-modes:
+- native
+- connected
+- hybrid

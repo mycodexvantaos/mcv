@@ -1,22 +1,10 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - NamingClosureProof
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - naming-closure-proof
-        - - version
-          - 1.0.0
-        - - date
-          - '2026-06-29'
-        - - status
-          - proven
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - []
-  - - platform
-    - mycodexvantaos
-  - - proven
-    - true
+apiVersion: mycodexvantaos.io/v1
+kind: NamingClosureProof
+metadata:
+  name: naming-closure-proof
+  version: 1.0.0
+  date: '2026-06-29'
+  status: proven
+spec: {}
+platform: mycodexvantaos
+proven: true

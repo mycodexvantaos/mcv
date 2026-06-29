@@ -1,37 +1,18 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.org/v1
-  - - kind
-    - Provider
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - mycodexvantaos-graph-memgraph
-        - - capability
-          - graph
-        - - labels
-          - !!python/object/apply:collections.OrderedDict
-            - - - mycodexvantaos.org/managed-by
-                - naming-spec-v1
-              - - mycodexvantaos.org/specRef
-                - '8.1'
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - providerName
-          - memgraph
-        - - isNative
-          - false
-        - - lifecycle
-          - !!python/object/apply:collections.OrderedDict
-            - - - stage
-                - beta
-        - - envVarPrefix
-          - MYCODEXVANTAOS_GRAPH_MEMGRAPH
-        - - configSchemaRef
-          - ./config.schema.json
-        - - description
-          - Memgraph in-memory graph database provider.
-  - - provider-id
-    - mycodexvantaos-graph-memgraph
-  - - capability
-    - graph
+apiVersion: mycodexvantaos.org/v1
+kind: Provider
+metadata:
+  name: mycodexvantaos-graph-memgraph
+  capability: graph
+  labels:
+    mycodexvantaos.org/managed-by: naming-spec-v1
+    mycodexvantaos.org/specRef: '8.1'
+spec:
+  providerName: memgraph
+  isNative: false
+  lifecycle:
+    stage: beta
+  envVarPrefix: MYCODEXVANTAOS_GRAPH_MEMGRAPH
+  configSchemaRef: ./config.schema.json
+  description: Memgraph in-memory graph database provider.
+provider-id: mycodexvantaos-graph-memgraph
+capability: graph

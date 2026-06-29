@@ -1,38 +1,19 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.org/v1
-  - - kind
-    - Provider
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - mycodexvantaos-blockchain-hyperledger
-        - - capability
-          - blockchain
-        - - labels
-          - !!python/object/apply:collections.OrderedDict
-            - - - mycodexvantaos.org/managed-by
-                - naming-spec-v1
-              - - mycodexvantaos.org/specRef
-                - '8.1'
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - providerName
-          - hyperledger
-        - - isNative
-          - false
-        - - lifecycle
-          - !!python/object/apply:collections.OrderedDict
-            - - - stage
-                - stable
-        - - envVarPrefix
-          - MYCODEXVANTAOS_BLOCKCHAIN
-        - - configSchemaRef
-          - ./config.schema.json
-        - - description
-          - Hyperledger Fabric distributed ledger provider for enterprise smart contract
-            execution and immutable audit trails.
-  - - provider-id
-    - mycodexvantaos-blockchain-hyperledger
-  - - capability
-    - database
+apiVersion: mycodexvantaos.org/v1
+kind: Provider
+metadata:
+  name: mycodexvantaos-blockchain-hyperledger
+  capability: blockchain
+  labels:
+    mycodexvantaos.org/managed-by: naming-spec-v1
+    mycodexvantaos.org/specRef: '8.1'
+spec:
+  providerName: hyperledger
+  isNative: false
+  lifecycle:
+    stage: stable
+  envVarPrefix: MYCODEXVANTAOS_BLOCKCHAIN
+  configSchemaRef: ./config.schema.json
+  description: Hyperledger Fabric distributed ledger provider for enterprise smart
+    contract execution and immutable audit trails.
+provider-id: mycodexvantaos-blockchain-hyperledger
+capability: database

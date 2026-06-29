@@ -1,98 +1,86 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.io/v1
-  - - kind
-    - QuantumClassicalBridge
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - quantum-classical-bridge
-        - - description
-          - Quantum-classical bridge governance specification
-        - - version
-          - 1.0.0
-        - - date
-          - '2026-06-29'
-        - - status
-          - active
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - kubernetesApiGroup
-          - mycodexvantaos.quantum
-        - - apiGroupNote
-          - 'The dotted value is allowed only because Kubernetes API groups follow
-            DNS-like naming conventions. This exception MUST NOT apply to file basenames,
-            directory names, service IDs, packages, URNs, or OCI names.
+apiVersion: mycodexvantaos.io/v1
+kind: QuantumClassicalBridge
+metadata:
+  name: quantum-classical-bridge
+  description: Quantum-classical bridge governance specification
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
+spec:
+  kubernetesApiGroup: mycodexvantaos.quantum
+  apiGroupNote: 'The dotted value is allowed only because Kubernetes API groups follow
+    DNS-like naming conventions. This exception MUST NOT apply to file basenames,
+    directory names, service IDs, packages, URNs, or OCI names.
 
-            '
-        - - crdPaths
-          - - infra/kubernetes/crds/quantum.mycodexvantaos.io.yaml
-            - infra/kubernetes/crds/aitasks.mycodexvantaos.io.yaml
-            - infra/kubernetes/crds/providers.mycodexvantaos.io.yaml
-        - - quantumProviders
-          - - quantum-runtime-native
-            - quantum-simulator-qiskit
-            - quantum-processor-native
-            - quantum-circuit-native
-            - quantum-observability-native
-  - - bridge
-    - enabled: true
-      version: 1.0.0
-  - - quantum-capabilities
-    - - quantum-runtime
-      - quantum-simulator
-      - quantum-processor
-      - quantum-circuit
-      - quantum-observability
-  - - classical-interfaces
-    - - llm
-      - embedding
-      - vector-store
-      - observability
-  - - protocol
-    - serialization: protobuf
-      transport: grpc
-      timeout-ms: 30000
-      retry:
-        max-attempts: 3
-        backoff-ms: 1000
-  - - circuit-interface
-    - format: qasm3
-      max-qubits: 127
-      max-depth: 1000
-      supported-gates:
-      - H
-      - X
-      - Y
-      - Z
-      - CNOT
-      - CZ
-      - T
-      - S
-      - RX
-      - RY
-      - RZ
-      - SWAP
-      - Toffoli
-      - Fredkin
-  - - result-interface
-    - format: json
-      include-statevector: false
-      include-counts: true
-      include-probabilities: true
-      shots-default: 1024
-      shots-max: 100000
-  - - error-mitigation
-    - enabled: true
-      strategies:
-      - zero-noise-extrapolation
-      - probabilistic-error-cancellation
-      - measurement-error-mitigation
-  - - observability
-    - metrics:
-      - quantum_circuit_execution_total
-      - quantum_circuit_execution_duration_seconds
-      - quantum_circuit_error_rate
-      - quantum_qubit_fidelity
-      tracing: true
-      logging-level: info
+    '
+  crdPaths:
+  - infra/kubernetes/crds/quantum.mycodexvantaos.io.yaml
+  - infra/kubernetes/crds/aitasks.mycodexvantaos.io.yaml
+  - infra/kubernetes/crds/providers.mycodexvantaos.io.yaml
+  quantumProviders:
+  - quantum-runtime-native
+  - quantum-simulator-qiskit
+  - quantum-processor-native
+  - quantum-circuit-native
+  - quantum-observability-native
+bridge:
+  enabled: true
+  version: 1.0.0
+quantum-capabilities:
+- quantum-runtime
+- quantum-simulator
+- quantum-processor
+- quantum-circuit
+- quantum-observability
+classical-interfaces:
+- llm
+- embedding
+- vector-store
+- observability
+protocol:
+  serialization: protobuf
+  transport: grpc
+  timeout-ms: 30000
+  retry:
+    max-attempts: 3
+    backoff-ms: 1000
+circuit-interface:
+  format: qasm3
+  max-qubits: 127
+  max-depth: 1000
+  supported-gates:
+  - H
+  - X
+  - Y
+  - Z
+  - CNOT
+  - CZ
+  - T
+  - S
+  - RX
+  - RY
+  - RZ
+  - SWAP
+  - Toffoli
+  - Fredkin
+result-interface:
+  format: json
+  include-statevector: false
+  include-counts: true
+  include-probabilities: true
+  shots-default: 1024
+  shots-max: 100000
+error-mitigation:
+  enabled: true
+  strategies:
+  - zero-noise-extrapolation
+  - probabilistic-error-cancellation
+  - measurement-error-mitigation
+observability:
+  metrics:
+  - quantum_circuit_execution_total
+  - quantum_circuit_execution_duration_seconds
+  - quantum_circuit_error_rate
+  - quantum_qubit_fidelity
+  tracing: true
+  logging-level: info

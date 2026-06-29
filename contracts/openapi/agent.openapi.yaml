@@ -1,24 +1,15 @@
-!!python/object/apply:collections.OrderedDict
-- - - openapi
-    - 3.1.0
-  - - info
-    - !!python/object/apply:collections.OrderedDict
-      - - - title
-          - MyCodexVantaOS agent API
-        - - version
-          - 1.0.0
-        - - description
-          - OpenAPI specification for MyCodexVantaOS agent
-  - - paths
-    - !!python/object/apply:collections.OrderedDict
-      - []
-  - - components
-    - !!python/object/apply:collections.OrderedDict
-      - - - securitySchemes
-          - BearerAuth:
-              type: http
-              scheme: bearer
-              bearerFormat: JWT
-  - - servers
-    - - url: https://api.mycodexvantaos.com/v1
-        description: Production
+openapi: 3.1.0
+info:
+  title: MyCodexVantaOS agent API
+  version: 1.0.0
+  description: OpenAPI specification for MyCodexVantaOS agent
+paths: {}
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+servers:
+- url: https://api.mycodexvantaos.com/v1
+  description: Production

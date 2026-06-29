@@ -1,37 +1,18 @@
-!!python/object/apply:collections.OrderedDict
-- - - apiVersion
-    - mycodexvantaos.org/v1
-  - - kind
-    - Provider
-  - - metadata
-    - !!python/object/apply:collections.OrderedDict
-      - - - name
-          - mycodexvantaos-graph-neo4j
-        - - capability
-          - graph
-        - - labels
-          - !!python/object/apply:collections.OrderedDict
-            - - - mycodexvantaos.org/managed-by
-                - naming-spec-v1
-              - - mycodexvantaos.org/specRef
-                - '8.1'
-  - - spec
-    - !!python/object/apply:collections.OrderedDict
-      - - - providerName
-          - neo4j
-        - - isNative
-          - false
-        - - lifecycle
-          - !!python/object/apply:collections.OrderedDict
-            - - - stage
-                - stable
-        - - envVarPrefix
-          - MYCODEXVANTAOS_GRAPH
-        - - configSchemaRef
-          - ./config.schema.json
-        - - description
-          - Neo4j graph database provider.
-  - - provider-id
-    - mycodexvantaos-graph-neo4j
-  - - capability
-    - graph
+apiVersion: mycodexvantaos.org/v1
+kind: Provider
+metadata:
+  name: mycodexvantaos-graph-neo4j
+  capability: graph
+  labels:
+    mycodexvantaos.org/managed-by: naming-spec-v1
+    mycodexvantaos.org/specRef: '8.1'
+spec:
+  providerName: neo4j
+  isNative: false
+  lifecycle:
+    stage: stable
+  envVarPrefix: MYCODEXVANTAOS_GRAPH
+  configSchemaRef: ./config.schema.json
+  description: Neo4j graph database provider.
+provider-id: mycodexvantaos-graph-neo4j
+capability: graph
