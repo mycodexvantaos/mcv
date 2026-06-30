@@ -118,7 +118,10 @@ export class EventBus {
 export class Kernel {
   public readonly events = new EventBus();
   public readonly defaultMode = (process.env.MYCODEXVANTAOS_CORE_RUNTIME_MODE || 'hybrid') as
-    'native' | 'hybrid' | 'connected' | 'auto';
+    | 'native'
+    | 'hybrid'
+    | 'connected'
+    | 'auto';
   public readonly registry = new ProviderRegistry(this.defaultMode);
 
   start() {

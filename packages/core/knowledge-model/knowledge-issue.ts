@@ -10,7 +10,11 @@
 import type { ResourceCondition } from '../shared';
 
 export type KnowledgeIssueType =
-  'stale' | 'contradiction' | 'gap' | 'hallucination' | 'broken-reference';
+  | 'stale'
+  | 'contradiction'
+  | 'gap'
+  | 'hallucination'
+  | 'broken-reference';
 
 export type KnowledgeIssueSeverity = 'critical' | 'high' | 'medium' | 'low';
 

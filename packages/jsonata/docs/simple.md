@@ -174,6 +174,7 @@ If no index is specified for an array (i.e. no square brackets after the field r
   { "type": "office", "number": "01962 001234" }
 
 ]</div>
+
   </div>
 
 ## Result sequences

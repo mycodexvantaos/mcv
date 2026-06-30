@@ -17,7 +17,13 @@ export interface Resource<TSpec = Record<string, unknown>, TStatus = Record<stri
 
 /** Standard resource phases */
 export type ResourcePhase =
-  'creating' | 'active' | 'updating' | 'degraded' | 'suspended' | 'deleting' | 'deleted';
+  | 'creating'
+  | 'active'
+  | 'updating'
+  | 'degraded'
+  | 'suspended'
+  | 'deleting'
+  | 'deleted';
 
 /** Resource reference for cross-resource links */
 export interface ResourceReference {

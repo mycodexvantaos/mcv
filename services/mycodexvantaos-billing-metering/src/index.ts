@@ -12,7 +12,12 @@ export const SERVICE_ID = 'mycodexvantaos-billing-metering';
 export const SERVICE_VERSION = '1.0.0';
 
 export type BillingUnit =
-  'token' | 'request' | 'compute-second' | 'storage-gb' | 'embedding' | 'agent-run';
+  | 'token'
+  | 'request'
+  | 'compute-second'
+  | 'storage-gb'
+  | 'embedding'
+  | 'agent-run';
 export type BillingTier = 'free' | 'starter' | 'professional' | 'enterprise';
 
 export interface UsageEvent {

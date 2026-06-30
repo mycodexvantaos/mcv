@@ -25,7 +25,12 @@ export type ScanType =
 export type VulnerabilitySeverity = 'critical' | 'high' | 'medium' | 'low' | 'informational';
 
 export type VulnerabilityState =
-  'open' | 'confirmed' | 'in_progress' | 'resolved' | 'dismissed' | 'false_positive';
+  | 'open'
+  | 'confirmed'
+  | 'in_progress'
+  | 'resolved'
+  | 'dismissed'
+  | 'false_positive';
 
 export interface Vulnerability {
   id: string;

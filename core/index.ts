@@ -173,7 +173,13 @@ export interface DocumentStatus {
 }
 
 export type DocumentPhase =
-  'uploaded' | 'ingesting' | 'ready' | 'failed' | 'stale' | 'archived' | 'deleted';
+  | 'uploaded'
+  | 'ingesting'
+  | 'ready'
+  | 'failed'
+  | 'stale'
+  | 'archived'
+  | 'deleted';
 
 export interface DocumentChunkSpec {
   documentId: string;

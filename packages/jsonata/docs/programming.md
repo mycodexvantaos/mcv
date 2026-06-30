@@ -370,6 +370,7 @@ e.g. bound to a variable, passed to a higher-order function, etc.
   $first5("Hello, World")
 
 )</div>
+
 <div>"Hello"</div>
   </div>
 
@@ -381,6 +382,7 @@ e.g. bound to a variable, passed to a higher-order function, etc.
   $first5("Hello, World")
 
 )</div>
+
 <div>"Hello"</div>
   </div>
 
@@ -420,6 +422,7 @@ is equivalent to\
    $normalize("   Some   Words   ")
 
 )</div>
+
 <div>"SOME WORDS"</div>
   </div>
 
@@ -437,6 +440,7 @@ functions.
   $first5Capitalized(Address.City)
 
 )</div>
+
 <div>"WINCH"</div>
   </div>
 

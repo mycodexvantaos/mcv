@@ -31,6 +31,7 @@ If the evaluation of any key expression results in a key that is already in the 
   "Cloak": 107.99
 
 }</div>
+
   </div>
 
 - Group all of the product sales by name, with the price and the quantity of each item in each group
@@ -39,6 +40,7 @@ If the evaluation of any key expression results in a key that is already in the 
   `Product Name`: {"Price": Price, "Qty": Quantity}
 
 }</div>
+
 <div>{
 "Bowler Hat": {
 "Price": [ 34.45, 34.45 ],
@@ -57,6 +59,7 @@ Note in the above example, the value expression grouped all of the prices togeth
   `Product Name`: $.{"Price": Price, "Qty": Quantity}
 
 }</div>
+
 <div>{
 "Bowler Hat": [
 { "Price": 34.45, "Qty": 2 },
@@ -76,6 +79,7 @@ Note in the above example, the value expression grouped all of the prices togeth
   "Cloak": 107.99
 
 }</div>
+
   </div>
 
 - The total aggregated value in each group
@@ -87,6 +91,7 @@ Note in the above example, the value expression grouped all of the prices togeth
   "Cloak": 107.99
 
 }</div>
+
   </div>
 
 ## Aggregation

@@ -304,8 +304,12 @@ describe('NativeVectorStore', () => {
 describe('HybridVectorStore', () => {
   it('should fallback to native on failure', async () => {
     const factory = new ProviderFactory('test', RuntimeMode.HYBRID);
-    factory.registerProvider({/* external config */});
-    factory.registerProvider({/* native config */});
+    factory.registerProvider({
+      /* external config */
+    });
+    factory.registerProvider({
+      /* native config */
+    });
 
     const hybridProvider = await factory.createProvider(
       'vector-store',

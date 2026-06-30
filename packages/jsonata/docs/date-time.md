@@ -23,6 +23,7 @@ The timestamp is captured at the start of the expression evaluation, and that sa
   "closingTime": $now()
 
 }</div>
+
 <div>{
 "invoiceTime": "2018-12-10T13:49:51.141Z",
 "total": 336.36,

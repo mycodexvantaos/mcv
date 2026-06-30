@@ -162,7 +162,7 @@ providers/
 
 ### 3.3 External & Hybrid Provider 實作檢查
 
-** adapters/ 目錄中的 External 實作：**
+**adapters/ 目錄中的 External 實作：**
 
 | Provider       | 路徑                            | 功能                  | 類型     |
 | -------------- | ------------------------------- | --------------------- | -------- |
@@ -595,8 +595,12 @@ mycodexvantaos/
            new ExternalCodeSynthesis(config.apiKey)
          ),
      },
-     storage: {/* ... */},
-     authentication: {/* ... */},
+     storage: {
+       /* ... */
+     },
+     authentication: {
+       /* ... */
+     },
    };
    ```
 

@@ -27,7 +27,7 @@ MyCodexVantaOS is an upstream software infrastructure platform purpose-built for
 | Machine Identity                                                                                         | `mycodexvantaos`             |
 | Brand Identity                                                                                           | `MyCodexVantaOS`             |
 | Canonical URL                                                                                            | `https://mycodexvantaos.com` |
-| **Forbidden Prefixes:** `mycodexvanta-os`, `codexvanta-os`, `codexvanta`, `codevantaos`, `kubo`, `axiom` |
+| **Forbidden Prefixes:** `mycodexvanta-os`, `codexvanta-os`, `codexvanta`, `codevantaos`, `kubo`, `axiom` | —                            |
 
 ## Specification Hierarchy
 
