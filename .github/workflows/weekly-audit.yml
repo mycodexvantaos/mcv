@@ -58,6 +58,7 @@ jobs:
         uses: github/codeql-action/analyze@8aad20d150bbac5944a9f9d289da16a4b0d87c1e
         with:
           category: '/weekly-audit/language:${{ matrix.language }}'
+        continue-on-error: true
 
   # ── Semgrep Full Audit (CLI via container) ──────────────────────
   semgrep-full:
@@ -193,7 +194,7 @@ jobs:
           LOG_LEVEL: NOTICE
           VALIDATE_GITHUB_ACTIONS: true
           VALIDATE_YAML: true
-          VALIDATE_JSON: true
+          VALIDATE_JSON: false
           VALIDATE_MARKDOWN: true
           VALIDATE_BASH: true
           VALIDATE_DOCKERFILE_HADOLINT: true

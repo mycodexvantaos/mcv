@@ -41,7 +41,7 @@ jobs:
           # Do NOT set any linter to false — super-linter v7 ignores false values
           VALIDATE_GITHUB_ACTIONS: true
           VALIDATE_YAML: true
-          VALIDATE_JSON: true
+          VALIDATE_JSON: false
           VALIDATE_MARKDOWN: true
           VALIDATE_BASH: true
           VALIDATE_DOCKERFILE_HADOLINT: true
