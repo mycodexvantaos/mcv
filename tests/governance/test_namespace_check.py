@@ -55,8 +55,8 @@ class TestRepositoryNameValidator:
     @pytest.mark.parametrize("name", [
         "invalid-name",
         "auth-service",
-        "mycodexvantaos",
         "mycodexvantaos-auth",
+        "other-namespace-service",
     ])
     def test_r01_invalid_repo_names(self, name):
         results = self.validator.validate(name)
@@ -405,10 +405,10 @@ class TestControlledVocabularies:
         assert VALID_NAMESPACES["softwareos"] == "product-plane"
 
     def test_domain_count(self):
-        assert len(VALID_DOMAINS) == 21
+        assert len(VALID_DOMAINS) == 28
 
     def test_function_count(self):
-        assert len(VALID_FUNCTIONS) == 18
+        assert len(VALID_FUNCTIONS) == 23
 
     def test_controller_in_both(self):
         assert "controller" in VALID_DOMAINS

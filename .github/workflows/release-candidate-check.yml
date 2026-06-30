@@ -1,5 +1,5 @@
 name: Release Candidate Check
-true:
+on:
   push:
     branches:
       - main
@@ -209,4 +209,3 @@ jobs:
           name: release-candidate-report
           path: outputs/release-candidate-report.json
           retention-days: 90
-metadata: {}
