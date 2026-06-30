@@ -1,4 +1,4 @@
-import type { Role } from './dashboard';
+import type { Role } from "./dashboard";
 
 export interface AuditEntryChange {
   field: string;

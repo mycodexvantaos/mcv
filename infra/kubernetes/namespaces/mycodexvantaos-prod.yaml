@@ -1,5 +1,3 @@
-# infra/kubernetes/namespaces/mycodexvantaos-prod.yaml
-# 12.1 — Environment 'prod' appears ONLY in namespace name, never in resource names.
 apiVersion: v1
 kind: Namespace
 metadata:

@@ -12,8 +12,8 @@ metadata:
   governanceCode: mycodexvantaos-00000
   createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l00
-    - dependency
+  - l00
+  - dependency
   sloTarget: 30
   evidenceRetentionDays: 2555
   date: '2026-06-29'
@@ -24,19 +24,19 @@ spec:
 
     '
   validates:
-    - dimension: acyclicity
-      description: Hard dependency graph is acyclic.
-      checks:
-        - id: chk-dag-no-cycle
-          description: DFS cycle detection finds no cycles in hard dependency graph
-          rule: dep-graph:acyclic
-          severity: critical
-          evidenceRequired: true
-        - id: chk-no-control-to-product
-          description: No control-plane service hard-depends on product-plane service
-          rule: dep-graph:no-control-to-product-hard-dep
-          severity: critical
-          evidenceRequired: true
+  - dimension: acyclicity
+    description: Hard dependency graph is acyclic.
+    checks:
+    - id: chk-dag-no-cycle
+      description: DFS cycle detection finds no cycles in hard dependency graph
+      rule: dep-graph:acyclic
+      severity: critical
+      evidenceRequired: true
+    - id: chk-no-control-to-product
+      description: No control-plane service hard-depends on product-plane service
+      rule: dep-graph:no-control-to-product-hard-dep
+      severity: critical
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

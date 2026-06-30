@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 /**
  * @fileoverview Highlighted Text Component
@@ -7,8 +7,8 @@
  * and human-like sentences highlighted in green.
  */
 
-import { Badge } from '@/components/ui/badge';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface HighlightedTextProps {
   sentences: Array<{
@@ -24,19 +24,19 @@ interface HighlightedTextProps {
 export function HighlightedText({ sentences }: HighlightedTextProps) {
   const getHighlightClass = (label: string) => {
     switch (label) {
-      case 'ai':
-        return 'bg-red-100 dark:bg-red-900/30 border-l-2 border-red-500';
-      case 'human':
-        return 'bg-green-100 dark:bg-green-900/30 border-l-2 border-green-500';
-      case 'mixed':
-        return 'bg-yellow-100 dark:bg-yellow-900/30 border-l-2 border-yellow-500';
+      case "ai":
+        return "bg-red-100 dark:bg-red-900/30 border-l-2 border-red-500";
+      case "human":
+        return "bg-green-100 dark:bg-green-900/30 border-l-2 border-green-500";
+      case "mixed":
+        return "bg-yellow-100 dark:bg-yellow-900/30 border-l-2 border-yellow-500";
       default:
-        return 'bg-gray-100 dark:bg-gray-900/30 border-l-2 border-gray-500';
+        return "bg-gray-100 dark:bg-gray-900/30 border-l-2 border-gray-500";
     }
   };
 
   const getLabelBadge = (label: string, confidence: number) => {
-    const variant = label === 'ai' ? 'destructive' : label === 'human' ? 'default' : 'secondary';
+    const variant = label === "ai" ? "destructive" : label === "human" ? "default" : "secondary";
     return (
       <Badge variant={variant} className="text-[10px] px-1.5 py-0">
         {label.toUpperCase()} {(confidence * 100).toFixed(0)}%

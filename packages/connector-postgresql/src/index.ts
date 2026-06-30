@@ -34,7 +34,7 @@ export interface Transaction {
 }
 
 export class PostgreSQLConnector {
-  private config: Required<Omit<PostgreSQLConfig, 'maxConnections' | 'idleTimeoutMs'>> & {
+  private config: Required<Omit<PostgreSQLConfig, "maxConnections" | "idleTimeoutMs">> & {
     maxConnections: number;
     idleTimeoutMs: number;
   };
@@ -85,38 +85,38 @@ export class PostgreSQLConnector {
    */
   async query<T = any>(sql: string, values?: any[]): Promise<QueryResult<T>> {
     if (!this.connected) {
-      throw new Error('Not connected to database');
+      throw new Error("Not connected to database");
     }
 
     const trimmedSql = sql.trim().toLowerCase();
 
     // Handle SELECT queries
-    if (trimmedSql.startsWith('select')) {
+    if (trimmedSql.startsWith("select")) {
       return this.executeSelect<T>(sql, values);
     }
 
     // Handle INSERT queries
-    if (trimmedSql.startsWith('insert')) {
+    if (trimmedSql.startsWith("insert")) {
       return this.executeInsert<T>(sql, values);
     }
 
     // Handle UPDATE queries
-    if (trimmedSql.startsWith('update')) {
+    if (trimmedSql.startsWith("update")) {
       return this.executeUpdate<T>(sql, values);
     }
 
     // Handle DELETE queries
-    if (trimmedSql.startsWith('delete')) {
+    if (trimmedSql.startsWith("delete")) {
       return this.executeDelete<T>(sql, values);
     }
 
     // Handle CREATE TABLE
-    if (trimmedSql.startsWith('create table')) {
+    if (trimmedSql.startsWith("create table")) {
       return this.executeCreateTable<T>(sql);
     }
 
     // Handle DROP TABLE
-    if (trimmedSql.startsWith('drop table')) {
+    if (trimmedSql.startsWith("drop table")) {
       return this.executeDropTable<T>(sql);
     }
 
@@ -129,7 +129,7 @@ export class PostgreSQLConnector {
   private async executeSelect<T>(sql: string, values?: any[]): Promise<QueryResult<T>> {
     const tableMatch = sql.match(/FROM\s+(\w+)/i);
     if (!tableMatch) {
-      throw new Error('Could not parse table name from SELECT query');
+      throw new Error("Could not parse table name from SELECT query");
     }
 
     const tableName = tableMatch[1];
@@ -145,7 +145,7 @@ export class PostgreSQLConnector {
         const match = condition.match(/(\w+)\s*=\s*\$?\d+/i);
         if (match) {
           const column = match[1];
-          const valueIndex = parseInt(condition.match(/\$(\d+)/)?.[1] || '0') - 1;
+          const valueIndex = parseInt(condition.match(/\$(\d+)/)?.[1] || "0") - 1;
           filteredRows = filteredRows.filter((row) => row[column] === values[valueIndex]);
         }
       }
@@ -155,12 +155,12 @@ export class PostgreSQLConnector {
     const orderByMatch = sql.match(/ORDER\s+BY\s+(\w+)(?:\s+(ASC|DESC))?/i);
     if (orderByMatch) {
       const column = orderByMatch[1];
-      const direction = (orderByMatch[2] || 'ASC').toUpperCase();
+      const direction = (orderByMatch[2] || "ASC").toUpperCase();
       filteredRows.sort((a, b) => {
         const aVal = a[column];
         const bVal = b[column];
-        if (aVal < bVal) return direction === 'ASC' ? -1 : 1;
-        if (aVal > bVal) return direction === 'ASC' ? 1 : -1;
+        if (aVal < bVal) return direction === "ASC" ? -1 : 1;
+        if (aVal > bVal) return direction === "ASC" ? 1 : -1;
         return 0;
       });
     }
@@ -174,7 +174,7 @@ export class PostgreSQLConnector {
     return {
       rows: filteredRows as T[],
       rowCount: filteredRows.length,
-      command: 'SELECT',
+      command: "SELECT",
       fields: [],
     };
   }
@@ -185,12 +185,12 @@ export class PostgreSQLConnector {
   private async executeInsert<T>(sql: string, values?: any[]): Promise<QueryResult<T>> {
     const tableMatch = sql.match(/INSERT\s+INTO\s+(\w+)/i);
     if (!tableMatch) {
-      throw new Error('Could not parse table name from INSERT query');
+      throw new Error("Could not parse table name from INSERT query");
     }
 
     const tableName = tableMatch[1];
     const columnsMatch = sql.match(/\(([^)]+)\)/i);
-    const columns = columnsMatch ? columnsMatch[1].split(',').map((c) => c.trim()) : [];
+    const columns = columnsMatch ? columnsMatch[1].split(",").map((c) => c.trim()) : [];
 
     const table = this.tables.get(tableName);
     if (!table) {
@@ -211,10 +211,10 @@ export class PostgreSQLConnector {
 
     // Handle RETURNING clause - generate auto-increment id if requested
     const returningMatch = sql.match(/RETURNING\s+(\w+)/i);
-    if (returningMatch && returningMatch[1].toLowerCase() === 'id') {
-      const currentId = (autoIncrementMap.get('id') || 0) + 1;
-      autoIncrementMap.set('id', currentId);
-      row['id'] = currentId;
+    if (returningMatch && returningMatch[1].toLowerCase() === "id") {
+      const currentId = (autoIncrementMap.get("id") || 0) + 1;
+      autoIncrementMap.set("id", currentId);
+      row["id"] = currentId;
     }
 
     this.tables.get(tableName)!.push(row);
@@ -223,7 +223,7 @@ export class PostgreSQLConnector {
       return {
         rows: [row as T],
         rowCount: 1,
-        command: 'INSERT',
+        command: "INSERT",
         fields: [],
       };
     }
@@ -231,7 +231,7 @@ export class PostgreSQLConnector {
     return {
       rows: [] as T[],
       rowCount: 1,
-      command: 'INSERT',
+      command: "INSERT",
       fields: [],
     };
   }
@@ -242,7 +242,7 @@ export class PostgreSQLConnector {
   private async executeUpdate<T>(sql: string, values?: any[]): Promise<QueryResult<T>> {
     const tableMatch = sql.match(/UPDATE\s+(\w+)/i);
     if (!tableMatch) {
-      throw new Error('Could not parse table name from UPDATE query');
+      throw new Error("Could not parse table name from UPDATE query");
     }
 
     const tableName = tableMatch[1];
@@ -251,18 +251,18 @@ export class PostgreSQLConnector {
       return {
         rows: [] as T[],
         rowCount: 0,
-        command: 'UPDATE',
+        command: "UPDATE",
         fields: [],
       };
     }
 
     const setMatch = sql.match(/SET\s+(.+?)\s+WHERE/i);
     if (!setMatch) {
-      throw new Error('Could not parse SET clause');
+      throw new Error("Could not parse SET clause");
     }
 
     const setClause = setMatch[1];
-    const assignments = setClause.split(',');
+    const assignments = setClause.split(",");
 
     let rowCount = 0;
 
@@ -314,7 +314,7 @@ export class PostgreSQLConnector {
     return {
       rows: [] as T[],
       rowCount,
-      command: 'UPDATE',
+      command: "UPDATE",
       fields: [],
     };
   }
@@ -325,7 +325,7 @@ export class PostgreSQLConnector {
   private async executeDelete<T>(sql: string, values?: any[]): Promise<QueryResult<T>> {
     const tableMatch = sql.match(/DELETE\s+FROM\s+(\w+)/i);
     if (!tableMatch) {
-      throw new Error('Could not parse table name from DELETE query');
+      throw new Error("Could not parse table name from DELETE query");
     }
 
     const tableName = tableMatch[1];
@@ -334,7 +334,7 @@ export class PostgreSQLConnector {
       return {
         rows: [] as T[],
         rowCount: 0,
-        command: 'DELETE',
+        command: "DELETE",
         fields: [],
       };
     }
@@ -347,7 +347,7 @@ export class PostgreSQLConnector {
       return {
         rows: [] as T[],
         rowCount,
-        command: 'DELETE',
+        command: "DELETE",
         fields: [],
       };
     }
@@ -380,7 +380,7 @@ export class PostgreSQLConnector {
     return {
       rows: [] as T[],
       rowCount,
-      command: 'DELETE',
+      command: "DELETE",
       fields: [],
     };
   }
@@ -391,7 +391,7 @@ export class PostgreSQLConnector {
   private async executeCreateTable<T>(sql: string): Promise<QueryResult<T>> {
     const tableMatch = sql.match(/CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?(\w+)/i);
     if (!tableMatch) {
-      throw new Error('Could not parse table name from CREATE TABLE query');
+      throw new Error("Could not parse table name from CREATE TABLE query");
     }
 
     const tableName = tableMatch[1];
@@ -403,7 +403,7 @@ export class PostgreSQLConnector {
     return {
       rows: [] as T[],
       rowCount: 0,
-      command: 'CREATE',
+      command: "CREATE",
       fields: [],
     };
   }
@@ -414,7 +414,7 @@ export class PostgreSQLConnector {
   private async executeDropTable<T>(sql: string): Promise<QueryResult<T>> {
     const tableMatch = sql.match(/DROP\s+TABLE\s+(?:IF\s+EXISTS\s+)?(\w+)/i);
     if (!tableMatch) {
-      throw new Error('Could not parse table name from DROP TABLE query');
+      throw new Error("Could not parse table name from DROP TABLE query");
     }
 
     const tableName = tableMatch[1];
@@ -424,7 +424,7 @@ export class PostgreSQLConnector {
     return {
       rows: [] as T[],
       rowCount: 0,
-      command: 'DROP',
+      command: "DROP",
       fields: [],
     };
   }

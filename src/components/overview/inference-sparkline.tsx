@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useMemo } from 'react';
-import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
+import { useMemo } from "react";
+import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
 
 // Simulated 24h inference data
 function generateSparklineData() {
@@ -14,7 +14,7 @@ function generateSparklineData() {
     const base = hour >= 9 && hour <= 18 ? 800 : 300;
     const noise = Math.random() * 200 - 100;
     data.push({
-      time: `${hour.toString().padStart(2, '0')}:00`,
+      time: `${hour.toString().padStart(2, "0")}:00`,
       requests: Math.max(100, Math.round(base + noise)),
       errors: Math.max(0, Math.round(Math.random() * 15)),
     });
@@ -37,25 +37,25 @@ export function InferenceSparkline() {
           </defs>
           <XAxis
             dataKey="time"
-            tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }}
+            tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }}
             axisLine={false}
             tickLine={false}
             interval={3}
           />
           <YAxis
-            tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }}
+            tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }}
             axisLine={false}
             tickLine={false}
             width={40}
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: 'hsl(var(--card))',
-              border: '1px solid hsl(var(--border))',
-              borderRadius: '6px',
-              fontSize: '12px',
+              backgroundColor: "hsl(var(--card))",
+              border: "1px solid hsl(var(--border))",
+              borderRadius: "6px",
+              fontSize: "12px",
             }}
-            labelStyle={{ color: 'hsl(var(--foreground))' }}
+            labelStyle={{ color: "hsl(var(--foreground))" }}
           />
           <Area
             type="monotone"

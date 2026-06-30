@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import type { Dispatch, SetStateAction } from 'react';
+import type { Dispatch, SetStateAction } from "react";
 import {
   Terminal,
   Database,
@@ -17,9 +17,9 @@ import {
   Zap,
   Globe,
   Orbit,
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface IconSidebarProps {
   activeView: string;
@@ -28,15 +28,15 @@ interface IconSidebarProps {
 
 export function IconSidebar({ activeView, setActiveView }: IconSidebarProps) {
   const navItems = [
-    { id: 'files', label: '檔案總管 (Layer A)', icon: Code2 },
-    { id: 'generation', label: '源碼生成 (P9 Hub)', icon: Braces },
-    { id: 'tasks', label: '共生任務 (P8 Hub)', icon: CheckSquare },
-    { id: 'reality', label: '現實網格 (Layer P)', icon: Globe },
-    { id: 'search', label: 'API 探險家', icon: Share2 },
-    { id: 'source-control', label: '架構分析 (Governance)', icon: ClipboardList },
-    { id: 'workstation', label: '管理員工作站 (Layer F)', icon: BarChart3 },
-    { id: 'security', label: '安全性掃描 (Layer C)', icon: ShieldCheck },
-    { id: 'runtime', label: '運行時核心 (Layer B)', icon: Cpu },
+    { id: "files", label: "檔案總管 (Layer A)", icon: Code2 },
+    { id: "generation", label: "源碼生成 (P9 Hub)", icon: Braces },
+    { id: "tasks", label: "共生任務 (P8 Hub)", icon: CheckSquare },
+    { id: "reality", label: "現實網格 (Layer P)", icon: Globe },
+    { id: "search", label: "API 探險家", icon: Share2 },
+    { id: "source-control", label: "架構分析 (Governance)", icon: ClipboardList },
+    { id: "workstation", label: "管理員工作站 (Layer F)", icon: BarChart3 },
+    { id: "security", label: "安全性掃描 (Layer C)", icon: ShieldCheck },
+    { id: "runtime", label: "運行時核心 (Layer B)", icon: Cpu },
   ];
 
   return (
@@ -46,12 +46,12 @@ export function IconSidebar({ activeView, setActiveView }: IconSidebarProps) {
           <Tooltip key={item.id}>
             <TooltipTrigger asChild>
               <Button
-                variant={activeView === item.id ? 'secondary' : 'ghost'}
+                variant={activeView === item.id ? "secondary" : "ghost"}
                 size="icon"
                 className={`h-10 w-10 transition-all ${
                   activeView === item.id
-                    ? 'bg-primary/10 text-primary border border-primary/20 scale-110 shadow-lg shadow-primary/5'
-                    : 'text-muted-foreground hover:text-accent hover:bg-accent/5'
+                    ? "bg-primary/10 text-primary border border-primary/20 scale-110 shadow-lg shadow-primary/5"
+                    : "text-muted-foreground hover:text-accent hover:bg-accent/5"
                 }`}
                 onClick={() => setActiveView(item.id)}
               >
@@ -87,14 +87,14 @@ export function IconSidebar({ activeView, setActiveView }: IconSidebarProps) {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              variant={activeView === 'settings' ? 'secondary' : 'ghost'}
+              variant={activeView === "settings" ? "secondary" : "ghost"}
               size="icon"
               className={`h-10 w-10 transition-all ${
-                activeView === 'settings'
-                  ? 'text-accent bg-accent/5'
-                  : 'text-muted-foreground hover:text-accent'
+                activeView === "settings"
+                  ? "text-accent bg-accent/5"
+                  : "text-muted-foreground hover:text-accent"
               }`}
-              onClick={() => setActiveView('settings')}
+              onClick={() => setActiveView("settings")}
             >
               <Settings className="h-5 w-5" />
             </Button>

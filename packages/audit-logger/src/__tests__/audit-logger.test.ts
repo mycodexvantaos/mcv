@@ -1,17 +1,17 @@
-import { AuditLogger } from '../index';
+import { AuditLogger } from "../index";
 
-describe('audit-logger', () => {
+describe("audit-logger", () => {
   let instance: AuditLogger;
 
   beforeEach(() => {
     instance = new AuditLogger();
   });
 
-  test('should initialize', () => {
+  test("should initialize", () => {
     expect(instance).toBeDefined();
   });
 
-  test('should have basic functionality', () => {
-    expect(typeof instance).toBe('object');
+  test("should have basic functionality", () => {
+    expect(typeof instance).toBe("object");
   });
 });

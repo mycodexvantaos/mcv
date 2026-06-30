@@ -1,8 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
 kind: GateCatalog
 metadata:
-  name: gate-documentation-catalog
   version: 1.0.0
+  name: gate-documentation-catalog
   authority: unified-gate-governance
   governanceCode: mycodexvantaos-00000
   labels:
@@ -16,185 +16,185 @@ metadata:
       '
 spec:
   documents:
-    - section: 1-core
-      files:
-        - id: gate-overview
-          path: 1-core/gate-overview.rst
-          dimension: core
-          normative: true
-        - id: gate-policies
-          path: 1-core/gate-policies.rst
-          dimension: core
-          normative: true
-        - id: gate-validation
-          path: 1-core/gate-validation.rst
-          dimension: core
-          normative: true
-        - id: gate-mapping
-          path: 1-core/gate-mapping.rst
-          dimension: core
-          normative: true
-    - section: 2-lifecycle
-      files:
-        - id: gate-lifecycle
-          path: 2-lifecycle/gate-lifecycle.rst
-          dimension: lifecycle
-          normative: true
-        - id: gate-states
-          path: 2-lifecycle/gate-states.rst
-          dimension: lifecycle
-          normative: true
-        - id: gate-metadata
-          path: 2-lifecycle/gate-metadata.rst
-          dimension: lifecycle
-          normative: true
-    - section: 3-technical
-      files:
-        - id: gate-framework
-          path: 3-technical/gate-framework.rst
-          dimension: technical
-          normative: true
-        - id: gate-spec
-          path: 3-technical/gate-spec.rst
-          dimension: technical
-          normative: true
-        - id: gate-catalog-spec
-          path: 3-technical/gate-catalog.rst
-          dimension: technical
-          normative: true
-        - id: gate-composition
-          path: 3-technical/gate-composition.rst
-          dimension: technical
-          normative: true
-        - id: gate-dependencies
-          path: 3-technical/gate-dependencies.rst
-          dimension: technical
-          normative: true
-        - id: gate-configuration
-          path: 3-technical/gate-configuration.rst
-          dimension: technical
-          normative: true
-        - id: gate-templates
-          path: 3-technical/gate-templates.rst
-          dimension: technical
-          normative: false
-        - id: gate-sdk
-          path: 3-technical/gate-sdk.rst
-          dimension: technical
-          normative: false
-    - section: 4-execution
-      files:
-        - id: gate-execution
-          path: 4-execution/gate-execution.rst
-          dimension: execution
-          normative: true
-        - id: gate-pipeline
-          path: 4-execution/gate-pipeline.rst
-          dimension: execution
-          normative: true
-        - id: gate-metrics
-          path: 4-execution/gate-metrics.rst
-          dimension: execution
-          normative: true
-        - id: gate-monitoring
-          path: 4-execution/gate-monitoring.rst
-          dimension: execution
-          normative: true
-        - id: gate-alerting
-          path: 4-execution/gate-alerting.rst
-          dimension: execution
-          normative: true
-        - id: gate-audit
-          path: 4-execution/gate-audit.rst
-          dimension: execution
-          normative: true
-        - id: gate-reporting
-          path: 4-execution/gate-reporting.rst
-          dimension: execution
-          normative: true
-    - section: 5-governance
-      files:
-        - id: gate-governance
-          path: 5-governance/gate-governance.rst
-          dimension: governance
-          normative: true
-        - id: gate-rbac
-          path: 5-governance/gate-rbac.rst
-          dimension: governance
-          normative: true
-        - id: gate-compliance
-          path: 5-governance/gate-compliance.rst
-          dimension: governance
-          normative: true
-        - id: gate-risk
-          path: 5-governance/gate-risk.rst
-          dimension: governance
-          normative: true
-        - id: gate-waiver
-          path: 5-governance/gate-waiver.rst
-          dimension: governance
-          normative: true
-        - id: gate-escalation
-          path: 5-governance/gate-escalation.rst
-          dimension: governance
-          normative: true
-        - id: gate-slo
-          path: 5-governance/gate-slo.rst
-          dimension: governance
-          normative: true
-        - id: gate-cost
-          path: 5-governance/gate-cost.rst
-          dimension: governance
-          normative: false
-    - section: 6-domain-ai
-      files:
-        - id: gate-model-quality
-          path: 6-domain-ai/gate-model-quality.rst
-          dimension: ai-domain
-          normative: true
-        - id: gate-model-safety
-          path: 6-domain-ai/gate-model-safety.rst
-          dimension: ai-domain
-          normative: true
-        - id: gate-data-quality
-          path: 6-domain-ai/gate-data-quality.rst
-          dimension: ai-domain
-          normative: true
-        - id: gate-inference-latency
-          path: 6-domain-ai/gate-inference-latency.rst
-          dimension: ai-domain
-          normative: true
-        - id: gate-training-stability
-          path: 6-domain-ai/gate-training-stability.rst
-          dimension: ai-domain
-          normative: true
-        - id: gate-vector-index-quality
-          path: 6-domain-ai/gate-vector-index-quality.rst
-          dimension: ai-domain
-          normative: true
-        - id: gate-billing-accuracy
-          path: 6-domain-ai/gate-billing-accuracy.rst
-          dimension: ai-domain
-          normative: true
-        - id: gate-multi-tenant-isolation
-          path: 6-domain-ai/gate-multi-tenant-isolation.rst
-          dimension: ai-domain
-          normative: true
-    - section: 7-evolution
-      files:
-        - id: gate-experiments
-          path: 7-evolution/gate-experiments.rst
-          dimension: evolution
-          normative: false
-        - id: gate-evolution
-          path: 7-evolution/gate-evolution.rst
-          dimension: evolution
-          normative: false
-        - id: gate-roadmap
-          path: 7-evolution/gate-roadmap.rst
-          dimension: evolution
-          normative: false
-        - id: gate-feedback
-          path: 7-evolution/gate-feedback.rst
-          dimension: evolution
-          normative: false
+  - section: 1-core
+    files:
+    - id: gate-overview
+      path: 1-core/gate-overview.rst
+      dimension: core
+      normative: true
+    - id: gate-policies
+      path: 1-core/gate-policies.rst
+      dimension: core
+      normative: true
+    - id: gate-validation
+      path: 1-core/gate-validation.rst
+      dimension: core
+      normative: true
+    - id: gate-mapping
+      path: 1-core/gate-mapping.rst
+      dimension: core
+      normative: true
+  - section: 2-lifecycle
+    files:
+    - id: gate-lifecycle
+      path: 2-lifecycle/gate-lifecycle.rst
+      dimension: lifecycle
+      normative: true
+    - id: gate-states
+      path: 2-lifecycle/gate-states.rst
+      dimension: lifecycle
+      normative: true
+    - id: gate-metadata
+      path: 2-lifecycle/gate-metadata.rst
+      dimension: lifecycle
+      normative: true
+  - section: 3-technical
+    files:
+    - id: gate-framework
+      path: 3-technical/gate-framework.rst
+      dimension: technical
+      normative: true
+    - id: gate-spec
+      path: 3-technical/gate-spec.rst
+      dimension: technical
+      normative: true
+    - id: gate-catalog-spec
+      path: 3-technical/gate-catalog.rst
+      dimension: technical
+      normative: true
+    - id: gate-composition
+      path: 3-technical/gate-composition.rst
+      dimension: technical
+      normative: true
+    - id: gate-dependencies
+      path: 3-technical/gate-dependencies.rst
+      dimension: technical
+      normative: true
+    - id: gate-configuration
+      path: 3-technical/gate-configuration.rst
+      dimension: technical
+      normative: true
+    - id: gate-templates
+      path: 3-technical/gate-templates.rst
+      dimension: technical
+      normative: false
+    - id: gate-sdk
+      path: 3-technical/gate-sdk.rst
+      dimension: technical
+      normative: false
+  - section: 4-execution
+    files:
+    - id: gate-execution
+      path: 4-execution/gate-execution.rst
+      dimension: execution
+      normative: true
+    - id: gate-pipeline
+      path: 4-execution/gate-pipeline.rst
+      dimension: execution
+      normative: true
+    - id: gate-metrics
+      path: 4-execution/gate-metrics.rst
+      dimension: execution
+      normative: true
+    - id: gate-monitoring
+      path: 4-execution/gate-monitoring.rst
+      dimension: execution
+      normative: true
+    - id: gate-alerting
+      path: 4-execution/gate-alerting.rst
+      dimension: execution
+      normative: true
+    - id: gate-audit
+      path: 4-execution/gate-audit.rst
+      dimension: execution
+      normative: true
+    - id: gate-reporting
+      path: 4-execution/gate-reporting.rst
+      dimension: execution
+      normative: true
+  - section: 5-governance
+    files:
+    - id: gate-governance
+      path: 5-governance/gate-governance.rst
+      dimension: governance
+      normative: true
+    - id: gate-rbac
+      path: 5-governance/gate-rbac.rst
+      dimension: governance
+      normative: true
+    - id: gate-compliance
+      path: 5-governance/gate-compliance.rst
+      dimension: governance
+      normative: true
+    - id: gate-risk
+      path: 5-governance/gate-risk.rst
+      dimension: governance
+      normative: true
+    - id: gate-waiver
+      path: 5-governance/gate-waiver.rst
+      dimension: governance
+      normative: true
+    - id: gate-escalation
+      path: 5-governance/gate-escalation.rst
+      dimension: governance
+      normative: true
+    - id: gate-slo
+      path: 5-governance/gate-slo.rst
+      dimension: governance
+      normative: true
+    - id: gate-cost
+      path: 5-governance/gate-cost.rst
+      dimension: governance
+      normative: false
+  - section: 6-domain-ai
+    files:
+    - id: gate-model-quality
+      path: 6-domain-ai/gate-model-quality.rst
+      dimension: ai-domain
+      normative: true
+    - id: gate-model-safety
+      path: 6-domain-ai/gate-model-safety.rst
+      dimension: ai-domain
+      normative: true
+    - id: gate-data-quality
+      path: 6-domain-ai/gate-data-quality.rst
+      dimension: ai-domain
+      normative: true
+    - id: gate-inference-latency
+      path: 6-domain-ai/gate-inference-latency.rst
+      dimension: ai-domain
+      normative: true
+    - id: gate-training-stability
+      path: 6-domain-ai/gate-training-stability.rst
+      dimension: ai-domain
+      normative: true
+    - id: gate-vector-index-quality
+      path: 6-domain-ai/gate-vector-index-quality.rst
+      dimension: ai-domain
+      normative: true
+    - id: gate-billing-accuracy
+      path: 6-domain-ai/gate-billing-accuracy.rst
+      dimension: ai-domain
+      normative: true
+    - id: gate-multi-tenant-isolation
+      path: 6-domain-ai/gate-multi-tenant-isolation.rst
+      dimension: ai-domain
+      normative: true
+  - section: 7-evolution
+    files:
+    - id: gate-experiments
+      path: 7-evolution/gate-experiments.rst
+      dimension: evolution
+      normative: false
+    - id: gate-evolution
+      path: 7-evolution/gate-evolution.rst
+      dimension: evolution
+      normative: false
+    - id: gate-roadmap
+      path: 7-evolution/gate-roadmap.rst
+      dimension: evolution
+      normative: false
+    - id: gate-feedback
+      path: 7-evolution/gate-feedback.rst
+      dimension: evolution
+      normative: false

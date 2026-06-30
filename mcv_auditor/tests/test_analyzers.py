@@ -2,6 +2,7 @@
 MyCodexVantaOS MCV Auditor — Analyzer Unit Tests (22 tests)
 """
 
+import pytest
 from mcv_auditor.core.analyzers import PromptAnalyzer, ToolAnalyzer, GuardrailAnalyzer
 
 

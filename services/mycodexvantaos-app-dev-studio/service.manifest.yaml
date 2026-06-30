@@ -6,16 +6,16 @@ spec:
   id: mycodexvantaos-app-dev-studio
   tier: 3
   capabilities:
-    - llm
-    - repo
-    - observability
-    - auth
+  - llm
+  - repo
+  - observability
+  - auth
   requiredProviders:
-    - llm-gemini
-    - repo-nexus
-    - observability-prometheus
+  - llm-gemini
+  - repo-nexus
+  - observability-prometheus
   deployment:
     supportedModes:
-      - native
-      - connected
-      - hybrid
+    - native
+    - connected
+    - hybrid

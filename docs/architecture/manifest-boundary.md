@@ -1,4 +1,4 @@
-## MyCodexVantaOS — manifest-boundary
+# MyCodexVantaOS — manifest-boundary
 
 Machine Identity: `mycodexvantaos`
 Canonical URL: https://mycodexvantaos.com
@@ -15,7 +15,7 @@ This document describes the manifest-boundary specification for MyCodexVantaOS.
 
 <!-- Formal spec additions -->
 
-## Manifest Boundary
+# Manifest Boundary
 
 > Status: Normative
 > Document: docs/architecture/manifest-boundary.md

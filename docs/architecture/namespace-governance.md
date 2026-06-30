@@ -1,4 +1,4 @@
-## MyCodexVantaOS — namespace-governance
+# MyCodexVantaOS — namespace-governance
 
 Machine Identity: `mycodexvantaos`
 Canonical URL: https://mycodexvantaos.com
@@ -15,7 +15,7 @@ This document describes the namespace-governance specification for MyCodexVantaO
 
 <!-- Formal spec additions -->
 
-## Namespace Governance
+# Namespace Governance
 
 > Status: Normative
 > Document: docs/architecture/namespace-governance.md

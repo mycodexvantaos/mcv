@@ -41,9 +41,9 @@ const CONFIG_FILE = `${CONFIG_DIR}/config.json`;
 
 function loadConfig(): Record<string, string> {
   try {
-    const fs = require('fs');
+    const fs = require("fs");
     if (fs.existsSync(CONFIG_FILE)) {
-      return JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf-8'));
+      return JSON.parse(fs.readFileSync(CONFIG_FILE, "utf-8"));
     }
   } catch {
     /* ignore */
@@ -53,11 +53,11 @@ function loadConfig(): Record<string, string> {
 
 function saveConfig(config: Record<string, string>): void {
   try {
-    const fs = require('fs');
+    const fs = require("fs");
     if (!fs.existsSync(CONFIG_DIR)) fs.mkdirSync(CONFIG_DIR, { recursive: true });
     fs.writeFileSync(CONFIG_FILE, JSON.stringify(config, null, 2));
   } catch (err) {
-    console.error('Failed to save config:', (err as Error).message);
+    console.error("Failed to save config:", (err as Error).message);
   }
 }
 
@@ -65,13 +65,13 @@ function saveConfig(config: Record<string, string>): void {
 
 async function apiRequest(method: string, path: string, body?: unknown): Promise<unknown> {
   const config = loadConfig();
-  const baseUrl = config['api_base'] ?? 'http://localhost:8787/api/v1';
-  const token = config['token'];
+  const baseUrl = config["api_base"] ?? "http://localhost:8787/api/v1";
+  const token = config["token"];
 
   const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   };
-  if (token) headers['Authorization'] = `Bearer ${token}`;
+  if (token) headers["Authorization"] = `Bearer ${token}`;
 
   const res = await fetch(`${baseUrl}${path}`, {
     method,
@@ -90,26 +90,26 @@ async function apiRequest(method: string, path: string, body?: unknown): Promise
 // ── Commands ───────────────────────────────────────────────────────────
 
 const statusCommand: CliCommand = {
-  name: 'status',
-  description: 'Show platform health status',
+  name: "status",
+  description: "Show platform health status",
   action: async () => {
-    const result = (await apiRequest('GET', '/health')) as { status: string; timestamp: string };
+    const result = (await apiRequest("GET", "/health")) as { status: string; timestamp: string };
     console.log(`Platform Status: ${result.status}`);
     console.log(`Timestamp: ${result.timestamp}`);
   },
 };
 
 const configCommand: CliCommand = {
-  name: 'config',
-  description: 'Manage CLI configuration',
+  name: "config",
+  description: "Manage CLI configuration",
   subcommands: [
     {
-      name: 'set',
-      description: 'Set a configuration value',
+      name: "set",
+      description: "Set a configuration value",
       action: async (args) => {
         const [key, value] = args;
         if (!key || !value) {
-          console.error('Usage: mcx config set <key> <value>');
+          console.error("Usage: mcx config set <key> <value>");
           process.exit(1);
         }
         const config = loadConfig();
@@ -119,12 +119,12 @@ const configCommand: CliCommand = {
       },
     },
     {
-      name: 'get',
-      description: 'Get a configuration value',
+      name: "get",
+      description: "Get a configuration value",
       action: async (args) => {
         const [key] = args;
         if (!key) {
-          console.error('Usage: mcx config get <key>');
+          console.error("Usage: mcx config get <key>");
           process.exit(1);
         }
         const config = loadConfig();
@@ -139,33 +139,33 @@ const configCommand: CliCommand = {
 };
 
 const workspaceCommand: CliCommand = {
-  name: 'workspace',
-  description: 'Manage workspaces',
+  name: "workspace",
+  description: "Manage workspaces",
   subcommands: [
     {
-      name: 'create',
-      description: 'Create a workspace',
+      name: "create",
+      description: "Create a workspace",
       action: async (args) => {
         const [name] = args;
         if (!name) {
-          console.error('Usage: mcx workspace create <name>');
+          console.error("Usage: mcx workspace create <name>");
           process.exit(1);
         }
-        const result = await apiRequest('POST', '/workspace', { name, ownerId: 'cli-user' });
-        console.log('✓ Workspace created:', JSON.stringify(result, null, 2));
+        const result = await apiRequest("POST", "/workspace", { name, ownerId: "cli-user" });
+        console.log("✓ Workspace created:", JSON.stringify(result, null, 2));
       },
     },
     {
-      name: 'list',
-      description: 'List workspaces',
+      name: "list",
+      description: "List workspaces",
       action: async () => {
-        const result = (await apiRequest('GET', '/workspace')) as {
+        const result = (await apiRequest("GET", "/workspace")) as {
           items: Array<{ id: string; name: string }>;
         };
         if (result.items?.length) {
           console.table(result.items);
         } else {
-          console.log('No workspaces found.');
+          console.log("No workspaces found.");
         }
       },
     },
@@ -173,47 +173,47 @@ const workspaceCommand: CliCommand = {
 };
 
 const knowledgeCommand: CliCommand = {
-  name: 'knowledge',
-  description: 'Knowledge base operations',
+  name: "knowledge",
+  description: "Knowledge base operations",
   subcommands: [
     {
-      name: 'collections',
-      description: 'List knowledge collections',
+      name: "collections",
+      description: "List knowledge collections",
       action: async () => {
-        const result = await apiRequest('GET', '/knowledge/collections');
+        const result = await apiRequest("GET", "/knowledge/collections");
         console.log(JSON.stringify(result, null, 2));
       },
     },
     {
-      name: 'ingest',
-      description: 'Ingest a document',
+      name: "ingest",
+      description: "Ingest a document",
       action: async (args) => {
         const [filePath] = args;
         if (!filePath) {
-          console.error('Usage: mcx knowledge ingest <file>');
+          console.error("Usage: mcx knowledge ingest <file>");
           process.exit(1);
         }
-        const fs = require('fs');
-        const content = fs.readFileSync(filePath, 'utf-8');
-        const fileName = filePath.split('/').pop();
-        const result = await apiRequest('POST', '/knowledge/ingest', {
-          collectionId: 'default',
+        const fs = require("fs");
+        const content = fs.readFileSync(filePath, "utf-8");
+        const fileName = filePath.split("/").pop();
+        const result = await apiRequest("POST", "/knowledge/ingest", {
+          collectionId: "default",
           documentId: fileName,
           content,
         });
-        console.log('✓ Document ingested:', JSON.stringify(result, null, 2));
+        console.log("✓ Document ingested:", JSON.stringify(result, null, 2));
       },
     },
     {
-      name: 'search',
-      description: 'Search the knowledge base',
+      name: "search",
+      description: "Search the knowledge base",
       action: async (args) => {
-        const query = args.join(' ');
+        const query = args.join(" ");
         if (!query) {
-          console.error('Usage: mcx knowledge search <query>');
+          console.error("Usage: mcx knowledge search <query>");
           process.exit(1);
         }
-        const result = await apiRequest('POST', '/knowledge/search', { query, topK: 5 });
+        const result = await apiRequest("POST", "/knowledge/search", { query, topK: 5 });
         console.log(JSON.stringify(result, null, 2));
       },
     },
@@ -221,33 +221,33 @@ const knowledgeCommand: CliCommand = {
 };
 
 const agentCommand: CliCommand = {
-  name: 'agent',
-  description: 'Agent session operations',
+  name: "agent",
+  description: "Agent session operations",
   subcommands: [
     {
-      name: 'chat',
-      description: 'Start an interactive chat session',
+      name: "chat",
+      description: "Start an interactive chat session",
       action: async (args, opts) => {
-        const workspaceId = opts['workspace'] ?? 'default';
+        const workspaceId = opts["workspace"] ?? "default";
         // Create session
-        const session = (await apiRequest('POST', '/agent/sessions', { workspaceId })) as {
+        const session = (await apiRequest("POST", "/agent/sessions", { workspaceId })) as {
           sessionId: string;
         };
         console.log(`Session started: ${session.sessionId}`);
-        console.log('Type your message (Ctrl+C to exit):\n');
+        console.log("Type your message (Ctrl+C to exit):\n");
 
-        const readline = require('readline');
+        const readline = require("readline");
         const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
         const prompt = () => {
-          rl.question('You: ', async (msg: string) => {
+          rl.question("You: ", async (msg: string) => {
             if (!msg.trim()) {
               prompt();
               return;
             }
             try {
               const result = (await apiRequest(
-                'POST',
+                "POST",
                 `/agent/sessions/${session.sessionId}/messages`,
                 {
                   content: msg,
@@ -259,43 +259,43 @@ const agentCommand: CliCommand = {
               }
               console.log();
             } catch (err) {
-              console.error('Error:', (err as Error).message);
+              console.error("Error:", (err as Error).message);
             }
             prompt();
           });
         };
         prompt();
       },
-      options: [{ flag: '--workspace', description: 'Workspace ID', default: 'default' }],
+      options: [{ flag: "--workspace", description: "Workspace ID", default: "default" }],
     },
   ],
 };
 
 const modelCommand: CliCommand = {
-  name: 'model',
-  description: 'Model endpoint operations',
+  name: "model",
+  description: "Model endpoint operations",
   subcommands: [
     {
-      name: 'list',
-      description: 'List available model endpoints',
+      name: "list",
+      description: "List available model endpoints",
       action: async () => {
-        const result = await apiRequest('GET', '/model/endpoints');
+        const result = await apiRequest("GET", "/model/endpoints");
         console.log(JSON.stringify(result, null, 2));
       },
     },
     {
-      name: 'chat',
-      description: 'Call a model directly',
+      name: "chat",
+      description: "Call a model directly",
       action: async (args) => {
         const [modelId, ...promptParts] = args;
         if (!modelId) {
-          console.error('Usage: mcx model chat <model-id> <prompt>');
+          console.error("Usage: mcx model chat <model-id> <prompt>");
           process.exit(1);
         }
-        const prompt = promptParts.join(' ');
-        const result = await apiRequest('POST', '/model/chat', {
+        const prompt = promptParts.join(" ");
+        const result = await apiRequest("POST", "/model/chat", {
           modelId,
-          messages: [{ role: 'user', content: prompt }],
+          messages: [{ role: "user", content: prompt }],
         });
         console.log(JSON.stringify(result, null, 2));
       },
@@ -304,29 +304,29 @@ const modelCommand: CliCommand = {
 };
 
 const auditCommand: CliCommand = {
-  name: 'audit',
-  description: 'Audit trail operations',
+  name: "audit",
+  description: "Audit trail operations",
   subcommands: [
     {
-      name: 'list',
-      description: 'List audit events',
+      name: "list",
+      description: "List audit events",
       action: async (args, opts) => {
-        const limit = opts['limit'] ?? '50';
-        const result = await apiRequest('GET', `/audit/events?limit=${limit}`);
+        const limit = opts["limit"] ?? "50";
+        const result = await apiRequest("GET", `/audit/events?limit=${limit}`);
         console.log(JSON.stringify(result, null, 2));
       },
-      options: [{ flag: '--limit', description: 'Max events to return', default: '50' }],
+      options: [{ flag: "--limit", description: "Max events to return", default: "50" }],
     },
     {
-      name: 'verify',
-      description: 'Verify audit chain integrity',
+      name: "verify",
+      description: "Verify audit chain integrity",
       action: async () => {
-        const result = (await apiRequest('POST', '/audit/verify')) as {
+        const result = (await apiRequest("POST", "/audit/verify")) as {
           valid: boolean;
           brokenAt?: string;
         };
         if (result.valid) {
-          console.log('✅ Audit chain integrity verified — no tampering detected.');
+          console.log("✅ Audit chain integrity verified — no tampering detected.");
         } else {
           console.error(`❌ Audit chain integrity BROKEN at event: ${result.brokenAt}`);
           process.exit(1);
@@ -337,37 +337,37 @@ const auditCommand: CliCommand = {
 };
 
 const usageCommand: CliCommand = {
-  name: 'usage',
-  description: 'Usage metering',
+  name: "usage",
+  description: "Usage metering",
   action: async (args, opts) => {
     const [subjectId] = args;
     if (!subjectId) {
-      console.error('Usage: mcx usage <subject-id>');
+      console.error("Usage: mcx usage <subject-id>");
       process.exit(1);
     }
-    const window = opts['window'] ?? 'hour';
-    const result = await apiRequest('GET', `/usage/${subjectId}?window=${window}`);
+    const window = opts["window"] ?? "hour";
+    const result = await apiRequest("GET", `/usage/${subjectId}?window=${window}`);
     console.log(JSON.stringify(result, null, 2));
   },
-  options: [{ flag: '--window', description: 'Time window: minute, hour, day', default: 'hour' }],
+  options: [{ flag: "--window", description: "Time window: minute, hour, day", default: "hour" }],
 };
 
 const automationCommand: CliCommand = {
-  name: 'automation',
-  description: 'Automation job operations',
+  name: "automation",
+  description: "Automation job operations",
   subcommands: [
     {
-      name: 'enqueue',
-      description: 'Enqueue an automation job',
+      name: "enqueue",
+      description: "Enqueue an automation job",
       action: async (args) => {
         const [jobType, payloadJson] = args;
         if (!jobType) {
-          console.error('Usage: mcx automation enqueue <type> [json-payload]');
+          console.error("Usage: mcx automation enqueue <type> [json-payload]");
           process.exit(1);
         }
         const payload = payloadJson ? JSON.parse(payloadJson) : {};
-        const result = await apiRequest('POST', '/automation/jobs', { jobType, payload });
-        console.log('✓ Job enqueued:', JSON.stringify(result, null, 2));
+        const result = await apiRequest("POST", "/automation/jobs", { jobType, payload });
+        console.log("✓ Job enqueued:", JSON.stringify(result, null, 2));
       },
     },
   ],
@@ -393,9 +393,9 @@ function parseArgs(argv: string[]): { positional: string[]; opts: Record<string,
   const positional: string[] = [];
   const opts: Record<string, string> = {};
   for (const arg of argv) {
-    if (arg.startsWith('--')) {
-      const [key, value] = arg.slice(2).split('=');
-      opts[key] = value ?? 'true';
+    if (arg.startsWith("--")) {
+      const [key, value] = arg.slice(2).split("=");
+      opts[key] = value ?? "true";
     } else {
       positional.push(arg);
     }
@@ -423,7 +423,7 @@ async function dispatch(
     process.exit(1);
   }
 
-  if (found.subcommands?.length && rest.length > 0 && !rest[0].startsWith('--')) {
+  if (found.subcommands?.length && rest.length > 0 && !rest[0].startsWith("--")) {
     await dispatch(found.subcommands, rest, opts);
   } else if (found.action) {
     await found.action(rest, opts);
@@ -436,8 +436,8 @@ async function dispatch(
 
 function printHelp(commands: CliCommand[], prefix?: string): void {
   console.log(`\nMyCodeXvantaOS CLI (mcx) — Platform Management Tool\n`);
-  console.log(`Usage: mcx ${prefix ? prefix + ' ' : ''}<command> [options]\n`);
-  console.log('Commands:');
+  console.log(`Usage: mcx ${prefix ? prefix + " " : ""}<command> [options]\n`);
+  console.log("Commands:");
   for (const cmd of commands) {
     console.log(`  ${cmd.name.padEnd(20)} ${cmd.description}`);
   }
@@ -451,7 +451,7 @@ async function main(): Promise<void> {
   try {
     await dispatch(rootCommands, positional, opts);
   } catch (err) {
-    console.error('Error:', (err as Error).message);
+    console.error("Error:", (err as Error).message);
     process.exit(1);
   }
 }

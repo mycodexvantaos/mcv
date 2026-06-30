@@ -8,10 +8,10 @@ metadata:
 spec:
   domain: data
   capabilities:
-    - database
-    - queue
-    - storage
-    - observability
+  - database
+  - queue
+  - storage
+  - observability
   providers:
     database: database-postgres
     queue: queue-rabbitmq

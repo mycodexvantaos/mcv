@@ -8,13 +8,13 @@ export interface Policy {
   name: string;
   description: string;
   rules: PolicyRule[];
-  target: 'service' | 'user' | 'resource' | 'network';
-  action: 'allow' | 'deny';
+  target: "service" | "user" | "resource" | "network";
+  action: "allow" | "deny";
 }
 
 export interface PolicyRule {
   condition: string;
-  effect: 'allow' | 'deny';
+  effect: "allow" | "deny";
 }
 
 export interface PolicyContext {
@@ -42,12 +42,12 @@ export class PolicyEngine {
   }
 
   async evaluate(context: PolicyContext): Promise<PolicyResult> {
-    let lastDenyReason = '';
+    let lastDenyReason = "";
 
     for (const policy of this.policies.values()) {
       const matches = this.matchesPolicy(policy, context);
       if (matches) {
-        if (policy.action === 'deny') {
+        if (policy.action === "deny") {
           lastDenyReason = `Denied by policy ${policy.name}: ${policy.description}`;
         }
       }
@@ -55,8 +55,8 @@ export class PolicyEngine {
 
     // Default deny if no explicit allow
     return {
-      allowed: lastDenyReason === '',
-      reason: lastDenyReason || 'Allowed by default',
+      allowed: lastDenyReason === "",
+      reason: lastDenyReason || "Allowed by default",
     };
   }
 

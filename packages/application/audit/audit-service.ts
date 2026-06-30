@@ -11,8 +11,8 @@
  *   - verify-audit-chain
  */
 
-import type { IDatabasePort } from '../../ports/database';
-import type { IJobQueuePort } from '../../ports/queue';
+import type { IDatabasePort } from "../../ports/database";
+import type { IJobQueuePort } from "../../ports/queue";
 
 // ── Service Dependencies ───────────────────────────────────────────────
 
@@ -24,16 +24,16 @@ export interface AuditServiceDeps {
 // ── Types ──────────────────────────────────────────────────────────────
 
 export type AuditEventCategory =
-  | 'knowledge'
-  | 'agent'
-  | 'workspace'
-  | 'developer'
-  | 'security'
-  | 'storage'
-  | 'model'
-  | 'automation';
-export type AuditEventSeverity = 'critical' | 'high' | 'medium' | 'low' | 'info';
-export type ClosedLoopStatus = 'open' | 'completed' | 'timeout' | 'violated';
+  | "knowledge"
+  | "agent"
+  | "workspace"
+  | "developer"
+  | "security"
+  | "storage"
+  | "model"
+  | "automation";
+export type AuditEventSeverity = "critical" | "high" | "medium" | "low" | "info";
+export type ClosedLoopStatus = "open" | "completed" | "timeout" | "violated";
 
 export interface WriteAuditEventInput {
   eventType: string;
@@ -103,7 +103,7 @@ export interface IntegrityVerificationResult {
 export class AuditService {
   private deps: AuditServiceDeps;
   private static readonly GENESIS_HASH =
-    '0000000000000000000000000000000000000000000000000000000000000000';
+    "0000000000000000000000000000000000000000000000000000000000000000";
 
   constructor(deps: AuditServiceDeps) {
     this.deps = deps;
@@ -115,7 +115,7 @@ export class AuditService {
 
     // Get last event for hash chaining
     const lastEvent = await this.deps.database.queryFirst<{ hash: string; chain_index: number }>(
-      'SELECT hash, chain_index FROM audit_events ORDER BY chain_index DESC LIMIT 1'
+      "SELECT hash, chain_index FROM audit_events ORDER BY chain_index DESC LIMIT 1"
     );
 
     const previousHash = lastEvent?.hash ?? AuditService.GENESIS_HASH;
@@ -175,7 +175,7 @@ export class AuditService {
         hash,
         previousHash,
         chainIndex,
-        closedLoopStatus: 'open',
+        closedLoopStatus: "open",
         closedAt: null,
       },
     };
@@ -186,23 +186,23 @@ export class AuditService {
     const params: unknown[] = [];
 
     if (input.category) {
-      conditions.push('category = ?');
+      conditions.push("category = ?");
       params.push(input.category);
     }
     if (input.subjectId) {
-      conditions.push('subject_id = ?');
+      conditions.push("subject_id = ?");
       params.push(input.subjectId);
     }
     if (input.workspaceId) {
-      conditions.push('workspace_id = ?');
+      conditions.push("workspace_id = ?");
       params.push(input.workspaceId);
     }
     if (input.resourceKind) {
-      conditions.push('resource_kind = ?');
+      conditions.push("resource_kind = ?");
       params.push(input.resourceKind);
     }
 
-    const where = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+    const where = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
     params.push(input.limit ?? 100, input.offset ?? 0);
 
     const rows = await this.deps.database.query<Record<string, unknown>>(
@@ -226,10 +226,10 @@ export class AuditService {
       timestamp: string;
       data: string;
     }>(
-      'SELECT hash, previous_hash, chain_index, id, event_type, timestamp, data FROM audit_events ORDER BY chain_index ASC'
+      "SELECT hash, previous_hash, chain_index, id, event_type, timestamp, data FROM audit_events ORDER BY chain_index ASC"
     );
 
-    const violations: IntegrityVerificationResult['violations'] = [];
+    const violations: IntegrityVerificationResult["violations"] = [];
     let previousHash = AuditService.GENESIS_HASH;
 
     for (const row of rows) {
@@ -260,10 +260,10 @@ export class AuditService {
   ): Promise<string> {
     const payload = JSON.stringify({ eventId, eventType, timestamp, previousHash, data });
     const encoder = new TextEncoder();
-    const buffer = await crypto.subtle.digest('SHA-256', encoder.encode(payload));
+    const buffer = await crypto.subtle.digest("SHA-256", encoder.encode(payload));
     return Array.from(new Uint8Array(buffer))
-      .map((b) => b.toString(16).padStart(2, '0'))
-      .join('');
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
   }
 
   private mapRowToResource(row: Record<string, unknown>): AuditEventResource {
@@ -279,7 +279,7 @@ export class AuditService {
         resourceKind: row.resource_kind as string | null,
         resourceId: row.resource_id as string | null,
         action: row.action as string,
-        data: JSON.parse((row.data as string) || '{}'),
+        data: JSON.parse((row.data as string) || "{}"),
         correlationId: row.correlation_id as string,
         parentEventId: row.parent_event_id as string | null,
         pairId: row.pair_id as string | null,

@@ -8,9 +8,9 @@ metadata:
 spec:
   domain: ai
   capabilities:
-    - vector-store
-    - embedding
-    - state-store
+  - vector-store
+  - embedding
+  - state-store
   providers:
     vector-store: vector-store-pgvector
     embedding: embedding-openai

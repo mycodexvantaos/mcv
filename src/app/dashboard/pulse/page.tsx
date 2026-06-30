@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { senseGlobalPulse, type PulseSensingOutput } from '@/ai/client-stubs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { useState, useEffect } from "react";
+import { senseGlobalPulse, type PulseSensingOutput } from "@/ai/client-stubs";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   Activity,
   Globe,
@@ -16,7 +16,7 @@ import {
   ShieldCheck,
   Terminal,
   Users,
-} from 'lucide-react';
+} from "lucide-react";
 
 export default function PulseSensingPage() {
   const [loading, setLoading] = useState(false);
@@ -26,11 +26,11 @@ export default function PulseSensingPage() {
   // Simulate real-time data stream ingestion
   useEffect(() => {
     const streams = [
-      'INGEST: Twitter_API_V2 -> [Fever, Cough, Pandemic] frequency +340%',
-      'INGEST: Bloomberg -> Semiconductor supply chain bottleneck detected',
-      'INGEST: GitHub_Event_Stream -> Novel zero-day vulnerability proof-of-concept published',
-      'INGEST: ArXiv_RSS -> Quantum Entanglement Phase Shift paper uploaded',
-      'INGEST: WHO_Gateway -> Regional medical resource threshold exceeded',
+      "INGEST: Twitter_API_V2 -> [Fever, Cough, Pandemic] frequency +340%",
+      "INGEST: Bloomberg -> Semiconductor supply chain bottleneck detected",
+      "INGEST: GitHub_Event_Stream -> Novel zero-day vulnerability proof-of-concept published",
+      "INGEST: ArXiv_RSS -> Quantum Entanglement Phase Shift paper uploaded",
+      "INGEST: WHO_Gateway -> Regional medical resource threshold exceeded",
     ];
     let i = 0;
     const interval = setInterval(() => {
@@ -44,7 +44,7 @@ export default function PulseSensingPage() {
     setLoading(true);
     try {
       const output = await senseGlobalPulse({
-        region: 'Global Lattice',
+        region: "Global Lattice",
         dataStreams: streamData,
       });
       setPulse(output);
@@ -156,7 +156,7 @@ export default function PulseSensingPage() {
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
                           <Badge
-                            variant={anomaly.anomaly_score < 0.3 ? 'destructive' : 'secondary'}
+                            variant={anomaly.anomaly_score < 0.3 ? "destructive" : "secondary"}
                             className="text-[9px] uppercase font-bold px-3"
                           >
                             Score: {anomaly.anomaly_score.toFixed(2)}

@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useState, useCallback } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 import {
   Loader2,
   ScanSearch,
@@ -28,11 +28,11 @@ import {
   Copy,
   Download,
   RefreshCw,
-} from 'lucide-react';
-import { HighlightedText } from '@/components/humaniser/highlighted-text';
-import { DetectionResult } from '@/components/humaniser/detection-result';
-import { RewriteComparison } from '@/components/humaniser/rewrite-comparison';
-import { ScoreGauge } from '@/components/humaniser/score-gauge';
+} from "lucide-react";
+import { HighlightedText } from "@/components/humaniser/highlighted-text";
+import { DetectionResult } from "@/components/humaniser/detection-result";
+import { RewriteComparison } from "@/components/humaniser/rewrite-comparison";
+import { ScoreGauge } from "@/components/humaniser/score-gauge";
 
 interface DetectionData {
   id: string;
@@ -91,15 +91,15 @@ interface HumaniserData {
 }
 
 export default function HumaniserPage() {
-  const [inputText, setInputText] = useState('');
-  const [style, setStyle] = useState('neutral');
+  const [inputText, setInputText] = useState("");
+  const [style, setStyle] = useState("neutral");
   const [useLLM, setUseLLM] = useState(false);
   const [detecting, setDetecting] = useState(false);
   const [humanising, setHumanising] = useState(false);
   const [detectionData, setDetectionData] = useState<DetectionData | null>(null);
   const [humaniserData, setHumaniserData] = useState<HumaniserData | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState('detect');
+  const [activeTab, setActiveTab] = useState("detect");
 
   const handleDetect = useCallback(async () => {
     if (!inputText.trim()) return;
@@ -109,20 +109,20 @@ export default function HumaniserPage() {
     setHumaniserData(null);
 
     try {
-      const res = await fetch('/api/humaniser/detect', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: inputText, source: 'text', useLLM }),
+      const res = await fetch("/api/humaniser/detect", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: inputText, source: "text", useLLM }),
       });
 
       if (!res.ok) {
         const err: { error?: string } = await res.json();
-        throw new Error(err.error || 'Detection failed');
+        throw new Error(err.error || "Detection failed");
       }
 
       const data: DetectionData = await res.json();
       setDetectionData(data);
-      setActiveTab('results');
+      setActiveTab("results");
     } catch (e: any) {
       setError(e.message);
     } finally {
@@ -136,9 +136,9 @@ export default function HumaniserPage() {
     setError(null);
 
     try {
-      const res = await fetch('/api/humaniser/humanise', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/humaniser/humanise", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           text: inputText,
           detectionResult: detectionData,
@@ -149,12 +149,12 @@ export default function HumaniserPage() {
 
       if (!res.ok) {
         const err: { error?: string } = await res.json();
-        throw new Error(err.error || 'Humanisation failed');
+        throw new Error(err.error || "Humanisation failed");
       }
 
       const data: HumaniserData = await res.json();
       setHumaniserData(data);
-      setActiveTab('comparison');
+      setActiveTab("comparison");
     } catch (e: any) {
       setError(e.message);
     } finally {
@@ -168,24 +168,24 @@ export default function HumaniserPage() {
 
   const labelColor = (label: string) => {
     switch (label) {
-      case 'ai':
-        return 'destructive';
-      case 'human':
-        return 'default';
-      case 'mixed':
-        return 'secondary';
+      case "ai":
+        return "destructive";
+      case "human":
+        return "default";
+      case "mixed":
+        return "secondary";
       default:
-        return 'outline';
+        return "outline";
     }
   };
 
   const labelIcon = (label: string) => {
     switch (label) {
-      case 'ai':
+      case "ai":
         return <XCircle className="h-4 w-4 text-red-500" />;
-      case 'human':
+      case "human":
         return <CheckCircle2 className="h-4 w-4 text-green-500" />;
-      case 'mixed':
+      case "mixed":
         return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
       default:
         return <FileText className="h-4 w-4 text-gray-500" />;
@@ -215,7 +215,7 @@ export default function HumaniserPage() {
             </Label>
           </div>
           <Badge variant="outline" className="text-xs">
-            {useLLM ? 'Hybrid Mode' : 'Native Mode'}
+            {useLLM ? "Hybrid Mode" : "Native Mode"}
           </Badge>
         </div>
       </div>

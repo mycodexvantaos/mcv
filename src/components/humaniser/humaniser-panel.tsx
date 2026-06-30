@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 /**
  * @fileoverview Humaniser Panel Component
@@ -7,15 +7,15 @@
  * Provides quick detection and humanisation functionality.
  */
 
-import { useState, useCallback } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
-import { ScanSearch, Wand2, Loader2, CheckCircle2, XCircle } from 'lucide-react';
+import { useState, useCallback } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import { ScanSearch, Wand2, Loader2, CheckCircle2, XCircle } from "lucide-react";
 
 export function HumaniserPanel() {
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{
     label: string;
@@ -27,14 +27,14 @@ export function HumaniserPanel() {
     if (!text.trim()) return;
     setLoading(true);
     try {
-      const res = await fetch('/api/humaniser/detect', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text, source: 'text' }),
+      const res = await fetch("/api/humaniser/detect", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text, source: "text" }),
       });
       const data: { label?: string; aiScore?: number; confidence?: number } = await res.json();
       setResult({
-        label: data.label || 'unknown',
+        label: data.label || "unknown",
         aiScore: data.aiScore ?? 0,
         confidence: data.confidence ?? 0,
       });
@@ -49,17 +49,17 @@ export function HumaniserPanel() {
     if (!text.trim() || !result) return;
     setLoading(true);
     try {
-      const detectRes = await fetch('/api/humaniser/detect', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text, source: 'text' }),
+      const detectRes = await fetch("/api/humaniser/detect", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text, source: "text" }),
       });
       const detection: any = await detectRes.json();
 
-      const res = await fetch('/api/humaniser/humanise', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text, detectionResult: detection, style: 'neutral' }),
+      const res = await fetch("/api/humaniser/humanise", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text, detectionResult: detection, style: "neutral" }),
       });
       const data: {
         humanisedText?: string;
@@ -67,7 +67,7 @@ export function HumaniserPanel() {
       } = await res.json();
       setText(data.humanisedText || text);
       setResult({
-        label: data.updatedDetection?.label || 'human',
+        label: data.updatedDetection?.label || "human",
         aiScore: data.updatedDetection?.aiScore || 0,
         confidence: data.updatedDetection?.confidence || 0,
       });
@@ -96,13 +96,13 @@ export function HumaniserPanel() {
 
         {result && (
           <div className="flex items-center gap-2">
-            {result.label === 'ai' ? (
+            {result.label === "ai" ? (
               <XCircle className="h-4 w-4 text-red-500" />
             ) : (
               <CheckCircle2 className="h-4 w-4 text-green-500" />
             )}
             <Badge
-              variant={result.label === 'ai' ? 'destructive' : 'default'}
+              variant={result.label === "ai" ? "destructive" : "default"}
               className="text-[10px]"
             >
               {result.label.toUpperCase()} {(result.aiScore * 100).toFixed(0)}%

@@ -1,17 +1,17 @@
-import { StateManager } from '../index';
+import { StateManager } from "../index";
 
-describe('state-manager', () => {
+describe("state-manager", () => {
   let instance: StateManager;
 
   beforeEach(() => {
     instance = new StateManager();
   });
 
-  test('should initialize', () => {
+  test("should initialize", () => {
     expect(instance).toBeDefined();
   });
 
-  test('should have basic functionality', () => {
-    expect(typeof instance).toBe('object');
+  test("should have basic functionality", () => {
+    expect(typeof instance).toBe("object");
   });
 });

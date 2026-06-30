@@ -11,7 +11,7 @@ pnpm add @mycodexvantaos/database
 ## Usage
 
 ```typescript
-import { database } from '@mycodexvantaos/database';
+import { database } from "@mycodexvantaos/database";
 
 // Initialize
 await database.initialize();

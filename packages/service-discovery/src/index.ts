@@ -3,7 +3,7 @@
  * Service registration, discovery, and health monitoring
  */
 
-import * as events from 'events';
+import * as events from "events";
 
 export interface ServiceRegistration {
   id: string;
@@ -41,7 +41,7 @@ export class ServiceDiscovery extends events.EventEmitter {
    * Initialize service discovery
    */
   async initialize(): Promise<void> {
-    console.log('Service discovery initialized');
+    console.log("Service discovery initialized");
     // Start health check simulation
     this.startHealthChecks();
   }
@@ -52,14 +52,14 @@ export class ServiceDiscovery extends events.EventEmitter {
   async execute<T = ServiceRegistration>(registration: ServiceRegistration): Promise<T> {
     // Validate registration
     if (!registration.id || !registration.name || !registration.endpoint) {
-      throw new Error('Invalid service registration: id, name, and endpoint required');
+      throw new Error("Invalid service registration: id, name, and endpoint required");
     }
 
     // Store service
     this.services.set(registration.id, {
       ...registration,
       registeredAt: Date.now(),
-      status: 'healthy',
+      status: "healthy",
       lastHealthCheck: Date.now(),
     });
 
@@ -69,7 +69,7 @@ export class ServiceDiscovery extends events.EventEmitter {
     }
 
     // Emit registration event
-    this.emit('service-registered', registration);
+    this.emit("service-registered", registration);
     console.log(`Service registered: ${registration.name}`);
 
     return registration as T;
@@ -98,7 +98,7 @@ export class ServiceDiscovery extends events.EventEmitter {
 
     // Filter by health status
     if (query.healthyOnly) {
-      results = results.filter((s) => s.status === 'healthy');
+      results = results.filter((s) => s.status === "healthy");
     }
 
     return results;
@@ -118,7 +118,7 @@ export class ServiceDiscovery extends events.EventEmitter {
     const removed = this.services.delete(serviceId);
     if (removed) {
       this.healthChecks.delete(serviceId);
-      this.emit('service-unregistered', { serviceId });
+      this.emit("service-unregistered", { serviceId });
     }
     return removed;
   }
@@ -152,13 +152,13 @@ export class ServiceDiscovery extends events.EventEmitter {
         // Simulate health check
         const isHealthy = Math.random() > 0.1; // 90% chance of healthy
 
-        const status = isHealthy ? 'healthy' : 'unhealthy';
+        const status = isHealthy ? "healthy" : "unhealthy";
 
         if (service.status !== status) {
           service.status = status;
           service.lastHealthCheck = Date.now();
 
-          this.emit('service-health-changed', {
+          this.emit("service-health-changed", {
             serviceId,
             status,
             timestamp: Date.now(),
@@ -190,8 +190,8 @@ export class ServiceDiscovery extends events.EventEmitter {
     const services = Array.from(this.services.values());
     return {
       total: services.length,
-      healthy: services.filter((s) => s.status === 'healthy').length,
-      unhealthy: services.filter((s) => s.status !== 'healthy').length,
+      healthy: services.filter((s) => s.status === "healthy").length,
+      unhealthy: services.filter((s) => s.status !== "healthy").length,
       byType: this.groupByType(services),
     };
   }
@@ -216,7 +216,7 @@ export class ServiceDiscovery extends events.EventEmitter {
     this.services.clear();
     this.healthChecks.clear();
     this.subscriptions.clear();
-    console.log('Service discovery cleaned up');
+    console.log("Service discovery cleaned up");
   }
 }
 

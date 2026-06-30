@@ -19,7 +19,7 @@
 
 - **Use `z` from `genkit`**: Always import `z` from the `genkit` package to ensure compatibility.
   ```ts
-  import { z } from 'genkit';
+  import { z } from "genkit";
   ```
 - **Descriptive Schemas**: Use `.describe()` on Zod fields. LLMs use these descriptions to understand how to populate the fields.
 

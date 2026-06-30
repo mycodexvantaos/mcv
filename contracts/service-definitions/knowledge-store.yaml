@@ -1,6 +1,3 @@
-# ═══════════════════════════════════════════════════════════════════
-# MyCodeXvantaOS — Knowledge Store Service Definition
-# ═══════════════════════════════════════════════════════════════════
 apiVersion: platform.mycodexvantaos/v1
 kind: ServiceDefinition
 metadata:
@@ -9,12 +6,12 @@ metadata:
   version: 1.0.0-constitution
   category: knowledge
   display_name: Knowledge Store Service
-  description: >
-    Document ingestion, chunking, embedding, and knowledge collection management.
-    Implements the full ingestion pipeline: validate → extract → chunk → embed → index → verify.
-    Stores documents in R2, metadata in D1, embeddings in Vectorize.
-    Level 2 service — depends on identity.
+  description: 'Document ingestion, chunking, embedding, and knowledge collection
+    management. Implements the full ingestion pipeline: validate → extract → chunk
+    → embed → index → verify. Stores documents in R2, metadata in D1, embeddings in
+    Vectorize. Level 2 service — depends on identity.
 
+    '
 spec:
   resource_type: document
   runtime:
@@ -27,149 +24,214 @@ spec:
     limits:
       cpu_ms: 200
       memory_mb: 256
-
   capabilities:
-    - id: knowledge.upload-document
-      method: uploadDocument
-      description: Upload a document to a workspace's knowledge collection
-      input:
-        type: object
-        required: [workspace_id, collection_id, filename, content_type, data, subject_id]
-        properties:
-          workspace_id: { type: string }
-          collection_id: { type: string }
-          filename: { type: string }
-          content_type:
-            {
-              type: string,
-              enum: [application/pdf, text/plain, text/markdown, text/html, application/json],
-            }
-          data: { type: string, format: base64 }
-          subject_id: { type: string }
-          metadata: { type: object }
-      output:
-        type: object
-        properties:
-          document:
-            $ref: 'urn:mycodexvantaos:knowledge:resource:document'
-          ingestion_queued: { type: boolean }
-
-    - id: knowledge.ingest-document
-      method: ingestDocument
-      description: Process a document through the full ingestion pipeline
-      input:
-        type: object
-        required: [document_id, workspace_id, collection_id]
-        properties:
-          document_id: { type: string }
-          workspace_id: { type: string }
-          collection_id: { type: string }
-          chunking_strategy:
-            type: object
-            properties:
-              method: { type: string, enum: [fixed, semantic, sentence], default: fixed }
-              chunk_size: { type: integer, default: 512 }
-              overlap: { type: integer, default: 64 }
-      output:
-        type: object
-        properties:
-          document_id: { type: string }
-          chunks_created: { type: integer }
-          phase: { type: string, enum: [ingested, failed] }
-          verification_report:
-            type: object
-            properties:
-              chunk_count: { type: integer }
-              embedding_dimensions: { type: integer }
-              index_status: { type: string }
-
-    - id: knowledge.create-collection
-      method: createCollection
-      description: Create a new knowledge collection within a workspace
-      input:
-        type: object
-        required: [workspace_id, display_name, subject_id]
-        properties:
-          workspace_id: { type: string }
-          display_name: { type: string }
-          subject_id: { type: string }
-          description: { type: string }
-          embedding_model: { type: string, default: 'text-embedding-3-small' }
-      output:
-        type: object
-        $ref: 'urn:mycodexvantaos:knowledge:resource:knowledge-collection'
-
-    - id: knowledge.get-document
-      method: getDocument
-      description: Retrieve a document by ID
-      input:
-        type: object
-        required: [document_id, workspace_id]
-        properties:
-          document_id: { type: string }
-          workspace_id: { type: string }
-      output:
-        type: object
-        $ref: 'urn:mycodexvantaos:knowledge:resource:document'
-
-    - id: knowledge.delete-document
-      method: deleteDocument
-      description: Soft-delete a document and its chunks
-      input:
-        type: object
-        required: [document_id, workspace_id, subject_id]
-        properties:
-          document_id: { type: string }
-          workspace_id: { type: string }
-          subject_id: { type: string }
-      output:
-        type: object
-        properties:
-          deleted: { type: boolean }
-
-    - id: knowledge.list-documents
-      method: listDocuments
-      description: List documents in a collection with pagination
-      input:
-        type: object
-        required: [collection_id, workspace_id]
-        properties:
-          collection_id: { type: string }
-          workspace_id: { type: string }
-          limit: { type: integer, default: 20, maximum: 100 }
-          cursor: { type: string }
-      output:
-        type: object
-        properties:
-          documents: { type: array }
-          next_cursor: { type: string }
-
+  - id: knowledge.upload-document
+    method: uploadDocument
+    description: Upload a document to a workspace's knowledge collection
+    input:
+      type: object
+      required:
+      - workspace_id
+      - collection_id
+      - filename
+      - content_type
+      - data
+      - subject_id
+      properties:
+        workspace_id:
+          type: string
+        collection_id:
+          type: string
+        filename:
+          type: string
+        content_type:
+          type: string
+          enum:
+          - application/pdf
+          - text/plain
+          - text/markdown
+          - text/html
+          - application/json
+        data:
+          type: string
+          format: base64
+        subject_id:
+          type: string
+        metadata:
+          type: object
+    output:
+      type: object
+      properties:
+        document:
+          $ref: urn:mycodexvantaos:knowledge:resource:document
+        ingestion_queued:
+          type: boolean
+  - id: knowledge.ingest-document
+    method: ingestDocument
+    description: Process a document through the full ingestion pipeline
+    input:
+      type: object
+      required:
+      - document_id
+      - workspace_id
+      - collection_id
+      properties:
+        document_id:
+          type: string
+        workspace_id:
+          type: string
+        collection_id:
+          type: string
+        chunking_strategy:
+          type: object
+          properties:
+            method:
+              type: string
+              enum:
+              - fixed
+              - semantic
+              - sentence
+              default: fixed
+            chunk_size:
+              type: integer
+              default: 512
+            overlap:
+              type: integer
+              default: 64
+    output:
+      type: object
+      properties:
+        document_id:
+          type: string
+        chunks_created:
+          type: integer
+        phase:
+          type: string
+          enum:
+          - ingested
+          - failed
+        verification_report:
+          type: object
+          properties:
+            chunk_count:
+              type: integer
+            embedding_dimensions:
+              type: integer
+            index_status:
+              type: string
+  - id: knowledge.create-collection
+    method: createCollection
+    description: Create a new knowledge collection within a workspace
+    input:
+      type: object
+      required:
+      - workspace_id
+      - display_name
+      - subject_id
+      properties:
+        workspace_id:
+          type: string
+        display_name:
+          type: string
+        subject_id:
+          type: string
+        description:
+          type: string
+        embedding_model:
+          type: string
+          default: text-embedding-3-small
+    output:
+      type: object
+      $ref: urn:mycodexvantaos:knowledge:resource:knowledge-collection
+  - id: knowledge.get-document
+    method: getDocument
+    description: Retrieve a document by ID
+    input:
+      type: object
+      required:
+      - document_id
+      - workspace_id
+      properties:
+        document_id:
+          type: string
+        workspace_id:
+          type: string
+    output:
+      type: object
+      $ref: urn:mycodexvantaos:knowledge:resource:document
+  - id: knowledge.delete-document
+    method: deleteDocument
+    description: Soft-delete a document and its chunks
+    input:
+      type: object
+      required:
+      - document_id
+      - workspace_id
+      - subject_id
+      properties:
+        document_id:
+          type: string
+        workspace_id:
+          type: string
+        subject_id:
+          type: string
+    output:
+      type: object
+      properties:
+        deleted:
+          type: boolean
+  - id: knowledge.list-documents
+    method: listDocuments
+    description: List documents in a collection with pagination
+    input:
+      type: object
+      required:
+      - collection_id
+      - workspace_id
+      properties:
+        collection_id:
+          type: string
+        workspace_id:
+          type: string
+        limit:
+          type: integer
+          default: 20
+          maximum: 100
+        cursor:
+          type: string
+    output:
+      type: object
+      properties:
+        documents:
+          type: array
+        next_cursor:
+          type: string
   events:
     emitted:
-      - knowledge.document.uploaded
-      - knowledge.document.ingestion-started
-      - knowledge.document.ingestion-completed
-      - knowledge.document.ingestion-failed
-      - knowledge.document.deleted
-      - knowledge.collection.created
+    - knowledge.document.uploaded
+    - knowledge.document.ingestion-started
+    - knowledge.document.ingestion-completed
+    - knowledge.document.ingestion-failed
+    - knowledge.document.deleted
+    - knowledge.collection.created
     subscribed:
-      - identity.subject.registered
-
+    - identity.subject.registered
   audit:
     log_all_actions: true
     integrity_chain: true
     retention: 2555d
-
   dependencies:
-    hard: [identity]
-    soft: [audit-log, usage-meter]
-
+    hard:
+    - identity
+    soft:
+    - audit-log
+    - usage-meter
   ports:
-    - interface: IKnowledgeStorePort
-      methods:
-        - uploadDocument
-        - ingestDocument
-        - createCollection
-        - getDocument
-        - deleteDocument
-        - listDocuments
+  - interface: IKnowledgeStorePort
+    methods:
+    - uploadDocument
+    - ingestDocument
+    - createCollection
+    - getDocument
+    - deleteDocument
+    - listDocuments

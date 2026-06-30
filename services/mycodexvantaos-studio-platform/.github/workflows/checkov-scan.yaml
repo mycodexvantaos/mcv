@@ -1,41 +1,38 @@
 name: Checkov IaC Scan
-
-on:
+"on":
   push:
-    branches: [main]
+    branches:
+    - main
     paths:
-      - 'deploy/**'
-      - '.config/checkov/**'
+    - deploy/**
+    - .config/checkov/**
   pull_request:
-    branches: [main]
+    branches:
+    - main
     paths:
-      - 'deploy/**'
-      - '.config/checkov/**'
-  workflow_dispatch:
-
+    - deploy/**
+    - .config/checkov/**
+  workflow_dispatch: null
 permissions:
   contents: read
   security-events: write
-
 jobs:
   checkov:
     name: Checkov Scan
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-
-      - name: Run Checkov scan
-        uses: bridgecrewio/checkov-action@v12.2987.0
-        with:
-          directory: ./deploy/
-          framework: all
-          output_format: sarif
-          output_file_path: checkov.sarif
-
-      - name: Upload SARIF to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@250f3813c415201c19f2a9d84c1b9b5963f25da4 # v3
-        if: always()
-        with:
-          sarif_file: checkov.sarif
-          category: checkov
+    - name: Checkout repository
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+    - name: Run Checkov scan
+      uses: bridgecrewio/checkov-action@v12.2987.0
+      with:
+        directory: ./deploy/
+        framework: all
+        output_format: sarif
+        output_file_path: checkov.sarif
+    - name: Upload SARIF to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@250f3813c415201c19f2a9d84c1b9b5963f25da4
+      if: always()
+      with:
+        sarif_file: checkov.sarif
+        category: checkov

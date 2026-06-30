@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import type { SystemOverview, Alert, SystemStatus } from '@/types/dashboard';
+import { create } from "zustand";
+import type { SystemOverview, Alert, SystemStatus } from "@/types/dashboard";
 
 interface DashboardState {
   overview: SystemOverview | null;
@@ -23,8 +23,8 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   fetchOverview: async () => {
     set({ isLoading: true, error: null });
     try {
-      const response = await fetch('/api/overview');
-      if (!response.ok) throw new Error('Failed to fetch overview');
+      const response = await fetch("/api/overview");
+      if (!response.ok) throw new Error("Failed to fetch overview");
       const data: SystemOverview & { alerts?: Alert[] } = await response.json();
       set({
         overview: data,
@@ -35,7 +35,7 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
     } catch (error) {
       set({
         isLoading: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
       });
     }
   },

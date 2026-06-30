@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,34 +10,36 @@ metadata:
   criticality: high
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-60700
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l30
-    - ai
+  - l30
+  - ai
   sloTarget: 30
   evidenceRetentionDays: 1095
 spec:
-  description: >
-    Validates that the AI agent framework is correctly configured and that agent tool definitions conform to their contracts.
+  description: 'Validates that the AI agent framework is correctly configured and
+    that agent tool definitions conform to their contracts.
+
+    '
   validates:
-    - dimension: agent-readiness
-      description: AI agent framework is ready.
-      checks:
-        - id: chk-agent-framework-version
-          description: Agent framework version is in approved compatibility matrix
-          rule: 'compatibility:agent-framework-matrix'
-          severity: high
-          evidenceRequired: true
-        - id: chk-tool-contracts-valid
-          description: All tool definitions conform to tool-calling contract
-          rule: 'schema:tool-calling-contract'
-          severity: high
-          evidenceRequired: true
-        - id: chk-memory-isolation
-          description: Agent memory is isolated per session
-          rule: 'isolation:agent-memory'
-          severity: high
-          evidenceRequired: true
+  - dimension: agent-readiness
+    description: AI agent framework is ready.
+    checks:
+    - id: chk-agent-framework-version
+      description: Agent framework version is in approved compatibility matrix
+      rule: compatibility:agent-framework-matrix
+      severity: high
+      evidenceRequired: true
+    - id: chk-tool-contracts-valid
+      description: All tool definitions conform to tool-calling contract
+      rule: schema:tool-calling-contract
+      severity: high
+      evidenceRequired: true
+    - id: chk-memory-isolation
+      description: Agent memory is isolated per session
+      rule: isolation:agent-memory
+      severity: high
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

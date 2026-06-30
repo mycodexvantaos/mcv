@@ -1,8 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGateCatalog
 metadata:
-  name: ai-infra-gate-catalog
   version: 1.0.0
+  name: ai-infra-gate-catalog
   ssot: true
   authority: unified-gate-governance
   governanceCode: mycodexvantaos-00000
@@ -17,7 +17,6 @@ metadata:
 
       '
 spec:
-  version: 1.0.0
   totalGates: 56
   layers:
     l00:
@@ -28,49 +27,42 @@ spec:
         audit evidence.
       governanceCode: mycodexvantaos-00000
     l10:
-      name: ai-compute-infrastructure
       range: 11-18
       count: 8
       description: GPU/accelerator hardware, cluster readiness, distributed training
         runtime, and cost metering.
       governanceCode: mycodexvantaos-10000
     l20:
-      name: data-vector-layer
       range: 21-28
       count: 8
       description: Dataset contracts, lineage, PII scanning, vector DB schema, embedding
         dimensions, and data quality.
       governanceCode: mycodexvantaos-40100
     l30:
-      name: ai-framework-model-layer
       range: 31-38
       count: 8
       description: AI framework compatibility, model contracts, training pipelines,
         inference runtimes, and safety policies.
       governanceCode: mycodexvantaos-60600
     l40:
-      name: workload-execution-layer
       range: 41-48
       count: 8
       description: AI workload contracts, inference/training tasks, RAG pipelines,
         agent policies, SLO, and sandbox validation.
       governanceCode: mycodexvantaos-60700
     l50:
-      name: billing-metering-layer
       range: 51-58
       count: 8
       description: Usage event contracts, inference/training/embedding/agent metering,
         cost attribution, billing policy, and invoice evidence.
       governanceCode: mycodexvantaos-30400
     l60:
-      name: cloud-infrastructure-layer
       range: 61-64
       count: 4
       description: Cloud infrastructure readiness, Kubernetes baseline, GitOps sync,
         and managed service SLA.
       governanceCode: mycodexvantaos-30100
     l90:
-      name: supply-chain-production-closure
       range: 91-99
       count: 9
       description: SBOM, provenance, signatures, policy attestation, audit evidence
@@ -79,14 +71,14 @@ spec:
   gateSchema: ./schemas/ai-infra-gate.schema.json
   contractSchema: ./schemas/ai-workload-contract.schema.json
   executionOrder:
-    - l00
-    - l10
-    - l20
-    - l30
-    - l40
-    - l50
-    - l60
-    - l90
+  - l00
+  - l10
+  - l20
+  - l30
+  - l40
+  - l50
+  - l60
+  - l90
   blockingPolicy:
     default: true
     overrideRequiresWaiver: true
@@ -94,9 +86,9 @@ spec:
     waiverMaxDurationDays: 30
   evidenceRequirements:
     hashAlgorithms:
-      - sha-256
-      - sha3-512
-      - blake3
+    - sha-256
+    - sha3-512
+    - blake3
     signatureRequired: true
     attestationRequired: true
     auditChainRequired: true

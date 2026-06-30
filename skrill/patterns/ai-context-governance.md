@@ -167,8 +167,8 @@ name: AI Context Governance Check
 on:
   pull_request:
     paths:
-      - 'python/ai_context/**'
-      - 'services/*/ai-integration/**'
+      - "python/ai_context/**"
+      - "services/*/ai-integration/**"
 
 jobs:
   ai-governance:

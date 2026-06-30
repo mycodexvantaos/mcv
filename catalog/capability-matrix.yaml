@@ -1,90 +1,108 @@
-# catalog/capability-matrix.yaml
-# Maps each service to its declared capabilities.
-# Based on naming-spec-v1.md 5.5, 8
-
 apiVersion: mycodexvantaos.org/v1
 kind: CapabilityMatrix
 metadata:
   name: platform-capability-matrix
-
 matrix:
   mycodexvantaos-core-kernel:
-    capabilities: [database, cache, observability, secrets]
+    capabilities:
+    - database
+    - cache
+    - observability
+    - secrets
     providers:
       database: database-postgres
       cache: cache-redis
       observability: observability-opentelemetry
       secrets: secrets-k8s-native
-
   mycodexvantaos-core-auth:
-    capabilities: [auth, database, cache, secrets]
+    capabilities:
+    - auth
+    - database
+    - cache
+    - secrets
     providers:
       auth: auth-keycloak
       database: database-postgres
       cache: cache-redis
       secrets: secrets-k8s-native
-
   mycodexvantaos-core-gateway:
-    capabilities: [auth, observability, cache]
+    capabilities:
+    - auth
+    - observability
+    - cache
     providers:
       auth: auth-jwt-native
       observability: observability-opentelemetry
       cache: cache-redis
-
   mycodexvantaos-ai-embedding:
-    capabilities: [embedding, vector-store, cache]
+    capabilities:
+    - embedding
+    - vector-store
+    - cache
     providers:
       embedding: embedding-openai
       vector-store: vector-store-pgvector
       cache: cache-redis
-
   mycodexvantaos-ai-llm:
-    capabilities: [llm, cache, observability]
+    capabilities:
+    - llm
+    - cache
+    - observability
     providers:
       llm: llm-openai
       cache: cache-redis
       observability: observability-opentelemetry
-
   mycodexvantaos-ai-memory:
-    capabilities: [vector-store, embedding, state-store]
+    capabilities:
+    - vector-store
+    - embedding
+    - state-store
     providers:
       vector-store: vector-store-pgvector
       embedding: embedding-openai
       state-store: state-store-redis
-
   mycodexvantaos-ai-agent:
-    capabilities: [llm, embedding, vector-store, scheduler]
+    capabilities:
+    - llm
+    - embedding
+    - vector-store
+    - scheduler
     providers:
       llm: llm-openai
       embedding: embedding-openai
       vector-store: vector-store-pgvector
       scheduler: scheduler-temporal
-
   mycodexvantaos-data-vector-store:
-    capabilities: [vector-store, embedding, search]
+    capabilities:
+    - vector-store
+    - embedding
+    - search
     providers:
       vector-store: vector-store-pgvector
       embedding: embedding-openai
       search: search-elasticsearch
-
   mycodexvantaos-data-graph:
-    capabilities: [graph, database]
+    capabilities:
+    - graph
+    - database
     providers:
       graph: graph-neo4j
       database: database-postgres
-
   mycodexvantaos-platform-observability:
-    capabilities: [observability]
+    capabilities:
+    - observability
     providers:
       observability: observability-opentelemetry
-
   mycodexvantaos-security-secrets:
-    capabilities: [secrets]
+    capabilities:
+    - secrets
     providers:
       secrets: secrets-vault
-
   mycodexvantaos-docs-search:
-    capabilities: [search, vector-store, embedding]
+    capabilities:
+    - search
+    - vector-store
+    - embedding
     providers:
       search: search-elasticsearch
       vector-store: vector-store-pgvector

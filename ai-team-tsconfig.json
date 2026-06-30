@@ -44,5 +44,12 @@
     { "path": "services/mycodexvantaos-ai-team-service" }
   ],
   "include": ["index.ts", "modules/**/*.ts", "services/**/*.ts", "schemas/**/*.json"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/tests/**", "persona_extracted", "summarized_conversations"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.test.ts",
+    "**/tests/**",
+    "persona_extracted",
+    "summarized_conversations"
+  ]
 }

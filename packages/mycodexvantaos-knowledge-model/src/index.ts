@@ -4,4 +4,4 @@
  */
 
 // Re-export from core constitution
-export * from '@mycodexvantaos/core/knowledge-model';
+export * from "@mycodexvantaos/core/knowledge-model";

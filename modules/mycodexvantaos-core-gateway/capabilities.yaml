@@ -1,5 +1,4 @@
-# modules/mycodexvantaos-core-gateway/capabilities.yaml
 capabilities:
-  - auth
-  - observability
-  - cache
+- auth
+- observability
+- cache

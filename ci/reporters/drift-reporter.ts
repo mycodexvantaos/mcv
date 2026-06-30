@@ -2,8 +2,8 @@
  * MyCodexVantaOS CI Reporter: drift-reporter
  */
 
-import { writeFileSync, mkdirSync } from 'node:fs';
-import { join } from 'node:path';
+import { writeFileSync, mkdirSync } from "node:fs";
+import { join } from "node:path";
 
 export interface ReportData {
   reporter: string;
@@ -15,9 +15,9 @@ export interface ReportData {
 
 export function generateReport(results: unknown[]): ReportData {
   return {
-    reporter: 'drift-reporter',
+    reporter: "drift-reporter",
     timestamp: new Date().toISOString(),
-    platform: 'mycodexvantaos',
+    platform: "mycodexvantaos",
     results,
     summary: {
       total: results.length,
@@ -29,6 +29,6 @@ export function generateReport(results: unknown[]): ReportData {
 
 export function saveReport(report: ReportData, outputDir: string): void {
   mkdirSync(outputDir, { recursive: true });
-  const outputPath = join(outputDir, 'drift-reporter-report.json');
+  const outputPath = join(outputDir, "drift-reporter-report.json");
   writeFileSync(outputPath, JSON.stringify(report, null, 2));
 }

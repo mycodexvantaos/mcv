@@ -3,8 +3,9 @@ MyCodexVantaOS MCV Auditor — Report Generator Tests (6 tests)
 """
 
 import json
+import pytest
 from mcv_auditor.core.analyzers import PromptAnalyzer, GuardrailAnalyzer
-from mcv_auditor.reports.report import ReportGenerator
+from mcv_auditor.reports.report import ReportGenerator, AuditReport
 
 
 class TestReportGenerator:

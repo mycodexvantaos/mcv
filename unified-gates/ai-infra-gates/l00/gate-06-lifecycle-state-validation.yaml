@@ -12,8 +12,8 @@ metadata:
   governanceCode: mycodexvantaos-00200
   createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l00
-    - lifecycle
+  - l00
+  - lifecycle
   sloTarget: 30
   evidenceRetentionDays: 2555
   date: '2026-06-29'
@@ -24,25 +24,25 @@ spec:
 
     '
   validates:
-    - dimension: lifecycle-validity
-      description: Lifecycle states and transitions are valid.
-      checks:
-        - id: chk-stage-valid
-          description: 'Lifecycle stage is one of: proposed, active, deprecated, archived,
-            destroyed'
-          rule: enum:proposed,active,deprecated,archived,destroyed
-          severity: critical
-          evidenceRequired: true
-        - id: chk-transition-valid
-          description: Lifecycle transition follows the allowed state machine
-          rule: lifecycle:valid-transition
-          severity: critical
-          evidenceRequired: true
-        - id: chk-destroyed-not-reused
-          description: Destroyed namespace IDs are not reused
-          rule: registry:no-destroyed-reuse
-          severity: critical
-          evidenceRequired: true
+  - dimension: lifecycle-validity
+    description: Lifecycle states and transitions are valid.
+    checks:
+    - id: chk-stage-valid
+      description: 'Lifecycle stage is one of: proposed, active, deprecated, archived,
+        destroyed'
+      rule: enum:proposed,active,deprecated,archived,destroyed
+      severity: critical
+      evidenceRequired: true
+    - id: chk-transition-valid
+      description: Lifecycle transition follows the allowed state machine
+      rule: lifecycle:valid-transition
+      severity: critical
+      evidenceRequired: true
+    - id: chk-destroyed-not-reused
+      description: Destroyed namespace IDs are not reused
+      rule: registry:no-destroyed-reuse
+      severity: critical
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

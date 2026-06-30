@@ -22,7 +22,7 @@ export class CloudflareKVCacheStore {
   }
 
   async get<T = string>(key: string): Promise<T | null> {
-    const value = await this.kv.get(key, 'text');
+    const value = await this.kv.get(key, "text");
     if (value === null) return null;
     try {
       return JSON.parse(value) as T;
@@ -36,7 +36,7 @@ export class CloudflareKVCacheStore {
     value: unknown,
     options?: { expirationTtl?: number; metadata?: Record<string, string> }
   ): Promise<void> {
-    const serialized = typeof value === 'string' ? value : JSON.stringify(value);
+    const serialized = typeof value === "string" ? value : JSON.stringify(value);
     await this.kv.put(key, serialized, {
       expirationTtl: options?.expirationTtl,
       metadata: options?.metadata,
@@ -71,10 +71,10 @@ export class CloudflareKVCacheStore {
     options?: { expirationTtl?: number }
   ): Promise<boolean> {
     const existing = await this.kv.getWithMetadata<{ revision: number }>(key);
-    const expectedRevision = typeof expectedValue === 'number' ? expectedValue : 0;
+    const expectedRevision = typeof expectedValue === "number" ? expectedValue : 0;
     const currentRevision = existing.metadata?.revision ?? 0;
     if (currentRevision !== expectedRevision) return false;
-    const serialized = typeof newValue === 'string' ? newValue : JSON.stringify(newValue);
+    const serialized = typeof newValue === "string" ? newValue : JSON.stringify(newValue);
     const newRevision = currentRevision + 1;
     await this.kv.put(key, serialized, {
       expirationTtl: options?.expirationTtl,
@@ -109,7 +109,7 @@ export class CloudflareKVSessionStore {
   }
 
   async getSession(sessionId: string): Promise<SessionData | null> {
-    const data = await this.kv.get(`session:${sessionId}`, 'text');
+    const data = await this.kv.get(`session:${sessionId}`, "text");
     return data ? JSON.parse(data) : null;
   }
 

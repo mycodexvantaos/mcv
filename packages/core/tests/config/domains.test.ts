@@ -63,13 +63,13 @@ describe('Domain Configuration — Domain & Deployment Contract', () => {
 
   describe('resolveEnvironment()', () => {
     beforeEach(() => {
-      Reflect.deleteProperty(process.env, 'APP_ENV');
-      Reflect.deleteProperty(process.env, 'NODE_ENV');
+      delete process.env.APP_ENV;
+      delete process.env.NODE_ENV;
     });
 
     afterEach(() => {
-      Reflect.deleteProperty(process.env, 'APP_ENV');
-      Reflect.deleteProperty(process.env, 'NODE_ENV');
+      delete process.env.APP_ENV;
+      delete process.env.NODE_ENV;
     });
 
     it('should return production when APP_ENV=production', () => {
@@ -88,7 +88,7 @@ describe('Domain Configuration — Domain & Deployment Contract', () => {
     });
 
     it('should return production when NODE_ENV=production and no APP_ENV', () => {
-      (process.env as Record<string, string>).NODE_ENV = 'production';
+      process.env.NODE_ENV = 'production';
       expect(resolveEnvironment()).toBe('production');
     });
 

@@ -1,6 +1,6 @@
 name: Lint Code Base
 
-"on":
+on:
   push:
     branches: ["main"]
   pull_request:
@@ -41,16 +41,13 @@ jobs:
           # Do NOT set any linter to false — super-linter v7 ignores false values
           VALIDATE_GITHUB_ACTIONS: true
           VALIDATE_YAML: true
-          # JSON lint disabled: Super-Linter v7.4 ESLint integration conflicts with
-          # our flat config (eslint.config.js) causing ERR_UNKNOWN_FILE_EXTENSION.
-          # Prettier format:check already validates JSON formatting.
           VALIDATE_MARKDOWN: true
           VALIDATE_BASH: true
           VALIDATE_DOCKERFILE_HADOLINT: true
 
           # Shellcheck options — suppress false positives for GitHub Actions env vars
-          SHELLCHECK_OPTS: "--exclude=SC2086,SC2034,SC2317"
+          SHELLCHECK_OPTS: "--exclude=SC2086,SC2317"
 
           # Exclude generated / vendored / data directories
           FILTER_REGEX_EXCLUDE: >-
-            node_modules/.*|dist/.*|build/.*|coverage/.*|\.next/.*|vendor/.*|pnpm-lock\.yaml|package-lock\.json|yarn\.lock|python/\.coverage.*|project-import/.*|todo\.md|\.ai/.*|packages/jsonata/.*
+            node_modules/.*|dist/.*|build/.*|coverage/.*|\.next/.*|vendor/.*|pnpm-lock\.yaml|package-lock\.json|yarn\.lock|python/\.coverage.*|project-import/.*|todo\.md|\.ai/.*|packages/jsonata/.*|services/.*/.github/workflows/.*

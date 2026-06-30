@@ -1,267 +1,250 @@
-# Full-Stack Development Team Topology
-# Cross-functional team for end-to-end application development
 urn: urn:mycodexvantaos:team:fullstack-dev-team
 name: Full-Stack Development Team
-description: |
-  A cross-functional team responsible for full-stack application development,
+description: 'A cross-functional team responsible for full-stack application development,
+
   from architecture design to deployment. Includes frontend, backend, and
+
   DevOps capabilities for end-to-end delivery.
+
+  '
 type: hierarchical
 version: 1.0.0
-created_at: 2024-01-15T10:00:00Z
-updated_at: 2024-01-15T10:00:00Z
-
-# Team Topology Configuration
+created_at: 2024-01-15 10:00:00+00:00
+updated_at: 2024-01-15 10:00:00+00:00
 topology_type: hierarchical
 communication_pattern: collaborative
-
-# Team Members
 agents:
-  # Tech Lead / Architect (Team Lead)
-  - agent_urn: urn:mycodexvantaos:agent:architect-primary
-    role_in_team: tech_lead
-    responsibilities:
-      - Technical leadership
-      - Architecture decisions
-      - Code review approval
-      - Technical mentoring
-      - Stakeholder communication
-    expertise:
-      - system_design
-      - technical_strategy
-      - code_review
-    governance_tier_override: 2
-
-  # Senior Backend Engineer
-  - agent_urn: urn:mycodexvantaos:agent:engineer-backend-01
-    role_in_team: senior_backend
-    reports_to: urn:mycodexvantaos:agent:architect-primary
-    responsibilities:
-      - Backend development
-      - API design
-      - Database optimization
-      - Code review
-    expertise:
-      - nodejs
-      - python
-      - postgresql
-      - redis
-      - graphql
-    governance_tier_override: 1
-
-  # Backend Engineer
-  - agent_urn: urn:mycodexvantaos:agent:engineer-backend-02
-    role_in_team: backend_developer
-    reports_to: urn:mycodexvantaos:agent:engineer-backend-01
-    responsibilities:
-      - Backend feature development
-      - Unit testing
-      - Bug fixes
-      - Documentation
-    expertise:
-      - nodejs
-      - typescript
-      - mongodb
-    governance_tier_override: 0
-
-  # Frontend Engineer
-  - agent_urn: urn:mycodexvantaos:agent:engineer-frontend-01
-    role_in_team: frontend_developer
-    reports_to: urn:mycodexvantaos:agent:architect-primary
-    responsibilities:
-      - Frontend development
-      - UI/UX implementation
-      - Performance optimization
-      - Cross-browser compatibility
-    expertise:
-      - react
-      - typescript
-      - css
-      - testing_library
-    governance_tier_override: 0
-
-  # DevOps Engineer
-  - agent_urn: urn:mycodexvantaos:agent:devops-engineer-01
-    role_in_team: devops
-    reports_to: urn:mycodexvantaos:agent:architect-primary
-    responsibilities:
-      - CI/CD pipeline management
-      - Infrastructure as Code
-      - Monitoring and alerting
-      - Deployment automation
-    expertise:
-      - kubernetes
-      - docker
-      - terraform
-      - github_actions
-      - aws
-    governance_tier_override: 1
-
-  # QA Engineer
-  - agent_urn: urn:mycodexvantaos:agent:tester-qa-01
-    role_in_team: qa_engineer
-    reports_to: urn:mycodexvantaos:agent:architect-primary
-    responsibilities:
-      - Test planning
-      - Automated testing
-      - Quality assurance
-      - Regression testing
-      - Performance testing
-    expertise:
-      - selenium
-      - jest
-      - cypress
-      - k6
-    governance_tier_override: 0
-
-# Workflow Definition
+- agent_urn: urn:mycodexvantaos:agent:architect-primary
+  role_in_team: tech_lead
+  responsibilities:
+  - Technical leadership
+  - Architecture decisions
+  - Code review approval
+  - Technical mentoring
+  - Stakeholder communication
+  expertise:
+  - system_design
+  - technical_strategy
+  - code_review
+  governance_tier_override: 2
+- agent_urn: urn:mycodexvantaos:agent:engineer-backend-01
+  role_in_team: senior_backend
+  reports_to: urn:mycodexvantaos:agent:architect-primary
+  responsibilities:
+  - Backend development
+  - API design
+  - Database optimization
+  - Code review
+  expertise:
+  - nodejs
+  - python
+  - postgresql
+  - redis
+  - graphql
+  governance_tier_override: 1
+- agent_urn: urn:mycodexvantaos:agent:engineer-backend-02
+  role_in_team: backend_developer
+  reports_to: urn:mycodexvantaos:agent:engineer-backend-01
+  responsibilities:
+  - Backend feature development
+  - Unit testing
+  - Bug fixes
+  - Documentation
+  expertise:
+  - nodejs
+  - typescript
+  - mongodb
+  governance_tier_override: 0
+- agent_urn: urn:mycodexvantaos:agent:engineer-frontend-01
+  role_in_team: frontend_developer
+  reports_to: urn:mycodexvantaos:agent:architect-primary
+  responsibilities:
+  - Frontend development
+  - UI/UX implementation
+  - Performance optimization
+  - Cross-browser compatibility
+  expertise:
+  - react
+  - typescript
+  - css
+  - testing_library
+  governance_tier_override: 0
+- agent_urn: urn:mycodexvantaos:agent:devops-engineer-01
+  role_in_team: devops
+  reports_to: urn:mycodexvantaos:agent:architect-primary
+  responsibilities:
+  - CI/CD pipeline management
+  - Infrastructure as Code
+  - Monitoring and alerting
+  - Deployment automation
+  expertise:
+  - kubernetes
+  - docker
+  - terraform
+  - github_actions
+  - aws
+  governance_tier_override: 1
+- agent_urn: urn:mycodexvantaos:agent:tester-qa-01
+  role_in_team: qa_engineer
+  reports_to: urn:mycodexvantaos:agent:architect-primary
+  responsibilities:
+  - Test planning
+  - Automated testing
+  - Quality assurance
+  - Regression testing
+  - Performance testing
+  expertise:
+  - selenium
+  - jest
+  - cypress
+  - k6
+  governance_tier_override: 0
 workflow_definition:
   id: fullstack-development-workflow
   type: dag
   nodes:
-    # Planning Phase
-    - id: requirements_analysis
-      type: task
-      action: analyze_requirements
-      assigned_to: urn:mycodexvantaos:agent:architect-primary
-    - id: technical_design
-      type: task
-      action: create_design
-      assigned_to: urn:mycodexvantaos:agent:architect-primary
-      dependencies: [requirements_analysis]
-    - id: hitl_design_review
-      type: hitl
-      action: review_design
-      dependencies: [technical_design]
-
-    # Parallel Development Phase
-    - id: backend_development
-      type: task
-      action: develop_backend
-      assigned_to: urn:mycodexvantaos:agent:engineer-backend-01
-      dependencies: [hitl_design_review]
-    - id: frontend_development
-      type: task
-      action: develop_frontend
-      assigned_to: urn:mycodexvantaos:agent:engineer-frontend-01
-      dependencies: [hitl_design_review]
-    - id: infrastructure_setup
-      type: task
-      action: setup_infrastructure
-      assigned_to: urn:mycodexvantaos:agent:devops-engineer-01
-      dependencies: [hitl_design_review]
-
-    # Testing Phase
-    - id: unit_testing
-      type: task
-      action: run_unit_tests
-      assigned_to: urn:mycodexvantaos:agent:tester-qa-01
-      dependencies: [backend_development, frontend_development]
-    - id: integration_testing
-      type: task
-      action: run_integration_tests
-      assigned_to: urn:mycodexvantaos:agent:tester-qa-01
-      dependencies: [unit_testing]
-    - id: hitl_code_review
-      type: hitl
-      action: review_code
-      dependencies: [integration_testing]
-
-    # Deployment Phase
-    - id: staging_deployment
-      type: task
-      action: deploy_to_staging
-      assigned_to: urn:mycodexvantaos:agent:devops-engineer-01
-      dependencies: [hitl_code_review]
-    - id: qa_validation
-      type: task
-      action: validate_quality
-      assigned_to: urn:mycodexvantaos:agent:tester-qa-01
-      dependencies: [staging_deployment]
-    - id: hitl_release_approval
-      type: hitl
-      action: approve_release
-      dependencies: [qa_validation]
-    - id: production_deployment
-      type: task
-      action: deploy_to_production
-      assigned_to: urn:mycodexvantaos:agent:devops-engineer-01
-      dependencies: [hitl_release_approval]
-
+  - id: requirements_analysis
+    type: task
+    action: analyze_requirements
+    assigned_to: urn:mycodexvantaos:agent:architect-primary
+  - id: technical_design
+    type: task
+    action: create_design
+    assigned_to: urn:mycodexvantaos:agent:architect-primary
+    dependencies:
+    - requirements_analysis
+  - id: hitl_design_review
+    type: hitl
+    action: review_design
+    dependencies:
+    - technical_design
+  - id: backend_development
+    type: task
+    action: develop_backend
+    assigned_to: urn:mycodexvantaos:agent:engineer-backend-01
+    dependencies:
+    - hitl_design_review
+  - id: frontend_development
+    type: task
+    action: develop_frontend
+    assigned_to: urn:mycodexvantaos:agent:engineer-frontend-01
+    dependencies:
+    - hitl_design_review
+  - id: infrastructure_setup
+    type: task
+    action: setup_infrastructure
+    assigned_to: urn:mycodexvantaos:agent:devops-engineer-01
+    dependencies:
+    - hitl_design_review
+  - id: unit_testing
+    type: task
+    action: run_unit_tests
+    assigned_to: urn:mycodexvantaos:agent:tester-qa-01
+    dependencies:
+    - backend_development
+    - frontend_development
+  - id: integration_testing
+    type: task
+    action: run_integration_tests
+    assigned_to: urn:mycodexvantaos:agent:tester-qa-01
+    dependencies:
+    - unit_testing
+  - id: hitl_code_review
+    type: hitl
+    action: review_code
+    dependencies:
+    - integration_testing
+  - id: staging_deployment
+    type: task
+    action: deploy_to_staging
+    assigned_to: urn:mycodexvantaos:agent:devops-engineer-01
+    dependencies:
+    - hitl_code_review
+  - id: qa_validation
+    type: task
+    action: validate_quality
+    assigned_to: urn:mycodexvantaos:agent:tester-qa-01
+    dependencies:
+    - staging_deployment
+  - id: hitl_release_approval
+    type: hitl
+    action: approve_release
+    dependencies:
+    - qa_validation
+  - id: production_deployment
+    type: task
+    action: deploy_to_production
+    assigned_to: urn:mycodexvantaos:agent:devops-engineer-01
+    dependencies:
+    - hitl_release_approval
   edges:
-    - from: requirements_analysis
-      to: technical_design
-    - from: technical_design
-      to: hitl_design_review
-    - from: hitl_design_review
-      to: backend_development
-    - from: hitl_design_review
-      to: frontend_development
-    - from: hitl_design_review
-      to: infrastructure_setup
-    - from: backend_development
-      to: unit_testing
-    - from: frontend_development
-      to: unit_testing
-    - from: unit_testing
-      to: integration_testing
-    - from: integration_testing
-      to: hitl_code_review
-    - from: hitl_code_review
-      to: staging_deployment
-    - from: staging_deployment
-      to: qa_validation
-    - from: qa_validation
-      to: hitl_release_approval
-    - from: hitl_release_approval
-      to: production_deployment
-
-# HITL Configuration
+  - from: requirements_analysis
+    to: technical_design
+  - from: technical_design
+    to: hitl_design_review
+  - from: hitl_design_review
+    to: backend_development
+  - from: hitl_design_review
+    to: frontend_development
+  - from: hitl_design_review
+    to: infrastructure_setup
+  - from: backend_development
+    to: unit_testing
+  - from: frontend_development
+    to: unit_testing
+  - from: unit_testing
+    to: integration_testing
+  - from: integration_testing
+    to: hitl_code_review
+  - from: hitl_code_review
+    to: staging_deployment
+  - from: staging_deployment
+    to: qa_validation
+  - from: qa_validation
+    to: hitl_release_approval
+  - from: hitl_release_approval
+    to: production_deployment
 hitl_config:
   enabled: true
   checkpoints:
-    - node_id: hitl_design_review
-      type: design_review
-      timeout_seconds: 86400
-      approvers:
-        - urn:mycodexvantaos:agent:architect-primary
-      required: true
-    - node_id: hitl_code_review
-      type: code_review
-      timeout_seconds: 14400
-      approvers:
-        - urn:mycodexvantaos:agent:engineer-backend-01
-        - urn:mycodexvantaos:agent:architect-primary
-      min_approvers: 1
-    - node_id: hitl_release_approval
-      type: release_approval
-      timeout_seconds: 3600
-      approvers:
-        - urn:mycodexvantaos:agent:architect-primary
-      auto_approve_conditions:
-        - is_hotfix: true
-        - is_minor_version: true
-
-# Team Capabilities
+  - node_id: hitl_design_review
+    type: design_review
+    timeout_seconds: 86400
+    approvers:
+    - urn:mycodexvantaos:agent:architect-primary
+    required: true
+  - node_id: hitl_code_review
+    type: code_review
+    timeout_seconds: 14400
+    approvers:
+    - urn:mycodexvantaos:agent:engineer-backend-01
+    - urn:mycodexvantaos:agent:architect-primary
+    min_approvers: 1
+  - node_id: hitl_release_approval
+    type: release_approval
+    timeout_seconds: 3600
+    approvers:
+    - urn:mycodexvantaos:agent:architect-primary
+    auto_approve_conditions:
+    - is_hotfix: true
+    - is_minor_version: true
 capabilities:
-  - frontend_development
-  - backend_development
-  - api_design
-  - database_design
-  - infrastructure_automation
-  - testing_automation
-  - ci_cd_management
-  - monitoring_setup
-
-# Development Process
+- frontend_development
+- backend_development
+- api_design
+- database_design
+- infrastructure_automation
+- testing_automation
+- ci_cd_management
+- monitoring_setup
 process:
   methodology: agile
   sprint_duration_weeks: 2
   ceremonies:
-    - daily_standup
-    - sprint_planning
-    - sprint_review
-    - retrospective
+  - daily_standup
+  - sprint_planning
+  - sprint_review
+  - retrospective
   code_review:
     required: true
     min_reviewers: 1
@@ -270,20 +253,19 @@ process:
     unit_test_coverage_minimum: 80
     integration_test_required: true
     e2e_test_required: true
-
-# Team Schedule
 schedule:
   timezone: UTC
   working_hours:
-    start: '09:00'
+    start: 09:00
     end: '18:00'
   deployment_windows:
     production:
-      days: [tuesday, wednesday, thursday]
+      days:
+      - tuesday
+      - wednesday
+      - thursday
       start: '10:00'
       end: '16:00'
-
-# Performance Metrics
 metrics:
   velocity:
     story_points_per_sprint: 30
@@ -293,19 +275,17 @@ metrics:
   delivery:
     sprint_completion_rate_target: 0.85
     lead_time_days_target: 14
-
-# Communication Channels
 channels:
-  - type: slack
-    channels:
-      - '#dev-team'
-      - '#dev-standup'
-    purpose: daily_communication
-  - type: jira
-    project: FULLSTACK
-    purpose: task_tracking
-  - type: github
-    repository: org/fullstack-app
-    purpose: code_collaboration
-  - type: figma
-    purpose: design_collaboration
+- type: slack
+  channels:
+  - '#dev-team'
+  - '#dev-standup'
+  purpose: daily_communication
+- type: jira
+  project: FULLSTACK
+  purpose: task_tracking
+- type: github
+  repository: org/fullstack-app
+  purpose: code_collaboration
+- type: figma
+  purpose: design_collaboration

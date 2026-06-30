@@ -87,7 +87,7 @@ export interface KnowledgeSearchRequest {
   collectionIds: string[];
   topK: number;
   minScore: number;
-  searchType: 'semantic' | 'fulltext' | 'hybrid';
+  searchType: "semantic" | "fulltext" | "hybrid";
   filters?: Record<string, unknown>;
 }
 

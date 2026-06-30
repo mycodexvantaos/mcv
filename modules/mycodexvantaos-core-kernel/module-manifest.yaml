@@ -8,11 +8,11 @@ metadata:
 spec:
   domain: core
   capabilities:
-    - database
-    - cache
-    - observability
-    - secrets
-    - kernel
+  - database
+  - cache
+  - observability
+  - secrets
+  - kernel
   providers:
     database: database-postgres
     cache: cache-redis
@@ -28,11 +28,11 @@ spec:
   id: mycodexvantaos-core-kernel
   tier: 0
   requiredProviders:
-    - auth
+  - auth
   supportedModes:
-    - native
-    - connected
-    - hybrid
+  - native
+  - connected
+  - hybrid
   deployment:
     type: container
 service-id: mycodexvantaos-core-kernel

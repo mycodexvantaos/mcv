@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,34 +10,36 @@ metadata:
   criticality: critical
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-50200
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l20
-    - data
+  - l20
+  - data
   sloTarget: 30
   evidenceRetentionDays: 2555
 spec:
-  description: >
-    Validates that data access policies are defined and enforced for all datasets.
+  description: 'Validates that data access policies are defined and enforced for all
+    datasets.
+
+    '
   validates:
-    - dimension: access-policy
-      description: Data access policies are defined and enforced.
-      checks:
-        - id: chk-access-policy-exists
-          description: Data access policy is defined for the dataset
-          rule: 'policy:data-access-exists'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-rbac-enforced
-          description: RBAC is enforced on dataset access
-          rule: 'policy:rbac-enforced'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-audit-logging-enabled
-          description: Audit logging is enabled for all dataset access
-          rule: 'audit:data-access-logged'
-          severity: high
-          evidenceRequired: true
+  - dimension: access-policy
+    description: Data access policies are defined and enforced.
+    checks:
+    - id: chk-access-policy-exists
+      description: Data access policy is defined for the dataset
+      rule: policy:data-access-exists
+      severity: critical
+      evidenceRequired: true
+    - id: chk-rbac-enforced
+      description: RBAC is enforced on dataset access
+      rule: policy:rbac-enforced
+      severity: critical
+      evidenceRequired: true
+    - id: chk-audit-logging-enabled
+      description: Audit logging is enabled for all dataset access
+      rule: audit:data-access-logged
+      severity: high
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

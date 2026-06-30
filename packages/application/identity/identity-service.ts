@@ -15,11 +15,11 @@
  *   - check-permission
  */
 
-import type { IDatabasePort } from '../../ports/database';
-import type { IObjectStoragePort } from '../../ports/object-storage';
-import type { IQueuePort } from '../../ports/queue';
-import type { IAuthPort, TokenClaims, Role, SubjectInfo, SessionInfo } from '../../ports/auth';
-import type { Result } from '../../core/shared';
+import type { IDatabasePort } from "../../ports/database";
+import type { IObjectStoragePort } from "../../ports/object-storage";
+import type { IQueuePort } from "../../ports/queue";
+import type { IAuthPort, TokenClaims, Role, SubjectInfo, SessionInfo } from "../../ports/auth";
+import type { Result } from "../../core/shared";
 
 // ── Service Dependencies ───────────────────────────────────────────────
 
@@ -55,7 +55,7 @@ export interface ResolveActorInput {
   accessToken: string;
 }
 
-export type SubjectPhase = 'unregistered' | 'active' | 'suspended' | 'deactivated';
+export type SubjectPhase = "unregistered" | "active" | "suspended" | "deactivated";
 
 export interface SubjectResource {
   id: string;
@@ -76,7 +76,7 @@ export interface SubjectResource {
 
 export interface IdentityAuditEvent {
   eventType: string;
-  category: 'security';
+  category: "security";
   severity: string;
   subjectId: string;
   workspaceId?: string;
@@ -106,11 +106,11 @@ export class IdentityService implements IAuthPort {
     );
 
     await this.deps.audit.emitEvent({
-      eventType: 'security.subject.registered',
-      category: 'security',
-      severity: 'info',
+      eventType: "security.subject.registered",
+      category: "security",
+      severity: "info",
       subjectId,
-      action: 'register-subject',
+      action: "register-subject",
       correlationId: crypto.randomUUID(),
     });
 
@@ -124,8 +124,8 @@ export class IdentityService implements IAuthPort {
         roles: {},
       },
       status: {
-        phase: 'active',
-        authProvider: 'local',
+        phase: "active",
+        authProvider: "local",
         lastAuthenticatedAt: null,
         activeSessions: 0,
       },
@@ -134,7 +134,7 @@ export class IdentityService implements IAuthPort {
 
   async validateToken(accessToken: string): Promise<TokenClaims> {
     // JWT validation — implementation delegated to adapter
-    throw new Error('Not implemented: validateToken requires adapter');
+    throw new Error("Not implemented: validateToken requires adapter");
   }
 
   async checkPermission(
@@ -144,12 +144,12 @@ export class IdentityService implements IAuthPort {
     resourceKind: string
   ): Promise<boolean> {
     // Policy evaluation — delegates to policy model
-    throw new Error('Not implemented: checkPermission requires policy evaluation');
+    throw new Error("Not implemented: checkPermission requires policy evaluation");
   }
 
   async getSubject(subjectId: string): Promise<SubjectInfo> {
     const row = await this.deps.database.queryFirst<Record<string, unknown>>(
-      'SELECT * FROM subjects WHERE id = ?',
+      "SELECT * FROM subjects WHERE id = ?",
       [subjectId]
     );
     if (!row) throw new Error(`Subject not found: ${subjectId}`);
@@ -158,17 +158,17 @@ export class IdentityService implements IAuthPort {
       email: row.email as string,
       displayName: row.display_name as string,
       mfaEnabled: row.mfa_enabled as boolean,
-      status: row.phase as 'active' | 'suspended' | 'deactivated',
+      status: row.phase as "active" | "suspended" | "deactivated",
       roles: {},
     };
   }
 
   async resolveRole(subjectId: string, workspaceId: string): Promise<Role> {
     const row = await this.deps.database.queryFirst<{ role: Role }>(
-      'SELECT role FROM memberships WHERE subject_id = ? AND workspace_id = ?',
+      "SELECT role FROM memberships WHERE subject_id = ? AND workspace_id = ?",
       [subjectId, workspaceId]
     );
-    return row?.role ?? 'workspace-viewer';
+    return row?.role ?? "workspace-viewer";
   }
 
   async createSession(subjectId: string, workspaceId: string): Promise<SessionInfo> {
@@ -194,6 +194,6 @@ export class IdentityService implements IAuthPort {
   }
 
   async revokeSession(sessionId: string): Promise<void> {
-    await this.deps.database.execute('DELETE FROM sessions WHERE id = ?', [sessionId]);
+    await this.deps.database.execute("DELETE FROM sessions WHERE id = ?", [sessionId]);
   }
 }

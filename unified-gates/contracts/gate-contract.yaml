@@ -1,53 +1,53 @@
 apiVersion: mycodexvantaos.io/v1
 kind: GateContract
 metadata:
-  name: gate-contract
   version: 1.0.0
-  governanceCode: mycodexvantaos-00000
-  authority: unified-gate-governance
   date: '2026-06-29'
   status: active
+  name: gate-contract
+  governanceCode: mycodexvantaos-00000
+  authority: unified-gate-governance
 spec:
   description: 'Defines the canonical contract for a gate definition. All gate YAML
     files in ai-infra-gates/ MUST conform to this contract.
 
     '
   requiredFields:
-    - apiVersion
-    - kind
-    - metadata.id
-    - metadata.version
-    - metadata.layer
-    - metadata.plane
-    - metadata.blocking
-    - metadata.lifecycle
-    - metadata.owner
-    - metadata.governanceCode
-    - spec.description
-    - spec.validates
+  - apiVersion
+  - kind
+  - metadata.id
+  - metadata.version
+  - metadata.layer
+  - metadata.plane
+  - metadata.blocking
+  - metadata.lifecycle
+  - metadata.owner
+  - metadata.governanceCode
+  - spec.description
+  - spec.validates
   validValues:
     metadata.lifecycle:
-      - proposed
-      - active
-      - deprecated
-      - archived
-      - destroyed
+    - proposed
+    - active
+    - deprecated
+    - archived
+    - destroyed
     metadata.plane:
-      - ai-infra
-      - quality
-      - production
+    - ai-infra
+    - quality
+    - production
     metadata.criticality:
-      - critical
-      - high
-      - medium
-      - low
+    - critical
+    - high
+    - medium
+    - low
     metadata.layer:
-      - l00
-      - l10
-      - l20
-      - l30
-      - l40
-      - l50
-      - l60
-      - l90
+    - l00
+    - l10
+    - l20
+    - l30
+    - l40
+    - l50
+    - l60
+    - l90
   schemaRef: ../schemas/gate.schema.json

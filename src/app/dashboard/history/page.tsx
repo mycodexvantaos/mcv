@@ -1,43 +1,43 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { GitCommit, History, ArrowRight } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { GitCommit, History, ArrowRight } from "lucide-react";
 
 export default function HistoryPage() {
   const auditLogs = [
     {
-      type: 'Architecture Sync',
-      commit: 'a8f2c1d',
-      message: 'Updated database topology to multi-region read replicas',
-      time: '2 hours ago',
-      status: 'Synced',
+      type: "Architecture Sync",
+      commit: "a8f2c1d",
+      message: "Updated database topology to multi-region read replicas",
+      time: "2 hours ago",
+      status: "Synced",
     },
     {
-      type: 'Pipeline Gen',
-      commit: '3e4b9f2',
-      message: 'Generated CI/CD for staging environment with auto-rollback',
-      time: '5 hours ago',
-      status: 'Validated',
+      type: "Pipeline Gen",
+      commit: "3e4b9f2",
+      message: "Generated CI/CD for staging environment with auto-rollback",
+      time: "5 hours ago",
+      status: "Validated",
     },
     {
-      type: 'Risk Audit',
-      commit: '9c1d2e3',
-      message: 'Meticulous analysis detected potential deadlock in Orders Service',
-      time: '1 day ago',
-      status: 'Reported',
+      type: "Risk Audit",
+      commit: "9c1d2e3",
+      message: "Meticulous analysis detected potential deadlock in Orders Service",
+      time: "1 day ago",
+      status: "Reported",
     },
     {
-      type: 'Policy Change',
-      commit: 'b2a5f6c',
-      message: 'Enforced mandatory code coverage > 95% policy',
-      time: '2 days ago',
-      status: 'Active',
+      type: "Policy Change",
+      commit: "b2a5f6c",
+      message: "Enforced mandatory code coverage > 95% policy",
+      time: "2 days ago",
+      status: "Active",
     },
     {
-      type: 'Refinement',
-      commit: 'f4d7b1a',
-      message: 'Applied suggestion: API Gateway rate-limiting pattern',
-      time: '3 days ago',
-      status: 'Applied',
+      type: "Refinement",
+      commit: "f4d7b1a",
+      message: "Applied suggestion: API Gateway rate-limiting pattern",
+      time: "3 days ago",
+      status: "Applied",
     },
   ];
 
@@ -76,7 +76,7 @@ export default function HistoryPage() {
                   <h3 className="text-sm font-medium">{log.message}</h3>
                   <div className="flex items-center gap-2 pt-1">
                     <div
-                      className={`h-1.5 w-1.5 rounded-full ${log.status === 'Synced' || log.status === 'Validated' ? 'bg-accent' : 'bg-primary'}`}
+                      className={`h-1.5 w-1.5 rounded-full ${log.status === "Synced" || log.status === "Validated" ? "bg-accent" : "bg-primary"}`}
                     />
                     <span className="text-[10px] font-bold uppercase tracking-tighter text-muted-foreground">
                       {log.status}

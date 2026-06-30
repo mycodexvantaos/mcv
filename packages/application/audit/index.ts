@@ -2,7 +2,7 @@
  * MyCodeXvantaOS — Audit Application Package
  */
 
-export { AuditService } from './audit-service';
+export { AuditService } from "./audit-service";
 export type {
   AuditServiceDeps,
   AuditEventCategory,
@@ -12,4 +12,4 @@ export type {
   AuditEventResource,
   ListAuditEventsInput,
   IntegrityVerificationResult,
-} from './audit-service';
+} from "./audit-service";

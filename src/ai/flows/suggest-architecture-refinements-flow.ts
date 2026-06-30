@@ -7,21 +7,21 @@
  * - SuggestArchitectureRefinementsOutput - The return type for the suggestArchitectureRefinements function.
  */
 
-import { ai } from '@/ai/genkit';
-import { z } from 'genkit';
+import { ai } from "@/ai/genkit";
+import { z } from "genkit";
 
 // Input Schema Definition
 const SuggestArchitectureRefinementsInputSchema = z.object({
   currentArchitectureDescription: z
     .string()
     .describe(
-      'A detailed description of the current system architecture, including components, their interactions, data flows, and deployment environment.'
+      "A detailed description of the current system architecture, including components, their interactions, data flows, and deployment environment."
     ),
   gitlabCiCdConfiguration: z
     .string()
     .optional()
     .describe(
-      'The current GitLab CI/CD pipeline configuration in YAML format, if available, for context on deployment strategies and automation. This helps tailor suggestions to existing CI/CD practices.'
+      "The current GitLab CI/CD pipeline configuration in YAML format, if available, for context on deployment strategies and automation. This helps tailor suggestions to existing CI/CD practices."
     ),
   architecturalGoals: z
     .string()
@@ -32,7 +32,7 @@ const SuggestArchitectureRefinementsInputSchema = z.object({
     .string()
     .optional()
     .describe(
-      'A summary of past incidents, outages, or recurring issues that the architecture has experienced. This information is crucial for identifying areas needing improvement and suggesting targeted resilience patterns.'
+      "A summary of past incidents, outages, or recurring issues that the architecture has experienced. This information is crucial for identifying areas needing improvement and suggesting targeted resilience patterns."
     ),
 });
 export type SuggestArchitectureRefinementsInput = z.infer<
@@ -52,17 +52,17 @@ const SuggestArchitectureRefinementsOutputSchema = z.object({
         description: z
           .string()
           .describe(
-            'A detailed explanation of the proposed architectural improvement or resilience pattern, including its technical aspects and how it addresses identified weaknesses.'
+            "A detailed explanation of the proposed architectural improvement or resilience pattern, including its technical aspects and how it addresses identified weaknesses."
           ),
         impact: z
-          .enum(['High', 'Medium', 'Low'])
+          .enum(["High", "Medium", "Low"])
           .describe(
             'The estimated impact level of implementing this suggestion on achieving the architectural goals and a zero-failure state. "High" indicates significant improvement, "Medium" moderate, and "Low" minor.'
           ),
         gitlabImplications: z
           .string()
           .describe(
-            'Specific considerations, best practices, or actions related to GitLab for implementing this suggestion. This could include recommended CI/CD pipeline modifications, policy enforcement within GitLab, leveraging specific GitLab features (e.g., environments, reviews, security scanning), or repository structure changes.'
+            "Specific considerations, best practices, or actions related to GitLab for implementing this suggestion. This could include recommended CI/CD pipeline modifications, policy enforcement within GitLab, leveraging specific GitLab features (e.g., environments, reviews, security scanning), or repository structure changes."
           ),
         reasoning: z
           .string()
@@ -72,7 +72,7 @@ const SuggestArchitectureRefinementsOutputSchema = z.object({
       })
     )
     .describe(
-      'A comprehensive list of AI-powered suggestions for architectural improvements and resilience patterns.'
+      "A comprehensive list of AI-powered suggestions for architectural improvements and resilience patterns."
     ),
   overallSummary: z
     .string()
@@ -93,7 +93,7 @@ export async function suggestArchitectureRefinements(
 
 // Prompt Definition
 const suggestArchitectureRefinementsPrompt = ai.definePrompt({
-  name: 'suggestArchitectureRefinementsPrompt',
+  name: "suggestArchitectureRefinementsPrompt",
   input: { schema: SuggestArchitectureRefinementsInputSchema },
   output: { schema: SuggestArchitectureRefinementsOutputSchema },
   prompt: `You are an expert architect with extreme meticulousness, specializing in 'zero-failure' architecture refinement for systems integrating seamlessly with GitLab.
@@ -131,7 +131,7 @@ Finally, provide an overall summary of your key recommendations and how they ali
 // Genkit Flow Definition
 const suggestArchitectureRefinementsFlow = ai.defineFlow(
   {
-    name: 'suggestArchitectureRefinementsFlow',
+    name: "suggestArchitectureRefinementsFlow",
     inputSchema: SuggestArchitectureRefinementsInputSchema,
     outputSchema: SuggestArchitectureRefinementsOutputSchema,
   },

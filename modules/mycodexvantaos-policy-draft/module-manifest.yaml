@@ -12,8 +12,8 @@ spec:
     management.
   category: governance
   runtime-modes:
-    - native
-    - connected
-    - hybrid
+  - native
+  - connected
+  - hybrid
   implementationPath: services/mycodexvantaos-policy-draft/
   packageName: '@mycodexvantaos/policy-draft'

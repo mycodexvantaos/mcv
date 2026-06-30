@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,34 +10,36 @@ metadata:
   criticality: high
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-30100
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l60
-    - managed
+  - l60
+  - managed
   sloTarget: 30
   evidenceRetentionDays: 1095
 spec:
-  description: >
-    Validates that managed cloud services (databases, object storage, message queues) meet their SLA requirements.
+  description: 'Validates that managed cloud services (databases, object storage,
+    message queues) meet their SLA requirements.
+
+    '
   validates:
-    - dimension: sla-compliance
-      description: Managed services meet SLA requirements.
-      checks:
-        - id: chk-db-availability
-          description: Managed database availability meets SLA
-          rule: 'threshold:db-availability>=0.9999'
-          severity: high
-          evidenceRequired: false
-        - id: chk-storage-availability
-          description: Object storage availability meets SLA
-          rule: 'threshold:storage-availability>=0.99999'
-          severity: high
-          evidenceRequired: false
-        - id: chk-queue-availability
-          description: Message queue availability meets SLA
-          rule: 'threshold:queue-availability>=0.9999'
-          severity: medium
-          evidenceRequired: false
+  - dimension: sla-compliance
+    description: Managed services meet SLA requirements.
+    checks:
+    - id: chk-db-availability
+      description: Managed database availability meets SLA
+      rule: threshold:db-availability>=0.9999
+      severity: high
+      evidenceRequired: false
+    - id: chk-storage-availability
+      description: Object storage availability meets SLA
+      rule: threshold:storage-availability>=0.99999
+      severity: high
+      evidenceRequired: false
+    - id: chk-queue-availability
+      description: Message queue availability meets SLA
+      rule: threshold:queue-availability>=0.9999
+      severity: medium
+      evidenceRequired: false
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

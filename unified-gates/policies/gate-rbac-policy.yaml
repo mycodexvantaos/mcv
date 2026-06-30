@@ -1,46 +1,46 @@
 apiVersion: mycodexvantaos.io/v1
 kind: GateRBACPolicy
 metadata:
-  name: gate-rbac-policy
   version: 1.0.0
-  authority: platform-governance-root
-  governanceCode: mycodexvantaos-00600
   date: '2026-06-29'
   status: active
+  name: gate-rbac-policy
+  authority: platform-governance-root
+  governanceCode: mycodexvantaos-00600
 spec:
   roles:
-    - id: gate-reader
-      permissions:
-        - read:gate-definitions
-        - read:gate-results
-        - read:gate-reports
-    - id: gate-evaluator
-      permissions:
-        - read:gate-definitions
-        - execute:gate-evaluation
-        - write:gate-results
-    - id: gate-owner
-      permissions:
-        - read:gate-definitions
-        - write:gate-definitions
-        - execute:gate-evaluation
-        - approve:waivers
-        - write:gate-results
-    - id: gate-approver
-      permissions:
-        - read:gate-definitions
-        - approve:waivers
-        - approve:lifecycle-transitions
-    - id: gate-admin
-      permissions:
-        - all
-      requiresRootApproval: true
-    - id: governance-council
-      permissions:
-        - approve:cross-layer-changes
-        - approve:escalations
-        - approve:waiver-overrides
+  - id: gate-reader
+    permissions:
+    - read:gate-definitions
+    - read:gate-results
+    - read:gate-reports
+  - id: gate-evaluator
+    permissions:
+    - read:gate-definitions
+    - execute:gate-evaluation
+    - write:gate-results
+  - id: gate-owner
+    permissions:
+    - read:gate-definitions
+    - write:gate-definitions
+    - execute:gate-evaluation
+    - approve:waivers
+    - write:gate-results
+  - id: gate-approver
+    permissions:
+    - read:gate-definitions
+    - approve:waivers
+    - approve:lifecycle-transitions
+  - id: gate-admin
+    permissions:
+    - all
+    requiresRootApproval: true
+  - id: governance-council
+    permissions:
+    - approve:cross-layer-changes
+    - approve:escalations
+    - approve:waiver-overrides
   roleAssignmentAudit: true
   quarterlyReviewRequired:
-    - gate-admin
-    - governance-council
+  - gate-admin
+  - governance-council

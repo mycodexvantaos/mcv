@@ -1,37 +1,30 @@
 {
   "name": "@mycodexvantaos/cli",
   "version": "1.0.0",
-  "private": true,
   "description": "MyCodexVantaOS Forge CLI",
-  "type": "module",
-  "main": "index.ts",
   "bin": {
-    "mcx": "./index.ts",
     "mcxos": "./dist/index.js"
   },
   "scripts": {
-    "dev": "ts-node src/index.ts",
     "build": "tsc -p tsconfig.json && chmod +x dist/index.js",
-    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src --ext .ts",
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@mycodexvantaos/core": "workspace:*",
-    "@mycodexvantaos/ports": "workspace:*"
+    "@mycodexvantaos/core": "workspace:*"
   },
   "devDependencies": {
-    "tsup": "^8.5.1",
-    "tsx": "^4.22.4",
-    "typescript": "^5.5.0",
     "@types/node": "^22.0.0",
     "ts-node": "^10.9.2",
+    "typescript": "^5.5.0",
     "vitest": "^2.0.0"
   },
-  "license": "UNLICENSED",
   "engines": {
     "node": ">=22.0.0"
-  }
+  },
+  "license": "UNLICENSED",
+  "private": true
 }

@@ -8,9 +8,9 @@ metadata:
 spec:
   domain: platform
   capabilities:
-    - scheduler
-    - database
-    - queue
+  - scheduler
+  - database
+  - queue
   providers:
     scheduler: scheduler-temporal
     database: database-postgres

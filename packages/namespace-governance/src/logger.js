@@ -6,11 +6,11 @@
  * Rationale: a factory (not a module-level singleton) keeps tests isolated —
  * each test can construct its own silent logger without global state.
  */
-import pino from 'pino';
+import pino from "pino";
 
 /**
  * @param {{ level?: string }} [opts]
  * @returns {import('pino').Logger}
  */
 export const initLogger = (opts = {}) =>
-  pino({ level: opts.level || process.env.LOG_LEVEL || 'info' });
+  pino({ level: opts.level || process.env.LOG_LEVEL || "info" });

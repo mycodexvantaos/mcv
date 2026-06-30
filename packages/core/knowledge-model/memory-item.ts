@@ -7,7 +7,7 @@
  * MVP: short-term (session-scoped) only. Long-term is post-MVP.
  */
 
-export type MemoryType = 'short-term' | 'long-term' | 'episodic' | 'semantic';
+export type MemoryType = "short-term" | "long-term" | "episodic" | "semantic";
 
 export interface MemoryItemSpec {
   /** The session that created this memory */
@@ -31,4 +31,4 @@ export interface MemoryItemStatus {
   decayScore: number;
 }
 
-export type MemoryPhase = 'active' | 'decaying' | 'consolidated' | 'forgotten' | 'archived';
+export type MemoryPhase = "active" | "decaying" | "consolidated" | "forgotten" | "archived";

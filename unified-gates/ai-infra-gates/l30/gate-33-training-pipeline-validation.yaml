@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,39 +10,41 @@ metadata:
   criticality: critical
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-60600
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l30
-    - training
+  - l30
+  - training
   sloTarget: 30
   evidenceRetentionDays: 2555
 spec:
-  description: >
-    Validates that the training pipeline is correctly configured, stable, and producing convergent results.
+  description: 'Validates that the training pipeline is correctly configured, stable,
+    and producing convergent results.
+
+    '
   validates:
-    - dimension: pipeline-stability
-      description: Training pipeline is stable and convergent.
-      checks:
-        - id: chk-loss-convergent
-          description: Training loss shows convergence over final 10% of steps
-          rule: 'metric:loss-convergent'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-no-nan-loss
-          description: No NaN or Inf loss values detected
-          rule: 'metric:no-nan-loss'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-gradient-healthy
-          description: Gradient norm is within defined bounds
-          rule: 'metric:gradient-norm-in-bounds'
-          severity: high
-          evidenceRequired: true
-        - id: chk-checkpoint-saved
-          description: Model checkpoint is saved and verifiable
-          rule: 'artifact:checkpoint-exists'
-          severity: critical
-          evidenceRequired: true
+  - dimension: pipeline-stability
+    description: Training pipeline is stable and convergent.
+    checks:
+    - id: chk-loss-convergent
+      description: Training loss shows convergence over final 10% of steps
+      rule: metric:loss-convergent
+      severity: critical
+      evidenceRequired: true
+    - id: chk-no-nan-loss
+      description: No NaN or Inf loss values detected
+      rule: metric:no-nan-loss
+      severity: critical
+      evidenceRequired: true
+    - id: chk-gradient-healthy
+      description: Gradient norm is within defined bounds
+      rule: metric:gradient-norm-in-bounds
+      severity: high
+      evidenceRequired: true
+    - id: chk-checkpoint-saved
+      description: Model checkpoint is saved and verifiable
+      rule: artifact:checkpoint-exists
+      severity: critical
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

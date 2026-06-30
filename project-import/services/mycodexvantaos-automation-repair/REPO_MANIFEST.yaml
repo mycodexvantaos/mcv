@@ -9,23 +9,23 @@ metadata:
   planeDescription: 執行面 — 任務、工作流、自動化
   tier: 3
   tags:
-    - automation
-    - workflow
-    - state-machine
+  - automation
+  - workflow
+  - state-machine
 spec:
   architecture:
     philosophy: native-first / provider-agnostic
     principle: 第三方服務是擴充出口，不是平台地基
     mode: native | connected | hybrid
   capabilities:
-    - workflow-execution
-    - step-runner
-    - state-machine
+  - workflow-execution
+  - step-runner
+  - state-machine
   providerDependencies:
-    - queue
-    - stateStore
-    - database
+  - queue
+  - stateStore
+  - database
   repoDependencies:
-    - codexvanta-os-core-kernel
-    - codexvanta-os-event-bus
-    - codexvanta-os-scheduler
+  - codexvanta-os-core-kernel
+  - codexvanta-os-event-bus
+  - codexvanta-os-scheduler

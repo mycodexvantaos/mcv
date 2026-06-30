@@ -1,5 +1,4 @@
-# modules/mycodexvantaos-ai-memory/capabilities.yaml
 capabilities:
-  - vector-store
-  - embedding
-  - state-store
+- vector-store
+- embedding
+- state-store

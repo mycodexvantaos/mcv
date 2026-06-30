@@ -1,4 +1,4 @@
-## MyCodexVantaOS — service-topology
+# MyCodexVantaOS — service-topology
 
 Machine Identity: `mycodexvantaos`
 Canonical URL: https://mycodexvantaos.com
@@ -15,7 +15,7 @@ This document describes the service-topology specification for MyCodexVantaOS.
 
 <!-- Formal spec additions -->
 
-## Service Topology
+# Service Topology
 
 > Status: Normative
 > Document: docs/architecture/service-topology.md

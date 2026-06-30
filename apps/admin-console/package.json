@@ -1,9 +1,7 @@
 {
   "name": "@mycodexvantaos/admin-console",
   "version": "1.0.0",
-  "private": true,
   "description": "MyCodexVantaOS Admin Console — https://admin.mycodexvantaos.com",
-  "type": "module",
   "scripts": {
     "dev": "next dev -p 3002",
     "build": "next build",
@@ -13,7 +11,6 @@
     "lint": "next lint",
     "clean": "rm -rf .next dist"
   },
-  "license": "UNLICENSED",
   "dependencies": {
     "@mycodexvantaos/core": "workspace:*",
     "next": "^15.0.0",
@@ -25,5 +22,7 @@
     "@types/react": "^19.0.0",
     "typescript": "^5.5.0",
     "vitest": "^2.0.0"
-  }
+  },
+  "license": "UNLICENSED",
+  "private": true
 }

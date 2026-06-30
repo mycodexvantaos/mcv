@@ -1,15 +1,15 @@
 apiVersion: mycodexvantaos.io/v1
 kind: ReportOutputConfig
 metadata:
-  name: report-output-config
   version: 1.0.0
+  name: report-output-config
 spec:
   outputDirectory: outputs/
   reports:
-    - architecture-validation-report.json
-    - foundation-validation-report.json
-    - navigation-validation-report.json
-    - namespace-governance-validation-report.json
-    - unified-gates-validation-report.json
-    - provider-capability-validation-report.json
-    - phase-one-freeze-report.json
+  - architecture-validation-report.json
+  - foundation-validation-report.json
+  - navigation-validation-report.json
+  - namespace-governance-validation-report.json
+  - unified-gates-validation-report.json
+  - provider-capability-validation-report.json
+  - phase-one-freeze-report.json

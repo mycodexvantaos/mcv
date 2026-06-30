@@ -8,8 +8,8 @@ metadata:
 spec:
   domain: security
   capabilities:
-    - validation
-    - observability
+  - validation
+  - observability
   providers:
     validation: validation-zod
     observability: observability-opentelemetry

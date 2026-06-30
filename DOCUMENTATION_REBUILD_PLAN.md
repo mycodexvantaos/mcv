@@ -505,15 +505,15 @@ docs/
 創建 `tools/validators/docs-validator.ts`：
 
 ```typescript
-import * as yaml from 'js-yaml';
-import fs from 'fs';
-import path from 'path';
+import * as yaml from "js-yaml";
+import fs from "fs";
+import path from "path";
 
 interface DocMetadata {
   title: string;
   version: string;
   date: string;
-  status: 'Draft' | 'Stable' | 'Deprecated';
+  status: "Draft" | "Stable" | "Deprecated";
   contract?: string;
   spectrum?: string;
 }
@@ -530,9 +530,9 @@ export function validateDocMetadata(filePath: string): DocMetadata | null {
 創建 `tools/validators/link-validator.ts`：
 
 ```typescript
-import fs from 'fs';
-import path from 'path';
-import { marked } from 'marked';
+import fs from "fs";
+import path from "path";
+import { marked } from "marked";
 
 export function checkInternalLinks(docRoot: string): { [filePath: string]: string[] } {
   // 遍歷所有 .md 文件

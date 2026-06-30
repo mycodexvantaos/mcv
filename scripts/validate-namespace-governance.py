@@ -8,6 +8,7 @@ Machine Identity: mycodexvantaos
 
 import sys
 import yaml
+import json
 from pathlib import Path
 
 MACHINE_IDENTITY = "mycodexvantaos"

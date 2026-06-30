@@ -1,6 +1,6 @@
 name: Unified Gates Validation
 
-"on":
+on:
   push:
     branches: [main, develop]
     paths:
@@ -37,13 +37,13 @@ jobs:
         run: pip install pyyaml jsonschema
 
       - name: Validate gate catalog
-        run: python3 unified-gates/scripts/validate-gate-catalog.py
+        run: python3 unified-gates/scripts/validate-gate-catalog.py --root unified-gates
 
       - name: Validate AI infra gates
-        run: python3 unified-gates/scripts/validate-ai-infra-gates.py
+        run: python3 unified-gates/scripts/validate-ai-infra-gates.py --root unified-gates
 
       - name: Validate gate schemas
-        run: python3 unified-gates/scripts/validate-gate-schema.py
+        run: python3 unified-gates/scripts/validate-gate-schema.py --root unified-gates
 
   validate-gate-composition:
     name: Validate Gate Composition
@@ -63,7 +63,7 @@ jobs:
         run: pip install pyyaml jsonschema networkx
 
       - name: Validate gate composition
-        run: python3 unified-gates/scripts/validate-gate-composition.py
+        run: python3 unified-gates/scripts/validate-gate-composition.py --root unified-gates
 
   generate-gate-report:
     name: Generate Gate Report
@@ -84,11 +84,10 @@ jobs:
         run: pip install pyyaml jsonschema
 
       - name: Generate gate validation report
-        run: python3 unified-gates/scripts/generate-gate-report.py
+        run: python3 unified-gates/scripts/generate-gate-report.py --root unified-gates --output unified-gates/outputs/gate-validation-report.json
 
       - name: Generate production closure report
-        continue-on-error: true
-        run: python3 unified-gates/scripts/generate-production-closure-report.py
+        run: python3 unified-gates/scripts/generate-production-closure-report.py --root unified-gates
 
       - name: Upload gate reports
         uses: actions/upload-artifact@v4
@@ -96,7 +95,7 @@ jobs:
           name: gate-validation-reports
           path: |
             unified-gates/outputs/gate-validation-report.json
-            unified-gates/outputs/production-closure-report.json
+            unified-gates/reports/production-closure-report.json
           retention-days: 30
 
   production-closure-gate:
@@ -117,7 +116,6 @@ jobs:
         run: pip install pyyaml
 
       - name: Evaluate production closure gate
-        continue-on-error: true
         run: |
           python3 unified-gates/scripts/evaluate-gate.py \
             --gate unified-gates/ai-infra-gates/l90/gate-99-production-closure-validation.yaml \

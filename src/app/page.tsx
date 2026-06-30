@@ -1,34 +1,34 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { ArrowRight, Box, Cpu, Globe, Layers, ShieldCheck, Zap } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Logo } from '@/components/icons/logo';
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight, Box, Cpu, Globe, Layers, ShieldCheck, Zap } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { Logo } from "@/components/icons/logo";
 
 export default function LandingPage() {
-  const heroImage = PlaceHolderImages.find((img) => img.id === 'hero-image');
+  const heroImage = PlaceHolderImages.find((img) => img.id === "hero-image");
 
   const coreValues = [
     {
       icon: <Layers className="h-6 w-6 text-accent" />,
-      title: 'Local-First',
-      description: '零外部依賴，最小環境即可成立，確保開發主權。',
+      title: "Local-First",
+      description: "零外部依賴，最小環境即可成立，確保開發主權。",
     },
     {
       icon: <Globe className="h-6 w-6 text-accent" />,
-      title: 'Cloud-Agnostic',
-      description: '核心語義不綁定雲廠商，部署目標自由遷移。',
+      title: "Cloud-Agnostic",
+      description: "核心語義不綁定雲廠商，部署目標自由遷移。",
     },
     {
       icon: <Cpu className="h-6 w-6 text-accent" />,
-      title: 'Contract-First',
-      description: '穩定契約優先，實現與供應商完全解耦。',
+      title: "Contract-First",
+      description: "穩定契約優先，實現與供應商完全解耦。",
     },
     {
       icon: <ShieldCheck className="h-6 w-6 text-accent" />,
-      title: 'Governance-Enforced',
-      description: '機器強制執行治理規則，自動化預防架構漂移。',
+      title: "Governance-Enforced",
+      description: "機器強制執行治理規則，自動化預防架構漂移。",
     },
   ];
 
@@ -145,10 +145,10 @@ export default function LandingPage() {
                 </p>
                 <ul className="space-y-3">
                   {[
-                    'Era-1 獨立性 (Era-1 Independence)',
-                    '量子權重感知的核心 (Era-Q Aware)',
-                    '100% 語義閉環 (Semantic Closure)',
-                    'P9 自遞歸治理循環',
+                    "Era-1 獨立性 (Era-1 Independence)",
+                    "量子權重感知的核心 (Era-Q Aware)",
+                    "100% 語義閉環 (Semantic Closure)",
+                    "P9 自遞歸治理循環",
                   ].map((item, i) => (
                     <li key={i} className="flex items-center gap-3">
                       <div className="h-1.5 w-1.5 rounded-full bg-accent"></div>
@@ -178,7 +178,7 @@ export default function LandingPage() {
                   <div className="h-1.5 w-full bg-border rounded-full overflow-hidden">
                     <div
                       className="h-full bg-accent shadow-[0_0_10px_#52E0B0]"
-                      style={{ width: '100%' }}
+                      style={{ width: "100%" }}
                     ></div>
                   </div>
                 </div>

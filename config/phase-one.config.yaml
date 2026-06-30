@@ -5,20 +5,6 @@ metadata:
   version: 1.0.0
   date: '2026-06-29'
   description: Phase 1 Architecture Baseline — Freeze Configuration
-spec:
-  phase: 1
-  status: in-progress
-  freezeCriteria:
-    total: 25
-    satisfied: 0
-  requiredDeliverables:
-    - docs/unified-architecture-spec.md
-    - navigation/mycodexvantaos-module.yaml
-    - foundation/mycodexvantaos-module.yaml
-    - governance/platform-governance-spec.yaml
-    - platform/service-catalog.yaml
-    - unified-gates/unified-gate-index.yaml
-    - mycodexvantaos-namespace-governance/mycodexvantaos-module.yaml
 freeze:
   enabled: true
   status: frozen
@@ -26,27 +12,27 @@ freeze:
   frozen-by: platform-governance
 frozen-artifacts:
   specs:
-    - docs/spec/l0-meta/formalized-specification-architecture.yaml
-    - docs/spec/l1-constitution/constitution.yaml
-    - docs/spec/l2-structure/capability-architecture-addendum.yaml
+  - docs/spec/l0-meta/formalized-specification-architecture.yaml
+  - docs/spec/l1-constitution/constitution.yaml
+  - docs/spec/l2-structure/capability-architecture-addendum.yaml
   governance:
-    - governance/identity-policy.yaml
-    - governance/platform-governance-spec.yaml
-    - governance/capability-set.yaml
-    - governance/naming-policy.schema.json
+  - governance/identity-policy.yaml
+  - governance/platform-governance-spec.yaml
+  - governance/capability-set.yaml
+  - governance/naming-policy.schema.json
   platform:
-    - platform/service-catalog.yaml
-    - platform/service-topology.yaml
+  - platform/service-catalog.yaml
+  - platform/service-topology.yaml
 required-gates:
-  - gate-01-namespace-governance-validation
-  - gate-02-repository-naming-validation
-  - gate-03-governance-code-validation
-  - gate-04-directory-binding-mediator-validation
-  - gate-05-dependency-graph-acyclic-validation
-  - gate-06-lifecycle-state-validation
-  - gate-07-owner-registry-validation
-  - gate-08-audit-evidence-validation
-  - gate-99-production-closure-validation
+- gate-01-namespace-governance-validation
+- gate-02-repository-naming-validation
+- gate-03-governance-code-validation
+- gate-04-directory-binding-mediator-validation
+- gate-05-dependency-graph-acyclic-validation
+- gate-06-lifecycle-state-validation
+- gate-07-owner-registry-validation
+- gate-08-audit-evidence-validation
+- gate-99-production-closure-validation
 scope:
   foundations: 7
   modules: 11

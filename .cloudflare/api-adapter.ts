@@ -21,13 +21,13 @@ const apiRoutes: APIRoute[] = [
     handler: async (_request, env) => {
       return new Response(
         JSON.stringify({
-          status: 'healthy',
+          status: "healthy",
           environment: env.ENVIRONMENT,
           timestamp: new Date().toISOString(),
-          version: '1.0.0',
+          version: "1.0.0",
         }),
         {
-          headers: { 'Content-Type': 'application/json' },
+          headers: { "Content-Type": "application/json" },
         }
       );
     },
@@ -45,7 +45,7 @@ const apiRoutes: APIRoute[] = [
           timestamp: new Date().toISOString(),
         }),
         {
-          headers: { 'Content-Type': 'application/json' },
+          headers: { "Content-Type": "application/json" },
         }
       );
     },
@@ -55,12 +55,12 @@ const apiRoutes: APIRoute[] = [
     handler: async (_request, env) => {
       return new Response(
         JSON.stringify({
-          status: 'ok',
+          status: "ok",
           environment: env.ENVIRONMENT,
           timestamp: new Date().toISOString(),
         }),
         {
-          headers: { 'Content-Type': 'application/json' },
+          headers: { "Content-Type": "application/json" },
         }
       );
     },
@@ -79,12 +79,12 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       } catch (error) {
         return new Response(
           JSON.stringify({
-            error: 'Internal Server Error',
-            message: error instanceof Error ? error.message : 'Unknown error',
+            error: "Internal Server Error",
+            message: error instanceof Error ? error.message : "Unknown error",
           }),
           {
             status: 500,
-            headers: { 'Content-Type': 'application/json' },
+            headers: { "Content-Type": "application/json" },
           }
         );
       }
@@ -94,12 +94,12 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   // No matching route found
   return new Response(
     JSON.stringify({
-      error: 'Not Found',
+      error: "Not Found",
       path: url.pathname,
     }),
     {
       status: 404,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     }
   );
 };

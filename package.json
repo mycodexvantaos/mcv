@@ -2,7 +2,6 @@
   "name": "mycodexvantaos",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "genkit:dev": "genkit start -- tsx src/ai/dev.ts",
@@ -49,8 +48,7 @@
     "release:promotion:evaluate": "node --import tsx tools/evaluate-promotion.ts",
     "release:sign": "node --import tsx tools/sign-provenance.ts",
     "ci:validate": "node --import tsx ci/validate-architecture.ts",
-    "validate:all": "pnpm run ci:validate && pnpm run schemas:validate",
-    "validate:architecture": "tsx ci/validate-architecture.ts"
+    "validate:all": "pnpm run ci:validate && pnpm run schemas:validate"
   },
   "dependencies": {
     "@genkit-ai/google-genai": "^1.37.0",
@@ -130,7 +128,6 @@
     "@cloudflare/workers-types": "^4.20260619.1",
     "@codecov/vite-plugin": "^2.0.1",
     "@codecov/webpack-plugin": "^2.0.1",
-    "@eslint/js": "^10.0.1",
     "@mycodexvantaos/ai-humaniser": "workspace:*",
     "@mycodexvantaos/contracts-sdk": "workspace:*",
     "@mycodexvantaos/policy-model": "workspace:*",
@@ -146,8 +143,6 @@
     "@types/node": "^20.19.43",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "@typescript-eslint/eslint-plugin": "^8.62.0",
-    "@typescript-eslint/parser": "^8.62.0",
     "@vitejs/plugin-react": "^6.0.1",
     "autoprefixer": "^10.5.0",
     "axios": "^1.18.0",
@@ -162,7 +157,7 @@
     "ts-node": "^10.9.2",
     "tsx": "^4.22.4",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.62.0",
+    "typescript-eslint": "^8.62.1",
     "uuid": "^14.0.0",
     "vite": "^8.0.16",
     "wrangler": "^4.103.0"

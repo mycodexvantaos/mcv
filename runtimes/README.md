@@ -29,29 +29,29 @@ Runtime Layer 提供兩層能力：
 ### 1.2 快速開始
 
 ```typescript
-import { getRuntimeManager, RuntimeMode } from './runtimes';
+import { getRuntimeManager, RuntimeMode } from "./runtimes";
 
 // 初始化 Runtime Manager
 const manager = getRuntimeManager({
   mode: RuntimeMode.AUTO,
   enableAutoFallback: true,
-  logLevel: 'info',
+  logLevel: "info",
 });
 
 // 查看當前模式
-console.log('Current mode:', manager.getCurrentMode());
+console.log("Current mode:", manager.getCurrentMode());
 
 // AUTO 模式下執行檢測並自動切換
 const result = await manager.performDetectionAndSwitch(true);
-console.log('Recommended mode:', result.recommendedMode);
-console.log('Reasons:', result.reasons);
-console.log('Network status:', result.networkStatus);
+console.log("Recommended mode:", result.recommendedMode);
+console.log("Reasons:", result.reasons);
+console.log("Network status:", result.networkStatus);
 
 // 手動切換模式
-manager.setMode(RuntimeMode.NATIVE, 'user request');
+manager.setMode(RuntimeMode.NATIVE, "user request");
 
 // 查看模式切換歷史
-console.log('Mode change history:', manager.getModeChangeHistory());
+console.log("Mode change history:", manager.getModeChangeHistory());
 ```
 
 ### 1.3 配置詳解
@@ -64,14 +64,14 @@ interface RuntimeConfiguration {
   enableAutoFallback: boolean;
   /** 網絡檢測配置 */
   networkProbe?: {
-    strategy: 'google' | 'custom' | 'dns' | 'system';
+    strategy: "google" | "custom" | "dns" | "system";
     customUrl?: string;
     timeout?: number;
   };
   /** 是否強制忽略缺失依賴（僅調試） */
   ignoreMissingDeps?: boolean;
   /** 日誌級別 */
-  logLevel: 'debug' | 'info' | 'warn' | 'error';
+  logLevel: "debug" | "info" | "warn" | "error";
 }
 ```
 
@@ -82,12 +82,12 @@ const manager = getRuntimeManager();
 
 // 觸發網絡檢測（AUTO 模式會自動切換）
 const networkStatus = await manager.triggerNetworkProbe({
-  strategy: 'google',
+  strategy: "google",
   timeout: 5000,
 });
 
-console.log('Online:', networkStatus.isOnline);
-console.log('Latency:', networkStatus.latency);
+console.log("Online:", networkStatus.isOnline);
+console.log("Latency:", networkStatus.latency);
 ```
 
 ---
@@ -112,12 +112,12 @@ const adapter = new CloudflareRuntimeAdapter(env);
 ### 2.2 Docker / Node.js
 
 ```typescript
-import { bootstrapDocker, DockerRuntimeAdapter } from './runtimes';
+import { bootstrapDocker, DockerRuntimeAdapter } from "./runtimes";
 
 const env = {
-  DATABASE_URL: 'postgresql://localhost:5432/mydb',
-  REDIS_URL: 'redis://localhost:6379',
-  MINIO_ENDPOINT: 'localhost:9000',
+  DATABASE_URL: "postgresql://localhost:5432/mydb",
+  REDIS_URL: "redis://localhost:6379",
+  MINIO_ENDPOINT: "localhost:9000",
 };
 
 const adapter = new DockerRuntimeAdapter(env);
@@ -126,7 +126,7 @@ const adapter = new DockerRuntimeAdapter(env);
 ### 2.3 Kubernetes
 
 ```typescript
-import { bootstrapKubernetes, mapKubernetesEnv } from './runtimes';
+import { bootstrapKubernetes, mapKubernetesEnv } from "./runtimes";
 
 // Kubernetes 環境變量映射
 const env = await mapKubernetesEnv();
@@ -149,20 +149,20 @@ const manager = getRuntimeManager({
 const result = await manager.performDetectionAndSwitch(true);
 
 if (result.recommendedMode === RuntimeMode.NATIVE) {
-  console.log('Workers network error, fallback to native');
+  console.log("Workers network error, fallback to native");
 }
 ```
 
 ### 3.2 本地開發
 
 ```typescript
-import { getRuntimeManager, RuntimeMode } from './runtimes';
+import { getRuntimeManager, RuntimeMode } from "./runtimes";
 
 // 本地開發通常使用 NATIVE 模式，避免 API key
 const manager = getRuntimeManager({
   mode: RuntimeMode.NATIVE,
   enableAutoFallback: false,
-  logLevel: 'debug',
+  logLevel: "debug",
 });
 ```
 

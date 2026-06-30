@@ -3,17 +3,10 @@
   "$id": "https://mycodexvantaos.com/schemas/billing-event.schema.json",
   "title": "BillingEvent",
   "type": "object",
+  "required": ["id", "type", "timestamp"],
   "properties": {
-    "id": {
-      "type": "string"
-    },
-    "type": {
-      "type": "string"
-    },
-    "timestamp": {
-      "type": "string",
-      "format": "date-time"
-    }
-  },
-  "required": ["id", "type", "timestamp"]
+    "id": { "type": "string" },
+    "type": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" }
+  }
 }

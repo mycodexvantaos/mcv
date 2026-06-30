@@ -7,15 +7,15 @@
  * Domain & Deployment Contract: https://mycodexvantaos.com
  */
 
-import http from 'node:http';
-import { createCorsMiddleware, evaluateCors } from '@mycodexvantaos/core/lib/cors';
-import { applySecurityHeaders } from '@mycodexvantaos/core/lib/security-headers';
-import { evaluateRedirect } from '@mycodexvantaos/core/lib/redirects';
+import http from "node:http";
+import { createCorsMiddleware, evaluateCors } from "@mycodexvantaos/core/lib/cors";
+import { applySecurityHeaders } from "@mycodexvantaos/core/lib/security-headers";
+import { evaluateRedirect } from "@mycodexvantaos/core/lib/redirects";
 import {
   getEnvironmentConfig,
   loadEnvironmentConfig,
-} from '@mycodexvantaos/core/config/environment';
-import { buildWebhookUrl, buildOAuthCallbackUrl } from '@mycodexvantaos/core/lib/url-builder';
+} from "@mycodexvantaos/core/config/environment";
+import { buildWebhookUrl, buildOAuthCallbackUrl } from "@mycodexvantaos/core/lib/url-builder";
 
 const config = loadEnvironmentConfig();
 
@@ -23,11 +23,11 @@ const config = loadEnvironmentConfig();
  * Request router with CORS, security headers, and redirect enforcement.
  */
 function handleRequest(req: http.IncomingMessage, res: http.ServerResponse): void {
-  const url = req.url ?? '/';
-  const method = req.method ?? 'GET';
+  const url = req.url ?? "/";
+  const method = req.method ?? "GET";
   const origin = req.headers.origin as string | undefined;
-  const host = req.headers.host ?? '';
-  const protocol = req.headers['x-forwarded-proto'] ?? 'http';
+  const host = req.headers.host ?? "";
+  const protocol = req.headers["x-forwarded-proto"] ?? "http";
 
   // Apply security headers to all responses
   applySecurityHeaders(res, config.appEnv);
@@ -39,31 +39,31 @@ function handleRequest(req: http.IncomingMessage, res: http.ServerResponse): voi
   }
 
   // Handle preflight
-  if (method === 'OPTIONS') {
+  if (method === "OPTIONS") {
     res.writeHead(204);
     res.end();
     return;
   }
 
   // Health check endpoints
-  if (url === '/health/live') {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
+  if (url === "/health/live") {
+    res.writeHead(200, { "Content-Type": "application/json" });
     res.end(
       JSON.stringify({
-        status: 'ok',
-        service: 'mycodexvantaos-api',
+        status: "ok",
+        service: "mycodexvantaos-api",
         timestamp: new Date().toISOString(),
       })
     );
     return;
   }
 
-  if (url === '/health/ready') {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
+  if (url === "/health/ready") {
+    res.writeHead(200, { "Content-Type": "application/json" });
     res.end(
       JSON.stringify({
-        status: 'ready',
-        service: 'mycodexvantaos-api',
+        status: "ready",
+        service: "mycodexvantaos-api",
         timestamp: new Date().toISOString(),
       })
     );
@@ -71,26 +71,26 @@ function handleRequest(req: http.IncomingMessage, res: http.ServerResponse): voi
   }
 
   // API v1 routes
-  if (url.startsWith('/v1/')) {
+  if (url.startsWith("/v1/")) {
     handleApiV1(url, method, req, res);
     return;
   }
 
   // Webhook routes
-  if (url.startsWith('/webhooks/')) {
+  if (url.startsWith("/webhooks/")) {
     handleWebhook(url, method, req, res);
     return;
   }
 
   // Auth callback routes
-  if (url.startsWith('/api/auth/callback/')) {
+  if (url.startsWith("/api/auth/callback/")) {
     handleAuthCallback(url, method, req, res);
     return;
   }
 
   // 404
-  res.writeHead(404, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify({ error: 'Not Found', path: url }));
+  res.writeHead(404, { "Content-Type": "application/json" });
+  res.end(JSON.stringify({ error: "Not Found", path: url }));
 }
 
 /**
@@ -102,11 +102,11 @@ function handleApiV1(
   req: http.IncomingMessage,
   res: http.ServerResponse
 ): void {
-  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.writeHead(200, { "Content-Type": "application/json" });
   res.end(
     JSON.stringify({
-      api: 'mycodexvantaos',
-      version: 'v1',
+      api: "mycodexvantaos",
+      version: "v1",
       path: url,
       method,
       timestamp: new Date().toISOString(),
@@ -124,19 +124,19 @@ function handleWebhook(
   req: http.IncomingMessage,
   res: http.ServerResponse
 ): void {
-  if (method !== 'POST') {
-    res.writeHead(405, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ error: 'Method Not Allowed' }));
+  if (method !== "POST") {
+    res.writeHead(405, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ error: "Method Not Allowed" }));
     return;
   }
 
-  const webhookPath = url.replace('/webhooks/', '');
+  const webhookPath = url.replace("/webhooks/", "");
   const expectedUrl = buildWebhookUrl(webhookPath as any, config.appEnv);
 
   // Log webhook receipt (in production, verify signature before processing)
   console.warn(`[Webhook] Received: ${url}, expected endpoint: ${expectedUrl}`);
 
-  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.writeHead(200, { "Content-Type": "application/json" });
   res.end(JSON.stringify({ received: true, webhook: webhookPath }));
 }
 
@@ -152,8 +152,8 @@ function handleAuthCallback(
 ): void {
   const providerMatch = url.match(/\/api\/auth\/callback\/([a-z]+)/);
   if (!providerMatch) {
-    res.writeHead(400, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ error: 'Invalid OAuth callback path' }));
+    res.writeHead(400, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ error: "Invalid OAuth callback path" }));
     return;
   }
 
@@ -162,8 +162,8 @@ function handleAuthCallback(
 
   console.warn(`[Auth] OAuth callback for ${provider}, expected: ${expectedCallbackUrl}`);
 
-  res.writeHead(200, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify({ provider, status: 'callback_received' }));
+  res.writeHead(200, { "Content-Type": "application/json" });
+  res.end(JSON.stringify({ provider, status: "callback_received" }));
 }
 
 /**

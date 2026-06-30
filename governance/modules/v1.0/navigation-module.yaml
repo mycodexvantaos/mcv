@@ -1,16 +1,15 @@
 apiVersion: mycodexvantaos.io/v1
 kind: NavigationModule
-
 metadata:
   name: mycodexvantaos-module
   organization: mycodexvantaos
   title: MyCodexVantaOS Navigation Module
-  description: >
-    Canonical navigation module definition for MyCodexVantaOS.
-    This module formalizes dependency graph generation, dependency policy,
-    directory bindings, relationship topology, mediator indexing, cross-plane
-    navigation, registry navigation, CI validation indexes, and gate navigation
-    as a machine-readable navigation artifact.
+  description: 'Canonical navigation module definition for MyCodexVantaOS. This module
+    formalizes dependency graph generation, dependency policy, directory bindings,
+    relationship topology, mediator indexing, cross-plane navigation, registry navigation,
+    CI validation indexes, and gate navigation as a machine-readable navigation artifact.
+
+    '
   labels:
     app.kubernetes.io/name: mycodexvantaos-module
     app.kubernetes.io/part-of: mycodexvantaos
@@ -23,7 +22,6 @@ metadata:
     mycodexvantaos.io/version-in-name: forbidden
     mycodexvantaos.io/environment-in-name: forbidden
     mycodexvantaos.io/generated-graph-policy: generated-not-manual
-
 spec:
   identity:
     id: navigation-mycodexvantaos-module
@@ -34,37 +32,35 @@ spec:
     lifecycle: active
     owner: platform-governance
     governanceCode: mycodexvantaos-00400
-
   naming:
     canonicalRules:
       lowercaseOnly: true
       kebabCaseOnly: true
       separator: hyphen
       forbiddenSeparators:
-        - underscore
-        - dot
-        - space
+      - underscore
+      - dot
+      - space
       versionInName: forbidden
       environmentMarkerInName: forbidden
-    artifactPattern: 'navigation/{artifact-name}.yaml'
-    moduleNamePattern: '^mycodexvantaos-module$'
-    bindingNamePattern: '^[a-z0-9]+(?:-[a-z0-9]+)*-binding$'
+    artifactPattern: navigation/{artifact-name}.yaml
+    moduleNamePattern: ^mycodexvantaos-module$
+    bindingNamePattern: ^[a-z0-9]+(?:-[a-z0-9]+)*-binding$
     dependencyGraphPath: navigation/dependency-graph.yaml
     dependencyPolicyPath: navigation/dependency-policy.yaml
-
   scope:
     appliesTo:
-      - dependency-policy
-      - dependency-graph
-      - directory-bindings
-      - navigation-maps
-      - navigation-indexes
-      - mediator-index
-      - registry-index
-      - ci-validation-index
-      - gate-navigation-index
-      - cross-era-map
-      - namespace-plane-map
+    - dependency-policy
+    - dependency-graph
+    - directory-bindings
+    - navigation-maps
+    - navigation-indexes
+    - mediator-index
+    - registry-index
+    - ci-validation-index
+    - gate-navigation-index
+    - cross-era-map
+    - namespace-plane-map
     canonicalPaths:
       navigationModule: navigation/mycodexvantaos-module.yaml
       dependencyPolicy: navigation/dependency-policy.yaml
@@ -76,7 +72,6 @@ spec:
       maps: navigation/maps
       indexes: navigation/indexes
       exceptions: governance/dependency-exceptions.yaml
-
   topology:
     authority:
       localDeclarationSource: directory-context.yaml
@@ -84,125 +79,105 @@ spec:
       globalTopologySource: navigation/dependency-graph.yaml
       globalTopologyGenerated: true
       manualGraphEditAllowed: false
-
     graphSources:
-      - pattern: '**/directory-context.yaml'
-        sourceType: directory-context
-        required: true
-
-      - pattern: '**/module-manifest.yaml'
-        sourceType: module-manifest
-        required: false
-
-      - pattern: 'providers/**/provider-manifest.yaml'
-        sourceType: provider-manifest
-        required: false
-
-      - pattern: 'contracts/index.yaml'
-        sourceType: contract-index
-        required: false
-
-      - pattern: 'platform/service-catalog.yaml'
-        sourceType: service-catalog
-        required: false
-
-      - pattern: 'governance/registry/provider-registry.yaml'
-        sourceType: provider-registry
-        required: false
-
-      - pattern: 'navigation/**/*.yaml'
-        sourceType: navigation-metadata
-        required: false
-
-      - pattern: 'unified-gates/**/*.yaml'
-        sourceType: unified-gate-metadata
-        required: false
-
+    - pattern: '**/directory-context.yaml'
+      sourceType: directory-context
+      required: true
+    - pattern: '**/module-manifest.yaml'
+      sourceType: module-manifest
+      required: false
+    - pattern: providers/**/provider-manifest.yaml
+      sourceType: provider-manifest
+      required: false
+    - pattern: contracts/index.yaml
+      sourceType: contract-index
+      required: false
+    - pattern: platform/service-catalog.yaml
+      sourceType: service-catalog
+      required: false
+    - pattern: governance/registry/provider-registry.yaml
+      sourceType: provider-registry
+      required: false
+    - pattern: navigation/**/*.yaml
+      sourceType: navigation-metadata
+      required: false
+    - pattern: unified-gates/**/*.yaml
+      sourceType: unified-gate-metadata
+      required: false
     generatedArtifacts:
-      - path: navigation/dependency-graph.yaml
-        kind: DependencyGraph
-        generated: true
-        manuallyEditable: false
-
-      - path: navigation/dependency-report.json
-        kind: DependencyReport
-        generated: true
-        manuallyEditable: false
-
-      - path: navigation/dependency-cycles.json
-        kind: DependencyCycleReport
-        generated: true
-        manuallyEditable: false
-
-      - path: navigation/dependency-policy-violations.json
-        kind: DependencyPolicyViolationReport
-        generated: true
-        manuallyEditable: false
-
+    - path: navigation/dependency-graph.yaml
+      kind: DependencyGraph
+      generated: true
+      manuallyEditable: false
+    - path: navigation/dependency-report.json
+      kind: DependencyReport
+      generated: true
+      manuallyEditable: false
+    - path: navigation/dependency-cycles.json
+      kind: DependencyCycleReport
+      generated: true
+      manuallyEditable: false
+    - path: navigation/dependency-policy-violations.json
+      kind: DependencyPolicyViolationReport
+      generated: true
+      manuallyEditable: false
   dependencyPolicy:
     path: navigation/dependency-policy.yaml
     required: true
     kind: DependencyPolicy
     responsibilities:
-      - hard-dependency-field-definition
-      - soft-dependency-field-definition
-      - allowed-direction-definition
-      - forbidden-hard-edge-definition
-      - cross-plane-rule-definition
-      - cross-foundation-rule-definition
-      - exception-file-reference
-      - cycle-policy-definition
-
+    - hard-dependency-field-definition
+    - soft-dependency-field-definition
+    - allowed-direction-definition
+    - forbidden-hard-edge-definition
+    - cross-plane-rule-definition
+    - cross-foundation-rule-definition
+    - exception-file-reference
+    - cycle-policy-definition
     hardDependencyFields:
-      - related.hard.dependsOn
-      - related.hard.consumes
-      - related.hard.implements
-      - related.dependsOn
-      - related.consumes
-
+    - related.hard.dependsOn
+    - related.hard.consumes
+    - related.hard.implements
+    - related.dependsOn
+    - related.consumes
     softDependencyFields:
-      - related.soft.references
-      - related.soft.observes
-      - related.soft.documents
-      - related.soft.owns
-      - related.soft.produces
-      - related.references
-      - related.observes
-      - related.documents
-      - related.owns
-      - related.produces
-
+    - related.soft.references
+    - related.soft.observes
+    - related.soft.documents
+    - related.soft.owns
+    - related.soft.produces
+    - related.references
+    - related.observes
+    - related.documents
+    - related.owns
+    - related.produces
     cyclePolicy:
       hardDependencies: forbidden
       softDependencies: allowed
       mixedDependencies: warn
       bidirectionalHardDependency: forbidden-unless-excepted
-
     exceptionFile: governance/dependency-exceptions.yaml
-
   bindings:
     path: navigation/bindings
     required: true
     kind: DirectoryBinding
     purpose:
-      - represent-bidirectional-logical-relations
-      - govern-relationship-semantics
-      - declare-mediation
-      - preserve-ai-navigation-semantics
-      - prevent-hard-dependency-cycles
-
+    - represent-bidirectional-logical-relations
+    - govern-relationship-semantics
+    - declare-mediation
+    - preserve-ai-navigation-semantics
+    - prevent-hard-dependency-cycles
     requiredBindingFields:
-      - apiVersion
-      - kind
-      - metadata.name
-      - metadata.organization
-      - spec.relationType
-      - spec.relationSemantics
-      - spec.hardDependency
-      - spec.participants
-      - spec.mediation
-      - spec.rules
-
+    - apiVersion
+    - kind
+    - metadata.name
+    - metadata.organization
+    - spec.relationType
+    - spec.relationSemantics
+    - spec.hardDependency
+    - spec.participants
+    - spec.mediation
+    - spec.rules
     bindingRules:
       kindMustBe: DirectoryBinding
       organizationMustBe: mycodexvantaos
@@ -211,212 +186,184 @@ spec:
       mediatorPathMustExist: true
       hardDependencyMustBeFalse: true
       bidirectionalLogicalRelationHardDependency: false
-
     canonicalBindings:
-      - id: automation-task-binding
-        path: navigation/bindings/automation-task-binding.yaml
-        relationType: automation-orchestration
-        relationSemantics: orchestration-mediated
-        mediator:
-          type: event-contract-and-policy
-          path: contracts/events/automation-event.yaml
-
-      - id: task-billing-binding
-        path: navigation/bindings/task-billing-binding.yaml
-        relationType: usage-metering
-        relationSemantics: bidirectional-logical
-        mediator:
-          type: shared-contract
-          path: contracts/events/usage-event.yaml
-
-      - id: provider-port-binding
-        path: navigation/bindings/provider-port-binding.yaml
-        relationType: provider-port-implementation
-        relationSemantics: contract-mediated
-        mediator:
-          type: port
-          path: ports/provider-port.yaml
-
-      - id: service-observability-binding
-        path: navigation/bindings/service-observability-binding.yaml
-        relationType: observability
-        relationSemantics: observation-only
-        mediator:
-          type: evidence
-          path: contracts/events/audit-evidence.yaml
-
-      - id: governance-evidence-binding
-        path: navigation/bindings/governance-evidence-binding.yaml
-        relationType: governance-evidence
-        relationSemantics: policy-mediated
-        mediator:
-          type: evidence-contract
-          path: contracts/events/audit-evidence.yaml
-
-      - id: control-plane-product-plane-binding
-        path: navigation/bindings/control-plane-product-plane-binding.yaml
-        relationType: plane-boundary
-        relationSemantics: policy-mediated
-        mediator:
-          type: service-catalog
-          path: platform/service-catalog.yaml
-
-      - id: cross-era-mapping-binding
-        path: navigation/bindings/cross-era-mapping-binding.yaml
-        relationType: cross-era-mapping
-        relationSemantics: registry-mediated
-        mediator:
-          type: registry
-          path: governance/registry/governance-code-registry.yaml
-
-      - id: namespace-registry-binding
-        path: navigation/bindings/namespace-registry-binding.yaml
-        relationType: namespace-registration
-        relationSemantics: registry-mediated
-        mediator:
-          type: registry
-          path: governance/registry/namespace-registry.yaml
-
+    - id: automation-task-binding
+      path: navigation/bindings/automation-task-binding.yaml
+      relationType: automation-orchestration
+      relationSemantics: orchestration-mediated
+      mediator:
+        type: event-contract-and-policy
+        path: contracts/events/automation-event.yaml
+    - id: task-billing-binding
+      path: navigation/bindings/task-billing-binding.yaml
+      relationType: usage-metering
+      relationSemantics: bidirectional-logical
+      mediator:
+        type: shared-contract
+        path: contracts/events/usage-event.yaml
+    - id: provider-port-binding
+      path: navigation/bindings/provider-port-binding.yaml
+      relationType: provider-port-implementation
+      relationSemantics: contract-mediated
+      mediator:
+        type: port
+        path: ports/provider-port.yaml
+    - id: service-observability-binding
+      path: navigation/bindings/service-observability-binding.yaml
+      relationType: observability
+      relationSemantics: observation-only
+      mediator:
+        type: evidence
+        path: contracts/events/audit-evidence.yaml
+    - id: governance-evidence-binding
+      path: navigation/bindings/governance-evidence-binding.yaml
+      relationType: governance-evidence
+      relationSemantics: policy-mediated
+      mediator:
+        type: evidence-contract
+        path: contracts/events/audit-evidence.yaml
+    - id: control-plane-product-plane-binding
+      path: navigation/bindings/control-plane-product-plane-binding.yaml
+      relationType: plane-boundary
+      relationSemantics: policy-mediated
+      mediator:
+        type: service-catalog
+        path: platform/service-catalog.yaml
+    - id: cross-era-mapping-binding
+      path: navigation/bindings/cross-era-mapping-binding.yaml
+      relationType: cross-era-mapping
+      relationSemantics: registry-mediated
+      mediator:
+        type: registry
+        path: governance/registry/governance-code-registry.yaml
+    - id: namespace-registry-binding
+      path: navigation/bindings/namespace-registry-binding.yaml
+      relationType: namespace-registration
+      relationSemantics: registry-mediated
+      mediator:
+        type: registry
+        path: governance/registry/namespace-registry.yaml
   maps:
     path: navigation/maps
     required: true
     mapArtifacts:
-      - id: namespace-plane-map
-        path: navigation/maps/namespace-plane-map.yaml
-        purpose: map-namespaces-to-control-plane-or-product-plane
-
-      - id: era-code-map
-        path: navigation/maps/era-code-map.yaml
-        purpose: map-governance-codes-to-era-ranges
-
-      - id: repository-domain-function-map
-        path: navigation/maps/repository-domain-function-map.yaml
-        purpose: map-repositories-to-domain-and-function
-
-      - id: automation-task-map
-        path: navigation/maps/automation-task-map.yaml
-        purpose: map-automation-tasks-to-repositories-and-mediators
-
-      - id: governance-code-map
-        path: navigation/maps/governance-code-map.yaml
-        purpose: map-governance-code-records-to-registries
-
-      - id: cross-era-map
-        path: navigation/maps/cross-era-map.yaml
-        purpose: map-cross-era-namespace-transformations
-
+    - id: namespace-plane-map
+      path: navigation/maps/namespace-plane-map.yaml
+      purpose: map-namespaces-to-control-plane-or-product-plane
+    - id: era-code-map
+      path: navigation/maps/era-code-map.yaml
+      purpose: map-governance-codes-to-era-ranges
+    - id: repository-domain-function-map
+      path: navigation/maps/repository-domain-function-map.yaml
+      purpose: map-repositories-to-domain-and-function
+    - id: automation-task-map
+      path: navigation/maps/automation-task-map.yaml
+      purpose: map-automation-tasks-to-repositories-and-mediators
+    - id: governance-code-map
+      path: navigation/maps/governance-code-map.yaml
+      purpose: map-governance-code-records-to-registries
+    - id: cross-era-map
+      path: navigation/maps/cross-era-map.yaml
+      purpose: map-cross-era-namespace-transformations
   indexes:
     path: navigation/indexes
     required: true
     indexArtifacts:
-      - id: directory-context-index
-        path: navigation/indexes/directory-context-index.yaml
-        indexes:
-          - '**/directory-context.yaml'
-
-      - id: module-manifest-index
-        path: navigation/indexes/module-manifest-index.yaml
-        indexes:
-          - '**/module-manifest.yaml'
-
-      - id: binding-index
-        path: navigation/indexes/binding-index.yaml
-        indexes:
-          - navigation/bindings/*.yaml
-
-      - id: mediator-index
-        path: navigation/indexes/mediator-index.yaml
-        indexes:
-          - contracts/**/*.yaml
-          - ports/**/*.yaml
-          - governance/policies/**/*.yaml
-          - platform/service-catalog.yaml
-          - workflows/**/*.yaml
-          - evidence/**/*.yaml
-
-      - id: registry-index
-        path: navigation/indexes/registry-index.yaml
-        indexes:
-          - governance/registry/*.yaml
-
-      - id: ci-validation-index
-        path: navigation/indexes/ci-validation-index.yaml
-        indexes:
-          - .github/workflows/*.yaml
-          - scripts/validate-*.py
-          - outputs/*.json
-
-      - id: gate-navigation-index
-        path: navigation/indexes/gate-navigation-index.yaml
-        indexes:
-          - unified-gates/**/*.yaml
-          - unified-gates/**/*.rst
-
+    - id: directory-context-index
+      path: navigation/indexes/directory-context-index.yaml
+      indexes:
+      - '**/directory-context.yaml'
+    - id: module-manifest-index
+      path: navigation/indexes/module-manifest-index.yaml
+      indexes:
+      - '**/module-manifest.yaml'
+    - id: binding-index
+      path: navigation/indexes/binding-index.yaml
+      indexes:
+      - navigation/bindings/*.yaml
+    - id: mediator-index
+      path: navigation/indexes/mediator-index.yaml
+      indexes:
+      - contracts/**/*.yaml
+      - ports/**/*.yaml
+      - governance/policies/**/*.yaml
+      - platform/service-catalog.yaml
+      - workflows/**/*.yaml
+      - evidence/**/*.yaml
+    - id: registry-index
+      path: navigation/indexes/registry-index.yaml
+      indexes:
+      - governance/registry/*.yaml
+    - id: ci-validation-index
+      path: navigation/indexes/ci-validation-index.yaml
+      indexes:
+      - .github/workflows/*.yaml
+      - scripts/validate-*.py
+      - outputs/*.json
+    - id: gate-navigation-index
+      path: navigation/indexes/gate-navigation-index.yaml
+      indexes:
+      - unified-gates/**/*.yaml
+      - unified-gates/**/*.rst
   relationSemantics:
     allowedValues:
-      - bidirectional-logical
-      - unidirectional-runtime
-      - contract-mediated
-      - registry-mediated
-      - orchestration-mediated
-      - policy-mediated
-      - observation-only
-      - documentation-only
-      - ownership-only
-      - gate-mediated
-      - navigation-mediated
-
+    - bidirectional-logical
+    - unidirectional-runtime
+    - contract-mediated
+    - registry-mediated
+    - orchestration-mediated
+    - policy-mediated
+    - observation-only
+    - documentation-only
+    - ownership-only
+    - gate-mediated
+    - navigation-mediated
     bidirectionalLogical:
       hardDependency: false
       mediationRequired: true
       inlineMediationAllowed: true
       directoryBindingAllowed: true
       includedInHardDag: false
-
   mediatorTypes:
     allowedValues:
-      - shared-contract
-      - shared-schema
-      - event
-      - event-contract
-      - port
-      - interface
-      - registry
-      - catalog
-      - orchestrator
-      - binding-manifest
-      - evidence
-      - evidence-contract
-      - observation-channel
-      - navigation
-      - service-catalog
-      - policy
-      - workflow
-      - read-model
-      - capability-contract
-      - mesh-policy
-
+    - shared-contract
+    - shared-schema
+    - event
+    - event-contract
+    - port
+    - interface
+    - registry
+    - catalog
+    - orchestrator
+    - binding-manifest
+    - evidence
+    - evidence-contract
+    - observation-channel
+    - navigation
+    - service-catalog
+    - policy
+    - workflow
+    - read-model
+    - capability-contract
+    - mesh-policy
   crossPlaneNavigation:
     planes:
-      - id: mycodexvantaos
-        plane: control-plane
-
-      - id: softwareos
-        plane: product-plane
-
+    - id: mycodexvantaos
+      plane: control-plane
+    - id: softwareos
+      plane: product-plane
     rules:
       productPlaneMayDependOnControlPlaneContracts: true
       productPlaneMayDependOnControlPlaneServices: true
       controlPlaneHardDependsOnProductPlaneRuntime: forbidden
       reverseAwarenessRequiresMediator: true
       approvedReverseAwarenessMediators:
-        - registry
-        - catalog
-        - binding-manifest
-        - contract
-        - evidence-channel
-        - observation-channel
-
+      - registry
+      - catalog
+      - binding-manifest
+      - contract
+      - evidence-channel
+      - observation-channel
   gateNavigation:
     enabled: true
     root: unified-gates
@@ -424,112 +371,97 @@ spec:
     aiInfraGateCatalog: unified-gates/ai-infra-gate-catalog.yaml
     qualityGateCatalog: unified-gates/gate-catalog.yaml
     mustIndex:
-      - quality-gate-plane
-      - ai-infra-gate-plane
-      - production-readiness-chain
-      - minimum-blocking-gates
-      - gate-evidence
-      - gate-waiver
-      - gate-results
-
+    - quality-gate-plane
+    - ai-infra-gate-plane
+    - production-readiness-chain
+    - minimum-blocking-gates
+    - gate-evidence
+    - gate-waiver
+    - gate-results
   ci:
     requiredValidators:
-      - id: validate-directory-bindings
-        path: scripts/validate-directory-bindings.py
-        validates:
-          - directory-bindings
-          - mediator-existence
-          - bidirectional-logical-relations
-          - bidirectional-hard-dependencies
-
-      - id: validate-dependency-graph
-        path: scripts/validate-dependency-graph.py
-        validates:
-          - hard-dependency-dag
-          - cycle-detection
-          - forbidden-hard-edges
-          - stale-generated-graph
-
-      - id: build-dependency-graph
-        path: scripts/build-dependency-graph.py
-        validates:
-          - graph-generation
-          - graph-idempotency
-          - graph-source-coverage
-
-      - id: validate-naming
-        path: scripts/validate-naming.py
-        validates:
-          - repository-names
-          - governance-codes
-          - lowercase-kebab-case
-
+    - id: validate-directory-bindings
+      path: scripts/validate-directory-bindings.py
+      validates:
+      - directory-bindings
+      - mediator-existence
+      - bidirectional-logical-relations
+      - bidirectional-hard-dependencies
+    - id: validate-dependency-graph
+      path: scripts/validate-dependency-graph.py
+      validates:
+      - hard-dependency-dag
+      - cycle-detection
+      - forbidden-hard-edges
+      - stale-generated-graph
+    - id: build-dependency-graph
+      path: scripts/build-dependency-graph.py
+      validates:
+      - graph-generation
+      - graph-idempotency
+      - graph-source-coverage
+    - id: validate-naming
+      path: scripts/validate-naming.py
+      validates:
+      - repository-names
+      - governance-codes
+      - lowercase-kebab-case
     requiredReports:
-      - navigation/dependency-report.json
-      - navigation/dependency-cycles.json
-      - navigation/dependency-policy-violations.json
-      - outputs/dependency-binding-report.json
-      - outputs/ci-governance-summary.json
-
+    - navigation/dependency-report.json
+    - navigation/dependency-cycles.json
+    - navigation/dependency-policy-violations.json
+    - outputs/dependency-binding-report.json
+    - outputs/ci-governance-summary.json
     mustFailWhen:
-      - hard-dependency-cycle-detected
-      - bidirectional-hard-dependency-detected-without-exception
-      - binding-mediator-missing
-      - binding-participant-missing
-      - mediation-path-missing
-      - forbidden-hard-edge-detected
-      - generated-dependency-graph-stale
-      - dependency-policy-malformed
-      - expired-dependency-exception
-      - control-plane-hard-depends-on-product-plane-runtime
-
+    - hard-dependency-cycle-detected
+    - bidirectional-hard-dependency-detected-without-exception
+    - binding-mediator-missing
+    - binding-participant-missing
+    - mediation-path-missing
+    - forbidden-hard-edge-detected
+    - generated-dependency-graph-stale
+    - dependency-policy-malformed
+    - expired-dependency-exception
+    - control-plane-hard-depends-on-product-plane-runtime
   compliance:
     criteria:
-      - navigation-module-artifact-exists
-      - dependency-policy-exists
-      - dependency-graph-is-generated
-      - dependency-graph-is-not-manually-edited
-      - all-directory-context-files-are-indexed
-      - all-directory-bindings-are-indexed
-      - all-bindings-have-mediators
-      - all-mediator-paths-exist
-      - hard-dependency-graph-is-acyclic
-      - soft-relations-are-excluded-from-hard-dag
-      - cross-plane-hard-dependency-rules-are-enforced
-      - ci-generates-navigation-reports
-      - gate-navigation-index-is-present
-
+    - navigation-module-artifact-exists
+    - dependency-policy-exists
+    - dependency-graph-is-generated
+    - dependency-graph-is-not-manually-edited
+    - all-directory-context-files-are-indexed
+    - all-directory-bindings-are-indexed
+    - all-bindings-have-mediators
+    - all-mediator-paths-exist
+    - hard-dependency-graph-is-acyclic
+    - soft-relations-are-excluded-from-hard-dag
+    - cross-plane-hard-dependency-rules-are-enforced
+    - ci-generates-navigation-reports
+    - gate-navigation-index-is-present
   references:
     foundationModule: foundation/mycodexvantaos-module.yaml
     appendices:
-      - id: appendix-e
-        title: directory-dependency-governance-and-cycle-prevention-specification
-        path: docs/architecture/directory-dependency-governance-spec.md
-
-      - id: appendix-f
-        title: bidirectional-logical-relation-decoupling-specification
-        path: docs/architecture/bidirectional-relation-decoupling-spec.md
-
-      - id: appendix-g
-        title: strong-logical-coupling-decoupling-patterns-specification
-        path: docs/architecture/strong-logical-coupling-decoupling-patterns-spec.md
-
-      - id: appendix-h
-        title: dependency-binding-guard-ci-specification
-        path: docs/ci/dependency-binding-guard-ci-spec.md
-
-      - id: appendix-i
-        title: namespace-governance-closure-specification
-        path: docs/governance/namespace-governance-closure-spec.md
-
-      - id: appendix-j
-        title: namespace-governance-architecture-panorama-and-directory-tree
-        path: docs/architecture/namespace-governance-architecture-panorama.md
-
-      - id: appendix-k
-        title: unified-gate-system-specification
-        path: docs/governance/unified-gate-system-spec.md
-
+    - id: appendix-e
+      title: directory-dependency-governance-and-cycle-prevention-specification
+      path: docs/architecture/directory-dependency-governance-spec.md
+    - id: appendix-f
+      title: bidirectional-logical-relation-decoupling-specification
+      path: docs/architecture/bidirectional-relation-decoupling-spec.md
+    - id: appendix-g
+      title: strong-logical-coupling-decoupling-patterns-specification
+      path: docs/architecture/strong-logical-coupling-decoupling-patterns-spec.md
+    - id: appendix-h
+      title: dependency-binding-guard-ci-specification
+      path: docs/ci/dependency-binding-guard-ci-spec.md
+    - id: appendix-i
+      title: namespace-governance-closure-specification
+      path: docs/governance/namespace-governance-closure-spec.md
+    - id: appendix-j
+      title: namespace-governance-architecture-panorama-and-directory-tree
+      path: docs/architecture/namespace-governance-architecture-panorama.md
+    - id: appendix-k
+      title: unified-gate-system-specification
+      path: docs/governance/unified-gate-system-spec.md
 status:
   phase: navigation-normalized
   readiness: ci-verifiable

@@ -1,4 +1,4 @@
-## MyCodexVantaOS Algorithm-foundation
+# MyCodexVantaOS Algorithm-foundation
 
 Foundation ID: `mycodexvantaos-algorithm-foundation`
 Version: 1.0.0
@@ -24,10 +24,3 @@ This directory contains the specification for the MyCodexVantaOS algorithm Found
 | `roadmap.yaml`                | Foundation roadmap             |
 | `service-map.yaml`            | Service mapping                |
 | `urn-map.yaml`                | URN mapping                    |
-
-## Algorithm Foundation
-
-Strategic specification unit for MyCodexVantaOS algorithm-foundation.
-
-This is a specification-unit under the `foundation` root module.
-It MUST NOT contain runtime source code, service implementation, or deployment manifests.

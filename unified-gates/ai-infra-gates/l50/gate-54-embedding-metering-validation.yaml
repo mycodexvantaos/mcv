@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,29 +10,30 @@ metadata:
   criticality: high
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-30400
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l50
-    - embedding
+  - l50
+  - embedding
   sloTarget: 30
   evidenceRetentionDays: 1095
 spec:
-  description: >
-    Validates that embedding generation usage is accurately metered.
+  description: 'Validates that embedding generation usage is accurately metered.
+
+    '
   validates:
-    - dimension: metering-accuracy
-      description: Embedding metering is accurate.
-      checks:
-        - id: chk-token-count-accurate
-          description: Reported token count matches runtime within 0.1%
-          rule: 'threshold:token-count-error<0.001'
-          severity: high
-          evidenceRequired: true
-        - id: chk-model-id-present
-          description: Embedding model ID is present
-          rule: 'field-not-empty:modelId'
-          severity: high
-          evidenceRequired: true
+  - dimension: metering-accuracy
+    description: Embedding metering is accurate.
+    checks:
+    - id: chk-token-count-accurate
+      description: Reported token count matches runtime within 0.1%
+      rule: threshold:token-count-error<0.001
+      severity: high
+      evidenceRequired: true
+    - id: chk-model-id-present
+      description: Embedding model ID is present
+      rule: field-not-empty:modelId
+      severity: high
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

@@ -1,1 +1,1 @@
-export * from './policy-definition';
+export * from "./policy-definition";

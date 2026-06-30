@@ -1,10 +1,10 @@
-import type { Metadata } from 'next';
-import './globals.css';
-import { Toaster } from '@/components/ui/toaster';
+import type { Metadata } from "next";
+import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: 'MyCodeXvantaOS | 極深程式碼智慧解決方案',
-  description: '全自架構、自搭建的強原生雲應用操作系統。程式碼深度，系統智慧。',
+  title: "MyCodeXvantaOS | 極深程式碼智慧解決方案",
+  description: "全自架構、自搭建的強原生雲應用操作系統。程式碼深度，系統智慧。",
 };
 
 export default function RootLayout({

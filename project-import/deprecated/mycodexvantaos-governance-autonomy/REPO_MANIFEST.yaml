@@ -9,23 +9,23 @@ metadata:
   planeDescription: 治理面 — 策略、合規、自治
   tier: 4
   tags:
-    - governance
-    - autonomy
-    - compliance
+  - governance
+  - autonomy
+  - compliance
 spec:
   architecture:
     philosophy: native-first / provider-agnostic
     principle: 第三方服務是擴充出口，不是平台地基
     mode: native | connected | hybrid
   capabilities:
-    - autonomous-governance
-    - compliance-monitoring
-    - auto-remediation
+  - autonomous-governance
+  - compliance-monitoring
+  - auto-remediation
   providerDependencies:
-    - database
-    - stateStore
-    - notification
+  - database
+  - stateStore
+  - notification
   repoDependencies:
-    - codexvanta-os-core-kernel
-    - codexvanta-os-policy-engine
-    - codexvanta-os-decision-engine
+  - codexvanta-os-core-kernel
+  - codexvanta-os-policy-engine
+  - codexvanta-os-decision-engine

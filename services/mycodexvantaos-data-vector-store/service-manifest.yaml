@@ -1,8 +1,3 @@
-# service-manifest.yaml
-# Service manifest for mycodexvantaos-data-vector-store
-# Generated automatically by MyCodeXvantaOS governance tooling
-# Do not edit manually unless you know what you're doing
-
 apiVersion: mycodexvantaos.org/v1
 kind: ServiceManifest
 metadata:
@@ -16,66 +11,46 @@ metadata:
     capability: vector-store
   annotations:
     governance.mycodexvantaos.org/spec: platform-governance-spec-v1.0.0
-    governance.mycodexvantaos.org/last-audit-date: 2026-05-04T11:33:07Z
-
+    governance.mycodexvantaos.org/last-audit-date: 2026-05-04 11:33:07+00:00
 spec:
-  # Service identification
   serviceName: mycodexvantaos-data-vector-store
   serviceVersion: v1.0.0
-
-  # Layer and capability mapping
   layer: Native Services
   capability: vector-store
-
-  # Service configuration
   description: MyCodeXvantaOS mycodexvantaos-data-vector-store service
   category: platform
-
-  # Health and availability
   healthCheck:
     enabled: true
     endpoint: /health
     interval: 30s
     timeout: 5s
     failureThreshold: 3
-
-  # Resource requirements
   resources:
     requests:
-      memory: '128Mi'
-      cpu: '100m'
+      memory: 128Mi
+      cpu: 100m
     limits:
-      memory: '512Mi'
-      cpu: '500m'
-
-  # Ports
+      memory: 512Mi
+      cpu: 500m
   ports:
-    - name: http
-      port: 8080
-      protocol: TCP
-      targetPort: 8080
-
-  # Environment
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
   env:
-    - name: NODE_ENV
-      value: 'production'
-    - name: LOG_LEVEL
-      value: 'info'
-
-  # Dependencies
+  - name: NODE_ENV
+    value: production
+  - name: LOG_LEVEL
+    value: info
   dependencies:
-    - name: mycodexvantaos-core-kernel
-      required: true
-    - name: mycodexvantaos-core-config
-      required: true
-
-  # Security
+  - name: mycodexvantaos-core-kernel
+    required: true
+  - name: mycodexvantaos-core-config
+    required: true
   security:
     serviceAccountName: mycodexvantaos-data-vector-store
     rbac:
       enabled: true
-
-  # Observability
   observability:
     metrics:
       enabled: true

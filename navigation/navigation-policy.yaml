@@ -12,12 +12,12 @@ spec:
   bidirectionalLogicalCouplingPolicy:
     requiresMediatorArtifact: true
     approvedMediators:
-      - contracts/
-      - schemas/
-      - contracts/events/
-      - ports/
-      - governance/policies/
-      - platform/service-catalog.yaml
+    - contracts/
+    - schemas/
+    - contracts/events/
+    - ports/
+    - governance/policies/
+    - platform/service-catalog.yaml
   navigationIndexPolicy:
     mustNotCreateHardRuntimeDependencies: true
     mustBeGovernanceArtifacts: true

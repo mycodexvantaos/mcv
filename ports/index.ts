@@ -254,7 +254,7 @@ export interface ModelRequest {
 }
 
 export interface ModelMessage {
-  role: 'system' | 'user' | 'assistant' | 'tool';
+  role: "system" | "user" | "assistant" | "tool";
   content: string;
   name?: string;
 }
@@ -389,12 +389,12 @@ export interface SubjectInfo {
 }
 
 export type Role =
-  | 'platform-admin'
-  | 'workspace-owner'
-  | 'workspace-member'
-  | 'workspace-viewer'
-  | 'agent-service'
-  | 'auditor';
+  | "platform-admin"
+  | "workspace-owner"
+  | "workspace-member"
+  | "workspace-viewer"
+  | "agent-service"
+  | "auditor";
 
 // ─── Audit Port ───────────────────────────────────────────────────────
 // Abstracts audit event emission and querying.
@@ -477,7 +477,7 @@ export interface IUsagePort {
 export interface UsageMetric {
   workspaceId: string;
   serviceId: string;
-  metricType: 'api_calls' | 'tokens' | 'storage_bytes' | 'compute_ms';
+  metricType: "api_calls" | "tokens" | "storage_bytes" | "compute_ms";
   quantity: number;
   metadata?: Record<string, unknown>;
 }

@@ -3,8 +3,8 @@
  * Comprehensive validation for architecture compliance
  */
 
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from "fs";
+import * as path from "path";
 
 interface ValidationResult {
   passed: boolean;
@@ -21,7 +21,7 @@ interface PackageInfo {
 class ArchitectureValidator {
   private projectRoot: string;
 
-  constructor(projectRoot: string = __dirname + '/..') {
+  constructor(projectRoot: string = __dirname + "/..") {
     this.projectRoot = projectRoot;
   }
 
@@ -35,7 +35,7 @@ class ArchitectureValidator {
       warnings: [],
     };
 
-    console.log('🔍 Starting MyCodeXvantaOS Architecture Validation...');
+    console.log("🔍 Starting MyCodeXvantaOS Architecture Validation...");
 
     // 1. Validate governance manifest exists
     await this.validateGovernanceManifest(result);
@@ -59,36 +59,36 @@ class ArchitectureValidator {
   }
 
   private async validateGovernanceManifest(result: ValidationResult): Promise<void> {
-    const manifestPath = path.join(this.projectRoot, 'governance.json');
+    const manifestPath = path.join(this.projectRoot, "governance.json");
 
     if (!fs.existsSync(manifestPath)) {
-      result.errors.push('Governance manifest not found at governance.json');
+      result.errors.push("Governance manifest not found at governance.json");
       result.passed = false;
       return;
     }
 
     try {
-      const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+      const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8"));
 
       if (!manifest.principles || !Array.isArray(manifest.principles)) {
-        result.errors.push('Governance manifest missing principles array');
+        result.errors.push("Governance manifest missing principles array");
         result.passed = false;
       }
 
       const requiredPrinciples = [
-        'local-first',
-        'cloud-agnostic',
-        'contract-first',
-        'governance-enforced',
+        "local-first",
+        "cloud-agnostic",
+        "contract-first",
+        "governance-enforced",
       ];
       const missingPrinciples = requiredPrinciples.filter((p) => !manifest.principles.includes(p));
 
       if (missingPrinciples.length > 0) {
-        result.errors.push(`Missing required principles: ${missingPrinciples.join(', ')}`);
+        result.errors.push(`Missing required principles: ${missingPrinciples.join(", ")}`);
         result.passed = false;
       }
 
-      console.log('  ✅ Governance manifest valid');
+      console.log("  ✅ Governance manifest valid");
     } catch (error) {
       result.errors.push(`Failed to parse governance manifest: ${error}`);
       result.passed = false;
@@ -96,24 +96,24 @@ class ArchitectureValidator {
   }
 
   private async validatePackageStructure(result: ValidationResult): Promise<void> {
-    const packagesPath = path.join(this.projectRoot, 'packages');
+    const packagesPath = path.join(this.projectRoot, "packages");
 
     if (!fs.existsSync(packagesPath)) {
-      result.errors.push('Packages directory not found');
+      result.errors.push("Packages directory not found");
       result.passed = false;
       return;
     }
 
     const requiredPackages = [
-      '@mycodexvantaos/builder',
-      '@mycodexvantaos/runtime',
-      '@mycodexvantaos/deployment',
-      '@mycodexvantaos/service-discovery',
-      '@mycodexvantaos/config-sync',
-      '@mycodexvantaos/storage',
-      '@mycodexvantaos/database',
-      '@mycodexvantaos/events',
-      '@mycodexvantaos/monitoring',
+      "@mycodexvantaos/builder",
+      "@mycodexvantaos/runtime",
+      "@mycodexvantaos/deployment",
+      "@mycodexvantaos/service-discovery",
+      "@mycodexvantaos/config-sync",
+      "@mycodexvantaos/storage",
+      "@mycodexvantaos/database",
+      "@mycodexvantaos/events",
+      "@mycodexvantaos/monitoring",
     ];
 
     const packageDirs = fs
@@ -123,9 +123,9 @@ class ArchitectureValidator {
 
     const existingPackages = packageDirs
       .map((dir) => {
-        const packageJsonPath = path.join(packagesPath, dir, 'package.json');
+        const packageJsonPath = path.join(packagesPath, dir, "package.json");
         if (fs.existsSync(packageJsonPath)) {
-          const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
+          const pkg = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
           return pkg.name;
         }
         return null;
@@ -135,7 +135,7 @@ class ArchitectureValidator {
     const missingPackages = requiredPackages.filter((pkg) => !existingPackages.includes(pkg));
 
     if (missingPackages.length > 0) {
-      result.errors.push(`Missing required packages: ${missingPackages.join(', ')}`);
+      result.errors.push(`Missing required packages: ${missingPackages.join(", ")}`);
       result.passed = false;
     }
 
@@ -143,16 +143,16 @@ class ArchitectureValidator {
   }
 
   private async validateCapabilityDeclarations(result: ValidationResult): Promise<void> {
-    const capabilitiesPath = path.join(this.projectRoot, 'capabilities');
+    const capabilitiesPath = path.join(this.projectRoot, "capabilities");
 
     if (!fs.existsSync(capabilitiesPath)) {
-      result.warnings.push('Capabilities directory not found');
+      result.warnings.push("Capabilities directory not found");
       return;
     }
 
     const capabilityFiles = fs
       .readdirSync(capabilitiesPath)
-      .filter((file) => file.endsWith('.yaml') || file.endsWith('.json'));
+      .filter((file) => file.endsWith(".yaml") || file.endsWith(".json"));
 
     if (capabilityFiles.length < 8) {
       result.warnings.push(
@@ -164,34 +164,34 @@ class ArchitectureValidator {
   }
 
   private async validateNamingConventions(result: ValidationResult): Promise<void> {
-    const packagesPath = path.join(this.projectRoot, 'packages');
+    const packagesPath = path.join(this.projectRoot, "packages");
     const packageDirs = fs
       .readdirSync(packagesPath, { withFileTypes: true })
       .filter((dirent) => dirent.isDirectory())
       .map((dirent) => dirent.name);
 
     for (const dir of packageDirs) {
-      const packageJsonPath = path.join(packagesPath, dir, 'package.json');
+      const packageJsonPath = path.join(packagesPath, dir, "package.json");
       if (fs.existsSync(packageJsonPath)) {
-        const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
+        const pkg = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
 
-        if (!pkg.name.startsWith('@mycodexvantaos/')) {
+        if (!pkg.name.startsWith("@mycodexvantaos/")) {
           result.errors.push(`Package "${pkg.name}" does not follow @mycodexvantaos/ convention`);
           result.passed = false;
         }
       }
     }
 
-    console.log('  ✅ Naming conventions valid');
+    console.log("  ✅ Naming conventions valid");
   }
 
   private async validateCorePrinciples(result: ValidationResult): Promise<void> {
     // Validate that packages implement core principles
     const requiredPrinciples = [
-      'local-first',
-      'cloud-agnostic',
-      'contract-first',
-      'governance-enforced',
+      "local-first",
+      "cloud-agnostic",
+      "contract-first",
+      "governance-enforced",
     ];
 
     for (const principle of requiredPrinciples) {
@@ -201,11 +201,11 @@ class ArchitectureValidator {
       }
     }
 
-    console.log('  ✅ Core principles validated');
+    console.log("  ✅ Core principles validated");
   }
 
   private async validateLayerCompleteness(result: ValidationResult): Promise<void> {
-    const requiredLayers = ['Builder', 'Runtime', 'Native Services'];
+    const requiredLayers = ["Builder", "Runtime", "Native Services"];
 
     for (const layer of requiredLayers) {
       const layerExists = this.checkLayerExists(layer);
@@ -215,17 +215,17 @@ class ArchitectureValidator {
       }
     }
 
-    console.log('  ✅ Architecture layers complete');
+    console.log("  ✅ Architecture layers complete");
   }
 
   private searchPrincipleInProject(principle: string): boolean {
     // Simple search - in production, this would be more sophisticated
-    const filesToCheck = ['README.md', 'governance.json', 'package.json'];
+    const filesToCheck = ["README.md", "governance.json", "package.json"];
 
     for (const file of filesToCheck) {
       const filePath = path.join(this.projectRoot, file);
       if (fs.existsSync(filePath)) {
-        const content = fs.readFileSync(filePath, 'utf-8');
+        const content = fs.readFileSync(filePath, "utf-8");
         if (content.toLowerCase().includes(principle.toLowerCase())) {
           return true;
         }
@@ -237,10 +237,10 @@ class ArchitectureValidator {
 
   private checkLayerExists(layer: string): boolean {
     // Check if layer has corresponding packages
-    const governancePath = path.join(this.projectRoot, 'governance.json');
+    const governancePath = path.join(this.projectRoot, "governance.json");
 
     if (fs.existsSync(governancePath)) {
-      const governance = JSON.parse(fs.readFileSync(governancePath, 'utf-8'));
+      const governance = JSON.parse(fs.readFileSync(governancePath, "utf-8"));
       return governance.layers && governance.layers.some((l: any) => l.name === layer);
     }
 
@@ -253,18 +253,18 @@ async function main() {
   const validator = new ArchitectureValidator();
   const result = await validator.validate();
 
-  console.log('\n📊 Validation Results:');
-  console.log(`  Status: ${result.passed ? '✅ PASSED' : '❌ FAILED'}`);
+  console.log("\n📊 Validation Results:");
+  console.log(`  Status: ${result.passed ? "✅ PASSED" : "❌ FAILED"}`);
   console.log(`  Errors: ${result.errors.length}`);
   console.log(`  Warnings: ${result.warnings.length}\n`);
 
   if (result.errors.length > 0) {
-    console.log('❌ Errors:');
+    console.log("❌ Errors:");
     result.errors.forEach((error) => console.log(`  - ${error}`));
   }
 
   if (result.warnings.length > 0) {
-    console.log('⚠️  Warnings:');
+    console.log("⚠️  Warnings:");
     result.warnings.forEach((warning) => console.log(`  - ${warning}`));
   }
 
@@ -272,6 +272,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error('Validation failed:', error);
+  console.error("Validation failed:", error);
   process.exit(1);
 });

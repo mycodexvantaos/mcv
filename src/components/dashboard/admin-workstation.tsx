@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   Loader2,
   Orbit,
@@ -16,19 +16,19 @@ import {
   ShieldAlert,
   Zap,
   Activity,
-} from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export function AdminWorkstation() {
   const [metrics, setMetrics] = useState<any>(null);
 
   const loadMetrics = async () => {
     try {
-      const response = await fetch('/api/admin/metrics');
+      const response = await fetch("/api/admin/metrics");
       if (response.ok) {
         const json: { data?: any } = await response.json();
         setMetrics(json.data);
@@ -156,16 +156,16 @@ export function AdminWorkstation() {
             <TabsContent value="diag" className="mt-5 space-y-4">
               <div className="grid gap-3">
                 {[
-                  { label: '通用性風險', val: diag.generality, max: 3, icon: Globe },
+                  { label: "通用性風險", val: diag.generality, max: 3, icon: Globe },
                   {
-                    label: '假設透明度',
+                    label: "假設透明度",
                     val: diag.assumptionTransparency,
                     max: 2,
                     icon: SearchCheck,
                   },
-                  { label: '邊界定義度', val: diag.boundaryCheck, max: 2, icon: Target },
-                  { label: '診斷深度', val: diag.depth, max: 3, icon: Brain },
-                  { label: 'NLU 5 層防禦', val: diag.nluDefense, max: 2, icon: ShieldAlert },
+                  { label: "邊界定義度", val: diag.boundaryCheck, max: 2, icon: Target },
+                  { label: "診斷深度", val: diag.depth, max: 3, icon: Brain },
+                  { label: "NLU 5 層防禦", val: diag.nluDefense, max: 2, icon: ShieldAlert },
                 ].map((item, i) => (
                   <div
                     key={i}
@@ -179,7 +179,7 @@ export function AdminWorkstation() {
                     </div>
                     <Badge
                       variant="outline"
-                      className={`text-[10px] font-code ${item.val === 0 ? 'text-accent border-accent/20' : 'text-primary border-primary/20'}`}
+                      className={`text-[10px] font-code ${item.val === 0 ? "text-accent border-accent/20" : "text-primary border-primary/20"}`}
                     >
                       {item.val} / {item.max}
                     </Badge>

@@ -1,6 +1,6 @@
 name: Platform Constitution CI
 
-"on":
+on:
   push:
     branches: [main]
     paths:

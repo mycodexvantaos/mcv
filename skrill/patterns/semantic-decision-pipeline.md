@@ -70,7 +70,7 @@ class SemanticDecisionPipeline {
 
   private fallback(context: DecisionContext, error: Error): DecisionResult {
     return {
-      decision: 'default',
+      decision: "default",
       confidence: 0,
       reasoning: [`Fallback due to: ${error.message}`],
       fallback_used: true,
@@ -86,8 +86,8 @@ name: Semantic Pipeline Contract Check
 on:
   pull_request:
     paths:
-      - 'services/semantic-core/**'
-      - 'contracts/openapi/**'
+      - "services/semantic-core/**"
+      - "contracts/openapi/**"
 
 jobs:
   contract-check:

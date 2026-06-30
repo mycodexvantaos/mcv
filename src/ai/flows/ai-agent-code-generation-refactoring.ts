@@ -6,8 +6,8 @@
  * - DelegateCodingTaskOutput - The return type for the delegateCodingTask function.
  */
 
-import { ai } from '@/ai/genkit';
-import { z } from 'genkit';
+import { ai } from "@/ai/genkit";
+import { z } from "genkit";
 
 const DelegateCodingTaskInputSchema = z.object({
   taskDescription: z
@@ -19,31 +19,31 @@ const DelegateCodingTaskInputSchema = z.object({
     .string()
     .optional()
     .describe(
-      'The existing code context that the AI agent needs to work with or use as a reference. This can be the content of a file or a relevant code snippet.'
+      "The existing code context that the AI agent needs to work with or use as a reference. This can be the content of a file or a relevant code snippet."
     ),
   filePath: z
     .string()
     .optional()
     .describe(
-      'The logical file path where the code context resides, providing additional context to the AI agent.'
+      "The logical file path where the code context resides, providing additional context to the AI agent."
     ),
   taskType: z
-    .enum(['generation', 'refactoring', 'testing', 'documentation', 'optimization'])
+    .enum(["generation", "refactoring", "testing", "documentation", "optimization"])
     .optional()
     .describe(
-      'The type of coding task to perform. Defaults to general code generation if not specified.'
+      "The type of coding task to perform. Defaults to general code generation if not specified."
     )
-    .default('generation'),
-  isOffline: z.boolean().optional().describe('Whether the system is operating in offline mode.'),
+    .default("generation"),
+  isOffline: z.boolean().optional().describe("Whether the system is operating in offline mode."),
 });
 
 export type DelegateCodingTaskInput = z.infer<typeof DelegateCodingTaskInputSchema>;
 
 const DelegateCodingTaskOutputSchema = z.object({
-  generatedCode: z.string().describe('The resulting code generated or refactored by the AI agent.'),
+  generatedCode: z.string().describe("The resulting code generated or refactored by the AI agent."),
   explanation: z
     .string()
-    .describe('An explanation of the changes made or the rationale behind the generated code.'),
+    .describe("An explanation of the changes made or the rationale behind the generated code."),
   agentRole: z
     .string()
     .describe(
@@ -58,15 +58,15 @@ export async function delegateCodingTask(
 ): Promise<DelegateCodingTaskOutput> {
   if (!process.env.GEMINI_API_KEY) {
     throw new Error(
-      'The GEMINI_API_KEY environment variable is not set. Please add it to your .env file to use AI features.'
+      "The GEMINI_API_KEY environment variable is not set. Please add it to your .env file to use AI features."
     );
   }
   try {
     return await delegateCodingTaskFlow(input);
   } catch (e: any) {
-    if (e.message.includes('API key not valid')) {
+    if (e.message.includes("API key not valid")) {
       throw new Error(
-        'The provided GEMINI_API_KEY is invalid. Please check your .env file and provide a valid key from Google AI Studio.'
+        "The provided GEMINI_API_KEY is invalid. Please check your .env file and provide a valid key from Google AI Studio."
       );
     }
     // Re-throw other errors
@@ -75,7 +75,7 @@ export async function delegateCodingTask(
 }
 
 const agentCodingTaskPrompt = ai.definePrompt({
-  name: 'agentCodingTaskPrompt',
+  name: "agentCodingTaskPrompt",
   input: { schema: DelegateCodingTaskInputSchema },
   output: { schema: DelegateCodingTaskOutputSchema },
   prompt: `You are a highly specialized AI coding agent, tasked with assisting a developer with various programming tasks. Your current role is to act as a {{{taskType}}} agent.
@@ -91,9 +91,9 @@ File Path: {{{filePath}}}
 
 --- CODE CONTEXT ---
 {{#if codeContext}}
-${'```'}
+${"```"}
 {{{codeContext}}}
-${'```'}
+${"```"}
 {{else}}
 No code context provided.
 {{/if}}
@@ -104,7 +104,7 @@ Your output MUST be a JSON object conforming to the DelegateCodingTaskOutputSche
 
 const delegateCodingTaskFlow = ai.defineFlow(
   {
-    name: 'delegateCodingTaskFlow',
+    name: "delegateCodingTaskFlow",
     inputSchema: DelegateCodingTaskInputSchema,
     outputSchema: DelegateCodingTaskOutputSchema,
   },

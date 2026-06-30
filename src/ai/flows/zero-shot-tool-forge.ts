@@ -3,27 +3,27 @@
  * Generates executable code based on novel environments and performs self-audit.
  */
 
-import { ai } from '@/ai/genkit';
-import { z } from 'genkit';
+import { ai } from "@/ai/genkit";
+import { z } from "genkit";
 
 const ToolForgeInputSchema = z.object({
   environmentDescription: z
     .string()
-    .describe('API docs, UI structure, or novel environment parameters.'),
-  taskGoal: z.string().describe('The specific action to perform.'),
+    .describe("API docs, UI structure, or novel environment parameters."),
+  taskGoal: z.string().describe("The specific action to perform."),
   previousErrors: z
     .string()
     .optional()
-    .describe('Error logs from previous execution for self-correction.'),
+    .describe("Error logs from previous execution for self-correction."),
 });
 
 const ToolForgeOutputSchema = z.object({
-  generatedCode: z.string().describe('The Python/JS code generated for the task.'),
-  reverseEngineeringReport: z.string().describe('How the AI interpreted the target system.'),
+  generatedCode: z.string().describe("The Python/JS code generated for the task."),
+  reverseEngineeringReport: z.string().describe("How the AI interpreted the target system."),
   selfCorrectionLog: z
     .string()
-    .describe('Steps taken to ensure code validity or fix previous errors.'),
-  safetyAudit: z.string().describe('Validation against safety protocols.'),
+    .describe("Steps taken to ensure code validity or fix previous errors."),
+  safetyAudit: z.string().describe("Validation against safety protocols."),
 });
 
 export type ToolForgeInput = z.infer<typeof ToolForgeInputSchema>;
@@ -38,7 +38,7 @@ export async function forgeDynamicTool(input: ToolForgeInput): Promise<ToolForge
     Input Parameters:
     Environment: ${input.environmentDescription}
     Goal: ${input.taskGoal}
-    ${input.previousErrors ? `Previous Error Context: ${input.previousErrors}` : ''}
+    ${input.previousErrors ? `Previous Error Context: ${input.previousErrors}` : ""}
 
     Task:
     1. Reverse engineer the provided specs.

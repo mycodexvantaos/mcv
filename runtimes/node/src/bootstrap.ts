@@ -14,16 +14,16 @@ import type {
   IChatModelPort,
   IEmbeddingModelPort,
   IQueuePort,
-} from '@mycodexvantaos/ports';
+} from "@mycodexvantaos/ports";
 
-import { IdentityService } from '@mycodexvantaos/application/identity';
-import { WorkspaceService } from '@mycodexvantaos/application/workspace';
-import { KnowledgeService } from '@mycodexvantaos/application/knowledge';
-import { AgentService } from '@mycodexvantaos/application/agent';
-import { ModelService } from '@mycodexvantaos/application/model';
-import { AuditService } from '@mycodexvantaos/application/audit';
-import { UsageService } from '@mycodexvantaos/application/usage';
-import { AutomationService } from '@mycodexvantaos/application/automation';
+import { IdentityService } from "@mycodexvantaos/application/identity";
+import { WorkspaceService } from "@mycodexvantaos/application/workspace";
+import { KnowledgeService } from "@mycodexvantaos/application/knowledge";
+import { AgentService } from "@mycodexvantaos/application/agent";
+import { ModelService } from "@mycodexvantaos/application/model";
+import { AuditService } from "@mycodexvantaos/application/audit";
+import { UsageService } from "@mycodexvantaos/application/usage";
+import { AutomationService } from "@mycodexvantaos/application/automation";
 
 export interface NodeBindings {
   DATABASE_URL: string;
@@ -81,7 +81,7 @@ export function bootstrapNode(_env: NodeBindings): NodeServiceContainer {
 
   const audit = new AuditService(database);
   const usage = new UsageService(cacheStore);
-  const identity = new IdentityService(database, sessionStore, '');
+  const identity = new IdentityService(database, sessionStore, "");
   const workspace = new WorkspaceService(database);
   const model = new ModelService(chatModel, embeddingModel);
   const knowledge = new KnowledgeService(database, objectStorage, search, embeddingModel);
@@ -100,5 +100,5 @@ export function createNodeServer(container: NodeServiceContainer, port: number =
   // This will be the equivalent of the Cloudflare Worker fetch handler
   // but running on Node.js http.createServer
   console.log(`Node.js runtime server would listen on port ${port}`);
-  console.log('Implementation pending — Phase 2 (Portable Core)');
+  console.log("Implementation pending — Phase 2 (Portable Core)");
 }

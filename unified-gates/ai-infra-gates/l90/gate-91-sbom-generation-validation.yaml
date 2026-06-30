@@ -12,8 +12,8 @@ metadata:
   governanceCode: mycodexvantaos-00000
   createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l90
-    - sbom
+  - l90
+  - sbom
   sloTarget: 30
   evidenceRetentionDays: 2555
   date: '2026-06-29'
@@ -24,24 +24,24 @@ spec:
 
     '
   validates:
-    - dimension: sbom-completeness
-      description: SBOM is complete and valid.
-      checks:
-        - id: chk-sbom-exists
-          description: SBOM file exists in the release artifact
-          rule: file-exists:sbom.json
-          severity: critical
-          evidenceRequired: true
-        - id: chk-sbom-format-valid
-          description: SBOM conforms to CycloneDX or SPDX format
-          rule: schema:sbom-cyclonedx-or-spdx
-          severity: critical
-          evidenceRequired: true
-        - id: chk-all-deps-included
-          description: All direct and transitive dependencies are in the SBOM
-          rule: sbom:all-deps-included
-          severity: critical
-          evidenceRequired: true
+  - dimension: sbom-completeness
+    description: SBOM is complete and valid.
+    checks:
+    - id: chk-sbom-exists
+      description: SBOM file exists in the release artifact
+      rule: file-exists:sbom.json
+      severity: critical
+      evidenceRequired: true
+    - id: chk-sbom-format-valid
+      description: SBOM conforms to CycloneDX or SPDX format
+      rule: schema:sbom-cyclonedx-or-spdx
+      severity: critical
+      evidenceRequired: true
+    - id: chk-all-deps-included
+      description: All direct and transitive dependencies are in the SBOM
+      rule: sbom:all-deps-included
+      severity: critical
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

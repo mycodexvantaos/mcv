@@ -1,91 +1,89 @@
-# catalog/urn-registry.yaml
-# 7.5 — Platform URN registry. All URNs are registered here for cross-reference.
 apiVersion: mycodexvantaos.org/v1
 kind: UrnRegistry
 metadata:
   name: platform-urn-registry
 entries:
-  - urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-core-kernel'
-    type: manifest
-    subtype: service
-    identifier: mycodexvantaos-core-kernel
-  - urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-core-auth'
-    type: manifest
-    subtype: service
-    identifier: mycodexvantaos-core-auth
-  - urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-core-gateway'
-    type: manifest
-    subtype: service
-    identifier: mycodexvantaos-core-gateway
-  - urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-core-config'
-    type: manifest
-    subtype: service
-    identifier: mycodexvantaos-core-config
-  - urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-embedding'
-    type: manifest
-    subtype: service
-    identifier: mycodexvantaos-ai-embedding
-  - urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-llm'
-    type: manifest
-    subtype: service
-    identifier: mycodexvantaos-ai-llm
-  - urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-memory'
-    type: manifest
-    subtype: service
-    identifier: mycodexvantaos-ai-memory
-  - urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-agent'
-    type: manifest
-    subtype: service
-    identifier: mycodexvantaos-ai-agent
-  - urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-data-vector-store'
-    type: manifest
-    subtype: service
-    identifier: mycodexvantaos-data-vector-store
-  - urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-data-pipeline'
-    type: manifest
-    subtype: service
-    identifier: mycodexvantaos-data-pipeline
-  - urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-data-graph'
-    type: manifest
-    subtype: service
-    identifier: mycodexvantaos-data-graph
-  - urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-platform-notification'
-    type: manifest
-    subtype: service
-    identifier: mycodexvantaos-platform-notification
-  - urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-platform-scheduler'
-    type: manifest
-    subtype: service
-    identifier: mycodexvantaos-platform-scheduler
-  - urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-platform-observability'
-    type: manifest
-    subtype: service
-    identifier: mycodexvantaos-platform-observability
-  - urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-security-secrets'
-    type: manifest
-    subtype: service
-    identifier: mycodexvantaos-security-secrets
-  - urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-security-validation'
-    type: manifest
-    subtype: service
-    identifier: mycodexvantaos-security-validation
-  - urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-docs-search'
-    type: manifest
-    subtype: service
-    identifier: mycodexvantaos-docs-search
-  - urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-governance-policy'
-    type: manifest
-    subtype: service
-    identifier: mycodexvantaos-governance-policy
-  - urn: 'urn:mycodexvantaos:capability:vector-store:pgvector'
-    type: capability
-    subtype: vector-store
-    identifier: pgvector
-  - urn: 'urn:mycodexvantaos:capability:llm:openai'
-    type: capability
-    subtype: llm
-    identifier: openai
-  - urn: 'urn:mycodexvantaos:policy:naming:naming-spec'
-    type: policy
-    subtype: naming
-    identifier: naming-spec
+- urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-core-kernel
+  type: manifest
+  subtype: service
+  identifier: mycodexvantaos-core-kernel
+- urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-core-auth
+  type: manifest
+  subtype: service
+  identifier: mycodexvantaos-core-auth
+- urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-core-gateway
+  type: manifest
+  subtype: service
+  identifier: mycodexvantaos-core-gateway
+- urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-core-config
+  type: manifest
+  subtype: service
+  identifier: mycodexvantaos-core-config
+- urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-embedding
+  type: manifest
+  subtype: service
+  identifier: mycodexvantaos-ai-embedding
+- urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-llm
+  type: manifest
+  subtype: service
+  identifier: mycodexvantaos-ai-llm
+- urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-memory
+  type: manifest
+  subtype: service
+  identifier: mycodexvantaos-ai-memory
+- urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-agent
+  type: manifest
+  subtype: service
+  identifier: mycodexvantaos-ai-agent
+- urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-data-vector-store
+  type: manifest
+  subtype: service
+  identifier: mycodexvantaos-data-vector-store
+- urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-data-pipeline
+  type: manifest
+  subtype: service
+  identifier: mycodexvantaos-data-pipeline
+- urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-data-graph
+  type: manifest
+  subtype: service
+  identifier: mycodexvantaos-data-graph
+- urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-platform-notification
+  type: manifest
+  subtype: service
+  identifier: mycodexvantaos-platform-notification
+- urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-platform-scheduler
+  type: manifest
+  subtype: service
+  identifier: mycodexvantaos-platform-scheduler
+- urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-platform-observability
+  type: manifest
+  subtype: service
+  identifier: mycodexvantaos-platform-observability
+- urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-security-secrets
+  type: manifest
+  subtype: service
+  identifier: mycodexvantaos-security-secrets
+- urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-security-validation
+  type: manifest
+  subtype: service
+  identifier: mycodexvantaos-security-validation
+- urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-docs-search
+  type: manifest
+  subtype: service
+  identifier: mycodexvantaos-docs-search
+- urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-governance-policy
+  type: manifest
+  subtype: service
+  identifier: mycodexvantaos-governance-policy
+- urn: urn:mycodexvantaos:capability:vector-store:pgvector
+  type: capability
+  subtype: vector-store
+  identifier: pgvector
+- urn: urn:mycodexvantaos:capability:llm:openai
+  type: capability
+  subtype: llm
+  identifier: openai
+- urn: urn:mycodexvantaos:policy:naming:naming-spec
+  type: policy
+  subtype: naming
+  identifier: naming-spec

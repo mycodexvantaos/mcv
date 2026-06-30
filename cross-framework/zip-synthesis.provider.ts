@@ -6,19 +6,19 @@
 import type {
   FrameworkDetectionCapability,
   FrameworkInfo,
-} from '../packages/capabilities/src/framework-detection';
+} from "../packages/capabilities/src/framework-detection";
 
 export type FrameworkType =
-  | 'TypeScript'
-  | 'TypeScript/Node'
-  | 'JavaScript/Node'
-  | 'Python'
-  | 'Go'
-  | 'Rust'
-  | 'Mixed'
-  | 'error';
+  | "TypeScript"
+  | "TypeScript/Node"
+  | "JavaScript/Node"
+  | "Python"
+  | "Go"
+  | "Rust"
+  | "Mixed"
+  | "error";
 
-export type AnalysisStatus = 'pending' | 'analyzing' | 'done' | 'error';
+export type AnalysisStatus = "pending" | "analyzing" | "done" | "error";
 
 export interface FileEntry {
   name: string;
@@ -69,7 +69,7 @@ export class ZipSynthesis {
       await this.frameworkDetector.initialize();
       this.initialized = true;
     } catch (error) {
-      console.error('Failed to initialize ZipSynthesis:', error);
+      console.error("Failed to initialize ZipSynthesis:", error);
       throw error;
     }
   }
@@ -91,8 +91,8 @@ export class ZipSynthesis {
       // Map detected framework to our FrameworkType
       return this.mapToFrameworkType(result.detected);
     } catch (error) {
-      console.error('Framework detection error:', error);
-      return 'error';
+      console.error("Framework detection error:", error);
+      return "error";
     }
   }
 
@@ -101,19 +101,19 @@ export class ZipSynthesis {
    */
   private mapToFrameworkType(framework: string): FrameworkType {
     const frameworkMap: Record<string, FrameworkType> = {
-      react: 'TypeScript',
-      vue: 'TypeScript',
-      angular: 'TypeScript',
-      nextjs: 'TypeScript',
-      node: 'JavaScript/Node',
-      typescript: 'TypeScript/Node',
-      python: 'Python',
-      django: 'Python',
-      fastapi: 'Python',
-      flask: 'Python',
-      go: 'Go',
-      rust: 'Rust',
-      mixed: 'Mixed',
+      react: "TypeScript",
+      vue: "TypeScript",
+      angular: "TypeScript",
+      nextjs: "TypeScript",
+      node: "JavaScript/Node",
+      typescript: "TypeScript/Node",
+      python: "Python",
+      django: "Python",
+      fastapi: "Python",
+      flask: "Python",
+      go: "Go",
+      rust: "Rust",
+      mixed: "Mixed",
     };
 
     const lower = framework.toLowerCase();
@@ -123,7 +123,7 @@ export class ZipSynthesis {
       }
     }
 
-    return 'Mixed';
+    return "Mixed";
   }
 
   /**
@@ -137,7 +137,7 @@ export class ZipSynthesis {
       name,
       files,
       type: frameworkType,
-      status: 'pending',
+      status: "pending",
       analysis: null,
       error: null,
     };
@@ -151,7 +151,7 @@ export class ZipSynthesis {
 
     try {
       // Update status
-      zipItem.status = 'analyzing';
+      zipItem.status = "analyzing";
 
       // If we have an analysis provider, use it
       if (analysisProvider) {
@@ -161,7 +161,7 @@ export class ZipSynthesis {
         });
 
         zipItem.analysis = result;
-        zipItem.status = 'done';
+        zipItem.status = "done";
         return result;
       }
 
@@ -173,16 +173,16 @@ export class ZipSynthesis {
       const result: AnalysisResult = {
         tags: this.extractTags(frameworkInfo),
         overview: `Detected ${frameworkInfo.detected} framework`,
-        architecture: frameworkInfo.structure || 'Standard project structure',
+        architecture: frameworkInfo.structure || "Standard project structure",
         value: this.assessValue(zipItem),
       };
 
       zipItem.analysis = result;
-      zipItem.status = 'done';
+      zipItem.status = "done";
       return result;
     } catch (error: any) {
-      zipItem.status = 'error';
-      zipItem.error = error.message || 'Analysis failed';
+      zipItem.status = "error";
+      zipItem.error = error.message || "Analysis failed";
       throw error;
     }
   }
@@ -198,15 +198,15 @@ export class ZipSynthesis {
     }
 
     if (info.confidence > 0.8) {
-      tags.push('high-confidence');
+      tags.push("high-confidence");
     } else if (info.confidence > 0.5) {
-      tags.push('medium-confidence');
+      tags.push("medium-confidence");
     }
 
     // Add package manager tags
     if (info.features) {
       for (const feature of info.features) {
-        if (feature.includes('package')) {
+        if (feature.includes("package")) {
           tags.push(feature);
         }
       }
@@ -222,13 +222,13 @@ export class ZipSynthesis {
     const fileCount = zipItem.files.length;
 
     if (fileCount > 100) {
-      return 'Large codebase with significant functionality';
+      return "Large codebase with significant functionality";
     } else if (fileCount > 50) {
-      return 'Medium-sized project with multiple features';
+      return "Medium-sized project with multiple features";
     } else if (fileCount > 20) {
-      return 'Compact project with focused functionality';
+      return "Compact project with focused functionality";
     } else {
-      return 'Small utility or prototype project';
+      return "Small utility or prototype project";
     }
   }
 
@@ -247,22 +247,22 @@ export class ZipSynthesis {
 
     if (frameworks.size > 1) {
       conflicts.push({
-        issue: 'Multiple framework types detected',
-        solution: 'Consider separating concerns or using micro-frontends',
+        issue: "Multiple framework types detected",
+        solution: "Consider separating concerns or using micro-frontends",
       });
     }
 
     // Generate action plan
-    actionPlan.push('1. Review detected frameworks and validate accuracy');
-    actionPlan.push('2. Analyze dependency conflicts');
-    actionPlan.push('3. Plan integration strategy');
-    actionPlan.push('4. Set up shared tooling');
-    actionPlan.push('5. Establish code review process');
+    actionPlan.push("1. Review detected frameworks and validate accuracy");
+    actionPlan.push("2. Analyze dependency conflicts");
+    actionPlan.push("3. Plan integration strategy");
+    actionPlan.push("4. Set up shared tooling");
+    actionPlan.push("5. Establish code review process");
 
     return {
-      strategy: frameworks.size > 1 ? 'multi-framework' : 'unified',
+      strategy: frameworks.size > 1 ? "multi-framework" : "unified",
       conflicts,
-      architecture: 'modular-monolith',
+      architecture: "modular-monolith",
       contributions,
       actionPlan,
     };
@@ -294,7 +294,7 @@ export class ZipSynthesis {
 
   private ensureInitialized(): void {
     if (!this.initialized || !this.frameworkDetector) {
-      throw new Error('ZipSynthesis not initialized. Call initialize() first.');
+      throw new Error("ZipSynthesis not initialized. Call initialize() first.");
     }
   }
 }
@@ -315,7 +315,7 @@ let _synthesisInstance: ZipSynthesis | null = null;
 
 async function getSynthesis(): Promise<ZipSynthesis> {
   if (!_synthesisInstance) {
-    const { getProviderFactory } = await import('../packages/capabilities/src/provider-factory');
+    const { getProviderFactory } = await import("../packages/capabilities/src/provider-factory");
     const factory = getProviderFactory();
     _synthesisInstance = await createZipSynthesis(factory);
   }

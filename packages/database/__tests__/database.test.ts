@@ -2,9 +2,9 @@
  * Comprehensive tests for Database package
  */
 
-import { Database, DatabaseConfig, QueryResult } from '../src/index';
+import { Database, DatabaseConfig, QueryResult } from "../src/index";
 
-describe('Database', () => {
+describe("Database", () => {
   let database: Database;
 
   beforeEach(() => {
@@ -15,43 +15,43 @@ describe('Database', () => {
     await database.cleanup();
   });
 
-  describe('initialize', () => {
-    it('should initialize database with default config', async () => {
+  describe("initialize", () => {
+    it("should initialize database with default config", async () => {
       await database.initialize();
     });
 
-    it('should run migrations on initialize', async () => {
+    it("should run migrations on initialize", async () => {
       await database.initialize();
     });
   });
 
-  describe('query', () => {
-    it('should execute a query', async () => {
+  describe("query", () => {
+    it("should execute a query", async () => {
       await database.initialize();
 
-      const result = await database.query<QueryResult>('SELECT * FROM users');
+      const result = await database.query<QueryResult>("SELECT * FROM users");
 
       expect(result).toBeDefined();
       expect(result.rows).toEqual([]);
       expect(result.rowCount).toBe(0);
     });
 
-    it('should execute query with parameters', async () => {
+    it("should execute query with parameters", async () => {
       await database.initialize();
 
-      const result = await database.query<QueryResult>('SELECT * FROM users WHERE id = ?', [1]);
+      const result = await database.query<QueryResult>("SELECT * FROM users WHERE id = ?", [1]);
 
       expect(result).toBeDefined();
     });
   });
 
-  describe('executeSql', () => {
-    it('should execute SQL statement', async () => {
+  describe("executeSql", () => {
+    it("should execute SQL statement", async () => {
       await database.initialize();
 
-      const result = await database.executeSql('INSERT INTO users (name, email) VALUES (?, ?)', [
-        'Test User',
-        'test@example.com',
+      const result = await database.executeSql("INSERT INTO users (name, email) VALUES (?, ?)", [
+        "Test User",
+        "test@example.com",
       ]);
 
       expect(result).toBeDefined();
@@ -59,8 +59,8 @@ describe('Database', () => {
     });
   });
 
-  describe('transaction', () => {
-    it('should execute transaction successfully', async () => {
+  describe("transaction", () => {
+    it("should execute transaction successfully", async () => {
       await database.initialize();
 
       const result = await database.transaction(async () => {
@@ -70,79 +70,79 @@ describe('Database', () => {
       expect(result.success).toBe(true);
     });
 
-    it('should rollback on error', async () => {
+    it("should rollback on error", async () => {
       await database.initialize();
 
       await expect(
         database.transaction(async () => {
-          throw new Error('Transaction error');
+          throw new Error("Transaction error");
         })
-      ).rejects.toThrow('Transaction error');
+      ).rejects.toThrow("Transaction error");
     });
   });
 
-  describe('execute', () => {
-    it('should execute query action', async () => {
+  describe("execute", () => {
+    it("should execute query action", async () => {
       await database.initialize();
 
       const result = await database.execute<QueryResult>({
-        action: 'query',
-        sql: 'SELECT * FROM users',
+        action: "query",
+        sql: "SELECT * FROM users",
       });
 
       expect(result).toBeDefined();
     });
 
-    it('should execute execute action', async () => {
+    it("should execute execute action", async () => {
       await database.initialize();
 
       const result = await database.execute({
-        action: 'execute',
-        sql: 'INSERT INTO users (name) VALUES (?)',
-        params: ['Test'],
+        action: "execute",
+        sql: "INSERT INTO users (name) VALUES (?)",
+        params: ["Test"],
       });
 
       expect(result).toBeDefined();
     });
 
-    it('should execute transaction action', async () => {
+    it("should execute transaction action", async () => {
       await database.initialize();
 
       const result = await database.execute<{ done: boolean }>({
-        action: 'transaction',
+        action: "transaction",
         fn: async () => ({ done: true }),
       });
 
       expect(result.done).toBe(true);
     });
 
-    it('should default to query for unknown action', async () => {
+    it("should default to query for unknown action", async () => {
       await database.initialize();
 
       const result = await database.execute<QueryResult>({
-        action: 'unknown',
-        sql: 'SELECT 1',
+        action: "unknown",
+        sql: "SELECT 1",
       });
 
       expect(result).toBeDefined();
     });
   });
 
-  describe('migrate', () => {
-    it('should create default tables', async () => {
+  describe("migrate", () => {
+    it("should create default tables", async () => {
       await database.migrate();
     });
   });
 
-  describe('cleanup', () => {
-    it('should clear all tables', async () => {
+  describe("cleanup", () => {
+    it("should clear all tables", async () => {
       await database.initialize();
       await database.cleanup();
     });
   });
 
-  describe('concurrent operations', () => {
-    it('should handle concurrent queries', async () => {
+  describe("concurrent operations", () => {
+    it("should handle concurrent queries", async () => {
       await database.initialize();
 
       const promises: Promise<QueryResult>[] = [];

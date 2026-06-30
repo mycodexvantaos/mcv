@@ -8,8 +8,8 @@ metadata:
 spec:
   domain: security
   capabilities:
-    - secrets
-    - database
+  - secrets
+  - database
   providers:
     secrets: secrets-vault
     database: database-postgres

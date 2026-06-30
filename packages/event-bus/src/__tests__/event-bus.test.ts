@@ -1,17 +1,17 @@
-import { EventBus } from '../index';
+import { EventBus } from "../index";
 
-describe('event-bus', () => {
+describe("event-bus", () => {
   let instance: EventBus;
 
   beforeEach(() => {
     instance = new EventBus();
   });
 
-  test('should initialize', () => {
+  test("should initialize", () => {
     expect(instance).toBeDefined();
   });
 
-  test('should have basic functionality', () => {
-    expect(typeof instance).toBe('object');
+  test("should have basic functionality", () => {
+    expect(typeof instance).toBe("object");
   });
 });

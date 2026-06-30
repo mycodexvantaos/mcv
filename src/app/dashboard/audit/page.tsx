@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import {
   ScrollText,
   Search,
@@ -11,19 +11,19 @@ import {
   ShieldCheck,
   ChevronLeft,
   ChevronRight,
-} from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import type { Role } from '@/types/dashboard';
+} from "@/components/ui/select";
+import type { Role } from "@/types/dashboard";
 
 interface AuditLogEntry {
   id: string;
@@ -41,121 +41,121 @@ interface AuditLogEntry {
 
 const mockAuditLog: AuditLogEntry[] = [
   {
-    id: 'a1',
-    timestamp: '2025-05-04T22:15:00Z',
-    actorEmail: 'admin@autoecoops.io',
-    actorRole: 'super_admin',
-    actorIp: '203.0.113.42',
-    action: 'connector.update',
-    resourceType: 'connector',
-    resourceName: 'Redis Cache Cluster',
-    changes: 'maxConnections: 50 → 100',
+    id: "a1",
+    timestamp: "2025-05-04T22:15:00Z",
+    actorEmail: "admin@autoecoops.io",
+    actorRole: "super_admin",
+    actorIp: "203.0.113.42",
+    action: "connector.update",
+    resourceType: "connector",
+    resourceName: "Redis Cache Cluster",
+    changes: "maxConnections: 50 → 100",
     governanceApproved: true,
-    governanceApprovedBy: 'system',
+    governanceApprovedBy: "system",
   },
   {
-    id: 'a2',
-    timestamp: '2025-05-04T21:45:00Z',
-    actorEmail: 'operator@autoecoops.io',
-    actorRole: 'operator',
-    actorIp: '203.0.113.55',
-    action: 'edge.deploy',
-    resourceType: 'edge_node',
-    resourceName: 'ap-southeast-1',
-    changes: 'version: v2.3.8 → v2.4.1',
+    id: "a2",
+    timestamp: "2025-05-04T21:45:00Z",
+    actorEmail: "operator@autoecoops.io",
+    actorRole: "operator",
+    actorIp: "203.0.113.55",
+    action: "edge.deploy",
+    resourceType: "edge_node",
+    resourceName: "ap-southeast-1",
+    changes: "version: v2.3.8 → v2.4.1",
     governanceApproved: true,
-    governanceApprovedBy: 'admin@autoecoops.io',
+    governanceApprovedBy: "admin@autoecoops.io",
   },
   {
-    id: 'a3',
-    timestamp: '2025-05-04T20:30:00Z',
-    actorEmail: 'admin@autoecoops.io',
-    actorRole: 'admin',
-    actorIp: '203.0.113.42',
-    action: 'scenario.create',
-    resourceType: 'scenario_matrix',
-    resourceName: 'Healthcare AI Diagnostics',
-    changes: 'Created new scenario matrix',
+    id: "a3",
+    timestamp: "2025-05-04T20:30:00Z",
+    actorEmail: "admin@autoecoops.io",
+    actorRole: "admin",
+    actorIp: "203.0.113.42",
+    action: "scenario.create",
+    resourceType: "scenario_matrix",
+    resourceName: "Healthcare AI Diagnostics",
+    changes: "Created new scenario matrix",
     governanceApproved: true,
-    governanceApprovedBy: 'system',
+    governanceApprovedBy: "system",
   },
   {
-    id: 'a4',
-    timestamp: '2025-05-04T18:20:00Z',
-    actorEmail: 'system',
-    actorRole: 'operator',
-    actorIp: '10.0.0.1',
-    action: 'security.scan',
-    resourceType: 'system',
-    resourceName: 'Full Vulnerability Scan',
-    changes: 'Scan completed — 0 vulnerabilities',
+    id: "a4",
+    timestamp: "2025-05-04T18:20:00Z",
+    actorEmail: "system",
+    actorRole: "operator",
+    actorIp: "10.0.0.1",
+    action: "security.scan",
+    resourceType: "system",
+    resourceName: "Full Vulnerability Scan",
+    changes: "Scan completed — 0 vulnerabilities",
     governanceApproved: true,
-    governanceApprovedBy: 'system',
+    governanceApprovedBy: "system",
   },
   {
-    id: 'a5',
-    timestamp: '2025-05-04T16:10:00Z',
-    actorEmail: 'admin@autoecoops.io',
-    actorRole: 'admin',
-    actorIp: '203.0.113.42',
-    action: 'inference.routing_update',
-    resourceType: 'model_routing',
-    resourceName: 'gemini-2.5-flash',
-    changes: 'weight: 0.4 → 0.5, priority: 1 → 1',
+    id: "a5",
+    timestamp: "2025-05-04T16:10:00Z",
+    actorEmail: "admin@autoecoops.io",
+    actorRole: "admin",
+    actorIp: "203.0.113.42",
+    action: "inference.routing_update",
+    resourceType: "model_routing",
+    resourceName: "gemini-2.5-flash",
+    changes: "weight: 0.4 → 0.5, priority: 1 → 1",
     governanceApproved: true,
-    governanceApprovedBy: 'system',
+    governanceApprovedBy: "system",
   },
   {
-    id: 'a6',
-    timestamp: '2025-05-04T14:05:00Z',
-    actorEmail: 'operator@autoecoops.io',
-    actorRole: 'operator',
-    actorIp: '203.0.113.55',
-    action: 'edge.rollback',
-    resourceType: 'edge_node',
-    resourceName: 'eu-central-1-primary',
-    changes: 'version: v2.4.1 → v2.4.0',
+    id: "a6",
+    timestamp: "2025-05-04T14:05:00Z",
+    actorEmail: "operator@autoecoops.io",
+    actorRole: "operator",
+    actorIp: "203.0.113.55",
+    action: "edge.rollback",
+    resourceType: "edge_node",
+    resourceName: "eu-central-1-primary",
+    changes: "version: v2.4.1 → v2.4.0",
     governanceApproved: true,
-    governanceApprovedBy: 'admin@autoecoops.io',
+    governanceApprovedBy: "admin@autoecoops.io",
   },
   {
-    id: 'a7',
-    timestamp: '2025-05-04T10:30:00Z',
-    actorEmail: 'admin@autoecoops.io',
-    actorRole: 'super_admin',
-    actorIp: '203.0.113.42',
-    action: 'connector.create',
-    resourceType: 'connector',
-    resourceName: 'S3 Document Storage',
-    changes: 'Created new connector',
+    id: "a7",
+    timestamp: "2025-05-04T10:30:00Z",
+    actorEmail: "admin@autoecoops.io",
+    actorRole: "super_admin",
+    actorIp: "203.0.113.42",
+    action: "connector.create",
+    resourceType: "connector",
+    resourceName: "S3 Document Storage",
+    changes: "Created new connector",
     governanceApproved: true,
-    governanceApprovedBy: 'system',
+    governanceApprovedBy: "system",
   },
   {
-    id: 'a8',
-    timestamp: '2025-05-03T22:00:00Z',
-    actorEmail: 'system',
-    actorRole: 'operator',
-    actorIp: '10.0.0.1',
-    action: 'connector.health_check',
-    resourceType: 'connector',
-    resourceName: 'All Connectors',
-    changes: 'Scheduled health check completed',
+    id: "a8",
+    timestamp: "2025-05-03T22:00:00Z",
+    actorEmail: "system",
+    actorRole: "operator",
+    actorIp: "10.0.0.1",
+    action: "connector.health_check",
+    resourceType: "connector",
+    resourceName: "All Connectors",
+    changes: "Scheduled health check completed",
     governanceApproved: true,
-    governanceApprovedBy: 'system',
+    governanceApprovedBy: "system",
   },
 ];
 
 const roleColors: Record<Role, string> = {
-  super_admin: 'bg-chart-3/20 text-chart-3',
-  admin: 'bg-chart-1/20 text-chart-1',
-  operator: 'bg-chart-4/20 text-chart-4',
-  viewer: 'bg-chart-5/20 text-chart-5',
+  super_admin: "bg-chart-3/20 text-chart-3",
+  admin: "bg-chart-1/20 text-chart-1",
+  operator: "bg-chart-4/20 text-chart-4",
+  viewer: "bg-chart-5/20 text-chart-5",
 };
 
 export default function AuditPage() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filterAction, setFilterAction] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterAction, setFilterAction] = useState<string>("all");
 
   const filteredLog = mockAuditLog.filter((entry) => {
     if (
@@ -165,7 +165,7 @@ export default function AuditPage() {
       !entry.actorEmail.includes(searchQuery)
     )
       return false;
-    if (filterAction !== 'all' && !entry.action.startsWith(filterAction)) return false;
+    if (filterAction !== "all" && !entry.action.startsWith(filterAction)) return false;
     return true;
   });
 

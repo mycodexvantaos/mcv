@@ -1,5 +1,3 @@
-# vector-store/collections/mycodexvantaos-ai-memory--memories--bge-small-384.yaml
-# 9.2 — Format: <service-id>--<purpose>--<embedding-model-alias>
 apiVersion: mycodexvantaos.org/v1
 kind: VectorCollection
 metadata:

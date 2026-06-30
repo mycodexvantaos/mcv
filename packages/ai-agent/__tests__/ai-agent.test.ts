@@ -2,8 +2,8 @@
  * 基礎測試 - ai-agent
  */
 
-describe('ai-agent', () => {
-  it('應該有正確的套件結構', () => {
+describe("ai-agent", () => {
+  it("應該有正確的套件結構", () => {
     expect(true).toBe(true);
   });
 });

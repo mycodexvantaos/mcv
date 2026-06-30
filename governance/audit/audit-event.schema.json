@@ -2,19 +2,10 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://mycodexvantaos.com/schemas/audit-event.schema.json",
   "title": "AuditEvent",
+  "description": "MyCodexVantaOS audit event schema",
   "type": "object",
+  "required": ["event-id", "event-type", "timestamp", "actor", "resource", "hash"],
   "properties": {
-    "id": {
-      "type": "string"
-    },
-    "type": {
-      "type": "string"
-    },
-    "timestamp": {
-      "type": "string",
-      "format": "date-time",
-      "description": "ISO 8601 UTC timestamp"
-    },
     "event-id": {
       "type": "string",
       "pattern": "^evt-[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}$",
@@ -55,35 +46,30 @@
         "permission-change"
       ]
     },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 UTC timestamp"
+    },
     "actor": {
       "type": "object",
       "required": ["id", "type"],
       "properties": {
-        "id": {
-          "type": "string"
-        },
+        "id": { "type": "string" },
         "type": {
           "type": "string",
           "enum": ["user", "service", "ci-pipeline", "governance-engine"]
         },
-        "display-name": {
-          "type": "string"
-        }
+        "display-name": { "type": "string" }
       }
     },
     "resource": {
       "type": "object",
       "required": ["id", "type"],
       "properties": {
-        "id": {
-          "type": "string"
-        },
-        "type": {
-          "type": "string"
-        },
-        "path": {
-          "type": "string"
-        }
+        "id": { "type": "string" },
+        "type": { "type": "string" },
+        "path": { "type": "string" }
       }
     },
     "payload": {
@@ -105,7 +91,5 @@
       "enum": ["info", "warning", "error", "critical"]
     }
   },
-  "required": ["id", "type", "timestamp", "event-id", "event-type", "actor", "resource", "hash"],
-  "description": "MyCodexVantaOS audit event schema",
   "additionalProperties": false
 }

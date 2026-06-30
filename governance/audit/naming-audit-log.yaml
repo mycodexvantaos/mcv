@@ -1,8 +1,3 @@
-# governance/audit/naming-audit-log.yaml
-# Naming compliance audit log for mycodexvantaos platform.
-# This file is APPEND-ONLY. Do not edit or delete existing entries.
-# Based on naming-spec-v1.md 15
-
 apiVersion: mycodexvantaos.org/v1
 kind: NamingAuditLog
 metadata:
@@ -10,10 +5,9 @@ metadata:
   labels:
     managed-by: naming-spec-v1
     specRef: '15'
-
 entries:
-  - date: '2026-04-18'
-    action: spec-adopted
-    description: 'naming-spec-v1.md v1.0.0 formally adopted as platform naming authority.'
-    actor: arch-committee-lead
-    result: pass
+- date: '2026-04-18'
+  action: spec-adopted
+  description: naming-spec-v1.md v1.0.0 formally adopted as platform naming authority.
+  actor: arch-committee-lead
+  result: pass

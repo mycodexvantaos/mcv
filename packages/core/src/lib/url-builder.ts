@@ -18,11 +18,11 @@ import {
   getCanonicalUrl,
   isProductionSafeUrl,
   resolveEnvironment,
-} from '../config/domains';
+} from "../config/domains";
 
-export type OAuthProvider = 'github' | 'google' | 'microsoft' | 'slack';
-export type WebhookService = 'github' | 'stripe' | 'resend' | 'twilio' | 'pagerduty';
-export type ApiVersion = 'v1' | 'v2';
+export type OAuthProvider = "github" | "google" | "microsoft" | "slack";
+export type WebhookService = "github" | "stripe" | "resend" | "twilio" | "pagerduty";
+export type ApiVersion = "v1" | "v2";
 
 /**
  * URL builder class that enforces domain contract compliance.
@@ -37,17 +37,17 @@ export class UrlBuilder {
   /**
    * Build a canonical URL (brand/SEO/landing page URL).
    */
-  canonical(path: string = '/'): string {
+  canonical(path: string = "/"): string {
     return buildCanonicalUrl(path, this.env);
   }
 
   /**
    * Build an API URL.
    */
-  api(path: string, version: ApiVersion = 'v1'): string {
+  api(path: string, version: ApiVersion = "v1"): string {
     const versionedPath = path.startsWith(`/${version}`)
       ? path
-      : `/${version}${path.startsWith('/') ? path : `/${path}`}`;
+      : `/${version}${path.startsWith("/") ? path : `/${path}`}`;
     return buildApiUrl(versionedPath, this.env);
   }
 
@@ -71,16 +71,16 @@ export class UrlBuilder {
    * Build a sitemap URL.
    * All sitemap URLs MUST begin with https://mycodexvantaos.com in production.
    */
-  sitemap(path: string = '/'): string {
+  sitemap(path: string = "/"): string {
     return this.canonical(path);
   }
 
   /**
    * Build an app console URL.
    */
-  app(path: string = '/'): string {
+  app(path: string = "/"): string {
     const base = getAppUrl(this.env);
-    const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+    const normalizedPath = path.startsWith("/") ? path : `/${path}`;
     return `${base}${normalizedPath}`;
   }
 
@@ -94,7 +94,7 @@ export class UrlBuilder {
         reason: `URL "${url}" matches a forbidden vendor-generated URL pattern. Use canonical domain https://mycodexvantaos.com instead.`,
       };
     }
-    if (this.env === 'production' && !url.startsWith('https://')) {
+    if (this.env === "production" && !url.startsWith("https://")) {
       return {
         valid: false,
         reason: `URL "${url}" must use HTTPS in production.`,
@@ -150,10 +150,10 @@ export function assertProductionSafeUrl(url: string, context: string): void {
 export function getAllOAuthCallbackUrls(env?: AppEnvironment): Record<OAuthProvider, string> {
   const builder = new UrlBuilder(env);
   return {
-    github: builder.oauthCallback('github'),
-    google: builder.oauthCallback('google'),
-    microsoft: builder.oauthCallback('microsoft'),
-    slack: builder.oauthCallback('slack'),
+    github: builder.oauthCallback("github"),
+    google: builder.oauthCallback("google"),
+    microsoft: builder.oauthCallback("microsoft"),
+    slack: builder.oauthCallback("slack"),
   };
 }
 
@@ -163,10 +163,10 @@ export function getAllOAuthCallbackUrls(env?: AppEnvironment): Record<OAuthProvi
 export function getAllWebhookUrls(env?: AppEnvironment): Record<WebhookService, string> {
   const builder = new UrlBuilder(env);
   return {
-    github: builder.webhook('github'),
-    stripe: builder.webhook('stripe'),
-    resend: builder.webhook('resend'),
-    twilio: builder.webhook('twilio'),
-    pagerduty: builder.webhook('pagerduty'),
+    github: builder.webhook("github"),
+    stripe: builder.webhook("stripe"),
+    resend: builder.webhook("resend"),
+    twilio: builder.webhook("twilio"),
+    pagerduty: builder.webhook("pagerduty"),
   };
 }

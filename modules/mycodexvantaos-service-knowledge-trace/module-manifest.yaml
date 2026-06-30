@@ -12,8 +12,8 @@ spec:
     and audit trail generation.
   category: knowledge
   runtime-modes:
-    - native
-    - connected
-    - hybrid
+  - native
+  - connected
+  - hybrid
   implementationPath: services/mycodexvantaos-service-knowledge-trace/
   packageName: '@mycodexvantaos/service-knowledge-trace'

@@ -4,8 +4,8 @@ metadata:
   name: sbom-policy
 spec:
   formats:
-    - cyclonedx
-    - spdx
+  - cyclonedx
+  - spdx
   required: true
   minimumVersion:
     cyclonedx: '1.5'

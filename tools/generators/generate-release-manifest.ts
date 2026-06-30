@@ -18,10 +18,10 @@
  *   - manifest hash for integrity verification
  */
 
-import { execSync } from 'node:child_process';
-import { writeFileSync, mkdirSync, existsSync, readFileSync } from 'node:fs';
-import { resolve, dirname } from 'node:path';
-import { createHash } from 'node:crypto';
+import { execSync } from "node:child_process";
+import { writeFileSync, mkdirSync, existsSync, readFileSync } from "node:fs";
+import { resolve, dirname } from "node:path";
+import { createHash } from "node:crypto";
 
 // ──── Types ──────────────────────────────────────────────────────────────
 
@@ -57,17 +57,17 @@ export interface ReleaseManifest {
 
 function git(command: string): string {
   try {
-    return execSync(`git ${command}`, { encoding: 'utf-8' }).trim();
+    return execSync(`git ${command}`, { encoding: "utf-8" }).trim();
   } catch {
-    return 'unknown';
+    return "unknown";
   }
 }
 
 function parseArgs(): { output: string } {
   const args = process.argv.slice(2);
-  let output = 'release/release-manifest.json';
+  let output = "release/release-manifest.json";
   for (let i = 0; i < args.length; i++) {
-    if (args[i] === '--output' && args[i + 1]) {
+    if (args[i] === "--output" && args[i + 1]) {
       output = args[i + 1];
       i++;
     }
@@ -80,22 +80,22 @@ function parseArgs(): { output: string } {
  */
 export function scanServices(): ServiceEntry[] {
   const services: ServiceEntry[] = [];
-  const dirs = ['services', 'packages'];
+  const dirs = ["services", "packages"];
 
   for (const dir of dirs) {
     if (!existsSync(dir)) continue;
 
     try {
-      const entries = execSync(`ls -d ${dir}/*/`, { encoding: 'utf-8' })
+      const entries = execSync(`ls -d ${dir}/*/`, { encoding: "utf-8" })
         .trim()
-        .split('\n')
+        .split("\n")
         .filter(Boolean);
 
       for (const entry of entries) {
-        const pkgJsonPath = resolve(entry, 'package.json');
+        const pkgJsonPath = resolve(entry, "package.json");
         if (existsSync(pkgJsonPath)) {
           try {
-            const pkgJson = JSON.parse(readFileSync(pkgJsonPath, 'utf-8'));
+            const pkgJson = JSON.parse(readFileSync(pkgJsonPath, "utf-8"));
             if (pkgJson.name && pkgJson.version) {
               services.push({ name: pkgJson.name, version: pkgJson.version });
             }
@@ -116,18 +116,18 @@ export function scanServices(): ServiceEntry[] {
  * Compute a SHA-256 hash of the manifest (excluding the hash field itself)
  * for integrity verification.
  */
-export function computeManifestHash(manifest: Omit<ReleaseManifest, 'manifestHash'>): string {
+export function computeManifestHash(manifest: Omit<ReleaseManifest, "manifestHash">): string {
   const data = JSON.stringify(manifest, Object.keys(manifest).sort());
-  return createHash('sha256').update(data).digest('hex');
+  return createHash("sha256").update(data).digest("hex");
 }
 
 /**
  * Generate a release manifest from current git and environment metadata.
  */
 export function generateManifest(): ReleaseManifest {
-  const version = process.env.npm_package_version ?? '0.1.0';
-  const commit = process.env.GIT_COMMIT ?? git('rev-parse HEAD');
-  const branch = process.env.GIT_BRANCH ?? git('rev-parse --abbrev-ref HEAD');
+  const version = process.env.npm_package_version ?? "0.1.0";
+  const commit = process.env.GIT_COMMIT ?? git("rev-parse HEAD");
+  const branch = process.env.GIT_BRANCH ?? git("rev-parse --abbrev-ref HEAD");
   const buildTimestamp = process.env.BUILD_TIMESTAMP ?? new Date().toISOString();
 
   const runtime: RuntimeInfo = {
@@ -144,7 +144,7 @@ export function generateManifest(): ReleaseManifest {
     dreamSafetyEnforcement: true,
   };
 
-  const manifestWithoutHash: Omit<ReleaseManifest, 'manifestHash'> = {
+  const manifestWithoutHash: Omit<ReleaseManifest, "manifestHash"> = {
     version,
     commit,
     branch,
@@ -172,7 +172,7 @@ function main(): void {
     mkdirSync(outputDir, { recursive: true });
   }
 
-  writeFileSync(outputPath, JSON.stringify(manifest, null, 2) + '\n', 'utf-8');
+  writeFileSync(outputPath, JSON.stringify(manifest, null, 2) + "\n", "utf-8");
 
   console.log(`✅ Release manifest written to ${outputPath}`);
   console.log(`   version:          ${manifest.version}`);

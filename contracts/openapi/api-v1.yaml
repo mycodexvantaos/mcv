@@ -2,43 +2,44 @@ openapi: 3.1.0
 info:
   title: MyCodeXvantaOS Platform API
   version: 0.1.0
-  description: |
-    The unified API surface for the MyCodeXvantaOS platform.
+  description: 'The unified API surface for the MyCodeXvantaOS platform.
+
     Organized by the 8 service categories: knowledge, agent, workspace,
+
     developer, security, storage, model, automation.
+
+    '
   contact:
     name: MyCodeXvantaOS Team
   license:
     name: UNLICENSED
-
 servers:
-  - url: /api/v1
-    description: Current deployment
-
+- url: /api/v1
+  description: Current deployment
 tags:
-  - name: Health
-    description: Platform health check
-  - name: Security
-    description: Identity, authentication, and authorization
-  - name: Workspace
-    description: Multi-tenant workspace management
-  - name: Knowledge
-    description: Document ingestion, vector search, collections
-  - name: Agent
-    description: Conversational AI sessions with RAG
-  - name: Model
-    description: LLM and embedding model routing
-  - name: Audit
-    description: Audit trail and integrity verification
-  - name: Usage
-    description: Usage metering and quota management
-  - name: Automation
-    description: Job queues and scheduled tasks
-
+- name: Health
+  description: Platform health check
+- name: Security
+  description: Identity, authentication, and authorization
+- name: Workspace
+  description: Multi-tenant workspace management
+- name: Knowledge
+  description: Document ingestion, vector search, collections
+- name: Agent
+  description: Conversational AI sessions with RAG
+- name: Model
+  description: LLM and embedding model routing
+- name: Audit
+  description: Audit trail and integrity verification
+- name: Usage
+  description: Usage metering and quota management
+- name: Automation
+  description: Job queues and scheduled tasks
 paths:
   /health:
     get:
-      tags: [Health]
+      tags:
+      - Health
       operationId: getHealth
       summary: Health check
       responses:
@@ -48,11 +49,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HealthResponse'
-
-  # ── Security ────────────────────────────────────────────────────────
   /security/register:
     post:
-      tags: [Security]
+      tags:
+      - Security
       operationId: registerSubject
       summary: Register a new subject
       requestBody:
@@ -68,10 +68,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RegisterResponse'
-
   /security/token:
     post:
-      tags: [Security]
+      tags:
+      - Security
       operationId: createToken
       summary: Create authentication token
       requestBody:
@@ -87,14 +87,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TokenPair'
-
   /security/verify:
     get:
-      tags: [Security]
+      tags:
+      - Security
       operationId: verifyToken
       summary: Validate a token
       security:
-        - bearerAuth: []
+      - bearerAuth: []
       responses:
         '200':
           description: Token is valid
@@ -102,11 +102,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TokenClaims'
-
-  # ── Workspace ───────────────────────────────────────────────────────
   /workspace:
     post:
-      tags: [Workspace]
+      tags:
+      - Workspace
       operationId: createWorkspace
       summary: Create a workspace
       requestBody:
@@ -123,7 +122,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Workspace'
     get:
-      tags: [Workspace]
+      tags:
+      - Workspace
       operationId: listWorkspaces
       summary: List workspaces
       responses:
@@ -133,11 +133,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/WorkspaceList'
-
-  # ── Knowledge ───────────────────────────────────────────────────────
   /knowledge/collections:
     post:
-      tags: [Knowledge]
+      tags:
+      - Knowledge
       operationId: createCollection
       summary: Create a knowledge collection
       requestBody:
@@ -154,7 +153,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Collection'
     get:
-      tags: [Knowledge]
+      tags:
+      - Knowledge
       operationId: listCollections
       summary: List knowledge collections
       responses:
@@ -164,10 +164,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CollectionList'
-
   /knowledge/ingest:
     post:
-      tags: [Knowledge]
+      tags:
+      - Knowledge
       operationId: ingestDocument
       summary: Ingest a document into the knowledge base
       requestBody:
@@ -183,10 +183,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/IngestResponse'
-
   /knowledge/search:
     post:
-      tags: [Knowledge]
+      tags:
+      - Knowledge
       operationId: searchKnowledge
       summary: Search the knowledge base
       requestBody:
@@ -202,11 +202,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SearchResults'
-
-  # ── Agent ───────────────────────────────────────────────────────────
   /agent/sessions:
     post:
-      tags: [Agent]
+      tags:
+      - Agent
       operationId: createAgentSession
       summary: Create an agent session
       requestBody:
@@ -222,19 +221,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AgentSession'
-
   /agent/sessions/{sessionId}/messages:
     post:
-      tags: [Agent]
+      tags:
+      - Agent
       operationId: sendMessage
       summary: Send a message to an agent session
       parameters:
-        - name: sessionId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - name: sessionId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
       requestBody:
         required: true
         content:
@@ -248,11 +247,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AgentResponse'
-
-  # ── Model ───────────────────────────────────────────────────────────
   /model/endpoints:
     get:
-      tags: [Model]
+      tags:
+      - Model
       operationId: listModelEndpoints
       summary: List available model endpoints
       responses:
@@ -262,10 +260,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ModelEndpointList'
-
   /model/chat:
     post:
-      tags: [Model]
+      tags:
+      - Model
       operationId: chatCompletion
       summary: Chat completion via model routing
       requestBody:
@@ -281,23 +279,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChatResponse'
-
-  # ── Audit ───────────────────────────────────────────────────────────
   /audit/events:
     get:
-      tags: [Audit]
+      tags:
+      - Audit
       operationId: listAuditEvents
       summary: List audit events
       parameters:
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            default: 50
-        - name: cursor
-          in: query
-          schema:
-            type: string
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+      - name: cursor
+        in: query
+        schema:
+          type: string
       responses:
         '200':
           description: List of audit events
@@ -305,10 +302,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuditEventList'
-
   /audit/verify:
     post:
-      tags: [Audit]
+      tags:
+      - Audit
       operationId: verifyAuditChain
       summary: Verify the integrity of the audit chain
       responses:
@@ -318,25 +315,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuditVerificationResult'
-
-  # ── Usage ───────────────────────────────────────────────────────────
   /usage/{subjectId}:
     get:
-      tags: [Usage]
+      tags:
+      - Usage
       operationId: getUsage
       summary: Get usage metering for a subject
       parameters:
-        - name: subjectId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: window
-          in: query
-          schema:
-            type: string
-            enum: [minute, hour, day]
-            default: hour
+      - name: subjectId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: window
+        in: query
+        schema:
+          type: string
+          enum:
+          - minute
+          - hour
+          - day
+          default: hour
       responses:
         '200':
           description: Usage data
@@ -344,11 +343,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UsageData'
-
-  # ── Automation ──────────────────────────────────────────────────────
   /automation/jobs:
     post:
-      tags: [Automation]
+      tags:
+      - Automation
       operationId: enqueueJob
       summary: Enqueue an automation job
       requestBody:
@@ -364,28 +362,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EnqueueJobResponse'
-
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-
   schemas:
     HealthResponse:
       type: object
       properties:
         status:
           type: string
-          enum: [ok, degraded, down]
+          enum:
+          - ok
+          - degraded
+          - down
         timestamp:
           type: string
           format: date-time
-
     RegisterRequest:
       type: object
-      required: [subjectId, roles]
+      required:
+      - subjectId
+      - roles
       properties:
         subjectId:
           type: string
@@ -396,7 +396,6 @@ components:
         claims:
           type: object
           additionalProperties: true
-
     RegisterResponse:
       type: object
       properties:
@@ -405,16 +404,16 @@ components:
         createdAt:
           type: string
           format: date-time
-
     TokenRequest:
       type: object
-      required: [subjectId, password]
+      required:
+      - subjectId
+      - password
       properties:
         subjectId:
           type: string
         password:
           type: string
-
     TokenPair:
       type: object
       properties:
@@ -424,7 +423,6 @@ components:
           type: string
         expiresIn:
           type: integer
-
     TokenClaims:
       type: object
       properties:
@@ -437,10 +435,11 @@ components:
         expiresAt:
           type: string
           format: date-time
-
     CreateWorkspaceRequest:
       type: object
-      required: [name, ownerId]
+      required:
+      - name
+      - ownerId
       properties:
         name:
           type: string
@@ -449,7 +448,6 @@ components:
         settings:
           type: object
           additionalProperties: true
-
     Workspace:
       type: object
       properties:
@@ -463,7 +461,6 @@ components:
         createdAt:
           type: string
           format: date-time
-
     WorkspaceList:
       type: object
       properties:
@@ -473,10 +470,10 @@ components:
             $ref: '#/components/schemas/Workspace'
         nextCursor:
           type: string
-
     CreateCollectionRequest:
       type: object
-      required: [name]
+      required:
+      - name
       properties:
         name:
           type: string
@@ -484,7 +481,6 @@ components:
           type: string
         embeddingModel:
           type: string
-
     Collection:
       type: object
       properties:
@@ -502,7 +498,6 @@ components:
         createdAt:
           type: string
           format: date-time
-
     CollectionList:
       type: object
       properties:
@@ -510,10 +505,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Collection'
-
     IngestRequest:
       type: object
-      required: [collectionId, documentId, content]
+      required:
+      - collectionId
+      - documentId
+      - content
       properties:
         collectionId:
           type: string
@@ -524,7 +521,6 @@ components:
         metadata:
           type: object
           additionalProperties: true
-
     IngestResponse:
       type: object
       properties:
@@ -532,13 +528,15 @@ components:
           type: string
         status:
           type: string
-          enum: [accepted, processing]
+          enum:
+          - accepted
+          - processing
         jobId:
           type: string
-
     SearchRequest:
       type: object
-      required: [query]
+      required:
+      - query
       properties:
         query:
           type: string
@@ -551,9 +549,11 @@ components:
           default: 10
         searchType:
           type: string
-          enum: [semantic, fulltext, hybrid]
+          enum:
+          - semantic
+          - fulltext
+          - hybrid
           default: hybrid
-
     SearchResults:
       type: object
       properties:
@@ -563,7 +563,6 @@ components:
             $ref: '#/components/schemas/SearchResultItem'
         totalDurationMs:
           type: number
-
     SearchResultItem:
       type: object
       properties:
@@ -577,17 +576,19 @@ components:
           type: number
         evidenceLevel:
           type: string
-          enum: [knowledge-assisted, knowledge-verified, knowledge-grounded]
-
+          enum:
+          - knowledge-assisted
+          - knowledge-verified
+          - knowledge-grounded
     CreateSessionRequest:
       type: object
-      required: [workspaceId]
+      required:
+      - workspaceId
       properties:
         workspaceId:
           type: string
         modelEndpointId:
           type: string
-
     AgentSession:
       type: object
       properties:
@@ -599,10 +600,10 @@ components:
         createdAt:
           type: string
           format: date-time
-
     SendMessageRequest:
       type: object
-      required: [content]
+      required:
+      - content
       properties:
         content:
           type: string
@@ -610,7 +611,6 @@ components:
           type: array
           items:
             type: string
-
     AgentResponse:
       type: object
       properties:
@@ -624,7 +624,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SourceTrace'
-
     SourceTrace:
       type: object
       properties:
@@ -636,7 +635,6 @@ components:
           type: string
         relevanceScore:
           type: number
-
     ModelEndpointList:
       type: object
       properties:
@@ -644,7 +642,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ModelEndpoint'
-
     ModelEndpoint:
       type: object
       properties:
@@ -656,11 +653,15 @@ components:
           type: string
         status:
           type: string
-          enum: [available, unavailable, rate-limited]
-
+          enum:
+          - available
+          - unavailable
+          - rate-limited
     ChatRequest:
       type: object
-      required: [modelId, messages]
+      required:
+      - modelId
+      - messages
       properties:
         modelId:
           type: string
@@ -671,17 +672,20 @@ components:
         options:
           type: object
           additionalProperties: true
-
     ChatMessage:
       type: object
-      required: [role, content]
+      required:
+      - role
+      - content
       properties:
         role:
           type: string
-          enum: [system, user, assistant]
+          enum:
+          - system
+          - user
+          - assistant
         content:
           type: string
-
     ChatResponse:
       type: object
       properties:
@@ -691,7 +695,6 @@ components:
           type: string
         usage:
           $ref: '#/components/schemas/TokenUsage'
-
     TokenUsage:
       type: object
       properties:
@@ -701,7 +704,6 @@ components:
           type: integer
         totalTokens:
           type: integer
-
     AuditEventList:
       type: object
       properties:
@@ -711,7 +713,6 @@ components:
             $ref: '#/components/schemas/AuditEvent'
         nextCursor:
           type: string
-
     AuditEvent:
       type: object
       properties:
@@ -731,7 +732,6 @@ components:
           type: string
         hash:
           type: string
-
     AuditVerificationResult:
       type: object
       properties:
@@ -741,7 +741,6 @@ components:
           type: string
         eventsVerified:
           type: integer
-
     UsageData:
       type: object
       properties:
@@ -755,7 +754,6 @@ components:
             $ref: '#/components/schemas/UsageEvent'
         quotaRemaining:
           type: integer
-
     UsageEvent:
       type: object
       properties:
@@ -765,10 +763,11 @@ components:
           type: integer
         tokensUsed:
           type: integer
-
     EnqueueJobRequest:
       type: object
-      required: [jobType, payload]
+      required:
+      - jobType
+      - payload
       properties:
         jobType:
           type: string
@@ -778,7 +777,6 @@ components:
         priority:
           type: integer
           default: 0
-
     EnqueueJobResponse:
       type: object
       properties:
@@ -786,4 +784,5 @@ components:
           type: string
         status:
           type: string
-          enum: [queued]
+          enum:
+          - queued

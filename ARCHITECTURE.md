@@ -123,7 +123,7 @@ interface BaseProvider {
   // 能力標識，例如 'database'
   readonly capability: string;
   // 來源標識，'native' 或 'external'
-  readonly source: 'native' | 'external' | 'hybrid';
+  readonly source: "native" | "external" | "hybrid";
   // 初始化
   initialize?(config?: unknown): Promise<void>;
   // 健康檢查

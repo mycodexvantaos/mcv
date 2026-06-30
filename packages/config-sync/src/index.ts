@@ -17,11 +17,11 @@ export class ConfigSync {
 
   constructor() {
     this.configurations = new Map();
-    this.currentEnvironment = 'development';
+    this.currentEnvironment = "development";
   }
 
   async initialize(): Promise<void> {
-    console.log('Config sync initialized');
+    console.log("Config sync initialized");
     await this.loadConfigurations();
   }
 
@@ -29,13 +29,13 @@ export class ConfigSync {
     const { action, data } = operation;
 
     switch (action) {
-      case 'get':
+      case "get":
         return (await this.get(data)) as T;
-      case 'set':
+      case "set":
         return (await this.set(data)) as T;
-      case 'sync':
+      case "sync":
         return (await this.sync(data)) as T;
-      case 'list':
+      case "list":
         return (await this.list(data)) as T;
       default:
         throw new Error(`Unknown config sync action: ${action}`);
@@ -58,8 +58,8 @@ export class ConfigSync {
       id: configData.id || `urn:mycodexvantaos:config:${Date.now()}`,
       environment: configData.environment || this.currentEnvironment,
       values: configData.values,
-      version: configData.version || '1.0.0',
-      source: configData.source || 'manual',
+      version: configData.version || "1.0.0",
+      source: configData.source || "manual",
     };
 
     this.configurations.set(config.id, config);
@@ -68,7 +68,7 @@ export class ConfigSync {
   }
 
   async sync(options?: any): Promise<void> {
-    console.log('Syncing configurations from Git repository');
+    console.log("Syncing configurations from Git repository");
     // Simulate GitOps sync
     await this.loadConfigurations();
   }
@@ -86,19 +86,19 @@ export class ConfigSync {
   private async loadConfigurations(): Promise<void> {
     // Load default configurations
     const defaultConfig: Configuration = {
-      id: 'urn:mycodexvantaos:config:default',
-      environment: 'development',
+      id: "urn:mycodexvantaos:config:default",
+      environment: "development",
       values: {
         runtime: {
-          mode: 'native',
+          mode: "native",
           validation: true,
         },
         logging: {
-          level: 'info',
+          level: "info",
         },
       },
-      version: '1.0.0',
-      source: 'default',
+      version: "1.0.0",
+      source: "default",
     };
 
     this.configurations.set(defaultConfig.id, defaultConfig);
@@ -106,7 +106,7 @@ export class ConfigSync {
 
   async cleanup(): Promise<void> {
     this.configurations.clear();
-    console.log('Config sync cleaned up');
+    console.log("Config sync cleaned up");
   }
 }
 

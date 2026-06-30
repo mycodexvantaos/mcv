@@ -2,18 +2,10 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://mycodexvantaos.com/schemas/audit-evidence.schema.json",
   "title": "AuditEvidence",
+  "description": "Evidence artifact for gate evaluations and governance decisions",
   "type": "object",
+  "required": ["evidence-id", "evidence-type", "created-at", "gate-id", "result", "artifacts"],
   "properties": {
-    "id": {
-      "type": "string"
-    },
-    "type": {
-      "type": "string"
-    },
-    "timestamp": {
-      "type": "string",
-      "format": "date-time"
-    },
     "evidence-id": {
       "type": "string",
       "pattern": "^evd-[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}$"
@@ -45,17 +37,12 @@
         "type": "object",
         "required": ["name", "digest"],
         "properties": {
-          "name": {
-            "type": "string"
-          },
+          "name": { "type": "string" },
           "digest": {
             "type": "string",
             "pattern": "^sha256:[a-f0-9]{64}$"
           },
-          "url": {
-            "type": "string",
-            "format": "uri"
-          }
+          "url": { "type": "string", "format": "uri" }
         }
       }
     },
@@ -63,17 +50,5 @@
       "type": "object"
     }
   },
-  "required": [
-    "id",
-    "type",
-    "timestamp",
-    "evidence-id",
-    "evidence-type",
-    "created-at",
-    "gate-id",
-    "result",
-    "artifacts"
-  ],
-  "description": "Evidence artifact for gate evaluations and governance decisions",
   "additionalProperties": false
 }

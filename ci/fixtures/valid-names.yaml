@@ -1,119 +1,102 @@
-# ci/fixtures/valid-names.yaml
-# Valid naming examples for test fixtures.
-# Based on naming-spec-v1.md 13, Appendix A
-
 serviceIds:
-  - mycodexvantaos-core-kernel
-  - mycodexvantaos-core-auth
-  - mycodexvantaos-core-gateway
-  - mycodexvantaos-core-config
-  - mycodexvantaos-ai-embedding
-  - mycodexvantaos-ai-llm
-  - mycodexvantaos-ai-memory
-  - mycodexvantaos-ai-agent
-  - mycodexvantaos-data-vector-store
-  - mycodexvantaos-data-pipeline
-  - mycodexvantaos-data-graph
-  - mycodexvantaos-platform-notification
-  - mycodexvantaos-platform-scheduler
-  - mycodexvantaos-platform-observability
-  - mycodexvantaos-security-secrets
-  - mycodexvantaos-security-validation
-  - mycodexvantaos-docs-search
-  - mycodexvantaos-governance-policy
-
+- mycodexvantaos-core-kernel
+- mycodexvantaos-core-auth
+- mycodexvantaos-core-gateway
+- mycodexvantaos-core-config
+- mycodexvantaos-ai-embedding
+- mycodexvantaos-ai-llm
+- mycodexvantaos-ai-memory
+- mycodexvantaos-ai-agent
+- mycodexvantaos-data-vector-store
+- mycodexvantaos-data-pipeline
+- mycodexvantaos-data-graph
+- mycodexvantaos-platform-notification
+- mycodexvantaos-platform-scheduler
+- mycodexvantaos-platform-observability
+- mycodexvantaos-security-secrets
+- mycodexvantaos-security-validation
+- mycodexvantaos-docs-search
+- mycodexvantaos-governance-policy
 packageNames:
-  - '@mycodexvantaos/core-kernel'
-  - '@mycodexvantaos/ai-embedding'
-  - '@mycodexvantaos/data-vector-store'
-
+- '@mycodexvantaos/core-kernel'
+- '@mycodexvantaos/ai-embedding'
+- '@mycodexvantaos/data-vector-store'
 capabilityIds:
-  - database
-  - storage
-  - auth
-  - queue
-  - state-store
-  - secrets
-  - repo
-  - deploy
-  - validation
-  - security
-  - observability
-  - notification
-  - scheduler
-  - vector-store
-  - embedding
-  - llm
-  - graph
-  - cache
-  - search
-
+- database
+- storage
+- auth
+- queue
+- state-store
+- secrets
+- repo
+- deploy
+- validation
+- security
+- observability
+- notification
+- scheduler
+- vector-store
+- embedding
+- llm
+- graph
+- cache
+- search
 providerInstances:
-  - database-postgres
-  - database-sqlite
-  - vector-store-pgvector
-  - vector-store-qdrant
-  - llm-openai
-  - llm-ollama
-  - embedding-openai
-  - embedding-cohere
-  - cache-redis
-  - graph-neo4j
-  - storage-s3
-  - auth-keycloak
-  - queue-rabbitmq
-  - secrets-vault
-  - observability-opentelemetry
-  - search-elasticsearch
-  - state-store-redis
-  - notification-sendgrid
-  - scheduler-temporal
-
+- database-postgres
+- database-sqlite
+- vector-store-pgvector
+- vector-store-qdrant
+- llm-openai
+- llm-ollama
+- embedding-openai
+- embedding-cohere
+- cache-redis
+- graph-neo4j
+- storage-s3
+- auth-keycloak
+- queue-rabbitmq
+- secrets-vault
+- observability-opentelemetry
+- search-elasticsearch
+- state-store-redis
+- notification-sendgrid
+- scheduler-temporal
 envVars:
-  - MYCODEXVANTAOS_DATABASE_URL
-  - MYCODEXVANTAOS_AUTH_JWT_SECRET
-  - MYCODEXVANTAOS_MODE
-  - MYCODEXVANTAOS_VECTOR_STORE_URL
-  - MYCODEXVANTAOS_LLM_API_KEY
-  - MYCODEXVANTAOS_REDIS_URL
-
+- MYCODEXVANTAOS_DATABASE_URL
+- MYCODEXVANTAOS_AUTH_JWT_SECRET
+- MYCODEXVANTAOS_MODE
+- MYCODEXVANTAOS_VECTOR_STORE_URL
+- MYCODEXVANTAOS_LLM_API_KEY
+- MYCODEXVANTAOS_REDIS_URL
 urns:
-  - 'urn:mycodexvantaos:capability:vector-store:pgvector'
-  - 'urn:mycodexvantaos:manifest:service:mycodexvantaos-core-kernel'
-  - 'urn:mycodexvantaos:policy:naming:naming-spec'
-  - 'urn:mycodexvantaos:provider:llm:openai'
-  - 'urn:mycodexvantaos:exception:no-version-in-canonical:migration-2026'
-
+- urn:mycodexvantaos:capability:vector-store:pgvector
+- urn:mycodexvantaos:manifest:service:mycodexvantaos-core-kernel
+- urn:mycodexvantaos:policy:naming:naming-spec
+- urn:mycodexvantaos:provider:llm:openai
+- urn:mycodexvantaos:exception:no-version-in-canonical:migration-2026
 vectorCollectionIds:
-  - 'mycodexvantaos-ai-memory--memories--bge-small-384'
-  - 'mycodexvantaos-docs-search--docs--openai-text-embedding-3-small-1536d'
-
+- mycodexvantaos-ai-memory--memories--bge-small-384
+- mycodexvantaos-docs-search--docs--openai-text-embedding-3-small-1536d
 embeddingModelAliases:
-  - 'openai--text-embedding-3-small--1536d'
-  - 'openai--text-embedding-3-large--3072d'
-  - 'cohere--embed-english-v3--1024d'
-  - 'ollama--nomic-embed-text--768d'
-
+- openai--text-embedding-3-small--1536d
+- openai--text-embedding-3-large--3072d
+- cohere--embed-english-v3--1024d
+- ollama--nomic-embed-text--768d
 retrievalPipelineIds:
-  - 'retrieval--dense--pgvector'
-  - 'retrieval--hybrid--qdrant'
-  - 'retrieval--sparse--memory'
-
+- retrieval--dense--pgvector
+- retrieval--hybrid--qdrant
+- retrieval--sparse--memory
 searchIndexIds:
-  - 'idx--mycodexvantaos-docs-search--content--cjk'
-  - 'idx--mycodexvantaos-docs-search--title--standard'
-
+- idx--mycodexvantaos-docs-search--content--cjk
+- idx--mycodexvantaos-docs-search--title--standard
 graphDbIndexIds:
-  - 'graph-idx--mycodexvantaos-governance--policy--name'
-  - 'graph-idx--mycodexvantaos-core-kernel--service--id'
-
+- graph-idx--mycodexvantaos-governance--policy--name
+- graph-idx--mycodexvantaos-core-kernel--service--id
 timestampedIds:
-  - 'job--20260418--a1b2c3'
-  - 'exception--20260418--zx9k1m'
-
+- job--20260418--a1b2c3
+- exception--20260418--zx9k1m
 contentAddressedIds:
-  - 'dataset--sha256-3f4a8b9c1d2e'
-  - 'artifact--sha256-abcdef012345'
-
+- dataset--sha256-3f4a8b9c1d2e
+- artifact--sha256-abcdef012345
 uuidBasedIds:
-  - 'session--550e8400e29b41d4a716446655440000'
+- session--550e8400e29b41d4a716446655440000

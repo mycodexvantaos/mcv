@@ -6,7 +6,7 @@
  */
 
 export interface ApiEndpoint {
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+  method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
   path: string;
   description?: string;
   parameters?: ApiParameter[];
@@ -17,7 +17,7 @@ export interface ApiEndpoint {
 
 export interface ApiParameter {
   name: string;
-  in: 'path' | 'query' | 'header' | 'cookie';
+  in: "path" | "query" | "header" | "cookie";
   type: string;
   required: boolean;
   description?: string;
@@ -30,7 +30,7 @@ export interface ApiResponse {
 }
 
 export interface ApiSchema {
-  type: 'object' | 'array' | 'string' | 'number' | 'boolean' | 'integer';
+  type: "object" | "array" | "string" | "number" | "boolean" | "integer";
   properties?: Record<string, ApiSchema>;
   items?: ApiSchema;
   required?: string[];
@@ -39,10 +39,10 @@ export interface ApiSchema {
 }
 
 export interface ApiGeneratorOptions {
-  apiType?: 'rest' | 'graphql' | 'openapi';
+  apiType?: "rest" | "graphql" | "openapi";
   basePath?: string;
   version?: string;
-  authType?: 'none' | 'bearer' | 'basic' | 'apiKey';
+  authType?: "none" | "bearer" | "basic" | "apiKey";
 }
 
 export interface ModelDefinition {
@@ -55,10 +55,10 @@ export class ApiGenerator {
 
   constructor(options: ApiGeneratorOptions = {}) {
     this.options = {
-      apiType: 'rest',
-      basePath: '/api/v1',
-      version: '1.0.0',
-      authType: 'bearer',
+      apiType: "rest",
+      basePath: "/api/v1",
+      version: "1.0.0",
+      authType: "bearer",
       ...options,
     };
   }
@@ -73,23 +73,23 @@ export class ApiGenerator {
 
     // List endpoint
     endpoints.push({
-      method: 'GET',
+      method: "GET",
       path: basePath,
       description: `List all ${model.name} resources`,
       parameters: [
         {
-          name: 'page',
-          in: 'query',
-          type: 'integer',
+          name: "page",
+          in: "query",
+          type: "integer",
           required: false,
-          description: 'Page number for pagination',
+          description: "Page number for pagination",
         },
         {
-          name: 'limit',
-          in: 'query',
-          type: 'integer',
+          name: "limit",
+          in: "query",
+          type: "integer",
           required: false,
-          description: 'Number of items per page',
+          description: "Number of items per page",
         },
       ],
       responses: [
@@ -97,7 +97,7 @@ export class ApiGenerator {
           statusCode: 200,
           description: `Successfully retrieved list of ${model.name} resources`,
           schema: {
-            type: 'array',
+            type: "array",
             items: this.modelToSchema(model),
           },
         },
@@ -107,14 +107,14 @@ export class ApiGenerator {
 
     // Get by ID endpoint
     endpoints.push({
-      method: 'GET',
+      method: "GET",
       path: `${basePath}/:id`,
       description: `Get a specific ${model.name} by ID`,
       parameters: [
         {
-          name: 'id',
-          in: 'path',
-          type: 'string',
+          name: "id",
+          in: "path",
+          type: "string",
           required: true,
           description: `${model.name} ID`,
         },
@@ -135,7 +135,7 @@ export class ApiGenerator {
 
     // Create endpoint
     endpoints.push({
-      method: 'POST',
+      method: "POST",
       path: basePath,
       description: `Create a new ${model.name}`,
       requestBody: this.modelToSchema(model),
@@ -147,7 +147,7 @@ export class ApiGenerator {
         },
         {
           statusCode: 400,
-          description: 'Invalid request body',
+          description: "Invalid request body",
         },
       ],
       tags: [modelName],
@@ -155,14 +155,14 @@ export class ApiGenerator {
 
     // Update endpoint
     endpoints.push({
-      method: 'PUT',
+      method: "PUT",
       path: `${basePath}/:id`,
       description: `Update a specific ${model.name}`,
       parameters: [
         {
-          name: 'id',
-          in: 'path',
-          type: 'string',
+          name: "id",
+          in: "path",
+          type: "string",
           required: true,
           description: `${model.name} ID`,
         },
@@ -184,14 +184,14 @@ export class ApiGenerator {
 
     // Delete endpoint
     endpoints.push({
-      method: 'DELETE',
+      method: "DELETE",
       path: `${basePath}/:id`,
       description: `Delete a specific ${model.name}`,
       parameters: [
         {
-          name: 'id',
-          in: 'path',
-          type: 'string',
+          name: "id",
+          in: "path",
+          type: "string",
           required: true,
           description: `${model.name} ID`,
         },
@@ -245,7 +245,7 @@ export class ApiGenerator {
         if (endpoint.requestBody) {
           pathItem[endpoint.method.toLowerCase()].requestBody = {
             content: {
-              'application/json': {
+              "application/json": {
                 schema: endpoint.requestBody,
               },
             },
@@ -259,7 +259,7 @@ export class ApiGenerator {
 
           if (response.schema) {
             pathItem[endpoint.method.toLowerCase()].responses[response.statusCode].content = {
-              'application/json': {
+              "application/json": {
                 schema: response.schema,
               },
             };
@@ -296,7 +296,7 @@ export class ApiGenerator {
         if (endpoint.requestBody) {
           pathItem[endpoint.method.toLowerCase()].requestBody = {
             content: {
-              'application/json': {
+              "application/json": {
                 schema: endpoint.requestBody,
               },
             },
@@ -310,7 +310,7 @@ export class ApiGenerator {
 
           if (response.schema) {
             pathItem[endpoint.method.toLowerCase()].responses[response.statusCode].content = {
-              'application/json': {
+              "application/json": {
                 schema: response.schema,
               },
             };
@@ -322,7 +322,7 @@ export class ApiGenerator {
     }
 
     const openApiSpec = {
-      openapi: '3.0.0',
+      openapi: "3.0.0",
       info: {
         title,
         description,
@@ -331,7 +331,7 @@ export class ApiGenerator {
       servers: [
         {
           url: this.options.basePath,
-          description: 'API Server',
+          description: "API Server",
         },
       ],
       paths,
@@ -352,7 +352,7 @@ export class ApiGenerator {
       schema += `type ${model.name} {\n`;
       for (const [propName, propDef] of Object.entries(model.properties)) {
         const graphQLType = this.toGraphQLType(propDef.type);
-        const optional = propDef.required ? '!' : '';
+        const optional = propDef.required ? "!" : "";
         schema += `  ${propName}: ${graphQLType}${optional}\n`;
       }
       schema += `}\n\n`;
@@ -384,7 +384,7 @@ export class ApiGenerator {
       schema += `input ${model.name}Input {\n`;
       for (const [propName, propDef] of Object.entries(model.properties)) {
         const graphQLType = this.toGraphQLType(propDef.type);
-        const optional = propDef.required ? '!' : '';
+        const optional = propDef.required ? "!" : "";
         schema += `  ${propName}: ${graphQLType}${optional}\n`;
       }
       schema += `}\n\n`;
@@ -411,7 +411,7 @@ export class ApiGenerator {
     }
 
     return {
-      type: 'object',
+      type: "object",
       properties,
       required,
     };
@@ -422,14 +422,14 @@ export class ApiGenerator {
    */
   private toGraphQLType(type: string): string {
     const typeMap: Record<string, string> = {
-      string: 'String',
-      number: 'Float',
-      integer: 'Int',
-      boolean: 'Boolean',
-      object: 'JSON',
-      array: '[String]',
+      string: "String",
+      number: "Float",
+      integer: "Int",
+      boolean: "Boolean",
+      object: "JSON",
+      array: "[String]",
     };
-    return typeMap[type] || 'String';
+    return typeMap[type] || "String";
   }
 }
 

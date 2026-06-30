@@ -12,8 +12,8 @@ metadata:
   governanceCode: mycodexvantaos-51000
   createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l90
-    - compliance
+  - l90
+  - compliance
   sloTarget: 30
   evidenceRetentionDays: 2555
   date: '2026-06-29'
@@ -24,24 +24,24 @@ spec:
 
     '
   validates:
-    - dimension: compliance-report
-      description: Compliance report is present and approved.
-      checks:
-        - id: chk-report-generated
-          description: Compliance report has been generated
-          rule: file-exists:outputs/gate-audit-report.json
-          severity: critical
-          evidenceRequired: true
-        - id: chk-report-approved
-          description: Compliance report has been approved by the governance council
-          rule: approval:governance-council
-          severity: critical
-          evidenceRequired: true
-        - id: chk-no-open-compliance-issues
-          description: No open compliance issues in the report
-          rule: report:no-open-issues
-          severity: critical
-          evidenceRequired: true
+  - dimension: compliance-report
+    description: Compliance report is present and approved.
+    checks:
+    - id: chk-report-generated
+      description: Compliance report has been generated
+      rule: file-exists:outputs/gate-audit-report.json
+      severity: critical
+      evidenceRequired: true
+    - id: chk-report-approved
+      description: Compliance report has been approved by the governance council
+      rule: approval:governance-council
+      severity: critical
+      evidenceRequired: true
+    - id: chk-no-open-compliance-issues
+      description: No open compliance issues in the report
+      rule: report:no-open-issues
+      severity: critical
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

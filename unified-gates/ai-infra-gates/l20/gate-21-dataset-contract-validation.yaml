@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,34 +10,36 @@ metadata:
   criticality: critical
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-40100
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l20
-    - dataset
+  - l20
+  - dataset
   sloTarget: 30
   evidenceRetentionDays: 2555
 spec:
-  description: >
-    Validates that datasets conform to their registered dataset contracts in contracts/dataset-contract.yaml.
+  description: 'Validates that datasets conform to their registered dataset contracts
+    in contracts/dataset-contract.yaml.
+
+    '
   validates:
-    - dimension: contract-conformance
-      description: Dataset conforms to its registered contract.
-      checks:
-        - id: chk-contract-exists
-          description: Dataset contract file exists in contracts/
-          rule: 'file-exists:contracts/dataset-contract.yaml'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-schema-valid
-          description: Dataset metadata conforms to dataset contract schema
-          rule: 'schema:dataset-contract'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-version-pinned
-          description: Dataset version is pinned and immutable
-          rule: 'field:version-pinned'
-          severity: high
-          evidenceRequired: true
+  - dimension: contract-conformance
+    description: Dataset conforms to its registered contract.
+    checks:
+    - id: chk-contract-exists
+      description: Dataset contract file exists in contracts/
+      rule: file-exists:contracts/dataset-contract.yaml
+      severity: critical
+      evidenceRequired: true
+    - id: chk-schema-valid
+      description: Dataset metadata conforms to dataset contract schema
+      rule: schema:dataset-contract
+      severity: critical
+      evidenceRequired: true
+    - id: chk-version-pinned
+      description: Dataset version is pinned and immutable
+      rule: field:version-pinned
+      severity: high
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

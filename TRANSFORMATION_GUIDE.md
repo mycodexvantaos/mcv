@@ -53,7 +53,7 @@
 interface CapabilityBase {
   readonly capabilityId: string;
   readonly capabilityName: string;
-  readonly source: 'native' | 'external' | 'hybrid';
+  readonly source: "native" | "external" | "hybrid";
   readonly supportedModes: RuntimeMode[];
 
   initialize(): Promise<void>;
@@ -88,14 +88,14 @@ interface CapabilityBase {
 ```typescript
 // providers/native/src/code-synthesis.ts
 export class NativeCodeSynthesis implements CodeSynthesisCapability {
-  readonly capabilityId = 'code-synthesis';
-  readonly source = 'native';
-  readonly supportedModes = ['native', 'hybrid', 'auto'];
+  readonly capabilityId = "code-synthesis";
+  readonly source = "native";
+  readonly supportedModes = ["native", "hybrid", "auto"];
 
   async generate(options: SynthesisOptions): Promise<SynthesisResult> {
     // 本地規則：模板匹配 + AST 變換（不調用任何 API）
     const suggestion = this.applyLocalTemplates(options.prompt, options.context);
-    return { code: suggestion, confidence: 0.6, provider: 'native' };
+    return { code: suggestion, confidence: 0.6, provider: "native" };
   }
 }
 ```
@@ -113,13 +113,13 @@ export class NativeCodeSynthesis implements CodeSynthesisCapability {
 ```typescript
 // providers/external/src/code-synthesis.ts
 export class ExternalCodeSynthesis implements CodeSynthesisCapability {
-  readonly source = 'external';
+  readonly source = "external";
 
   constructor(private apiKey: string) {}
 
   async generate(options: SynthesisOptions): Promise<SynthesisResult> {
     const response = await callAnthropic(options.prompt, this.apiKey);
-    return { code: response.completion, confidence: 0.95, provider: 'external' };
+    return { code: response.completion, confidence: 0.95, provider: "external" };
   }
 }
 ```
@@ -137,7 +137,7 @@ export class ExternalCodeSynthesis implements CodeSynthesisCapability {
 ```typescript
 // providers/hybrid/src/code-synthesis.ts
 export class HybridCodeSynthesis implements CodeSynthesisCapability {
-  readonly source = 'hybrid';
+  readonly source = "hybrid";
 
   constructor(
     private external: ExternalCodeSynthesis,
@@ -148,7 +148,7 @@ export class HybridCodeSynthesis implements CodeSynthesisCapability {
     try {
       return await this.external.generate(options);
     } catch (err) {
-      console.warn('External AI failed, falling back to native', err);
+      console.warn("External AI failed, falling back to native", err);
       const result = await this.native.generate(options);
       return { ...result, fallbackTriggered: true };
     }
@@ -218,11 +218,11 @@ grep -r "api.openai.com" --include="*.ts" --include="*.js"
 
 ```typescript
 // 原來錯誤的寫法 ❌
-import { callClaudeAPI } from './api-client';
+import { callClaudeAPI } from "./api-client";
 const result = await callClaudeAPI(apiKey, prompt);
 
 // 現在正確的寫法 ✅
-import { getProviderFactory } from '@mycodexvantaos/capabilities';
+import { getProviderFactory } from "@mycodexvantaos/capabilities";
 const factory = getProviderFactory();
 const synthesis = await factory.getCodeSynthesisProvider();
 const result = await synthesis.generate({ prompt });

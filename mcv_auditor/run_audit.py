@@ -12,10 +12,12 @@ Usage:
 """
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
 from mcv_auditor.core.analyzers import PromptAnalyzer, ToolAnalyzer, GuardrailAnalyzer
+from mcv_auditor.probes.catalog import ALL_PROBES, get_probes_by_phase
 from mcv_auditor.reports.report import ReportGenerator
 
 CANONICAL_URL = "https://mycodexvantaos.com"

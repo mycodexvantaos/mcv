@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 
-export const dynamic = 'force-static';
+export const dynamic = "force-static";
 
 /**
  * @fileoverview Humaniser Detection API Route
@@ -13,27 +13,27 @@ export const dynamic = 'force-static';
 export async function POST(request: NextRequest) {
   try {
     const body: { text?: string; source?: string; useLLM?: boolean } = await request.json();
-    const { text, source = 'text', useLLM = false } = body;
+    const { text, source = "text", useLLM = false } = body;
 
-    if (!text || typeof text !== 'string') {
+    if (!text || typeof text !== "string") {
       return NextResponse.json(
-        { error: 'Text input is required and must be a string' },
+        { error: "Text input is required and must be a string" },
         { status: 400 }
       );
     }
 
     if (text.length > 100000) {
       return NextResponse.json(
-        { error: 'Text exceeds maximum length of 100,000 characters' },
+        { error: "Text exceeds maximum length of 100,000 characters" },
         { status: 400 }
       );
     }
 
     // Dynamic import to avoid circular dependencies at module level
-    const { HumaniserEngine } = await import('@mycodexvantaos/ai-humaniser');
+    const { HumaniserEngine } = await import("@mycodexvantaos/ai-humaniser");
 
     const engine = new HumaniserEngine({
-      mode: useLLM ? 'hybrid' : 'native',
+      mode: useLLM ? "hybrid" : "native",
     });
 
     await engine.initialize();
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     // If LLM enhancement is requested and API key is available
     if (useLLM && process.env.GEMINI_API_KEY) {
       try {
-        const { humaniserDetectFlow } = await import('@/ai/flows/humaniser-detection-flow');
+        const { humaniserDetectFlow } = await import("@/ai/flows/humaniser-detection-flow");
         const llmResult = await humaniserDetectFlow({
           text,
           nativeResult: {
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({
           ...result,
           llmEnhanced: false,
-          llmError: 'LLM enhancement unavailable',
+          llmError: "LLM enhancement unavailable",
         });
       }
     }
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
       llmEnhanced: false,
     });
   } catch (error: any) {
-    console.error('[Humaniser Detect API]', error);
-    return NextResponse.json({ error: error.message || 'Detection failed' }, { status: 500 });
+    console.error("[Humaniser Detect API]", error);
+    return NextResponse.json({ error: error.message || "Detection failed" }, { status: 500 });
   }
 }

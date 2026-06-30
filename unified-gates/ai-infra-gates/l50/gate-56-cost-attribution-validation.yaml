@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,34 +10,36 @@ metadata:
   criticality: critical
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-30400
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l50
-    - cost
+  - l50
+  - cost
   sloTarget: 30
   evidenceRetentionDays: 2555
 spec:
-  description: >
-    Validates that cost attribution records are complete and accurate for all usage events.
+  description: 'Validates that cost attribution records are complete and accurate
+    for all usage events.
+
+    '
   validates:
-    - dimension: attribution-completeness
-      description: Cost attribution is complete.
-      checks:
-        - id: chk-workspace-attributed
-          description: Every usage event is attributed to a workspace
-          rule: 'field-not-empty:workspaceId'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-project-attributed
-          description: Every usage event is attributed to a project
-          rule: 'field-not-empty:projectId'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-billing-account-attributed
-          description: Every usage event is attributed to a billing account
-          rule: 'field-not-empty:billingAccountId'
-          severity: critical
-          evidenceRequired: true
+  - dimension: attribution-completeness
+    description: Cost attribution is complete.
+    checks:
+    - id: chk-workspace-attributed
+      description: Every usage event is attributed to a workspace
+      rule: field-not-empty:workspaceId
+      severity: critical
+      evidenceRequired: true
+    - id: chk-project-attributed
+      description: Every usage event is attributed to a project
+      rule: field-not-empty:projectId
+      severity: critical
+      evidenceRequired: true
+    - id: chk-billing-account-attributed
+      description: Every usage event is attributed to a billing account
+      rule: field-not-empty:billingAccountId
+      severity: critical
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

@@ -1,14 +1,8 @@
 packages:
-  - "packages/*"
-  - "services/*"
-  - "providers/*/*"
-  - "apps/*"
-
-# Security overrides live in package.json > pnpm.overrides (pnpm v9 merges both
-# locations but package.json is the canonical source for our project).
-# See Issue #81: https://github.com/mycodexvantaos/mycodexvantaos/issues/81
-# See docs/security/dependency-vulnerability-remediation-v0.1.1.md for full classification
-
+  - packages/*
+  - services/*
+  - providers/*/*
+  - apps/*
 allowBuilds:
   "@apollo/protobufjs": false
   "@firebase/util": true
@@ -16,7 +10,6 @@ allowBuilds:
   protobufjs: true
   sharp: true
   workerd: true
-
 minimumReleaseAgeExclude:
   - postcss@8.5.10
   - uuid@11.1.1

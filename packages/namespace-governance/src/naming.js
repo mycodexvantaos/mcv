@@ -7,14 +7,14 @@
  * closure engine can aggregate a complete, actionable report in one pass —
  * "near-enough" boolean checks would hide which spec clause failed.
  */
-import { violation } from './result.js';
+import { violation } from "./result.js";
 import {
   PLANE_BY_NAMESPACE,
   DOMAINS,
   FUNCTIONS,
   ERA_RANGES,
   FORBIDDEN_REPO_TOKENS,
-} from './vocabulary.js';
+} from "./vocabulary.js";
 
 /** Canonical governance code regex (Sec.I.3.2). */
 export const CODE_REGEX = /^mycodexvantaos-[0-9]{5}$/;
@@ -32,23 +32,23 @@ const KEBAB_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
  * @returns {import('./result.js').Violation[]}
  */
 export function checkMachineName(name) {
-  if (typeof name !== 'string' || name.length === 0) {
-    return [violation('I.1.1', String(name), 'name must be a non-empty string')];
+  if (typeof name !== "string" || name.length === 0) {
+    return [violation("I.1.1", String(name), "name must be a non-empty string")];
   }
-  if (name.includes('_')) {
-    return [violation('I.1.1', name, 'underscore is forbidden; use hyphen')];
+  if (name.includes("_")) {
+    return [violation("I.1.1", name, "underscore is forbidden; use hyphen")];
   }
-  if (name.includes('.')) {
-    return [violation('I.1.1', name, 'semantic dot is forbidden in canonical names')];
+  if (name.includes(".")) {
+    return [violation("I.1.1", name, "semantic dot is forbidden in canonical names")];
   }
-  if (name.includes(' ')) {
-    return [violation('I.1.1', name, 'space is not a machine-stable separator')];
+  if (name.includes(" ")) {
+    return [violation("I.1.1", name, "space is not a machine-stable separator")];
   }
   if (name !== name.toLowerCase()) {
-    return [violation('I.1.1', name, 'uppercase is forbidden; use lowercase only')];
+    return [violation("I.1.1", name, "uppercase is forbidden; use lowercase only")];
   }
   if (!KEBAB_REGEX.test(name)) {
-    return [violation('I.1.1', name, 'name must be lowercase kebab-case')];
+    return [violation("I.1.1", name, "name must be lowercase kebab-case")];
   }
   return [];
 }
@@ -66,7 +66,7 @@ export function decomposeCode(code) {
     domain: Number(code.slice(2, 3)),
     subtype: Number(code.slice(3, 4)),
     sequence: Number(code.slice(4, 5)),
-    era: era ? era[2] : 'unmapped',
+    era: era ? era[2] : "unmapped",
   };
 }
 
@@ -77,7 +77,7 @@ export function decomposeCode(code) {
  */
 export function checkGovernanceCode(id) {
   if (!CODE_REGEX.test(id)) {
-    return [violation('I.3.2', String(id), 'governance code must match ^mycodexvantaos-[0-9]{5}$')];
+    return [violation("I.3.2", String(id), "governance code must match ^mycodexvantaos-[0-9]{5}$")];
   }
   return [];
 }
@@ -96,29 +96,29 @@ export function checkRepositoryName(name) {
   const out = [];
   if (!REPO_REGEX.test(name)) {
     out.push(
-      violation('I.6.2', name, 'repository name must match {namespace}-{domain}-{function}')
+      violation("I.6.2", name, "repository name must match {namespace}-{domain}-{function}")
     );
     return out;
   }
 
-  const parts = name.split('-');
+  const parts = name.split("-");
   const namespace = parts[0];
   const fn = parts[parts.length - 1];
   const domain = parts[1];
 
   if (!Object.prototype.hasOwnProperty.call(PLANE_BY_NAMESPACE, namespace)) {
-    out.push(violation('I.7.1', namespace, 'namespace not in controlled vocabulary'));
+    out.push(violation("I.7.1", namespace, "namespace not in controlled vocabulary"));
   }
   if (!DOMAINS.includes(domain)) {
-    out.push(violation('I.7.2', domain, 'domain not in controlled vocabulary'));
+    out.push(violation("I.7.2", domain, "domain not in controlled vocabulary"));
   }
   if (!FUNCTIONS.includes(fn)) {
-    out.push(violation('I.7.3', fn, 'function not in controlled vocabulary'));
+    out.push(violation("I.7.3", fn, "function not in controlled vocabulary"));
   }
   for (const token of FORBIDDEN_REPO_TOKENS) {
     if (parts.includes(token)) {
       out.push(
-        violation('I.6.3', token, `forbidden token "${token}" (version/environment marker)`)
+        violation("I.6.3", token, `forbidden token "${token}" (version/environment marker)`)
       );
     }
   }
@@ -133,17 +133,17 @@ export function checkRepositoryName(name) {
  * @returns {import('./result.js').Violation[]}
  */
 export function checkPlaneDependency(fromRepo, toRepo) {
-  const fromNs = String(fromRepo).split('-')[0];
-  const toNs = String(toRepo).split('-')[0];
+  const fromNs = String(fromRepo).split("-")[0];
+  const toNs = String(toRepo).split("-")[0];
   const fromPlane = PLANE_BY_NAMESPACE[fromNs];
   const toPlane = PLANE_BY_NAMESPACE[toNs];
-  if (fromPlane === 'control-plane' && toPlane === 'product-plane') {
+  if (fromPlane === "control-plane" && toPlane === "product-plane") {
     return [
       violation(
-        'I.2.4',
+        "I.2.4",
         `${fromRepo} -> ${toRepo}`,
-        'control-plane MUST NOT hard-depend on product-plane; use a mediator ' +
-          '(registry/catalog/binding/contract/evidence channel)'
+        "control-plane MUST NOT hard-depend on product-plane; use a mediator " +
+          "(registry/catalog/binding/contract/evidence channel)"
       ),
     ];
   }

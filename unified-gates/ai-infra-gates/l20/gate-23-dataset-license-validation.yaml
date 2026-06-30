@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,34 +10,36 @@ metadata:
   criticality: critical
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-40100
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l20
-    - dataset
+  - l20
+  - dataset
   sloTarget: 30
   evidenceRetentionDays: 2555
 spec:
-  description: >
-    Validates that all datasets have valid, approved licenses that permit their intended use.
+  description: 'Validates that all datasets have valid, approved licenses that permit
+    their intended use.
+
+    '
   validates:
-    - dimension: license-compliance
-      description: Dataset license is valid and approved.
-      checks:
-        - id: chk-license-declared
-          description: Dataset license is declared in the dataset contract
-          rule: 'field-not-empty:license'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-license-approved
-          description: License is in the approved license list
-          rule: 'registry:approved-licenses'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-commercial-use-permitted
-          description: License permits commercial use if required
-          rule: 'license:commercial-use-permitted'
-          severity: high
-          evidenceRequired: true
+  - dimension: license-compliance
+    description: Dataset license is valid and approved.
+    checks:
+    - id: chk-license-declared
+      description: Dataset license is declared in the dataset contract
+      rule: field-not-empty:license
+      severity: critical
+      evidenceRequired: true
+    - id: chk-license-approved
+      description: License is in the approved license list
+      rule: registry:approved-licenses
+      severity: critical
+      evidenceRequired: true
+    - id: chk-commercial-use-permitted
+      description: License permits commercial use if required
+      rule: license:commercial-use-permitted
+      severity: high
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

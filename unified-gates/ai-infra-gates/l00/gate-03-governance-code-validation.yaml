@@ -12,8 +12,8 @@ metadata:
   governanceCode: mycodexvantaos-00000
   createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l00
-    - governance
+  - l00
+  - governance
   sloTarget: 30
   evidenceRetentionDays: 2555
   date: '2026-06-29'
@@ -24,24 +24,24 @@ spec:
 
     '
   validates:
-    - dimension: code-format
-      description: Governance codes are well-formed.
-      checks:
-        - id: chk-code-regex
-          description: Code matches ^mycodexvantaos-[0-9]{5}$
-          rule: regex:^mycodexvantaos-[0-9]{5}$
-          severity: critical
-          evidenceRequired: true
-        - id: chk-no-space-form
-          description: No space-based governance code (mycodexvantaos 00000)
-          rule: regex-not:mycodexvantaos\s+[0-9]{5}
-          severity: critical
-          evidenceRequired: true
-        - id: chk-era-range
-          description: Code numeric value falls within a known era range
-          rule: era-range:00000-99999
-          severity: high
-          evidenceRequired: false
+  - dimension: code-format
+    description: Governance codes are well-formed.
+    checks:
+    - id: chk-code-regex
+      description: Code matches ^mycodexvantaos-[0-9]{5}$
+      rule: regex:^mycodexvantaos-[0-9]{5}$
+      severity: critical
+      evidenceRequired: true
+    - id: chk-no-space-form
+      description: No space-based governance code (mycodexvantaos 00000)
+      rule: regex-not:mycodexvantaos\s+[0-9]{5}
+      severity: critical
+      evidenceRequired: true
+    - id: chk-era-range
+      description: Code numeric value falls within a known era range
+      rule: era-range:00000-99999
+      severity: high
+      evidenceRequired: false
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

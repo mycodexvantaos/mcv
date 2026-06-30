@@ -5,212 +5,192 @@ metadata:
   organization: mycodexvantaos
   governanceCode: mycodexvantaos-00000
 records:
-  - id: mycodexvantaos-auth-service
-    namespace: mycodexvantaos
-    domain: auth
-    function: service
-    repository: mycodexvantaos-auth-service
-    governanceCode: mycodexvantaos-50100
-    era: era-two
-    lifecycle: active
-    owner: platform-security
-
-  - id: mycodexvantaos-policy-engine
-    namespace: mycodexvantaos
-    domain: policy
-    function: engine
-    repository: mycodexvantaos-policy-engine
-    governanceCode: mycodexvantaos-50500
-    era: era-two
-    lifecycle: active
-    owner: platform-governance
-
-  - id: mycodexvantaos-memory-hub
-    namespace: mycodexvantaos
-    domain: memory
-    function: hub
-    repository: mycodexvantaos-memory-hub
-    governanceCode: mycodexvantaos-30100
-    era: era-two
-    lifecycle: active
-    owner: platform-core
-
-  - id: mycodexvantaos-event-bus
-    namespace: mycodexvantaos
-    domain: event
-    function: bus
-    repository: mycodexvantaos-event-bus
-    governanceCode: mycodexvantaos-30300
-    era: era-two
-    lifecycle: active
-    owner: platform-core
-
-  - id: mycodexvantaos-infra-manager
-    namespace: mycodexvantaos
-    domain: infra
-    function: manager
-    repository: mycodexvantaos-infra-manager
-    governanceCode: mycodexvantaos-20100
-    era: era-one
-    lifecycle: active
-    owner: platform-infra
-
-  - id: mycodexvantaos-signerd-service
-    namespace: mycodexvantaos
-    domain: signerd
-    function: service
-    repository: mycodexvantaos-signerd-service
-    governanceCode: mycodexvantaos-50400
-    era: era-two
-    lifecycle: active
-    owner: platform-security
-
-  - id: mycodexvantaos-controller-manager
-    namespace: mycodexvantaos
-    domain: controller
-    function: manager
-    repository: mycodexvantaos-controller-manager
-    governanceCode: mycodexvantaos-20400
-    era: era-one
-    lifecycle: active
-    owner: platform-controllers
-
-  - id: mycodexvantaos-rolloutd-controller
-    namespace: mycodexvantaos
-    domain: rolloutd
-    function: controller
-    repository: mycodexvantaos-rolloutd-controller
-    governanceCode: mycodexvantaos-20400
-    era: era-one
-    lifecycle: active
-    owner: platform-controllers
-
-  - id: mycodexvantaos-db-schemas-repository
-    namespace: mycodexvantaos
-    domain: db-schemas
-    function: repository
-    repository: mycodexvantaos-db-schemas-repository
-    governanceCode: mycodexvantaos-40200
-    era: era-two
-    lifecycle: active
-    owner: platform-data
-
-  - id: mycodexvantaos-autotask-engine
-    namespace: mycodexvantaos
-    domain: autotask
-    function: engine
-    repository: mycodexvantaos-autotask-engine
-    governanceCode: mycodexvantaos-60800
-    era: era-three
-    lifecycle: active
-    owner: platform-automation
-
-  - id: mycodexvantaos-compliance-scanner
-    namespace: mycodexvantaos
-    domain: compliance
-    function: scanner
-    repository: mycodexvantaos-compliance-scanner
-    governanceCode: mycodexvantaos-51000
-    era: era-two
-    lifecycle: active
-    owner: platform-compliance
-
-  - id: mycodexvantaos-prediction-predictor
-    namespace: mycodexvantaos
-    domain: prediction
-    function: predictor
-    repository: mycodexvantaos-prediction-predictor
-    governanceCode: mycodexvantaos-60600
-    era: era-three
-    lifecycle: active
-    owner: platform-ml
-
-  - id: mycodexvantaos-rollback-engine
-    namespace: mycodexvantaos
-    domain: rollback
-    function: engine
-    repository: mycodexvantaos-rollback-engine
-    governanceCode: mycodexvantaos-60800
-    era: era-three
-    lifecycle: active
-    owner: platform-automation
-
-  - id: mycodexvantaos-scheduler-service
-    namespace: mycodexvantaos
-    domain: scheduler
-    function: service
-    repository: mycodexvantaos-scheduler-service
-    governanceCode: mycodexvantaos-30600
-    era: era-two
-    lifecycle: active
-    owner: platform-automation
-
-  - id: mycodexvantaos-alertd-service
-    namespace: mycodexvantaos
-    domain: alertd
-    function: service
-    repository: mycodexvantaos-alertd-service
-    governanceCode: mycodexvantaos-50600
-    era: era-two
-    lifecycle: active
-    owner: platform-observability
-
-  - id: softwareos-iaops-api
-    namespace: softwareos
-    domain: iaops
-    function: api
-    repository: softwareos-iaops-api
-    governanceCode: mycodexvantaos-30100
-    era: era-two
-    lifecycle: active
-    owner: product-iaops
-
-  - id: softwareos-platform-web
-    namespace: softwareos
-    domain: platform
-    function: web
-    repository: softwareos-platform-web
-    governanceCode: mycodexvantaos-20100
-    era: era-one
-    lifecycle: active
-    owner: product-platform
-
-  - id: softwareos-qa-service
-    namespace: softwareos
-    domain: qa
-    function: service
-    repository: softwareos-qa-service
-    governanceCode: mycodexvantaos-60700
-    era: era-three
-    lifecycle: active
-    owner: product-qa
-
-  - id: softwareos-toolkit-cli
-    namespace: softwareos
-    domain: toolkit
-    function: cli
-    repository: softwareos-toolkit-cli
-    governanceCode: mycodexvantaos-10100
-    era: era-one
-    lifecycle: active
-    owner: product-toolkit
-
-  - id: softwareos-machinenativeops-agent
-    namespace: softwareos
-    domain: machinenativeops
-    function: agent
-    repository: softwareos-machinenativeops-agent
-    governanceCode: mycodexvantaos-80100
-    era: era-three
-    lifecycle: active
-    owner: product-edge
-
-  - id: softwareos-toolkit-action
-    namespace: softwareos
-    domain: toolkit
-    function: action
-    repository: softwareos-toolkit-action
-    governanceCode: mycodexvantaos-10100
-    era: era-one
-    lifecycle: active
-    owner: product-toolkit
+- id: mycodexvantaos-auth-service
+  namespace: mycodexvantaos
+  domain: auth
+  function: service
+  repository: mycodexvantaos-auth-service
+  governanceCode: mycodexvantaos-50100
+  era: era-two
+  lifecycle: active
+  owner: platform-security
+- id: mycodexvantaos-policy-engine
+  namespace: mycodexvantaos
+  domain: policy
+  function: engine
+  repository: mycodexvantaos-policy-engine
+  governanceCode: mycodexvantaos-50500
+  era: era-two
+  lifecycle: active
+  owner: platform-governance
+- id: mycodexvantaos-memory-hub
+  namespace: mycodexvantaos
+  domain: memory
+  function: hub
+  repository: mycodexvantaos-memory-hub
+  governanceCode: mycodexvantaos-30100
+  era: era-two
+  lifecycle: active
+  owner: platform-core
+- id: mycodexvantaos-event-bus
+  namespace: mycodexvantaos
+  domain: event
+  function: bus
+  repository: mycodexvantaos-event-bus
+  governanceCode: mycodexvantaos-30300
+  era: era-two
+  lifecycle: active
+  owner: platform-core
+- id: mycodexvantaos-infra-manager
+  namespace: mycodexvantaos
+  domain: infra
+  function: manager
+  repository: mycodexvantaos-infra-manager
+  governanceCode: mycodexvantaos-20100
+  era: era-one
+  lifecycle: active
+  owner: platform-infra
+- id: mycodexvantaos-signerd-service
+  namespace: mycodexvantaos
+  domain: signerd
+  function: service
+  repository: mycodexvantaos-signerd-service
+  governanceCode: mycodexvantaos-50400
+  era: era-two
+  lifecycle: active
+  owner: platform-security
+- id: mycodexvantaos-controller-manager
+  namespace: mycodexvantaos
+  domain: controller
+  function: manager
+  repository: mycodexvantaos-controller-manager
+  governanceCode: mycodexvantaos-20400
+  era: era-one
+  lifecycle: active
+  owner: platform-controllers
+- id: mycodexvantaos-rolloutd-controller
+  namespace: mycodexvantaos
+  domain: rolloutd
+  function: controller
+  repository: mycodexvantaos-rolloutd-controller
+  governanceCode: mycodexvantaos-20400
+  era: era-one
+  lifecycle: active
+  owner: platform-controllers
+- id: mycodexvantaos-db-schemas-repository
+  namespace: mycodexvantaos
+  domain: db-schemas
+  function: repository
+  repository: mycodexvantaos-db-schemas-repository
+  governanceCode: mycodexvantaos-40200
+  era: era-two
+  lifecycle: active
+  owner: platform-data
+- id: mycodexvantaos-autotask-engine
+  namespace: mycodexvantaos
+  domain: autotask
+  function: engine
+  repository: mycodexvantaos-autotask-engine
+  governanceCode: mycodexvantaos-60800
+  era: era-three
+  lifecycle: active
+  owner: platform-automation
+- id: mycodexvantaos-compliance-scanner
+  namespace: mycodexvantaos
+  domain: compliance
+  function: scanner
+  repository: mycodexvantaos-compliance-scanner
+  governanceCode: mycodexvantaos-51000
+  era: era-two
+  lifecycle: active
+  owner: platform-compliance
+- id: mycodexvantaos-prediction-predictor
+  namespace: mycodexvantaos
+  domain: prediction
+  function: predictor
+  repository: mycodexvantaos-prediction-predictor
+  governanceCode: mycodexvantaos-60600
+  era: era-three
+  lifecycle: active
+  owner: platform-ml
+- id: mycodexvantaos-rollback-engine
+  namespace: mycodexvantaos
+  domain: rollback
+  function: engine
+  repository: mycodexvantaos-rollback-engine
+  governanceCode: mycodexvantaos-60800
+  era: era-three
+  lifecycle: active
+  owner: platform-automation
+- id: mycodexvantaos-scheduler-service
+  namespace: mycodexvantaos
+  domain: scheduler
+  function: service
+  repository: mycodexvantaos-scheduler-service
+  governanceCode: mycodexvantaos-30600
+  era: era-two
+  lifecycle: active
+  owner: platform-automation
+- id: mycodexvantaos-alertd-service
+  namespace: mycodexvantaos
+  domain: alertd
+  function: service
+  repository: mycodexvantaos-alertd-service
+  governanceCode: mycodexvantaos-50600
+  era: era-two
+  lifecycle: active
+  owner: platform-observability
+- id: softwareos-iaops-api
+  namespace: softwareos
+  domain: iaops
+  function: api
+  repository: softwareos-iaops-api
+  governanceCode: mycodexvantaos-30100
+  era: era-two
+  lifecycle: active
+  owner: product-iaops
+- id: softwareos-platform-web
+  namespace: softwareos
+  domain: platform
+  function: web
+  repository: softwareos-platform-web
+  governanceCode: mycodexvantaos-20100
+  era: era-one
+  lifecycle: active
+  owner: product-platform
+- id: softwareos-qa-service
+  namespace: softwareos
+  domain: qa
+  function: service
+  repository: softwareos-qa-service
+  governanceCode: mycodexvantaos-60700
+  era: era-three
+  lifecycle: active
+  owner: product-qa
+- id: softwareos-toolkit-cli
+  namespace: softwareos
+  domain: toolkit
+  function: cli
+  repository: softwareos-toolkit-cli
+  governanceCode: mycodexvantaos-10100
+  era: era-one
+  lifecycle: active
+  owner: product-toolkit
+- id: softwareos-machinenativeops-agent
+  namespace: softwareos
+  domain: machinenativeops
+  function: agent
+  repository: softwareos-machinenativeops-agent
+  governanceCode: mycodexvantaos-80100
+  era: era-three
+  lifecycle: active
+  owner: product-edge
+- id: softwareos-toolkit-action
+  namespace: softwareos
+  domain: toolkit
+  function: action
+  repository: softwareos-toolkit-action
+  governanceCode: mycodexvantaos-10100
+  era: era-one
+  lifecycle: active
+  owner: product-toolkit

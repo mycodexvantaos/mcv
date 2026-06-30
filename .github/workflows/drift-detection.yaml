@@ -1,17 +1,13 @@
 name: Configuration Drift Detection
-
 "on":
   schedule:
-    - cron: "0 6 * * 1" # Run weekly on Monday at 6 UTC
-  workflow_dispatch:
-
+    - cron: 0 6 * * 1
+  workflow_dispatch: null
 permissions:
   contents: read
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
 jobs:
   detect-drift:
     runs-on: ubuntu-latest
@@ -19,26 +15,19 @@ jobs:
     steps:
       - name: Check infrastructure credentials
         id: check_creds
-        run: |
-          echo "has_creds=false" >> "$GITHUB_OUTPUT"
+        run: 'echo "has_creds=false" >> "$GITHUB_OUTPUT"
+
           echo "Infrastructure credentials not configured — skipping drift detection."
 
+          '
       - name: Checkout repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
-
       - name: Validate infrastructure definitions
-        run: |
-          {
-            echo "### Drift Detection: Infrastructure Not Configured"
-            echo ""
-            echo "- **Classification:** infrastructure-not-configured"
-            echo "- **Action:** Configure GCP/Terraform/Cloudflare credentials to enable drift detection"
-            echo ""
-          } >> "$GITHUB_STEP_SUMMARY"
-
-          # Basic validation of any infrastructure definitions in the repo
-          if [ -d "deploy" ]; then
-            echo "Found deploy/ directory — validating structure"
-            find deploy -name "*.yaml" -o -name "*.yml" 2>/dev/null | head -5 || true
-          fi
-          echo "Drift detection skipped (infrastructure-not-configured)"
+        run: "{\n  echo \"### Drift Detection: Infrastructure Not Configured\"\n  echo\
+          \ \"\"\n  echo \"- **Classification:** infrastructure-not-configured\"\n \
+          \ echo \"- **Action:** Configure GCP/Terraform/Cloudflare credentials to enable\
+          \ drift detection\"\n  echo \"\"\n} >> \"$GITHUB_STEP_SUMMARY\"\n\n# Basic\
+          \ validation of any infrastructure definitions in the repo\nif [ -d \"deploy\"\
+          \ ]; then\n  echo \"Found deploy/ directory — validating structure\"\n  find\
+          \ deploy -name \"*.yaml\" -o -name \"*.yml\" 2>/dev/null | head -5 || true\n\
+          fi\necho \"Drift detection skipped (infrastructure-not-configured)\"\n"

@@ -4,9 +4,9 @@
  * 定義 Runtime Mode 相關類型、配置、檢測結果。
  */
 
-import { RuntimeMode } from '../../packages/capabilities/types';
+import { RuntimeMode } from "../../packages/capabilities/types";
 
-export type { RuntimeMode } from '../../packages/capabilities/types';
+export type { RuntimeMode } from "../../packages/capabilities/types";
 
 /**
  * 🌐 環境信息（用於 AUTO 模式的環境感知）
@@ -28,10 +28,10 @@ export interface RuntimeEnvironment {
  * 📡 網絡檢測策略
  */
 export type NetworkProbeStrategy =
-  | 'google' // 檢測 www.google.com
-  | 'custom' // 自定義端點 URL
-  | 'dns' // DNS 查詢檢測
-  | 'system'; // 系統網絡狀態 API（瀏覽器/Workers）
+  | "google" // 檢測 www.google.com
+  | "custom" // 自定義端點 URL
+  | "dns" // DNS 查詢檢測
+  | "system"; // 系統網絡狀態 API（瀏覽器/Workers）
 
 export interface NetworkProbeConfig {
   /** 策略 */
@@ -55,7 +55,7 @@ export interface RuntimeConfiguration {
   /** 是否強制忽略外部分依賴錯誤（僅用於調試） */
   ignoreMissingDeps?: boolean;
   /** 調試日誌級別 */
-  logLevel: 'debug' | 'info' | 'warn' | 'error';
+  logLevel: "debug" | "info" | "warn" | "error";
 }
 
 /**

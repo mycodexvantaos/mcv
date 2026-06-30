@@ -17,14 +17,14 @@ export interface Logger {
 
 interface LogEntry {
   timestamp: string;
-  level: 'info' | 'warn' | 'error';
+  level: "info" | "warn" | "error";
   namespace: string;
   message?: string;
   data?: unknown;
 }
 
 function formatEntry(
-  level: LogEntry['level'],
+  level: LogEntry["level"],
   namespace: string,
   data: unknown,
   message?: string
@@ -48,13 +48,13 @@ function formatEntry(
 export function createLogger(namespace: string): Logger {
   return {
     info(data: unknown, message?: string): void {
-      process.stdout.write(formatEntry('info', namespace, data, message) + '\n');
+      process.stdout.write(formatEntry("info", namespace, data, message) + "\n");
     },
     warn(data: unknown, message?: string): void {
-      process.stderr.write(formatEntry('warn', namespace, data, message) + '\n');
+      process.stderr.write(formatEntry("warn", namespace, data, message) + "\n");
     },
     error(data: unknown, message?: string): void {
-      process.stderr.write(formatEntry('error', namespace, data, message) + '\n');
+      process.stderr.write(formatEntry("error", namespace, data, message) + "\n");
     },
   };
 }

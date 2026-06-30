@@ -38,7 +38,7 @@ npm install mycodexvantaos
 ## Quick Start
 
 ```typescript
-import { createMyCodeXvantaOSSystem } from 'mycodexvantaos';
+import { createMyCodeXvantaOSSystem } from "mycodexvantaos";
 
 async function main() {
   // Initialize the complete system
@@ -48,7 +48,7 @@ async function main() {
       enableAuditLog: true,
     },
     persona: {
-      defaultArchetype: 'disrupter',
+      defaultArchetype: "disrupter",
       enableCache: true,
       enableValidation: true,
     },
@@ -56,20 +56,20 @@ async function main() {
 
   // Register an agent
   orchestrator.registerAgent({
-    urn: 'urn:mycodexvantaos:agent:analyst-01',
-    name: 'Primary Analyst',
-    capabilities: ['data_analysis', 'pattern_recognition'],
-    archetype: 'analyst',
+    urn: "urn:mycodexvantaos:agent:analyst-01",
+    name: "Primary Analyst",
+    capabilities: ["data_analysis", "pattern_recognition"],
+    archetype: "analyst",
   });
 
   // Process a task with persona integration
   const result = await personaIntegration.processTask({
-    taskId: 'task-001',
-    type: 'consultation',
-    priority: 'high',
-    input: 'I need help analyzing why our team velocity has decreased.',
+    taskId: "task-001",
+    type: "consultation",
+    priority: "high",
+    input: "I need help analyzing why our team velocity has decreased.",
     metadata: {
-      sourceAgentUrn: 'urn:mycodexvantaos:agent:coordinator',
+      sourceAgentUrn: "urn:mycodexvantaos:agent:coordinator",
       timestamp: new Date().toISOString(),
     },
   });
@@ -158,17 +158,17 @@ mycodexvantaos/
 The orchestrator manages the lifecycle of AI agents and their interactions:
 
 ```typescript
-import { Orchestrator, AgentManager, WorkflowEngine } from 'mycodexvantaos/orchestrator';
+import { Orchestrator, AgentManager, WorkflowEngine } from "mycodexvantaos/orchestrator";
 
 const orchestrator = new Orchestrator({
-  urn: 'urn:mycodexvantaos:orchestrator:main',
+  urn: "urn:mycodexvantaos:orchestrator:main",
   governanceTier: 1,
 });
 
 // Start a workflow
-const workflow = await orchestrator.executeWorkflow('security-audit', {
-  target: 'codebase',
-  depth: 'comprehensive',
+const workflow = await orchestrator.executeWorkflow("security-audit", {
+  target: "codebase",
+  depth: "comprehensive",
 });
 ```
 
@@ -177,15 +177,20 @@ const workflow = await orchestrator.executeWorkflow('security-audit', {
 The persona engine provides intelligent analysis capabilities:
 
 ```typescript
-import { PersonaManager, SemanticMaskDetector, RootCauseAnalyzer, SolutionGenerator } from 'mycodexvantaos/persona';
+import {
+  PersonaManager,
+  SemanticMaskDetector,
+  RootCauseAnalyzer,
+  SolutionGenerator,
+} from "mycodexvantaos/persona";
 
 // Detect semantic masks
 const detector = new SemanticMaskDetector();
-const masks = detector.detect('Everything happens for a reason...');
+const masks = detector.detect("Everything happens for a reason...");
 
 // Analyze root causes
 const analyzer = new RootCauseAnalyzer();
-const diagnosis = analyzer.quickAnalyze('I keep procrastinating on important tasks.');
+const diagnosis = analyzer.quickAnalyze("I keep procrastinating on important tasks.");
 
 // Generate solutions
 const generator = new SolutionGenerator();
@@ -233,9 +238,9 @@ MyCodeXvantaOS includes pre-built workflow patterns:
 ### Agent Configuration (YAML)
 
 ```yaml
-urn: 'urn:mycodexvantaos:agent:analyst-01'
-name: 'Primary Analyst'
-archetype: 'analyst'
+urn: "urn:mycodexvantaos:agent:analyst-01"
+name: "Primary Analyst"
+archetype: "analyst"
 capabilities:
   - data_analysis
   - pattern_recognition
@@ -251,9 +256,9 @@ governance:
 
 ```yaml
 metadata:
-  urn: 'urn:mycodexvantaos:persona:disrupter-primary'
-  name: 'Disrupter Primary'
-  archetype: 'disrupter'
+  urn: "urn:mycodexvantaos:persona:disrupter-primary"
+  name: "Disrupter Primary"
+  archetype: "disrupter"
 
 behavioral_parameters:
   critical_tolerance: 0.7

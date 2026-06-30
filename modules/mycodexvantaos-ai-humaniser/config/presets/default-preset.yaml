@@ -1,15 +1,8 @@
-# presets/default-preset.yaml
-# MyCodeXvantaOS — Humaniser Default Configuration Preset
-#
-# Default settings for the Humaniser engine. Can be overridden
-# per-workspace or per-request.
-
 apiVersion: mycodexvantaos.org/v1
 kind: HumaniserPreset
 metadata:
   name: default
   description: Default Humaniser configuration preset
-
 spec:
   mode: auto
   detection:

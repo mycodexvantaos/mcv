@@ -48,12 +48,12 @@ export const integrationConfig = {
     },
     alerts: {
       enabled: true,
-      severityLevels: ['info', 'warning', 'critical'],
+      severityLevels: ["info", "warning", "critical"],
     },
   },
 
   database: {
-    type: 'mysql',
-    tables: ['decisions', 'feedback', 'metrics', 'suggestions', 'optimization_history'],
+    type: "mysql",
+    tables: ["decisions", "feedback", "metrics", "suggestions", "optimization_history"],
   },
 };

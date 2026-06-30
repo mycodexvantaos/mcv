@@ -1,5 +1,4 @@
-# modules/mycodexvantaos-ai-embedding/capabilities.yaml
 capabilities:
-  - embedding
-  - vector-store
-  - cache
+- embedding
+- vector-store
+- cache

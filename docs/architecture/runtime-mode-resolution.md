@@ -1,4 +1,4 @@
-## MyCodexVantaOS — runtime-mode-resolution
+# MyCodexVantaOS — runtime-mode-resolution
 
 Machine Identity: `mycodexvantaos`
 Canonical URL: https://mycodexvantaos.com
@@ -15,7 +15,7 @@ This document describes the runtime-mode-resolution specification for MyCodexVan
 
 <!-- Formal spec additions -->
 
-## Runtime Mode Resolution
+# Runtime Mode Resolution
 
 > Status: Normative
 > Document: docs/architecture/runtime-mode-resolution.md

@@ -1,6 +1,3 @@
-# ═══════════════════════════════════════════════════════════════════
-# MyCodeXvantaOS — Model BYOK Service Definition
-# ═══════════════════════════════════════════════════════════════════
 apiVersion: platform.mycodexvantaos/v1
 kind: ServiceDefinition
 metadata:
@@ -9,12 +6,12 @@ metadata:
   version: 1.0.0-constitution
   category: model
   display_name: Model BYOK (Bring Your Own Key) Service
-  description: >
-    Multi-provider LLM gateway that allows workspaces to register their own
-    API keys for OpenAI, Anthropic, Google, and any OpenAI-compatible endpoint.
-    Handles credential encryption, model invocation (sync + streaming),
-    embedding generation, and health checking. Level 2 service.
+  description: 'Multi-provider LLM gateway that allows workspaces to register their
+    own API keys for OpenAI, Anthropic, Google, and any OpenAI-compatible endpoint.
+    Handles credential encryption, model invocation (sync + streaming), embedding
+    generation, and health checking. Level 2 service.
 
+    '
 spec:
   resource_type: model-endpoint
   runtime:
@@ -24,149 +21,218 @@ spec:
     limits:
       cpu_ms: 200
       memory_mb: 256
-
   capabilities:
-    - id: model.register-endpoint
-      method: registerEndpoint
-      description: Register a new model endpoint with encrypted credentials
-      input:
-        type: object
-        required: [workspace_id, subject_id, provider, model_id, api_key, base_url]
-        properties:
-          workspace_id: { type: string }
-          subject_id: { type: string }
-          provider: { type: string, enum: [openai, anthropic, google, ollama, custom] }
-          model_id: { type: string }
-          display_name: { type: string }
-          api_key: { type: string }
-          base_url: { type: string }
-          parameters:
+  - id: model.register-endpoint
+    method: registerEndpoint
+    description: Register a new model endpoint with encrypted credentials
+    input:
+      type: object
+      required:
+      - workspace_id
+      - subject_id
+      - provider
+      - model_id
+      - api_key
+      - base_url
+      properties:
+        workspace_id:
+          type: string
+        subject_id:
+          type: string
+        provider:
+          type: string
+          enum:
+          - openai
+          - anthropic
+          - google
+          - ollama
+          - custom
+        model_id:
+          type: string
+        display_name:
+          type: string
+        api_key:
+          type: string
+        base_url:
+          type: string
+        parameters:
+          type: object
+          properties:
+            temperature:
+              type: number
+              default: 0.7
+            max_tokens:
+              type: integer
+              default: 4096
+            top_p:
+              type: number
+              default: 1.0
+    output:
+      type: object
+      $ref: urn:mycodexvantaos:ai:resource:model-endpoint
+  - id: model.invoke
+    method: invokeModel
+    description: Invoke a registered model endpoint with chat completion
+    input:
+      type: object
+      required:
+      - endpoint_id
+      - workspace_id
+      - messages
+      - subject_id
+      properties:
+        endpoint_id:
+          type: string
+        workspace_id:
+          type: string
+        messages:
+          type: array
+          items:
             type: object
             properties:
-              temperature: { type: number, default: 0.7 }
-              max_tokens: { type: integer, default: 4096 }
-              top_p: { type: number, default: 1.0 }
-      output:
-        type: object
-        $ref: 'urn:mycodexvantaos:ai:resource:model-endpoint'
-
-    - id: model.invoke
-      method: invokeModel
-      description: Invoke a registered model endpoint with chat completion
-      input:
-        type: object
-        required: [endpoint_id, workspace_id, messages, subject_id]
-        properties:
-          endpoint_id: { type: string }
-          workspace_id: { type: string }
-          messages:
-            type: array
-            items:
-              type: object
-              properties:
-                role: { type: string, enum: [system, user, assistant] }
-                content: { type: string }
-          subject_id: { type: string }
-          stream: { type: boolean, default: false }
-          parameters:
+              role:
+                type: string
+                enum:
+                - system
+                - user
+                - assistant
+              content:
+                type: string
+        subject_id:
+          type: string
+        stream:
+          type: boolean
+          default: false
+        parameters:
+          type: object
+          properties:
+            temperature:
+              type: number
+            max_tokens:
+              type: integer
+    output:
+      type: object
+      properties:
+        content:
+          type: string
+        model:
+          type: string
+        usage:
+          type: object
+          properties:
+            prompt_tokens:
+              type: integer
+            completion_tokens:
+              type: integer
+            total_tokens:
+              type: integer
+  - id: model.embed
+    method: embed
+    description: Generate embeddings using a registered endpoint
+    input:
+      type: object
+      required:
+      - endpoint_id
+      - workspace_id
+      - input
+      properties:
+        endpoint_id:
+          type: string
+        workspace_id:
+          type: string
+        input:
+          type: array
+          items:
+            type: string
+        model:
+          type: string
+    output:
+      type: object
+      properties:
+        embeddings:
+          type: array
+          items:
             type: object
             properties:
-              temperature: { type: number }
-              max_tokens: { type: integer }
-      output:
-        type: object
-        properties:
-          content: { type: string }
-          model: { type: string }
-          usage:
-            type: object
-            properties:
-              prompt_tokens: { type: integer }
-              completion_tokens: { type: integer }
-              total_tokens: { type: integer }
-
-    - id: model.embed
-      method: embed
-      description: Generate embeddings using a registered endpoint
-      input:
-        type: object
-        required: [endpoint_id, workspace_id, input]
-        properties:
-          endpoint_id: { type: string }
-          workspace_id: { type: string }
-          input:
-            type: array
-            items: { type: string }
-          model: { type: string }
-      output:
-        type: object
-        properties:
-          embeddings:
-            type: array
-            items:
-              type: object
-              properties:
-                index: { type: integer }
-                vector: { type: array, items: { type: number } }
-          model: { type: string }
-          usage:
-            type: object
-            properties:
-              prompt_tokens: { type: integer }
-
-    - id: model.health-check
-      method: healthCheck
-      description: Verify a model endpoint is reachable and responding
-      input:
-        type: object
-        required: [endpoint_id, workspace_id]
-        properties:
-          endpoint_id: { type: string }
-          workspace_id: { type: string }
-      output:
-        type: object
-        properties:
-          healthy: { type: boolean }
-          latency_ms: { type: integer }
-          model: { type: string }
-
-    - id: model.delete-endpoint
-      method: deleteEndpoint
-      description: Soft-delete a model endpoint and revoke its credentials
-      input:
-        type: object
-        required: [endpoint_id, workspace_id, subject_id]
-        properties:
-          endpoint_id: { type: string }
-          workspace_id: { type: string }
-          subject_id: { type: string }
-      output:
-        type: object
-        properties:
-          deleted: { type: boolean }
-
+              index:
+                type: integer
+              vector:
+                type: array
+                items:
+                  type: number
+        model:
+          type: string
+        usage:
+          type: object
+          properties:
+            prompt_tokens:
+              type: integer
+  - id: model.health-check
+    method: healthCheck
+    description: Verify a model endpoint is reachable and responding
+    input:
+      type: object
+      required:
+      - endpoint_id
+      - workspace_id
+      properties:
+        endpoint_id:
+          type: string
+        workspace_id:
+          type: string
+    output:
+      type: object
+      properties:
+        healthy:
+          type: boolean
+        latency_ms:
+          type: integer
+        model:
+          type: string
+  - id: model.delete-endpoint
+    method: deleteEndpoint
+    description: Soft-delete a model endpoint and revoke its credentials
+    input:
+      type: object
+      required:
+      - endpoint_id
+      - workspace_id
+      - subject_id
+      properties:
+        endpoint_id:
+          type: string
+        workspace_id:
+          type: string
+        subject_id:
+          type: string
+    output:
+      type: object
+      properties:
+        deleted:
+          type: boolean
   events:
     emitted:
-      - model.endpoint.registered
-      - model.endpoint.invoked
-      - model.endpoint.invocation-failed
-      - model.endpoint.health-checked
-      - model.endpoint.deleted
+    - model.endpoint.registered
+    - model.endpoint.invoked
+    - model.endpoint.invocation-failed
+    - model.endpoint.health-checked
+    - model.endpoint.deleted
     subscribed: []
-
   audit:
     log_all_actions: true
     integrity_chain: true
     retention: 2555d
-    sensitive_fields: [api_key]
-
+    sensitive_fields:
+    - api_key
   dependencies:
-    hard: [identity]
-    soft: [audit-log, usage-meter]
-
+    hard:
+    - identity
+    soft:
+    - audit-log
+    - usage-meter
   ports:
-    - interface: IModelPort
-      methods:
-        - invoke
-        - embed
-        - healthCheck
+  - interface: IModelPort
+    methods:
+    - invoke
+    - embed
+    - healthCheck

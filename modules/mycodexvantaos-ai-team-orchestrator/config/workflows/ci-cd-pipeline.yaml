@@ -1,19 +1,18 @@
-# CI/CD Pipeline Workflow Pattern
-# Designed for continuous integration and continuous deployment
 urn: urn:mycodexvantaos:workflow:ci-cd-pipeline
 name: CI/CD Pipeline Workflow
-description: |
-  A comprehensive CI/CD pipeline workflow that covers code integration,
+description: 'A comprehensive CI/CD pipeline workflow that covers code integration,
+
   testing, building, deployment, and post-deployment verification.
+
   Supports multiple environments and includes rollback capabilities.
+
+  '
 type: dag
 version: 1.0.0
-created_at: 2024-01-15T10:00:00Z
-updated_at: 2024-01-15T10:00:00Z
-
-# Workflow Configuration
+created_at: 2024-01-15 10:00:00+00:00
+updated_at: 2024-01-15 10:00:00+00:00
 config:
-  timeout_seconds: 1800 # 30 minutes max
+  timeout_seconds: 1800
   retry_policy:
     max_retries: 1
     backoff_seconds: 30
@@ -23,601 +22,552 @@ config:
     on_success: true
     on_failure: true
     channels:
-      - slack
-      - email
-
-# Environment Configuration
+    - slack
+    - email
 environments:
-  - name: development
-    auto_deploy: true
-    approval_required: false
-  - name: staging
-    auto_deploy: true
-    approval_required: false
-  - name: production
-    auto_deploy: false
-    approval_required: true
-
-# DAG Nodes Definition
+- name: development
+  auto_deploy: true
+  approval_required: false
+- name: staging
+  auto_deploy: true
+  approval_required: false
+- name: production
+  auto_deploy: false
+  approval_required: true
 nodes:
-  # Stage 1: Checkout and Setup
-  - id: checkout
-    type: task
-    action: checkout_code
-    config:
-      repository: ${REPO_URL}
-      branch: ${BRANCH}
-      depth: 1
-      submodules: true
-    handler: checkoutHandler
-    next:
-      - setup_environment
-
-  - id: setup_environment
-    type: task
-    action: setup_build_environment
-    config:
-      runtime: ${RUNTIME} # node, python, java, go, etc.
-      version: ${RUNTIME_VERSION}
-      cache_dependencies: true
-    dependencies:
-      - checkout
-    handler: setupHandler
-    next:
-      - install_dependencies
-
-  - id: install_dependencies
-    type: task
-    action: install_packages
-    config:
-      package_manager: ${PACKAGE_MANAGER}
-      production_only: false
-      frozen_lockfile: true
-    dependencies:
-      - setup_environment
-    handler: installHandler
-    next:
-      - lint
-      - type_check
-
-  # Stage 2: Code Quality Checks (Parallel)
-  - id: lint
-    type: task
-    action: run_linter
-    config:
-      linters:
-        - eslint
-        - prettier
-      fail_on_error: true
-      format_output: checkstyle
-    dependencies:
-      - install_dependencies
-    handler: lintHandler
-    next:
-      - quality_gate
-
-  - id: type_check
-    type: task
-    action: run_type_checker
-    config:
-      checker: typescript
-      strict: true
-      no_implicit_any: true
-    dependencies:
-      - install_dependencies
-    handler: typeCheckHandler
-    next:
-      - quality_gate
-
-  # Quality Gate
-  - id: quality_gate
-    type: gateway
-    action: evaluate_quality
-    config:
-      conditions:
-        - field: lint_passed
-          operator: eq
-          value: true
-        - field: type_check_passed
-          operator: eq
-          value: true
-      on_pass: build
-      on_fail: quality_failure
-    dependencies:
-      - lint
-      - type_check
-    handler: gatewayHandler
-
-  - id: quality_failure
-    type: task
-    action: report_quality_issues
-    config:
-      generate_report: true
-      annotate_pr: true
-    dependencies:
-      - quality_gate
-    handler: qualityFailureHandler
-
-  # Stage 3: Build
-  - id: build
-    type: task
-    action: build_application
-    config:
-      command: ${BUILD_COMMAND}
-      output_dir: dist
-      source_maps: true
-      optimization: true
-    dependencies:
-      - quality_gate
-    handler: buildHandler
-    next:
-      - unit_tests
-      - integration_tests
-
-  # Stage 4: Testing (Parallel)
-  - id: unit_tests
-    type: task
-    action: run_unit_tests
-    config:
-      framework: ${TEST_FRAMEWORK}
-      coverage: true
-      coverage_threshold: 80
-      parallel: true
-      reporters:
-        - junit
-        - html
-    dependencies:
-      - build
-    handler: unitTestHandler
-    next:
-      - test_gate
-
-  - id: integration_tests
-    type: task
-    action: run_integration_tests
-    config:
-      framework: ${TEST_FRAMEWORK}
-      setup_fixtures: true
-      mock_external_services: true
-      timeout_seconds: 300
-    dependencies:
-      - build
-    handler: integrationTestHandler
-    next:
-      - test_gate
-
-  # Test Gate
-  - id: test_gate
-    type: gateway
-    action: evaluate_tests
-    config:
-      conditions:
-        - field: unit_test_passed
-          operator: eq
-          value: true
-        - field: integration_test_passed
-          operator: eq
-          value: true
-        - field: coverage_percentage
-          operator: gte
-          value: 80
-      on_pass: security_scan
-      on_fail: test_failure
-    dependencies:
-      - unit_tests
-      - integration_tests
-    handler: gatewayHandler
-
-  - id: test_failure
-    type: task
-    action: report_test_failures
-    config:
-      upload_artifacts: true
-      annotate_pr: true
-      notify_team: true
-    dependencies:
-      - test_gate
-    handler: testFailureHandler
-
-  # Stage 5: Security Scan
-  - id: security_scan
-    type: task
-    action: scan_for_vulnerabilities
-    config:
-      scanners:
-        - sast
-        - dependency_check
-        - secrets_detection
-      fail_on_critical: true
-      generate_report: true
-    dependencies:
-      - test_gate
-    handler: securityScanHandler
-    next:
-      - security_gate
-
-  - id: security_gate
-    type: gateway
-    action: evaluate_security
-    config:
-      conditions:
-        - field: critical_vulnerabilities
-          operator: eq
-          value: 0
-        - field: high_vulnerabilities
-          operator: lte
-          value: 2
-      on_pass: build_docker_image
-      on_fail: security_failure
-    dependencies:
-      - security_scan
-    handler: gatewayHandler
-
-  - id: security_failure
-    type: task
-    action: report_security_issues
-    config:
-      severity: high
-      block_deployment: true
-      create_ticket: true
-    dependencies:
-      - security_gate
-    handler: securityFailureHandler
-
-  # Stage 6: Docker Build
-  - id: build_docker_image
-    type: task
-    action: build_container
-    config:
-      dockerfile: Dockerfile
-      context: .
-      tags:
-        - ${IMAGE_NAME}:${VERSION}
-        - ${IMAGE_NAME}:latest
-      build_args:
-        - NODE_ENV=production
-      scan_image: true
-    dependencies:
-      - security_gate
-    handler: dockerBuildHandler
-    next:
-      - push_image
-
-  - id: push_image
-    type: task
-    action: push_to_registry
-    config:
-      registry: ${REGISTRY_URL}
-      authenticate: true
-      tags:
-        - ${IMAGE_NAME}:${VERSION}
-        - ${IMAGE_NAME}:latest
-    dependencies:
-      - build_docker_image
-    handler: pushImageHandler
-    next:
-      - deploy_staging
-
-  # Stage 7: Deploy to Staging
-  - id: deploy_staging
-    type: task
-    action: deploy_application
-    config:
-      environment: staging
-      strategy: rolling
-      replicas: 2
-      health_check:
-        endpoint: /health
-        timeout_seconds: 60
-        interval_seconds: 5
-    dependencies:
-      - push_image
-    handler: deployStagingHandler
-    next:
-      - smoke_tests_staging
-
-  - id: smoke_tests_staging
-    type: task
-    action: run_smoke_tests
-    config:
-      environment: staging
-      endpoints:
-        - /health
-        - /api/status
-        - /api/version
+- id: checkout
+  type: task
+  action: checkout_code
+  config:
+    repository: ${REPO_URL}
+    branch: ${BRANCH}
+    depth: 1
+    submodules: true
+  handler: checkoutHandler
+  next:
+  - setup_environment
+- id: setup_environment
+  type: task
+  action: setup_build_environment
+  config:
+    runtime: ${RUNTIME}
+    version: ${RUNTIME_VERSION}
+    cache_dependencies: true
+  dependencies:
+  - checkout
+  handler: setupHandler
+  next:
+  - install_dependencies
+- id: install_dependencies
+  type: task
+  action: install_packages
+  config:
+    package_manager: ${PACKAGE_MANAGER}
+    production_only: false
+    frozen_lockfile: true
+  dependencies:
+  - setup_environment
+  handler: installHandler
+  next:
+  - lint
+  - type_check
+- id: lint
+  type: task
+  action: run_linter
+  config:
+    linters:
+    - eslint
+    - prettier
+    fail_on_error: true
+    format_output: checkstyle
+  dependencies:
+  - install_dependencies
+  handler: lintHandler
+  next:
+  - quality_gate
+- id: type_check
+  type: task
+  action: run_type_checker
+  config:
+    checker: typescript
+    strict: true
+    no_implicit_any: true
+  dependencies:
+  - install_dependencies
+  handler: typeCheckHandler
+  next:
+  - quality_gate
+- id: quality_gate
+  type: gateway
+  action: evaluate_quality
+  config:
+    conditions:
+    - field: lint_passed
+      operator: eq
+      value: true
+    - field: type_check_passed
+      operator: eq
+      value: true
+    on_pass: build
+    on_fail: quality_failure
+  dependencies:
+  - lint
+  - type_check
+  handler: gatewayHandler
+- id: quality_failure
+  type: task
+  action: report_quality_issues
+  config:
+    generate_report: true
+    annotate_pr: true
+  dependencies:
+  - quality_gate
+  handler: qualityFailureHandler
+- id: build
+  type: task
+  action: build_application
+  config:
+    command: ${BUILD_COMMAND}
+    output_dir: dist
+    source_maps: true
+    optimization: true
+  dependencies:
+  - quality_gate
+  handler: buildHandler
+  next:
+  - unit_tests
+  - integration_tests
+- id: unit_tests
+  type: task
+  action: run_unit_tests
+  config:
+    framework: ${TEST_FRAMEWORK}
+    coverage: true
+    coverage_threshold: 80
+    parallel: true
+    reporters:
+    - junit
+    - html
+  dependencies:
+  - build
+  handler: unitTestHandler
+  next:
+  - test_gate
+- id: integration_tests
+  type: task
+  action: run_integration_tests
+  config:
+    framework: ${TEST_FRAMEWORK}
+    setup_fixtures: true
+    mock_external_services: true
+    timeout_seconds: 300
+  dependencies:
+  - build
+  handler: integrationTestHandler
+  next:
+  - test_gate
+- id: test_gate
+  type: gateway
+  action: evaluate_tests
+  config:
+    conditions:
+    - field: unit_test_passed
+      operator: eq
+      value: true
+    - field: integration_test_passed
+      operator: eq
+      value: true
+    - field: coverage_percentage
+      operator: gte
+      value: 80
+    on_pass: security_scan
+    on_fail: test_failure
+  dependencies:
+  - unit_tests
+  - integration_tests
+  handler: gatewayHandler
+- id: test_failure
+  type: task
+  action: report_test_failures
+  config:
+    upload_artifacts: true
+    annotate_pr: true
+    notify_team: true
+  dependencies:
+  - test_gate
+  handler: testFailureHandler
+- id: security_scan
+  type: task
+  action: scan_for_vulnerabilities
+  config:
+    scanners:
+    - sast
+    - dependency_check
+    - secrets_detection
+    fail_on_critical: true
+    generate_report: true
+  dependencies:
+  - test_gate
+  handler: securityScanHandler
+  next:
+  - security_gate
+- id: security_gate
+  type: gateway
+  action: evaluate_security
+  config:
+    conditions:
+    - field: critical_vulnerabilities
+      operator: eq
+      value: 0
+    - field: high_vulnerabilities
+      operator: lte
+      value: 2
+    on_pass: build_docker_image
+    on_fail: security_failure
+  dependencies:
+  - security_scan
+  handler: gatewayHandler
+- id: security_failure
+  type: task
+  action: report_security_issues
+  config:
+    severity: high
+    block_deployment: true
+    create_ticket: true
+  dependencies:
+  - security_gate
+  handler: securityFailureHandler
+- id: build_docker_image
+  type: task
+  action: build_container
+  config:
+    dockerfile: Dockerfile
+    context: .
+    tags:
+    - ${IMAGE_NAME}:${VERSION}
+    - ${IMAGE_NAME}:latest
+    build_args:
+    - NODE_ENV=production
+    scan_image: true
+  dependencies:
+  - security_gate
+  handler: dockerBuildHandler
+  next:
+  - push_image
+- id: push_image
+  type: task
+  action: push_to_registry
+  config:
+    registry: ${REGISTRY_URL}
+    authenticate: true
+    tags:
+    - ${IMAGE_NAME}:${VERSION}
+    - ${IMAGE_NAME}:latest
+  dependencies:
+  - build_docker_image
+  handler: pushImageHandler
+  next:
+  - deploy_staging
+- id: deploy_staging
+  type: task
+  action: deploy_application
+  config:
+    environment: staging
+    strategy: rolling
+    replicas: 2
+    health_check:
+      endpoint: /health
+      timeout_seconds: 60
+      interval_seconds: 5
+  dependencies:
+  - push_image
+  handler: deployStagingHandler
+  next:
+  - smoke_tests_staging
+- id: smoke_tests_staging
+  type: task
+  action: run_smoke_tests
+  config:
+    environment: staging
+    endpoints:
+    - /health
+    - /api/status
+    - /api/version
+    timeout_seconds: 120
+  dependencies:
+  - deploy_staging
+  handler: smokeTestHandler
+  next:
+  - staging_gate
+- id: staging_gate
+  type: gateway
+  action: evaluate_staging
+  config:
+    conditions:
+    - field: staging_deployed
+      operator: eq
+      value: true
+    - field: smoke_tests_passed
+      operator: eq
+      value: true
+    on_pass: hitl_production_approval
+    on_fail: rollback_staging
+  dependencies:
+  - smoke_tests_staging
+  handler: gatewayHandler
+- id: rollback_staging
+  type: task
+  action: rollback_deployment
+  config:
+    environment: staging
+    reason: smoke_test_failure
+    notify_team: true
+  dependencies:
+  - staging_gate
+  handler: rollbackStagingHandler
+- id: hitl_production_approval
+  type: hitl
+  action: request_production_approval
+  config:
+    timeout_seconds: 3600
+    approvers_required: 1
+    approver_roles:
+    - release_manager
+    - tech_lead
+    auto_approve_conditions:
+    - is_hotfix: false
+    - is_major_version: false
+    include_change_summary: true
+  dependencies:
+  - staging_gate
+  handler: hitlApprovalHandler
+  next:
+  - production_decision_gate
+- id: production_decision_gate
+  type: gateway
+  action: evaluate_approval
+  config:
+    conditions:
+    - field: approved
+      operator: eq
+      value: true
+    on_pass: deploy_production
+    on_fail: cancel_deployment
+  dependencies:
+  - hitl_production_approval
+  handler: gatewayHandler
+- id: cancel_deployment
+  type: task
+  action: cancel_release
+  config:
+    reason: approval_rejected
+    notify_team: true
+  dependencies:
+  - production_decision_gate
+  handler: cancelHandler
+- id: deploy_production
+  type: task
+  action: deploy_application
+  config:
+    environment: production
+    strategy: blue_green
+    replicas: 3
+    health_check:
+      endpoint: /health
       timeout_seconds: 120
-    dependencies:
-      - deploy_staging
-    handler: smokeTestHandler
-    next:
-      - staging_gate
-
-  - id: staging_gate
-    type: gateway
-    action: evaluate_staging
-    config:
-      conditions:
-        - field: staging_deployed
-          operator: eq
-          value: true
-        - field: smoke_tests_passed
-          operator: eq
-          value: true
-      on_pass: hitl_production_approval
-      on_fail: rollback_staging
-    dependencies:
-      - smoke_tests_staging
-    handler: gatewayHandler
-
-  - id: rollback_staging
-    type: task
-    action: rollback_deployment
-    config:
-      environment: staging
-      reason: smoke_test_failure
-      notify_team: true
-    dependencies:
-      - staging_gate
-    handler: rollbackStagingHandler
-
-  # HITL Checkpoint: Production Approval
-  - id: hitl_production_approval
-    type: hitl
-    action: request_production_approval
-    config:
-      timeout_seconds: 3600 # 1 hour
-      approvers_required: 1
-      approver_roles:
-        - release_manager
-        - tech_lead
-      auto_approve_conditions:
-        - is_hotfix: false
-        - is_major_version: false
-      include_change_summary: true
-    dependencies:
-      - staging_gate
-    handler: hitlApprovalHandler
-    next:
-      - production_decision_gate
-
-  - id: production_decision_gate
-    type: gateway
-    action: evaluate_approval
-    config:
-      conditions:
-        - field: approved
-          operator: eq
-          value: true
-      on_pass: deploy_production
-      on_fail: cancel_deployment
-    dependencies:
-      - hitl_production_approval
-    handler: gatewayHandler
-
-  - id: cancel_deployment
-    type: task
-    action: cancel_release
-    config:
-      reason: approval_rejected
-      notify_team: true
-    dependencies:
-      - production_decision_gate
-    handler: cancelHandler
-
-  # Stage 8: Deploy to Production
-  - id: deploy_production
-    type: task
-    action: deploy_application
-    config:
-      environment: production
-      strategy: blue_green # blue_green, canary, rolling
-      replicas: 3
-      health_check:
-        endpoint: /health
-        timeout_seconds: 120
-        interval_seconds: 10
-      rollback_on_failure: true
-      traffic_shift:
-        type: gradual
-        steps: [10, 25, 50, 100]
-        interval_seconds: 60
-    dependencies:
-      - production_decision_gate
-    handler: deployProductionHandler
-    next:
-      - smoke_tests_production
-
-  - id: smoke_tests_production
-    type: task
-    action: run_smoke_tests
-    config:
-      environment: production
-      endpoints:
-        - /health
-        - /api/status
-      timeout_seconds: 180
-      alert_on_failure: true
-    dependencies:
-      - deploy_production
-    handler: smokeTestProductionHandler
-    next:
-      - production_gate
-
-  - id: production_gate
-    type: gateway
-    action: evaluate_production
-    config:
-      conditions:
-        - field: production_deployed
-          operator: eq
-          value: true
-        - field: smoke_tests_passed
-          operator: eq
-          value: true
-      on_pass: notify_success
-      on_fail: rollback_production
-    dependencies:
-      - smoke_tests_production
-    handler: gatewayHandler
-
-  - id: rollback_production
-    type: task
-    action: rollback_deployment
-    config:
-      environment: production
-      reason: deployment_failure
-      notify_oncall: true
-      create_incident: true
-    dependencies:
-      - production_gate
-    handler: rollbackProductionHandler
-
-  # Stage 9: Notify Success
-  - id: notify_success
-    type: task
-    action: send_notification
-    config:
-      channels:
-        - slack
-        - email
-      template: deployment_success
-      include:
-        - version
-        - environment
-        - changelog
-    dependencies:
-      - production_gate
-    handler: notifySuccessHandler
-
-# Edge Definitions
+      interval_seconds: 10
+    rollback_on_failure: true
+    traffic_shift:
+      type: gradual
+      steps:
+      - 10
+      - 25
+      - 50
+      - 100
+      interval_seconds: 60
+  dependencies:
+  - production_decision_gate
+  handler: deployProductionHandler
+  next:
+  - smoke_tests_production
+- id: smoke_tests_production
+  type: task
+  action: run_smoke_tests
+  config:
+    environment: production
+    endpoints:
+    - /health
+    - /api/status
+    timeout_seconds: 180
+    alert_on_failure: true
+  dependencies:
+  - deploy_production
+  handler: smokeTestProductionHandler
+  next:
+  - production_gate
+- id: production_gate
+  type: gateway
+  action: evaluate_production
+  config:
+    conditions:
+    - field: production_deployed
+      operator: eq
+      value: true
+    - field: smoke_tests_passed
+      operator: eq
+      value: true
+    on_pass: notify_success
+    on_fail: rollback_production
+  dependencies:
+  - smoke_tests_production
+  handler: gatewayHandler
+- id: rollback_production
+  type: task
+  action: rollback_deployment
+  config:
+    environment: production
+    reason: deployment_failure
+    notify_oncall: true
+    create_incident: true
+  dependencies:
+  - production_gate
+  handler: rollbackProductionHandler
+- id: notify_success
+  type: task
+  action: send_notification
+  config:
+    channels:
+    - slack
+    - email
+    template: deployment_success
+    include:
+    - version
+    - environment
+    - changelog
+  dependencies:
+  - production_gate
+  handler: notifySuccessHandler
 edges:
-  - from: checkout
-    to: setup_environment
-  - from: setup_environment
-    to: install_dependencies
-  - from: install_dependencies
-    to: lint
-  - from: install_dependencies
-    to: type_check
-  - from: lint
-    to: quality_gate
-  - from: type_check
-    to: quality_gate
-  - from: quality_gate
-    to: build
-    condition: passed
-  - from: quality_gate
-    to: quality_failure
-    condition: failed
-  - from: build
-    to: unit_tests
-  - from: build
-    to: integration_tests
-  - from: unit_tests
-    to: test_gate
-  - from: integration_tests
-    to: test_gate
-  - from: test_gate
-    to: security_scan
-    condition: passed
-  - from: test_gate
-    to: test_failure
-    condition: failed
-  - from: security_scan
-    to: security_gate
-  - from: security_gate
-    to: build_docker_image
-    condition: passed
-  - from: security_gate
-    to: security_failure
-    condition: failed
-  - from: build_docker_image
-    to: push_image
-  - from: push_image
-    to: deploy_staging
-  - from: deploy_staging
-    to: smoke_tests_staging
-  - from: smoke_tests_staging
-    to: staging_gate
-  - from: staging_gate
-    to: hitl_production_approval
-    condition: passed
-  - from: staging_gate
-    to: rollback_staging
-    condition: failed
-  - from: hitl_production_approval
-    to: production_decision_gate
-  - from: production_decision_gate
-    to: deploy_production
-    condition: approved
-  - from: production_decision_gate
-    to: cancel_deployment
-    condition: rejected
-  - from: deploy_production
-    to: smoke_tests_production
-  - from: smoke_tests_production
-    to: production_gate
-  - from: production_gate
-    to: notify_success
-    condition: passed
-  - from: production_gate
-    to: rollback_production
-    condition: failed
-
-# HITL Configuration
+- from: checkout
+  to: setup_environment
+- from: setup_environment
+  to: install_dependencies
+- from: install_dependencies
+  to: lint
+- from: install_dependencies
+  to: type_check
+- from: lint
+  to: quality_gate
+- from: type_check
+  to: quality_gate
+- from: quality_gate
+  to: build
+  condition: passed
+- from: quality_gate
+  to: quality_failure
+  condition: failed
+- from: build
+  to: unit_tests
+- from: build
+  to: integration_tests
+- from: unit_tests
+  to: test_gate
+- from: integration_tests
+  to: test_gate
+- from: test_gate
+  to: security_scan
+  condition: passed
+- from: test_gate
+  to: test_failure
+  condition: failed
+- from: security_scan
+  to: security_gate
+- from: security_gate
+  to: build_docker_image
+  condition: passed
+- from: security_gate
+  to: security_failure
+  condition: failed
+- from: build_docker_image
+  to: push_image
+- from: push_image
+  to: deploy_staging
+- from: deploy_staging
+  to: smoke_tests_staging
+- from: smoke_tests_staging
+  to: staging_gate
+- from: staging_gate
+  to: hitl_production_approval
+  condition: passed
+- from: staging_gate
+  to: rollback_staging
+  condition: failed
+- from: hitl_production_approval
+  to: production_decision_gate
+- from: production_decision_gate
+  to: deploy_production
+  condition: approved
+- from: production_decision_gate
+  to: cancel_deployment
+  condition: rejected
+- from: deploy_production
+  to: smoke_tests_production
+- from: smoke_tests_production
+  to: production_gate
+- from: production_gate
+  to: notify_success
+  condition: passed
+- from: production_gate
+  to: rollback_production
+  condition: failed
 hitl_config:
   enabled: true
   checkpoints:
-    - node_id: hitl_production_approval
-      type: deployment_approval
-      timeout_seconds: 3600
-      escalation:
-        after_seconds: 1800
-        escalate_to: engineering_manager
-      skip_conditions:
-        - is_hotfix: true
-        - auto_deploy_enabled: true
-
-# CI/CD Metrics
+  - node_id: hitl_production_approval
+    type: deployment_approval
+    timeout_seconds: 3600
+    escalation:
+      after_seconds: 1800
+      escalate_to: engineering_manager
+    skip_conditions:
+    - is_hotfix: true
+    - auto_deploy_enabled: true
 metrics:
   track_per_stage: true
   aggregate_metrics:
-    - build_duration
-    - test_duration
-    - deployment_duration
-    - pipeline_success_rate
-    - mean_time_to_recovery
-    - change_failure_rate
+  - build_duration
+  - test_duration
+  - deployment_duration
+  - pipeline_success_rate
+  - mean_time_to_recovery
+  - change_failure_rate
   sla:
     build_time_minutes: 10
     test_time_minutes: 15
     deployment_time_minutes: 5
-
-# Example Usage
 examples:
-  - name: Standard Deployment
-    description: Typical CI/CD pipeline for a Node.js application
-    input:
-      REPO_URL: https://github.com/org/repo.git
-      BRANCH: main
-      RUNTIME: node
-      RUNTIME_VERSION: '20'
-      PACKAGE_MANAGER: npm
-      TEST_FRAMEWORK: jest
-      IMAGE_NAME: org/app
-      VERSION: '1.2.3'
-      REGISTRY_URL: registry.example.com
-    expected_output:
-      status: deployed
-      environment: production
-      duration_minutes: 25
-
-  - name: Hotfix Deployment
-    description: Expedited hotfix deployment with auto-approval
-    input:
-      BRANCH: hotfix/critical-fix
-      is_hotfix: true
-    expected_output:
-      status: deployed
-      hitl_skipped: true
-      duration_minutes: 15
+- name: Standard Deployment
+  description: Typical CI/CD pipeline for a Node.js application
+  input:
+    REPO_URL: https://github.com/org/repo.git
+    BRANCH: main
+    RUNTIME: node
+    RUNTIME_VERSION: '20'
+    PACKAGE_MANAGER: npm
+    TEST_FRAMEWORK: jest
+    IMAGE_NAME: org/app
+    VERSION: 1.2.3
+    REGISTRY_URL: registry.example.com
+  expected_output:
+    status: deployed
+    environment: production
+    duration_minutes: 25
+- name: Hotfix Deployment
+  description: Expedited hotfix deployment with auto-approval
+  input:
+    BRANCH: hotfix/critical-fix
+    is_hotfix: true
+  expected_output:
+    status: deployed
+    hitl_skipped: true
+    duration_minutes: 15

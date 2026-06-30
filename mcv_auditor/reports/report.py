@@ -9,9 +9,9 @@ from __future__ import annotations
 import json
 import datetime
 from dataclasses import asdict, dataclass, field
-from typing import Any
+from typing import Any, Optional
 
-from ..core.analyzers import AnalyzerResult
+from ..core.analyzers import AnalyzerResult, AnalyzerFinding
 
 CANONICAL_URL = "https://mycodexvantaos.com"
 MACHINE_IDENTITY = "mycodexvantaos"

@@ -33,7 +33,7 @@ export class RedisConnector {
     this.config = {
       host: config.host,
       port: config.port || 6379,
-      password: config.password || '',
+      password: config.password || "",
       db: config.db || 0,
       timeout: config.timeout || 5000,
       retryDelayOnFailover: config.retryDelayOnFailover || 50,
@@ -93,14 +93,14 @@ export class RedisConnector {
     // Check nx/xx conditions
     const exists = this.store.has(key);
     if (options?.nx && exists) {
-      return 'nil';
+      return "nil";
     }
     if (options?.xx && !exists) {
-      return 'nil';
+      return "nil";
     }
 
     this.store.set(key, { value: strValue, expiry });
-    return 'OK';
+    return "OK";
   }
 
   /**
@@ -252,7 +252,7 @@ export class RedisConnector {
   async keys(pattern: string): Promise<string[]> {
     this.cleanup();
 
-    const regex = new RegExp(pattern.replace(/\*/g, '.*'));
+    const regex = new RegExp(pattern.replace(/\*/g, ".*"));
     const allKeys = Array.from(this.store.keys());
     return allKeys.filter((key) => regex.test(key));
   }
@@ -262,7 +262,7 @@ export class RedisConnector {
    */
   async mset(...keyValuePairs: string[]): Promise<string> {
     if (keyValuePairs.length % 2 !== 0) {
-      throw new Error('MSET requires an even number of arguments');
+      throw new Error("MSET requires an even number of arguments");
     }
 
     for (let i = 0; i < keyValuePairs.length; i += 2) {
@@ -271,7 +271,7 @@ export class RedisConnector {
       await this.set(key, value);
     }
 
-    return 'OK';
+    return "OK";
   }
 
   /**
@@ -285,7 +285,7 @@ export class RedisConnector {
    * Append to string
    */
   async append(key: string, value: string): Promise<number> {
-    const current = (await this.get(key)) || '';
+    const current = (await this.get(key)) || "";
     const newStr = current + value;
     await this.set(key, newStr);
     return newStr.length;
@@ -295,7 +295,7 @@ export class RedisConnector {
    * Get substring of string
    */
   async getrange(key: string, start: number, end: number): Promise<string> {
-    const value = (await this.get(key)) || '';
+    const value = (await this.get(key)) || "";
     const actualEnd = end === -1 ? undefined : end + 1;
     return value.substring(start, actualEnd);
   }
@@ -304,8 +304,8 @@ export class RedisConnector {
    * Set substring of string
    */
   async setrange(key: string, offset: number, value: string): Promise<number> {
-    const current = (await this.get(key)) || '';
-    const padded = current.padStart(offset + value.length - current.length, '\0');
+    const current = (await this.get(key)) || "";
+    const padded = current.padStart(offset + value.length - current.length, "\0");
     const newStr = padded.substring(0, offset) + value + padded.substring(offset + value.length);
     await this.set(key, newStr);
     return newStr.length;
@@ -324,7 +324,7 @@ export class RedisConnector {
    */
   async flushall(): Promise<string> {
     this.store.clear();
-    return 'OK';
+    return "OK";
   }
 
   /**
@@ -332,7 +332,7 @@ export class RedisConnector {
    */
   async flushdb(): Promise<string> {
     this.store.clear();
-    return 'OK';
+    return "OK";
   }
 
   /**
@@ -347,7 +347,7 @@ export class RedisConnector {
    * Ping server
    */
   async ping(): Promise<string> {
-    return 'PONG';
+    return "PONG";
   }
 
   /**
@@ -373,19 +373,19 @@ used_cpu_user=0.3`;
 
     if (section) {
       // Find the section and return lines until next section
-      const lines = allInfo.split('\n');
+      const lines = allInfo.split("\n");
       const result: string[] = [];
       let inSection = false;
 
       for (const line of lines) {
-        if (line.startsWith('# ')) {
+        if (line.startsWith("# ")) {
           inSection = line.toLowerCase().includes(section.toLowerCase());
         }
         if (inSection) {
           result.push(line);
         }
       }
-      return result.join('\n');
+      return result.join("\n");
     }
 
     return allInfo;
@@ -395,7 +395,7 @@ used_cpu_user=0.3`;
    * Select database
    */
   async select(index: number): Promise<string> {
-    return 'OK';
+    return "OK";
   }
 }
 

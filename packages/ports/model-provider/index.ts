@@ -47,7 +47,7 @@ export interface ModelRequest {
 }
 
 export interface ModelMessage {
-  role: 'system' | 'user' | 'assistant' | 'tool';
+  role: "system" | "user" | "assistant" | "tool";
   content: string;
   name?: string;
 }

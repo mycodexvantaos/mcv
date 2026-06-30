@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,29 +10,31 @@ metadata:
   criticality: high
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-00000
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l10
-    - compute
+  - l10
+  - compute
   sloTarget: 30
   evidenceRetentionDays: 1095
 spec:
-  description: >
-    Validates that compute cost metering is active and producing accurate cost attribution records for all AI workloads.
+  description: 'Validates that compute cost metering is active and producing accurate
+    cost attribution records for all AI workloads.
+
+    '
   validates:
-    - dimension: cost-metering
-      description: Compute cost metering is active and accurate.
-      checks:
-        - id: chk-metering-agent-running
-          description: Cost metering agent is running on all nodes
-          rule: 'health:metering-agent'
-          severity: high
-          evidenceRequired: true
-        - id: chk-cost-attribution-complete
-          description: Every workload has a cost attribution record
-          rule: 'billing:cost-attribution-complete'
-          severity: high
-          evidenceRequired: true
+  - dimension: cost-metering
+    description: Compute cost metering is active and accurate.
+    checks:
+    - id: chk-metering-agent-running
+      description: Cost metering agent is running on all nodes
+      rule: health:metering-agent
+      severity: high
+      evidenceRequired: true
+    - id: chk-cost-attribution-complete
+      description: Every workload has a cost attribution record
+      rule: billing:cost-attribution-complete
+      severity: high
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

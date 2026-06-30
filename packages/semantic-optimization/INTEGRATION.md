@@ -50,7 +50,7 @@ import {
   DataAnalytics,
   ContinuousImprovement,
   IntegratedDashboard,
-} from '@mycodexvantaos/semantic-optimization';
+} from "@mycodexvantaos/semantic-optimization";
 ```
 
 ### Initialize

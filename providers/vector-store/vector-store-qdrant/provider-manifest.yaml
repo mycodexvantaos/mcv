@@ -21,6 +21,6 @@ provider-id: mycodexvantaos-vector-store-qdrant
 capability: vector-store
 platform: mycodexvantaos
 runtime-modes:
-  - native
-  - connected
-  - hybrid
+- native
+- connected
+- hybrid

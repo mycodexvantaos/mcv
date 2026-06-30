@@ -14,20 +14,20 @@ describe('Environment Configuration Tests', () => {
   beforeEach(() => {
     resetEnvironmentConfig();
     // Clear test environment variables
-    Reflect.deleteProperty(process.env, 'APP_ENV');
-    Reflect.deleteProperty(process.env, 'NODE_ENV');
-    Reflect.deleteProperty(process.env, 'PUBLIC_CANONICAL_URL');
-    Reflect.deleteProperty(process.env, 'PUBLIC_API_URL');
-    Reflect.deleteProperty(process.env, 'PUBLIC_APP_URL');
+    delete process.env.APP_ENV;
+    delete process.env.NODE_ENV;
+    delete process.env.PUBLIC_CANONICAL_URL;
+    delete process.env.PUBLIC_API_URL;
+    delete process.env.PUBLIC_APP_URL;
   });
 
   afterEach(() => {
     resetEnvironmentConfig();
-    Reflect.deleteProperty(process.env, 'APP_ENV');
-    Reflect.deleteProperty(process.env, 'NODE_ENV');
-    Reflect.deleteProperty(process.env, 'PUBLIC_CANONICAL_URL');
-    Reflect.deleteProperty(process.env, 'PUBLIC_API_URL');
-    Reflect.deleteProperty(process.env, 'PUBLIC_APP_URL');
+    delete process.env.APP_ENV;
+    delete process.env.NODE_ENV;
+    delete process.env.PUBLIC_CANONICAL_URL;
+    delete process.env.PUBLIC_API_URL;
+    delete process.env.PUBLIC_APP_URL;
   });
 
   describe('loadEnvironmentConfig()', () => {
@@ -78,7 +78,7 @@ describe('Environment Configuration Tests', () => {
     it('should return environment variable value', () => {
       process.env.TEST_VAR = 'test-value';
       expect(getEnvVar('TEST_VAR')).toBe('test-value');
-      Reflect.deleteProperty(process.env, 'TEST_VAR');
+      delete process.env.TEST_VAR;
     });
 
     it('should return default value when variable not set', () => {
@@ -94,7 +94,7 @@ describe('Environment Configuration Tests', () => {
     it('should return secret value when set', () => {
       process.env.TEST_SECRET = 'secret-value';
       expect(getSecretEnvVar('TEST_SECRET')).toBe('secret-value');
-      Reflect.deleteProperty(process.env, 'TEST_SECRET');
+      delete process.env.TEST_SECRET;
     });
 
     it('should return empty string in development when not set', () => {

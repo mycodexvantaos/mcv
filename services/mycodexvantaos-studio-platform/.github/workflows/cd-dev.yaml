@@ -1,70 +1,55 @@
-# === path: .github/workflows/cd-dev.yaml ===
 name: Deploy to Development
-
-on:
+"on":
   push:
     branches:
-      - main
-  workflow_dispatch:
-
+    - main
+  workflow_dispatch: null
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
 permissions:
   contents: read
-  id-token: write # for OIDC to cloud providers
-
+  id-token: write
 jobs:
   deploy-dev:
     name: Deploy to Dev Environment
     runs-on: ubuntu-latest
     environment: dev
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+    - name: Checkout repository
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v2
+      with:
+        workload_identity_provider: projects/${{ secrets.GCP_PROJECT_ID }}/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+        service_account: deploy-bot@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com
+    - name: Set up GKE credentials
+      uses: google-github-actions/get-gke-credentials@v1
+      with:
+        cluster_name: dev-cluster
+        location: us-central1
+    - name: Download Build Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: dist
+    - name: Deploy with Kustomize
+      run: 'kustomize build deploy/kustomize/overlays/dev | kubectl apply -f -
 
-      - name: 'Authenticate to Google Cloud'
-        uses: 'google-github-actions/auth@v2'
-        with:
-          workload_identity_provider: 'projects/${{ secrets.GCP_PROJECT_ID }}/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
-          service_account: 'deploy-bot@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com'
+        kubectl rollout status deployment/my-app-api -n dev
 
-      - name: Set up GKE credentials
-        uses: google-github-actions/get-gke-credentials@v1
-        with:
-          cluster_name: dev-cluster
-          location: us-central1
+        kubectl rollout status deployment/my-app-web -n dev
 
-      - name: Download Build Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: dist
-
-      - name: Deploy with Kustomize
-        run: |
-          kustomize build deploy/kustomize/overlays/dev | kubectl apply -f -
-          kubectl rollout status deployment/my-app-api -n dev
-          kubectl rollout status deployment/my-app-web -n dev
-
-      - name: Run Smoke Tests
-        run: ./ops/scripts/smoke.sh dev
-
-      - name: Log Deployment
-        run: |
-          echo "Deployment to dev successful."
-          # In a real scenario, you'd log to a dedicated audit service here.
-          echo '{ \
-            "actor": "${{ github.actor }}", \
-            "action": "deploy", \
-            "resource": "environment:dev", \
-            "result": "success", \
-            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)", \
-            "correlationId": "${{ github.run_id }}" \
-          }' >> deployment-audit.log
-
-      - name: Upload Audit Log
-        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
-        with:
-          name: deployment-audit-log-dev
-          path: deployment-audit.log
+        '
+    - name: Run Smoke Tests
+      run: ./ops/scripts/smoke.sh dev
+    - name: Log Deployment
+      run: "echo \"Deployment to dev successful.\"\n# In a real scenario, you'd log\
+        \ to a dedicated audit service here.\necho '{ \\\n  \"actor\": \"${{ github.actor\
+        \ }}\", \\\n  \"action\": \"deploy\", \\\n  \"resource\": \"environment:dev\"\
+        , \\\n  \"result\": \"success\", \\\n  \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"\
+        , \\\n  \"correlationId\": \"${{ github.run_id }}\" \\\n}' >> deployment-audit.log\n"
+    - name: Upload Audit Log
+      uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3
+      with:
+        name: deployment-audit-log-dev
+        path: deployment-audit.log

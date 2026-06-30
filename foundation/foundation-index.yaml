@@ -8,25 +8,25 @@ metadata:
   status: active
 spec:
   foundations:
-    - name: compute-foundation
-      path: ./compute-foundation/foundation.yaml
-      urn: urn:mycodexvantaos:foundation:spec:compute-foundation
-    - name: data-foundation
-      path: ./data-foundation/foundation.yaml
-      urn: urn:mycodexvantaos:foundation:spec:data-foundation
-    - name: algorithm-foundation
-      path: ./algorithm-foundation/foundation.yaml
-      urn: urn:mycodexvantaos:foundation:spec:algorithm-foundation
-    - name: agent-foundation
-      path: ./agent-foundation/foundation.yaml
-      urn: urn:mycodexvantaos:foundation:spec:agent-foundation
-    - name: contract-foundation
-      path: ./contract-foundation/foundation.yaml
-      urn: urn:mycodexvantaos:foundation:spec:contract-foundation
-    - name: governance-foundation
-      path: ./governance-foundation/foundation.yaml
-      urn: urn:mycodexvantaos:foundation:spec:governance-foundation
-    - name: business-foundation
-      path: ./business-foundation/foundation.yaml
-      urn: urn:mycodexvantaos:foundation:spec:business-foundation
+  - name: compute-foundation
+    path: ./compute-foundation/foundation.yaml
+    urn: urn:mycodexvantaos:foundation:spec:compute-foundation
+  - name: data-foundation
+    path: ./data-foundation/foundation.yaml
+    urn: urn:mycodexvantaos:foundation:spec:data-foundation
+  - name: algorithm-foundation
+    path: ./algorithm-foundation/foundation.yaml
+    urn: urn:mycodexvantaos:foundation:spec:algorithm-foundation
+  - name: agent-foundation
+    path: ./agent-foundation/foundation.yaml
+    urn: urn:mycodexvantaos:foundation:spec:agent-foundation
+  - name: contract-foundation
+    path: ./contract-foundation/foundation.yaml
+    urn: urn:mycodexvantaos:foundation:spec:contract-foundation
+  - name: governance-foundation
+    path: ./governance-foundation/foundation.yaml
+    urn: urn:mycodexvantaos:foundation:spec:governance-foundation
+  - name: business-foundation
+    path: ./business-foundation/foundation.yaml
+    urn: urn:mycodexvantaos:foundation:spec:business-foundation
   platform: mycodexvantaos
