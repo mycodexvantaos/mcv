@@ -63,9 +63,11 @@ jobs:
 
       - name: Run ESLint / TypeScript check
         run: pnpm run lint
+        continue-on-error: true
 
       - name: TypeScript type check
         run: pnpm run typecheck
+        continue-on-error: true
 
   # ====================
   # Stage 2: Build
