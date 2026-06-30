@@ -4,9 +4,9 @@ metadata:
   name: release-manifest
   version: 1.0.0
   date: '2026-06-29'
-  status: candidate
 spec:
   version: 0.1.0
   artifacts: []
 platform: mycodexvantaos
 canonical-url: https://mycodexvantaos.com
+status: candidate
