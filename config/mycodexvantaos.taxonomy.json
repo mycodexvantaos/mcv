@@ -47,14 +47,7 @@
     "Quality Gate",
     "Policy Engine"
   ],
-  "bannedExternalPlatformTerms": [
-    "MuleRun",
-    "Zapier",
-    "Coze",
-    "Make.com",
-    "IFTTT",
-    "n8n"
-  ],
+  "bannedExternalPlatformTerms": ["MuleRun", "Zapier", "Coze", "Make.com", "IFTTT", "n8n"],
   "replacementPolicy": {
     "MuleRun": "MyCodexVantaOS Cloud Runtime",
     "Zapier": "傳統規則式自動化平台",

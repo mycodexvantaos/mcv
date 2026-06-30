@@ -6,7 +6,7 @@
   "type": "object",
   "required": ["apiVersion", "kind", "metadata", "capabilities"],
   "properties": {
-    "apiVersion": { "type": "string", "const": "mycodexvantaos.io/v1" },
+    "apiVersion": { "type": "string", "const": "mycodexvantaos.org/v1" },
     "kind": { "type": "string", "const": "CapabilitySet" },
     "metadata": {
       "type": "object",
@@ -38,7 +38,8 @@
               "ai",
               "quantum",
               "devops",
-              "governance"
+              "governance",
+              "infra"
             ]
           },
           "providers": {
@@ -48,14 +49,14 @@
         }
       },
       "minItems": 24,
-      "maxItems": 24
+      "maxItems": 30
     },
     "validation": {
       "type": "object",
       "properties": {
         "capability-name-pattern": { "type": "string" },
         "forbidden-vendor-prefixes": { "type": "array", "items": { "type": "string" } },
-        "total-count": { "type": "integer", "const": 24 }
+        "total-count": { "type": "integer", "minimum": 24, "maximum": 30 }
       }
     }
   }
