@@ -9,6 +9,9 @@ pnpm-lock.yaml
 package-lock.json
 .turbo/
 
+# Generated output files (not source code)
+outputs/
+
 # Helm templates use Go template syntax ({{ }}) which is not valid YAML
 infra/helm/**/*.yaml
 
