@@ -47,7 +47,8 @@
     "rc:soak": "node --import tsx tools/rc-soak.ts",
     "release:promotion:evaluate": "node --import tsx tools/evaluate-promotion.ts",
     "release:sign": "node --import tsx tools/sign-provenance.ts",
-    "ci:validate": "ts-node ci/validate-architecture.ts"
+    "ci:validate": "node --import tsx ci/validate-architecture.ts",
+    "validate:all": "pnpm run ci:validate && pnpm run schemas:validate"
   },
   "dependencies": {
     "@genkit-ai/google-genai": "^1.37.0",

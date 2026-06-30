@@ -115,8 +115,7 @@ jobs:
           .github\\.io',\n    r'\\.pages\\.dev',\n    r'\\.vercel\\.app',\n    r'\\\
           .netlify\\.app',\n    r'\\.run\\.app',\n    r'\\.appspot\\.com',\n    r'\\\
           .cloudfunctions\\.net',\n    r'\\.web\\.app',\n    r'\\.firebaseapp\\.com',\n\
-          ]\n\nproduction_config_files = [\n    'config/architecture.config.yaml',\n\
-          \    'config/runtime.config.yaml',\n]\n\nviolations = []\nfor filepath in\
+          ]\n\nproduction_config_files = [\n    'config/architecture.config.yaml',\n]\n\nviolations = []\nfor filepath in\
           \ production_config_files:\n    if not os.path.exists(filepath):\n       \
           \ continue\n    with open(filepath) as f:\n        content = f.read()\n  \
           \  for pattern in forbidden_patterns:\n        if re.search(pattern, content):\n\

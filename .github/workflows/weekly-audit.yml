@@ -194,7 +194,6 @@ jobs:
           LOG_LEVEL: NOTICE
           VALIDATE_GITHUB_ACTIONS: true
           VALIDATE_YAML: true
-          VALIDATE_JSON: false
           VALIDATE_MARKDOWN: true
           VALIDATE_BASH: true
           VALIDATE_DOCKERFILE_HADOLINT: true
