@@ -10,3 +10,5 @@ spec:
   rules: []
   enforcement: block
 platform: mycodexvantaos
+required-gates:
+  - gate-99-production-closure-validation
