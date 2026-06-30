@@ -55,7 +55,7 @@ export interface DatabaseMetadata {
 export interface IRepository<T> {
   findById(id: string): Promise<T | null>;
   findMany(filter: Record<string, unknown>, limit?: number, offset?: number): Promise<T[]>;
-  create(entity: Omit<T, 'id'>): Promise<T>;
+  create(entity: Omit<T, "id">): Promise<T>;
   update(id: string, patch: Partial<T>): Promise<T>;
   delete(id: string): Promise<void>;
   count(filter?: Record<string, unknown>): Promise<number>;

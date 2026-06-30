@@ -18,21 +18,21 @@ spec:
   deploymentAllowed: false
   metadataOnly: true
   exports:
-    - type: navigation-index
-      name: directory-index
-      path: ./directory-index.yaml
-    - type: navigation-index
-      name: module-index
-      path: ./module-index.yaml
-    - type: navigation-index
-      name: dependency-graph
-      path: ./dependency-graph.yaml
-    - type: navigation-index
-      name: binding-index
-      path: ./binding-index.yaml
-    - type: navigation-index
-      name: service-navigation-map
-      path: ./service-navigation-map.yaml
+  - type: navigation-index
+    name: directory-index
+    path: ./directory-index.yaml
+  - type: navigation-index
+    name: module-index
+    path: ./module-index.yaml
+  - type: navigation-index
+    name: dependency-graph
+    path: ./dependency-graph.yaml
+  - type: navigation-index
+    name: binding-index
+    path: ./binding-index.yaml
+  - type: navigation-index
+    name: service-navigation-map
+    path: ./service-navigation-map.yaml
   governance:
     ssot: true
     authority: global-navigation-index

@@ -13,8 +13,8 @@ import type {
   CommitInfo,
   PRInfo,
   FileChange,
-} from '../packages/capabilities/src/repository';
-import type { LoggingCapability } from '../packages/capabilities/src/logging';
+} from "../packages/capabilities/src/repository";
+import type { LoggingCapability } from "../packages/capabilities/src/logging";
 
 export interface FixerContext {
   owner: string;
@@ -70,17 +70,17 @@ export abstract class BaseFixer {
 export class NamingFixer extends BaseFixer {
   async checkAndFix(context: FixerContext): Promise<FixResult> {
     if (!this.repoProvider) {
-      throw new Error('Repository provider not initialized');
+      throw new Error("Repository provider not initialized");
     }
 
     try {
-      await this.log('info', 'Checking naming violations', context);
+      await this.log("info", "Checking naming violations", context);
 
       // Get file content
       const content = await this.repoProvider.getFile({
         owner: context.owner,
         repo: context.repo,
-        path: context.path || '',
+        path: context.path || "",
         ref: context.ref,
       });
 
@@ -88,7 +88,7 @@ export class NamingFixer extends BaseFixer {
         return {
           success: true,
           fixed: false,
-          message: 'File not found or empty',
+          message: "File not found or empty",
         };
       }
 
@@ -99,7 +99,7 @@ export class NamingFixer extends BaseFixer {
         return {
           success: true,
           fixed: false,
-          message: 'No naming violations found',
+          message: "No naming violations found",
         };
       }
 
@@ -110,16 +110,16 @@ export class NamingFixer extends BaseFixer {
       const commitResult = await this.repoProvider.createCommit({
         owner: context.owner,
         repo: context.repo,
-        message: 'fix: correct naming convention violations',
+        message: "fix: correct naming convention violations",
         changes: [
           {
-            path: context.path || '',
+            path: context.path || "",
             content: fixedContent,
           },
         ],
       });
 
-      await this.log('info', 'Fixed naming violations', {
+      await this.log("info", "Fixed naming violations", {
         count: violations.length,
         commit: commitResult.sha,
       });
@@ -130,24 +130,24 @@ export class NamingFixer extends BaseFixer {
         message: `Fixed ${violations.length} naming violations`,
         changes: [
           {
-            path: context.path || '',
+            path: context.path || "",
             content: fixedContent,
           },
         ],
       };
     } catch (error: any) {
-      await this.log('error', 'Failed to fix naming violations', { error: error.message });
+      await this.log("error", "Failed to fix naming violations", { error: error.message });
       throw error;
     }
   }
 
   async checkPR(context: FixerContext): Promise<FixResult> {
     if (!this.repoProvider) {
-      throw new Error('Repository provider not initialized');
+      throw new Error("Repository provider not initialized");
     }
 
     try {
-      await this.log('info', 'Checking PR for naming violations', context);
+      await this.log("info", "Checking PR for naming violations", context);
 
       const pr = await this.repoProvider.getPR({
         owner: context.owner,
@@ -159,7 +159,7 @@ export class NamingFixer extends BaseFixer {
         return {
           success: true,
           fixed: false,
-          message: 'PR not found',
+          message: "PR not found",
         };
       }
 
@@ -174,7 +174,7 @@ export class NamingFixer extends BaseFixer {
       const fixes: FileChange[] = [];
 
       for (const file of files) {
-        if (file.filename.endsWith('.yaml') || file.filename.endsWith('.yml')) {
+        if (file.filename.endsWith(".yaml") || file.filename.endsWith(".yml")) {
           const result = await this.checkAndFix({
             owner: context.owner,
             repo: context.repo,
@@ -205,11 +205,11 @@ export class NamingFixer extends BaseFixer {
         message:
           totalViolations > 0
             ? `Fixed ${totalViolations} files with naming violations`
-            : 'No naming violations found',
+            : "No naming violations found",
         changes: fixes,
       };
     } catch (error: any) {
-      await this.log('error', 'Failed to check PR', { error: error.message });
+      await this.log("error", "Failed to check PR", { error: error.message });
       throw error;
     }
   }
@@ -218,7 +218,7 @@ export class NamingFixer extends BaseFixer {
     const violations: string[] = [];
 
     // Example: Check for kebab-case violations in YAML keys
-    const lines = content.split('\n');
+    const lines = content.split("\n");
     lines.forEach((line, index) => {
       const match = line.match(/^\s*([a-zA-Z0-9_-]+):/);
       if (match) {
@@ -242,13 +242,13 @@ export class NamingFixer extends BaseFixer {
         const lineNum = parseInt(match[1]) - 1;
         const key = match[2];
         const kebabKey = key
-          .replace(/([A-Z])/g, '-$1')
+          .replace(/([A-Z])/g, "-$1")
           .toLowerCase()
-          .replace(/^-/, '');
+          .replace(/^-/, "");
 
-        const lines = fixed.split('\n');
+        const lines = fixed.split("\n");
         lines[lineNum] = lines[lineNum].replace(key, kebabKey);
-        fixed = lines.join('\n');
+        fixed = lines.join("\n");
       }
     });
 
@@ -261,23 +261,23 @@ export class NamingFixer extends BaseFixer {
  */
 export class SecurityFixer extends BaseFixer {
   async checkAndFix(context: FixerContext): Promise<FixResult> {
-    await this.log('info', 'Checking security issues', context);
+    await this.log("info", "Checking security issues", context);
 
     // Implementation similar to NamingFixer
     return {
       success: true,
       fixed: false,
-      message: 'Security check completed',
+      message: "Security check completed",
     };
   }
 
   async checkPR(context: FixerContext): Promise<FixResult> {
-    await this.log('info', 'Checking PR for security issues', context);
+    await this.log("info", "Checking PR for security issues", context);
 
     return {
       success: true,
       fixed: false,
-      message: 'Security PR check completed',
+      message: "Security PR check completed",
     };
   }
 }
@@ -287,22 +287,22 @@ export class SecurityFixer extends BaseFixer {
  */
 export class DependencyFixer extends BaseFixer {
   async checkAndFix(context: FixerContext): Promise<FixResult> {
-    await this.log('info', 'Checking dependency issues', context);
+    await this.log("info", "Checking dependency issues", context);
 
     return {
       success: true,
       fixed: false,
-      message: 'Dependency check completed',
+      message: "Dependency check completed",
     };
   }
 
   async checkPR(context: FixerContext): Promise<FixResult> {
-    await this.log('info', 'Checking PR for dependency issues', context);
+    await this.log("info", "Checking PR for dependency issues", context);
 
     return {
       success: true,
       fixed: false,
-      message: 'Dependency PR check completed',
+      message: "Dependency PR check completed",
     };
   }
 }
@@ -344,8 +344,8 @@ export class AutoFixBot {
   async handlePush(payload: any): Promise<void> {
     const logger = await this.providerFactory.getLoggingProvider();
     await logger.log({
-      level: 'info',
-      message: 'Received push event',
+      level: "info",
+      message: "Received push event",
       context: {
         repo: payload.repository?.full_name,
         ref: payload.ref,
@@ -357,7 +357,7 @@ export class AutoFixBot {
     for (const commit of payload.commits || []) {
       const files = [...(commit.added || []), ...(commit.modified || [])];
       for (const file of files) {
-        if (file.endsWith('.yaml') || file.endsWith('.yml')) {
+        if (file.endsWith(".yaml") || file.endsWith(".yml")) {
           await this.fixers[0].checkAndFix({
             owner: payload.repository?.owner?.login,
             repo: payload.repository?.name,
@@ -375,8 +375,8 @@ export class AutoFixBot {
   async handlePROpened(payload: any): Promise<void> {
     const logger = await this.providerFactory.getLoggingProvider();
     await logger.log({
-      level: 'info',
-      message: 'Received pull_request.opened event',
+      level: "info",
+      message: "Received pull_request.opened event",
       context: {
         repo: payload.repository?.full_name,
         pr: payload.pull_request?.number,
@@ -398,8 +398,8 @@ export class AutoFixBot {
    */
   async healthCheck(): Promise<{ status: string; version: string }> {
     return {
-      status: 'healthy',
-      version: this.config.version || '1.0.0',
+      status: "healthy",
+      version: this.config.version || "1.0.0",
     };
   }
 

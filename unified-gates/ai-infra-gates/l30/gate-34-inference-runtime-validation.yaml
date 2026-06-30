@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,34 +10,36 @@ metadata:
   criticality: critical
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-60700
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l30
-    - inference
+  - l30
+  - inference
   sloTarget: 30
   evidenceRetentionDays: 2555
 spec:
-  description: >
-    Validates that the inference runtime is correctly configured and meets latency and throughput SLOs.
+  description: 'Validates that the inference runtime is correctly configured and meets
+    latency and throughput SLOs.
+
+    '
   validates:
-    - dimension: runtime-readiness
-      description: Inference runtime is ready and meets SLOs.
-      checks:
-        - id: chk-runtime-healthy
-          description: Inference runtime health check passes
-          rule: 'health:inference-runtime'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-latency-slo
-          description: p99 inference latency meets SLO target
-          rule: 'threshold:latency-p99<=contract.maxLatencyMs'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-throughput-slo
-          description: Throughput meets SLO target
-          rule: 'threshold:throughput>=contract.minThroughput'
-          severity: high
-          evidenceRequired: true
+  - dimension: runtime-readiness
+    description: Inference runtime is ready and meets SLOs.
+    checks:
+    - id: chk-runtime-healthy
+      description: Inference runtime health check passes
+      rule: health:inference-runtime
+      severity: critical
+      evidenceRequired: true
+    - id: chk-latency-slo
+      description: p99 inference latency meets SLO target
+      rule: threshold:latency-p99<=contract.maxLatencyMs
+      severity: critical
+      evidenceRequired: true
+    - id: chk-throughput-slo
+      description: Throughput meets SLO target
+      rule: threshold:throughput>=contract.minThroughput
+      severity: high
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

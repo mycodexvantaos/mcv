@@ -1,6 +1,3 @@
-# === path: argocd/Project.yaml ===
-# ArgoCD Project for MyCodeXvantaOS
-
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
@@ -8,76 +5,65 @@ metadata:
   namespace: argocd
 spec:
   description: MyCodeXvantaOS Platform Project
-
-  # Source repositories
   sourceRepos:
-    - 'https://github.com/mycodexvantaos/*'
-    - 'ghcr.io/mycodexvantaos/*'
-
-  # Destination clusters and namespaces
+  - https://github.com/mycodexvantaos/*
+  - ghcr.io/mycodexvantaos/*
   destinations:
-    - namespace: mycodexvantaos
-      server: https://kubernetes.default.svc
-    - namespace: mycodexvantaos-staging
-      server: https://kubernetes.default.svc
-    - namespace: mycodexvantaos-dev
-      server: https://kubernetes.default.svc
-
-  # Cluster resource allow list
+  - namespace: mycodexvantaos
+    server: https://kubernetes.default.svc
+  - namespace: mycodexvantaos-staging
+    server: https://kubernetes.default.svc
+  - namespace: mycodexvantaos-dev
+    server: https://kubernetes.default.svc
   clusterResourceWhitelist:
-    - group: ''
-      kind: Namespace
-    - group: ''
-      kind: PersistentVolume
-    - group: ''
-      kind: StorageClass
-    - group: rbac.authorization.k8s.io
-      kind: ClusterRole
-    - group: rbac.authorization.k8s.io
-      kind: ClusterRoleBinding
-
-  # Namespace resource allow list
+  - group: ''
+    kind: Namespace
+  - group: ''
+    kind: PersistentVolume
+  - group: ''
+    kind: StorageClass
+  - group: rbac.authorization.k8s.io
+    kind: ClusterRole
+  - group: rbac.authorization.k8s.io
+    kind: ClusterRoleBinding
   namespaceResourceWhitelist:
-    - group: ''
-      kind: Deployment
-    - group: ''
-      kind: Service
-    - group: ''
-      kind: ConfigMap
-    - group: ''
-      kind: Secret
-    - group: ''
-      kind: PersistentVolumeClaim
-    - group: apps
-      kind: Deployment
-    - group: apps
-      kind: StatefulSet
-    - group: apps
-      kind: DaemonSet
-    - group: networking.k8s.io
-      kind: Ingress
-    - group: networking.k8s.io
-      kind: NetworkPolicy
-    - group: autoscaling
-      kind: HorizontalPodAutoscaler
-    - group: policy
-      kind: PodDisruptionBudget
-
-  # Roles for team access
+  - group: ''
+    kind: Deployment
+  - group: ''
+    kind: Service
+  - group: ''
+    kind: ConfigMap
+  - group: ''
+    kind: Secret
+  - group: ''
+    kind: PersistentVolumeClaim
+  - group: apps
+    kind: Deployment
+  - group: apps
+    kind: StatefulSet
+  - group: apps
+    kind: DaemonSet
+  - group: networking.k8s.io
+    kind: Ingress
+  - group: networking.k8s.io
+    kind: NetworkPolicy
+  - group: autoscaling
+    kind: HorizontalPodAutoscaler
+  - group: policy
+    kind: PodDisruptionBudget
   roles:
-    - name: admin
-      description: Admin access to MyCodeXvantaOS project
-      policies:
-        - p, proj:mycodexvantaos:admin, applications, *, mycodexvantaos/*, allow
-        - p, proj:mycodexvantaos:admin, repositories, *, mycodexvantaos/*, allow
-        - p, proj:mycodexvantaos:admin, clusters, *, mycodexvantaos/*, allow
-      groups:
-        - mycodexvantaos:admins
-
-    - name: developer
-      description: Developer access to MyCodeXvantaOS project
-      policies:
-        - p, proj:mycodexvantaos:developer, applications, get, mycodexvantaos/*, allow
-        - p, proj:mycodexvantaos:developer, applications, sync, mycodexvantaos/*, allow
-      groups:
-        - mycodexvantaos:developers
+  - name: admin
+    description: Admin access to MyCodeXvantaOS project
+    policies:
+    - p, proj:mycodexvantaos:admin, applications, *, mycodexvantaos/*, allow
+    - p, proj:mycodexvantaos:admin, repositories, *, mycodexvantaos/*, allow
+    - p, proj:mycodexvantaos:admin, clusters, *, mycodexvantaos/*, allow
+    groups:
+    - mycodexvantaos:admins
+  - name: developer
+    description: Developer access to MyCodeXvantaOS project
+    policies:
+    - p, proj:mycodexvantaos:developer, applications, get, mycodexvantaos/*, allow
+    - p, proj:mycodexvantaos:developer, applications, sync, mycodexvantaos/*, allow
+    groups:
+    - mycodexvantaos:developers

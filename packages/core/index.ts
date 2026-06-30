@@ -19,10 +19,10 @@ export {
   isValidKebabCase,
   PLATFORM_NAMESPACE,
   URN_SCHEME,
-} from './shared';
+} from "./shared";
 
-export type { ResourceMetadata, ResourceCondition, OwnerReference } from './shared';
-export type { PaginationRequest, PaginationResponse } from './shared';
+export type { ResourceMetadata, ResourceCondition, OwnerReference } from "./shared";
+export type { PaginationRequest, PaginationResponse } from "./shared";
 export type {
   PlatformError,
   NotFoundError,
@@ -31,11 +31,11 @@ export type {
   ValidationError,
   QuotaExceededError,
   ConflictError,
-} from './shared';
-export { ok, err, isOk, isErr } from './shared';
-export type { Result } from './shared';
-export { nowISO, parseISO, isExpired, addDays, daysBetween } from './shared';
-export { DEFAULT_PAGE_LIMIT, MAX_PAGE_LIMIT } from './shared';
+} from "./shared";
+export { ok, err, isOk, isErr } from "./shared";
+export type { Result } from "./shared";
+export { nowISO, parseISO, isExpired, addDays, daysBetween } from "./shared";
+export { DEFAULT_PAGE_LIMIT, MAX_PAGE_LIMIT } from "./shared";
 
 // ── Service Catalog ────────────────────────────────────────────────────
 export type {
@@ -48,11 +48,11 @@ export type {
   DependencyGraph,
   RuntimeProfile,
   GovernanceOverlay,
-} from './service-catalog';
+} from "./service-catalog";
 
-export type { ServiceCategoryDefinition, CategoryServiceRef } from './service-catalog';
+export type { ServiceCategoryDefinition, CategoryServiceRef } from "./service-catalog";
 
-export { MVP_SERVICE_CATEGORIES } from './service-catalog';
+export { MVP_SERVICE_CATEGORIES } from "./service-catalog";
 
 // ── Resource Model ─────────────────────────────────────────────────────
 export type {
@@ -60,9 +60,9 @@ export type {
   ResourcePhase,
   ResourceReference,
   PlatformResourceKind,
-} from './resource-model';
+} from "./resource-model";
 
-export { resourceUri } from './resource-model';
+export { resourceUri } from "./resource-model";
 
 // ── Policy Model ───────────────────────────────────────────────────────
 export type {
@@ -74,9 +74,9 @@ export type {
   PolicyCondition,
   PolicyDecision,
   PolicyEvaluationContext,
-} from './policy-model';
+} from "./policy-model";
 
-export { STANDARD_ACTIONS } from './policy-model';
+export { STANDARD_ACTIONS } from "./policy-model";
 
 // ── Audit Model ────────────────────────────────────────────────────────
 export type {
@@ -87,9 +87,9 @@ export type {
   AuditContext,
   IntegrityReport,
   ClosedLoopStatus,
-} from './audit-model';
+} from "./audit-model";
 
-export { STANDARD_AUDIT_EVENTS } from './audit-model';
+export { STANDARD_AUDIT_EVENTS } from "./audit-model";
 
 // ── Knowledge Model ────────────────────────────────────────────────────
 export type {
@@ -131,4 +131,4 @@ export type {
   DerivedArtifactPhase,
   DerivedArtifactSpec,
   DerivedArtifactStatus,
-} from './knowledge-model';
+} from "./knowledge-model";

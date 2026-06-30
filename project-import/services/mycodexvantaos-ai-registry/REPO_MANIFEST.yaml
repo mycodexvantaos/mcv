@@ -9,20 +9,20 @@ metadata:
   planeDescription: 執行面 — 任務、工作流、自動化
   tier: 2
   tags:
-    - builder
-    - modules
-    - plugins
+  - builder
+  - modules
+  - plugins
 spec:
   architecture:
     philosophy: native-first / provider-agnostic
     principle: 第三方服務是擴充出口，不是平台地基
     mode: native | connected | hybrid
   capabilities:
-    - module-loading
-    - plugin-management
-    - extension-registry
+  - module-loading
+  - plugin-management
+  - extension-registry
   providerDependencies:
-    - database
-    - storage
+  - database
+  - storage
   repoDependencies:
-    - codexvanta-os-core-kernel
+  - codexvanta-os-core-kernel

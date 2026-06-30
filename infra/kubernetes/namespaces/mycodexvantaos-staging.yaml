@@ -1,5 +1,3 @@
-# infra/kubernetes/namespaces/mycodexvantaos-staging.yaml
-# 12.1 — Environment 'staging' appears ONLY in namespace name, never in resource names.
 apiVersion: v1
 kind: Namespace
 metadata:

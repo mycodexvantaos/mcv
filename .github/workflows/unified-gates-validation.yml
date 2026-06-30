@@ -4,8 +4,8 @@ on:
   push:
     branches: [main, develop]
     paths:
-      - 'unified-gates/**'
-      - 'governance/**'
+      - "unified-gates/**"
+      - "governance/**"
   pull_request:
     branches: [main, develop]
   workflow_dispatch:
@@ -30,8 +30,8 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-          cache: 'pip'
+          python-version: "3.12"
+          cache: "pip"
 
       - name: Install dependencies
         run: pip install pyyaml jsonschema
@@ -57,7 +57,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install dependencies
         run: pip install pyyaml jsonschema networkx
@@ -78,13 +78,13 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install dependencies
         run: pip install pyyaml jsonschema
 
       - name: Generate gate validation report
-        run: python3 unified-gates/scripts/generate-gate-report.py --root unified-gates
+        run: python3 unified-gates/scripts/generate-gate-report.py --root unified-gates --output unified-gates/outputs/gate-validation-report.json
 
       - name: Generate production closure report
         run: python3 unified-gates/scripts/generate-production-closure-report.py --root unified-gates
@@ -95,7 +95,7 @@ jobs:
           name: gate-validation-reports
           path: |
             unified-gates/outputs/gate-validation-report.json
-            unified-gates/outputs/production-closure-report.json
+            unified-gates/reports/production-closure-report.json
           retention-days: 30
 
   production-closure-gate:
@@ -110,7 +110,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install dependencies
         run: pip install pyyaml

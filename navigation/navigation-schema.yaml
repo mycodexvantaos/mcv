@@ -8,11 +8,11 @@ metadata:
   status: active
 spec:
   schemas:
-    - name: navigation-index
-      path: navigation/schemas/navigation-index.schema.json
-    - name: dependency-graph
-      path: navigation/schemas/dependency-graph.schema.json
-    - name: binding-index
-      path: navigation/schemas/binding-index.schema.json
+  - name: navigation-index
+    path: navigation/schemas/navigation-index.schema.json
+  - name: dependency-graph
+    path: navigation/schemas/dependency-graph.schema.json
+  - name: binding-index
+    path: navigation/schemas/binding-index.schema.json
 platform: mycodexvantaos
 canonical-url: https://mycodexvantaos.com

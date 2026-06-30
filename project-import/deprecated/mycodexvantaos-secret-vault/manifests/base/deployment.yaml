@@ -20,31 +20,31 @@ spec:
         component: secret-vault
     spec:
       containers:
-        - name: mycodexvantaos-secret-vault
-          image: registry.local/mycodexvantaos/mycodexvantaos-secret-vault:latest
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 3000
-              protocol: TCP
-          envFrom:
-            - configMapRef:
-                name: mycodexvantaos-secret-vault-config
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 3000
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 3000
-            initialDelaySeconds: 15
-            periodSeconds: 20
-          resources:
-            requests:
-              cpu: '50m'
-              memory: '64Mi'
-            limits:
-              cpu: '200m'
-              memory: '128Mi'
+      - name: mycodexvantaos-secret-vault
+        image: registry.local/mycodexvantaos/mycodexvantaos-secret-vault:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: mycodexvantaos-secret-vault-config
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 128Mi

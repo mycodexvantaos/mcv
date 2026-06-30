@@ -1,37 +1,35 @@
 apiVersion: mycodexvantaos.io/v1
 kind: ProductionClosurePolicy
 metadata:
-  version: '1.0.0'
+  version: 1.0.0
   date: '2026-06-29'
-  status: 'active'
+  status: active
   name: production-closure-policy
   authority: platform-governance-root
   governanceCode: mycodexvantaos-00000
-  date: '2026-06-29'
-  status: active
 spec:
   description: 'Defines the requirements for production closure. An artifact MUST
     satisfy all requirements in this policy before gate-99 can pass.
 
     '
   requirements:
-    - id: all-mandatory-gates-passed
-      description: All mandatory gates in l00-l90 must have passed.
-      rule: gate:all-mandatory-passed
-    - id: no-open-p1-issues
-      description: No open P1 issues associated with this release.
-      rule: issue-tracker:no-open-p1
-    - id: compliance-report-approved
-      description: Compliance report approved by governance council.
-      rule: approval:governance-council
-    - id: rollback-plan-tested
-      description: Rollback procedure tested in staging.
-      rule: test:rollback-tested
-    - id: on-call-confirmed
-      description: On-call engineer confirmed readiness.
-      rule: oncall:confirmed
-    - id: deployment-window-approved
-      description: Deployment within approved window.
-      rule: schedule:deployment-window
+  - id: all-mandatory-gates-passed
+    description: All mandatory gates in l00-l90 must have passed.
+    rule: gate:all-mandatory-passed
+  - id: no-open-p1-issues
+    description: No open P1 issues associated with this release.
+    rule: issue-tracker:no-open-p1
+  - id: compliance-report-approved
+    description: Compliance report approved by governance council.
+    rule: approval:governance-council
+  - id: rollback-plan-tested
+    description: Rollback procedure tested in staging.
+    rule: test:rollback-tested
+  - id: on-call-confirmed
+    description: On-call engineer confirmed readiness.
+    rule: oncall:confirmed
+  - id: deployment-window-approved
+    description: Deployment within approved window.
+    rule: schedule:deployment-window
   approvalAuthority: release-authority
   deploymentWindowRequired: true

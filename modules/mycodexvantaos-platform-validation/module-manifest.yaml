@@ -12,8 +12,8 @@ spec:
     and architecture compliance.
   category: governance
   runtime-modes:
-    - native
-    - connected
-    - hybrid
+  - native
+  - connected
+  - hybrid
   implementationPath: services/mycodexvantaos-platform-validation/
   packageName: '@mycodexvantaos/platform-validation'

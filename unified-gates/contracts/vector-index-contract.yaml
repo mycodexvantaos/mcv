@@ -1,32 +1,30 @@
 apiVersion: mycodexvantaos.io/v1
 kind: VectorIndexContract
 metadata:
-  version: '1.0.0'
-  date: '2026-06-29'
-  status: 'active'
-  name: vector-index-contract
-  governanceCode: mycodexvantaos-70900
+  version: 1.0.0
   date: '2026-06-29'
   status: active
+  name: vector-index-contract
+  governanceCode: mycodexvantaos-70900
 spec:
   description: 'Defines the canonical contract for vector database indexes. All vector
     indexes MUST conform to this contract.
 
     '
   requiredFields:
-    - indexId
-    - indexVersion
-    - embeddingModelRef
-    - embeddingDimension
-    - distanceMetric
-    - freshnessWindowHours
-    - recallAtK.k
-    - recallAtK.minRecall
-    - maxQueryLatencyMs
-    - accessPolicy
+  - indexId
+  - indexVersion
+  - embeddingModelRef
+  - embeddingDimension
+  - distanceMetric
+  - freshnessWindowHours
+  - recallAtK.k
+  - recallAtK.minRecall
+  - maxQueryLatencyMs
+  - accessPolicy
   validValues:
     distanceMetric:
-      - cosine
-      - euclidean
-      - dot-product
+    - cosine
+    - euclidean
+    - dot-product
   schemaRef: ../schemas/vector-index.schema.json

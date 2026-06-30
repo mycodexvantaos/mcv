@@ -1,17 +1,17 @@
-import { CacheManager } from '../index';
+import { CacheManager } from "../index";
 
-describe('cache-manager', () => {
+describe("cache-manager", () => {
   let instance: CacheManager;
 
   beforeEach(() => {
     instance = new CacheManager();
   });
 
-  test('should initialize', () => {
+  test("should initialize", () => {
     expect(instance).toBeDefined();
   });
 
-  test('should have basic functionality', () => {
-    expect(typeof instance).toBe('object');
+  test("should have basic functionality", () => {
+    expect(typeof instance).toBe("object");
   });
 });

@@ -7,53 +7,53 @@ metadata:
   version: 1.0.0
 spec:
   namespaces:
-    - name: mycodexvantaos
-      type: platform
-      status: active
-      urn: urn:mycodexvantaos
-    - name: mycodexvantaos-core-auth
-      type: service
-      status: active
-      urn: urn:mycodexvantaos:service:mycodexvantaos-core-auth
-    - name: mycodexvantaos-ai-embedding
-      type: service
-      status: active
-      urn: urn:mycodexvantaos:service:mycodexvantaos-ai-embedding
-    - name: mycodexvantaos-ai-inference
-      type: service
-      status: active
-      urn: urn:mycodexvantaos:service:mycodexvantaos-ai-inference
-    - name: mycodexvantaos-agent-runtime
-      type: service
-      status: active
-      urn: urn:mycodexvantaos:service:mycodexvantaos-agent-runtime
-    - name: mycodexvantaos-knowledge-ingestion
-      type: service
-      status: active
-      urn: urn:mycodexvantaos:service:mycodexvantaos-knowledge-ingestion
-    - name: mycodexvantaos-knowledge-search
-      type: service
-      status: active
-      urn: urn:mycodexvantaos:service:mycodexvantaos-knowledge-search
-    - name: mycodexvantaos-governance-policy-engine
-      type: service
-      status: active
-      urn: urn:mycodexvantaos:service:mycodexvantaos-governance-policy-engine
-    - name: mycodexvantaos-governance-audit-chain
-      type: service
-      status: active
-      urn: urn:mycodexvantaos:service:mycodexvantaos-governance-audit-chain
-    - name: mycodexvantaos-billing-metering
-      type: service
-      status: active
-      urn: urn:mycodexvantaos:service:mycodexvantaos-billing-metering
-    - name: mycodexvantaos-runtime-mode-resolver
-      type: service
-      status: active
-      urn: urn:mycodexvantaos:service:mycodexvantaos-runtime-mode-resolver
-    - name: mycodexvantaos-quantum-controller
-      type: service
-      status: active
-      urn: urn:mycodexvantaos:service:mycodexvantaos-quantum-controller
+  - name: mycodexvantaos
+    type: platform
+    status: active
+    urn: urn:mycodexvantaos
+  - name: mycodexvantaos-core-auth
+    type: service
+    status: active
+    urn: urn:mycodexvantaos:service:mycodexvantaos-core-auth
+  - name: mycodexvantaos-ai-embedding
+    type: service
+    status: active
+    urn: urn:mycodexvantaos:service:mycodexvantaos-ai-embedding
+  - name: mycodexvantaos-ai-inference
+    type: service
+    status: active
+    urn: urn:mycodexvantaos:service:mycodexvantaos-ai-inference
+  - name: mycodexvantaos-agent-runtime
+    type: service
+    status: active
+    urn: urn:mycodexvantaos:service:mycodexvantaos-agent-runtime
+  - name: mycodexvantaos-knowledge-ingestion
+    type: service
+    status: active
+    urn: urn:mycodexvantaos:service:mycodexvantaos-knowledge-ingestion
+  - name: mycodexvantaos-knowledge-search
+    type: service
+    status: active
+    urn: urn:mycodexvantaos:service:mycodexvantaos-knowledge-search
+  - name: mycodexvantaos-governance-policy-engine
+    type: service
+    status: active
+    urn: urn:mycodexvantaos:service:mycodexvantaos-governance-policy-engine
+  - name: mycodexvantaos-governance-audit-chain
+    type: service
+    status: active
+    urn: urn:mycodexvantaos:service:mycodexvantaos-governance-audit-chain
+  - name: mycodexvantaos-billing-metering
+    type: service
+    status: active
+    urn: urn:mycodexvantaos:service:mycodexvantaos-billing-metering
+  - name: mycodexvantaos-runtime-mode-resolver
+    type: service
+    status: active
+    urn: urn:mycodexvantaos:service:mycodexvantaos-runtime-mode-resolver
+  - name: mycodexvantaos-quantum-controller
+    type: service
+    status: active
+    urn: urn:mycodexvantaos:service:mycodexvantaos-quantum-controller
 platform: mycodexvantaos
 entries: []

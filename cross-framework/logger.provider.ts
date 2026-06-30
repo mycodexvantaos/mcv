@@ -7,13 +7,13 @@ import type {
   LoggingCapability,
   LogEntry,
   LogLevel as CapabilityLogLevel,
-} from '../packages/capabilities/src/logging';
+} from "../packages/capabilities/src/logging";
 
 export enum LogLevel {
-  DEBUG = 'DEBUG',
-  INFO = 'INFO',
-  WARN = 'WARN',
-  ERROR = 'ERROR',
+  DEBUG = "DEBUG",
+  INFO = "INFO",
+  WARN = "WARN",
+  ERROR = "ERROR",
 }
 
 export interface LogEntryLegacy {
@@ -48,7 +48,7 @@ export class LoggerProvider {
       }
       this.initialized = true;
     } catch (error) {
-      console.error('Failed to initialize Logger:', error);
+      console.error("Failed to initialize Logger:", error);
       // Continue with local logging only
       this.initialized = true;
     }
@@ -93,7 +93,7 @@ export class LoggerProvider {
     }
 
     if (error) {
-      consoleMethod('Error details:', error);
+      consoleMethod("Error details:", error);
     }
 
     // Also send to capability if available
@@ -116,10 +116,10 @@ export class LoggerProvider {
    */
   private mapLogLevel(level: LogLevel): CapabilityLogLevel {
     const map: Record<LogLevel, CapabilityLogLevel> = {
-      [LogLevel.DEBUG]: 'debug',
-      [LogLevel.INFO]: 'info',
-      [LogLevel.WARN]: 'warn',
-      [LogLevel.ERROR]: 'error',
+      [LogLevel.DEBUG]: "debug",
+      [LogLevel.INFO]: "info",
+      [LogLevel.WARN]: "warn",
+      [LogLevel.ERROR]: "error",
     };
     return map[level];
   }
@@ -177,7 +177,7 @@ export class LoggerProvider {
         }
         return text;
       })
-      .join('\n\n');
+      .join("\n\n");
   }
 
   /**

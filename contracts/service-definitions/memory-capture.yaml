@@ -10,16 +10,25 @@ spec:
   runtime:
     portable: true
     supported:
-      - cloudflare-workers
-      - node-server
-      - docker-container
+    - cloudflare-workers
+    - node-server
+    - docker-container
   permissions:
-    - action: read
-      roles: [workspace-viewer, workspace-member, workspace-owner, platform-admin]
-    - action: write
-      roles: [workspace-member, workspace-owner, platform-admin]
-    - action: admin
-      roles: [workspace-owner, platform-admin]
+  - action: read
+    roles:
+    - workspace-viewer
+    - workspace-member
+    - workspace-owner
+    - platform-admin
+  - action: write
+    roles:
+    - workspace-member
+    - workspace-owner
+    - platform-admin
+  - action: admin
+    roles:
+    - workspace-owner
+    - platform-admin
   events:
     emitted: []
     subscribed: []

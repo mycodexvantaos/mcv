@@ -9,22 +9,22 @@ metadata:
   planeDescription: 執行面 — 任務、工作流、自動化
   tier: 3
   tags:
-    - connector
-    - ci-cd
-    - github-actions
+  - connector
+  - ci-cd
+  - github-actions
 spec:
   architecture:
     philosophy: native-first / provider-agnostic
     principle: 第三方服務是擴充出口，不是平台地基
     mode: native | connected | hybrid
   capabilities:
-    - ci-cd
-    - workflow-triggers
-    - pipeline-integration
+  - ci-cd
+  - workflow-triggers
+  - pipeline-integration
   providerDependencies:
-    - repo
-    - deploy
-    - notification
+  - repo
+  - deploy
+  - notification
   repoDependencies:
-    - codexvanta-os-core-kernel
-    - codexvanta-os-automation-core
+  - codexvanta-os-core-kernel
+  - codexvanta-os-automation-core

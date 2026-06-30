@@ -116,22 +116,22 @@ cp .env.connected.example .env
 ### 2. 初始化
 
 ```typescript
-import { initializeCrossFramework } from '@mycodexvantaos/cross-framework';
-import { initializeChatOps } from '@mycodexvantaos/chatops';
-import { initializeGitOps } from '@mycodexvantaos/gitops-controlplane';
+import { initializeCrossFramework } from "@mycodexvantaos/cross-framework";
+import { initializeChatOps } from "@mycodexvantaos/chatops";
+import { initializeGitOps } from "@mycodexvantaos/gitops-controlplane";
 
 // 初始化所有模組
 const [crossFramework, chatops, gitops] = await Promise.all([
-  initializeCrossFramework({ runtimeMode: 'native' }),
+  initializeCrossFramework({ runtimeMode: "native" }),
   initializeChatOps({ gatewayPort: 8081 }),
-  initializeGitOps({ evidenceDir: 'dist/evidence' }),
+  initializeGitOps({ evidenceDir: "dist/evidence" }),
 ]);
 ```
 
 ### 3. 健康檢查
 
 ```typescript
-import { healthCheckAll } from '@mycodexvantaos/cross-framework';
+import { healthCheckAll } from "@mycodexvantaos/cross-framework";
 
 const health = await healthCheckAll();
 console.log(health);
@@ -147,7 +147,7 @@ console.log(health);
 ### 4. 優雅關閉
 
 ```typescript
-import { shutdownAll } from '@mycodexvantaos/cross-framework';
+import { shutdownAll } from "@mycodexvantaos/cross-framework";
 
 await shutdownAll();
 ```
@@ -160,7 +160,7 @@ await shutdownAll();
 
 ```typescript
 // 完全離線運行
-const factory = getProviderFactory({ mode: 'native' });
+const factory = getProviderFactory({ mode: "native" });
 const synthesis = await factory.getCodeSynthesisProvider();
 // 使用本地模板生成代碼
 ```
@@ -169,7 +169,7 @@ const synthesis = await factory.getCodeSynthesisProvider();
 
 ```typescript
 // 優先使用外部服務，失敗時降級
-const factory = getProviderFactory({ mode: 'hybrid' });
+const factory = getProviderFactory({ mode: "hybrid" });
 const synthesis = await factory.getCodeSynthesisProvider();
 // 1. 嘗試 Anthropic API
 // 2. 失敗時自動降級到 Native 模板
@@ -179,7 +179,7 @@ const synthesis = await factory.getCodeSynthesisProvider();
 
 ```typescript
 // 僅使用外部服務
-const factory = getProviderFactory({ mode: 'connected' });
+const factory = getProviderFactory({ mode: "connected" });
 const synthesis = await factory.getCodeSynthesisProvider();
 // 必須有網絡連接，否則拋出錯誤
 ```

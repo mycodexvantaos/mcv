@@ -1,45 +1,32 @@
 name: Deployment Freeze Gate
-
-on:
+true:
   workflow_run:
-    workflows: ['Deploy to Development', 'Deploy to Staging', 'Deploy to Production'] # Add your deployment workflow names
+    workflows:
+    - Deploy to Development
+    - Deploy to Staging
+    - Deploy to Production
     types:
-      - requested
-
+    - requested
 permissions:
   actions: write
-
 jobs:
   check-freeze:
     runs-on: ubuntu-latest
     steps:
-      - name: Check for deployment freeze
-        id: freeze_check
-        run: |
-          # This script would contain logic to check a central configuration
-          # (e.g., .root.governance.yaml) for freeze windows.
-          # For this example, we'll simulate a freeze.
-          FREEZE_ACTIVE="false"
-          CURRENT_DATE=$(date -u +%Y-%m-%d)
-
-          # Example Freeze Window (from .root.governance.yaml)
-          FREEZE_START="2024-12-15"
-          FREEZE_END="2025-01-10"
-
-          if [[ "$CURRENT_DATE" > "$FREEZE_START" ]] && [[ "$CURRENT_DATE" < "$FREEZE_END" ]]; then
-            FREEZE_ACTIVE="true"
-          fi
-
-          if [[ "$FREEZE_ACTIVE" == "true" ]]; then
-            echo "::error::Deployment freeze is active! Deployments are currently blocked."
-            exit 1
-          else
-            echo "Deployment freeze is not active. Proceeding."
-          fi
-
-      - name: Cancel workflow run
-        if: failure()
-        uses: andymckay/cancel-workflow-action@0.3.0
-        with:
-          workflow_id: ${{ github.event.workflow_run.id }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Check for deployment freeze
+      id: freeze_check
+      run: "# This script would contain logic to check a central configuration\n#\
+        \ (e.g., .root.governance.yaml) for freeze windows.\n# For this example, we'll\
+        \ simulate a freeze.\nFREEZE_ACTIVE=\"false\"\nCURRENT_DATE=$(date -u +%Y-%m-%d)\n\
+        \n# Example Freeze Window (from .root.governance.yaml)\nFREEZE_START=\"2024-12-15\"\
+        \nFREEZE_END=\"2025-01-10\"\n\nif [[ \"$CURRENT_DATE\" > \"$FREEZE_START\"\
+        \ ]] && [[ \"$CURRENT_DATE\" < \"$FREEZE_END\" ]]; then\n  FREEZE_ACTIVE=\"\
+        true\"\nfi\n\nif [[ \"$FREEZE_ACTIVE\" == \"true\" ]]; then\n  echo \"::error::Deployment\
+        \ freeze is active! Deployments are currently blocked.\"\n  exit 1\nelse\n\
+        \  echo \"Deployment freeze is not active. Proceeding.\"\nfi\n"
+    - name: Cancel workflow run
+      if: failure()
+      uses: andymckay/cancel-workflow-action@0.3.0
+      with:
+        workflow_id: ${{ github.event.workflow_run.id }}
+        token: ${{ secrets.GITHUB_TOKEN }}

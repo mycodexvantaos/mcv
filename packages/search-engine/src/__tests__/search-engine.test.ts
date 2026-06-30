@@ -1,17 +1,17 @@
-import { SearchEngine } from '../index';
+import { SearchEngine } from "../index";
 
-describe('search-engine', () => {
+describe("search-engine", () => {
   let instance: SearchEngine;
 
   beforeEach(() => {
     instance = new SearchEngine();
   });
 
-  test('should initialize', () => {
+  test("should initialize", () => {
     expect(instance).toBeDefined();
   });
 
-  test('should have basic functionality', () => {
-    expect(typeof instance).toBe('object');
+  test("should have basic functionality", () => {
+    expect(typeof instance).toBe("object");
   });
 });

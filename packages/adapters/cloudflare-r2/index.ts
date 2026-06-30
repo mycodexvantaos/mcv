@@ -13,7 +13,7 @@ import type {
   StorageMetadata,
   StorageListOptions,
   StorageListResult,
-} from '../../ports/object-storage';
+} from "../../ports/object-storage";
 
 // ── R2 Environment Binding ─────────────────────────────────────────────
 
@@ -65,7 +65,7 @@ export class CloudflareR2Adapter implements IObjectStoragePort {
     return {
       key: object.key,
       sizeBytes: object.size,
-      contentType: object.httpMetadata?.contentType ?? 'application/octet-stream',
+      contentType: object.httpMetadata?.contentType ?? "application/octet-stream",
       lastModified: object.uploaded.toISOString(),
       etag: object.etag,
       customMetadata: object.customMetadata ?? {},

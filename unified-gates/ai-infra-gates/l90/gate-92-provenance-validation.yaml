@@ -12,8 +12,8 @@ metadata:
   governanceCode: mycodexvantaos-00000
   createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l90
-    - provenance
+  - l90
+  - provenance
   sloTarget: 30
   evidenceRetentionDays: 2555
   date: '2026-06-29'
@@ -24,24 +24,24 @@ spec:
 
     '
   validates:
-    - dimension: provenance-completeness
-      description: Provenance is complete and traceable.
-      checks:
-        - id: chk-provenance-exists
-          description: SLSA provenance record exists for the artifact
-          rule: slsa:provenance-exists
-          severity: critical
-          evidenceRequired: true
-        - id: chk-provenance-level
-          description: SLSA provenance level meets minimum requirement (SLSA Level 2)
-          rule: slsa:level>=2
-          severity: critical
-          evidenceRequired: true
-        - id: chk-source-ref-valid
-          description: Source repository reference in provenance is valid
-          rule: slsa:source-ref-valid
-          severity: critical
-          evidenceRequired: true
+  - dimension: provenance-completeness
+    description: Provenance is complete and traceable.
+    checks:
+    - id: chk-provenance-exists
+      description: SLSA provenance record exists for the artifact
+      rule: slsa:provenance-exists
+      severity: critical
+      evidenceRequired: true
+    - id: chk-provenance-level
+      description: SLSA provenance level meets minimum requirement (SLSA Level 2)
+      rule: slsa:level>=2
+      severity: critical
+      evidenceRequired: true
+    - id: chk-source-ref-valid
+      description: Source repository reference in provenance is valid
+      rule: slsa:source-ref-valid
+      severity: critical
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

@@ -11,7 +11,7 @@ export interface GatewayConfig {
 
 export interface Route {
   path: string;
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+  method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
   handler: (req: Request, res: Response) => Promise<Response>;
   auth?: boolean;
   rateLimit?: number;
@@ -30,11 +30,11 @@ export class ApiGateway {
   }
 
   async start(): Promise<void> {
-    console.log('API Gateway starting on port', this.config.port);
+    console.log("API Gateway starting on port", this.config.port);
   }
 
   async stop(): Promise<void> {
-    console.log('API Gateway stopped');
+    console.log("API Gateway stopped");
   }
 
   addRoute(route: Route): void {

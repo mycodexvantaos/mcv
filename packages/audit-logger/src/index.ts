@@ -8,7 +8,7 @@ export interface AuditEvent {
   userId?: string;
   action: string;
   resource: string;
-  result: 'success' | 'failure';
+  result: "success" | "failure";
   timestamp: number;
   metadata: Record<string, any>;
 }
@@ -55,18 +55,18 @@ export class AuditLogger {
     return results;
   }
 
-  async export(format: 'json' | 'csv'): Promise<string> {
-    if (format === 'json') {
+  async export(format: "json" | "csv"): Promise<string> {
+    if (format === "json") {
       return JSON.stringify(this.events, null, 2);
     }
 
     // CSV format
-    const headers = 'id,userId,action,resource,result,timestamp,metadata';
+    const headers = "id,userId,action,resource,result,timestamp,metadata";
     const rows = this.events.map(
       (e) =>
-        `${e.id},${e.userId || ''},${e.action},${e.resource},${e.result},${e.timestamp},"${JSON.stringify(e.metadata)}"`
+        `${e.id},${e.userId || ""},${e.action},${e.resource},${e.result},${e.timestamp},"${JSON.stringify(e.metadata)}"`
     );
-    return [headers, ...rows].join('\n');
+    return [headers, ...rows].join("\n");
   }
 }
 

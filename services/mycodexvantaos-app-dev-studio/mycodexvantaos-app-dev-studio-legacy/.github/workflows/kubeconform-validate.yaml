@@ -1,41 +1,34 @@
-# === path: .github/workflows/kubeconform-validate.yaml ===
 name: Kubeconform Validate
-
-on:
+true:
   pull_request:
     paths:
-      - 'deploy/helm/**.yaml'
-      - 'deploy/kustomize/**.yaml'
-      - 'deploy/platform/**.yaml'
-
+    - deploy/helm/**.yaml
+    - deploy/kustomize/**.yaml
+    - deploy/platform/**.yaml
 permissions:
   contents: read
-
 jobs:
   kubeconform:
     name: Kubeconform Validation
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+    - name: Checkout repository
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+    - name: Set up Helm
+      uses: azure/setup-helm@v4
+      with:
+        version: v3.13.1
+    - name: Render Helm templates
+      run: "mkdir -p ./.tmp/kubeconform\nfind deploy/helm -name \"Chart.yaml\" | while\
+        \ read chart; do\n  CHART_DIR=$(dirname \"$chart\")\n  helm template \"$CHART_DIR\"\
+        \ > ./.tmp/kubeconform/$(basename \"$CHART_DIR\").yaml\ndone\n"
+    - name: Run Kubeconform validation
+      uses: yannh/kubeconform-action@01630d3558117184283879a1a8449557342ac43c
+      with:
+        paths: 'deploy/kustomize/
 
-      - name: Set up Helm
-        uses: azure/setup-helm@v4
-        with:
-          version: v3.13.1
+          deploy/platform/
 
-      - name: Render Helm templates
-        run: |
-          mkdir -p ./.tmp/kubeconform
-          find deploy/helm -name "Chart.yaml" | while read chart; do
-            CHART_DIR=$(dirname "$chart")
-            helm template "$CHART_DIR" > ./.tmp/kubeconform/$(basename "$CHART_DIR").yaml
-          done
+          ./.tmp/kubeconform/
 
-      - name: Run Kubeconform validation
-        uses: yannh/kubeconform-action@01630d3558117184283879a1a8449557342ac43c # v1.20.0
-        with:
-          paths: |
-            deploy/kustomize/
-            deploy/platform/
-            ./.tmp/kubeconform/
+          '

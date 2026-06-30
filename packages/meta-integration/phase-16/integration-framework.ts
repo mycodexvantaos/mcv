@@ -5,7 +5,7 @@ export class IntegrationFramework {
     this.integrations.set(id, {
       id,
       ...integration,
-      status: 'active',
+      status: "active",
     });
   }
 

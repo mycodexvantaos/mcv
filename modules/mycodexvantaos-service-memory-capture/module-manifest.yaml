@@ -12,8 +12,8 @@ spec:
     and memory item creation.
   category: ai
   runtime-modes:
-    - native
-    - connected
-    - hybrid
+  - native
+  - connected
+  - hybrid
   implementationPath: services/mycodexvantaos-service-memory-capture/
   packageName: '@mycodexvantaos/service-memory-capture'

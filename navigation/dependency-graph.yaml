@@ -13,43 +13,43 @@ metadata:
   status: active
 spec:
   hardDependencies:
-    - from: mycodexvantaos-ai-embedding
-      to: mycodexvantaos-core-auth
-      type: hard-runtime-dependency
-      reason: Requires authentication for API access
-    - from: mycodexvantaos-ai-inference
-      to: mycodexvantaos-core-auth
-      type: hard-runtime-dependency
-      reason: Requires authentication for API access
-    - from: mycodexvantaos-agent-runtime
-      to: mycodexvantaos-ai-embedding
-      type: hard-runtime-dependency
-      reason: Requires embedding capability
-    - from: mycodexvantaos-agent-runtime
-      to: mycodexvantaos-ai-inference
-      type: hard-runtime-dependency
-      reason: Requires inference capability
-    - from: mycodexvantaos-knowledge-ingestion
-      to: mycodexvantaos-ai-embedding
-      type: hard-runtime-dependency
-      reason: Requires embedding for knowledge processing
-    - from: mycodexvantaos-knowledge-search
-      to: mycodexvantaos-ai-embedding
-      type: hard-runtime-dependency
-      reason: Requires embedding for search queries
-    - from: mycodexvantaos-billing-metering
-      to: mycodexvantaos-core-auth
-      type: hard-runtime-dependency
-      reason: Requires authentication for billing operations
+  - from: mycodexvantaos-ai-embedding
+    to: mycodexvantaos-core-auth
+    type: hard-runtime-dependency
+    reason: Requires authentication for API access
+  - from: mycodexvantaos-ai-inference
+    to: mycodexvantaos-core-auth
+    type: hard-runtime-dependency
+    reason: Requires authentication for API access
+  - from: mycodexvantaos-agent-runtime
+    to: mycodexvantaos-ai-embedding
+    type: hard-runtime-dependency
+    reason: Requires embedding capability
+  - from: mycodexvantaos-agent-runtime
+    to: mycodexvantaos-ai-inference
+    type: hard-runtime-dependency
+    reason: Requires inference capability
+  - from: mycodexvantaos-knowledge-ingestion
+    to: mycodexvantaos-ai-embedding
+    type: hard-runtime-dependency
+    reason: Requires embedding for knowledge processing
+  - from: mycodexvantaos-knowledge-search
+    to: mycodexvantaos-ai-embedding
+    type: hard-runtime-dependency
+    reason: Requires embedding for search queries
+  - from: mycodexvantaos-billing-metering
+    to: mycodexvantaos-core-auth
+    type: hard-runtime-dependency
+    reason: Requires authentication for billing operations
   logicalDependencies:
-    - from: mycodexvantaos-governance-policy-engine
-      to: mycodexvantaos-governance-audit-chain
-      type: logical-pair
-      reason: Policy evaluation produces audit events
-    - from: mycodexvantaos-agent-runtime
-      to: mycodexvantaos-knowledge-search
-      type: semantic-alignment
-      reason: Agent uses knowledge search for RAG
+  - from: mycodexvantaos-governance-policy-engine
+    to: mycodexvantaos-governance-audit-chain
+    type: logical-pair
+    reason: Policy evaluation produces audit events
+  - from: mycodexvantaos-agent-runtime
+    to: mycodexvantaos-knowledge-search
+    type: semantic-alignment
+    reason: Agent uses knowledge search for RAG
   cyclicityCheck:
     status: acyclic
     lastValidated: '2024-01-01T00:00:00Z'

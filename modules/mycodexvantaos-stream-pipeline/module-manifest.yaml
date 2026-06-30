@@ -8,10 +8,10 @@ metadata:
 spec:
   domain: data
   capabilities:
-    - streaming
-    - queue
-    - observability
-    - aggregation
+  - streaming
+  - queue
+  - observability
+  - aggregation
   providers:
     streaming: streaming-kafka
     queue: queue-kafka

@@ -9,24 +9,24 @@ metadata:
   planeDescription: 可觀測面 — 日誌、指標、追蹤
   tier: 1
   tags:
-    - observability
-    - logging
-    - metrics
-    - tracing
+  - observability
+  - logging
+  - metrics
+  - tracing
 spec:
   architecture:
     philosophy: native-first / provider-agnostic
     principle: 第三方服務是擴充出口，不是平台地基
     mode: native | connected | hybrid
   capabilities:
-    - logging
-    - metrics
-    - tracing
-    - alerting
-    - dashboards
+  - logging
+  - metrics
+  - tracing
+  - alerting
+  - dashboards
   providerDependencies:
-    - observability
-    - database
-    - notification
+  - observability
+  - database
+  - notification
   repoDependencies:
-    - codexvanta-os-core-kernel
+  - codexvanta-os-core-kernel

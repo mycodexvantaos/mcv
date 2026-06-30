@@ -1,34 +1,32 @@
 apiVersion: mycodexvantaos.io/v1
 kind: GateEscalationWorkflow
 metadata:
-  version: '1.0.0'
-  date: '2026-06-29'
-  status: 'active'
-  name: gate-escalation-workflow
-  governanceCode: mycodexvantaos-00000
+  version: 1.0.0
   date: '2026-06-29'
   status: active
+  name: gate-escalation-workflow
+  governanceCode: mycodexvantaos-00000
 spec:
   description: 'Defines the escalation workflow for unresolved gate failures.
 
     '
   escalationPath:
-    - level: 1
-      actor: gate-owner
-      sloMinutes: 60
-      trigger: p1-failure-unresolved
-    - level: 2
-      actor: architecture-governance-owner
-      sloMinutes: 120
-      trigger: level-1-unresolved
-    - level: 3
-      actor: platform-governance-council
-      sloMinutes: 240
-      trigger: level-2-unresolved
-    - level: 4
-      actor: platform-governance-root
-      sloMinutes: 480
-      trigger: level-3-unresolved
+  - level: 1
+    actor: gate-owner
+    sloMinutes: 60
+    trigger: p1-failure-unresolved
+  - level: 2
+    actor: architecture-governance-owner
+    sloMinutes: 120
+    trigger: level-1-unresolved
+  - level: 3
+    actor: platform-governance-council
+    sloMinutes: 240
+    trigger: level-2-unresolved
+  - level: 4
+    actor: platform-governance-root
+    sloMinutes: 480
+    trigger: level-3-unresolved
   postIncidentReview:
     required: true
     condition: p1-escalation

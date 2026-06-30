@@ -2,7 +2,7 @@
  * MyCodeXvantaOS — Usage Application Package
  */
 
-export { UsageService } from './usage-service';
+export { UsageService } from "./usage-service";
 export type {
   UsageServiceDeps,
   Tier,
@@ -12,4 +12,4 @@ export type {
   UsageRecord,
   UsageReport,
   UsageAuditEvent,
-} from './usage-service';
+} from "./usage-service";

@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,34 +10,36 @@ metadata:
   criticality: high
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-00000
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l10
-    - smart
+  - l10
+  - smart
   sloTarget: 30
   evidenceRetentionDays: 1095
 spec:
-  description: >
-    Validates that AI server baseline configuration (BMC, firmware, BIOS) meets the platform's smart server requirements.
+  description: 'Validates that AI server baseline configuration (BMC, firmware, BIOS)
+    meets the platform''s smart server requirements.
+
+    '
   validates:
-    - dimension: server-baseline
-      description: Server baseline configuration is valid.
-      checks:
-        - id: chk-bmc-version
-          description: BMC firmware version meets minimum requirement
-          rule: 'semver:>=2.0.0'
-          severity: high
-          evidenceRequired: true
-        - id: chk-bios-secure-boot
-          description: Secure boot is enabled in BIOS
-          rule: 'feature:secure-boot-enabled'
-          severity: high
-          evidenceRequired: true
-        - id: chk-ipmi-accessible
-          description: IPMI/Redfish management interface is accessible
-          rule: 'connectivity:ipmi'
-          severity: medium
-          evidenceRequired: false
+  - dimension: server-baseline
+    description: Server baseline configuration is valid.
+    checks:
+    - id: chk-bmc-version
+      description: BMC firmware version meets minimum requirement
+      rule: semver:>=2.0.0
+      severity: high
+      evidenceRequired: true
+    - id: chk-bios-secure-boot
+      description: Secure boot is enabled in BIOS
+      rule: feature:secure-boot-enabled
+      severity: high
+      evidenceRequired: true
+    - id: chk-ipmi-accessible
+      description: IPMI/Redfish management interface is accessible
+      rule: connectivity:ipmi
+      severity: medium
+      evidenceRequired: false
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

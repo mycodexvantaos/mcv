@@ -4,43 +4,35 @@ metadata:
   name: mycodexvantaos-phase-one-config
   version: 1.0.0
   date: '2026-06-29'
-  description: 'Phase 1 Architecture Baseline — Freeze Configuration'
-
-# Phase 1 freeze status
+  description: Phase 1 Architecture Baseline — Freeze Configuration
 freeze:
   enabled: true
   status: frozen
   frozen-at: '2026-06-29T00:00:00Z'
   frozen-by: platform-governance
-
-# Frozen artifacts (MUST NOT be modified without governance approval)
 frozen-artifacts:
   specs:
-    - docs/spec/l0-meta/formalized-specification-architecture.yaml
-    - docs/spec/l1-constitution/constitution.yaml
-    - docs/spec/l2-structure/capability-architecture-addendum.yaml
+  - docs/spec/l0-meta/formalized-specification-architecture.yaml
+  - docs/spec/l1-constitution/constitution.yaml
+  - docs/spec/l2-structure/capability-architecture-addendum.yaml
   governance:
-    - governance/identity-policy.yaml
-    - governance/platform-governance-spec.yaml
-    - governance/capability-set.yaml
-    - governance/naming-policy.schema.json
+  - governance/identity-policy.yaml
+  - governance/platform-governance-spec.yaml
+  - governance/capability-set.yaml
+  - governance/naming-policy.schema.json
   platform:
-    - platform/service-catalog.yaml
-    - platform/service-topology.yaml
-
-# Phase 1 required gates (all must pass before phase 2)
+  - platform/service-catalog.yaml
+  - platform/service-topology.yaml
 required-gates:
-  - gate-01-namespace-governance-validation
-  - gate-02-repository-naming-validation
-  - gate-03-governance-code-validation
-  - gate-04-directory-binding-mediator-validation
-  - gate-05-dependency-graph-acyclic-validation
-  - gate-06-lifecycle-state-validation
-  - gate-07-owner-registry-validation
-  - gate-08-audit-evidence-validation
-  - gate-99-production-closure-validation
-
-# Phase 1 scope
+- gate-01-namespace-governance-validation
+- gate-02-repository-naming-validation
+- gate-03-governance-code-validation
+- gate-04-directory-binding-mediator-validation
+- gate-05-dependency-graph-acyclic-validation
+- gate-06-lifecycle-state-validation
+- gate-07-owner-registry-validation
+- gate-08-audit-evidence-validation
+- gate-99-production-closure-validation
 scope:
   foundations: 7
   modules: 11
@@ -48,8 +40,6 @@ scope:
   gates: 61
   workflows: 29
   ci-rules: 18
-
-# Phase 1 acceptance criteria
 acceptance-criteria:
   identity-policy-valid: true
   naming-closure-proven: true

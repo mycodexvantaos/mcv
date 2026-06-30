@@ -1,42 +1,23 @@
-# ── MyCodeXvantaOS Docker Compose ─────────────────────────────────────
-# Self-hostable runtime for the governance-hardened platform
-#
-# Services:
-#   api-node      — Node.js API server (TypeScript control plane)
-#   dream-worker  — Python dream worker (intelligence plane)
-#   postgres      — Persistent storage (production-grade)
-#
-# Usage:
-#   docker compose up                # Start all services
-#   docker compose up api-node       # Start only the API
-#   docker compose logs -f api-node  # Follow API logs
-#
-# Governance enforcement is active by default:
-#   - All mutations are audited
-#   - Policy engine evaluates requests
-#   - Knowledge-assisted requires receipts
-#   - Dream: auto-apply disabled, delete forbidden, review required
-#
-# For development (SQLite instead of Postgres):
-#   Set USE_SQLITE=1 and remove the postgres service
-
 services:
-  # ── API Node (TypeScript Control Plane) ────────────────────────────
   api-node:
     build:
       context: ../..
       dockerfile: infra/docker-compose/Dockerfile.api-node
     container_name: mycodexvantaos-api
     ports:
-      - '${API_PORT:-3100}:3100'
+    - ${API_PORT:-3100}:3100
     environment:
-      - NODE_ENV=production
-      - PORT=3100
-      - DATABASE_URL=${DATABASE_URL:-postgres://mycodexvantaos:mycodexvantaos@postgres:5432/mycodexvantaos}
+    - NODE_ENV=production
+    - PORT=3100
+    - DATABASE_URL=${DATABASE_URL:-postgres://mycodexvantaos:mycodexvantaos@postgres:5432/mycodexvantaos}
     volumes:
-      - ../../contracts:/app/contracts:ro
+    - ../../contracts:/app/contracts:ro
     healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:3100/']
+      test:
+      - CMD
+      - curl
+      - -f
+      - http://localhost:3100/
       interval: 30s
       timeout: 5s
       start_period: 15s
@@ -45,26 +26,23 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-
-  # ── Dream Worker (Python Intelligence Plane) ───────────────────────
   dream-worker:
     build:
       context: ../..
       dockerfile: infra/docker-compose/Dockerfile.dream-worker
     container_name: mycodexvantaos-dream
     environment:
-      - DREAM_MODE=${DREAM_MODE:-dry-run}
-      - PYTHONUNBUFFERED=1
-      - DATABASE_URL=${DATABASE_URL:-postgres://mycodexvantaos:mycodexvantaos@postgres:5432/mycodexvantaos}
+    - DREAM_MODE=${DREAM_MODE:-dry-run}
+    - PYTHONUNBUFFERED=1
+    - DATABASE_URL=${DATABASE_URL:-postgres://mycodexvantaos:mycodexvantaos@postgres:5432/mycodexvantaos}
     volumes:
-      - dream-data:/app/data
+    - dream-data:/app/data
     restart: unless-stopped
-    # Dream worker runs on-demand via CLI, not as a long-lived server
-    # Override command for different modes:
-    #   docker compose run dream-worker dream-worker run --mode proposal
-    command: ['dream-worker', 'run', '--mode', '${DREAM_MODE:-dry-run}']
-
-  # ── PostgreSQL (Production Storage) ────────────────────────────────
+    command:
+    - dream-worker
+    - run
+    - --mode
+    - ${DREAM_MODE:-dry-run}
   postgres:
     image: postgres:16-alpine
     container_name: mycodexvantaos-db
@@ -73,16 +51,17 @@ services:
       POSTGRES_USER: mycodexvantaos
       POSTGRES_PASSWORD: ${DB_PASSWORD:-mycodexvantaos}
     ports:
-      - '${DB_PORT:-5432}:5432'
+    - ${DB_PORT:-5432}:5432
     volumes:
-      - pg-data:/var/lib/postgresql/data
+    - pg-data:/var/lib/postgresql/data
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U mycodexvantaos']
+      test:
+      - CMD-SHELL
+      - pg_isready -U mycodexvantaos
       interval: 5s
       timeout: 5s
       retries: 5
     restart: unless-stopped
-
 volumes:
   dream-data:
     driver: local

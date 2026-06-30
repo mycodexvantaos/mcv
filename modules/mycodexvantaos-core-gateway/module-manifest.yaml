@@ -8,9 +8,9 @@ metadata:
 spec:
   domain: core
   capabilities:
-    - auth
-    - observability
-    - cache
+  - auth
+  - observability
+  - cache
   providers:
     auth: auth-keycloak
     observability: observability-opentelemetry

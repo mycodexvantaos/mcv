@@ -10,25 +10,25 @@ metadata:
   authoritative: true
 spec:
   canonicalRuntimeModes:
+  - native
+  - connected
+  - hybrid
+  - auto
+  providerSupportedModes:
+    allowed:
     - native
     - connected
     - hybrid
-    - auto
-  providerSupportedModes:
-    allowed:
-      - native
-      - connected
-      - hybrid
     forbidden:
-      - auto
+    - auto
     reason: auto is a startup intent, not a provider-supported final runtime mode
   productionRules:
     allowedFinalModes:
-      - native
-      - connected
-      - hybrid
+    - native
+    - connected
+    - hybrid
     forbiddenFinalModes:
-      - auto
+    - auto
     autoForbiddenInProduction:
       condition:
         environment: production
@@ -37,16 +37,16 @@ spec:
       severity: critical
       errorCode: MYCODEXVANTAOS_RUNTIME_AUTO_FORBIDDEN_IN_PRODUCTION
   requiredEnvironmentVariables:
-    - MYCODEXVANTAOS_RUNTIME_MODE
-    - MYCODEXVANTAOS_SECRETS_PROVIDER
-    - MYCODEXVANTAOS_DEPLOYMENT_TARGET
+  - MYCODEXVANTAOS_RUNTIME_MODE
+  - MYCODEXVANTAOS_SECRETS_PROVIDER
+  - MYCODEXVANTAOS_DEPLOYMENT_TARGET
   forbiddenEnvironmentVariablePrefixes:
-    - ORCH_
-    - AXM_
-    - AXIOM_
-    - GL_
-    - NG_
-    - KUBO_
+  - ORCH_
+  - AXM_
+  - AXIOM_
+  - GL_
+  - NG_
+  - KUBO_
 modes:
   native:
     description: Fully self-hosted, no external providers required
@@ -63,49 +63,49 @@ modes:
       graph: graph-native
       search: search-native
     use-cases:
-      - air-gapped environments
-      - on-premises deployment
-      - maximum data sovereignty
-      - development and testing
+    - air-gapped environments
+    - on-premises deployment
+    - maximum data sovereignty
+    - development and testing
   connected:
     description: Cloud-connected with external provider integrations
     external-dependencies: allowed
     providers:
       llm:
-        - llm-openai
-        - llm-openrouter
-        - llm-workers-ai
+      - llm-openai
+      - llm-openrouter
+      - llm-workers-ai
       embedding:
-        - embedding-openai
-        - embedding-workers-ai
+      - embedding-openai
+      - embedding-workers-ai
       vector-store:
-        - vector-store-qdrant
-        - vector-store-vectorize
+      - vector-store-qdrant
+      - vector-store-vectorize
       database:
-        - database-d1
-        - database-postgres
+      - database-d1
+      - database-postgres
       cache:
-        - cache-kv
-        - cache-redis
+      - cache-kv
+      - cache-redis
       queue:
-        - queue-cloudflare
-        - queue-rabbitmq
+      - queue-cloudflare
+      - queue-rabbitmq
       storage:
-        - storage-r2
-        - storage-minio
+      - storage-r2
+      - storage-minio
       secrets:
-        - secrets-vault
+      - secrets-vault
     use-cases:
-      - cloud-native deployment
-      - SaaS applications
-      - high-scale production
+    - cloud-native deployment
+    - SaaS applications
+    - high-scale production
   hybrid:
     description: Mix of native and connected providers based on capability
     external-dependencies: selective
     use-cases:
-      - regulated industries with selective cloud usage
-      - gradual cloud migration
-      - cost optimization
+    - regulated industries with selective cloud usage
+    - gradual cloud migration
+    - cost optimization
 resolution:
   environment-variable: MYCODEXVANTAOS_RUNTIME_MODE
   config-key: runtime-mode

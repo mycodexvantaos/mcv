@@ -8,7 +8,7 @@ export interface PaginationRequest {
   cursor?: string;
   offset?: number;
   sortBy?: string;
-  sortOrder?: 'asc' | 'desc';
+  sortOrder?: "asc" | "desc";
 }
 
 export interface PaginationResponse<T> {

@@ -1,44 +1,29 @@
-# === path: .github/workflows/helm-deps.yaml ===
 name: Check Helm Dependencies
-
-on:
+true:
   pull_request:
     paths:
-      - 'deploy/helm/**/Chart.yaml'
-
+    - deploy/helm/**/Chart.yaml
 permissions:
   contents: read
-
 jobs:
   check-helm-deps:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-
-      - name: Set up Helm
-        uses: azure/setup-helm@v4
-        with:
-          version: v3.13.1
-
-      - name: Check for outdated dependencies
-        run: |
-          find deploy/helm -name "Chart.yaml" | while read chart; do
-            CHART_DIR=$(dirname "$chart")
-            echo "Checking dependencies for $CHART_DIR"
-            if [ -f "$CHART_DIR/Chart.lock" ]; then
-              helm dependency list "$CHART_DIR" | tail -n +2 | while read -r line; do
-                NAME=$(echo "$line" | awk '{print $1}')
-                VERSION=$(echo "$line" | awk '{print $2}')
-                REPO=$(echo "$line" | awk '{print $3}')
-                STATUS=$(echo "$line" | awk '{print $4}')
-                
-                if [ "$STATUS" = "ok" ]; then
-                  LATEST=$(helm search repo "$REPO/$NAME" -l | awk 'NR==2 {print $2}')
-                  if [ "$VERSION" != "$LATEST" ]; then
-                    echo "::warning file=$chart,line=1::Dependency $NAME is outdated. Has: $VERSION, Latest: $LATEST"
-                  fi
-                fi
-              done
-            fi
-          done
+    - name: Checkout code
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+    - name: Set up Helm
+      uses: azure/setup-helm@v4
+      with:
+        version: v3.13.1
+    - name: Check for outdated dependencies
+      run: "find deploy/helm -name \"Chart.yaml\" | while read chart; do\n  CHART_DIR=$(dirname\
+        \ \"$chart\")\n  echo \"Checking dependencies for $CHART_DIR\"\n  if [ -f\
+        \ \"$CHART_DIR/Chart.lock\" ]; then\n    helm dependency list \"$CHART_DIR\"\
+        \ | tail -n +2 | while read -r line; do\n      NAME=$(echo \"$line\" | awk\
+        \ '{print $1}')\n      VERSION=$(echo \"$line\" | awk '{print $2}')\n    \
+        \  REPO=$(echo \"$line\" | awk '{print $3}')\n      STATUS=$(echo \"$line\"\
+        \ | awk '{print $4}')\n      \n      if [ \"$STATUS\" = \"ok\" ]; then\n \
+        \       LATEST=$(helm search repo \"$REPO/$NAME\" -l | awk 'NR==2 {print $2}')\n\
+        \        if [ \"$VERSION\" != \"$LATEST\" ]; then\n          echo \"::warning\
+        \ file=$chart,line=1::Dependency $NAME is outdated. Has: $VERSION, Latest:\
+        \ $LATEST\"\n        fi\n      fi\n    done\n  fi\ndone\n"

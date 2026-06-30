@@ -9,21 +9,21 @@ metadata:
   planeDescription: 整合面 — 事件、網路、外部系統
   tier: 2
   tags:
-    - networking
-    - mesh
-    - gateway
+  - networking
+  - mesh
+  - gateway
 spec:
   architecture:
     philosophy: native-first / provider-agnostic
     principle: 第三方服務是擴充出口，不是平台地基
     mode: native | connected | hybrid
   capabilities:
-    - service-discovery
-    - load-balancing
-    - api-gateway
+  - service-discovery
+  - load-balancing
+  - api-gateway
   providerDependencies:
-    - stateStore
-    - observability
+  - stateStore
+  - observability
   repoDependencies:
-    - codexvanta-os-core-kernel
-    - codexvanta-os-config-manager
+  - codexvanta-os-core-kernel
+  - codexvanta-os-config-manager

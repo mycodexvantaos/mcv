@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Loader2,
   Sparkles,
@@ -13,11 +13,11 @@ import {
   DollarSign,
   ShieldAlert,
   FileText,
-} from 'lucide-react';
-import { researchData as defaultResearchData } from '@/lib/research-data';
-import { summarizeResearchData } from '@/ai/client-stubs';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Badge } from '@/components/ui/badge';
+} from "lucide-react";
+import { researchData as defaultResearchData } from "@/lib/research-data";
+import { summarizeResearchData } from "@/ai/client-stubs";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
 import {
   LineChart,
   Line,
@@ -28,19 +28,19 @@ import {
   ResponsiveContainer,
   BarChart,
   Bar,
-} from 'recharts';
+} from "recharts";
 
 const mockTrendData = [
-  { name: '2021', vsCode: 65, cursor: 0 },
-  { name: '2022', vsCode: 70, cursor: 2 },
-  { name: '2023', vsCode: 74, cursor: 8 },
-  { name: '2024', vsCode: 76, cursor: 15 },
-  { name: '2025', vsCode: 75.9, cursor: 22 },
+  { name: "2021", vsCode: 65, cursor: 0 },
+  { name: "2022", vsCode: 70, cursor: 2 },
+  { name: "2023", vsCode: 74, cursor: 8 },
+  { name: "2024", vsCode: 76, cursor: 15 },
+  { name: "2025", vsCode: 75.9, cursor: 22 },
 ];
 
 const marketGrowthData = [
-  { year: '2024', value: 15.2 },
-  { year: '2033', value: 27.1 },
+  { year: "2024", value: 15.2 },
+  { year: "2033", value: 27.1 },
 ];
 
 interface ResearchPanelProps {
@@ -49,12 +49,12 @@ interface ResearchPanelProps {
 
 export function ResearchPanel({ title }: ResearchPanelProps) {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysis, setAnalysis] = useState('');
+  const [analysis, setAnalysis] = useState("");
   const [inputData, setInputData] = useState(defaultResearchData);
 
   const handleDeepAnalysis = async () => {
     setIsAnalyzing(true);
-    setAnalysis('');
+    setAnalysis("");
     try {
       const result = await summarizeResearchData({ researchData: inputData });
       setAnalysis(result.summary);
@@ -68,7 +68,7 @@ export function ResearchPanel({ title }: ResearchPanelProps) {
 
   const resetData = () => {
     setInputData(defaultResearchData);
-    setAnalysis('');
+    setAnalysis("");
   };
 
   return (

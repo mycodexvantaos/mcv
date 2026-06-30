@@ -21,6 +21,6 @@ provider-id: mycodexvantaos-storage-minio
 capability: storage
 platform: mycodexvantaos
 runtime-modes:
-  - native
-  - connected
-  - hybrid
+- native
+- connected
+- hybrid

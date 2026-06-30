@@ -2,10 +2,10 @@
  * MyCodeXvantaOS — Knowledge Collection Model
  */
 
-import type { ResourceCondition } from '../shared';
+import type { ResourceCondition } from "../shared";
 
-export type CollectionPhase = 'creating' | 'empty' | 'indexing' | 'ready' | 'degraded' | 'deleted';
-export type ChunkStrategy = 'fixed' | 'semantic' | 'sentence';
+export type CollectionPhase = "creating" | "empty" | "indexing" | "ready" | "degraded" | "deleted";
+export type ChunkStrategy = "fixed" | "semantic" | "sentence";
 
 export interface KnowledgeCollectionSpec {
   name: string;

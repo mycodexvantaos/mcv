@@ -1,11 +1,11 @@
 category: audit
 description: Event contracts for audit domain
 events:
-  - audit.event-recorded
-  - audit.chain-verified
-  - audit.chain-violation-detected
-  - audit.event-queried
-  - audit.integrity-check-completed
+- audit.event-recorded
+- audit.chain-verified
+- audit.chain-violation-detected
+- audit.event-queried
+- audit.integrity-check-completed
 apiVersion: mycodexvantaos.io/v1
 kind: EventContract
 metadata:

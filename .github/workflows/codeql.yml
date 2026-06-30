@@ -62,7 +62,7 @@ jobs:
         if: matrix.language == 'javascript-typescript'
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: "22"
           cache: pnpm
       - name: Install JS dependencies
         if: matrix.language == 'javascript-typescript'

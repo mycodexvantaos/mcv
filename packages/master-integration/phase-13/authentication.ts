@@ -8,6 +8,6 @@ export class AuthenticationService {
   }
 
   async verifyToken(token: string): Promise<boolean> {
-    return token.startsWith('token_');
+    return token.startsWith("token_");
   }
 }

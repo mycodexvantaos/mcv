@@ -1,269 +1,224 @@
-# MyCodeXvantaOS Workflow Pattern
-# URN: urn:mycodexvantaos:workflow:persona-consultation
-# Version: 1.0.0
-
-urn: 'urn:mycodexvantaos:workflow:persona-consultation'
-name: 'Persona Consultation Workflow'
-version: '1.0.0'
-description: 'A structured consultation workflow using persona-based analysis and solution generation'
-
-# Workflow metadata
+urn: urn:mycodexvantaos:workflow:persona-consultation
+name: Persona Consultation Workflow
+version: 1.0.0
+description: A structured consultation workflow using persona-based analysis and solution
+  generation
 metadata:
   created_at: '2024-01-15T00:00:00Z'
   updated_at: '2024-01-15T00:00:00Z'
-  author: 'MyCodeXvantaOS Team'
+  author: MyCodeXvantaOS Team
   tags:
-    - 'consultation'
-    - 'analysis'
-    - 'solution-generation'
-    - 'persona-driven'
-
-# Workflow configuration
+  - consultation
+  - analysis
+  - solution-generation
+  - persona-driven
 config:
   max_iterations: 3
   timeout_seconds: 300
   hitl_enabled: true
   governance_tier: 0
-
-# Trigger configuration
 triggers:
-  - type: 'manual'
-    description: 'Manually triggered consultation session'
-  - type: 'api'
-    endpoint: '/api/v1/consultation/start'
-    method: 'POST'
-
-# Input schema
+- type: manual
+  description: Manually triggered consultation session
+- type: api
+  endpoint: /api/v1/consultation/start
+  method: POST
 input_schema:
-  type: 'object'
+  type: object
   required:
-    - 'user_input'
+  - user_input
   properties:
     user_input:
-      type: 'string'
-      description: "The user's input or problem description"
+      type: string
+      description: The user's input or problem description
       minLength: 10
       maxLength: 10000
     preferred_persona:
-      type: 'string'
-      description: 'URN of preferred persona archetype'
-      pattern: '^urn:mycodexvantaos:persona:[a-z0-9-]+$'
+      type: string
+      description: URN of preferred persona archetype
+      pattern: ^urn:mycodexvantaos:persona:[a-z0-9-]+$
     context:
-      type: 'object'
-      description: 'Additional context for the consultation'
+      type: object
+      description: Additional context for the consultation
       properties:
         previous_sessions:
-          type: 'array'
+          type: array
           items:
-            type: 'string'
+            type: string
         domain:
-          type: 'string'
+          type: string
         urgency:
-          type: 'string'
-          enum: ['low', 'medium', 'high']
-
-# Workflow steps
+          type: string
+          enum:
+          - low
+          - medium
+          - high
 steps:
-  # Step 1: Initial Input Analysis
-  - id: 'input-analysis'
-    name: 'Input Analysis'
-    description: 'Analyze user input and determine appropriate persona'
-    type: 'analysis'
-
-    action:
-      type: 'persona_selection'
-      config:
-        default_persona: 'urn:mycodexvantaos:persona:disrupter-primary'
-        selection_criteria:
-          - condition: "contains_keywords(['feel', 'emotion', 'sad', 'anxious'])"
-            persona: 'urn:mycodexvantaos:persona:mediator-primary'
-          - condition: "contains_keywords(['analyze', 'data', 'pattern', 'trend'])"
-            persona: 'urn:mycodexvantaos:persona:analyst-primary'
-          - condition: "contains_keywords(['design', 'architecture', 'solution', 'system'])"
-            persona: 'urn:mycodexvantaos:persona:solution-architect-primary'
-          - condition: "contains_keywords(['creative', 'innovative', 'idea', 'brainstorm'])"
-            persona: 'urn:mycodexvantaos:persona:creative-thinker-primary'
-          - condition: "contains_keywords(['review', 'critique', 'evaluate', 'quality'])"
-            persona: 'urn:mycodexvantaos:persona:critic-primary'
-
-    outputs:
-      - name: 'selected_persona'
-        type: 'string'
-        description: 'URN of selected persona'
-      - name: 'input_classification'
-        type: 'object'
-        description: 'Classification of input type and themes'
-
-  # Step 2: Semantic Mask Detection
-  - id: 'mask-detection'
-    name: 'Semantic Mask Detection'
-    description: 'Detect semantic masks and avoidance patterns in user input'
-    type: 'analysis'
-
-    depends_on:
-      - 'input-analysis'
-
-    action:
-      type: 'semantic_mask_detection'
-      config:
-        min_severity: 1
-        include_reframes: true
-        max_detections: 10
-
-    outputs:
-      - name: 'detected_masks'
-        type: 'array'
-        description: 'List of detected semantic masks'
-      - name: 'mask_severity_score'
-        type: 'number'
-        description: 'Overall severity score of detected masks'
-      - name: 'reframe_suggestions'
-        type: 'array'
-        description: 'Truth reframe suggestions for detected masks'
-
-  # Step 3: Root Cause Analysis
-  - id: 'root-cause-analysis'
-    name: 'Root Cause Analysis'
-    description: 'Perform multi-layer root cause analysis'
-    type: 'analysis'
-
-    depends_on:
-      - 'mask-detection'
-
-    action:
-      type: 'root_cause_analysis'
-      config:
-        min_confidence: 0.6
-        max_layers: 6
-        analysis_depth: 'psychological-archaeology'
-
-    outputs:
-      - name: 'diagnosis_results'
-        type: 'array'
-        description: 'Diagnosis results per analysis layer'
-      - name: 'root_causes'
-        type: 'array'
-        description: 'Identified root causes'
-      - name: 'analysis_confidence'
-        type: 'number'
-        description: 'Overall analysis confidence score'
-
-  # Step 4: Solution Generation
-  - id: 'solution-generation'
-    name: 'Solution Generation'
-    description: 'Generate actionable solutions based on analysis'
-    type: 'generation'
-
-    depends_on:
-      - 'root-cause-analysis'
-
-    action:
-      type: 'solution_generation'
-      config:
-        max_solutions: 5
-        min_solution_depth: 3
-        include_action_steps: true
-        time_frame_constraint: null
-
-    outputs:
-      - name: 'solutions'
-        type: 'array'
-        description: 'Generated solution proposals'
-      - name: 'prioritized_solutions'
-        type: 'array'
-        description: 'Solution IDs in priority order'
-      - name: 'estimated_time_frame'
-        type: 'string'
-        description: 'Estimated implementation time frame'
-
-  # Step 5: Response Synthesis
-  - id: 'response-synthesis'
-    name: 'Response Synthesis'
-    description: 'Synthesize persona response with analysis and solutions'
-    type: 'synthesis'
-
-    depends_on:
-      - 'solution-generation'
-
-    action:
-      type: 'persona_response'
-      config:
-        style: 'integrated'
-        include_critique: true
-        include_solutions: true
-        include_follow_up: true
-
-    outputs:
-      - name: 'persona_response'
-        type: 'object'
-        description: 'Complete persona response object'
-      - name: 'follow_up_questions'
-        type: 'array'
-        description: 'Suggested follow-up questions'
-
-  # Step 6: HITL Checkpoint (optional)
-  - id: 'hitl-checkpoint'
-    name: 'Human-in-the-Loop Checkpoint'
-    description: 'Optional checkpoint for human review'
-    type: 'checkpoint'
-
-    depends_on:
-      - 'response-synthesis'
-
-    condition:
-      type: 'config_flag'
-      flag: 'hitl_enabled'
-
-    action:
-      type: 'human_review'
-      config:
-        timeout_seconds: 600
-        allow_modifications: true
-        approval_required: false
-
-    outputs:
-      - name: 'human_feedback'
-        type: 'object'
-        description: 'Optional human feedback and modifications'
-
-# Output schema
+- id: input-analysis
+  name: Input Analysis
+  description: Analyze user input and determine appropriate persona
+  type: analysis
+  action:
+    type: persona_selection
+    config:
+      default_persona: urn:mycodexvantaos:persona:disrupter-primary
+      selection_criteria:
+      - condition: contains_keywords(['feel', 'emotion', 'sad', 'anxious'])
+        persona: urn:mycodexvantaos:persona:mediator-primary
+      - condition: contains_keywords(['analyze', 'data', 'pattern', 'trend'])
+        persona: urn:mycodexvantaos:persona:analyst-primary
+      - condition: contains_keywords(['design', 'architecture', 'solution', 'system'])
+        persona: urn:mycodexvantaos:persona:solution-architect-primary
+      - condition: contains_keywords(['creative', 'innovative', 'idea', 'brainstorm'])
+        persona: urn:mycodexvantaos:persona:creative-thinker-primary
+      - condition: contains_keywords(['review', 'critique', 'evaluate', 'quality'])
+        persona: urn:mycodexvantaos:persona:critic-primary
+  outputs:
+  - name: selected_persona
+    type: string
+    description: URN of selected persona
+  - name: input_classification
+    type: object
+    description: Classification of input type and themes
+- id: mask-detection
+  name: Semantic Mask Detection
+  description: Detect semantic masks and avoidance patterns in user input
+  type: analysis
+  depends_on:
+  - input-analysis
+  action:
+    type: semantic_mask_detection
+    config:
+      min_severity: 1
+      include_reframes: true
+      max_detections: 10
+  outputs:
+  - name: detected_masks
+    type: array
+    description: List of detected semantic masks
+  - name: mask_severity_score
+    type: number
+    description: Overall severity score of detected masks
+  - name: reframe_suggestions
+    type: array
+    description: Truth reframe suggestions for detected masks
+- id: root-cause-analysis
+  name: Root Cause Analysis
+  description: Perform multi-layer root cause analysis
+  type: analysis
+  depends_on:
+  - mask-detection
+  action:
+    type: root_cause_analysis
+    config:
+      min_confidence: 0.6
+      max_layers: 6
+      analysis_depth: psychological-archaeology
+  outputs:
+  - name: diagnosis_results
+    type: array
+    description: Diagnosis results per analysis layer
+  - name: root_causes
+    type: array
+    description: Identified root causes
+  - name: analysis_confidence
+    type: number
+    description: Overall analysis confidence score
+- id: solution-generation
+  name: Solution Generation
+  description: Generate actionable solutions based on analysis
+  type: generation
+  depends_on:
+  - root-cause-analysis
+  action:
+    type: solution_generation
+    config:
+      max_solutions: 5
+      min_solution_depth: 3
+      include_action_steps: true
+      time_frame_constraint: null
+  outputs:
+  - name: solutions
+    type: array
+    description: Generated solution proposals
+  - name: prioritized_solutions
+    type: array
+    description: Solution IDs in priority order
+  - name: estimated_time_frame
+    type: string
+    description: Estimated implementation time frame
+- id: response-synthesis
+  name: Response Synthesis
+  description: Synthesize persona response with analysis and solutions
+  type: synthesis
+  depends_on:
+  - solution-generation
+  action:
+    type: persona_response
+    config:
+      style: integrated
+      include_critique: true
+      include_solutions: true
+      include_follow_up: true
+  outputs:
+  - name: persona_response
+    type: object
+    description: Complete persona response object
+  - name: follow_up_questions
+    type: array
+    description: Suggested follow-up questions
+- id: hitl-checkpoint
+  name: Human-in-the-Loop Checkpoint
+  description: Optional checkpoint for human review
+  type: checkpoint
+  depends_on:
+  - response-synthesis
+  condition:
+    type: config_flag
+    flag: hitl_enabled
+  action:
+    type: human_review
+    config:
+      timeout_seconds: 600
+      allow_modifications: true
+      approval_required: false
+  outputs:
+  - name: human_feedback
+    type: object
+    description: Optional human feedback and modifications
 output_schema:
-  type: 'object'
+  type: object
   properties:
     session_id:
-      type: 'string'
-      description: 'Unique session identifier'
+      type: string
+      description: Unique session identifier
     selected_persona:
-      type: 'string'
-      description: 'URN of persona used'
+      type: string
+      description: URN of persona used
     analysis_summary:
-      type: 'object'
-      description: 'Summary of analysis results'
+      type: object
+      description: Summary of analysis results
     solutions:
-      type: 'array'
-      description: 'Generated solutions'
+      type: array
+      description: Generated solutions
     response:
-      type: 'object'
-      description: 'Complete persona response'
+      type: object
+      description: Complete persona response
     follow_up_questions:
-      type: 'array'
-      description: 'Suggested follow-up questions'
+      type: array
+      description: Suggested follow-up questions
     metadata:
-      type: 'object'
-      description: 'Session metadata'
-
-# Error handling
+      type: object
+      description: Session metadata
 error_handling:
   retry_policy:
     max_retries: 2
     backoff_seconds: 5
-  fallback_persona: 'urn:mycodexvantaos:persona:analyst-primary'
+  fallback_persona: urn:mycodexvantaos:persona:analyst-primary
   error_responses:
-    persona_not_found: 'Defaulting to analyst persona for analysis'
-    analysis_failed: 'Providing best-effort response with available information'
-    solution_generation_failed: 'Providing analysis without specific solutions'
-
-# Governance
+    persona_not_found: Defaulting to analyst persona for analysis
+    analysis_failed: Providing best-effort response with available information
+    solution_generation_failed: Providing analysis without specific solutions
 governance:
   tier: 0
   required_approvals: []

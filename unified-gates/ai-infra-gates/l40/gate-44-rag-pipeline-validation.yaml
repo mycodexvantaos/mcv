@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,34 +10,36 @@ metadata:
   criticality: high
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-60700
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l40
-    - rag
+  - l40
+  - rag
   sloTarget: 30
   evidenceRetentionDays: 1095
 spec:
-  description: >
-    Validates that RAG pipeline definitions are correct and that all components (retriever, reranker, generator) are ready.
+  description: 'Validates that RAG pipeline definitions are correct and that all components
+    (retriever, reranker, generator) are ready.
+
+    '
   validates:
-    - dimension: pipeline-readiness
-      description: RAG pipeline is ready.
-      checks:
-        - id: chk-vector-index-ready
-          description: Vector index passes gate-25 and gate-26
-          rule: 'gate:gate-25-pass,gate-26-pass'
-          severity: high
-          evidenceRequired: true
-        - id: chk-retriever-latency
-          description: Retriever p99 latency meets SLO
-          rule: 'threshold:retriever-latency-p99<=100'
-          severity: high
-          evidenceRequired: true
-        - id: chk-generator-model-ready
-          description: Generator model passes gate-32
-          rule: 'gate:gate-32-pass'
-          severity: high
-          evidenceRequired: true
+  - dimension: pipeline-readiness
+    description: RAG pipeline is ready.
+    checks:
+    - id: chk-vector-index-ready
+      description: Vector index passes gate-25 and gate-26
+      rule: gate:gate-25-pass,gate-26-pass
+      severity: high
+      evidenceRequired: true
+    - id: chk-retriever-latency
+      description: Retriever p99 latency meets SLO
+      rule: threshold:retriever-latency-p99<=100
+      severity: high
+      evidenceRequired: true
+    - id: chk-generator-model-ready
+      description: Generator model passes gate-32
+      rule: gate:gate-32-pass
+      severity: high
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

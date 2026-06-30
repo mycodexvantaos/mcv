@@ -1,42 +1,30 @@
-# === path: .github/workflows/release-consolidated.yaml ===
-# Unified Release Pipeline for MyCodeXvantaOS
-# Version: 2.1.0
-
 name: Release Pipeline
-
 "on":
   push:
     tags:
-      - "v*.*.*"
+      - v*.*.*
   workflow_dispatch:
     inputs:
       version:
-        description: "Release version (e.g., 1.0.0)"
+        description: Release version (e.g., 1.0.0)
         required: true
         type: string
       prerelease:
-        description: "Pre-release"
+        description: Pre-release
         required: false
         default: false
         type: boolean
-
 concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: true
-
 permissions:
   contents: write
   packages: write
   id-token: write
   attestations: write
-
 env:
   REGISTRY: ghcr.io
-
 jobs:
-  # ====================
-  # Stage 1: Validate
-  # ====================
   validate:
     name: Validate Release
     runs-on: ubuntu-latest
@@ -44,30 +32,21 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
-
       - name: Setup PNPM
         uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271
         with:
           version: "9"
-
       - name: Setup Node.js
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
         with:
           node-version: "22"
-          cache: "pnpm"
-
+          cache: pnpm
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
-
       - name: Run typecheck
         run: pnpm run typecheck
-
       - name: Run tests
         run: pnpm run test
-
-  # ====================
-  # Stage 2: Build & Push Container
-  # ====================
   build-container:
     name: Build & Push Container
     runs-on: ubuntu-latest
@@ -76,27 +55,26 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f
-
       - name: Log in to Container Registry
         uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Extract metadata
         id: meta
         uses: docker/metadata-action@80c7e94dd9b9319bd5eb7a0e0fe9291e23a2a2e9
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository }}
-          tags: |
-            type=ref,event=tag
+          tags: "type=ref,event=tag
+
             type=sha,prefix=
+
             type=raw,value=${{ github.event.inputs.version || github.ref_name }}
 
+            "
       - name: Build and push
         uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf
         with:
@@ -109,28 +87,22 @@ jobs:
           cache-to: type=gha,mode=max
           provenance: true
           sbom: true
-
-  # ====================
-  # Stage 3: Create GitHub Release
-  # ====================
   create-release:
     name: Create GitHub Release
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: [validate, build-container]
+    needs:
+      - validate
+      - build-container
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
       - name: Checkout repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
-
       - name: Create Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_NAME: ${{ github.ref_name }}
           IS_PRERELEASE: ${{ github.event.inputs.prerelease }}
-        run: |
-          RELEASE_ARGS=(--title "Release ${TAG_NAME}" --generate-notes)
-          if [ "${IS_PRERELEASE}" = "true" ]; then
-            RELEASE_ARGS+=(--prerelease)
-          fi
-          gh release create "${TAG_NAME}" "${RELEASE_ARGS[@]}"
+        run: "RELEASE_ARGS=(--title \"Release ${TAG_NAME}\" --generate-notes)\nif [\
+          \ \"${IS_PRERELEASE}\" = \"true\" ]; then\n  RELEASE_ARGS+=(--prerelease)\n\
+          fi\ngh release create \"${TAG_NAME}\" \"${RELEASE_ARGS[@]}\"\n"

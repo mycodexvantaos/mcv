@@ -1,33 +1,31 @@
 apiVersion: mycodexvantaos.io/v1
 kind: InferenceResultContract
 metadata:
-  version: '1.0.0'
-  date: '2026-06-29'
-  status: 'active'
-  name: inference-result-contract
-  governanceCode: mycodexvantaos-60700
+  version: 1.0.0
   date: '2026-06-29'
   status: active
+  name: inference-result-contract
+  governanceCode: mycodexvantaos-60700
 spec:
   description: 'Defines the canonical contract for inference result records. All inference
     results MUST conform to this contract.
 
     '
   requiredFields:
-    - resultId
-    - workloadId
-    - modelId
-    - modelVersion
-    - requestId
-    - completedAt
-    - latencyMs
-    - inputTokens
-    - outputTokens
-    - status
+  - resultId
+  - workloadId
+  - modelId
+  - modelVersion
+  - requestId
+  - completedAt
+  - latencyMs
+  - inputTokens
+  - outputTokens
+  - status
   validValues:
     status:
-      - success
-      - error
-      - timeout
-      - filtered
+    - success
+    - error
+    - timeout
+    - filtered
   schemaRef: ../schemas/ai-workload-contract.schema.json

@@ -8,12 +8,12 @@ metadata:
   status: active
 spec:
   gatePlanes:
-    - name: quality-gates
-      catalogPath: unified-gates/quality-gates/
-    - name: ai-infra-gates
-      catalogPath: unified-gates/ai-infra-gates/
-    - name: production-gates
-      catalogPath: unified-gates/production-gates/
+  - name: quality-gates
+    catalogPath: unified-gates/quality-gates/
+  - name: ai-infra-gates
+    catalogPath: unified-gates/ai-infra-gates/
+  - name: production-gates
+    catalogPath: unified-gates/production-gates/
   gateIndex:
     path: unified-gates/unified-gate-index.yaml
 platform: mycodexvantaos

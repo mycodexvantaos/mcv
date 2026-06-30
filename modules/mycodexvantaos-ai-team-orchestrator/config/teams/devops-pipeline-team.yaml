@@ -1,145 +1,116 @@
-# =============================================================================
-# DevOps Pipeline Team Topology
-# File: modules/mycodexvantaos-ai-team-orchestrator/config/teams/devops-pipeline-team.yaml
-# Conforms to: schemas/ai-team/team-topology.schema.json
-# =============================================================================
-
-id: 'urn:mycodexvantaos:team:devops-pipeline-primary'
-name: 'DevOps Pipeline Team'
-version: '1.0.0'
-status: 'draft'
-topology_type: 'dag'
-
+id: urn:mycodexvantaos:team:devops-pipeline-primary
+name: DevOps Pipeline Team
+version: 1.0.0
+status: draft
+topology_type: dag
 agents:
-  - agent_id: 'urn:mycodexvantaos:agent:architect-primary'
-    position: 0
-    delegation_scope:
-      - 'architecture-design'
-      - 'technical-review'
-
-  - agent_id: 'urn:mycodexvantaos:agent:engineer-backend-01'
-    position: 1
-    delegation_scope:
-      - 'code-implementation'
-      - 'testing'
-
-  - agent_id: 'urn:mycodexvantaos:agent:ethicist-compliance-primary'
-    position: 2
-    delegation_scope:
-      - 'ethics-review'
-      - 'compliance-check'
-
+- agent_id: urn:mycodexvantaos:agent:architect-primary
+  position: 0
+  delegation_scope:
+  - architecture-design
+  - technical-review
+- agent_id: urn:mycodexvantaos:agent:engineer-backend-01
+  position: 1
+  delegation_scope:
+  - code-implementation
+  - testing
+- agent_id: urn:mycodexvantaos:agent:ethicist-compliance-primary
+  position: 2
+  delegation_scope:
+  - ethics-review
+  - compliance-check
 communication_rules:
-  message_routing: 'direct'
+  message_routing: direct
   max_concurrent_messages: 10
   message_timeout_ms: 30000
   retry_policy:
     max_retries: 3
     backoff_ms: 1000
-
 workflow_definition:
-  type: 'dag'
+  type: dag
   nodes:
-    - id: 'design'
-      agent_id: 'urn:mycodexvantaos:agent:architect-primary'
-      action: 'create_design'
-      on_success: 'implement'
-      on_failure: 'design_review'
-
-    - id: 'design_review'
-      agent_id: 'urn:mycodexvantaos:agent:architect-primary'
-      action: 'review_design'
-      on_success: 'implement'
-      on_failure: 'fail'
-
-    - id: 'implement'
-      agent_id: 'urn:mycodexvantaos:agent:engineer-backend-01'
-      action: 'implement_feature'
-      on_success: 'ethics_check'
-      on_failure: 'implement_retry'
-
-    - id: 'implement_retry'
-      agent_id: 'urn:mycodexvantaos:agent:engineer-backend-01'
-      action: 'fix_implementation'
-      on_success: 'ethics_check'
-      on_failure: 'fail'
-
-    - id: 'ethics_check'
-      agent_id: 'urn:mycodexvantaos:agent:ethicist-compliance-primary'
-      action: 'ethics_review'
-      on_success: 'complete'
-      on_failure: 'ethics_remediation'
-
-    - id: 'ethics_remediation'
-      agent_id: 'urn:mycodexvantaos:agent:ethicist-compliance-primary'
-      action: 'suggest_remediation'
-      on_success: 'implement'
-      on_failure: 'fail'
-
-    - id: 'complete'
-      agent_id: 'urn:mycodexvantaos:agent:architect-primary'
-      action: 'finalize'
-      on_success: null
-      on_failure: null
-
-    - id: 'fail'
-      agent_id: 'urn:mycodexvantaos:agent:architect-primary'
-      action: 'report_failure'
-      on_success: null
-      on_failure: null
-
+  - id: design
+    agent_id: urn:mycodexvantaos:agent:architect-primary
+    action: create_design
+    on_success: implement
+    on_failure: design_review
+  - id: design_review
+    agent_id: urn:mycodexvantaos:agent:architect-primary
+    action: review_design
+    on_success: implement
+    on_failure: fail
+  - id: implement
+    agent_id: urn:mycodexvantaos:agent:engineer-backend-01
+    action: implement_feature
+    on_success: ethics_check
+    on_failure: implement_retry
+  - id: implement_retry
+    agent_id: urn:mycodexvantaos:agent:engineer-backend-01
+    action: fix_implementation
+    on_success: ethics_check
+    on_failure: fail
+  - id: ethics_check
+    agent_id: urn:mycodexvantaos:agent:ethicist-compliance-primary
+    action: ethics_review
+    on_success: complete
+    on_failure: ethics_remediation
+  - id: ethics_remediation
+    agent_id: urn:mycodexvantaos:agent:ethicist-compliance-primary
+    action: suggest_remediation
+    on_success: implement
+    on_failure: fail
+  - id: complete
+    agent_id: urn:mycodexvantaos:agent:architect-primary
+    action: finalize
+    on_success: null
+    on_failure: null
+  - id: fail
+    agent_id: urn:mycodexvantaos:agent:architect-primary
+    action: report_failure
+    on_success: null
+    on_failure: null
   edges:
-    - from: 'design'
-      to: 'implement'
-      condition: "result.status === 'success'"
-
-    - from: 'design'
-      to: 'design_review'
-      condition: "result.status === 'needs_review'"
-
-    - from: 'implement'
-      to: 'ethics_check'
-      condition: 'result.tests_passed === true'
-
-    - from: 'implement'
-      to: 'implement_retry'
-      condition: 'result.tests_passed === false'
-
-    - from: 'ethics_check'
-      to: 'complete'
-      condition: 'result.compliant === true'
-
-    - from: 'ethics_check'
-      to: 'ethics_remediation'
-      condition: 'result.compliant === false'
-
-  initial_state: 'design'
+  - from: design
+    to: implement
+    condition: result.status === 'success'
+  - from: design
+    to: design_review
+    condition: result.status === 'needs_review'
+  - from: implement
+    to: ethics_check
+    condition: result.tests_passed === true
+  - from: implement
+    to: implement_retry
+    condition: result.tests_passed === false
+  - from: ethics_check
+    to: complete
+    condition: result.compliant === true
+  - from: ethics_check
+    to: ethics_remediation
+    condition: result.compliant === false
+  initial_state: design
   final_states:
-    - 'complete'
-    - 'fail'
-
+  - complete
+  - fail
 hitl_config:
   enabled: true
   checkpoints:
-    - node_id: 'ethics_check'
-      trigger_condition: 'on_threshold'
-      timeout_seconds: 600
-      notification_channels:
-        - 'slack'
-        - 'email'
-
-    - node_id: 'complete'
-      trigger_condition: 'always'
-      timeout_seconds: 300
-      notification_channels:
-        - 'slack'
-
+  - node_id: ethics_check
+    trigger_condition: on_threshold
+    timeout_seconds: 600
+    notification_channels:
+    - slack
+    - email
+  - node_id: complete
+    trigger_condition: always
+    timeout_seconds: 300
+    notification_channels:
+    - slack
   approval_required_for:
-    - 'code_deployment'
-    - 'database_modification'
-    - 'security_changes'
-
+  - code_deployment
+  - database_modification
+  - security_changes
 metadata:
-  team_type: 'development'
-  project_scope: 'full-stack'
+  team_type: development
+  project_scope: full-stack
   estimated_completion_time_hours: 4

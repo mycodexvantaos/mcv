@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,34 +10,36 @@ metadata:
   criticality: high
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-00000
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l10
-    - resource
+  - l10
+  - resource
   sloTarget: 30
   evidenceRetentionDays: 1095
 spec:
-  description: >
-    Validates that resource quotas (CPU, GPU, memory) are defined and enforced per namespace, and that the scheduler correctly respects them.
+  description: 'Validates that resource quotas (CPU, GPU, memory) are defined and
+    enforced per namespace, and that the scheduler correctly respects them.
+
+    '
   validates:
-    - dimension: quota-enforcement
-      description: Resource quotas are defined and enforced.
-      checks:
-        - id: chk-namespace-quota-defined
-          description: ResourceQuota is defined for every Kubernetes namespace
-          rule: 'k8s:resource-quota-exists'
-          severity: high
-          evidenceRequired: true
-        - id: chk-gpu-quota-enforced
-          description: GPU quota is enforced and not exceeded
-          rule: 'k8s:gpu-quota-not-exceeded'
-          severity: high
-          evidenceRequired: true
-        - id: chk-priority-class-defined
-          description: PriorityClass is defined for training and inference workloads
-          rule: 'k8s:priority-class-exists'
-          severity: medium
-          evidenceRequired: false
+  - dimension: quota-enforcement
+    description: Resource quotas are defined and enforced.
+    checks:
+    - id: chk-namespace-quota-defined
+      description: ResourceQuota is defined for every Kubernetes namespace
+      rule: k8s:resource-quota-exists
+      severity: high
+      evidenceRequired: true
+    - id: chk-gpu-quota-enforced
+      description: GPU quota is enforced and not exceeded
+      rule: k8s:gpu-quota-not-exceeded
+      severity: high
+      evidenceRequired: true
+    - id: chk-priority-class-defined
+      description: PriorityClass is defined for training and inference workloads
+      rule: k8s:priority-class-exists
+      severity: medium
+      evidenceRequired: false
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

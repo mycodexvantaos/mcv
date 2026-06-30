@@ -1,25 +1,20 @@
-# MyCodeXvantaOS Capability Declaration
-
 id: urn:mycodexvantaos:capability:database
 name: Database
 version: 1.0.0
 description: Relational database capabilities
 status: stable
 governance_tier: 1
-
 contract:
   interfaces:
-    - initialize
-    - execute
-    - cleanup
-    - validate
-
+  - initialize
+  - execute
+  - cleanup
+  - validate
   requirements:
-    - local-first: true
-    - cloud-agnostic: true
-    - contract-first: true
-    - governance-enforced: true
-
+  - local-first: true
+  - cloud-agnostic: true
+  - contract-first: true
+  - governance-enforced: true
 provider_manifests:
-  - native: 'urn:mycodexvantaos:capability:database:provider-native'
-  - external: 'urn:mycodexvantaos:capability:database:provider-external'
+- native: urn:mycodexvantaos:capability:database:provider-native
+- external: urn:mycodexvantaos:capability:database:provider-external

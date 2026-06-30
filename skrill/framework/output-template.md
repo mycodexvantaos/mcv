@@ -362,16 +362,16 @@ Skill: <技能名稱>
 
 ```yaml
 report:
-  project: '<project name>'
-  version: 'v1.0'
-  date: 'YYYY-MM-DD'
+  project: "<project name>"
+  version: "v1.0"
+  date: "YYYY-MM-DD"
   input_level: 1 # 1, 2, or 3
   highlights_count: 10
   skills_extracted: 0
   patterns_added: 0
   ci_candidates: 0
   related_reports: []
-  next_analysis: '<下一份要分析的資料>'
+  next_analysis: "<下一份要分析的資料>"
 ```
 
 ---

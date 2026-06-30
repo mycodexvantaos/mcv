@@ -1,6 +1,5 @@
-# modules/mycodexvantaos-core-kernel/capabilities.yaml
 capabilities:
-  - database
-  - cache
-  - observability
-  - secrets
+- database
+- cache
+- observability
+- secrets

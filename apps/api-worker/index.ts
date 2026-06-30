@@ -29,24 +29,24 @@
  */
 
 // ── Service imports (workspace packages) ──────────────────────────────
-import { listServices, getService } from '@mycodexvantaos/service-service-catalog';
+import { listServices, getService } from "@mycodexvantaos/service-service-catalog";
 
-import { listResourceKinds, getResourceKind } from '@mycodexvantaos/service-resource-registry';
+import { listResourceKinds, getResourceKind } from "@mycodexvantaos/service-resource-registry";
 
 import {
   recordEvent,
   queryEvents,
   type AuditEventCategory,
   type EventSeverity,
-} from '@mycodexvantaos/service-audit-log';
+} from "@mycodexvantaos/service-audit-log";
 
 import {
   evaluatePolicy,
   getPolicyEngine,
   type PolicyEvaluateRequest,
-} from '@mycodexvantaos/service-policy-engine';
+} from "@mycodexvantaos/service-policy-engine";
 
-import { validateAllContracts } from '@mycodexvantaos/contracts-sdk';
+import { validateAllContracts } from "@mycodexvantaos/contracts-sdk";
 
 // ── Types ─────────────────────────────────────────────────────────────
 export interface Env {
@@ -56,7 +56,7 @@ export interface Env {
   R2_BUCKET?: R2Bucket;
   AI?: Ai;
   JWT_SECRET?: string;
-  ENVIRONMENT: 'production' | 'staging' | 'development';
+  ENVIRONMENT: "production" | "staging" | "development";
 }
 
 interface RouteMatch {
@@ -88,8 +88,8 @@ function json(data: unknown, status = 200, headers: Record<string, string> = {})
   return new Response(JSON.stringify(data), {
     status,
     headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
       ...headers,
     },
   });
@@ -108,10 +108,10 @@ function withAudit(eventType: string, category: AuditEventCategory, handler: Han
       recordEvent({
         eventType,
         category,
-        severity: (response.status < 400 ? 'info' : 'warning') as EventSeverity,
-        actor: { type: 'system', id: 'api-worker' },
-        resource: { type: 'api-endpoint', id: new URL(req.url).pathname },
-        context: { tenantId: 'system', workspaceId: null },
+        severity: (response.status < 400 ? "info" : "warning") as EventSeverity,
+        actor: { type: "system", id: "api-worker" },
+        resource: { type: "api-endpoint", id: new URL(req.url).pathname },
+        context: { tenantId: "system", workspaceId: null },
         data: {
           method: req.method,
           status: response.status,
@@ -129,10 +129,10 @@ function withAudit(eventType: string, category: AuditEventCategory, handler: Han
 // ════════════════════════════════════════════════════════════════════════
 
 // ── Health ────────────────────────────────────────────────────────────
-addRoute('GET', '/v1/health', async () => {
+addRoute("GET", "/v1/health", async () => {
   const governance = validateAllContracts();
   return json({
-    status: 'ok',
+    status: "ok",
     timestamp: new Date().toISOString(),
     governance: {
       contractsValid:
@@ -146,42 +146,42 @@ addRoute('GET', '/v1/health', async () => {
 });
 
 // ── Services ──────────────────────────────────────────────────────────
-addRoute('GET', '/v1/services', async () => {
+addRoute("GET", "/v1/services", async () => {
   const result = listServices();
   return json(result);
 });
 
-addRoute('GET', '/v1/services/:id', async (_req, _env, _ctx, match) => {
+addRoute("GET", "/v1/services/:id", async (_req, _env, _ctx, match) => {
   const result = getService(match.params.id);
-  if (!result) return errorResponse('Service not found', 404);
+  if (!result) return errorResponse("Service not found", 404);
   return json(result);
 });
 
 // ── Resource Kinds ────────────────────────────────────────────────────
-addRoute('GET', '/v1/resource-kinds', async () => {
+addRoute("GET", "/v1/resource-kinds", async () => {
   const result = listResourceKinds();
   return json(result);
 });
 
-addRoute('GET', '/v1/resource-kinds/:id', async (_req, _env, _ctx, match) => {
+addRoute("GET", "/v1/resource-kinds/:id", async (_req, _env, _ctx, match) => {
   const result = getResourceKind(match.params.id);
-  if (!result) return errorResponse('Resource kind not found', 404);
+  if (!result) return errorResponse("Resource kind not found", 404);
   return json(result);
 });
 
 // ── Audit Events ──────────────────────────────────────────────────────
 addRoute(
-  'POST',
-  '/v1/audit/events',
-  withAudit('audit.event-created', 'audit', async (req) => {
+  "POST",
+  "/v1/audit/events",
+  withAudit("audit.event-created", "audit", async (req) => {
     try {
       const body = (await req.json()) as Record<string, unknown>;
       const result = recordEvent({
         eventType: body.eventType as string,
         category: body.category as AuditEventCategory,
-        severity: (body.severity ?? 'info') as EventSeverity,
+        severity: (body.severity ?? "info") as EventSeverity,
         actor: body.actor as {
-          type: 'user' | 'agent' | 'system' | 'cron';
+          type: "user" | "agent" | "system" | "cron";
           id: string;
           name?: string;
           role?: string;
@@ -199,47 +199,47 @@ addRoute(
       });
       return json(result, 201);
     } catch (err) {
-      return errorResponse(err instanceof Error ? err.message : 'Bad request', 400);
+      return errorResponse(err instanceof Error ? err.message : "Bad request", 400);
     }
   })
 );
 
-addRoute('GET', '/v1/audit/events', async (req) => {
+addRoute("GET", "/v1/audit/events", async (req) => {
   const url = new URL(req.url);
   const result = queryEvents({
-    eventType: url.searchParams.get('eventType') ?? undefined,
-    category: (url.searchParams.get('category') ?? undefined) as AuditEventCategory | undefined,
-    resourceType: url.searchParams.get('resourceType') ?? undefined,
-    resourceId: url.searchParams.get('resourceId') ?? undefined,
-    actorId: url.searchParams.get('actorId') ?? undefined,
-    tenantId: url.searchParams.get('tenantId') ?? undefined,
-    limit: Number(url.searchParams.get('limit') ?? 50),
-    offset: Number(url.searchParams.get('offset') ?? 0),
+    eventType: url.searchParams.get("eventType") ?? undefined,
+    category: (url.searchParams.get("category") ?? undefined) as AuditEventCategory | undefined,
+    resourceType: url.searchParams.get("resourceType") ?? undefined,
+    resourceId: url.searchParams.get("resourceId") ?? undefined,
+    actorId: url.searchParams.get("actorId") ?? undefined,
+    tenantId: url.searchParams.get("tenantId") ?? undefined,
+    limit: Number(url.searchParams.get("limit") ?? 50),
+    offset: Number(url.searchParams.get("offset") ?? 0),
   });
   return json(result);
 });
 
 // ── Policy Evaluation ─────────────────────────────────────────────────
 addRoute(
-  'POST',
-  '/v1/policies/evaluate',
-  withAudit('policy.evaluated', 'audit', async (req) => {
+  "POST",
+  "/v1/policies/evaluate",
+  withAudit("policy.evaluated", "audit", async (req) => {
     try {
       const body = (await req.json()) as Record<string, unknown>;
       const result = evaluatePolicy({
-        subject: body.subject as PolicyEvaluateRequest['subject'],
+        subject: body.subject as PolicyEvaluateRequest["subject"],
         action: body.action as string,
-        resource: body.resource as PolicyEvaluateRequest['resource'],
+        resource: body.resource as PolicyEvaluateRequest["resource"],
         context: body.context as Record<string, unknown>,
       });
       return json(result);
     } catch (err) {
-      return errorResponse(err instanceof Error ? err.message : 'Bad request', 400);
+      return errorResponse(err instanceof Error ? err.message : "Bad request", 400);
     }
   })
 );
 
-addRoute('GET', '/v1/policies', async () => {
+addRoute("GET", "/v1/policies", async () => {
   const engine = getPolicyEngine();
   return json({
     policies: engine.listPolicies(),
@@ -251,20 +251,20 @@ addRoute('GET', '/v1/policies', async () => {
 function handleRoot(req: Request): Response {
   const url = new URL(req.url);
   return json({
-    name: 'MyCodeXvantaOS API',
-    version: '0.2.0',
-    status: 'running',
-    runtime: 'cloudflare-worker',
+    name: "MyCodeXvantaOS API",
+    version: "0.2.0",
+    status: "running",
+    runtime: "cloudflare-worker",
     endpoints: [
-      'GET  /v1/health',
-      'GET  /v1/services',
-      'GET  /v1/services/:id',
-      'GET  /v1/resource-kinds',
-      'GET  /v1/resource-kinds/:id',
-      'POST /v1/audit/events',
-      'GET  /v1/audit/events',
-      'POST /v1/policies/evaluate',
-      'GET  /v1/policies',
+      "GET  /v1/health",
+      "GET  /v1/services",
+      "GET  /v1/services/:id",
+      "GET  /v1/resource-kinds",
+      "GET  /v1/resource-kinds/:id",
+      "POST /v1/audit/events",
+      "GET  /v1/audit/events",
+      "POST /v1/policies/evaluate",
+      "GET  /v1/policies",
     ],
     governance: {
       auditEnforcement: true,
@@ -281,14 +281,14 @@ function handleRoot(req: Request): Response {
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     // CORS preflight
-    if (request.method === 'OPTIONS') {
+    if (request.method === "OPTIONS") {
       return new Response(null, {
         status: 204,
         headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-          'Access-Control-Max-Age': '86400',
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Max-Age": "86400",
         },
       });
     }
@@ -296,7 +296,7 @@ export default {
     const url = new URL(request.url);
 
     // Root
-    if (url.pathname === '/' || url.pathname === '') {
+    if (url.pathname === "/" || url.pathname === "") {
       return handleRoot(request);
     }
 
@@ -314,17 +314,17 @@ export default {
           }
           const response = await route.handler(request, env, ctx, { params });
           // Add CORS headers
-          response.headers.set('Access-Control-Allow-Origin', '*');
+          response.headers.set("Access-Control-Allow-Origin", "*");
           return response;
         } catch (err) {
-          const message = err instanceof Error ? err.message : 'Internal Server Error';
-          const status = message.includes('not found')
+          const message = err instanceof Error ? err.message : "Internal Server Error";
+          const status = message.includes("not found")
             ? 404
-            : message.includes('unauthorized')
+            : message.includes("unauthorized")
               ? 401
-              : message.includes('forbidden')
+              : message.includes("forbidden")
                 ? 403
-                : message.includes('already exists')
+                : message.includes("already exists")
                   ? 409
                   : 500;
           return errorResponse(message, status);
@@ -332,6 +332,6 @@ export default {
       }
     }
 
-    return errorResponse('Not Found', 404);
+    return errorResponse("Not Found", 404);
   },
 };

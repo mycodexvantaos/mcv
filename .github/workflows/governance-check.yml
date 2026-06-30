@@ -32,7 +32,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
           cache: pip
       - name: Install dependencies
         run: pip install pyyaml jsonschema
@@ -70,7 +70,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
       - name: Install dependencies
         run: pip install pyyaml
       - name: Run naming governance validation
@@ -87,7 +87,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
       - name: Install dependencies
         run: pip install pyyaml
       - name: Validate hash policy
@@ -124,5 +124,5 @@ jobs:
         run: pnpm test:contracts || echo "test:contracts not yet configured"
         continue-on-error: true
 env:
-  NODE_VERSION: '22'
-  PNPM_VERSION: '9'
+  NODE_VERSION: "22"
+  PNPM_VERSION: "9"

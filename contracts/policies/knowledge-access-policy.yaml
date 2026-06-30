@@ -1,14 +1,18 @@
 id: knowledge-access-policy
 description: Access policy for knowledge store operations
 rules:
-  - effect: allow
-    subject:
-      roles: ['workspace-member', 'workspace-owner']
-    action: knowledge:ingest
-    resource: knowledge/collections/*
-
-  - effect: allow
-    subject:
-      roles: ['workspace-viewer', 'workspace-member', 'workspace-owner']
-    action: knowledge:search
-    resource: knowledge/collections/*
+- effect: allow
+  subject:
+    roles:
+    - workspace-member
+    - workspace-owner
+  action: knowledge:ingest
+  resource: knowledge/collections/*
+- effect: allow
+  subject:
+    roles:
+    - workspace-viewer
+    - workspace-member
+    - workspace-owner
+  action: knowledge:search
+  resource: knowledge/collections/*

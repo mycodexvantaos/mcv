@@ -12,8 +12,8 @@
 export type {
   NodeBindings as DockerBindings,
   NodeServiceContainer as DockerServiceContainer,
-} from '../node/src/bootstrap.js';
-export { bootstrapNode as bootstrapDocker, createNodeServer } from '../node/src/bootstrap.js';
+} from "../node/src/bootstrap.js";
+export { bootstrapNode as bootstrapDocker, createNodeServer } from "../node/src/bootstrap.js";
 
 /**
  * Docker-specific environment variable mapping.
@@ -21,20 +21,20 @@ export { bootstrapNode as bootstrapDocker, createNodeServer } from '../node/src/
  */
 export function mapDockerEnv(
   rawEnv: Record<string, string | undefined>
-): import('../node/src/bootstrap.js').NodeBindings {
+): import("../node/src/bootstrap.js").NodeBindings {
   return {
     DATABASE_URL:
       rawEnv.DATABASE_URL ??
-      'postgres://mycodexvantaos:mycodexvantaos@postgres:5432/mycodexvantaos',
-    REDIS_URL: rawEnv.REDIS_URL ?? 'redis://redis:6379',
-    MINIO_ENDPOINT: rawEnv.MINIO_ENDPOINT ?? 'minio:9000',
-    MINIO_ACCESS_KEY: rawEnv.MINIO_ACCESS_KEY ?? 'mycodexvantaos',
-    MINIO_SECRET_KEY: rawEnv.MINIO_SECRET_KEY ?? 'mycodexvantaos-secret',
-    MINIO_BUCKET: rawEnv.MINIO_BUCKET ?? 'mycodexvantaos-storage',
-    QDRANT_URL: rawEnv.QDRANT_URL ?? 'http://qdrant:6333',
-    RABBITMQ_URL: rawEnv.RABBITMQ_URL ?? 'amqp://mycodexvantaos:mycodexvantaos@rabbitmq:5672',
-    JWT_SECRET: rawEnv.JWT_SECRET ?? 'change-me-in-production',
-    ENCRYPTION_KEY: rawEnv.ENCRYPTION_KEY ?? 'change-me-in-production-32ch',
+      "postgres://mycodexvantaos:mycodexvantaos@postgres:5432/mycodexvantaos",
+    REDIS_URL: rawEnv.REDIS_URL ?? "redis://redis:6379",
+    MINIO_ENDPOINT: rawEnv.MINIO_ENDPOINT ?? "minio:9000",
+    MINIO_ACCESS_KEY: rawEnv.MINIO_ACCESS_KEY ?? "mycodexvantaos",
+    MINIO_SECRET_KEY: rawEnv.MINIO_SECRET_KEY ?? "mycodexvantaos-secret",
+    MINIO_BUCKET: rawEnv.MINIO_BUCKET ?? "mycodexvantaos-storage",
+    QDRANT_URL: rawEnv.QDRANT_URL ?? "http://qdrant:6333",
+    RABBITMQ_URL: rawEnv.RABBITMQ_URL ?? "amqp://mycodexvantaos:mycodexvantaos@rabbitmq:5672",
+    JWT_SECRET: rawEnv.JWT_SECRET ?? "change-me-in-production",
+    ENCRYPTION_KEY: rawEnv.ENCRYPTION_KEY ?? "change-me-in-production-32ch",
     OPENAI_API_KEY: rawEnv.OPENAI_API_KEY,
     OPENROUTER_API_KEY: rawEnv.OPENROUTER_API_KEY,
   };
@@ -52,14 +52,14 @@ export function registerDockerShutdownHandlers(onShutdown: () => Promise<void>):
     console.log(`Received ${signal}, shutting down gracefully...`);
     try {
       await onShutdown();
-      console.log('Shutdown complete.');
+      console.log("Shutdown complete.");
       process.exit(0);
     } catch (err) {
-      console.error('Error during shutdown:', err);
+      console.error("Error during shutdown:", err);
       process.exit(1);
     }
   };
 
-  process.on('SIGTERM', () => handle('SIGTERM'));
-  process.on('SIGINT', () => handle('SIGINT'));
+  process.on("SIGTERM", () => handle("SIGTERM"));
+  process.on("SIGINT", () => handle("SIGINT"));
 }

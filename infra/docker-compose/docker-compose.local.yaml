@@ -7,28 +7,28 @@ services:
       POSTGRES_PASSWORD: mycodexvantaos
       POSTGRES_DB: mycodexvantaos
     ports:
-      - 5432:5432
+    - 5432:5432
     volumes:
-      - pgdata:/var/lib/postgresql/data
-      - ../../migrations/postgres:/docker-entrypoint-initdb.d:ro
+    - pgdata:/var/lib/postgresql/data
+    - ../../migrations/postgres:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test:
-        - CMD-SHELL
-        - pg_isready -U mycodexvantaos
+      - CMD-SHELL
+      - pg_isready -U mycodexvantaos
       interval: 5s
       timeout: 5s
       retries: 5
   redis:
     image: redis:7-alpine
     ports:
-      - 6379:6379
+    - 6379:6379
     volumes:
-      - redisdata:/data
+    - redisdata:/data
     healthcheck:
       test:
-        - CMD
-        - redis-cli
-        - ping
+      - CMD
+      - redis-cli
+      - ping
       interval: 5s
       timeout: 5s
       retries: 5
@@ -39,27 +39,27 @@ services:
       MINIO_ROOT_USER: mycodexvantaos
       MINIO_ROOT_PASSWORD: mycodexvantaos-secret
     ports:
-      - 9000:9000
-      - 9001:9001
+    - 9000:9000
+    - 9001:9001
     volumes:
-      - miniodata:/data
+    - miniodata:/data
   qdrant:
     image: qdrant/qdrant:latest
     ports:
-      - 6333:6333
-      - 6334:6334
+    - 6333:6333
+    - 6334:6334
     volumes:
-      - qdrantdata:/qdrant/storage
+    - qdrantdata:/qdrant/storage
   rabbitmq:
     image: rabbitmq:3-management-alpine
     environment:
       RABBITMQ_DEFAULT_USER: mycodexvantaos
       RABBITMQ_DEFAULT_PASS: mycodexvantaos
     ports:
-      - 5672:5672
-      - 15672:15672
+    - 5672:5672
+    - 15672:15672
     volumes:
-      - rabbitmqdata:/var/lib/rabbitmq
+    - rabbitmqdata:/var/lib/rabbitmq
   api:
     build:
       context: ../..
@@ -67,7 +67,7 @@ services:
       args:
         SERVICE_NAME: api-worker
     ports:
-      - 8787:8000
+    - 8787:8000
     environment:
       NODE_ENV: development
       DATABASE_URL: postgres://mycodexvantaos:mycodexvantaos@postgres:5432/mycodexvantaos

@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,34 +10,36 @@ metadata:
   criticality: critical
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-60700
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l40
-    - workload
+  - l40
+  - workload
   sloTarget: 30
   evidenceRetentionDays: 2555
 spec:
-  description: >
-    Validates that AI workload SLO targets are defined, measurable, and currently met.
+  description: 'Validates that AI workload SLO targets are defined, measurable, and
+    currently met.
+
+    '
   validates:
-    - dimension: slo-compliance
-      description: Workload SLO targets are defined and met.
-      checks:
-        - id: chk-slo-defined
-          description: SLO targets are defined in the workload contract
-          rule: 'field-not-empty:slo'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-latency-slo-met
-          description: Current p99 latency meets the SLO target
-          rule: 'threshold:latency-p99<=slo.maxLatencyMs'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-availability-slo-met
-          description: Current availability meets the SLO target
-          rule: 'threshold:availability>=slo.minAvailability'
-          severity: critical
-          evidenceRequired: true
+  - dimension: slo-compliance
+    description: Workload SLO targets are defined and met.
+    checks:
+    - id: chk-slo-defined
+      description: SLO targets are defined in the workload contract
+      rule: field-not-empty:slo
+      severity: critical
+      evidenceRequired: true
+    - id: chk-latency-slo-met
+      description: Current p99 latency meets the SLO target
+      rule: threshold:latency-p99<=slo.maxLatencyMs
+      severity: critical
+      evidenceRequired: true
+    - id: chk-availability-slo-met
+      description: Current availability meets the SLO target
+      rule: threshold:availability>=slo.minAvailability
+      severity: critical
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

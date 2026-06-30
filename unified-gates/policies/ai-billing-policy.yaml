@@ -1,14 +1,12 @@
 apiVersion: mycodexvantaos.io/v1
 kind: AIBillingPolicy
 metadata:
-  version: '1.0.0'
+  version: 1.0.0
   date: '2026-06-29'
-  status: 'active'
+  status: active
   name: ai-billing-policy
   authority: platform-governance-root
   governanceCode: mycodexvantaos-30400
-  date: '2026-06-29'
-  status: active
 spec:
   meteringRequired: true
   costAttributionRequired: true
@@ -19,7 +17,7 @@ spec:
   rateCardApprovalRequired: true
   billingEventRetentionDays: 2555
   mandatoryGates:
-    - gate-51-usage-event-contract-validation
-    - gate-56-cost-attribution-validation
-    - gate-57-billing-policy-validation
-    - gate-58-invoice-evidence-validation
+  - gate-51-usage-event-contract-validation
+  - gate-56-cost-attribution-validation
+  - gate-57-billing-policy-validation
+  - gate-58-invoice-evidence-validation

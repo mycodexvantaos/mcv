@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,34 +10,36 @@ metadata:
   criticality: high
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-30400
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l50
-    - agent
+  - l50
+  - agent
   sloTarget: 30
   evidenceRetentionDays: 1095
 spec:
-  description: >
-    Validates that agent run usage (tool calls, LLM calls, memory operations) is accurately metered.
+  description: 'Validates that agent run usage (tool calls, LLM calls, memory operations)
+    is accurately metered.
+
+    '
   validates:
-    - dimension: metering-accuracy
-      description: Agent run metering is accurate.
-      checks:
-        - id: chk-tool-calls-metered
-          description: All tool calls are metered
-          rule: 'metering:tool-calls-complete'
-          severity: high
-          evidenceRequired: true
-        - id: chk-llm-calls-metered
-          description: All LLM calls within agent run are metered
-          rule: 'metering:llm-calls-complete'
-          severity: high
-          evidenceRequired: true
-        - id: chk-run-id-present
-          description: Agent run ID is present in all usage events
-          rule: 'field-not-empty:agentRunId'
-          severity: high
-          evidenceRequired: true
+  - dimension: metering-accuracy
+    description: Agent run metering is accurate.
+    checks:
+    - id: chk-tool-calls-metered
+      description: All tool calls are metered
+      rule: metering:tool-calls-complete
+      severity: high
+      evidenceRequired: true
+    - id: chk-llm-calls-metered
+      description: All LLM calls within agent run are metered
+      rule: metering:llm-calls-complete
+      severity: high
+      evidenceRequired: true
+    - id: chk-run-id-present
+      description: Agent run ID is present in all usage events
+      rule: field-not-empty:agentRunId
+      severity: high
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

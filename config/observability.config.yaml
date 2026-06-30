@@ -4,39 +4,29 @@ metadata:
   name: mycodexvantaos-observability-config
   version: 1.0.0
   date: '2026-06-29'
-
-# OpenTelemetry configuration
 opentelemetry:
   service-name: mycodexvantaos
-  service-version: '1.0.0'
+  service-version: 1.0.0
   service-namespace: mycodexvantaos
-  deployment-environment: '${APP_ENV:-development}'
-
-  # Traces
+  deployment-environment: ${APP_ENV:-development}
   traces:
     enabled: true
     exporter: otlp
-    endpoint: '${OTEL_EXPORTER_OTLP_ENDPOINT:-http://localhost:4317}'
+    endpoint: ${OTEL_EXPORTER_OTLP_ENDPOINT:-http://localhost:4317}
     sampling-rate: 1.0
     propagators:
-      - tracecontext
-      - baggage
-
-  # Metrics
+    - tracecontext
+    - baggage
   metrics:
     enabled: true
     exporter: otlp
-    endpoint: '${OTEL_EXPORTER_OTLP_ENDPOINT:-http://localhost:4317}'
+    endpoint: ${OTEL_EXPORTER_OTLP_ENDPOINT:-http://localhost:4317}
     interval-ms: 60000
-
-  # Logs
   logs:
     enabled: true
     exporter: otlp
-    endpoint: '${OTEL_EXPORTER_OTLP_ENDPOINT:-http://localhost:4317}'
-    level: '${LOG_LEVEL:-info}'
-
-# Health checks
+    endpoint: ${OTEL_EXPORTER_OTLP_ENDPOINT:-http://localhost:4317}
+    level: ${LOG_LEVEL:-info}
 health:
   liveness:
     path: /health/live
@@ -48,47 +38,68 @@ health:
     interval-seconds: 10
     timeout-seconds: 5
     failure-threshold: 3
-
-# Metrics definitions
 metrics:
   platform:
-    - name: mycodexvantaos_agent_task_total
-      type: counter
-      description: Total number of agent tasks executed
-      labels: [agent_id, task_type, status]
-    - name: mycodexvantaos_agent_task_duration_seconds
-      type: histogram
-      description: Agent task execution duration in seconds
-      labels: [agent_id, task_type]
-      buckets: [0.1, 0.5, 1.0, 2.5, 5.0, 10.0, 30.0, 60.0]
-    - name: mycodexvantaos_llm_request_total
-      type: counter
-      description: Total number of LLM requests
-      labels: [provider, model, status]
-    - name: mycodexvantaos_llm_tokens_total
-      type: counter
-      description: Total tokens consumed
-      labels: [provider, model, token_type]
-    - name: mycodexvantaos_gate_evaluation_total
-      type: counter
-      description: Total gate evaluations
-      labels: [gate_id, level, result]
-    - name: mycodexvantaos_billing_usage_total
-      type: counter
-      description: Total billable usage units
-      labels: [workspace_id, capability, unit_type]
-
-# Alerting
+  - name: mycodexvantaos_agent_task_total
+    type: counter
+    description: Total number of agent tasks executed
+    labels:
+    - agent_id
+    - task_type
+    - status
+  - name: mycodexvantaos_agent_task_duration_seconds
+    type: histogram
+    description: Agent task execution duration in seconds
+    labels:
+    - agent_id
+    - task_type
+    buckets:
+    - 0.1
+    - 0.5
+    - 1.0
+    - 2.5
+    - 5.0
+    - 10.0
+    - 30.0
+    - 60.0
+  - name: mycodexvantaos_llm_request_total
+    type: counter
+    description: Total number of LLM requests
+    labels:
+    - provider
+    - model
+    - status
+  - name: mycodexvantaos_llm_tokens_total
+    type: counter
+    description: Total tokens consumed
+    labels:
+    - provider
+    - model
+    - token_type
+  - name: mycodexvantaos_gate_evaluation_total
+    type: counter
+    description: Total gate evaluations
+    labels:
+    - gate_id
+    - level
+    - result
+  - name: mycodexvantaos_billing_usage_total
+    type: counter
+    description: Total billable usage units
+    labels:
+    - workspace_id
+    - capability
+    - unit_type
 alerting:
   enabled: true
   rules:
-    - name: HighAgentTaskFailureRate
-      condition: "rate(mycodexvantaos_agent_task_total{status='error'}[5m]) > 0.1"
-      severity: critical
-      annotations:
-        summary: 'High agent task failure rate detected'
-    - name: GateEvaluationFailure
-      condition: "mycodexvantaos_gate_evaluation_total{result='fail'} > 0"
-      severity: warning
-      annotations:
-        summary: 'Gate evaluation failure detected'
+  - name: HighAgentTaskFailureRate
+    condition: rate(mycodexvantaos_agent_task_total{status='error'}[5m]) > 0.1
+    severity: critical
+    annotations:
+      summary: High agent task failure rate detected
+  - name: GateEvaluationFailure
+    condition: mycodexvantaos_gate_evaluation_total{result='fail'} > 0
+    severity: warning
+    annotations:
+      summary: Gate evaluation failure detected

@@ -23,5 +23,5 @@ export function isValidKebabCase(name: string): boolean {
   return /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/.test(name);
 }
 
-export const PLATFORM_NAMESPACE = 'mycodexvantaos';
-export const URN_SCHEME = 'urn:mycodexvantaos';
+export const PLATFORM_NAMESPACE = "mycodexvantaos";
+export const URN_SCHEME = "urn:mycodexvantaos";

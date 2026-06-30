@@ -2,9 +2,9 @@ name: Lint Code Base
 
 on:
   push:
-    branches: ['main']
+    branches: ["main"]
   pull_request:
-    branches: ['main']
+    branches: ["main"]
   workflow_dispatch:
 
 concurrency:
@@ -33,7 +33,7 @@ jobs:
         uses: super-linter/super-linter@12150456a73e248bdc94d0794898f94e23127c88
         env:
           VALIDATE_ALL_CODEBASE: false
-          DEFAULT_BRANCH: 'main'
+          DEFAULT_BRANCH: "main"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LOG_LEVEL: NOTICE
 
@@ -46,7 +46,7 @@ jobs:
           VALIDATE_DOCKERFILE_HADOLINT: true
 
           # Shellcheck options — suppress false positives for GitHub Actions env vars
-          SHELLCHECK_OPTS: '--exclude=SC2086'
+          SHELLCHECK_OPTS: "--exclude=SC2086"
 
           # Exclude generated / vendored / data directories
           FILTER_REGEX_EXCLUDE: >-

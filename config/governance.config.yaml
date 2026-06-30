@@ -4,8 +4,6 @@ metadata:
   name: mycodexvantaos-governance-config
   version: 1.0.0
   date: '2026-06-29'
-
-# Governance policy references
 policies:
   identity: governance/identity-policy.yaml
   platform: governance/platform-governance-spec.yaml
@@ -15,8 +13,6 @@ policies:
   runtime-mode: governance/runtime-mode-policy.yaml
   service-tier: governance/service-tier-policy.yaml
   exceptions: governance/exceptions.yaml
-
-# Audit configuration
 audit:
   enabled: true
   retention:
@@ -26,40 +22,32 @@ audit:
     algorithm: SHA-256
     immutable: true
   events:
-    - governance-policy-change
-    - identity-policy-change
-    - provider-registration
-    - module-registration
-    - gate-evaluation
-    - release-promotion
-    - exception-grant
-    - exception-revoke
+  - governance-policy-change
+  - identity-policy-change
+  - provider-registration
+  - module-registration
+  - gate-evaluation
+  - release-promotion
+  - exception-grant
+  - exception-revoke
   evidence:
     required: true
     schema: governance/audit/audit-evidence.schema.json
-
-# Exception management
 exceptions:
   registry: governance/exceptions.yaml
   require-approval: true
   max-duration-days: 90
   review-cycle-days: 30
-
-# SSOT registry
 ssot:
   registry: governance/ssot-registry.yaml
   drift-detection: true
   drift-threshold: 0
-
-# Quantum-classical bridge
 quantum:
   bridge: governance/quantum-classical-bridge.yaml
   enabled: true
-
-# Reporting
 reports:
   output-dir: governance/reports
   formats:
-    - json
-    - yaml
+  - json
+  - yaml
   retention-days: 90

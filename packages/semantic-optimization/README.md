@@ -50,10 +50,10 @@ npm install
 ### Usage
 
 ```typescript
-import { performanceTuner } from './systems/performance-tuning';
-import { dataAnalytics } from './systems/data-analytics';
-import { continuousImprovement } from './systems/continuous-improvement';
-import { integratedDashboard } from './systems/integrated-dashboard';
+import { performanceTuner } from "./systems/performance-tuning";
+import { dataAnalytics } from "./systems/data-analytics";
+import { continuousImprovement } from "./systems/continuous-improvement";
+import { integratedDashboard } from "./systems/integrated-dashboard";
 
 // Record metrics
 performanceTuner.recordMetrics(metrics);
@@ -122,13 +122,13 @@ All systems use sensible defaults but can be customized:
 ```typescript
 // Custom parameters
 const tuner = new PerformanceTuner();
-tuner.parameters.set('cache_ttl', {
-  name: 'cache_ttl',
+tuner.parameters.set("cache_ttl", {
+  name: "cache_ttl",
   value: 7200,
   min: 60,
   max: 86400,
   step: 60,
-  impact: 'high',
+  impact: "high",
 });
 ```
 

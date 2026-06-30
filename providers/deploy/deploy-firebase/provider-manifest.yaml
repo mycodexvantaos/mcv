@@ -7,30 +7,30 @@ metadata:
   version: 1.0.0
   author: MyCodeXvantaOS Team
   tags:
-    - deployment
-    - firebase
-    - gcp
-    - cloud
-    - optional
+  - deployment
+  - firebase
+  - gcp
+  - cloud
+  - optional
 spec:
   providerName: firebase
   isNative: false
   fallbackProvider: deploy-native
   priority: 50
   capabilities:
-    - firebase-app-hosting
-    - firebase-hosting
-    - cloud-functions
-    - gcp-integration
+  - firebase-app-hosting
+  - firebase-hosting
+  - cloud-functions
+  - gcp-integration
   requirements:
     external:
-      - firebase-tools
-      - gcloud-cli
+    - firebase-tools
+    - gcloud-cli
     runtime:
-      - nodejs >= 18.0.0
+    - nodejs >= 18.0.0
     credentials:
-      - FIREBASE_PROJECT_ID
-      - GOOGLE_APPLICATION_CREDENTIALS (optional)
+    - FIREBASE_PROJECT_ID
+    - GOOGLE_APPLICATION_CREDENTIALS (optional)
   configuration:
     type: object
     properties:
@@ -54,7 +54,7 @@ spec:
   availability:
     always: false
     requires:
-      - FIREBASE_PROJECT_ID
+    - FIREBASE_PROJECT_ID
     healthCheck: firebase projects list
 provider-id: mycodexvantaos-deploy-firebase
 capability: deploy

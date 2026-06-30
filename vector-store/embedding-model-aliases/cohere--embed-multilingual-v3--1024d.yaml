@@ -1,5 +1,3 @@
-# vector-store/embedding-model-aliases/cohere--embed-multilingual-v3--1024d.yaml
-# 9.3 — Format: <provider>--<model-name>--<dimension>d
 apiVersion: mycodexvantaos.org/v1
 kind: EmbeddingModelAlias
 metadata:
@@ -12,4 +10,4 @@ spec:
   dimension: 1024
   providerInstance: embedding-cohere
   maxTokens: 512
-  description: 'Cohere embed-multilingual-v3. 100+ language support, 1024 dimensions.'
+  description: Cohere embed-multilingual-v3. 100+ language support, 1024 dimensions.

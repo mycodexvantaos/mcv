@@ -8,9 +8,9 @@ metadata:
 spec:
   domain: ai
   capabilities:
-    - llm
-    - cache
-    - observability
+  - llm
+  - cache
+  - observability
   providers:
     llm: llm-openai
     cache: cache-redis

@@ -12,8 +12,8 @@
  *   - fail-job
  */
 
-import type { IDatabasePort } from '../../ports/database';
-import type { IJobQueuePort, JobType, JobPayload } from '../../ports/queue';
+import type { IDatabasePort } from "../../ports/database";
+import type { IJobQueuePort, JobType, JobPayload } from "../../ports/queue";
 
 // ── Service Dependencies ───────────────────────────────────────────────
 
@@ -27,7 +27,7 @@ export interface AutomationServiceDeps {
 
 // ── Types ──────────────────────────────────────────────────────────────
 
-export type JobPhase = 'pending' | 'leased' | 'completed' | 'failed' | 'dead-letter';
+export type JobPhase = "pending" | "leased" | "completed" | "failed" | "dead-letter";
 
 export interface EnqueueJobInput {
   jobType: JobType;
@@ -58,7 +58,7 @@ export interface JobResource {
 
 export interface AutomationAuditEvent {
   eventType: string;
-  category: 'automation';
+  category: "automation";
   severity: string;
   subjectId: string;
   workspaceId: string;
@@ -87,12 +87,12 @@ export class AutomationService {
     });
 
     await this.deps.audit.emitEvent({
-      eventType: 'automation.job.enqueued',
-      category: 'automation',
-      severity: 'info',
+      eventType: "automation.job.enqueued",
+      category: "automation",
+      severity: "info",
       subjectId,
       workspaceId: input.workspaceId,
-      action: 'enqueue-job',
+      action: "enqueue-job",
       correlationId: crypto.randomUUID(),
       data: { jobId, jobType: input.jobType },
     });
@@ -107,7 +107,7 @@ export class AutomationService {
         maxRetries: input.maxRetries ?? 3,
       },
       status: {
-        phase: 'pending',
+        phase: "pending",
         leasedBy: null,
         leasedAt: null,
         completedAt: null,
@@ -132,7 +132,7 @@ export class AutomationService {
         maxRetries: job.maxRetries ?? 3,
       },
       status: {
-        phase: 'leased',
+        phase: "leased",
         leasedBy: workerId,
         leasedAt: new Date().toISOString(),
         completedAt: null,

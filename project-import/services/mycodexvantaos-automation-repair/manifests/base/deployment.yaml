@@ -20,31 +20,31 @@ spec:
         component: automation-core
     spec:
       containers:
-        - name: mycodexvantaos-automation-core
-          image: registry.local/mycodexvantaos/mycodexvantaos-automation-core:latest
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 3000
-              protocol: TCP
-          envFrom:
-            - configMapRef:
-                name: mycodexvantaos-automation-core-config
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 3000
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 3000
-            initialDelaySeconds: 15
-            periodSeconds: 20
-          resources:
-            requests:
-              cpu: '50m'
-              memory: '64Mi'
-            limits:
-              cpu: '200m'
-              memory: '256Mi'
+      - name: mycodexvantaos-automation-core
+        image: registry.local/mycodexvantaos/mycodexvantaos-automation-core:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: mycodexvantaos-automation-core-config
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi

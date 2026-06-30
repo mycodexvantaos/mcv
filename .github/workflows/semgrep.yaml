@@ -1,37 +1,30 @@
 name: Semgrep SAST
-
 "on":
   push:
-    branches: ["main"]
+    branches:
+      - main
   pull_request:
-    branches: ["main"]
-  workflow_dispatch:
-
+    branches:
+      - main
+  workflow_dispatch: null
 permissions:
   contents: read
   security-events: write
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
 jobs:
   semgrep:
     name: Semgrep Scan
     runs-on: ubuntu-latest
     timeout-minutes: 20
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
-
       - name: Run Semgrep via container
-        run: |
-          docker run --rm -v "${PWD}:/src" returntocorp/semgrep:latest \
-            semgrep --config p/default --config p/security-audit \
-            --config p/python --config p/javascript \
-            --sarif -o /src/semgrep.sarif /src || true
-
+        run: "docker run --rm -v \"${PWD}:/src\" returntocorp/semgrep:latest \\\n  semgrep\
+          \ --config p/default --config p/security-audit \\\n  --config p/python --config\
+          \ p/javascript \\\n  --sarif -o /src/semgrep.sarif /src || true\n"
       - name: Upload SARIF to GitHub Security tab
         uses: github/codeql-action/upload-sarif@dd903d2e4f5405488e5ef1422510ee31c8b32357
         continue-on-error: true

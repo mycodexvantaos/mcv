@@ -7,17 +7,17 @@ metadata:
   status: active
 spec:
   validations:
-    - name: directory-index-completeness
-      severity: critical
-      check: all-root-modules-indexed
-    - name: dependency-graph-acyclicity
-      severity: critical
-      check: hard-dependency-graph-acyclic
-    - name: binding-index-coverage
-      severity: high
-      check: all-services-have-provider-bindings
-    - name: navigation-no-runtime-deps
-      severity: critical
-      check: navigation-indexes-have-no-hard-runtime-dependencies
+  - name: directory-index-completeness
+    severity: critical
+    check: all-root-modules-indexed
+  - name: dependency-graph-acyclicity
+    severity: critical
+    check: hard-dependency-graph-acyclic
+  - name: binding-index-coverage
+    severity: high
+    check: all-services-have-provider-bindings
+  - name: navigation-no-runtime-deps
+    severity: critical
+    check: navigation-indexes-have-no-hard-runtime-dependencies
 platform: mycodexvantaos
 canonical-url: https://mycodexvantaos.com

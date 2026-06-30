@@ -2,7 +2,7 @@
  * MyCodeXvantaOS — Knowledge Application Package
  */
 
-export { KnowledgeService } from './knowledge-service';
+export { KnowledgeService } from "./knowledge-service";
 export type {
   KnowledgeServiceDeps,
   DocumentFormat,
@@ -19,4 +19,4 @@ export type {
   SearchResultItem,
   KnowledgeIssueType,
   KnowledgeAuditEvent,
-} from './knowledge-service';
+} from "./knowledge-service";

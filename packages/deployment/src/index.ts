@@ -9,7 +9,7 @@
 
 // Core types
 export interface DeploymentConfig {
-  target: 'local' | 'kubernetes' | 'docker' | 'cloud';
+  target: "local" | "kubernetes" | "docker" | "cloud";
   namespace?: string;
   replicas?: number;
   resources?: {
@@ -27,7 +27,7 @@ export interface DeploymentRequest {
 
 export interface DeploymentResult {
   jobId: string;
-  status: 'pending' | 'deployed' | 'failed';
+  status: "pending" | "deployed" | "failed";
   url?: string;
   endpoints?: string[];
   deploymentTime: number;
@@ -49,7 +49,7 @@ export interface DeploymentProviderInterface {
  */
 export class DeploymentProviderRegistry {
   private providers: Map<string, DeploymentProviderInterface> = new Map();
-  private preferredProvider: string = 'native';
+  private preferredProvider: string = "native";
 
   /**
    * Register a deployment provider
@@ -91,13 +91,13 @@ export class DeploymentProviderRegistry {
     }
 
     // Fall back to native
-    const native = this.providers.get('native');
+    const native = this.providers.get("native");
     if (native) {
       return native;
     }
 
     throw new Error(
-      'No deployment provider available. Native provider should always be registered.'
+      "No deployment provider available. Native provider should always be registered."
     );
   }
 
@@ -139,7 +139,7 @@ export function getDeploymentRegistry(): DeploymentProviderRegistry {
  * Native Deployment Provider (built-in, zero dependencies)
  */
 export class NativeDeploymentProvider implements DeploymentProviderInterface {
-  name = 'native';
+  name = "native";
   isNative = true;
 
   isAvailable(): boolean {
@@ -147,14 +147,14 @@ export class NativeDeploymentProvider implements DeploymentProviderInterface {
   }
 
   async healthCheck(): Promise<{ healthy: boolean; message: string }> {
-    return { healthy: true, message: 'Native Deployment Provider is operational' };
+    return { healthy: true, message: "Native Deployment Provider is operational" };
   }
 
   getMetadata() {
     return {
-      name: 'deploy-native',
-      provider: 'native',
-      capabilities: ['local-deployment', 'docker-deployment', 'static-site-hosting'],
+      name: "deploy-native",
+      provider: "native",
+      capabilities: ["local-deployment", "docker-deployment", "static-site-hosting"],
       isNative: true,
       requiresApiKey: false,
     };
@@ -162,13 +162,13 @@ export class NativeDeploymentProvider implements DeploymentProviderInterface {
 
   async deploy(application: any, config?: DeploymentConfig): Promise<DeploymentResult> {
     const startTime = Date.now();
-    const jobId = `urn:mycodexvantaos:deployment:native:${application.name || 'app'}:${Date.now()}`;
+    const jobId = `urn:mycodexvantaos:deployment:native:${application.name || "app"}:${Date.now()}`;
 
     return {
       jobId,
-      status: 'deployed',
+      status: "deployed",
       url: `http://localhost:${config?.resources?.cpu ? 8080 : 3000}`,
-      endpoints: [`/api/v1/${application.name || 'app'}`],
+      endpoints: [`/api/v1/${application.name || "app"}`],
       deploymentTime: Date.now() - startTime,
     };
   }
@@ -179,7 +179,7 @@ export class NativeDeploymentProvider implements DeploymentProviderInterface {
  */
 export async function initializeDeployment(
   config: {
-    preferredProvider?: 'native' | 'firebase' | 'kubernetes' | 'docker';
+    preferredProvider?: "native" | "firebase" | "kubernetes" | "docker";
     providers?: Record<string, any>;
   } = {}
 ): Promise<DeploymentProviderRegistry> {
@@ -187,7 +187,7 @@ export async function initializeDeployment(
 
   // Always register native provider first (guaranteed fallback)
   const nativeProvider = new NativeDeploymentProvider();
-  reg.register('native', nativeProvider);
+  reg.register("native", nativeProvider);
 
   // Set preferred provider if specified
   if (config.preferredProvider) {
@@ -208,7 +208,7 @@ export async function deploy(
   const provider = options?.provider ? reg.get(options.provider) : reg.getActive();
 
   if (!provider) {
-    throw new Error('No deployment provider available');
+    throw new Error("No deployment provider available");
   }
 
   return provider.deploy(application, options?.config);
@@ -231,7 +231,7 @@ export class Deployment {
    */
   async initialize(): Promise<void> {
     await initializeDeployment();
-    console.log('Deployment service initialized');
+    console.log("Deployment service initialized");
   }
 
   /**
@@ -242,7 +242,7 @@ export class Deployment {
 
     // Validate deployment request
     if (!request.application || !request.config) {
-      throw new Error('Invalid deployment request');
+      throw new Error("Invalid deployment request");
     }
 
     // Generate deployment ID
@@ -260,7 +260,7 @@ export class Deployment {
 
       const result: DeploymentResult = {
         jobId,
-        status: 'deployed',
+        status: "deployed",
         url: deployment.url,
         endpoints: deployment.endpoints,
         deploymentTime,
@@ -273,7 +273,7 @@ export class Deployment {
 
       const result: DeploymentResult = {
         jobId,
-        status: 'failed',
+        status: "failed",
         deploymentTime,
       };
 
@@ -289,13 +289,13 @@ export class Deployment {
     const { application, config } = request;
 
     switch (config.target) {
-      case 'local':
+      case "local":
         return this.deployLocal(application, config, jobId);
-      case 'kubernetes':
+      case "kubernetes":
         return this.deployKubernetes(application, config, jobId);
-      case 'docker':
+      case "docker":
         return this.deployDocker(application, config, jobId);
-      case 'cloud':
+      case "cloud":
         return this.deployCloud(application, config, jobId);
       default:
         throw new Error(`Unsupported deployment target: ${config.target}`);
@@ -312,11 +312,11 @@ export class Deployment {
   ): Promise<any> {
     return {
       jobId,
-      target: 'local',
+      target: "local",
       port: 3000,
-      url: 'http://localhost:3000',
+      url: "http://localhost:3000",
       endpoints: [`/api/v1/${application.name}`],
-      status: 'running',
+      status: "running",
     };
   }
 
@@ -331,12 +331,12 @@ export class Deployment {
     // Simulate Kubernetes deployment
     return {
       jobId,
-      target: 'kubernetes',
-      namespace: config.namespace || 'default',
+      target: "kubernetes",
+      namespace: config.namespace || "default",
       replicas: config.replicas || 1,
       url: `http://${application.name}.mycodexvantaos.local`,
       endpoints: [`/api/v1/${application.name}`],
-      status: 'running',
+      status: "running",
     };
   }
 
@@ -350,12 +350,12 @@ export class Deployment {
   ): Promise<any> {
     return {
       jobId,
-      target: 'docker',
+      target: "docker",
       containerName: `mycodexvantaos-${application.name}`,
       port: config.resources?.cpu ? 8080 : 3000,
       url: `http://localhost:${config.resources?.cpu ? 8080 : 3000}`,
       endpoints: [`/api/v1/${application.name}`],
-      status: 'running',
+      status: "running",
     };
   }
 
@@ -369,10 +369,10 @@ export class Deployment {
   ): Promise<any> {
     return {
       jobId,
-      target: 'cloud',
+      target: "cloud",
       url: `https://${application.name}.mycodexvantaos.cloud`,
       endpoints: [`/api/v1/${application.name}`],
-      status: 'running',
+      status: "running",
     };
   }
 
@@ -395,7 +395,7 @@ export class Deployment {
    */
   async cleanup(): Promise<void> {
     this.deployments.clear();
-    console.log('Deployment service cleaned up');
+    console.log("Deployment service cleaned up");
   }
 }
 

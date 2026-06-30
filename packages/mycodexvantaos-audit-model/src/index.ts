@@ -4,7 +4,7 @@
  */
 
 // Re-export from core constitution
-export * from '@mycodexvantaos/core/audit-model';
+export * from "@mycodexvantaos/core/audit-model";
 
 // Extended types for standalone package
 export interface AuditActor {

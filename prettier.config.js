@@ -2,31 +2,31 @@
 const config = {
   semi: true,
   singleQuote: false,
-  trailingComma: 'es5',
+  trailingComma: "es5",
   printWidth: 100,
   tabWidth: 2,
   useTabs: false,
   bracketSpacing: true,
-  arrowParens: 'always',
-  endOfLine: 'lf',
+  arrowParens: "always",
+  endOfLine: "lf",
   overrides: [
     {
-      files: ['*.yaml', '*.yml'],
+      files: ["*.yaml", "*.yml"],
       options: {
         tabWidth: 2,
         singleQuote: false,
       },
     },
     {
-      files: ['*.json'],
+      files: ["*.json"],
       options: {
         tabWidth: 2,
       },
     },
     {
-      files: ['*.md'],
+      files: ["*.md"],
       options: {
-        proseWrap: 'preserve',
+        proseWrap: "preserve",
       },
     },
   ],

@@ -1,17 +1,17 @@
-import { PolicyEngine } from '../index';
+import { PolicyEngine } from "../index";
 
-describe('policy-engine', () => {
+describe("policy-engine", () => {
   let instance: PolicyEngine;
 
   beforeEach(() => {
     instance = new PolicyEngine();
   });
 
-  test('should initialize', () => {
+  test("should initialize", () => {
     expect(instance).toBeDefined();
   });
 
-  test('should have basic functionality', () => {
-    expect(typeof instance).toBe('object');
+  test("should have basic functionality", () => {
+    expect(typeof instance).toBe("object");
   });
 });

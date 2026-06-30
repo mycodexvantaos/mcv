@@ -1,17 +1,17 @@
-import { ServiceMesh } from '../index';
+import { ServiceMesh } from "../index";
 
-describe('service-mesh', () => {
+describe("service-mesh", () => {
   let instance: ServiceMesh;
 
   beforeEach(() => {
     instance = new ServiceMesh();
   });
 
-  test('should initialize', () => {
+  test("should initialize", () => {
     expect(instance).toBeDefined();
   });
 
-  test('should have basic functionality', () => {
-    expect(typeof instance).toBe('object');
+  test("should have basic functionality", () => {
+    expect(typeof instance).toBe("object");
   });
 });

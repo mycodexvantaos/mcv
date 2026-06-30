@@ -1,73 +1,65 @@
-# workflows/detect-and-humanise-workflow.yaml
-# MyCodeXvantaOS — Humaniser Detect-and-Humanise Workflow
-#
-# Defines the standard workflow for detecting AI-generated content
-# and applying humanisation rewriting.
-
 apiVersion: mycodexvantaos.org/v1
 kind: Workflow
 metadata:
   name: detect-and-humanise
   urn: urn:mycodexvantaos:ai:workflow:detect-and-humanise
-  description: >
-    Standard workflow for detecting AI-generated content and applying
+  description: 'Standard workflow for detecting AI-generated content and applying
     humanisation rewriting. Supports text, file, and URL input sources.
 
+    '
 spec:
   steps:
-    - id: extract
-      name: Extract Text
-      description: Extract text content from the input source
-      input:
-        source: '{{input.source}}'
-        text: '{{input.text}}'
-        file: '{{input.file}}'
-        url: '{{input.url}}'
-      output: extracted_text
-
-    - id: detect
-      name: Detect AI Content
-      description: Analyze text for AI-generated patterns
-      depends_on: [extract]
-      input:
-        text: '{{steps.extract.output.extracted_text}}'
-        source: '{{input.source}}'
-      output: detection_result
-
-    - id: evaluate
-      name: Evaluate Detection
-      description: Check if humanisation is needed based on detection results
-      depends_on: [detect]
-      condition: '{{steps.detect.output.detection_result.aiScore > 0.35}}'
-      output: needs_humanisation
-
-    - id: humanise
-      name: Humanise Content
-      description: Rewrite flagged sentences to sound more natural
-      depends_on: [evaluate]
-      condition: '{{steps.evaluate.output.needs_humanisation}}'
-      input:
-        originalText: '{{steps.extract.output.extracted_text}}'
-        detectionResult: '{{steps.detect.output.detection_result}}'
-        style: '{{input.style}}'
-        preserveTechnicalTerms: '{{input.preserveTechnicalTerms}}'
-        formalityLevel: '{{input.formalityLevel}}'
-      output: humanisation_result
-
-    - id: report
-      name: Generate Report
-      description: Generate comparison report and recommendations
-      depends_on: [humanise]
-      input:
-        detection: '{{steps.detect.output.detection_result}}'
-        humanisation: '{{steps.humanise.output.humanisation_result}}'
-      output: report
-
+  - id: extract
+    name: Extract Text
+    description: Extract text content from the input source
+    input:
+      source: '{{input.source}}'
+      text: '{{input.text}}'
+      file: '{{input.file}}'
+      url: '{{input.url}}'
+    output: extracted_text
+  - id: detect
+    name: Detect AI Content
+    description: Analyze text for AI-generated patterns
+    depends_on:
+    - extract
+    input:
+      text: '{{steps.extract.output.extracted_text}}'
+      source: '{{input.source}}'
+    output: detection_result
+  - id: evaluate
+    name: Evaluate Detection
+    description: Check if humanisation is needed based on detection results
+    depends_on:
+    - detect
+    condition: '{{steps.detect.output.detection_result.aiScore > 0.35}}'
+    output: needs_humanisation
+  - id: humanise
+    name: Humanise Content
+    description: Rewrite flagged sentences to sound more natural
+    depends_on:
+    - evaluate
+    condition: '{{steps.evaluate.output.needs_humanisation}}'
+    input:
+      originalText: '{{steps.extract.output.extracted_text}}'
+      detectionResult: '{{steps.detect.output.detection_result}}'
+      style: '{{input.style}}'
+      preserveTechnicalTerms: '{{input.preserveTechnicalTerms}}'
+      formalityLevel: '{{input.formalityLevel}}'
+    output: humanisation_result
+  - id: report
+    name: Generate Report
+    description: Generate comparison report and recommendations
+    depends_on:
+    - humanise
+    input:
+      detection: '{{steps.detect.output.detection_result}}'
+      humanisation: '{{steps.humanise.output.humanisation_result}}'
+    output: report
   outputs:
     detection: '{{steps.detect.output.detection_result}}'
     humanisation: '{{steps.humanise.output.humanisation_result}}'
     report: '{{steps.report.output.report}}'
-
   error_handling:
     on_step_failure: fallback_to_native
     fallback_provider: native

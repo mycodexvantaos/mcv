@@ -19,18 +19,18 @@ spec:
   description: Native LLM provider with zero external dependencies. Provides basic
     text processing and template-based responses as fallback.
   capabilities:
-    - text-generation
-    - text-completion
-    - code-assistance
-    - summarization
+  - text-generation
+  - text-completion
+  - code-assistance
+  - summarization
   limitations:
-    - No advanced reasoning without external model
-    - Template-based responses only
+  - No advanced reasoning without external model
+  - Template-based responses only
   priority: 100
 provider-id: mycodexvantaos-llm-native
 capability: llm
 platform: mycodexvantaos
 runtime-modes:
-  - native
-  - connected
-  - hybrid
+- native
+- connected
+- hybrid

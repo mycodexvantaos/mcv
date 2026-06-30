@@ -1,103 +1,58 @@
 name: OPA Policy Check
-
-on:
+true:
   pull_request:
     paths:
-      - 'deploy/**/*.yaml'
-      - '.config/policy/**'
-      - '.config/conftest/**'
-
+    - deploy/**/*.yaml
+    - .config/policy/**
+    - .config/conftest/**
 permissions:
   contents: read
   pull-requests: write
-
 jobs:
   opa-conftest:
     name: Conftest Policy Check
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+    - name: Checkout repository
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+    - name: Setup Conftest
+      uses: open-policy-agent/setup-conftest@2387140fcfd049c6d32ac373f15a1a1f59998246
+      with:
+        version: v0.45.0
+    - name: Run Conftest on Kubernetes manifests
+      id: conftest
+      run: 'conftest test --all-namespaces -p .config/conftest/policies -o json deploy/kustomize/base/
+        > conftest-results.json || true
 
-      - name: Setup Conftest
-        uses: open-policy-agent/setup-conftest@2387140fcfd049c6d32ac373f15a1a1f59998246 # v2.0.0
-        with:
-          version: v0.45.0
+        cat conftest-results.json
 
-      - name: Run Conftest on Kubernetes manifests
-        id: conftest
-        run: |
-          conftest test --all-namespaces -p .config/conftest/policies -o json deploy/kustomize/base/ > conftest-results.json || true
-          cat conftest-results.json
-
-      - name: Check for failures and post comment
-        uses: actions/github-script@a3f4214272a5a585724915a209c95143e1858f62 # v7
-        if: always()
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const fs = require('fs');
-            const path = require('path');
-            const core = require('@actions/core');
-            const resultsPath = 'conftest-results.json';
-
-            if (!fs.existsSync(resultsPath)) {
-              console.log('No conftest results file found.');
-              return;
-            }
-
-            let results;
-            try {
-              results = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
-            } catch (error) {
-              console.log('Could not parse conftest results file.');
-              core.setFailed('Could not parse conftest results file.');
-              return;
-            }
-
-            let failures = [];
-            if (results && Array.isArray(results)) {
-              results.forEach(result => {
-                if(result.failures && Array.isArray(result.failures)) {
-                  failures = failures.concat(result.failures);
-                }
-              });
-            }
-
-            if (failures.length === 0) {
-              console.log("No policy violations found.");
-              return;
-            }
-
-            let body = `### 🚨 OPA Policy Check Failed\n\nFound ${failures.length} violation(s):\n\n`;
-            body += '| File | Message |\n';
-            body += '|------|---------|\n';
-            for (const failure of failures) {
-              body += `| \`${failure.filename}\` | \`${failure.msg}\` |\n`;
-            }
-
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-            });
-
-            const botComment = comments.find(comment => comment.user.login === 'github-actions[bot]' && comment.body.includes('OPA Policy Check Failed'));
-
-            if (botComment) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: botComment.id,
-                body: body,
-              });
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body: body,
-              });
-            }
-
-            core.setFailed(`OPA policy check failed with ${failures.length} violation(s).`);
+        '
+    - name: Check for failures and post comment
+      uses: actions/github-script@a3f4214272a5a585724915a209c95143e1858f62
+      if: always()
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: "const fs = require('fs');\nconst path = require('path');\nconst core\
+          \ = require('@actions/core');\nconst resultsPath = 'conftest-results.json';\n\
+          \nif (!fs.existsSync(resultsPath)) {\n  console.log('No conftest results\
+          \ file found.');\n  return;\n}\n\nlet results;\ntry {\n  results = JSON.parse(fs.readFileSync(resultsPath,\
+          \ 'utf8'));\n} catch (error) {\n  console.log('Could not parse conftest\
+          \ results file.');\n  core.setFailed('Could not parse conftest results file.');\n\
+          \  return;\n}\n\nlet failures = [];\nif (results && Array.isArray(results))\
+          \ {\n  results.forEach(result => {\n    if(result.failures && Array.isArray(result.failures))\
+          \ {\n      failures = failures.concat(result.failures);\n    }\n  });\n\
+          }\n\nif (failures.length === 0) {\n  console.log(\"No policy violations\
+          \ found.\");\n  return;\n}\n\nlet body = `### \U0001F6A8 OPA Policy Check\
+          \ Failed\\n\\nFound ${failures.length} violation(s):\\n\\n`;\nbody += '|\
+          \ File | Message |\\n';\nbody += '|------|---------|\\n';\nfor (const failure\
+          \ of failures) {\n  body += `| \\`${failure.filename}\\` | \\`${failure.msg}\\\
+          ` |\\n`;\n}\n\nconst { data: comments } = await github.rest.issues.listComments({\n\
+          \  owner: context.repo.owner,\n  repo: context.repo.repo,\n  issue_number:\
+          \ context.issue.number,\n});\n\nconst botComment = comments.find(comment\
+          \ => comment.user.login === 'github-actions[bot]' && comment.body.includes('OPA\
+          \ Policy Check Failed'));\n\nif (botComment) {\n  await github.rest.issues.updateComment({\n\
+          \    owner: context.repo.owner,\n    repo: context.repo.repo,\n    comment_id:\
+          \ botComment.id,\n    body: body,\n  });\n} else {\n  await github.rest.issues.createComment({\n\
+          \    owner: context.repo.owner,\n    repo: context.repo.repo,\n    issue_number:\
+          \ context.issue.number,\n    body: body,\n  });\n}\n\ncore.setFailed(`OPA\
+          \ policy check failed with ${failures.length} violation(s).`);\n"

@@ -5,8 +5,8 @@
  * 指標: 延遲 < 150ms, 意圖準確度 92%+, 代碼有效性 95%+, 誠信鎖定 1.00
  */
 
-import { performNativeAnalysis } from '@/lib/architecture-engine';
-import { designDocsContent } from '@/lib/design-docs';
+import { performNativeAnalysis } from "@/lib/architecture-engine";
+import { designDocsContent } from "@/lib/design-docs";
 
 export interface SystemMetrics {
   eraStatus: string;
@@ -54,7 +54,7 @@ export class NativeValidationService {
     const analysis = performNativeAnalysis(designDocsContent);
 
     return {
-      eraStatus: 'Era-3 P3 Phase 4: Production Ready [x]',
+      eraStatus: "Era-3 P3 Phase 4: Production Ready [x]",
       resonanceIndex: 1.0,
       recursiveDepth: 32,
       sovereigntyIndex: 0.35,
@@ -67,7 +67,7 @@ export class NativeValidationService {
         accuracy: 0.96,
         passedTests: 24,
         satisfaction: 4.8,
-        deliveryStatus: 'v1.0.0_PRODUCTION_READY',
+        deliveryStatus: "v1.0.0_PRODUCTION_READY",
         localLlmReady: true,
         productionReady: true,
       },

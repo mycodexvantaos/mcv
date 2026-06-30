@@ -1,17 +1,16 @@
 apiVersion: mycodexvantaos.io/v1
 kind: NamespaceGovernanceModule
-
 metadata:
   name: mycodexvantaos-module
   organization: mycodexvantaos
   title: MyCodexVantaOS Namespace Governance Module
-  description: >
-    Canonical namespace governance module for MyCodexVantaOS.
-    This artifact formalizes the namespace governance closure system,
-    repository naming governance, governance code taxonomy, namespace planes,
-    lifecycle policy, registry architecture, automation task alignment,
-    cross-era mapping, closure proof model, CI validation, and binding-mediator
-    enforcement as a machine-readable module.
+  description: 'Canonical namespace governance module for MyCodexVantaOS. This artifact
+    formalizes the namespace governance closure system, repository naming governance,
+    governance code taxonomy, namespace planes, lifecycle policy, registry architecture,
+    automation task alignment, cross-era mapping, closure proof model, CI validation,
+    and binding-mediator enforcement as a machine-readable module.
+
+    '
   labels:
     app.kubernetes.io/name: mycodexvantaos-module
     app.kubernetes.io/part-of: mycodexvantaos
@@ -25,7 +24,6 @@ metadata:
     mycodexvantaos.io/environment-in-name: forbidden
     mycodexvantaos.io/closure-model: l0-l1-l2-termination
     mycodexvantaos.io/registry-mode: immutable-or-append-only
-
 spec:
   identity:
     id: mycodexvantaos-namespace-governance-module
@@ -36,49 +34,45 @@ spec:
     lifecycle: active
     owner: platform-governance
     governanceCode: mycodexvantaos-00000
-
   naming:
     canonicalRules:
       lowercaseOnly: true
       kebabCaseOnly: true
       separator: hyphen
       forbiddenSeparators:
-        - underscore
-        - dot
-        - space
+      - underscore
+      - dot
+      - space
       versionInName: forbidden
       environmentMarkerInName: forbidden
-
     machineIdentifier: mycodexvantaos
     brandIdentifier: MyCodexVantaOS
     repositoryPattern: '{namespace}-{domain}-{function}'
-    repositoryRegex: '^(?:mycodexvantaos|softwareos)-[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*$'
-    governanceCodePattern: '^mycodexvantaos-[0-9]{5}$'
+    repositoryRegex: ^(?:mycodexvantaos|softwareos)-[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*$
+    governanceCodePattern: ^mycodexvantaos-[0-9]{5}$
     canonicalCodeExample: mycodexvantaos-00000
     forbiddenExamples:
-      - mycodexvantaos 00000
-      - mycodexvantaos_00000
-      - mycodexvantaos.00000
-      - mycodexvantaos-auth-service-v1
-      - mycodexvantaos-auth-service-prod
-
+    - mycodexvantaos 00000
+    - mycodexvantaos_00000
+    - mycodexvantaos.00000
+    - mycodexvantaos-auth-service-v1
+    - mycodexvantaos-auth-service-prod
   scope:
     appliesTo:
-      - git-organization
-      - repository-names
-      - governance-codes
-      - namespace-registry
-      - repository-registry
-      - governance-code-registry
-      - automation-task-registry
-      - controlled-vocabulary
-      - lifecycle-policy
-      - approval-workflow
-      - cross-era-mapping
-      - closure-prover
-      - dependency-binding-mediator
-      - ci-naming-validators
-
+    - git-organization
+    - repository-names
+    - governance-codes
+    - namespace-registry
+    - repository-registry
+    - governance-code-registry
+    - automation-task-registry
+    - controlled-vocabulary
+    - lifecycle-policy
+    - approval-workflow
+    - cross-era-mapping
+    - closure-prover
+    - dependency-binding-mediator
+    - ci-naming-validators
     canonicalPaths:
       module: mycodexvantaos-namespace-governance/mycodexvantaos-module.yaml
       spec: docs/governance/namespace-governance-closure-spec.md
@@ -93,373 +87,347 @@ spec:
       dependencyPolicy: navigation/dependency-policy.yaml
       directoryBindings: navigation/bindings
       dependencyExceptions: governance/exceptions/dependency-exceptions.yaml
-
   namespacePlanes:
     required: true
     planes:
-      - id: mycodexvantaos
-        plane: control-plane
-        responsibility:
-          - core-infrastructure
-          - shared-governance
-          - authentication-and-authorization
-          - policy-and-audit
-          - automation-engines
-          - event-bus
-          - registry-and-catalog
-          - signing-and-supply-chain-services
-          - runtime-control-services
-
-      - id: softwareos
-        plane: product-plane
-        responsibility:
-          - product-domain-platforms
-          - business-facing-services
-          - user-facing-apis
-          - domain-specific-agents
-          - product-dashboards
-          - domain-knowledge-services
-
+    - id: mycodexvantaos
+      plane: control-plane
+      responsibility:
+      - core-infrastructure
+      - shared-governance
+      - authentication-and-authorization
+      - policy-and-audit
+      - automation-engines
+      - event-bus
+      - registry-and-catalog
+      - signing-and-supply-chain-services
+      - runtime-control-services
+    - id: softwareos
+      plane: product-plane
+      responsibility:
+      - product-domain-platforms
+      - business-facing-services
+      - user-facing-apis
+      - domain-specific-agents
+      - product-dashboards
+      - domain-knowledge-services
     dependencyRule:
       productPlaneMayDependOnControlPlaneContracts: true
       productPlaneMayDependOnControlPlaneServices: true
       controlPlaneHardDependsOnProductPlaneRuntime: forbidden
       reverseAwarenessRequiresMediator: true
       approvedReverseAwarenessMediators:
-        - registry
-        - catalog
-        - binding-manifest
-        - contract
-        - evidence-channel
-        - observation-channel
-
+      - registry
+      - catalog
+      - binding-manifest
+      - contract
+      - evidence-channel
+      - observation-channel
   governanceCodeModel:
-    canonicalFormat: 'mycodexvantaos-{code}'
-    regex: '^mycodexvantaos-[0-9]{5}$'
+    canonicalFormat: mycodexvantaos-{code}
+    regex: ^mycodexvantaos-[0-9]{5}$
     decomposition:
-      code: 'll-d-s-qq'
+      code: ll-d-s-qq
       fields:
-        - name: ll
-          width: 2
-          range: '00-99'
-          meaning: layer-group
-
-        - name: d
-          width: 1
-          range: '0-9'
-          meaning: governance-domain
-
-        - name: s
-          width: 1
-          range: '0-9'
-          meaning: governance-subtype
-
-        - name: qq
-          width: 2
-          range: '00-99'
-          meaning: rule-sequence
-
+      - name: ll
+        width: 2
+        range: 00-99
+        meaning: layer-group
+      - name: d
+        width: 1
+        range: 0-9
+        meaning: governance-domain
+      - name: s
+        width: 1
+        range: 0-9
+        meaning: governance-subtype
+      - name: qq
+        width: 2
+        range: 00-99
+        meaning: rule-sequence
     eras:
-      - id: meta-governance
-        range: '00000-09999'
-        canonicalName: meta-framework
-        characteristic: immutable-baseline
-        focus:
-          - charter
-          - lifecycle
-          - inheritance
-          - conflict-resolution
-
-      - id: era-one
-        range: '10000-29999'
-        canonicalName: code-and-architecture-layer
-        characteristic: static-structure
-        focus:
-          - code-organization
-          - module-boundary
-          - component-architecture
-
-      - id: era-two
-        range: '30000-59999'
-        canonicalName: distributed-runtime-layer
-        characteristic: dynamic-distributed-systems
-        focus:
-          - service-mesh
-          - event-flow
-          - data-governance
-          - security
-
-      - id: era-three
-        range: '60000-89999'
-        canonicalName: intent-and-autonomy-layer
-        characteristic: intent-driven-systems
-        focus:
-          - semantic-intent
-          - ai-agents
-          - autonomy
-          - adaptive-governance
-
-      - id: cross-era-governance
-        range: '90000-99999'
-        canonicalName: cross-era-closure
-        characteristic: unified-governance-loop
-        focus:
-          - mapping
-          - migration
-          - compatibility
-          - archive
-          - destruction
-
+    - id: meta-governance
+      range: 00000-09999
+      canonicalName: meta-framework
+      characteristic: immutable-baseline
+      focus:
+      - charter
+      - lifecycle
+      - inheritance
+      - conflict-resolution
+    - id: era-one
+      range: 10000-29999
+      canonicalName: code-and-architecture-layer
+      characteristic: static-structure
+      focus:
+      - code-organization
+      - module-boundary
+      - component-architecture
+    - id: era-two
+      range: 30000-59999
+      canonicalName: distributed-runtime-layer
+      characteristic: dynamic-distributed-systems
+      focus:
+      - service-mesh
+      - event-flow
+      - data-governance
+      - security
+    - id: era-three
+      range: 60000-89999
+      canonicalName: intent-and-autonomy-layer
+      characteristic: intent-driven-systems
+      focus:
+      - semantic-intent
+      - ai-agents
+      - autonomy
+      - adaptive-governance
+    - id: cross-era-governance
+      range: 90000-99999
+      canonicalName: cross-era-closure
+      characteristic: unified-governance-loop
+      focus:
+      - mapping
+      - migration
+      - compatibility
+      - archive
+      - destruction
     quantumGovernancePlacement:
       avoidCollisionWith: mycodexvantaos-80100
       ranges:
-        - range: '83000-84999'
-          family: quantum-runtime-governance
-
-        - range: '85000-86999'
-          family: quantum-algorithm-governance
-
-        - range: '87000-88999'
-          family: quantum-classical-hybrid-governance
-
+      - range: 83000-84999
+        family: quantum-runtime-governance
+      - range: 85000-86999
+        family: quantum-algorithm-governance
+      - range: 87000-88999
+        family: quantum-classical-hybrid-governance
   governanceCodeCatalog:
     metaGovernance:
-      - id: mycodexvantaos-00000
-        title: namespace-governance-baseline-specification
-      - id: mycodexvantaos-00100
-        title: namespace-identifier-standard
-      - id: mycodexvantaos-00200
-        title: namespace-lifecycle-standard
-      - id: mycodexvantaos-00300
-        title: namespace-hierarchy-standard
-      - id: mycodexvantaos-00400
-        title: cross-namespace-reference-standard
-      - id: mycodexvantaos-00500
-        title: namespace-version-governance-standard
-      - id: mycodexvantaos-00600
-        title: namespace-permission-model
-      - id: mycodexvantaos-00700
-        title: namespace-audit-trail-standard
-      - id: mycodexvantaos-00800
-        title: namespace-conflict-resolution-standard
-      - id: mycodexvantaos-00900
-        title: namespace-migration-standard
-
+    - id: mycodexvantaos-00000
+      title: namespace-governance-baseline-specification
+    - id: mycodexvantaos-00100
+      title: namespace-identifier-standard
+    - id: mycodexvantaos-00200
+      title: namespace-lifecycle-standard
+    - id: mycodexvantaos-00300
+      title: namespace-hierarchy-standard
+    - id: mycodexvantaos-00400
+      title: cross-namespace-reference-standard
+    - id: mycodexvantaos-00500
+      title: namespace-version-governance-standard
+    - id: mycodexvantaos-00600
+      title: namespace-permission-model
+    - id: mycodexvantaos-00700
+      title: namespace-audit-trail-standard
+    - id: mycodexvantaos-00800
+      title: namespace-conflict-resolution-standard
+    - id: mycodexvantaos-00900
+      title: namespace-migration-standard
     eraOne:
       codeNamespace:
-        - mycodexvantaos-10100
-        - mycodexvantaos-10200
-        - mycodexvantaos-10300
-        - mycodexvantaos-10400
-        - mycodexvantaos-10500
-        - mycodexvantaos-10600
-        - mycodexvantaos-10700
-        - mycodexvantaos-10800
-        - mycodexvantaos-10900
-        - mycodexvantaos-11000
+      - mycodexvantaos-10100
+      - mycodexvantaos-10200
+      - mycodexvantaos-10300
+      - mycodexvantaos-10400
+      - mycodexvantaos-10500
+      - mycodexvantaos-10600
+      - mycodexvantaos-10700
+      - mycodexvantaos-10800
+      - mycodexvantaos-10900
+      - mycodexvantaos-11000
       architectureNamespace:
-        - mycodexvantaos-20100
-        - mycodexvantaos-20200
-        - mycodexvantaos-20300
-        - mycodexvantaos-20400
-        - mycodexvantaos-20500
-        - mycodexvantaos-20600
-        - mycodexvantaos-20700
-        - mycodexvantaos-20800
-        - mycodexvantaos-20900
-        - mycodexvantaos-21000
-
+      - mycodexvantaos-20100
+      - mycodexvantaos-20200
+      - mycodexvantaos-20300
+      - mycodexvantaos-20400
+      - mycodexvantaos-20500
+      - mycodexvantaos-20600
+      - mycodexvantaos-20700
+      - mycodexvantaos-20800
+      - mycodexvantaos-20900
+      - mycodexvantaos-21000
     eraTwo:
       serviceNamespace:
-        - mycodexvantaos-30100
-        - mycodexvantaos-30200
-        - mycodexvantaos-30300
-        - mycodexvantaos-30400
-        - mycodexvantaos-30500
-        - mycodexvantaos-30600
-        - mycodexvantaos-30700
-        - mycodexvantaos-30800
-        - mycodexvantaos-30900
-        - mycodexvantaos-31000
+      - mycodexvantaos-30100
+      - mycodexvantaos-30200
+      - mycodexvantaos-30300
+      - mycodexvantaos-30400
+      - mycodexvantaos-30500
+      - mycodexvantaos-30600
+      - mycodexvantaos-30700
+      - mycodexvantaos-30800
+      - mycodexvantaos-30900
+      - mycodexvantaos-31000
       dataNamespace:
-        - mycodexvantaos-40100
-        - mycodexvantaos-40200
-        - mycodexvantaos-40300
-        - mycodexvantaos-40400
-        - mycodexvantaos-40500
-        - mycodexvantaos-40600
-        - mycodexvantaos-40700
-        - mycodexvantaos-40800
-        - mycodexvantaos-40900
-        - mycodexvantaos-41000
-        - mycodexvantaos-41100
+      - mycodexvantaos-40100
+      - mycodexvantaos-40200
+      - mycodexvantaos-40300
+      - mycodexvantaos-40400
+      - mycodexvantaos-40500
+      - mycodexvantaos-40600
+      - mycodexvantaos-40700
+      - mycodexvantaos-40800
+      - mycodexvantaos-40900
+      - mycodexvantaos-41000
+      - mycodexvantaos-41100
       securityNamespace:
-        - mycodexvantaos-50100
-        - mycodexvantaos-50200
-        - mycodexvantaos-50300
-        - mycodexvantaos-50400
-        - mycodexvantaos-50500
-        - mycodexvantaos-50600
-        - mycodexvantaos-50700
-        - mycodexvantaos-50800
-        - mycodexvantaos-50900
-        - mycodexvantaos-51000
-
+      - mycodexvantaos-50100
+      - mycodexvantaos-50200
+      - mycodexvantaos-50300
+      - mycodexvantaos-50400
+      - mycodexvantaos-50500
+      - mycodexvantaos-50600
+      - mycodexvantaos-50700
+      - mycodexvantaos-50800
+      - mycodexvantaos-50900
+      - mycodexvantaos-51000
     eraThree:
       intentNamespace:
-        - mycodexvantaos-60100
-        - mycodexvantaos-60200
-        - mycodexvantaos-60300
-        - mycodexvantaos-60400
-        - mycodexvantaos-60500
-        - mycodexvantaos-60600
-        - mycodexvantaos-60700
-        - mycodexvantaos-60800
-        - mycodexvantaos-60900
-        - mycodexvantaos-61000
-        - mycodexvantaos-61100
+      - mycodexvantaos-60100
+      - mycodexvantaos-60200
+      - mycodexvantaos-60300
+      - mycodexvantaos-60400
+      - mycodexvantaos-60500
+      - mycodexvantaos-60600
+      - mycodexvantaos-60700
+      - mycodexvantaos-60800
+      - mycodexvantaos-60900
+      - mycodexvantaos-61000
+      - mycodexvantaos-61100
       semanticNamespace:
-        - mycodexvantaos-70100
-        - mycodexvantaos-70200
-        - mycodexvantaos-70300
-        - mycodexvantaos-70400
-        - mycodexvantaos-70500
-        - mycodexvantaos-70600
-        - mycodexvantaos-70700
-        - mycodexvantaos-70800
-        - mycodexvantaos-70900
-        - mycodexvantaos-71000
-        - mycodexvantaos-71100
+      - mycodexvantaos-70100
+      - mycodexvantaos-70200
+      - mycodexvantaos-70300
+      - mycodexvantaos-70400
+      - mycodexvantaos-70500
+      - mycodexvantaos-70600
+      - mycodexvantaos-70700
+      - mycodexvantaos-70800
+      - mycodexvantaos-70900
+      - mycodexvantaos-71000
+      - mycodexvantaos-71100
       autonomousNamespace:
-        - mycodexvantaos-80100
-        - mycodexvantaos-80200
-        - mycodexvantaos-80300
-        - mycodexvantaos-80400
-        - mycodexvantaos-80500
-        - mycodexvantaos-80600
-        - mycodexvantaos-80700
-        - mycodexvantaos-80800
-        - mycodexvantaos-80900
-        - mycodexvantaos-81000
+      - mycodexvantaos-80100
+      - mycodexvantaos-80200
+      - mycodexvantaos-80300
+      - mycodexvantaos-80400
+      - mycodexvantaos-80500
+      - mycodexvantaos-80600
+      - mycodexvantaos-80700
+      - mycodexvantaos-80800
+      - mycodexvantaos-80900
+      - mycodexvantaos-81000
       quantumNamespace:
         quantumRuntime:
-          - mycodexvantaos-83100
-          - mycodexvantaos-83200
-          - mycodexvantaos-83300
-          - mycodexvantaos-83400
+        - mycodexvantaos-83100
+        - mycodexvantaos-83200
+        - mycodexvantaos-83300
+        - mycodexvantaos-83400
         quantumAlgorithm:
-          - mycodexvantaos-85100
-          - mycodexvantaos-85200
-          - mycodexvantaos-85300
+        - mycodexvantaos-85100
+        - mycodexvantaos-85200
+        - mycodexvantaos-85300
         quantumHybrid:
-          - mycodexvantaos-87100
-          - mycodexvantaos-87200
-          - mycodexvantaos-87300
-
+        - mycodexvantaos-87100
+        - mycodexvantaos-87200
+        - mycodexvantaos-87300
     crossEraGovernance:
-      - mycodexvantaos-90100
-      - mycodexvantaos-90200
-      - mycodexvantaos-90300
-      - mycodexvantaos-90400
-      - mycodexvantaos-90500
-      - mycodexvantaos-90600
-      - mycodexvantaos-90700
-      - mycodexvantaos-90800
-      - mycodexvantaos-90900
-      - mycodexvantaos-91000
-
+    - mycodexvantaos-90100
+    - mycodexvantaos-90200
+    - mycodexvantaos-90300
+    - mycodexvantaos-90400
+    - mycodexvantaos-90500
+    - mycodexvantaos-90600
+    - mycodexvantaos-90700
+    - mycodexvantaos-90800
+    - mycodexvantaos-90900
+    - mycodexvantaos-91000
   controlledVocabulary:
     namespaces:
-      - mycodexvantaos
-      - softwareos
-
+    - mycodexvantaos
+    - softwareos
     domains:
-      - auth
-      - policy
-      - memory
-      - event
-      - infra
-      - platform
-      - iaops
-      - machinenativeops
-      - toolkit
-      - contracts
-      - signerd
-      - controller
-      - rolloutd
-      - db-schemas
-      - autotask
-      - compliance
-      - prediction
-      - qa
-      - rollback
-      - scheduler
-      - alertd
-
+    - auth
+    - policy
+    - memory
+    - event
+    - infra
+    - platform
+    - iaops
+    - machinenativeops
+    - toolkit
+    - contracts
+    - signerd
+    - controller
+    - rolloutd
+    - db-schemas
+    - autotask
+    - compliance
+    - prediction
+    - qa
+    - rollback
+    - scheduler
+    - alertd
     functions:
-      - service
-      - agent
-      - sdk
-      - cli
-      - web
-      - api
-      - worker
-      - manager
-      - hub
-      - bus
-      - engine
-      - scanner
-      - reporter
-      - predictor
-      - action
-      - plugin
-      - controller
-      - repository
-
+    - service
+    - agent
+    - sdk
+    - cli
+    - web
+    - api
+    - worker
+    - manager
+    - hub
+    - bus
+    - engine
+    - scanner
+    - reporter
+    - predictor
+    - action
+    - plugin
+    - controller
+    - repository
     lifecycleStages:
-      - proposed
-      - active
-      - deprecated
-      - archived
-      - destroyed
-
+    - proposed
+    - active
+    - deprecated
+    - archived
+    - destroyed
     atomicCategories:
-      - platform
-      - repository
-      - service
-      - api
-      - contract
-      - schema
-      - event
-      - policy
-      - audit
-      - metric
-      - log
-      - trace
-      - identity
-      - permission
-      - secret
-      - key
-      - registry
-      - catalog
-      - workflow
-      - state-machine
-      - task
-      - agent
-      - model
-      - memory
-      - vector
-      - embedding
-      - dataset
-      - provider
-      - adapter
-      - gateway
-      - controller
-      - runtime
-
+    - platform
+    - repository
+    - service
+    - api
+    - contract
+    - schema
+    - event
+    - policy
+    - audit
+    - metric
+    - log
+    - trace
+    - identity
+    - permission
+    - secret
+    - key
+    - registry
+    - catalog
+    - workflow
+    - state-machine
+    - task
+    - agent
+    - model
+    - memory
+    - vector
+    - embedding
+    - dataset
+    - provider
+    - adapter
+    - gateway
+    - controller
+    - runtime
   repositoryGovernance:
     pattern: '{namespace}-{domain}-{function}'
-    regex: '^(?:mycodexvantaos|softwareos)-[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*$'
+    regex: ^(?:mycodexvantaos|softwareos)-[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*$
     constraints:
       lowercaseOnly: true
       kebabCaseOnly: true
@@ -467,203 +435,174 @@ spec:
       environmentMarkerInName: forbidden
       domainMustBeControlledVocabulary: true
       functionMustBeControlledVocabulary: true
-
   automationTaskAlignment:
     required: true
     tasks:
-      - task: event-triggered-rollback
-        domain: rollback
-        function: engine
-        repository: mycodexvantaos-rollback-engine
-        responsibility: listens-to-events-and-triggers-rollback-according-to-policy
-
-      - task: compliance-scan
-        domain: compliance
-        function: scanner
-        repository: mycodexvantaos-compliance-scanner
-        responsibility: scans-system-state-and-validates-compliance-policies
-
-      - task: compliance-report-generation
-        domain: compliance
-        function: reporter
-        repository: mycodexvantaos-compliance-reporter
-        responsibility: converts-scan-results-into-reports-and-notifications
-
-      - task: hardware-failure-prediction
-        domain: prediction
-        function: predictor
-        repository: mycodexvantaos-prediction-predictor
-        responsibility: predicts-hardware-failures-from-telemetry-and-alerts
-
-      - task: knowledge-question-answering
-        domain: qa
-        function: service
-        repository: softwareos-qa-service
-        responsibility: provides-rag-based-natural-language-query-interface
-
-      - task: automation-task-execution
-        domain: autotask
-        function: engine
-        repository: mycodexvantaos-autotask-engine
-        responsibility: executes-governed-automation-tasks
-
-      - task: task-scheduling
-        domain: scheduler
-        function: service
-        repository: mycodexvantaos-scheduler-service
-        responsibility: schedules-automation-jobs
-
-      - task: alert-routing
-        domain: alertd
-        function: service
-        repository: mycodexvantaos-alertd-service
-        responsibility: routes-alerts-to-services-and-humans
-
+    - task: event-triggered-rollback
+      domain: rollback
+      function: engine
+      repository: mycodexvantaos-rollback-engine
+      responsibility: listens-to-events-and-triggers-rollback-according-to-policy
+    - task: compliance-scan
+      domain: compliance
+      function: scanner
+      repository: mycodexvantaos-compliance-scanner
+      responsibility: scans-system-state-and-validates-compliance-policies
+    - task: compliance-report-generation
+      domain: compliance
+      function: reporter
+      repository: mycodexvantaos-compliance-reporter
+      responsibility: converts-scan-results-into-reports-and-notifications
+    - task: hardware-failure-prediction
+      domain: prediction
+      function: predictor
+      repository: mycodexvantaos-prediction-predictor
+      responsibility: predicts-hardware-failures-from-telemetry-and-alerts
+    - task: knowledge-question-answering
+      domain: qa
+      function: service
+      repository: softwareos-qa-service
+      responsibility: provides-rag-based-natural-language-query-interface
+    - task: automation-task-execution
+      domain: autotask
+      function: engine
+      repository: mycodexvantaos-autotask-engine
+      responsibility: executes-governed-automation-tasks
+    - task: task-scheduling
+      domain: scheduler
+      function: service
+      repository: mycodexvantaos-scheduler-service
+      responsibility: schedules-automation-jobs
+    - task: alert-routing
+      domain: alertd
+      function: service
+      repository: mycodexvantaos-alertd-service
+      responsibility: routes-alerts-to-services-and-humans
     mediators:
-      - contracts/events/automation-event.yaml
-      - contracts/events/rollback-request.yaml
-      - contracts/events/compliance-finding.yaml
-      - contracts/events/prediction-alert.yaml
-      - contracts/events/audit-evidence.yaml
-      - navigation/bindings/automation-task-binding.yaml
-      - governance/policies/automation-policy.yaml
-      - platform/service-catalog.yaml
-
+    - contracts/events/automation-event.yaml
+    - contracts/events/rollback-request.yaml
+    - contracts/events/compliance-finding.yaml
+    - contracts/events/prediction-alert.yaml
+    - contracts/events/audit-evidence.yaml
+    - navigation/bindings/automation-task-binding.yaml
+    - governance/policies/automation-policy.yaml
+    - platform/service-catalog.yaml
   lifecycle:
     current: active
     stages:
       proposed:
         duration: 7d
         requiredActions:
-          - validation
-          - approval
-
+        - validation
+        - approval
       active:
         duration: indefinite
         monitoring:
-          - health-check
-          - compliance-audit
+        - health-check
+        - compliance-audit
         optimization:
-          - cost-optimization
-          - performance-tuning
-
+        - cost-optimization
+        - performance-tuning
       deprecated:
         duration: 90d
         requiredActions:
-          - migration-notification
-          - compatibility-layer
-
+        - migration-notification
+        - compatibility-layer
       archived:
         duration: retention-period
         access:
-          - read-only
-          - restricted
-
+        - read-only
+        - restricted
       destroyed:
         finalState: true
         verification:
-          - certificate-of-destruction
-
+        - certificate-of-destruction
     transitionRules:
-      - from: active
-        to: deprecated
-        condition: inactivity-period-exceeded
-
-      - from: deprecated
-        to: archived
-        condition: migration-complete
-
-      - from: archived
-        to: destroyed
-        condition: retention-period-expired
-
+    - from: active
+      to: deprecated
+      condition: inactivity-period-exceeded
+    - from: deprecated
+      to: archived
+      condition: migration-complete
+    - from: archived
+      to: destroyed
+      condition: retention-period-expired
     destroyedIdentifierReuse: forbidden
     transitionAuditRequired: true
-
   registries:
     required:
-      - namespace-registry
-      - repository-registry
-      - governance-code-registry
-      - automation-task-registry
-      - owner-registry
-      - service-registry
-      - provider-registry
-
+    - namespace-registry
+    - repository-registry
+    - governance-code-registry
+    - automation-task-registry
+    - owner-registry
+    - service-registry
+    - provider-registry
     behavior:
-      - validate
-      - conflict-check
-      - code-assignment
-      - immutable-store
-      - hierarchy-update
-      - governance-event-emit
-      - audit-write
-
+    - validate
+    - conflict-check
+    - code-assignment
+    - immutable-store
+    - hierarchy-update
+    - governance-event-emit
+    - audit-write
     storageMode: immutable-or-append-only
-
   approvalWorkflow:
     stages:
-      - request
-      - validation
-      - conflict-detection
-      - approval
-      - registration
-      - activation
-      - monitoring
-
+    - request
+    - validation
+    - conflict-detection
+    - approval
+    - registration
+    - activation
+    - monitoring
     authority:
       era-one: development-team-owner
       era-two: architecture-governance-owner
       era-three: governance-council-owner
       cross-era-governance: joint-governance-approval
       meta-governance: platform-governance-root-authority
-
   crossEraMapping:
     governedBy: mycodexvantaos-90100
     runtimeHardDependenciesBetweenEras: forbidden
     approvedMediators:
-      - contracts
-      - schemas
-      - registries
-      - catalogs
-      - binding-manifests
-      - compatibility-layers
-      - migration-paths
+    - contracts
+    - schemas
+    - registries
+    - catalogs
+    - binding-manifests
+    - compatibility-layers
+    - migration-paths
     transformationEngine:
       name: mycodexvantaos-namespace-transformer
       capabilities:
-        - automatic-namespace-mapping
-        - semantic-similarity-calculation
-        - conflict-detection-and-resolution
-        - bidirectional-transformation
-
+      - automatic-namespace-mapping
+      - semantic-similarity-calculation
+      - conflict-detection-and-resolution
+      - bidirectional-transformation
   closure:
     model: l0-l1-l2-termination
     terminationLayers:
-      - id: l0
-        name: atomic-naming-layer
-        mutability: immutable
-        responsibility: defines-base-atomic-categories
-
-      - id: l1
-        name: specification-naming-layer
-        mutability: governed-mutable
-        responsibility: defines-category-specific-naming-specifications
-
-      - id: l2
-        name: meta-naming-layer
-        mutability: termination-layer
-        responsibility: defines-how-l1-specifications-are-named-and-changed
-
+    - id: l0
+      name: atomic-naming-layer
+      mutability: immutable
+      responsibility: defines-base-atomic-categories
+    - id: l1
+      name: specification-naming-layer
+      mutability: governed-mutable
+      responsibility: defines-category-specific-naming-specifications
+    - id: l2
+      name: meta-naming-layer
+      mutability: termination-layer
+      responsibility: defines-how-l1-specifications-are-named-and-changed
     prover:
       required: true
       validates:
-        - completeness
-        - consistency
-        - termination
-        - self-reference-closure
-        - non-recursive-authority
-
+      - completeness
+      - consistency
+      - termination
+      - self-reference-closure
+      - non-recursive-authority
   dependencyAndBindingGovernance:
     bindingMediatorRequiredForBidirectionalLogicalRelations: true
     hardDependencyGraphMustBeAcyclic: true
@@ -672,114 +611,97 @@ spec:
     dependencyGraph: navigation/dependency-graph.yaml
     directoryBindings: navigation/bindings
     dependencyExceptions: governance/exceptions/dependency-exceptions.yaml
-
   metrics:
     namespaceHealth:
-      - metric: namespace-uniqueness-score
-        target: '100%'
-
-      - metric: namespace-consistency-score
-        target: '>95%'
-
-      - metric: namespace-utilization-rate
-        target: '>85%'
-
-      - metric: namespace-conflict-count
-        target: '0'
-
-      - metric: namespace-lifecycle-health
-        target: '100%'
-
-      - metric: namespace-governance-compliance
-        target: '100%'
-
-      - metric: namespace-cost-optimization-rate
-        target: '>20%'
-
+    - metric: namespace-uniqueness-score
+      target: 100%
+    - metric: namespace-consistency-score
+      target: '>95%'
+    - metric: namespace-utilization-rate
+      target: '>85%'
+    - metric: namespace-conflict-count
+      target: '0'
+    - metric: namespace-lifecycle-health
+      target: 100%
+    - metric: namespace-governance-compliance
+      target: 100%
+    - metric: namespace-cost-optimization-rate
+      target: '>20%'
   ci:
     requiredValidators:
-      - scripts/validate-naming.py
-      - scripts/validate-registry.py
-      - scripts/validate-lifecycle.py
-      - scripts/validate-cross-era-mapping.py
-      - scripts/validate-closure.py
-      - scripts/validate-directory-bindings.py
-      - scripts/validate-dependency-graph.py
-
+    - scripts/validate-naming.py
+    - scripts/validate-registry.py
+    - scripts/validate-lifecycle.py
+    - scripts/validate-cross-era-mapping.py
+    - scripts/validate-closure.py
+    - scripts/validate-directory-bindings.py
+    - scripts/validate-dependency-graph.py
     requiredReports:
-      - outputs/naming-report.json
-      - outputs/registry-report.json
-      - outputs/lifecycle-report.json
-      - outputs/closure-report.json
-      - outputs/dependency-binding-report.json
-      - outputs/ci-governance-summary.json
-
+    - outputs/naming-report.json
+    - outputs/registry-report.json
+    - outputs/lifecycle-report.json
+    - outputs/closure-report.json
+    - outputs/dependency-binding-report.json
+    - outputs/ci-governance-summary.json
     mustValidate:
-      - repository-name-pattern
-      - namespace-registration
-      - controlled-domain-vocabulary
-      - controlled-function-vocabulary
-      - governance-code-regex
-      - no-space-based-governance-code
-      - no-environment-marker-in-name
-      - no-version-number-in-name
-      - valid-lifecycle-status
-      - valid-cross-era-mapping
-      - valid-binding-mediator
-      - acyclic-hard-dependency-graph
-      - valid-governance-exception-file
-      - destroyed-identifier-not-reused
-
+    - repository-name-pattern
+    - namespace-registration
+    - controlled-domain-vocabulary
+    - controlled-function-vocabulary
+    - governance-code-regex
+    - no-space-based-governance-code
+    - no-environment-marker-in-name
+    - no-version-number-in-name
+    - valid-lifecycle-status
+    - valid-cross-era-mapping
+    - valid-binding-mediator
+    - acyclic-hard-dependency-graph
+    - valid-governance-exception-file
+    - destroyed-identifier-not-reused
     mustFailWhen:
-      - repository-name-violates-naming-rule
-      - governance-code-uses-spaces
-      - governance-code-malformed
-      - namespace-unregistered
-      - domain-or-function-unknown
-      - bidirectional-hard-dependency-detected
-      - binding-mediator-missing
-      - lifecycle-transition-invalid
-      - destroyed-namespace-reused
-
+    - repository-name-violates-naming-rule
+    - governance-code-uses-spaces
+    - governance-code-malformed
+    - namespace-unregistered
+    - domain-or-function-unknown
+    - bidirectional-hard-dependency-detected
+    - binding-mediator-missing
+    - lifecycle-transition-invalid
+    - destroyed-namespace-reused
   compliance:
     criteria:
-      - all-governance-codes-use-mycodexvantaos-00000-style-identifiers
-      - all-repository-names-follow-namespace-domain-function-pattern
-      - all-machine-facing-names-are-lowercase-kebab-case
-      - all-namespace-planes-are-classified
-      - all-domains-and-functions-are-controlled-vocabularies
-      - all-automation-tasks-map-to-domain-and-function
-      - namespace-lifecycle-is-enforced
-      - namespace-registry-is-immutable-or-append-only
-      - cross-era-mapping-is-machine-readable
-      - reverse-control-plane-dependency-on-product-plane-runtime-is-forbidden
-      - binding-mediator-pattern-is-used-for-bidirectional-logical-relations
-      - governance-metrics-are-produced
-      - ci-validates-naming-lifecycle-registry-and-dependency-rules
-      - destroyed-namespace-identifiers-are-never-reused
-      - closure-prover-validates-completeness-consistency-termination-and-self-reference-closure
-
+    - all-governance-codes-use-mycodexvantaos-00000-style-identifiers
+    - all-repository-names-follow-namespace-domain-function-pattern
+    - all-machine-facing-names-are-lowercase-kebab-case
+    - all-namespace-planes-are-classified
+    - all-domains-and-functions-are-controlled-vocabularies
+    - all-automation-tasks-map-to-domain-and-function
+    - namespace-lifecycle-is-enforced
+    - namespace-registry-is-immutable-or-append-only
+    - cross-era-mapping-is-machine-readable
+    - reverse-control-plane-dependency-on-product-plane-runtime-is-forbidden
+    - binding-mediator-pattern-is-used-for-bidirectional-logical-relations
+    - governance-metrics-are-produced
+    - ci-validates-naming-lifecycle-registry-and-dependency-rules
+    - destroyed-namespace-identifiers-are-never-reused
+    - closure-prover-validates-completeness-consistency-termination-and-self-reference-closure
   references:
     foundationModule: foundation/mycodexvantaos-module.yaml
     navigationModule: navigation/mycodexvantaos-module.yaml
     namespaceGovernanceArchitecture: docs/architecture/namespace-governance-architecture-panorama.md
     appendices:
-      - id: appendix-i
-        title: namespace-governance-closure-specification
-        path: docs/governance/namespace-governance-closure-spec.md
-
-      - id: appendix-j
-        title: namespace-governance-architecture-panorama-and-directory-tree
-        path: docs/architecture/namespace-governance-architecture-panorama.md
-
-      - id: appendix-h
-        title: dependency-binding-guard-ci-specification
-        path: docs/ci/dependency-binding-guard-ci-spec.md
-
-      - id: appendix-k
-        title: unified-gate-system-specification
-        path: docs/governance/unified-gate-system-spec.md
-
+    - id: appendix-i
+      title: namespace-governance-closure-specification
+      path: docs/governance/namespace-governance-closure-spec.md
+    - id: appendix-j
+      title: namespace-governance-architecture-panorama-and-directory-tree
+      path: docs/architecture/namespace-governance-architecture-panorama.md
+    - id: appendix-h
+      title: dependency-binding-guard-ci-specification
+      path: docs/ci/dependency-binding-guard-ci-spec.md
+    - id: appendix-k
+      title: unified-gate-system-specification
+      path: docs/governance/unified-gate-system-spec.md
 status:
   phase: namespace-governance-normalized
   readiness: ci-verifiable

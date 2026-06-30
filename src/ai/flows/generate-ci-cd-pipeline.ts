@@ -7,25 +7,25 @@
  * - GenerateCiCdPipelineOutput - The return type for the generateCiCdPipeline function.
  */
 
-import { ai } from '@/ai/genkit';
-import { z } from 'genkit';
+import { ai } from "@/ai/genkit";
+import { z } from "genkit";
 
 const GenerateCiCdPipelineInputSchema = z.object({
   architectureDescription: z
     .string()
     .describe(
-      'A detailed description of the system architecture, including components, dependencies, data flows, and services.'
+      "A detailed description of the system architecture, including components, dependencies, data flows, and services."
     ),
   deploymentStrategy: z
     .string()
     .describe(
-      'A description of the deployment strategy, such as target environments (e.g., staging, production), containerization approach, or serverless functions.'
+      "A description of the deployment strategy, such as target environments (e.g., staging, production), containerization approach, or serverless functions."
     ),
   additionalRequirements: z
     .string()
     .optional()
     .describe(
-      'Any additional requirements or specific considerations for the CI/CD pipeline, e.g., security scans, specific testing stages, or rollback procedures.'
+      "Any additional requirements or specific considerations for the CI/CD pipeline, e.g., security scans, specific testing stages, or rollback procedures."
     ),
 });
 export type GenerateCiCdPipelineInput = z.infer<typeof GenerateCiCdPipelineInputSchema>;
@@ -33,7 +33,7 @@ export type GenerateCiCdPipelineInput = z.infer<typeof GenerateCiCdPipelineInput
 const GenerateCiCdPipelineOutputSchema = z.object({
   gitlabCiCdYaml: z
     .string()
-    .describe('The generated GitLab CI/CD pipeline configuration in YAML format.'),
+    .describe("The generated GitLab CI/CD pipeline configuration in YAML format."),
   validationReport: z
     .string()
     .describe(
@@ -49,7 +49,7 @@ export async function generateCiCdPipeline(
 }
 
 const prompt = ai.definePrompt({
-  name: 'generateCiCdPipelinePrompt',
+  name: "generateCiCdPipelinePrompt",
   input: { schema: GenerateCiCdPipelineInputSchema },
   output: { schema: GenerateCiCdPipelineOutputSchema },
   prompt: `You are an expert in GitLab CI/CD pipeline configuration and architectural best practices, with a focus on achieving 'perfect pass' rates and 'zero-failure' deployments.
@@ -76,14 +76,14 @@ Ensure the YAML is valid and complete, ready to be dropped into a .gitlab-ci.yml
 
 const generateCiCdPipelineFlow = ai.defineFlow(
   {
-    name: 'generateCiCdPipelineFlow',
+    name: "generateCiCdPipelineFlow",
     inputSchema: GenerateCiCdPipelineInputSchema,
     outputSchema: GenerateCiCdPipelineOutputSchema,
   },
   async (input) => {
     const { output } = await prompt(input);
     if (!output) {
-      throw new Error('Failed to generate GitLab CI/CD pipeline.');
+      throw new Error("Failed to generate GitLab CI/CD pipeline.");
     }
     return output;
   }

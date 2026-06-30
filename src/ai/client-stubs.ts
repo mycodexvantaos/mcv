@@ -61,7 +61,7 @@ export interface AnalyzeArchitectureForRisksOutput {
   risks: Array<{
     type: string;
     description: string;
-    severity: 'Critical' | 'High' | 'Medium' | 'Low' | 'Informational';
+    severity: "Critical" | "High" | "Medium" | "Low" | "Informational";
     recommendation: string;
   }>;
   vulnerabilities: Array<{
@@ -96,7 +96,7 @@ export interface PulseSensingOutput {
     task_id: string;
     description: string;
     expertise_required: string;
-    priority: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
+    priority: "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
   }>;
 }
 
@@ -112,7 +112,7 @@ export interface SuggestArchitectureRefinementsOutput {
   suggestions: Array<{
     category: string;
     description: string;
-    impact: 'High' | 'Medium' | 'Low';
+    impact: "High" | "Medium" | "Low";
     gitlabImplications: string;
     reasoning: string;
   }>;
@@ -141,7 +141,7 @@ export interface ValidateAndSuggestChecklistsInput {
 export interface ValidateAndSuggestChecklistsOutput {
   validationResults: Array<{
     policy: string;
-    status: 'ADHERENT' | 'VIOLATED' | 'N/A';
+    status: "ADHERENT" | "VIOLATED" | "N/A";
     details: string;
   }>;
   suggestedPolicies: Array<{
@@ -155,7 +155,7 @@ export interface ConversationalAiAssistantInput {
   query: string;
   codeSnippet?: string;
   conversationHistory?: Array<{
-    role: 'user' | 'model';
+    role: "user" | "model";
     content: string;
   }>;
   isOffline?: boolean;
@@ -187,7 +187,7 @@ export interface ScanForVulnerabilitiesOutput {
     id: string;
     packageName: string;
     version: string;
-    severity: 'Critical' | 'High' | 'Medium' | 'Low';
+    severity: "Critical" | "High" | "Medium" | "Low";
     cve: string;
     description: string;
     remediation: string;
@@ -200,7 +200,7 @@ export interface DelegateCodingTaskInput {
   taskDescription: string;
   codeContext?: string;
   filePath?: string;
-  taskType?: 'generation' | 'refactoring' | 'testing' | 'documentation' | 'optimization';
+  taskType?: "generation" | "refactoring" | "testing" | "documentation" | "optimization";
   isOffline?: boolean;
 }
 
@@ -215,8 +215,8 @@ export interface DelegateCodingTaskOutput {
 // ============================================================
 
 const NOT_AVAILABLE_MSG =
-  'AI features are not available in the static site deployment. ' +
-  'Deploy to a Node.js server with GEMINI_API_KEY to enable AI capabilities.';
+  "AI features are not available in the static site deployment. " +
+  "Deploy to a Node.js server with GEMINI_API_KEY to enable AI capabilities.";
 
 function createUnavailableStub<T>(name: string): (input: unknown) => Promise<T> {
   return async (_input: unknown): Promise<T> => {
@@ -225,34 +225,34 @@ function createUnavailableStub<T>(name: string): (input: unknown) => Promise<T> 
 }
 
 export const runAdvancedAnalysis =
-  createUnavailableStub<AdvancedAnalysisOutput>('runAdvancedAnalysis');
+  createUnavailableStub<AdvancedAnalysisOutput>("runAdvancedAnalysis");
 
-export const forgeDynamicTool = createUnavailableStub<ToolForgeOutput>('forgeDynamicTool');
+export const forgeDynamicTool = createUnavailableStub<ToolForgeOutput>("forgeDynamicTool");
 
 export const analyzeArchitectureForRisks = createUnavailableStub<AnalyzeArchitectureForRisksOutput>(
-  'analyzeArchitectureForRisks'
+  "analyzeArchitectureForRisks"
 );
 
-export const senseGlobalPulse = createUnavailableStub<PulseSensingOutput>('senseGlobalPulse');
+export const senseGlobalPulse = createUnavailableStub<PulseSensingOutput>("senseGlobalPulse");
 
 export const suggestArchitectureRefinements =
-  createUnavailableStub<SuggestArchitectureRefinementsOutput>('suggestArchitectureRefinements');
+  createUnavailableStub<SuggestArchitectureRefinementsOutput>("suggestArchitectureRefinements");
 
 export const generateCiCdPipeline =
-  createUnavailableStub<GenerateCiCdPipelineOutput>('generateCiCdPipeline');
+  createUnavailableStub<GenerateCiCdPipelineOutput>("generateCiCdPipeline");
 
 export const validateAndSuggestChecklists =
-  createUnavailableStub<ValidateAndSuggestChecklistsOutput>('validateAndSuggestChecklists');
+  createUnavailableStub<ValidateAndSuggestChecklistsOutput>("validateAndSuggestChecklists");
 
 export const conversationalAiAssistant = createUnavailableStub<ConversationalAiAssistantOutput>(
-  'conversationalAiAssistant'
+  "conversationalAiAssistant"
 );
 
 export const summarizeResearchData =
-  createUnavailableStub<ResearchDataSummarizationOutput>('summarizeResearchData');
+  createUnavailableStub<ResearchDataSummarizationOutput>("summarizeResearchData");
 
 export const scanForVulnerabilities =
-  createUnavailableStub<ScanForVulnerabilitiesOutput>('scanForVulnerabilities');
+  createUnavailableStub<ScanForVulnerabilitiesOutput>("scanForVulnerabilities");
 
 export const delegateCodingTask =
-  createUnavailableStub<DelegateCodingTaskOutput>('delegateCodingTask');
+  createUnavailableStub<DelegateCodingTaskOutput>("delegateCodingTask");

@@ -3,17 +3,17 @@
  * Knowledge as operational substrate.
  */
 
-import type { ResourceCondition } from '../shared';
+import type { ResourceCondition } from "../shared";
 
-export type DocumentFormat = 'pdf' | 'txt' | 'md' | 'html' | 'json' | 'csv' | 'docx';
+export type DocumentFormat = "pdf" | "txt" | "md" | "html" | "json" | "csv" | "docx";
 export type DocumentPhase =
-  | 'uploaded'
-  | 'ingesting'
-  | 'ready'
-  | 'failed'
-  | 'stale'
-  | 'archived'
-  | 'deleted';
+  | "uploaded"
+  | "ingesting"
+  | "ready"
+  | "failed"
+  | "stale"
+  | "archived"
+  | "deleted";
 
 export interface DocumentSpec {
   title: string;
@@ -29,5 +29,5 @@ export interface DocumentStatus {
   chunkCount: number;
   totalTokens: number;
   fileSizeBytes: number;
-  verificationStatus: 'passed' | 'failed' | 'pending' | 'skipped';
+  verificationStatus: "passed" | "failed" | "pending" | "skipped";
 }

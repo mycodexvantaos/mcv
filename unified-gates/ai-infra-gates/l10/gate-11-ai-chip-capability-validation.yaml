@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,34 +10,36 @@ metadata:
   criticality: critical
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-00000
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l10
-    - ai
+  - l10
+  - ai
   sloTarget: 30
   evidenceRetentionDays: 2555
 spec:
-  description: >
-    Validates that AI accelerator chips (GPU, TPU, NPU) meet the capability requirements defined in the compute cluster contract.
+  description: 'Validates that AI accelerator chips (GPU, TPU, NPU) meet the capability
+    requirements defined in the compute cluster contract.
+
+    '
   validates:
-    - dimension: chip-capability
-      description: AI chips meet capability requirements.
-      checks:
-        - id: chk-chip-model-registered
-          description: Chip model is in the approved AI chip registry
-          rule: 'registry:ai-chip'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-compute-capability
-          description: CUDA/ROCm compute capability meets minimum threshold
-          rule: 'threshold:compute-capability>=7.0'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-memory-capacity
-          description: GPU memory meets minimum threshold for target workload
-          rule: 'threshold:gpu-memory-gb>=16'
-          severity: high
-          evidenceRequired: true
+  - dimension: chip-capability
+    description: AI chips meet capability requirements.
+    checks:
+    - id: chk-chip-model-registered
+      description: Chip model is in the approved AI chip registry
+      rule: registry:ai-chip
+      severity: critical
+      evidenceRequired: true
+    - id: chk-compute-capability
+      description: CUDA/ROCm compute capability meets minimum threshold
+      rule: threshold:compute-capability>=7.0
+      severity: critical
+      evidenceRequired: true
+    - id: chk-memory-capacity
+      description: GPU memory meets minimum threshold for target workload
+      rule: threshold:gpu-memory-gb>=16
+      severity: high
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

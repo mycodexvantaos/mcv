@@ -12,8 +12,8 @@ spec:
     allocation.
   category: platform
   runtime-modes:
-    - native
-    - connected
-    - hybrid
+  - native
+  - connected
+  - hybrid
   implementationPath: services/mycodexvantaos-service-workspace/
   packageName: '@mycodexvantaos/service-workspace'

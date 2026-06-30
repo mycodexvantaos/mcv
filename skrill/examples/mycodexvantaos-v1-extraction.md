@@ -495,15 +495,15 @@ Foundation Spec Candidates:
 
 ```yaml
 report:
-  project: 'mycodexvantaos-core-archive'
-  version: 'v1.0'
-  date: '2026-06-21'
+  project: "mycodexvantaos-core-archive"
+  version: "v1.0"
+  date: "2026-06-21"
   input_level: 3
   highlights_count: 10
   skills_extracted: 15
   patterns_added: 8
   ci_candidates: 5
   related_reports:
-    - 'unified-architecture-patch.md'
-  next_analysis: '待定'
+    - "unified-architecture-patch.md"
+  next_analysis: "待定"
 ```

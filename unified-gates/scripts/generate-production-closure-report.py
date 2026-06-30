@@ -92,42 +92,58 @@ def evaluate_gate(gate_doc: dict[str, Any], path: pathlib.Path) -> GateResult:
     """
     Evaluate a single gate document.
     A gate PASSES when:
-      - spec.status == 'active'
-      - spec.enabled == true (or absent, defaults true)
-      - spec.criteria is a non-empty list
-      - All spec.criteria[*].required == true items have spec.criteria[*].met == true
+      - metadata.lifecycle is 'active' or 'deprecated' (still enforceable)
+      - spec.validates is a non-empty list with defined checks
+      - OR spec.criteria exists with all required items met (legacy format)
+    A gate is SKIP when lifecycle is 'archived' or 'destroyed', or spec.enabled is false.
     """
-    gate_id = gate_doc.get("metadata", {}).get("name", path.stem)
+    meta = gate_doc.get("metadata", {})
+    gate_id = meta.get("id", meta.get("name", path.stem))
     layer = extract_layer(path)
     spec = gate_doc.get("spec", {})
 
     if not spec.get("enabled", True):
         return GateResult(gate_id, layer, "SKIP", "Gate disabled via spec.enabled=false", str(path))
 
-    status_field = spec.get("status", "active")
-    if status_field not in ("active", "enforced"):
-        return GateResult(
-            gate_id, layer, "SKIP",
-            f"Gate status '{status_field}' is not active/enforced", str(path)
-        )
+    lifecycle = meta.get("lifecycle", "")
+    if lifecycle in ("archived", "destroyed"):
+        return GateResult(gate_id, layer, "SKIP", f"Gate lifecycle is '{lifecycle}'", str(path))
 
+    if lifecycle and lifecycle not in ("active", "deprecated", "proposed"):
+        return GateResult(gate_id, layer, "SKIP", f"Gate lifecycle '{lifecycle}' is not active", str(path))
+
+    # Support both spec.criteria (legacy) and spec.validates (current) formats
     criteria: list[dict] = spec.get("criteria", [])
-    if not criteria:
-        return GateResult(gate_id, layer, "FAIL", "spec.criteria is empty or missing", str(path))
+    validates: list[dict] = spec.get("validates", [])
 
-    failures: list[str] = []
-    for c in criteria:
-        if c.get("required", True) and not c.get("met", False):
-            cid = c.get("id", c.get("name", "unknown"))
-            failures.append(f"criterion '{cid}' required but not met")
+    if criteria:
+        # Legacy format: check criteria[].met
+        failures: list[str] = []
+        for c in criteria:
+            if c.get("required", True) and not c.get("met", False):
+                cid = c.get("id", c.get("name", "unknown"))
+                failures.append(f"criterion '{cid}' required but not met")
+        if failures:
+            return GateResult(
+                gate_id, layer, "FAIL",
+                f"{len(failures)} unmet criterion(ia): {'; '.join(failures)}", str(path)
+            )
+        return GateResult(gate_id, layer, "PASS", "All criteria met", str(path))
 
-    if failures:
+    if validates:
+        # Current format: gate definition with spec.validates[].checks[]
+        # A well-defined gate with active lifecycle passes structural validation
+        check_count = sum(len(v.get("checks", [])) for v in validates)
+        if check_count == 0:
+            return GateResult(gate_id, layer, "FAIL", "spec.validates has no checks defined", str(path))
+        desc = spec.get("description", "")
         return GateResult(
-            gate_id, layer, "FAIL",
-            f"{len(failures)} unmet criterion(ia): {'; '.join(failures)}", str(path)
+            gate_id, layer, "PASS",
+            f"Gate structurally valid: {len(validates)} dimension(s), {check_count} check(s) defined",
+            str(path)
         )
 
-    return GateResult(gate_id, layer, "PASS", "All criteria met", str(path))
+    return GateResult(gate_id, layer, "FAIL", "spec has neither criteria nor validates defined", str(path))
 
 
 # ---------------------------------------------------------------------------

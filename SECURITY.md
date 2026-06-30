@@ -25,7 +25,7 @@ interface AuthConfig {
   jwtSecret: string;
   tokenExpiry: number;
   refreshTokenExpiry: number;
-  algorithm: 'HS256' | 'RS256';
+  algorithm: "HS256" | "RS256";
 }
 
 class AuthenticationService {
@@ -40,7 +40,7 @@ class AuthenticationService {
 
 ```typescript
 interface OAuthConfig {
-  provider: 'google' | 'github' | 'azure' | 'okta';
+  provider: "google" | "github" | "azure" | "okta";
   clientId: string;
   clientSecret: string;
   callbackUrl: string;
@@ -84,7 +84,7 @@ class AuthorizationService {
 interface Policy {
   id: string;
   name: string;
-  effects: 'allow' | 'deny';
+  effects: "allow" | "deny";
   conditions: Condition[];
   actions: string[];
   resources: string[];
@@ -110,7 +110,7 @@ class PolicyEngine {
 
 ```typescript
 interface EncryptionConfig {
-  algorithm: 'AES-256-GCM';
+  algorithm: "AES-256-GCM";
   keyId: string;
   rotationInterval: number; // days
 }
@@ -143,7 +143,7 @@ ssl_session_timeout 10m;
 ```typescript
 interface DataMaskingConfig {
   fields: string[];
-  method: 'hash' | 'redact' | 'tokenize';
+  method: "hash" | "redact" | "tokenize";
 }
 
 class DataMaskingService {
@@ -220,7 +220,7 @@ load_balancer:
   ssl_protocols:
     - TLSv1.2
     - TLSv1.3
-  ssl_ciphers: 'HIGH:!aNULL:!MD5'
+  ssl_ciphers: "HIGH:!aNULL:!MD5"
   security_groups:
     - sg-web-access
     - sg-api-access
@@ -317,7 +317,7 @@ interface AuditEvent {
   userId: string;
   action: string;
   resource: string;
-  result: 'success' | 'failure';
+  result: "success" | "failure";
   timestamp: Date;
   ipAddress: string;
   userAgent: string;
@@ -328,7 +328,7 @@ class AuditService {
   async logEvent(event: AuditEvent): Promise<void>;
   async queryLogs(filter: AuditFilter): Promise<AuditLog[]>;
   async generateReport(startDate: Date, endDate: Date): Promise<AuditReport>;
-  async exportLogs(filter: AuditFilter, format: 'json' | 'csv'): Promise<void>;
+  async exportLogs(filter: AuditFilter, format: "json" | "csv"): Promise<void>;
 }
 ```
 
@@ -336,9 +336,9 @@ class AuditService {
 
 ```typescript
 interface ComplianceStandard {
-  name: 'SOC2' | 'HIPAA' | 'GDPR' | 'PCI-DSS';
+  name: "SOC2" | "HIPAA" | "GDPR" | "PCI-DSS";
   controls: Control[];
-  auditFrequency: 'monthly' | 'quarterly' | 'annually';
+  auditFrequency: "monthly" | "quarterly" | "annually";
 }
 
 class ComplianceService {
@@ -373,9 +373,9 @@ class DataRetentionService {
 ```typescript
 interface Incident {
   incidentId: string;
-  severity: 'low' | 'medium' | 'high' | 'critical';
-  type: 'breach' | 'vulnerability' | 'compliance' | 'malware';
-  status: 'open' | 'investigating' | 'resolved' | 'closed';
+  severity: "low" | "medium" | "high" | "critical";
+  type: "breach" | "vulnerability" | "compliance" | "malware";
+  status: "open" | "investigating" | "resolved" | "closed";
   timestamp: Date;
   reporter: string;
   description: string;
@@ -434,7 +434,7 @@ class SAMLService {
 
 ```typescript
 interface MFAConfig {
-  providers: ('totp' | 'sms' | 'email' | 'hardware-token')[];
+  providers: ("totp" | "sms" | "email" | "hardware-token")[];
   backupCodes: boolean;
   recoveryEmail: string;
 }
@@ -489,7 +489,7 @@ class SecurityMonitoringService {
 
 ```typescript
 interface SIEMConfig {
-  provider: 'splunk' | 'elastic' | 'sumo-logic' | 'azure-sentinel';
+  provider: "splunk" | "elastic" | "sumo-logic" | "azure-sentinel";
   endpoint: string;
   apiKey: string;
   logTypes: string[];

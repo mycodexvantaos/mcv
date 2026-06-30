@@ -1,9 +1,9 @@
 apiVersion: mycodexvantaos.io/v1
 kind: UnifiedGateIndex
 metadata:
-  version: '1.0.0'
+  version: 1.0.0
   date: '2026-06-29'
-  status: 'active'
+  status: active
   name: unified-gate-index
   ssot: true
   authority: unified-gate-governance
@@ -12,155 +12,148 @@ metadata:
     tier: platform
     scope: unified
   annotations:
-    description: >
-      Authoritative index of all gate planes, catalogs, schemas, workflows,
-      policies, and scripts in the unified-gates system. This file is the
-      single entry point for gate discovery and CI orchestration.
+    description: 'Authoritative index of all gate planes, catalogs, schemas, workflows,
+      policies, and scripts in the unified-gates system. This file is the single entry
+      point for gate discovery and CI orchestration.
 
+      '
 spec:
   gatePlanes:
-    - id: gate-documentation
-      name: Gate Specification Documentation
-      path: ./gate/
-      type: documentation
-      catalog: ./gate/gate-catalog.yaml
-      description: RST-format gate specifications covering core model, lifecycle, technical framework, execution, governance, AI domains, evolution, and coverage taxonomy.
-
-    - id: ai-infra-gates
-      path: ./ai-infra-gates/
-      type: ai-infrastructure
-      catalog: ./ai-infra-gate-catalog.yaml
-      description: Executable YAML gate definitions for all AI infrastructure layers (l00–l90).
-
+  - id: gate-documentation
+    name: Gate Specification Documentation
+    path: ./gate/
+    type: documentation
+    catalog: ./gate/gate-catalog.yaml
+    description: RST-format gate specifications covering core model, lifecycle, technical
+      framework, execution, governance, AI domains, evolution, and coverage taxonomy.
+  - id: ai-infra-gates
+    path: ./ai-infra-gates/
+    type: ai-infrastructure
+    catalog: ./ai-infra-gate-catalog.yaml
+    description: Executable YAML gate definitions for all AI infrastructure layers
+      (l00–l90).
   catalogs:
-    - id: unified-gate-catalog
-      path: ./gate-catalog.yaml
-      kind: GateCatalog
-      scope: all-planes
-
-    - id: ai-infra-gate-catalog
-      path: ./ai-infra-gate-catalog.yaml
-      kind: AIInfraGateCatalog
-      scope: ai-infrastructure
-
+  - id: unified-gate-catalog
+    path: ./gate-catalog.yaml
+    kind: GateCatalog
+    scope: all-planes
+  - id: ai-infra-gate-catalog
+    path: ./ai-infra-gate-catalog.yaml
+    kind: AIInfraGateCatalog
+    scope: ai-infrastructure
   schemas:
-    - id: gate-schema
-      path: ./schemas/gate.schema.json
-    - id: gate-catalog-schema
-      path: ./schemas/gate-catalog.schema.json
-    - id: gate-result-schema
-      path: ./schemas/gate-result.schema.json
-    - id: gate-waiver-schema
-      path: ./schemas/gate-waiver.schema.json
-    - id: gate-policy-schema
-      path: ./schemas/gate-policy.schema.json
-    - id: gate-pipeline-schema
-      path: ./schemas/gate-pipeline.schema.json
-    - id: ai-infra-gate-schema
-      path: ./schemas/ai-infra-gate.schema.json
-    - id: ai-workload-contract-schema
-      path: ./schemas/ai-workload-contract.schema.json
-    - id: usage-event-schema
-      path: ./schemas/usage-event.schema.json
-    - id: model-contract-schema
-      path: ./schemas/model-contract.schema.json
-    - id: dataset-contract-schema
-      path: ./schemas/dataset-contract.schema.json
-    - id: vector-index-schema
-      path: ./schemas/vector-index.schema.json
-
+  - id: gate-schema
+    path: ./schemas/gate.schema.json
+  - id: gate-catalog-schema
+    path: ./schemas/gate-catalog.schema.json
+  - id: gate-result-schema
+    path: ./schemas/gate-result.schema.json
+  - id: gate-waiver-schema
+    path: ./schemas/gate-waiver.schema.json
+  - id: gate-policy-schema
+    path: ./schemas/gate-policy.schema.json
+  - id: gate-pipeline-schema
+    path: ./schemas/gate-pipeline.schema.json
+  - id: ai-infra-gate-schema
+    path: ./schemas/ai-infra-gate.schema.json
+  - id: ai-workload-contract-schema
+    path: ./schemas/ai-workload-contract.schema.json
+  - id: usage-event-schema
+    path: ./schemas/usage-event.schema.json
+  - id: model-contract-schema
+    path: ./schemas/model-contract.schema.json
+  - id: dataset-contract-schema
+    path: ./schemas/dataset-contract.schema.json
+  - id: vector-index-schema
+    path: ./schemas/vector-index.schema.json
   workflows:
-    - id: gate-evaluation-workflow
-      path: ./workflows/gate-evaluation-workflow.yaml
-    - id: gate-waiver-workflow
-      path: ./workflows/gate-waiver-workflow.yaml
-    - id: gate-escalation-workflow
-      path: ./workflows/gate-escalation-workflow.yaml
-    - id: gate-release-workflow
-      path: ./workflows/gate-release-workflow.yaml
-    - id: ai-workload-production-readiness-workflow
-      path: ./workflows/ai-workload-production-readiness-workflow.yaml
-
+  - id: gate-evaluation-workflow
+    path: ./workflows/gate-evaluation-workflow.yaml
+  - id: gate-waiver-workflow
+    path: ./workflows/gate-waiver-workflow.yaml
+  - id: gate-escalation-workflow
+    path: ./workflows/gate-escalation-workflow.yaml
+  - id: gate-release-workflow
+    path: ./workflows/gate-release-workflow.yaml
+  - id: ai-workload-production-readiness-workflow
+    path: ./workflows/ai-workload-production-readiness-workflow.yaml
   policies:
-    - id: gate-governance-policy
-      path: ./policies/gate-governance-policy.yaml
-    - id: gate-rbac-policy
-      path: ./policies/gate-rbac-policy.yaml
-    - id: gate-waiver-policy
-      path: ./policies/gate-waiver-policy.yaml
-    - id: gate-risk-policy
-      path: ./policies/gate-risk-policy.yaml
-    - id: gate-cost-policy
-      path: ./policies/gate-cost-policy.yaml
-    - id: ai-workload-policy
-      path: ./policies/ai-workload-policy.yaml
-    - id: ai-safety-policy
-      path: ./policies/ai-safety-policy.yaml
-    - id: ai-billing-policy
-      path: ./policies/ai-billing-policy.yaml
-    - id: production-closure-policy
-      path: ./policies/production-closure-policy.yaml
-
+  - id: gate-governance-policy
+    path: ./policies/gate-governance-policy.yaml
+  - id: gate-rbac-policy
+    path: ./policies/gate-rbac-policy.yaml
+  - id: gate-waiver-policy
+    path: ./policies/gate-waiver-policy.yaml
+  - id: gate-risk-policy
+    path: ./policies/gate-risk-policy.yaml
+  - id: gate-cost-policy
+    path: ./policies/gate-cost-policy.yaml
+  - id: ai-workload-policy
+    path: ./policies/ai-workload-policy.yaml
+  - id: ai-safety-policy
+    path: ./policies/ai-safety-policy.yaml
+  - id: ai-billing-policy
+    path: ./policies/ai-billing-policy.yaml
+  - id: production-closure-policy
+    path: ./policies/production-closure-policy.yaml
   scripts:
-    - id: validate-gate-catalog
-      path: ./scripts/validate-gate-catalog.py
-    - id: validate-gate-schema
-      path: ./scripts/validate-gate-schema.py
-    - id: validate-gate-composition
-      path: ./scripts/validate-gate-composition.py
-    - id: validate-ai-infra-gates
-      path: ./scripts/validate-ai-infra-gates.py
-    - id: evaluate-gate
-      path: ./scripts/evaluate-gate.py
-    - id: generate-gate-report
-      path: ./scripts/generate-gate-report.py
-    - id: generate-gate-catalog
-      path: ./scripts/generate-gate-catalog.py
-    - id: generate-production-closure-report
-      path: ./scripts/generate-production-closure-report.py
-
+  - id: validate-gate-catalog
+    path: ./scripts/validate-gate-catalog.py
+  - id: validate-gate-schema
+    path: ./scripts/validate-gate-schema.py
+  - id: validate-gate-composition
+    path: ./scripts/validate-gate-composition.py
+  - id: validate-ai-infra-gates
+    path: ./scripts/validate-ai-infra-gates.py
+  - id: evaluate-gate
+    path: ./scripts/evaluate-gate.py
+  - id: generate-gate-report
+    path: ./scripts/generate-gate-report.py
+  - id: generate-gate-catalog
+    path: ./scripts/generate-gate-catalog.py
+  - id: generate-production-closure-report
+    path: ./scripts/generate-production-closure-report.py
   outputs:
-    - id: gate-validation-report
-      path: ./outputs/gate-validation-report.json
-    - id: gate-coverage-report
-      path: ./outputs/gate-coverage-report.json
-    - id: ai-infra-gate-report
-      path: ./outputs/ai-infra-gate-report.json
-    - id: gate-waiver-report
-      path: ./outputs/gate-waiver-report.json
-    - id: gate-audit-report
-      path: ./outputs/gate-audit-report.json
-    - id: production-closure-report
-      path: ./outputs/production-closure-report.json
-    - id: unified-gate-summary
-      path: ./outputs/unified-gate-summary.json
-
+  - id: gate-validation-report
+    path: ./outputs/gate-validation-report.json
+  - id: gate-coverage-report
+    path: ./outputs/gate-coverage-report.json
+  - id: ai-infra-gate-report
+    path: ./outputs/ai-infra-gate-report.json
+  - id: gate-waiver-report
+    path: ./outputs/gate-waiver-report.json
+  - id: gate-audit-report
+    path: ./outputs/gate-audit-report.json
+  - id: production-closure-report
+    path: ./outputs/production-closure-report.json
+  - id: unified-gate-summary
+    path: ./outputs/unified-gate-summary.json
   gateCategories:
-    - namespace-governance
-    - repository-naming
-    - dependency-graph
-    - lifecycle-management
-    - audit-evidence
-    - ai-compute
-    - data-quality
-    - model-quality
-    - model-safety
-    - workload-execution
-    - inference-latency
-    - training-stability
-    - vector-index-quality
-    - billing-accuracy
-    - multi-tenant-isolation
-    - supply-chain
-    - production-closure
-    - code-coverage
-    - structure-coverage
-    - requirements-coverage
-    - workflow-coverage
-    - artifact-coverage
-    - resilience-coverage
-    - observability-coverage
-    - security-coverage
-    - api-contract-coverage
-    - change-coverage
-    - state-data-coverage
+  - namespace-governance
+  - repository-naming
+  - dependency-graph
+  - lifecycle-management
+  - audit-evidence
+  - ai-compute
+  - data-quality
+  - model-quality
+  - model-safety
+  - workload-execution
+  - inference-latency
+  - training-stability
+  - vector-index-quality
+  - billing-accuracy
+  - multi-tenant-isolation
+  - supply-chain
+  - production-closure
+  - code-coverage
+  - structure-coverage
+  - requirements-coverage
+  - workflow-coverage
+  - artifact-coverage
+  - resilience-coverage
+  - observability-coverage
+  - security-coverage
+  - api-contract-coverage
+  - change-coverage
+  - state-data-coverage

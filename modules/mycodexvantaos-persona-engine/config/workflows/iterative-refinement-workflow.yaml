@@ -1,256 +1,214 @@
-# MyCodeXvantaOS Workflow Configuration
-# URN: urn:mycodexvantaos:workflow:iterative-refinement
-# Version: 1.0.0
-
 metadata:
-  urn: 'urn:mycodexvantaos:workflow:iterative-refinement'
-  name: 'Iterative Refinement Workflow'
-  version: '1.0.0'
-  description: |
-    A cyclical workflow that iteratively refines outputs through multiple
+  urn: urn:mycodexvantaos:workflow:iterative-refinement
+  name: Iterative Refinement Workflow
+  version: 1.0.0
+  description: 'A cyclical workflow that iteratively refines outputs through multiple
+
     rounds of generation, critique, and improvement until quality thresholds
+
     are met or maximum iterations are reached.
-  author: 'MyCodeXvantaOS Team'
+
+    '
+  author: MyCodeXvantaOS Team
   created_at: '2024-01-15T00:00:00Z'
   tags:
-    - iterative
-    - refinement
-    - quality-improvement
-    - feedback-loop
-
+  - iterative
+  - refinement
+  - quality-improvement
+  - feedback-loop
 workflow:
-  type: 'cyclic'
+  type: cyclic
   max_iterations: 5
-  timeout: 900000 # 15 minutes total
+  timeout: 900000
   convergence_criteria:
-    - type: 'quality_threshold'
-      metric: 'overall_quality_score'
-      threshold: 0.85
-    - type: 'diminishing_returns'
-      metric: 'improvement_delta'
-      threshold: 0.05
-
+  - type: quality_threshold
+    metric: overall_quality_score
+    threshold: 0.85
+  - type: diminishing_returns
+    metric: improvement_delta
+    threshold: 0.05
 participants:
   primary_persona:
-    archetype: 'architect'
-    role: 'generator'
-    objective: 'Create and refine solutions'
-
+    archetype: architect
+    role: generator
+    objective: Create and refine solutions
   critic_persona:
-    archetype: 'critic'
-    role: 'evaluator'
-    objective: 'Identify weaknesses and improvement areas'
-
+    archetype: critic
+    role: evaluator
+    objective: Identify weaknesses and improvement areas
   mediator_persona:
-    archetype: 'mediator'
-    role: 'balancer'
-    objective: 'Ensure constructive feedback and balanced improvements'
-
+    archetype: mediator
+    role: balancer
+    objective: Ensure constructive feedback and balanced improvements
 phases:
-  - id: 'initial_generation'
-    name: 'Initial Generation'
-    description: 'Create the initial output based on requirements'
-
-    steps:
-      - action: 'understand_requirements'
-        persona: 'architect'
-        task: 'Analyze and clarify the requirements'
-        output_key: 'requirements_analysis'
-
-      - action: 'generate_initial'
-        persona: 'architect'
-        input_source: 'requirements_analysis'
-        task: 'Generate initial solution/output'
-        output_key: 'draft_v1'
-
-      - action: 'assess_quality'
-        persona: 'critic'
-        input_source: 'draft_v1'
-        task: 'Initial quality assessment'
-        output_key: 'quality_score_v1'
-
-  - id: 'refinement_cycle'
-    name: 'Refinement Cycle'
-    description: 'Iterative improvement loop'
-    repeat: 'until_converged_or_max_iterations'
-
-    steps:
-      - action: 'critique'
-        persona: 'critic'
-        input_source: 'current_draft'
-        task: 'Identify specific improvement areas'
-        output_key: 'critique_feedback'
-
-      - action: 'prioritize_improvements'
-        persona: 'mediator'
-        input_sources:
-          - 'critique_feedback'
-          - 'current_quality_score'
-        task: 'Prioritize and structure improvement areas'
-        output_key: 'improvement_priorities'
-
-      - action: 'refine'
-        persona: 'architect'
-        input_sources:
-          - 'current_draft'
-          - 'improvement_priorities'
-        task: 'Apply improvements to create refined version'
-        output_key: 'refined_draft'
-
-      - action: 'assess_improvement'
-        persona: 'critic'
-        input_source: 'refined_draft'
-        task: 'Assess quality improvement'
-        output_key: 'new_quality_score'
-
-      - action: 'evaluate_convergence'
-        persona: 'mediator'
-        input_sources:
-          - 'current_quality_score'
-          - 'new_quality_score'
-        task: 'Determine if convergence achieved'
-        output_key: 'convergence_status'
-
-    state_updates:
-      - current_draft: 'refined_draft'
-      - current_quality_score: 'new_quality_score'
-
-    exit_conditions:
-      - condition: 'convergence_status.achieved == true'
-        next_phase: 'final_validation'
-      - condition: 'iteration_count >= max_iterations'
-        next_phase: 'final_validation'
-
-  - id: 'final_validation'
-    name: 'Final Validation'
-    description: 'Final quality check and output preparation'
-
-    steps:
-      - action: 'final_review'
-        persona: 'critic'
-        input_source: 'final_draft'
-        task: 'Comprehensive final review'
-        output_key: 'final_review'
-
-      - action: 'prepare_output'
-        persona: 'mediator'
-        input_sources:
-          - 'final_draft'
-          - 'final_review'
-          - 'iteration_history'
-        task: 'Prepare final output with quality documentation'
-        output_key: 'final_output'
-
+- id: initial_generation
+  name: Initial Generation
+  description: Create the initial output based on requirements
+  steps:
+  - action: understand_requirements
+    persona: architect
+    task: Analyze and clarify the requirements
+    output_key: requirements_analysis
+  - action: generate_initial
+    persona: architect
+    input_source: requirements_analysis
+    task: Generate initial solution/output
+    output_key: draft_v1
+  - action: assess_quality
+    persona: critic
+    input_source: draft_v1
+    task: Initial quality assessment
+    output_key: quality_score_v1
+- id: refinement_cycle
+  name: Refinement Cycle
+  description: Iterative improvement loop
+  repeat: until_converged_or_max_iterations
+  steps:
+  - action: critique
+    persona: critic
+    input_source: current_draft
+    task: Identify specific improvement areas
+    output_key: critique_feedback
+  - action: prioritize_improvements
+    persona: mediator
+    input_sources:
+    - critique_feedback
+    - current_quality_score
+    task: Prioritize and structure improvement areas
+    output_key: improvement_priorities
+  - action: refine
+    persona: architect
+    input_sources:
+    - current_draft
+    - improvement_priorities
+    task: Apply improvements to create refined version
+    output_key: refined_draft
+  - action: assess_improvement
+    persona: critic
+    input_source: refined_draft
+    task: Assess quality improvement
+    output_key: new_quality_score
+  - action: evaluate_convergence
+    persona: mediator
+    input_sources:
+    - current_quality_score
+    - new_quality_score
+    task: Determine if convergence achieved
+    output_key: convergence_status
+  state_updates:
+  - current_draft: refined_draft
+  - current_quality_score: new_quality_score
+  exit_conditions:
+  - condition: convergence_status.achieved == true
+    next_phase: final_validation
+  - condition: iteration_count >= max_iterations
+    next_phase: final_validation
+- id: final_validation
+  name: Final Validation
+  description: Final quality check and output preparation
+  steps:
+  - action: final_review
+    persona: critic
+    input_source: final_draft
+    task: Comprehensive final review
+    output_key: final_review
+  - action: prepare_output
+    persona: mediator
+    input_sources:
+    - final_draft
+    - final_review
+    - iteration_history
+    task: Prepare final output with quality documentation
+    output_key: final_output
 quality_scoring:
   dimensions:
-    - name: 'completeness'
-      weight: 0.25
-      description: 'Coverage of all requirements'
-
-    - name: 'clarity'
-      weight: 0.20
-      description: 'Clear and unambiguous presentation'
-
-    - name: 'feasibility'
-      weight: 0.20
-      description: 'Practical implementability'
-
-    - name: 'coherence'
-      weight: 0.15
-      description: 'Internal consistency'
-
-    - name: 'innovation'
-      weight: 0.10
-      description: 'Novel and creative elements'
-
-    - name: 'robustness'
-      weight: 0.10
-      description: 'Handles edge cases and variations'
-
-  calculation: 'weighted_average'
-
+  - name: completeness
+    weight: 0.25
+    description: Coverage of all requirements
+  - name: clarity
+    weight: 0.2
+    description: Clear and unambiguous presentation
+  - name: feasibility
+    weight: 0.2
+    description: Practical implementability
+  - name: coherence
+    weight: 0.15
+    description: Internal consistency
+  - name: innovation
+    weight: 0.1
+    description: Novel and creative elements
+  - name: robustness
+    weight: 0.1
+    description: Handles edge cases and variations
+  calculation: weighted_average
 feedback_structure:
   categories:
-    - 'critical_issues' # Must fix before completion
-    - 'important_improvements' # Should fix for quality
-    - 'minor_suggestions' # Nice to have improvements
-    - 'strengths' # What works well (preserve)
-
+  - critical_issues
+  - important_improvements
+  - minor_suggestions
+  - strengths
   format:
     issue_identification:
-      - location: 'specific area'
-      - description: "what's wrong"
-      - severity: 'critical|important|minor'
-      - suggestion: 'how to fix'
-
+    - location: specific area
+    - description: what's wrong
+    - severity: critical|important|minor
+    - suggestion: how to fix
 improvement_tracking:
   metrics:
-    - 'issues_resolved_per_iteration'
-    - 'quality_score_improvement'
-    - 'new_issues_introduced'
-    - 'time_per_iteration'
-
+  - issues_resolved_per_iteration
+  - quality_score_improvement
+  - new_issues_introduced
+  - time_per_iteration
   reports:
-    - 'iteration_summary'
-    - 'convergence_analysis'
-    - 'quality_trend'
-
+  - iteration_summary
+  - convergence_analysis
+  - quality_trend
 outputs:
   primary:
-    - 'final_output'
+  - final_output
   secondary:
-    - 'iteration_history'
-    - 'quality_trend'
-    - 'final_review'
-
+  - iteration_history
+  - quality_trend
+  - final_review
 hitl_checkpoints:
-  - phase: 'refinement_cycle'
-    trigger: 'iteration_count >= 3 AND quality_improvement < 0.1'
-    description: 'Human review when progress stalls'
-
-  - phase: 'final_validation'
-    trigger: 'final_quality_score < 0.7'
-    description: 'Human review for low-quality outputs'
-
+- phase: refinement_cycle
+  trigger: iteration_count >= 3 AND quality_improvement < 0.1
+  description: Human review when progress stalls
+- phase: final_validation
+  trigger: final_quality_score < 0.7
+  description: Human review for low-quality outputs
 governance:
   tier: 1
   audit_required: true
   constraints:
-    - 'constructive_feedback_only'
-    - 'preserve_strengths'
-    - 'document_all_changes'
-    - 'maintain_traceability'
-
+  - constructive_feedback_only
+  - preserve_strengths
+  - document_all_changes
+  - maintain_traceability
   escalation:
-    - trigger: 'no_convergence_after_max_iterations'
-      action: 'escalate_to_human'
-    - trigger: 'quality_regression'
-      action: 'rollback_and_investigate'
-
+  - trigger: no_convergence_after_max_iterations
+    action: escalate_to_human
+  - trigger: quality_regression
+    action: rollback_and_investigate
 error_handling:
   strategies:
-    - condition: 'generation_failure'
-      action: 'retry_with_different_approach'
-      max_retries: 2
-
-    - condition: 'critique_too_harsh'
-      action: 'mediator_intervention'
-
-    - condition: 'improvement_loop'
-      action: 'introduce_variation'
-
+  - condition: generation_failure
+    action: retry_with_different_approach
+    max_retries: 2
+  - condition: critique_too_harsh
+    action: mediator_intervention
+  - condition: improvement_loop
+    action: introduce_variation
 performance_metrics:
   success_criteria:
-    - 'Quality threshold met OR max iterations reached'
-    - 'No critical issues remaining'
-    - 'All requirements addressed'
-
+  - Quality threshold met OR max iterations reached
+  - No critical issues remaining
+  - All requirements addressed
   efficiency_metrics:
-    - 'iterations_to_convergence'
-    - 'average_improvement_per_iteration'
-    - 'total_processing_time'
-
+  - iterations_to_convergence
+  - average_improvement_per_iteration
+  - total_processing_time
   quality_metrics:
-    - 'final_quality_score'
-    - 'issue_resolution_rate'
-    - 'stakeholder_satisfaction'
+  - final_quality_score
+  - issue_resolution_rate
+  - stakeholder_satisfaction

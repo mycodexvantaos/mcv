@@ -12,8 +12,8 @@ spec:
     and quota enforcement.
   category: business
   runtime-modes:
-    - native
-    - connected
-    - hybrid
+  - native
+  - connected
+  - hybrid
   implementationPath: services/mycodexvantaos-service-usage-meter/
   packageName: '@mycodexvantaos/service-usage-meter'

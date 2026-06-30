@@ -42,14 +42,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: "22"
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
           cache: pip
       - name: Install Python dependencies
         run: pip install pyyaml jsonschema
@@ -81,7 +81,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
       - name: Install dependencies
         run: pip install pyyaml jsonschema
       - name: Validate identity policy
@@ -103,7 +103,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
       - name: Install dependencies
         run: pip install pyyaml jsonschema
       - name: Validate SSOT registry

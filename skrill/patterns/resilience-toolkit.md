@@ -65,7 +65,7 @@ class CircuitBreaker {
       if (Date.now() - this.lastFailureTime! > this.timeout) {
         this.state = CircuitState.HALF_OPEN;
       } else {
-        throw new CircuitOpenError('Circuit is OPEN');
+        throw new CircuitOpenError("Circuit is OPEN");
       }
     }
 
@@ -152,7 +152,7 @@ class HealthCheckRegistry {
 
   async liveness(): Promise<{ status: string }> {
     // Liveness: 服務是否在運行
-    return { status: 'alive' };
+    return { status: "alive" };
   }
 
   async readiness(): Promise<{ status: string; details: Record<string, boolean> }> {
@@ -169,7 +169,7 @@ class HealthCheckRegistry {
     }
 
     return {
-      status: allHealthy ? 'ready' : 'not-ready',
+      status: allHealthy ? "ready" : "not-ready",
       details: results,
     };
   }
@@ -183,7 +183,7 @@ name: Resilience Pattern Check
 on:
   pull_request:
     paths:
-      - 'services/**'
+      - "services/**"
 
 jobs:
   resilience-check:

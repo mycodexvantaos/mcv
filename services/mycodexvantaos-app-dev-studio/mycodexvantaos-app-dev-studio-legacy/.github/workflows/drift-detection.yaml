@@ -1,59 +1,60 @@
 name: Configuration Drift Detection
-
-on:
+true:
   schedule:
-    - cron: '0 * * * *' # Run hourly
-  workflow_dispatch:
-
+  - cron: 0 * * * *
+  workflow_dispatch: null
 permissions:
   contents: read
   id-token: write
   issues: write
-
 jobs:
   detect-drift:
     runs-on: ubuntu-latest
     environment: dev
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+    - name: Checkout repository
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v2
+      with:
+        workload_identity_provider: projects/${{ secrets.GCP_PROJECT_ID }}/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+        service_account: deploy-bot@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com
+    - name: Set up GKE credentials
+      uses: google-github-actions/get-gke-credentials@v1
+      with:
+        cluster_name: dev-cluster
+        location: us-central1
+    - name: Detect drift
+      id: drift
+      run: 'set -e
 
-      - name: 'Authenticate to Google Cloud'
-        uses: 'google-github-actions/auth@v2'
-        with:
-          workload_identity_provider: 'projects/${{ secrets.GCP_PROJECT_ID }}/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
-          service_account: 'deploy-bot@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com'
+        PLANNED_STATE=$(kustomize build deploy/kustomize/overlays/dev)
 
-      - name: Set up GKE credentials
-        uses: google-github-actions/get-gke-credentials@v1
-        with:
-          cluster_name: dev-cluster
-          location: us-central1
+        # A simplified drift check. In reality, you''d use a more robust tool like
+        `kubectl diff`
 
-      - name: Detect drift
-        id: drift
-        run: |
-          set -e
-          PLANNED_STATE=$(kustomize build deploy/kustomize/overlays/dev)
-          # A simplified drift check. In reality, you'd use a more robust tool like `kubectl diff`
-          # against live resources, or a GitOps tool's status.
-          # This is a placeholder for the logic.
-          DRIFT_DETECTED="false"
-          echo "Drift detection logic placeholder. Assuming no drift."
+        # against live resources, or a GitOps tool''s status.
 
-          echo "drift_detected=$DRIFT_DETECTED" >> $GITHUB_OUTPUT
-          echo "drift_details=No drift detected (placeholder)." >> $GITHUB_OUTPUT
+        # This is a placeholder for the logic.
 
-      - name: Create GitHub Issue on Drift
-        if: steps.drift.outputs.drift_detected == 'true'
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            await github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: `🚨 Configuration Drift Detected in 'dev' environment`,
-              body: `Drift was detected between the Git state and the live state in the 'dev' environment.\n\n**Details:**\n\`\`\`\n${{ steps.drift.outputs.drift_details }}\n\`\`\``,
-              labels: ['drift', 'bug']
-            });
+        DRIFT_DETECTED="false"
+
+        echo "Drift detection logic placeholder. Assuming no drift."
+
+
+        echo "drift_detected=$DRIFT_DETECTED" >> $GITHUB_OUTPUT
+
+        echo "drift_details=No drift detected (placeholder)." >> $GITHUB_OUTPUT
+
+        '
+    - name: Create GitHub Issue on Drift
+      if: steps.drift.outputs.drift_detected == 'true'
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: "await github.rest.issues.create({\n  owner: context.repo.owner,\n\
+          \  repo: context.repo.repo,\n  title: `\U0001F6A8 Configuration Drift Detected\
+          \ in 'dev' environment`,\n  body: `Drift was detected between the Git state\
+          \ and the live state in the 'dev' environment.\\n\\n**Details:**\\n\\`\\\
+          `\\`\\n${{ steps.drift.outputs.drift_details }}\\n\\`\\`\\``,\n  labels:\
+          \ ['drift', 'bug']\n});\n"

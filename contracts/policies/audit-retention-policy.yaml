@@ -1,13 +1,14 @@
 id: audit-retention-policy
 description: Audit event retention and integrity policy
 rules:
-  - effect: deny
-    subject: '*'
-    action: audit:delete
-    resource: audit-event
-
-  - effect: allow
-    subject:
-      roles: ['platform-admin', 'auditor']
-    action: audit:query,audit:verify
-    resource: audit-event
+- effect: deny
+  subject: '*'
+  action: audit:delete
+  resource: audit-event
+- effect: allow
+  subject:
+    roles:
+    - platform-admin
+    - auditor
+  action: audit:query,audit:verify
+  resource: audit-event

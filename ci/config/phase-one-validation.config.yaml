@@ -1,15 +1,14 @@
 apiVersion: mycodexvantaos.io/v1
 kind: PhaseOneValidationConfig
 metadata:
-  version: '1.0.0'
-  name: phase-one-validation-config
   version: 1.0.0
+  name: phase-one-validation-config
 spec:
   requiredDeliverables:
-    - docs/unified-architecture-spec.md
-    - navigation/mycodexvantaos-module.yaml
-    - foundation/mycodexvantaos-module.yaml
-    - governance/platform-governance-spec.yaml
-    - platform/service-catalog.yaml
-    - unified-gates/unified-gate-index.yaml
-    - mycodexvantaos-namespace-governance/mycodexvantaos-module.yaml
+  - docs/unified-architecture-spec.md
+  - navigation/mycodexvantaos-module.yaml
+  - foundation/mycodexvantaos-module.yaml
+  - governance/platform-governance-spec.yaml
+  - platform/service-catalog.yaml
+  - unified-gates/unified-gate-index.yaml
+  - mycodexvantaos-namespace-governance/mycodexvantaos-module.yaml

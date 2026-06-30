@@ -12,8 +12,8 @@ metadata:
   governanceCode: mycodexvantaos-00000
   createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l90
-    - rollback
+  - l90
+  - rollback
   sloTarget: 30
   evidenceRetentionDays: 2555
   date: '2026-06-29'
@@ -24,24 +24,24 @@ spec:
 
     '
   validates:
-    - dimension: rollback-readiness
-      description: Rollback plan exists and is tested.
-      checks:
-        - id: chk-rollback-plan-exists
-          description: Rollback plan is documented and approved
-          rule: field-not-empty:rollbackPlan
-          severity: critical
-          evidenceRequired: true
-        - id: chk-rollback-tested
-          description: Rollback procedure has been tested in staging
-          rule: test:rollback-tested-in-staging
-          severity: critical
-          evidenceRequired: true
-        - id: chk-previous-version-available
-          description: Previous stable version is available for rollback
-          rule: registry:previous-version-available
-          severity: high
-          evidenceRequired: true
+  - dimension: rollback-readiness
+    description: Rollback plan exists and is tested.
+    checks:
+    - id: chk-rollback-plan-exists
+      description: Rollback plan is documented and approved
+      rule: field-not-empty:rollbackPlan
+      severity: critical
+      evidenceRequired: true
+    - id: chk-rollback-tested
+      description: Rollback procedure has been tested in staging
+      rule: test:rollback-tested-in-staging
+      severity: critical
+      evidenceRequired: true
+    - id: chk-previous-version-available
+      description: Previous stable version is available for rollback
+      rule: registry:previous-version-available
+      severity: high
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

@@ -12,8 +12,8 @@ metadata:
   governanceCode: mycodexvantaos-00100
   createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l00
-    - repository
+  - l00
+  - repository
   sloTarget: 30
   evidenceRetentionDays: 2555
   date: '2026-06-29'
@@ -24,24 +24,24 @@ spec:
 
     '
   validates:
-    - dimension: vocabulary-compliance
-      description: Domain and function are in the controlled vocabulary.
-      checks:
-        - id: chk-namespace-registered
-          description: Namespace prefix is mycodexvantaos or softwareos
-          rule: enum:mycodexvantaos,softwareos
-          severity: critical
-          evidenceRequired: true
-        - id: chk-domain-in-vocabulary
-          description: Domain segment is in the controlled domain vocabulary
-          rule: vocabulary:domains
-          severity: critical
-          evidenceRequired: true
-        - id: chk-function-in-vocabulary
-          description: Function segment is in the controlled function vocabulary
-          rule: vocabulary:functions
-          severity: critical
-          evidenceRequired: true
+  - dimension: vocabulary-compliance
+    description: Domain and function are in the controlled vocabulary.
+    checks:
+    - id: chk-namespace-registered
+      description: Namespace prefix is mycodexvantaos or softwareos
+      rule: enum:mycodexvantaos,softwareos
+      severity: critical
+      evidenceRequired: true
+    - id: chk-domain-in-vocabulary
+      description: Domain segment is in the controlled domain vocabulary
+      rule: vocabulary:domains
+      severity: critical
+      evidenceRequired: true
+    - id: chk-function-in-vocabulary
+      description: Function segment is in the controlled function vocabulary
+      rule: vocabulary:functions
+      severity: critical
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

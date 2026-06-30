@@ -24,7 +24,7 @@ export interface WorkflowConfig {
 
 export interface ExecutionResult {
   taskId: string;
-  status: 'pending' | 'running' | 'completed' | 'failed';
+  status: "pending" | "running" | "completed" | "failed";
   result?: any;
   error?: Error;
   startTime: Date;
@@ -72,7 +72,7 @@ export class ExecutionEngine {
     const opts = { ...this.defaultOptions, ...options };
     const result: ExecutionResult = {
       taskId,
-      status: 'running',
+      status: "running",
       startTime: new Date(),
     };
 
@@ -80,11 +80,11 @@ export class ExecutionEngine {
 
     try {
       const resultValue = await this.executeWithRetry(task, opts);
-      result.status = 'completed';
+      result.status = "completed";
       result.result = resultValue;
       result.endTime = new Date();
     } catch (error) {
-      result.status = 'failed';
+      result.status = "failed";
       result.error = error as Error;
       result.endTime = new Date();
 
@@ -234,9 +234,9 @@ export class ExecutionEngine {
    */
   cancelTask(taskId: string): void {
     const result = this.results.get(taskId);
-    if (result && result.status === 'running') {
-      result.status = 'failed';
-      result.error = new Error('Task cancelled');
+    if (result && result.status === "running") {
+      result.status = "failed";
+      result.error = new Error("Task cancelled");
       result.endTime = new Date();
     }
   }
@@ -261,10 +261,10 @@ export class ExecutionEngine {
     const results = this.getAllResults();
     return {
       total: results.length,
-      pending: results.filter((r) => r.status === 'pending').length,
-      running: results.filter((r) => r.status === 'running').length,
-      completed: results.filter((r) => r.status === 'completed').length,
-      failed: results.filter((r) => r.status === 'failed').length,
+      pending: results.filter((r) => r.status === "pending").length,
+      running: results.filter((r) => r.status === "running").length,
+      completed: results.filter((r) => r.status === "completed").length,
+      failed: results.filter((r) => r.status === "failed").length,
     };
   }
 }

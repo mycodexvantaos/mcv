@@ -383,7 +383,7 @@ mycodexvantaos/
    export interface CapabilityBase {
      readonly capabilityId: string;
      readonly capabilityName: string;
-     readonly source: 'native' | 'external' | 'hybrid';
+     readonly source: "native" | "external" | "hybrid";
      readonly supportedModes: RuntimeMode[];
 
      initialize(): Promise<void>;
@@ -392,7 +392,7 @@ mycodexvantaos/
    }
 
    // packages/capabilities/src/runtime-config.ts
-   export type RuntimeMode = 'native' | 'connected' | 'hybrid' | 'auto';
+   export type RuntimeMode = "native" | "connected" | "hybrid" | "auto";
 
    export interface RuntimeConfig {
      mode: RuntimeMode;
@@ -465,9 +465,9 @@ mycodexvantaos/
    on:
      pull_request:
        paths:
-         - 'packages/adapters/**'
-         - 'providers/**'
-         - 'src/**'
+         - "packages/adapters/**"
+         - "providers/**"
+         - "src/**"
    jobs:
      check:
        steps:
@@ -503,9 +503,9 @@ mycodexvantaos/
    ```typescript
    // providers/hybrid/src/code-synthesis.ts
    export class HybridCodeSynthesis implements CodeSynthesisCapability {
-     readonly capabilityId = 'code-synthesis';
-     readonly source = 'hybrid';
-     readonly supportedModes = ['hybrid', 'auto'];
+     readonly capabilityId = "code-synthesis";
+     readonly source = "hybrid";
+     readonly supportedModes = ["hybrid", "auto"];
 
      constructor(
        private native: NativeCodeSynthesis,
@@ -515,15 +515,15 @@ mycodexvantaos/
      async generate(options: SynthesisOptions): Promise<SynthesisResult> {
        try {
          const result = await this.external.generate(options);
-         logger.info('External AI succeeded', { result });
+         logger.info("External AI succeeded", { result });
          return result;
        } catch (error) {
-         logger.warn('External AI failed, falling back to native', { error });
+         logger.warn("External AI failed, falling back to native", { error });
          const result = await this.native.generate(options);
          return {
            ...result,
            fallbackTriggered: true,
-           provider: 'native-fallback',
+           provider: "native-fallback",
          };
        }
      }
@@ -553,19 +553,19 @@ mycodexvantaos/
 
    ```typescript
    // tests/integration/offline-mode.test.ts
-   describe('Offline Mode', () => {
-     it('should run in native mode without network', async () => {
-       const config = loadConfig('.envnative');
+   describe("Offline Mode", () => {
+     it("should run in native mode without network", async () => {
+       const config = loadConfig(".envnative");
        const factory = new ProviderFactory(config);
        await factory.initialize();
 
        // 斷網
        await simulateOffline();
 
-       const synthesis = factory.getProvider<CodeSynthesisCapability>('code-synthesis');
-       const result = await synthesis.generate({ prompt: 'test' });
+       const synthesis = factory.getProvider<CodeSynthesisCapability>("code-synthesis");
+       const result = await synthesis.generate({ prompt: "test" });
 
-       expect(result.provider).toBe('native');
+       expect(result.provider).toBe("native");
        expect(result.confidence).toBeGreaterThan(0);
      });
    });
@@ -586,7 +586,7 @@ mycodexvantaos/
    ```typescript
    // providers/registry.ts
    export const ProviderRegistry = {
-     'code-synthesis': {
+     "code-synthesis": {
        native: () => new NativeCodeSynthesis(),
        external: (config) => new ExternalCodeSynthesis(config.apiKey),
        hybrid: (config) =>
@@ -811,10 +811,10 @@ abstract class CapabilityBase<T = unknown> {
 
 ```typescript
 enum RuntimeMode {
-  NATIVE = 'native', // 零外部依赖
-  CONNECTED = 'connected', // 完全外部服务
-  HYBRID = 'hybrid', // 混合模式
-  AUTO = 'auto', // 自动检测
+  NATIVE = "native", // 零外部依赖
+  CONNECTED = "connected", // 完全外部服务
+  HYBRID = "hybrid", // 混合模式
+  AUTO = "auto", // 自动检测
 }
 ```
 

@@ -1,8 +1,8 @@
-import { SystemRegistry } from './phase-14/system-registry';
-import { DependencyMapper } from './phase-15/dependency-mapper';
-import { IntegrationFramework } from './phase-16/integration-framework';
-import { ValidationFramework } from './phase-17/validation-framework';
-import { MonitoringFramework } from './phase-18/monitoring-framework';
+import { SystemRegistry } from "./phase-14/system-registry";
+import { DependencyMapper } from "./phase-15/dependency-mapper";
+import { IntegrationFramework } from "./phase-16/integration-framework";
+import { ValidationFramework } from "./phase-17/validation-framework";
+import { MonitoringFramework } from "./phase-18/monitoring-framework";
 
 export class MetaIntegrationOrchestrator {
   private registry: SystemRegistry;

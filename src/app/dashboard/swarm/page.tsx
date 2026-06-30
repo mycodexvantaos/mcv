@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -8,10 +8,10 @@ import {
   CardHeader,
   CardTitle,
   CardFooter,
-} from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Users,
   Network,
@@ -23,49 +23,49 @@ import {
   Plus,
   Terminal,
   ShieldCheck,
-} from 'lucide-react';
-import { Progress } from '@/components/ui/progress';
-import { useToast } from '@/hooks/use-toast';
+} from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { useToast } from "@/hooks/use-toast";
 
 export default function SwarmPage() {
   const { toast } = useToast();
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [nodes, setNodes] = useState([
     {
-      id: 'node_alpha_01',
-      name: 'AlphaFold_Reasoning',
-      type: 'Scientific',
+      id: "node_alpha_01",
+      name: "AlphaFold_Reasoning",
+      type: "Scientific",
       rating: 4.8,
-      latency: '4ms',
+      latency: "4ms",
       load: 42,
-      status: 'SYNCED',
+      status: "SYNCED",
     },
     {
-      id: 'node_gamma_04',
-      name: 'Zero_Shot_Code_Forge',
-      type: 'DevOps',
+      id: "node_gamma_04",
+      name: "Zero_Shot_Code_Forge",
+      type: "DevOps",
       rating: 4.9,
-      latency: '12ms',
+      latency: "12ms",
       load: 88,
-      status: 'FORGING',
+      status: "FORGING",
     },
     {
-      id: 'node_delta_09',
-      name: 'Pulse_Sensor_Matrix',
-      type: 'Perception',
+      id: "node_delta_09",
+      name: "Pulse_Sensor_Matrix",
+      type: "Perception",
       rating: 4.7,
-      latency: '2ms',
+      latency: "2ms",
       load: 15,
-      status: 'STREAMING',
+      status: "STREAMING",
     },
     {
-      id: 'node_omega_12',
-      name: 'Consensus_Validator',
-      type: 'Governance',
+      id: "node_omega_12",
+      name: "Consensus_Validator",
+      type: "Governance",
       rating: 5.0,
-      latency: '24ms',
+      latency: "24ms",
       load: 64,
-      status: 'VALIDATING',
+      status: "VALIDATING",
     },
   ]);
 
@@ -85,8 +85,8 @@ export default function SwarmPage() {
 
   const handleRegister = () => {
     toast({
-      title: 'Capability Protocol: Initiated',
-      description: 'Generating node identity key and registering metadata...',
+      title: "Capability Protocol: Initiated",
+      description: "Generating node identity key and registering metadata...",
     });
   };
 
@@ -217,17 +217,17 @@ export default function SwarmPage() {
                 {[
                   {
                     time: new Date().toLocaleTimeString(),
-                    protocol: 'CDP_REQ_001',
+                    protocol: "CDP_REQ_001",
                     log: "Matching capability 'molecular_prediction' -> Found 2 candidates",
                   },
                   {
                     time: new Date().toLocaleTimeString(),
-                    protocol: 'CDP_SYNC',
+                    protocol: "CDP_SYNC",
                     log: "Node 'node_gamma_04' heartbeat verified via SHA-512",
                   },
                   {
                     time: new Date().toLocaleTimeString(),
-                    protocol: 'CDP_REG',
+                    protocol: "CDP_REG",
                     log: "New human expert node 'human_node_99' registered",
                   },
                 ].map((l, i) => (
@@ -280,7 +280,7 @@ export default function SwarmPage() {
               Node Integrity
             </p>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              All registered nodes have passed{' '}
+              All registered nodes have passed{" "}
               <span className="text-foreground font-bold">Proof-of-Intelligence</span> validation
               and are bound by the Liquid Consensus protocol.
             </p>

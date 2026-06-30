@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import {
   validateAndSuggestChecklists,
   type ValidateAndSuggestChecklistsOutput,
-} from '@/ai/client-stubs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Badge } from '@/components/ui/badge';
+} from "@/ai/client-stubs";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/ui/badge";
 import {
   ClipboardCheck,
   Loader2,
@@ -19,8 +19,8 @@ import {
   Wrench,
   GitPullRequest,
   Trash2,
-} from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+} from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function ChecklistsPage() {
   const { toast } = useToast();
@@ -29,31 +29,31 @@ export default function ChecklistsPage() {
   const [result, setResult] = useState<ValidateAndSuggestChecklistsOutput | null>(null);
 
   const [customItems, setCustomItems] = useState([
-    'All secrets must be stored in GitLab CI/CD protected variables',
-    'Database migrations must be decoupled from app deployment',
-    'Zero-downtime rollback strategy must be explicitly defined',
-    'Internal traffic must be encrypted via mTLS',
+    "All secrets must be stored in GitLab CI/CD protected variables",
+    "Database migrations must be decoupled from app deployment",
+    "Zero-downtime rollback strategy must be explicitly defined",
+    "Internal traffic must be encrypted via mTLS",
   ]);
 
   const runValidation = async () => {
     setLoading(true);
     try {
       const output = await validateAndSuggestChecklists({
-        architectureDefinition: 'Microservices using service mesh Linkerd.',
-        ciCdPipelineConfig: 'stages: build, deploy. deploy: script: kubectl rollout restart',
+        architectureDefinition: "Microservices using service mesh Linkerd.",
+        ciCdPipelineConfig: "stages: build, deploy. deploy: script: kubectl rollout restart",
         customChecklist: customItems,
       });
       setResult(output);
       toast({
-        title: 'Policy Audit Complete',
-        description: `Detected ${output.validationResults.filter((r) => r.status === 'VIOLATED').length} policy violations requiring intervention.`,
+        title: "Policy Audit Complete",
+        description: `Detected ${output.validationResults.filter((r) => r.status === "VIOLATED").length} policy violations requiring intervention.`,
       });
     } catch (e) {
       console.error(e);
       toast({
-        variant: 'destructive',
-        title: 'Audit Failed',
-        description: 'The policy engine encountered an internal error.',
+        variant: "destructive",
+        title: "Audit Failed",
+        description: "The policy engine encountered an internal error.",
       });
     } finally {
       setLoading(false);
@@ -63,15 +63,15 @@ export default function ChecklistsPage() {
   const handleAddToChecklist = (policy: string) => {
     if (customItems.includes(policy)) {
       toast({
-        title: 'Policy Exists',
-        description: 'This item is already active in your protocol.',
+        title: "Policy Exists",
+        description: "This item is already active in your protocol.",
       });
       return;
     }
     setCustomItems((prev) => [...prev, policy]);
     toast({
-      title: 'Protocol Enhanced',
-      description: 'AI suggested policy has been successfully integrated into your active list.',
+      title: "Protocol Enhanced",
+      description: "AI suggested policy has been successfully integrated into your active list.",
     });
   };
 
@@ -85,14 +85,14 @@ export default function ChecklistsPage() {
       const newResults = [...prev.validationResults];
       newResults[index] = {
         ...newResults[index],
-        status: 'ADHERENT',
+        status: "ADHERENT",
         details: `Auto-remediated: Successfully generated GitLab Merge Request #4021 to align with ${policy}.`,
       };
       return { ...prev, validationResults: newResults };
     });
 
     toast({
-      title: 'Issue Remediated',
+      title: "Issue Remediated",
       description: `Sentinel has applied a temporary patch and drafted a permanent fix for: ${policy}`,
     });
     setFixingId(null);
@@ -215,15 +215,15 @@ export default function ChecklistsPage() {
                   {result.validationResults.map((res, i) => (
                     <Card
                       key={i}
-                      className={`border-border/40 bg-card/30 overflow-hidden transition-all ${res.status === 'VIOLATED' ? 'border-l-4 border-l-destructive' : 'border-l-4 border-l-accent'}`}
+                      className={`border-border/40 bg-card/30 overflow-hidden transition-all ${res.status === "VIOLATED" ? "border-l-4 border-l-destructive" : "border-l-4 border-l-accent"}`}
                     >
                       <CardContent className="p-5 flex items-start gap-5">
                         <div className="mt-1">
-                          {res.status === 'ADHERENT' ? (
+                          {res.status === "ADHERENT" ? (
                             <div className="h-10 w-10 rounded-full bg-accent/10 flex items-center justify-center text-accent">
                               <CheckCircle2 className="h-6 w-6" />
                             </div>
-                          ) : res.status === 'VIOLATED' ? (
+                          ) : res.status === "VIOLATED" ? (
                             <div className="h-10 w-10 rounded-full bg-destructive/10 flex items-center justify-center text-destructive animate-pulse">
                               <AlertCircle className="h-6 w-6" />
                             </div>
@@ -239,13 +239,13 @@ export default function ChecklistsPage() {
                             <div className="flex items-center gap-3">
                               <span className="text-sm font-bold tracking-tight">{res.policy}</span>
                               <Badge
-                                variant={res.status === 'ADHERENT' ? 'secondary' : 'destructive'}
+                                variant={res.status === "ADHERENT" ? "secondary" : "destructive"}
                                 className="text-[9px] uppercase font-bold tracking-widest px-2"
                               >
                                 {res.status}
                               </Badge>
                             </div>
-                            {res.status === 'VIOLATED' && (
+                            {res.status === "VIOLATED" && (
                               <Button
                                 size="sm"
                                 className="h-8 bg-accent text-accent-foreground font-bold text-[10px] uppercase tracking-widest hover:bg-accent/90"
@@ -257,7 +257,7 @@ export default function ChecklistsPage() {
                                 ) : (
                                   <Wrench className="mr-2 h-3 w-3" />
                                 )}
-                                <span>{fixingId === i ? '修復中...' : '一鍵修復 (FIX NOW)'}</span>
+                                <span>{fixingId === i ? "修復中..." : "一鍵修復 (FIX NOW)"}</span>
                               </Button>
                             )}
                           </div>

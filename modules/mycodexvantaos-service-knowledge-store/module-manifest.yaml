@@ -12,8 +12,8 @@ spec:
     and retrieval pipeline execution.
   category: knowledge
   runtime-modes:
-    - native
-    - connected
-    - hybrid
+  - native
+  - connected
+  - hybrid
   implementationPath: services/mycodexvantaos-service-knowledge-store/
   packageName: '@mycodexvantaos/service-knowledge-store'

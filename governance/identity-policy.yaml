@@ -12,39 +12,39 @@ metadata:
 spec:
   humanFacingFields:
     allowed:
-      - MyCodexVantaOS
-      - MyCodeXvantaOS
-      - MyCodeXvanta OS
+    - MyCodexVantaOS
+    - MyCodeXvantaOS
+    - MyCodeXvanta OS
     preferred: MyCodexVantaOS
   machineFacingFields:
     allowed:
-      - mycodexvantaos
+    - mycodexvantaos
     forbidden:
-      - MyCodexVantaOS
-      - MyCodeXvantaOS
-      - MyCodeXvanta OS
-      - mycodexvanta-os
-      - codexvanta-os
-      - codexvanta
-      - codevantaos
-      - KUBO
-      - kubo
-      - AXIOM
-      - axiom
+    - MyCodexVantaOS
+    - MyCodeXvantaOS
+    - MyCodeXvanta OS
+    - mycodexvanta-os
+    - codexvanta-os
+    - codexvanta
+    - codevantaos
+    - KUBO
+    - kubo
+    - AXIOM
+    - axiom
   violationAction: block
 identity:
   machine: mycodexvantaos
   brand: MyCodexVantaOS
   legacy-aliases:
-    - MyCodeXvantaOS
-    - MyCodeXvanta OS
+  - MyCodeXvantaOS
+  - MyCodeXvanta OS
   forbidden-prefixes:
-    - mycodexvanta-os
-    - codexvanta-os
-    - codexvanta
-    - codevantaos
-    - kubo
-    - axiom
+  - mycodexvanta-os
+  - codexvanta-os
+  - codexvanta
+  - codevantaos
+  - kubo
+  - axiom
 deployment:
   canonical-url: https://mycodexvantaos.com
   domains:
@@ -63,16 +63,16 @@ deployment:
     development:
       canonical-url: http://localhost:3000
   forbidden-production-urls:
-    - '*.github.io'
-    - '*.pages.dev'
-    - '*.vercel.app'
-    - '*.netlify.app'
-    - '*.run.app'
-    - '*.appspot.com'
-    - '*.cloudfunctions.net'
-    - '*.web.app'
-    - '*.firebaseapp.com'
-    - storage.googleapis.com
+  - '*.github.io'
+  - '*.pages.dev'
+  - '*.vercel.app'
+  - '*.netlify.app'
+  - '*.run.app'
+  - '*.appspot.com'
+  - '*.cloudfunctions.net'
+  - '*.web.app'
+  - '*.firebaseapp.com'
+  - storage.googleapis.com
 naming:
   machine-identifier-pattern: ^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)*$
   service-id-pattern: ^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*$

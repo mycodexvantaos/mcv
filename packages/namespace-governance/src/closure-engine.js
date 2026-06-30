@@ -15,8 +15,8 @@ import {
   checkPlaneDependency,
   decomposeCode,
   CODE_REGEX,
-} from './naming.js';
-import { ok, err } from './result.js';
+} from "./naming.js";
+import { ok, err } from "./result.js";
 
 /**
  * @typedef {Object} ClosureContext
@@ -35,8 +35,8 @@ export class ClosureEngine {
    * @returns {import('./result.js').Result<{ namespace: string, era: object|null, checked: number }>}
    */
   evaluate(context) {
-    if (context === null || typeof context !== 'object') {
-      return err([{ rule: 'I.0', subject: String(context), message: 'context must be an object' }]);
+    if (context === null || typeof context !== "object") {
+      return err([{ rule: "I.0", subject: String(context), message: "context must be an object" }]);
     }
     const namespace = context.namespace;
     /** @type {import('./result.js').Violation[]} */
@@ -55,9 +55,9 @@ export class ClosureEngine {
     for (const pair of rules.dependencies || []) {
       if (!Array.isArray(pair) || pair.length !== 2) {
         violations.push({
-          rule: 'I.2.4',
+          rule: "I.2.4",
           subject: String(pair),
-          message: 'dependency must be a [from, to] pair',
+          message: "dependency must be a [from, to] pair",
         });
       } else {
         violations.push(...checkPlaneDependency(pair[0], pair[1]));
@@ -70,7 +70,7 @@ export class ClosureEngine {
     const firstCode = (rules.codes || []).find((c) => CODE_REGEX.test(c));
     return ok({
       namespace,
-      era: firstCode ? decomposeCode(firstCode.replace('mycodexvantaos-', '')) : null,
+      era: firstCode ? decomposeCode(firstCode.replace("mycodexvantaos-", "")) : null,
       checked,
     });
   }

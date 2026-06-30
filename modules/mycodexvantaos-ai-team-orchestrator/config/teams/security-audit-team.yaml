@@ -1,182 +1,166 @@
-# Security Audit Team Topology
-# Dedicated team for security assessments and vulnerability management
 urn: urn:mycodexvantaos:team:security-audit-team
 name: Security Audit Team
-description: |
-  A specialized team focused on security assessments, vulnerability scanning,
+description: 'A specialized team focused on security assessments, vulnerability scanning,
+
   compliance verification, and security incident response. Works closely with
+
   development teams to ensure secure coding practices.
+
+  '
 type: hierarchical
 version: 1.0.0
-created_at: 2024-01-15T10:00:00Z
-updated_at: 2024-01-15T10:00:00Z
-
-# Team Topology Configuration
+created_at: 2024-01-15 10:00:00+00:00
+updated_at: 2024-01-15 10:00:00+00:00
 topology_type: hierarchical
 communication_pattern: hub_and_spoke
-
-# Team Members
 agents:
-  # Lead Security Architect (Team Lead)
-  - agent_urn: urn:mycodexvantaos:agent:security-specialist-01
-    role_in_team: lead
-    responsibilities:
-      - Oversee security audits
-      - Approve security exceptions
-      - Report to CISO
-      - Mentor team members
-    expertise:
-      - application_security
-      - architecture_review
-      - threat_modeling
-    governance_tier_override: 3
-
-  # Security Analyst (Core Member)
-  - agent_urn: urn:mycodexvantaos:agent:security-analyst-01
-    role_in_team: analyst
-    reports_to: urn:mycodexvantaos:agent:security-specialist-01
-    responsibilities:
-      - Vulnerability scanning
-      - Security testing
-      - Incident analysis
-      - Report generation
-    expertise:
-      - vulnerability_assessment
-      - penetration_testing
-      - siem_analysis
-    governance_tier_override: 2
-
-  # Compliance Specialist (Core Member)
-  - agent_urn: urn:mycodexvantaos:agent:compliance-specialist-01
-    role_in_team: compliance_officer
-    reports_to: urn:mycodexvantaos:agent:security-specialist-01
-    responsibilities:
-      - Compliance auditing
-      - Policy enforcement
-      - Evidence collection
-      - Regulatory liaison
-    expertise:
-      - soc2
-      - gdpr
-      - hipaa
-      - pci_dss
-    governance_tier_override: 2
-
-# Workflow Definition
+- agent_urn: urn:mycodexvantaos:agent:security-specialist-01
+  role_in_team: lead
+  responsibilities:
+  - Oversee security audits
+  - Approve security exceptions
+  - Report to CISO
+  - Mentor team members
+  expertise:
+  - application_security
+  - architecture_review
+  - threat_modeling
+  governance_tier_override: 3
+- agent_urn: urn:mycodexvantaos:agent:security-analyst-01
+  role_in_team: analyst
+  reports_to: urn:mycodexvantaos:agent:security-specialist-01
+  responsibilities:
+  - Vulnerability scanning
+  - Security testing
+  - Incident analysis
+  - Report generation
+  expertise:
+  - vulnerability_assessment
+  - penetration_testing
+  - siem_analysis
+  governance_tier_override: 2
+- agent_urn: urn:mycodexvantaos:agent:compliance-specialist-01
+  role_in_team: compliance_officer
+  reports_to: urn:mycodexvantaos:agent:security-specialist-01
+  responsibilities:
+  - Compliance auditing
+  - Policy enforcement
+  - Evidence collection
+  - Regulatory liaison
+  expertise:
+  - soc2
+  - gdpr
+  - hipaa
+  - pci_dss
+  governance_tier_override: 2
 workflow_definition:
   id: security-audit-workflow
   type: dag
   nodes:
-    - id: init_audit
-      type: task
-      action: initialize_audit
-      assigned_to: urn:mycodexvantaos:agent:security-specialist-01
-    - id: vulnerability_scan
-      type: task
-      action: scan_vulnerabilities
-      assigned_to: urn:mycodexvantaos:agent:security-analyst-01
-      dependencies: [init_audit]
-    - id: compliance_check
-      type: task
-      action: verify_compliance
-      assigned_to: urn:mycodexvantaos:agent:compliance-specialist-01
-      dependencies: [init_audit]
-    - id: aggregate_findings
-      type: aggregator
-      action: combine_results
-      dependencies: [vulnerability_scan, compliance_check]
-    - id: hitl_review
-      type: hitl
-      action: security_review
-      assigned_to: urn:mycodexvantaos:agent:security-specialist-01
-      dependencies: [aggregate_findings]
-    - id: generate_report
-      type: task
-      action: create_report
-      dependencies: [hitl_review]
+  - id: init_audit
+    type: task
+    action: initialize_audit
+    assigned_to: urn:mycodexvantaos:agent:security-specialist-01
+  - id: vulnerability_scan
+    type: task
+    action: scan_vulnerabilities
+    assigned_to: urn:mycodexvantaos:agent:security-analyst-01
+    dependencies:
+    - init_audit
+  - id: compliance_check
+    type: task
+    action: verify_compliance
+    assigned_to: urn:mycodexvantaos:agent:compliance-specialist-01
+    dependencies:
+    - init_audit
+  - id: aggregate_findings
+    type: aggregator
+    action: combine_results
+    dependencies:
+    - vulnerability_scan
+    - compliance_check
+  - id: hitl_review
+    type: hitl
+    action: security_review
+    assigned_to: urn:mycodexvantaos:agent:security-specialist-01
+    dependencies:
+    - aggregate_findings
+  - id: generate_report
+    type: task
+    action: create_report
+    dependencies:
+    - hitl_review
   edges:
-    - from: init_audit
-      to: vulnerability_scan
-    - from: init_audit
-      to: compliance_check
-    - from: vulnerability_scan
-      to: aggregate_findings
-    - from: compliance_check
-      to: aggregate_findings
-    - from: aggregate_findings
-      to: hitl_review
-    - from: hitl_review
-      to: generate_report
-
-# HITL Configuration
+  - from: init_audit
+    to: vulnerability_scan
+  - from: init_audit
+    to: compliance_check
+  - from: vulnerability_scan
+    to: aggregate_findings
+  - from: compliance_check
+    to: aggregate_findings
+  - from: aggregate_findings
+    to: hitl_review
+  - from: hitl_review
+    to: generate_report
 hitl_config:
   enabled: true
   checkpoints:
-    - node_id: hitl_review
-      type: security_approval
-      timeout_seconds: 28800
-      approvers:
-        - urn:mycodexvantaos:agent:security-specialist-01
-      escalation:
-        after_seconds: 14400
-        escalate_to: ciso
+  - node_id: hitl_review
+    type: security_approval
+    timeout_seconds: 28800
+    approvers:
+    - urn:mycodexvantaos:agent:security-specialist-01
+    escalation:
+      after_seconds: 14400
+      escalate_to: ciso
   notification:
     on_critical_finding: immediate
     on_audit_complete: summary
-
-# Team Capabilities
 capabilities:
-  - vulnerability_assessment
-  - penetration_testing
-  - compliance_auditing
-  - security_training
-  - incident_response
-  - threat_modeling
-
-# Team Schedule
+- vulnerability_assessment
+- penetration_testing
+- compliance_auditing
+- security_training
+- incident_response
+- threat_modeling
 schedule:
   timezone: UTC
   working_hours:
-    start: '09:00'
+    start: 09:00
     end: '18:00'
   on_call:
     enabled: true
     rotation: weekly
     escalation_timeout_minutes: 30
-
-# Performance Metrics
 metrics:
   sla:
     critical_vulnerability_remediation_hours: 24
     high_vulnerability_remediation_hours: 168
     audit_completion_days: 5
   kpis:
-    - vulnerabilities_detected_count
-    - vulnerabilities_remediated_count
-    - compliance_score
-    - mean_time_to_remediation
-    - audit_coverage_percentage
-
-# Integration Points
+  - vulnerabilities_detected_count
+  - vulnerabilities_remediated_count
+  - compliance_score
+  - mean_time_to_remediation
+  - audit_coverage_percentage
 integrations:
-  - type: siem
-    system: splunk
-    purpose: log_analysis
-  - type: vulnerability_scanner
-    system: qualys
-    purpose: automated_scanning
-  - type: ticketing
-    system: jira
-    purpose: issue_tracking
-  - type: notification
-    system: pagerduty
-    purpose: alerting
-
-# Communication Channels
+- type: siem
+  system: splunk
+  purpose: log_analysis
+- type: vulnerability_scanner
+  system: qualys
+  purpose: automated_scanning
+- type: ticketing
+  system: jira
+  purpose: issue_tracking
+- type: notification
+  system: pagerduty
+  purpose: alerting
 channels:
-  - type: slack
-    channel: '#security-audit'
-    purpose: team_communication
-  - type: email
-    distribution_list: security-team@example.com
-    purpose: formal_communication
+- type: slack
+  channel: '#security-audit'
+  purpose: team_communication
+- type: email
+  distribution_list: security-team@example.com
+  purpose: formal_communication

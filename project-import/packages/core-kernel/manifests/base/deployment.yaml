@@ -19,31 +19,31 @@ spec:
         part-of: mycodexvantaos
     spec:
       containers:
-        - name: mycodexvantaos-core-kernel
-          image: registry.local/mycodexvantaos/mycodexvantaos-core-kernel:latest
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 3000
-              protocol: TCP
-          envFrom:
-            - configMapRef:
-                name: mycodexvantaos-core-kernel-config
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 3000
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 3000
-            initialDelaySeconds: 15
-            periodSeconds: 20
-          resources:
-            requests:
-              cpu: '50m'
-              memory: '64Mi'
-            limits:
-              cpu: '200m'
-              memory: '256Mi'
+      - name: mycodexvantaos-core-kernel
+        image: registry.local/mycodexvantaos/mycodexvantaos-core-kernel:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: mycodexvantaos-core-kernel-config
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi

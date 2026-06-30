@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,34 +10,35 @@ metadata:
   criticality: critical
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-30400
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l50
-    - usage
+  - l50
+  - usage
   sloTarget: 30
   evidenceRetentionDays: 2555
 spec:
-  description: >
-    Validates that usage events conform to the usage event contract schema.
+  description: 'Validates that usage events conform to the usage event contract schema.
+
+    '
   validates:
-    - dimension: contract-conformance
-      description: Usage events conform to contract.
-      checks:
-        - id: chk-event-contract-exists
-          description: Usage event contract exists in contracts/
-          rule: 'file-exists:contracts/usage-event-contract.yaml'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-event-schema-valid
-          description: Usage event conforms to usage event schema
-          rule: 'schema:usage-event'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-event-timestamp-present
-          description: Usage event has a valid ISO 8601 timestamp
-          rule: 'field:timestamp-iso8601'
-          severity: critical
-          evidenceRequired: true
+  - dimension: contract-conformance
+    description: Usage events conform to contract.
+    checks:
+    - id: chk-event-contract-exists
+      description: Usage event contract exists in contracts/
+      rule: file-exists:contracts/usage-event-contract.yaml
+      severity: critical
+      evidenceRequired: true
+    - id: chk-event-schema-valid
+      description: Usage event conforms to usage event schema
+      rule: schema:usage-event
+      severity: critical
+      evidenceRequired: true
+    - id: chk-event-timestamp-present
+      description: Usage event has a valid ISO 8601 timestamp
+      rule: field:timestamp-iso8601
+      severity: critical
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

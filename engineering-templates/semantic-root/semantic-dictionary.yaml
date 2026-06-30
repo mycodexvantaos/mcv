@@ -2,268 +2,199 @@ id: urn:mycodexvantaos:dictionary:v2
 name: MyCodeXvantaOS Multilingual Engineering Dictionary
 version: 1.0.0
 status: active
-description: "\u672C\u5B57\u5178\u5B9A\u7FA9\u4E86 MyCodeXvantaOS \u751F\u614B\u4E2D\
-  \u6240\u6709\u6838\u5FC3\u8853\u8A9E\u7684\u7CBE\u78BA\u542B\u7FA9\u53CA\u5176\u591A\
-  \u8A9E\u7CFB\u6620\u5C04\u3002 \u5B83\u662F CI \u6587\u4EF6\u6AA2\u67E5\u3001\u65E5\
-  \u8A8C\u8F38\u51FA\u3001\u6587\u4EF6\u81EA\u52D5\u751F\u6210\u3001\u77E5\u8B58\u5716\
-  \u8B5C\u69CB\u5EFA\u4EE5\u53CA AI Agent \u4EA4\u4E92\u6642\u7684\u8853\u8A9E\u57FA\
-  \u6E96\u3002\u6240\u6709\u8CA2\u737B\u8005\u5FC5\u9808\u9075\u5FAA\u6B64\u5B57\u5178\
-  \u7684\u5B9A\u7FA9\u3002\n"
+description: '本字典定義了 MyCodeXvantaOS 生態中所有核心術語的精確含義及其多語系映射。 它是 CI 文件檢查、日誌輸出、文件自動生成、知識圖譜構建以及
+  AI Agent 交互時的術語基準。所有貢獻者必須遵循此字典的定義。
+
+  '
 terms:
 - id: term-continuous-integration
   english: Continuous Integration
-  definition: "\u4E00\u7A2E\u8EDF\u9AD4\u958B\u767C\u5BE6\u8E10\uFF0C\u5718\u968A\u6210\
-    \u54E1\u983B\u7E41\u5730\u5C07\u4ED6\u5011\u7684\u5DE5\u4F5C\u6574\u5408\u5230\
-    \u4E3B\u5E72\u4E0A\uFF0C\u6BCF\u6B21\u6574\u5408\u90FD\u901A\u904E\u81EA\u52D5\
-    \u5316\u69CB\u5EFA\u4F86\u9A57\u8B49\uFF0C\u4EE5\u76E1\u65E9\u767C\u73FE\u6574\
-    \u5408\u932F\u8AA4\u3002"
+  definition: 一種軟體開發實踐，團隊成員頻繁地將他們的工作整合到主干上，每次整合都通過自動化構建來驗證，以盡早發現整合錯誤。
   translations:
-    simplified_chinese: "\u6301\u7EED\u96C6\u6210"
-    traditional_chinese: "\u6301\u7E8C\u6574\u5408"
+    simplified_chinese: 持续集成
+    traditional_chinese: 持續整合
   domain: DevOps / CI/CD
 - id: term-continuous-delivery
   english: Continuous Delivery
-  definition: "\u4E00\u7A2E\u8EDF\u9AD4\u5DE5\u7A0B\u65B9\u6CD5\uFF0C\u8B93\u8EDF\u9AD4\
-    \u7522\u54C1\u7684\u7522\u51FA\u5728\u4E00\u500B\u77ED\u9031\u671F\u5167\u5B8C\
-    \u6210\uFF0C\u4EE5\u78BA\u4FDD\u8EDF\u9AD4\u53EF\u4EE5\u96A8\u6642\u53EF\u9760\
-    \u5730\u91CB\u51FA\u3002"
+  definition: 一種軟體工程方法，讓軟體產品的產出在一個短週期內完成，以確保軟體可以隨時可靠地釋出。
   translations:
-    simplified_chinese: "\u6301\u7EED\u4EA4\u4ED8"
-    traditional_chinese: "\u6301\u7E8C\u4EA4\u4ED8"
+    simplified_chinese: 持续交付
+    traditional_chinese: 持續交付
   domain: DevOps / CI/CD
 - id: term-continuous-deployment
   english: Continuous Deployment
-  definition: "Continuous Delivery \u7684\u5EF6\u4F38\uFF0C\u5176\u4E2D\u5C0D\u751F\
-    \u7522\u74B0\u5883\u7684\u90E8\u7F72\u662F\u5B8C\u5168\u81EA\u52D5\u5316\u7684\
-    \uFF0C\u7121\u9700\u4EBA\u5DE5\u5E72\u9810\u3002"
+  definition: Continuous Delivery 的延伸，其中對生產環境的部署是完全自動化的，無需人工干預。
   translations:
-    simplified_chinese: "\u6301\u7EED\u90E8\u7F72"
-    traditional_chinese: "\u6301\u7E8C\u90E8\u7F72"
+    simplified_chinese: 持续部署
+    traditional_chinese: 持續部署
   domain: DevOps / CI/CD
 - id: term-integration
   english: Integration
-  definition: "\u5C07\u4E0D\u540C\u7684\u8EDF\u9AD4\u7D44\u4EF6\u6216\u5B50\u7CFB\u7D71\
-    \u7D44\u5408\u6210\u70BA\u4E00\u500B\u6574\u9AD4\u7CFB\u7D71\u7684\u904E\u7A0B\
-    \u3002"
+  definition: 將不同的軟體組件或子系統組合成為一個整體系統的過程。
   translations:
-    simplified_chinese: "\u96C6\u6210"
-    traditional_chinese: "\u6574\u5408"
+    simplified_chinese: 集成
+    traditional_chinese: 整合
   domain: DevOps / CI/CD
 - id: term-system-integration
   english: System Integration
-  definition: "\u5C07\u4E0D\u540C\u7684\u904B\u7B97\u7CFB\u7D71\u8207\u8EDF\u9AD4\u61C9\
-    \u7528\u7A0B\u5F0F\u5728\u7269\u7406\u6216\u529F\u80FD\u4E0A\u9023\u7D50\u5728\
-    \u4E00\u8D77\u7684\u904E\u7A0B\uFF0C\u4EE5\u4F5C\u70BA\u4E00\u500B\u5354\u8ABF\
-    \u7684\u6574\u9AD4\u3002"
+  definition: 將不同的運算系統與軟體應用程式在物理或功能上連結在一起的過程，以作為一個協調的整體。
   translations:
-    simplified_chinese: "\u7CFB\u7EDF\u96C6\u6210"
-    traditional_chinese: "\u7CFB\u7D71\u6574\u5408"
+    simplified_chinese: 系统集成
+    traditional_chinese: 系統整合
   domain: DevOps / CI/CD
 - id: term-configuration-management
   english: Configuration Management
-  definition: "\u4E00\u500B\u7CFB\u7D71\u5DE5\u7A0B\u904E\u7A0B\uFF0C\u7528\u65BC\u5EFA\
-    \u7ACB\u548C\u7DAD\u8B77\u7522\u54C1\u7684\u6027\u80FD\u3001\u529F\u80FD\u8207\
-    \u7269\u7406\u5C6C\u6027\u5728\u6574\u500B\u751F\u547D\u9031\u671F\u4E2D\u7684\
-    \u4E00\u81F4\u6027\u3002"
+  definition: 一個系統工程過程，用於建立和維護產品的性能、功能與物理屬性在整個生命週期中的一致性。
   translations:
-    simplified_chinese: "\u914D\u7F6E\u7BA1\u7406"
-    traditional_chinese: "\u7D44\u614B\u7BA1\u7406 / \u8A2D\u5B9A\u7BA1\u7406"
+    simplified_chinese: 配置管理
+    traditional_chinese: 組態管理 / 設定管理
   domain: DevOps / CI/CD
 - id: term-configuration-drift
   english: Configuration Drift
-  definition: "\u4E00\u500B\u57FA\u790E\u8A2D\u65BD\u7684\u5BE6\u969B\u914D\u7F6E\u96A8\
-    \u6642\u9593\u504F\u96E2\u5176\u9810\u671F\u5B9A\u7FA9\u7684\u72C0\u614B\u3002"
+  definition: 一個基礎設施的實際配置隨時間偏離其預期定義的狀態。
   translations:
-    simplified_chinese: "\u914D\u7F6E\u6F02\u79FB"
-    traditional_chinese: "\u7D44\u614B\u6F02\u79FB / \u8A2D\u5B9A\u6F02\u79FB"
+    simplified_chinese: 配置漂移
+    traditional_chinese: 組態漂移 / 設定漂移
   domain: DevOps / CI/CD
 - id: term-devops
   english: DevOps
-  definition: "Development \u8207 Operations \u7684\u7D44\u5408\u8A5E\uFF0C\u4EE3\u8868\
-    \u4E00\u7A2E\u91CD\u8996\u8EDF\u9AD4\u958B\u767C\u4EBA\u54E1\u8207 IT \u904B\u7DAD\
-    \u4EBA\u54E1\u4E4B\u9593\u6E9D\u901A\u5408\u4F5C\u7684\u6587\u5316\u3001\u904B\
-    \u52D5\u6216\u5BE6\u8E10\u3002"
+  definition: Development 與 Operations 的組合詞，代表一種重視軟體開發人員與 IT 運維人員之間溝通合作的文化、運動或實踐。
   translations:
     simplified_chinese: DevOps
     traditional_chinese: DevOps
   domain: DevOps / CI/CD
 - id: term-cicd
   english: CI/CD
-  definition: "\u6301\u7E8C\u6574\u5408\u8207\u6301\u7E8C\u4EA4\u4ED8/\u90E8\u7F72\
-    \u7684\u7D71\u7A31\uFF0C\u662F\u73FE\u4EE3\u8EDF\u9AD4\u958B\u767C\u7684\u6838\
-    \u5FC3\u5BE6\u8E10\u3002"
+  definition: 持續整合與持續交付/部署的統稱，是現代軟體開發的核心實踐。
   translations:
     simplified_chinese: CI/CD
     traditional_chinese: CI/CD
   domain: DevOps / CI/CD
 - id: term-pipeline
   english: Pipeline
-  definition: "\u4E00\u7D44\u81EA\u52D5\u5316\u7684\u3001\u4F9D\u5E8F\u57F7\u884C\u7684\
-    \u8655\u7406\u6B65\u9A5F\uFF0C\u7528\u65BC\u5C07\u7A0B\u5F0F\u78BC\u5F9E\u958B\
-    \u767C\u968E\u6BB5\u8F49\u79FB\u5230\u751F\u7522\u74B0\u5883\u3002"
+  definition: 一組自動化的、依序執行的處理步驟，用於將程式碼從開發階段轉移到生產環境。
   translations:
-    simplified_chinese: "\u6D41\u6C34\u7EBF"
-    traditional_chinese: "\u7BA1\u7DDA / \u6D41\u6C34\u7DDA"
+    simplified_chinese: 流水线
+    traditional_chinese: 管線 / 流水線
   domain: DevOps / CI/CD
 - id: term-artifact
   english: Artifact
-  definition: "\u5728\u8EDF\u9AD4\u958B\u767C\u904E\u7A0B\u4E2D\u7522\u751F\u7684\u4EFB\
-    \u4F55\u53EF\u7BA1\u7406\u7684\u7522\u7269\uFF0C\u4F8B\u5982\u7DE8\u8B6F\u5F8C\
-    \u7684\u4E8C\u9032\u4F4D\u6A94\u3001\u6587\u4EF6\u3001\u5BB9\u5668\u6620\u50CF\
-    \u7B49\u3002"
+  definition: 在軟體開發過程中產生的任何可管理的產物，例如編譯後的二進位檔、文件、容器映像等。
   translations:
-    simplified_chinese: "\u5236\u54C1"
-    traditional_chinese: "\u6210\u54C1 / \u5DE5\u4EF6"
+    simplified_chinese: 制品
+    traditional_chinese: 成品 / 工件
   domain: DevOps / CI/CD
 - id: term-repository
   english: Repository (Repo)
-  definition: "\u7528\u65BC\u5B58\u5132\u548C\u7BA1\u7406\u7279\u5B9A\u5C08\u6848\u7684\
-    \u6240\u6709\u6A94\u6848\u8207\u4FEE\u8A02\u6B77\u53F2\u8A18\u9304\u7684\u8CC7\
-    \u6599\u5EAB\u3002"
+  definition: 用於存儲和管理特定專案的所有檔案與修訂歷史記錄的資料庫。
   translations:
-    simplified_chinese: "\u4ED3\u5E93 / \u4EE3\u7801\u5E93"
-    traditional_chinese: "\u5132\u5B58\u5EAB / \u7248\u672C\u5EAB"
+    simplified_chinese: 仓库 / 代码库
+    traditional_chinese: 儲存庫 / 版本庫
   domain: Version Control
 - id: term-commit
   english: Commit
-  definition: "\u5C07\u5C0D\u7A0B\u5F0F\u78BC\u7684\u8B8A\u66F4\u6B63\u5F0F\u63D0\u4EA4\
-    \u5230\u7248\u672C\u63A7\u5236\u7CFB\u7D71\u7684\u5132\u5B58\u5EAB\u4E2D\u7684\
-    \u52D5\u4F5C\u3002"
+  definition: 將對程式碼的變更正式提交到版本控制系統的儲存庫中的動作。
   translations:
-    simplified_chinese: "\u63D0\u4EA4"
-    traditional_chinese: "\u63D0\u4EA4"
+    simplified_chinese: 提交
+    traditional_chinese: 提交
   domain: Version Control
 - id: term-branch
   english: Branch
-  definition: "\u5F9E\u4E3B\u958B\u767C\u7DDA\u4E0A\u5206\u96E2\u51FA\u4F86\u7684\u4E00\
-    \u689D\u7368\u7ACB\u7684\u958B\u767C\u8DEF\u5F91\uFF0C\u5141\u8A31\u5728\u4E0D\
-    \u5F71\u97FF\u4E3B\u5E79\u7684\u60C5\u6CC1\u4E0B\u9032\u884C\u529F\u80FD\u958B\
-    \u767C\u6216\u932F\u8AA4\u4FEE\u6B63\u3002"
+  definition: 從主開發線上分離出來的一條獨立的開發路徑，允許在不影響主幹的情況下進行功能開發或錯誤修正。
   translations:
-    simplified_chinese: "\u5206\u652F"
-    traditional_chinese: "\u5206\u652F"
+    simplified_chinese: 分支
+    traditional_chinese: 分支
   domain: Version Control
 - id: term-merge
   english: Merge
-  definition: "\u5C07\u4E00\u500B\u5206\u652F\u4E0A\u7684\u8B8A\u66F4\u6574\u5408\u5230\
-    \u53E6\u4E00\u500B\u5206\u652F\uFF08\u901A\u5E38\u662F\u4E3B\u5206\u652F\uFF09\
-    \u7684\u904E\u7A0B\u3002"
+  definition: 將一個分支上的變更整合到另一個分支（通常是主分支）的過程。
   translations:
-    simplified_chinese: "\u5408\u5E76"
-    traditional_chinese: "\u5408\u4F75"
+    simplified_chinese: 合并
+    traditional_chinese: 合併
   domain: Version Control
 - id: term-pull-request
   english: Pull Request (PR)
-  definition: "\u4E00\u7A2E\u901A\u77E5\u5718\u968A\u6210\u54E1\u4F60\u5DF2\u5B8C\u6210\
-    \u67D0\u500B\u529F\u80FD\u7684\u958B\u767C\uFF0C\u4E26\u8ACB\u6C42\u4ED6\u5011\
-    \u6AA2\u95B1\u548C\u5408\u4F75\u4F60\u7684\u7A0B\u5F0F\u78BC\u7684\u6A5F\u5236\
-    \u3002"
+  definition: 一種通知團隊成員你已完成某個功能的開發，並請求他們檢閱和合併你的程式碼的機制。
   translations:
-    simplified_chinese: "\u62C9\u53D6\u8BF7\u6C42"
-    traditional_chinese: "\u63D0\u53D6\u8ACB\u6C42 / \u62C9\u53D6\u8ACB\u6C42"
+    simplified_chinese: 拉取请求
+    traditional_chinese: 提取請求 / 拉取請求
   domain: Version Control
 - id: term-merge-request
   english: Merge Request (MR)
-  definition: "GitLab \u4E2D\u8207 Pull Request \u529F\u80FD\u7B49\u540C\u7684\u8853\
-    \u8A9E\u3002"
+  definition: GitLab 中與 Pull Request 功能等同的術語。
   translations:
-    simplified_chinese: "\u5408\u5E76\u8BF7\u6C42"
-    traditional_chinese: "\u5408\u4F75\u8ACB\u6C42"
+    simplified_chinese: 合并请求
+    traditional_chinese: 合併請求
   domain: Version Control
 - id: term-conflict-resolution
   english: Conflict Resolution
-  definition: "\u7576\u5169\u500B\u5206\u652F\u5C0D\u540C\u4E00\u90E8\u5206\u7A0B\u5F0F\
-    \u78BC\u9032\u884C\u4E86\u4E0D\u540C\u7684\u4FEE\u6539\u6642\uFF0C\u624B\u52D5\
-    \u6216\u81EA\u52D5\u89E3\u6C7A\u9019\u4E9B\u885D\u7A81\u7684\u904E\u7A0B\u3002"
+  definition: 當兩個分支對同一部分程式碼進行了不同的修改時，手動或自動解決這些衝突的過程。
   translations:
-    simplified_chinese: "\u51B2\u7A81\u89E3\u51B3"
-    traditional_chinese: "\u885D\u7A81\u89E3\u6C7A"
+    simplified_chinese: 冲突解决
+    traditional_chinese: 衝突解決
   domain: Version Control
 - id: term-mycodexvantaos
   english: MyCodeXvantaOS
-  definition: "\u4E00\u500B\u5168\u68E7\u61C9\u7528\u64CD\u4F5C\u7CFB\u7D71\uFF0C\u80FD\
-    \u5728\u96F6\u5916\u4F9D\u8CF4\u4E0B\u5B8C\u6210\u5EFA\u7ACB\u3001\u751F\u6210\
-    \u3001\u57F7\u884C\u3001\u9A57\u8B49\u3001\u767C\u5E03\u8207\u56DE\u6EFE\u3002"
+  definition: 一個全棧應用操作系統，能在零外依賴下完成建立、生成、執行、驗證、發布與回滾。
   translations:
     simplified_chinese: MyCodeXvantaOS
     traditional_chinese: MyCodeXvantaOS
   domain: MyCodeXvantaOS Platform
 - id: term-minimum-closed-loop
   english: Minimum Closed Loop
-  definition: "\u5E73\u53F0\u5728\u96F6\u5916\u4F9D\u8CF4\u4E0B\uFF0C\u5B8C\u6210\u5EFA\
-    \u7ACB\u3001\u751F\u6210\u3001\u57F7\u884C\u3001\u9810\u89BD\u3001\u767C\u5E03\
-    \u3001\u56DE\u6EFE\u7684\u5B8C\u6574\u6D41\u7A0B\u3002\u9019\u662F\u5E73\u53F0\
-    \u6210\u7ACB\u7684\u6700\u9AD8\u57FA\u6E96\u3002"
+  definition: 平台在零外依賴下，完成建立、生成、執行、預覽、發布、回滾的完整流程。這是平台成立的最高基準。
   translations:
-    simplified_chinese: "\u6700\u5C0F\u95ED\u73AF"
-    traditional_chinese: "\u6700\u5C0F\u9589\u74B0"
+    simplified_chinese: 最小闭环
+    traditional_chinese: 最小閉環
   domain: MyCodeXvantaOS Platform
 - id: term-provider
   english: Provider
-  definition: "MyCodeXvantaOS \u4E2D\u5C0D\u5916\u90E8\u80FD\u529B\u7684\u62BD\u8C61\
-    \u4ECB\u9762\uFF0C\u5FC5\u9808\u5BE6\u4F5C initialize\u3001healthCheck\u3001shutdown\
-    \ \u6A19\u6E96\u65B9\u6CD5\u3002"
+  definition: MyCodeXvantaOS 中對外部能力的抽象介面，必須實作 initialize、healthCheck、shutdown 標準方法。
   translations:
-    simplified_chinese: "\u63D0\u4F9B\u8005"
-    traditional_chinese: "\u63D0\u4F9B\u8005"
+    simplified_chinese: 提供者
+    traditional_chinese: 提供者
   domain: MyCodeXvantaOS Platform
 - id: term-runtime-mode
   english: Runtime Mode
-  definition: "MyCodeXvantaOS \u7684\u57F7\u884C\u6A21\u5F0F\uFF0C\u5206\u70BA native\uFF08\
-    \u7D14\u672C\u6A5F\uFF09\u3001connected\uFF08\u5168\u5916\u90E8\u9023\u63A5\uFF09\
-    \u548C hybrid\uFF08\u6DF7\u5408\uFF09\u4E09\u7A2E\u3002"
+  definition: MyCodeXvantaOS 的執行模式，分為 native（純本機）、connected（全外部連接）和 hybrid（混合）三種。
   translations:
-    simplified_chinese: "\u8FD0\u884C\u65F6\u6A21\u5F0F"
-    traditional_chinese: "\u57F7\u884C\u968E\u6BB5\u6A21\u5F0F"
+    simplified_chinese: 运行时模式
+    traditional_chinese: 執行階段模式
   domain: MyCodeXvantaOS Platform
 - id: term-continuous-integration
   english: Continuous Integration
-  definition: "\u4E00\u7A2E\u8EDF\u9AD4\u958B\u767C\u5BE6\u8E10\uFF0C\u5718\u968A\u6210\
-    \u54E1\u983B\u7E41\u5730\u5C07\u4ED6\u5011\u7684\u5DE5\u4F5C\u6574\u5408\u5230\
-    \u4E3B\u5E79\u4E0A\uFF0C\u6BCF\u6B21\u6574\u5408\u90FD\u901A\u904E\u81EA\u52D5\
-    \u5316\u69CB\u5EFA\u4F86\u9A57\u8B49\uFF0C\u4EE5\u76E1\u65E9\u767C\u73FE\u6574\
-    \u5408\u932F\u8AA4\u3002"
+  definition: 一種軟體開發實踐，團隊成員頻繁地將他們的工作整合到主幹上，每次整合都通過自動化構建來驗證，以盡早發現整合錯誤。
   translations:
-    simplified_chinese: "\u6301\u7EED\u96C6\u6210"
-    traditional_chinese: "\u6301\u7E8C\u6574\u5408"
+    simplified_chinese: 持续集成
+    traditional_chinese: 持續整合
   domain: DevOps / CI/CD
 - id: term-configuration-management
   english: Configuration Management
-  definition: "\u4E00\u500B\u7CFB\u7D71\u5DE5\u7A0B\u904E\u7A0B\uFF0C\u7528\u65BC\u5EFA\
-    \u7ACB\u548C\u7DAD\u6301\u7522\u54C1\u7684\u6027\u80FD\u3001\u529F\u80FD\u8207\
-    \u7269\u7406\u5C6C\u6027\u5728\u6574\u500B\u751F\u547D\u9031\u671F\u4E2D\u7684\
-    \u4E00\u81F4\u6027\u3002"
+  definition: 一個系統工程過程，用於建立和維持產品的性能、功能與物理屬性在整個生命週期中的一致性。
   translations:
-    simplified_chinese: "\u914D\u7F6E\u7BA1\u7406"
-    traditional_chinese: "\u7D44\u614B\u7BA1\u7406 / \u8A2D\u5B9A\u7BA1\u7406"
+    simplified_chinese: 配置管理
+    traditional_chinese: 組態管理 / 設定管理
   domain: DevOps / CI/CD
 - id: term-mycodexvantaos
   english: MyCodeXvantaOS
-  definition: "\u4E00\u500B\u5168\u68E7\u61C9\u7528\u64CD\u4F5C\u7CFB\u7D71\uFF0C\u80FD\
-    \u5728\u96F6\u5916\u90E8\u4F9D\u8CF4\u4E0B\u5B8C\u6210\u751F\u6210\u3001\u57F7\
-    \u884C\u3001\u9A57\u8B49\u3001\u767C\u5E03\u8207\u56DE\u6EFE\u3002"
+  definition: 一個全棧應用操作系統，能在零外部依賴下完成生成、執行、驗證、發布與回滾。
   translations:
     simplified_chinese: MyCodeXvantaOS
     traditional_chinese: MyCodeXvantaOS
   domain: MyCodeXvantaOS Platform
 - id: term-minimum-closed-loop
   english: Minimum Closed Loop
-  definition: "\u5E73\u53F0\u5728\u96F6\u5916\u90E8\u4F9D\u8CF4\u4E0B\uFF0C\u5B8C\u6210\
-    \u5EFA\u7ACB\u3001\u751F\u6210\u3001\u57F7\u884C\u3001\u9810\u89BD\u3001\u767C\
-    \u5E03\u3001\u56DE\u6EFE\u7684\u5B8C\u6574\u6D41\u7A0B\u3002\u9019\u662F\u5E73\
-    \u53F0\u6210\u7ACB\u7684\u6700\u9AD8\u57FA\u6E96\u3002"
+  definition: 平台在零外部依賴下，完成建立、生成、執行、預覽、發布、回滾的完整流程。這是平台成立的最高基準。
   translations:
-    simplified_chinese: "\u6700\u5C0F\u95ED\u73AF"
-    traditional_chinese: "\u6700\u5C0F\u9589\u74B0"
+    simplified_chinese: 最小闭环
+    traditional_chinese: 最小閉環
   domain: MyCodeXvantaOS Platform
 - id: term-runtime-mode
   english: Runtime Mode
-  definition: "MyCodeXvantaOS \u7684\u57F7\u884C\u6A21\u5F0F\uFF0C\u5206\u70BA native\uFF08\
-    \u7D14\u672C\u5730\uFF09\u3001connected\uFF08\u5168\u5916\u90E8\u9023\u63A5\uFF09\
-    \u548C hybrid\uFF08\u6DF7\u5408\uFF09\u4E09\u7A2E\u3002"
+  definition: MyCodeXvantaOS 的執行模式，分為 native（純本地）、connected（全外部連接）和 hybrid（混合）三種。
   translations:
-    simplified_chinese: "\u8FD0\u884C\u65F6\u6A21\u5F0F"
-    traditional_chinese: "\u57F7\u884C\u968E\u6BB5\u6A21\u5F0F"
+    simplified_chinese: 运行时模式
+    traditional_chinese: 執行階段模式
   domain: MyCodeXvantaOS Platform
 statistics:
   total_terms: 331

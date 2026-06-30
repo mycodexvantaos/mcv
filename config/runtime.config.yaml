@@ -8,9 +8,9 @@ runtime-mode:
   policy: governance/runtime-mode-policy.yaml
   default: native
   resolution-order:
-    - environment-variable
-    - config-file
-    - default
+  - environment-variable
+  - config-file
+  - default
   environment-variable: MYCODEXVANTAOS_RUNTIME_MODE
 provider-resolution:
   strategy: capability-first
@@ -40,36 +40,36 @@ domains:
     docs: https://docs.mycodexvantaos.com
 forbidden-production-urls:
   patterns:
-    - '*.github.io'
-    - '*.pages.dev'
-    - '*.vercel.app'
-    - '*.netlify.app'
-    - '*.run.app'
-    - '*.appspot.com'
-    - '*.cloudfunctions.net'
-    - '*.web.app'
-    - '*.firebaseapp.com'
-    - storage.googleapis.com
+  - '*.github.io'
+  - '*.pages.dev'
+  - '*.vercel.app'
+  - '*.netlify.app'
+  - '*.run.app'
+  - '*.appspot.com'
+  - '*.cloudfunctions.net'
+  - '*.web.app'
+  - '*.firebaseapp.com'
+  - storage.googleapis.com
 cors:
   production-allowlist:
-    - https://mycodexvantaos.com
-    - https://www.mycodexvantaos.com
-    - https://app.mycodexvantaos.com
-    - https://admin.mycodexvantaos.com
-    - https://docs.mycodexvantaos.com
+  - https://mycodexvantaos.com
+  - https://www.mycodexvantaos.com
+  - https://app.mycodexvantaos.com
+  - https://admin.mycodexvantaos.com
+  - https://docs.mycodexvantaos.com
   allow-credentials: true
   allow-methods:
-    - GET
-    - POST
-    - PUT
-    - PATCH
-    - DELETE
-    - OPTIONS
+  - GET
+  - POST
+  - PUT
+  - PATCH
+  - DELETE
+  - OPTIONS
   allow-headers:
-    - Content-Type
-    - Authorization
-    - X-Request-ID
-    - X-Trace-ID
+  - Content-Type
+  - Authorization
+  - X-Request-ID
+  - X-Trace-ID
 security-headers:
   strict-transport-security: max-age=31536000; includeSubDomains; preload
   x-frame-options: DENY
@@ -100,8 +100,8 @@ rate-limiting:
 spec:
   defaultRuntimeMode: native
   productionForbiddenModes:
-    - auto
+  - auto
   requiredEnvironmentVariables:
-    - MYCODEXVANTAOS_RUNTIME_MODE
-    - MYCODEXVANTAOS_SECRETS_PROVIDER
-    - MYCODEXVANTAOS_DEPLOYMENT_TARGET
+  - MYCODEXVANTAOS_RUNTIME_MODE
+  - MYCODEXVANTAOS_SECRETS_PROVIDER
+  - MYCODEXVANTAOS_DEPLOYMENT_TARGET

@@ -18,7 +18,7 @@ import type {
   EmbedRequest,
   EmbedResponse,
   ModelHealthStatus,
-} from '../../ports/model-provider';
+} from "../../ports/model-provider";
 
 // ── Workers AI Environment Binding ─────────────────────────────────────
 
@@ -36,7 +36,7 @@ export class WorkersAIChatAdapter implements IChatModelPort {
   }
 
   async invoke(request: ModelRequest): Promise<ModelResponse> {
-    const model = request.model ?? '@cf/meta/llama-3.1-8b-instruct';
+    const model = request.model ?? "@cf/meta/llama-3.1-8b-instruct";
     const response = await this.ai.run(model as any, {
       messages: request.messages.map((m) => ({
         role: m.role,
@@ -49,20 +49,20 @@ export class WorkersAIChatAdapter implements IChatModelPort {
     const result = response as any;
     return {
       id: crypto.randomUUID(),
-      content: result.response ?? result.choices?.[0]?.message?.content ?? '',
+      content: result.response ?? result.choices?.[0]?.message?.content ?? "",
       model,
       usage: {
         promptTokens: result.usage?.prompt_tokens ?? 0,
         completionTokens: result.usage?.completion_tokens ?? 0,
         totalTokens: (result.usage?.prompt_tokens ?? 0) + (result.usage?.completion_tokens ?? 0),
       },
-      finishReason: 'stop',
+      finishReason: "stop",
       created: new Date().toISOString(),
     };
   }
 
   async *invokeStream(request: ModelRequest): AsyncIterable<ModelChunk> {
-    const model = request.model ?? '@cf/meta/llama-3.1-8b-instruct';
+    const model = request.model ?? "@cf/meta/llama-3.1-8b-instruct";
     const response = await this.ai.run(model as any, {
       messages: request.messages.map((m) => ({
         role: m.role,
@@ -91,9 +91,9 @@ export class WorkersAIChatAdapter implements IChatModelPort {
       const result = response as any;
       yield {
         id: crypto.randomUUID(),
-        content: result.response ?? '',
+        content: result.response ?? "",
         model,
-        finishReason: 'stop',
+        finishReason: "stop",
       };
     }
   }
@@ -113,7 +113,7 @@ export class WorkersAIChatAdapter implements IChatModelPort {
         healthy: false,
         latencyMs: -1,
         lastChecked: new Date().toISOString(),
-        error: error instanceof Error ? error.message : 'Unknown',
+        error: error instanceof Error ? error.message : "Unknown",
       };
     }
   }
@@ -129,7 +129,7 @@ export class WorkersAIEmbeddingAdapter implements IEmbeddingModelPort {
   }
 
   async embed(input: EmbedRequest): Promise<EmbedResponse> {
-    const model = input.model ?? '@cf/baai/bge-small-en-v1.5';
+    const model = input.model ?? "@cf/baai/bge-small-en-v1.5";
     const response = await this.ai.run(model as any, {
       text: input.input,
     });
@@ -155,7 +155,7 @@ export class WorkersAIEmbeddingAdapter implements IEmbeddingModelPort {
         healthy: false,
         latencyMs: -1,
         lastChecked: new Date().toISOString(),
-        error: error instanceof Error ? error.message : 'Unknown',
+        error: error instanceof Error ? error.message : "Unknown",
       };
     }
   }

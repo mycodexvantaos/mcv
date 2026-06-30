@@ -12,8 +12,8 @@ spec:
     management.
   category: platform
   runtime-modes:
-    - native
-    - connected
-    - hybrid
+  - native
+  - connected
+  - hybrid
   implementationPath: services/mycodexvantaos-service-service-catalog/
   packageName: '@mycodexvantaos/service-service-catalog'

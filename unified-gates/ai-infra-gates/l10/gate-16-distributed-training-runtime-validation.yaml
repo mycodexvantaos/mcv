@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,34 +10,36 @@ metadata:
   criticality: critical
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-00000
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l10
-    - distributed
+  - l10
+  - distributed
   sloTarget: 30
   evidenceRetentionDays: 2555
 spec:
-  description: >
-    Validates that the distributed training runtime (PyTorch DDP, DeepSpeed, Megatron-LM) is correctly configured and operational.
+  description: 'Validates that the distributed training runtime (PyTorch DDP, DeepSpeed,
+    Megatron-LM) is correctly configured and operational.
+
+    '
   validates:
-    - dimension: runtime-readiness
-      description: Distributed training runtime is ready.
-      checks:
-        - id: chk-framework-version
-          description: AI framework version is in the approved compatibility matrix
-          rule: 'compatibility:framework-matrix'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-collective-ops
-          description: NCCL/RCCL collective operations complete without error
-          rule: 'functional:nccl-allreduce'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-checkpoint-storage
-          description: Checkpoint storage is writable and has sufficient capacity
-          rule: 'storage:checkpoint-writable'
-          severity: high
-          evidenceRequired: true
+  - dimension: runtime-readiness
+    description: Distributed training runtime is ready.
+    checks:
+    - id: chk-framework-version
+      description: AI framework version is in the approved compatibility matrix
+      rule: compatibility:framework-matrix
+      severity: critical
+      evidenceRequired: true
+    - id: chk-collective-ops
+      description: NCCL/RCCL collective operations complete without error
+      rule: functional:nccl-allreduce
+      severity: critical
+      evidenceRequired: true
+    - id: chk-checkpoint-storage
+      description: Checkpoint storage is writable and has sufficient capacity
+      rule: storage:checkpoint-writable
+      severity: high
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

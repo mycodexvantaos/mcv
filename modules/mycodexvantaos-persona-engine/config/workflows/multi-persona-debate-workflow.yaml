@@ -1,194 +1,166 @@
-# MyCodeXvantaOS Workflow Configuration
-# URN: urn:mycodexvantaos:workflow:multi-persona-debate
-# Version: 1.0.0
-
 metadata:
-  urn: 'urn:mycodexvantaos:workflow:multi-persona-debate'
-  name: 'Multi-Persona Debate Workflow'
-  version: '1.0.0'
-  description: |
-    Orchestrates a structured debate between multiple personas to explore
+  urn: urn:mycodexvantaos:workflow:multi-persona-debate
+  name: Multi-Persona Debate Workflow
+  version: 1.0.0
+  description: 'Orchestrates a structured debate between multiple personas to explore
+
     different perspectives on a topic, identify blind spots, and synthesize
+
     insights into comprehensive recommendations.
-  author: 'MyCodeXvantaOS Team'
+
+    '
+  author: MyCodeXvantaOS Team
   created_at: '2024-01-15T00:00:00Z'
   tags:
-    - debate
-    - multi-perspective
-    - synthesis
-    - decision-support
-
+  - debate
+  - multi-perspective
+  - synthesis
+  - decision-support
 workflow:
-  type: 'parallel-then-merge'
-  timeout: 600000 # 10 minutes total
+  type: parallel-then-merge
+  timeout: 600000
   retry_policy:
     max_retries: 2
-    backoff: 'exponential'
-
+    backoff: exponential
 participants:
   personas:
-    - archetype: 'disrupter'
-      role: 'challenger'
-      objective: 'Identify weaknesses and challenge assumptions'
-
-    - archetype: 'analyst'
-      role: 'examiner'
-      objective: 'Provide data-driven analysis and evidence'
-
-    - archetype: 'synthesizer'
-      role: 'integrator'
-      objective: 'Find connections and build bridges between perspectives'
-
-    - archetype: 'critic'
-      role: 'reviewer'
-      objective: 'Evaluate arguments and identify logical flaws'
-
+  - archetype: disrupter
+    role: challenger
+    objective: Identify weaknesses and challenge assumptions
+  - archetype: analyst
+    role: examiner
+    objective: Provide data-driven analysis and evidence
+  - archetype: synthesizer
+    role: integrator
+    objective: Find connections and build bridges between perspectives
+  - archetype: critic
+    role: reviewer
+    objective: Evaluate arguments and identify logical flaws
 phases:
-  - id: 'opening'
-    name: 'Opening Statements'
-    description: 'Each persona presents their initial perspective'
-    duration_limit: 120000 # 2 minutes per persona
-
-    steps:
-      - action: 'persona_present'
-        persona: 'disrupter'
-        task: 'Present critical challenges to the topic'
-        output_key: 'disrupter_opening'
-
-      - action: 'persona_present'
-        persona: 'analyst'
-        task: 'Present analytical framework and key data points'
-        output_key: 'analyst_opening'
-
-      - action: 'persona_present'
-        persona: 'synthesizer'
-        task: 'Present initial synthesis and potential connections'
-        output_key: 'synthesizer_opening'
-
-      - action: 'persona_present'
-        persona: 'critic'
-        task: 'Present evaluation criteria and initial assessment'
-        output_key: 'critic_opening'
-
-  - id: 'cross_examination'
-    name: 'Cross-Examination'
-    description: "Personas challenge and question each other's positions"
-    duration_limit: 180000 # 3 minutes
-
-    steps:
-      - action: 'persona_respond'
-        persona: 'disrupter'
-        input_sources:
-          - 'analyst_opening'
-          - 'synthesizer_opening'
-        task: "Challenge the analyst's data and synthesizer's connections"
-        output_key: 'disrupter_challenges'
-
-      - action: 'persona_respond'
-        persona: 'analyst'
-        input_sources:
-          - 'disrupter_opening'
-          - 'critic_opening'
-        task: 'Address challenges with evidence and data'
-        output_key: 'analyst_responses'
-
-      - action: 'persona_respond'
-        persona: 'synthesizer'
-        input_sources:
-          - 'disrupter_challenges'
-          - 'analyst_responses'
-        task: 'Identify common ground and bridge disagreements'
-        output_key: 'synthesizer_bridges'
-
-      - action: 'persona_respond'
-        persona: 'critic'
-        input_sources:
-          - 'disrupter_challenges'
-          - 'analyst_responses'
-        task: 'Evaluate the strength of each position'
-        output_key: 'critic_evaluation'
-
-  - id: 'deep_dive'
-    name: 'Deep Dive Analysis'
-    description: 'Explore key points in greater depth'
-    duration_limit: 120000 # 2 minutes
-
-    steps:
-      - action: 'root_cause_analysis'
-        persona: 'analyst'
-        input_source: 'critic_evaluation'
-        task: 'Analyze root causes of key disagreements'
-        output_key: 'root_cause_findings'
-
-      - action: 'solution_generation'
-        persona: 'synthesizer'
-        input_source: 'root_cause_findings'
-        task: 'Generate potential resolution approaches'
-        output_key: 'resolution_options'
-
-  - id: 'synthesis'
-    name: 'Final Synthesis'
-    description: 'Synthesize all perspectives into comprehensive output'
-    duration_limit: 180000 # 3 minutes
-
-    steps:
-      - action: 'persona_synthesize'
-        persona: 'synthesizer'
-        input_sources:
-          - 'disrupter_opening'
-          - 'analyst_opening'
-          - 'synthesizer_opening'
-          - 'critic_opening'
-          - 'disrupter_challenges'
-          - 'analyst_responses'
-          - 'synthesizer_bridges'
-          - 'critic_evaluation'
-          - 'root_cause_findings'
-          - 'resolution_options'
-        task: 'Create comprehensive synthesis of all perspectives'
-        output_key: 'final_synthesis'
-
-      - action: 'persona_review'
-        persona: 'critic'
-        input_source: 'final_synthesis'
-        task: 'Final quality review and validation'
-        output_key: 'quality_review'
-
+- id: opening
+  name: Opening Statements
+  description: Each persona presents their initial perspective
+  duration_limit: 120000
+  steps:
+  - action: persona_present
+    persona: disrupter
+    task: Present critical challenges to the topic
+    output_key: disrupter_opening
+  - action: persona_present
+    persona: analyst
+    task: Present analytical framework and key data points
+    output_key: analyst_opening
+  - action: persona_present
+    persona: synthesizer
+    task: Present initial synthesis and potential connections
+    output_key: synthesizer_opening
+  - action: persona_present
+    persona: critic
+    task: Present evaluation criteria and initial assessment
+    output_key: critic_opening
+- id: cross_examination
+  name: Cross-Examination
+  description: Personas challenge and question each other's positions
+  duration_limit: 180000
+  steps:
+  - action: persona_respond
+    persona: disrupter
+    input_sources:
+    - analyst_opening
+    - synthesizer_opening
+    task: Challenge the analyst's data and synthesizer's connections
+    output_key: disrupter_challenges
+  - action: persona_respond
+    persona: analyst
+    input_sources:
+    - disrupter_opening
+    - critic_opening
+    task: Address challenges with evidence and data
+    output_key: analyst_responses
+  - action: persona_respond
+    persona: synthesizer
+    input_sources:
+    - disrupter_challenges
+    - analyst_responses
+    task: Identify common ground and bridge disagreements
+    output_key: synthesizer_bridges
+  - action: persona_respond
+    persona: critic
+    input_sources:
+    - disrupter_challenges
+    - analyst_responses
+    task: Evaluate the strength of each position
+    output_key: critic_evaluation
+- id: deep_dive
+  name: Deep Dive Analysis
+  description: Explore key points in greater depth
+  duration_limit: 120000
+  steps:
+  - action: root_cause_analysis
+    persona: analyst
+    input_source: critic_evaluation
+    task: Analyze root causes of key disagreements
+    output_key: root_cause_findings
+  - action: solution_generation
+    persona: synthesizer
+    input_source: root_cause_findings
+    task: Generate potential resolution approaches
+    output_key: resolution_options
+- id: synthesis
+  name: Final Synthesis
+  description: Synthesize all perspectives into comprehensive output
+  duration_limit: 180000
+  steps:
+  - action: persona_synthesize
+    persona: synthesizer
+    input_sources:
+    - disrupter_opening
+    - analyst_opening
+    - synthesizer_opening
+    - critic_opening
+    - disrupter_challenges
+    - analyst_responses
+    - synthesizer_bridges
+    - critic_evaluation
+    - root_cause_findings
+    - resolution_options
+    task: Create comprehensive synthesis of all perspectives
+    output_key: final_synthesis
+  - action: persona_review
+    persona: critic
+    input_source: final_synthesis
+    task: Final quality review and validation
+    output_key: quality_review
 outputs:
   primary:
-    - 'final_synthesis'
+  - final_synthesis
   secondary:
-    - 'quality_review'
-    - 'root_cause_findings'
-    - 'resolution_options'
-
+  - quality_review
+  - root_cause_findings
+  - resolution_options
 hitl_checkpoints:
-  - phase: 'synthesis'
-    step: 'final_synthesis'
-    trigger: 'conflict_detected'
-    description: 'Human review required when personas cannot reach synthesis'
-
-  - phase: 'deep_dive'
-    step: 'root_cause_analysis'
-    trigger: 'ethical_concern'
-    description: 'Human review for sensitive topics'
-
+- phase: synthesis
+  step: final_synthesis
+  trigger: conflict_detected
+  description: Human review required when personas cannot reach synthesis
+- phase: deep_dive
+  step: root_cause_analysis
+  trigger: ethical_concern
+  description: Human review for sensitive topics
 governance:
   tier: 1
   audit_required: true
   constraints:
-    - 'respectful_discourse'
-    - 'evidence_based_arguments'
-    - 'constructive_criticism_only'
-
+  - respectful_discourse
+  - evidence_based_arguments
+  - constructive_criticism_only
 performance_metrics:
   success_criteria:
-    - 'All personas contributed'
-    - 'Synthesis achieved'
-    - 'Quality review passed'
-
+  - All personas contributed
+  - Synthesis achieved
+  - Quality review passed
   quality_metrics:
-    - 'argument_coherence'
-    - 'evidence_quality'
-    - 'synthesis_completeness'
-    - 'blind_spot_coverage'
+  - argument_coherence
+  - evidence_quality
+  - synthesis_completeness
+  - blind_spot_coverage

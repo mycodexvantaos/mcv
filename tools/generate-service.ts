@@ -5,23 +5,23 @@
 // Usage: npx ts-node tools/generate-service.ts <service-name>
 // ═══════════════════════════════════════════════════════════════════════
 
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from "fs";
+import * as path from "path";
 
-const ROOT_DIR = path.resolve(__dirname, '..');
+const ROOT_DIR = path.resolve(__dirname, "..");
 const SERVICE_NAME = process.argv[2];
 
 if (!SERVICE_NAME) {
-  console.error('Usage: npx ts-node tools/generate-service.ts <service-name>');
-  console.error('Example: npx ts-node tools/generate-service.ts my-service');
+  console.error("Usage: npx ts-node tools/generate-service.ts <service-name>");
+  console.error("Example: npx ts-node tools/generate-service.ts my-service");
   process.exit(1);
 }
 
 function toPascalCase(kebab: string): string {
   return kebab
-    .split('-')
+    .split("-")
     .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
-    .join('');
+    .join("");
 }
 
 const ClassName = toPascalCase(SERVICE_NAME);
@@ -114,25 +114,25 @@ function writeFile(filePath: string, content: string) {
     console.log(`⏭️  Skipped (exists): ${path.relative(ROOT_DIR, filePath)}`);
     return;
   }
-  fs.writeFileSync(filePath, content, 'utf-8');
+  fs.writeFileSync(filePath, content, "utf-8");
   console.log(`✅ Created: ${path.relative(ROOT_DIR, filePath)}`);
 }
 
-console.log('════════════════════════════════════════════════════════');
+console.log("════════════════════════════════════════════════════════");
 console.log(`  Generating scaffold for: ${SERVICE_NAME}`);
-console.log('════════════════════════════════════════════════════════\n');
+console.log("════════════════════════════════════════════════════════\n");
 
-writeFile(path.join(ROOT_DIR, 'application', `${SERVICE_NAME}-service.ts`), appServiceContent);
+writeFile(path.join(ROOT_DIR, "application", `${SERVICE_NAME}-service.ts`), appServiceContent);
 writeFile(
-  path.join(ROOT_DIR, 'infra', 'cloudflare', 'workers', `wrangler.${SERVICE_NAME}.toml`),
+  path.join(ROOT_DIR, "infra", "cloudflare", "workers", `wrangler.${SERVICE_NAME}.toml`),
   wranglerContent
 );
 
-console.log('\n──────────────────────────────────────────────────────');
-console.log('Next steps:');
+console.log("\n──────────────────────────────────────────────────────");
+console.log("Next steps:");
 console.log(`  1. Implement capabilities in application/${SERVICE_NAME}-service.ts`);
 console.log(`  2. Update ports/ with any new port interfaces needed`);
 console.log(`  3. Add adapter implementations in adapters/`);
 console.log(`  4. Register in application/index.ts`);
 console.log(`  5. Update runtimes/cloudflare/adapter.ts`);
-console.log('──────────────────────────────────────────────────────');
+console.log("──────────────────────────────────────────────────────");

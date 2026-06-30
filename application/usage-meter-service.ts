@@ -22,22 +22,22 @@ import type {
   IQueuePort,
   AuditEventInput,
   DatabaseStatement,
-} from '../ports/index.js';
+} from "../ports/index.js";
 
-import type { UsageRecordSpec, Tier, Resource, AuditEventSpec } from '../core/index.js';
+import type { UsageRecordSpec, Tier, Resource, AuditEventSpec } from "../core/index.js";
 
 /* ──────────────────────────── Types ──────────────────────────── */
 
 /** Dimension of metering — each maps to a separate counter & quota */
 export type MeterDimension =
-  | 'api_calls'
-  | 'storage_bytes'
-  | 'search_queries'
-  | 'model_tokens_input'
-  | 'model_tokens_output'
-  | 'documents_ingested'
-  | 'chat_messages'
-  | 'audit_events';
+  | "api_calls"
+  | "storage_bytes"
+  | "search_queries"
+  | "model_tokens_input"
+  | "model_tokens_output"
+  | "documents_ingested"
+  | "chat_messages"
+  | "audit_events";
 
 /** A single usage record row */
 export interface UsageRecord {
@@ -105,7 +105,7 @@ export interface UsageMeterServiceDeps {
 
 const TIER_LIMITS: TierLimits[] = [
   {
-    tier: 'free',
+    tier: "free",
     limits: {
       api_calls: { monthly: 10_000, per_minute: 30, burst: 50 },
       storage_bytes: { monthly: 1_073_741_824, per_minute: 10_485_760 }, // 1 GB / 10 MB min-1
@@ -118,7 +118,7 @@ const TIER_LIMITS: TierLimits[] = [
     },
   },
   {
-    tier: 'pro',
+    tier: "pro",
     limits: {
       api_calls: { monthly: 100_000, per_minute: 120, burst: 200 },
       storage_bytes: { monthly: 10_737_418_240, per_minute: 52_428_800 }, // 10 GB / 50 MB min-1
@@ -131,7 +131,7 @@ const TIER_LIMITS: TierLimits[] = [
     },
   },
   {
-    tier: 'enterprise',
+    tier: "enterprise",
     limits: {
       api_calls: { monthly: 1_000_000, per_minute: 600, burst: 1_000 },
       storage_bytes: { monthly: 107_374_182_400, per_minute: 262_144_000 }, // 100 GB / 250 MB min-1
@@ -199,9 +199,9 @@ export class UsageMeterService {
     if (!rateLimit.allowed || monthlyUsage + input.quantity > monthlyLimit) {
       // Rate limit or quota exceeded — emit event & deny
       await this.audit.emitEvent({
-        event_type: 'usage.rate-limit-exceeded',
-        category: 'governance',
-        severity: 'warning',
+        event_type: "usage.rate-limit-exceeded",
+        category: "governance",
+        severity: "warning",
         subject_id: input.subject_id,
         workspace_id: input.workspace_id,
         resource_urn: input.resource_urn,
@@ -212,7 +212,7 @@ export class UsageMeterService {
           per_minute_limit: rateLimit.limit,
           current_month: monthlyUsage,
           monthly_limit: monthlyLimit,
-          reason: !rateLimit.allowed ? 'per_minute_exceeded' : 'monthly_quota_exceeded',
+          reason: !rateLimit.allowed ? "per_minute_exceeded" : "monthly_quota_exceeded",
         },
       });
 
@@ -264,9 +264,9 @@ export class UsageMeterService {
 
     // 5. Emit audit event
     await this.audit.emitEvent({
-      event_type: 'usage.metered',
-      category: 'governance',
-      severity: 'info',
+      event_type: "usage.metered",
+      category: "governance",
+      severity: "info",
       subject_id: input.subject_id,
       workspace_id: input.workspace_id,
       resource_urn: input.resource_urn,
@@ -282,8 +282,8 @@ export class UsageMeterService {
     // 6. If approaching 80% of monthly quota, queue an alert job
     const utilizationPct = (monthlyUsage + input.quantity) / monthlyLimit;
     if (utilizationPct >= 0.8) {
-      await this.queue.send('USAGE_ALERT_QUEUE', {
-        type: 'quota-approaching',
+      await this.queue.send("USAGE_ALERT_QUEUE", {
+        type: "quota-approaching",
         workspace_id: input.workspace_id,
         dimension: input.dimension,
         utilization_pct: Math.round(utilizationPct * 100),
@@ -323,7 +323,7 @@ export class UsageMeterService {
     tier: Tier
   ): Promise<UsageAggregate> {
     const tierConfig = this.getTierLimits(tier);
-    const dimensions: UsageAggregate['dimensions'] = {} as any;
+    const dimensions: UsageAggregate["dimensions"] = {} as any;
     const overage: MeterDimension[] = [];
 
     for (const dim of Object.keys(tierConfig.limits) as MeterDimension[]) {
@@ -468,14 +468,14 @@ export class UsageMeterService {
 
   private dimensionUnit(dim: MeterDimension): string {
     const units: Record<MeterDimension, string> = {
-      api_calls: 'requests',
-      storage_bytes: 'bytes',
-      search_queries: 'queries',
-      model_tokens_input: 'tokens',
-      model_tokens_output: 'tokens',
-      documents_ingested: 'documents',
-      chat_messages: 'messages',
-      audit_events: 'events',
+      api_calls: "requests",
+      storage_bytes: "bytes",
+      search_queries: "queries",
+      model_tokens_input: "tokens",
+      model_tokens_output: "tokens",
+      documents_ingested: "documents",
+      chat_messages: "messages",
+      audit_events: "events",
     };
     return units[dim];
   }

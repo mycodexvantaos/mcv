@@ -1,4 +1,3 @@
-# .config/helm/ct.yaml
 remote: origin
 target-branch: main
 chart-dirs:

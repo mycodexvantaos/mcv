@@ -9,19 +9,19 @@ metadata:
   planeDescription: 控制面 — 平台核心控制與配置
   tier: 1
   tags:
-    - security
-    - secrets
-    - vault
+  - security
+  - secrets
+  - vault
 spec:
   architecture:
     philosophy: native-first / provider-agnostic
     principle: 第三方服務是擴充出口，不是平台地基
     mode: native | connected | hybrid
   capabilities:
-    - secret-management
-    - encryption
-    - rotation
+  - secret-management
+  - encryption
+  - rotation
   providerDependencies:
-    - secrets
+  - secrets
   repoDependencies:
-    - codexvanta-os-core-kernel
+  - codexvanta-os-core-kernel

@@ -1,5 +1,5 @@
-export type EdgeNodeStatus = 'online' | 'offline' | 'deploying' | 'draining' | 'error';
-export type ModelLoadStatus = 'loaded' | 'loading' | 'error';
+export type EdgeNodeStatus = "online" | "offline" | "deploying" | "draining" | "error";
+export type ModelLoadStatus = "loaded" | "loading" | "error";
 
 export interface EdgeNodeResources {
   cpuUsage: number;
@@ -37,8 +37,8 @@ export interface EdgeNode {
   traffic: EdgeNodeTraffic;
 }
 
-export type DeploymentStep = 'build' | 'test' | 'stage' | 'deploy' | 'verify';
-export type DeploymentStepStatus = 'pending' | 'running' | 'success' | 'failed';
+export type DeploymentStep = "build" | "test" | "stage" | "deploy" | "verify";
+export type DeploymentStepStatus = "pending" | "running" | "success" | "failed";
 
 export interface DeploymentPipelineStep {
   step: DeploymentStep;

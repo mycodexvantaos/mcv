@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   BookOpen,
   Target,
@@ -22,7 +22,7 @@ import {
   Terminal,
   Globe,
   Scale,
-} from 'lucide-react';
+} from "lucide-react";
 import {
   Table,
   TableBody,
@@ -30,73 +30,73 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from "@/components/ui/table";
 
 export default function ProtocolPage() {
   const roadmap = [
     {
-      month: 'Month 1: Capability Discovery Protocol',
-      status: 'ACTIVE',
+      month: "Month 1: Capability Discovery Protocol",
+      status: "ACTIVE",
       icon: Network,
-      color: 'text-primary',
-      description: '建立輕量級節點註冊與發現機制。證明系統能識別並調用全球分散的 AI 能力。',
+      color: "text-primary",
+      description: "建立輕量級節點註冊與發現機制。證明系統能識別並調用全球分散的 AI 能力。",
       repos: [
-        'auth-service',
-        'module-suite',
-        'core-main',
-        'config-manager',
-        'event-bus',
-        'observability-stack',
+        "auth-service",
+        "module-suite",
+        "core-main",
+        "config-manager",
+        "event-bus",
+        "observability-stack",
       ],
       deliverables: [
-        '能力元數據規範 (Capability Metadata Spec)',
-        '第一個 NodeClient 原型',
-        '向量相似度路由邏輯',
+        "能力元數據規範 (Capability Metadata Spec)",
+        "第一個 NodeClient 原型",
+        "向量相似度路由邏輯",
       ],
     },
     {
-      month: 'Month 2: Zero-Shot Tool Creation',
-      status: 'FORGING',
+      month: "Month 2: Zero-Shot Tool Creation",
+      status: "FORGING",
       icon: Zap,
-      color: 'text-accent',
-      description: '證明系統能在無人類干預下，自主生成控制代碼操作陌生系統。',
-      repos: ['core-deconstructor', 'fleet-sandbox', 'automation-core', 'policy-engine', 'cli'],
+      color: "text-accent",
+      description: "證明系統能在無人類干預下，自主生成控制代碼操作陌生系統。",
+      repos: ["core-deconstructor", "fleet-sandbox", "automation-core", "policy-engine", "cli"],
       deliverables: [
-        '自我編程智能體 (ToolGenerator)',
-        'Docker 隔離沙盒環境',
-        '錯誤監測與自動修正迴圈',
+        "自我編程智能體 (ToolGenerator)",
+        "Docker 隔離沙盒環境",
+        "錯誤監測與自動修正迴圈",
       ],
     },
     {
-      month: 'Month 3: Global Anomaly-Driven Orchestration',
-      status: 'EVOLVING',
+      month: "Month 3: Global Anomaly-Driven Orchestration",
+      status: "EVOLVING",
       icon: Activity,
-      color: 'text-primary',
-      description: '證明系統能不依賴人類 Prompt，自主感知世界、發現問題並生成任務。',
+      color: "text-primary",
+      description: "證明系統能不依賴人類 Prompt，自主感知世界、發現問題並生成任務。",
       repos: [
-        'data-pipeline',
-        'ai-engine',
-        'decision-engine',
-        'app-portal',
-        'app-ui',
-        'governance-autonomy',
+        "data-pipeline",
+        "ai-engine",
+        "decision-engine",
+        "app-portal",
+        "app-ui",
+        "governance-autonomy",
       ],
       deliverables: [
-        '全球脈搏感測儀 (GlobalPulseMonitor)',
-        '自發性任務生成與調度',
-        '智慧證明 (Proof-of-Intelligence) 共識',
+        "全球脈搏感測儀 (GlobalPulseMonitor)",
+        "自發性任務生成與調度",
+        "智慧證明 (Proof-of-Intelligence) 共識",
       ],
     },
   ];
 
   const repoMatrix = [
-    { id: 1, name: 'workflows', role: 'CI/CD 中樞', pillar: 'Infrastructure' },
-    { id: 4, name: 'core-kernel', role: '神經中樞核心', pillar: 'Cognitive Fluidity' },
-    { id: 5, name: 'core-deconstructor', role: '工程解構引擎', pillar: 'Ubiquitous Action' },
-    { id: 11, name: 'auth-service', role: '身份認證協議', pillar: 'Cognitive Fluidity' },
-    { id: 13, name: 'decision-engine', role: '自動決策仲裁', pillar: 'Organic Evolution' },
-    { id: 18, name: 'ai-engine', role: '預測大腦 (RL)', pillar: 'Organic Evolution' },
-    { id: 25, name: 'core-main', role: '系統主入口 (API)', pillar: 'Cognitive Fluidity' },
+    { id: 1, name: "workflows", role: "CI/CD 中樞", pillar: "Infrastructure" },
+    { id: 4, name: "core-kernel", role: "神經中樞核心", pillar: "Cognitive Fluidity" },
+    { id: 5, name: "core-deconstructor", role: "工程解構引擎", pillar: "Ubiquitous Action" },
+    { id: 11, name: "auth-service", role: "身份認證協議", pillar: "Cognitive Fluidity" },
+    { id: 13, name: "decision-engine", role: "自動決策仲裁", pillar: "Organic Evolution" },
+    { id: 18, name: "ai-engine", role: "預測大腦 (RL)", pillar: "Organic Evolution" },
+    { id: 25, name: "core-main", role: "系統主入口 (API)", pillar: "Cognitive Fluidity" },
   ];
 
   return (
@@ -239,7 +239,7 @@ export default function ProtocolPage() {
                       className="border-border/40 hover:bg-white/5 transition-colors"
                     >
                       <TableCell className="font-mono text-xs text-primary">
-                        #{repo.id.toString().padStart(2, '0')}
+                        #{repo.id.toString().padStart(2, "0")}
                       </TableCell>
                       <TableCell className="font-bold text-xs text-foreground">
                         mycodexvanta-os-{repo.name}
@@ -283,8 +283,8 @@ export default function ProtocolPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="p-4 rounded-xl bg-sidebar-background border border-border/40 text-xs leading-relaxed text-muted-foreground">
-                  當 AI 決策信心度 &lt; 85% 時，系統會自動在{' '}
-                  <span className="text-accent font-bold">governance-autonomy</span>{' '}
+                  當 AI 決策信心度 &lt; 85% 時，系統會自動在{" "}
+                  <span className="text-accent font-bold">governance-autonomy</span>{" "}
                   倉庫發起懸賞任務，向全球專家節點請求協助。
                 </div>
                 <div className="flex items-center justify-between p-4 rounded-xl bg-primary/5 border border-primary/20">
@@ -312,8 +312,8 @@ export default function ProtocolPage() {
                   ROOT_HASH: 0x8f2c1d9c3e4b9f2a5f6cf4d7b1a...
                 </div>
                 <p className="text-xs text-muted-foreground leading-relaxed italic">
-                  所有 Phase 1-3 的產出均經過{' '}
-                  <span className="text-foreground font-bold">policy-engine</span>{' '}
+                  所有 Phase 1-3 的產出均經過{" "}
+                  <span className="text-foreground font-bold">policy-engine</span>{" "}
                   的嚴格審計，確保自動生成的代碼符合零信任網路安全規範。
                 </p>
               </CardContent>

@@ -1,32 +1,32 @@
-'use client';
+"use client";
 
-import { ArrowUpRight, ArrowDownRight, type LucideIcon } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-import type { SystemStatus } from '@/types/dashboard';
+import { ArrowUpRight, ArrowDownRight, type LucideIcon } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import type { SystemStatus } from "@/types/dashboard";
 
 interface KpiCardProps {
   title: string;
   value: string;
   subtitle: string;
   change: number;
-  status: SystemStatus | 'warning';
+  status: SystemStatus | "warning";
   icon: LucideIcon;
 }
 
 const statusColors: Record<string, string> = {
-  healthy: 'text-status-healthy',
-  degraded: 'text-status-warning',
-  critical: 'text-status-critical',
-  idle: 'text-status-idle',
-  warning: 'text-status-warning',
+  healthy: "text-status-healthy",
+  degraded: "text-status-warning",
+  critical: "text-status-critical",
+  idle: "text-status-idle",
+  warning: "text-status-warning",
 };
 
 const statusBgColors: Record<string, string> = {
-  healthy: 'bg-status-healthy/10',
-  degraded: 'bg-status-warning/10',
-  critical: 'bg-status-critical/10',
-  idle: 'bg-status-idle/10',
-  warning: 'bg-status-warning/10',
+  healthy: "bg-status-healthy/10",
+  degraded: "bg-status-warning/10",
+  critical: "bg-status-critical/10",
+  idle: "bg-status-idle/10",
+  warning: "bg-status-warning/10",
 };
 
 export function KpiCard({ title, value, subtitle, change, status, icon: Icon }: KpiCardProps) {
@@ -52,7 +52,7 @@ export function KpiCard({ title, value, subtitle, change, status, icon: Icon }: 
           </div>
           {change !== 0 && (
             <div
-              className={`flex items-center gap-0.5 text-xs font-medium ${isPositive ? 'text-status-healthy' : 'text-status-critical'}`}
+              className={`flex items-center gap-0.5 text-xs font-medium ${isPositive ? "text-status-healthy" : "text-status-critical"}`}
             >
               {isPositive ? (
                 <ArrowUpRight className="h-3 w-3" />

@@ -1,6 +1,3 @@
-# ═══════════════════════════════════════════════════════════════════
-# MyCodeXvantaOS — Usage Meter Service Definition
-# ═══════════════════════════════════════════════════════════════════
 apiVersion: platform.mycodexvantaos/v1
 kind: ServiceDefinition
 metadata:
@@ -9,12 +6,11 @@ metadata:
   version: 1.0.0-constitution
   category: security
   display_name: Usage Meter Service
-  description: >
-    Multi-dimensional usage tracking, metering, and rate-limit enforcement.
-    Implements sliding-window rate limiting (per-minute) and monthly quota
-    enforcement across 8 dimensions. Supports free/pro/enterprise tiers.
-    Level 1 service.
+  description: 'Multi-dimensional usage tracking, metering, and rate-limit enforcement.
+    Implements sliding-window rate limiting (per-minute) and monthly quota enforcement
+    across 8 dimensions. Supports free/pro/enterprise tiers. Level 1 service.
 
+    '
 spec:
   resource_type: usage-record
   runtime:
@@ -25,159 +21,228 @@ spec:
     limits:
       cpu_ms: 50
       memory_mb: 128
-
   capabilities:
-    - id: usage.record
-      method: record
-      description: Record a usage event and enforce rate limits
-      input:
-        type: object
-        required: [workspace_id, subject_id, dimension, quantity, unit, resource_urn, tier]
-        properties:
-          workspace_id: { type: string }
-          subject_id: { type: string }
-          dimension:
-            type: string
-            enum:
-              [
-                api_calls,
-                storage_bytes,
-                search_queries,
-                model_tokens_input,
-                model_tokens_output,
-                documents_ingested,
-                chat_messages,
-                audit_events,
-              ]
-          quantity: { type: number }
-          unit: { type: string }
-          resource_urn: { type: string }
-          tier: { type: string, enum: [free, pro, enterprise] }
-          metadata: { type: object }
-      output:
-        type: object
-        properties:
-          recorded: { type: boolean }
-          rate_limit:
+  - id: usage.record
+    method: record
+    description: Record a usage event and enforce rate limits
+    input:
+      type: object
+      required:
+      - workspace_id
+      - subject_id
+      - dimension
+      - quantity
+      - unit
+      - resource_urn
+      - tier
+      properties:
+        workspace_id:
+          type: string
+        subject_id:
+          type: string
+        dimension:
+          type: string
+          enum:
+          - api_calls
+          - storage_bytes
+          - search_queries
+          - model_tokens_input
+          - model_tokens_output
+          - documents_ingested
+          - chat_messages
+          - audit_events
+        quantity:
+          type: number
+        unit:
+          type: string
+        resource_urn:
+          type: string
+        tier:
+          type: string
+          enum:
+          - free
+          - pro
+          - enterprise
+        metadata:
+          type: object
+    output:
+      type: object
+      properties:
+        recorded:
+          type: boolean
+        rate_limit:
+          type: object
+          properties:
+            allowed:
+              type: boolean
+            dimension:
+              type: string
+            current:
+              type: number
+            limit:
+              type: number
+            remaining:
+              type: number
+            reset_at:
+              type: string
+            retry_after_ms:
+              type: number
+        record:
+          type: object
+  - id: usage.check-rate-limit
+    method: checkRateLimit
+    description: Pre-flight rate limit check without recording usage
+    input:
+      type: object
+      required:
+      - workspace_id
+      - dimension
+      - tier
+      properties:
+        workspace_id:
+          type: string
+        dimension:
+          type: string
+        tier:
+          type: string
+          enum:
+          - free
+          - pro
+          - enterprise
+    output:
+      type: object
+      properties:
+        allowed:
+          type: boolean
+        current:
+          type: number
+        limit:
+          type: number
+        remaining:
+          type: number
+        reset_at:
+          type: string
+  - id: usage.get-usage
+    method: getUsage
+    description: Get aggregated usage for a workspace in a billing period
+    input:
+      type: object
+      required:
+      - workspace_id
+      - billing_period
+      - tier
+      properties:
+        workspace_id:
+          type: string
+        billing_period:
+          type: string
+          pattern: ^\d{4}-\d{2}$
+        tier:
+          type: string
+          enum:
+          - free
+          - pro
+          - enterprise
+    output:
+      type: object
+      properties:
+        workspace_id:
+          type: string
+        billing_period:
+          type: string
+        dimensions:
+          type: object
+          additionalProperties:
             type: object
             properties:
-              allowed: { type: boolean }
-              dimension: { type: string }
-              current: { type: number }
-              limit: { type: number }
-              remaining: { type: number }
-              reset_at: { type: string }
-              retry_after_ms: { type: number }
-          record:
+              consumed:
+                type: number
+              limit:
+                type: number
+              unit:
+                type: string
+              utilization_pct:
+                type: number
+        overage:
+          type: array
+          items:
+            type: string
+  - id: usage.get-trend
+    method: getUsageTrend
+    description: Get daily usage trend for a dimension in a billing period
+    input:
+      type: object
+      required:
+      - workspace_id
+      - dimension
+      - billing_period
+      properties:
+        workspace_id:
+          type: string
+        dimension:
+          type: string
+        billing_period:
+          type: string
+    output:
+      type: object
+      properties:
+        trend:
+          type: array
+          items:
             type: object
-
-    - id: usage.check-rate-limit
-      method: checkRateLimit
-      description: Pre-flight rate limit check without recording usage
-      input:
-        type: object
-        required: [workspace_id, dimension, tier]
-        properties:
-          workspace_id: { type: string }
-          dimension: { type: string }
-          tier: { type: string, enum: [free, pro, enterprise] }
-      output:
-        type: object
-        properties:
-          allowed: { type: boolean }
-          current: { type: number }
-          limit: { type: number }
-          remaining: { type: number }
-          reset_at: { type: string }
-
-    - id: usage.get-usage
-      method: getUsage
-      description: Get aggregated usage for a workspace in a billing period
-      input:
-        type: object
-        required: [workspace_id, billing_period, tier]
-        properties:
-          workspace_id: { type: string }
-          billing_period: { type: string, pattern: "^\\d{4}-\\d{2}$" }
-          tier: { type: string, enum: [free, pro, enterprise] }
-      output:
-        type: object
-        properties:
-          workspace_id: { type: string }
-          billing_period: { type: string }
-          dimensions:
+            properties:
+              date:
+                type: string
+              quantity:
+                type: number
+  - id: usage.get-top-consumers
+    method: getTopConsumers
+    description: Get top-N resource consumers within a workspace
+    input:
+      type: object
+      required:
+      - workspace_id
+      - dimension
+      - billing_period
+      properties:
+        workspace_id:
+          type: string
+        dimension:
+          type: string
+        billing_period:
+          type: string
+        limit:
+          type: integer
+          default: 10
+    output:
+      type: object
+      properties:
+        consumers:
+          type: array
+          items:
             type: object
-            additionalProperties:
-              type: object
-              properties:
-                consumed: { type: number }
-                limit: { type: number }
-                unit: { type: string }
-                utilization_pct: { type: number }
-          overage: { type: array, items: { type: string } }
-
-    - id: usage.get-trend
-      method: getUsageTrend
-      description: Get daily usage trend for a dimension in a billing period
-      input:
-        type: object
-        required: [workspace_id, dimension, billing_period]
-        properties:
-          workspace_id: { type: string }
-          dimension: { type: string }
-          billing_period: { type: string }
-      output:
-        type: object
-        properties:
-          trend:
-            type: array
-            items:
-              type: object
-              properties:
-                date: { type: string }
-                quantity: { type: number }
-
-    - id: usage.get-top-consumers
-      method: getTopConsumers
-      description: Get top-N resource consumers within a workspace
-      input:
-        type: object
-        required: [workspace_id, dimension, billing_period]
-        properties:
-          workspace_id: { type: string }
-          dimension: { type: string }
-          billing_period: { type: string }
-          limit: { type: integer, default: 10 }
-      output:
-        type: object
-        properties:
-          consumers:
-            type: array
-            items:
-              type: object
-              properties:
-                subject_id: { type: string }
-                quantity: { type: number }
-
+            properties:
+              subject_id:
+                type: string
+              quantity:
+                type: number
   events:
     emitted:
-      - usage.metered
-      - usage.rate-limit-exceeded
-      - usage.quota-approaching
+    - usage.metered
+    - usage.rate-limit-exceeded
+    - usage.quota-approaching
     subscribed: []
-
   audit:
     log_all_actions: true
     integrity_chain: true
     retention: 2555d
-
   dependencies:
     hard: []
-    soft: [audit-log]
-
+    soft:
+    - audit-log
   ports:
-    - interface: IUsagePort
-      methods:
-        - record
-        - checkRateLimit
-        - getUsage
+  - interface: IUsagePort
+    methods:
+    - record
+    - checkRateLimit
+    - getUsage
