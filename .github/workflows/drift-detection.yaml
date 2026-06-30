@@ -1,8 +1,8 @@
 name: Configuration Drift Detection
 
-on:
+"on":
   schedule:
-    - cron: '0 6 * * 1' # Run weekly on Monday at 6 UTC
+    - cron: "0 6 * * 1" # Run weekly on Monday at 6 UTC
   workflow_dispatch:
 
 permissions:

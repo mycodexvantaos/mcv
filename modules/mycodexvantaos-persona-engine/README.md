@@ -1,4 +1,4 @@
-# MyCodeXvantaOS Persona Engine
+## MyCodeXvantaOS Persona Engine
 
 A sophisticated persona engine for the MyCodeXvantaOS AI Team system, providing intelligent persona management with semantic mask detection, root cause analysis, and solution generation.
 
@@ -269,10 +269,11 @@ The engine detects 8 types of semantic masks:
 ## Testing
 
 ```bash
-# Run all tests
+
+## Run all tests
 npm test
 
-# Run with coverage
+## Run with coverage
 npm run test:coverage
 ```
 

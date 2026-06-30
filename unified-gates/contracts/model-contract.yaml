@@ -6,10 +6,13 @@ metadata:
   status: 'active'
   name: model-contract
   governanceCode: mycodexvantaos-60600
+  date: '2026-06-29'
+  status: active
 spec:
-  description: >
-    Defines the canonical contract for AI model artifacts. All models
+  description: 'Defines the canonical contract for AI model artifacts. All models
     registered in the model registry MUST conform to this contract.
+
+    '
   requiredFields:
     - modelId
     - modelVersion
@@ -24,5 +27,11 @@ spec:
     - safetyPolicyRef
     - trainingDatasetRef
   validValues:
-    modelType: [llm, embedding, classifier, regressor, diffusion, multimodal]
+    modelType:
+      - llm
+      - embedding
+      - classifier
+      - regressor
+      - diffusion
+      - multimodal
   schemaRef: ../schemas/model-contract.schema.json

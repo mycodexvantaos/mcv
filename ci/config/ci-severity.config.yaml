@@ -3,6 +3,7 @@ kind: CiSeverityConfig
 metadata:
   version: '1.0.0'
   name: ci-severity-config
+  version: 1.0.0
 spec:
   severityLevels:
     - critical

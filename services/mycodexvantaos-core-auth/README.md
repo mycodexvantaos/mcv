@@ -1,4 +1,4 @@
-# mycodexvantaos-core-auth
+## mycodexvantaos-core-auth
 
 Service implementation for `mycodexvantaos-core-auth`.
 

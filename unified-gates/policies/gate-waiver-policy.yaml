@@ -7,6 +7,8 @@ metadata:
   name: gate-waiver-policy
   authority: platform-governance-root
   governanceCode: mycodexvantaos-00000
+  date: '2026-06-29'
+  status: active
 spec:
   maxDurationDays: 30
   renewalProhibited: false

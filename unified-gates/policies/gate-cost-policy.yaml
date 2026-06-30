@@ -7,8 +7,10 @@ metadata:
   name: gate-cost-policy
   authority: platform-governance-root
   governanceCode: mycodexvantaos-00000
+  date: '2026-06-29'
+  status: active
 spec:
-  maxCostPerRunUSD: 0.10
+  maxCostPerRunUSD: 0.1
   parallelEvaluationEnabled: true
   resultCachingEnabled: true
   resultCacheTtlHours: 24

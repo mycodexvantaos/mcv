@@ -7,6 +7,7 @@ metadata:
   ssot: true
   authority: unified-gate-governance
   governanceCode: mycodexvantaos-00000
+  date: '2026-06-29'
 spec:
   totalGates: 61
   layers:
@@ -42,6 +43,14 @@ spec:
       path: ./l90/
       gateCount: 9
       description: Supply chain and production closure gates (91-99)
-  executionOrder: [l00, l10, l20, l30, l40, l50, l60, l90]
+  executionOrder:
+    - l00
+    - l10
+    - l20
+    - l30
+    - l40
+    - l50
+    - l60
+    - l90
   schemaRef: ../schemas/ai-infra-gate.schema.json
   catalogRef: ./ai-infra-gates-catalog.yaml

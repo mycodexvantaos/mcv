@@ -7,6 +7,8 @@ metadata:
   name: ai-billing-policy
   authority: platform-governance-root
   governanceCode: mycodexvantaos-30400
+  date: '2026-06-29'
+  status: active
 spec:
   meteringRequired: true
   costAttributionRequired: true

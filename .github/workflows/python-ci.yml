@@ -1,16 +1,16 @@
 name: Python CI
 
-on:
+"on":
   push:
     branches: [main, develop]
     paths:
-      - 'python/**'
-      - 'contracts/schemas/memory-*.json'
+      - "python/**"
+      - "contracts/schemas/memory-*.json"
   pull_request:
     branches: [main, develop]
     paths:
-      - 'python/**'
-      - 'contracts/schemas/memory-*.json'
+      - "python/**"
+      - "contracts/schemas/memory-*.json"
   workflow_dispatch:
 
 permissions:
@@ -31,7 +31,7 @@ jobs:
       - name: Set up Python 3.11
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install uv
         run: pip install uv

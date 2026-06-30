@@ -1,56 +1,47 @@
-# governance/namespace-policy.yaml
-# Kubernetes namespace policy for mycodexvantaos platform.
-# Based on naming-spec-v1.md 12
-
-apiVersion: mycodexvantaos.org/v1
+apiVersion: mycodexvantaos.io/v1
 kind: NamespacePolicy
 metadata:
   name: platform-namespace-policy
   labels:
     managed-by: naming-spec-v1
     specRef: '12'
-
 policy:
-  namespaceFormat: 'mycodexvantaos-<environment>'
-
+  namespaceFormat: mycodexvantaos-<environment>
   allowedNamespaces:
     - name: mycodexvantaos-dev
       environment: dev
       description: Development environment namespace.
-
     - name: mycodexvantaos-staging
       environment: staging
       description: Pre-production staging namespace.
-
     - name: mycodexvantaos-prod
       environment: prod
       description: Production environment namespace.
-
   environmentIsolationRules:
-    # 12.2 — Environment markers MUST NOT appear in canonical resource names.
     forbiddenInCanonicalNames:
       - dev
       - staging
       - prod
-    note: >
-      The strings 'dev', 'staging', and 'prod' are permitted ONLY in namespace
-      names (mycodexvantaos-dev, mycodexvantaos-staging, mycodexvantaos-prod)
-      and in Helm values files (values-dev.yaml, values-staging.yaml, values-prod.yaml).
-      Any other resource (Deployment, Service, ConfigMap, Secret, Ingress,
-      package name, env var, URN, module id) MUST NOT contain these strings.
-      Exception: if a string is a genuine business-domain term, register in
-      governance/exceptions.yaml with arch-committee approval.
+    note: "The strings 'dev', 'staging', and 'prod' are permitted ONLY in namespace
+      names (mycodexvantaos-dev, mycodexvantaos-staging, mycodexvantaos-prod) and
+      in Helm values files (values-dev.yaml, values-staging.yaml, values-prod.yaml).
+      Any other resource (Deployment, Service, ConfigMap, Secret, Ingress, package
+      name, env var, URN, module id) MUST NOT contain these strings. Exception: if
+      a string is a genuine business-domain term, register in governance/exceptions.yaml
+      with arch-committee approval.
 
+      "
   canonicalResourceNameRules:
-    note: >
-      Kubernetes Deployment / Service / ConfigMap / Secret / Ingress logical names
-      MUST equal the service-id exactly (5.4). Environment differentiation is
+    note: 'Kubernetes Deployment / Service / ConfigMap / Secret / Ingress logical
+      names MUST equal the service-id exactly (5.4). Environment differentiation is
       achieved ONLY via namespace targeting, never by modifying the resource name.
 
+      '
   overlayStrategy:
     tool: kustomize
     baseDir: infra/kubernetes/base/
     overlayDir: infra/kubernetes/overlays/<environment>/
-    note: >
-      Each overlay kustomization.yaml patches ONLY namespace and environment-specific
+    note: "Each overlay kustomization.yaml patches ONLY namespace and environment-specific
       labels/annotations. It MUST NOT rename any resource's metadata.name.
+
+      "

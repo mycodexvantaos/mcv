@@ -1,10 +1,10 @@
 name: Trivy Vulnerability Scan
 
-on:
+"on":
   push:
-    branches: ['main']
+    branches: ["main"]
   pull_request:
-    branches: ['main']
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
@@ -27,7 +27,7 @@ jobs:
 
       - name: Install Trivy
         env:
-          TRIVY_VERSION: '0.57.0'
+          TRIVY_VERSION: "0.57.0"
         run: |
           sudo apt-get update && sudo apt-get install -y wget apt-transport-https gnupg lsb-release
           wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -

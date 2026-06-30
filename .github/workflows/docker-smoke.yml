@@ -1,19 +1,19 @@
 name: Docker Smoke Test
 
-on:
+"on":
   pull_request:
     branches: [main]
     paths:
-      - 'apps/api-node/**'
-      - 'Dockerfile'
-      - '.dockerignore'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-      - 'pnpm-workspace.yaml'
-      - 'services/**'
-      - 'packages/**'
-      - 'contracts/**'
-      - 'modules/**'
+      - "apps/api-node/**"
+      - "Dockerfile"
+      - ".dockerignore"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "services/**"
+      - "packages/**"
+      - "contracts/**"
+      - "modules/**"
   push:
     branches: [main]
   workflow_dispatch:

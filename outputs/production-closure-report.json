@@ -1,0 +1,98 @@
+{
+  "apiVersion": "mycodexvantaos.io/v1",
+  "kind": "ProductionClosureReport",
+  "reportId": "220deeee-68e5-4807-b59a-fdbbe029b303",
+  "generatedAt": "2026-06-29T10:03:47.315065+00:00",
+  "specVersion": "mycodexvantaos-00000",
+  "overallStatus": "PASS",
+  "l90GateResults": [
+    {
+      "gateId": "gate-91-sbom-generation-validation",
+      "status": "PASS",
+      "criticality": "critical",
+      "blocking": true,
+      "evaluatedAt": "2026-06-29T10:03:47.298128+00:00"
+    },
+    {
+      "gateId": "gate-92-provenance-validation",
+      "status": "PASS",
+      "criticality": "critical",
+      "blocking": true,
+      "evaluatedAt": "2026-06-29T10:03:47.300256+00:00"
+    },
+    {
+      "gateId": "gate-93-signature-validation",
+      "status": "PASS",
+      "criticality": "critical",
+      "blocking": true,
+      "evaluatedAt": "2026-06-29T10:03:47.302398+00:00"
+    },
+    {
+      "gateId": "gate-94-policy-attestation-validation",
+      "status": "PASS",
+      "criticality": "critical",
+      "blocking": true,
+      "evaluatedAt": "2026-06-29T10:03:47.304441+00:00"
+    },
+    {
+      "gateId": "gate-95-audit-evidence-chain-validation",
+      "status": "PASS",
+      "criticality": "critical",
+      "blocking": true,
+      "evaluatedAt": "2026-06-29T10:03:47.306540+00:00"
+    },
+    {
+      "gateId": "gate-96-release-readiness-validation",
+      "status": "PASS",
+      "criticality": "critical",
+      "blocking": true,
+      "evaluatedAt": "2026-06-29T10:03:47.308641+00:00"
+    },
+    {
+      "gateId": "gate-97-rollback-readiness-validation",
+      "status": "PASS",
+      "criticality": "critical",
+      "blocking": true,
+      "evaluatedAt": "2026-06-29T10:03:47.310682+00:00"
+    },
+    {
+      "gateId": "gate-98-compliance-report-validation",
+      "status": "PASS",
+      "criticality": "critical",
+      "blocking": true,
+      "evaluatedAt": "2026-06-29T10:03:47.312771+00:00"
+    },
+    {
+      "gateId": "gate-99-production-closure-validation",
+      "status": "PASS",
+      "criticality": "critical",
+      "blocking": true,
+      "evaluatedAt": "2026-06-29T10:03:47.315042+00:00"
+    }
+  ],
+  "policyChecks": [
+    {
+      "id": "all-mandatory-gates-passed",
+      "status": "PASS"
+    },
+    {
+      "id": "compliance-report-approved",
+      "status": "PENDING"
+    },
+    {
+      "id": "rollback-plan-tested",
+      "status": "PENDING"
+    },
+    {
+      "id": "on-call-confirmed",
+      "status": "PENDING"
+    },
+    {
+      "id": "deployment-window-approved",
+      "status": "PENDING"
+    }
+  ],
+  "approvalStatus": "PENDING",
+  "approvalAuthority": "release-authority",
+  "notes": "This report requires manual approval before production promotion."
+}

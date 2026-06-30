@@ -6,10 +6,13 @@ metadata:
   status: 'active'
   name: ai-workload-production-readiness-workflow
   governanceCode: mycodexvantaos-60700
+  date: '2026-06-29'
+  status: active
 spec:
-  description: >
-    Defines the production readiness workflow for AI workloads. This workflow
+  description: 'Defines the production readiness workflow for AI workloads. This workflow
     orchestrates all AI-specific gates before a workload is promoted to production.
+
+    '
   prerequisites:
     - gate-01-namespace-governance-validation
     - gate-03-governance-code-validation

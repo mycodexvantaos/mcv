@@ -12,17 +12,20 @@ metadata:
     tier: platform
     scope: unified
   annotations:
-    description: >
-      Master gate catalog for the MyCodexVantaOS unified gate system.
-      This catalog is the authoritative registry of all gates across all planes.
-      Every gate MUST be registered here before it can be enforced in CI.
+    description: 'Master gate catalog for the MyCodexVantaOS unified gate system.
+      This catalog is the authoritative registry of all gates across all planes. Every
+      gate MUST be registered here before it can be enforced in CI.
 
+      '
+  date: '2026-06-29'
+  status: active
 spec:
   planes:
     - id: meta-governance
       layer: l00
       path: ./ai-infra-gates/l00/
-      description: Namespace governance, repository naming, dependency graph, lifecycle, and audit evidence gates.
+      description: Namespace governance, repository naming, dependency graph, lifecycle,
+        and audit evidence gates.
       gates:
         - id: gate-01-namespace-governance-validation
           blocking: true
@@ -48,11 +51,11 @@ spec:
         - id: gate-08-audit-evidence-validation
           blocking: true
           lifecycle: active
-
     - id: ai-compute
       layer: l10
       path: ./ai-infra-gates/l10/
-      description: AI chip capability, GPU driver, accelerator topology, cluster readiness, distributed training, and cost metering gates.
+      description: AI chip capability, GPU driver, accelerator topology, cluster readiness,
+        distributed training, and cost metering gates.
       gates:
         - id: gate-11-ai-chip-capability-validation
           blocking: true
@@ -78,11 +81,11 @@ spec:
         - id: gate-18-compute-cost-metering-validation
           blocking: false
           lifecycle: active
-
     - id: data-vector
       layer: l20
       path: ./ai-infra-gates/l20/
-      description: Dataset contract, lineage, license, PII scan, vector DB schema, embedding dimension, data quality, and access policy gates.
+      description: Dataset contract, lineage, license, PII scan, vector DB schema, embedding
+        dimension, data quality, and access policy gates.
       gates:
         - id: gate-21-dataset-contract-validation
           blocking: true
@@ -108,11 +111,12 @@ spec:
         - id: gate-28-data-access-policy-validation
           blocking: true
           lifecycle: active
-
     - id: ai-framework-model
       layer: l30
       path: ./ai-infra-gates/l30/
-      description: AI framework compatibility, model contract, training pipeline, inference runtime, agent framework, tool calling, model registry, and algorithm safety gates.
+      description: AI framework compatibility, model contract, training pipeline, inference
+        runtime, agent framework, tool calling, model registry, and algorithm safety
+        gates.
       gates:
         - id: gate-31-ai-framework-compatibility-validation
           blocking: true
@@ -138,11 +142,11 @@ spec:
         - id: gate-38-algorithm-safety-policy-validation
           blocking: true
           lifecycle: active
-
     - id: workload-execution
       layer: l40
       path: ./ai-infra-gates/l40/
-      description: AI workload contract, inference task, training task, RAG pipeline, agent task policy, resource estimation, SLO, and runtime sandbox gates.
+      description: AI workload contract, inference task, training task, RAG pipeline,
+        agent task policy, resource estimation, SLO, and runtime sandbox gates.
       gates:
         - id: gate-41-ai-workload-contract-validation
           blocking: true
@@ -168,11 +172,11 @@ spec:
         - id: gate-48-workload-runtime-sandbox-validation
           blocking: true
           lifecycle: active
-
     - id: billing-metering
       layer: l50
       path: ./ai-infra-gates/l50/
-      description: Usage event contract, inference/training/embedding/agent-run metering, cost attribution, billing policy, and invoice evidence gates.
+      description: Usage event contract, inference/training/embedding/agent-run metering,
+        cost attribution, billing policy, and invoice evidence gates.
       gates:
         - id: gate-51-usage-event-contract-validation
           blocking: true
@@ -198,11 +202,11 @@ spec:
         - id: gate-58-invoice-evidence-validation
           blocking: true
           lifecycle: active
-
     - id: cloud-infrastructure
       layer: l60
       path: ./ai-infra-gates/l60/
-      description: Cloud infrastructure readiness, Kubernetes baseline, GitOps sync, and managed service SLA gates.
+      description: Cloud infrastructure readiness, Kubernetes baseline, GitOps sync,
+        and managed service SLA gates.
       gates:
         - id: gate-61-cloud-infra-readiness-validation
           blocking: true
@@ -216,11 +220,12 @@ spec:
         - id: gate-64-managed-service-sla-validation
           blocking: false
           lifecycle: active
-
     - id: supply-chain-production
       layer: l90
       path: ./ai-infra-gates/l90/
-      description: SBOM generation, provenance, signature, policy attestation, audit evidence chain, release readiness, rollback readiness, compliance report, and production closure gates.
+      description: SBOM generation, provenance, signature, policy attestation, audit
+        evidence chain, release readiness, rollback readiness, compliance report, and
+        production closure gates.
       gates:
         - id: gate-91-sbom-generation-validation
           blocking: true
@@ -249,7 +254,6 @@ spec:
         - id: gate-99-production-closure-validation
           blocking: true
           lifecycle: active
-
   evidencePolicy:
     hashAlgorithms:
       - sha-256
@@ -260,7 +264,6 @@ spec:
       high: 1095
       medium: 365
       low: 180
-
   lifecycleStages:
     - proposed
     - active

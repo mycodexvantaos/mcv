@@ -6,9 +6,12 @@ metadata:
   status: 'active'
   name: gate-waiver-workflow
   governanceCode: mycodexvantaos-00000
+  date: '2026-06-29'
+  status: active
 spec:
-  description: >
-    Defines the approval workflow for gate waiver requests.
+  description: 'Defines the approval workflow for gate waiver requests.
+
+    '
   steps:
     - id: submit
       actor: requestor

@@ -7,14 +7,20 @@ metadata:
   name: gate-governance-policy
   governanceCode: mycodexvantaos-00000
   authority: platform-governance-root
+  date: '2026-06-29'
+  status: active
 spec:
-  description: >
-    Master governance policy for the unified gate system. Defines default
+  description: 'Master governance policy for the unified gate system. Defines default
     blocking behavior, evidence requirements, and escalation rules.
+
+    '
   defaultBlocking: true
   defaultCriticality: critical
   evidenceRequired: true
-  hashAlgorithms: [sha-256, sha3-512, blake3]
+  hashAlgorithms:
+    - sha-256
+    - sha3-512
+    - blake3
   waiverMaxDurationDays: 30
   criticalGateWaiverRequiresCouncilApproval: true
   destroyedGateIdReuseProhibited: true

@@ -3,6 +3,7 @@ kind: ReportOutputConfig
 metadata:
   version: '1.0.0'
   name: report-output-config
+  version: 1.0.0
 spec:
   outputDirectory: outputs/
   reports:

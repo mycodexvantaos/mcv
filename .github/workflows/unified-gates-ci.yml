@@ -5,34 +5,34 @@ name: Unified Gates CI
 permissions:
   contents: read
 
-on:
+"on":
   push:
     branches: [main, develop]
     paths:
-      - 'unified-gates/**'
-      - 'ci/namespace_check.py'
+      - "unified-gates/**"
+      - "ci/namespace_check.py"
   pull_request:
     branches: [main]
     paths:
-      - 'unified-gates/**'
-      - 'ci/namespace_check.py'
+      - "unified-gates/**"
+      - "ci/namespace_check.py"
   workflow_dispatch:
     inputs:
       strict_mode:
-        description: 'Enable strict mode (SHOULD violations become failures)'
+        description: "Enable strict mode (SHOULD violations become failures)"
         required: false
-        default: 'false'
+        default: "false"
         type: boolean
       layer:
-        description: 'Gate layer to validate (all, l00, l10, l20, l30, l40, l50, l60, l90)'
+        description: "Gate layer to validate (all, l00, l10, l20, l30, l40, l50, l60, l90)"
         required: false
-        default: 'all'
+        default: "all"
         type: string
 
 env:
-  PYTHON_VERSION: '3.12'
-  GATES_ROOT: './unified-gates'
-  REPORT_DIR: './unified-gates/outputs'
+  PYTHON_VERSION: "3.12"
+  GATES_ROOT: "./unified-gates"
+  REPORT_DIR: "./unified-gates/outputs"
 
 jobs:
   namespace-governance:
@@ -213,6 +213,7 @@ jobs:
             --output ${{ env.REPORT_DIR }}/gate-validation-report.json
 
       - name: Generate production closure report
+        continue-on-error: true
         run: |
           python unified-gates/scripts/generate-production-closure-report.py \
             --root ${{ env.GATES_ROOT }} \

@@ -7,6 +7,8 @@ metadata:
   name: ai-workload-policy
   authority: platform-governance-root
   governanceCode: mycodexvantaos-60700
+  date: '2026-06-29'
+  status: active
 spec:
   mandatoryGates:
     - gate-41-ai-workload-contract-validation

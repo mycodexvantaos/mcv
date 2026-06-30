@@ -1,14 +1,14 @@
 name: Policy Check
 
-on:
+"on":
   push:
     paths:
-      - 'contracts/policies/**'
-      - 'packages/mycodexvantaos-policy-model/**'
+      - "contracts/policies/**"
+      - "packages/mycodexvantaos-policy-model/**"
   pull_request:
     paths:
-      - 'contracts/policies/**'
-      - 'packages/mycodexvantaos-policy-model/**'
+      - "contracts/policies/**"
+      - "packages/mycodexvantaos-policy-model/**"
   workflow_dispatch:
 
 permissions:

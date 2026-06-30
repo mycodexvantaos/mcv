@@ -6,10 +6,13 @@ metadata:
   status: 'active'
   name: ai-workload-contract
   governanceCode: mycodexvantaos-60700
+  date: '2026-06-29'
+  status: active
 spec:
-  description: >
-    Defines the canonical contract for AI workload definitions. All workloads
+  description: 'Defines the canonical contract for AI workload definitions. All workloads
     submitted to the platform MUST conform to this contract.
+
+    '
   requiredFields:
     - workloadId
     - workloadType
@@ -23,6 +26,13 @@ spec:
     - workspaceId
     - projectId
   validValues:
-    workloadType: [inference, training, embedding, rag, agent-run]
-    namespace: [mycodexvantaos, softwareos]
+    workloadType:
+      - inference
+      - training
+      - embedding
+      - rag
+      - agent-run
+    namespace:
+      - mycodexvantaos
+      - softwareos
   schemaRef: ../schemas/ai-workload-contract.schema.json
