@@ -1,5 +1,5 @@
 name: Trivy Container Scan
-true:
+"on":
   push:
     branches:
     - main

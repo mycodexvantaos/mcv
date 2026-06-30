@@ -1,5 +1,5 @@
 name: Kustomize Diff
-true:
+"on":
   pull_request:
     paths:
     - deploy/kustomize/**

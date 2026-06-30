@@ -1,5 +1,5 @@
 name: OpenAPI Contract Diff
-true:
+"on":
   pull_request:
     paths:
     - apps/my-app/repo/contracts/openapi.yaml

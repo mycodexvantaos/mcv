@@ -1,5 +1,5 @@
 name: Checkov IaC Scan
-true:
+"on":
   push:
     branches:
     - main

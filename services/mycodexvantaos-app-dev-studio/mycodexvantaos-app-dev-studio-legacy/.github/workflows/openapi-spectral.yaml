@@ -1,5 +1,5 @@
 name: OpenAPI Linting
-true:
+"on":
   pull_request:
     paths:
     - apps/my-app/repo/contracts/openapi.yaml

@@ -1,5 +1,5 @@
 name: Generate Provenance Attestation
-true:
+"on":
   release:
     types:
     - published

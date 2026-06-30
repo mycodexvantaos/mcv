@@ -1,5 +1,5 @@
 name: Kubeconform Validate
-true:
+"on":
   pull_request:
     paths:
     - deploy/helm/**.yaml

@@ -1,5 +1,5 @@
 name: Helm Chart Testing
-true:
+"on":
   pull_request:
     paths:
     - deploy/helm/**

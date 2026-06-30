@@ -1,5 +1,5 @@
 name: Security Scan
-true:
+"on":
   push:
     branches:
       - main

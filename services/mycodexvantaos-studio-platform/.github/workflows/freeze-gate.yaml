@@ -1,5 +1,5 @@
 name: Deployment Freeze Gate
-true:
+"on":
   workflow_run:
     workflows:
     - Deploy to Development
