@@ -2,4 +2,6 @@ apiVersion: mycodexvantaos.io/v1
 kind: FoundationMap
 metadata:
   name: foundation-to-service-map
-spec: {}
+  version: 1.0.0
+spec:
+  platform: mycodexvantaos

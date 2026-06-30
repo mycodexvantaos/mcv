@@ -5,6 +5,8 @@ metadata:
   version: 1.0.0
   authority: platform-governance-root
   governanceCode: mycodexvantaos-60600
+  date: '2026-06-29'
+  status: active
 spec:
   harmfulOutputRateThreshold: 0.001
   promptInjectionTestRequired: true

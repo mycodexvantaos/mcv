@@ -1,11 +1,6 @@
-# infra/kubernetes/overlays/prod/kustomization.yaml
-# 12.1 — This overlay sets namespace and environment labels ONLY.
-# It MUST NOT rename any resource (no namePrefix/nameSuffix that violates 5.4).
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-
 namespace: mycodexvantaos-prod
-
 resources:
   - ../../base/mycodexvantaos-core-kernel
   - ../../base/mycodexvantaos-core-auth
@@ -25,15 +20,13 @@ resources:
   - ../../base/mycodexvantaos-security-validation
   - ../../base/mycodexvantaos-docs-search
   - ../../base/mycodexvantaos-governance-policy
-
 commonLabels:
   mycodexvantaos.org/environment: prod
-
+  environment: prod
 patches:
-  - patch: |-
-      - op: replace
-        path: /spec/replicas
-        value: 3
+  - patch: "- op: replace\n  path: /spec/replicas\n  value: 3"
     target:
       kind: Deployment
-      labelSelector: 'app.kubernetes.io/managed-by=mycodexvantaos'
+      labelSelector: app.kubernetes.io/managed-by=mycodexvantaos
+bases:
+  - ../../base

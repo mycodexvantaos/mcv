@@ -1,9 +1,6 @@
-# infra/helm/mycodexvantaos/values-staging.yaml
-# Environment-specific overrides for staging.
-# 12.2 — 'dev'/'staging'/'prod' appears ONLY in this file and namespace names.
 global:
-  imageTag: 'latest'
-
+  imageTag: latest
+  platform: mycodexvantaos
 services:
   mycodexvantaos-core-kernel:
     replicas: 2

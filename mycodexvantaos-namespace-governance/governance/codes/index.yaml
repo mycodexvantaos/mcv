@@ -4,7 +4,7 @@ metadata:
   name: governance-code-index
   ssot: true
   authority: namespace-governance-codes
-
+  version: 1.0.0
 spec:
   codeFiles:
     - path: ./root-module-codes.yaml
@@ -19,3 +19,4 @@ spec:
       type: gate
     - path: ./exception-codes.yaml
       type: exception
+platform: mycodexvantaos

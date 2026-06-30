@@ -647,3 +647,83 @@ path_derivation:
       example: mycodexvantaos-ai-embedding
     k8s_base_path:
       formula: infra/kubernetes/base/{service_id}/
+apiVersion: mycodexvantaos.io/v1
+kind: PlatformGovernanceSpec
+metadata:
+  name: mycodexvantaos-platform-governance-spec
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
+  authoritative: true
+model:
+  type: policy-as-code
+  enforcement: ci-pipeline
+  authority-chain:
+    - layer: 0
+      spec: docs/spec/l0-meta/formalized-specification-architecture.yaml
+      description: Meta-governance specification
+    - layer: 1
+      spec: docs/spec/l1-constitution/constitution.yaml
+      description: Constitutional specification
+    - layer: 2
+      spec: docs/spec/l2-structure/capability-architecture-addendum.yaml
+      description: Structural specification
+domains:
+  identity:
+    policy: governance/identity-policy.yaml
+    enforced-by: ci/rules/identity-rule.ts
+  naming:
+    policy: governance/naming-policy.schema.json
+    enforced-by: ci/rules/naming-rule.ts
+  manifest-boundary:
+    policy: docs/spec/l1-constitution/constitution.yaml
+    enforced-by: ci/rules/manifest-boundary-rule.ts
+  foundation:
+    policy: foundation/
+    enforced-by: ci/rules/foundation-rule.ts
+  provider-capability:
+    policy: governance/capability-set.yaml
+    enforced-by: ci/rules/provider-capability-rule.ts
+  service-catalog:
+    policy: platform/service-catalog.yaml
+    enforced-by: ci/rules/service-catalog-rule.ts
+  namespace-governance:
+    policy: mycodexvantaos-namespace-governance/
+    enforced-by: ci/rules/namespace-governance-rule.ts
+  navigation:
+    policy: navigation/
+    enforced-by: ci/rules/navigation-rule.ts
+  ssot-drift:
+    policy: governance/ssot-registry.yaml
+    enforced-by: ci/rules/ssot-drift-rule.ts
+  unified-gates:
+    policy: unified-gates/
+    enforced-by: ci/rules/unified-gates-rule.ts
+  hash-policy:
+    policy: governance/hash-policy.yaml
+    enforced-by: ci/rules/hash-policy-rule.ts
+  runtime-mode:
+    policy: governance/runtime-mode-policy.yaml
+    enforced-by: ci/rules/runtime-mode-rule.ts
+  quantum-bridge:
+    policy: governance/quantum-classical-bridge.yaml
+    enforced-by: ci/rules/quantum-bridge-rule.ts
+conflict-resolution:
+  algorithm: layer-priority
+  tiebreaker: authoritative-flag
+  final-tiebreaker: semantic-version
+  unresolvable: ci-failure-with-human-review
+exceptions:
+  registry: governance/exceptions.yaml
+  max-duration-days: 90
+  require-approval: true
+  approvers:
+    - platform-governance-team
+  review-cycle-days: 30
+reporting:
+  output-dir: governance/reports
+  schedule: on-ci-run
+  formats:
+    - json
+    - yaml
+spec: {}

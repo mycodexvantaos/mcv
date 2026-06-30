@@ -1,22 +1,77 @@
 {
   "name": "@mycodexvantaos/core",
-  "version": "1.0.0-constitution",
-  "description": "MyCodeXvantaOS platform constitution — five divine models that define what IS",
+  "version": "1.0.0",
+  "description": "MyCodexVantaOS core configuration and utilities",
   "type": "module",
-  "main": "./index.ts",
-  "types": "./index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./index.ts",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
     "./shared": "./shared/index.ts",
     "./service-catalog": "./service-catalog/index.ts",
     "./resource-model": "./resource-model/index.ts",
     "./policy-model": "./policy-model/index.ts",
     "./audit-model": "./audit-model/index.ts",
-    "./knowledge-model": "./knowledge-model/index.ts"
+    "./knowledge-model": "./knowledge-model/index.ts",
+    "./config/domains": {
+      "types": "./dist/config/domains.d.ts",
+      "import": "./dist/config/domains.js",
+      "require": "./dist/config/domains.cjs"
+    },
+    "./config/environment": {
+      "types": "./dist/config/environment.d.ts",
+      "import": "./dist/config/environment.js",
+      "require": "./dist/config/environment.cjs"
+    },
+    "./lib/url-builder": {
+      "types": "./dist/lib/url-builder.d.ts",
+      "import": "./dist/lib/url-builder.js",
+      "require": "./dist/lib/url-builder.cjs"
+    },
+    "./lib/cors": {
+      "types": "./dist/lib/cors.d.ts",
+      "import": "./dist/lib/cors.js",
+      "require": "./dist/lib/cors.cjs"
+    },
+    "./lib/csp": {
+      "types": "./dist/lib/csp.d.ts",
+      "import": "./dist/lib/csp.js",
+      "require": "./dist/lib/csp.cjs"
+    },
+    "./lib/cookies": {
+      "types": "./dist/lib/cookies.d.ts",
+      "import": "./dist/lib/cookies.js",
+      "require": "./dist/lib/cookies.cjs"
+    },
+    "./lib/redirects": {
+      "types": "./dist/lib/redirects.d.ts",
+      "import": "./dist/lib/redirects.js",
+      "require": "./dist/lib/redirects.cjs"
+    },
+    "./lib/security-headers": {
+      "types": "./dist/lib/security-headers.d.ts",
+      "import": "./dist/lib/security-headers.js",
+      "require": "./dist/lib/security-headers.cjs"
+    },
+    "./lib/logger": {
+      "types": "./dist/lib/logger.d.ts",
+      "import": "./dist/lib/logger.js",
+      "require": "./dist/lib/logger.cjs"
+    }
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src/"
+    "lint": "eslint src --ext .ts",
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "clean": "rm -rf dist"
   },
   "keywords": [
     "platform",
@@ -28,5 +83,15 @@
     "knowledge-model"
   ],
   "license": "UNLICENSED",
-  "private": true
+  "private": false,
+  "module": "./dist/index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^3.2.6"
+  },
+  "peerDependencies": {},
+  "sideEffects": false
 }

@@ -3,7 +3,9 @@ kind: GateNavigationMap
 metadata:
   name: gate-navigation-map
   description: Gate navigation map for MyCodexVantaOS
-
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   gatePlanes:
     - name: quality-gates
@@ -14,3 +16,5 @@ spec:
       catalogPath: unified-gates/production-gates/
   gateIndex:
     path: unified-gates/unified-gate-index.yaml
+platform: mycodexvantaos
+canonical-url: https://mycodexvantaos.com

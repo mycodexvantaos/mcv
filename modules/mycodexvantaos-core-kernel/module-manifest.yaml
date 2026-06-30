@@ -35,3 +35,4 @@ spec:
     - hybrid
   deployment:
     type: container
+service-id: mycodexvantaos-core-kernel

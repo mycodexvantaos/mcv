@@ -5,7 +5,9 @@ metadata:
   urn: urn:mycodexvantaos:service:mycodexvantaos-governance-audit-chain
   serviceId: mycodexvantaos-governance-audit-chain
   tier: tier-0
-
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   serviceId: mycodexvantaos-governance-audit-chain
   tier: tier-0
@@ -14,16 +16,13 @@ spec:
   kubernetesResourceName: mycodexvantaos-governance-audit-chain
   internalUri: mycodexvantaos://service/mycodexvantaos-governance-audit-chain
   urn: urn:mycodexvantaos:service:mycodexvantaos-governance-audit-chain
-
   supportedRuntimeModes:
     - native
     - connected
     - hybrid
-
   deploymentTargets:
     - kubernetes
     - docker-compose
-
   productionReadiness:
     required: true
     healthCheckRequired: true
@@ -31,3 +30,10 @@ spec:
     sbomRequired: true
     provenanceRequired: true
     imagePinningRequired: true
+service-id: mycodexvantaos-governance-audit-chain
+platform: mycodexvantaos
+runtime-modes:
+  - native
+  - connected
+  - hybrid
+service-path: services/mycodexvantaos-governance-audit-chain

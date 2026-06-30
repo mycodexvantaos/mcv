@@ -1,5 +1,3 @@
-# modules/mycodexvantaos-ai-agent/module-manifest.yaml
-# 6.3 — metadata.name MUST equal the directory name and service-id exactly (6.4)
 apiVersion: mycodexvantaos.org/v1
 kind: Module
 metadata:
@@ -21,7 +19,8 @@ spec:
     scheduler: scheduler-temporal
   lifecycle:
     stage: stable
-    since: 'v1.0.0'
-  urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-agent'
+    since: v1.0.0
+  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-agent
   packageName: '@mycodexvantaos/ai-agent'
-  description: 'AI agent orchestration. Multi-step reasoning and tool use.'
+  description: AI agent orchestration. Multi-step reasoning and tool use.
+service-id: mycodexvantaos-ai-agent

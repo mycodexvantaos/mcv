@@ -1,56 +1,48 @@
-# governance/exceptions.yaml
-# Naming exception register for mycodexvantaos platform.
-# Based on naming-spec-v1.md 15, 15.1, 15.2
-#
-# RULES:
-#   - Every deviation from naming-spec-v1 MUST be registered here.
-#   - All exceptions MUST have an expiresAt date — no indefinite exceptions.
-#   - All exceptions MUST have a named approver from the architecture committee.
-#   - Oral agreements are NOT valid substitutes for formal registration.
-#   - Expired exceptions must be cleaned up by scripts/expire-exceptions.sh
-#
-# ID format: exception--<YYYYMMDD>--<random6>   (9.8 timestamped-id)
-# Validate against: schemas/exception-record.schema.json
-
-apiVersion: mycodexvantaos.org/v1
+apiVersion: mycodexvantaos.io/v1
 kind: ExceptionRegister
 metadata:
   name: platform-exception-register
   labels:
     managed-by: naming-spec-v1
     specRef: '15'
-
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 exceptions:
-  # Example — REPLACE with real exceptions as needed.
-  # Kept as documentation template only; status: revoked means it is inactive.
   - id: exception--20260418--example
     rule: no-version-in-canonical
-    scope: 'services/mycodexvantaos-core-kernel'
-    reason: >
-      Temporary migration period: legacy deployment pipeline still references
-      a versioned directory name. Migration to naming-spec-v1 path derivation
-      is tracked in backlog item CORE-142 and scheduled for completion by 2026-06-01.
+    scope: services/mycodexvantaos-core-kernel
+    reason: 'Temporary migration period: legacy deployment pipeline still references
+      a versioned directory name. Migration to naming-spec-v1 path derivation is tracked
+      in backlog item CORE-142 and scheduled for completion by 2026-06-01.
+
+      '
     approver: arch-committee-lead
     createdAt: '2026-04-18'
     expiresAt: '2026-06-01'
     status: revoked
-    mitigationPlan: >
-      Update deployment pipeline configuration to use canonical service-id path.
-      Remove versioned directory reference in ci/deploy.yaml.
+    mitigationPlan: 'Update deployment pipeline configuration to use canonical service-id
+      path. Remove versioned directory reference in ci/deploy.yaml.
+
+      '
   - id: exception--20260621--dvstud
     rule: no-environment-in-canonical
     scope: mycodexvantaos-app-dev-studio
-    reason: >
-      The legacy Dev Studio service identifier is still the stable integration
-      anchor for local-first tooling, generated Docker assets, and existing
-      service references. Renaming it during the ZIP-first consolidation would
-      break retained architecture capabilities before a coordinated migration is
-      ready.
+    reason: 'The legacy Dev Studio service identifier is still the stable integration
+      anchor for local-first tooling, generated Docker assets, and existing service
+      references. Renaming it during the ZIP-first consolidation would break retained
+      architecture capabilities before a coordinated migration is ready.
+
+      '
     approver: arch-committee-lead
     createdAt: '2026-06-21'
     expiresAt: '2026-12-31'
     status: active
-    mitigationPlan: >
-      Complete the planned Dev Studio identifier migration alongside updated
-      service manifests, Docker generation, and navigation indexes so the
-      exception can be removed without capability loss.
+    mitigationPlan: 'Complete the planned Dev Studio identifier migration alongside
+      updated service manifests, Docker generation, and navigation indexes so the exception
+      can be removed without capability loss.
+
+      '
+expired: []
+revoked: []
+spec: {}

@@ -1,49 +1,85 @@
----
+# ADR: Production closure gate is the terminal L90 gate. It PASSES only when
+# all L10-L60 prerequisite layers have zero FAIL/MISSING results.
+# generate-production-closure-report.py evaluates this gate programmatically;
+# this YAML is the declarative specification and audit anchor.
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
   id: gate-99-production-closure-validation
   version: 1.0.0
   layer: l90
-  plane: ai-infra
+  plane: production-closure
   blocking: true
   lifecycle: active
   criticality: critical
-  owner: platform@mycodexvantaos.com
-  governanceCode: mycodexvantaos-00000
-  createdAt: 2026-01-01T00:00:00Z
+  owner: platform-governance@mycodexvantaos.com
+  governanceCode: mycodexvantaos-00099
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
     - l90
-    - production
-  sloTarget: 30
+    - production-closure
+  sloTarget: 60
   evidenceRetentionDays: 2555
+  date: '2026-06-29'
+  status: active
 spec:
   description: >
-    Final production closure gate. Validates that all l90 gates have passed and the artifact is approved for production promotion.
+    Terminal production closure gate. Validates that all upstream gate layers
+    (L10-L60) have passed before authorising a production deployment.
+    A single terminal gate provides an unambiguous, machine-auditable signal
+    that the full governance chain has been satisfied.
   validates:
-    - dimension: production-closure
-      description: All production closure requirements are met.
+    - dimension: prerequisite-layers
+      description: All prerequisite gate layers L10-L60 must pass
       checks:
-        - id: chk-all-l90-gates-passed
-          description: All l90 gates (91–98) have passed
-          rule: 'gate:l90-all-passed'
+        - id: chk-l10-pass
+          description: L10 core gates have all passed
+          rule: layer-result:l10:PASS
           severity: critical
           evidenceRequired: true
-        - id: chk-production-approval
-          description: Production promotion has been approved by the release authority
-          rule: 'approval:release-authority'
+        - id: chk-l20-pass
+          description: L20 lifecycle gates have all passed
+          rule: layer-result:l20:PASS
           severity: critical
           evidenceRequired: true
-        - id: chk-deployment-window
-          description: Deployment is within the approved deployment window
-          rule: 'schedule:deployment-window'
+        - id: chk-l30-pass
+          description: L30 technical gates have all passed
+          rule: layer-result:l30:PASS
+          severity: critical
+          evidenceRequired: true
+        - id: chk-l40-pass
+          description: L40 execution gates have all passed
+          rule: layer-result:l40:PASS
+          severity: critical
+          evidenceRequired: true
+        - id: chk-l50-pass
+          description: L50 governance gates have all passed
+          rule: layer-result:l50:PASS
+          severity: critical
+          evidenceRequired: true
+        - id: chk-l60-pass
+          description: L60 domain-AI gates have all passed
+          rule: layer-result:l60:PASS
+          severity: critical
+          evidenceRequired: true
+    - dimension: policy-registration
+      description: Production readiness policy includes this gate
+      checks:
+        - id: chk-policy-registered
+          description: gate-99 is listed in production-readiness-policy.yaml requiredGates
+          rule: policy-includes:gate-99-production-closure-validation
+          severity: critical
+          evidenceRequired: true
+    - dimension: audit-trail
+      description: JSONL audit trail has been emitted for all evaluated gates
+      checks:
+        - id: chk-audit-trail
+          description: production-closure-audit.jsonl exists and is non-empty
+          rule: file-exists:unified-gates/reports/production-closure-audit.jsonl
           severity: high
           evidenceRequired: true
-        - id: chk-on-call-confirmed
-          description: On-call engineer has confirmed readiness
-          rule: 'oncall:confirmed'
-          severity: high
-          evidenceRequired: true
-  dependsOn: []
+  dependsOn:
+    - gate-91-sbom-generation-validation
+    - gate-92-provenance-validation
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

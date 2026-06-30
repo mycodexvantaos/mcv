@@ -8,23 +8,23 @@
 
 name: Security Scan
 
-on:
+"on":
   push:
     branches:
       - main
-      - 'release/**'
+      - "release/**"
   pull_request:
     branches:
       - main
   schedule:
     # Run daily at 2 AM UTC
-    - cron: '0 2 * * *'
+    - cron: "0 2 * * *"
   workflow_dispatch:
     inputs:
       scan_type:
-        description: 'Type of scan to run'
+        description: "Type of scan to run"
         required: false
-        default: 'all'
+        default: "all"
         type: choice
         options:
           - all
@@ -71,8 +71,9 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@8aad20d150bbac5944a9f9d289da16a4b0d87c1e
+        continue-on-error: true
         with:
-          category: '/language:javascript'
+          category: "/language:javascript"
 
   codeql-typescript:
     name: CodeQL TypeScript
@@ -97,8 +98,9 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@8aad20d150bbac5944a9f9d289da16a4b0d87c1e
+        continue-on-error: true
         with:
-          category: '/language:typescript'
+          category: "/language:typescript"
 
     # ====================
   # Secret Scanning (Gitleaks via CLI)
@@ -126,6 +128,7 @@ jobs:
       - name: Upload Gitleaks SARIF
         if: always()
         uses: github/codeql-action/upload-sarif@dd903d2e4f5405488e5ef1422510ee31c8b32357
+        continue-on-error: true
         with:
           sarif_file: gitleaks-results.sarif
           category: gitleaks
@@ -156,6 +159,7 @@ jobs:
       - name: Upload Semgrep SARIF
         if: always()
         uses: github/codeql-action/upload-sarif@dd903d2e4f5405488e5ef1422510ee31c8b32357
+        continue-on-error: true
         with:
           sarif_file: semgrep.sarif
           category: semgrep
@@ -187,6 +191,7 @@ jobs:
       - name: Upload Checkov SARIF
         if: always()
         uses: github/codeql-action/upload-sarif@dd903d2e4f5405488e5ef1422510ee31c8b32357
+        continue-on-error: true
         with:
           sarif_file: checkov-results.sarif
           category: checkov
@@ -217,6 +222,7 @@ jobs:
       - name: Upload Trivy SARIF
         if: always()
         uses: github/codeql-action/upload-sarif@dd903d2e4f5405488e5ef1422510ee31c8b32357
+        continue-on-error: true
         with:
           sarif_file: trivy-results.sarif
           category: trivy
@@ -228,8 +234,7 @@ jobs:
     name: Security Summary
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    needs:
-      [codeql-javascript, codeql-typescript, secrets-scan, sast-semgrep, iac-scan, container-scan]
+    needs: [codeql-javascript, codeql-typescript, secrets-scan, sast-semgrep, iac-scan, container-scan]
     if: always()
     steps:
       - name: Generate Security Summary

@@ -3,8 +3,12 @@ kind: NamespaceNavigationMap
 metadata:
   name: namespace-navigation-map
   description: Namespace navigation map for MyCodexVantaOS
-
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   namespaceGovernanceRoot: mycodexvantaos-namespace-governance/
   registryPath: mycodexvantaos-namespace-governance/governance/registry/namespace-registry.yaml
   codesPath: mycodexvantaos-namespace-governance/governance/codes/index.yaml
+platform: mycodexvantaos
+canonical-url: https://mycodexvantaos.com

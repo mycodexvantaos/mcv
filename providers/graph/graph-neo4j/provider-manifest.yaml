@@ -1,10 +1,7 @@
-# providers/graph/graph-neo4j/provider-manifest.yaml
-# 8.1 — provider instance: graph-neo4j
-# 8.2 — capability (graph) precedes provider name (neo4j)
 apiVersion: mycodexvantaos.org/v1
 kind: Provider
 metadata:
-  name: graph-neo4j
+  name: mycodexvantaos-graph-neo4j
   capability: graph
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
@@ -16,4 +13,6 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_GRAPH
   configSchemaRef: ./config.schema.json
-  description: 'Neo4j graph database provider.'
+  description: Neo4j graph database provider.
+provider-id: mycodexvantaos-graph-neo4j
+capability: graph

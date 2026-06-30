@@ -1,0 +1,60 @@
+name: Namespace Governance Validation
+
+"on":
+  push:
+    branches: [main, develop]
+    paths:
+      - "mycodexvantaos-namespace-governance/**"
+      - "governance/naming-closure/**"
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate-namespace-governance:
+    name: Validate Namespace Governance
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install pyyaml jsonschema
+
+      - name: Validate namespace governance
+        run: python3 mycodexvantaos-namespace-governance/scripts/validate-namespace-governance.py
+
+      - name: Validate namespace closure
+        run: python3 mycodexvantaos-namespace-governance/scripts/validate-namespace-closure.py
+
+      - name: Validate governance codes
+        run: python3 mycodexvantaos-namespace-governance/scripts/validate-governance-codes.py
+
+      - name: Validate namespace registry
+        run: python3 mycodexvantaos-namespace-governance/scripts/validate-namespace-registry.py
+
+      - name: Generate namespace governance report
+        if: always()
+        run: python3 mycodexvantaos-namespace-governance/scripts/generate-namespace-report.py
+
+      - name: Upload namespace governance report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: namespace-governance-report
+          path: outputs/namespace-governance-validation-report.json
+          retention-days: 30

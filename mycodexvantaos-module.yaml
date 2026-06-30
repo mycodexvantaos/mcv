@@ -1,0 +1,118 @@
+apiVersion: mycodexvantaos.io/v1
+kind: RootModule
+metadata:
+  name: mycodexvantaos
+  version: 1.0.0
+  date: '2026-06-29'
+  classification: INTERNAL
+  status: active
+  spec-authority: 'docs/spec/l0-meta/formalized-specification-architecture.yaml'
+
+identity:
+  machine: mycodexvantaos
+  brand: MyCodexVantaOS
+  canonical-url: 'https://mycodexvantaos.com'
+  forbidden-prefixes:
+    - mycodexvanta-os
+    - codexvanta-os
+    - codexvanta
+    - codevantaos
+    - kubo
+    - axiom
+
+foundations:
+  - compute-foundation
+  - data-foundation
+  - algorithm-foundation
+  - agent-foundation
+  - contract-foundation
+  - governance-foundation
+  - business-foundation
+
+modules:
+  - mycodexvantaos-agent-runtime
+  - mycodexvantaos-ai-embedding
+  - mycodexvantaos-ai-inference
+  - mycodexvantaos-billing-metering
+  - mycodexvantaos-core-auth
+  - mycodexvantaos-governance-audit-chain
+  - mycodexvantaos-governance-policy-engine
+  - mycodexvantaos-knowledge-ingestion
+  - mycodexvantaos-knowledge-search
+  - mycodexvantaos-quantum-controller
+  - mycodexvantaos-runtime-mode-resolver
+
+providers:
+  auth:
+    - auth-jwt
+  cache:
+    - cache-kv
+    - cache-redis
+  database:
+    - database-d1
+    - database-postgres
+  embedding:
+    - embedding-native
+    - embedding-openai
+    - embedding-workers-ai
+  graph:
+    - graph-native
+  llm:
+    - llm-native
+    - llm-openai
+    - llm-openrouter
+    - llm-workers-ai
+  observability:
+    - observability-opentelemetry
+  quantum-circuit:
+    - quantum-circuit-native
+  quantum-observability:
+    - quantum-observability-native
+  quantum-processor:
+    - quantum-processor-native
+  quantum-runtime:
+    - quantum-runtime-native
+  quantum-simulator:
+    - quantum-simulator-qiskit
+  queue:
+    - queue-cloudflare
+    - queue-rabbitmq
+  search:
+    - search-native
+  secrets:
+    - secrets-local
+    - secrets-vault
+  storage:
+    - storage-minio
+    - storage-r2
+  vector-store:
+    - vector-store-pgvector
+    - vector-store-qdrant
+    - vector-store-vectorize
+
+runtime-modes:
+  - native
+  - connected
+  - hybrid
+
+ssot:
+  spec-hierarchy:
+    - docs/spec/l0-meta/formalized-specification-architecture.yaml
+    - docs/spec/l1-constitution/constitution.yaml
+    - docs/spec/l2-structure/capability-architecture-addendum.yaml
+    - docs/unified-architecture-spec.md
+    - governance/identity-policy.yaml
+    - platform/service-catalog.yaml
+
+governance:
+  policy-engine: governance/platform-governance-spec.yaml
+  identity-policy: governance/identity-policy.yaml
+  naming-policy: governance/naming-policy.schema.json
+  audit-policy: governance/audit/audit-policy.yaml
+
+ci:
+  validation-entry: ci/validate-architecture.ts
+  gates: unified-gates/
+  workflows: .github/workflows/
+  rules-count: 18
+  workflow-count: 29

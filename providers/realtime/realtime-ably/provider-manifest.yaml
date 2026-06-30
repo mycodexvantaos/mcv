@@ -1,0 +1,18 @@
+apiVersion: mycodexvantaos.org/v1
+kind: Provider
+metadata:
+  name: mycodexvantaos-realtime-ably
+  capability: realtime
+  labels:
+    mycodexvantaos.org/managed-by: naming-spec-v1
+    mycodexvantaos.org/specRef: '8.1'
+spec:
+  providerName: ably
+  isNative: false
+  lifecycle:
+    stage: beta
+  envVarPrefix: MYCODEXVANTAOS_REALTIME
+  configSchemaRef: ./config.schema.json
+  description: Ably realtime messaging provider for push infrastructure.
+provider-id: mycodexvantaos-realtime-ably
+capability: realtime

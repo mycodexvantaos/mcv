@@ -1,0 +1,85 @@
+name: Provider Capability Validation
+
+"on":
+  push:
+    branches: [main, develop]
+    paths:
+      - "providers/**"
+      - "governance/capability-set.yaml"
+      - "governance/provider-registry.yaml"
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate-providers:
+    name: Validate Provider Capabilities
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install pyyaml jsonschema
+
+      - name: Validate provider registry
+        run: python3 scripts/validate-provider-registry.py
+
+      - name: Validate all provider manifests
+        run: |
+          python3 -c "
+          import yaml, os, sys, glob
+
+          ALLOWED_CAPABILITIES = [
+              'database', 'storage', 'auth', 'queue', 'state-store', 'secrets',
+              'repo', 'deploy', 'validation', 'security', 'observability',
+              'notification', 'scheduler', 'vector-store', 'embedding', 'llm',
+              'graph', 'cache', 'search', 'quantum-runtime', 'quantum-simulator',
+              'quantum-processor', 'quantum-circuit', 'quantum-observability',
+              'ai-ethics', 'blockchain', 'event-stream', 'audio', 'image', 'realtime'
+          ]
+
+          manifests = glob.glob('providers/**/provider-manifest.yaml', recursive=True)
+          errors = []
+          for manifest_path in manifests:
+              with open(manifest_path) as f:
+                  manifest = yaml.safe_load(f)
+              cap = manifest.get('capability', '')
+              if cap not in ALLOWED_CAPABILITIES:
+                  errors.append(f'{manifest_path}: invalid capability \"{cap}\"')
+              provider_id = manifest.get('provider-id', '')
+              if not provider_id.startswith('mycodexvantaos-'):
+                  errors.append(f'{manifest_path}: provider-id must start with mycodexvantaos-')
+
+          if errors:
+              for e in errors:
+                  print(f'ERROR: {e}')
+              sys.exit(1)
+          print(f'Provider validation: PASSED ({len(manifests)} providers)')
+          "
+
+      - name: Generate provider capability report
+        if: always()
+        run: python3 scripts/generate-provider-capability-validation-report.py
+
+      - name: Upload provider capability report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: provider-capability-report
+          path: outputs/provider-capability-validation-report.json
+          retention-days: 30

@@ -1,7 +1,7 @@
 {
   "apiVersion": "mycodexvantaos.io/v1",
   "kind": "GateValidationReport",
-  "generatedAt": "2026-06-25T16:25:33.739972+00:00",
+  "generatedAt": "2026-06-29T09:59:05.619552+00:00",
   "specVersion": "mycodexvantaos-00000",
   "toolVersion": "1.0.0",
   "overallStatus": "PASS",
@@ -17,7 +17,7 @@
       "l60": 4,
       "l90": 9
     },
-    "passed": 1281,
+    "passed": 366,
     "failed": 0,
     "warnings": 0
   },

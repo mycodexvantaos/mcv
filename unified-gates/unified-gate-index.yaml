@@ -10,40 +10,39 @@ metadata:
     tier: platform
     scope: unified
   annotations:
-    description: >
-      Authoritative index of all gate planes, catalogs, schemas, workflows,
-      policies, and scripts in the unified-gates system. This file is the
-      single entry point for gate discovery and CI orchestration.
+    description: 'Authoritative index of all gate planes, catalogs, schemas, workflows,
+      policies, and scripts in the unified-gates system. This file is the single entry
+      point for gate discovery and CI orchestration.
 
+      '
+  date: '2026-06-29'
+  status: active
 spec:
   version: 1.0.0
-
   gatePlanes:
     - id: gate-documentation
       name: Gate Specification Documentation
       path: ./gate/
       type: documentation
       catalog: ./gate/gate-catalog.yaml
-      description: RST-format gate specifications covering core model, lifecycle, technical framework, execution, governance, AI domains, evolution, and coverage taxonomy.
-
+      description: RST-format gate specifications covering core model, lifecycle, technical
+        framework, execution, governance, AI domains, evolution, and coverage taxonomy.
     - id: ai-infra-gates
       name: AI Infrastructure Gates
       path: ./ai-infra-gates/
       type: ai-infrastructure
       catalog: ./ai-infra-gate-catalog.yaml
-      description: Executable YAML gate definitions for all AI infrastructure layers (l00–l90).
-
+      description: Executable YAML gate definitions for all AI infrastructure layers
+        (l00–l90).
   catalogs:
     - id: unified-gate-catalog
       path: ./gate-catalog.yaml
       kind: GateCatalog
       scope: all-planes
-
     - id: ai-infra-gate-catalog
       path: ./ai-infra-gate-catalog.yaml
       kind: AIInfraGateCatalog
       scope: ai-infrastructure
-
   schemas:
     - id: gate-schema
       path: ./schemas/gate.schema.json
@@ -69,7 +68,6 @@ spec:
       path: ./schemas/dataset-contract.schema.json
     - id: vector-index-schema
       path: ./schemas/vector-index.schema.json
-
   workflows:
     - id: gate-evaluation-workflow
       path: ./workflows/gate-evaluation-workflow.yaml
@@ -81,7 +79,6 @@ spec:
       path: ./workflows/gate-release-workflow.yaml
     - id: ai-workload-production-readiness-workflow
       path: ./workflows/ai-workload-production-readiness-workflow.yaml
-
   policies:
     - id: gate-governance-policy
       path: ./policies/gate-governance-policy.yaml
@@ -101,7 +98,6 @@ spec:
       path: ./policies/ai-billing-policy.yaml
     - id: production-closure-policy
       path: ./policies/production-closure-policy.yaml
-
   scripts:
     - id: validate-gate-catalog
       path: ./scripts/validate-gate-catalog.py
@@ -119,7 +115,6 @@ spec:
       path: ./scripts/generate-gate-catalog.py
     - id: generate-production-closure-report
       path: ./scripts/generate-production-closure-report.py
-
   outputs:
     - id: gate-validation-report
       path: ./outputs/gate-validation-report.json
@@ -135,7 +130,6 @@ spec:
       path: ./outputs/production-closure-report.json
     - id: unified-gate-summary
       path: ./outputs/unified-gate-summary.json
-
   gateCategories:
     - namespace-governance
     - repository-naming

@@ -3,23 +3,29 @@ kind: ProviderManifest
 metadata:
   name: cache-kv
   urn: urn:mycodexvantaos:provider:cache-kv
-
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   id: cache-kv
   capability: cache
   source: cloudflare-kv
   status: active
   criticality: high
-
   supportsModes:
     - native
     - connected
     - hybrid
-
   healthCheck:
     enabled: true
     endpoint: /health
-
   observability:
     metricsEnabled: true
     tracingEnabled: true
+provider-id: mycodexvantaos-cache-kv
+capability: cache
+platform: mycodexvantaos
+runtime-modes:
+  - native
+  - connected
+  - hybrid

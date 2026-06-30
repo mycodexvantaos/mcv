@@ -5,11 +5,15 @@ metadata:
   urn: urn:mycodexvantaos:navigation:module:navigation
   domain: navigation
   layer: governance
+  version: 1.0.0
+  date: '2026-06-29'
 spec:
   moduleType: navigation-index
-  description: >
-    Global AI and human navigation index root for MyCodexVantaOS.
-    Owns discovery indexes, dependency graphs, binding indexes, and service navigation maps.
+  description: 'Global AI and human navigation index root for MyCodexVantaOS. Owns
+    discovery indexes, dependency graphs, binding indexes, and service navigation
+    maps.
+
+    '
   runtimeCodeAllowed: false
   deploymentAllowed: false
   metadataOnly: true
@@ -32,3 +36,4 @@ spec:
   governance:
     ssot: true
     authority: global-navigation-index
+platform: mycodexvantaos

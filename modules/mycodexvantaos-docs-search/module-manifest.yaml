@@ -1,5 +1,3 @@
-# modules/mycodexvantaos-docs-search/module-manifest.yaml
-# 6.3 — metadata.name MUST equal the directory name and service-id exactly (6.4)
 apiVersion: mycodexvantaos.org/v1
 kind: Module
 metadata:
@@ -19,7 +17,8 @@ spec:
     embedding: embedding-openai
   lifecycle:
     stage: stable
-    since: 'v1.0.0'
-  urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-docs-search'
+    since: v1.0.0
+  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-docs-search
   packageName: '@mycodexvantaos/docs-search'
-  description: 'Full-text and semantic search for platform documentation.'
+  description: Full-text and semantic search for platform documentation.
+service-id: mycodexvantaos-docs-search

@@ -2,4 +2,9 @@ apiVersion: mycodexvantaos.io/v1
 kind: PlatformSpec
 metadata:
   name: metering-model
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec: {}
+platform: mycodexvantaos
+canonical-url: https://mycodexvantaos.com

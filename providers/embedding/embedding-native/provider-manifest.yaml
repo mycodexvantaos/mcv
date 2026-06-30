@@ -3,23 +3,29 @@ kind: ProviderManifest
 metadata:
   name: embedding-native
   urn: urn:mycodexvantaos:provider:embedding-native
-
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   id: embedding-native
   capability: embedding
   source: native
   status: active
   criticality: high
-
   supportsModes:
     - native
     - connected
     - hybrid
-
   healthCheck:
     enabled: true
     endpoint: /health
-
   observability:
     metricsEnabled: true
     tracingEnabled: true
+provider-id: mycodexvantaos-embedding-native
+capability: embedding
+platform: mycodexvantaos
+runtime-modes:
+  - native
+  - connected
+  - hybrid

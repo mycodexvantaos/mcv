@@ -5,6 +5,7 @@ metadata:
   urn: urn:mycodexvantaos:ci:module:ci
   domain: ci
   layer: ci
+  version: 1.0.0
 spec:
   moduleType: ci
   description: CI architecture validation and enforcement

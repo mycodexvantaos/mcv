@@ -1,5 +1,3 @@
-# modules/mycodexvantaos-core-auth/module-manifest.yaml
-# 6.3 — metadata.name MUST equal the directory name and service-id exactly (6.4)
 apiVersion: mycodexvantaos.org/v1
 kind: Module
 metadata:
@@ -7,6 +5,9 @@ metadata:
   labels:
     mycodexvantaos.org/domain: core
     mycodexvantaos.org/managed-by: naming-spec-v1
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   domain: core
   capabilities:
@@ -21,7 +22,14 @@ spec:
     secrets: secrets-vault
   lifecycle:
     stage: stable
-    since: 'v1.0.0'
-  urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-core-auth'
+    since: v1.0.0
+  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-core-auth
   packageName: '@mycodexvantaos/core-auth'
-  description: 'Core authentication and authorization service.'
+  description: Core authentication and authorization service.
+service-id: mycodexvantaos-core-auth
+platform: mycodexvantaos
+runtime-modes:
+  - native
+  - connected
+  - hybrid
+service-path: services/mycodexvantaos-core-auth

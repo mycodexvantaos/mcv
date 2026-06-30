@@ -3,4 +3,6 @@ kind: NavigationMap
 metadata:
   name: release-map
   description: release-map for MyCodexVantaOS
+  version: 1.0.0
 spec: {}
+platform: mycodexvantaos

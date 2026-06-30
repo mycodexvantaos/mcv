@@ -1,10 +1,65 @@
 {
-  "report": "architecture-validation-report",
-  "generatedAt": "2024-01-01T00:00:00Z",
-  "status": "pending",
-  "ssot": false,
-  "generated": true,
-  "manualEditAllowed": false,
-  "generatedFrom": [],
-  "results": []
+  "report-id": "arch-validation-20260630-091105",
+  "platform": "mycodexvantaos",
+  "canonical-url": "https://mycodexvantaos.com",
+  "generated-at": "2026-06-30T09:11:05.560291Z",
+  "checks": [
+    {
+      "check": "identity-policy-exists",
+      "result": "pass",
+      "path": "governance/identity-policy.yaml"
+    },
+    {
+      "check": "foundation-exists-compute-foundation",
+      "result": "pass",
+      "path": "foundation/compute-foundation"
+    },
+    {
+      "check": "foundation-exists-data-foundation",
+      "result": "pass",
+      "path": "foundation/data-foundation"
+    },
+    {
+      "check": "foundation-exists-algorithm-foundation",
+      "result": "pass",
+      "path": "foundation/algorithm-foundation"
+    },
+    {
+      "check": "foundation-exists-agent-foundation",
+      "result": "pass",
+      "path": "foundation/agent-foundation"
+    },
+    {
+      "check": "foundation-exists-contract-foundation",
+      "result": "pass",
+      "path": "foundation/contract-foundation"
+    },
+    {
+      "check": "foundation-exists-governance-foundation",
+      "result": "pass",
+      "path": "foundation/governance-foundation"
+    },
+    {
+      "check": "foundation-exists-business-foundation",
+      "result": "pass",
+      "path": "foundation/business-foundation"
+    },
+    {
+      "check": "service-catalog-exists",
+      "result": "pass",
+      "path": "platform/service-catalog.yaml"
+    },
+    {
+      "check": "ci-rules-count",
+      "result": "pass",
+      "expected": 18,
+      "actual": 38
+    }
+  ],
+  "summary": {
+    "total": 10,
+    "passed": 10,
+    "failed": 0,
+    "overall": "pass"
+  }
 }

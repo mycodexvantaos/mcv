@@ -1,0 +1,12 @@
+From: MyCodexVantaOS Platform Team <platform@mycodexvantaos.com>
+Date: 2026-06-29
+Subject: [PATCH 0002] ci: remove 11 redundant stub workflows (consolidation)
+
+Remove 11 redundant workflow stubs that duplicate functionality already
+provided by the unified-gates CI system. Reduces workflow count from 43 to 32.
+Removes 398 lines of redundant YAML.
+
+Signed-off-by: MyCodexVantaOS Platform Team <platform@mycodexvantaos.com>
+---
+ .github/workflows/stub-*.yml | 398 ----------------------------------
+ 11 files changed, 398 deletions(-)

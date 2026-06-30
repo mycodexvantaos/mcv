@@ -1,0 +1,19 @@
+apiVersion: mycodexvantaos.io/v1
+kind: Module
+service-id: mycodexvantaos-service-service-catalog
+metadata:
+  name: mycodexvantaos-service-service-catalog
+  capability: database
+  version: 1.0.0
+  tier: tier-0
+  foundation: contract-foundation
+spec:
+  description: Service catalog service for service registration, discovery, and topology
+    management.
+  category: platform
+  runtime-modes:
+    - native
+    - connected
+    - hybrid
+  implementationPath: services/mycodexvantaos-service-service-catalog/
+  packageName: '@mycodexvantaos/service-service-catalog'

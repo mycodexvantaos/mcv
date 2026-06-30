@@ -1,5 +1,3 @@
-# modules/mycodexvantaos-security-secrets/module-manifest.yaml
-# 6.3 — metadata.name MUST equal the directory name and service-id exactly (6.4)
 apiVersion: mycodexvantaos.org/v1
 kind: Module
 metadata:
@@ -17,7 +15,8 @@ spec:
     database: database-postgres
   lifecycle:
     stage: stable
-    since: 'v1.0.0'
-  urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-security-secrets'
+    since: v1.0.0
+  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-security-secrets
   packageName: '@mycodexvantaos/security-secrets'
-  description: 'Secret and credential management service.'
+  description: Secret and credential management service.
+service-id: mycodexvantaos-security-secrets

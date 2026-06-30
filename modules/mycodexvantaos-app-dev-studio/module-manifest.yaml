@@ -1,0 +1,19 @@
+apiVersion: mycodexvantaos.io/v1
+kind: Module
+service-id: mycodexvantaos-app-dev-studio
+metadata:
+  name: mycodexvantaos-app-dev-studio
+  capability: validation
+  version: 1.0.0
+  tier: tier-2
+  foundation: contract-foundation
+spec:
+  description: Application development studio for visual workflow editing, code generation,
+    and deployment orchestration.
+  category: platform
+  runtime-modes:
+    - native
+    - connected
+    - hybrid
+  implementationPath: services/mycodexvantaos-app-dev-studio/
+  packageName: '@mycodexvantaos/app-dev-studio'

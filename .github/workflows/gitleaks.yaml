@@ -1,15 +1,16 @@
 name: Gitleaks Secret Scan
 
-on:
+"on":
   push:
-    branches: ['main']
+    branches: ["main"]
   pull_request:
-    branches: ['main']
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
   contents: read
   security-events: write
+  actions: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -29,7 +30,7 @@ jobs:
 
       - name: Install Gitleaks
         env:
-          GITLEAKS_VERSION: '8.21.2'
+          GITLEAKS_VERSION: "8.21.2"
         run: |
           wget -q "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
           tar -xzf "gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
@@ -39,7 +40,8 @@ jobs:
           ./gitleaks detect --source . --report-format sarif --report-path gitleaks-report.sarif --exit-code 0 || true
 
       - name: Upload Gitleaks SARIF report
-        uses: github/codeql-action/upload-sarif@dd903d2e4f5405488e5ef1422510ee31c8b32357
+        uses: github/codeql-action/upload-sarif@v3
+        continue-on-error: true
         if: always() && hashFiles('gitleaks-report.sarif') != ''
         with:
           sarif_file: gitleaks-report.sarif

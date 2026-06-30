@@ -1,4 +1,4 @@
-# mycodexvantaos-billing-metering
+## mycodexvantaos-billing-metering
 
 Service implementation for `mycodexvantaos-billing-metering`.
 
@@ -13,3 +13,10 @@ See `modules/mycodexvantaos-billing-metering/module-manifest.yaml` for the servi
 ## OCI Image
 
 `ghcr.io/mycodexvantaos/mycodexvantaos-billing-metering`
+
+<!-- Platform v1.0 additions -->
+
+Service ID: `mycodexvantaos-billing-metering`
+Version: 1.0.0
+Machine Identity: mycodexvantaos
+Canonical URL: https://mycodexvantaos.com

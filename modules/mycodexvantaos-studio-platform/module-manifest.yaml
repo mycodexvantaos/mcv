@@ -1,0 +1,19 @@
+apiVersion: mycodexvantaos.io/v1
+kind: Module
+service-id: mycodexvantaos-studio-platform
+metadata:
+  name: mycodexvantaos-studio-platform
+  capability: validation
+  version: 1.0.0
+  tier: tier-2
+  foundation: contract-foundation
+spec:
+  description: Studio platform for visual development, workflow design, and integrated
+    deployment experience.
+  category: platform
+  runtime-modes:
+    - native
+    - connected
+    - hybrid
+  implementationPath: services/mycodexvantaos-studio-platform/
+  packageName: '@mycodexvantaos/studio-platform'

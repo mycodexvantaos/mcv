@@ -1,10 +1,7 @@
-# providers/search/search-typesense/provider-manifest.yaml
-# 8.1 — provider instance: search-typesense
-# 8.2 — capability (search) precedes provider name (typesense)
 apiVersion: mycodexvantaos.org/v1
 kind: Provider
 metadata:
-  name: search-typesense
+  name: mycodexvantaos-search-typesense
   capability: search
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
@@ -16,4 +13,6 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_SEARCH_TYPESENSE
   configSchemaRef: ./config.schema.json
-  description: 'Typesense full-text search provider.'
+  description: Typesense full-text search provider.
+provider-id: mycodexvantaos-search-typesense
+capability: search

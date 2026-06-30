@@ -4,10 +4,13 @@ metadata:
   name: gate-waiver-contract
   version: 1.0.0
   governanceCode: mycodexvantaos-00000
+  date: '2026-06-29'
+  status: active
 spec:
-  description: >
-    Defines the canonical contract for a gate waiver. All waiver records
+  description: 'Defines the canonical contract for a gate waiver. All waiver records
     MUST conform to this contract.
+
+    '
   requiredFields:
     - id
     - gateId

@@ -5,28 +5,41 @@ metadata:
   version: 1.0.0
   authority: platform-governance-root
   governanceCode: mycodexvantaos-00600
+  date: '2026-06-29'
+  status: active
 spec:
   roles:
     - id: gate-reader
-      permissions: [read:gate-definitions, read:gate-results, read:gate-reports]
+      permissions:
+        - read:gate-definitions
+        - read:gate-results
+        - read:gate-reports
     - id: gate-evaluator
-      permissions: [read:gate-definitions, execute:gate-evaluation, write:gate-results]
+      permissions:
+        - read:gate-definitions
+        - execute:gate-evaluation
+        - write:gate-results
     - id: gate-owner
       permissions:
-        [
-          read:gate-definitions,
-          write:gate-definitions,
-          execute:gate-evaluation,
-          approve:waivers,
-          write:gate-results,
-        ]
+        - read:gate-definitions
+        - write:gate-definitions
+        - execute:gate-evaluation
+        - approve:waivers
+        - write:gate-results
     - id: gate-approver
-      permissions: [read:gate-definitions, approve:waivers, approve:lifecycle-transitions]
+      permissions:
+        - read:gate-definitions
+        - approve:waivers
+        - approve:lifecycle-transitions
     - id: gate-admin
-      permissions: [all]
+      permissions:
+        - all
       requiresRootApproval: true
     - id: governance-council
-      permissions: [approve:cross-layer-changes, approve:escalations, approve:waiver-overrides]
+      permissions:
+        - approve:cross-layer-changes
+        - approve:escalations
+        - approve:waiver-overrides
   roleAssignmentAudit: true
   quarterlyReviewRequired:
     - gate-admin

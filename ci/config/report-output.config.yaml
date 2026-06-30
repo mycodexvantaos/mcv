@@ -2,6 +2,7 @@ apiVersion: mycodexvantaos.io/v1
 kind: ReportOutputConfig
 metadata:
   name: report-output-config
+  version: 1.0.0
 spec:
   outputDirectory: outputs/
   reports:

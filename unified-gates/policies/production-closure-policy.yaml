@@ -5,10 +5,13 @@ metadata:
   version: 1.0.0
   authority: platform-governance-root
   governanceCode: mycodexvantaos-00000
+  date: '2026-06-29'
+  status: active
 spec:
-  description: >
-    Defines the requirements for production closure. An artifact MUST satisfy
-    all requirements in this policy before gate-99 can pass.
+  description: 'Defines the requirements for production closure. An artifact MUST
+    satisfy all requirements in this policy before gate-99 can pass.
+
+    '
   requirements:
     - id: all-mandatory-gates-passed
       description: All mandatory gates in l00-l90 must have passed.

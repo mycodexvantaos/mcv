@@ -3,8 +3,10 @@ kind: RootModule
 metadata:
   name: supply-chain
   urn: urn:mycodexvantaos:supply-chain:module:supply-chain
+  version: 1.0.0
 spec:
   moduleType: supply-chain
   description: Supply chain security policies and attestations
   runtimeCodeAllowed: false
   deploymentAllowed: false
+platform: mycodexvantaos

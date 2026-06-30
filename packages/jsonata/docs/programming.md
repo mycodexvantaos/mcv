@@ -368,8 +368,10 @@ e.g. bound to a variable, passed to a higher-order function, etc.
     <div>(
   $first5 := $substring(?, 0, 5);
   $first5("Hello, World")
+
 )</div>
-    <div>"Hello"</div>
+
+<div>"Hello"</div>
   </div>
 
 - Partially applied function can be further partially applied
@@ -378,8 +380,10 @@ e.g. bound to a variable, passed to a higher-order function, etc.
   $firstN := $substring(?, 0, ?);
   $first5 := $firstN(?, 5);
   $first5("Hello, World")
+
 )</div>
-    <div>"Hello"</div>
+
+<div>"Hello"</div>
   </div>
 
 ### Function chaining
@@ -416,8 +420,10 @@ is equivalent to\
     <div>(
    $normalize := $uppercase ~> $trim;
    $normalize("   Some   Words   ")
+
 )</div>
-    <div>"SOME WORDS"</div>
+
+<div>"SOME WORDS"</div>
   </div>
 
 ### Functions as first class values
@@ -432,8 +438,10 @@ functions.
     <div>(
   $first5Capitalized := $substring(?, 0, 5) ~> $uppercase(?);
   $first5Capitalized(Address.City)
+
 )</div>
-    <div>"WINCH"</div>
+
+<div>"WINCH"</div>
   </div>
 
 ### Advanced example - The Y-combinator

@@ -3,4 +3,7 @@ kind: FoundationSpec
 metadata:
   name: boundary
   foundation: governance-foundation
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec: {}

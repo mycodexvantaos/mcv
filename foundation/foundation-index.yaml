@@ -3,7 +3,9 @@ kind: FoundationIndex
 metadata:
   name: foundation-index
   description: Index of all foundation specification units
-
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   foundations:
     - name: compute-foundation
@@ -27,3 +29,4 @@ spec:
     - name: business-foundation
       path: ./business-foundation/foundation.yaml
       urn: urn:mycodexvantaos:foundation:spec:business-foundation
+  platform: mycodexvantaos

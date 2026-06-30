@@ -3,6 +3,9 @@ kind: Foundation
 metadata:
   name: business-foundation
   urn: urn:mycodexvantaos:foundation:spec:business-foundation
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   boundary:
     boundaryType: specification-unit
@@ -14,3 +17,6 @@ spec:
     serviceCodeAllowed: false
     deploymentManifestAllowed: false
   description: Strategic specification unit for business-foundation
+  foundation-id: mycodexvantaos-business-foundation
+  platform: mycodexvantaos
+  category: business

@@ -4,10 +4,13 @@ metadata:
   name: dataset-contract
   version: 1.0.0
   governanceCode: mycodexvantaos-40100
+  date: '2026-06-29'
+  status: active
 spec:
-  description: >
-    Defines the canonical contract for datasets used in AI workloads.
+  description: 'Defines the canonical contract for datasets used in AI workloads.
     All datasets MUST conform to this contract before use.
+
+    '
   requiredFields:
     - datasetId
     - datasetVersion
@@ -21,5 +24,10 @@ spec:
     - accessPolicy
     - piiScanRef
   validValues:
-    datasetType: [training, evaluation, fine-tuning, rag-corpus, synthetic]
+    datasetType:
+      - training
+      - evaluation
+      - fine-tuning
+      - rag-corpus
+      - synthetic
   schemaRef: ../schemas/dataset-contract.schema.json

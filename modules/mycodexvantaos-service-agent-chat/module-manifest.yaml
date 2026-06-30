@@ -1,0 +1,19 @@
+apiVersion: mycodexvantaos.io/v1
+kind: Module
+service-id: mycodexvantaos-service-agent-chat
+metadata:
+  name: mycodexvantaos-service-agent-chat
+  capability: llm
+  version: 1.0.0
+  tier: tier-1
+  foundation: agent-foundation
+spec:
+  description: Agent chat service for conversational AI interaction, context management,
+    and response streaming.
+  category: agent
+  runtime-modes:
+    - native
+    - connected
+    - hybrid
+  implementationPath: services/mycodexvantaos-service-agent-chat/
+  packageName: '@mycodexvantaos/service-agent-chat'

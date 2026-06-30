@@ -66,7 +66,7 @@ echo ""
 
 # ── Step 2: Run ──────────────────────────────────────────────────────────────
 echo -e "${YELLOW}Step 2: Starting container ${CONTAINER_NAME} on port ${PORT}...${NC}"
-docker run -d --name "${CONTAINER_NAME}" -p "${PORT}:${PORT}" -e NODE_ENV=production "${IMAGE}"
+docker run -d --name "${CONTAINER_NAME}" -p "${PORT}:3001" -e NODE_ENV=production "${IMAGE}"
 echo "Waiting for container to start..."
 sleep 5
 

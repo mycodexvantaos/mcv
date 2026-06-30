@@ -1,11 +1,72 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Naming Policy",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NamingPolicy",
   "type": "object",
   "properties": {
     "service_id_pattern": {
       "type": "string",
       "default": "^mycodexvantaos-(app|core|ai|data|platform|security|docs|governance)-[a-z0-9-]+$"
+    },
+    "machine-identifier": {
+      "type": "string",
+      "pattern": "^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "description": "Machine-readable identifier pattern"
+    },
+    "service-id": {
+      "type": "string",
+      "pattern": "^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "description": "Service identifier pattern"
+    },
+    "provider-id": {
+      "type": "string",
+      "pattern": "^mycodexvantaos-[a-z0-9]+-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "description": "Provider identifier pattern"
+    },
+    "directory-name": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "description": "Directory name pattern (kebab-case)"
+    },
+    "forbidden-prefixes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Forbidden identifier prefixes",
+      "contains": {
+        "type": "string",
+        "enum": ["mycodexvanta-os", "codexvanta-os", "codexvanta", "codevantaos", "kubo", "axiom"]
+      }
+    },
+    "spec-id": {
+      "type": "string",
+      "pattern": "^mycodexvantaos-spec-l[0-5]-[a-z0-9]+(?:-[a-z0-9]+)*-v\\d+\\.\\d+\\.\\d+$",
+      "description": "Specification identifier pattern"
+    },
+    "urn": {
+      "type": "string",
+      "pattern": "^urn:mycodexvantaos:[a-z0-9]+(?:-[a-z0-9]+)*:[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "description": "URN pattern"
+    },
+    "kubernetes-name": {
+      "type": "string",
+      "pattern": "^mycodexvantaos(?:-[a-z0-9]+)*$",
+      "maxLength": 63,
+      "description": "Kubernetes resource name pattern"
+    },
+    "oci-image": {
+      "type": "string",
+      "pattern": "^mycodexvantaos/[a-z0-9]+(?:-[a-z0-9]+)*(?::[a-z0-9.]+)?$",
+      "description": "OCI image name pattern"
     }
-  }
+  },
+  "$id": "https://mycodexvantaos.com/schemas/naming-policy.schema.json",
+  "description": "MyCodexVantaOS naming policy schema — L1 Constitution enforcement",
+  "required": [
+    "machine-identifier",
+    "service-id",
+    "provider-id",
+    "directory-name",
+    "forbidden-prefixes"
+  ]
 }

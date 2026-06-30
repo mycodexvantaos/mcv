@@ -5,7 +5,9 @@ metadata:
   urn: urn:mycodexvantaos:service:mycodexvantaos-billing-metering
   serviceId: mycodexvantaos-billing-metering
   tier: tier-1
-
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   serviceId: mycodexvantaos-billing-metering
   tier: tier-1
@@ -14,16 +16,13 @@ spec:
   kubernetesResourceName: mycodexvantaos-billing-metering
   internalUri: mycodexvantaos://service/mycodexvantaos-billing-metering
   urn: urn:mycodexvantaos:service:mycodexvantaos-billing-metering
-
   supportedRuntimeModes:
     - native
     - connected
     - hybrid
-
   deploymentTargets:
     - kubernetes
     - docker-compose
-
   productionReadiness:
     required: true
     healthCheckRequired: true
@@ -31,3 +30,10 @@ spec:
     sbomRequired: true
     provenanceRequired: true
     imagePinningRequired: true
+service-id: mycodexvantaos-billing-metering
+platform: mycodexvantaos
+runtime-modes:
+  - native
+  - connected
+  - hybrid
+service-path: services/mycodexvantaos-billing-metering

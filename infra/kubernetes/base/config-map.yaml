@@ -4,5 +4,9 @@ metadata:
   name: mycodexvantaos-config
   namespace: mycodexvantaos
 data:
-  MYCODEXVANTAOS_RUNTIME_MODE: 'connected'
-  MYCODEXVANTAOS_DEPLOYMENT_TARGET: 'kubernetes'
+  MYCODEXVANTAOS_RUNTIME_MODE: connected
+  MYCODEXVANTAOS_DEPLOYMENT_TARGET: kubernetes
+  PLATFORM: mycodexvantaos
+  CANONICAL_URL: https://mycodexvantaos.com
+  API_URL: https://api.mycodexvantaos.com
+  APP_ENV: production

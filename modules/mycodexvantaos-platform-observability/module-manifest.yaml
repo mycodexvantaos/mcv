@@ -30,3 +30,4 @@ spec:
     - hybrid
   deployment:
     type: container
+service-id: mycodexvantaos-platform-observability

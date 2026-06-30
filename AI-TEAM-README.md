@@ -177,12 +177,7 @@ const workflow = await orchestrator.executeWorkflow('security-audit', {
 The persona engine provides intelligent analysis capabilities:
 
 ```typescript
-import {
-  PersonaManager,
-  SemanticMaskDetector,
-  RootCauseAnalyzer,
-  SolutionGenerator,
-} from 'mycodexvantaos/persona';
+import { PersonaManager, SemanticMaskDetector, RootCauseAnalyzer, SolutionGenerator } from 'mycodexvantaos/persona';
 
 // Detect semantic masks
 const detector = new SemanticMaskDetector();

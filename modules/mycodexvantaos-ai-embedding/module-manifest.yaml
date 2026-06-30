@@ -1,4 +1,3 @@
-# modules/mycodexvantaos-ai-embedding/module-manifest.yaml
 apiVersion: mycodexvantaos.org/v1
 kind: Module
 metadata:
@@ -6,7 +5,9 @@ metadata:
   labels:
     mycodexvantaos.org/domain: ai
     mycodexvantaos.org/managed-by: naming-spec-v1
-
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   domain: ai
   capabilities:
@@ -19,7 +20,15 @@ spec:
     cache: cache-redis
   lifecycle:
     stage: stable
-    since: 'v1.0.0'
-  urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-embedding'
+    since: v1.0.0
+  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-embedding
   packageName: '@mycodexvantaos/ai-embedding'
-  description: 'AI embedding generation service. Produces dense vector representations from text using configurable embedding providers.'
+  description: AI embedding generation service. Produces dense vector representations
+    from text using configurable embedding providers.
+service-id: mycodexvantaos-ai-embedding
+platform: mycodexvantaos
+runtime-modes:
+  - native
+  - connected
+  - hybrid
+service-path: services/mycodexvantaos-ai-embedding

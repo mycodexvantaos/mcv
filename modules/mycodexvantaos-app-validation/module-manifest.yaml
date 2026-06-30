@@ -1,0 +1,19 @@
+apiVersion: mycodexvantaos.io/v1
+kind: Module
+service-id: mycodexvantaos-app-validation
+metadata:
+  name: mycodexvantaos-app-validation
+  capability: validation
+  version: 1.0.0
+  tier: tier-1
+  foundation: governance-foundation
+spec:
+  description: Application validation service for schema enforcement, contract verification,
+    and compliance checking.
+  category: governance
+  runtime-modes:
+    - native
+    - connected
+    - hybrid
+  implementationPath: services/mycodexvantaos-app-validation/
+  packageName: '@mycodexvantaos/app-validation'

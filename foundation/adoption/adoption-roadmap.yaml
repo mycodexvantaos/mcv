@@ -2,4 +2,6 @@ apiVersion: mycodexvantaos.io/v1
 kind: FoundationAdoption
 metadata:
   name: adoption-roadmap
-spec: {}
+  version: 1.0.0
+spec:
+  platform: mycodexvantaos

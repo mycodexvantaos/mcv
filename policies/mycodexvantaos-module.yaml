@@ -3,8 +3,10 @@ kind: RootModule
 metadata:
   name: policies
   urn: urn:mycodexvantaos:policies:module:policies
+  version: 1.0.0
 spec:
   moduleType: policies
   description: Platform governance policies
   runtimeCodeAllowed: false
   deploymentAllowed: false
+platform: mycodexvantaos

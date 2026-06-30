@@ -3,7 +3,9 @@ kind: BindingIndex
 metadata:
   name: binding-index
   description: Service-to-provider binding index for MyCodexVantaOS
-
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   bindings:
     - serviceId: mycodexvantaos-core-auth
@@ -11,21 +13,18 @@ spec:
         - capability: auth
           providerId: auth-jwt
           required: true
-
     - serviceId: mycodexvantaos-ai-embedding
       providers:
         - capability: embedding
           providerId: embedding-native
           required: true
           fallback: embedding-openai
-
     - serviceId: mycodexvantaos-ai-inference
       providers:
         - capability: llm
           providerId: llm-native
           required: true
           fallback: llm-openai
-
     - serviceId: mycodexvantaos-agent-runtime
       providers:
         - capability: llm
@@ -34,7 +33,6 @@ spec:
         - capability: vector-store
           providerId: vector-store-pgvector
           required: true
-
     - serviceId: mycodexvantaos-knowledge-ingestion
       providers:
         - capability: embedding
@@ -46,7 +44,6 @@ spec:
         - capability: storage
           providerId: storage-minio
           required: true
-
     - serviceId: mycodexvantaos-knowledge-search
       providers:
         - capability: vector-store
@@ -55,7 +52,6 @@ spec:
         - capability: embedding
           providerId: embedding-native
           required: true
-
     - serviceId: mycodexvantaos-billing-metering
       providers:
         - capability: database
@@ -64,7 +60,6 @@ spec:
         - capability: queue
           providerId: queue-rabbitmq
           required: true
-
     - serviceId: mycodexvantaos-quantum-controller
       providers:
         - capability: quantum-runtime
@@ -73,3 +68,5 @@ spec:
         - capability: quantum-simulator
           providerId: quantum-simulator-qiskit
           required: false
+platform: mycodexvantaos
+canonical-url: https://mycodexvantaos.com

@@ -3,7 +3,9 @@ kind: NavigationSchema
 metadata:
   name: navigation-schema
   description: Schema definitions for navigation artifacts
-
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   schemas:
     - name: navigation-index
@@ -12,3 +14,5 @@ spec:
       path: navigation/schemas/dependency-graph.schema.json
     - name: binding-index
       path: navigation/schemas/binding-index.schema.json
+platform: mycodexvantaos
+canonical-url: https://mycodexvantaos.com

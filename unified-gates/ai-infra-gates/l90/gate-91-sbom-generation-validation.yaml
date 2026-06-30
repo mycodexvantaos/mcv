@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,32 +10,36 @@ metadata:
   criticality: critical
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-00000
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
     - l90
     - sbom
   sloTarget: 30
   evidenceRetentionDays: 2555
+  date: '2026-06-29'
+  status: active
 spec:
-  description: >
-    Validates that a complete Software Bill of Materials (SBOM) has been generated for the release artifact.
+  description: 'Validates that a complete Software Bill of Materials (SBOM) has been
+    generated for the release artifact.
+
+    '
   validates:
     - dimension: sbom-completeness
       description: SBOM is complete and valid.
       checks:
         - id: chk-sbom-exists
           description: SBOM file exists in the release artifact
-          rule: 'file-exists:sbom.json'
+          rule: file-exists:sbom.json
           severity: critical
           evidenceRequired: true
         - id: chk-sbom-format-valid
           description: SBOM conforms to CycloneDX or SPDX format
-          rule: 'schema:sbom-cyclonedx-or-spdx'
+          rule: schema:sbom-cyclonedx-or-spdx
           severity: critical
           evidenceRequired: true
         - id: chk-all-deps-included
           description: All direct and transitive dependencies are in the SBOM
-          rule: 'sbom:all-deps-included'
+          rule: sbom:all-deps-included
           severity: critical
           evidenceRequired: true
   dependsOn: []

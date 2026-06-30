@@ -1,10 +1,7 @@
-# providers/security/security-trivy/provider-manifest.yaml
-# 8.1 — provider instance: security-trivy
-# 8.2 — capability (security) precedes provider name (trivy)
 apiVersion: mycodexvantaos.org/v1
 kind: Provider
 metadata:
-  name: security-trivy
+  name: mycodexvantaos-security-trivy
   capability: security
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
@@ -16,4 +13,6 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_SECURITY
   configSchemaRef: ./config.schema.json
-  description: 'Trivy vulnerability scanner provider.'
+  description: Trivy vulnerability scanner provider.
+provider-id: mycodexvantaos-security-trivy
+capability: security

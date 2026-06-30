@@ -2,4 +2,10 @@ apiVersion: mycodexvantaos.io/v1
 kind: SupplyChainPolicy
 metadata:
   name: slsa-policy
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec: {}
+platform: mycodexvantaos
+slsa:
+  level: 2

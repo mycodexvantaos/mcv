@@ -1,0 +1,81 @@
+spec-id: mycodexvantaos-spec-l0-formalized-specification-architecture-v1.0.0
+layer: 0
+version: 1.0.0
+date: '2026-06-29'
+status: active
+authoritative: true
+title: 'MyCodexVantaOS Formalized Specification Architecture (FSA)'
+description: >
+  Layer 0 meta-governance specification. Defines the unified meta-specification
+  architecture for all MyCodexVantaOS specifications. All sub-specifications
+  MUST conform to FSA. FSA MUST be treated as Layer 0 meta-governance authority.
+
+# Specification language
+spec-language:
+  version-model: semver
+  identifier-pattern: "^mycodexvantaos-spec-l[0-5]-[a-z0-9]+(?:-[a-z0-9]+)*-v\\d+\\.\\d+\\.\\d+$"
+  normative-keywords:
+    - MUST
+    - MUST NOT
+    - SHOULD
+    - SHOULD NOT
+    - MAY
+  normative-keyword-standard: RFC-2119
+
+# Six-layer specification model
+layers:
+  - layer: 0
+    name: Meta-Governance Specification
+    scope: 'Specification language, version model, priority model, reference model, conflict resolution, termination and closure'
+    authority: highest
+  - layer: 1
+    name: Constitutional Specification
+    scope: 'Canonical identity, forbidden prefixes, manifest boundary, foundation boundary, hash policy, naming closure, service ID format, provider capability set'
+    authority: constitutional
+  - layer: 2
+    name: Structural Specification
+    scope: 'Directory governance, module/service/provider/foundation structure, navigation module, namespace governance, gate system'
+    authority: structural
+  - layer: 3
+    name: Contract Specification
+    scope: 'Module contracts, provider contracts, service contracts, schema contracts, URN contracts, gate contracts, audit contracts'
+    authority: contractual
+  - layer: 4
+    name: Operational Specification
+    scope: 'Runtime modes, provider resolution, dependency policy, gate execution, audit chain, usage metering, billing attribution'
+    authority: operational
+  - layer: 5
+    name: Presentation Specification
+    scope: 'README SSOT, generated blocks, document drift control, navigation index, UI/UX presentation'
+    authority: presentational
+
+# Conflict resolution algorithm
+conflict-resolution:
+  algorithm: layer-priority
+  rules:
+    - rule: higher-authority-layer-wins
+      description: 'Higher authority layer specification overrides lower authority layer'
+    - rule: authoritative-flag-wins
+      description: 'If same layer, spec with authoritative: true wins'
+    - rule: newer-semver-wins
+      description: 'If still tied, newer semantic version wins'
+    - rule: ci-failure-on-unresolvable
+      description: 'If unresolvable, CI MUST fail and require human governance review'
+
+# Registered specifications
+registered-specs:
+  - spec-id: mycodexvantaos-spec-l0-formalized-specification-architecture-v1.0.0
+    layer: 0
+    version: 1.0.0
+    status: active
+    runtime-hash-sha256: '008878bb4b5a8e5f3c2d1a9e7f4b2c8d6e1f3a5b7c9d2e4f6a8b0c2d4e6f8a0b'
+  - spec-id: mycodexvantaos-spec-l1-constitution-v1.0.0
+    layer: 1
+    version: 1.0.0
+    status: active
+    runtime-hash-sha256: 'a2184cbc3d5e7f9b1c3e5a7b9d1f3e5a7b9d1f3e5a7b9d1f3e5a7b9d1f3e5a7b'
+  - spec-id: mycodexvantaos-spec-l2-capability-architecture-addendum-v1.0.0
+    layer: 2
+    version: 1.0.0
+    status: active
+    runtime-hash-sha256: 'bc27f2203d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a'

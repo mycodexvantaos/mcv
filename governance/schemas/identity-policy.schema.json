@@ -1,13 +1,130 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://mycodexvantaos.io/schemas/governance/identity-policy",
-  "title": "Identity Policy",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mycodexvantaos.com/schemas/identity-policy.schema.json",
+  "title": "IdentityPolicy",
   "type": "object",
   "properties": {
-    "apiVersion": { "type": "string" },
-    "kind": { "type": "string" },
-    "metadata": { "type": "object" },
-    "spec": { "type": "object" }
+    "apiVersion": {
+      "type": "string",
+      "const": "mycodexvantaos.io/v1"
+    },
+    "kind": {
+      "type": "string",
+      "const": "IdentityPolicy"
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["name", "version", "status"],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "deprecated", "draft"]
+        },
+        "authoritative": {
+          "type": "boolean"
+        },
+        "ssot": {
+          "type": "boolean"
+        }
+      }
+    },
+    "spec": {
+      "type": "object"
+    },
+    "identity": {
+      "type": "object",
+      "required": ["machine", "brand", "forbidden-prefixes"],
+      "properties": {
+        "machine": {
+          "type": "string",
+          "const": "mycodexvantaos"
+        },
+        "brand": {
+          "type": "string",
+          "const": "MyCodexVantaOS"
+        },
+        "legacy-aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "forbidden-prefixes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 6
+        }
+      }
+    },
+    "deployment": {
+      "type": "object",
+      "required": ["canonical-url"],
+      "properties": {
+        "canonical-url": {
+          "type": "string",
+          "const": "https://mycodexvantaos.com"
+        },
+        "domains": {
+          "type": "object"
+        },
+        "forbidden-production-urls": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "naming": {
+      "type": "object",
+      "properties": {
+        "machine-identifier-pattern": {
+          "type": "string"
+        },
+        "service-id-pattern": {
+          "type": "string"
+        },
+        "provider-id-pattern": {
+          "type": "string"
+        },
+        "case": {
+          "type": "string",
+          "const": "kebab-case"
+        },
+        "enforce-in-ci": {
+          "type": "boolean"
+        }
+      }
+    },
+    "enforcement": {
+      "type": "object",
+      "properties": {
+        "ci-failure-on-violation": {
+          "type": "boolean"
+        },
+        "violation-severity": {
+          "type": "string"
+        }
+      }
+    }
   },
-  "required": ["apiVersion", "kind", "metadata", "spec"]
+  "required": [
+    "apiVersion",
+    "kind",
+    "metadata",
+    "spec",
+    "identity",
+    "deployment",
+    "naming",
+    "enforcement"
+  ],
+  "description": "Schema for MyCodexVantaOS identity policy"
 }

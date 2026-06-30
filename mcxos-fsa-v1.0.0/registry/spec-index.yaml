@@ -1,0 +1,9 @@
+apiVersion: mycodexvantaos.io/v1
+kind: SpecIndex
+metadata:
+  name: mcxos-fsa-spec-index
+  version: 1.0.0
+specs:
+  - spec-id: mycodexvantaos-spec-l0-formalized-specification-architecture-v1.0.0
+    layer: 0
+    status: active

@@ -1,0 +1,11 @@
+From: MyCodexVantaOS Platform Team <platform@mycodexvantaos.com>
+Date: 2026-06-29
+Subject: [PATCH 0004] ci: remove 3 more workflows duplicated inside unified-gates
+
+Remove 3 workflows that are now fully covered by unified-gates-ci.yml.
+Reduces workflow count from 32 to 29, saving 3x runner time.
+
+Signed-off-by: MyCodexVantaOS Platform Team <platform@mycodexvantaos.com>
+---
+ .github/workflows/duplicate-*.yml | 89 ------------------------------
+ 3 files changed, 89 deletions(-)

@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,27 +10,31 @@ metadata:
   criticality: high
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-00000
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
     - l00
     - owner
   sloTarget: 30
   evidenceRetentionDays: 1095
+  date: '2026-06-29'
+  status: active
 spec:
-  description: >
-    Validates that every gate and namespace has a registered owner in the owner registry.
+  description: 'Validates that every gate and namespace has a registered owner in
+    the owner registry.
+
+    '
   validates:
     - dimension: ownership-completeness
       description: All gates and namespaces have registered owners.
       checks:
         - id: chk-gate-has-owner
           description: Every gate definition has a non-empty owner field
-          rule: 'field-not-empty:owner'
+          rule: field-not-empty:owner
           severity: high
           evidenceRequired: true
         - id: chk-owner-is-registered
           description: Owner email or URN is in the owner registry
-          rule: 'registry:owner-registered'
+          rule: registry:owner-registered
           severity: high
           evidenceRequired: true
   dependsOn: []

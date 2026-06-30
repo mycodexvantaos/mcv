@@ -3,7 +3,9 @@ kind: SsotRegistry
 metadata:
   name: ssot-registry
   description: Single source of truth registry
-
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   ssotArtifacts:
     - name: identity
@@ -30,3 +32,59 @@ spec:
     - name: gateCatalog
       artifact: unified-gates/gate/gate-catalog.yaml
       ssot: true
+ssot-sources:
+  - id: l0-fsa
+    path: docs/spec/l0-meta/formalized-specification-architecture.yaml
+    layer: 0
+    authoritative: true
+    derived-artifacts: []
+  - id: l1-constitution
+    path: docs/spec/l1-constitution/constitution.yaml
+    layer: 1
+    authoritative: true
+    derived-artifacts:
+      - governance/capability-set.yaml
+      - governance/naming-policy.schema.json
+      - governance/identity-policy.yaml
+  - id: l2-capability-addendum
+    path: docs/spec/l2-structure/capability-architecture-addendum.yaml
+    layer: 2
+    authoritative: true
+    derived-artifacts:
+      - navigation/
+      - mycodexvantaos-namespace-governance/
+  - id: identity-policy
+    path: governance/identity-policy.yaml
+    layer: governance
+    authoritative: true
+    derived-artifacts:
+      - all machine-readable identifiers
+      - all service IDs
+      - all provider IDs
+  - id: platform-governance-spec
+    path: governance/platform-governance-spec.yaml
+    layer: governance
+    authoritative: true
+    derived-artifacts:
+      - ci/rules/
+      - ci/reporters/
+  - id: service-catalog
+    path: platform/service-catalog.yaml
+    layer: platform
+    authoritative: true
+    derived-artifacts:
+      - modules/
+      - services/
+      - navigation/maps/service-map.yaml
+  - id: capability-set
+    path: governance/capability-set.yaml
+    layer: governance
+    authoritative: true
+    derived-artifacts:
+      - providers/
+      - governance/provider-registry.yaml
+drift-detection:
+  enabled: true
+  threshold: 0
+  ci-failure-on-drift: true
+  check-interval: on-every-ci-run

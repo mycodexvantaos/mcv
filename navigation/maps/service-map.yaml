@@ -3,4 +3,6 @@ kind: NavigationMap
 metadata:
   name: service-map
   description: service-map for MyCodexVantaOS
+  version: 1.0.0
 spec: {}
+platform: mycodexvantaos

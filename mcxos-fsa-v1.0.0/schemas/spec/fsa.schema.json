@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mycodexvantaos.com/schemas/spec/fsa.schema.json",
+  "title": "FSA",
+  "type": "object",
+  "required": ["spec-id", "layer", "version", "status"],
+  "properties": {
+    "spec-id": { "type": "string" },
+    "layer": { "type": "integer" },
+    "version": { "type": "string" },
+    "status": { "type": "string" }
+  }
+}

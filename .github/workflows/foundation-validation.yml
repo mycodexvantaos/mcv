@@ -1,0 +1,79 @@
+name: Foundation Validation
+
+"on":
+  push:
+    branches: [main, develop]
+    paths:
+      - "foundation/**"
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate-foundation-structure:
+    name: Validate Foundation Structure
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install pyyaml jsonschema
+
+      - name: Validate foundation structure
+        run: python3 scripts/validate-foundation-structure.py
+
+      - name: Validate each foundation has required files
+        run: |
+          python3 -c "
+          import os, sys
+          foundations = [
+              'compute-foundation', 'data-foundation', 'algorithm-foundation',
+              'agent-foundation', 'contract-foundation', 'governance-foundation',
+              'business-foundation'
+          ]
+          required_files = [
+              'foundation.yaml', 'README.md', 'boundary.yaml', 'capability-map.yaml',
+              'commercial-model.yaml', 'maturity.yaml', 'module-map.yaml',
+              'owner-map.yaml', 'package-map.yaml', 'product-boundary.yaml',
+              'reference-architecture.yaml', 'roadmap.yaml', 'service-map.yaml',
+              'urn-map.yaml'
+          ]
+          errors = []
+          for foundation in foundations:
+              for req_file in required_files:
+                  path = f'foundation/{foundation}/{req_file}'
+                  if not os.path.exists(path):
+                      errors.append(f'Missing: {path}')
+          if errors:
+              for e in errors:
+                  print(f'ERROR: {e}')
+              sys.exit(1)
+          print(f'Foundation structure validation: PASSED ({len(foundations)} foundations)')
+          "
+
+      - name: Generate foundation validation report
+        if: always()
+        run: python3 scripts/generate-foundation-validation-report.py
+
+      - name: Upload foundation validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: foundation-validation-report
+          path: outputs/foundation-validation-report.json
+          retention-days: 30

@@ -3,7 +3,9 @@ kind: ProviderNavigationMap
 metadata:
   name: provider-navigation-map
   description: Provider navigation map for MyCodexVantaOS
-
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   providers:
     - capability: database
@@ -46,3 +48,5 @@ spec:
       instances:
         - id: quantum-runtime-native
           path: providers/quantum-runtime/quantum-runtime-native/provider-manifest.yaml
+platform: mycodexvantaos
+canonical-url: https://mycodexvantaos.com

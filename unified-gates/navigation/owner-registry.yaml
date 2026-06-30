@@ -1,6 +1,3 @@
----
-# path: unified-gates/navigation/owner-registry.yaml
-# governanceCode: mycodexvantaos-00000
 apiVersion: mycodexvantaos.io/v1
 kind: OwnerRegistry
 metadata:
@@ -8,14 +5,13 @@ metadata:
   version: 1.0.0
   governanceCode: mycodexvantaos-00000
   lifecycle: active
-
 spec:
-  description: >
-    Authoritative owner registry for all gates, policies, and governance
-    artifacts in the unified-gates module. Every gate MUST have a registered
-    owner. Gates without a registered owner are treated as blocking:true
-    with criticality:critical until an owner is assigned.
+  description: 'Authoritative owner registry for all gates, policies, and governance
+    artifacts in the unified-gates module. Every gate MUST have a registered owner.
+    Gates without a registered owner are treated as blocking:true with criticality:critical
+    until an owner is assigned.
 
+    '
   owners:
     - urn: urn:mycodexvantaos:team:platform-governance-council
       email: platform-governance-council@mycodexvantaos.com
@@ -34,7 +30,6 @@ spec:
         - gate-95-audit-evidence-chain-validation
         - gate-98-compliance-report-validation
         - gate-99-production-closure-validation
-
     - urn: urn:mycodexvantaos:team:platform-infra
       email: platform@mycodexvantaos.com
       displayName: Platform Infrastructure Team
@@ -52,7 +47,6 @@ spec:
         - gate-62-kubernetes-baseline-validation
         - gate-63-gitops-sync-validation
         - gate-64-managed-service-sla-validation
-
     - urn: urn:mycodexvantaos:team:data-platform
       email: data-platform@mycodexvantaos.com
       displayName: Data Platform Team
@@ -66,7 +60,6 @@ spec:
         - gate-26-embedding-dimension-validation
         - gate-27-data-quality-threshold-validation
         - gate-28-data-access-policy-validation
-
     - urn: urn:mycodexvantaos:team:ai-platform
       email: ai-platform@mycodexvantaos.com
       displayName: AI Platform Team
@@ -88,7 +81,6 @@ spec:
         - gate-46-workload-resource-estimation
         - gate-47-workload-slo-validation
         - gate-48-workload-runtime-sandbox-validation
-
     - urn: urn:mycodexvantaos:team:billing-platform
       email: billing@mycodexvantaos.com
       displayName: Billing Platform Team
@@ -102,7 +94,6 @@ spec:
         - gate-56-cost-attribution-validation
         - gate-57-billing-policy-validation
         - gate-58-invoice-evidence-validation
-
     - urn: urn:mycodexvantaos:team:platform-security
       email: platform-security@mycodexvantaos.com
       displayName: Platform Security Team
@@ -113,7 +104,6 @@ spec:
         - gate-93-signature-validation
         - gate-96-release-readiness-validation
         - gate-97-rollback-readiness-validation
-
   escalationChain:
     - level: 1
       urn: urn:mycodexvantaos:team:gate-owner

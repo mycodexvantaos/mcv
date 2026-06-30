@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mycodexvantaos.com/schemas/l2/capability-architecture-addendum.schema.json",
+  "title": "L2CapabilityArchitectureAddendum",
+  "type": "object",
+  "required": ["spec-id", "layer"],
+  "properties": {
+    "spec-id": { "type": "string" },
+    "layer": { "type": "integer", "const": 2 }
+  }
+}

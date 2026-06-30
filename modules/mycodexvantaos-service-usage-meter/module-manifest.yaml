@@ -1,0 +1,19 @@
+apiVersion: mycodexvantaos.io/v1
+kind: Module
+service-id: mycodexvantaos-service-usage-meter
+metadata:
+  name: mycodexvantaos-service-usage-meter
+  capability: database
+  version: 1.0.0
+  tier: tier-1
+  foundation: business-foundation
+spec:
+  description: Usage metering service for consumption tracking, billing event generation,
+    and quota enforcement.
+  category: business
+  runtime-modes:
+    - native
+    - connected
+    - hybrid
+  implementationPath: services/mycodexvantaos-service-usage-meter/
+  packageName: '@mycodexvantaos/service-usage-meter'

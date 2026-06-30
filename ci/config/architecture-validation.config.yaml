@@ -2,6 +2,7 @@ apiVersion: mycodexvantaos.io/v1
 kind: ArchitectureValidationConfig
 metadata:
   name: architecture-validation-config
+  version: 1.0.0
 spec:
   checks:
     - identity

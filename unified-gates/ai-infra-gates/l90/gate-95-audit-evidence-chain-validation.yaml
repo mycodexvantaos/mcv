@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,32 +10,36 @@ metadata:
   criticality: critical
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-00700
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
     - l90
     - audit
   sloTarget: 30
   evidenceRetentionDays: 2555
+  date: '2026-06-29'
+  status: active
 spec:
-  description: >
-    Validates that the audit evidence chain is intact and has no gaps or hash mismatches.
+  description: 'Validates that the audit evidence chain is intact and has no gaps
+    or hash mismatches.
+
+    '
   validates:
     - dimension: chain-integrity
       description: Audit evidence chain is intact.
       checks:
         - id: chk-chain-no-gaps
           description: No gaps in the audit evidence chain
-          rule: 'evidence:chain-no-gaps'
+          rule: evidence:chain-no-gaps
           severity: critical
           evidenceRequired: true
         - id: chk-chain-hash-valid
           description: All previousRecordHash values are valid
-          rule: 'evidence:chain-hash-valid'
+          rule: evidence:chain-hash-valid
           severity: critical
           evidenceRequired: true
         - id: chk-chain-covers-all-gates
           description: Evidence chain covers all gate evaluations in the pipeline run
-          rule: 'evidence:chain-complete'
+          rule: evidence:chain-complete
           severity: critical
           evidenceRequired: true
   dependsOn: []

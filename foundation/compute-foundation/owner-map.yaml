@@ -3,4 +3,7 @@ kind: FoundationSpec
 metadata:
   name: owner-map
   foundation: compute-foundation
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec: {}

@@ -1,10 +1,7 @@
-# providers/storage/storage-s3/provider-manifest.yaml
-# 8.1 — provider instance: storage-s3
-# 8.2 — capability (storage) precedes provider name (s3)
 apiVersion: mycodexvantaos.org/v1
 kind: Provider
 metadata:
-  name: storage-s3
+  name: mycodexvantaos-storage-s3
   capability: storage
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
@@ -16,4 +13,6 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_STORAGE
   configSchemaRef: ./config.schema.json
-  description: 'AWS S3 object storage provider.'
+  description: AWS S3 object storage provider.
+provider-id: mycodexvantaos-storage-s3
+capability: storage

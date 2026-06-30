@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env tsx
 /**
  * ci/validate-architecture.ts
  *
@@ -22,26 +22,26 @@ import fs from 'fs';
 import path from 'path';
 import { parseArgs } from 'util';
 import { parse } from 'yaml';
-import * as serviceIdRule from './rules/service-id.rule';
-import * as modulePathRule from './rules/module-path.rule';
-import * as packageNameRule from './rules/package-name.rule';
-import * as manifestNameRule from './rules/manifest-name.rule';
-import * as capabilityIdRule from './rules/capability-id.rule';
-import * as providerInstanceRule from './rules/provider-instance.rule';
-import * as envVarRule from './rules/env-var.rule';
-import * as urnRule from './rules/urn.rule';
-import * as forbiddenLegacyPrefixRule from './rules/forbidden-legacy-prefix.rule';
-import * as noVersionInCanonicalRule from './rules/no-version-in-canonical.rule';
-import * as noEnvironmentInCanonicalRule from './rules/no-environment-in-canonical.rule';
-import * as vectorCollectionRule from './rules/vector-collection.rule';
-import * as embeddingModelAliasRule from './rules/embedding-model-alias.rule';
-import * as retrievalPipelineIdRule from './rules/retrieval-pipeline-id.rule';
-import * as searchIndexIdRule from './rules/search-index-id.rule';
-import * as graphNodeIdRule from './rules/graph-node-id.rule';
-import * as graphDbIndexIdRule from './rules/graph-db-index-id.rule';
-import * as timestampedIdRule from './rules/timestamped-id.rule';
-import * as contentAddressedIdRule from './rules/content-addressed-id.rule';
-import * as uuidBasedIdRule from './rules/uuid-based-id.rule';
+import * as serviceIdRule from './rules/service-id.rule.js';
+import * as modulePathRule from './rules/module-path.rule.js';
+import * as packageNameRule from './rules/package-name.rule.js';
+import * as manifestNameRule from './rules/manifest-name.rule.js';
+import * as capabilityIdRule from './rules/capability-id.rule.js';
+import * as providerInstanceRule from './rules/provider-instance.rule.js';
+import * as envVarRule from './rules/env-var.rule.js';
+import * as urnRule from './rules/urn.rule.js';
+import * as forbiddenLegacyPrefixRule from './rules/forbidden-legacy-prefix.rule.js';
+import * as noVersionInCanonicalRule from './rules/no-version-in-canonical.rule.js';
+import * as noEnvironmentInCanonicalRule from './rules/no-environment-in-canonical.rule.js';
+import * as vectorCollectionRule from './rules/vector-collection.rule.js';
+import * as embeddingModelAliasRule from './rules/embedding-model-alias.rule.js';
+import * as retrievalPipelineIdRule from './rules/retrieval-pipeline-id.rule.js';
+import * as searchIndexIdRule from './rules/search-index-id.rule.js';
+import * as graphNodeIdRule from './rules/graph-node-id.rule.js';
+import * as graphDbIndexIdRule from './rules/graph-db-index-id.rule.js';
+import * as timestampedIdRule from './rules/timestamped-id.rule.js';
+import * as contentAddressedIdRule from './rules/content-addressed-id.rule.js';
+import * as uuidBasedIdRule from './rules/uuid-based-id.rule.js';
 import { validate } from './utils/regex-table.js';
 
 // ─── Public Types ─────────────────────────────────────────────────────────────

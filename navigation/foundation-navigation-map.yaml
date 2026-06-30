@@ -3,7 +3,9 @@ kind: FoundationNavigationMap
 metadata:
   name: foundation-navigation-map
   description: Foundation navigation map for MyCodexVantaOS
-
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   foundations:
     - name: compute-foundation
@@ -27,3 +29,5 @@ spec:
     - name: business-foundation
       path: foundation/business-foundation/foundation.yaml
       urn: urn:mycodexvantaos:foundation:spec:business-foundation
+platform: mycodexvantaos
+canonical-url: https://mycodexvantaos.com

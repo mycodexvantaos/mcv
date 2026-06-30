@@ -2,7 +2,12 @@ apiVersion: mycodexvantaos.io/v1
 kind: ReleaseCandidate
 metadata:
   name: release-candidate
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   version: 0.1.0
   status: draft
   gates: []
+platform: mycodexvantaos
+canonical-url: https://mycodexvantaos.com

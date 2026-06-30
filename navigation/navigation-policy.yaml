@@ -2,12 +2,13 @@ apiVersion: mycodexvantaos.io/v1
 kind: NavigationPolicy
 metadata:
   name: navigation-policy
-
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   hardDependencyCyclePolicy:
     action: block
     severity: critical
-
   bidirectionalLogicalCouplingPolicy:
     requiresMediatorArtifact: true
     approvedMediators:
@@ -17,7 +18,8 @@ spec:
       - ports/
       - governance/policies/
       - platform/service-catalog.yaml
-
   navigationIndexPolicy:
     mustNotCreateHardRuntimeDependencies: true
     mustBeGovernanceArtifacts: true
+platform: mycodexvantaos
+canonical-url: https://mycodexvantaos.com

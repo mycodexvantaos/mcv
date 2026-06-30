@@ -4,10 +4,13 @@ metadata:
   name: vector-index-contract
   version: 1.0.0
   governanceCode: mycodexvantaos-70900
+  date: '2026-06-29'
+  status: active
 spec:
-  description: >
-    Defines the canonical contract for vector database indexes.
-    All vector indexes MUST conform to this contract.
+  description: 'Defines the canonical contract for vector database indexes. All vector
+    indexes MUST conform to this contract.
+
+    '
   requiredFields:
     - indexId
     - indexVersion
@@ -20,5 +23,8 @@ spec:
     - maxQueryLatencyMs
     - accessPolicy
   validValues:
-    distanceMetric: [cosine, euclidean, dot-product]
+    distanceMetric:
+      - cosine
+      - euclidean
+      - dot-product
   schemaRef: ../schemas/vector-index.schema.json

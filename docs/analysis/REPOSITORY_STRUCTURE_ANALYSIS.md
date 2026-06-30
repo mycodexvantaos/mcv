@@ -1,4 +1,4 @@
-# MyCodeXvantaOS 倉庫深度結構分析報告
+## MyCodeXvantaOS 倉庫深度結構分析報告
 
 **分析日期**: 2026-05-05  
 **倉庫**: https://github.com/mycodexvantaos/mycodexvantaos.git  
@@ -74,50 +74,56 @@ MyCodeXvantaOS 是一個量子感知（Quantum-Aware）的企業級平台作業�
 **職責**: 平台核心基礎服務，為上層提供穩定的基礎設施抽象
 
 **核心域 (Core Domain)**:
-| 服務 | 能力 |
-|------|------|
-| `mycodexvantaos-core-kernel` | 核心內核：資料庫、快取、可觀測性、密鑰管理 |
-| `mycodexvantaos-core-auth` | 認證授權：Keycloak / JWT 原生 |
-| `mycodexvantaos-core-gateway` | API 閘道：JWT 認證、可觀測性、快取 |
-| `mycodexvantaos-core-config` | 組態管理 |
+
+| 服務                          | 能力                                       |
+| ----------------------------- | ------------------------------------------ |
+| `mycodexvantaos-core-kernel`  | 核心內核：資料庫、快取、可觀測性、密鑰管理 |
+| `mycodexvantaos-core-auth`    | 認證授權：Keycloak / JWT 原生              |
+| `mycodexvantaos-core-gateway` | API 閘道：JWT 認證、可觀測性、快取         |
+| `mycodexvantaos-core-config`  | 組態管理                                   |
 
 **AI 域 (AI Domain)**:
-| 服務 | 能力 |
-|------|------|
-| `mycodexvantaos-ai-embedding` | 嵌入生成：OpenAI / Cohere / Ollama |
-| `mycodexvantaos-ai-llm` | LLM 推理：OpenAI / Gemini / Anthropic / Ollama |
-| `mycodexvantaos-ai-memory` | AI 記憶體：向量存儲 (pgvector/Qdrant)、嵌入、狀態存儲 |
-| `mycodexvantaos-ai-agent` | AI 代理：工具鍛造、自主決策 |
-| `mycodexvantaos-ai-ensemble` | AI 集成：多模型協同 |
-| `mycodexvantaos-ai-team-service` | AI 團隊服務：多代理編排 |
-| `mycodexvantaos-persona-engine` | 人格引擎：語義面具、人格輪廓 |
+
+| 服務                             | 能力                                                  |
+| -------------------------------- | ----------------------------------------------------- |
+| `mycodexvantaos-ai-embedding`    | 嵌入生成：OpenAI / Cohere / Ollama                    |
+| `mycodexvantaos-ai-llm`          | LLM 推理：OpenAI / Gemini / Anthropic / Ollama        |
+| `mycodexvantaos-ai-memory`       | AI 記憶體：向量存儲 (pgvector/Qdrant)、嵌入、狀態存儲 |
+| `mycodexvantaos-ai-agent`        | AI 代理：工具鍛造、自主決策                           |
+| `mycodexvantaos-ai-ensemble`     | AI 集成：多模型協同                                   |
+| `mycodexvantaos-ai-team-service` | AI 團隊服務：多代理編排                               |
+| `mycodexvantaos-persona-engine`  | 人格引擎：語義面具、人格輪廓                          |
 
 **資料域 (Data Domain)**:
-| 服務 | 能力 |
-|------|------|
-| `mycodexvantaos-data-graph` | 知識圖譜：Neo4j / Memgraph |
-| `mycodexvantaos-data-pipeline` | 資料管線：流處理、轉換 |
+
+| 服務                               | 能力                        |
+| ---------------------------------- | --------------------------- |
+| `mycodexvantaos-data-graph`        | 知識圖譜：Neo4j / Memgraph  |
+| `mycodexvantaos-data-pipeline`     | 資料管線：流處理、轉換      |
 | `mycodexvantaos-data-vector-store` | 向量存儲：pgvector / Qdrant |
 
 **平台域 (Platform Domain)**:
-| 服務 | 能力 |
-|------|------|
-| `mycodexvantaos-platform-scheduler` | 任務排程：Temporal |
-| `mycodexvantaos-platform-notification` | 通知服務：SendGrid |
+
+| 服務                                    | 能力                                 |
+| --------------------------------------- | ------------------------------------ |
+| `mycodexvantaos-platform-scheduler`     | 任務排程：Temporal                   |
+| `mycodexvantaos-platform-notification`  | 通知服務：SendGrid                   |
 | `mycodexvantaos-platform-observability` | 可觀測性：Prometheus / OpenTelemetry |
-| `mycodexvantaos-platform-validation` | 平台驗證 |
+| `mycodexvantaos-platform-validation`    | 平台驗證                             |
 
 **安全域 (Security Domain)**:
-| 服務 | 能力 |
-|------|------|
-| `mycodexvantaos-security-secrets` | 密鑰管理：K8s 原生 / HashiCorp Vault |
-| `mycodexvantaos-security-validation` | 安全驗證：Trivy 掃描 |
+
+| 服務                                 | 能力                                 |
+| ------------------------------------ | ------------------------------------ |
+| `mycodexvantaos-security-secrets`    | 密鑰管理：K8s 原生 / HashiCorp Vault |
+| `mycodexvantaos-security-validation` | 安全驗證：Trivy 掃描                 |
 
 **治理域 (Governance Domain)**:
-| 服務 | 能力 |
-|------|------|
-| `mycodexvantaos-governance-policy` | 策略引擎：OPA / 策略即程式碼 |
-| `mycodexvantaos-docs-search` | 文件搜尋：Elasticsearch / Typesense |
+
+| 服務                               | 能力                                |
+| ---------------------------------- | ----------------------------------- |
+| `mycodexvantaos-governance-policy` | 策略引擎：OPA / 策略即程式碼        |
+| `mycodexvantaos-docs-search`       | 文件搜尋：Elasticsearch / Typesense |
 
 ### Layer D: 連接器層 (Connector Layer)
 
@@ -228,15 +234,16 @@ knowledge-graph/
 ```
 
 **圖譜關係類型**:
-| 關係 | 方向 | 描述 |
-|------|------|------|
-| `DEPENDS_ON` | Service → Capability/Service | 服務依賴能力或服務 |
-| `IMPLEMENTS` | Service → Capability | 服務實現標準化能力 |
-| `PROVIDES_CAPABILITY` | Provider → Capability | 提供者實例提供能力 |
-| `HAS_VECTOR_INDEX` | Service → VectorCollection | 服務擁有向量集合 |
-| `GOVERNED_BY` | Resource → Policy | 資源受策略約束 |
-| `REPLACED_BY` | Resource → Resource | 已棄用資源指向替代 |
-| `AUDITED_BY` | Resource → AuditLog | 資源受審計記錄 |
+
+| 關係                  | 方向                         | 描述               |
+| --------------------- | ---------------------------- | ------------------ |
+| `DEPENDS_ON`          | Service → Capability/Service | 服務依賴能力或服務 |
+| `IMPLEMENTS`          | Service → Capability         | 服務實現標準化能力 |
+| `PROVIDES_CAPABILITY` | Provider → Capability        | 提供者實例提供能力 |
+| `HAS_VECTOR_INDEX`    | Service → VectorCollection   | 服務擁有向量集合   |
+| `GOVERNED_BY`         | Resource → Policy            | 資源受策略約束     |
+| `REPLACED_BY`         | Resource → Resource          | 已棄用資源指向替代 |
+| `AUDITED_BY`          | Resource → AuditLog          | 資源受審計記錄     |
 
 ### 向量存儲
 

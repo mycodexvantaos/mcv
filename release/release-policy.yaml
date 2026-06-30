@@ -2,6 +2,9 @@ apiVersion: mycodexvantaos.io/v1
 kind: ReleasePolicy
 metadata:
   name: release-policy
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   requiredGates:
     - architecture-validation
@@ -17,3 +20,5 @@ spec:
   imagePinningRequired: true
   sbomRequired: true
   provenanceRequired: true
+platform: mycodexvantaos
+canonical-url: https://mycodexvantaos.com

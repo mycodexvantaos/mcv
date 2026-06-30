@@ -1,14 +1,14 @@
 name: Resource Model Check
 
-on:
+"on":
   push:
     paths:
-      - 'contracts/resource-kinds/**'
-      - 'packages/mycodexvantaos-resource-model/**'
+      - "contracts/resource-kinds/**"
+      - "packages/mycodexvantaos-resource-model/**"
   pull_request:
     paths:
-      - 'contracts/resource-kinds/**'
-      - 'packages/mycodexvantaos-resource-model/**'
+      - "contracts/resource-kinds/**"
+      - "packages/mycodexvantaos-resource-model/**"
   workflow_dispatch:
 
 permissions:

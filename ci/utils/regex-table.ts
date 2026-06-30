@@ -66,7 +66,7 @@ export const NAMING_RULES: Record<string, NamingRule> = {
     description:
       'Canonical capability identifier. Must be a member of the current canonical allowlist. Vendor names forbidden.',
     pattern:
-      /^(database|storage|auth|queue|state-store|secrets|repo|deploy|validation|security|observability|notification|scheduler|vector-store|embedding|llm|graph|cache|search|ai-ethics|blockchain|event-stream)$/,
+      /^(database|storage|auth|queue|state-store|secrets|repo|deploy|validation|security|observability|notification|scheduler|vector-store|embedding|llm|graph|cache|search|ai-ethics|blockchain|event-stream|quantum-runtime|quantum-simulator|quantum-processor|quantum-circuit|quantum-observability|audio|image|realtime)$/,
     matchMeansValid: true,
     enforcement: 'hard',
     specRef: 'Section 5.5',
@@ -77,7 +77,7 @@ export const NAMING_RULES: Record<string, NamingRule> = {
     description:
       'Provider instance: <canonical-capability-id>-<provider-name>. Capability segment MUST come first.',
     pattern:
-      /^(database|storage|auth|queue|state-store|secrets|repo|deploy|validation|security|observability|notification|scheduler|vector-store|embedding|llm|graph|cache|search|ai-ethics|blockchain|event-stream)-[a-z0-9-]+$/,
+      /^(database|storage|auth|queue|state-store|secrets|repo|deploy|validation|security|observability|notification|scheduler|vector-store|embedding|llm|graph|cache|search|ai-ethics|blockchain|event-stream|quantum-runtime|quantum-simulator|quantum-processor|quantum-circuit|quantum-observability|audio|image|realtime)-[a-z0-9-]+$/,
     matchMeansValid: true,
     enforcement: 'hard',
     specRef: 'Section 8.1',
@@ -237,6 +237,14 @@ export const CANONICAL_CAPABILITIES = [
   'ai-ethics',
   'blockchain',
   'event-stream',
+  'quantum-runtime',
+  'quantum-simulator',
+  'quantum-processor',
+  'quantum-circuit',
+  'quantum-observability',
+  'audio',
+  'image',
+  'realtime',
 ] as const;
 
 export type CapabilityId = (typeof CANONICAL_CAPABILITIES)[number];

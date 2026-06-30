@@ -3,6 +3,10 @@ kind: GovernancePolicy
 metadata:
   name: runtime-policy
   description: runtime-policy for MyCodexVantaOS
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   rules: []
   enforcement: block
+platform: mycodexvantaos

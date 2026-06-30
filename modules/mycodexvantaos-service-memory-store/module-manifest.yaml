@@ -1,0 +1,19 @@
+apiVersion: mycodexvantaos.io/v1
+kind: Module
+service-id: mycodexvantaos-service-memory-store
+metadata:
+  name: mycodexvantaos-service-memory-store
+  capability: vector-store
+  version: 1.0.0
+  tier: tier-1
+  foundation: algorithm-foundation
+spec:
+  description: Memory store service for persistent memory storage, retrieval, and
+    lifecycle management.
+  category: ai
+  runtime-modes:
+    - native
+    - connected
+    - hybrid
+  implementationPath: services/mycodexvantaos-service-memory-store/
+  packageName: '@mycodexvantaos/service-memory-store'

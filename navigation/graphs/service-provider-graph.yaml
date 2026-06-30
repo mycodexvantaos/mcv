@@ -3,4 +3,8 @@ kind: NavigationGraph
 metadata:
   name: service-provider-graph
   description: service-provider-graph for MyCodexVantaOS
+  version: 1.0.0
 spec: {}
+platform: mycodexvantaos
+nodes: []
+edges: []

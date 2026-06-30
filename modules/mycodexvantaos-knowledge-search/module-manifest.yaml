@@ -5,7 +5,9 @@ metadata:
   urn: urn:mycodexvantaos:service:mycodexvantaos-knowledge-search
   serviceId: mycodexvantaos-knowledge-search
   tier: tier-1
-
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   serviceId: mycodexvantaos-knowledge-search
   tier: tier-1
@@ -14,16 +16,13 @@ spec:
   kubernetesResourceName: mycodexvantaos-knowledge-search
   internalUri: mycodexvantaos://service/mycodexvantaos-knowledge-search
   urn: urn:mycodexvantaos:service:mycodexvantaos-knowledge-search
-
   supportedRuntimeModes:
     - native
     - connected
     - hybrid
-
   deploymentTargets:
     - kubernetes
     - docker-compose
-
   productionReadiness:
     required: true
     healthCheckRequired: true
@@ -31,3 +30,10 @@ spec:
     sbomRequired: true
     provenanceRequired: true
     imagePinningRequired: true
+service-id: mycodexvantaos-knowledge-search
+platform: mycodexvantaos
+runtime-modes:
+  - native
+  - connected
+  - hybrid
+service-path: services/mycodexvantaos-knowledge-search

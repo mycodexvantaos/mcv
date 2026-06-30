@@ -3,23 +3,29 @@ kind: ProviderManifest
 metadata:
   name: search-native
   urn: urn:mycodexvantaos:provider:search-native
-
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   id: search-native
   capability: search
   source: native
   status: active
   criticality: high
-
   supportsModes:
     - native
     - connected
     - hybrid
-
   healthCheck:
     enabled: true
     endpoint: /health
-
   observability:
     metricsEnabled: true
     tracingEnabled: true
+provider-id: mycodexvantaos-search-native
+capability: search
+platform: mycodexvantaos
+runtime-modes:
+  - native
+  - connected
+  - hybrid

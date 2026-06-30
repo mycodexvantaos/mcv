@@ -7,3 +7,11 @@ events:
   - usage.rate-limit-checked
   - usage.quota-warning
   - usage.quota-exceeded
+apiVersion: mycodexvantaos.io/v1
+kind: EventContract
+metadata:
+  name: mycodexvantaos-usage-events
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
+platform: mycodexvantaos

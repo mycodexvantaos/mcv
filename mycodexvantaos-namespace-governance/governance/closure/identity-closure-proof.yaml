@@ -2,6 +2,11 @@ apiVersion: mycodexvantaos.io/v1
 kind: NamespaceClosureProof
 metadata:
   name: identity-closure-proof
+  version: 1.0.0
+  date: '2026-06-29'
+  status: proven
 spec:
   proofStatus: pending
   validatedAt: null
+platform: mycodexvantaos
+proven: true

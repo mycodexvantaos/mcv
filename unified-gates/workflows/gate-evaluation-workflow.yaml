@@ -4,16 +4,22 @@ metadata:
   name: gate-evaluation-workflow
   version: 1.0.0
   governanceCode: mycodexvantaos-00000
+  date: '2026-06-29'
+  status: active
 spec:
-  description: >
-    Defines the ordered gate evaluation workflow for a standard CI pipeline run.
-    Gates are evaluated in layer order. A blocking failure in any layer halts
+  description: 'Defines the ordered gate evaluation workflow for a standard CI pipeline
+    run. Gates are evaluated in layer order. A blocking failure in any layer halts
     the pipeline immediately.
+
+    '
   triggers:
     - type: push
-      branches: [main, develop]
+      branches:
+        - main
+        - develop
     - type: pull_request
-      branches: [main]
+      branches:
+        - main
     - type: manual
   layers:
     - id: l00

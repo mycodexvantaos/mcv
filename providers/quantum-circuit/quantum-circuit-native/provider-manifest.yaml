@@ -3,23 +3,29 @@ kind: ProviderManifest
 metadata:
   name: quantum-circuit-native
   urn: urn:mycodexvantaos:provider:quantum-circuit-native
-
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   id: quantum-circuit-native
   capability: quantum-circuit
   source: native
   status: active
   criticality: high
-
   supportsModes:
     - native
     - connected
     - hybrid
-
   healthCheck:
     enabled: true
     endpoint: /health
-
   observability:
     metricsEnabled: true
     tracingEnabled: true
+provider-id: mycodexvantaos-quantum-circuit-native
+capability: quantum-circuit
+platform: mycodexvantaos
+runtime-modes:
+  - native
+  - connected
+  - hybrid

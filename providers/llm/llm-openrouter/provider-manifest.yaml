@@ -3,23 +3,29 @@ kind: ProviderManifest
 metadata:
   name: llm-openrouter
   urn: urn:mycodexvantaos:provider:llm-openrouter
-
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   id: llm-openrouter
   capability: llm
   source: openrouter
   status: active
   criticality: high
-
   supportsModes:
     - native
     - connected
     - hybrid
-
   healthCheck:
     enabled: true
     endpoint: /health
-
   observability:
     metricsEnabled: true
     tracingEnabled: true
+provider-id: mycodexvantaos-llm-openrouter
+capability: llm
+platform: mycodexvantaos
+runtime-modes:
+  - native
+  - connected
+  - hybrid

@@ -1,0 +1,110 @@
+name: Platform Constitution CI
+
+"on":
+  push:
+    branches: [main]
+    paths:
+      - "docs/spec/**"
+      - "governance/identity-policy.yaml"
+      - "governance/platform-governance-spec.yaml"
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  checks: write
+
+jobs:
+  constitution-compliance:
+    name: Constitution Compliance Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install pyyaml jsonschema
+
+      - name: Validate L0 FSA spec
+        run: |
+          python3 -c "
+          import yaml
+          with open('docs/spec/l0-meta/formalized-specification-architecture.yaml') as f:
+              spec = yaml.safe_load(f)
+          assert spec.get('spec-id', '').startswith('mycodexvantaos-spec-l0-'), 'Invalid L0 spec-id'
+          assert spec.get('layer') == 0, 'L0 spec must have layer: 0'
+          print('L0 FSA spec validation: PASSED')
+          "
+
+      - name: Validate L1 Constitution spec
+        run: |
+          python3 -c "
+          import yaml
+          with open('docs/spec/l1-constitution/constitution.yaml') as f:
+              spec = yaml.safe_load(f)
+          assert spec.get('spec-id', '').startswith('mycodexvantaos-spec-l1-'), 'Invalid L1 spec-id'
+          assert spec.get('layer') == 1, 'L1 spec must have layer: 1'
+          machine_id = spec.get('identity', {}).get('machine', '')
+          assert machine_id == 'mycodexvantaos', f'Invalid machine identity in L1: {machine_id}'
+          print('L1 Constitution spec validation: PASSED')
+          "
+
+      - name: Validate L2 Capability Addendum spec
+        run: |
+          python3 -c "
+          import yaml
+          with open('docs/spec/l2-structure/capability-architecture-addendum.yaml') as f:
+              spec = yaml.safe_load(f)
+          assert spec.get('spec-id', '').startswith('mycodexvantaos-spec-l2-'), 'Invalid L2 spec-id'
+          assert spec.get('layer') == 2, 'L2 spec must have layer: 2'
+          print('L2 Capability Addendum spec validation: PASSED')
+          "
+
+      - name: Validate identity policy SSOT
+        run: |
+          python3 -c "
+          import yaml
+          with open('governance/identity-policy.yaml') as f:
+              policy = yaml.safe_load(f)
+          identity = policy.get('identity', {})
+          assert identity.get('machine') == 'mycodexvantaos', 'Machine identity mismatch'
+          assert identity.get('brand') == 'MyCodexVantaOS', 'Brand identity mismatch'
+          canonical = policy.get('deployment', {}).get('canonical-url', '')
+          assert canonical == 'https://mycodexvantaos.com', f'Invalid canonical URL: {canonical}'
+          print('Identity policy SSOT validation: PASSED')
+          "
+
+  phase-one-freeze:
+    name: Phase One Freeze Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Validate phase one freeze
+        run: python3 scripts/validate-phase-one-freeze.py
+
+      - name: Generate phase one freeze report
+        if: always()
+        run: python3 scripts/generate-phase-one-freeze-report.py

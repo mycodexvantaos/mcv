@@ -1,12 +1,21 @@
-# Pre-commit hooks for MyCodeXvantaOS
-# See CONTRIBUTING.md for documentation format rules
-
 repos:
   - repo: local
     hooks:
       - id: forbid-section-sign
         name: Forbid Section Sign Symbol (U+00A7)
-        entry: '§'
+        entry: Â§
         language: pygrep
-        types: [markdown]
-        exclude: 'CONTRIBUTING\.md$'
+        types:
+          - markdown
+        exclude: CONTRIBUTING\.md$
+      - id: forbid-section-sign-code
+        name: Forbid Section Sign Symbol in Code (U+00A7)
+        entry: Â§
+        language: pygrep
+        types:
+          - python
+          - ts
+          - tsx
+          - js
+          - yaml
+          - json

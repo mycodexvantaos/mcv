@@ -1,6 +1,3 @@
-# providers/llm/llm-native/provider-manifest.yaml
-# Native LLM Provider - Zero external dependency
-# Falls back to simple rule-based responses when no external LLM available
 apiVersion: mycodexvantaos.org/v1
 kind: Provider
 metadata:
@@ -9,6 +6,9 @@ metadata:
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
     mycodexvantaos.org/specRef: '8.1'
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   providerName: native
   isNative: true
@@ -16,7 +16,8 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_LLM_NATIVE
   configSchemaRef: ./config.schema.json
-  description: 'Native LLM provider with zero external dependencies. Provides basic text processing and template-based responses as fallback.'
+  description: Native LLM provider with zero external dependencies. Provides basic
+    text processing and template-based responses as fallback.
   capabilities:
     - text-generation
     - text-completion
@@ -25,4 +26,11 @@ spec:
   limitations:
     - No advanced reasoning without external model
     - Template-based responses only
-  priority: 100 # Highest priority as fallback
+  priority: 100
+provider-id: mycodexvantaos-llm-native
+capability: llm
+platform: mycodexvantaos
+runtime-modes:
+  - native
+  - connected
+  - hybrid

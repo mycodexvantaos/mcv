@@ -3,23 +3,29 @@ kind: ProviderManifest
 metadata:
   name: quantum-observability-native
   urn: urn:mycodexvantaos:provider:quantum-observability-native
-
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
 spec:
   id: quantum-observability-native
   capability: quantum-observability
   source: native
   status: active
   criticality: high
-
   supportsModes:
     - native
     - connected
     - hybrid
-
   healthCheck:
     enabled: true
     endpoint: /health
-
   observability:
     metricsEnabled: true
     tracingEnabled: true
+provider-id: mycodexvantaos-quantum-observability-native
+capability: quantum-observability
+platform: mycodexvantaos
+runtime-modes:
+  - native
+  - connected
+  - hybrid

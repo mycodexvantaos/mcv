@@ -1,10 +1,7 @@
-# providers/embedding/embedding-cohere/provider-manifest.yaml
-# 8.1 — provider instance: embedding-cohere
-# 8.2 — capability (embedding) precedes provider name (cohere)
 apiVersion: mycodexvantaos.org/v1
 kind: Provider
 metadata:
-  name: embedding-cohere
+  name: mycodexvantaos-embedding-cohere
   capability: embedding
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
@@ -16,4 +13,6 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_EMBEDDING_COHERE
   configSchemaRef: ./config.schema.json
-  description: 'Cohere embedding provider.'
+  description: Cohere embedding provider.
+provider-id: mycodexvantaos-embedding-cohere
+capability: embedding

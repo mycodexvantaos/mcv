@@ -1,10 +1,7 @@
-# providers/blockchain/blockchain-native-ledger/provider-manifest.yaml
-# 8.1 — provider instance: blockchain-native-ledger
-# 8.2 — capability (blockchain) precedes provider name (native-ledger)
 apiVersion: mycodexvantaos.org/v1
 kind: Provider
 metadata:
-  name: blockchain-native-ledger
+  name: mycodexvantaos-blockchain-native-ledger
   capability: blockchain
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
@@ -16,4 +13,7 @@ spec:
     stage: stable
   envVarPrefix: MYCODEXVANTAOS_BLOCKCHAIN
   configSchemaRef: ./config.schema.json
-  description: 'Native immutable ledger provider for platform-internal governance event anchoring, Merkle proof generation, and compliance audit trails.'
+  description: Native immutable ledger provider for platform-internal governance event
+    anchoring, Merkle proof generation, and compliance audit trails.
+provider-id: mycodexvantaos-blockchain-native-ledger
+capability: database

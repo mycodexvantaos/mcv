@@ -4,31 +4,31 @@ name: Custom CodeQL Configuration
 
 # Path filters for analysis
 paths:
-  - 'services'
-  - 'apps'
-  - 'packages'
-  - 'contracts'
-  - 'scripts'
-  - '.github'
+  - "services"
+  - "apps"
+  - "packages"
+  - "contracts"
+  - "scripts"
+  - ".github"
 
 paths-ignore:
-  - '**/node_modules'
-  - '**/dist'
-  - '**/build'
-  - '**/.next'
-  - '**/coverage'
-  - '**/*.test.ts'
-  - '**/*.spec.ts'
-  - '**/*.test.js'
-  - '**/*.spec.js'
-  - '**/vendor'
-  - '**/__pycache__'
-  - '**/.venv'
-  - '**/venv'
-  - 'packages/providers/src/observability-native.ts'
-  - 'scripts/update-module-manifests.ts'
-  - 'services/mycodexvantaos-platform-validation/src/validator.ts'
-  - 'services/mycodexvantaos-platform-validation/src/validator.js'
+  - "**/node_modules"
+  - "**/dist"
+  - "**/build"
+  - "**/.next"
+  - "**/coverage"
+  - "**/*.test.ts"
+  - "**/*.spec.ts"
+  - "**/*.test.js"
+  - "**/*.spec.js"
+  - "**/vendor"
+  - "**/__pycache__"
+  - "**/.venv"
+  - "**/venv"
+  - "packages/providers/src/observability-native.ts"
+  - "scripts/update-module-manifests.ts"
+  - "services/mycodexvantaos-platform-validation/src/validator.ts"
+  - "services/mycodexvantaos-platform-validation/src/validator.js"
 
 # Query suite - use security-extended for deeper analysis
 queries:

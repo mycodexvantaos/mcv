@@ -1,5 +1,3 @@
-# modules/mycodexvantaos-data-pipeline/module-manifest.yaml
-# 6.3 — metadata.name MUST equal the directory name and service-id exactly (6.4)
 apiVersion: mycodexvantaos.org/v1
 kind: Module
 metadata:
@@ -21,7 +19,8 @@ spec:
     observability: observability-opentelemetry
   lifecycle:
     stage: stable
-    since: 'v1.0.0'
-  urn: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-data-pipeline'
+    since: v1.0.0
+  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-data-pipeline
   packageName: '@mycodexvantaos/data-pipeline'
-  description: 'Data ingestion and transformation pipeline service.'
+  description: Data ingestion and transformation pipeline service.
+service-id: mycodexvantaos-data-pipeline

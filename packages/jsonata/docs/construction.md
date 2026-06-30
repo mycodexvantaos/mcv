@@ -24,7 +24,9 @@ Array constructors can also be used within location paths for making multiple se
   "fsmith@my-work.com",
   "freddy@my-social.com",
   "frederic.smith@very-serious.com"
+
 ]</div>
+
   </div>
 
 - Each email object generates an array of addresses.
@@ -33,7 +35,9 @@ Array constructors can also be used within location paths for making multiple se
     <div>[
   [ "fred.smith@my-work.com",  "fsmith@my-work.com" ],
   [ "freddy@my-social.com", "frederic.smith@very-serious.com" ]
+
 ]</div>
+
   </div>
 
 - Selects the `City` value of both `Address` and `Alternative.Address` objects.
@@ -57,8 +61,10 @@ When an object constructor follows an expression that selects multiple values, t
   { "home": "0203 544 1234" }, 
   { "office": "01962 001234" }, 
   { "office": "01962 001235" }, 
-  { "mobile": "077 7700 1234"  } 
+  { "mobile": "077 7700 1234"  }
+
 ]</div>
+
   </div>
 
 - Combines the key/value pairs into a single object. See [Grouping using object key expression](sorting-grouping.md) for more details.
@@ -71,7 +77,9 @@ When an object constructor follows an expression that selects multiple values, t
     "01962 001235"
   ],
   "mobile": "077 7700 1234"
+
 }</div>
+
   </div>
 
 - Combines the key/value pairs into a single object. In this case, for consistency, all numbers are grouped into arrays. See [Singleton array and value equivalence](predicate.md#singleton-array-and-value-equivalence) for more details.
@@ -88,7 +96,9 @@ When an object constructor follows an expression that selects multiple values, t
   "mobile": [
     "077 7700 1234"
   ]
+
 }</div>
+
   </div>
 
 ## JSON literals

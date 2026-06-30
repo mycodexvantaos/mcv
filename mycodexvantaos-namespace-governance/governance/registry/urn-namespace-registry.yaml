@@ -2,5 +2,8 @@ apiVersion: mycodexvantaos.io/v1
 kind: NamespaceRegistry
 metadata:
   name: urn-namespace-registry
+  version: 1.0.0
 spec:
   entries: []
+platform: mycodexvantaos
+entries: []

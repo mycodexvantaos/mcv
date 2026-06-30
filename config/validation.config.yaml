@@ -1,9 +1,68 @@
 apiVersion: mycodexvantaos.io/v1
 kind: ValidationConfig
 metadata:
-  name: validation-config
+  name: mycodexvantaos-validation-config
+  version: 1.0.0
+  date: '2026-06-29'
 spec:
   blockingLevels:
     - critical
     - high
   reportOutputDirectory: outputs/
+ci:
+  strict-mode: true
+  fail-fast: false
+  parallel-jobs: 4
+  timeout-minutes: 30
+severity:
+  critical:
+    - identity-rule
+    - naming-rule
+    - manifest-boundary-rule
+    - ssot-drift-rule
+    - phase-one-freeze-rule
+  error:
+    - foundation-rule
+    - provider-capability-rule
+    - service-catalog-rule
+    - namespace-governance-rule
+    - navigation-rule
+    - hash-policy-rule
+    - runtime-mode-rule
+    - unified-gates-rule
+  warning:
+    - deprecated-manifest-rule
+    - derived-identity-rule
+    - exception-rule
+    - quantum-bridge-rule
+    - root-module-rule
+coverage:
+  line: 90
+  branch: 80
+  function: 85
+security:
+  critical-vulnerabilities: 0
+  blocker-static-analysis-findings: 0
+  hardcoded-secrets: 0
+  public-secret-exposure: 0
+quality-gates:
+  - domain-config-schema-valid
+  - no-hardcoded-production-domain-outside-config
+  - canonical-url-valid
+  - www-redirect-valid
+  - https-enforced
+  - oauth-redirect-uri-valid
+  - webhook-endpoint-valid
+  - cors-allowlist-valid
+  - csp-baseline-valid
+  - cookie-security-valid
+  - sitemap-host-valid
+  - robots-host-valid
+  - opengraph-url-valid
+  - gcp-vendor-url-not-used-as-production-public-url
+reports:
+  output-dir: outputs
+  formats:
+    - json
+  include-passing: true
+  include-warnings: true

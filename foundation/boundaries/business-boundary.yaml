@@ -2,6 +2,8 @@ apiVersion: mycodexvantaos.io/v1
 kind: FoundationBoundary
 metadata:
   name: business-boundary
+  version: 1.0.0
 spec:
   foundation: business-foundation
   boundaryType: specification-unit
+  platform: mycodexvantaos
