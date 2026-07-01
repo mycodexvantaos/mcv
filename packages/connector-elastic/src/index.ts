@@ -33,12 +33,12 @@ export class ElasticConnector {
   }
 
   async index(index: string, document: any, id?: string): Promise<void> {
-    if (!this.connected) throw new Error('Not connected');
+    if (!this.connected) throw new Error("Not connected");
     console.log(`Indexing document to ${index}`);
   }
 
   async search(index: string, query: Query): Promise<any[]> {
-    if (!this.connected) throw new Error('Not connected');
+    if (!this.connected) throw new Error("Not connected");
     console.log(`Searching in ${index}`);
     return [];
   }

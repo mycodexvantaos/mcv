@@ -1,17 +1,17 @@
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
-  roots: ['<rootDir>'],
-  testMatch: ['**/__tests__/**/*.test.ts'],
+  preset: "ts-jest",
+  testEnvironment: "node",
+  roots: ["<rootDir>"],
+  testMatch: ["**/__tests__/**/*.test.ts"],
   transform: {
-    '^.+\\.tsx?$': [
-      'ts-jest',
+    "^.+\\.tsx?$": [
+      "ts-jest",
       {
         tsconfig: {
-          module: 'commonjs',
+          module: "commonjs",
           esModuleInterop: true,
           allowSyntheticDefaultImports: true,
-          target: 'ES2020',
+          target: "ES2020",
           sourceMap: true,
           inlineSourceMap: true,
           inlineSources: true,
@@ -19,7 +19,7 @@ module.exports = {
       },
     ],
   },
-  collectCoverageFrom: ['src/**/*.ts', '!src/**/*.d.ts'],
-  coverageReporters: ['text', 'json'],
+  collectCoverageFrom: ["src/**/*.ts", "!src/**/*.d.ts"],
+  coverageReporters: ["text", "json"],
   testTimeout: 15000,
 };

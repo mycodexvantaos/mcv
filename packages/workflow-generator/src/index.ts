@@ -8,13 +8,13 @@
 export interface WorkflowStep {
   id: string;
   name: string;
-  type: 'action' | 'trigger' | 'condition' | 'parallel' | 'sequence';
+  type: "action" | "trigger" | "condition" | "parallel" | "sequence";
   config: Record<string, any>;
   next?: string | string[];
   onFail?: string;
   retryPolicy?: {
     maxAttempts: number;
-    backoff: 'linear' | 'exponential';
+    backoff: "linear" | "exponential";
     delay: number;
   };
 }
@@ -30,10 +30,10 @@ export interface WorkflowDefinition {
 }
 
 export interface WorkflowGeneratorOptions {
-  format?: 'yaml' | 'json' | 'typescript';
+  format?: "yaml" | "json" | "typescript";
   includeErrorHandling?: boolean;
   includeLogging?: boolean;
-  retryStrategy?: 'none' | 'linear' | 'exponential';
+  retryStrategy?: "none" | "linear" | "exponential";
 }
 
 export interface TaskDefinition {
@@ -49,10 +49,10 @@ export class WorkflowGenerator {
 
   constructor(options: WorkflowGeneratorOptions = {}) {
     this.options = {
-      format: 'yaml',
+      format: "yaml",
       includeErrorHandling: true,
       includeLogging: true,
-      retryStrategy: 'exponential',
+      retryStrategy: "exponential",
       ...options,
     };
   }
@@ -68,7 +68,7 @@ export class WorkflowGenerator {
       const step: WorkflowStep = {
         id: task.id,
         name: task.name,
-        type: 'action',
+        type: "action",
         config: {
           ...task.config,
           type: task.type,
@@ -81,7 +81,7 @@ export class WorkflowGenerator {
       }
 
       // Add retry policy if enabled
-      if (this.options.retryStrategy && this.options.retryStrategy !== 'none') {
+      if (this.options.retryStrategy && this.options.retryStrategy !== "none") {
         step.retryPolicy = {
           maxAttempts: 3,
           backoff: this.options.retryStrategy,
@@ -95,7 +95,7 @@ export class WorkflowGenerator {
     return {
       id: this.formatId(name),
       name,
-      version: '1.0.0',
+      version: "1.0.0",
       steps,
     };
   }
@@ -109,22 +109,22 @@ export class WorkflowGenerator {
     finalTask?: TaskDefinition
   ): WorkflowDefinition {
     const steps: WorkflowStep[] = [];
-    const finalStepId = finalTask ? finalTask.id : 'finish';
+    const finalStepId = finalTask ? finalTask.id : "finish";
 
     // Create a single parallel step with all branches
     const parallelStep: WorkflowStep = {
-      id: 'parallel_0',
-      name: 'Execute parallel branches',
-      type: 'parallel',
+      id: "parallel_0",
+      name: "Execute parallel branches",
+      type: "parallel",
       config: {
         branches: parallelTasks.map((branch, branchIndex) => ({
           id: `branch_${branchIndex}`,
           name: `Branch ${branchIndex + 1}`,
-          type: 'action',
+          type: "action",
           steps: branch.map((task) => ({
             id: task.id,
             name: task.name,
-            type: 'action',
+            type: "action",
             config: {
               ...task.config,
               type: task.type,
@@ -142,7 +142,7 @@ export class WorkflowGenerator {
       const finalStep: WorkflowStep = {
         id: finalTask.id,
         name: finalTask.name,
-        type: 'action',
+        type: "action",
         config: {
           ...finalTask.config,
           type: finalTask.type,
@@ -154,7 +154,7 @@ export class WorkflowGenerator {
     return {
       id: this.formatId(name),
       name,
-      version: '1.0.0',
+      version: "1.0.0",
       steps,
     };
   }
@@ -170,16 +170,16 @@ export class WorkflowGenerator {
     finalTask?: TaskDefinition
   ): WorkflowDefinition {
     const steps: WorkflowStep[] = [];
-    const conditionId = 'condition_0';
-    const trueBranchId = 'true_branch';
-    const falseBranchId = 'false_branch';
-    const finalStepId = finalTask ? finalTask.id : 'finish';
+    const conditionId = "condition_0";
+    const trueBranchId = "true_branch";
+    const falseBranchId = "false_branch";
+    const finalStepId = finalTask ? finalTask.id : "finish";
 
     // Create condition step
     const conditionStep: WorkflowStep = {
       id: conditionId,
-      name: 'Evaluate condition',
-      type: 'condition',
+      name: "Evaluate condition",
+      type: "condition",
       config: {
         expression: condition,
       },
@@ -190,13 +190,13 @@ export class WorkflowGenerator {
     // Create true branch
     const trueBranchStep: WorkflowStep = {
       id: trueBranchId,
-      name: 'True branch',
-      type: 'sequence',
+      name: "True branch",
+      type: "sequence",
       config: {
         steps: trueBranch.map((task) => ({
           id: task.id,
           name: task.name,
-          type: 'action',
+          type: "action",
           config: {
             ...task.config,
             type: task.type,
@@ -210,13 +210,13 @@ export class WorkflowGenerator {
     // Create false branch
     const falseBranchStep: WorkflowStep = {
       id: falseBranchId,
-      name: 'False branch',
-      type: 'sequence',
+      name: "False branch",
+      type: "sequence",
       config: {
         steps: falseBranch.map((task) => ({
           id: task.id,
           name: task.name,
-          type: 'action',
+          type: "action",
           config: {
             ...task.config,
             type: task.type,
@@ -232,7 +232,7 @@ export class WorkflowGenerator {
       const finalStep: WorkflowStep = {
         id: finalTask.id,
         name: finalTask.name,
-        type: 'action',
+        type: "action",
         config: {
           ...finalTask.config,
           type: finalTask.type,
@@ -244,7 +244,7 @@ export class WorkflowGenerator {
     return {
       id: this.formatId(name),
       name,
-      version: '1.0.0',
+      version: "1.0.0",
       steps,
     };
   }
@@ -253,9 +253,9 @@ export class WorkflowGenerator {
    * Generate workflow file content
    */
   generateWorkflowFile(workflow: WorkflowDefinition): string {
-    if (this.options.format === 'json') {
+    if (this.options.format === "json") {
       return JSON.stringify(workflow, null, 2);
-    } else if (this.options.format === 'typescript') {
+    } else if (this.options.format === "typescript") {
       return this.generateTypeScriptWorkflow(workflow);
     } else {
       return this.generateYamlWorkflow(workflow);
@@ -273,9 +273,9 @@ export class WorkflowGenerator {
       const step: WorkflowStep = {
         id: `stage_${i}`,
         name: stage,
-        type: 'action',
+        type: "action",
         config: {
-          type: 'pipeline_stage',
+          type: "pipeline_stage",
           stage,
           commands: this.getStageCommands(stage),
         },
@@ -291,7 +291,7 @@ export class WorkflowGenerator {
     return {
       id: this.formatId(name),
       name: `${name} Pipeline`,
-      version: '1.0.0',
+      version: "1.0.0",
       steps,
     };
   }
@@ -306,7 +306,7 @@ export class WorkflowGenerator {
     destinations: string[]
   ): WorkflowDefinition {
     const steps: WorkflowStep[] = [];
-    let currentId = 'start';
+    let currentId = "start";
     let parallelStepId: string | undefined;
 
     // Add source steps
@@ -317,23 +317,23 @@ export class WorkflowGenerator {
       steps.push({
         id: stepId,
         name: `Extract from ${sources[i]}`,
-        type: 'action',
+        type: "action",
         config: {
-          type: 'data_source',
+          type: "data_source",
           source: sources[i],
         },
       });
     }
 
     // If multiple sources, add a merge step
-    let previousStep = sourceIds.length === 1 ? sourceIds[0] : 'merge_sources';
+    let previousStep = sourceIds.length === 1 ? sourceIds[0] : "merge_sources";
     if (sources.length > 1) {
       steps.push({
-        id: 'merge_sources',
-        name: 'Merge data sources',
-        type: 'action',
+        id: "merge_sources",
+        name: "Merge data sources",
+        type: "action",
         config: {
-          type: 'data_merge',
+          type: "data_merge",
           sources: sourceIds,
         },
       });
@@ -345,9 +345,9 @@ export class WorkflowGenerator {
       steps.push({
         id: stepId,
         name: transformations[i],
-        type: 'action',
+        type: "action",
         config: {
-          type: 'data_transform',
+          type: "data_transform",
           transformation: transformations[i],
         },
       });
@@ -367,9 +367,9 @@ export class WorkflowGenerator {
       steps.push({
         id: stepId,
         name: `Load to ${destinations[0]}`,
-        type: 'action',
+        type: "action",
         config: {
-          type: 'data_destination',
+          type: "data_destination",
           destination: destinations[0],
         },
       });
@@ -381,18 +381,18 @@ export class WorkflowGenerator {
       }
     } else {
       // Multiple destinations - run in parallel
-      parallelStepId = 'parallel_destinations';
+      parallelStepId = "parallel_destinations";
       steps.push({
         id: parallelStepId,
-        name: 'Load to destinations in parallel',
-        type: 'parallel',
+        name: "Load to destinations in parallel",
+        type: "parallel",
         config: {
           branches: destinations.map((dest, i) => ({
             id: `destination_${i}`,
             name: `Load to ${dest}`,
-            type: 'action',
+            type: "action",
             config: {
-              type: 'data_destination',
+              type: "data_destination",
               destination: dest,
             },
           })),
@@ -409,8 +409,8 @@ export class WorkflowGenerator {
     return {
       id: this.formatId(name),
       name: `${name} Data Pipeline`,
-      description: 'ETL pipeline for data processing',
-      version: '1.0.0',
+      description: "ETL pipeline for data processing",
+      version: "1.0.0",
       steps,
     };
   }
@@ -442,7 +442,7 @@ export class WorkflowGenerator {
       yaml += `    config:\n`;
 
       for (const [key, value] of Object.entries(step.config)) {
-        if (typeof value === 'object') {
+        if (typeof value === "object") {
           yaml += `      ${key}:\n`;
           yaml += this.indentYaml(JSON.stringify(value, null, 2), 6);
         } else {
@@ -465,7 +465,7 @@ export class WorkflowGenerator {
         yaml += `      delay: ${step.retryPolicy.delay}\n`;
       }
 
-      yaml += '\n';
+      yaml += "\n";
     }
 
     return yaml;
@@ -524,15 +524,15 @@ export class WorkflowGenerator {
   private formatId(name: string): string {
     return name
       .toLowerCase()
-      .replace(/\s+/g, '_')
-      .replace(/[^a-z0-9_]/g, '');
+      .replace(/\s+/g, "_")
+      .replace(/[^a-z0-9_]/g, "");
   }
 
   /**
    * Format variable name
    */
   private formatVarName(name: string): string {
-    return name.replace(/[^a-zA-Z0-9]/g, '');
+    return name.replace(/[^a-zA-Z0-9]/g, "");
   }
 
   /**
@@ -540,11 +540,11 @@ export class WorkflowGenerator {
    */
   private getStageCommands(stage: string): string[] {
     const stageCommands: Record<string, string[]> = {
-      build: ['npm install', 'npm run build'],
-      test: ['npm test'],
-      lint: ['npm run lint'],
-      deploy: ['npm run deploy'],
-      release: ['npm version patch', 'npm publish'],
+      build: ["npm install", "npm run build"],
+      test: ["npm test"],
+      lint: ["npm run lint"],
+      deploy: ["npm run deploy"],
+      release: ["npm version patch", "npm publish"],
     };
 
     return stageCommands[stage] || ['echo "Running stage: ' + stage + '"'];
@@ -554,12 +554,12 @@ export class WorkflowGenerator {
    * Indent YAML content
    */
   private indentYaml(yaml: string, spaces: number): string {
-    const indent = ' '.repeat(spaces);
+    const indent = " ".repeat(spaces);
     return (
       yaml
-        .split('\n')
+        .split("\n")
         .map((line) => indent + line)
-        .join('\n') + '\n'
+        .join("\n") + "\n"
     );
   }
 }

@@ -8,9 +8,9 @@ metadata:
 spec:
   domain: core
   capabilities:
-    - database
-    - cache
-    - secrets
+  - database
+  - cache
+  - secrets
   providers:
     database: database-postgres
     cache: cache-redis

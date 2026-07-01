@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,34 +10,36 @@ metadata:
   criticality: critical
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-50300
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l20
-    - pii
+  - l20
+  - pii
   sloTarget: 30
   evidenceRetentionDays: 2555
 spec:
-  description: >
-    Scans datasets for personally identifiable information (PII) and sensitive data before use in AI workloads.
+  description: 'Scans datasets for personally identifiable information (PII) and sensitive
+    data before use in AI workloads.
+
+    '
   validates:
-    - dimension: pii-absence
-      description: Dataset contains no unmasked PII or sensitive data.
-      checks:
-        - id: chk-pii-scan-complete
-          description: PII scan has been completed on the dataset
-          rule: 'scan:pii-complete'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-pii-rate-below-threshold
-          description: PII detection rate is below 0.01%
-          rule: 'threshold:pii-rate<0.0001'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-no-credentials
-          description: No API keys, passwords, or secrets detected
-          rule: 'scan:no-credentials'
-          severity: critical
-          evidenceRequired: true
+  - dimension: pii-absence
+    description: Dataset contains no unmasked PII or sensitive data.
+    checks:
+    - id: chk-pii-scan-complete
+      description: PII scan has been completed on the dataset
+      rule: scan:pii-complete
+      severity: critical
+      evidenceRequired: true
+    - id: chk-pii-rate-below-threshold
+      description: PII detection rate is below 0.01%
+      rule: threshold:pii-rate<0.0001
+      severity: critical
+      evidenceRequired: true
+    - id: chk-no-credentials
+      description: No API keys, passwords, or secrets detected
+      rule: scan:no-credentials
+      severity: critical
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 /**
  * @fileoverview Detection Result Component
@@ -7,10 +7,10 @@
  * breakdown, statistics, and summary cards.
  */
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { CheckCircle2, XCircle, AlertTriangle, HelpCircle } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { CheckCircle2, XCircle, AlertTriangle, HelpCircle } from "lucide-react";
 
 interface DetectionResultProps {
   detection: {
@@ -47,11 +47,11 @@ export function DetectionResult({ detection }: DetectionResultProps) {
 
   const VerdictIcon = () => {
     switch (detection.label) {
-      case 'ai':
+      case "ai":
         return <XCircle className="h-5 w-5 text-red-500" />;
-      case 'human':
+      case "human":
         return <CheckCircle2 className="h-5 w-5 text-green-500" />;
-      case 'mixed':
+      case "mixed":
         return <AlertTriangle className="h-5 w-5 text-yellow-500" />;
       default:
         return <HelpCircle className="h-5 w-5 text-gray-500" />;
@@ -120,7 +120,7 @@ export function DetectionResult({ detection }: DetectionResultProps) {
                 <span className="text-xs text-muted-foreground w-6 text-right">{s.index + 1}</span>
                 <Badge
                   variant={
-                    s.label === 'ai' ? 'destructive' : s.label === 'human' ? 'default' : 'secondary'
+                    s.label === "ai" ? "destructive" : s.label === "human" ? "default" : "secondary"
                   }
                   className="text-[10px] min-w-[52px] justify-center"
                 >

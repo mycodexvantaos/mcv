@@ -22,7 +22,7 @@ import type {
   IQueuePort,
   IAuditPort,
   IUsagePort,
-} from '../../ports/index.js';
+} from "../../ports/index.js";
 
 import {
   IdentityService,
@@ -33,7 +33,7 @@ import {
   ModelByokService,
   AuditLogService,
   UsageMeterService,
-} from '../../application/index.js';
+} from "../../application/index.js";
 
 export interface DockerEnv {
   DATABASE_URL: string; // postgresql://...
@@ -47,8 +47,8 @@ export interface DockerEnv {
 }
 
 export class DockerRuntimeAdapter {
-  readonly name = 'docker';
-  readonly version = '1.0.0-constitution';
+  readonly name = "docker";
+  readonly version = "1.0.0-constitution";
 
   private env: DockerEnv;
   private _adapters?: {
@@ -83,9 +83,9 @@ export class DockerRuntimeAdapter {
 
     // Placeholder — will be replaced when portable adapters are implemented
     throw new Error(
-      'DockerRuntimeAdapter: Portable adapters not yet implemented. ' +
-        'These will be added in Phase 2 (Portable Core). ' +
-        'See adapters/ directory for the Cloudflare implementations to use as reference.'
+      "DockerRuntimeAdapter: Portable adapters not yet implemented. " +
+        "These will be added in Phase 2 (Portable Core). " +
+        "See adapters/ directory for the Cloudflare implementations to use as reference."
     );
   }
 
@@ -109,7 +109,7 @@ export class DockerRuntimeAdapter {
         audit: adapters.audit,
         identity,
       }),
-      'knowledge-store': new KnowledgeStoreService({
+      "knowledge-store": new KnowledgeStoreService({
         database: adapters.database,
         storage: adapters.storage,
         search: adapters.search,
@@ -117,13 +117,13 @@ export class DockerRuntimeAdapter {
         audit: adapters.audit,
         identity,
       }),
-      'knowledge-search': new KnowledgeSearchService({
+      "knowledge-search": new KnowledgeSearchService({
         database: adapters.database,
         search: adapters.search,
         audit: adapters.audit,
         identity,
       }),
-      'agent-chat': new AgentChatService({
+      "agent-chat": new AgentChatService({
         database: adapters.database,
         cache: adapters.cache,
         queue: adapters.queue,
@@ -132,7 +132,7 @@ export class DockerRuntimeAdapter {
         identity,
         usage: adapters.usage,
       }),
-      'model-byok': new ModelByokService({
+      "model-byok": new ModelByokService({
         database: adapters.database,
         cache: adapters.cache,
         model: adapters.model,
@@ -140,11 +140,11 @@ export class DockerRuntimeAdapter {
         identity,
         usage: adapters.usage,
       }),
-      'audit-log': new AuditLogService({
+      "audit-log": new AuditLogService({
         database: adapters.database,
         queue: adapters.queue,
       }),
-      'usage-meter': new UsageMeterService({
+      "usage-meter": new UsageMeterService({
         database: adapters.database,
         cache: adapters.cache,
         audit: adapters.audit,

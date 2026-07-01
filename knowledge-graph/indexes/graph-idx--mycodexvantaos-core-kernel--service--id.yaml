@@ -1,5 +1,3 @@
-# knowledge-graph/indexes/graph-idx--mycodexvantaos-core-kernel--service--id.yaml
-# 10.3 — Format: graph-idx--<service-id>--<label>--<property>
 apiVersion: mycodexvantaos.org/v1
 kind: GraphDbIndex
 metadata:

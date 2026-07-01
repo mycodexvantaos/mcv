@@ -1,25 +1,20 @@
-# MyCodeXvantaOS Capability Declaration
-
 id: urn:mycodexvantaos:capability:runtime
 name: Runtime
 version: 1.0.0
 description: Application runtime execution capabilities
 status: stable
 governance_tier: 1
-
 contract:
   interfaces:
-    - initialize
-    - execute
-    - cleanup
-    - validate
-
+  - initialize
+  - execute
+  - cleanup
+  - validate
   requirements:
-    - local-first: true
-    - cloud-agnostic: true
-    - contract-first: true
-    - governance-enforced: true
-
+  - local-first: true
+  - cloud-agnostic: true
+  - contract-first: true
+  - governance-enforced: true
 provider_manifests:
-  - native: 'urn:mycodexvantaos:capability:runtime:provider-native'
-  - external: 'urn:mycodexvantaos:capability:runtime:provider-external'
+- native: urn:mycodexvantaos:capability:runtime:provider-native
+- external: urn:mycodexvantaos:capability:runtime:provider-external

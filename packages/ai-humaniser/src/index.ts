@@ -7,7 +7,7 @@
  */
 
 export interface HumaniserOptions {
-  mode?: 'native' | 'hybrid' | 'llm-only';
+  mode?: "native" | "hybrid" | "llm-only";
 }
 
 export interface DetectionResult {
@@ -62,7 +62,7 @@ export class HumaniserEngine {
   private initialized: boolean = false;
 
   constructor(options: HumaniserOptions = {}) {
-    this.mode = options.mode || 'native';
+    this.mode = options.mode || "native";
   }
 
   async initialize(): Promise<void> {
@@ -81,19 +81,19 @@ export class HumaniserEngine {
 
     return {
       aiScore,
-      label: aiScore > 0.7 ? 'ai' : aiScore > 0.3 ? 'mixed' : 'human',
+      label: aiScore > 0.7 ? "ai" : aiScore > 0.3 ? "mixed" : "human",
       confidence: 0.5,
       humanScore,
       flaggedSentences: [],
-      overallAssessment: aiScore > 0.7 ? 'Likely AI-generated' : 'Likely human-written',
+      overallAssessment: aiScore > 0.7 ? "Likely AI-generated" : "Likely human-written",
       sentences: sentences.map((s, i) => ({
         text: s.trim(),
         index: i,
-        label: 'human' as const,
+        label: "human" as const,
         confidence: 0.5,
         aiScore: 0.3,
         humanScore: 0.7,
-        explanation: 'Heuristic analysis',
+        explanation: "Heuristic analysis",
       })),
       stats: {
         totalSentences: sentences.length,
@@ -105,7 +105,7 @@ export class HumaniserEngine {
         minAiScore: 0,
         stdDevAiScore: 0,
       },
-      explanation: 'Native heuristic detection (stub)',
+      explanation: "Native heuristic detection (stub)",
       processingTimeMs: 10,
     };
   }
@@ -126,8 +126,8 @@ export class HumaniserEngine {
     return {
       humanisedText,
       changesApplied,
-      style: request.style || 'neutral',
-      formalityLevel: request.formalityLevel || 'semi-formal',
+      style: request.style || "neutral",
+      formalityLevel: request.formalityLevel || "semi-formal",
       preservedTerms: [],
     };
   }
@@ -144,12 +144,12 @@ export function generateReport(detectionResult: DetectionResult): {
   overallScore: number;
 } {
   return {
-    grade: detectionResult.aiScore > 0.7 ? 'D' : detectionResult.aiScore > 0.4 ? 'C' : 'A',
+    grade: detectionResult.aiScore > 0.7 ? "D" : detectionResult.aiScore > 0.4 ? "C" : "A",
     summary: `AI score: ${(detectionResult.aiScore * 100).toFixed(1)}% — ${detectionResult.overallAssessment}`,
     recommendations:
       detectionResult.aiScore > 0.5
-        ? ['Consider rewriting AI-flagged sentences', 'Use humaniser to improve natural tone']
-        : ['Content appears naturally written'],
+        ? ["Consider rewriting AI-flagged sentences", "Use humaniser to improve natural tone"]
+        : ["Content appears naturally written"],
     overallScore: Math.round((1 - detectionResult.aiScore) * 100),
   };
 }

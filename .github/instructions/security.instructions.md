@@ -77,11 +77,11 @@ DATABASE_URL=
 const apiKey = process.env.API_KEY;
 
 // CORRECT: Use the secrets package
-import { getSecret } from '@mycodexvantaos/security-secrets';
-const secret = await getSecret('my-service-key');
+import { getSecret } from "@mycodexvantaos/security-secrets";
+const secret = await getSecret("my-service-key");
 
 // WRONG: Hardcoded credentials
-const apiKey = 'sk-abc123...'; // NEVER DO THIS
+const apiKey = "sk-abc123..."; // NEVER DO THIS
 ```
 
 ## Dependency Security

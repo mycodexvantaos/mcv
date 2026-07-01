@@ -8,11 +8,11 @@
  *   node --import tsx packages/mycodexvantaos-contracts-sdk/src/cli.ts validate
  */
 
-import { validateAllContracts } from './index.js';
+import { validateAllContracts } from "./index.js";
 
 const command = process.argv[2];
 
-if (command === 'validate') {
+if (command === "validate") {
   const result = validateAllContracts();
   const allValid =
     result.services.valid &&
@@ -27,19 +27,19 @@ if (command === 'validate') {
   ];
 
   if (allValid) {
-    console.log('✅ All contracts validate');
+    console.log("✅ All contracts validate");
     process.exit(0);
   } else {
-    console.error('❌ Contract validation failed');
+    console.error("❌ Contract validation failed");
     for (const err of allErrors) {
       console.error(`  - ${err}`);
     }
     process.exit(1);
   }
 } else {
-  console.error('Usage: contracts-sdk <validate>');
-  console.error('');
-  console.error('Commands:');
-  console.error('  validate   Validate all platform contracts');
+  console.error("Usage: contracts-sdk <validate>");
+  console.error("");
+  console.error("Commands:");
+  console.error("  validate   Validate all platform contracts");
   process.exit(1);
 }

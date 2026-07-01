@@ -20,31 +20,31 @@ spec:
         component: control-cli
     spec:
       containers:
-        - name: mycodexvantaos-control-cli
-          image: registry.local/mycodexvantaos/mycodexvantaos-control-cli:latest
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 3000
-              protocol: TCP
-          envFrom:
-            - configMapRef:
-                name: mycodexvantaos-control-cli-config
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 3000
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 3000
-            initialDelaySeconds: 15
-            periodSeconds: 20
-          resources:
-            requests:
-              cpu: '50m'
-              memory: '32Mi'
-            limits:
-              cpu: '100m'
-              memory: '128Mi'
+      - name: mycodexvantaos-control-cli
+        image: registry.local/mycodexvantaos/mycodexvantaos-control-cli:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: mycodexvantaos-control-cli-config
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        resources:
+          requests:
+            cpu: 50m
+            memory: 32Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi

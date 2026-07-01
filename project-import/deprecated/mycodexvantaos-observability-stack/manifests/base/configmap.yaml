@@ -7,7 +7,7 @@ metadata:
     app: mycodexvantaos-observability-stack
     part-of: mycodexvantaos
 data:
-  NODE_ENV: 'production'
-  SERVICE_NAME: 'mycodexvantaos-observability-stack'
+  NODE_ENV: production
+  SERVICE_NAME: mycodexvantaos-observability-stack
   PORT: '3000'
-  LOG_LEVEL: 'info'
+  LOG_LEVEL: info

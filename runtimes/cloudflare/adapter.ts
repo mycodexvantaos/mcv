@@ -16,9 +16,9 @@ import {
   CloudflareSearchAdapter,
   CloudflareModelAdapter,
   CloudflareQueueAdapter,
-} from '../../adapters/cloudflare/index.js';
+} from "../../adapters/cloudflare/index.js";
 
-import { createCloudflareAdapters, type CloudflareEnv } from '../../adapters/cloudflare/index.js';
+import { createCloudflareAdapters, type CloudflareEnv } from "../../adapters/cloudflare/index.js";
 
 import {
   IdentityService,
@@ -29,11 +29,11 @@ import {
   ModelByokService,
   AuditLogService,
   UsageMeterService,
-} from '../../application/index.js';
+} from "../../application/index.js";
 
 export class CloudflareRuntimeAdapter {
-  readonly name = 'cloudflare';
-  readonly version = '1.0.0-constitution';
+  readonly name = "cloudflare";
+  readonly version = "1.0.0-constitution";
 
   private env: CloudflareEnv;
 
@@ -169,12 +169,12 @@ export class CloudflareRuntimeAdapter {
     return {
       identity: this.createIdentityService(),
       workspace: this.createWorkspaceService(),
-      'knowledge-store': this.createKnowledgeStoreService(),
-      'knowledge-search': this.createKnowledgeSearchService(),
-      'agent-chat': this.createAgentChatService(),
-      'model-byok': this.createModelByokService(),
-      'audit-log': this.createAuditLogService(),
-      'usage-meter': this.createUsageMeterService(),
+      "knowledge-store": this.createKnowledgeStoreService(),
+      "knowledge-search": this.createKnowledgeSearchService(),
+      "agent-chat": this.createAgentChatService(),
+      "model-byok": this.createModelByokService(),
+      "audit-log": this.createAuditLogService(),
+      "usage-meter": this.createUsageMeterService(),
     };
   }
 }

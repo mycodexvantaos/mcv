@@ -1,5 +1,3 @@
-# search-indexes/idx--mycodexvantaos-data-pipeline--metadata--standard.yaml
-# 9.5 — Format: idx--<service-id>--<field>--<analyzer>
 apiVersion: mycodexvantaos.org/v1
 kind: SearchIndex
 metadata:
@@ -10,4 +8,4 @@ spec:
   serviceId: mycodexvantaos-data-pipeline
   field: metadata
   analyzer: standard
-  description: 'Standard index for pipeline artifact metadata.'
+  description: Standard index for pipeline artifact metadata.

@@ -1,15 +1,15 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from "fs";
+import * as path from "path";
 
 const write = (p: string, content: string) => {
   fs.mkdirSync(path.dirname(p), { recursive: true });
-  fs.writeFileSync(p, content.trim() + '\n', 'utf8');
+  fs.writeFileSync(p, content.trim() + "\n", "utf8");
   console.log(`Created/Updated: ${p}`);
 };
 
 // 1. Vector Store Logic
 write(
-  '/services/mycodexvantaos-data-vector-store/src/index.ts',
+  "/services/mycodexvantaos-data-vector-store/src/index.ts",
   `
 import { Kernel } from '@mycodexvantaos/core-kernel';
 
@@ -54,7 +54,7 @@ export function bootstrapVectorStore(kernel: Kernel) {
 
 // 2. Integration / Simulation Update
 write(
-  '/simulation.ts',
+  "/simulation.ts",
   `
 import { Kernel } from './services/mycodexvantaos-core-kernel/src/index';
 import { bootstrapAuthService } from './services/mycodexvantaos-core-auth/src/index';
@@ -86,7 +86,7 @@ run();
 
 // 3. Kubernetes Base additions
 write(
-  '/infra/kubernetes/base/mycodexvantaos-data-vector-store/deployment.yaml',
+  "/infra/kubernetes/base/mycodexvantaos-data-vector-store/deployment.yaml",
   `
 apiVersion: apps/v1
 kind: Deployment
@@ -108,7 +108,7 @@ spec:
 );
 
 write(
-  '/infra/kubernetes/base/kustomization.yaml',
+  "/infra/kubernetes/base/kustomization.yaml",
   `
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -122,7 +122,7 @@ resources:
 // 4. Kubernetes Overlays (Kustomize)
 // Development Overlay
 write(
-  '/infra/kubernetes/overlays/development/kustomization.yaml',
+  "/infra/kubernetes/overlays/development/kustomization.yaml",
   `
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -138,7 +138,7 @@ patches:
 `
 );
 write(
-  '/infra/kubernetes/overlays/development/replica-patch.yaml',
+  "/infra/kubernetes/overlays/development/replica-patch.yaml",
   `
 apiVersion: apps/v1
 kind: Deployment
@@ -151,7 +151,7 @@ spec:
 
 // Production Overlay
 write(
-  '/infra/kubernetes/overlays/production/kustomization.yaml',
+  "/infra/kubernetes/overlays/production/kustomization.yaml",
   `
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -171,7 +171,7 @@ patches:
 `
 );
 write(
-  '/infra/kubernetes/overlays/production/replica-patch.yaml',
+  "/infra/kubernetes/overlays/production/replica-patch.yaml",
   `
 apiVersion: apps/v1
 kind: Deployment
@@ -184,7 +184,7 @@ spec:
 
 // 5. ArgoCD ApplicationSet (GitOps)
 write(
-  '/infra/gitops/argocd/applicationset.yaml',
+  "/infra/gitops/argocd/applicationset.yaml",
   `
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet

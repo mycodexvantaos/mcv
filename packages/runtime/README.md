@@ -11,7 +11,7 @@ pnpm add @mycodexvantaos/runtime
 ## Usage
 
 ```typescript
-import { runtime } from '@mycodexvantaos/runtime';
+import { runtime } from "@mycodexvantaos/runtime";
 
 // Initialize
 await runtime.initialize();

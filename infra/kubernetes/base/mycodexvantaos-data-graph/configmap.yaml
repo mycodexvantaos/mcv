@@ -1,4 +1,3 @@
-# infra/kubernetes/base/mycodexvantaos-data-graph/configmap.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:

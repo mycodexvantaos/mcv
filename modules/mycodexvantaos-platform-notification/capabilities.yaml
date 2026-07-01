@@ -1,5 +1,4 @@
-# modules/mycodexvantaos-platform-notification/capabilities.yaml
 capabilities:
-  - notification
-  - queue
-  - observability
+- notification
+- queue
+- observability

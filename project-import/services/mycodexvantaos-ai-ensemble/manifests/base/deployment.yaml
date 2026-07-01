@@ -20,31 +20,31 @@ spec:
         component: ai-engine
     spec:
       containers:
-        - name: mycodexvantaos-ai-engine
-          image: registry.local/mycodexvantaos/mycodexvantaos-ai-engine:latest
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 3000
-              protocol: TCP
-          envFrom:
-            - configMapRef:
-                name: mycodexvantaos-ai-engine-config
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 3000
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 3000
-            initialDelaySeconds: 15
-            periodSeconds: 20
-          resources:
-            requests:
-              cpu: '100m'
-              memory: '128Mi'
-            limits:
-              cpu: '500m'
-              memory: '512Mi'
+      - name: mycodexvantaos-ai-engine
+        image: registry.local/mycodexvantaos/mycodexvantaos-ai-engine:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: mycodexvantaos-ai-engine-config
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi

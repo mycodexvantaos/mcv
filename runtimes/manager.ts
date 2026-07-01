@@ -4,15 +4,15 @@
  * 單例模式，管理 Runtime Configuration、模式切換並記錄關鍵日誌。
  */
 
-import { RuntimeMode } from '../packages/capabilities/types';
+import { RuntimeMode } from "../packages/capabilities/types";
 import type {
   RuntimeConfiguration,
   RuntimeEnvironment,
   NetworkProbeStrategy,
   NetworkProbeConfig,
   ModeDetectionResult,
-} from './types';
-import { detectMode, loadRuntimeConfig as rawLoadConfig } from './detector';
+} from "./types";
+import { detectMode, loadRuntimeConfig as rawLoadConfig } from "./detector";
 
 /**
  * ✨ Runtime Manager（單例）
@@ -56,14 +56,14 @@ export class RuntimeManager {
   /** 更新配置（部分，不觸發重新檢測） */
   public updateConfig(updates: Partial<RuntimeConfiguration>): void {
     this.config = { ...this.config, ...updates };
-    this.log('info', 'Runtime config updated');
+    this.log("info", "Runtime config updated");
   }
 
   /**
    * 切換 Runtime Mode（記錄日誌）
    */
-  public setMode(mode: RuntimeMode, reason: string = 'manual'): void {
-    if (mode === this.currentMode && reason !== 'manual') return;
+  public setMode(mode: RuntimeMode, reason: string = "manual"): void {
+    if (mode === this.currentMode && reason !== "manual") return;
 
     const from = this.currentMode;
     this.currentMode = mode;
@@ -75,7 +75,7 @@ export class RuntimeManager {
       reason,
     });
 
-    this.log('info', `Runtime mode switched: ${from} → ${mode} (reason: ${reason})`);
+    this.log("info", `Runtime mode switched: ${from} → ${mode} (reason: ${reason})`);
   }
 
   /** 獲取模式切換歷史 */
@@ -95,7 +95,7 @@ export class RuntimeManager {
 
     if (autoSwitch && this.config.mode === RuntimeMode.AUTO) {
       if (result.recommendedMode !== this.currentMode) {
-        this.setMode(result.recommendedMode, result.reasons.join(', ') || 'automatic detection');
+        this.setMode(result.recommendedMode, result.reasons.join(", ") || "automatic detection");
       }
     }
 
@@ -127,29 +127,29 @@ export class RuntimeManager {
         : this.currentMode !== RuntimeMode.NATIVE)
     ) {
       const newMode = networkStatus.isOnline ? RuntimeMode.CONNECTED : RuntimeMode.NATIVE;
-      this.setMode(newMode, `network probe: ${networkStatus.isOnline ? 'online' : 'offline'}`);
+      this.setMode(newMode, `network probe: ${networkStatus.isOnline ? "online" : "offline"}`);
     }
 
     return networkStatus;
   }
 
   /** 日誌輔助方法 */
-  private log(level: 'debug' | 'info' | 'warn' | 'error', message: string): void {
+  private log(level: "debug" | "info" | "warn" | "error", message: string): void {
     const timestamp = new Date().toISOString();
     const prefix = `[${timestamp}] [${level.toUpperCase()}] [RuntimeManager]`;
 
     const enabled =
-      this.config.logLevel === 'debug' ||
-      (level === 'info' && this.config.logLevel === 'info') ||
-      this.config.logLevel === 'warn' ||
-      this.config.logLevel === 'error';
+      this.config.logLevel === "debug" ||
+      (level === "info" && this.config.logLevel === "info") ||
+      this.config.logLevel === "warn" ||
+      this.config.logLevel === "error";
     if (!enabled) return;
 
-    if (level === 'debug') {
-      if (this.config.logLevel === 'debug') console.debug(prefix, message);
-    } else if (level === 'error') {
+    if (level === "debug") {
+      if (this.config.logLevel === "debug") console.debug(prefix, message);
+    } else if (level === "error") {
       console.error(prefix, message);
-    } else if (level === 'warn') {
+    } else if (level === "warn") {
       console.warn(prefix, message);
     } else {
       console.log(prefix, message);

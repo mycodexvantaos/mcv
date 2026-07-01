@@ -1,19 +1,18 @@
-# Sequential Review Workflow Pattern
-# Designed for code review, document review, and approval processes
 urn: urn:mycodexvantaos:workflow:sequential-review
 name: Sequential Review Workflow
-description: |
-  A workflow pattern for sequential review and approval processes.
+description: 'A workflow pattern for sequential review and approval processes.
+
   Each stage must be completed before moving to the next.
+
   Includes built-in HITL checkpoints for human approval gates.
+
+  '
 type: dag
 version: 1.0.0
-created_at: 2024-01-15T10:00:00Z
-updated_at: 2024-01-15T10:00:00Z
-
-# Workflow Configuration
+created_at: 2024-01-15 10:00:00+00:00
+updated_at: 2024-01-15 10:00:00+00:00
 config:
-  timeout_seconds: 7200 # 2 hours max
+  timeout_seconds: 7200
   retry_policy:
     max_retries: 2
     backoff_seconds: 30
@@ -22,277 +21,245 @@ config:
     on_stage_complete: true
     on_approval_required: true
     on_final_complete: true
-
-# DAG Nodes Definition
 nodes:
-  # Stage 1: Initial Submission
-  - id: submit
-    type: task
-    action: submit_for_review
-    config:
-      validate_submission: true
-      check_completeness: true
-      auto_assign_reviewers: true
-    handler: submitHandler
-    next:
-      - initial_checks
-
-  # Stage 2: Automated Checks
-  - id: initial_checks
-    type: task
-    action: run_automated_checks
-    config:
-      checks:
-        - linting
-        - formatting
-        - static_analysis
-        - unit_tests
-      fail_threshold: error # error, warning, info
-      generate_report: true
-    dependencies:
-      - submit
-    handler: automatedChecksHandler
-    next:
-      - check_results_gate
-
-  # Decision Gate: Check if automated checks passed
-  - id: check_results_gate
-    type: gateway
-    action: evaluate_checks
-    config:
-      conditions:
-        - field: automated_checks_passed
-          operator: eq
-          value: true
-      on_pass: assign_reviewer
-      on_fail: return_for_fixes
-    dependencies:
-      - initial_checks
-    handler: gatewayHandler
-
-  # Branch: Return for fixes if checks failed
-  - id: return_for_fixes
-    type: task
-    action: request_fixes
-    config:
-      include_check_report: true
-      max_iterations: 3
-    dependencies:
-      - check_results_gate
-    handler: requestFixesHandler
-    next:
-      - wait_for_fixes
-
-  - id: wait_for_fixes
-    type: wait
-    action: wait_for_resubmission
-    config:
-      timeout_seconds: 86400 # 24 hours
-      notify_on_timeout: true
-    dependencies:
-      - return_for_fixes
-    handler: waitHandler
-    next:
-      - initial_checks # Loop back to re-check
-
-  # Stage 3: Assign Reviewer
-  - id: assign_reviewer
-    type: task
-    action: assign_to_reviewer
-    config:
-      strategy: round_robin
-      consider_expertise: true
-      max_reviewers: 2
-    dependencies:
-      - check_results_gate
-    handler: assignReviewerHandler
-    next:
-      - hitl_code_review
-
-  # HITL Checkpoint: Code Review
-  - id: hitl_code_review
-    type: hitl
-    action: wait_for_review
-    config:
-      timeout_seconds: 172800 # 48 hours
-      approvers_required: 1
-      allow_rejection: true
-      notification:
-        channels:
-          - email
-          - slack
-        template: review_request
-    dependencies:
-      - assign_reviewer
-    handler: hitlReviewHandler
-    next:
-      - review_decision_gate
-
-  # Decision Gate: Review Result
-  - id: review_decision_gate
-    type: gateway
-    action: evaluate_review
-    config:
-      conditions:
-        - field: review_status
-          operator: in
-          value: [approved, approved_with_comments]
-      on_pass: final_approval
-      on_fail: request_changes
-    dependencies:
-      - hitl_code_review
-    handler: gatewayHandler
-
-  # Branch: Request changes
-  - id: request_changes
-    type: task
-    action: send_change_request
-    config:
-      include_review_comments: true
-      priority: high
-    dependencies:
-      - review_decision_gate
-    handler: requestChangesHandler
-    next:
-      - wait_for_changes
-
-  - id: wait_for_changes
-    type: wait
-    action: wait_for_revision
-    config:
-      timeout_seconds: 86400 # 24 hours
-    dependencies:
-      - request_changes
-    handler: waitHandler
-    next:
-      - hitl_code_review # Loop back for re-review
-
-  # Stage 4: Final Approval
-  - id: final_approval
-    type: hitl
-    action: final_sign_off
-    config:
-      timeout_seconds: 3600
-      approvers_required: 1
-      approver_roles:
-        - tech_lead
-        - architect
-    dependencies:
-      - review_decision_gate
-    handler: finalApprovalHandler
-    next:
-      - merge
-
-  # Stage 5: Merge
-  - id: merge
-    type: task
-    action: merge_changes
-    config:
-      strategy: squash_merge
-      delete_branch: true
-      tag_release: false
-    dependencies:
-      - final_approval
-    handler: mergeHandler
-    next:
-      - notify_complete
-
-  # Stage 6: Notification
-  - id: notify_complete
-    type: task
-    action: send_notification
-    config:
+- id: submit
+  type: task
+  action: submit_for_review
+  config:
+    validate_submission: true
+    check_completeness: true
+    auto_assign_reviewers: true
+  handler: submitHandler
+  next:
+  - initial_checks
+- id: initial_checks
+  type: task
+  action: run_automated_checks
+  config:
+    checks:
+    - linting
+    - formatting
+    - static_analysis
+    - unit_tests
+    fail_threshold: error
+    generate_report: true
+  dependencies:
+  - submit
+  handler: automatedChecksHandler
+  next:
+  - check_results_gate
+- id: check_results_gate
+  type: gateway
+  action: evaluate_checks
+  config:
+    conditions:
+    - field: automated_checks_passed
+      operator: eq
+      value: true
+    on_pass: assign_reviewer
+    on_fail: return_for_fixes
+  dependencies:
+  - initial_checks
+  handler: gatewayHandler
+- id: return_for_fixes
+  type: task
+  action: request_fixes
+  config:
+    include_check_report: true
+    max_iterations: 3
+  dependencies:
+  - check_results_gate
+  handler: requestFixesHandler
+  next:
+  - wait_for_fixes
+- id: wait_for_fixes
+  type: wait
+  action: wait_for_resubmission
+  config:
+    timeout_seconds: 86400
+    notify_on_timeout: true
+  dependencies:
+  - return_for_fixes
+  handler: waitHandler
+  next:
+  - initial_checks
+- id: assign_reviewer
+  type: task
+  action: assign_to_reviewer
+  config:
+    strategy: round_robin
+    consider_expertise: true
+    max_reviewers: 2
+  dependencies:
+  - check_results_gate
+  handler: assignReviewerHandler
+  next:
+  - hitl_code_review
+- id: hitl_code_review
+  type: hitl
+  action: wait_for_review
+  config:
+    timeout_seconds: 172800
+    approvers_required: 1
+    allow_rejection: true
+    notification:
       channels:
-        - email
-        - slack
-      template: review_complete
-    dependencies:
-      - merge
-    handler: notifyHandler
-
-# Edge Definitions
+      - email
+      - slack
+      template: review_request
+  dependencies:
+  - assign_reviewer
+  handler: hitlReviewHandler
+  next:
+  - review_decision_gate
+- id: review_decision_gate
+  type: gateway
+  action: evaluate_review
+  config:
+    conditions:
+    - field: review_status
+      operator: in
+      value:
+      - approved
+      - approved_with_comments
+    on_pass: final_approval
+    on_fail: request_changes
+  dependencies:
+  - hitl_code_review
+  handler: gatewayHandler
+- id: request_changes
+  type: task
+  action: send_change_request
+  config:
+    include_review_comments: true
+    priority: high
+  dependencies:
+  - review_decision_gate
+  handler: requestChangesHandler
+  next:
+  - wait_for_changes
+- id: wait_for_changes
+  type: wait
+  action: wait_for_revision
+  config:
+    timeout_seconds: 86400
+  dependencies:
+  - request_changes
+  handler: waitHandler
+  next:
+  - hitl_code_review
+- id: final_approval
+  type: hitl
+  action: final_sign_off
+  config:
+    timeout_seconds: 3600
+    approvers_required: 1
+    approver_roles:
+    - tech_lead
+    - architect
+  dependencies:
+  - review_decision_gate
+  handler: finalApprovalHandler
+  next:
+  - merge
+- id: merge
+  type: task
+  action: merge_changes
+  config:
+    strategy: squash_merge
+    delete_branch: true
+    tag_release: false
+  dependencies:
+  - final_approval
+  handler: mergeHandler
+  next:
+  - notify_complete
+- id: notify_complete
+  type: task
+  action: send_notification
+  config:
+    channels:
+    - email
+    - slack
+    template: review_complete
+  dependencies:
+  - merge
+  handler: notifyHandler
 edges:
-  - from: submit
-    to: initial_checks
-  - from: initial_checks
-    to: check_results_gate
-  - from: check_results_gate
-    to: assign_reviewer
-    condition: checks_passed
-  - from: check_results_gate
-    to: return_for_fixes
-    condition: checks_failed
-  - from: return_for_fixes
-    to: wait_for_fixes
-  - from: wait_for_fixes
-    to: initial_checks
-  - from: assign_reviewer
-    to: hitl_code_review
-  - from: hitl_code_review
-    to: review_decision_gate
-  - from: review_decision_gate
-    to: final_approval
-    condition: approved
-  - from: review_decision_gate
-    to: request_changes
-    condition: changes_requested
-  - from: request_changes
-    to: wait_for_changes
-  - from: wait_for_changes
-    to: hitl_code_review
-  - from: final_approval
-    to: merge
-  - from: merge
-    to: notify_complete
-
-# HITL Configuration
+- from: submit
+  to: initial_checks
+- from: initial_checks
+  to: check_results_gate
+- from: check_results_gate
+  to: assign_reviewer
+  condition: checks_passed
+- from: check_results_gate
+  to: return_for_fixes
+  condition: checks_failed
+- from: return_for_fixes
+  to: wait_for_fixes
+- from: wait_for_fixes
+  to: initial_checks
+- from: assign_reviewer
+  to: hitl_code_review
+- from: hitl_code_review
+  to: review_decision_gate
+- from: review_decision_gate
+  to: final_approval
+  condition: approved
+- from: review_decision_gate
+  to: request_changes
+  condition: changes_requested
+- from: request_changes
+  to: wait_for_changes
+- from: wait_for_changes
+  to: hitl_code_review
+- from: final_approval
+  to: merge
+- from: merge
+  to: notify_complete
 hitl_config:
   enabled: true
   checkpoints:
-    - node_id: hitl_code_review
-      type: approval
-      timeout_seconds: 172800
-      escalation:
-        after_seconds: 86400
-        escalate_to: tech_lead
-    - node_id: final_approval
-      type: sign_off
-      timeout_seconds: 3600
+  - node_id: hitl_code_review
+    type: approval
+    timeout_seconds: 172800
+    escalation:
+      after_seconds: 86400
+      escalate_to: tech_lead
+  - node_id: final_approval
+    type: sign_off
+    timeout_seconds: 3600
   notification:
     on_waiting: true
     on_timeout: true
     on_approval: true
     on_rejection: true
-
-# Metrics and Monitoring
 metrics:
   track_per_stage: true
   aggregate_metrics:
-    - time_to_first_review
-    - review_iterations
-    - approval_rate
-    - time_to_merge
-
-# Example Usage
+  - time_to_first_review
+  - review_iterations
+  - approval_rate
+  - time_to_merge
 examples:
-  - name: Pull Request Review
-    description: Standard code review workflow for pull requests
-    input:
-      pull_request_id: PR-123
-      author: developer@example.com
-      reviewers:
-        - reviewer1@example.com
-        - reviewer2@example.com
-    expected_output:
-      status: merged
-      review_duration: 2h
-
-  - name: Document Review
-    description: Review process for technical documentation
-    input:
-      document_id: DOC-456
-      document_type: technical_spec
-      submitter: author@example.com
-    expected_output:
-      status: approved
-      approved_by: tech_lead@example.com
+- name: Pull Request Review
+  description: Standard code review workflow for pull requests
+  input:
+    pull_request_id: PR-123
+    author: developer@example.com
+    reviewers:
+    - reviewer1@example.com
+    - reviewer2@example.com
+  expected_output:
+    status: merged
+    review_duration: 2h
+- name: Document Review
+  description: Review process for technical documentation
+  input:
+    document_id: DOC-456
+    document_type: technical_spec
+    submitter: author@example.com
+  expected_output:
+    status: approved
+    approved_by: tech_lead@example.com

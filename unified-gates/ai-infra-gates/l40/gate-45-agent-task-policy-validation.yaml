@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,34 +10,35 @@ metadata:
   criticality: high
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-60700
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l40
-    - agent
+  - l40
+  - agent
   sloTarget: 30
   evidenceRetentionDays: 1095
 spec:
-  description: >
-    Validates that agent task definitions comply with the agent task policy.
+  description: 'Validates that agent task definitions comply with the agent task policy.
+
+    '
   validates:
-    - dimension: policy-compliance
-      description: Agent task complies with policy.
-      checks:
-        - id: chk-task-policy-attested
-          description: Agent task policy attestation exists
-          rule: 'attestation:agent-task-policy'
-          severity: high
-          evidenceRequired: true
-        - id: chk-tool-permissions-scoped
-          description: Tool permissions are scoped to minimum required
-          rule: 'policy:least-privilege'
-          severity: high
-          evidenceRequired: true
-        - id: chk-human-in-loop-defined
-          description: Human-in-the-loop checkpoints are defined for high-risk actions
-          rule: 'field:human-in-loop-defined'
-          severity: medium
-          evidenceRequired: false
+  - dimension: policy-compliance
+    description: Agent task complies with policy.
+    checks:
+    - id: chk-task-policy-attested
+      description: Agent task policy attestation exists
+      rule: attestation:agent-task-policy
+      severity: high
+      evidenceRequired: true
+    - id: chk-tool-permissions-scoped
+      description: Tool permissions are scoped to minimum required
+      rule: policy:least-privilege
+      severity: high
+      evidenceRequired: true
+    - id: chk-human-in-loop-defined
+      description: Human-in-the-loop checkpoints are defined for high-risk actions
+      rule: field:human-in-loop-defined
+      severity: medium
+      evidenceRequired: false
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

@@ -1,5 +1,3 @@
-# infra/kubernetes/base/mycodexvantaos-data-pipeline/deployment.yaml
-# 5.4, 6.4 — metadata.name MUST equal the service-id. Namespace set by overlay only (12.1).
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -18,25 +16,23 @@ spec:
         app.kubernetes.io/name: mycodexvantaos-data-pipeline
     spec:
       containers:
-        - name: mycodexvantaos-data-pipeline
-          image: ghcr.io/mycodexvantaos/mycodexvantaos-data-pipeline:latest
-          # Production MUST use digest pinning (7.3):
-          # image: ghcr.io/mycodexvantaos/mycodexvantaos-data-pipeline@sha256:<digest>
-          ports:
-            - containerPort: 3000
-          envFrom:
-            - configMapRef:
-                name: mycodexvantaos-data-pipeline
-          resources:
-            requests:
-              cpu: 100m
-              memory: 128Mi
-            limits:
-              cpu: 500m
-              memory: 512Mi
-          livenessProbe:
-            httpGet:
-              path: /healthz
-              port: 3000
-            initialDelaySeconds: 10
-            periodSeconds: 30
+      - name: mycodexvantaos-data-pipeline
+        image: ghcr.io/mycodexvantaos/mycodexvantaos-data-pipeline:latest
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - configMapRef:
+            name: mycodexvantaos-data-pipeline
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 30

@@ -1,5 +1,3 @@
-# search-indexes/idx--mycodexvantaos-core-auth--username--standard.yaml
-# 9.5 — Format: idx--<service-id>--<field>--<analyzer>
 apiVersion: mycodexvantaos.org/v1
 kind: SearchIndex
 metadata:
@@ -10,4 +8,4 @@ spec:
   serviceId: mycodexvantaos-core-auth
   field: username
   analyzer: standard
-  description: 'Standard index for user search by username.'
+  description: Standard index for user search by username.

@@ -1,25 +1,20 @@
-# MyCodeXvantaOS Capability Declaration
-
 id: urn:mycodexvantaos:capability:service-discovery
 name: Service Discovery
 version: 1.0.0
 description: Service registration and discovery capabilities
 status: stable
 governance_tier: 1
-
 contract:
   interfaces:
-    - initialize
-    - execute
-    - cleanup
-    - validate
-
+  - initialize
+  - execute
+  - cleanup
+  - validate
   requirements:
-    - local-first: true
-    - cloud-agnostic: true
-    - contract-first: true
-    - governance-enforced: true
-
+  - local-first: true
+  - cloud-agnostic: true
+  - contract-first: true
+  - governance-enforced: true
 provider_manifests:
-  - native: 'urn:mycodexvantaos:capability:service-discovery:provider-native'
-  - external: 'urn:mycodexvantaos:capability:service-discovery:provider-external'
+- native: urn:mycodexvantaos:capability:service-discovery:provider-native
+- external: urn:mycodexvantaos:capability:service-discovery:provider-external

@@ -24,21 +24,30 @@ metadata_schema:
 spec_schema: {}
 status_schema: {}
 lifecycle:
-  - creating
-  - active
-  - updating
-  - degraded
-  - suspended
-  - deleting
-  - deleted
+- creating
+- active
+- updating
+- degraded
+- suspended
+- deleting
+- deleted
 permissions:
-  - action: read
-    roles: [workspace-viewer, workspace-member, workspace-owner, platform-admin]
-  - action: write
-    roles: [workspace-member, workspace-owner, platform-admin]
-  - action: delete
-    roles: [workspace-owner, platform-admin]
+- action: read
+  roles:
+  - workspace-viewer
+  - workspace-member
+  - workspace-owner
+  - platform-admin
+- action: write
+  roles:
+  - workspace-member
+  - workspace-owner
+  - platform-admin
+- action: delete
+  roles:
+  - workspace-owner
+  - platform-admin
 audit_events:
-  - document-chunk.created
-  - document-chunk.updated
-  - document-chunk.deleted
+- document-chunk.created
+- document-chunk.updated
+- document-chunk.deleted

@@ -22,28 +22,28 @@ import type {
   IEmbeddingModelPort,
   IQueuePort,
   IAuthPort,
-} from '@mycodexvantaos/ports';
+} from "@mycodexvantaos/ports";
 
-import { CloudflareD1Adapter } from '@mycodexvantaos/adapters/cloudflare-d1';
+import { CloudflareD1Adapter } from "@mycodexvantaos/adapters/cloudflare-d1";
 import {
   CloudflareKVCacheStore,
   CloudflareKVSessionStore,
-} from '@mycodexvantaos/adapters/cloudflare-kv';
-import { CloudflareR2Adapter } from '@mycodexvantaos/adapters/cloudflare-r2';
-import { D1FullTextSearchAdapter } from '@mycodexvantaos/adapters/d1-full-text-search';
+} from "@mycodexvantaos/adapters/cloudflare-kv";
+import { CloudflareR2Adapter } from "@mycodexvantaos/adapters/cloudflare-r2";
+import { D1FullTextSearchAdapter } from "@mycodexvantaos/adapters/d1-full-text-search";
 import {
   WorkersAIChatAdapter,
   WorkersAIEmbeddingAdapter,
-} from '@mycodexvantaos/adapters/workers-ai';
+} from "@mycodexvantaos/adapters/workers-ai";
 
-import { IdentityService } from '@mycodexvantaos/application/identity';
-import { WorkspaceService } from '@mycodexvantaos/application/workspace';
-import { KnowledgeService } from '@mycodexvantaos/application/knowledge';
-import { AgentService } from '@mycodexvantaos/application/agent';
-import { ModelService } from '@mycodexvantaos/application/model';
-import { AuditService } from '@mycodexvantaos/application/audit';
-import { UsageService } from '@mycodexvantaos/application/usage';
-import { AutomationService } from '@mycodexvantaos/application/automation';
+import { IdentityService } from "@mycodexvantaos/application/identity";
+import { WorkspaceService } from "@mycodexvantaos/application/workspace";
+import { KnowledgeService } from "@mycodexvantaos/application/knowledge";
+import { AgentService } from "@mycodexvantaos/application/agent";
+import { ModelService } from "@mycodexvantaos/application/model";
+import { AuditService } from "@mycodexvantaos/application/audit";
+import { UsageService } from "@mycodexvantaos/application/usage";
+import { AutomationService } from "@mycodexvantaos/application/automation";
 
 export interface CloudflareBindings {
   D1_DATABASE: D1Database;
@@ -99,7 +99,7 @@ export function bootstrapCloudflare(env: CloudflareBindings): CloudflareServiceC
  * all critical infrastructure bindings are present.
  */
 export function healthCheck(env: CloudflareBindings): {
-  status: 'ok' | 'degraded' | 'down';
+  status: "ok" | "degraded" | "down";
   checks: Record<string, boolean>;
 } {
   const checks: Record<string, boolean> = {
@@ -116,7 +116,7 @@ export function healthCheck(env: CloudflareBindings): {
   const mostOk = Object.values(checks).filter(Boolean).length >= 5;
 
   return {
-    status: allOk ? 'ok' : mostOk ? 'degraded' : 'down',
+    status: allOk ? "ok" : mostOk ? "degraded" : "down",
     checks,
   };
 }

@@ -33,12 +33,12 @@ export class KafkaConnector {
   }
 
   async publish(message: KafkaMessage): Promise<void> {
-    if (!this.connected) throw new Error('Not connected');
+    if (!this.connected) throw new Error("Not connected");
     console.log(`Publishing to ${message.topic}`);
   }
 
   async subscribe(topic: string, callback: (message: KafkaMessage) => void): Promise<void> {
-    if (!this.connected) throw new Error('Not connected');
+    if (!this.connected) throw new Error("Not connected");
     console.log(`Subscribing to ${topic}`);
   }
 

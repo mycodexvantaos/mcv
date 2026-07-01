@@ -1,5 +1,4 @@
-# modules/mycodexvantaos-docs-search/capabilities.yaml
 capabilities:
-  - search
-  - vector-store
-  - embedding
+- search
+- vector-store
+- embedding

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -8,15 +8,15 @@ import {
   CardHeader,
   CardTitle,
   CardFooter,
-} from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/accordion';
+} from "@/components/ui/accordion";
 import {
   Table,
   TableBody,
@@ -24,8 +24,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { ScrollArea } from '@/components/ui/scroll-area';
+} from "@/components/ui/table";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   ScrollText,
   CheckCircle2,
@@ -41,44 +41,44 @@ import {
   Network,
   Loader2,
   RotateCw,
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function ReportsPage() {
   const [isAuditing, setIsAuditing] = useState(false);
-  const [lastAuditTs, setLastAuditTs] = useState('2024-05-20 14:30:00 (UTC+8)');
+  const [lastAuditTs, setLastAuditTs] = useState("2024-05-20 14:30:00 (UTC+8)");
   const [score, setScore] = useState(95);
 
   const [summaryTable, setSummaryTable] = useState([
     {
-      aspect: '評分計算 (Score Calculation)',
-      status: '基本上合理',
-      recommendation: 'REQ: 公開指標分數、權重、統計檢定 (t 檢定)',
+      aspect: "評分計算 (Score Calculation)",
+      status: "基本上合理",
+      recommendation: "REQ: 公開指標分數、權重、統計檢定 (t 檢定)",
     },
     {
-      aspect: '核心改進 (Core Refinements)',
-      status: '具備可操作性',
-      recommendation: 'REQ: 強化 SOP、責任分工 (RACI 矩陣)、驗證指標',
+      aspect: "核心改進 (Core Refinements)",
+      status: "具備可操作性",
+      recommendation: "REQ: 強化 SOP、責任分工 (RACI 矩陣)、驗證指標",
     },
     {
-      aspect: 'YAML / 架構驗證',
-      status: '基本符合標準',
-      recommendation: 'REQ: 採用國際標準 (ISO)、持續自動驗證 (CI)',
+      aspect: "YAML / 架構驗證",
+      status: "基本符合標準",
+      recommendation: "REQ: 採用國際標準 (ISO)、持續自動驗證 (CI)",
     },
     {
-      aspect: '多協定 / 自動驗證 (協定)',
-      status: '架構完整',
-      recommendation: 'REQ: 加強資料轉換、資料標準化、監控 (軟體中介軟體)',
+      aspect: "多協定 / 自動驗證 (協定)",
+      status: "架構完整",
+      recommendation: "REQ: 加強資料轉換、資料標準化、監控 (軟體中介軟體)",
     },
     {
-      aspect: '工具與文件 (文件)',
-      status: '工具鏈完整',
-      recommendation: 'REQ: 精煉文件、建立知識庫與訓練系統 (超級使用者)',
+      aspect: "工具與文件 (文件)",
+      status: "工具鏈完整",
+      recommendation: "REQ: 精煉文件、建立知識庫與訓練系統 (超級使用者)",
     },
     {
-      aspect: '風險 / 錯誤 (風險評估)',
-      status: '無重大失誤',
-      recommendation: 'REQ: 明確區分「總體」與「成果」、暴露限制與潛在風險',
+      aspect: "風險 / 錯誤 (風險評估)",
+      status: "無重大失誤",
+      recommendation: "REQ: 明確區分「總體」與「成果」、暴露限制與潛在風險",
     },
   ]);
 
@@ -95,7 +95,7 @@ export default function ReportsPage() {
     setSummaryTable((prev) =>
       prev.map((row) => ({
         ...row,
-        status: Math.random() > 0.8 ? '驗證中 (Validating)' : row.status,
+        status: Math.random() > 0.8 ? "驗證中 (Validating)" : row.status,
       }))
     );
   };
@@ -140,7 +140,7 @@ export default function ReportsPage() {
             ) : (
               <RotateCw className="mr-2 h-4 w-4" />
             )}
-            <span>{isAuditing ? 'Auditing Network...' : 'Run New Audit'}</span>
+            <span>{isAuditing ? "Auditing Network..." : "Run New Audit"}</span>
           </Button>
           <Button
             variant="outline"
@@ -155,31 +155,31 @@ export default function ReportsPage() {
       <div className="grid gap-6 md:grid-cols-4">
         {[
           {
-            label: 'Final Validation Score',
+            label: "Final Validation Score",
             value: score,
-            suffix: '/ 100',
-            trend: '大幅提升 (Pre: 35)',
+            suffix: "/ 100",
+            trend: "大幅提升 (Pre: 35)",
             icon: Zap,
           },
           {
-            label: 'Cronbach’s α (信度)',
-            value: '0.92',
-            suffix: '',
-            trend: '信度極高 (Reliable)',
+            label: "Cronbach’s α (信度)",
+            value: "0.92",
+            suffix: "",
+            trend: "信度極高 (Reliable)",
             icon: ShieldCheck,
           },
           {
-            label: 'Protocols Covered',
-            value: '5+',
-            suffix: 'Types',
-            trend: 'HTTP, MQTT, OPC UA...',
+            label: "Protocols Covered",
+            value: "5+",
+            suffix: "Types",
+            trend: "HTTP, MQTT, OPC UA...",
             icon: Network,
           },
           {
-            label: 'Audit Standard',
-            value: 'SLSA',
-            suffix: 'L3',
-            trend: 'NIST IR 8536 實踐',
+            label: "Audit Standard",
+            value: "SLSA",
+            suffix: "L3",
+            trend: "NIST IR 8536 實踐",
             icon: ClipboardList,
           },
         ].map((kpi, i) => (
@@ -317,7 +317,7 @@ export default function ReportsPage() {
                       </TableCell>
                       <TableCell className="text-[10px] text-muted-foreground leading-relaxed">
                         <span className="text-accent font-bold">REQ: </span>
-                        {row.recommendation.replace('REQ: ', '')}
+                        {row.recommendation.replace("REQ: ", "")}
                       </TableCell>
                     </TableRow>
                   ))}

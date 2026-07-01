@@ -1,6 +1,5 @@
-# modules/mycodexvantaos-ai-agent/capabilities.yaml
 capabilities:
-  - llm
-  - embedding
-  - vector-store
-  - scheduler
+- llm
+- embedding
+- vector-store
+- scheduler

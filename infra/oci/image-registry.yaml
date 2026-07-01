@@ -1,5 +1,3 @@
-# infra/oci/image-registry.yaml
-# 7.3 — OCI image registry configuration
 apiVersion: mycodexvantaos.org/v1
 kind: ImageRegistryConfig
 metadata:
@@ -7,11 +5,10 @@ metadata:
 spec:
   registry: ghcr.io
   namespace: mycodexvantaos
-  # Image repository name MUST equal service-id (7.3)
-  namingRule: '<registry>/<namespace>/<service-id>:<semver-tag>'
-  productionRule: '<registry>/<namespace>/<service-id>@sha256:<digest>'
+  namingRule: <registry>/<namespace>/<service-id>:<semver-tag>
+  productionRule: <registry>/<namespace>/<service-id>@sha256:<digest>
   digestPinningRequired: true
   environments:
-    prod: true # digest pinning required
+    prod: true
     staging: true
-    dev: false # tag-based allowed in dev
+    dev: false

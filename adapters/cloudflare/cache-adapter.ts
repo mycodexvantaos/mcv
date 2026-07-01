@@ -8,8 +8,8 @@ import type {
   CachePutOptions,
   CacheListOptions,
   CacheListResult,
-} from '../../ports/index';
-import type { CloudflareEnv } from './index';
+} from "../../ports/index";
+import type { CloudflareEnv } from "./index";
 
 export class CloudflareCacheAdapter implements ICachePort {
   private kv: KVNamespace;
@@ -19,7 +19,7 @@ export class CloudflareCacheAdapter implements ICachePort {
   }
 
   async get<T = string>(key: string): Promise<T | null> {
-    const value = await this.kv.get(key, 'text');
+    const value = await this.kv.get(key, "text");
     if (value === null) return null;
 
     try {
@@ -31,7 +31,7 @@ export class CloudflareCacheAdapter implements ICachePort {
   }
 
   async put(key: string, value: unknown, options?: CachePutOptions): Promise<void> {
-    const serialized = typeof value === 'string' ? value : JSON.stringify(value);
+    const serialized = typeof value === "string" ? value : JSON.stringify(value);
 
     await this.kv.put(key, serialized, {
       expirationTtl: options?.expirationTtl,
@@ -67,14 +67,14 @@ export class CloudflareCacheAdapter implements ICachePort {
     // using the metadata field as a revision counter.
     const existing = await this.kv.getWithMetadata<{ revision: number }>(key);
 
-    const expectedRevision = typeof expectedValue === 'number' ? expectedValue : 0;
+    const expectedRevision = typeof expectedValue === "number" ? expectedValue : 0;
     const currentRevision = existing.metadata?.revision ?? 0;
 
     if (currentRevision !== expectedRevision) {
       return false;
     }
 
-    const serialized = typeof newValue === 'string' ? newValue : JSON.stringify(newValue);
+    const serialized = typeof newValue === "string" ? newValue : JSON.stringify(newValue);
     const newRevision = currentRevision + 1;
 
     await this.kv.put(key, serialized, {

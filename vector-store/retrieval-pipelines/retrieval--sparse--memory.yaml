@@ -1,5 +1,3 @@
-# vector-store/retrieval-pipelines/retrieval--sparse--memory.yaml
-# 9.4 — Format: retrieval--<strategy>--<store-type>
 apiVersion: mycodexvantaos.org/v1
 kind: RetrievalPipeline
 metadata:
@@ -10,7 +8,6 @@ spec:
   strategy: sparse
   storeType: memory
   provider: vector-store-pgvector
-  # no embeddingModelAlias for sparse pipelines
   topK: 10
   rerankEnabled: false
-  description: 'Sparse BM25 keyword retrieval, in-memory index.'
+  description: Sparse BM25 keyword retrieval, in-memory index.

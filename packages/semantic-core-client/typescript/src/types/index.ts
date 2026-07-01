@@ -2,7 +2,7 @@
  * Type definitions for Semantic Core Client
  */
 
-import { Logger } from 'pino';
+import { Logger } from "pino";
 
 /**
  * Decision context for semantic analysis
@@ -27,12 +27,12 @@ export interface Evidence {
 }
 
 export type EvidenceSource =
-  | 'internal_primary'
-  | 'internal_secondary'
-  | 'external_peer_reviewed'
-  | 'external_standard'
-  | 'global_news'
-  | 'global_forum';
+  | "internal_primary"
+  | "internal_secondary"
+  | "external_peer_reviewed"
+  | "external_standard"
+  | "global_news"
+  | "global_forum";
 
 /**
  * Decision parameters
@@ -48,7 +48,7 @@ export interface DecisionParameters {
  * Decision result
  */
 export interface Decision {
-  verdict: 'ALLOW' | 'DENY' | 'ABSTAIN';
+  verdict: "ALLOW" | "DENY" | "ABSTAIN";
   confidence: number;
   reasoning: string;
   scores: {

@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { generateCiCdPipeline, type GenerateCiCdPipelineOutput } from '@/ai/client-stubs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Input } from '@/components/ui/input';
-import { FileCode, Loader2, Sparkles, CheckCircle2 } from 'lucide-react';
+import { useState } from "react";
+import { generateCiCdPipeline, type GenerateCiCdPipelineOutput } from "@/ai/client-stubs";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { FileCode, Loader2, Sparkles, CheckCircle2 } from "lucide-react";
 
 export default function PipelineGeneratorPage() {
   const [loading, setLoading] = useState(false);
-  const [arch, setArch] = useState('');
-  const [strategy, setStrategy] = useState('Kubernetes Blue/Green Deployment');
+  const [arch, setArch] = useState("");
+  const [strategy, setStrategy] = useState("Kubernetes Blue/Green Deployment");
   const [result, setResult] = useState<GenerateCiCdPipelineOutput | null>(null);
 
   const handleGenerate = async () => {
@@ -111,7 +111,7 @@ export default function PipelineGeneratorPage() {
               <CardDescription>Meticulous review of generated logic.</CardDescription>
             </CardHeader>
             <CardContent className="prose prose-invert max-w-none text-sm text-muted-foreground">
-              {result.validationReport.split('\n').map((line, i) => (
+              {result.validationReport.split("\n").map((line, i) => (
                 <p key={i} className="mb-2 leading-relaxed">
                   {line}
                 </p>

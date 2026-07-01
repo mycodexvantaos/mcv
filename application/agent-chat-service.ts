@@ -13,7 +13,7 @@ import type {
   IAuditPort,
   IIdentityPort,
   IUsagePort,
-} from '../ports/index';
+} from "../ports/index";
 import type {
   ChatSessionSpec,
   ChatSessionStatus,
@@ -21,7 +21,7 @@ import type {
   ChatMessage,
   EvidenceLevel,
   Resource,
-} from '../core/index';
+} from "../core/index";
 
 export interface AgentChatServiceDeps {
   database: IDatabasePort;
@@ -72,30 +72,30 @@ export class AgentChatService {
     );
 
     await this.deps.audit.emitEvent({
-      eventType: 'ai.chat.session.created',
-      category: 'ai',
-      severity: 'info',
+      eventType: "ai.chat.session.created",
+      category: "ai",
+      severity: "info",
       subjectId: input.subjectId,
       workspaceId,
-      resourceKind: 'chat-session',
+      resourceKind: "chat-session",
       resourceId: sessionId,
-      action: 'create-session',
+      action: "create-session",
       data: { modelEndpointId: input.modelEndpointId, collectionIds: input.knowledgeCollectionIds },
       correlationId: crypto.randomUUID(),
     });
 
     return {
-      apiVersion: 'platform.mycodevantaos/v1',
-      kind: 'chat-session',
+      apiVersion: "platform.mycodevantaos/v1",
+      kind: "chat-session",
       metadata: {
         id: sessionId,
         urn,
-        kind: 'chat-session',
+        kind: "chat-session",
         workspaceId,
         labels: {},
         annotations: {},
         createdBy: input.subjectId,
-        version: '1.0.0',
+        version: "1.0.0",
         resourceVersion: 1,
         createdAt: now,
         updatedAt: now,
@@ -108,13 +108,13 @@ export class AgentChatService {
         temperature: input.temperature ?? 0.7,
       },
       status: {
-        phase: 'created',
+        phase: "created",
         conditions: [
           {
-            type: 'Ready',
-            status: 'True',
-            reason: 'Created',
-            message: 'Session ready',
+            type: "Ready",
+            status: "True",
+            reason: "Created",
+            message: "Session ready",
             lastTransitionTime: now,
           },
         ],
@@ -143,20 +143,20 @@ export class AgentChatService {
       model_endpoint_id: string;
       system_prompt: string;
       temperature: number;
-    }>('SELECT * FROM chat_sessions WHERE id = ?', [sessionId]);
+    }>("SELECT * FROM chat_sessions WHERE id = ?", [sessionId]);
 
     if (!session) throw new Error(`Session ${sessionId} not found`);
 
     // 2. Emit message.sent event (start of closed-loop pair)
     await this.deps.audit.emitEvent({
-      eventType: 'ai.chat.message.sent',
-      category: 'ai',
-      severity: 'info',
+      eventType: "ai.chat.message.sent",
+      category: "ai",
+      severity: "info",
       subjectId: session.subject_id,
       workspaceId: session.workspace_id,
-      resourceKind: 'chat-session',
+      resourceKind: "chat-session",
       resourceId: sessionId,
-      action: 'send-message',
+      action: "send-message",
       data: { contentLength: content.length },
       correlationId,
     });
@@ -164,15 +164,15 @@ export class AgentChatService {
     // 3. Assemble prompt with context (generation pipeline stage 1)
     const messages = [];
     if (session.system_prompt) {
-      messages.push({ role: 'system' as const, content: session.system_prompt });
+      messages.push({ role: "system" as const, content: session.system_prompt });
     }
     if (options?.retrievalResults) {
       const contextBlock = options.retrievalResults
         .map((r: any) => `[Source: ${r.documentTitle}]\n${r.content}`)
-        .join('\n\n');
-      messages.push({ role: 'system' as const, content: `Retrieved context:\n${contextBlock}` });
+        .join("\n\n");
+      messages.push({ role: "system" as const, content: `Retrieved context:\n${contextBlock}` });
     }
-    messages.push({ role: 'user' as const, content });
+    messages.push({ role: "user" as const, content });
 
     // 4. Invoke model (generation pipeline stage 2)
     const modelResponse = await this.deps.model.invoke({
@@ -183,7 +183,7 @@ export class AgentChatService {
 
     // 5. Attribute sources (generation pipeline stage 3)
     const evidenceLevel: EvidenceLevel =
-      options?.retrievalResults?.length > 0 ? 'knowledge-assisted' : 'knowledge-assisted';
+      options?.retrievalResults?.length > 0 ? "knowledge-assisted" : "knowledge-assisted";
 
     // 6. Safety check (generation pipeline stage 4) — placeholder
     const safetyPassed = true;
@@ -204,14 +204,14 @@ export class AgentChatService {
     );
 
     await this.deps.audit.emitEvent({
-      eventType: safetyPassed ? 'ai.chat.response.generated' : 'ai.chat.response.safety-flagged',
-      category: 'ai',
-      severity: safetyPassed ? 'info' : 'high',
+      eventType: safetyPassed ? "ai.chat.response.generated" : "ai.chat.response.safety-flagged",
+      category: "ai",
+      severity: safetyPassed ? "info" : "high",
       subjectId: session.subject_id,
       workspaceId: session.workspace_id,
-      resourceKind: 'chat-session',
+      resourceKind: "chat-session",
       resourceId: sessionId,
-      action: 'generate-response',
+      action: "generate-response",
       data: {
         evidenceLevel,
         sourceChunkCount: options?.retrievalResults?.length ?? 0,
@@ -223,15 +223,15 @@ export class AgentChatService {
     // Record usage
     await this.deps.usage.record({
       workspaceId: session.workspace_id,
-      serviceId: 'agent-chat',
-      metricType: 'tokens',
+      serviceId: "agent-chat",
+      metricType: "tokens",
       quantity: modelResponse.usage.totalTokens,
     });
 
     return {
       id: messageId,
       sessionId,
-      role: 'assistant',
+      role: "assistant",
       content: modelResponse.content,
       evidenceLevel,
       sourceTraces: [],

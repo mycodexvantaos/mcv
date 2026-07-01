@@ -1,9 +1,3 @@
-# ╔══════════════════════════════════════════════════════════════════════╗
-# ║  MyCodeXvantaOS — Service Catalog (平台服務憲法)                    ║
-# ║  Cloudflare-first · Multi-runtime · Self-hostable                  ║
-# ║  Version: 1.0.0-constitution                                      ║
-# ╚══════════════════════════════════════════════════════════════════════╝
-
 apiVersion: platform.mycodevantaos/v1
 kind: ServiceCatalog
 metadata:
@@ -13,612 +7,688 @@ metadata:
     tier: constitution
     scope: platform
   annotations:
-    description: |
-      Central service registry defining all MVP services, their dependencies,
+    description: 'Central service registry defining all MVP services, their dependencies,
+
       port interfaces, runtime profiles, and governance constraints.
+
       This is the single source of truth for service topology.
 
+      '
 spec:
-  version: '1.0.0-constitution'
-  phase: cloudflare-first # cloudflare-first → portable-core → self-hostable
-
-  # ─── Dependency Graph (DAG) ──────────────────────────────────────────
-  # identity has zero dependencies (foundation service)
-  # workspace depends on identity
-  # knowledge-* depends on workspace + identity
-  # agent-chat depends on knowledge-search + model-byok
-  # audit-log and usage-meter are cross-cutting observability services
+  version: 1.0.0-constitution
+  phase: cloudflare-first
   dependency_graph:
     nodes:
-      - id: identity
-        level: 0
-      - id: workspace
-        level: 1
-        depends_on: [identity]
-      - id: knowledge-store
-        level: 2
-        depends_on: [workspace, identity]
-      - id: knowledge-search
-        level: 2
-        depends_on: [workspace, identity, knowledge-store]
-      - id: agent-chat
-        level: 3
-        depends_on: [identity, workspace, knowledge-search, model-byok]
-      - id: model-byok
-        level: 2
-        depends_on: [workspace, identity]
-      - id: audit-log
-        level: 1
-        depends_on: [identity]
-      - id: usage-meter
-        level: 1
-        depends_on: [identity, audit-log]
+    - id: identity
+      level: 0
+    - id: workspace
+      level: 1
+      depends_on:
+      - identity
+    - id: knowledge-store
+      level: 2
+      depends_on:
+      - workspace
+      - identity
+    - id: knowledge-search
+      level: 2
+      depends_on:
+      - workspace
+      - identity
+      - knowledge-store
+    - id: agent-chat
+      level: 3
+      depends_on:
+      - identity
+      - workspace
+      - knowledge-search
+      - model-byok
+    - id: model-byok
+      level: 2
+      depends_on:
+      - workspace
+      - identity
+    - id: audit-log
+      level: 1
+      depends_on:
+      - identity
+    - id: usage-meter
+      level: 1
+      depends_on:
+      - identity
+      - audit-log
     edges:
-      - from: workspace
-        to: identity
-        type: hard
-      - from: knowledge-store
-        to: workspace
-        type: hard
-      - from: knowledge-store
-        to: identity
-        type: hard
-      - from: knowledge-search
-        to: knowledge-store
-        type: hard
-      - from: knowledge-search
-        to: workspace
-        type: hard
-      - from: agent-chat
-        to: knowledge-search
-        type: hard
-      - from: agent-chat
-        to: model-byok
-        type: hard
-      - from: model-byok
-        to: workspace
-        type: hard
-      - from: usage-meter
-        to: audit-log
-        type: soft
-
-  # ─── Runtime Profile ─────────────────────────────────────────────────
+    - from: workspace
+      to: identity
+      type: hard
+    - from: knowledge-store
+      to: workspace
+      type: hard
+    - from: knowledge-store
+      to: identity
+      type: hard
+    - from: knowledge-search
+      to: knowledge-store
+      type: hard
+    - from: knowledge-search
+      to: workspace
+      type: hard
+    - from: agent-chat
+      to: knowledge-search
+      type: hard
+    - from: agent-chat
+      to: model-byok
+      type: hard
+    - from: model-byok
+      to: workspace
+      type: hard
+    - from: usage-meter
+      to: audit-log
+      type: soft
   runtime_profile:
     default_provider: cloudflare
     portable_alternatives:
       database:
         cloudflare: cloudflare-d1
-        portable: [sqlite, postgresql]
+        portable:
+        - sqlite
+        - postgresql
       cache:
         cloudflare: cloudflare-kv
-        portable: [redis, memory]
+        portable:
+        - redis
+        - memory
       storage:
         cloudflare: cloudflare-r2
-        portable: [s3, minio, local-fs]
+        portable:
+        - s3
+        - minio
+        - local-fs
       queue:
         cloudflare: cloudflare-queues
-        portable: [rabbitmq, kafka, bull]
+        portable:
+        - rabbitmq
+        - kafka
+        - bull
       compute:
         cloudflare: cloudflare-workers
-        portable: [docker, kubernetes-pod, node-process]
+        portable:
+        - docker
+        - kubernetes-pod
+        - node-process
       search:
         cloudflare: cloudflare-vectorize
-        portable: [qdrant, pgvector, typesense]
-
-  # ─── MVP Services ─────────────────────────────────────────────────────
+        portable:
+        - qdrant
+        - pgvector
+        - typesense
   services:
-    # ──── Identity Service ──────────────────────────────────────────────
-    - id: identity
-      urn: 'urn:mycodexvantaos:service:identity'
-      category: security
-      display_name: Identity Service
-      description: |
-        Foundation authentication and authorization service. Manages subjects,
-        credentials, sessions, and workspace-scoped role assignments.
-        Zero external dependencies — the root of the service DAG.
-      resource_type: identity-subject
-      version: '1.0.0'
-      runtime:
-        provider: cloudflare-workers
-        database: cloudflare-d1
-        cache: cloudflare-kv
-        limits:
-          cpu_ms: 50
-          memory_mb: 128
-      capabilities:
-        - subject-registration
-        - credential-management
-        - session-lifecycle
-        - role-assignment
-        - mfa-enforcement
-        - token-issuance
-        - token-validation
-      limits:
-        max_sessions_per_subject: 5
-        max_credentials_per_subject: 10
-        session_ttl_minutes: 480
-        refresh_token_ttl_days: 30
-        mfa_challenge_timeout_seconds: 300
-      events:
-        emitted:
-          - identity.subject.registered
-          - identity.subject.authenticated
-          - identity.subject.mfa-challenged
-          - identity.subject.mfa-verified
-          - identity.session.created
-          - identity.session.revoked
-        subscribed: []
-      audit:
-        level: full
-        retention: 365d
-        immutable: true
-      dependencies:
-        hard: []
-        soft: [audit-log]
-      ports:
-        - name: identity-port
-          interface: IIdentityService
-          protocol: http
-          methods:
-            - 'registerSubject(input: RegisterSubjectInput): Subject'
-            - 'authenticateSubject(input: AuthenticateInput): AuthenticationResult'
-            - 'issueToken(subjectId: string, scopes: string[]): TokenPair'
-            - 'validateToken(accessToken: string): TokenClaims'
-            - 'revokeSession(sessionId: string): void'
-            - 'assignRole(subjectId: string, workspaceId: string, role: Role): RoleAssignment'
-            - 'challengeMfa(subjectId: string): MfaChallenge'
-            - 'verifyMfa(challengeId: string, code: string): MfaVerification'
+  - id: identity
+    urn: urn:mycodexvantaos:service:identity
+    category: security
+    display_name: Identity Service
+    description: 'Foundation authentication and authorization service. Manages subjects,
 
-    # ──── Workspace Service ─────────────────────────────────────────────
-    - id: workspace
-      urn: 'urn:mycodexvantaos:service:workspace'
-      category: security
-      display_name: Workspace Service
-      description: |
-        Workspace-scoped resource isolation and lifecycle management.
-        Every resource in the platform belongs to a workspace; workspace
-        enforces namespace boundaries, membership, and resource quotas.
-      resource_type: workspace
-      version: '1.0.0'
-      runtime:
-        provider: cloudflare-workers
-        database: cloudflare-d1
-        cache: cloudflare-kv
-        limits:
-          cpu_ms: 50
-          memory_mb: 128
-      capabilities:
-        - workspace-creation
-        - membership-management
-        - resource-quota-enforcement
-        - namespace-isolation
-        - workspace-settings
-        - invitation-lifecycle
-      limits:
-        max_members_per_workspace: 50
-        max_resources_per_workspace: 10000
-        max_workspaces_per_owner: 10
-        invitation_ttl_days: 7
-      events:
-        emitted:
-          - workspace.created
-          - workspace.updated
-          - workspace.member.added
-          - workspace.member.removed
-          - workspace.resource-quota.warning
-          - workspace.suspended
-        subscribed:
-          - identity.subject.registered
-      audit:
-        level: full
-        retention: 180d
-        immutable: true
-      dependencies:
-        hard: [identity]
-        soft: [audit-log, usage-meter]
-      ports:
-        - name: workspace-port
-          interface: IWorkspaceService
-          protocol: http
-          methods:
-            - 'createWorkspace(input: CreateWorkspaceInput): Workspace'
-            - 'getWorkspace(workspaceId: string): Workspace'
-            - 'updateWorkspace(workspaceId: string, patch: WorkspacePatch): Workspace'
-            - 'suspendWorkspace(workspaceId: string, reason: string): Workspace'
-            - 'addMember(workspaceId: string, subjectId: string, role: Role): Membership'
-            - 'removeMember(workspaceId: string, subjectId: string): void'
-            - 'checkQuota(workspaceId: string, resourceKind: string): QuotaStatus'
-            - 'listWorkspaceResources(workspaceId: string, filter: ResourceFilter): ResourceList'
+      credentials, sessions, and workspace-scoped role assignments.
 
-    # ──── Knowledge Store Service ───────────────────────────────────────
-    - id: knowledge-store
-      urn: 'urn:mycodexvantaos:service:knowledge-store'
-      category: knowledge
-      display_name: Knowledge Store
-      description: |
-        Document ingestion, chunking, embedding, and persistent storage.
-        Manages the complete knowledge ingestion pipeline: validate → extract →
-        chunk → embed → index → verify. Stores raw documents, processed chunks,
-        and vector embeddings with source traceability.
-      resource_type: knowledge-collection
-      version: '1.0.0'
-      runtime:
-        provider: cloudflare-workers
-        database: cloudflare-d1
-        storage: cloudflare-r2
-        queue: cloudflare-queues
-        search: cloudflare-vectorize
-        limits:
-          cpu_ms: 200
-          memory_mb: 256
-      capabilities:
-        - document-upload
-        - document-ingestion-pipeline
-        - chunk-extraction
-        - embedding-generation
-        - collection-management
-        - source-traceability
-        - knowledge-verification
-      limits:
-        max_document_size_mb: 50
-        max_chunks_per_document: 500
-        max_collections_per_workspace: 100
-        max_documents_per_collection: 5000
-        supported_formats: [pdf, txt, md, html, json, csv, docx]
-        chunk_size_tokens: 512
-        chunk_overlap_tokens: 64
-      events:
-        emitted:
-          - knowledge.document.uploaded
-          - knowledge.document.ingestion.started
-          - knowledge.document.ingestion.completed
-          - knowledge.document.ingestion.failed
-          - knowledge.chunk.created
-          - knowledge.embedding.generated
-          - knowledge.collection.created
-          - knowledge.verification.passed
-          - knowledge.verification.failed
-        subscribed:
-          - workspace.created
-      audit:
-        level: full
-        retention: 365d
-        immutable: true
-      dependencies:
-        hard: [workspace, identity]
-        soft: [audit-log]
-      ports:
-        - name: knowledge-store-port
-          interface: IKnowledgeStoreService
-          protocol: http
-          methods:
-            - 'uploadDocument(workspaceId: string, input: DocumentUploadInput): Document'
-            - 'ingestDocument(documentId: string): IngestionResult'
-            - 'getDocument(documentId: string): Document'
-            - 'listDocuments(workspaceId: string, filter: DocumentFilter): DocumentList'
-            - 'deleteDocument(documentId: string): void'
-            - 'createCollection(workspaceId: string, input: CollectionInput): KnowledgeCollection'
-            - 'getCollection(collectionId: string): KnowledgeCollection'
-            - 'getIngestionStatus(documentId: string): IngestionStatus'
-            - 'verifyKnowledge(collectionId: string): VerificationReport'
+      Zero external dependencies — the root of the service DAG.
 
-    # ──── Knowledge Search Service ──────────────────────────────────────
-    - id: knowledge-search
-      urn: 'urn:mycodexvantaos:service:knowledge-search'
-      category: knowledge
-      display_name: Knowledge Search
-      description: |
-        Full-text, semantic, and hybrid search over knowledge collections.
-        Implements the retrieval pipeline: parse → authorize → search → rank →
-        trace → audit. Supports metadata filtering, source tracing, and
-        evidence-level classification of results.
-      resource_type: knowledge-index
-      version: '1.0.0'
-      runtime:
-        provider: cloudflare-workers
-        database: cloudflare-d1
-        search: cloudflare-vectorize
-        limits:
-          cpu_ms: 100
-          memory_mb: 128
-      capabilities:
-        - full-text-search
-        - semantic-search
-        - hybrid-search
-        - metadata-filter
-        - source-trace
-        - result-ranking
-        - evidence-level-classification
+      '
+    resource_type: identity-subject
+    version: 1.0.0
+    runtime:
+      provider: cloudflare-workers
+      database: cloudflare-d1
+      cache: cloudflare-kv
       limits:
-        max_top_k: 12
-        max_query_length: 2000
-        default_top_k: 5
-        min_relevance_score: 0.7
-        max_filters: 10
-      events:
-        emitted:
-          - knowledge.search.executed
-          - knowledge.search.result-served
-          - knowledge.search.zero-result
-          - knowledge.retrieval.completed
-        subscribed:
-          - knowledge.document.ingestion.completed
-      audit:
-        level: full
-        retention: 90d
-        immutable: true
-      dependencies:
-        hard: [workspace, identity, knowledge-store]
-        soft: [audit-log]
-      ports:
-        - name: knowledge-search-port
-          interface: IKnowledgeSearchService
-          protocol: http
-          methods:
-            - 'search(workspaceId: string, query: string, options: SearchOptions): SearchResult'
-            - 'hybridSearch(workspaceId: string, query: string, options: HybridSearchOptions): SearchResult'
-            - 'traceSource(chunkId: string): SourceTrace'
-            - 'getIndexStats(workspaceId: string): IndexStats'
-            - 'suggestQueries(workspaceId: string, prefix: string): string[]'
+        cpu_ms: 50
+        memory_mb: 128
+    capabilities:
+    - subject-registration
+    - credential-management
+    - session-lifecycle
+    - role-assignment
+    - mfa-enforcement
+    - token-issuance
+    - token-validation
+    limits:
+      max_sessions_per_subject: 5
+      max_credentials_per_subject: 10
+      session_ttl_minutes: 480
+      refresh_token_ttl_days: 30
+      mfa_challenge_timeout_seconds: 300
+    events:
+      emitted:
+      - identity.subject.registered
+      - identity.subject.authenticated
+      - identity.subject.mfa-challenged
+      - identity.subject.mfa-verified
+      - identity.session.created
+      - identity.session.revoked
+      subscribed: []
+    audit:
+      level: full
+      retention: 365d
+      immutable: true
+    dependencies:
+      hard: []
+      soft:
+      - audit-log
+    ports:
+    - name: identity-port
+      interface: IIdentityService
+      protocol: http
+      methods:
+      - 'registerSubject(input: RegisterSubjectInput): Subject'
+      - 'authenticateSubject(input: AuthenticateInput): AuthenticationResult'
+      - 'issueToken(subjectId: string, scopes: string[]): TokenPair'
+      - 'validateToken(accessToken: string): TokenClaims'
+      - 'revokeSession(sessionId: string): void'
+      - 'assignRole(subjectId: string, workspaceId: string, role: Role): RoleAssignment'
+      - 'challengeMfa(subjectId: string): MfaChallenge'
+      - 'verifyMfa(challengeId: string, code: string): MfaVerification'
+  - id: workspace
+    urn: urn:mycodexvantaos:service:workspace
+    category: security
+    display_name: Workspace Service
+    description: 'Workspace-scoped resource isolation and lifecycle management.
 
-    # ──── Agent Chat Service ────────────────────────────────────────────
-    - id: agent-chat
-      urn: 'urn:mycodexvantaos:service:agent-chat'
-      category: agent
-      display_name: Agent Chat
-      description: |
-        AI-powered conversational agent with knowledge-grounded generation.
-        Implements the generation pipeline: assemble → invoke → attribute →
-        safety-check → audit. Integrates knowledge retrieval for RAG-based
-        responses with source attribution and evidence-level classification.
-      resource_type: chat-session
-      version: '1.0.0'
-      runtime:
-        provider: cloudflare-workers
-        database: cloudflare-d1
-        queue: cloudflare-queues
-        limits:
-          cpu_ms: 300
-          memory_mb: 256
-      capabilities:
-        - chat-session-management
-        - rag-response-generation
-        - source-attribution
-        - evidence-level-classification
-        - safety-checking
-        - conversation-memory
-        - streaming-response
+      Every resource in the platform belongs to a workspace; workspace
+
+      enforces namespace boundaries, membership, and resource quotas.
+
+      '
+    resource_type: workspace
+    version: 1.0.0
+    runtime:
+      provider: cloudflare-workers
+      database: cloudflare-d1
+      cache: cloudflare-kv
       limits:
-        max_session_history: 100
-        max_message_length: 10000
-        max_concurrent_sessions_per_user: 3
-        response_timeout_seconds: 60
-        streaming_chunk_interval_ms: 100
-      events:
-        emitted:
-          - ai.chat.session.created
-          - ai.chat.message.sent
-          - ai.chat.response.generated
-          - ai.chat.response.safety-flagged
-          - ai.chat.session.closed
-        subscribed:
-          - knowledge.search.executed
-      audit:
-        level: full
-        retention: 365d
-        immutable: true
-      dependencies:
-        hard: [identity, workspace, knowledge-search, model-byok]
-        soft: [audit-log, usage-meter]
-      ports:
-        - name: agent-chat-port
-          interface: IAgentChatService
-          protocol: http
-          methods:
-            - 'createSession(workspaceId: string, input: SessionInput): ChatSession'
-            - 'sendMessage(sessionId: string, content: string, options: MessageOptions): ChatResponse'
-            - 'streamMessage(sessionId: string, content: string, options: MessageOptions): AsyncIterable<ChatChunk>'
-            - 'getSessionHistory(sessionId: string, limit: int): MessageList'
-            - 'closeSession(sessionId: string): void'
-            - 'getSession(sessionId: string): ChatSession'
+        cpu_ms: 50
+        memory_mb: 128
+    capabilities:
+    - workspace-creation
+    - membership-management
+    - resource-quota-enforcement
+    - namespace-isolation
+    - workspace-settings
+    - invitation-lifecycle
+    limits:
+      max_members_per_workspace: 50
+      max_resources_per_workspace: 10000
+      max_workspaces_per_owner: 10
+      invitation_ttl_days: 7
+    events:
+      emitted:
+      - workspace.created
+      - workspace.updated
+      - workspace.member.added
+      - workspace.member.removed
+      - workspace.resource-quota.warning
+      - workspace.suspended
+      subscribed:
+      - identity.subject.registered
+    audit:
+      level: full
+      retention: 180d
+      immutable: true
+    dependencies:
+      hard:
+      - identity
+      soft:
+      - audit-log
+      - usage-meter
+    ports:
+    - name: workspace-port
+      interface: IWorkspaceService
+      protocol: http
+      methods:
+      - 'createWorkspace(input: CreateWorkspaceInput): Workspace'
+      - 'getWorkspace(workspaceId: string): Workspace'
+      - 'updateWorkspace(workspaceId: string, patch: WorkspacePatch): Workspace'
+      - 'suspendWorkspace(workspaceId: string, reason: string): Workspace'
+      - 'addMember(workspaceId: string, subjectId: string, role: Role): Membership'
+      - 'removeMember(workspaceId: string, subjectId: string): void'
+      - 'checkQuota(workspaceId: string, resourceKind: string): QuotaStatus'
+      - 'listWorkspaceResources(workspaceId: string, filter: ResourceFilter): ResourceList'
+  - id: knowledge-store
+    urn: urn:mycodexvantaos:service:knowledge-store
+    category: knowledge
+    display_name: Knowledge Store
+    description: 'Document ingestion, chunking, embedding, and persistent storage.
 
-    # ──── Model BYOK Service ────────────────────────────────────────────
-    - id: model-byok
-      urn: 'urn:mycodexvantaos:service:model-byok'
-      category: agent
-      display_name: Model BYOK (Bring Your Own Key)
-      description: |
-        Multi-provider LLM gateway with bring-your-own-key configuration.
-        Manages model endpoint registration, credential encryption, usage
-        tracking, and provider failover. Workspace-scoped model configurations
-        with policy-gated access control.
-      resource_type: model-endpoint
-      version: '1.0.0'
-      runtime:
-        provider: cloudflare-workers
-        database: cloudflare-d1
-        cache: cloudflare-kv
-        limits:
-          cpu_ms: 100
-          memory_mb: 128
-      capabilities:
-        - model-endpoint-registration
-        - credential-encryption
-        - provider-routing
-        - usage-tracking-per-model
-        - failover-management
-        - model-discovery
+      Manages the complete knowledge ingestion pipeline: validate → extract →
+
+      chunk → embed → index → verify. Stores raw documents, processed chunks,
+
+      and vector embeddings with source traceability.
+
+      '
+    resource_type: knowledge-collection
+    version: 1.0.0
+    runtime:
+      provider: cloudflare-workers
+      database: cloudflare-d1
+      storage: cloudflare-r2
+      queue: cloudflare-queues
+      search: cloudflare-vectorize
       limits:
-        max_endpoints_per_workspace: 10
-        max_api_key_length: 512
-        supported_providers: [openai, anthropic, google, ollama, custom-openai-compatible]
-        request_timeout_seconds: 120
-      events:
-        emitted:
-          - model.endpoint.registered
-          - model.endpoint.updated
-          - model.endpoint.revoked
-          - model.invocation.started
-          - model.invocation.completed
-          - model.invocation.failed
-        subscribed: []
-      audit:
-        level: full
-        retention: 180d
-        immutable: true
-      dependencies:
-        hard: [workspace, identity]
-        soft: [audit-log, usage-meter]
-      ports:
-        - name: model-byok-port
-          interface: IModelByokService
-          protocol: http
-          methods:
-            - 'registerEndpoint(workspaceId: string, input: EndpointInput): ModelEndpoint'
-            - 'getEndpoint(endpointId: string): ModelEndpoint'
-            - 'listEndpoints(workspaceId: string): EndpointList'
-            - 'revokeEndpoint(endpointId: string): void'
-            - 'invokeModel(endpointId: string, prompt: string, options: InvokeOptions): ModelResponse'
-            - 'streamModel(endpointId: string, prompt: string, options: InvokeOptions): AsyncIterable<ModelChunk>'
-            - 'getEndpointUsage(endpointId: string, period: UsagePeriod): UsageReport'
+        cpu_ms: 200
+        memory_mb: 256
+    capabilities:
+    - document-upload
+    - document-ingestion-pipeline
+    - chunk-extraction
+    - embedding-generation
+    - collection-management
+    - source-traceability
+    - knowledge-verification
+    limits:
+      max_document_size_mb: 50
+      max_chunks_per_document: 500
+      max_collections_per_workspace: 100
+      max_documents_per_collection: 5000
+      supported_formats:
+      - pdf
+      - txt
+      - md
+      - html
+      - json
+      - csv
+      - docx
+      chunk_size_tokens: 512
+      chunk_overlap_tokens: 64
+    events:
+      emitted:
+      - knowledge.document.uploaded
+      - knowledge.document.ingestion.started
+      - knowledge.document.ingestion.completed
+      - knowledge.document.ingestion.failed
+      - knowledge.chunk.created
+      - knowledge.embedding.generated
+      - knowledge.collection.created
+      - knowledge.verification.passed
+      - knowledge.verification.failed
+      subscribed:
+      - workspace.created
+    audit:
+      level: full
+      retention: 365d
+      immutable: true
+    dependencies:
+      hard:
+      - workspace
+      - identity
+      soft:
+      - audit-log
+    ports:
+    - name: knowledge-store-port
+      interface: IKnowledgeStoreService
+      protocol: http
+      methods:
+      - 'uploadDocument(workspaceId: string, input: DocumentUploadInput): Document'
+      - 'ingestDocument(documentId: string): IngestionResult'
+      - 'getDocument(documentId: string): Document'
+      - 'listDocuments(workspaceId: string, filter: DocumentFilter): DocumentList'
+      - 'deleteDocument(documentId: string): void'
+      - 'createCollection(workspaceId: string, input: CollectionInput): KnowledgeCollection'
+      - 'getCollection(collectionId: string): KnowledgeCollection'
+      - 'getIngestionStatus(documentId: string): IngestionStatus'
+      - 'verifyKnowledge(collectionId: string): VerificationReport'
+  - id: knowledge-search
+    urn: urn:mycodexvantaos:service:knowledge-search
+    category: knowledge
+    display_name: Knowledge Search
+    description: 'Full-text, semantic, and hybrid search over knowledge collections.
 
-    # ──── Audit Log Service ─────────────────────────────────────────────
-    - id: audit-log
-      urn: 'urn:mycodexvantaos:service:audit-log'
-      category: security
-      display_name: Audit Log
-      description: |
-        Immutable, hash-chained audit event storage and query engine.
-        Implements the platform's audit integrity chain with SHA-256
-        hash-linking, tamper detection, and closed-loop event completion
-        verification. All platform events flow through this service.
-      resource_type: audit-event
-      version: '1.0.0'
-      runtime:
-        provider: cloudflare-workers
-        database: cloudflare-d1
-        queue: cloudflare-queues
-        limits:
-          cpu_ms: 50
-          memory_mb: 128
-      capabilities:
-        - event-ingestion
-        - hash-chain-integrity
-        - tamper-detection
-        - closed-loop-verification
-        - event-query
-        - compliance-reporting
-        - retention-enforcement
+      Implements the retrieval pipeline: parse → authorize → search → rank →
+
+      trace → audit. Supports metadata filtering, source tracing, and
+
+      evidence-level classification of results.
+
+      '
+    resource_type: knowledge-index
+    version: 1.0.0
+    runtime:
+      provider: cloudflare-workers
+      database: cloudflare-d1
+      search: cloudflare-vectorize
       limits:
-        max_event_batch_size: 100
-        max_query_window_days: 90
-        integrity_check_interval_minutes: 60
-        max_retention_days: 2555 # 7 years for compliance
-      events:
-        emitted:
-          - governance.audit.event-ingested
-          - governance.audit.integrity-violation
-          - governance.audit.closed-loop-timeout
-        subscribed: [] # receives events from all services via queue
-      audit:
-        level: full
-        retention: 2555d
-        immutable: true
-        integrity: sha256-hash-chain
-      dependencies:
-        hard: [identity]
-        soft: []
-      ports:
-        - name: audit-log-port
-          interface: IAuditLogService
-          protocol: http
-          methods:
-            - 'ingestEvent(event: AuditEvent): IngestionReceipt'
-            - 'ingestBatch(events: AuditEvent[]): BatchIngestionReceipt'
-            - 'queryEvents(filter: AuditFilter, pagination: Pagination): AuditEventPage'
-            - 'verifyIntegrity(fromTimestamp: string, toTimestamp: string): IntegrityReport'
-            - 'getClosedLoopStatus(eventType: string): ClosedLoopStatus'
-            - 'exportAuditLog(filter: AuditFilter, format: ExportFormat): ExportResult'
+        cpu_ms: 100
+        memory_mb: 128
+    capabilities:
+    - full-text-search
+    - semantic-search
+    - hybrid-search
+    - metadata-filter
+    - source-trace
+    - result-ranking
+    - evidence-level-classification
+    limits:
+      max_top_k: 12
+      max_query_length: 2000
+      default_top_k: 5
+      min_relevance_score: 0.7
+      max_filters: 10
+    events:
+      emitted:
+      - knowledge.search.executed
+      - knowledge.search.result-served
+      - knowledge.search.zero-result
+      - knowledge.retrieval.completed
+      subscribed:
+      - knowledge.document.ingestion.completed
+    audit:
+      level: full
+      retention: 90d
+      immutable: true
+    dependencies:
+      hard:
+      - workspace
+      - identity
+      - knowledge-store
+      soft:
+      - audit-log
+    ports:
+    - name: knowledge-search-port
+      interface: IKnowledgeSearchService
+      protocol: http
+      methods:
+      - 'search(workspaceId: string, query: string, options: SearchOptions): SearchResult'
+      - 'hybridSearch(workspaceId: string, query: string, options: HybridSearchOptions):
+        SearchResult'
+      - 'traceSource(chunkId: string): SourceTrace'
+      - 'getIndexStats(workspaceId: string): IndexStats'
+      - 'suggestQueries(workspaceId: string, prefix: string): string[]'
+  - id: agent-chat
+    urn: urn:mycodexvantaos:service:agent-chat
+    category: agent
+    display_name: Agent Chat
+    description: 'AI-powered conversational agent with knowledge-grounded generation.
 
-    # ──── Usage Meter Service ───────────────────────────────────────────
-    - id: usage-meter
-      urn: 'urn:mycodexvantaos:service:usage-meter'
-      category: security
-      display_name: Usage Meter
-      description: |
-        Multi-dimensional usage tracking, metering, and rate limit enforcement.
-        Tracks per-workspace, per-service, per-model usage with configurable
-        billing periods and rate limit tiers (free/pro/enterprise).
-        Integrates with audit-log for usage event traceability.
-      resource_type: usage-record
-      version: '1.0.0'
-      runtime:
-        provider: cloudflare-workers
-        database: cloudflare-d1
-        cache: cloudflare-kv
-        limits:
-          cpu_ms: 30
-          memory_mb: 64
-      capabilities:
-        - usage-tracking
-        - rate-limit-enforcement
-        - quota-management
-        - billing-period-aggregation
-        - usage-alerting
-        - tier-based-access
+      Implements the generation pipeline: assemble → invoke → attribute →
+
+      safety-check → audit. Integrates knowledge retrieval for RAG-based
+
+      responses with source attribution and evidence-level classification.
+
+      '
+    resource_type: chat-session
+    version: 1.0.0
+    runtime:
+      provider: cloudflare-workers
+      database: cloudflare-d1
+      queue: cloudflare-queues
       limits:
-        rate_limit_tiers:
-          free:
-            requests_per_minute: 10
-            requests_per_day: 1000
-            tokens_per_day: 50000
-            storage_mb: 100
-          pro:
-            requests_per_minute: 60
-            requests_per_day: 10000
-            tokens_per_day: 500000
-            storage_mb: 5000
-          enterprise:
-            requests_per_minute: 300
-            requests_per_day: 100000
-            tokens_per_day: unlimited
-            storage_mb: 50000
-        billing_period: monthly
-      events:
-        emitted:
-          - governance.usage.quota-warning
-          - governance.usage.rate-limit-exceeded
-          - governance.usage.billing-period-reset
-        subscribed:
-          - governance.audit.event-ingested
-      audit:
-        level: summary
-        retention: 365d
-        immutable: false # usage records can be aggregated
-      dependencies:
-        hard: [identity]
-        soft: [audit-log]
-      ports:
-        - name: usage-meter-port
-          interface: IUsageMeterService
-          protocol: http
-          methods:
-            - 'recordUsage(workspaceId: string, metric: UsageMetric): void'
-            - 'checkRateLimit(workspaceId: string, tier: Tier): RateLimitStatus'
-            - 'getUsageReport(workspaceId: string, period: UsagePeriod): UsageReport'
-            - 'getQuotaStatus(workspaceId: string): QuotaStatus'
-            - 'setTier(workspaceId: string, tier: Tier): void'
-            - 'getTierLimits(tier: Tier): TierLimits'
+        cpu_ms: 300
+        memory_mb: 256
+    capabilities:
+    - chat-session-management
+    - rag-response-generation
+    - source-attribution
+    - evidence-level-classification
+    - safety-checking
+    - conversation-memory
+    - streaming-response
+    limits:
+      max_session_history: 100
+      max_message_length: 10000
+      max_concurrent_sessions_per_user: 3
+      response_timeout_seconds: 60
+      streaming_chunk_interval_ms: 100
+    events:
+      emitted:
+      - ai.chat.session.created
+      - ai.chat.message.sent
+      - ai.chat.response.generated
+      - ai.chat.response.safety-flagged
+      - ai.chat.session.closed
+      subscribed:
+      - knowledge.search.executed
+    audit:
+      level: full
+      retention: 365d
+      immutable: true
+    dependencies:
+      hard:
+      - identity
+      - workspace
+      - knowledge-search
+      - model-byok
+      soft:
+      - audit-log
+      - usage-meter
+    ports:
+    - name: agent-chat-port
+      interface: IAgentChatService
+      protocol: http
+      methods:
+      - 'createSession(workspaceId: string, input: SessionInput): ChatSession'
+      - 'sendMessage(sessionId: string, content: string, options: MessageOptions):
+        ChatResponse'
+      - 'streamMessage(sessionId: string, content: string, options: MessageOptions):
+        AsyncIterable<ChatChunk>'
+      - 'getSessionHistory(sessionId: string, limit: int): MessageList'
+      - 'closeSession(sessionId: string): void'
+      - 'getSession(sessionId: string): ChatSession'
+  - id: model-byok
+    urn: urn:mycodexvantaos:service:model-byok
+    category: agent
+    display_name: Model BYOK (Bring Your Own Key)
+    description: 'Multi-provider LLM gateway with bring-your-own-key configuration.
 
-  # ─── Governance Overlay ──────────────────────────────────────────────
+      Manages model endpoint registration, credential encryption, usage
+
+      tracking, and provider failover. Workspace-scoped model configurations
+
+      with policy-gated access control.
+
+      '
+    resource_type: model-endpoint
+    version: 1.0.0
+    runtime:
+      provider: cloudflare-workers
+      database: cloudflare-d1
+      cache: cloudflare-kv
+      limits:
+        cpu_ms: 100
+        memory_mb: 128
+    capabilities:
+    - model-endpoint-registration
+    - credential-encryption
+    - provider-routing
+    - usage-tracking-per-model
+    - failover-management
+    - model-discovery
+    limits:
+      max_endpoints_per_workspace: 10
+      max_api_key_length: 512
+      supported_providers:
+      - openai
+      - anthropic
+      - google
+      - ollama
+      - custom-openai-compatible
+      request_timeout_seconds: 120
+    events:
+      emitted:
+      - model.endpoint.registered
+      - model.endpoint.updated
+      - model.endpoint.revoked
+      - model.invocation.started
+      - model.invocation.completed
+      - model.invocation.failed
+      subscribed: []
+    audit:
+      level: full
+      retention: 180d
+      immutable: true
+    dependencies:
+      hard:
+      - workspace
+      - identity
+      soft:
+      - audit-log
+      - usage-meter
+    ports:
+    - name: model-byok-port
+      interface: IModelByokService
+      protocol: http
+      methods:
+      - 'registerEndpoint(workspaceId: string, input: EndpointInput): ModelEndpoint'
+      - 'getEndpoint(endpointId: string): ModelEndpoint'
+      - 'listEndpoints(workspaceId: string): EndpointList'
+      - 'revokeEndpoint(endpointId: string): void'
+      - 'invokeModel(endpointId: string, prompt: string, options: InvokeOptions):
+        ModelResponse'
+      - 'streamModel(endpointId: string, prompt: string, options: InvokeOptions):
+        AsyncIterable<ModelChunk>'
+      - 'getEndpointUsage(endpointId: string, period: UsagePeriod): UsageReport'
+  - id: audit-log
+    urn: urn:mycodexvantaos:service:audit-log
+    category: security
+    display_name: Audit Log
+    description: 'Immutable, hash-chained audit event storage and query engine.
+
+      Implements the platform''s audit integrity chain with SHA-256
+
+      hash-linking, tamper detection, and closed-loop event completion
+
+      verification. All platform events flow through this service.
+
+      '
+    resource_type: audit-event
+    version: 1.0.0
+    runtime:
+      provider: cloudflare-workers
+      database: cloudflare-d1
+      queue: cloudflare-queues
+      limits:
+        cpu_ms: 50
+        memory_mb: 128
+    capabilities:
+    - event-ingestion
+    - hash-chain-integrity
+    - tamper-detection
+    - closed-loop-verification
+    - event-query
+    - compliance-reporting
+    - retention-enforcement
+    limits:
+      max_event_batch_size: 100
+      max_query_window_days: 90
+      integrity_check_interval_minutes: 60
+      max_retention_days: 2555
+    events:
+      emitted:
+      - governance.audit.event-ingested
+      - governance.audit.integrity-violation
+      - governance.audit.closed-loop-timeout
+      subscribed: []
+    audit:
+      level: full
+      retention: 2555d
+      immutable: true
+      integrity: sha256-hash-chain
+    dependencies:
+      hard:
+      - identity
+      soft: []
+    ports:
+    - name: audit-log-port
+      interface: IAuditLogService
+      protocol: http
+      methods:
+      - 'ingestEvent(event: AuditEvent): IngestionReceipt'
+      - 'ingestBatch(events: AuditEvent[]): BatchIngestionReceipt'
+      - 'queryEvents(filter: AuditFilter, pagination: Pagination): AuditEventPage'
+      - 'verifyIntegrity(fromTimestamp: string, toTimestamp: string): IntegrityReport'
+      - 'getClosedLoopStatus(eventType: string): ClosedLoopStatus'
+      - 'exportAuditLog(filter: AuditFilter, format: ExportFormat): ExportResult'
+  - id: usage-meter
+    urn: urn:mycodexvantaos:service:usage-meter
+    category: security
+    display_name: Usage Meter
+    description: 'Multi-dimensional usage tracking, metering, and rate limit enforcement.
+
+      Tracks per-workspace, per-service, per-model usage with configurable
+
+      billing periods and rate limit tiers (free/pro/enterprise).
+
+      Integrates with audit-log for usage event traceability.
+
+      '
+    resource_type: usage-record
+    version: 1.0.0
+    runtime:
+      provider: cloudflare-workers
+      database: cloudflare-d1
+      cache: cloudflare-kv
+      limits:
+        cpu_ms: 30
+        memory_mb: 64
+    capabilities:
+    - usage-tracking
+    - rate-limit-enforcement
+    - quota-management
+    - billing-period-aggregation
+    - usage-alerting
+    - tier-based-access
+    limits:
+      rate_limit_tiers:
+        free:
+          requests_per_minute: 10
+          requests_per_day: 1000
+          tokens_per_day: 50000
+          storage_mb: 100
+        pro:
+          requests_per_minute: 60
+          requests_per_day: 10000
+          tokens_per_day: 500000
+          storage_mb: 5000
+        enterprise:
+          requests_per_minute: 300
+          requests_per_day: 100000
+          tokens_per_day: unlimited
+          storage_mb: 50000
+      billing_period: monthly
+    events:
+      emitted:
+      - governance.usage.quota-warning
+      - governance.usage.rate-limit-exceeded
+      - governance.usage.billing-period-reset
+      subscribed:
+      - governance.audit.event-ingested
+    audit:
+      level: summary
+      retention: 365d
+      immutable: false
+    dependencies:
+      hard:
+      - identity
+      soft:
+      - audit-log
+    ports:
+    - name: usage-meter-port
+      interface: IUsageMeterService
+      protocol: http
+      methods:
+      - 'recordUsage(workspaceId: string, metric: UsageMetric): void'
+      - 'checkRateLimit(workspaceId: string, tier: Tier): RateLimitStatus'
+      - 'getUsageReport(workspaceId: string, period: UsagePeriod): UsageReport'
+      - 'getQuotaStatus(workspaceId: string): QuotaStatus'
+      - 'setTier(workspaceId: string, tier: Tier): void'
+      - 'getTierLimits(tier: Tier): TierLimits'
   governance:
     policy_enforcement: policy-model
     audit_integrity: audit-events
     resource_lifecycle: resource-model
     knowledge_operations: knowledge-model
     all_services_must:
-      - emit audit events for every state mutation
-      - enforce workspace-scoped isolation
-      - respect rate limit tiers from usage-meter
-      - register capabilities in this catalog
-      - depend only on services declared in dependency_graph
+    - emit audit events for every state mutation
+    - enforce workspace-scoped isolation
+    - respect rate limit tiers from usage-meter
+    - register capabilities in this catalog
+    - depend only on services declared in dependency_graph

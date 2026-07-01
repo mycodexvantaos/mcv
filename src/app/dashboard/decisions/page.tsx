@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Compass,
   Wand2,
@@ -15,12 +15,12 @@ import {
   Clock,
   DollarSign,
   BarChart3,
-} from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface Recommendation {
   rank: number;
@@ -33,84 +33,84 @@ interface Recommendation {
   cons: string[];
   risks: string[];
   estimatedCost: string;
-  implementationEffort: 'low' | 'medium' | 'high';
+  implementationEffort: "low" | "medium" | "high";
 }
 
 const mockRecommendations: Recommendation[] = [
   {
     rank: 1,
-    solutionName: 'Gemini 2.5 Flash + Vertex AI',
-    provider: 'Google Cloud',
+    solutionName: "Gemini 2.5 Flash + Vertex AI",
+    provider: "Google Cloud",
     overallScore: 92,
     confidence: 0.89,
     reasoning:
-      'Best overall fit for the Healthcare AI scenario with sub-100ms latency, HIPAA compliance, and cost-effective scaling. Vertex AI provides managed ML infrastructure with built-in monitoring.',
-    pros: ['Sub-50ms P99 latency', 'HIPAA compliant', 'Auto-scaling', 'Cost-effective at scale'],
-    cons: ['Vendor lock-in risk', 'Limited model customization'],
-    risks: ['API availability dependency', 'Data residency requirements'],
-    estimatedCost: '$12K-18K/month',
-    implementationEffort: 'low',
+      "Best overall fit for the Healthcare AI scenario with sub-100ms latency, HIPAA compliance, and cost-effective scaling. Vertex AI provides managed ML infrastructure with built-in monitoring.",
+    pros: ["Sub-50ms P99 latency", "HIPAA compliant", "Auto-scaling", "Cost-effective at scale"],
+    cons: ["Vendor lock-in risk", "Limited model customization"],
+    risks: ["API availability dependency", "Data residency requirements"],
+    estimatedCost: "$12K-18K/month",
+    implementationEffort: "low",
   },
   {
     rank: 2,
-    solutionName: 'Azure OpenAI + AKS',
-    provider: 'Microsoft Azure',
+    solutionName: "Azure OpenAI + AKS",
+    provider: "Microsoft Azure",
     overallScore: 85,
     confidence: 0.82,
     reasoning:
-      'Strong enterprise integration with existing Microsoft ecosystem. GPT-4o provides excellent multi-modal capabilities but at higher cost and slightly elevated latency.',
-    pros: ['Enterprise integration', 'Multi-modal support', 'Comprehensive compliance'],
-    cons: ['Higher latency (80-120ms)', 'Premium pricing', 'Complex setup'],
-    risks: ['Rate limit concerns at peak', 'Cost escalation with usage'],
-    estimatedCost: '$22K-35K/month',
-    implementationEffort: 'medium',
+      "Strong enterprise integration with existing Microsoft ecosystem. GPT-4o provides excellent multi-modal capabilities but at higher cost and slightly elevated latency.",
+    pros: ["Enterprise integration", "Multi-modal support", "Comprehensive compliance"],
+    cons: ["Higher latency (80-120ms)", "Premium pricing", "Complex setup"],
+    risks: ["Rate limit concerns at peak", "Cost escalation with usage"],
+    estimatedCost: "$22K-35K/month",
+    implementationEffort: "medium",
   },
   {
     rank: 3,
-    solutionName: 'Self-hosted Llama 3.1 + Kubernetes',
-    provider: 'Local / On-premises',
+    solutionName: "Self-hosted Llama 3.1 + Kubernetes",
+    provider: "Local / On-premises",
     overallScore: 78,
     confidence: 0.71,
     reasoning:
-      'Maximum control and data sovereignty, but requires significant operational overhead. Best for organizations with strict data residency requirements.',
-    pros: ['Full data control', 'No vendor lock-in', 'Customizable', 'Predictable costs'],
-    cons: ['High operational overhead', 'Limited model quality', 'GPU hardware costs'],
-    risks: ['Operational complexity', 'Talent requirements', 'Hardware failure risk'],
-    estimatedCost: '$45K-60K/month (including infra)',
-    implementationEffort: 'high',
+      "Maximum control and data sovereignty, but requires significant operational overhead. Best for organizations with strict data residency requirements.",
+    pros: ["Full data control", "No vendor lock-in", "Customizable", "Predictable costs"],
+    cons: ["High operational overhead", "Limited model quality", "GPU hardware costs"],
+    risks: ["Operational complexity", "Talent requirements", "Hardware failure risk"],
+    estimatedCost: "$45K-60K/month (including infra)",
+    implementationEffort: "high",
   },
 ];
 
 const tradeOffs = [
   {
-    dimension: 'Cost vs Performance',
+    dimension: "Cost vs Performance",
     description:
-      'Gemini offers best cost/performance ratio but with vendor dependency. Self-hosted provides control at 3-4x cost.',
-    recommendation: 'Choose Gemini for cost-efficiency; self-host for sovereignty.',
+      "Gemini offers best cost/performance ratio but with vendor dependency. Self-hosted provides control at 3-4x cost.",
+    recommendation: "Choose Gemini for cost-efficiency; self-host for sovereignty.",
   },
   {
-    dimension: 'Latency vs Flexibility',
+    dimension: "Latency vs Flexibility",
     description:
-      'Cloud APIs deliver lowest latency but limit model customization. Self-hosted allows fine-tuning but adds latency.',
-    recommendation: 'Use cloud APIs for real-time inference; self-host for batch processing.',
+      "Cloud APIs deliver lowest latency but limit model customization. Self-hosted allows fine-tuning but adds latency.",
+    recommendation: "Use cloud APIs for real-time inference; self-host for batch processing.",
   },
   {
-    dimension: 'Compliance vs Innovation',
+    dimension: "Compliance vs Innovation",
     description:
-      'HIPAA compliance is faster with cloud providers. Custom solutions require additional audit overhead.',
-    recommendation: 'Leverage cloud compliance certifications to accelerate time-to-market.',
+      "HIPAA compliance is faster with cloud providers. Custom solutions require additional audit overhead.",
+    recommendation: "Leverage cloud compliance certifications to accelerate time-to-market.",
   },
 ];
 
 const effortColors = {
-  low: 'text-status-healthy',
-  medium: 'text-status-warning',
-  high: 'text-status-critical',
+  low: "text-status-healthy",
+  medium: "text-status-warning",
+  high: "text-status-critical",
 };
 const effortBg = {
-  low: 'bg-status-healthy/10',
-  medium: 'bg-status-warning/10',
-  high: 'bg-status-critical/10',
+  low: "bg-status-healthy/10",
+  medium: "bg-status-warning/10",
+  high: "bg-status-critical/10",
 };
 
 export default function DecisionsPage() {
@@ -144,7 +144,7 @@ export default function DecisionsPage() {
             ) : (
               <Wand2 className="h-4 w-4" />
             )}
-            {isGenerating ? 'Generating...' : 'Generate Guide'}
+            {isGenerating ? "Generating..." : "Generate Guide"}
           </Button>
         </div>
       </div>
@@ -175,13 +175,13 @@ export default function DecisionsPage() {
             {mockRecommendations.map((rec) => (
               <Card
                 key={rec.rank}
-                className={rec.rank === 1 ? 'border-accent/30 shadow-md shadow-accent/5' : ''}
+                className={rec.rank === 1 ? "border-accent/30 shadow-md shadow-accent/5" : ""}
               >
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div
-                        className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold ${rec.rank === 1 ? 'bg-accent text-accent-foreground' : 'bg-secondary text-muted-foreground'}`}
+                        className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold ${rec.rank === 1 ? "bg-accent text-accent-foreground" : "bg-secondary text-muted-foreground"}`}
                       >
                         #{rec.rank}
                       </div>
@@ -286,11 +286,11 @@ export default function DecisionsPage() {
             <CardContent>
               <div className="space-y-2">
                 {[
-                  'Validate Gemini 2.5 Flash latency with a proof-of-concept on Vertex AI',
-                  'Schedule HIPAA compliance review with the security team',
-                  'Request cost estimates for projected 10K RPS workload',
-                  'Set up monitoring dashboards for inference metrics',
-                  'Create rollback plan for migration from current setup',
+                  "Validate Gemini 2.5 Flash latency with a proof-of-concept on Vertex AI",
+                  "Schedule HIPAA compliance review with the security team",
+                  "Request cost estimates for projected 10K RPS workload",
+                  "Set up monitoring dashboards for inference metrics",
+                  "Create rollback plan for migration from current setup",
                 ].map((step, i) => (
                   <div key={i} className="flex items-start gap-3 p-2 rounded hover:bg-secondary/30">
                     <div className="flex h-5 w-5 items-center justify-center rounded-full bg-secondary text-[10px] font-medium">

@@ -3,7 +3,7 @@
  * Event processing service with pub/sub and streaming
  */
 
-import { EventEmitter } from 'events';
+import { EventEmitter } from "events";
 
 export interface EventPayload {
   id: string;
@@ -30,7 +30,7 @@ export class EventService extends EventEmitter {
   }
 
   async initialize(): Promise<void> {
-    console.log('Event service initialized');
+    console.log("Event service initialized");
     this.setMaxListeners(1000);
   }
 
@@ -38,13 +38,13 @@ export class EventService extends EventEmitter {
     const { action, data } = operation;
 
     switch (action) {
-      case 'publish':
+      case "publish":
         return (await this.publish(data)) as T;
-      case 'subscribe':
+      case "subscribe":
         return (await this.subscribe(data)) as T;
-      case 'unsubscribe':
+      case "unsubscribe":
         return (await this.unsubscribe(data)) as T;
-      case 'getHistory':
+      case "getHistory":
         return (await this.getHistory(data)) as T;
       default:
         throw new Error(`Unknown event action: ${action}`);
@@ -57,7 +57,7 @@ export class EventService extends EventEmitter {
       type: event.type,
       data: event.data,
       timestamp: Date.now(),
-      source: event.source || 'unknown',
+      source: event.source || "unknown",
     };
 
     // Add to history
@@ -70,7 +70,7 @@ export class EventService extends EventEmitter {
 
     // Emit to subscribers
     this.emit(eventPayload.type, eventPayload);
-    this.emit('*', eventPayload);
+    this.emit("*", eventPayload);
 
     console.log(`Event published: ${eventPayload.type}`);
     return eventPayload;
@@ -120,7 +120,7 @@ export class EventService extends EventEmitter {
     this.subscriptions.clear();
     this.eventHistory = [];
     this.removeAllListeners();
-    console.log('Event service cleaned up');
+    console.log("Event service cleaned up");
   }
 }
 

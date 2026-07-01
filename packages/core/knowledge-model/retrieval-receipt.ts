@@ -7,14 +7,14 @@
  * for knowledge.
  */
 
-import type { ResourceCondition } from '../shared';
+import type { ResourceCondition } from "../shared";
 import type {
   SearchOptions,
   SearchResultItem,
   SourceTrace,
   EvidenceLevel,
   RetrievalPhase,
-} from './knowledge-index';
+} from "./knowledge-index";
 
 export interface RetrievalReceiptSpec {
   /** The chat session that triggered this retrieval */

@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,34 +10,36 @@ metadata:
   criticality: critical
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-60600
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l30
-    - model
+  - l30
+  - model
   sloTarget: 30
   evidenceRetentionDays: 2555
 spec:
-  description: >
-    Validates that all model artifacts are registered in the model registry before deployment.
+  description: 'Validates that all model artifacts are registered in the model registry
+    before deployment.
+
+    '
   validates:
-    - dimension: registry-completeness
-      description: All models are registered.
-      checks:
-        - id: chk-model-registered
-          description: Model is registered in the model registry
-          rule: 'registry:model-registered'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-model-version-immutable
-          description: Registered model version is immutable
-          rule: 'registry:model-version-immutable'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-model-signed
-          description: Model artifact is signed by the platform signing service
-          rule: 'signature:model-signed'
-          severity: critical
-          evidenceRequired: true
+  - dimension: registry-completeness
+    description: All models are registered.
+    checks:
+    - id: chk-model-registered
+      description: Model is registered in the model registry
+      rule: registry:model-registered
+      severity: critical
+      evidenceRequired: true
+    - id: chk-model-version-immutable
+      description: Registered model version is immutable
+      rule: registry:model-version-immutable
+      severity: critical
+      evidenceRequired: true
+    - id: chk-model-signed
+      description: Model artifact is signed by the platform signing service
+      rule: signature:model-signed
+      severity: critical
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

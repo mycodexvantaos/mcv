@@ -1,5 +1,4 @@
-# modules/mycodexvantaos-ai-llm/capabilities.yaml
 capabilities:
-  - llm
-  - cache
-  - observability
+- llm
+- cache
+- observability

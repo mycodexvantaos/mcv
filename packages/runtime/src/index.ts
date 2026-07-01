@@ -3,10 +3,10 @@
  * Application runtime execution environment
  */
 
-import { EventEmitter } from 'events';
+import { EventEmitter } from "events";
 
 export interface RuntimeConfig {
-  environment: 'local' | 'native' | 'connected' | 'hybrid';
+  environment: "local" | "native" | "connected" | "hybrid";
   validation?: boolean;
   observability?: boolean;
 }
@@ -32,7 +32,7 @@ export class Runtime extends EventEmitter {
   constructor() {
     super();
     this.config = {
-      environment: 'native',
+      environment: "native",
       validation: true,
       observability: true,
     };
@@ -45,7 +45,7 @@ export class Runtime extends EventEmitter {
    */
   async initialize(): Promise<void> {
     console.log(`Runtime initialized in ${this.config.environment} mode`);
-    this.emit('initialized', { environment: this.config.environment });
+    this.emit("initialized", { environment: this.config.environment });
   }
 
   /**
@@ -81,7 +81,7 @@ export class Runtime extends EventEmitter {
         executionTime,
       };
 
-      this.emit('executed', { appId, result });
+      this.emit("executed", { appId, result });
       return result as T;
     } catch (error) {
       errors.push(error);
@@ -94,7 +94,7 @@ export class Runtime extends EventEmitter {
         executionTime,
       };
 
-      this.emit('error', { request, error });
+      this.emit("error", { request, error });
       return result as T;
     }
   }
@@ -106,7 +106,7 @@ export class Runtime extends EventEmitter {
     this.runningApplications.set(application.id, {
       application,
       registeredAt: Date.now(),
-      status: 'ready',
+      status: "ready",
     });
     console.log(`Application registered: ${application.id}`);
   }
@@ -117,7 +117,7 @@ export class Runtime extends EventEmitter {
   private async executeApplication(request: ExecutionRequest): Promise<any> {
     // Simulate execution logic
     return {
-      message: 'Application executed successfully',
+      message: "Application executed successfully",
       application: request.application.name,
       timestamp: new Date().toISOString(),
       environment: this.config.environment,
@@ -141,7 +141,7 @@ export class Runtime extends EventEmitter {
    */
   private validateRequest(request: ExecutionRequest): void {
     if (!request.application || !request.application.id) {
-      throw new Error('Invalid request: application.id is required');
+      throw new Error("Invalid request: application.id is required");
     }
   }
 
@@ -161,7 +161,7 @@ export class Runtime extends EventEmitter {
   async cleanup(): Promise<void> {
     this.runningApplications.clear();
     this.metrics.clear();
-    console.log('Runtime cleaned up');
+    console.log("Runtime cleaned up");
   }
 }
 

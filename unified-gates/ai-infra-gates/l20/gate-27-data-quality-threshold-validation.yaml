@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,34 +10,36 @@ metadata:
   criticality: high
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-40100
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l20
-    - data
+  - l20
+  - data
   sloTarget: 30
   evidenceRetentionDays: 1095
 spec:
-  description: >
-    Validates that dataset quality metrics (completeness, consistency, freshness, deduplication) meet defined thresholds.
+  description: 'Validates that dataset quality metrics (completeness, consistency,
+    freshness, deduplication) meet defined thresholds.
+
+    '
   validates:
-    - dimension: quality-thresholds
-      description: Dataset quality metrics meet defined thresholds.
-      checks:
-        - id: chk-completeness
-          description: Null rate is below threshold defined in dataset contract
-          rule: 'threshold:null-rate<contract.maxNullRate'
-          severity: high
-          evidenceRequired: true
-        - id: chk-consistency
-          description: Schema violation rate is below 0.01%
-          rule: 'threshold:schema-violation-rate<0.0001'
-          severity: high
-          evidenceRequired: true
-        - id: chk-deduplication
-          description: Duplicate record rate is below threshold
-          rule: 'threshold:duplicate-rate<contract.maxDuplicateRate'
-          severity: medium
-          evidenceRequired: false
+  - dimension: quality-thresholds
+    description: Dataset quality metrics meet defined thresholds.
+    checks:
+    - id: chk-completeness
+      description: Null rate is below threshold defined in dataset contract
+      rule: threshold:null-rate<contract.maxNullRate
+      severity: high
+      evidenceRequired: true
+    - id: chk-consistency
+      description: Schema violation rate is below 0.01%
+      rule: threshold:schema-violation-rate<0.0001
+      severity: high
+      evidenceRequired: true
+    - id: chk-deduplication
+      description: Duplicate record rate is below threshold
+      rule: threshold:duplicate-rate<contract.maxDuplicateRate
+      severity: medium
+      evidenceRequired: false
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

@@ -1,6 +1,6 @@
 novelty_detection:
   enabled: true
   metrics:
-    - 'unusual_call_graph_clusters'
-    - 'contrary_to_documentation_behavior'
-  action: '生成探索任務卡，而非直接修改代碼'
+  - unusual_call_graph_clusters
+  - contrary_to_documentation_behavior
+  action: 生成探索任務卡，而非直接修改代碼

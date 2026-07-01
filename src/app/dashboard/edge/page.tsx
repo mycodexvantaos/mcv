@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Globe,
   Cpu,
@@ -13,13 +13,13 @@ import {
   Clock,
   Loader2,
   ChevronRight,
-} from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import type { EdgeNodeStatus } from '@/types/edge';
+} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import type { EdgeNodeStatus } from "@/types/edge";
 
 interface EdgeNodeData {
   id: string;
@@ -37,50 +37,50 @@ interface EdgeNodeData {
 
 const mockNodes: EdgeNodeData[] = [
   {
-    id: 'n1',
-    name: 'us-west-2-primary',
-    region: 'US West (Oregon)',
-    status: 'online',
-    currentVersion: 'v2.4.1',
+    id: "n1",
+    name: "us-west-2-primary",
+    region: "US West (Oregon)",
+    status: "online",
+    currentVersion: "v2.4.1",
     cpu: 0.45,
     memory: 0.62,
     gpu: 0.38,
-    models: ['gemini-2.5-flash', 'llama-3.1-70b'],
+    models: ["gemini-2.5-flash", "llama-3.1-70b"],
     rps: 1250,
     latencyMs: 28,
   },
   {
-    id: 'n2',
-    name: 'us-east-1-primary',
-    region: 'US East (Virginia)',
-    status: 'online',
-    currentVersion: 'v2.4.1',
+    id: "n2",
+    name: "us-east-1-primary",
+    region: "US East (Virginia)",
+    status: "online",
+    currentVersion: "v2.4.1",
     cpu: 0.32,
     memory: 0.48,
     gpu: 0.22,
-    models: ['gpt-4o'],
+    models: ["gpt-4o"],
     rps: 820,
     latencyMs: 35,
   },
   {
-    id: 'n3',
-    name: 'eu-central-1-primary',
-    region: 'EU (Frankfurt)',
-    status: 'online',
-    currentVersion: 'v2.4.0',
+    id: "n3",
+    name: "eu-central-1-primary",
+    region: "EU (Frankfurt)",
+    status: "online",
+    currentVersion: "v2.4.0",
     cpu: 0.58,
     memory: 0.71,
     gpu: 0.45,
-    models: ['gemini-2.5-flash', 'claude-sonnet-4'],
+    models: ["gemini-2.5-flash", "claude-sonnet-4"],
     rps: 950,
     latencyMs: 42,
   },
   {
-    id: 'n4',
-    name: 'ap-southeast-1',
-    region: 'Asia Pacific (Singapore)',
-    status: 'deploying',
-    currentVersion: 'v2.3.8',
+    id: "n4",
+    name: "ap-southeast-1",
+    region: "Asia Pacific (Singapore)",
+    status: "deploying",
+    currentVersion: "v2.3.8",
     cpu: 0.0,
     memory: 0.0,
     gpu: 0.0,
@@ -89,15 +89,15 @@ const mockNodes: EdgeNodeData[] = [
     latencyMs: 0,
   },
   {
-    id: 'n5',
-    name: 'eu-west-2-secondary',
-    region: 'EU (London)',
-    status: 'online',
-    currentVersion: 'v2.4.0',
+    id: "n5",
+    name: "eu-west-2-secondary",
+    region: "EU (London)",
+    status: "online",
+    currentVersion: "v2.4.0",
     cpu: 0.28,
     memory: 0.35,
     gpu: 0.18,
-    models: ['llama-3.1-70b'],
+    models: ["llama-3.1-70b"],
     rps: 340,
     latencyMs: 55,
   },
@@ -112,29 +112,29 @@ const statusIcons: Record<EdgeNodeStatus, typeof CheckCircle2> = {
 };
 
 const statusColors: Record<EdgeNodeStatus, string> = {
-  online: 'text-status-healthy',
-  offline: 'text-status-critical',
-  deploying: 'text-chart-1',
-  draining: 'text-status-warning',
-  error: 'text-status-critical',
+  online: "text-status-healthy",
+  offline: "text-status-critical",
+  deploying: "text-chart-1",
+  draining: "text-status-warning",
+  error: "text-status-critical",
 };
 
 const statusBadgeVariant: Record<
   EdgeNodeStatus,
-  'default' | 'secondary' | 'destructive' | 'outline'
+  "default" | "secondary" | "destructive" | "outline"
 > = {
-  online: 'default',
-  offline: 'destructive',
-  deploying: 'secondary',
-  draining: 'outline',
-  error: 'destructive',
+  online: "default",
+  offline: "destructive",
+  deploying: "secondary",
+  draining: "outline",
+  error: "destructive",
 };
 
 export default function EdgePage() {
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [rollingBack, setRollingBack] = useState<string | null>(null);
 
-  const onlineNodes = mockNodes.filter((n) => n.status === 'online').length;
+  const onlineNodes = mockNodes.filter((n) => n.status === "online").length;
   const totalRps = mockNodes.reduce((s, n) => s + n.rps, 0);
 
   const handleRollback = (nodeId: string) => {
@@ -174,7 +174,7 @@ export default function EdgePage() {
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground">Deploying</p>
             <p className="text-2xl font-bold font-headline text-chart-1">
-              {mockNodes.filter((n) => n.status === 'deploying').length}
+              {mockNodes.filter((n) => n.status === "deploying").length}
             </p>
           </CardContent>
         </Card>
@@ -193,7 +193,7 @@ export default function EdgePage() {
           return (
             <Card
               key={node.id}
-              className={`cursor-pointer transition-all ${selectedNode === node.id ? 'border-primary shadow-lg shadow-primary/10' : 'hover:border-primary/30'}`}
+              className={`cursor-pointer transition-all ${selectedNode === node.id ? "border-primary shadow-lg shadow-primary/10" : "hover:border-primary/30"}`}
               onClick={() => setSelectedNode(selectedNode === node.id ? null : node.id)}
             >
               <CardHeader className="pb-2">
@@ -210,7 +210,7 @@ export default function EdgePage() {
                   <div className="flex items-center gap-2">
                     <Badge variant={statusBadgeVariant[node.status]} className="text-[10px] gap-1">
                       <StatusIcon
-                        className={`h-3 w-3 ${node.status === 'deploying' ? 'animate-spin' : ''}`}
+                        className={`h-3 w-3 ${node.status === "deploying" ? "animate-spin" : ""}`}
                       />
                       {node.status}
                     </Badge>
@@ -221,7 +221,7 @@ export default function EdgePage() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-3">
-                {node.status === 'online' && (
+                {node.status === "online" && (
                   <>
                     <div className="grid grid-cols-3 gap-3">
                       <div>
@@ -269,7 +269,7 @@ export default function EdgePage() {
                     </div>
                   </>
                 )}
-                {node.status === 'deploying' && (
+                {node.status === "deploying" && (
                   <div className="flex items-center gap-3 p-3 rounded-md bg-chart-1/10">
                     <Loader2 className="h-5 w-5 text-chart-1 animate-spin" />
                     <div>
@@ -280,7 +280,7 @@ export default function EdgePage() {
                     </div>
                   </div>
                 )}
-                {selectedNode === node.id && node.status === 'online' && (
+                {selectedNode === node.id && node.status === "online" && (
                   <div className="flex gap-2 pt-2 border-t border-border">
                     <Button variant="outline" size="sm" className="gap-1.5">
                       <ChevronRight className="h-3.5 w-3.5" /> Details
@@ -300,7 +300,7 @@ export default function EdgePage() {
                       ) : (
                         <RotateCcw className="h-3.5 w-3.5" />
                       )}
-                      {rollingBack === node.id ? 'Rolling back...' : 'Rollback'}
+                      {rollingBack === node.id ? "Rolling back..." : "Rollback"}
                     </Button>
                   </div>
                 )}

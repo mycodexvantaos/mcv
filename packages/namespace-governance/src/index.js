@@ -6,9 +6,9 @@
  * Rationale: separating app construction (app.js) from process binding lets the
  * same artifact run as a server and be unit-tested without port conflicts.
  */
-import { fileURLToPath } from 'node:url';
-import { createApp } from './app.js';
-import { initLogger } from './logger.js';
+import { fileURLToPath } from "node:url";
+import { createApp } from "./app.js";
+import { initLogger } from "./logger.js";
 
 const logger = initLogger();
 const app = createApp({ logger });

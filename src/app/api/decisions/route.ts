@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
-export const dynamic = 'force-static';
+export const dynamic = "force-static";
 
 // MyCodeXvantaOS Admin Dashboard - Decision Guide API
 // AI-powered decision guide generation with ranked recommendations
@@ -20,8 +20,8 @@ interface Recommendation {
   pros: string[];
   cons: string[];
   risks: string[];
-  effort: 'low' | 'medium' | 'high';
-  impact: 'low' | 'medium' | 'high';
+  effort: "low" | "medium" | "high";
+  impact: "low" | "medium" | "high";
   estimatedTime: string;
 }
 
@@ -46,103 +46,103 @@ interface DecisionGuide {
 function generateDecisionGuide(input: DecisionGuideInput): DecisionGuide {
   const recommendations: Recommendation[] = [
     {
-      id: 'rec-1',
-      title: 'Start with Hybrid Cloud-Edge Architecture',
+      id: "rec-1",
+      title: "Start with Hybrid Cloud-Edge Architecture",
       description:
-        'Deploy lightweight models at edge for low-latency use cases while maintaining cloud-based large models for complex tasks. This provides the best balance of performance, cost, and flexibility.',
+        "Deploy lightweight models at edge for low-latency use cases while maintaining cloud-based large models for complex tasks. This provides the best balance of performance, cost, and flexibility.",
       confidence: 0.89,
       pros: [
-        'Optimal latency for real-time use cases',
-        'Cost-effective through intelligent routing',
-        'Graceful degradation with cloud fallback',
-        'Scales independently per region',
+        "Optimal latency for real-time use cases",
+        "Cost-effective through intelligent routing",
+        "Graceful degradation with cloud fallback",
+        "Scales independently per region",
       ],
       cons: [
-        'Increased operational complexity',
-        'Requires edge infrastructure management',
-        'Model synchronization overhead',
+        "Increased operational complexity",
+        "Requires edge infrastructure management",
+        "Model synchronization overhead",
       ],
       risks: [
-        'Edge node failures may impact regional availability',
-        'Model version drift between edge and cloud',
+        "Edge node failures may impact regional availability",
+        "Model version drift between edge and cloud",
       ],
-      effort: 'high',
-      impact: 'high',
-      estimatedTime: '8-12 weeks',
+      effort: "high",
+      impact: "high",
+      estimatedTime: "8-12 weeks",
     },
     {
-      id: 'rec-2',
-      title: 'Implement Provider-Agnostic Abstraction Layer',
+      id: "rec-2",
+      title: "Implement Provider-Agnostic Abstraction Layer",
       description:
-        'Build a unified connector interface that abstracts away provider-specific APIs. This enables seamless switching between LM providers and avoids vendor lock-in.',
+        "Build a unified connector interface that abstracts away provider-specific APIs. This enables seamless switching between LM providers and avoids vendor lock-in.",
       confidence: 0.92,
       pros: [
-        'No vendor lock-in',
-        'Easy provider failover',
-        'Consistent monitoring across providers',
-        'Simplified compliance management',
+        "No vendor lock-in",
+        "Easy provider failover",
+        "Consistent monitoring across providers",
+        "Simplified compliance management",
       ],
       cons: [
-        'Additional abstraction layer adds latency',
-        'Feature parity limitations across providers',
-        'Maintenance overhead for adapter updates',
+        "Additional abstraction layer adds latency",
+        "Feature parity limitations across providers",
+        "Maintenance overhead for adapter updates",
       ],
       risks: [
-        'Provider API changes may break adapters',
-        'Performance overhead from abstraction layer',
+        "Provider API changes may break adapters",
+        "Performance overhead from abstraction layer",
       ],
-      effort: 'medium',
-      impact: 'high',
-      estimatedTime: '4-6 weeks',
+      effort: "medium",
+      impact: "high",
+      estimatedTime: "4-6 weeks",
     },
     {
-      id: 'rec-3',
-      title: 'Adaptive Cost Optimization with Budget Controls',
+      id: "rec-3",
+      title: "Adaptive Cost Optimization with Budget Controls",
       description:
-        'Implement intelligent cost management with real-time budget tracking, automatic model downgrading when budgets approach limits, and cost anomaly detection.',
+        "Implement intelligent cost management with real-time budget tracking, automatic model downgrading when budgets approach limits, and cost anomaly detection.",
       confidence: 0.85,
       pros: [
-        'Predictable monthly costs',
-        'Automated cost management',
-        'Visibility into spending patterns',
-        'Prevents bill shock',
+        "Predictable monthly costs",
+        "Automated cost management",
+        "Visibility into spending patterns",
+        "Prevents bill shock",
       ],
       cons: [
-        'May limit capability during peak usage',
-        'Requires careful threshold tuning',
-        'Additional monitoring infrastructure',
+        "May limit capability during peak usage",
+        "Requires careful threshold tuning",
+        "Additional monitoring infrastructure",
       ],
       risks: [
-        'Overly aggressive budget limits may degrade service',
-        'Cost optimization may conflict with performance SLAs',
+        "Overly aggressive budget limits may degrade service",
+        "Cost optimization may conflict with performance SLAs",
       ],
-      effort: 'low',
-      impact: 'medium',
-      estimatedTime: '2-3 weeks',
+      effort: "low",
+      impact: "medium",
+      estimatedTime: "2-3 weeks",
     },
   ];
 
   const tradeOffs: TradeOff[] = [
     {
-      id: 'to-1',
-      dimension: 'Latency vs Cost',
-      optionA: { name: 'Low Latency (Edge)', score: 9 },
-      optionB: { name: 'Low Cost (Cloud)', score: 7 },
-      recommendation: 'Use edge for latency-sensitive workloads, cloud for batch processing',
+      id: "to-1",
+      dimension: "Latency vs Cost",
+      optionA: { name: "Low Latency (Edge)", score: 9 },
+      optionB: { name: "Low Cost (Cloud)", score: 7 },
+      recommendation: "Use edge for latency-sensitive workloads, cloud for batch processing",
     },
     {
-      id: 'to-2',
-      dimension: 'Flexibility vs Simplicity',
-      optionA: { name: 'Multi-Provider', score: 8 },
-      optionB: { name: 'Single Provider', score: 6 },
-      recommendation: 'Multi-provider for production, single provider for development',
+      id: "to-2",
+      dimension: "Flexibility vs Simplicity",
+      optionA: { name: "Multi-Provider", score: 8 },
+      optionB: { name: "Single Provider", score: 6 },
+      recommendation: "Multi-provider for production, single provider for development",
     },
     {
-      id: 'to-3',
-      dimension: 'Performance vs Compliance',
-      optionA: { name: 'Maximum Performance', score: 7 },
-      optionB: { name: 'Full Compliance', score: 9 },
-      recommendation: 'Compliance first - implement audit trails even at performance cost',
+      id: "to-3",
+      dimension: "Performance vs Compliance",
+      optionA: { name: "Maximum Performance", score: 7 },
+      optionB: { name: "Full Compliance", score: 9 },
+      recommendation: "Compliance first - implement audit trails even at performance cost",
     },
   ];
 
@@ -169,7 +169,7 @@ export async function POST(request: Request) {
   const body: DecisionGuideInput = await request.json();
 
   if (!body.question) {
-    return NextResponse.json({ error: 'Question is required' }, { status: 400 });
+    return NextResponse.json({ error: "Question is required" }, { status: 400 });
   }
 
   const guide = generateDecisionGuide(body);

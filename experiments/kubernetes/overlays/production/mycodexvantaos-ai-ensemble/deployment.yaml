@@ -12,5 +12,5 @@ spec:
         app: mycodexvantaos-ai-ensemble
     spec:
       containers:
-        - name: mycodexvantaos-ai-ensemble
-          image: registry.internal/mycodexvantaos/mycodexvantaos-ai-ensemble:latest
+      - name: mycodexvantaos-ai-ensemble
+        image: registry.internal/mycodexvantaos/mycodexvantaos-ai-ensemble:latest

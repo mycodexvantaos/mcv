@@ -10,7 +10,7 @@ export interface DecisionRecord {
   strategy: string;
   verdict: string;
   confidence: number;
-  outcome?: 'correct' | 'incorrect' | 'unknown';
+  outcome?: "correct" | "incorrect" | "unknown";
   feedback?: string;
 }
 
@@ -36,20 +36,20 @@ export class DataAnalytics {
     this.decisions.push(decision);
   }
 
-  recordFeedback(decisionId: string, outcome: 'correct' | 'incorrect', feedback?: string): void {
+  recordFeedback(decisionId: string, outcome: "correct" | "incorrect", feedback?: string): void {
     const decision = this.decisions.find((d) => d.id === decisionId);
     if (decision) {
       decision.outcome = outcome;
       decision.feedback = feedback;
-      this.feedbackQueue.push({ decisionId, feedback: feedback || '' });
+      this.feedbackQueue.push({ decisionId, feedback: feedback || "" });
     }
   }
 
   getAnalytics(): AnalyticsMetrics {
     const totalDecisions = this.decisions.length;
     const decidedDecisions = this.decisions.filter((d) => d.outcome !== undefined);
-    const correctDecisions = this.decisions.filter((d) => d.outcome === 'correct').length;
-    const incorrectDecisions = this.decisions.filter((d) => d.outcome === 'incorrect').length;
+    const correctDecisions = this.decisions.filter((d) => d.outcome === "correct").length;
+    const incorrectDecisions = this.decisions.filter((d) => d.outcome === "incorrect").length;
     const unknownOutcomes = totalDecisions - decidedDecisions.length;
 
     const accuracy = decidedDecisions.length > 0 ? correctDecisions / decidedDecisions.length : 0;
@@ -75,7 +75,7 @@ export class DataAnalytics {
     });
 
     Object.entries(strategyDecisions).forEach(([strategy, decisions]) => {
-      const correct = decisions.filter((d) => d.outcome === 'correct').length;
+      const correct = decisions.filter((d) => d.outcome === "correct").length;
       const decided = decisions.filter((d) => d.outcome !== undefined).length;
       strategyPerformance[strategy] = {
         accuracy: decided > 0 ? correct / decided : 0,
@@ -100,10 +100,10 @@ export class DataAnalytics {
 
   private calculatePrecision(): number {
     const truePositives = this.decisions.filter(
-      (d) => d.verdict === 'ALLOW' && d.outcome === 'correct'
+      (d) => d.verdict === "ALLOW" && d.outcome === "correct"
     ).length;
     const falsePositives = this.decisions.filter(
-      (d) => d.verdict === 'ALLOW' && d.outcome === 'incorrect'
+      (d) => d.verdict === "ALLOW" && d.outcome === "incorrect"
     ).length;
     return truePositives + falsePositives > 0
       ? truePositives / (truePositives + falsePositives)
@@ -112,10 +112,10 @@ export class DataAnalytics {
 
   private calculateRecall(): number {
     const truePositives = this.decisions.filter(
-      (d) => d.verdict === 'ALLOW' && d.outcome === 'correct'
+      (d) => d.verdict === "ALLOW" && d.outcome === "correct"
     ).length;
     const falseNegatives = this.decisions.filter(
-      (d) => d.verdict === 'DENY' && d.outcome === 'incorrect'
+      (d) => d.verdict === "DENY" && d.outcome === "incorrect"
     ).length;
     return truePositives + falseNegatives > 0
       ? truePositives / (truePositives + falseNegatives)
@@ -145,7 +145,7 @@ export class DataAnalytics {
 
       if (d.outcome !== undefined) {
         totalCount++;
-        if (d.outcome === 'correct') {
+        if (d.outcome === "correct") {
           correctCount++;
         }
         accuracies.push(totalCount > 0 ? correctCount / totalCount : 0);
@@ -159,37 +159,37 @@ export class DataAnalytics {
     const analytics = this.getAnalytics();
     const lines: string[] = [];
 
-    lines.push('# Semantic Core Analytics Report');
+    lines.push("# Semantic Core Analytics Report");
     lines.push(`Generated: ${new Date().toISOString()}`);
-    lines.push('');
+    lines.push("");
 
-    lines.push('## Summary');
+    lines.push("## Summary");
     lines.push(`- Total Decisions: ${analytics.totalDecisions}`);
     lines.push(`- Correct: ${analytics.correctDecisions}`);
     lines.push(`- Incorrect: ${analytics.incorrectDecisions}`);
     lines.push(`- Unknown: ${analytics.unknownOutcomes}`);
-    lines.push('');
+    lines.push("");
 
-    lines.push('## Performance Metrics');
+    lines.push("## Performance Metrics");
     lines.push(`- Accuracy: ${(analytics.accuracy * 100).toFixed(2)}%`);
     lines.push(`- Precision: ${(analytics.precision * 100).toFixed(2)}%`);
     lines.push(`- Recall: ${(analytics.recall * 100).toFixed(2)}%`);
     lines.push(`- F1 Score: ${analytics.f1Score.toFixed(4)}`);
     lines.push(`- Average Confidence: ${(analytics.averageConfidence * 100).toFixed(2)}%`);
-    lines.push('');
+    lines.push("");
 
-    lines.push('## Verdict Distribution');
+    lines.push("## Verdict Distribution");
     Object.entries(analytics.verdictDistribution).forEach(([verdict, count]) => {
       lines.push(`- ${verdict}: ${count}`);
     });
-    lines.push('');
+    lines.push("");
 
-    lines.push('## Strategy Performance');
+    lines.push("## Strategy Performance");
     Object.entries(analytics.strategyPerformance).forEach(([strategy, perf]) => {
       lines.push(`- ${strategy}: ${(perf.accuracy * 100).toFixed(2)}% (${perf.count} decisions)`);
     });
 
-    return lines.join('\n');
+    return lines.join("\n");
   }
 }
 

@@ -1,3 +1,2 @@
-# modules/mycodexvantaos-platform-observability/capabilities.yaml
 capabilities:
-  - observability
+- observability

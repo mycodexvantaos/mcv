@@ -1,6 +1,7 @@
 apiVersion: mycodexvantaos.io/v1
 kind: RootModule
 metadata:
+  version: 1.0.0
   name: ci
   urn: urn:mycodexvantaos:ci:module:ci
   domain: ci

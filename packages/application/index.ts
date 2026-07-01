@@ -19,7 +19,7 @@
  */
 
 // ── Identity (security) ────────────────────────────────────────────────
-export { IdentityService } from './identity';
+export { IdentityService } from "./identity";
 export type {
   IdentityServiceDeps,
   RegisterSubjectInput,
@@ -28,10 +28,10 @@ export type {
   SubjectPhase,
   SubjectResource,
   IdentityAuditEvent,
-} from './identity';
+} from "./identity";
 
 // ── Workspace (workspace) ──────────────────────────────────────────────
-export { WorkspaceService } from './workspace';
+export { WorkspaceService } from "./workspace";
 export type {
   WorkspaceServiceDeps,
   WorkspacePhase,
@@ -42,10 +42,10 @@ export type {
   WorkspaceResource,
   MembershipResource,
   WorkspaceAuditEvent,
-} from './workspace';
+} from "./workspace";
 
 // ── Knowledge (knowledge) ──────────────────────────────────────────────
-export { KnowledgeService } from './knowledge';
+export { KnowledgeService } from "./knowledge";
 export type {
   KnowledgeServiceDeps,
   DocumentFormat,
@@ -62,10 +62,10 @@ export type {
   SearchResultItem,
   KnowledgeIssueType,
   KnowledgeAuditEvent,
-} from './knowledge';
+} from "./knowledge";
 
 // ── Agent (agent) ──────────────────────────────────────────────────────
-export { AgentService } from './agent';
+export { AgentService } from "./agent";
 export type {
   AgentServiceDeps,
   ChatSessionPhase,
@@ -75,10 +75,10 @@ export type {
   SendMessageInput,
   AgentSearchResult,
   AgentAuditEvent,
-} from './agent';
+} from "./agent";
 
 // ── Model (model) ──────────────────────────────────────────────────────
-export { ModelService } from './model';
+export { ModelService } from "./model";
 export type {
   ModelServiceDeps,
   ModelProvider,
@@ -88,10 +88,10 @@ export type {
   CallChatModelInput,
   CallEmbeddingModelInput,
   ModelAuditEvent,
-} from './model';
+} from "./model";
 
 // ── Audit (security) ───────────────────────────────────────────────────
-export { AuditService } from './audit';
+export { AuditService } from "./audit";
 export type {
   AuditServiceDeps,
   AuditEventCategory,
@@ -101,10 +101,10 @@ export type {
   AuditEventResource,
   ListAuditEventsInput,
   IntegrityVerificationResult,
-} from './audit';
+} from "./audit";
 
 // ── Usage (security) ───────────────────────────────────────────────────
-export { UsageService } from './usage';
+export { UsageService } from "./usage";
 export type {
   UsageServiceDeps,
   Tier,
@@ -114,29 +114,29 @@ export type {
   UsageRecord,
   UsageReport,
   UsageAuditEvent,
-} from './usage';
+} from "./usage";
 
 // ── Automation (automation) ────────────────────────────────────────────
-export { AutomationService } from './automation';
+export { AutomationService } from "./automation";
 export type {
   AutomationServiceDeps,
   JobPhase,
   EnqueueJobInput,
   JobResource,
   AutomationAuditEvent,
-} from './automation';
+} from "./automation";
 
 // ── Service Dependency Map ─────────────────────────────────────────────
 
 export const SERVICE_DEPENDENCIES = {
-  identity: ['database', 'queue', 'audit'] as const,
-  workspace: ['database', 'audit', 'auth'] as const,
-  knowledge: ['database', 'object-storage', 'search', 'queue', 'auth', 'audit'] as const,
-  agent: ['database', 'chat-model', 'queue', 'auth', 'search', 'audit', 'usage'] as const,
-  model: ['database', 'chat-model', 'embedding-model', 'auth', 'audit', 'usage'] as const,
-  audit: ['database', 'queue'] as const,
-  usage: ['database', 'cache', 'audit'] as const,
-  automation: ['database', 'queue', 'audit'] as const,
+  identity: ["database", "queue", "audit"] as const,
+  workspace: ["database", "audit", "auth"] as const,
+  knowledge: ["database", "object-storage", "search", "queue", "auth", "audit"] as const,
+  agent: ["database", "chat-model", "queue", "auth", "search", "audit", "usage"] as const,
+  model: ["database", "chat-model", "embedding-model", "auth", "audit", "usage"] as const,
+  audit: ["database", "queue"] as const,
+  usage: ["database", "cache", "audit"] as const,
+  automation: ["database", "queue", "audit"] as const,
 } as const;
 
 export type ServiceId = keyof typeof SERVICE_DEPENDENCIES;

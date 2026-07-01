@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { runAdvancedAnalysis, type AdvancedAnalysisOutput } from '@/ai/client-stubs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
+import { useState } from "react";
+import { runAdvancedAnalysis, type AdvancedAnalysisOutput } from "@/ai/client-stubs";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -13,7 +13,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from "@/components/ui/table";
 import {
   FileSearch,
   ScanText,
@@ -29,14 +29,14 @@ import {
   ChevronRight,
   FileJson,
   Database,
-} from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+} from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function IntelligencePage() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [results, setResult] = useState<AdvancedAnalysisOutput | null>(null);
-  const [activeTab, setActiveTab] = useState('SEMANTIC_SEARCH');
+  const [activeTab, setActiveTab] = useState("SEMANTIC_SEARCH");
 
   const startAnalysis = async () => {
     setLoading(true);
@@ -47,15 +47,15 @@ export default function IntelligencePage() {
       });
       setResult(output);
       toast({
-        title: 'Intelligence Synthesis Complete',
+        title: "Intelligence Synthesis Complete",
         description: `Successfully analyzed cross-dimensional sources in ${activeTab} mode.`,
       });
     } catch (e) {
       console.error(e);
       toast({
-        variant: 'destructive',
-        title: 'Analysis Failed',
-        description: 'Engine encountered a recursive reasoning error.',
+        variant: "destructive",
+        title: "Analysis Failed",
+        description: "Engine encountered a recursive reasoning error.",
       });
     } finally {
       setLoading(false);
@@ -64,15 +64,15 @@ export default function IntelligencePage() {
 
   const getModeIcon = (mode: string) => {
     switch (mode) {
-      case 'SEMANTIC_SEARCH':
+      case "SEMANTIC_SEARCH":
         return <FileSearch className="h-4 w-4" />;
-      case 'OCR_EXTRACTION':
+      case "OCR_EXTRACTION":
         return <ScanText className="h-4 w-4" />;
-      case 'RESEARCH_SYNTHESIS':
+      case "RESEARCH_SYNTHESIS":
         return <GraduationCap className="h-4 w-4" />;
-      case 'DATA_QUALITY_AUDIT':
+      case "DATA_QUALITY_AUDIT":
         return <BarChart4 className="h-4 w-4" />;
-      case 'LEGAL_CONTRACT_REVIEW':
+      case "LEGAL_CONTRACT_REVIEW":
         return <Gavel className="h-4 w-4" />;
       default:
         return <Sparkles className="h-4 w-4" />;
@@ -114,12 +114,12 @@ export default function IntelligencePage() {
       <Tabs defaultValue="SEMANTIC_SEARCH" className="space-y-8" onValueChange={setActiveTab}>
         <TabsList className="bg-sidebar-background border border-border/40 p-1 h-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-1">
           {[
-            { id: 'SEMANTIC_SEARCH', label: 'Semantic Index' },
-            { id: 'OCR_EXTRACTION', label: 'OCR & Extract' },
-            { id: 'RESEARCH_SYNTHESIS', label: 'Research Synthesis' },
-            { id: 'DATA_QUALITY_AUDIT', label: 'Data Quality' },
-            { id: 'LEGAL_CONTRACT_REVIEW', label: 'Legal/Contract' },
-            { id: 'COMPLIANCE_GAP_ANALYSIS', label: 'Compliance Audit' },
+            { id: "SEMANTIC_SEARCH", label: "Semantic Index" },
+            { id: "OCR_EXTRACTION", label: "OCR & Extract" },
+            { id: "RESEARCH_SYNTHESIS", label: "Research Synthesis" },
+            { id: "DATA_QUALITY_AUDIT", label: "Data Quality" },
+            { id: "LEGAL_CONTRACT_REVIEW", label: "Legal/Contract" },
+            { id: "COMPLIANCE_GAP_ANALYSIS", label: "Compliance Audit" },
           ].map((tab) => (
             <TabsTrigger
               key={tab.id}
@@ -141,7 +141,7 @@ export default function IntelligencePage() {
                 Engine Idle
               </h3>
               <p className="text-sm text-muted-foreground max-w-md">
-                Ready to perform <strong>{activeTab.replace(/_/g, ' ')}</strong>. Upload
+                Ready to perform <strong>{activeTab.replace(/_/g, " ")}</strong>. Upload
                 multi-format files or run simulation to synthesize global intelligence.
               </p>
             </Card>
@@ -204,12 +204,12 @@ export default function IntelligencePage() {
                                   variant="outline"
                                   className="text-[8px] font-mono border-primary/20 text-primary uppercase"
                                 >
-                                  {find.pageReference || 'N/A'}
+                                  {find.pageReference || "N/A"}
                                 </Badge>
                               </div>
                             </TableCell>
                             <TableCell className="text-xs text-muted-foreground leading-relaxed py-4">
-                              {typeof find.content === 'string'
+                              {typeof find.content === "string"
                                 ? find.content
                                 : JSON.stringify(find.content, null, 2)}
                             </TableCell>
@@ -272,7 +272,7 @@ export default function IntelligencePage() {
                           className="flex justify-between items-center py-2 border-b border-border/10 last:border-0"
                         >
                           <span className="text-[9px] uppercase font-bold text-muted-foreground/60">
-                            {key.replace(/_/g, ' ')}
+                            {key.replace(/_/g, " ")}
                           </span>
                           <span className="text-[10px] font-mono text-primary font-bold">
                             {String(val)}

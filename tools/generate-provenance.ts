@@ -19,10 +19,10 @@
  *   - Use pnpm release:sign (tools/sign-provenance.ts) to sign after generation
  */
 
-import { execSync } from 'node:child_process';
-import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
-import { resolve } from 'node:path';
-import { createHash } from 'node:crypto';
+import { execSync } from "node:child_process";
+import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { resolve } from "node:path";
+import { createHash } from "node:crypto";
 
 // ── Types ──────────────────────────────────────────────────────────
 
@@ -103,7 +103,7 @@ interface SupplyChainSummary {
   sbomPath: string;
   provenanceAvailable: boolean;
   provenancePath: string;
-  signingStatus: 'signed' | 'signing-not-configured';
+  signingStatus: "signed" | "signing-not-configured";
   signingWorkflow?: string;
   materialsCount: number;
   subjectsCount: number;
@@ -114,31 +114,31 @@ interface SupplyChainSummary {
 
 function git(command: string): string {
   try {
-    return execSync(`git ${command}`, { encoding: 'utf-8' }).trim();
+    return execSync(`git ${command}`, { encoding: "utf-8" }).trim();
   } catch {
-    return 'unknown';
+    return "unknown";
   }
 }
 
 function getVersion(): string {
   const args = process.argv.slice(2);
   for (let i = 0; i < args.length; i++) {
-    if (args[i] === '--version' && args[i + 1]) {
+    if (args[i] === "--version" && args[i + 1]) {
       return args[i + 1];
     }
   }
-  const tag = git('describe --tags --exact-match HEAD 2>/dev/null');
-  if (tag && tag !== 'unknown') return tag;
-  return process.env.npm_package_version ?? '0.1.0';
+  const tag = git("describe --tags --exact-match HEAD 2>/dev/null");
+  if (tag && tag !== "unknown") return tag;
+  return process.env.npm_package_version ?? "0.1.0";
 }
 
 function sha256OfContent(content: string): string {
-  return createHash('sha256').update(content).digest('hex');
+  return createHash("sha256").update(content).digest("hex");
 }
 
 function sha256OfFile(filePath: string): string | null {
   if (!existsSync(filePath)) return null;
-  return sha256OfContent(readFileSync(filePath, 'utf-8'));
+  return sha256OfContent(readFileSync(filePath, "utf-8"));
 }
 
 // ── Main ───────────────────────────────────────────────────────────
@@ -147,54 +147,54 @@ function main(): void {
   const version = getVersion();
   const artifactsDir = resolve(process.cwd(), `release/artifacts/${version}`);
 
-  console.log('\n🔗 MyCodeXvantaOS Provenance Generator (SLSA/in-toto)');
+  console.log("\n🔗 MyCodeXvantaOS Provenance Generator (SLSA/in-toto)");
   console.log(`   Version: ${version}`);
-  console.log('━'.repeat(50));
+  console.log("━".repeat(50));
 
   if (!existsSync(artifactsDir)) {
     mkdirSync(artifactsDir, { recursive: true });
   }
 
-  const commit = git('rev-parse HEAD');
-  const branch = git('rev-parse --abbrev-ref HEAD');
-  const repoUrl = 'https://github.com/mycodexvantaos/mycodexvantaos';
+  const commit = git("rev-parse HEAD");
+  const branch = git("rev-parse --abbrev-ref HEAD");
+  const repoUrl = "https://github.com/mycodexvantaos/mycodexvantaos";
 
   // ── Collect subjects (artifact digests) ─────────────────────────
   const subjects: Array<{ name: string; digest: Record<string, string> }> = [];
   const materials: ProvenanceMaterial[] = [];
 
   // Digest the release manifest
-  const manifestPath = resolve(artifactsDir, 'release-manifest.json');
+  const manifestPath = resolve(artifactsDir, "release-manifest.json");
   const manifestDigest = sha256OfFile(manifestPath);
   if (manifestDigest) {
-    subjects.push({ name: 'release-manifest.json', digest: { sha256: manifestDigest } });
+    subjects.push({ name: "release-manifest.json", digest: { sha256: manifestDigest } });
   }
 
   // Digest the artifact digests file
-  const digestsPath = resolve(artifactsDir, 'artifact-digests.json');
+  const digestsPath = resolve(artifactsDir, "artifact-digests.json");
   const digestsDigest = sha256OfFile(digestsPath);
   if (digestsDigest) {
-    subjects.push({ name: 'artifact-digests.json', digest: { sha256: digestsDigest } });
+    subjects.push({ name: "artifact-digests.json", digest: { sha256: digestsDigest } });
   }
 
   // Digest the SBOM if it exists
-  const sbomPath = resolve(artifactsDir, 'sbom.cyclonedx.json');
+  const sbomPath = resolve(artifactsDir, "sbom.cyclonedx.json");
   const sbomDigest = sha256OfFile(sbomPath);
   if (sbomDigest) {
-    subjects.push({ name: 'sbom.cyclonedx.json', digest: { sha256: sbomDigest } });
+    subjects.push({ name: "sbom.cyclonedx.json", digest: { sha256: sbomDigest } });
   }
 
   // Material: git repository
   materials.push({
     uri: `${repoUrl}.git`,
-    digest: { sha1: commit !== 'unknown' ? commit : '' },
+    digest: { sha1: commit !== "unknown" ? commit : "" },
   });
 
   // Material: pnpm lockfile
-  const lockfileDigest = sha256OfFile(resolve(process.cwd(), 'pnpm-lock.yaml'));
+  const lockfileDigest = sha256OfFile(resolve(process.cwd(), "pnpm-lock.yaml"));
   if (lockfileDigest) {
     materials.push({
-      uri: 'file://pnpm-lock.yaml',
+      uri: "file://pnpm-lock.yaml",
       digest: { sha256: lockfileDigest },
     });
   }
@@ -205,29 +205,29 @@ function main(): void {
   const buildFinishedOn = new Date().toISOString();
 
   const provenance: InTotoStatement = {
-    _type: 'https://in-toto.io/Statement/v1',
-    predicateType: 'https://slsa.dev/provenance/v1',
+    _type: "https://in-toto.io/Statement/v1",
+    predicateType: "https://slsa.dev/provenance/v1",
     subject: subjects,
     predicate: {
       builder: {
         id: process.env.GITHUB_SERVER_URL
           ? `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions`
-          : 'https://github.com/mycodexvantaos/mycodexvantaos/actions',
-        version: '1.0.0',
+          : "https://github.com/mycodexvantaos/mycodexvantaos/actions",
+        version: "1.0.0",
       },
-      buildType: 'https://github.com/mycodexvantaos/mycodexvantaos/build-type@v1',
+      buildType: "https://github.com/mycodexvantaos/mycodexvantaos/build-type@v1",
       invocation: {
         configSource: {
           uri: `${repoUrl}.git`,
-          digest: { sha1: commit !== 'unknown' ? commit : '' },
-          entryPoint: '.github/workflows/release-candidate-check.yml',
+          digest: { sha1: commit !== "unknown" ? commit : "" },
+          entryPoint: ".github/workflows/release-candidate-check.yml",
         },
         parameters: {
           version,
           ref: branch,
         },
         environment: {
-          GITHUB_EVENT_NAME: process.env.GITHUB_EVENT_NAME ?? 'local',
+          GITHUB_EVENT_NAME: process.env.GITHUB_EVENT_NAME ?? "local",
           RUNNER_OS: process.env.RUNNER_OS ?? process.platform,
           NODE_VERSION: process.version,
         },
@@ -249,18 +249,18 @@ function main(): void {
     // Run pnpm release:sign (tools/sign-provenance.ts) in GitHub Actions to add signatures.
   };
 
-  const provenancePath = resolve(artifactsDir, 'provenance.intoto.json');
-  writeFileSync(provenancePath, JSON.stringify(provenance, null, 2) + '\n', 'utf-8');
+  const provenancePath = resolve(artifactsDir, "provenance.intoto.json");
+  writeFileSync(provenancePath, JSON.stringify(provenance, null, 2) + "\n", "utf-8");
   console.log(`\n  ✅ Provenance generated: ${provenancePath}`);
   console.log(`     Subjects: ${subjects.length}`);
   console.log(`     Materials: ${materials.length}`);
   console.log(`     Builder: ${provenance.predicate.builder.id}`);
 
   // ── Generate supply chain summary ──────────────────────────────
-  const signingStatus: 'signed' | 'signing-not-configured' = 'signing-not-configured';
+  const signingStatus: "signed" | "signing-not-configured" = "signing-not-configured";
   console.log(`\n  ⚠️  Signing status: ${signingStatus}`);
   console.log(
-    '     Provenance is unsigned. Run pnpm release:sign in GitHub Actions to sign with cosign.'
+    "     Provenance is unsigned. Run pnpm release:sign in GitHub Actions to sign with cosign."
   );
 
   const supplyChainSummary: SupplyChainSummary = {
@@ -273,22 +273,22 @@ function main(): void {
     provenanceAvailable: true,
     provenancePath,
     signingStatus,
-    signingWorkflow: '.github/workflows/sign-release.yaml',
+    signingWorkflow: ".github/workflows/sign-release.yaml",
     materialsCount: materials.length,
     subjectsCount: subjects.length,
     infrastructureSkips: [
-      'GCP / Terraform Cloud: infrastructure-not-configured',
-      'Cloudflare: infrastructure-not-configured',
-      'Kubernetes: infrastructure-not-configured',
-      'Artifact signing: signing-not-configured (run pnpm release:sign to sign)',
+      "GCP / Terraform Cloud: infrastructure-not-configured",
+      "Cloudflare: infrastructure-not-configured",
+      "Kubernetes: infrastructure-not-configured",
+      "Artifact signing: signing-not-configured (run pnpm release:sign to sign)",
     ],
   };
 
-  const summaryPath = resolve(artifactsDir, 'supply-chain-summary.json');
-  writeFileSync(summaryPath, JSON.stringify(supplyChainSummary, null, 2) + '\n', 'utf-8');
+  const summaryPath = resolve(artifactsDir, "supply-chain-summary.json");
+  writeFileSync(summaryPath, JSON.stringify(supplyChainSummary, null, 2) + "\n", "utf-8");
   console.log(`  ✅ Supply chain summary: ${summaryPath}`);
 
-  console.log('');
+  console.log("");
 }
 
 main();

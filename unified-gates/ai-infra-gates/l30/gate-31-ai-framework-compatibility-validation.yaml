@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,34 +10,36 @@ metadata:
   criticality: critical
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-60600
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l30
-    - ai
+  - l30
+  - ai
   sloTarget: 30
   evidenceRetentionDays: 2555
 spec:
-  description: >
-    Validates that the AI framework (PyTorch, JAX, TensorFlow) version is compatible with the platform's approved compatibility matrix.
+  description: 'Validates that the AI framework (PyTorch, JAX, TensorFlow) version
+    is compatible with the platform''s approved compatibility matrix.
+
+    '
   validates:
-    - dimension: framework-compatibility
-      description: AI framework is compatible with platform.
-      checks:
-        - id: chk-framework-in-matrix
-          description: Framework version is in the approved compatibility matrix
-          rule: 'compatibility:framework-matrix'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-cuda-compatibility
-          description: Framework is compatible with installed CUDA version
-          rule: 'compatibility:cuda-framework'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-no-known-cve
-          description: Framework version has no critical CVEs
-          rule: 'scan:no-critical-cve'
-          severity: critical
-          evidenceRequired: true
+  - dimension: framework-compatibility
+    description: AI framework is compatible with platform.
+    checks:
+    - id: chk-framework-in-matrix
+      description: Framework version is in the approved compatibility matrix
+      rule: compatibility:framework-matrix
+      severity: critical
+      evidenceRequired: true
+    - id: chk-cuda-compatibility
+      description: Framework is compatible with installed CUDA version
+      rule: compatibility:cuda-framework
+      severity: critical
+      evidenceRequired: true
+    - id: chk-no-known-cve
+      description: Framework version has no critical CVEs
+      rule: scan:no-critical-cve
+      severity: critical
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

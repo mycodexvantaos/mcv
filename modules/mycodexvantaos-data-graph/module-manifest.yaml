@@ -8,8 +8,8 @@ metadata:
 spec:
   domain: data
   capabilities:
-    - graph
-    - database
+  - graph
+  - database
   providers:
     graph: graph-neo4j
     database: database-postgres

@@ -1,30 +1,30 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, Sparkles, ShieldCheck, AlertCircle, Info, Cpu } from 'lucide-react';
-import { designDocsContent } from '@/lib/design-docs';
-import { summarizeResearchData } from '@/ai/client-stubs';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Badge } from '@/components/ui/badge';
-import { performNativeAnalysis, type NativeAnalysisResult } from '@/lib/architecture-engine';
-import { useConnectivity } from '@/lib/connectivity-manager';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Loader2, Sparkles, ShieldCheck, AlertCircle, Info, Cpu } from "lucide-react";
+import { designDocsContent } from "@/lib/design-docs";
+import { summarizeResearchData } from "@/ai/client-stubs";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
+import { performNativeAnalysis, type NativeAnalysisResult } from "@/lib/architecture-engine";
+import { useConnectivity } from "@/lib/connectivity-manager";
 
 export function DesignAnalyzer() {
   const [docsContent, setDocsContent] = useState(designDocsContent);
-  const [aiAnalysis, setAiAnalysis] = useState('');
+  const [aiAnalysis, setAiAnalysis] = useState("");
   const [nativeAnalysis, setNativeAnalysis] = useState<NativeAnalysisResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const { mode } = useConnectivity();
-  const isOffline = mode === 'native';
+  const isOffline = mode === "native";
 
   const handleAnalyze = async () => {
     setIsLoading(true);
-    setAiAnalysis('');
+    setAiAnalysis("");
     setNativeAnalysis(null);
 
     // 始終執行原生分析作為基礎
@@ -43,7 +43,7 @@ export function DesignAnalyzer() {
         setAiAnalysis(result.summary);
         setNativeAnalysis(localResult); // 同時顯示原生指標
       } catch (error) {
-        console.error('AI Analysis failed, falling back to native:', error);
+        console.error("AI Analysis failed, falling back to native:", error);
         setNativeAnalysis(localResult);
       } finally {
         setIsLoading(false);
@@ -61,10 +61,10 @@ export function DesignAnalyzer() {
         <Badge
           variant="outline"
           className={
-            isOffline ? 'text-yellow-500 border-yellow-500/20' : 'text-accent border-accent/20'
+            isOffline ? "text-yellow-500 border-yellow-500/20" : "text-accent border-accent/20"
           }
         >
-          {isOffline ? 'NATIVE ENGINE ACTIVE' : 'AI HYBRID MODE'}
+          {isOffline ? "NATIVE ENGINE ACTIVE" : "AI HYBRID MODE"}
         </Badge>
       </div>
 
@@ -98,7 +98,7 @@ export function DesignAnalyzer() {
             ) : (
               <Sparkles className="h-4 w-4" />
             )}
-            {isOffline ? '執行原生專家審查 (Offline)' : '啟動 AI 混合架構分析'}
+            {isOffline ? "執行原生專家審查 (Offline)" : "啟動 AI 混合架構分析"}
           </Button>
 
           {isLoading && (
@@ -135,20 +135,20 @@ export function DesignAnalyzer() {
                 <Card key={i} className="bg-card/50 border-border/50 overflow-hidden">
                   <div
                     className={`h-1 w-full ${
-                      section.status === 'pass'
-                        ? 'bg-accent'
-                        : section.status === 'warning'
-                          ? 'bg-yellow-500'
-                          : 'bg-blue-500'
+                      section.status === "pass"
+                        ? "bg-accent"
+                        : section.status === "warning"
+                          ? "bg-yellow-500"
+                          : "bg-blue-500"
                     }`}
                   />
                   <CardHeader className="p-3">
                     <CardTitle className="text-[10px] font-bold uppercase flex items-center gap-2">
-                      {section.status === 'pass' && <ShieldCheck className="h-3 w-3 text-accent" />}
-                      {section.status === 'warning' && (
+                      {section.status === "pass" && <ShieldCheck className="h-3 w-3 text-accent" />}
+                      {section.status === "warning" && (
                         <AlertCircle className="h-3 w-3 text-yellow-500" />
                       )}
-                      {section.status === 'info' && <Info className="h-3 w-3 text-blue-500" />}
+                      {section.status === "info" && <Info className="h-3 w-3 text-blue-500" />}
                       {section.title}
                     </CardTitle>
                   </CardHeader>

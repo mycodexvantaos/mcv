@@ -1,115 +1,85 @@
-# ci/fixtures/invalid-names.yaml
-# Invalid naming examples for test fixtures.
-# Each entry includes the violated rule and reason.
-# Based on naming-spec-v1.md 13
-
 serviceIds:
-  - value: 'core-kernel'
-    rule: service-id
-    reason: 'Missing mycodexvantaos- prefix (5.1)'
-
-  - value: 'MyCodeXvantaOS-core-kernel'
-    rule: service-id
-    reason: 'Uppercase not allowed in canonical identifiers (3.2)'
-
-  - value: 'mycodexvantaos-ai'
-    rule: service-id
-    reason: 'Only one segment after prefix; need at least domain+capability (5.1)'
-
-  - value: 'mycodexvantaos-ai-embedding-v2'
-    rule: no-version-in-canonical
-    reason: 'Version number in canonical identifier (3.6)'
-
-  - value: 'mycodexvantaos-ai-embedding-prod'
-    rule: no-environment-in-canonical
-    reason: "Environment marker 'prod' in canonical identifier (3.7)"
-
-  - value: 'mycodexvantaos-ai-embedding-dev'
-    rule: no-environment-in-canonical
-    reason: "Environment marker 'dev' in canonical identifier (3.7)"
-
-  - value: 'mycodexvantaos_ai_embedding'
-    rule: service-id
-    reason: 'Underscores not allowed in canonical identifiers (3.1, 3.4)'
-
-  - value: 'mycodexvanta-os-ai-embedding'
-    rule: forbidden-legacy-prefix
-    reason: 'Forbidden legacy prefix mycodexvanta-os (4)'
-
-  - value: 'codexvanta-ai-service'
-    rule: forbidden-legacy-prefix
-    reason: 'Forbidden legacy prefix codexvanta (4)'
-
-  - value: 'codexvanta-os-core'
-    rule: forbidden-legacy-prefix
-    reason: 'Forbidden legacy prefix codexvanta-os (4)'
-
+- value: core-kernel
+  rule: service-id
+  reason: Missing mycodexvantaos- prefix (5.1)
+- value: MyCodeXvantaOS-core-kernel
+  rule: service-id
+  reason: Uppercase not allowed in canonical identifiers (3.2)
+- value: mycodexvantaos-ai
+  rule: service-id
+  reason: Only one segment after prefix; need at least domain+capability (5.1)
+- value: mycodexvantaos-ai-embedding-v2
+  rule: no-version-in-canonical
+  reason: Version number in canonical identifier (3.6)
+- value: mycodexvantaos-ai-embedding-prod
+  rule: no-environment-in-canonical
+  reason: Environment marker 'prod' in canonical identifier (3.7)
+- value: mycodexvantaos-ai-embedding-dev
+  rule: no-environment-in-canonical
+  reason: Environment marker 'dev' in canonical identifier (3.7)
+- value: mycodexvantaos_ai_embedding
+  rule: service-id
+  reason: Underscores not allowed in canonical identifiers (3.1, 3.4)
+- value: mycodexvanta-os-ai-embedding
+  rule: forbidden-legacy-prefix
+  reason: Forbidden legacy prefix mycodexvanta-os (4)
+- value: codexvanta-ai-service
+  rule: forbidden-legacy-prefix
+  reason: Forbidden legacy prefix codexvanta (4)
+- value: codexvanta-os-core
+  rule: forbidden-legacy-prefix
+  reason: Forbidden legacy prefix codexvanta-os (4)
 packageNames:
-  - value: 'core-kernel'
-    rule: package-name
-    reason: 'Missing @mycodexvantaos/ scope (7.1)'
-
-  - value: '@other/core-kernel'
-    rule: package-name
-    reason: 'Wrong scope, must be @mycodexvantaos/ (7.1)'
-
-  - value: '@mycodexvantaos/CoreKernel'
-    rule: package-name
-    reason: 'Uppercase not allowed (3.2)'
-
+- value: core-kernel
+  rule: package-name
+  reason: Missing @mycodexvantaos/ scope (7.1)
+- value: '@other/core-kernel'
+  rule: package-name
+  reason: Wrong scope, must be @mycodexvantaos/ (7.1)
+- value: '@mycodexvantaos/CoreKernel'
+  rule: package-name
+  reason: Uppercase not allowed (3.2)
 capabilityIds:
-  - value: 'postgres'
-    rule: capability-id
-    reason: 'Vendor name, not a canonical capability (5.5)'
-
-  - value: 'redis'
-    rule: capability-id
-    reason: 'Vendor name, not a canonical capability (5.5)'
-
-  - value: 'vector_store'
-    rule: capability-id
-    reason: 'Underscore not allowed; must use hyphen (5.5)'
-
+- value: postgres
+  rule: capability-id
+  reason: Vendor name, not a canonical capability (5.5)
+- value: redis
+  rule: capability-id
+  reason: Vendor name, not a canonical capability (5.5)
+- value: vector_store
+  rule: capability-id
+  reason: Underscore not allowed; must use hyphen (5.5)
 providerInstances:
-  - value: 'postgres-database'
-    rule: provider-instance
-    reason: 'Order inverted: provider before capability (8.2)'
-
-  - value: 'openai-llm'
-    rule: provider-instance
-    reason: 'Order inverted: provider before capability (8.2)'
-
-  - value: 'postgres'
-    rule: provider-instance
-    reason: 'Missing capability prefix (8.1)'
-
+- value: postgres-database
+  rule: provider-instance
+  reason: 'Order inverted: provider before capability (8.2)'
+- value: openai-llm
+  rule: provider-instance
+  reason: 'Order inverted: provider before capability (8.2)'
+- value: postgres
+  rule: provider-instance
+  reason: Missing capability prefix (8.1)
 envVars:
-  - value: 'DATABASE_URL'
-    rule: env-var
-    reason: 'Missing MYCODEXVANTAOS_ prefix (7.2)'
-
-  - value: 'ORCH_DATABASE_URL'
-    rule: env-var
-    reason: 'Deprecated ORCH_ prefix, forbidden for new variables (7.2)'
-
-  - value: 'mycodexvantaos_database_url'
-    rule: env-var
-    reason: 'Must be UPPERCASE (7.2)'
-
+- value: DATABASE_URL
+  rule: env-var
+  reason: Missing MYCODEXVANTAOS_ prefix (7.2)
+- value: ORCH_DATABASE_URL
+  rule: env-var
+  reason: Deprecated ORCH_ prefix, forbidden for new variables (7.2)
+- value: mycodexvantaos_database_url
+  rule: env-var
+  reason: Must be UPPERCASE (7.2)
 urns:
-  - value: 'urn:mycodexvantaos:manifest:service:mycodexvantaos-core-kernel-v2'
-    rule: urn
-    reason: 'Version in URN identifier segment (3.6, 7.5)'
-
-  - value: 'urn:other:capability:vector-store:pgvector'
-    rule: urn
-    reason: 'Wrong namespace, must be mycodexvantaos (7.5)'
-
+- value: urn:mycodexvantaos:manifest:service:mycodexvantaos-core-kernel-v2
+  rule: urn
+  reason: Version in URN identifier segment (3.6, 7.5)
+- value: urn:other:capability:vector-store:pgvector
+  rule: urn
+  reason: Wrong namespace, must be mycodexvantaos (7.5)
 embeddingModelAliases:
-  - value: 'openai--text-embedding-3-small--1536'
-    rule: embedding-model-alias
-    reason: "Missing 'd' suffix for dimension (9.3)"
-
-  - value: 'openai-text-embedding-3-small-1536d'
-    rule: embedding-model-alias
-    reason: 'Single hyphens used instead of -- composite separator (9.3)'
+- value: openai--text-embedding-3-small--1536
+  rule: embedding-model-alias
+  reason: Missing 'd' suffix for dimension (9.3)
+- value: openai-text-embedding-3-small-1536d
+  rule: embedding-model-alias
+  reason: Single hyphens used instead of -- composite separator (9.3)

@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { TooltipProvider } from '@/components/ui/tooltip';
-import { Header } from '@/components/dashboard/header';
-import { IconSidebar } from '@/components/dashboard/icon-sidebar';
-import { AiPanel } from '@/components/dashboard/ai-panel';
-import { StatusBar } from '@/components/dashboard/status-bar';
+import { useState } from "react";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { Header } from "@/components/dashboard/header";
+import { IconSidebar } from "@/components/dashboard/icon-sidebar";
+import { AiPanel } from "@/components/dashboard/ai-panel";
+import { StatusBar } from "@/components/dashboard/status-bar";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [isRightPanelOpen, setIsRightPanelOpen] = useState(true);
-  const [activeView, setActiveView] = useState('files');
+  const [activeView, setActiveView] = useState("files");
 
   return (
     <TooltipProvider delayDuration={0}>

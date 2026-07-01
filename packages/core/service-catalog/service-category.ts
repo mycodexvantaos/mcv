@@ -15,18 +15,18 @@ export interface ServiceCategoryDefinition {
 
 export interface CategoryServiceRef {
   id: string;
-  phase: 'mvp' | 'post-mvp' | 'deprecated' | 'planned';
+  phase: "mvp" | "post-mvp" | "deprecated" | "planned";
   description: string;
 }
 
 /** MVP service → category mapping */
 export const MVP_SERVICE_CATEGORIES: Record<string, string> = {
-  identity: 'security',
-  workspace: 'workspace',
-  'knowledge-store': 'knowledge',
-  'knowledge-search': 'knowledge',
-  'agent-chat': 'agent',
-  'model-byok': 'model',
-  'audit-log': 'security',
-  'usage-meter': 'security',
+  identity: "security",
+  workspace: "workspace",
+  "knowledge-store": "knowledge",
+  "knowledge-search": "knowledge",
+  "agent-chat": "agent",
+  "model-byok": "model",
+  "audit-log": "security",
+  "usage-meter": "security",
 };

@@ -11,7 +11,7 @@ pnpm add @mycodexvantaos/monitoring
 ## Usage
 
 ```typescript
-import { monitoring } from '@mycodexvantaos/monitoring';
+import { monitoring } from "@mycodexvantaos/monitoring";
 
 // Initialize
 await monitoring.initialize();

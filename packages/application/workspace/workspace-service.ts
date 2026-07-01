@@ -14,9 +14,9 @@
  *   - remove-member
  */
 
-import type { IDatabasePort } from '../../ports/database';
-import type { IAuthPort, Role } from '../../ports/auth';
-import type { ResourceCondition } from '../../core/shared';
+import type { IDatabasePort } from "../../ports/database";
+import type { IAuthPort, Role } from "../../ports/auth";
+import type { ResourceCondition } from "../../core/shared";
 
 // ── Service Dependencies ───────────────────────────────────────────────
 
@@ -30,13 +30,13 @@ export interface WorkspaceServiceDeps {
 
 // ── Input / Output Types ───────────────────────────────────────────────
 
-export type WorkspacePhase = 'creating' | 'active' | 'suspended' | 'deleting' | 'deleted';
+export type WorkspacePhase = "creating" | "active" | "suspended" | "deleting" | "deleted";
 
 export interface CreateWorkspaceInput {
   displayName: string;
   description?: string;
   ownerId: string;
-  tier?: 'free' | 'pro' | 'enterprise';
+  tier?: "free" | "pro" | "enterprise";
 }
 
 export interface UpdateWorkspaceInput {
@@ -88,7 +88,7 @@ export interface MembershipResource {
 
 export interface WorkspaceAuditEvent {
   eventType: string;
-  category: 'workspace';
+  category: "workspace";
   severity: string;
   subjectId: string;
   workspaceId: string;
@@ -112,7 +112,7 @@ export class WorkspaceService {
     const now = new Date().toISOString();
 
     const defaultQuotas: QuotaSpec =
-      input.tier === 'enterprise'
+      input.tier === "enterprise"
         ? {
             maxMembers: 200,
             maxResources: 100000,
@@ -120,7 +120,7 @@ export class WorkspaceService {
             maxModelEndpoints: 20,
             maxStorageMb: 50000,
           }
-        : input.tier === 'pro'
+        : input.tier === "pro"
           ? {
               maxMembers: 50,
               maxResources: 50000,
@@ -143,24 +143,24 @@ export class WorkspaceService {
         workspaceId,
         urn,
         input.displayName,
-        input.description ?? '',
+        input.description ?? "",
         input.ownerId,
-        input.tier ?? 'free',
+        input.tier ?? "free",
         JSON.stringify(defaultQuotas),
         now,
         now,
       ]
     );
 
-    await this.addMember(workspaceId, input.ownerId, 'workspace-owner');
+    await this.addMember(workspaceId, input.ownerId, "workspace-owner");
 
     await this.deps.audit.emitEvent({
-      eventType: 'workspace.workspace.created',
-      category: 'workspace',
-      severity: 'info',
+      eventType: "workspace.workspace.created",
+      category: "workspace",
+      severity: "info",
       subjectId: input.ownerId,
       workspaceId,
-      action: 'create-workspace',
+      action: "create-workspace",
       correlationId: crypto.randomUUID(),
     });
 
@@ -169,12 +169,12 @@ export class WorkspaceService {
       urn,
       spec: {
         displayName: input.displayName,
-        description: input.description ?? '',
+        description: input.description ?? "",
         ownerId: input.ownerId,
         quotas: defaultQuotas,
       },
       status: {
-        phase: 'active',
+        phase: "active",
         memberCount: 1,
         resourceCount: 0,
         quotaUsage: { members: 1, resources: 0, collections: 0, modelEndpoints: 0, storageMb: 0 },
@@ -193,7 +193,7 @@ export class WorkspaceService {
 
   async getWorkspace(workspaceId: string): Promise<WorkspaceResource | null> {
     const row = await this.deps.database.queryFirst<Record<string, unknown>>(
-      'SELECT * FROM workspaces WHERE id = ?',
+      "SELECT * FROM workspaces WHERE id = ?",
       [workspaceId]
     );
     return row ? this.mapRowToResource(row) : null;
@@ -204,9 +204,9 @@ export class WorkspaceService {
     await this.deps.database.execute(
       `INSERT INTO memberships (subject_id, workspace_id, role, added_at, added_by)
        VALUES (?, ?, ?, ?, ?)`,
-      [subjectId, workspaceId, role, now, 'system']
+      [subjectId, workspaceId, role, now, "system"]
     );
-    return { subjectId, workspaceId, role, addedAt: now, addedBy: 'system' };
+    return { subjectId, workspaceId, role, addedAt: now, addedBy: "system" };
   }
 
   private mapRowToResource(row: Record<string, unknown>): WorkspaceResource {
@@ -217,7 +217,7 @@ export class WorkspaceService {
         displayName: row.display_name as string,
         description: row.description as string,
         ownerId: row.owner_id as string,
-        quotas: JSON.parse((row.quotas as string) || '{}'),
+        quotas: JSON.parse((row.quotas as string) || "{}"),
       },
       status: {
         phase: row.phase as WorkspacePhase,

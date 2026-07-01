@@ -1,92 +1,53 @@
-# === path: .github/workflows/kustomize-diff.yaml ===
 name: Kustomize Diff
-
-on:
+"on":
   pull_request:
     paths:
-      - 'deploy/kustomize/**'
-
+    - deploy/kustomize/**
 permissions:
   contents: read
   pull-requests: write
-
 jobs:
   diff:
     name: Kustomize Diff
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-        with:
-          fetch-depth: 0
-
-      - name: Get base branch
-        id: base_branch
-        run: echo "ref=$(jq -r .pull_request.base.ref "$GITHUB_EVENT_PATH")" >> "$GITHUB_OUTPUT"
-
-      - name: Setup Kustomize
-        uses: imranismail/setup-kustomize@538c206898e29a4a7536af14baa935393081e7d2 # v2
-
-      - name: Generate diff
-        id: kustomize_diff
-        run: |
-          set -e
-          git fetch origin ${{ steps.base_branch.outputs.ref }}
-          BASE_COMMIT="origin/${{ steps.base_branch.outputs.ref }}"
-
-          mkdir -p ./.tmp/base ./.tmp/head
-
-          find deploy/kustomize/overlays/* -maxdepth 0 -type d | while read overlay; do
-            OVERLAY_NAME=$(basename "$overlay")
-            echo "Building HEAD for overlay $OVERLAY_NAME"
-            kustomize build "$overlay" > ./.tmp/head/$OVERLAY_NAME.yaml
-            
-            echo "Building BASE for overlay $OVERLAY_NAME"
-            git checkout "$BASE_COMMIT" -- "$overlay"
-            kustomize build "$overlay" > ./.tmp/base/$OVERLAY_NAME.yaml || echo "Failed to build base, maybe it's a new overlay" > ./.tmp/base/$OVERLAY_NAME.yaml
-            
-            git checkout HEAD -- "$overlay"
-          done
-
-          DIFF_BODY=$(diff -u ./.tmp/base ./.tmp/head || true)
-
-          if [[ -z "$DIFF_BODY" ]]; then
-            echo "body=No Kustomize changes detected." >> "$GITHUB_OUTPUT"
-          else
-            echo 'body<<EOF' >> "$GITHUB_OUTPUT"
-            echo '### Kustomize Diff' >> "$GITHUB_OUTPUT"
-            echo '´´´diff' >> "$GITHUB_OUTPUT"
-            echo "$DIFF_BODY" >> "$GITHUB_OUTPUT"
-            echo '´´´' >> "$GITHUB_OUTPUT"
-            echo 'EOF' >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Post comment
-        uses: actions/github-script@a3f4214272a5a585724915a209c95143e1858f62 # v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-            });
-
-            const botComment = comments.find(comment => comment.user.login === 'github-actions[bot]' && comment.body.includes('### Kustomize Diff'));
-            const body = `${{ steps.kustomize_diff.outputs.body }}`;
-
-            if (botComment) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: botComment.id,
-                body: body,
-              });
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body: body,
-              });
-            }
+    - name: Checkout repository
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+      with:
+        fetch-depth: 0
+    - name: Get base branch
+      id: base_branch
+      run: echo "ref=$(jq -r .pull_request.base.ref "$GITHUB_EVENT_PATH")" >> "$GITHUB_OUTPUT"
+    - name: Setup Kustomize
+      uses: imranismail/setup-kustomize@538c206898e29a4a7536af14baa935393081e7d2
+    - name: Generate diff
+      id: kustomize_diff
+      run: "set -e\ngit fetch origin ${{ steps.base_branch.outputs.ref }}\nBASE_COMMIT=\"\
+        origin/${{ steps.base_branch.outputs.ref }}\"\n\nmkdir -p ./.tmp/base ./.tmp/head\n\
+        \nfind deploy/kustomize/overlays/* -maxdepth 0 -type d | while read overlay;\
+        \ do\n  OVERLAY_NAME=$(basename \"$overlay\")\n  echo \"Building HEAD for\
+        \ overlay $OVERLAY_NAME\"\n  kustomize build \"$overlay\" > ./.tmp/head/$OVERLAY_NAME.yaml\n\
+        \  \n  echo \"Building BASE for overlay $OVERLAY_NAME\"\n  git checkout \"\
+        $BASE_COMMIT\" -- \"$overlay\"\n  kustomize build \"$overlay\" > ./.tmp/base/$OVERLAY_NAME.yaml\
+        \ || echo \"Failed to build base, maybe it's a new overlay\" > ./.tmp/base/$OVERLAY_NAME.yaml\n\
+        \  \n  git checkout HEAD -- \"$overlay\"\ndone\n\nDIFF_BODY=$(diff -u ./.tmp/base\
+        \ ./.tmp/head || true)\n\nif [[ -z \"$DIFF_BODY\" ]]; then\n  echo \"body=No\
+        \ Kustomize changes detected.\" >> \"$GITHUB_OUTPUT\"\nelse\n  echo 'body<<EOF'\
+        \ >> \"$GITHUB_OUTPUT\"\n  echo '### Kustomize Diff' >> \"$GITHUB_OUTPUT\"\
+        \n  echo '´´´diff' >> \"$GITHUB_OUTPUT\"\n  echo \"$DIFF_BODY\" >> \"$GITHUB_OUTPUT\"\
+        \n  echo '´´´' >> \"$GITHUB_OUTPUT\"\n  echo 'EOF' >> \"$GITHUB_OUTPUT\"\n\
+        fi\n"
+    - name: Post comment
+      uses: actions/github-script@a3f4214272a5a585724915a209c95143e1858f62
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: "const { data: comments } = await github.rest.issues.listComments({\n\
+          \  owner: context.repo.owner,\n  repo: context.repo.repo,\n  issue_number:\
+          \ context.issue.number,\n});\n\nconst botComment = comments.find(comment\
+          \ => comment.user.login === 'github-actions[bot]' && comment.body.includes('###\
+          \ Kustomize Diff'));\nconst body = `${{ steps.kustomize_diff.outputs.body\
+          \ }}`;\n\nif (botComment) {\n  await github.rest.issues.updateComment({\n\
+          \    owner: context.repo.owner,\n    repo: context.repo.repo,\n    comment_id:\
+          \ botComment.id,\n    body: body,\n  });\n} else {\n  await github.rest.issues.createComment({\n\
+          \    owner: context.repo.owner,\n    repo: context.repo.repo,\n    issue_number:\
+          \ context.issue.number,\n    body: body,\n  });\n}\n"

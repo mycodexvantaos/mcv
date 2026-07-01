@@ -47,7 +47,7 @@ export interface AuthResult {
 }
 
 export class AuthConnector {
-  private config: Required<Omit<AuthConfig, 'audience'>> & { audience?: string };
+  private config: Required<Omit<AuthConfig, "audience">> & { audience?: string };
   private users: Map<string, User> = new Map();
   private refreshTokenStore: Map<string, { userId: string; expiresAt: number }> = new Map();
   private connected: boolean = false;
@@ -57,7 +57,7 @@ export class AuthConnector {
       secret: config.secret,
       tokenExpiry: config.tokenExpiry || 3600, // 1 hour
       refreshTokenExpiry: config.refreshTokenExpiry || 604800, // 7 days
-      issuer: config.issuer || 'mycodexvantaos',
+      issuer: config.issuer || "mycodexvantaos",
       audience: config.audience,
     };
   }
@@ -98,16 +98,16 @@ export class AuthConnector {
     permissions?: string[];
   }): Promise<AuthResult> {
     if (!this.connected) {
-      return { success: false, error: 'Not connected' };
+      return { success: false, error: "Not connected" };
     }
 
     // Check if email already exists
     for (const user of this.users.values()) {
       if (user.email === userData.email) {
-        return { success: false, error: 'Email already registered' };
+        return { success: false, error: "Email already registered" };
       }
       if (user.username === userData.username) {
-        return { success: false, error: 'Username already taken' };
+        return { success: false, error: "Username already taken" };
       }
     }
 
@@ -136,18 +136,18 @@ export class AuthConnector {
    */
   async login(credentials: { email: string; password: string }): Promise<AuthResult> {
     if (!this.connected) {
-      return { success: false, error: 'Not connected' };
+      return { success: false, error: "Not connected" };
     }
 
     const usersArray = Array.from(this.users.values());
     const user = usersArray.find((u) => u.email === credentials.email);
 
     if (!user) {
-      return { success: false, error: 'Invalid credentials' };
+      return { success: false, error: "Invalid credentials" };
     }
 
-    if (!this.verifyPassword(credentials.password, user.password || '')) {
-      return { success: false, error: 'Invalid credentials' };
+    if (!this.verifyPassword(credentials.password, user.password || "")) {
+      return { success: false, error: "Invalid credentials" };
     }
 
     const tokens = await this.generateTokens(user);
@@ -164,23 +164,23 @@ export class AuthConnector {
    */
   async refresh(refreshToken: string): Promise<AuthResult> {
     if (!this.connected) {
-      return { success: false, error: 'Not connected' };
+      return { success: false, error: "Not connected" };
     }
 
     const storedToken = this.refreshTokenStore.get(refreshToken);
 
     if (!storedToken) {
-      return { success: false, error: 'Invalid refresh token' };
+      return { success: false, error: "Invalid refresh token" };
     }
 
     if (Date.now() > storedToken.expiresAt) {
       this.refreshTokenStore.delete(refreshToken);
-      return { success: false, error: 'Refresh token expired' };
+      return { success: false, error: "Refresh token expired" };
     }
 
     const user = this.users.get(storedToken.userId);
     if (!user) {
-      return { success: false, error: 'User not found' };
+      return { success: false, error: "User not found" };
     }
 
     const tokens = await this.generateTokens(user);
@@ -200,7 +200,7 @@ export class AuthConnector {
    */
   async logout(refreshToken: string): Promise<{ success: boolean; error?: string }> {
     if (!this.connected) {
-      return { success: false, error: 'Not connected' };
+      return { success: false, error: "Not connected" };
     }
 
     this.refreshTokenStore.delete(refreshToken);
@@ -245,7 +245,7 @@ export class AuthConnector {
    */
   async updateUser(
     userId: string,
-    updates: Partial<Omit<User, 'id' | 'password'>>
+    updates: Partial<Omit<User, "id" | "password">>
   ): Promise<User | null> {
     if (!this.connected) {
       return null;
@@ -274,16 +274,16 @@ export class AuthConnector {
     newPassword: string
   ): Promise<{ success: boolean; error?: string }> {
     if (!this.connected) {
-      return { success: false, error: 'Not connected' };
+      return { success: false, error: "Not connected" };
     }
 
     const user = this.users.get(userId);
     if (!user) {
-      return { success: false, error: 'User not found' };
+      return { success: false, error: "User not found" };
     }
 
-    if (!this.verifyPassword(currentPassword, user.password || '')) {
-      return { success: false, error: 'Current password is incorrect' };
+    if (!this.verifyPassword(currentPassword, user.password || "")) {
+      return { success: false, error: "Current password is incorrect" };
     }
 
     user.password = this.hashPassword(newPassword);
@@ -303,7 +303,7 @@ export class AuthConnector {
       return false;
     }
 
-    return user.permissions.includes(permission) || user.permissions.includes('*');
+    return user.permissions.includes(permission) || user.permissions.includes("*");
   }
 
   /**
@@ -319,7 +319,7 @@ export class AuthConnector {
       return false;
     }
 
-    return user.roles.includes(role) || user.roles.includes('admin');
+    return user.roles.includes(role) || user.roles.includes("admin");
   }
 
   /**
@@ -390,7 +390,7 @@ export class AuthConnector {
    */
   private encodeToken(payload: TokenPayload): string {
     // Simple base64 encoding (in production, use JWT)
-    const encoded = Buffer.from(JSON.stringify(payload)).toString('base64');
+    const encoded = Buffer.from(JSON.stringify(payload)).toString("base64");
     return `${encoded}.${this.config.secret.slice(0, 16)}`;
   }
 
@@ -398,8 +398,8 @@ export class AuthConnector {
    * Decode token payload
    */
   private decodeToken(token: string): TokenPayload {
-    const parts = token.split('.');
-    const payload = Buffer.from(parts[0], 'base64').toString('utf-8');
+    const parts = token.split(".");
+    const payload = Buffer.from(parts[0], "base64").toString("utf-8");
     return JSON.parse(payload);
   }
 
@@ -407,7 +407,7 @@ export class AuthConnector {
    * Generate refresh token
    */
   private generateRefreshToken(): string {
-    return 'rt_' + this.generateId() + '_' + Date.now();
+    return "rt_" + this.generateId() + "_" + Date.now();
   }
 
   /**
@@ -415,22 +415,22 @@ export class AuthConnector {
    */
   private hashPassword(password: string): string {
     // In production, use bcrypt or argon2
-    const crypto = require('crypto');
+    const crypto = require("crypto");
     return crypto
-      .createHash('sha256')
+      .createHash("sha256")
       .update(password + this.config.secret)
-      .digest('hex');
+      .digest("hex");
   }
 
   /**
    * Verify password
    */
   private verifyPassword(password: string, hash: string): boolean {
-    const crypto = require('crypto');
+    const crypto = require("crypto");
     const computedHash = crypto
-      .createHash('sha256')
+      .createHash("sha256")
       .update(password + this.config.secret)
-      .digest('hex');
+      .digest("hex");
     return computedHash === hash;
   }
 
@@ -438,7 +438,7 @@ export class AuthConnector {
    * Generate unique ID
    */
   private generateId(): string {
-    return 'user_' + Math.random().toString(36).substr(2, 9);
+    return "user_" + Math.random().toString(36).substr(2, 9);
   }
 
   /**

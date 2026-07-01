@@ -9,44 +9,44 @@
  * - HumaniserRewriteOutput - Output schema
  */
 
-import { ai } from '@/ai/genkit';
-import { z } from 'genkit';
+import { ai } from "@/ai/genkit";
+import { z } from "genkit";
 
 const SentenceRewriteSchema = z.object({
-  original: z.string().describe('Original sentence text'),
-  rewritten: z.string().describe('Rewritten sentence text'),
-  changes: z.array(z.string()).describe('List of changes made'),
+  original: z.string().describe("Original sentence text"),
+  rewritten: z.string().describe("Rewritten sentence text"),
+  changes: z.array(z.string()).describe("List of changes made"),
 });
 
 const HumaniserRewriteInputSchema = z.object({
-  text: z.string().describe('The text to humanise'),
+  text: z.string().describe("The text to humanise"),
   style: z
-    .enum(['conversational', 'professional', 'academic', 'creative', 'neutral'])
-    .default('neutral')
-    .describe('Rewrite style preference'),
+    .enum(["conversational", "professional", "academic", "creative", "neutral"])
+    .default("neutral")
+    .describe("Rewrite style preference"),
   targetSentenceIndices: z
     .array(z.number())
     .optional()
     .describe(
-      'Specific sentence indices to rewrite (0-based). If omitted, rewrite all AI-flagged sentences.'
+      "Specific sentence indices to rewrite (0-based). If omitted, rewrite all AI-flagged sentences."
     ),
   preserveTechnicalTerms: z
     .boolean()
     .default(true)
-    .describe('Whether to preserve technical terminology'),
+    .describe("Whether to preserve technical terminology"),
   formalityLevel: z
-    .enum(['casual', 'semi-formal', 'formal'])
-    .default('semi-formal')
-    .describe('Target formality level'),
+    .enum(["casual", "semi-formal", "formal"])
+    .default("semi-formal")
+    .describe("Target formality level"),
 });
 export type HumaniserRewriteInput = z.infer<typeof HumaniserRewriteInputSchema>;
 
 const HumaniserRewriteOutputSchema = z.object({
-  humanisedText: z.string().describe('The complete humanised text'),
-  sentenceRewrites: z.array(SentenceRewriteSchema).describe('Per-sentence rewrite results'),
-  improvement: z.number().min(0).max(1).describe('Estimated improvement in naturalness (0-1)'),
-  style: z.string().describe('The rewrite style used'),
-  summary: z.string().describe('Summary of changes made'),
+  humanisedText: z.string().describe("The complete humanised text"),
+  sentenceRewrites: z.array(SentenceRewriteSchema).describe("Per-sentence rewrite results"),
+  improvement: z.number().min(0).max(1).describe("Estimated improvement in naturalness (0-1)"),
+  style: z.string().describe("The rewrite style used"),
+  summary: z.string().describe("Summary of changes made"),
 });
 export type HumaniserRewriteOutput = z.infer<typeof HumaniserRewriteOutputSchema>;
 
@@ -55,22 +55,22 @@ export async function humaniserRewriteFlow(
 ): Promise<HumaniserRewriteOutput> {
   if (!process.env.GEMINI_API_KEY) {
     throw new Error(
-      'GEMINI_API_KEY environment variable is not set. Native rewriting will be used as fallback.'
+      "GEMINI_API_KEY environment variable is not set. Native rewriting will be used as fallback."
     );
   }
 
   try {
     return await rewriteFlow(input);
   } catch (e: any) {
-    if (e.message?.includes('API key not valid')) {
-      throw new Error('The provided GEMINI_API_KEY is invalid. Please check your .env file.');
+    if (e.message?.includes("API key not valid")) {
+      throw new Error("The provided GEMINI_API_KEY is invalid. Please check your .env file.");
     }
     throw e;
   }
 }
 
 const rewritePrompt = ai.definePrompt({
-  name: 'humaniserRewritePrompt',
+  name: "humaniserRewritePrompt",
   input: { schema: HumaniserRewriteInputSchema },
   output: { schema: HumaniserRewriteOutputSchema },
   prompt: `You are an expert editor specializing in making AI-generated text sound more natural and human-written. Your task is to rewrite the provided text to remove AI-typical patterns while preserving the original meaning.
@@ -107,14 +107,14 @@ Provide the complete humanised text, per-sentence changes, and a summary of impr
 
 const rewriteFlow = ai.defineFlow(
   {
-    name: 'humaniserRewriteFlow',
+    name: "humaniserRewriteFlow",
     inputSchema: HumaniserRewriteInputSchema,
     outputSchema: HumaniserRewriteOutputSchema,
   },
   async (input) => {
     const { output } = await rewritePrompt(input);
     if (!output) {
-      throw new Error('Failed to get a response from the Humaniser rewrite AI.');
+      throw new Error("Failed to get a response from the Humaniser rewrite AI.");
     }
     return output;
   }

@@ -1,44 +1,29 @@
-# config/config.yaml
-# Default configuration for mycodexvantaos-core-gateway
-# This file contains service-specific configuration
-
-# Service configuration
 service:
   name: mycodexvantaos-core-gateway
   version: v1.0.0
   environment: production
-
-# Server configuration
 server:
   host: 0.0.0.0
   port: 8080
   readTimeout: 30s
   writeTimeout: 30s
   idleTimeout: 120s
-
-# Logging configuration
 logging:
   level: info
   format: json
   outputs:
-    - stdout
+  - stdout
   fields:
     service: mycodexvantaos-core-gateway
-
-# Metrics configuration
 metrics:
   enabled: true
   port: 9090
   path: /metrics
-
-# Health check configuration
 healthCheck:
   enabled: true
   endpoint: /health
   interval: 30s
   timeout: 5s
-
-# Feature flags (example)
 features:
   cacheEnabled: true
   rateLimitingEnabled: true

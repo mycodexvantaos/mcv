@@ -9,8 +9,8 @@ import type {
   QueueHandler,
   QueueConsumeOptions,
   QueueMetadata,
-} from '../../ports/index';
-import type { CloudflareEnv } from './index';
+} from "../../ports/index";
+import type { CloudflareEnv } from "./index";
 
 export class CloudflareQueueAdapter implements IQueuePort {
   private env: CloudflareEnv;
@@ -24,7 +24,7 @@ export class CloudflareQueueAdapter implements IQueuePort {
     const q = this.resolveQueue(queue);
     await q.send({
       body: message.body,
-      contentType: message.contentType ?? 'application/json',
+      contentType: message.contentType ?? "application/json",
       delaySeconds: message.delaySeconds,
     });
   }
@@ -34,7 +34,7 @@ export class CloudflareQueueAdapter implements IQueuePort {
     await q.sendBatch(
       messages.map((msg) => ({
         body: msg.body,
-        contentType: msg.contentType ?? 'application/json',
+        contentType: msg.contentType ?? "application/json",
         delaySeconds: msg.delaySeconds,
       }))
     );
@@ -69,7 +69,7 @@ export class CloudflareQueueAdapter implements IQueuePort {
     const messages: QueueMessage[] = batch.messages.map((msg) => ({
       id: msg.id,
       body: msg.body,
-      contentType: 'application/json',
+      contentType: "application/json",
       metadata: msg.headers as Record<string, string>,
     }));
 
@@ -94,9 +94,9 @@ export class CloudflareQueueAdapter implements IQueuePort {
 
   private resolveQueue(queue: string): Queue {
     switch (queue) {
-      case 'audit':
+      case "audit":
         return this.env.AUDIT_QUEUE;
-      case 'ingestion':
+      case "ingestion":
         return this.env.INGESTION_QUEUE;
       default:
         throw new Error(`Unknown queue: ${queue}`);

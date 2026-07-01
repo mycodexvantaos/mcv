@@ -41,19 +41,19 @@ export class Analytics {
     });
   }
 
-  async aggregate(metricName: string, aggregation: 'sum' | 'avg' | 'min' | 'max'): Promise<number> {
+  async aggregate(metricName: string, aggregation: "sum" | "avg" | "min" | "max"): Promise<number> {
     const values = this.metrics.filter((m) => m.name === metricName).map((m) => m.value);
 
     if (values.length === 0) return 0;
 
     switch (aggregation) {
-      case 'sum':
+      case "sum":
         return values.reduce((a, b) => a + b, 0);
-      case 'avg':
+      case "avg":
         return values.reduce((a, b) => a + b, 0) / values.length;
-      case 'min':
+      case "min":
         return Math.min(...values);
-      case 'max':
+      case "max":
         return Math.max(...values);
     }
   }

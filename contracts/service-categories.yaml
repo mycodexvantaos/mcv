@@ -1,248 +1,246 @@
-# ╔══════════════════════════════════════════════════════════════════════╗
-# ║  MyCodeXvantaOS — Service Categories (平台服務分類體系)               ║
-# ║  AWS-like service catalog categories for AI-native platform         ║
-# ║  Version: 1.0.0                                                    ║
-# ╚══════════════════════════════════════════════════════════════════════╝
-
 apiVersion: platform.mycodevantaos/v1
 kind: ServiceCategoryMap
 metadata:
   name: mycodexvantaos-service-categories
   namespace: mycodexvantaos-system
   annotations:
-    description: |
-      Platform service classification following AWS-like product category model.
+    description: 'Platform service classification following AWS-like product category
+      model.
+
       Every capability is productized, categorized, searchable, and enableable.
+
       This is the "AWS Console sidebar" for MyCodeXvantaOS.
-    design_principle: |
-      AWS 的強大不是只有伺服器多，而是它有四層能力：
+
+      '
+    design_principle: 'AWS 的強大不是只有伺服器多，而是它有四層能力：
+
       1. 服務目錄 — 使用者知道有哪些能力
+
       2. 控制平面 — 使用者可以啟用、設定、監控、刪除服務
+
       3. 資源模型 — 每個服務都有自己的資源、狀態、權限、配額
+
       4. 計費與治理 — 每個服務都能被追蹤、限制、審計、收費
 
+      '
 spec:
-  # ─── 8 MVP Categories ──────────────────────────────────────────────
-  # Core resource axis: knowledge / agent / memory / workflow
-  # Not compute-first cloud, but agent-first knowledge platform
-
   categories:
-    # ── 1. Knowledge (知識服務) ──────────────────────────────────────
-    - id: knowledge
-      display_name: Knowledge
-      display_name_zh: 知識服務
-      description: |
-        Knowledge ingestion, storage, search, trace, and repair.
-        Documents become operational substrate — parseable, searchable,
-        citable, repairable, and promotable to memory.
-      icon: brain
-      sort_order: 1
-      services:
-        - id: knowledge-store
-          phase: mvp
-          description: Document and chunk storage with indexing pipeline
-        - id: knowledge-ingestion
-          phase: post-mvp
-          description: Document parsing, chunking, and metadata extraction
-        - id: knowledge-search
-          phase: mvp
-          description: Full-text and semantic search over indexed knowledge
-        - id: knowledge-trace
-          phase: post-mvp
-          description: Source tracing and "why not matched" analysis
-        - id: knowledge-cockpit
-          phase: post-mvp
-          description: Knowledge health dashboard and monitoring
-        - id: knowledge-repair
-          phase: post-mvp
-          description: Automated knowledge issue detection and repair
+  - id: knowledge
+    display_name: Knowledge
+    display_name_zh: 知識服務
+    description: 'Knowledge ingestion, storage, search, trace, and repair.
 
-    # ── 2. Agent (AI 代理服務) ──────────────────────────────────────
-    - id: agent
-      display_name: Agent
-      display_name_zh: AI 代理服務
-      description: |
-        AI agent orchestration with mode switching, intent routing,
-        evidence binding, and engineering mode for automated tasks.
-      icon: bot
-      sort_order: 2
-      services:
-        - id: agent-chat
-          phase: mvp
-          description: Conversational AI with knowledge-grounded responses
-        - id: agent-router
-          phase: post-mvp
-          description: Intent classification and request routing
-        - id: agent-mode
-          phase: post-mvp
-          description: Mode switching (chat/engineering/automation)
-        - id: agent-memory
-          phase: post-mvp
-          description: Agent memory management and context windows
-        - id: agent-execution
-          phase: post-mvp
-          description: Task execution engine for engineering mode
-        - id: agent-evidence
-          phase: post-mvp
-          description: Answer source binding and evidence chains
-        - id: agent-humaniser
-          phase: mvp
-          description: AI content detection, humanisation rewriting, and confidence scoring
+      Documents become operational substrate — parseable, searchable,
 
-    # ── 3. Workspace (工作空間服務) ─────────────────────────────────
-    - id: workspace
-      display_name: Workspace
-      display_name_zh: 工作空間服務
-      description: |
-        Multi-tenant workspace with projects, files, sessions,
-        artifacts, and state tracking. The isolation boundary.
-      icon: folder
-      sort_order: 3
-      services:
-        - id: workspace-project
-          phase: mvp
-          description: Workspace CRUD and project management (core workspace service)
-        - id: workspace-file
-          phase: post-mvp
-          description: File management within workspaces
-        - id: workspace-session
-          phase: post-mvp
-          description: Conversation and agent session tracking
-        - id: workspace-artifact
-          phase: post-mvp
-          description: Generated artifact management
-        - id: workspace-history
-          phase: post-mvp
-          description: Workspace state history and versioning
+      citable, repairable, and promotable to memory.
 
-    # ── 4. Developer (開發者服務) ───────────────────────────────────
-    - id: developer
-      display_name: Developer
-      display_name_zh: 開發者服務
-      description: |
-        API keys, webhooks, SDK, CLI, and external integration tools.
-        Turn platform capabilities into developer-consumable APIs.
-      icon: code
-      sort_order: 4
-      services:
-        - id: developer-api
-          phase: post-mvp
-          description: API key management and endpoint discovery
-        - id: developer-token
-          phase: post-mvp
-          description: Token lifecycle and scope management
-        - id: developer-webhook
-          phase: post-mvp
-          description: Webhook registration and event delivery
-        - id: developer-sdk
-          phase: post-mvp
-          description: Client SDK generation and distribution
-        - id: developer-cli
-          phase: post-mvp
-          description: Command-line interface for platform management
+      '
+    icon: brain
+    sort_order: 1
+    services:
+    - id: knowledge-store
+      phase: mvp
+      description: Document and chunk storage with indexing pipeline
+    - id: knowledge-ingestion
+      phase: post-mvp
+      description: Document parsing, chunking, and metadata extraction
+    - id: knowledge-search
+      phase: mvp
+      description: Full-text and semantic search over indexed knowledge
+    - id: knowledge-trace
+      phase: post-mvp
+      description: Source tracing and "why not matched" analysis
+    - id: knowledge-cockpit
+      phase: post-mvp
+      description: Knowledge health dashboard and monitoring
+    - id: knowledge-repair
+      phase: post-mvp
+      description: Automated knowledge issue detection and repair
+  - id: agent
+    display_name: Agent
+    display_name_zh: AI 代理服務
+    description: 'AI agent orchestration with mode switching, intent routing,
 
-    # ── 5. Security (安全與身分服務) ────────────────────────────────
-    - id: security
-      display_name: Security
-      display_name_zh: 安全與身分服務
-      description: |
-        Identity, access policy, tenant roles, audit logging, and
-        secret management. The platform's IAM foundation.
-      icon: shield
-      sort_order: 5
-      services:
-        - id: identity
-          phase: mvp
-          description: User identity, tenant management, and authentication
-        - id: access-policy
-          phase: post-mvp
-          description: RBAC/ABAC policy engine and evaluation
-        - id: tenant-role
-          phase: post-mvp
-          description: Tenant-scoped role and permission management
-        - id: audit-log
-          phase: mvp
-          description: Immutable, hash-chained audit event storage and query
-        - id: secret-reference
-          phase: post-mvp
-          description: Secret and credential reference management
+      evidence binding, and engineering mode for automated tasks.
 
-    # ── 6. Storage (儲存服務) ───────────────────────────────────────
-    - id: storage
-      display_name: Storage
-      display_name_zh: 儲存服務
-      description: |
-        Object storage, chunk storage, cache, and metadata storage.
-        Maps to R2/S3 for objects, D1/Postgres for metadata, KV/Redis for cache.
-      icon: database
-      sort_order: 6
-      services:
-        - id: storage-object
-          phase: post-mvp
-          description: S3-compatible object storage (R2/S3/MinIO)
-        - id: storage-chunk
-          phase: post-mvp
-          description: Document chunk storage with indexing metadata
-        - id: storage-cache
-          phase: post-mvp
-          description: Key-value cache (KV/Redis) for sessions and config
-        - id: storage-metadata
-          phase: post-mvp
-          description: Structured metadata storage (D1/Postgres)
+      '
+    icon: bot
+    sort_order: 2
+    services:
+    - id: agent-chat
+      phase: mvp
+      description: Conversational AI with knowledge-grounded responses
+    - id: agent-router
+      phase: post-mvp
+      description: Intent classification and request routing
+    - id: agent-mode
+      phase: post-mvp
+      description: Mode switching (chat/engineering/automation)
+    - id: agent-memory
+      phase: post-mvp
+      description: Agent memory management and context windows
+    - id: agent-execution
+      phase: post-mvp
+      description: Task execution engine for engineering mode
+    - id: agent-evidence
+      phase: post-mvp
+      description: Answer source binding and evidence chains
+    - id: agent-humaniser
+      phase: mvp
+      description: AI content detection, humanisation rewriting, and confidence scoring
+  - id: workspace
+    display_name: Workspace
+    display_name_zh: 工作空間服務
+    description: 'Multi-tenant workspace with projects, files, sessions,
 
-    # ── 7. Model (模型連接服務) ─────────────────────────────────────
-    - id: model
-      display_name: Model
-      display_name_zh: 模型連接服務
-      description: |
-        BYOK model gateway, provider connectors, model routing,
-        usage tracking, and cost control.
-      icon: cpu
-      sort_order: 7
-      services:
-        - id: model-byok
-          phase: mvp
-          description: Bring-your-own-key multi-provider LLM gateway
-        - id: model-provider
-          phase: post-mvp
-          description: Provider registration and health monitoring
-        - id: model-routing
-          phase: post-mvp
-          description: Model selection routing and fallback logic
-        - id: model-usage
-          phase: post-mvp
-          description: Per-model token usage and cost tracking
-        - id: model-policy
-          phase: post-mvp
-          description: Model access policies and cost limits
+      artifacts, and state tracking. The isolation boundary.
 
-    # ── 8. Automation (自動化服務) ──────────────────────────────────
-    - id: automation
-      display_name: Automation
-      display_name_zh: 自動化服務
-      description: |
-        Job scheduling, workflow execution, triggers, and runbooks.
-        Initially D1 jobs table + Workers scheduled trigger + Webhook trigger.
-      icon: zap
-      sort_order: 8
-      services:
-        - id: automation-job
-          phase: post-mvp
-          description: Job queue with lease/complete/fail lifecycle
-        - id: automation-workflow
-          phase: post-mvp
-          description: Multi-step workflow orchestration
-        - id: automation-trigger
-          phase: post-mvp
-          description: Event-driven and scheduled triggers
-        - id: automation-scheduler
-          phase: post-mvp
-          description: Cron-based and interval-based scheduling
-        - id: automation-runbook
-          phase: post-mvp
-          description: Reusable automation playbook management
+      '
+    icon: folder
+    sort_order: 3
+    services:
+    - id: workspace-project
+      phase: mvp
+      description: Workspace CRUD and project management (core workspace service)
+    - id: workspace-file
+      phase: post-mvp
+      description: File management within workspaces
+    - id: workspace-session
+      phase: post-mvp
+      description: Conversation and agent session tracking
+    - id: workspace-artifact
+      phase: post-mvp
+      description: Generated artifact management
+    - id: workspace-history
+      phase: post-mvp
+      description: Workspace state history and versioning
+  - id: developer
+    display_name: Developer
+    display_name_zh: 開發者服務
+    description: 'API keys, webhooks, SDK, CLI, and external integration tools.
 
-  # ─── Category-to-MVP-Service Mapping ─────────────────────────────
+      Turn platform capabilities into developer-consumable APIs.
+
+      '
+    icon: code
+    sort_order: 4
+    services:
+    - id: developer-api
+      phase: post-mvp
+      description: API key management and endpoint discovery
+    - id: developer-token
+      phase: post-mvp
+      description: Token lifecycle and scope management
+    - id: developer-webhook
+      phase: post-mvp
+      description: Webhook registration and event delivery
+    - id: developer-sdk
+      phase: post-mvp
+      description: Client SDK generation and distribution
+    - id: developer-cli
+      phase: post-mvp
+      description: Command-line interface for platform management
+  - id: security
+    display_name: Security
+    display_name_zh: 安全與身分服務
+    description: 'Identity, access policy, tenant roles, audit logging, and
+
+      secret management. The platform''s IAM foundation.
+
+      '
+    icon: shield
+    sort_order: 5
+    services:
+    - id: identity
+      phase: mvp
+      description: User identity, tenant management, and authentication
+    - id: access-policy
+      phase: post-mvp
+      description: RBAC/ABAC policy engine and evaluation
+    - id: tenant-role
+      phase: post-mvp
+      description: Tenant-scoped role and permission management
+    - id: audit-log
+      phase: mvp
+      description: Immutable, hash-chained audit event storage and query
+    - id: secret-reference
+      phase: post-mvp
+      description: Secret and credential reference management
+  - id: storage
+    display_name: Storage
+    display_name_zh: 儲存服務
+    description: 'Object storage, chunk storage, cache, and metadata storage.
+
+      Maps to R2/S3 for objects, D1/Postgres for metadata, KV/Redis for cache.
+
+      '
+    icon: database
+    sort_order: 6
+    services:
+    - id: storage-object
+      phase: post-mvp
+      description: S3-compatible object storage (R2/S3/MinIO)
+    - id: storage-chunk
+      phase: post-mvp
+      description: Document chunk storage with indexing metadata
+    - id: storage-cache
+      phase: post-mvp
+      description: Key-value cache (KV/Redis) for sessions and config
+    - id: storage-metadata
+      phase: post-mvp
+      description: Structured metadata storage (D1/Postgres)
+  - id: model
+    display_name: Model
+    display_name_zh: 模型連接服務
+    description: 'BYOK model gateway, provider connectors, model routing,
+
+      usage tracking, and cost control.
+
+      '
+    icon: cpu
+    sort_order: 7
+    services:
+    - id: model-byok
+      phase: mvp
+      description: Bring-your-own-key multi-provider LLM gateway
+    - id: model-provider
+      phase: post-mvp
+      description: Provider registration and health monitoring
+    - id: model-routing
+      phase: post-mvp
+      description: Model selection routing and fallback logic
+    - id: model-usage
+      phase: post-mvp
+      description: Per-model token usage and cost tracking
+    - id: model-policy
+      phase: post-mvp
+      description: Model access policies and cost limits
+  - id: automation
+    display_name: Automation
+    display_name_zh: 自動化服務
+    description: 'Job scheduling, workflow execution, triggers, and runbooks.
+
+      Initially D1 jobs table + Workers scheduled trigger + Webhook trigger.
+
+      '
+    icon: zap
+    sort_order: 8
+    services:
+    - id: automation-job
+      phase: post-mvp
+      description: Job queue with lease/complete/fail lifecycle
+    - id: automation-workflow
+      phase: post-mvp
+      description: Multi-step workflow orchestration
+    - id: automation-trigger
+      phase: post-mvp
+      description: Event-driven and scheduled triggers
+    - id: automation-scheduler
+      phase: post-mvp
+      description: Cron-based and interval-based scheduling
+    - id: automation-runbook
+      phase: post-mvp
+      description: Reusable automation playbook management
   mvp_service_mapping:
     identity: security
     workspace: workspace
@@ -253,24 +251,19 @@ spec:
     model-byok: model
     audit-log: security
     usage-meter: security
-
-  # ─── Future Category Expansion ───────────────────────────────────
-  # These categories will be added in later phases
   planned_categories:
-    - id: memory
-      display_name: Memory
-      display_name_zh: 記憶服務
-      phase: post-mvp
-      description: Agent memory store, dream/reinforcement, memory promotion
-
-    - id: observability
-      display_name: Observability
-      display_name_zh: 可觀測性
-      phase: post-mvp
-      description: Metrics, tracing, logging, and alerting
-
-    - id: billing
-      display_name: Billing
-      display_name_zh: 計費服務
-      phase: post-mvp
-      description: Billing, invoicing, payment, and subscription management
+  - id: memory
+    display_name: Memory
+    display_name_zh: 記憶服務
+    phase: post-mvp
+    description: Agent memory store, dream/reinforcement, memory promotion
+  - id: observability
+    display_name: Observability
+    display_name_zh: 可觀測性
+    phase: post-mvp
+    description: Metrics, tracing, logging, and alerting
+  - id: billing
+    display_name: Billing
+    display_name_zh: 計費服務
+    phase: post-mvp
+    description: Billing, invoicing, payment, and subscription management

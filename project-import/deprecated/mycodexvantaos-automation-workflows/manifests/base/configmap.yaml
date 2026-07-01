@@ -7,7 +7,7 @@ metadata:
     app: mycodexvantaos-automation-workflows
     part-of: mycodexvantaos
 data:
-  NODE_ENV: 'production'
-  SERVICE_NAME: 'mycodexvantaos-automation-workflows'
+  NODE_ENV: production
+  SERVICE_NAME: mycodexvantaos-automation-workflows
   PORT: '3000'
-  LOG_LEVEL: 'info'
+  LOG_LEVEL: info

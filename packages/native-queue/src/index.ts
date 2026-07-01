@@ -7,7 +7,7 @@ export interface QueueTask<T = any> {
   id: string;
   data: T;
   priority: number;
-  status: 'pending' | 'processing' | 'completed' | 'failed';
+  status: "pending" | "processing" | "completed" | "failed";
   createdAt: Date;
   startedAt?: Date;
   completedAt?: Date;
@@ -65,7 +65,7 @@ export class NativeQueue<T = any> {
       id: taskId,
       data,
       priority: options.priority || 0,
-      status: 'pending',
+      status: "pending",
       createdAt: new Date(),
       attempts: 0,
       maxAttempts: options.maxAttempts || this.options.maxRetries,
@@ -82,40 +82,40 @@ export class NativeQueue<T = any> {
    * Register a handler for tasks
    */
   registerHandler(handler: TaskHandler<T>): void {
-    this.handlers.set('default', handler);
+    this.handlers.set("default", handler);
   }
 
   /**
    * Process a single task
    */
   private async processTask(task: QueueTask<T>): Promise<void> {
-    const handler = this.handlers.get('default');
+    const handler = this.handlers.get("default");
     if (!handler) {
-      throw new Error('No handler registered');
+      throw new Error("No handler registered");
     }
 
-    task.status = 'processing';
+    task.status = "processing";
     task.startedAt = new Date();
     task.attempts++;
     this.processingTasks.add(task.id);
 
     try {
       const timeout = new Promise<void>((_, reject) => {
-        setTimeout(() => reject(new Error('Task timeout')), this.options.timeout);
+        setTimeout(() => reject(new Error("Task timeout")), this.options.timeout);
       });
 
       await Promise.race([handler(task), timeout]);
-      task.status = 'completed';
+      task.status = "completed";
       task.completedAt = new Date();
     } catch (error) {
       task.error = error as Error;
 
       if (task.attempts < task.maxAttempts) {
-        task.status = 'pending';
+        task.status = "pending";
         this.priorityQueue.push(task);
         this.priorityQueue.sort((a, b) => b.priority - a.priority);
       } else {
-        task.status = 'failed';
+        task.status = "failed";
         task.completedAt = new Date();
       }
     } finally {
@@ -154,7 +154,7 @@ export class NativeQueue<T = any> {
     if (this.processingTasks.size >= this.options.maxConcurrent) return;
 
     // Find next pending task
-    const taskIndex = this.priorityQueue.findIndex((task) => task.status === 'pending');
+    const taskIndex = this.priorityQueue.findIndex((task) => task.status === "pending");
 
     if (taskIndex === -1) return;
 
@@ -179,7 +179,7 @@ export class NativeQueue<T = any> {
   /**
    * Get tasks by status
    */
-  getTasksByStatus(status: QueueTask['status']): QueueTask<T>[] {
+  getTasksByStatus(status: QueueTask["status"]): QueueTask<T>[] {
     return Array.from(this.queue.values()).filter((task) => task.status === status);
   }
 
@@ -190,10 +190,10 @@ export class NativeQueue<T = any> {
     const tasks = Array.from(this.queue.values());
     return {
       total: tasks.length,
-      pending: tasks.filter((t) => t.status === 'pending').length,
-      processing: tasks.filter((t) => t.status === 'processing').length,
-      completed: tasks.filter((t) => t.status === 'completed').length,
-      failed: tasks.filter((t) => t.status === 'failed').length,
+      pending: tasks.filter((t) => t.status === "pending").length,
+      processing: tasks.filter((t) => t.status === "processing").length,
+      completed: tasks.filter((t) => t.status === "completed").length,
+      failed: tasks.filter((t) => t.status === "failed").length,
     };
   }
 
@@ -202,11 +202,11 @@ export class NativeQueue<T = any> {
    */
   clear(): void {
     Array.from(this.queue.entries()).forEach(([id, task]) => {
-      if (task.status === 'completed' || task.status === 'failed') {
+      if (task.status === "completed" || task.status === "failed") {
         this.queue.delete(id);
       }
     });
-    this.priorityQueue = this.priorityQueue.filter((task) => task.status === 'pending');
+    this.priorityQueue = this.priorityQueue.filter((task) => task.status === "pending");
   }
 
   /**

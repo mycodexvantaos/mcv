@@ -1,167 +1,139 @@
-# MyCodeXvantaOS Team Topology
-# URN: urn:mycodexvantaos:team:persona-consulting
-# Version: 1.0.0
-
-urn: 'urn:mycodexvantaos:team:persona-consulting'
-name: 'Persona Consulting Team'
-version: '1.0.0'
-description: 'Multi-persona team for comprehensive consultation and analysis'
-
-# Team metadata
+urn: urn:mycodexvantaos:team:persona-consulting
+name: Persona Consulting Team
+version: 1.0.0
+description: Multi-persona team for comprehensive consultation and analysis
 metadata:
   created_at: '2024-01-15T00:00:00Z'
   updated_at: '2024-01-15T00:00:00Z'
-  author: 'MyCodeXvantaOS Team'
+  author: MyCodeXvantaOS Team
   tags:
-    - 'consulting'
-    - 'analysis'
-    - 'multi-perspective'
-    - 'collaborative'
-
-# Team configuration
+  - consulting
+  - analysis
+  - multi-perspective
+  - collaborative
 config:
   max_concurrent_tasks: 5
   task_timeout_seconds: 300
-  coordination_mode: 'collaborative'
+  coordination_mode: collaborative
   consensus_threshold: 0.6
-
-# Team composition
 members:
-  # Lead Analyst
-  - agent_urn: 'urn:mycodexvantaos:persona:analyst-primary'
-    role: 'lead_analyst'
-    responsibilities:
-      - 'Initial problem assessment'
-      - 'Data gathering coordination'
-      - 'Analysis framework selection'
-      - 'Synthesis of team inputs'
-    capabilities:
-      - 'data_analysis'
-      - 'pattern_recognition'
-      - 'evidence_evaluation'
-    participation_mode: 'mandatory'
-    max_tasks: 3
-
-  # Disrupter (Critical Perspective)
-  - agent_urn: 'urn:mycodexvantaos:persona:disrupter-primary'
-    role: 'critical_challenger'
-    responsibilities:
-      - 'Challenge assumptions'
-      - 'Identify blind spots'
-      - 'Expose hidden issues'
-      - 'Provide alternative perspectives'
-    capabilities:
-      - 'critical_analysis'
-      - 'assumption_testing'
-      - 'semantic_mask_detection'
-    participation_mode: 'mandatory'
-    max_tasks: 2
-
-  # Solution Architect
-  - agent_urn: 'urn:mycodexvantaos:persona:solution-architect-primary'
-    role: 'solution_designer'
-    responsibilities:
-      - 'Solution architecture design'
-      - 'Implementation planning'
-      - 'Resource estimation'
-      - 'Technical feasibility assessment'
-    capabilities:
-      - 'solution_design'
-      - 'system_architecture'
-      - 'implementation_planning'
-    participation_mode: 'conditional'
-    max_tasks: 2
-    activation_condition:
-      type: 'solution_required'
-      trigger: 'after_analysis_complete'
-
-  # Mediator
-  - agent_urn: 'urn:mycodexvantaos:persona:mediator-primary'
-    role: 'balance_seeker'
-    responsibilities:
-      - 'Balance perspectives'
-      - 'Resolve conflicts in analysis'
-      - 'Ensure stakeholder consideration'
-      - 'Facilitate consensus'
-    capabilities:
-      - 'perspective_balancing'
-      - 'conflict_resolution'
-      - 'stakeholder_analysis'
-    participation_mode: 'conditional'
-    max_tasks: 2
-    activation_condition:
-      type: 'conflict_detected'
-      trigger: 'on_disagreement'
-
-  # Creative Thinker (Alternative Solutions)
-  - agent_urn: 'urn:mycodexvantaos:persona:creative-thinker-primary'
-    role: 'innovation_catalyst'
-    responsibilities:
-      - 'Generate alternative approaches'
-      - 'Challenge conventional thinking'
-      - 'Identify creative opportunities'
-      - 'Propose innovative solutions'
-    capabilities:
-      - 'ideation'
-      - 'creative_problem_solving'
-      - 'out_of_box_thinking'
-    participation_mode: 'optional'
-    max_tasks: 1
-    activation_condition:
-      type: 'innovation_required'
-      trigger: 'on_request_or_stuck'
-
-# Team workflows
+- agent_urn: urn:mycodexvantaos:persona:analyst-primary
+  role: lead_analyst
+  responsibilities:
+  - Initial problem assessment
+  - Data gathering coordination
+  - Analysis framework selection
+  - Synthesis of team inputs
+  capabilities:
+  - data_analysis
+  - pattern_recognition
+  - evidence_evaluation
+  participation_mode: mandatory
+  max_tasks: 3
+- agent_urn: urn:mycodexvantaos:persona:disrupter-primary
+  role: critical_challenger
+  responsibilities:
+  - Challenge assumptions
+  - Identify blind spots
+  - Expose hidden issues
+  - Provide alternative perspectives
+  capabilities:
+  - critical_analysis
+  - assumption_testing
+  - semantic_mask_detection
+  participation_mode: mandatory
+  max_tasks: 2
+- agent_urn: urn:mycodexvantaos:persona:solution-architect-primary
+  role: solution_designer
+  responsibilities:
+  - Solution architecture design
+  - Implementation planning
+  - Resource estimation
+  - Technical feasibility assessment
+  capabilities:
+  - solution_design
+  - system_architecture
+  - implementation_planning
+  participation_mode: conditional
+  max_tasks: 2
+  activation_condition:
+    type: solution_required
+    trigger: after_analysis_complete
+- agent_urn: urn:mycodexvantaos:persona:mediator-primary
+  role: balance_seeker
+  responsibilities:
+  - Balance perspectives
+  - Resolve conflicts in analysis
+  - Ensure stakeholder consideration
+  - Facilitate consensus
+  capabilities:
+  - perspective_balancing
+  - conflict_resolution
+  - stakeholder_analysis
+  participation_mode: conditional
+  max_tasks: 2
+  activation_condition:
+    type: conflict_detected
+    trigger: on_disagreement
+- agent_urn: urn:mycodexvantaos:persona:creative-thinker-primary
+  role: innovation_catalyst
+  responsibilities:
+  - Generate alternative approaches
+  - Challenge conventional thinking
+  - Identify creative opportunities
+  - Propose innovative solutions
+  capabilities:
+  - ideation
+  - creative_problem_solving
+  - out_of_box_thinking
+  participation_mode: optional
+  max_tasks: 1
+  activation_condition:
+    type: innovation_required
+    trigger: on_request_or_stuck
 workflows:
-  - workflow_urn: 'urn:mycodexvantaos:workflow:persona-consultation'
-    is_primary: true
-    trigger_conditions:
-      - 'new_consultation_request'
-    member_assignments:
-      lead_analyst: 'lead_analyst'
-      critical_challenger: 'disrupter-primary'
-      solution_designer: 'solution-architect-primary'
-      balance_seeker: 'mediator-primary'
-      innovation_catalyst: 'creative-thinker-primary'
-
-  - workflow_urn: 'urn:mycodexvantaos:workflow:problem-decomposition'
-    is_primary: false
-    trigger_conditions:
-      - 'complex_problem_detected'
-    member_assignments:
-      lead_analyst: 'lead_analyst'
-      critical_challenger: 'disrupter-primary'
-
-# Communication patterns
+- workflow_urn: urn:mycodexvantaos:workflow:persona-consultation
+  is_primary: true
+  trigger_conditions:
+  - new_consultation_request
+  member_assignments:
+    lead_analyst: lead_analyst
+    critical_challenger: disrupter-primary
+    solution_designer: solution-architect-primary
+    balance_seeker: mediator-primary
+    innovation_catalyst: creative-thinker-primary
+- workflow_urn: urn:mycodexvantaos:workflow:problem-decomposition
+  is_primary: false
+  trigger_conditions:
+  - complex_problem_detected
+  member_assignments:
+    lead_analyst: lead_analyst
+    critical_challenger: disrupter-primary
 communication:
-  message_bus: 'urn:mycodexvantaos:bus:persona-team'
+  message_bus: urn:mycodexvantaos:bus:persona-team
   interaction_patterns:
-    - type: 'sequential'
-      description: 'Lead analyst initiates, others respond in sequence'
-      order:
-        - 'lead_analyst'
-        - 'critical_challenger'
-        - 'solution_designer'
-        - 'balance_seeker'
-
-    - type: 'parallel'
-      description: 'Multiple members analyze simultaneously'
-      participants:
-        - 'lead_analyst'
-        - 'critical_challenger'
-        - 'solution_designer'
-      sync_point: 'after_initial_analysis'
-
-    - type: 'debate'
-      description: 'Structured debate for conflicting perspectives'
-      participants:
-        - 'critical_challenger'
-        - 'balance_seeker'
-      moderation: 'lead_analyst'
-
-# Consensus mechanism
+  - type: sequential
+    description: Lead analyst initiates, others respond in sequence
+    order:
+    - lead_analyst
+    - critical_challenger
+    - solution_designer
+    - balance_seeker
+  - type: parallel
+    description: Multiple members analyze simultaneously
+    participants:
+    - lead_analyst
+    - critical_challenger
+    - solution_designer
+    sync_point: after_initial_analysis
+  - type: debate
+    description: Structured debate for conflicting perspectives
+    participants:
+    - critical_challenger
+    - balance_seeker
+    moderation: lead_analyst
 consensus:
-  mechanism: 'weighted_voting'
+  mechanism: weighted_voting
   weights:
     lead_analyst: 1.5
     critical_challenger: 1.0
@@ -169,71 +141,66 @@ consensus:
     balance_seeker: 1.0
     innovation_catalyst: 0.8
   threshold: 0.6
-  tie_breaker: 'lead_analyst'
-
-# Task distribution
+  tie_breaker: lead_analyst
 task_distribution:
-  strategy: 'capability_matching'
+  strategy: capability_matching
   load_balancing: true
   priority_rules:
-    - condition: "urgency == 'high'"
-      assign_to: ['lead_analyst', 'critical_challenger']
-    - condition: 'complexity > 7'
-      assign_to: ['lead_analyst', 'solution_designer']
-    - condition: 'stakeholders > 3'
-      include: ['balance_seeker']
-
-# Quality gates
+  - condition: urgency == 'high'
+    assign_to:
+    - lead_analyst
+    - critical_challenger
+  - condition: complexity > 7
+    assign_to:
+    - lead_analyst
+    - solution_designer
+  - condition: stakeholders > 3
+    include:
+    - balance_seeker
 quality_gates:
-  - id: 'analysis_completeness'
-    description: 'Ensure analysis covers all required aspects'
-    criteria:
-      - 'root_causes_identified'
-      - 'stakeholders_considered'
-      - 'assumptions_documented'
-    approvers: ['lead_analyst']
-
-  - id: 'solution_feasibility'
-    description: 'Validate solution feasibility'
-    criteria:
-      - 'resources_available'
-      - 'timeline_realistic'
-      - 'risks_addressed'
-    approvers: ['solution_designer', 'critical_challenger']
-
-  - id: 'perspective_balance'
-    description: 'Ensure balanced perspectives in output'
-    criteria:
-      - 'multiple_viewpoints_represented'
-      - 'biases_acknowledged'
-      - 'limitations_documented'
-    approvers: ['balance_seeker']
-
-# Performance metrics
+- id: analysis_completeness
+  description: Ensure analysis covers all required aspects
+  criteria:
+  - root_causes_identified
+  - stakeholders_considered
+  - assumptions_documented
+  approvers:
+  - lead_analyst
+- id: solution_feasibility
+  description: Validate solution feasibility
+  criteria:
+  - resources_available
+  - timeline_realistic
+  - risks_addressed
+  approvers:
+  - solution_designer
+  - critical_challenger
+- id: perspective_balance
+  description: Ensure balanced perspectives in output
+  criteria:
+  - multiple_viewpoints_represented
+  - biases_acknowledged
+  - limitations_documented
+  approvers:
+  - balance_seeker
 metrics:
-  - name: 'consultation_completion_rate'
-    target: 0.95
-    measurement: 'completed_sessions / total_sessions'
-
-  - name: 'solution_acceptance_rate'
-    target: 0.80
-    measurement: 'accepted_solutions / proposed_solutions'
-
-  - name: 'average_session_duration'
-    target: 180
-    unit: 'seconds'
-    measurement: 'sum(session_duration) / count(sessions)'
-
-# Escalation procedures
+- name: consultation_completion_rate
+  target: 0.95
+  measurement: completed_sessions / total_sessions
+- name: solution_acceptance_rate
+  target: 0.8
+  measurement: accepted_solutions / proposed_solutions
+- name: average_session_duration
+  target: 180
+  unit: seconds
+  measurement: sum(session_duration) / count(sessions)
 escalation:
-  - condition: 'consensus_not_reached'
-    action: 'escalate_to_human'
-    timeout_seconds: 300
-
-  - condition: 'critical_issue_detected'
-    action: 'notify_human_supervisor'
-    immediate: true
-
-  - condition: 'resource_conflict'
-    action: 'queue_for_resolution'
-    priority: 'high'
+- condition: consensus_not_reached
+  action: escalate_to_human
+  timeout_seconds: 300
+- condition: critical_issue_detected
+  action: notify_human_supervisor
+  immediate: true
+- condition: resource_conflict
+  action: queue_for_resolution
+  priority: high

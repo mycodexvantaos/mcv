@@ -11,7 +11,7 @@ pnpm add @mycodexvantaos/deployment
 ## Usage
 
 ```typescript
-import { deployment } from '@mycodexvantaos/deployment';
+import { deployment } from "@mycodexvantaos/deployment";
 
 // Initialize
 await deployment.initialize();

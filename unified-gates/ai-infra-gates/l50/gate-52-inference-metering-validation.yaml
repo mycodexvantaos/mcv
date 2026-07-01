@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,34 +10,35 @@ metadata:
   criticality: critical
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-30400
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l50
-    - inference
+  - l50
+  - inference
   sloTarget: 30
   evidenceRetentionDays: 2555
 spec:
-  description: >
-    Validates that inference usage is accurately metered and attributed.
+  description: 'Validates that inference usage is accurately metered and attributed.
+
+    '
   validates:
-    - dimension: metering-accuracy
-      description: Inference metering is accurate.
-      checks:
-        - id: chk-token-count-accurate
-          description: Reported token count matches runtime within 0.1%
-          rule: 'threshold:token-count-error<0.001'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-model-id-present
-          description: Model ID is present in every inference usage event
-          rule: 'field-not-empty:modelId'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-workspace-id-present
-          description: Workspace ID is present for cost attribution
-          rule: 'field-not-empty:workspaceId'
-          severity: critical
-          evidenceRequired: true
+  - dimension: metering-accuracy
+    description: Inference metering is accurate.
+    checks:
+    - id: chk-token-count-accurate
+      description: Reported token count matches runtime within 0.1%
+      rule: threshold:token-count-error<0.001
+      severity: critical
+      evidenceRequired: true
+    - id: chk-model-id-present
+      description: Model ID is present in every inference usage event
+      rule: field-not-empty:modelId
+      severity: critical
+      evidenceRequired: true
+    - id: chk-workspace-id-present
+      description: Workspace ID is present for cost attribution
+      rule: field-not-empty:workspaceId
+      severity: critical
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

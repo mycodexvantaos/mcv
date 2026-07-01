@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { Database, GitFork, HardDrive, Cloud, Circle } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import type { ConnectorType, ConnectorHealthStatus } from '@/types/connector';
+import { Database, GitFork, HardDrive, Cloud, Circle } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import type { ConnectorType, ConnectorHealthStatus } from "@/types/connector";
 
 interface ConnectorStatus {
   name: string;
@@ -13,10 +13,10 @@ interface ConnectorStatus {
 }
 
 const mockConnectors: ConnectorStatus[] = [
-  { name: 'Primary PostgreSQL', type: 'postgresql', status: 'connected', latencyMs: 3.2 },
-  { name: 'Redis Cache', type: 'redis', status: 'connected', latencyMs: 0.8 },
-  { name: 'GitHub Integration', type: 'github', status: 'connected', latencyMs: 45 },
-  { name: 'S3 Storage', type: 's3', status: 'connected', latencyMs: 12 },
+  { name: "Primary PostgreSQL", type: "postgresql", status: "connected", latencyMs: 3.2 },
+  { name: "Redis Cache", type: "redis", status: "connected", latencyMs: 0.8 },
+  { name: "GitHub Integration", type: "github", status: "connected", latencyMs: 45 },
+  { name: "S3 Storage", type: "s3", status: "connected", latencyMs: 12 },
 ];
 
 const connectorIcons: Record<ConnectorType, typeof Database> = {
@@ -28,17 +28,17 @@ const connectorIcons: Record<ConnectorType, typeof Database> = {
 };
 
 const statusColors: Record<ConnectorHealthStatus, string> = {
-  connected: 'text-status-healthy',
-  degraded: 'text-status-warning',
-  disconnected: 'text-status-critical',
-  configuring: 'text-status-idle',
+  connected: "text-status-healthy",
+  degraded: "text-status-warning",
+  disconnected: "text-status-critical",
+  configuring: "text-status-idle",
 };
 
 const statusBgColors: Record<ConnectorHealthStatus, string> = {
-  connected: 'bg-status-healthy',
-  degraded: 'bg-status-warning',
-  disconnected: 'bg-status-critical',
-  configuring: 'bg-status-idle',
+  connected: "bg-status-healthy",
+  degraded: "bg-status-warning",
+  disconnected: "bg-status-critical",
+  configuring: "bg-status-idle",
 };
 
 export function ConnectorStatusList() {

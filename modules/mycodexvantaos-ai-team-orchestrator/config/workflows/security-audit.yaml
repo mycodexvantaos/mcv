@@ -1,410 +1,399 @@
-# Security Audit Workflow Pattern
-# Designed for comprehensive security assessment and vulnerability scanning
 urn: urn:mycodexvantaos:workflow:security-audit
 name: Security Audit Workflow
-description: |
-  A comprehensive security audit workflow that performs vulnerability scanning,
+description: 'A comprehensive security audit workflow that performs vulnerability
+  scanning,
+
   code analysis, dependency checking, and compliance verification.
+
   Includes HITL checkpoints for security team review and approval.
+
+  '
 type: dag
 version: 1.0.0
-created_at: 2024-01-15T10:00:00Z
-updated_at: 2024-01-15T10:00:00Z
-
-# Workflow Configuration
+created_at: 2024-01-15 10:00:00+00:00
+updated_at: 2024-01-15 10:00:00+00:00
 config:
-  timeout_seconds: 14400 # 4 hours max
+  timeout_seconds: 14400
   retry_policy:
     max_retries: 2
     backoff_seconds: 60
-  error_handling: continue_and_collect # Collect all issues before reporting
+  error_handling: continue_and_collect
   priority: high
   notification:
     on_critical_finding: immediate
     on_completion: summary
-
-# DAG Nodes Definition
 nodes:
-  # Stage 1: Initialize Audit
-  - id: init_audit
-    type: task
-    action: initialize_security_audit
-    config:
-      scope: full # full, targeted, incremental
-      include_third_party: true
-      compliance_frameworks:
-        - OWASP-Top-10
-        - SOC2
-        - GDPR
-    handler: initAuditHandler
-    next:
-      - vulnerability_scan
-      - dependency_scan
-      - secrets_scan
-      - compliance_check
-
-  # Stage 2: Parallel Security Scans
-
-  # Vulnerability Scanning
-  - id: vulnerability_scan
-    type: task
-    action: scan_vulnerabilities
-    config:
-      scanners:
-        - name: SAST
-          enabled: true
-          tools: [sonarqube, checkmarx, semgrep]
-        - name: DAST
-          enabled: true
-          tools: [owasp-zap, burp]
-        - name: IaC
-          enabled: true
-          tools: [checkov, terrascan]
-      severity_threshold: medium # critical, high, medium, low
-      fail_on_finding: false
-    dependencies:
-      - init_audit
-    handler: vulnerabilityScanHandler
-    next:
-      - aggregate_scan_results
-
-  # Dependency Vulnerability Scan
-  - id: dependency_scan
-    type: task
-    action: scan_dependencies
-    config:
-      package_managers: [npm, pip, maven, gradle]
-      check_outdated: true
-      check_licenses: true
-      license_policy:
-        allowed:
-          - MIT
-          - Apache-2.0
-          - BSD-3-Clause
-        forbidden:
-          - GPL-3.0
-          - AGPL-3.0
-      vulnerability_db: [nvd, snyk, osv]
-    dependencies:
-      - init_audit
-    handler: dependencyScanHandler
-    next:
-      - aggregate_scan_results
-
-  # Secrets Detection
-  - id: secrets_scan
-    type: task
-    action: detect_secrets
-    config:
-      scanners: [gitleaks, trufflehog, detect-secrets]
-      scan_history: true
-      history_depth: 100 # commits
-      patterns:
-        - api_key
-        - password
-        - private_key
-        - token
-        - credential
-    dependencies:
-      - init_audit
-    handler: secretsScanHandler
-    next:
-      - aggregate_scan_results
-
-  # Compliance Check
-  - id: compliance_check
-    type: task
-    action: verify_compliance
-    config:
-      frameworks:
-        - OWASP-Top-10
-        - SOC2-Type-II
-        - GDPR-Article-32
-      generate_evidence: true
-      check_controls: true
-    dependencies:
-      - init_audit
-    handler: complianceCheckHandler
-    next:
-      - aggregate_scan_results
-
-  # Stage 3: Aggregate Results
-  - id: aggregate_scan_results
-    type: aggregator
-    action: combine_security_findings
-    config:
-      deduplicate: true
-      prioritize_by_severity: true
-      group_by:
-        - severity
-        - category
-        - component
-    dependencies:
-      - vulnerability_scan
-      - dependency_scan
-      - secrets_scan
-      - compliance_check
-    handler: aggregateHandler
-    next:
-      - classify_findings
-
-  # Stage 4: Classify and Prioritize
-  - id: classify_findings
-    type: task
-    action: prioritize_vulnerabilities
-    config:
-      cvss_threshold: 7.0
-      exploitability_check: true
-      business_impact_analysis: true
-      auto_suppress_false_positives: true
-    dependencies:
-      - aggregate_scan_results
-    handler: classifyHandler
-    next:
-      - severity_gate
-
-  # Decision Gate: Check severity levels
-  - id: severity_gate
-    type: gateway
-    action: evaluate_severity
-    config:
-      conditions:
-        - field: critical_count
-          operator: gt
-          value: 0
-      on_pass: escalate_critical # Has critical findings
-      on_fail: check_high # No critical, check high
-    dependencies:
-      - classify_findings
-    handler: gatewayHandler
-
-  # Branch: Critical Findings
-  - id: escalate_critical
-    type: task
-    action: escalate_critical_findings
-    config:
-      notify_security_team: true
-      notify_management: true
-      block_deployment: true
-      create_tickets: true
-    dependencies:
-      - severity_gate
-    handler: escalateHandler
-    next:
-      - hitl_security_review
-
-  # Branch: High Findings Check
-  - id: check_high
-    type: gateway
-    action: evaluate_high_severity
-    config:
-      conditions:
-        - field: high_count
-          operator: gt
-          value: 0
-      on_pass: hitl_security_review
-      on_fail: generate_report
-    dependencies:
-      - severity_gate
-    handler: gatewayHandler
-
-  # HITL Checkpoint: Security Team Review
-  - id: hitl_security_review
-    type: hitl
-    action: security_team_review
-    config:
-      timeout_seconds: 28800 # 8 hours
-      approvers_required: 1
-      approver_roles:
-        - security_engineer
-        - security_analyst
-        - ciso
-      include_findings_report: true
-      actions:
-        - approve_with_mitigation
-        - approve_with_exceptions
-        - require_remediation
-        - reject
-    dependencies:
-      - escalate_critical
-    handler: hitlSecurityHandler
-    next:
-      - security_decision_gate
-
-  # Decision Gate: Security Review Outcome
-  - id: security_decision_gate
-    type: gateway
-    action: evaluate_security_decision
-    config:
-      conditions:
-        - field: decision
-          operator: in
-          value: [approve_with_mitigation, approve_with_exceptions]
-      on_pass: create_remediation_tasks
-      on_fail: block_release
-    dependencies:
-      - hitl_security_review
-    handler: gatewayHandler
-
-  # Branch: Create Remediation Tasks
-  - id: create_remediation_tasks
-    type: task
-    action: generate_remediation_tickets
-    config:
-      assign_to_teams: true
-      set_deadlines: true
-      prioritize_by_severity: true
-      include_fix_recommendations: true
-    dependencies:
-      - security_decision_gate
-    handler: remediationHandler
-    next:
-      - generate_report
-
-  # Branch: Block Release
-  - id: block_release
-    type: task
-    action: prevent_deployment
-    config:
-      reason: security_issues_found
-      notify_stakeholders: true
-      schedule_reaudit: true
-    dependencies:
-      - security_decision_gate
-    handler: blockHandler
-
-  # Stage 5: Generate Report
-  - id: generate_report
-    type: task
-    action: create_audit_report
-    config:
-      format: [pdf, html, json]
-      include:
-        - executive_summary
-        - detailed_findings
-        - compliance_status
-        - recommendations
-      distribution_list: [security_team, dev_team, management]
-    dependencies:
-      - check_high
-    handler: reportHandler
-    next:
-      - archive_audit
-
-  # Stage 6: Archive Audit
-  - id: archive_audit
-    type: task
-    action: archive_security_audit
-    config:
-      retention_days: 365
-      compliance_archive: true
-      export_to_siem: true
-    dependencies:
-      - generate_report
-    handler: archiveHandler
-
-# Edge Definitions
+- id: init_audit
+  type: task
+  action: initialize_security_audit
+  config:
+    scope: full
+    include_third_party: true
+    compliance_frameworks:
+    - OWASP-Top-10
+    - SOC2
+    - GDPR
+  handler: initAuditHandler
+  next:
+  - vulnerability_scan
+  - dependency_scan
+  - secrets_scan
+  - compliance_check
+- id: vulnerability_scan
+  type: task
+  action: scan_vulnerabilities
+  config:
+    scanners:
+    - name: SAST
+      enabled: true
+      tools:
+      - sonarqube
+      - checkmarx
+      - semgrep
+    - name: DAST
+      enabled: true
+      tools:
+      - owasp-zap
+      - burp
+    - name: IaC
+      enabled: true
+      tools:
+      - checkov
+      - terrascan
+    severity_threshold: medium
+    fail_on_finding: false
+  dependencies:
+  - init_audit
+  handler: vulnerabilityScanHandler
+  next:
+  - aggregate_scan_results
+- id: dependency_scan
+  type: task
+  action: scan_dependencies
+  config:
+    package_managers:
+    - npm
+    - pip
+    - maven
+    - gradle
+    check_outdated: true
+    check_licenses: true
+    license_policy:
+      allowed:
+      - MIT
+      - Apache-2.0
+      - BSD-3-Clause
+      forbidden:
+      - GPL-3.0
+      - AGPL-3.0
+    vulnerability_db:
+    - nvd
+    - snyk
+    - osv
+  dependencies:
+  - init_audit
+  handler: dependencyScanHandler
+  next:
+  - aggregate_scan_results
+- id: secrets_scan
+  type: task
+  action: detect_secrets
+  config:
+    scanners:
+    - gitleaks
+    - trufflehog
+    - detect-secrets
+    scan_history: true
+    history_depth: 100
+    patterns:
+    - api_key
+    - password
+    - private_key
+    - token
+    - credential
+  dependencies:
+  - init_audit
+  handler: secretsScanHandler
+  next:
+  - aggregate_scan_results
+- id: compliance_check
+  type: task
+  action: verify_compliance
+  config:
+    frameworks:
+    - OWASP-Top-10
+    - SOC2-Type-II
+    - GDPR-Article-32
+    generate_evidence: true
+    check_controls: true
+  dependencies:
+  - init_audit
+  handler: complianceCheckHandler
+  next:
+  - aggregate_scan_results
+- id: aggregate_scan_results
+  type: aggregator
+  action: combine_security_findings
+  config:
+    deduplicate: true
+    prioritize_by_severity: true
+    group_by:
+    - severity
+    - category
+    - component
+  dependencies:
+  - vulnerability_scan
+  - dependency_scan
+  - secrets_scan
+  - compliance_check
+  handler: aggregateHandler
+  next:
+  - classify_findings
+- id: classify_findings
+  type: task
+  action: prioritize_vulnerabilities
+  config:
+    cvss_threshold: 7.0
+    exploitability_check: true
+    business_impact_analysis: true
+    auto_suppress_false_positives: true
+  dependencies:
+  - aggregate_scan_results
+  handler: classifyHandler
+  next:
+  - severity_gate
+- id: severity_gate
+  type: gateway
+  action: evaluate_severity
+  config:
+    conditions:
+    - field: critical_count
+      operator: gt
+      value: 0
+    on_pass: escalate_critical
+    on_fail: check_high
+  dependencies:
+  - classify_findings
+  handler: gatewayHandler
+- id: escalate_critical
+  type: task
+  action: escalate_critical_findings
+  config:
+    notify_security_team: true
+    notify_management: true
+    block_deployment: true
+    create_tickets: true
+  dependencies:
+  - severity_gate
+  handler: escalateHandler
+  next:
+  - hitl_security_review
+- id: check_high
+  type: gateway
+  action: evaluate_high_severity
+  config:
+    conditions:
+    - field: high_count
+      operator: gt
+      value: 0
+    on_pass: hitl_security_review
+    on_fail: generate_report
+  dependencies:
+  - severity_gate
+  handler: gatewayHandler
+- id: hitl_security_review
+  type: hitl
+  action: security_team_review
+  config:
+    timeout_seconds: 28800
+    approvers_required: 1
+    approver_roles:
+    - security_engineer
+    - security_analyst
+    - ciso
+    include_findings_report: true
+    actions:
+    - approve_with_mitigation
+    - approve_with_exceptions
+    - require_remediation
+    - reject
+  dependencies:
+  - escalate_critical
+  handler: hitlSecurityHandler
+  next:
+  - security_decision_gate
+- id: security_decision_gate
+  type: gateway
+  action: evaluate_security_decision
+  config:
+    conditions:
+    - field: decision
+      operator: in
+      value:
+      - approve_with_mitigation
+      - approve_with_exceptions
+    on_pass: create_remediation_tasks
+    on_fail: block_release
+  dependencies:
+  - hitl_security_review
+  handler: gatewayHandler
+- id: create_remediation_tasks
+  type: task
+  action: generate_remediation_tickets
+  config:
+    assign_to_teams: true
+    set_deadlines: true
+    prioritize_by_severity: true
+    include_fix_recommendations: true
+  dependencies:
+  - security_decision_gate
+  handler: remediationHandler
+  next:
+  - generate_report
+- id: block_release
+  type: task
+  action: prevent_deployment
+  config:
+    reason: security_issues_found
+    notify_stakeholders: true
+    schedule_reaudit: true
+  dependencies:
+  - security_decision_gate
+  handler: blockHandler
+- id: generate_report
+  type: task
+  action: create_audit_report
+  config:
+    format:
+    - pdf
+    - html
+    - json
+    include:
+    - executive_summary
+    - detailed_findings
+    - compliance_status
+    - recommendations
+    distribution_list:
+    - security_team
+    - dev_team
+    - management
+  dependencies:
+  - check_high
+  handler: reportHandler
+  next:
+  - archive_audit
+- id: archive_audit
+  type: task
+  action: archive_security_audit
+  config:
+    retention_days: 365
+    compliance_archive: true
+    export_to_siem: true
+  dependencies:
+  - generate_report
+  handler: archiveHandler
 edges:
-  - from: init_audit
-    to: vulnerability_scan
-  - from: init_audit
-    to: dependency_scan
-  - from: init_audit
-    to: secrets_scan
-  - from: init_audit
-    to: compliance_check
-  - from: vulnerability_scan
-    to: aggregate_scan_results
-  - from: dependency_scan
-    to: aggregate_scan_results
-  - from: secrets_scan
-    to: aggregate_scan_results
-  - from: compliance_check
-    to: aggregate_scan_results
-  - from: aggregate_scan_results
-    to: classify_findings
-  - from: classify_findings
-    to: severity_gate
-  - from: severity_gate
-    to: escalate_critical
-    condition: critical_found
-  - from: severity_gate
-    to: check_high
-    condition: no_critical
-  - from: escalate_critical
-    to: hitl_security_review
-  - from: check_high
-    to: hitl_security_review
-    condition: high_found
-  - from: check_high
-    to: generate_report
-    condition: no_high
-  - from: hitl_security_review
-    to: security_decision_gate
-  - from: security_decision_gate
-    to: create_remediation_tasks
-    condition: approved
-  - from: security_decision_gate
-    to: block_release
-    condition: rejected
-  - from: create_remediation_tasks
-    to: generate_report
-  - from: generate_report
-    to: archive_audit
-
-# HITL Configuration
+- from: init_audit
+  to: vulnerability_scan
+- from: init_audit
+  to: dependency_scan
+- from: init_audit
+  to: secrets_scan
+- from: init_audit
+  to: compliance_check
+- from: vulnerability_scan
+  to: aggregate_scan_results
+- from: dependency_scan
+  to: aggregate_scan_results
+- from: secrets_scan
+  to: aggregate_scan_results
+- from: compliance_check
+  to: aggregate_scan_results
+- from: aggregate_scan_results
+  to: classify_findings
+- from: classify_findings
+  to: severity_gate
+- from: severity_gate
+  to: escalate_critical
+  condition: critical_found
+- from: severity_gate
+  to: check_high
+  condition: no_critical
+- from: escalate_critical
+  to: hitl_security_review
+- from: check_high
+  to: hitl_security_review
+  condition: high_found
+- from: check_high
+  to: generate_report
+  condition: no_high
+- from: hitl_security_review
+  to: security_decision_gate
+- from: security_decision_gate
+  to: create_remediation_tasks
+  condition: approved
+- from: security_decision_gate
+  to: block_release
+  condition: rejected
+- from: create_remediation_tasks
+  to: generate_report
+- from: generate_report
+  to: archive_audit
 hitl_config:
   enabled: true
   checkpoints:
-    - node_id: hitl_security_review
-      type: security_approval
-      timeout_seconds: 28800
-      escalation:
-        after_seconds: 14400
-        escalate_to: ciso
-      approval_levels:
-        - role: security_analyst
-          can_approve_severity: [low, medium]
-        - role: security_engineer
-          can_approve_severity: [low, medium, high]
-        - role: ciso
-          can_approve_severity: [critical]
-
-# Security-Specific Metrics
+  - node_id: hitl_security_review
+    type: security_approval
+    timeout_seconds: 28800
+    escalation:
+      after_seconds: 14400
+      escalate_to: ciso
+    approval_levels:
+    - role: security_analyst
+      can_approve_severity:
+      - low
+      - medium
+    - role: security_engineer
+      can_approve_severity:
+      - low
+      - medium
+      - high
+    - role: ciso
+      can_approve_severity:
+      - critical
 metrics:
   track_vulnerabilities: true
   track_compliance: true
   aggregate_metrics:
-    - vulnerability_count_by_severity
-    - mean_time_to_remediation
-    - compliance_score
-    - security_coverage
-    - false_positive_rate
+  - vulnerability_count_by_severity
+  - mean_time_to_remediation
+  - compliance_score
+  - security_coverage
+  - false_positive_rate
   sla:
     critical_remediation_hours: 24
     high_remediation_hours: 168
     medium_remediation_hours: 720
-
-# Example Usage
 examples:
-  - name: Pre-Release Security Audit
-    description: Full security audit before production release
-    input:
-      application_id: APP-001
-      version: 2.1.0
-      scope: full
-    expected_output:
-      audit_status: completed
-      critical_findings: 0
-      high_findings: 2
-      compliance_score: 95
-
-  - name: Dependency Vulnerability Scan
-    description: Check dependencies for known vulnerabilities
-    input:
-      project_path: /src/project
-      package_managers: [npm, pip]
-    expected_output:
-      vulnerable_dependencies: 3
-      outdated_packages: 5
-      license_issues: 0
+- name: Pre-Release Security Audit
+  description: Full security audit before production release
+  input:
+    application_id: APP-001
+    version: 2.1.0
+    scope: full
+  expected_output:
+    audit_status: completed
+    critical_findings: 0
+    high_findings: 2
+    compliance_score: 95
+- name: Dependency Vulnerability Scan
+  description: Check dependencies for known vulnerabilities
+  input:
+    project_path: /src/project
+    package_managers:
+    - npm
+    - pip
+  expected_output:
+    vulnerable_dependencies: 3
+    outdated_packages: 5
+    license_issues: 0

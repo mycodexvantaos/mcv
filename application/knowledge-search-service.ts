@@ -5,8 +5,8 @@
  * Implements the retrieval pipeline: parse → authorize → search → rank → trace → audit.
  */
 
-import type { IDatabasePort, ISearchPort, IAuditPort, IIdentityPort } from '../ports/index';
-import type { SearchResultItem, SearchOptions, EvidenceLevel, SourceTrace } from '../core/index';
+import type { IDatabasePort, ISearchPort, IAuditPort, IIdentityPort } from "../ports/index";
+import type { SearchResultItem, SearchOptions, EvidenceLevel, SourceTrace } from "../core/index";
 
 export interface KnowledgeSearchServiceDeps {
   database: IDatabasePort;
@@ -36,16 +36,16 @@ export class KnowledgeSearchService {
 
     // 1. Parse — validate query
     if (query.length > 2000) {
-      throw new Error('Query exceeds maximum length of 2000 characters');
+      throw new Error("Query exceeds maximum length of 2000 characters");
     }
 
     // 2. Authorize — handled by the runtime layer before reaching here
 
     // 3. Search — execute against the search index
     const rawResults =
-      options.searchType === 'semantic'
+      options.searchType === "semantic"
         ? await this.semanticSearch(query, options)
-        : options.searchType === 'fulltext'
+        : options.searchType === "fulltext"
           ? await this.fulltextSearch(query, options)
           : await this.hybridSearch(query, options);
 
@@ -57,13 +57,13 @@ export class KnowledgeSearchService {
     // 6. Audit — emit search event
     await this.deps.audit.emitEvent({
       eventType:
-        rawResults.length > 0 ? 'knowledge.search.executed' : 'knowledge.search.zero-result',
-      category: 'knowledge',
-      severity: 'info',
-      subjectId: 'system',
+        rawResults.length > 0 ? "knowledge.search.executed" : "knowledge.search.zero-result",
+      category: "knowledge",
+      severity: "info",
+      subjectId: "system",
       workspaceId,
-      resourceKind: 'knowledge-index',
-      action: 'search',
+      resourceKind: "knowledge-index",
+      action: "search",
       data: {
         query,
         searchType: options.searchType,
@@ -139,7 +139,7 @@ export class KnowledgeSearchService {
       chunk_index: number;
       content: string;
       metadata: string;
-    }>('SELECT * FROM document_chunks WHERE id = ?', [chunkId]);
+    }>("SELECT * FROM document_chunks WHERE id = ?", [chunkId]);
 
     if (!chunk) throw new Error(`Chunk ${chunkId} not found`);
 
@@ -147,13 +147,13 @@ export class KnowledgeSearchService {
       id: string;
       title: string;
       collection_id: string;
-    }>('SELECT id, title, collection_id FROM documents WHERE id = ?', [chunk.document_id]);
+    }>("SELECT id, title, collection_id FROM documents WHERE id = ?", [chunk.document_id]);
 
     return {
       chunkId,
       documentId: chunk.document_id,
-      documentTitle: document?.title ?? 'Unknown',
-      collectionId: document?.collection_id ?? '',
+      documentTitle: document?.title ?? "Unknown",
+      collectionId: document?.collection_id ?? "",
       relevanceScore: 1.0,
     };
   }
@@ -171,20 +171,20 @@ export class KnowledgeSearchService {
     });
     return results.map((r) => ({
       chunkId: r.id,
-      documentId: (r.metadata?.document_id as string) ?? '',
-      content: (r.metadata?.content as string) ?? '',
+      documentId: (r.metadata?.document_id as string) ?? "",
+      content: (r.metadata?.content as string) ?? "",
       score: r.score,
       metadata: {},
-      evidenceLevel: 'knowledge-assisted',
+      evidenceLevel: "knowledge-assisted",
     }));
   }
 
   private classifyEvidenceLevel(results: SearchResultItem[]): EvidenceLevel {
-    if (results.length === 0) return 'knowledge-assisted';
+    if (results.length === 0) return "knowledge-assisted";
     const allVerified = results.every((r) => r.score >= 0.7);
     const allGrounded = results.every((r) => r.score >= 0.8);
-    if (allGrounded) return 'knowledge-grounded';
-    if (allVerified) return 'knowledge-verified';
-    return 'knowledge-assisted';
+    if (allGrounded) return "knowledge-grounded";
+    if (allVerified) return "knowledge-verified";
+    return "knowledge-assisted";
   }
 }

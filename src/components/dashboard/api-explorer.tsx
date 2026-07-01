@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, Share2 } from 'lucide-react';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Loader2, Share2 } from "lucide-react";
 
 export function ApiExplorer() {
   const [data, setData] = useState<any>(null);
@@ -13,12 +13,12 @@ export function ApiExplorer() {
     setIsLoading(true);
     setData(null);
     try {
-      const response = await fetch('/api/data');
+      const response = await fetch("/api/data");
       const result = await response.json();
       setData(result);
     } catch (error) {
-      console.error('Error fetching API data:', error);
-      setData({ error: 'Failed to fetch data.' });
+      console.error("Error fetching API data:", error);
+      setData({ error: "Failed to fetch data." });
     }
     setIsLoading(false);
   };
@@ -43,7 +43,7 @@ export function ApiExplorer() {
               ) : (
                 <Share2 className="mr-2 h-4 w-4" />
               )}
-              {isLoading ? 'Fetching...' : 'Fetch Data'}
+              {isLoading ? "Fetching..." : "Fetch Data"}
             </Button>
           </CardContent>
         </Card>

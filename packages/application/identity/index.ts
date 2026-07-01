@@ -2,7 +2,7 @@
  * MyCodeXvantaOS — Identity Application Package
  */
 
-export { IdentityService } from './identity-service';
+export { IdentityService } from "./identity-service";
 export type {
   IdentityServiceDeps,
   RegisterSubjectInput,
@@ -12,4 +12,4 @@ export type {
   SubjectPhase,
   SubjectResource,
   IdentityAuditEvent,
-} from './identity-service';
+} from "./identity-service";

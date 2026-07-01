@@ -8,8 +8,8 @@ import type {
   DatabaseStatement,
   DatabaseResult,
   DatabaseMetadata,
-} from '../../ports/index';
-import type { CloudflareEnv } from './index';
+} from "../../ports/index";
+import type { CloudflareEnv } from "./index";
 
 export class CloudflareDatabaseAdapter implements IDatabasePort {
   private db: D1Database;
@@ -66,12 +66,12 @@ export class CloudflareDatabaseAdapter implements IDatabasePort {
       )`
     );
 
-    const existing = await this.queryFirst('SELECT id FROM _migrations WHERE id = ?', [
+    const existing = await this.queryFirst("SELECT id FROM _migrations WHERE id = ?", [
       migrationFile,
     ]);
 
     if (!existing) {
-      await this.execute('INSERT INTO _migrations (id) VALUES (?)', [migrationFile]);
+      await this.execute("INSERT INTO _migrations (id) VALUES (?)", [migrationFile]);
     }
   }
 
@@ -81,8 +81,8 @@ export class CloudflareDatabaseAdapter implements IDatabasePort {
     );
 
     return {
-      provider: 'cloudflare-d1',
-      version: 'sqlite-3',
+      provider: "cloudflare-d1",
+      version: "sqlite-3",
       tableCount: tables.length,
     };
   }

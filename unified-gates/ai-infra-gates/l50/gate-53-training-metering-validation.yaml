@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,29 +10,30 @@ metadata:
   criticality: critical
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-30400
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l50
-    - training
+  - l50
+  - training
   sloTarget: 30
   evidenceRetentionDays: 2555
 spec:
-  description: >
-    Validates that training compute usage is accurately metered and attributed.
+  description: 'Validates that training compute usage is accurately metered and attributed.
+
+    '
   validates:
-    - dimension: metering-accuracy
-      description: Training metering is accurate.
-      checks:
-        - id: chk-gpu-hours-accurate
-          description: Reported GPU-hours match cluster telemetry within 1%
-          rule: 'threshold:gpu-hours-error<0.01'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-job-id-present
-          description: Training job ID is present in every usage event
-          rule: 'field-not-empty:jobId'
-          severity: critical
-          evidenceRequired: true
+  - dimension: metering-accuracy
+    description: Training metering is accurate.
+    checks:
+    - id: chk-gpu-hours-accurate
+      description: Reported GPU-hours match cluster telemetry within 1%
+      rule: threshold:gpu-hours-error<0.01
+      severity: critical
+      evidenceRequired: true
+    - id: chk-job-id-present
+      description: Training job ID is present in every usage event
+      rule: field-not-empty:jobId
+      severity: critical
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

@@ -9,20 +9,20 @@ metadata:
   planeDescription: 體驗面 — UI、CLI、使用者介面
   tier: 3
   tags:
-    - ui
-    - frontend
-    - dashboard
+  - ui
+  - frontend
+  - dashboard
 spec:
   architecture:
     philosophy: native-first / provider-agnostic
     principle: 第三方服務是擴充出口，不是平台地基
     mode: native | connected | hybrid
   capabilities:
-    - web-ui
-    - dashboard
-    - management-console
+  - web-ui
+  - dashboard
+  - management-console
   providerDependencies:
-    - auth
+  - auth
   repoDependencies:
-    - codexvanta-os-core-kernel
-    - codexvanta-os-auth-service
+  - codexvanta-os-core-kernel
+  - codexvanta-os-auth-service

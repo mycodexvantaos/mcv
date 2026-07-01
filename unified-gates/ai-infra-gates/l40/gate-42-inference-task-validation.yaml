@@ -1,4 +1,3 @@
----
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGate
 metadata:
@@ -11,34 +10,36 @@ metadata:
   criticality: critical
   owner: platform@mycodexvantaos.com
   governanceCode: mycodexvantaos-60700
-  createdAt: 2026-01-01T00:00:00Z
+  createdAt: 2026-01-01 00:00:00+00:00
   tags:
-    - l40
-    - inference
+  - l40
+  - inference
   sloTarget: 30
   evidenceRetentionDays: 2555
 spec:
-  description: >
-    Validates that inference task definitions are correct and that the model and runtime are ready.
+  description: 'Validates that inference task definitions are correct and that the
+    model and runtime are ready.
+
+    '
   validates:
-    - dimension: task-readiness
-      description: Inference task is ready for execution.
-      checks:
-        - id: chk-model-ref-valid
-          description: Model reference resolves to a registered model
-          rule: 'registry:model-ref-valid'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-runtime-ref-valid
-          description: Runtime reference resolves to a validated runtime
-          rule: 'registry:runtime-ref-valid'
-          severity: critical
-          evidenceRequired: true
-        - id: chk-input-schema-valid
-          description: Input schema is defined and valid
-          rule: 'schema:inference-input'
-          severity: high
-          evidenceRequired: true
+  - dimension: task-readiness
+    description: Inference task is ready for execution.
+    checks:
+    - id: chk-model-ref-valid
+      description: Model reference resolves to a registered model
+      rule: registry:model-ref-valid
+      severity: critical
+      evidenceRequired: true
+    - id: chk-runtime-ref-valid
+      description: Runtime reference resolves to a validated runtime
+      rule: registry:runtime-ref-valid
+      severity: critical
+      evidenceRequired: true
+    - id: chk-input-schema-valid
+      description: Input schema is defined and valid
+      rule: schema:inference-input
+      severity: high
+      evidenceRequired: true
   dependsOn: []
   waiverPolicy: ./policies/gate-waiver-policy.yaml
   escalationPolicy: ./policies/gate-risk-policy.yaml

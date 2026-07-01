@@ -91,8 +91,8 @@ on:
 
 env:
   # 配置點：使用者需要設定這些變數
-  RULES_PATH: '<path to governance rules>'
-  THRESHOLD: '<threshold value>'
+  RULES_PATH: "<path to governance rules>"
+  THRESHOLD: "<threshold value>"
 
 jobs:
   validate:
