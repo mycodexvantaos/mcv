@@ -7,8 +7,6 @@ metadata:
   name: gate-risk-policy
   authority: platform-governance-root
   governanceCode: mycodexvantaos-00800
-  date: '2026-06-29'
-  status: active
 spec:
   riskLevels:
   - id: P1-Critical

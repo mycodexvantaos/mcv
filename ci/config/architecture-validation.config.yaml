@@ -3,7 +3,6 @@ kind: ArchitectureValidationConfig
 metadata:
   version: 1.0.0
   name: architecture-validation-config
-  version: 1.0.0
 spec:
   checks:
   - identity

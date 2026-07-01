@@ -2,7 +2,7 @@
 # governanceCode: mycodexvantaos-00000
 name: Unified Gates CI
 
-on:
+"on":
   push:
     branches: [main, develop]
     paths:

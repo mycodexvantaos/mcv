@@ -6,8 +6,6 @@ metadata:
   status: active
   name: billing-event-contract
   governanceCode: mycodexvantaos-30400
-  date: '2026-06-29'
-  status: active
 spec:
   description: 'Defines the canonical contract for billing events. Billing events
     are derived from usage events and represent chargeable actions.

@@ -7,8 +7,6 @@ metadata:
   name: ai-safety-policy
   authority: platform-governance-root
   governanceCode: mycodexvantaos-60600
-  date: '2026-06-29'
-  status: active
 spec:
   harmfulOutputRateThreshold: 0.001
   promptInjectionTestRequired: true

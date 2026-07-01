@@ -81,7 +81,16 @@ def read(path: pathlib.Path) -> str:
 
 def is_ignored(path: pathlib.Path) -> bool:
     ignored = {"node_modules", ".next", "dist", "build", "coverage", ".turbo", ".git"}
-    return any(part in ignored for part in path.parts)
+    parts = path.parts
+    if any(part in ignored for part in parts):
+        return True
+    # Helm templates contain Go template syntax {{ ... }} — not valid pure YAML
+    if "templates" in parts and any(p in parts for p in ("helm", "charts")):
+        return True
+    # ArgoCD manifests are multi-document YAML with non-standard structure
+    if "argocd" in parts:
+        return True
+    return False
 
 
 def collect_json_findings() -> list[Finding]:

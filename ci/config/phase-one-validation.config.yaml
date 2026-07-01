@@ -3,7 +3,6 @@ kind: PhaseOneValidationConfig
 metadata:
   version: 1.0.0
   name: phase-one-validation-config
-  version: 1.0.0
 spec:
   requiredDeliverables:
   - docs/unified-architecture-spec.md

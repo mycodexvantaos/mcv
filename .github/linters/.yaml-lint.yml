@@ -1,0 +1,11 @@
+---
+extends: default
+rules:
+  document-start: disable
+  truthy:
+    allowed-values: ["true", "false"]
+    check-keys: true
+ignore: |
+  infra/helm/
+  argocd/
+  pnpm-lock.yaml
