@@ -154,7 +154,10 @@ jobs:
         env:
           SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
         run: |
-          docker run --rm -v "${PWD}:/src" returntocorp/semgrep:latest             semgrep --config p/default --config p/security-audit             --config p/python --config p/javascript             --sarif -o /src/semgrep.sarif /src || true
+          docker run --rm -v "${PWD}:/src" returntocorp/semgrep:latest \
+            semgrep --config p/default --config p/security-audit \
+            --config p/python --config p/javascript \
+            --sarif -o /src/semgrep.sarif /src || true
 
       - name: Upload Semgrep SARIF
         if: always()
