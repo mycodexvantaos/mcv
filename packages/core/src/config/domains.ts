@@ -60,11 +60,14 @@ export const FORBIDDEN_PRODUCTION_URL_PATTERNS: RegExp[] = [
   /\.pages\.dev/,
   /\.vercel\.app/,
   /\.netlify\.app/,
-  /\.run\.app/,
+  /\.firebaseapp\.com/,
+  /\.web\.app/,
   /\.appspot\.com/,
   /\.cloudfunctions\.net/,
-  /\.web\.app/,
-  /\.firebaseapp\.com/,
+  /\.herokuapp\.com/,
+  /\.render\.com/,
+  /\.railway\.app/,
+  /\.fly\.dev/,
   /storage\.googleapis\.com/,
 ];
 

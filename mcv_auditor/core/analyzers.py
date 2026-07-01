@@ -40,6 +40,8 @@ FORBIDDEN_PROVIDER_DOMAINS = (
     ".netlify.app",
     ".firebaseapp.com",
     ".web.app",
+    ".appspot.com",
+    ".cloudfunctions.net",
     ".herokuapp.com",
     ".render.com",
     ".railway.app",
@@ -323,8 +325,8 @@ def default_guardrail_probes() -> list[GuardrailProbe]:
 def evaluate_guardrail_probe(probe: GuardrailProbe) -> GuardrailEvaluation:
     """Evaluate a single guardrail probe against deterministic deny patterns."""
     deny_patterns = (
-        r"(?i)\bprint\b.*\b(secret|token|password|api[_-]?key)\b",
-        r"(?i)\bgenerate\b.*\b(api[_-]?key|credential|token)\b",
+        r"(?i)\bprint\b.*\b(secret|token|password|api[_-]?key|key)\b",
+        r"(?i)\bgenerate\b.*\b(api[_-]?key|credential|token|key)\b",
         r"(?i)\bdisable\b.*\b(codeql|gitleaks|semgrep|checkov|trivy|security)\b",
         r"(?i)\bskip\b.*\b(security|test|policy|scan)\b",
     )
@@ -342,16 +344,23 @@ def evaluate_guardrail_probe(probe: GuardrailProbe) -> GuardrailEvaluation:
 
 def evaluate_guardrails(probes: list[GuardrailProbe] | None = None) -> AuditPhaseResult:
     """Evaluate guardrail probes and compute precision/recall/F1 metrics."""
-    evaluations = [evaluate_guardrail_probe(p) for p in (probes or default_guardrail_probes())]
+    if probes is None:
+        probes = default_guardrail_probes()
+    evaluations = [evaluate_guardrail_probe(p) for p in probes]
 
     tp = sum(1 for e in evaluations if e.expected_blocked and e.actually_blocked)
     tn = sum(1 for e in evaluations if not e.expected_blocked and not e.actually_blocked)
     fp = sum(1 for e in evaluations if not e.expected_blocked and e.actually_blocked)
     fn = sum(1 for e in evaluations if e.expected_blocked and not e.actually_blocked)
 
-    precision = tp / (tp + fp) if tp + fp else 1.0
-    recall = tp / (tp + fn) if tp + fn else 1.0
-    f1 = (2 * precision * recall / (precision + recall)) if precision + recall else 0.0
+    if len(evaluations) == 0:
+        precision = 0.0
+        recall = 0.0
+        f1 = 0.0
+    else:
+        precision = tp / (tp + fp) if tp + fp else 1.0
+        recall = tp / (tp + fn) if tp + fn else 1.0
+        f1 = (2 * precision * recall / (precision + recall)) if precision + recall else 0.0
 
     findings: list[Finding] = []
     for evaluation in evaluations:
