@@ -14,7 +14,7 @@ rules:
     message: "Do not hardcode production secrets. Use secret manager or environment injection."
     patterns:
       - pattern-regex: '(?i)(secret|password|api[_-]?key|token)\s*[:=]\s*["\x27][^"\x27]{20,}["\x27]'
-      - pattern-not-regex: '(?i)(example|dummy|test|fixture|placeholder)'
+      - pattern-not-regex: "(?i)(example|dummy|test|fixture|placeholder)"
 
   - id: mcv-no-cors-wildcard-production
     languages: [typescript, javascript]

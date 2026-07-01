@@ -24,9 +24,9 @@
  *   - release/policies/signing-policy.json
  *   - docs/security/release-signing.md
  */
-import { execSync } from "node:child_process";
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { execSync } from 'node:child_process';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 // ── Types ──────────────────────────────────────────────────────────
 interface ProvenanceSignature {
@@ -51,8 +51,8 @@ interface SignedProvenance {
 function exec(command: string, options?: { env?: Record<string, string> }): string {
   try {
     return execSync(command, {
-      encoding: "utf-8",
-      stdio: ["pipe", "pipe", "pipe"],
+      encoding: 'utf-8',
+      stdio: ['pipe', 'pipe', 'pipe'],
       env: { ...process.env, ...(options?.env ?? {}) },
     }).trim();
   } catch (err: unknown) {
@@ -63,42 +63,42 @@ function exec(command: string, options?: { env?: Record<string, string> }): stri
 
 function git(command: string): string {
   try {
-    return execSync(`git ${command}`, { encoding: "utf-8" }).trim();
+    return execSync(`git ${command}`, { encoding: 'utf-8' }).trim();
   } catch {
-    return "unknown";
+    return 'unknown';
   }
 }
 
 function getVersion(): string {
   const args = process.argv.slice(2);
   for (let i = 0; i < args.length; i++) {
-    if (args[i] === "--version" && args[i + 1]) {
+    if (args[i] === '--version' && args[i + 1]) {
       return args[i + 1];
     }
   }
-  const tag = git("describe --tags --exact-match HEAD 2>/dev/null");
-  if (tag && tag !== "unknown") return tag;
-  return process.env.npm_package_version ?? "0.1.0";
+  const tag = git('describe --tags --exact-match HEAD 2>/dev/null');
+  if (tag && tag !== 'unknown') return tag;
+  return process.env.npm_package_version ?? '0.1.0';
 }
 
 // ── Main ───────────────────────────────────────────────────────────
 function main(): void {
   const version = getVersion();
-  const isGitHubActions = process.env.GITHUB_ACTIONS === "true";
+  const isGitHubActions = process.env.GITHUB_ACTIONS === 'true';
 
-  console.log("\n🔐 MyCodeXvantaOS Provenance Signer (cosign keyless)");
+  console.log('\n🔐 MyCodeXvantaOS Provenance Signer (cosign keyless)');
   console.log(`   Version: ${version}`);
-  console.log("━".repeat(50));
+  console.log('━'.repeat(50));
 
   if (!isGitHubActions) {
-    console.error("\n❌ This script must run inside GitHub Actions (GITHUB_ACTIONS=true).");
-    console.error("   Keyless signing requires a GitHub OIDC token.");
-    console.error("   Use the sign-release.yaml workflow to sign provenance.");
+    console.error('\n❌ This script must run inside GitHub Actions (GITHUB_ACTIONS=true).');
+    console.error('   Keyless signing requires a GitHub OIDC token.');
+    console.error('   Use the sign-release.yaml workflow to sign provenance.');
     process.exit(1);
   }
 
   // Locate provenance file
-  const versionWithoutV = version.replace(/^v/, "");
+  const versionWithoutV = version.replace(/^v/, '');
   const candidatePaths = [
     resolve(process.cwd(), `release/artifacts/${version}/provenance.intoto.json`),
     resolve(process.cwd(), `release/artifacts/${versionWithoutV}/provenance.intoto.json`),
@@ -117,11 +117,11 @@ function main(): void {
     for (const p of candidatePaths) {
       console.error(`   ${p}`);
     }
-    console.error("\n   Run pnpm release:provenance first.");
+    console.error('\n   Run pnpm release:provenance first.');
     process.exit(1);
   }
 
-  const artifactsDir = resolve(provenancePath, "..");
+  const artifactsDir = resolve(provenancePath, '..');
   const sigPath = `${provenancePath}.sig`;
   const certPath = `${provenancePath}.cert`;
 
@@ -129,19 +129,19 @@ function main(): void {
 
   // Check if cosign is available
   try {
-    exec("cosign version");
-    console.log("  ✅ cosign available");
+    exec('cosign version');
+    console.log('  ✅ cosign available');
   } catch {
-    console.error("\n❌ cosign not found. Install via: sigstore/cosign-installer@v3");
+    console.error('\n❌ cosign not found. Install via: sigstore/cosign-installer@v3');
     process.exit(1);
   }
 
   // Sign the provenance blob
-  console.log("\n  🔏 Signing provenance with cosign keyless...");
+  console.log('\n  🔏 Signing provenance with cosign keyless...');
   try {
     exec(
       `cosign sign-blob --yes --output-signature "${sigPath}" --output-certificate "${certPath}" "${provenancePath}"`,
-      { env: { COSIGN_EXPERIMENTAL: "1" } }
+      { env: { COSIGN_EXPERIMENTAL: '1' } }
     );
     console.log(`  ✅ Signature: ${sigPath}`);
     console.log(`  ✅ Certificate: ${certPath}`);
@@ -151,11 +151,11 @@ function main(): void {
   }
 
   // Read signature and certificate
-  const sigB64 = readFileSync(sigPath, "utf-8").trim();
-  const certB64 = readFileSync(certPath, "utf-8").trim();
+  const sigB64 = readFileSync(sigPath, 'utf-8').trim();
+  const certB64 = readFileSync(certPath, 'utf-8').trim();
 
   // Extract signing identity from certificate
-  let signingIdentity = "github-actions-oidc";
+  let signingIdentity = 'github-actions-oidc';
   try {
     const certText = exec(`openssl x509 -in "${certPath}" -noout -text 2>/dev/null`);
     const uriMatch = certText.match(/URI:([^\s]+)/);
@@ -167,46 +167,46 @@ function main(): void {
   }
 
   // Embed signature in provenance bundle
-  console.log("\n  📝 Embedding signature in provenance bundle...");
-  const provenance = JSON.parse(readFileSync(provenancePath, "utf-8")) as SignedProvenance;
+  console.log('\n  📝 Embedding signature in provenance bundle...');
+  const provenance = JSON.parse(readFileSync(provenancePath, 'utf-8')) as SignedProvenance;
 
   const signature: ProvenanceSignature = {
-    keyid: "sigstore-keyless-github-oidc",
+    keyid: 'sigstore-keyless-github-oidc',
     sig: sigB64,
     cert: certB64,
     signingIdentity,
-    signingMethod: "sigstore-keyless",
-    oidcIssuer: "https://token.actions.githubusercontent.com",
+    signingMethod: 'sigstore-keyless',
+    oidcIssuer: 'https://token.actions.githubusercontent.com',
     signedAt: new Date().toISOString(),
   };
 
   provenance.signatures = [signature];
-  writeFileSync(provenancePath, JSON.stringify(provenance, null, 2) + "\n", "utf-8");
-  console.log("  ✅ Signature embedded in provenance.intoto.json");
+  writeFileSync(provenancePath, JSON.stringify(provenance, null, 2) + '\n', 'utf-8');
+  console.log('  ✅ Signature embedded in provenance.intoto.json');
 
   // Update supply-chain-summary.json
-  const summaryPath = resolve(artifactsDir, "supply-chain-summary.json");
+  const summaryPath = resolve(artifactsDir, 'supply-chain-summary.json');
   if (existsSync(summaryPath)) {
-    const summary = JSON.parse(readFileSync(summaryPath, "utf-8")) as Record<string, unknown>;
-    summary["signingStatus"] = "signed";
-    summary["signingMethod"] = "sigstore-keyless";
-    summary["signingWorkflow"] = ".github/workflows/sign-release.yaml";
-    summary["signedAt"] = new Date().toISOString();
-    summary["oidcIssuer"] = "https://token.actions.githubusercontent.com";
+    const summary = JSON.parse(readFileSync(summaryPath, 'utf-8')) as Record<string, unknown>;
+    summary['signingStatus'] = 'signed';
+    summary['signingMethod'] = 'sigstore-keyless';
+    summary['signingWorkflow'] = '.github/workflows/sign-release.yaml';
+    summary['signedAt'] = new Date().toISOString();
+    summary['oidcIssuer'] = 'https://token.actions.githubusercontent.com';
 
     // Remove signing from infrastructure skips
-    if (Array.isArray(summary["infrastructureSkips"])) {
-      summary["infrastructureSkips"] = (summary["infrastructureSkips"] as string[]).filter(
-        (s) => !s.toLowerCase().includes("signing")
+    if (Array.isArray(summary['infrastructureSkips'])) {
+      summary['infrastructureSkips'] = (summary['infrastructureSkips'] as string[]).filter(
+        (s) => !s.toLowerCase().includes('signing')
       );
     }
 
-    writeFileSync(summaryPath, JSON.stringify(summary, null, 2) + "\n", "utf-8");
-    console.log("  ✅ Supply chain summary updated (signingStatus: signed)");
+    writeFileSync(summaryPath, JSON.stringify(summary, null, 2) + '\n', 'utf-8');
+    console.log('  ✅ Supply chain summary updated (signingStatus: signed)');
   }
 
   // Verify the signature
-  console.log("\n  🔍 Verifying signature...");
+  console.log('\n  🔍 Verifying signature...');
   try {
     exec(
       `cosign verify-blob ` +
@@ -215,18 +215,18 @@ function main(): void {
         `--certificate-identity "${signingIdentity}" ` +
         `--certificate-oidc-issuer "https://token.actions.githubusercontent.com" ` +
         `"${provenancePath}"`,
-      { env: { COSIGN_EXPERIMENTAL: "1" } }
+      { env: { COSIGN_EXPERIMENTAL: '1' } }
     );
-    console.log("  ✅ Signature verified successfully");
+    console.log('  ✅ Signature verified successfully');
   } catch {
-    console.warn("  ⚠️  Signature verification failed (may be expected for new Rekor entries)");
+    console.warn('  ⚠️  Signature verification failed (may be expected for new Rekor entries)');
   }
 
-  console.log("\n  ✅ Provenance signing complete");
+  console.log('\n  ✅ Provenance signing complete');
   console.log(`     Signing identity: ${signingIdentity}`);
-  console.log("     OIDC issuer: https://token.actions.githubusercontent.com");
-  console.log("     Transparency log: Rekor (public-good)");
-  console.log("");
+  console.log('     OIDC issuer: https://token.actions.githubusercontent.com');
+  console.log('     Transparency log: Rekor (public-good)');
+  console.log('');
 }
 
 main();

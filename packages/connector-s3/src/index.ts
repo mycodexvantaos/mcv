@@ -24,7 +24,7 @@ export interface S3Object {
 export interface S3UploadOptions {
   contentType?: string;
   metadata?: Record<string, string>;
-  acl?: "private" | "public-read" | "public-read-write" | "authenticated-read";
+  acl?: 'private' | 'public-read' | 'public-read-write' | 'authenticated-read';
 }
 
 export interface S3DownloadOptions {
@@ -39,7 +39,7 @@ export interface S3ListOptions {
 }
 
 export class S3Connector {
-  private config: Required<Omit<S3Config, "bucket">> & { bucket?: string };
+  private config: Required<Omit<S3Config, 'bucket'>> & { bucket?: string };
   private connected: boolean = false;
   private storage: Map<string, Map<string, { data: Buffer; metadata: any }>> = new Map();
 
@@ -47,8 +47,8 @@ export class S3Connector {
     this.config = {
       accessKeyId: config.accessKeyId,
       secretAccessKey: config.secretAccessKey,
-      region: config.region || "us-east-1",
-      endpoint: config.endpoint || "https://s3.amazonaws.com",
+      region: config.region || 'us-east-1',
+      endpoint: config.endpoint || 'https://s3.amazonaws.com',
       bucket: config.bucket,
       timeout: config.timeout || 30000,
     };
@@ -98,10 +98,10 @@ export class S3Connector {
     options?: S3UploadOptions
   ): Promise<S3Object> {
     if (!this.connected) {
-      throw new Error("Not connected to S3");
+      throw new Error('Not connected to S3');
     }
 
-    const buffer = typeof data === "string" ? Buffer.from(data) : data;
+    const buffer = typeof data === 'string' ? Buffer.from(data) : data;
     const bucketStorage = this.getBucket(bucket);
 
     const object: S3Object = {
@@ -109,7 +109,7 @@ export class S3Connector {
       size: buffer.length,
       lastModified: new Date(),
       etag: this.generateETag(buffer),
-      contentType: options?.contentType || "application/octet-stream",
+      contentType: options?.contentType || 'application/octet-stream',
       metadata: options?.metadata || {},
     };
 
@@ -126,7 +126,7 @@ export class S3Connector {
    */
   async download(bucket: string, key: string, options?: S3DownloadOptions): Promise<Buffer> {
     if (!this.connected) {
-      throw new Error("Not connected to S3");
+      throw new Error('Not connected to S3');
     }
 
     const bucketStorage = this.getBucket(bucket);
@@ -152,7 +152,7 @@ export class S3Connector {
    */
   async delete(bucket: string, key: string): Promise<void> {
     if (!this.connected) {
-      throw new Error("Not connected to S3");
+      throw new Error('Not connected to S3');
     }
 
     const bucketStorage = this.getBucket(bucket);
@@ -180,7 +180,7 @@ export class S3Connector {
    */
   async head(bucket: string, key: string): Promise<S3Object> {
     if (!this.connected) {
-      throw new Error("Not connected to S3");
+      throw new Error('Not connected to S3');
     }
 
     const bucketStorage = this.getBucket(bucket);
@@ -198,7 +198,7 @@ export class S3Connector {
    */
   async list(bucket: string, options?: S3ListOptions): Promise<S3Object[]> {
     if (!this.connected) {
-      throw new Error("Not connected to S3");
+      throw new Error('Not connected to S3');
     }
 
     const bucketStorage = this.getBucket(bucket);
@@ -234,7 +234,7 @@ export class S3Connector {
     destKey: string
   ): Promise<S3Object> {
     if (!this.connected) {
-      throw new Error("Not connected to S3");
+      throw new Error('Not connected to S3');
     }
 
     const sourceStorage = this.getBucket(sourceBucket);
@@ -272,7 +272,7 @@ export class S3Connector {
     expiresIn: number = 3600
   ): Promise<string> {
     if (!this.connected) {
-      throw new Error("Not connected to S3");
+      throw new Error('Not connected to S3');
     }
 
     const bucketStorage = this.getBucket(bucket);
@@ -290,7 +290,7 @@ export class S3Connector {
    */
   async createBucket(bucket: string): Promise<void> {
     if (!this.connected) {
-      throw new Error("Not connected to S3");
+      throw new Error('Not connected to S3');
     }
 
     if (this.storage.has(bucket)) {
@@ -305,7 +305,7 @@ export class S3Connector {
    */
   async deleteBucket(bucket: string): Promise<void> {
     if (!this.connected) {
-      throw new Error("Not connected to S3");
+      throw new Error('Not connected to S3');
     }
 
     const deleted = this.storage.delete(bucket);
@@ -320,7 +320,7 @@ export class S3Connector {
    */
   async listBuckets(): Promise<string[]> {
     if (!this.connected) {
-      throw new Error("Not connected to S3");
+      throw new Error('Not connected to S3');
     }
 
     return Array.from(this.storage.keys());
@@ -333,7 +333,7 @@ export class S3Connector {
     bucket: string
   ): Promise<{ name: string; objectCount: number; size: number }> {
     if (!this.connected) {
-      throw new Error("Not connected to S3");
+      throw new Error('Not connected to S3');
     }
 
     const bucketStorage = this.getBucket(bucket);
@@ -357,7 +357,7 @@ export class S3Connector {
    */
   async deleteMultiple(bucket: string, keys: string[]): Promise<number> {
     if (!this.connected) {
-      throw new Error("Not connected to S3");
+      throw new Error('Not connected to S3');
     }
 
     const bucketStorage = this.getBucket(bucket);
@@ -377,7 +377,7 @@ export class S3Connector {
    */
   async emptyBucket(bucket: string): Promise<number> {
     if (!this.connected) {
-      throw new Error("Not connected to S3");
+      throw new Error('Not connected to S3');
     }
 
     const bucketStorage = this.getBucket(bucket);
@@ -391,8 +391,8 @@ export class S3Connector {
    * Generate ETag for buffer
    */
   private generateETag(buffer: Buffer): string {
-    const crypto = require("crypto");
-    const hash = crypto.createHash("md5").update(buffer).digest("hex");
+    const crypto = require('crypto');
+    const hash = crypto.createHash('md5').update(buffer).digest('hex');
     return `"${hash}"`;
   }
 }

@@ -1,32 +1,32 @@
-"use client";
+'use client';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { ShieldAlert, CheckCircle2, Users, ArrowUpRight, Scale, Gavel, Lock } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { ShieldAlert, CheckCircle2, Users, ArrowUpRight, Scale, Gavel, Lock } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export default function ConsensusPage() {
   const activeVotes = [
     {
-      title: "Protocol Upgrade: Liquid V4.0",
-      status: "VOTING",
-      consensus: "94.2%",
+      title: 'Protocol Upgrade: Liquid V4.0',
+      status: 'VOTING',
+      consensus: '94.2%',
       participants: 12042,
-      timeLeft: "4h 22m",
+      timeLeft: '4h 22m',
     },
     {
-      title: "Swarm Expansion: EU-West-4",
-      status: "VALIDATED",
-      consensus: "99.8%",
+      title: 'Swarm Expansion: EU-West-4',
+      status: 'VALIDATED',
+      consensus: '99.8%',
       participants: 8402,
-      timeLeft: "Complete",
+      timeLeft: 'Complete',
     },
     {
-      title: "Risk Mitigation: Order_Service_02",
-      status: "CRITICAL",
-      consensus: "42.1%",
+      title: 'Risk Mitigation: Order_Service_02',
+      status: 'CRITICAL',
+      consensus: '42.1%',
       participants: 320,
-      timeLeft: "12m",
+      timeLeft: '12m',
     },
   ];
 
@@ -68,7 +68,7 @@ export default function ConsensusPage() {
                     <div className="flex items-center gap-3">
                       <h4 className="text-lg font-bold">{vote.title}</h4>
                       <Badge
-                        variant={vote.status === "CRITICAL" ? "destructive" : "outline"}
+                        variant={vote.status === 'CRITICAL' ? 'destructive' : 'outline'}
                         className="text-[9px] font-mono border-primary/20 text-primary"
                       >
                         {vote.status}
@@ -111,22 +111,22 @@ export default function ConsensusPage() {
               <div className="divide-y divide-border/20">
                 {[
                   {
-                    date: "2024-05-20",
-                    action: "Emergency Rollback: API Gateway",
-                    weight: "0.98α",
-                    result: "SUCCESS",
+                    date: '2024-05-20',
+                    action: 'Emergency Rollback: API Gateway',
+                    weight: '0.98α',
+                    result: 'SUCCESS',
                   },
                   {
-                    date: "2024-05-18",
-                    action: "Resource Re-allocation: APAC Cluster",
-                    weight: "0.92α",
-                    result: "SUCCESS",
+                    date: '2024-05-18',
+                    action: 'Resource Re-allocation: APAC Cluster',
+                    weight: '0.92α',
+                    result: 'SUCCESS',
                   },
                   {
-                    date: "2024-05-15",
-                    action: "Policy Enforcement: mTLS v2",
-                    weight: "1.00α",
-                    result: "ENFORCED",
+                    date: '2024-05-15',
+                    action: 'Policy Enforcement: mTLS v2',
+                    weight: '1.00α',
+                    result: 'ENFORCED',
                   },
                 ].map((log, i) => (
                   <div
@@ -157,9 +157,9 @@ export default function ConsensusPage() {
             </CardHeader>
             <CardContent className="space-y-6">
               {[
-                { label: "Trust Index", value: "0.94α", color: "text-primary" },
-                { label: "Decision Velocity", value: "240ms", color: "text-primary" },
-                { label: "Conflict Rate", value: "0.02%", color: "text-accent" },
+                { label: 'Trust Index', value: '0.94α', color: 'text-primary' },
+                { label: 'Decision Velocity', value: '240ms', color: 'text-primary' },
+                { label: 'Conflict Rate', value: '0.02%', color: 'text-accent' },
               ].map((metric) => (
                 <div key={metric.label} className="space-y-1">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
@@ -179,7 +179,7 @@ export default function ConsensusPage() {
               System Attestation
             </p>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              所有決策均已通過 <span className="text-foreground font-bold">SHA-512</span>{" "}
+              所有決策均已通過 <span className="text-foreground font-bold">SHA-512</span>{' '}
               數位簽章與全域節點共識驗證。
             </p>
           </div>

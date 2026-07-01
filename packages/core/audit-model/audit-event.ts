@@ -4,28 +4,28 @@
  * Every significant action produces an audit event.
  */
 
-import type { ServiceCategory } from "../service-catalog/service-definition";
+import type { ServiceCategory } from '../service-catalog/service-definition';
 
 /** Event categories aligned with service categories */
 export type AuditEventCategory =
-  | "knowledge"
-  | "agent"
-  | "workspace"
-  | "developer"
-  | "security"
-  | "storage"
-  | "model"
-  | "automation";
+  | 'knowledge'
+  | 'agent'
+  | 'workspace'
+  | 'developer'
+  | 'security'
+  | 'storage'
+  | 'model'
+  | 'automation';
 
 /** Event severity levels */
-export type EventSeverity = "critical" | "high" | "medium" | "low" | "info";
+export type EventSeverity = 'critical' | 'high' | 'medium' | 'low' | 'info';
 
 /** Closed-loop status for request→completion/failure pairing */
-export type ClosedLoopStatus = "open" | "completed" | "timeout" | "violated";
+export type ClosedLoopStatus = 'open' | 'completed' | 'timeout' | 'violated';
 
 /** Audit actor — who or what performed the action */
 export interface AuditActor {
-  type: "user" | "agent" | "system" | "cron";
+  type: 'user' | 'agent' | 'system' | 'cron';
   id: string;
   name?: string;
   role?: string;
@@ -95,42 +95,42 @@ export interface IntegrityReport {
 /** Standard audit event types per category */
 export const STANDARD_AUDIT_EVENTS: Record<string, string[]> = {
   knowledge: [
-    "knowledge.document.uploaded",
-    "knowledge.document.parsed",
-    "knowledge.document.indexed",
-    "knowledge.search.requested",
-    "knowledge.search.completed",
-    "knowledge.search.failed",
+    'knowledge.document.uploaded',
+    'knowledge.document.parsed',
+    'knowledge.document.indexed',
+    'knowledge.search.requested',
+    'knowledge.search.completed',
+    'knowledge.search.failed',
   ],
   agent: [
-    "agent.session.created",
-    "agent.answer.created",
-    "agent.answer.cited",
-    "agent.answer.unverified",
+    'agent.session.created',
+    'agent.answer.created',
+    'agent.answer.cited',
+    'agent.answer.unverified',
   ],
   workspace: [
-    "workspace.created",
-    "workspace.updated",
-    "workspace.member.added",
-    "workspace.member.removed",
+    'workspace.created',
+    'workspace.updated',
+    'workspace.member.added',
+    'workspace.member.removed',
   ],
   security: [
-    "identity.user.registered",
-    "identity.session.created",
-    "identity.session.revoked",
-    "policy.denied",
-    "policy.evaluated",
+    'identity.user.registered',
+    'identity.session.created',
+    'identity.session.revoked',
+    'policy.denied',
+    'policy.evaluated',
   ],
   model: [
-    "model.endpoint.registered",
-    "model.invocation.started",
-    "model.invocation.completed",
-    "model.invocation.failed",
+    'model.endpoint.registered',
+    'model.invocation.started',
+    'model.invocation.completed',
+    'model.invocation.failed',
   ],
   audit: [
-    "governance.audit.event-ingested",
-    "governance.audit.integrity-violation",
-    "governance.audit.closed-loop-timeout",
+    'governance.audit.event-ingested',
+    'governance.audit.integrity-violation',
+    'governance.audit.closed-loop-timeout',
   ],
-  usage: ["governance.usage.quota-warning", "governance.usage.rate-limit-exceeded"],
+  usage: ['governance.usage.quota-warning', 'governance.usage.rate-limit-exceeded'],
 };

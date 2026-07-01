@@ -2,7 +2,7 @@
  * MyCodeXvantaOS — Model Application Package
  */
 
-export { ModelService } from "./model-service";
+export { ModelService } from './model-service';
 export type {
   ModelServiceDeps,
   ModelProvider,
@@ -12,4 +12,4 @@ export type {
   CallChatModelInput,
   CallEmbeddingModelInput,
   ModelAuditEvent,
-} from "./model-service";
+} from './model-service';

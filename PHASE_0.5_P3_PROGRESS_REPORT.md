@@ -246,16 +246,16 @@ Memory Storage / Native LLM / Native Audio / Native Image
 
 ```typescript
 const s3Provider = await initializeS3StorageProvider({
-  id: "s3-storage",
-  name: "AWS S3",
-  mode: "hybrid",
-  providerMode: "external",
+  id: 's3-storage',
+  name: 'AWS S3',
+  mode: 'hybrid',
+  providerMode: 'external',
   config: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: "us-east-1",
-    bucket: "my-bucket",
-    fallbackProviderId: "storage-memory",
+    region: 'us-east-1',
+    bucket: 'my-bucket',
+    fallbackProviderId: 'storage-memory',
   },
 });
 ```
@@ -264,16 +264,16 @@ const s3Provider = await initializeS3StorageProvider({
 
 ```typescript
 const bedrockProvider = await initializeBedrockProvider({
-  id: "bedrock-llm",
-  name: "AWS Bedrock",
-  mode: "hybrid",
-  providerMode: "external",
+  id: 'bedrock-llm',
+  name: 'AWS Bedrock',
+  mode: 'hybrid',
+  providerMode: 'external',
   config: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: "us-east-1",
-    modelId: "anthropic.claude-3-sonnet-20240229-v1:0",
-    fallbackProviderId: "llm-native",
+    region: 'us-east-1',
+    modelId: 'anthropic.claude-3-sonnet-20240229-v1:0',
+    fallbackProviderId: 'llm-native',
   },
 });
 ```
@@ -282,17 +282,17 @@ const bedrockProvider = await initializeBedrockProvider({
 
 ```typescript
 const dalleProvider = await initializeDalleProvider({
-  id: "dalle-image",
-  name: "DALL-E Image",
-  mode: "hybrid",
-  providerMode: "external",
+  id: 'dalle-image',
+  name: 'DALL-E Image',
+  mode: 'hybrid',
+  providerMode: 'external',
   config: {
     apiKey: process.env.OPENAI_API_KEY,
-    model: "dall-e-3",
-    size: "1024x1024",
-    quality: "standard",
-    style: "vivid",
-    fallbackProviderId: "image-native",
+    model: 'dall-e-3',
+    size: '1024x1024',
+    quality: 'standard',
+    style: 'vivid',
+    fallbackProviderId: 'image-native',
   },
 });
 ```
@@ -359,7 +359,7 @@ Each provider includes:
 ```typescript
 // Each provider validates required configuration
 if (!this.apiKey) {
-  throw new Error("API key is required");
+  throw new Error('API key is required');
 }
 ```
 

@@ -3,39 +3,39 @@
  * 處理跨維度文件索引、OCR 提取、法律/學術分析及多源數據清洗。
  */
 
-import { ai } from "@/ai/genkit";
-import { z } from "genkit";
+import { ai } from '@/ai/genkit';
+import { z } from 'genkit';
 
 const AnalysisModeSchema = z.enum([
-  "SEMANTIC_SEARCH",
-  "OCR_EXTRACTION",
-  "RESEARCH_SYNTHESIS",
-  "PRODUCT_COMPARISON",
-  "DATA_QUALITY_AUDIT",
-  "LEGAL_CONTRACT_REVIEW",
-  "COMPLIANCE_GAP_ANALYSIS",
+  'SEMANTIC_SEARCH',
+  'OCR_EXTRACTION',
+  'RESEARCH_SYNTHESIS',
+  'PRODUCT_COMPARISON',
+  'DATA_QUALITY_AUDIT',
+  'LEGAL_CONTRACT_REVIEW',
+  'COMPLIANCE_GAP_ANALYSIS',
 ]);
 
 const AdvancedAnalysisInputSchema = z.object({
   mode: AnalysisModeSchema,
-  contextDescription: z.string().describe("分析背景或任務目標"),
-  mockDataSeed: z.string().optional().describe("用於生成模擬數據的種子"),
+  contextDescription: z.string().describe('分析背景或任務目標'),
+  mockDataSeed: z.string().optional().describe('用於生成模擬數據的種子'),
 });
 
 export type AdvancedAnalysisInput = z.infer<typeof AdvancedAnalysisInputSchema>;
 
 const AdvancedAnalysisOutputSchema = z.object({
-  summary: z.string().describe("分析結果摘要"),
+  summary: z.string().describe('分析結果摘要'),
   findings: z.array(
     z.object({
-      source: z.string().describe("來源標籤或文件名"),
-      content: z.any().describe("發現的具體內容（文本、表格或結構化數據）"),
-      relevance: z.number().optional().describe("相關性評分 (0-1)"),
-      pageReference: z.string().optional().describe("頁碼或引用參考"),
+      source: z.string().describe('來源標籤或文件名'),
+      content: z.any().describe('發現的具體內容（文本、表格或結構化數據）'),
+      relevance: z.number().optional().describe('相關性評分 (0-1)'),
+      pageReference: z.string().optional().describe('頁碼或引用參考'),
     })
   ),
-  recommendations: z.array(z.string()).describe("基於分析的行動建議"),
-  metadata: z.record(z.any()).optional().describe("額外的元數據（如 OCR 信心分數、統計指標）"),
+  recommendations: z.array(z.string()).describe('基於分析的行動建議'),
+  metadata: z.record(z.any()).optional().describe('額外的元數據（如 OCR 信心分數、統計指標）'),
 });
 
 export type AdvancedAnalysisOutput = z.infer<typeof AdvancedAnalysisOutputSchema>;
@@ -47,7 +47,7 @@ export async function runAdvancedAnalysis(
 }
 
 const prompt = ai.definePrompt({
-  name: "advancedAnalysisPrompt",
+  name: 'advancedAnalysisPrompt',
   input: { schema: AdvancedAnalysisInputSchema },
   output: { schema: AdvancedAnalysisOutputSchema },
   prompt: `你現在是 Sentinel 的「全知分析引擎」。你的任務是執行跨維度、多格式的文件分析。
@@ -69,7 +69,7 @@ const prompt = ai.definePrompt({
 
 const advancedAnalysisFlow = ai.defineFlow(
   {
-    name: "advancedAnalysisFlow",
+    name: 'advancedAnalysisFlow',
     inputSchema: AdvancedAnalysisInputSchema,
     outputSchema: AdvancedAnalysisOutputSchema,
   },

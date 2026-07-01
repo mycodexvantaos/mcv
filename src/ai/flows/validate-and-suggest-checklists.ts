@@ -6,18 +6,18 @@
  * - ValidateAndSuggestChecklistsOutput - The return type for the validateAndSuggestChecklists function.
  */
 
-import { ai } from "@/ai/genkit";
-import { z } from "genkit";
+import { ai } from '@/ai/genkit';
+import { z } from 'genkit';
 
 const ValidateAndSuggestChecklistsInputSchema = z.object({
   architectureDefinition: z
     .string()
     .describe(
-      "The architecture definition, potentially in a format like PlantUML or Mermaid diagram code."
+      'The architecture definition, potentially in a format like PlantUML or Mermaid diagram code.'
     ),
   ciCdPipelineConfig: z
     .string()
-    .describe("The GitLab CI/CD pipeline configuration in YAML format."),
+    .describe('The GitLab CI/CD pipeline configuration in YAML format.'),
   customChecklist: z
     .array(z.string())
     .describe("A list of existing 'zero-failure' checklist items or policies to validate against."),
@@ -27,35 +27,35 @@ export type ValidateAndSuggestChecklistsInput = z.infer<
 >;
 
 const ValidationFindingSchema = z.object({
-  policy: z.string().describe("The checklist policy item being validated."),
+  policy: z.string().describe('The checklist policy item being validated.'),
   status: z
-    .enum(["ADHERENT", "VIOLATED", "N/A"])
+    .enum(['ADHERENT', 'VIOLATED', 'N/A'])
     .describe(
       "The adherence status: 'ADHERENT' if the policy is followed, 'VIOLATED' if not, or 'N/A' if not applicable."
     ),
   details: z
     .string()
     .describe(
-      "Explanation for the status, including specific reasons for violation if applicable."
+      'Explanation for the status, including specific reasons for violation if applicable.'
     ),
 });
 
 const SuggestedPolicySchema = z.object({
-  policy: z.string().describe("A new policy item suggested for the checklist."),
+  policy: z.string().describe('A new policy item suggested for the checklist.'),
   reason: z
     .string()
     .describe(
-      "The reasoning behind the suggested policy, linking it to zero-failure architecture, security, or efficiency."
+      'The reasoning behind the suggested policy, linking it to zero-failure architecture, security, or efficiency.'
     ),
 });
 
 const ValidateAndSuggestChecklistsOutputSchema = z.object({
   validationResults: z
     .array(ValidationFindingSchema)
-    .describe("Results of validating the architecture and CI/CD against the custom checklist."),
+    .describe('Results of validating the architecture and CI/CD against the custom checklist.'),
   suggestedPolicies: z
     .array(SuggestedPolicySchema)
-    .describe("New policy items suggested by AI to enhance zero-failure goals."),
+    .describe('New policy items suggested by AI to enhance zero-failure goals.'),
 });
 export type ValidateAndSuggestChecklistsOutput = z.infer<
   typeof ValidateAndSuggestChecklistsOutputSchema
@@ -68,7 +68,7 @@ export async function validateAndSuggestChecklists(
 }
 
 const prompt = ai.definePrompt({
-  name: "validateAndSuggestChecklistsPrompt",
+  name: 'validateAndSuggestChecklistsPrompt',
   input: { schema: ValidateAndSuggestChecklistsInputSchema },
   output: { schema: ValidateAndSuggestChecklistsOutputSchema },
   prompt: `You are an expert in 'zero-failure' architecture and GitLab CI/CD, dedicated to meticulous refinement and ensuring perfect pass rates.
@@ -109,7 +109,7 @@ Based on the provided information, perform the following tasks and output your r
 
 const validateAndSuggestChecklistsFlow = ai.defineFlow(
   {
-    name: "validateAndSuggestChecklistsFlow",
+    name: 'validateAndSuggestChecklistsFlow',
     inputSchema: ValidateAndSuggestChecklistsInputSchema,
     outputSchema: ValidateAndSuggestChecklistsOutputSchema,
   },

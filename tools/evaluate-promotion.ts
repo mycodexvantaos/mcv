@@ -23,10 +23,10 @@
  *   - infrastructure-not-configured and signing-not-configured are documented
  */
 
-import { execSync } from "node:child_process";
-import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
-import { resolve } from "node:path";
-import { createHash } from "node:crypto";
+import { execSync } from 'node:child_process';
+import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { createHash } from 'node:crypto';
 
 // ── Types ──────────────────────────────────────────────────────────
 
@@ -71,7 +71,7 @@ interface PromotionEvaluation {
     requiredGatesFailed: number;
   };
   blockingIssues: string[];
-  recommendation: "go" | "no-go" | "conditional-go";
+  recommendation: 'go' | 'no-go' | 'conditional-go';
   recommendationReason: string;
   infrastructureClassifications: string[];
   signingClassification: string;
@@ -81,39 +81,39 @@ interface PromotionEvaluation {
 
 function git(command: string): string {
   try {
-    return execSync(`git ${command}`, { encoding: "utf-8" }).trim();
+    return execSync(`git ${command}`, { encoding: 'utf-8' }).trim();
   } catch {
-    return "unknown";
+    return 'unknown';
   }
 }
 
 function exec(command: string): string {
   try {
     return execSync(command, {
-      encoding: "utf-8",
-      stdio: ["pipe", "pipe", "pipe"],
+      encoding: 'utf-8',
+      stdio: ['pipe', 'pipe', 'pipe'],
     }).trim();
   } catch (err: unknown) {
     const e = err as { stderr?: string; stdout?: string; message?: string };
-    throw new Error(e.stderr?.trim() || e.stdout?.trim() || e.message || "Command failed");
+    throw new Error(e.stderr?.trim() || e.stdout?.trim() || e.message || 'Command failed');
   }
 }
 
 function getVersion(): string {
   const args = process.argv.slice(2);
   for (let i = 0; i < args.length; i++) {
-    if (args[i] === "--version" && args[i + 1]) {
+    if (args[i] === '--version' && args[i + 1]) {
       return args[i + 1];
     }
   }
-  const tag = git("describe --tags --exact-match HEAD 2>/dev/null");
-  if (tag && tag !== "unknown") return tag;
-  return process.env.npm_package_version ?? "0.1.0";
+  const tag = git('describe --tags --exact-match HEAD 2>/dev/null');
+  if (tag && tag !== 'unknown') return tag;
+  return process.env.npm_package_version ?? '0.1.0';
 }
 
 function sha256OfFile(filePath: string): string | null {
   if (!existsSync(filePath)) return null;
-  return createHash("sha256").update(readFileSync(filePath, "utf-8")).digest("hex");
+  return createHash('sha256').update(readFileSync(filePath, 'utf-8')).digest('hex');
 }
 
 // ── Gate Evaluators ────────────────────────────────────────────────
@@ -122,27 +122,27 @@ function evaluateGate(gate: PromotionGate, version: string): GateEvaluation {
   const artifactsDir = resolve(process.cwd(), `release/artifacts/${version}`);
 
   switch (gate.id) {
-    case "G001":
+    case 'G001':
       return evaluateG001(gate, version);
-    case "G002":
+    case 'G002':
       return evaluateG002(gate, version);
-    case "G003":
+    case 'G003':
       return evaluateG003(gate, version);
-    case "G004":
+    case 'G004':
       return evaluateG004(gate, version, artifactsDir);
-    case "G005":
+    case 'G005':
       return evaluateG005(gate, version, artifactsDir);
-    case "G006":
+    case 'G006':
       return evaluateG006(gate, version);
-    case "G007":
+    case 'G007':
       return evaluateG007(gate, version);
-    case "G008":
+    case 'G008':
       return evaluateG008(gate, version, artifactsDir);
-    case "G009":
+    case 'G009':
       return evaluateG009(gate, version);
-    case "G010":
+    case 'G010':
       return evaluateG010(gate, version, artifactsDir);
-    case "G011":
+    case 'G011':
       return evaluateG011(gate, version, artifactsDir);
     default:
       return {
@@ -164,7 +164,7 @@ function evaluateG001(gate: PromotionGate, version: string): GateEvaluation {
     // Check if we can verify the current state locally
     const typecheckResult = (() => {
       try {
-        exec("pnpm typecheck");
+        exec('pnpm typecheck');
         return true;
       } catch {
         return false;
@@ -173,7 +173,7 @@ function evaluateG001(gate: PromotionGate, version: string): GateEvaluation {
 
     const testResult = (() => {
       try {
-        exec("pnpm test");
+        exec('pnpm test');
         return true;
       } catch {
         return false;
@@ -182,7 +182,7 @@ function evaluateG001(gate: PromotionGate, version: string): GateEvaluation {
 
     const governanceResult = (() => {
       try {
-        exec("pnpm governance:check");
+        exec('pnpm governance:check');
         return true;
       } catch {
         return false;
@@ -224,7 +224,7 @@ function evaluateG002(gate: PromotionGate, version: string): GateEvaluation {
   const exists = existsSync(releaseNotesPath);
 
   if (exists) {
-    const content = readFileSync(releaseNotesPath, "utf-8");
+    const content = readFileSync(releaseNotesPath, 'utf-8');
     const hasAdded = /##?\s*Added/i.test(content);
     const hasChanged = /##?\s*Changed/i.test(content);
     const hasFixed = /##?\s*Fixed/i.test(content);
@@ -258,7 +258,7 @@ function evaluateG002(gate: PromotionGate, version: string): GateEvaluation {
 
 // G003: CHANGELOG Entry
 function evaluateG003(gate: PromotionGate, version: string): GateEvaluation {
-  const changelogPath = resolve(process.cwd(), "CHANGELOG.md");
+  const changelogPath = resolve(process.cwd(), 'CHANGELOG.md');
   if (!existsSync(changelogPath)) {
     return {
       gateId: gate.id,
@@ -268,13 +268,13 @@ function evaluateG003(gate: PromotionGate, version: string): GateEvaluation {
       required: gate.required,
       rcStatus: gate.rcStatus,
       stableStatus: gate.stableStatus,
-      evidence: "CHANGELOG.md not found",
+      evidence: 'CHANGELOG.md not found',
     };
   }
 
-  const content = readFileSync(changelogPath, "utf-8");
+  const content = readFileSync(changelogPath, 'utf-8');
   // Match both [0.1.0-rc.1] and [v0.1.0-rc.1] formats
-  const versionStripped = version.startsWith("v") ? version.slice(1) : version;
+  const versionStripped = version.startsWith('v') ? version.slice(1) : version;
   const hasEntry = content.includes(`[${versionStripped}]`) || content.includes(`[${version}]`);
 
   return {
@@ -293,9 +293,9 @@ function evaluateG003(gate: PromotionGate, version: string): GateEvaluation {
 
 // G004: Release Artifacts
 function evaluateG004(gate: PromotionGate, version: string, artifactsDir: string): GateEvaluation {
-  const manifestPath = resolve(artifactsDir, "release-manifest.json");
-  const digestsPath = resolve(artifactsDir, "artifact-digests.json");
-  const summaryPath = resolve(artifactsDir, "verification-summary.json");
+  const manifestPath = resolve(artifactsDir, 'release-manifest.json');
+  const digestsPath = resolve(artifactsDir, 'artifact-digests.json');
+  const summaryPath = resolve(artifactsDir, 'verification-summary.json');
 
   const manifestExists = existsSync(manifestPath);
   const digestsExists = existsSync(digestsPath);
@@ -305,11 +305,11 @@ function evaluateG004(gate: PromotionGate, version: string, artifactsDir: string
 
   if (manifestExists) {
     try {
-      const manifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
+      const manifest = JSON.parse(readFileSync(manifestPath, 'utf-8'));
       if (manifest.version && manifest.commit && manifest.manifestHash) {
         evidence += `. Manifest valid: v${manifest.version} @ ${manifest.commit.slice(0, 8)}`;
       } else {
-        evidence += ". Manifest missing required fields";
+        evidence += '. Manifest missing required fields';
         return {
           gateId: gate.id,
           gateName: gate.name,
@@ -322,20 +322,20 @@ function evaluateG004(gate: PromotionGate, version: string, artifactsDir: string
         };
       }
     } catch {
-      evidence += ". Manifest parse error";
+      evidence += '. Manifest parse error';
     }
   }
 
   if (digestsExists) {
     try {
-      const digests = JSON.parse(readFileSync(digestsPath, "utf-8"));
-      if (digests.digestAlgorithm === "sha3-512") {
+      const digests = JSON.parse(readFileSync(digestsPath, 'utf-8'));
+      if (digests.digestAlgorithm === 'sha3-512') {
         evidence += `. Digests use SHA3-512 primary with ${digests.artifacts?.length ?? 0} artifacts`;
       } else {
         evidence += `. Digests use ${digests.digestAlgorithm} (expected sha3-512)`;
       }
     } catch {
-      evidence += ". Digests parse error";
+      evidence += '. Digests parse error';
     }
   }
 
@@ -354,8 +354,8 @@ function evaluateG004(gate: PromotionGate, version: string, artifactsDir: string
 
 // G005: Supply Chain Baseline
 function evaluateG005(gate: PromotionGate, version: string, artifactsDir: string): GateEvaluation {
-  const sbomPath = resolve(artifactsDir, "sbom.cyclonedx.json");
-  const provenancePath = resolve(artifactsDir, "provenance.intoto.json");
+  const sbomPath = resolve(artifactsDir, 'sbom.cyclonedx.json');
+  const provenancePath = resolve(artifactsDir, 'provenance.intoto.json');
 
   const sbomExists = existsSync(sbomPath);
   const provenanceExists = existsSync(provenancePath);
@@ -364,29 +364,29 @@ function evaluateG005(gate: PromotionGate, version: string, artifactsDir: string
 
   if (sbomExists) {
     try {
-      const sbom = JSON.parse(readFileSync(sbomPath, "utf-8"));
+      const sbom = JSON.parse(readFileSync(sbomPath, 'utf-8'));
       if (sbom.specVersion) {
         evidence += `. SBOM specVersion=${sbom.specVersion}`;
       }
-      if (sbom.bomFormat === "CycloneDX") {
-        evidence += ", format=CycloneDX";
+      if (sbom.bomFormat === 'CycloneDX') {
+        evidence += ', format=CycloneDX';
       }
     } catch {
-      evidence += ". SBOM parse error";
+      evidence += '. SBOM parse error';
     }
   }
 
   if (provenanceExists) {
     try {
-      const prov = JSON.parse(readFileSync(provenancePath, "utf-8"));
+      const prov = JSON.parse(readFileSync(provenancePath, 'utf-8'));
       if (prov._type) {
-        evidence += `. Provenance type=${prov._type.split("/").pop()}`;
+        evidence += `. Provenance type=${prov._type.split('/').pop()}`;
       }
       if (prov.predicateType) {
-        evidence += `, predicate=${prov.predicateType.split("/").pop()}`;
+        evidence += `, predicate=${prov.predicateType.split('/').pop()}`;
       }
     } catch {
-      evidence += ". Provenance parse error";
+      evidence += '. Provenance parse error';
     }
   }
 
@@ -405,7 +405,7 @@ function evaluateG005(gate: PromotionGate, version: string, artifactsDir: string
 // G006: Self-Hosted Validation
 function evaluateG006(gate: PromotionGate, version: string): GateEvaluation {
   const quickstartPath = resolve(process.cwd(), `docs/self-hostable/quickstart-${version}.md`);
-  const smokeScriptPath = resolve(process.cwd(), "scripts/smoke/self-hosted-rc-smoke.sh");
+  const smokeScriptPath = resolve(process.cwd(), 'scripts/smoke/self-hosted-rc-smoke.sh');
 
   const quickstartExists = existsSync(quickstartPath);
   const smokeScriptExists = existsSync(smokeScriptPath);
@@ -427,15 +427,15 @@ function evaluateG006(gate: PromotionGate, version: string): GateEvaluation {
 // G007: Governance Enforcement
 function evaluateG007(gate: PromotionGate, version: string): GateEvaluation {
   try {
-    const source = readFileSync("apps/api-node/index.ts", "utf-8");
+    const source = readFileSync('apps/api-node/index.ts', 'utf-8');
     const flags = [
-      "auditEnforcementEnabled",
-      "knowledgeTraceEnforcementEnabled",
-      "dreamSafetyEnforcementEnabled",
-      "auditEnforcementMiddleware",
-      "knowledgeTraceEnforcementMiddleware",
-      "dreamSafetyEnforcementMiddleware",
-      "policyRuntimeEnforcement",
+      'auditEnforcementEnabled',
+      'knowledgeTraceEnforcementEnabled',
+      'dreamSafetyEnforcementEnabled',
+      'auditEnforcementMiddleware',
+      'knowledgeTraceEnforcementMiddleware',
+      'dreamSafetyEnforcementMiddleware',
+      'policyRuntimeEnforcement',
     ];
     const missing = flags.filter((f) => !source.includes(f));
     const allPresent = missing.length === 0;
@@ -443,15 +443,15 @@ function evaluateG007(gate: PromotionGate, version: string): GateEvaluation {
     // Also run governance:check
     let governanceCheckPass = false;
     try {
-      exec("pnpm governance:check");
+      exec('pnpm governance:check');
       governanceCheckPass = true;
     } catch {
       governanceCheckPass = false;
     }
 
     const evidence = allPresent
-      ? `All 7 enforcement flags present. Governance check: ${governanceCheckPass ? "passed" : "failed"}`
-      : `Missing flags: ${missing.join(", ")}. Governance check: ${governanceCheckPass ? "passed" : "failed"}`;
+      ? `All 7 enforcement flags present. Governance check: ${governanceCheckPass ? 'passed' : 'failed'}`
+      : `Missing flags: ${missing.join(', ')}. Governance check: ${governanceCheckPass ? 'passed' : 'failed'}`;
 
     return {
       gateId: gate.id,
@@ -483,7 +483,7 @@ function evaluateG008(gate: PromotionGate, version: string, artifactsDir: string
   // (Dockerfile, package.json, pnpm-lock.yaml, apps/api-node/index.ts,
   // tools/governance/check.ts) are stable. Release manifest is excluded
   // because it contains a buildTimestamp that changes on each generation.
-  const digestsPath = resolve(artifactsDir, "artifact-digests.json");
+  const digestsPath = resolve(artifactsDir, 'artifact-digests.json');
 
   if (!existsSync(digestsPath)) {
     return {
@@ -494,20 +494,20 @@ function evaluateG008(gate: PromotionGate, version: string, artifactsDir: string
       required: gate.required,
       rcStatus: gate.rcStatus,
       stableStatus: gate.stableStatus,
-      evidence: "artifact-digests.json not found — run pnpm release:artifacts first",
+      evidence: 'artifact-digests.json not found — run pnpm release:artifacts first',
     };
   }
 
   try {
-    const digests = JSON.parse(readFileSync(digestsPath, "utf-8"));
+    const digests = JSON.parse(readFileSync(digestsPath, 'utf-8'));
 
     // Check static source files — these should have stable digests
     const staticFiles = [
-      "Dockerfile",
-      "package.json",
-      "pnpm-lock.yaml",
-      "apps/api-node/index.ts",
-      "tools/governance/check.ts",
+      'Dockerfile',
+      'package.json',
+      'pnpm-lock.yaml',
+      'apps/api-node/index.ts',
+      'tools/governance/check.ts',
     ];
 
     const staticDigests = digests.artifacts?.filter((a: { file: string }) =>
@@ -524,7 +524,7 @@ function evaluateG008(gate: PromotionGate, version: string, artifactsDir: string
         rcStatus: gate.rcStatus,
         stableStatus: gate.stableStatus,
         evidence:
-          "No static source file digests to compare. Artifact generation produces reproducible outputs from the same commit.",
+          'No static source file digests to compare. Artifact generation produces reproducible outputs from the same commit.',
       };
     }
 
@@ -534,9 +534,9 @@ function evaluateG008(gate: PromotionGate, version: string, artifactsDir: string
     for (const artifact of staticDigests) {
       const filePath = resolve(process.cwd(), artifact.file);
       if (existsSync(filePath)) {
-        const currentSha3_512 = createHash("sha3-512")
-          .update(readFileSync(filePath, "utf-8"))
-          .digest("hex");
+        const currentSha3_512 = createHash('sha3-512')
+          .update(readFileSync(filePath, 'utf-8'))
+          .digest('hex');
         if (currentSha3_512 !== artifact.sha3_512) {
           allMatch = false;
           mismatches.push(artifact.file);
@@ -546,7 +546,7 @@ function evaluateG008(gate: PromotionGate, version: string, artifactsDir: string
 
     const evidence = allMatch
       ? `All ${staticDigests.length} static source file digests match current content. Release artifacts are reproducible from the same commit.`
-      : `Digest mismatches in: ${mismatches.join(", ")}. Source files may have changed since artifact generation.`;
+      : `Digest mismatches in: ${mismatches.join(', ')}. Source files may have changed since artifact generation.`;
 
     return {
       gateId: gate.id,
@@ -578,7 +578,7 @@ function evaluateG009(gate: PromotionGate, version: string): GateEvaluation {
     // Verify current tests pass
     let testsPass = false;
     try {
-      exec("pnpm test");
+      exec('pnpm test');
       testsPass = true;
     } catch {
       testsPass = false;
@@ -587,26 +587,26 @@ function evaluateG009(gate: PromotionGate, version: string): GateEvaluation {
     // Verify contracts still validate
     let contractsPass = false;
     try {
-      exec("pnpm contracts:validate");
+      exec('pnpm contracts:validate');
       contractsPass = true;
     } catch {
       contractsPass = false;
     }
 
     // Verify enforcement flags unchanged
-    const source = readFileSync("apps/api-node/index.ts", "utf-8");
+    const source = readFileSync('apps/api-node/index.ts', 'utf-8');
     const flags = [
-      "auditEnforcementEnabled",
-      "knowledgeTraceEnforcementEnabled",
-      "dreamSafetyEnforcementEnabled",
-      "auditEnforcementMiddleware",
-      "knowledgeTraceEnforcementMiddleware",
-      "dreamSafetyEnforcementMiddleware",
-      "policyRuntimeEnforcement",
+      'auditEnforcementEnabled',
+      'knowledgeTraceEnforcementEnabled',
+      'dreamSafetyEnforcementEnabled',
+      'auditEnforcementMiddleware',
+      'knowledgeTraceEnforcementMiddleware',
+      'dreamSafetyEnforcementMiddleware',
+      'policyRuntimeEnforcement',
     ];
     const allFlagsPresent = flags.every((f) => source.includes(f));
 
-    const evidence = `Tests=${testsPass}, Contracts=${contractsPass}, Enforcement flags=${allFlagsPresent ? "unchanged" : "CHANGED"}. No regressions detected in test coverage, API contracts, or enforcement behavior.`;
+    const evidence = `Tests=${testsPass}, Contracts=${contractsPass}, Enforcement flags=${allFlagsPresent ? 'unchanged' : 'CHANGED'}. No regressions detected in test coverage, API contracts, or enforcement behavior.`;
 
     return {
       gateId: gate.id,
@@ -634,7 +634,7 @@ function evaluateG009(gate: PromotionGate, version: string): GateEvaluation {
 
 // G010: Cryptographic Signing
 function evaluateG010(gate: PromotionGate, version: string, artifactsDir: string): GateEvaluation {
-  const provenancePath = resolve(artifactsDir, "provenance.intoto.json");
+  const provenancePath = resolve(artifactsDir, 'provenance.intoto.json');
 
   if (!existsSync(provenancePath)) {
     return {
@@ -645,14 +645,14 @@ function evaluateG010(gate: PromotionGate, version: string, artifactsDir: string
       required: gate.required,
       rcStatus: gate.rcStatus,
       stableStatus: gate.stableStatus,
-      evidence: "provenance.intoto.json not found — run pnpm release:provenance first",
-      classification: "signing-not-configured",
+      evidence: 'provenance.intoto.json not found — run pnpm release:provenance first',
+      classification: 'signing-not-configured',
     };
   }
 
   // Check for signatures in the provenance
   try {
-    const prov = JSON.parse(readFileSync(provenancePath, "utf-8"));
+    const prov = JSON.parse(readFileSync(provenancePath, 'utf-8'));
     const hasSignatures =
       prov.signatures && Array.isArray(prov.signatures) && prov.signatures.length > 0;
 
@@ -673,14 +673,14 @@ function evaluateG010(gate: PromotionGate, version: string, artifactsDir: string
     return {
       gateId: gate.id,
       gateName: gate.name,
-      passed: gate.rcStatus === "acceptable-skip",
+      passed: gate.rcStatus === 'acceptable-skip',
       skipped: true,
       required: gate.required,
       rcStatus: gate.rcStatus,
       stableStatus: gate.stableStatus,
       evidence:
-        "Provenance is unsigned. Classified as signing-not-configured. RC policy allows this (acceptable-skip). Stable release requires signing.",
-      classification: "signing-not-configured",
+        'Provenance is unsigned. Classified as signing-not-configured. RC policy allows this (acceptable-skip). Stable release requires signing.',
+      classification: 'signing-not-configured',
     };
   } catch {
     return {
@@ -691,20 +691,20 @@ function evaluateG010(gate: PromotionGate, version: string, artifactsDir: string
       required: gate.required,
       rcStatus: gate.rcStatus,
       stableStatus: gate.stableStatus,
-      evidence: "Provenance parse error — classified as signing-not-configured",
-      classification: "signing-not-configured",
+      evidence: 'Provenance parse error — classified as signing-not-configured',
+      classification: 'signing-not-configured',
     };
   }
 }
 
 // G011: Infrastructure Validation
 function evaluateG011(gate: PromotionGate, version: string, artifactsDir: string): GateEvaluation {
-  const summaryPath = resolve(artifactsDir, "verification-summary.json");
+  const summaryPath = resolve(artifactsDir, 'verification-summary.json');
 
   let infrastructureSkips: string[] = [];
   if (existsSync(summaryPath)) {
     try {
-      const summary = JSON.parse(readFileSync(summaryPath, "utf-8"));
+      const summary = JSON.parse(readFileSync(summaryPath, 'utf-8'));
       if (summary.infrastructureSkips) {
         infrastructureSkips = summary.infrastructureSkips;
       }
@@ -715,22 +715,22 @@ function evaluateG011(gate: PromotionGate, version: string, artifactsDir: string
 
   if (infrastructureSkips.length === 0) {
     infrastructureSkips = [
-      "GCP / Terraform Cloud: infrastructure-not-configured (no .tf files)",
-      "Cloudflare: infrastructure-not-configured (no CF_API_TOKEN)",
-      "Kubernetes: infrastructure-not-configured (no KUBE_CONFIG_DEV)",
+      'GCP / Terraform Cloud: infrastructure-not-configured (no .tf files)',
+      'Cloudflare: infrastructure-not-configured (no CF_API_TOKEN)',
+      'Kubernetes: infrastructure-not-configured (no KUBE_CONFIG_DEV)',
     ];
   }
 
   return {
     gateId: gate.id,
     gateName: gate.name,
-    passed: gate.rcStatus === "acceptable-skip",
+    passed: gate.rcStatus === 'acceptable-skip',
     skipped: true,
     required: gate.required,
     rcStatus: gate.rcStatus,
     stableStatus: gate.stableStatus,
     evidence: `Infrastructure not configured. Skips documented: ${infrastructureSkips.length} items. RC policy: acceptable-skip. Stable policy: optional.`,
-    classification: "infrastructure-not-configured",
+    classification: 'infrastructure-not-configured',
   };
 }
 
@@ -740,7 +740,7 @@ function writePromotionMarkdown(report: PromotionEvaluation, outputPath: string)
   const lines: string[] = [];
 
   lines.push(`# Promotion Gate Evaluation — ${report.tag} → ${report.targetRelease}`);
-  lines.push("");
+  lines.push('');
   lines.push(`**Version**: ${report.version}`);
   lines.push(`**Tag**: ${report.tag}`);
   lines.push(`**Commit**: \`${report.commit}\``);
@@ -749,19 +749,19 @@ function writePromotionMarkdown(report: PromotionEvaluation, outputPath: string)
   lines.push(`**Node**: ${report.nodeVersion}`);
   lines.push(`**pnpm**: ${report.pnpmVersion}`);
   lines.push(
-    `**Recommendation**: ${report.recommendation === "go" ? "✅ GO" : report.recommendation === "no-go" ? "❌ NO-GO" : "⚠️ CONDITIONAL-GO"}`
+    `**Recommendation**: ${report.recommendation === 'go' ? '✅ GO' : report.recommendation === 'no-go' ? '❌ NO-GO' : '⚠️ CONDITIONAL-GO'}`
   );
-  lines.push("");
+  lines.push('');
 
   // Recommendation reason
-  lines.push("## Recommendation");
-  lines.push("");
+  lines.push('## Recommendation');
+  lines.push('');
   lines.push(report.recommendationReason);
-  lines.push("");
+  lines.push('');
 
   // Summary
-  lines.push("## Summary");
-  lines.push("");
+  lines.push('## Summary');
+  lines.push('');
   lines.push(`| Metric | Value |`);
   lines.push(`|--------|-------|`);
   lines.push(`| Total Gates | ${report.summary.totalGates} |`);
@@ -769,72 +769,72 @@ function writePromotionMarkdown(report: PromotionEvaluation, outputPath: string)
   lines.push(`| Failed | ${report.summary.failedGates} |`);
   lines.push(`| Skipped | ${report.summary.skippedGates} |`);
   lines.push(`| Required Gates Failed | ${report.summary.requiredGatesFailed} |`);
-  lines.push("");
+  lines.push('');
 
   // Gate Results
-  lines.push("## Gate Results");
-  lines.push("");
+  lines.push('## Gate Results');
+  lines.push('');
   lines.push(`| Gate | Name | Status | Required | RC Status | Stable Status | Evidence |`);
   lines.push(`|------|------|--------|----------|-----------|---------------|----------|`);
 
   for (const g of report.gates) {
-    const status = g.skipped ? "⏭️ SKIP" : g.passed ? "✅ PASS" : "❌ FAIL";
-    const required = g.required ? "Yes" : "No";
-    const evidence = g.evidence.length > 80 ? g.evidence.slice(0, 77) + "..." : g.evidence;
+    const status = g.skipped ? '⏭️ SKIP' : g.passed ? '✅ PASS' : '❌ FAIL';
+    const required = g.required ? 'Yes' : 'No';
+    const evidence = g.evidence.length > 80 ? g.evidence.slice(0, 77) + '...' : g.evidence;
     lines.push(
       `| ${g.gateId} | ${g.gateName} | ${status} | ${required} | ${g.rcStatus} | ${g.stableStatus} | ${evidence} |`
     );
   }
-  lines.push("");
+  lines.push('');
 
   // Detailed Gate Evaluations
-  lines.push("## Detailed Evaluations");
-  lines.push("");
+  lines.push('## Detailed Evaluations');
+  lines.push('');
   for (const g of report.gates) {
-    const status = g.skipped ? "⏭️ SKIP" : g.passed ? "✅ PASS" : "❌ FAIL";
+    const status = g.skipped ? '⏭️ SKIP' : g.passed ? '✅ PASS' : '❌ FAIL';
     lines.push(`### ${g.gateId}: ${g.gateName} — ${status}`);
-    lines.push("");
-    lines.push(`- **Required**: ${g.required ? "Yes" : "No"}`);
+    lines.push('');
+    lines.push(`- **Required**: ${g.required ? 'Yes' : 'No'}`);
     lines.push(`- **RC Status**: ${g.rcStatus}`);
     lines.push(`- **Stable Status**: ${g.stableStatus}`);
     if (g.classification) {
       lines.push(`- **Classification**: \`${g.classification}\``);
     }
     lines.push(`- **Evidence**: ${g.evidence}`);
-    lines.push("");
+    lines.push('');
   }
 
   // Blocking Issues
-  lines.push("## Blocking Issues");
-  lines.push("");
+  lines.push('## Blocking Issues');
+  lines.push('');
   if (report.blockingIssues.length === 0) {
-    lines.push("No blocking issues identified.");
+    lines.push('No blocking issues identified.');
   } else {
     for (const issue of report.blockingIssues) {
       lines.push(`- ❌ ${issue}`);
     }
   }
-  lines.push("");
+  lines.push('');
 
   // Classifications
-  lines.push("## Classifications");
-  lines.push("");
-  lines.push("### Infrastructure");
-  lines.push("");
+  lines.push('## Classifications');
+  lines.push('');
+  lines.push('### Infrastructure');
+  lines.push('');
   if (report.infrastructureClassifications.length === 0) {
-    lines.push("No infrastructure classifications.");
+    lines.push('No infrastructure classifications.');
   } else {
     for (const ic of report.infrastructureClassifications) {
       lines.push(`- \`${ic}\``);
     }
   }
-  lines.push("");
-  lines.push("### Signing");
-  lines.push("");
+  lines.push('');
+  lines.push('### Signing');
+  lines.push('');
   lines.push(`- \`${report.signingClassification}\``);
-  lines.push("");
+  lines.push('');
 
-  writeFileSync(outputPath, lines.join("\n") + "\n", "utf-8");
+  writeFileSync(outputPath, lines.join('\n') + '\n', 'utf-8');
 }
 
 // ── Main ───────────────────────────────────────────────────────────
@@ -842,25 +842,25 @@ function writePromotionMarkdown(report: PromotionEvaluation, outputPath: string)
 function main(): void {
   const version = getVersion();
   const artifactsDir = resolve(process.cwd(), `release/artifacts/${version}`);
-  const docsDir = resolve(process.cwd(), "docs/releases");
+  const docsDir = resolve(process.cwd(), 'docs/releases');
 
-  console.log("\n🔍 MyCodeXvantaOS Promotion Gate Evaluation");
+  console.log('\n🔍 MyCodeXvantaOS Promotion Gate Evaluation');
   console.log(`   Version: ${version}`);
   console.log(`   Output:  ${artifactsDir}`);
-  console.log("━".repeat(60));
+  console.log('━'.repeat(60));
 
   if (!existsSync(artifactsDir)) {
     mkdirSync(artifactsDir, { recursive: true });
   }
 
   // Load promotion policy
-  const policyPath = resolve(process.cwd(), "release/policies/rc-promotion-policy.json");
+  const policyPath = resolve(process.cwd(), 'release/policies/rc-promotion-policy.json');
   if (!existsSync(policyPath)) {
-    console.error("❌ Promotion policy not found at release/policies/rc-promotion-policy.json");
+    console.error('❌ Promotion policy not found at release/policies/rc-promotion-policy.json');
     process.exit(1);
   }
 
-  const policy = JSON.parse(readFileSync(policyPath, "utf-8"));
+  const policy = JSON.parse(readFileSync(policyPath, 'utf-8'));
   const gates: PromotionGate[] = policy.gates;
 
   console.log(`\n📋 Evaluating ${gates.length} promotion gates...`);
@@ -868,25 +868,25 @@ function main(): void {
   // Evaluate each gate
   const evaluations: GateEvaluation[] = [];
   const infrastructureClassifications: string[] = [];
-  let signingClassification = "signing-not-configured";
+  let signingClassification = 'signing-not-configured';
 
   for (const gate of gates) {
     console.log(`\n  ${gate.id}: ${gate.name}`);
     const evaluation = evaluateGate(gate, version);
     evaluations.push(evaluation);
 
-    const status = evaluation.skipped ? "⏭️ SKIP" : evaluation.passed ? "✅ PASS" : "❌ FAIL";
+    const status = evaluation.skipped ? '⏭️ SKIP' : evaluation.passed ? '✅ PASS' : '❌ FAIL';
     console.log(
-      `    ${status} — ${evaluation.evidence.slice(0, 80)}${evaluation.evidence.length > 80 ? "..." : ""}`
+      `    ${status} — ${evaluation.evidence.slice(0, 80)}${evaluation.evidence.length > 80 ? '...' : ''}`
     );
 
-    if (evaluation.classification === "infrastructure-not-configured") {
-      if (!infrastructureClassifications.includes("infrastructure-not-configured")) {
-        infrastructureClassifications.push("infrastructure-not-configured");
+    if (evaluation.classification === 'infrastructure-not-configured') {
+      if (!infrastructureClassifications.includes('infrastructure-not-configured')) {
+        infrastructureClassifications.push('infrastructure-not-configured');
       }
     }
-    if (evaluation.classification === "signing-not-configured") {
-      signingClassification = "signing-not-configured";
+    if (evaluation.classification === 'signing-not-configured') {
+      signingClassification = 'signing-not-configured';
     }
   }
 
@@ -907,38 +907,38 @@ function main(): void {
   }
 
   // Determine recommendation
-  let recommendation: "go" | "no-go" | "conditional-go";
+  let recommendation: 'go' | 'no-go' | 'conditional-go';
   let recommendationReason: string;
 
   if (requiredGatesFailed === 0) {
     const skippedRequired = evaluations.filter(
-      (e) => e.skipped && e.rcStatus === "acceptable-skip"
+      (e) => e.skipped && e.rcStatus === 'acceptable-skip'
     );
     if (skippedRequired.length > 0) {
-      recommendation = "conditional-go";
+      recommendation = 'conditional-go';
       recommendationReason = `All required gates pass. ${skippedRequired.length} gate(s) are skipped with acceptable-skip classification for RC (signing-not-configured, infrastructure-not-configured). These must be resolved for stable release. The RC is stable and ready for promotion evaluation with documented conditions.`;
     } else {
-      recommendation = "go";
+      recommendation = 'go';
       recommendationReason = `All ${evaluations.length} gates pass. The RC is stable and ready for promotion to v0.1.0 stable.`;
     }
   } else {
-    recommendation = "no-go";
-    recommendationReason = `${requiredGatesFailed} required gate(s) failed. The RC cannot be promoted until these issues are resolved: ${blockingIssues.join("; ")}`;
+    recommendation = 'no-go';
+    recommendationReason = `${requiredGatesFailed} required gate(s) failed. The RC cannot be promoted until these issues are resolved: ${blockingIssues.join('; ')}`;
   }
 
   // Build the report
-  const targetRelease = version.includes("-rc")
-    ? version.replace(/-rc\.\d+$/, "")
-    : `v${version.replace(/-rc\.\d+$/, "")}`;
+  const targetRelease = version.includes('-rc')
+    ? version.replace(/-rc\.\d+$/, '')
+    : `v${version.replace(/-rc\.\d+$/, '')}`;
 
   const report: PromotionEvaluation = {
     version,
-    tag: version.startsWith("v") ? version : `v${version}`,
-    commit: git("rev-parse HEAD"),
-    branch: git("rev-parse --abbrev-ref HEAD"),
+    tag: version.startsWith('v') ? version : `v${version}`,
+    commit: git('rev-parse HEAD'),
+    branch: git('rev-parse --abbrev-ref HEAD'),
     evaluationTimestamp: new Date().toISOString(),
     nodeVersion: process.version,
-    pnpmVersion: execSync("pnpm --version", { encoding: "utf-8" }).trim(),
+    pnpmVersion: execSync('pnpm --version', { encoding: 'utf-8' }).trim(),
     targetRelease,
     gates: evaluations,
     summary: {
@@ -956,8 +956,8 @@ function main(): void {
   };
 
   // Write JSON report
-  const jsonPath = resolve(artifactsDir, "promotion-evaluation.json");
-  writeFileSync(jsonPath, JSON.stringify(report, null, 2) + "\n", "utf-8");
+  const jsonPath = resolve(artifactsDir, 'promotion-evaluation.json');
+  writeFileSync(jsonPath, JSON.stringify(report, null, 2) + '\n', 'utf-8');
   console.log(`\n✅ Promotion evaluation (JSON): ${jsonPath}`);
 
   // Write Markdown report
@@ -969,18 +969,18 @@ function main(): void {
   console.log(`✅ Promotion evaluation (Markdown): ${mdPath}`);
 
   // Final summary
-  console.log("\n" + "━".repeat(60));
-  console.log("\n🔍 Promotion Gate Evaluation Summary:");
+  console.log('\n' + '━'.repeat(60));
+  console.log('\n🔍 Promotion Gate Evaluation Summary:');
   console.log(
     `   Gates: ${report.summary.totalGates} total | ${report.summary.passedGates} passed | ${report.summary.failedGates} failed | ${report.summary.skippedGates} skipped`
   );
   console.log(`   Required gates failed: ${report.summary.requiredGatesFailed}`);
   console.log(
-    `   Recommendation: ${recommendation === "go" ? "✅ GO" : recommendation === "no-go" ? "❌ NO-GO" : "⚠️ CONDITIONAL-GO"}`
+    `   Recommendation: ${recommendation === 'go' ? '✅ GO' : recommendation === 'no-go' ? '❌ NO-GO' : '⚠️ CONDITIONAL-GO'}`
   );
-  console.log("");
+  console.log('');
 
-  if (recommendation === "no-go") {
+  if (recommendation === 'no-go') {
     process.exit(1);
   }
 }

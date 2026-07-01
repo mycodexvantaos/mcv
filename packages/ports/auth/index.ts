@@ -52,20 +52,20 @@ export interface TokenPair {
   accessToken: string;
   refreshToken: string;
   expiresIn: number;
-  tokenType: "Bearer";
+  tokenType: 'Bearer';
 }
 
 // ── Identity Types ─────────────────────────────────────────────────────
 
 export type Role =
-  | "platform-admin"
-  | "workspace-owner"
-  | "workspace-member"
-  | "workspace-viewer"
-  | "agent-service"
-  | "auditor";
+  | 'platform-admin'
+  | 'workspace-owner'
+  | 'workspace-member'
+  | 'workspace-viewer'
+  | 'agent-service'
+  | 'auditor';
 
-export type CredentialType = "password" | "oauth" | "mfa-totp" | "mfa-webauthn" | "api-key";
+export type CredentialType = 'password' | 'oauth' | 'mfa-totp' | 'mfa-webauthn' | 'api-key';
 
 export interface CredentialRef {
   id: string;
@@ -78,7 +78,7 @@ export interface SubjectInfo {
   email: string;
   displayName: string;
   mfaEnabled: boolean;
-  status: "active" | "suspended" | "deactivated";
+  status: 'active' | 'suspended' | 'deactivated';
   roles: Record<string, Role>; // workspaceId → role
 }
 

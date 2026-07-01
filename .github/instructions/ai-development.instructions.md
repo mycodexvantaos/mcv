@@ -59,8 +59,8 @@ schemas/ai-team/                 — AI team schemas
 ### Basic Flow
 
 ```typescript
-import { z, genkit } from "genkit";
-import { googleAI } from "@genkit-ai/google-genai";
+import { z, genkit } from 'genkit';
+import { googleAI } from '@genkit-ai/google-genai';
 
 const ai = genkit({
   plugins: [googleAI()],
@@ -68,13 +68,13 @@ const ai = genkit({
 
 export const myFlow = ai.defineFlow(
   {
-    name: "myFlow",
+    name: 'myFlow',
     inputSchema: z.string(),
     outputSchema: z.string(),
   },
   async (input) => {
     const response = await ai.generate({
-      model: googleAI.model("gemini-2.5-flash"),
+      model: googleAI.model('gemini-2.5-flash'),
       prompt: `Process: ${input}`,
     });
     return response.text;
@@ -86,10 +86,10 @@ export const myFlow = ai.defineFlow(
 
 ```typescript
 // CORRECT: Use provider abstraction
-import { LLMProvider } from "@mycodexvantaos/ai-llm";
+import { LLMProvider } from '@mycodexvantaos/ai-llm';
 
 // WRONG: Direct SDK import in business logic
-import { GoogleGenerativeAI } from "@google/generative-ai"; // NO
+import { GoogleGenerativeAI } from '@google/generative-ai'; // NO
 ```
 
 ## Skills Reference

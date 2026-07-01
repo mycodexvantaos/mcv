@@ -11,25 +11,25 @@ declare namespace jsonata {
 
   interface ExprNode {
     type:
-      | "binary"
-      | "unary"
-      | "function"
-      | "partial"
-      | "lambda"
-      | "condition"
-      | "transform"
-      | "block"
-      | "name"
-      | "parent"
-      | "string"
-      | "number"
-      | "value"
-      | "wildcard"
-      | "descendant"
-      | "variable"
-      | "regexp"
-      | "operator"
-      | "error";
+      | 'binary'
+      | 'unary'
+      | 'function'
+      | 'partial'
+      | 'lambda'
+      | 'condition'
+      | 'transform'
+      | 'block'
+      | 'name'
+      | 'parent'
+      | 'string'
+      | 'number'
+      | 'value'
+      | 'wildcard'
+      | 'descendant'
+      | 'variable'
+      | 'regexp'
+      | 'operator'
+      | 'error';
     value?: any;
     position?: number;
     arguments?: ExprNode[];

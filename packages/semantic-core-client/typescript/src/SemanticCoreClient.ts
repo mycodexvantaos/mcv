@@ -6,8 +6,8 @@
  * parametric optimization, and feedback loops.
  */
 
-import axios, { AxiosInstance, AxiosError } from "axios";
-import { Logger } from "pino";
+import axios, { AxiosInstance, AxiosError } from 'axios';
+import { Logger } from 'pino';
 import {
   DecisionContext,
   Evidence,
@@ -15,7 +15,7 @@ import {
   Decision,
   EvidenceCluster,
   SemanticCoreClientConfig,
-} from "./types";
+} from './types';
 import {
   SemanticCoreError,
   ValidationError,
@@ -25,8 +25,8 @@ import {
   RateLimitError,
   ServerError,
   NetworkError,
-} from "./errors";
-import { generateRequestId, createDefaultLogger } from "./utils/logger";
+} from './errors';
+import { generateRequestId, createDefaultLogger } from './utils/logger';
 
 /**
  * TypeScript Client for Semantic Core
@@ -49,8 +49,8 @@ export class SemanticCoreClient {
       baseURL: this.config.baseUrl,
       timeout: this.config.timeout,
       headers: {
-        "Content-Type": "application/json",
-        "User-Agent": "@mycodexvantaos/semantic-core-client/1.0.0",
+        'Content-Type': 'application/json',
+        'User-Agent': '@mycodexvantaos/semantic-core-client/1.0.0',
       },
     });
 
@@ -65,13 +65,13 @@ export class SemanticCoreClient {
     const startTime = Date.now();
 
     try {
-      this.logger.info("decision_request_sent", {
+      this.logger.info('decision_request_sent', {
         request_id: requestId,
         hypothesis: context.hypothesis.substring(0, 100),
         evidence_count: context.evidence.length,
       });
 
-      const response = await this.client.post<Decision>("/v1/decide", {
+      const response = await this.client.post<Decision>('/v1/decide', {
         ...context,
         request_id: requestId,
         evidence: context.evidence.map((e) => ({
@@ -83,7 +83,7 @@ export class SemanticCoreClient {
       const decision = response.data;
       const processingTime = Date.now() - startTime;
 
-      this.logger.info("decision_received", {
+      this.logger.info('decision_received', {
         request_id: requestId,
         verdict: decision.verdict,
         confidence: decision.confidence,
@@ -92,7 +92,7 @@ export class SemanticCoreClient {
 
       return decision;
     } catch (error) {
-      this.logger.error("decision_failed", {
+      this.logger.error('decision_failed', {
         request_id: requestId,
         error: this.formatError(error),
         processing_time_ms: Date.now() - startTime,
@@ -107,10 +107,10 @@ export class SemanticCoreClient {
    */
   async getHealth() {
     try {
-      const response = await this.client.get("/health");
+      const response = await this.client.get('/health');
       return response.data;
     } catch (error) {
-      this.logger.error("health_check_failed", { error: this.formatError(error) });
+      this.logger.error('health_check_failed', { error: this.formatError(error) });
       throw this.handleError(error);
     }
   }
@@ -120,10 +120,10 @@ export class SemanticCoreClient {
    */
   async getHealthDetailed() {
     try {
-      const response = await this.client.get("/health/detailed");
+      const response = await this.client.get('/health/detailed');
       return response.data;
     } catch (error) {
-      this.logger.error("detailed_health_check_failed", { error: this.formatError(error) });
+      this.logger.error('detailed_health_check_failed', { error: this.formatError(error) });
       throw this.handleError(error);
     }
   }
@@ -133,10 +133,10 @@ export class SemanticCoreClient {
    */
   async getConfig() {
     try {
-      const response = await this.client.get("/v1/config");
+      const response = await this.client.get('/v1/config');
       return response.data;
     } catch (error) {
-      this.logger.error("config_fetch_failed", { error: this.formatError(error) });
+      this.logger.error('config_fetch_failed', { error: this.formatError(error) });
       throw this.handleError(error);
     }
   }
@@ -146,11 +146,11 @@ export class SemanticCoreClient {
    */
   async updateConfig(updates: Record<string, any>) {
     try {
-      const response = await this.client.patch("/v1/config", updates);
-      this.logger.info("config_updated", { updates });
+      const response = await this.client.patch('/v1/config', updates);
+      this.logger.info('config_updated', { updates });
       return response.data;
     } catch (error) {
-      this.logger.error("config_update_failed", { error: this.formatError(error) });
+      this.logger.error('config_update_failed', { error: this.formatError(error) });
       throw this.handleError(error);
     }
   }
@@ -160,10 +160,10 @@ export class SemanticCoreClient {
    */
   async getMetrics() {
     try {
-      const response = await this.client.get("/v1/metrics");
+      const response = await this.client.get('/v1/metrics');
       return response.data;
     } catch (error) {
-      this.logger.error("metrics_fetch_failed", { error: this.formatError(error) });
+      this.logger.error('metrics_fetch_failed', { error: this.formatError(error) });
       throw this.handleError(error);
     }
   }
@@ -227,26 +227,26 @@ export class SemanticCoreClient {
 
         switch (status) {
           case 400:
-            return new ValidationError(data.error || "Invalid input");
+            return new ValidationError(data.error || 'Invalid input');
           case 401:
-            return new AuthenticationError("Unauthorized");
+            return new AuthenticationError('Unauthorized');
           case 403:
-            return new ForbiddenError("Forbidden");
+            return new ForbiddenError('Forbidden');
           case 404:
-            return new NotFoundError(data.error || "Resource not found");
+            return new NotFoundError(data.error || 'Resource not found');
           case 429:
-            return new RateLimitError("Too many requests");
+            return new RateLimitError('Too many requests');
           case 500:
-            return new ServerError(data.error || "Internal server error");
+            return new ServerError(data.error || 'Internal server error');
           default:
             return new SemanticCoreError(`API error: ${status}`);
         }
       } else if (error.request) {
-        return new NetworkError("No response from server");
+        return new NetworkError('No response from server');
       }
     }
 
-    return new SemanticCoreError(error.message || "Unknown error");
+    return new SemanticCoreError(error.message || 'Unknown error');
   }
 
   /**
@@ -254,9 +254,9 @@ export class SemanticCoreClient {
    */
   private formatError(error: any): string {
     if (axios.isAxiosError(error)) {
-      return `${error.response?.status || "N/A"}: ${error.message}`;
+      return `${error.response?.status || 'N/A'}: ${error.message}`;
     }
-    return error.message || "Unknown error";
+    return error.message || 'Unknown error';
   }
 }
 
@@ -267,5 +267,5 @@ export function createSemanticCoreClient(baseUrl: string, logger?: Logger): Sema
   return new SemanticCoreClient({ baseUrl, logger });
 }
 
-export * from "./types";
-export * from "./errors";
+export * from './types';
+export * from './errors';

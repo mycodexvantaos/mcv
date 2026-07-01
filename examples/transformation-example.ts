@@ -54,7 +54,7 @@ import {
   CodeSynthesisCapability,
   SynthesisOptions,
   SynthesisResult,
-} from "@mycodexvantaos/capabilities";
+} from '@mycodexvantaos/capabilities';
 
 /**
  * 轉化後的 API 客戶端
@@ -102,7 +102,7 @@ export class CodeSynthesisClient {
     }
 
     if (!this.provider) {
-      throw new Error("Code synthesis provider not initialized");
+      throw new Error('Code synthesis provider not initialized');
     }
 
     const synthesisOptions: SynthesisOptions = {
@@ -117,7 +117,7 @@ export class CodeSynthesisClient {
 
     // 記錄降級情況
     if (result.fallbackTriggered) {
-      console.warn("Code synthesis fell back to native provider");
+      console.warn('Code synthesis fell back to native provider');
     }
 
     return result;
@@ -128,14 +128,14 @@ export class CodeSynthesisClient {
    */
   async analyzeCode(
     code: string,
-    analysisType: "quality" | "security" | "performance" | "architecture" = "quality"
+    analysisType: 'quality' | 'security' | 'performance' | 'architecture' = 'quality'
   ): Promise<any> {
     if (!this.initialized) {
       await this.initialize();
     }
 
-    if (!this.provider || typeof this.provider.analyze !== "function") {
-      throw new Error("Code analysis not supported by current provider");
+    if (!this.provider || typeof this.provider.analyze !== 'function') {
+      throw new Error('Code analysis not supported by current provider');
     }
 
     return await this.provider.analyze({ code, analysisType });
@@ -160,10 +160,10 @@ async function example1() {
   await client.initialize();
 
   try {
-    const result = await client.callSynthesis("Create a React component");
-    console.log("Generated code:", result.code);
-    console.log("Provider:", result.provider);
-    console.log("Confidence:", result.confidence);
+    const result = await client.callSynthesis('Create a React component');
+    console.log('Generated code:', result.code);
+    console.log('Provider:', result.provider);
+    console.log('Confidence:', result.confidence);
   } finally {
     await client.shutdown();
   }
@@ -177,14 +177,14 @@ async function example2() {
   await client.initialize();
 
   try {
-    const result = await client.callSynthesis("Create a component", {
+    const result = await client.callSynthesis('Create a component', {
       context: {
-        language: "typescript",
-        framework: "react",
+        language: 'typescript',
+        framework: 'react',
       },
       maxTokens: 2000,
     });
-    console.log("Generated code:", result.code);
+    console.log('Generated code:', result.code);
   } finally {
     await client.shutdown();
   }
@@ -203,8 +203,8 @@ async function example3() {
         console.log('test');
       }
     `;
-    const analysis = await client.analyzeCode(code, "quality");
-    console.log("Analysis:", analysis);
+    const analysis = await client.analyzeCode(code, 'quality');
+    console.log('Analysis:', analysis);
   } finally {
     await client.shutdown();
   }
@@ -218,19 +218,19 @@ async function example4() {
   await client.initialize();
 
   try {
-    const result = await client.callSynthesis("Create a component");
+    const result = await client.callSynthesis('Create a component');
 
     if (result.fallbackTriggered) {
-      console.warn("Using native provider (external API unavailable)");
+      console.warn('Using native provider (external API unavailable)');
     }
 
     if (result.confidence < 0.5) {
-      console.warn("Low confidence result, consider manual review");
+      console.warn('Low confidence result, consider manual review');
     }
 
-    console.log("Generated code:", result.code);
+    console.log('Generated code:', result.code);
   } catch (error) {
-    console.error("Code synthesis failed:", error);
+    console.error('Code synthesis failed:', error);
     // 錯誤處理邏輯
   } finally {
     await client.shutdown();
@@ -284,15 +284,15 @@ export async function callClaudeAPI(
  */
 export async function testNativeMode() {
   // 設置環境變數
-  process.env.MYCODEXVANTAOS_RUNTIME_MODE = "native";
+  process.env.MYCODEXVANTAOS_RUNTIME_MODE = 'native';
 
   const client = new CodeSynthesisClient();
   await client.initialize();
 
   try {
-    const result = await client.callSynthesis("Create a React component");
-    console.log("Native mode result:", result);
-    console.assert(result.provider === "native", "Should use native provider");
+    const result = await client.callSynthesis('Create a React component');
+    console.log('Native mode result:', result);
+    console.assert(result.provider === 'native', 'Should use native provider');
   } finally {
     await client.shutdown();
   }
@@ -303,15 +303,15 @@ export async function testNativeMode() {
  */
 export async function testHybridMode() {
   // 設置環境變數
-  process.env.MYCODEXVANTAOS_RUNTIME_MODE = "hybrid";
-  process.env.ANTHROPIC_API_KEY = "test-key";
+  process.env.MYCODEXVANTAOS_RUNTIME_MODE = 'hybrid';
+  process.env.ANTHROPIC_API_KEY = 'test-key';
 
   const client = new CodeSynthesisClient();
   await client.initialize();
 
   try {
-    const result = await client.callSynthesis("Create a React component");
-    console.log("Hybrid mode result:", result);
+    const result = await client.callSynthesis('Create a React component');
+    console.log('Hybrid mode result:', result);
     // 在 Hybrid 模式下，如果 API 不可用，應該降級到 native
   } finally {
     await client.shutdown();
@@ -323,16 +323,16 @@ export async function testHybridMode() {
  */
 export async function testConnectedMode() {
   // 設置環境變數
-  process.env.MYCODEXVANTAOS_RUNTIME_MODE = "connected";
-  process.env.ANTHROPIC_API_KEY = "test-key";
+  process.env.MYCODEXVANTAOS_RUNTIME_MODE = 'connected';
+  process.env.ANTHROPIC_API_KEY = 'test-key';
 
   const client = new CodeSynthesisClient();
   await client.initialize();
 
   try {
-    const result = await client.callSynthesis("Create a React component");
-    console.log("Connected mode result:", result);
-    console.assert(result.provider !== "native", "Should not use native provider");
+    const result = await client.callSynthesis('Create a React component');
+    console.log('Connected mode result:', result);
+    console.assert(result.provider !== 'native', 'Should not use native provider');
   } finally {
     await client.shutdown();
   }

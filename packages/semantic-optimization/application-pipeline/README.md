@@ -66,7 +66,7 @@ npm install jszip @anthropic-ai/sdk
 ### Basic Usage
 
 ```javascript
-import { ApplicationPipeline } from "./skills/application-pipeline/core/pipeline.js";
+import { ApplicationPipeline } from './skills/application-pipeline/core/pipeline.js';
 
 const pipeline = new ApplicationPipeline({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -90,7 +90,7 @@ console.log(report);
 ### React Component
 
 ```jsx
-import PipelineUI from "./skills/application-pipeline/core/PipelineUI.jsx";
+import PipelineUI from './skills/application-pipeline/core/PipelineUI.jsx';
 
 export default function App() {
   return <PipelineUI />;
@@ -182,7 +182,7 @@ Identify and unify technology choices across versions.
 ```javascript
 const pipeline = new ApplicationPipeline({
   apiKey: process.env.ANTHROPIC_API_KEY,
-  model: "claude-sonnet-4-20250514",
+  model: 'claude-sonnet-4-20250514',
   maxTokens: 1000,
   timeout: 30000,
 });
@@ -192,7 +192,7 @@ const pipeline = new ApplicationPipeline({
 
 ```javascript
 const customStrategy = {
-  "package.json": (versions) => {
+  'package.json': (versions) => {
     // Custom merge logic
     const merged = { ...versions[0] };
     versions.forEach((v) => {
@@ -264,7 +264,7 @@ Validate merged project integrity.
 ### Express API
 
 ```javascript
-app.post("/api/synthesize", async (req, res) => {
+app.post('/api/synthesize', async (req, res) => {
   const pipeline = new ApplicationPipeline();
   const report = await pipeline.synthesize(projects);
   res.json(report);

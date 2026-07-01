@@ -31,9 +31,9 @@ export interface AdapterCapability {
 
 export interface RuntimeHealth {
   runtimeId: string;
-  status: "healthy" | "degraded" | "unhealthy";
+  status: 'healthy' | 'degraded' | 'unhealthy';
   lastChecked: string;
-  components: Record<string, "healthy" | "degraded" | "unhealthy">;
+  components: Record<string, 'healthy' | 'degraded' | 'unhealthy'>;
 }
 
 export interface RuntimePortability {

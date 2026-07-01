@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,7 +9,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 import {
   Menubar,
   MenubarContent,
@@ -18,11 +18,11 @@ import {
   MenubarSeparator,
   MenubarShortcut,
   MenubarTrigger,
-} from "@/components/ui/menubar";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Logo } from "@/components/icons/logo";
-import { Badge } from "@/components/ui/badge";
+} from '@/components/ui/menubar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Logo } from '@/components/icons/logo';
+import { Badge } from '@/components/ui/badge';
 
 type UserProfile = {
   name: string;
@@ -37,13 +37,13 @@ export function Header() {
   useEffect(() => {
     async function fetchProfile() {
       try {
-        const response = await fetch("/api/user/profile");
+        const response = await fetch('/api/user/profile');
         if (response.ok) {
           const data: UserProfile = await response.json();
           setUserProfile(data);
         }
       } catch (error) {
-        console.error("Failed to fetch user profile:", error);
+        console.error('Failed to fetch user profile:', error);
       }
     }
     fetchProfile();
@@ -120,16 +120,16 @@ export function Header() {
                   <div className="h-full w-full bg-muted animate-pulse" />
                 )}
                 <AvatarFallback className="bg-secondary text-xs">
-                  {userProfile ? userProfile.name.charAt(0).toUpperCase() : "OS"}
+                  {userProfile ? userProfile.name.charAt(0).toUpperCase() : 'OS'}
                 </AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel className="flex flex-col">
-              <span className="font-bold">{userProfile ? userProfile.name : "主權管理員"}</span>
+              <span className="font-bold">{userProfile ? userProfile.name : '主權管理員'}</span>
               <span className="text-xs text-muted-foreground font-normal">
-                {userProfile ? userProfile.email : "sovereign@mycodexvantaos.local"}
+                {userProfile ? userProfile.email : 'sovereign@mycodexvantaos.local'}
               </span>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />

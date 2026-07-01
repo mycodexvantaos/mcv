@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 /**
  * @fileoverview Rewrite Comparison Component
@@ -7,11 +7,11 @@
  * with diff highlights, change summary, and copy actions.
  */
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Copy, ArrowRight, TrendingDown } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { Copy, ArrowRight, TrendingDown } from 'lucide-react';
 
 interface RewriteComparisonProps {
   originalText: string;
@@ -57,23 +57,23 @@ export function RewriteComparison({
 }: RewriteComparisonProps) {
   const highlightClass = (label: string) => {
     switch (label) {
-      case "ai":
-        return "bg-red-50 dark:bg-red-950/40 border-l-2 border-red-400";
-      case "human":
-        return "bg-green-50 dark:bg-green-950/40 border-l-2 border-green-400";
+      case 'ai':
+        return 'bg-red-50 dark:bg-red-950/40 border-l-2 border-red-400';
+      case 'human':
+        return 'bg-green-50 dark:bg-green-950/40 border-l-2 border-green-400';
       default:
-        return "border-l-2 border-gray-300";
+        return 'border-l-2 border-gray-300';
     }
   };
 
   const diffClass = (type: string) => {
     switch (type) {
-      case "removed":
-        return "bg-red-50 dark:bg-red-950/30 line-through text-red-700 dark:text-red-400";
-      case "added":
-        return "bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400";
+      case 'removed':
+        return 'bg-red-50 dark:bg-red-950/30 line-through text-red-700 dark:text-red-400';
+      case 'added':
+        return 'bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400';
       default:
-        return "";
+        return '';
     }
   };
 
@@ -196,11 +196,11 @@ export function RewriteComparison({
             {comparison.diffs.map((diff, i) => (
               <div key={`diff-${i}`} className={`px-3 py-1.5 rounded ${diffClass(diff.type)}`}>
                 <span className="text-muted-foreground mr-2">
-                  {diff.type === "removed" ? "-" : diff.type === "added" ? "+" : " "}
+                  {diff.type === 'removed' ? '-' : diff.type === 'added' ? '+' : ' '}
                 </span>
-                {diff.type === "removed" && diff.original}
-                {diff.type === "added" && diff.humanised}
-                {diff.type === "unchanged" && (diff.original || diff.humanised)}
+                {diff.type === 'removed' && diff.original}
+                {diff.type === 'added' && diff.humanised}
+                {diff.type === 'unchanged' && (diff.original || diff.humanised)}
               </div>
             ))}
           </div>

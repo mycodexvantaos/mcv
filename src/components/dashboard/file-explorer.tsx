@@ -1,54 +1,54 @@
-"use client";
+'use client';
 
-import { Folder, File, ChevronDown, ChevronRight } from "lucide-react";
+import { Folder, File, ChevronDown, ChevronRight } from 'lucide-react';
 
 const files: FileItem[] = [
   {
-    name: "app",
-    type: "folder",
+    name: 'app',
+    type: 'folder',
     children: [
-      { name: "dashboard", type: "folder", children: [{ name: "page.tsx", type: "file" }] },
-      { name: "page.tsx", type: "file" },
-      { name: "layout.tsx", type: "file" },
+      { name: 'dashboard', type: 'folder', children: [{ name: 'page.tsx', type: 'file' }] },
+      { name: 'page.tsx', type: 'file' },
+      { name: 'layout.tsx', type: 'file' },
     ],
   },
   {
-    name: "components",
-    type: "folder",
+    name: 'components',
+    type: 'folder',
     children: [
       {
-        name: "dashboard",
-        type: "folder",
+        name: 'dashboard',
+        type: 'folder',
         children: [
-          { name: "header.tsx", type: "file" },
-          { name: "editor-view.tsx", type: "file", active: true },
+          { name: 'header.tsx', type: 'file' },
+          { name: 'editor-view.tsx', type: 'file', active: true },
         ],
       },
     ],
   },
   {
-    name: "docs",
-    type: "folder",
+    name: 'docs',
+    type: 'folder',
     children: [
       {
-        name: "architecture",
-        type: "folder",
+        name: 'architecture',
+        type: 'folder',
         children: [
-          { name: "component-interaction.md", type: "file" },
-          { name: "naming-convention.md", type: "file" },
+          { name: 'component-interaction.md', type: 'file' },
+          { name: 'naming-convention.md', type: 'file' },
         ],
       },
-      { name: "ARCHITECTURE.md", type: "file" },
-      { name: "api-draft.md", type: "file" },
+      { name: 'ARCHITECTURE.md', type: 'file' },
+      { name: 'api-draft.md', type: 'file' },
     ],
   },
-  { name: "package.json", type: "file" },
-  { name: "next.config.ts", type: "file" },
+  { name: 'package.json', type: 'file' },
+  { name: 'next.config.ts', type: 'file' },
 ];
 
 type FileItem = {
   name: string;
-  type: "folder" | "file";
+  type: 'folder' | 'file';
   active?: boolean;
   children?: FileItem[];
 };
@@ -58,10 +58,10 @@ const FileTree = ({ items, level = 0 }: { items: FileItem[]; level?: number }) =
     {items.map((item) => (
       <div key={item.name}>
         <div
-          className={`flex items-center py-1.5 cursor-pointer rounded-md text-sm ${item.active ? "bg-primary/20 text-accent" : "hover:bg-primary/10"}`}
+          className={`flex items-center py-1.5 cursor-pointer rounded-md text-sm ${item.active ? 'bg-primary/20 text-accent' : 'hover:bg-primary/10'}`}
           style={{ paddingLeft: `${level * 1 + 0.75}rem` }}
         >
-          {item.type === "folder" ? (
+          {item.type === 'folder' ? (
             <>
               <ChevronDown className="mr-1 h-4 w-4" />
               <Folder className="mr-2 h-4 w-4 text-primary" />

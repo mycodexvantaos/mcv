@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
+import { useEffect } from 'react';
 import {
   Brain,
   Network,
@@ -10,17 +10,17 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Activity,
-} from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { useDashboardStore } from "@/lib/stores/dashboard-store";
-import { KpiCard } from "./kpi-card";
-import { InferenceSparkline } from "./inference-sparkline";
-import { ConnectorStatusList } from "./connector-status-list";
-import { RecentActivityFeed } from "./recent-activity-feed";
-import { AlertSummary } from "./alert-summary";
+} from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { useDashboardStore } from '@/lib/stores/dashboard-store';
+import { KpiCard } from './kpi-card';
+import { InferenceSparkline } from './inference-sparkline';
+import { ConnectorStatusList } from './connector-status-list';
+import { RecentActivityFeed } from './recent-activity-feed';
+import { AlertSummary } from './alert-summary';
 
 export function SystemOverview() {
   const { overview, isLoading, fetchOverview } = useDashboardStore();
@@ -34,36 +34,36 @@ export function SystemOverview() {
   const kpis = overview
     ? [
         {
-          title: "Inference Throughput",
+          title: 'Inference Throughput',
           value: `${(overview.inference.throughput24h / 1000).toFixed(1)}K`,
-          subtitle: "requests/24h",
+          subtitle: 'requests/24h',
           change: 12.5,
-          status: "healthy" as const,
+          status: 'healthy' as const,
           icon: Brain,
         },
         {
-          title: "Active Connectors",
+          title: 'Active Connectors',
           value: `${overview.connectors.healthy}/${overview.connectors.total}`,
           subtitle: `${overview.connectors.degraded} degraded`,
           change: 0,
-          status: overview.connectors.degraded > 0 ? ("degraded" as const) : ("healthy" as const),
+          status: overview.connectors.degraded > 0 ? ('degraded' as const) : ('healthy' as const),
           icon: Network,
         },
         {
-          title: "Edge Nodes Online",
+          title: 'Edge Nodes Online',
           value: `${overview.edge.onlineNodes}/${overview.edge.totalNodes}`,
           subtitle: `${overview.edge.deployingNodes} deploying`,
           change: 5.2,
-          status: "healthy" as const,
+          status: 'healthy' as const,
           icon: Globe,
         },
         {
-          title: "Governance Score",
+          title: 'Governance Score',
           value: `${overview.governance.complianceScore}%`,
           subtitle: `${overview.governance.pendingReviews} pending reviews`,
           change: -2.1,
           status:
-            overview.governance.complianceScore >= 90 ? ("healthy" as const) : ("warning" as const),
+            overview.governance.complianceScore >= 90 ? ('healthy' as const) : ('warning' as const),
           icon: ShieldCheck,
         },
       ]

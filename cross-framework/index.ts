@@ -19,13 +19,13 @@ export type {
   AnalysisResult,
   ZipItem,
   SynthesisResult,
-} from "./zip-synthesis.provider";
-export type { CachedAnalysis } from "./cache-manager.provider";
-export type { LogLevel, LogEntryLegacy } from "./logger.provider";
-export type { MessageResponse, AnalysisResult as APIAnalysisResult } from "./api-client.provider";
+} from './zip-synthesis.provider';
+export type { CachedAnalysis } from './cache-manager.provider';
+export type { LogLevel, LogEntryLegacy } from './logger.provider';
+export type { MessageResponse, AnalysisResult as APIAnalysisResult } from './api-client.provider';
 
 // Re-export provider classes
-export { ZipSynthesis, createZipSynthesis, detectFrameworkType } from "./zip-synthesis.provider";
+export { ZipSynthesis, createZipSynthesis, detectFrameworkType } from './zip-synthesis.provider';
 export {
   CacheManager,
   createCacheManager,
@@ -34,38 +34,38 @@ export {
   clearAnalysisCache,
   clearAllCache,
   getCacheStats,
-} from "./cache-manager.provider";
-export { LoggerProvider, getLogger, createLogger, logger } from "./logger.provider";
-export { APIClient, createAPIClient } from "./api-client.provider";
+} from './cache-manager.provider';
+export { LoggerProvider, getLogger, createLogger, logger } from './logger.provider';
+export { APIClient, createAPIClient } from './api-client.provider';
 
 // Provider factory for dependency injection
-export { getProviderFactory, ProviderFactory } from "../packages/capabilities/src/provider-factory";
+export { getProviderFactory, ProviderFactory } from '../packages/capabilities/src/provider-factory';
 
 // Runtime configuration
 export {
   getRuntimeConfig,
   RuntimeConfig,
   RuntimeMode,
-} from "../packages/capabilities/src/runtime-config";
+} from '../packages/capabilities/src/runtime-config';
 
 /**
  * Initialize all cross-framework modules
  * Call this once at application startup
  */
 export async function initializeCrossFramework(config?: {
-  runtimeMode?: "native" | "hybrid" | "connected";
+  runtimeMode?: 'native' | 'hybrid' | 'connected';
   providerFactory?: any;
 }): Promise<{
-  synthesis: import("./zip-synthesis.provider").ZipSynthesis;
-  cache: import("./cache-manager.provider").CacheManager;
-  logger: import("./logger.provider").LoggerProvider;
-  apiClient: import("./api-client.provider").APIClient;
+  synthesis: import('./zip-synthesis.provider').ZipSynthesis;
+  cache: import('./cache-manager.provider').CacheManager;
+  logger: import('./logger.provider').LoggerProvider;
+  apiClient: import('./api-client.provider').APIClient;
 }> {
-  const { getProviderFactory } = await import("../packages/capabilities/src/provider-factory");
-  const { createZipSynthesis } = await import("./zip-synthesis.provider");
-  const { createCacheManager } = await import("./cache-manager.provider");
-  const { createLogger } = await import("./logger.provider");
-  const { createAPIClient } = await import("./api-client.provider");
+  const { getProviderFactory } = await import('../packages/capabilities/src/provider-factory');
+  const { createZipSynthesis } = await import('./zip-synthesis.provider');
+  const { createCacheManager } = await import('./cache-manager.provider');
+  const { createLogger } = await import('./logger.provider');
+  const { createAPIClient } = await import('./api-client.provider');
 
   const providerFactory = config?.providerFactory || getProviderFactory();
 
@@ -89,7 +89,7 @@ export async function healthCheckAll(): Promise<{
   apiClient: boolean;
   overall: boolean;
 }> {
-  const { getProviderFactory } = await import("../packages/capabilities/src/provider-factory");
+  const { getProviderFactory } = await import('../packages/capabilities/src/provider-factory');
   const factory = getProviderFactory();
 
   const results = await Promise.allSettled([
@@ -100,7 +100,7 @@ export async function healthCheckAll(): Promise<{
   ]);
 
   const [synthesis, cache, logger, apiClient] = results.map((r, i) => {
-    if (r.status === "fulfilled" && "healthy" in r.value) {
+    if (r.status === 'fulfilled' && 'healthy' in r.value) {
       return r.value.healthy;
     }
     return false;
@@ -119,7 +119,7 @@ export async function healthCheckAll(): Promise<{
  * Shutdown all modules
  */
 export async function shutdownAll(): Promise<void> {
-  const { getProviderFactory } = await import("../packages/capabilities/src/provider-factory");
+  const { getProviderFactory } = await import('../packages/capabilities/src/provider-factory');
   const factory = getProviderFactory();
 
   const providers = await Promise.all([

@@ -97,7 +97,7 @@ interface LLMProvider {
 
 ```typescript
 // providers/aws/s3-adapter.ts
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
 class AWSS3Adapter implements StorageProvider {
   private client: S3Client;
@@ -181,8 +181,8 @@ name: Provider Boundary Check
 on:
   pull_request:
     paths:
-      - "services/**"
-      - "providers/**"
+      - 'services/**'
+      - 'providers/**'
 
 jobs:
   provider-check:

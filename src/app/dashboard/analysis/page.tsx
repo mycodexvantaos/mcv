@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 import {
   analyzeArchitectureForRisks,
   type AnalyzeArchitectureForRisksOutput,
-} from "@/ai/client-stubs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { SearchCheck, Loader2, AlertTriangle, ShieldCheck, ShieldAlert } from "lucide-react";
+} from '@/ai/client-stubs';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { SearchCheck, Loader2, AlertTriangle, ShieldCheck, ShieldAlert } from 'lucide-react';
 
 export default function AnalysisPage() {
   const [loading, setLoading] = useState(false);
@@ -19,9 +19,9 @@ export default function AnalysisPage() {
     try {
       const output = await analyzeArchitectureForRisks({
         architectureDefinition:
-          "Microservices architecture with Node.js services communicating via Kafka and a centralized Postgres database.",
+          'Microservices architecture with Node.js services communicating via Kafka and a centralized Postgres database.',
         ciCdPipelineConfig:
-          "build: stage: build script: - npm install deploy: stage: deploy script: - kubectl apply -f k8s/",
+          'build: stage: build script: - npm install deploy: stage: deploy script: - kubectl apply -f k8s/',
       });
       setResult(output);
     } catch (e) {
@@ -84,7 +84,7 @@ export default function AnalysisPage() {
                   >
                     <div className="flex items-center gap-2">
                       <Badge
-                        variant={risk.severity === "Critical" ? "destructive" : "secondary"}
+                        variant={risk.severity === 'Critical' ? 'destructive' : 'secondary'}
                         className="text-[10px] uppercase"
                       >
                         {risk.severity}
@@ -114,7 +114,7 @@ export default function AnalysisPage() {
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-foreground">Issue #{i + 1}</span>
                       <span className="text-[10px] text-muted-foreground">
-                        CVSS: {vuln.cvssScore || "N/A"}
+                        CVSS: {vuln.cvssScore || 'N/A'}
                       </span>
                     </div>
                     <p className="text-xs text-muted-foreground">{vuln.description}</p>

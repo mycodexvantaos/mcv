@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { AlertTriangle, ShieldAlert, Info, XCircle } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import type { Severity } from "@/types/dashboard";
+import { AlertTriangle, ShieldAlert, Info, XCircle } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import type { Severity } from '@/types/dashboard';
 
 interface AlertItem {
   id: string;
@@ -14,63 +14,63 @@ interface AlertItem {
 
 const mockAlerts: AlertItem[] = [
   {
-    id: "1",
-    severity: "critical",
-    title: "Edge node eu-central-1 unreachable",
-    source: "Edge Monitor",
-    time: "5m ago",
+    id: '1',
+    severity: 'critical',
+    title: 'Edge node eu-central-1 unreachable',
+    source: 'Edge Monitor',
+    time: '5m ago',
   },
   {
-    id: "2",
-    severity: "high",
-    title: "PostgreSQL connection pool at 85%",
-    source: "Connector Health",
-    time: "12m ago",
+    id: '2',
+    severity: 'high',
+    title: 'PostgreSQL connection pool at 85%',
+    source: 'Connector Health',
+    time: '12m ago',
   },
   {
-    id: "3",
-    severity: "medium",
-    title: "Model gemini-2.5-flash latency elevated",
-    source: "Inference Monitor",
-    time: "30m ago",
+    id: '3',
+    severity: 'medium',
+    title: 'Model gemini-2.5-flash latency elevated',
+    source: 'Inference Monitor',
+    time: '30m ago',
   },
   {
-    id: "4",
-    severity: "low",
-    title: "Governance policy review pending",
-    source: "Governance Engine",
-    time: "2h ago",
+    id: '4',
+    severity: 'low',
+    title: 'Governance policy review pending',
+    source: 'Governance Engine',
+    time: '2h ago',
   },
   {
-    id: "5",
-    severity: "low",
-    title: "API key rotation scheduled for next week",
-    source: "Security Scanner",
-    time: "1d ago",
+    id: '5',
+    severity: 'low',
+    title: 'API key rotation scheduled for next week',
+    source: 'Security Scanner',
+    time: '1d ago',
   },
 ];
 
 const severityConfig: Record<Severity, { icon: typeof AlertTriangle; color: string; bg: string }> =
   {
-    critical: { icon: XCircle, color: "text-status-critical", bg: "bg-status-critical/10" },
-    high: { icon: ShieldAlert, color: "text-status-critical", bg: "bg-status-critical/10" },
-    medium: { icon: AlertTriangle, color: "text-status-warning", bg: "bg-status-warning/10" },
-    low: { icon: Info, color: "text-status-idle", bg: "bg-status-idle/10" },
+    critical: { icon: XCircle, color: 'text-status-critical', bg: 'bg-status-critical/10' },
+    high: { icon: ShieldAlert, color: 'text-status-critical', bg: 'bg-status-critical/10' },
+    medium: { icon: AlertTriangle, color: 'text-status-warning', bg: 'bg-status-warning/10' },
+    low: { icon: Info, color: 'text-status-idle', bg: 'bg-status-idle/10' },
   };
 
 export function AlertSummary() {
   const counts = {
-    critical: mockAlerts.filter((a) => a.severity === "critical").length,
-    high: mockAlerts.filter((a) => a.severity === "high").length,
-    medium: mockAlerts.filter((a) => a.severity === "medium").length,
-    low: mockAlerts.filter((a) => a.severity === "low").length,
+    critical: mockAlerts.filter((a) => a.severity === 'critical').length,
+    high: mockAlerts.filter((a) => a.severity === 'high').length,
+    medium: mockAlerts.filter((a) => a.severity === 'medium').length,
+    low: mockAlerts.filter((a) => a.severity === 'low').length,
   };
 
   return (
     <div className="space-y-4">
       {/* Summary counts */}
       <div className="flex gap-4">
-        {(["critical", "high", "medium", "low"] as Severity[]).map((severity) => {
+        {(['critical', 'high', 'medium', 'low'] as Severity[]).map((severity) => {
           const config = severityConfig[severity];
           const Icon = config.icon;
           return (

@@ -1,17 +1,17 @@
-import { Analytics } from "../index";
+import { Analytics } from '../index';
 
-describe("analytics", () => {
+describe('analytics', () => {
   let instance: Analytics;
 
   beforeEach(() => {
     instance = new Analytics();
   });
 
-  test("should initialize", () => {
+  test('should initialize', () => {
     expect(instance).toBeDefined();
   });
 
-  test("should have basic functionality", () => {
-    expect(typeof instance).toBe("object");
+  test('should have basic functionality', () => {
+    expect(typeof instance).toBe('object');
   });
 });

@@ -10,9 +10,9 @@
  * 2. Legacy: id/category/description (flat) — auto-normalized on load
  */
 
-import { readFileSync, readdirSync, existsSync } from "node:fs";
-import { resolve, join, extname } from "node:path";
-import { parse as yamlParse } from "yaml";
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { resolve, join, extname } from 'node:path';
+import { parse as yamlParse } from 'yaml';
 
 // ─── Contract Type Definitions ────────────────────────────────────────────────
 
@@ -101,10 +101,10 @@ export interface EventDefinitionContract {
 function resolveContractsRoot(startDir?: string): string {
   let dir = startDir ?? resolve(process.cwd());
   for (let i = 0; i < 10; i++) {
-    if (existsSync(join(dir, "contracts"))) {
+    if (existsSync(join(dir, 'contracts'))) {
       return dir;
     }
-    const parent = resolve(dir, "..");
+    const parent = resolve(dir, '..');
     if (parent === dir) break;
     dir = parent;
   }
@@ -116,10 +116,10 @@ function resolveContractsRoot(startDir?: string): string {
  * Load and parse a single YAML or JSON file
  */
 function loadYamlOrJson(filePath: string): Record<string, unknown> {
-  const content = readFileSync(filePath, "utf-8");
+  const content = readFileSync(filePath, 'utf-8');
   const ext = extname(filePath);
 
-  if (ext === ".json") {
+  if (ext === '.json') {
     return JSON.parse(content) as Record<string, unknown>;
   }
 
@@ -136,7 +136,7 @@ function loadAllFromDir(dirPath: string): Record<string, unknown>[] {
   }
 
   const files = readdirSync(dirPath)
-    .filter((f) => extname(f) === ".yaml" || extname(f) === ".yml" || extname(f) === ".json")
+    .filter((f) => extname(f) === '.yaml' || extname(f) === '.yml' || extname(f) === '.json')
     .sort();
 
   return files.map((f) => loadYamlOrJson(join(dirPath, f)));
@@ -154,15 +154,15 @@ function normalizeServiceDefinition(raw: Record<string, unknown>): ServiceDefini
 
   // Normalize flat format: id → metadata.name, category → metadata.category
   const name =
-    (raw.id as string) ?? ((raw.metadata as Record<string, unknown>)?.name as string) ?? "unknown";
-  const metadata: ServiceDefinitionContract["metadata"] = {
+    (raw.id as string) ?? ((raw.metadata as Record<string, unknown>)?.name as string) ?? 'unknown';
+  const metadata: ServiceDefinitionContract['metadata'] = {
     name,
     category: raw.category as string | undefined,
     display_name: raw.display_name as string | undefined,
     description: raw.description as string | undefined,
   };
 
-  const spec: ServiceDefinitionContract["spec"] = {
+  const spec: ServiceDefinitionContract['spec'] = {
     resource_type: raw.resource_type as string | undefined,
     runtime: raw.runtime as Record<string, unknown> | undefined,
     events: raw.events
@@ -173,24 +173,24 @@ function normalizeServiceDefinition(raw: Record<string, unknown>): ServiceDefini
       Object.entries(raw).filter(
         ([k]) =>
           ![
-            "id",
-            "category",
-            "display_name",
-            "description",
-            "resource_types",
-            "permissions",
-            "events",
-            "usage_metrics",
-            "runtime",
-            "audit",
+            'id',
+            'category',
+            'display_name',
+            'description',
+            'resource_types',
+            'permissions',
+            'events',
+            'usage_metrics',
+            'runtime',
+            'audit',
           ].includes(k)
       )
     ),
   };
 
   return {
-    apiVersion: (raw.apiVersion as string) ?? "platform.mycodexvantaos/v1",
-    kind: (raw.kind as string) ?? "ServiceDefinition",
+    apiVersion: (raw.apiVersion as string) ?? 'platform.mycodexvantaos/v1',
+    kind: (raw.kind as string) ?? 'ServiceDefinition',
     metadata,
     spec,
   };
@@ -204,11 +204,11 @@ function normalizeResourceKind(raw: Record<string, unknown>): ResourceKindContra
   const name =
     (raw.kind as string) ??
     ((raw.metadata as Record<string, unknown>)?.name as string) ??
-    "unknown";
+    'unknown';
 
   return {
-    apiVersion: (raw.apiVersion as string) ?? "mycodexvantaos.io/v1",
-    kind: (raw.kind as string) ?? "ResourceKind",
+    apiVersion: (raw.apiVersion as string) ?? 'mycodexvantaos.io/v1',
+    kind: (raw.kind as string) ?? 'ResourceKind',
     metadata: {
       name,
       description:
@@ -236,11 +236,11 @@ function normalizePolicyDefinition(raw: Record<string, unknown>): PolicyDefiniti
   }
 
   const name =
-    (raw.id as string) ?? ((raw.metadata as Record<string, unknown>)?.name as string) ?? "unknown";
+    (raw.id as string) ?? ((raw.metadata as Record<string, unknown>)?.name as string) ?? 'unknown';
 
   return {
-    apiVersion: (raw.apiVersion as string) ?? "platform.mycodexvantaos/v1",
-    kind: (raw.kind as string) ?? "PolicyDefinition",
+    apiVersion: (raw.apiVersion as string) ?? 'platform.mycodexvantaos/v1',
+    kind: (raw.kind as string) ?? 'PolicyDefinition',
     metadata: {
       name,
       description: raw.description as string | undefined,
@@ -249,7 +249,7 @@ function normalizePolicyDefinition(raw: Record<string, unknown>): PolicyDefiniti
       rules: raw.rules,
       ...Object.fromEntries(
         Object.entries(raw).filter(
-          ([k]) => !["id", "description", "rules", "apiVersion", "kind", "metadata"].includes(k)
+          ([k]) => !['id', 'description', 'rules', 'apiVersion', 'kind', 'metadata'].includes(k)
         )
       ),
     },
@@ -270,11 +270,11 @@ function normalizeEventDefinition(raw: Record<string, unknown>): EventDefinition
     (raw.category as string) ??
     (raw.id as string) ??
     ((raw.metadata as Record<string, unknown>)?.name as string) ??
-    "unknown";
+    'unknown';
 
   return {
-    apiVersion: (raw.apiVersion as string) ?? "platform.mycodexvantaos/v1",
-    kind: (raw.kind as string) ?? "EventDefinition",
+    apiVersion: (raw.apiVersion as string) ?? 'platform.mycodexvantaos/v1',
+    kind: (raw.kind as string) ?? 'EventDefinition',
     metadata: {
       name,
       description: raw.description as string | undefined,
@@ -284,7 +284,7 @@ function normalizeEventDefinition(raw: Record<string, unknown>): EventDefinition
       ...Object.fromEntries(
         Object.entries(raw).filter(
           ([k]) =>
-            !["category", "description", "events", "apiVersion", "kind", "metadata"].includes(k)
+            !['category', 'description', 'events', 'apiVersion', 'kind', 'metadata'].includes(k)
         )
       ),
     },
@@ -319,7 +319,7 @@ function validateBasicContract(
  */
 export function loadServiceDefinitions(contractsDir?: string): ServiceDefinitionContract[] {
   const root = resolveContractsRoot(contractsDir);
-  const dir = join(root, "contracts", "service-definitions");
+  const dir = join(root, 'contracts', 'service-definitions');
   const raw = loadAllFromDir(dir);
 
   return raw.map((item) => normalizeServiceDefinition(item));
@@ -333,7 +333,7 @@ export function loadServiceDefinitions(contractsDir?: string): ServiceDefinition
  */
 export function loadResourceKinds(contractsDir?: string): ResourceKindContract[] {
   const root = resolveContractsRoot(contractsDir);
-  const dir = join(root, "contracts", "resource-kinds");
+  const dir = join(root, 'contracts', 'resource-kinds');
   const raw = loadAllFromDir(dir);
 
   return raw.map((item) => normalizeResourceKind(item));
@@ -347,7 +347,7 @@ export function loadResourceKinds(contractsDir?: string): ResourceKindContract[]
  */
 export function loadPolicyDefinitions(contractsDir?: string): PolicyDefinitionContract[] {
   const root = resolveContractsRoot(contractsDir);
-  const dir = join(root, "contracts", "policies");
+  const dir = join(root, 'contracts', 'policies');
   const raw = loadAllFromDir(dir);
 
   return raw.map((item) => normalizePolicyDefinition(item));
@@ -361,7 +361,7 @@ export function loadPolicyDefinitions(contractsDir?: string): PolicyDefinitionCo
  */
 export function loadEventDefinitions(contractsDir?: string): EventDefinitionContract[] {
   const root = resolveContractsRoot(contractsDir);
-  const dir = join(root, "contracts", "events");
+  const dir = join(root, 'contracts', 'events');
   const raw = loadAllFromDir(dir);
 
   return raw.map((item) => normalizeEventDefinition(item));
@@ -375,7 +375,7 @@ export function loadEventDefinitions(contractsDir?: string): EventDefinitionCont
  */
 export function loadServiceCatalog(contractsDir?: string): ServiceDefinitionContract | null {
   const root = resolveContractsRoot(contractsDir);
-  const catalogPath = join(root, "contracts", "service-definitions", "service-catalog.yaml");
+  const catalogPath = join(root, 'contracts', 'service-definitions', 'service-catalog.yaml');
 
   if (!existsSync(catalogPath)) {
     return null;
@@ -393,7 +393,7 @@ export function loadServiceCatalog(contractsDir?: string): ServiceDefinitionCont
  */
 export function loadSchemas(contractsDir?: string): Map<string, Record<string, unknown>> {
   const root = resolveContractsRoot(contractsDir);
-  const dir = join(root, "contracts", "schemas");
+  const dir = join(root, 'contracts', 'schemas');
   const schemas = new Map<string, Record<string, unknown>>();
 
   if (!existsSync(dir)) {
@@ -401,11 +401,11 @@ export function loadSchemas(contractsDir?: string): Map<string, Record<string, u
   }
 
   const files = readdirSync(dir)
-    .filter((f) => extname(f) === ".json")
+    .filter((f) => extname(f) === '.json')
     .sort();
 
   for (const f of files) {
-    const schemaName = f.replace(".schema.json", "");
+    const schemaName = f.replace('.schema.json', '');
     const raw = loadYamlOrJson(join(dir, f));
     schemas.set(schemaName, raw);
   }
@@ -422,7 +422,7 @@ export function loadSchemas(contractsDir?: string): Map<string, Record<string, u
  */
 export function validateContract(
   data: Record<string, unknown>,
-  requiredFields: string[] = ["apiVersion", "kind"]
+  requiredFields: string[] = ['apiVersion', 'kind']
 ): { valid: boolean; errors: string[] } {
   return validateBasicContract(data, requiredFields);
 }
@@ -447,44 +447,44 @@ export function validateAllContracts(contractsDir?: string): {
   const serviceErrors: string[] = [];
   for (const s of services) {
     const result = validateBasicContract(s as unknown as Record<string, unknown>, [
-      "apiVersion",
-      "kind",
+      'apiVersion',
+      'kind',
     ]);
     if (!result.valid) {
-      serviceErrors.push(`${s.metadata?.name ?? "unknown"}: ${result.errors.join(", ")}`);
+      serviceErrors.push(`${s.metadata?.name ?? 'unknown'}: ${result.errors.join(', ')}`);
     }
   }
 
   const resourceKindErrors: string[] = [];
   for (const r of resourceKinds) {
     const result = validateBasicContract(r as unknown as Record<string, unknown>, [
-      "apiVersion",
-      "kind",
+      'apiVersion',
+      'kind',
     ]);
     if (!result.valid) {
-      resourceKindErrors.push(`${r.metadata?.name ?? "unknown"}: ${result.errors.join(", ")}`);
+      resourceKindErrors.push(`${r.metadata?.name ?? 'unknown'}: ${result.errors.join(', ')}`);
     }
   }
 
   const policyErrors: string[] = [];
   for (const p of policies) {
     const result = validateBasicContract(p as unknown as Record<string, unknown>, [
-      "apiVersion",
-      "kind",
+      'apiVersion',
+      'kind',
     ]);
     if (!result.valid) {
-      policyErrors.push(`${p.metadata?.name ?? "unknown"}: ${result.errors.join(", ")}`);
+      policyErrors.push(`${p.metadata?.name ?? 'unknown'}: ${result.errors.join(', ')}`);
     }
   }
 
   const eventErrors: string[] = [];
   for (const e of events) {
     const result = validateBasicContract(e as unknown as Record<string, unknown>, [
-      "apiVersion",
-      "kind",
+      'apiVersion',
+      'kind',
     ]);
     if (!result.valid) {
-      eventErrors.push(`${e.metadata?.name ?? "unknown"}: ${result.errors.join(", ")}`);
+      eventErrors.push(`${e.metadata?.name ?? 'unknown'}: ${result.errors.join(', ')}`);
     }
   }
 

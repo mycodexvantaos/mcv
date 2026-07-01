@@ -19,8 +19,8 @@ export class SSLManager {
     const cert: Certificate = {
       id: `cert_${Date.now()}`,
       domain,
-      cert: "mock-certificate",
-      key: "mock-private-key",
+      cert: 'mock-certificate',
+      key: 'mock-private-key',
       expiresAt: Date.now() + 90 * 24 * 60 * 60 * 1000, // 90 days
       autoRenew: true,
     };

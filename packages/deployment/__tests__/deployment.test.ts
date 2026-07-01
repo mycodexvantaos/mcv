@@ -2,9 +2,9 @@
  * Comprehensive tests for Deployment package
  */
 
-import { Deployment, DeploymentConfig, DeploymentRequest, DeploymentResult } from "../src/index";
+import { Deployment, DeploymentConfig, DeploymentRequest, DeploymentResult } from '../src/index';
 
-describe("Deployment", () => {
+describe('Deployment', () => {
   let deployment: Deployment;
 
   beforeEach(() => {
@@ -15,135 +15,135 @@ describe("Deployment", () => {
     await deployment.cleanup();
   });
 
-  describe("initialize", () => {
-    it("should initialize deployment service", async () => {
+  describe('initialize', () => {
+    it('should initialize deployment service', async () => {
       await expect(deployment.initialize()).resolves.not.toThrow();
     });
   });
 
-  describe("execute", () => {
-    it("should deploy to local environment", async () => {
+  describe('execute', () => {
+    it('should deploy to local environment', async () => {
       const request: DeploymentRequest = {
-        application: { name: "test-app" },
-        config: { target: "local" },
+        application: { name: 'test-app' },
+        config: { target: 'local' },
       };
 
       const result = await deployment.execute<DeploymentResult>(request);
 
       expect(result).toBeDefined();
       expect(result.jobId).toMatch(/^urn:mycodexvantaos:deployment:/);
-      expect(result.status).toBe("deployed");
-      expect(result.url).toBe("http://localhost:3000");
+      expect(result.status).toBe('deployed');
+      expect(result.url).toBe('http://localhost:3000');
     });
 
-    it("should deploy to kubernetes", async () => {
+    it('should deploy to kubernetes', async () => {
       const request: DeploymentRequest = {
-        application: { name: "k8s-app" },
+        application: { name: 'k8s-app' },
         config: {
-          target: "kubernetes",
-          namespace: "production",
+          target: 'kubernetes',
+          namespace: 'production',
           replicas: 3,
         },
       };
 
       const result = await deployment.execute<DeploymentResult>(request);
 
-      expect(result.status).toBe("deployed");
-      expect(result.url).toBe("http://k8s-app.mycodexvantaos.local");
+      expect(result.status).toBe('deployed');
+      expect(result.url).toBe('http://k8s-app.mycodexvantaos.local');
     });
 
-    it("should deploy to docker", async () => {
+    it('should deploy to docker', async () => {
       const request: DeploymentRequest = {
-        application: { name: "docker-app" },
-        config: { target: "docker" },
+        application: { name: 'docker-app' },
+        config: { target: 'docker' },
       };
 
       const result = await deployment.execute<DeploymentResult>(request);
 
-      expect(result.status).toBe("deployed");
-      expect(result.url).toBe("http://localhost:3000");
+      expect(result.status).toBe('deployed');
+      expect(result.url).toBe('http://localhost:3000');
     });
 
-    it("should deploy to cloud", async () => {
+    it('should deploy to cloud', async () => {
       const request: DeploymentRequest = {
-        application: { name: "cloud-app" },
-        config: { target: "cloud" },
+        application: { name: 'cloud-app' },
+        config: { target: 'cloud' },
       };
 
       const result = await deployment.execute<DeploymentResult>(request);
 
-      expect(result.status).toBe("deployed");
-      expect(result.url).toBe("https://cloud-app.mycodexvantaos.cloud");
+      expect(result.status).toBe('deployed');
+      expect(result.url).toBe('https://cloud-app.mycodexvantaos.cloud');
     });
 
-    it("should throw error when application is missing", async () => {
+    it('should throw error when application is missing', async () => {
       const request = {
-        config: { target: "local" },
+        config: { target: 'local' },
       } as DeploymentRequest;
 
-      await expect(deployment.execute(request)).rejects.toThrow("Invalid deployment request");
+      await expect(deployment.execute(request)).rejects.toThrow('Invalid deployment request');
     });
 
-    it("should throw error when config is missing", async () => {
+    it('should throw error when config is missing', async () => {
       const request = {
-        application: { name: "test-app" },
+        application: { name: 'test-app' },
       } as DeploymentRequest;
 
-      await expect(deployment.execute(request)).rejects.toThrow("Invalid deployment request");
+      await expect(deployment.execute(request)).rejects.toThrow('Invalid deployment request');
     });
 
-    it("should record deployment in history", async () => {
+    it('should record deployment in history', async () => {
       await deployment.execute({
-        application: { name: "history-app" },
-        config: { target: "local" },
+        application: { name: 'history-app' },
+        config: { target: 'local' },
       });
 
       const history = deployment.getHistory();
       expect(history.length).toBe(1);
     });
 
-    it("should track deployment time", async () => {
+    it('should track deployment time', async () => {
       const result = await deployment.execute({
-        application: { name: "timed-app" },
-        config: { target: "local" },
+        application: { name: 'timed-app' },
+        config: { target: 'local' },
       });
 
       expect(result.deploymentTime).toBeGreaterThanOrEqual(0);
     });
   });
 
-  describe("getStatus", () => {
-    it("should return deployment status by jobId", async () => {
+  describe('getStatus', () => {
+    it('should return deployment status by jobId', async () => {
       const result = await deployment.execute({
-        application: { name: "status-app" },
-        config: { target: "local" },
+        application: { name: 'status-app' },
+        config: { target: 'local' },
       });
 
       const status = deployment.getStatus(result.jobId);
       expect(status).toBeDefined();
-      expect(status.target).toBe("local");
+      expect(status.target).toBe('local');
     });
 
-    it("should return undefined for non-existent jobId", () => {
-      const status = deployment.getStatus("non-existent-id");
+    it('should return undefined for non-existent jobId', () => {
+      const status = deployment.getStatus('non-existent-id');
       expect(status).toBeUndefined();
     });
   });
 
-  describe("getHistory", () => {
-    it("should return empty history initially", () => {
+  describe('getHistory', () => {
+    it('should return empty history initially', () => {
       const history = deployment.getHistory();
       expect(history).toEqual([]);
     });
 
-    it("should return all deployments", async () => {
+    it('should return all deployments', async () => {
       await deployment.execute({
-        application: { name: "app1" },
-        config: { target: "local" },
+        application: { name: 'app1' },
+        config: { target: 'local' },
       });
       await deployment.execute({
-        application: { name: "app2" },
-        config: { target: "docker" },
+        application: { name: 'app2' },
+        config: { target: 'docker' },
       });
 
       const history = deployment.getHistory();
@@ -151,15 +151,15 @@ describe("Deployment", () => {
     });
   });
 
-  describe("cleanup", () => {
-    it("should clear active deployments map", async () => {
+  describe('cleanup', () => {
+    it('should clear active deployments map', async () => {
       // Use a fresh deployment instance for this test
       const freshDeployment = new Deployment();
       await freshDeployment.initialize();
 
       const result = await freshDeployment.execute({
-        application: { name: "cleanup-app" },
-        config: { target: "local" },
+        application: { name: 'cleanup-app' },
+        config: { target: 'local' },
       });
 
       // Verify deployment was added
@@ -172,42 +172,42 @@ describe("Deployment", () => {
     });
   });
 
-  describe("different configurations", () => {
-    it("should handle kubernetes with resources", async () => {
+  describe('different configurations', () => {
+    it('should handle kubernetes with resources', async () => {
       const result = await deployment.execute({
-        application: { name: "resource-app" },
+        application: { name: 'resource-app' },
         config: {
-          target: "kubernetes",
-          resources: { cpu: "500m", memory: "512Mi" },
+          target: 'kubernetes',
+          resources: { cpu: '500m', memory: '512Mi' },
         },
       });
 
-      expect(result.status).toBe("deployed");
+      expect(result.status).toBe('deployed');
     });
 
-    it("should handle docker with resources", async () => {
+    it('should handle docker with resources', async () => {
       const result = await deployment.execute({
-        application: { name: "docker-resource-app" },
+        application: { name: 'docker-resource-app' },
         config: {
-          target: "docker",
-          resources: { cpu: "500m" },
+          target: 'docker',
+          resources: { cpu: '500m' },
         },
       });
 
-      expect(result.status).toBe("deployed");
-      expect(result.url).toBe("http://localhost:8080");
+      expect(result.status).toBe('deployed');
+      expect(result.url).toBe('http://localhost:8080');
     });
 
-    it("should handle cloud deployment with environment", async () => {
+    it('should handle cloud deployment with environment', async () => {
       const result = await deployment.execute({
-        application: { name: "env-app" },
+        application: { name: 'env-app' },
         config: {
-          target: "cloud",
-          environment: { NODE_ENV: "production" },
+          target: 'cloud',
+          environment: { NODE_ENV: 'production' },
         },
       });
 
-      expect(result.status).toBe("deployed");
+      expect(result.status).toBe('deployed');
     });
   });
 });

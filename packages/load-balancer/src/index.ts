@@ -22,7 +22,7 @@ export class LoadBalancer {
 
   constructor(
     strategy: LoadBalancingStrategy = {
-      name: "round-robin",
+      name: 'round-robin',
       select: (backends) => backends[Math.floor(Math.random() * backends.length)],
     }
   ) {

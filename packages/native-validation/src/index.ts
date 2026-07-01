@@ -12,7 +12,7 @@ export interface ValidationRule {
 
 export interface ValidationField {
   required?: boolean;
-  type?: "string" | "number" | "boolean" | "date" | "object" | "array" | "email" | "url" | "custom";
+  type?: 'string' | 'number' | 'boolean' | 'date' | 'object' | 'array' | 'email' | 'url' | 'custom';
   rules?: ValidationRule[];
   schema?: ValidationSchema;
   min?: number;
@@ -88,7 +88,7 @@ export class NativeValidator {
       }
 
       // Validate min/max for numbers
-      if (fieldConfig.type === "number") {
+      if (fieldConfig.type === 'number') {
         if (fieldConfig.min !== undefined && value < fieldConfig.min) {
           fieldErrors.push({
             field: fieldName,
@@ -106,7 +106,7 @@ export class NativeValidator {
       }
 
       // Validate string length min/max
-      if (fieldConfig.type === "string" && typeof value === "string") {
+      if (fieldConfig.type === 'string' && typeof value === 'string') {
         if (fieldConfig.min !== undefined && value.length < fieldConfig.min) {
           fieldErrors.push({
             field: fieldName,
@@ -124,7 +124,7 @@ export class NativeValidator {
       }
 
       // Validate array length
-      if (fieldConfig.type === "array" && Array.isArray(value)) {
+      if (fieldConfig.type === 'array' && Array.isArray(value)) {
         if (fieldConfig.min !== undefined && value.length < fieldConfig.min) {
           fieldErrors.push({
             field: fieldName,
@@ -156,7 +156,7 @@ export class NativeValidator {
       if (fieldConfig.enum && !fieldConfig.enum.includes(value)) {
         fieldErrors.push({
           field: fieldName,
-          message: `Field '${fieldName}' must be one of: ${fieldConfig.enum.join(", ")}`,
+          message: `Field '${fieldName}' must be one of: ${fieldConfig.enum.join(', ')}`,
           value,
         });
       }
@@ -165,7 +165,7 @@ export class NativeValidator {
       if (fieldConfig.rules) {
         for (const rule of fieldConfig.rules) {
           const ruleResult = await rule.validator(value);
-          if (ruleResult === false || typeof ruleResult === "string") {
+          if (ruleResult === false || typeof ruleResult === 'string') {
             fieldErrors.push({
               field: fieldName,
               message: rule.message || ruleResult.toString(),
@@ -178,7 +178,7 @@ export class NativeValidator {
       // Validate custom validator
       if (fieldConfig.customValidator) {
         const customResult = await fieldConfig.customValidator(value);
-        if (customResult === false || typeof customResult === "string") {
+        if (customResult === false || typeof customResult === 'string') {
           fieldErrors.push({
             field: fieldName,
             message:
@@ -243,28 +243,28 @@ export class NativeValidator {
     let isValid = false;
 
     switch (config.type) {
-      case "string":
-        isValid = typeof value === "string";
+      case 'string':
+        isValid = typeof value === 'string';
         break;
-      case "number":
-        isValid = typeof value === "number" && !isNaN(value);
+      case 'number':
+        isValid = typeof value === 'number' && !isNaN(value);
         break;
-      case "boolean":
-        isValid = typeof value === "boolean";
+      case 'boolean':
+        isValid = typeof value === 'boolean';
         break;
-      case "date":
+      case 'date':
         isValid = value instanceof Date || !isNaN(Date.parse(value));
         break;
-      case "object":
-        isValid = typeof value === "object" && !Array.isArray(value) && value !== null;
+      case 'object':
+        isValid = typeof value === 'object' && !Array.isArray(value) && value !== null;
         break;
-      case "array":
+      case 'array':
         isValid = Array.isArray(value);
         break;
-      case "email":
+      case 'email':
         isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
         break;
-      case "url":
+      case 'url':
         isValid = /^https?:\/\/.+\..+/.test(value);
         break;
     }
@@ -332,7 +332,7 @@ export class NativeValidator {
 
 // Built-in validators
 export const Validators = {
-  required: (value: any): boolean => value !== undefined && value !== null && value !== "",
+  required: (value: any): boolean => value !== undefined && value !== null && value !== '',
 
   minLength:
     (min: number) =>
@@ -373,7 +373,7 @@ export const Validators = {
   oneOf:
     (...allowed: any[]) =>
     (value: any): boolean | string => {
-      return allowed.includes(value) || `Must be one of: ${allowed.join(", ")}`;
+      return allowed.includes(value) || `Must be one of: ${allowed.join(', ')}`;
     },
 
   // Async validators
@@ -381,10 +381,10 @@ export const Validators = {
     (checkDomain?: boolean) =>
     async (value: string): Promise<boolean | string> => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(value)) return "Invalid email format";
+      if (!emailRegex.test(value)) return 'Invalid email format';
 
       if (checkDomain) {
-        const domain = value.split("@")[1];
+        const domain = value.split('@')[1];
         // Simulate async domain check
         await new Promise((resolve) => setTimeout(resolve, 10));
         return true;

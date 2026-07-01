@@ -57,13 +57,13 @@ export interface QueueMetadata {
 // Typed job queue for platform operations: ingestion, indexing, repair.
 
 export type JobType =
-  | "document-ingest"
-  | "document-chunk"
-  | "document-embed"
-  | "collection-reindex"
-  | "knowledge-repair"
-  | "audit-verify"
-  | "usage-aggregate";
+  | 'document-ingest'
+  | 'document-chunk'
+  | 'document-embed'
+  | 'collection-reindex'
+  | 'knowledge-repair'
+  | 'audit-verify'
+  | 'usage-aggregate';
 
 export interface JobPayload {
   jobId: string;

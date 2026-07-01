@@ -10,8 +10,8 @@ import type {
   StorageMetadata,
   StorageListOptions,
   StorageListResult,
-} from "../../ports/index";
-import type { CloudflareEnv } from "./index";
+} from '../../ports/index';
+import type { CloudflareEnv } from './index';
 
 export class CloudflareStorageAdapter implements IStoragePort {
   private bucket: R2Bucket;
@@ -61,7 +61,7 @@ export class CloudflareStorageAdapter implements IStoragePort {
     return {
       key: object.key,
       sizeBytes: object.size,
-      contentType: object.httpMetadata?.contentType ?? "application/octet-stream",
+      contentType: object.httpMetadata?.contentType ?? 'application/octet-stream',
       lastModified: object.uploaded.toISOString(),
       etag: object.etag,
       customMetadata: object.customMetadata ?? {},

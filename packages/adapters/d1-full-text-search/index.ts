@@ -16,7 +16,7 @@ import type {
   SearchResult,
   SearchIndexMetadata,
   FulltextSearchOptions,
-} from "../../ports/search";
+} from '../../ports/search';
 
 // ── D1 FTS Environment Binding ─────────────────────────────────────────
 
@@ -41,12 +41,12 @@ export class D1FullTextSearchAdapter implements ISearchPort {
   async query(vector: number[], options?: SearchQueryOptions): Promise<SearchResult[]> {
     // Vector search is not supported by FTS5 alone
     // Use Vectorize for vector search, or combine for hybrid
-    throw new Error("Vector search not supported by D1 FTS5. Use Vectorize adapter instead.");
+    throw new Error('Vector search not supported by D1 FTS5. Use Vectorize adapter instead.');
   }
 
   async deleteByIds(ids: string[]): Promise<void> {
     // Delete from FTS5 virtual table
-    const placeholders = ids.map(() => "?").join(", ");
+    const placeholders = ids.map(() => '?').join(', ');
     await this.db
       .prepare(`DELETE FROM document_chunks_fts WHERE chunk_id IN (${placeholders})`)
       .bind(...ids)
@@ -55,12 +55,12 @@ export class D1FullTextSearchAdapter implements ISearchPort {
 
   async getIndexMetadata(): Promise<SearchIndexMetadata> {
     const result = await this.db
-      .prepare("SELECT count(*) as count FROM document_chunks_fts_content")
+      .prepare('SELECT count(*) as count FROM document_chunks_fts_content')
       .first<{ count: number }>();
     return {
       dimension: 0, // FTS5 doesn't have vector dimension
       vectorCount: result?.count ?? 0,
-      indexType: "d1-fts5",
+      indexType: 'd1-fts5',
       lastUpdated: new Date().toISOString(),
     };
   }

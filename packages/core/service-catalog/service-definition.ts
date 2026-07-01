@@ -4,25 +4,25 @@
  * Every platform capability must be a service.
  */
 
-import type { ResourceMetadata, ResourceCondition } from "../shared";
+import type { ResourceMetadata, ResourceCondition } from '../shared';
 
 /** 8 MVP service categories — the "AWS Console sidebar" */
 export type ServiceCategory =
-  | "knowledge"
-  | "agent"
-  | "workspace"
-  | "developer"
-  | "security"
-  | "storage"
-  | "model"
-  | "automation";
+  | 'knowledge'
+  | 'agent'
+  | 'workspace'
+  | 'developer'
+  | 'security'
+  | 'storage'
+  | 'model'
+  | 'automation';
 
 /** Service lifecycle phase */
-export type ServicePhase = "mvp" | "post-mvp" | "deprecated" | "planned";
+export type ServicePhase = 'mvp' | 'post-mvp' | 'deprecated' | 'planned';
 
 /** Runtime provider for a service */
 export interface ServiceRuntime {
-  provider: "cloudflare-workers" | "node-server" | "docker-container" | "kubernetes-pod";
+  provider: 'cloudflare-workers' | 'node-server' | 'docker-container' | 'kubernetes-pod';
   database: string;
   cache?: string;
   queue?: string;
@@ -51,7 +51,7 @@ export interface ServiceDefinition {
     subscribed: string[];
   };
   audit: {
-    level: "full" | "summary" | "minimal" | "none";
+    level: 'full' | 'summary' | 'minimal' | 'none';
     retention: string;
     immutable: boolean;
     integrity?: string;
@@ -66,18 +66,18 @@ export interface ServiceDefinition {
 export interface ServicePort {
   name: string;
   interface: string;
-  protocol: "http" | "grpc" | "websocket";
+  protocol: 'http' | 'grpc' | 'websocket';
   methods: string[];
 }
 
 /** The complete service catalog */
 export interface ServiceCatalog {
   apiVersion: string;
-  kind: "ServiceCatalog";
+  kind: 'ServiceCatalog';
   metadata: ResourceMetadata;
   spec: {
     version: string;
-    phase: "cloudflare-first" | "portable-core" | "self-hostable";
+    phase: 'cloudflare-first' | 'portable-core' | 'self-hostable';
     services: ServiceDefinition[];
     dependencyGraph: DependencyGraph;
     runtimeProfile: RuntimeProfile;
@@ -94,7 +94,7 @@ export interface DependencyGraph {
   edges: Array<{
     from: string;
     to: string;
-    type: "hard" | "soft";
+    type: 'hard' | 'soft';
   }>;
 }
 
@@ -118,7 +118,7 @@ export interface GovernanceOverlay {
 }
 
 /** Access role for service governance */
-export type Role = "admin" | "editor" | "viewer" | "operator";
+export type Role = 'admin' | 'editor' | 'viewer' | 'operator';
 
 /** Service tier for capacity planning */
-export type Tier = "free" | "pro" | "enterprise";
+export type Tier = 'free' | 'pro' | 'enterprise';

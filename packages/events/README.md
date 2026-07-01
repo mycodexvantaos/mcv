@@ -11,7 +11,7 @@ pnpm add @mycodexvantaos/events
 ## Usage
 
 ```typescript
-import { events } from "@mycodexvantaos/events";
+import { events } from '@mycodexvantaos/events';
 
 // Initialize
 await events.initialize();

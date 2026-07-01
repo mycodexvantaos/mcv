@@ -11,7 +11,7 @@ export interface MetricData {
 }
 
 export interface LogEntry {
-  level: "info" | "warn" | "error" | "debug";
+  level: 'info' | 'warn' | 'error' | 'debug';
   message: string;
   timestamp: number;
   context?: any;
@@ -22,7 +22,7 @@ export interface AlertRule {
   name: string;
   metric: string;
   threshold: number;
-  condition: "greater" | "less" | "equal";
+  condition: 'greater' | 'less' | 'equal';
   callback: (data: any) => void;
 }
 
@@ -38,7 +38,7 @@ export class Monitoring {
   }
 
   async initialize(): Promise<void> {
-    console.log("Monitoring service initialized");
+    console.log('Monitoring service initialized');
     this.startAlertProcessing();
   }
 
@@ -46,15 +46,15 @@ export class Monitoring {
     const { action, data } = operation;
 
     switch (action) {
-      case "recordMetric":
+      case 'recordMetric':
         return (await this.recordMetric(data)) as T;
-      case "getMetrics":
+      case 'getMetrics':
         return (await this.getMetrics(data)) as T;
-      case "log":
+      case 'log':
         return (await this.log(data)) as T;
-      case "getLogs":
+      case 'getLogs':
         return (await this.getLogs(data)) as T;
-      case "createAlert":
+      case 'createAlert':
         return (await this.createAlert(data)) as T;
       default:
         throw new Error(`Unknown monitoring action: ${action}`);
@@ -94,7 +94,7 @@ export class Monitoring {
 
   async log(logEntry: any): Promise<void> {
     const entry: LogEntry = {
-      level: logEntry.level || "info",
+      level: logEntry.level || 'info',
       message: logEntry.message,
       timestamp: Date.now(),
       context: logEntry.context,
@@ -139,13 +139,13 @@ export class Monitoring {
 
       let triggered = false;
       switch (alert.condition) {
-        case "greater":
+        case 'greater':
           triggered = metric.value > alert.threshold;
           break;
-        case "less":
+        case 'less':
           triggered = metric.value < alert.threshold;
           break;
-        case "equal":
+        case 'equal':
           triggered = metric.value === alert.threshold;
           break;
       }
@@ -166,7 +166,7 @@ export class Monitoring {
     this.metrics.clear();
     this.logs = [];
     this.alerts = [];
-    console.log("Monitoring service cleaned up");
+    console.log('Monitoring service cleaned up');
   }
 }
 

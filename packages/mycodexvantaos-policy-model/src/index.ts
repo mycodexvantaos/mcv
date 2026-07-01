@@ -14,21 +14,21 @@
 // ── Policy Effect ────────────────────────────────────────────────────────
 
 /** The set of possible policy decisions. Extends the contract schema enum. */
-export type PolicyEffect = "allow" | "deny" | "require-review" | "dry-run-only" | "audit-required";
+export type PolicyEffect = 'allow' | 'deny' | 'require-review' | 'dry-run-only' | 'audit-required';
 
 /** Check if an effect is permissive (allows the action to proceed) */
 export function isAllowedEffect(effect: PolicyEffect): boolean {
-  return effect === "allow";
+  return effect === 'allow';
 }
 
 /** Check if an effect blocks the action */
 export function isDeniedEffect(effect: PolicyEffect): boolean {
-  return effect === "deny";
+  return effect === 'deny';
 }
 
 /** Check if an effect requires human review before proceeding */
 export function isReviewRequiredEffect(effect: PolicyEffect): boolean {
-  return effect === "require-review";
+  return effect === 'require-review';
 }
 
 // ── Policy Subject ──────────────────────────────────────────────────────
@@ -53,7 +53,7 @@ export type PolicyAction = string;
 /** Parse a compound action string into individual actions */
 export function parseActions(action: PolicyAction): string[] {
   return action
-    .split(",")
+    .split(',')
     .map((a) => a.trim())
     .filter(Boolean);
 }
@@ -61,9 +61,9 @@ export function parseActions(action: PolicyAction): string[] {
 /** Check if a requested action matches a policy action pattern.
  *  Supports wildcard '*' and comma-separated compound actions. */
 export function actionMatches(policyAction: PolicyAction, requestedAction: string): boolean {
-  if (policyAction === "*") return true;
+  if (policyAction === '*') return true;
   const policyActions = parseActions(policyAction);
-  return policyActions.includes(requestedAction) || policyActions.includes("*");
+  return policyActions.includes(requestedAction) || policyActions.includes('*');
 }
 
 // ── Policy Resource ──────────────────────────────────────────────────────
@@ -84,13 +84,13 @@ export function resourceMatches(
   policyResource: string,
   requestedResource: PolicyResource
 ): boolean {
-  if (policyResource === "*") return true;
+  if (policyResource === '*') return true;
   // Exact match on resource type
   if (policyResource === requestedResource.type) return true;
   // Prefix pattern match: 'workspace/*' matches any resource type starting with 'workspace/'
-  if (policyResource.endsWith("/*")) {
+  if (policyResource.endsWith('/*')) {
     const prefix = policyResource.slice(0, -2);
-    return requestedResource.type.startsWith(prefix + "/") || requestedResource.type === prefix;
+    return requestedResource.type.startsWith(prefix + '/') || requestedResource.type === prefix;
   }
   return false;
 }
@@ -118,9 +118,9 @@ export function conditionMatches(
     const actual = context[key];
 
     // Special handling for tags_contains: check if any of the expected tags are present in context.tags
-    if (key === "tags_contains") {
+    if (key === 'tags_contains') {
       const expectedTags = expected as string[];
-      const actualTags = (context["tags"] as string[]) ?? [];
+      const actualTags = (context['tags'] as string[]) ?? [];
       const hasMatch = expectedTags.some((tag) => actualTags.includes(tag));
       if (!hasMatch) return false;
       continue;
@@ -195,11 +195,11 @@ export interface PolicyEvaluateResult {
   /** The role used in evaluation, if applicable */
   role?: string;
   /** Scope of the decision */
-  scope?: "platform" | "workspace";
+  scope?: 'platform' | 'workspace';
   /** Detailed condition check results */
   conditions?: Array<{
     type: string;
-    status: "True" | "False" | "Unknown";
+    status: 'True' | 'False' | 'Unknown';
     reason: string;
     message: string;
   }>;
@@ -212,21 +212,21 @@ export interface PolicyEvaluateResult {
 /** Check if a policy rule's subject matches the request subject.
  *  Supports: wildcard '*', role-based matching, service-based matching, exact match */
 export function subjectMatches(
-  ruleSubject: PolicyRule["subject"],
+  ruleSubject: PolicyRule['subject'],
   requestSubject: PolicySubject
 ): boolean {
   // Wildcard: rule applies to all subjects
-  if (ruleSubject === "*") return true;
+  if (ruleSubject === '*') return true;
 
   // String form: match by service name or role
-  if (typeof ruleSubject === "string") {
+  if (typeof ruleSubject === 'string') {
     return (
       requestSubject.service === ruleSubject || (requestSubject.roles ?? []).includes(ruleSubject)
     );
   }
 
   // Object form: check roles and/or service
-  if (typeof ruleSubject === "object" && ruleSubject !== null) {
+  if (typeof ruleSubject === 'object' && ruleSubject !== null) {
     const rule = ruleSubject as { roles?: string[]; service?: string; type?: string; id?: string };
 
     // Service match
@@ -257,7 +257,7 @@ export function allowDecision(
 ): PolicyEvaluateResult {
   return {
     allowed: true,
-    effect: "allow",
+    effect: 'allow',
     reason,
     matchedRuleId: opts?.matchedRuleId,
     matchedPolicyId: opts?.matchedPolicyId,
@@ -273,7 +273,7 @@ export function denyDecision(
 ): PolicyEvaluateResult {
   return {
     allowed: false,
-    effect: "deny",
+    effect: 'deny',
     reason,
     matchedRuleId: opts?.matchedRuleId,
     matchedPolicyId: opts?.matchedPolicyId,
@@ -289,7 +289,7 @@ export function requireReviewDecision(
 ): PolicyEvaluateResult {
   return {
     allowed: false,
-    effect: "require-review",
+    effect: 'require-review',
     reason,
     matchedRuleId: opts?.matchedRuleId,
     matchedPolicyId: opts?.matchedPolicyId,
@@ -305,7 +305,7 @@ export function dryRunOnlyDecision(
 ): PolicyEvaluateResult {
   return {
     allowed: false,
-    effect: "dry-run-only",
+    effect: 'dry-run-only',
     reason,
     matchedRuleId: opts?.matchedRuleId,
     matchedPolicyId: opts?.matchedPolicyId,
@@ -320,7 +320,7 @@ export function auditRequiredDecision(
 ): PolicyEvaluateResult {
   return {
     allowed: true,
-    effect: "audit-required",
+    effect: 'audit-required',
     reason,
     matchedRuleId: opts?.matchedRuleId,
     matchedPolicyId: opts?.matchedPolicyId,

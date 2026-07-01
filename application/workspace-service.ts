@@ -5,7 +5,7 @@
  * Every resource belongs to a workspace; workspace enforces namespace boundaries.
  */
 
-import type { IDatabasePort, ICachePort, IAuditPort, IIdentityPort } from "../ports/index";
+import type { IDatabasePort, ICachePort, IAuditPort, IIdentityPort } from '../ports/index';
 import type {
   WorkspaceSpec,
   WorkspaceStatus,
@@ -15,7 +15,7 @@ import type {
   Role,
   QuotaSpec,
   QuotaUsage,
-} from "../core/index";
+} from '../core/index';
 
 export interface WorkspaceServiceDeps {
   database: IDatabasePort;
@@ -42,7 +42,7 @@ export class WorkspaceService {
     const now = new Date().toISOString();
 
     const defaultQuotas: QuotaSpec =
-      input.tier === "enterprise"
+      input.tier === 'enterprise'
         ? {
             maxMembers: 200,
             maxResources: 100000,
@@ -50,7 +50,7 @@ export class WorkspaceService {
             maxModelEndpoints: 20,
             maxStorageMb: 50000,
           }
-        : input.tier === "pro"
+        : input.tier === 'pro'
           ? {
               maxMembers: 50,
               maxResources: 50000,
@@ -73,9 +73,9 @@ export class WorkspaceService {
         workspaceId,
         urn,
         input.displayName,
-        input.description ?? "",
+        input.description ?? '',
         input.ownerId,
-        input.tier ?? "free",
+        input.tier ?? 'free',
         JSON.stringify(defaultQuotas),
         now,
         now,
@@ -83,55 +83,55 @@ export class WorkspaceService {
     );
 
     // Owner is automatically a member
-    await this.addMember(workspaceId, input.ownerId, "workspace-owner");
+    await this.addMember(workspaceId, input.ownerId, 'workspace-owner');
 
     await this.deps.audit.emitEvent({
-      eventType: "workspace.created",
-      category: "workspace",
-      severity: "info",
+      eventType: 'workspace.created',
+      category: 'workspace',
+      severity: 'info',
       subjectId: input.ownerId,
       workspaceId,
-      action: "create-workspace",
-      data: { displayName: input.displayName, tier: input.tier ?? "free" },
+      action: 'create-workspace',
+      data: { displayName: input.displayName, tier: input.tier ?? 'free' },
       correlationId: crypto.randomUUID(),
     });
 
     return {
-      apiVersion: "platform.mycodevantaos/v1",
-      kind: "workspace",
+      apiVersion: 'platform.mycodevantaos/v1',
+      kind: 'workspace',
       metadata: {
         id: workspaceId,
         urn,
-        kind: "workspace",
+        kind: 'workspace',
         workspaceId,
-        labels: { tier: input.tier ?? "free" },
+        labels: { tier: input.tier ?? 'free' },
         annotations: {},
         createdBy: input.ownerId,
-        version: "1.0.0",
+        version: '1.0.0',
         resourceVersion: 1,
         createdAt: now,
         updatedAt: now,
       },
       spec: {
         displayName: input.displayName,
-        description: input.description ?? "",
+        description: input.description ?? '',
         ownerId: input.ownerId,
         settings: {
-          dataResidency: "auto",
-          defaultLanguage: "en",
+          dataResidency: 'auto',
+          defaultLanguage: 'en',
           mfaRequired: false,
           retentionPolicy: { documents: 90, chatSessions: 90, auditEvents: 2555 },
         },
         quotas: defaultQuotas,
       },
       status: {
-        phase: "active",
+        phase: 'active',
         conditions: [
           {
-            type: "Ready",
-            status: "True",
-            reason: "Created",
-            message: "Workspace created",
+            type: 'Ready',
+            status: 'True',
+            reason: 'Created',
+            message: 'Workspace created',
             lastTransitionTime: now,
           },
         ],
@@ -152,12 +152,12 @@ export class WorkspaceService {
     );
 
     await this.deps.audit.emitEvent({
-      eventType: "workspace.member.added",
-      category: "workspace",
-      severity: "medium",
+      eventType: 'workspace.member.added',
+      category: 'workspace',
+      severity: 'medium',
       subjectId,
       workspaceId,
-      action: "add-member",
+      action: 'add-member',
       data: { role, addedBy: subjectId },
       correlationId: crypto.randomUUID(),
     });
@@ -167,17 +167,17 @@ export class WorkspaceService {
 
   async removeMember(workspaceId: string, subjectId: string): Promise<void> {
     await this.deps.database.execute(
-      "DELETE FROM workspace_memberships WHERE workspace_id = ? AND subject_id = ?",
+      'DELETE FROM workspace_memberships WHERE workspace_id = ? AND subject_id = ?',
       [workspaceId, subjectId]
     );
 
     await this.deps.audit.emitEvent({
-      eventType: "workspace.member.removed",
-      category: "workspace",
-      severity: "medium",
+      eventType: 'workspace.member.removed',
+      category: 'workspace',
+      severity: 'medium',
       subjectId,
       workspaceId,
-      action: "remove-member",
+      action: 'remove-member',
       data: { removedBy: subjectId },
       correlationId: crypto.randomUUID(),
     });
@@ -188,17 +188,17 @@ export class WorkspaceService {
     resourceKind: string
   ): Promise<{ allowed: boolean; current: number; limit: number }> {
     const workspace = await this.deps.database.queryFirst<{ quotas: string }>(
-      "SELECT quotas FROM workspaces WHERE id = ?",
+      'SELECT quotas FROM workspaces WHERE id = ?',
       [workspaceId]
     );
-    if (!workspace) throw new Error("Workspace not found");
+    if (!workspace) throw new Error('Workspace not found');
 
     const quotas: QuotaSpec = JSON.parse(workspace.quotas);
     const usage = await this.getQuotaUsage(workspaceId);
 
     const limitMap: Record<string, { current: number; limit: number }> = {
-      "knowledge-collection": { current: usage.collections, limit: quotas.maxCollections },
-      "model-endpoint": { current: usage.modelEndpoints, limit: quotas.maxModelEndpoints },
+      'knowledge-collection': { current: usage.collections, limit: quotas.maxCollections },
+      'model-endpoint': { current: usage.modelEndpoints, limit: quotas.maxModelEndpoints },
       member: { current: usage.members, limit: quotas.maxMembers },
     };
 
@@ -211,7 +211,7 @@ export class WorkspaceService {
 
   private async getQuotaUsage(workspaceId: string): Promise<QuotaUsage> {
     const memberCount = await this.deps.database.queryFirst<{ count: number }>(
-      "SELECT COUNT(*) as count FROM workspace_memberships WHERE workspace_id = ?",
+      'SELECT COUNT(*) as count FROM workspace_memberships WHERE workspace_id = ?',
       [workspaceId]
     );
     return {

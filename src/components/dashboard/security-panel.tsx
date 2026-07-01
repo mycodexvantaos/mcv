@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { ShieldAlert, Loader2, ShieldCheck, Zap, Activity } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { scanForVulnerabilities } from "@/ai/client-stubs";
-import { packageJsonContent } from "@/lib/project-files";
-import { useConnectivity } from "@/lib/connectivity-manager";
+import { useState } from 'react';
+import { ShieldAlert, Loader2, ShieldCheck, Zap, Activity } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { scanForVulnerabilities } from '@/ai/client-stubs';
+import { packageJsonContent } from '@/lib/project-files';
+import { useConnectivity } from '@/lib/connectivity-manager';
 
 type Vulnerability = {
   id: string;
   packageName: string;
   version: string;
-  severity: "Critical" | "High" | "Medium" | "Low";
+  severity: 'Critical' | 'High' | 'Medium' | 'Low';
   cve: string;
   description: string;
   remediation: string;
@@ -25,7 +25,7 @@ export function SecurityPanel() {
   const [isScanning, setIsScanning] = useState(false);
   const [scanCompleted, setScanCompleted] = useState(false);
   const [vulnerabilities, setVulnerabilities] = useState<Vulnerability[]>([]);
-  const [auditMode, setAuditMode] = useState<"connected" | "native" | null>(null);
+  const [auditMode, setAuditMode] = useState<'connected' | 'native' | null>(null);
 
   const { mode } = useConnectivity();
 
@@ -37,35 +37,35 @@ export function SecurityPanel() {
     try {
       const result = await scanForVulnerabilities({
         packageJsonContent,
-        isOffline: mode === "native",
+        isOffline: mode === 'native',
       });
       setVulnerabilities(result.vulnerabilities);
-      setAuditMode((result.auditMode as "connected" | "native") ?? null);
+      setAuditMode((result.auditMode as 'connected' | 'native') ?? null);
     } catch (error: any) {
-      console.error("Error scanning for vulnerabilities:", error);
+      console.error('Error scanning for vulnerabilities:', error);
     } finally {
       setIsScanning(false);
       setScanCompleted(true);
     }
   };
 
-  const getSeverityBadge = (severity: Vulnerability["severity"]) => {
+  const getSeverityBadge = (severity: Vulnerability['severity']) => {
     switch (severity) {
-      case "Critical":
+      case 'Critical':
         return <Badge variant="destructive">Critical</Badge>;
-      case "High":
+      case 'High':
         return (
           <Badge variant="destructive" className="bg-red-700">
             High
           </Badge>
         );
-      case "Medium":
+      case 'Medium':
         return (
           <Badge variant="secondary" className="bg-yellow-500 text-black">
             Medium
           </Badge>
         );
-      case "Low":
+      case 'Low':
         return <Badge variant="outline">Low</Badge>;
     }
   };
@@ -80,9 +80,9 @@ export function SecurityPanel() {
         {auditMode && (
           <Badge
             variant="outline"
-            className={`text-[8px] h-4 ${auditMode === "native" ? "text-accent border-accent/20" : "text-primary border-primary/20"}`}
+            className={`text-[8px] h-4 ${auditMode === 'native' ? 'text-accent border-accent/20' : 'text-primary border-primary/20'}`}
           >
-            {auditMode === "native" ? "SOVEREIGN NATIVE" : "CLOUD ENHANCED"}
+            {auditMode === 'native' ? 'SOVEREIGN NATIVE' : 'CLOUD ENHANCED'}
           </Badge>
         )}
       </div>
@@ -98,12 +98,12 @@ export function SecurityPanel() {
           ) : (
             <Activity className="h-4 w-4" />
           )}
-          {isScanning ? "正在執行全棧安全性掃描..." : "啟動 Era-3 深度弱點審計"}
+          {isScanning ? '正在執行全棧安全性掃描...' : '啟動 Era-3 深度弱點審計'}
         </Button>
 
         {scanCompleted && (
           <div className="animate-in fade-in slide-in-from-top-2 duration-500">
-            {auditMode === "native" && (
+            {auditMode === 'native' && (
               <div className="mb-4 p-3 rounded-xl bg-accent/5 border border-accent/20 flex items-center gap-3">
                 <Zap className="h-5 w-5 text-accent animate-pulse" />
                 <p className="text-[10px] font-bold text-accent uppercase tracking-widest leading-relaxed">

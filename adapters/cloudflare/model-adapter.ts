@@ -13,8 +13,8 @@ import type {
   EmbedRequest,
   EmbedResponse,
   ModelHealthStatus,
-} from "../../ports/index";
-import type { CloudflareEnv } from "./index";
+} from '../../ports/index';
+import type { CloudflareEnv } from './index';
 
 interface ProviderConfig {
   baseUrl: string;
@@ -33,9 +33,9 @@ export class CloudflareModelAdapter implements IModelPort {
     const config = this.getProviderConfig(request.model);
 
     const response = await fetch(`${config.baseUrl}/chat/completions`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         ...config.headers,
       },
       body: JSON.stringify({
@@ -55,14 +55,14 @@ export class CloudflareModelAdapter implements IModelPort {
     const data = (await response.json()) as any;
     return {
       id: data.id,
-      content: data.choices[0]?.message?.content ?? "",
+      content: data.choices[0]?.message?.content ?? '',
       model: data.model,
       usage: {
         promptTokens: data.usage?.prompt_tokens ?? 0,
         completionTokens: data.usage?.completion_tokens ?? 0,
         totalTokens: data.usage?.total_tokens ?? 0,
       },
-      finishReason: data.choices[0]?.finish_reason ?? "stop",
+      finishReason: data.choices[0]?.finish_reason ?? 'stop',
       created: new Date(data.created * 1000).toISOString(),
     };
   }
@@ -71,9 +71,9 @@ export class CloudflareModelAdapter implements IModelPort {
     const config = this.getProviderConfig(request.model);
 
     const response = await fetch(`${config.baseUrl}/chat/completions`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         ...config.headers,
       },
       body: JSON.stringify({
@@ -91,29 +91,29 @@ export class CloudflareModelAdapter implements IModelPort {
     }
 
     const reader = response.body?.getReader();
-    if (!reader) throw new Error("No response body");
+    if (!reader) throw new Error('No response body');
 
     const decoder = new TextDecoder();
-    let buffer = "";
+    let buffer = '';
 
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
 
       buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split("\n");
-      buffer = lines.pop() ?? "";
+      const lines = buffer.split('\n');
+      buffer = lines.pop() ?? '';
 
       for (const line of lines) {
         const trimmed = line.trim();
-        if (!trimmed || trimmed === "data: [DONE]") continue;
-        if (!trimmed.startsWith("data: ")) continue;
+        if (!trimmed || trimmed === 'data: [DONE]') continue;
+        if (!trimmed.startsWith('data: ')) continue;
 
         try {
           const data = JSON.parse(trimmed.slice(6));
           const chunk: ModelChunk = {
             id: data.id,
-            content: data.choices[0]?.delta?.content ?? "",
+            content: data.choices[0]?.delta?.content ?? '',
             model: data.model,
             finishReason: data.choices[0]?.finish_reason,
           };
@@ -138,9 +138,9 @@ export class CloudflareModelAdapter implements IModelPort {
     const config = this.getProviderConfig(request.model);
 
     const response = await fetch(`${config.baseUrl}/embeddings`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         ...config.headers,
       },
       body: JSON.stringify({
@@ -178,7 +178,7 @@ export class CloudflareModelAdapter implements IModelPort {
         healthy: false,
         latencyMs: -1,
         lastChecked: new Date().toISOString(),
-        error: error instanceof Error ? error.message : "Unknown error",
+        error: error instanceof Error ? error.message : 'Unknown error',
       };
     }
   }
@@ -190,28 +190,28 @@ export class CloudflareModelAdapter implements IModelPort {
   private getProviderConfig(modelId: string): ProviderConfig {
     // Default: OpenAI-compatible API
     // In production, this would look up the workspace's registered endpoint
-    if (modelId.startsWith("anthropic")) {
+    if (modelId.startsWith('anthropic')) {
       return {
-        baseUrl: "https://api.anthropic.com/v1",
+        baseUrl: 'https://api.anthropic.com/v1',
         headers: {
-          "x-api-key": this.env.ENVIRONMENT, // placeholder — real key from model-byok
-          "anthropic-version": "2023-06-01",
+          'x-api-key': this.env.ENVIRONMENT, // placeholder — real key from model-byok
+          'anthropic-version': '2023-06-01',
         },
-        modelMapping: { anthropic: "claude-3-5-sonnet-20241022" },
+        modelMapping: { anthropic: 'claude-3-5-sonnet-20241022' },
       };
     }
 
-    if (modelId.startsWith("google")) {
+    if (modelId.startsWith('google')) {
       return {
-        baseUrl: "https://generativelanguage.googleapis.com/v1beta",
+        baseUrl: 'https://generativelanguage.googleapis.com/v1beta',
         headers: {},
-        modelMapping: { google: "gemini-pro" },
+        modelMapping: { google: 'gemini-pro' },
       };
     }
 
     // Default: OpenAI-compatible
     return {
-      baseUrl: "https://api.openai.com/v1",
+      baseUrl: 'https://api.openai.com/v1',
       headers: {
         Authorization: `Bearer ${this.env.ENVIRONMENT}`, // placeholder
       },

@@ -16,10 +16,10 @@
  *   npx tsx tools/validators/validate-architecture.ts
  */
 
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from 'fs';
+import * as path from 'path';
 
-const ROOT = path.resolve(__dirname, "../..");
+const ROOT = path.resolve(__dirname, '../..');
 
 interface ArchCheck {
   name: string;
@@ -33,20 +33,20 @@ const checks: ArchCheck[] = [];
 
 function checkCorePackages(): void {
   const requiredCore = [
-    "shared",
-    "service-catalog",
-    "resource-model",
-    "policy-model",
-    "audit-model",
-    "knowledge-model",
+    'shared',
+    'service-catalog',
+    'resource-model',
+    'policy-model',
+    'audit-model',
+    'knowledge-model',
   ];
   const details: string[] = [];
   let allFound = true;
 
   for (const pkg of requiredCore) {
-    const dir = path.join(ROOT, "packages/core", pkg);
+    const dir = path.join(ROOT, 'packages/core', pkg);
     if (fs.existsSync(dir)) {
-      const indexFile = path.join(dir, "index.ts");
+      const indexFile = path.join(dir, 'index.ts');
       if (fs.existsSync(indexFile)) {
         details.push(`  ✅ packages/core/${pkg}/index.ts`);
       } else {
@@ -59,18 +59,18 @@ function checkCorePackages(): void {
     }
   }
 
-  checks.push({ name: "Core packages (6 sub-packages)", passed: allFound, details });
+  checks.push({ name: 'Core packages (6 sub-packages)', passed: allFound, details });
 }
 
 // ── Check 2: Port packages ─────────────────────────────────────────────
 
 function checkPortPackages(): void {
-  const requiredPorts = ["database", "object-storage", "search", "model-provider", "queue", "auth"];
+  const requiredPorts = ['database', 'object-storage', 'search', 'model-provider', 'queue', 'auth'];
   const details: string[] = [];
   let allFound = true;
 
   for (const pkg of requiredPorts) {
-    const dir = path.join(ROOT, "packages/ports", pkg);
+    const dir = path.join(ROOT, 'packages/ports', pkg);
     if (fs.existsSync(dir)) {
       details.push(`  ✅ packages/ports/${pkg}/`);
     } else {
@@ -79,29 +79,29 @@ function checkPortPackages(): void {
     }
   }
 
-  checks.push({ name: "Port packages (6 sub-packages)", passed: allFound, details });
+  checks.push({ name: 'Port packages (6 sub-packages)', passed: allFound, details });
 }
 
 // ── Check 3: Application service packages ──────────────────────────────
 
 function checkApplicationPackages(): void {
   const requiredApps = [
-    "identity",
-    "workspace",
-    "knowledge",
-    "agent",
-    "model",
-    "audit",
-    "usage",
-    "automation",
+    'identity',
+    'workspace',
+    'knowledge',
+    'agent',
+    'model',
+    'audit',
+    'usage',
+    'automation',
   ];
   const details: string[] = [];
   let allFound = true;
 
   for (const pkg of requiredApps) {
-    const dir = path.join(ROOT, "packages/application", pkg);
+    const dir = path.join(ROOT, 'packages/application', pkg);
     if (fs.existsSync(dir)) {
-      const serviceFile = fs.readdirSync(dir).find((f) => f.endsWith("-service.ts"));
+      const serviceFile = fs.readdirSync(dir).find((f) => f.endsWith('-service.ts'));
       if (serviceFile) {
         details.push(`  ✅ packages/application/${pkg}/ (${serviceFile})`);
       } else {
@@ -113,26 +113,26 @@ function checkApplicationPackages(): void {
     }
   }
 
-  checks.push({ name: "Application services (8 sub-packages)", passed: allFound, details });
+  checks.push({ name: 'Application services (8 sub-packages)', passed: allFound, details });
 }
 
 // ── Check 4: Adapter packages ──────────────────────────────────────────
 
 function checkAdapterPackages(): void {
   const requiredAdapters = [
-    "cloudflare-d1",
-    "cloudflare-kv",
-    "cloudflare-r2",
-    "d1-full-text-search",
-    "openai",
-    "openrouter",
-    "workers-ai",
+    'cloudflare-d1',
+    'cloudflare-kv',
+    'cloudflare-r2',
+    'd1-full-text-search',
+    'openai',
+    'openrouter',
+    'workers-ai',
   ];
   const details: string[] = [];
   let allFound = true;
 
   for (const pkg of requiredAdapters) {
-    const dir = path.join(ROOT, "packages/adapters", pkg);
+    const dir = path.join(ROOT, 'packages/adapters', pkg);
     if (fs.existsSync(dir)) {
       details.push(`  ✅ packages/adapters/${pkg}/`);
     } else {
@@ -141,34 +141,34 @@ function checkAdapterPackages(): void {
     }
   }
 
-  checks.push({ name: "Adapter packages (7 sub-packages)", passed: allFound, details });
+  checks.push({ name: 'Adapter packages (7 sub-packages)', passed: allFound, details });
 }
 
 // ── Check 5: Service categories ────────────────────────────────────────
 
 function checkServiceCategories(): void {
-  const categoriesFile = path.join(ROOT, "contracts/service-categories.yaml");
+  const categoriesFile = path.join(ROOT, 'contracts/service-categories.yaml');
   const details: string[] = [];
 
   if (!fs.existsSync(categoriesFile)) {
     checks.push({
-      name: "Service categories (8 categories)",
+      name: 'Service categories (8 categories)',
       passed: false,
-      details: ["  ❌ contracts/service-categories.yaml not found"],
+      details: ['  ❌ contracts/service-categories.yaml not found'],
     });
     return;
   }
 
-  const content = fs.readFileSync(categoriesFile, "utf-8");
+  const content = fs.readFileSync(categoriesFile, 'utf-8');
   const expectedCategories = [
-    "knowledge",
-    "agent",
-    "workspace",
-    "developer",
-    "security",
-    "storage",
-    "model",
-    "automation",
+    'knowledge',
+    'agent',
+    'workspace',
+    'developer',
+    'security',
+    'storage',
+    'model',
+    'automation',
   ];
   let allFound = true;
 
@@ -181,20 +181,20 @@ function checkServiceCategories(): void {
     }
   }
 
-  checks.push({ name: "Service categories (8 categories)", passed: allFound, details });
+  checks.push({ name: 'Service categories (8 categories)', passed: allFound, details });
 }
 
 // ── Check 6: Migrations ────────────────────────────────────────────────
 
 function checkMigrations(): void {
-  const requiredDirs = ["d1", "sqlite", "postgres"];
+  const requiredDirs = ['d1', 'sqlite', 'postgres'];
   const details: string[] = [];
   let allFound = true;
 
   for (const dir of requiredDirs) {
-    const migrationDir = path.join(ROOT, "migrations", dir);
+    const migrationDir = path.join(ROOT, 'migrations', dir);
     if (fs.existsSync(migrationDir)) {
-      const files = fs.readdirSync(migrationDir).filter((f) => f.endsWith(".sql"));
+      const files = fs.readdirSync(migrationDir).filter((f) => f.endsWith('.sql'));
       if (files.length > 0) {
         details.push(`  ✅ migrations/${dir}/ (${files.length} file(s))`);
       } else {
@@ -206,18 +206,18 @@ function checkMigrations(): void {
     }
   }
 
-  checks.push({ name: "Database migrations (3 dialects)", passed: allFound, details });
+  checks.push({ name: 'Database migrations (3 dialects)', passed: allFound, details });
 }
 
 // ── Check 7: Apps layer ────────────────────────────────────────────────
 
 function checkAppsLayer(): void {
-  const requiredApps = ["api-worker", "web-console", "cli"];
+  const requiredApps = ['api-worker', 'web-console', 'cli'];
   const details: string[] = [];
   let allFound = true;
 
   for (const app of requiredApps) {
-    const dir = path.join(ROOT, "apps", app);
+    const dir = path.join(ROOT, 'apps', app);
     if (fs.existsSync(dir)) {
       details.push(`  ✅ apps/${app}/`);
     } else {
@@ -226,21 +226,21 @@ function checkAppsLayer(): void {
     }
   }
 
-  checks.push({ name: "Apps layer (3 entry points)", passed: allFound, details });
+  checks.push({ name: 'Apps layer (3 entry points)', passed: allFound, details });
 }
 
 // ── Check 8: Runtime layer ─────────────────────────────────────────────
 
 function checkRuntimesLayer(): void {
-  const requiredRuntimes = ["cloudflare", "node", "docker", "kubernetes"];
+  const requiredRuntimes = ['cloudflare', 'node', 'docker', 'kubernetes'];
   const details: string[] = [];
   let allFound = true;
 
   for (const rt of requiredRuntimes) {
-    const dir = path.join(ROOT, "runtimes", rt);
+    const dir = path.join(ROOT, 'runtimes', rt);
     if (fs.existsSync(dir)) {
       const files = fs.readdirSync(dir, { recursive: true }) as string[];
-      const tsFiles = files.filter((f) => f.toString().endsWith(".ts"));
+      const tsFiles = files.filter((f) => f.toString().endsWith('.ts'));
       details.push(`  ✅ runtimes/${rt}/ (${tsFiles.length} TS file(s))`);
     } else {
       details.push(`  ❌ runtimes/${rt}/ not found`);
@@ -248,12 +248,12 @@ function checkRuntimesLayer(): void {
     }
   }
 
-  checks.push({ name: "Runtime layer (4 runtimes)", passed: allFound, details });
+  checks.push({ name: 'Runtime layer (4 runtimes)', passed: allFound, details });
 }
 
 // ── Main ───────────────────────────────────────────────────────────────
 
-console.log("🏗️  Validating MyCodeXvantaOS platform architecture...\n");
+console.log('🏗️  Validating MyCodeXvantaOS platform architecture...\n');
 
 checkCorePackages();
 checkPortPackages();
@@ -270,7 +270,7 @@ let passed = 0;
 let failed = 0;
 
 for (const check of checks) {
-  const icon = check.passed ? "✅" : "❌";
+  const icon = check.passed ? '✅' : '❌';
   console.log(`${icon} ${check.name}`);
   for (const detail of check.details) {
     console.log(`   ${detail}`);
@@ -280,13 +280,13 @@ for (const check of checks) {
   else failed++;
 }
 
-console.log(`\n${"─".repeat(50)}`);
+console.log(`\n${'─'.repeat(50)}`);
 console.log(`Checks: ${passed} passed, ${failed} failed`);
 
 if (failed > 0) {
-  console.log("\n❌ Architecture validation FAILED");
+  console.log('\n❌ Architecture validation FAILED');
   process.exit(1);
 } else {
-  console.log("\n✅ Architecture follows the platform constitution");
+  console.log('\n✅ Architecture follows the platform constitution');
   process.exit(0);
 }

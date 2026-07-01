@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 import {
   Zap,
   Sparkles,
@@ -17,27 +17,27 @@ import {
   ArrowRight,
   Database,
   Lock,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { delegateCodingTask, type DelegateCodingTaskOutput } from "@/ai/client-stubs";
-import { useToast } from "@/hooks/use-toast";
-import { useConnectivity } from "@/lib/connectivity-manager";
-import { NLUEngine, type NLUAnalysisResult } from "@/services/native/nlu-engine";
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { delegateCodingTask, type DelegateCodingTaskOutput } from '@/ai/client-stubs';
+import { useToast } from '@/hooks/use-toast';
+import { useConnectivity } from '@/lib/connectivity-manager';
+import { NLUEngine, type NLUAnalysisResult } from '@/services/native/nlu-engine';
 
 export function SourceGenerator() {
-  const [task, setTask] = useState("");
+  const [task, setTask] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [result, setResult] = useState<DelegateCodingTaskOutput | null>(null);
   const [nluResult, setNluResult] = useState<NLUAnalysisResult | null>(null);
   const [copied, setCopied] = useState(false);
   const { toast } = useToast();
   const { mode } = useConnectivity();
-  const isOffline = mode === "native";
+  const isOffline = mode === 'native';
 
   const handleGenerate = async () => {
     if (!task.trim() || isGenerating) return;
@@ -55,7 +55,7 @@ export function SourceGenerator() {
       // 2. 執行合成任務 (P9 Engine)
       const output = await delegateCodingTask({
         taskDescription: task,
-        taskType: "generation",
+        taskType: 'generation',
         isOffline: isOffline,
       });
 
@@ -63,16 +63,16 @@ export function SourceGenerator() {
 
       toast({
         title: nluAudit.isFallback
-          ? "Fallback Mode Active"
+          ? 'Fallback Mode Active'
           : nluAudit.cached
-            ? "P9 Cache Hit"
-            : "P9 Synthesis Converged",
-        description: `Production Integrity: ${nluAudit.integrityVerified ? "VERIFIED" : "CAUTION"}`,
+            ? 'P9 Cache Hit'
+            : 'P9 Synthesis Converged',
+        description: `Production Integrity: ${nluAudit.integrityVerified ? 'VERIFIED' : 'CAUTION'}`,
       });
     } catch (error: any) {
       toast({
-        variant: "destructive",
-        title: "Synthesis Failed",
+        variant: 'destructive',
+        title: 'Synthesis Failed',
         description: error.message,
       });
     } finally {
@@ -132,7 +132,7 @@ export function SourceGenerator() {
                 ) : (
                   <Lock className="h-4 w-4 text-accent" />
                 )}
-                {isGenerating ? "Production Processing..." : "Execute Sovereign Synthesis"}
+                {isGenerating ? 'Production Processing...' : 'Execute Sovereign Synthesis'}
               </Button>
             </CardContent>
           </Card>
@@ -158,12 +158,12 @@ export function SourceGenerator() {
                     <div key={i} className="flex items-center">
                       <div className="flex flex-col items-center gap-1.5">
                         <div
-                          className={`h-8 w-8 rounded-full border flex items-center justify-center text-[10px] font-black ${p.confidence > 0.9 ? "border-accent text-accent bg-accent/5" : "border-primary text-primary bg-primary/5"}`}
+                          className={`h-8 w-8 rounded-full border flex items-center justify-center text-[10px] font-black ${p.confidence > 0.9 ? 'border-accent text-accent bg-accent/5' : 'border-primary text-primary bg-primary/5'}`}
                         >
                           {i + 1}
                         </div>
                         <span className="text-[8px] font-bold text-muted-foreground uppercase tracking-tighter">
-                          {p.stage.split(" ")[1]}
+                          {p.stage.split(' ')[1]}
                         </span>
                       </div>
                       {i < nluResult.pipeline.length - 1 && (
@@ -186,29 +186,29 @@ export function SourceGenerator() {
                 <div className="grid grid-cols-2 gap-x-8 gap-y-4">
                   {[
                     {
-                      label: "Intent Recognition",
+                      label: 'Intent Recognition',
                       val: nluResult.confidence.intent * 100,
-                      color: "text-accent",
+                      color: 'text-accent',
                     },
                     {
-                      label: "Entity Extraction",
+                      label: 'Entity Extraction',
                       val: nluResult.confidence.entities * 100,
-                      color: "text-primary",
+                      color: 'text-primary',
                     },
                     {
-                      label: "Template Selection",
+                      label: 'Template Selection',
                       val: nluResult.confidence.template * 100,
-                      color: "text-accent",
+                      color: 'text-accent',
                     },
                     {
-                      label: "Code Generation",
+                      label: 'Code Generation',
                       val: nluResult.confidence.generation * 100,
-                      color: "text-primary",
+                      color: 'text-primary',
                     },
                     {
-                      label: "Validation (L3)",
+                      label: 'Validation (L3)',
                       val: nluResult.confidence.validation * 100,
-                      color: "text-accent",
+                      color: 'text-accent',
                     },
                   ].map((item, i) => (
                     <div key={i} className="space-y-1.5">

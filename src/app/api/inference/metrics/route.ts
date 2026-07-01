@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 
-export const dynamic = "force-static";
+export const dynamic = 'force-static';
 
 // MyCodeXvantaOS Admin Dashboard - Inference Metrics API
 // Time-series metrics for LM inference monitoring
@@ -29,9 +29,9 @@ function generateMetricPoints(
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const range = searchParams.get("range") || "24h";
+  const range = searchParams.get('range') || '24h';
 
-  const hours = range === "1h" ? 1 : range === "6h" ? 6 : 24;
+  const hours = range === '1h' ? 1 : range === '6h' ? 6 : 24;
 
   const metrics = {
     throughput: generateMetricPoints(hours, 52000, 8000, 0.5),
@@ -42,14 +42,14 @@ export async function GET(request: Request) {
       output: generateMetricPoints(hours, 800000, 200000, 500),
     },
     modelDistribution: [
-      { model: "gpt-4o", percentage: 22 },
-      { model: "gpt-4o-mini", percentage: 18 },
-      { model: "claude-3.5-sonnet", percentage: 16 },
-      { model: "claude-3-haiku", percentage: 12 },
-      { model: "gemini-1.5-flash", percentage: 15 },
-      { model: "gemini-1.5-pro", percentage: 8 },
-      { model: "llama-3.1-70b", percentage: 5 },
-      { model: "other", percentage: 4 },
+      { model: 'gpt-4o', percentage: 22 },
+      { model: 'gpt-4o-mini', percentage: 18 },
+      { model: 'claude-3.5-sonnet', percentage: 16 },
+      { model: 'claude-3-haiku', percentage: 12 },
+      { model: 'gemini-1.5-flash', percentage: 15 },
+      { model: 'gemini-1.5-pro', percentage: 8 },
+      { model: 'llama-3.1-70b', percentage: 5 },
+      { model: 'other', percentage: 4 },
     ],
     summary: {
       totalRequests: hours === 1 ? 52000 : hours === 6 ? 312000 : 1243789,

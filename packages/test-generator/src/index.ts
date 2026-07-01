@@ -7,7 +7,7 @@
 
 export interface TestMethod {
   name: string;
-  type: "unit" | "integration" | "e2e";
+  type: 'unit' | 'integration' | 'e2e';
   assertions: string[];
   setup?: string;
   teardown?: string;
@@ -17,7 +17,7 @@ export interface TestMethod {
 export interface TestSuite {
   name: string;
   subject: string;
-  type: "unit" | "integration" | "e2e";
+  type: 'unit' | 'integration' | 'e2e';
   methods: TestMethod[];
   imports?: string[];
   setup?: string;
@@ -25,8 +25,8 @@ export interface TestSuite {
 }
 
 export interface TestGeneratorOptions {
-  framework?: "jest" | "mocha" | "vitest";
-  language?: "typescript" | "javascript";
+  framework?: 'jest' | 'mocha' | 'vitest';
+  language?: 'typescript' | 'javascript';
   coverage?: boolean;
   mocking?: boolean;
   includeSnapshots?: boolean;
@@ -46,8 +46,8 @@ export class TestGenerator {
 
   constructor(options: TestGeneratorOptions = {}) {
     this.options = {
-      framework: "jest",
-      language: "typescript",
+      framework: 'jest',
+      language: 'typescript',
       coverage: true,
       mocking: true,
       includeSnapshots: false,
@@ -64,19 +64,19 @@ export class TestGenerator {
     for (const methodName of methods) {
       testMethods.push({
         name: `should execute ${methodName} successfully`,
-        type: "unit",
+        type: 'unit',
         assertions: [`expect(result).toBeDefined()`, `expect(result).not.toThrow()`],
         mocks: [
           {
             method: methodName,
-            returnValue: "{}",
+            returnValue: '{}',
           },
         ],
       });
 
       testMethods.push({
         name: `should handle errors in ${methodName}`,
-        type: "unit",
+        type: 'unit',
         assertions: [`expect(error).toBeDefined()`, `expect(spy).toHaveBeenCalled()`],
         mocks: [
           {
@@ -90,16 +90,16 @@ export class TestGenerator {
     return {
       name: `${className} unit tests`,
       subject: className,
-      type: "unit",
+      type: 'unit',
       methods: testMethods,
       imports: [
-        this.options.framework === "jest"
+        this.options.framework === 'jest'
           ? `import { describe, it, expect, jest } from '@jest/globals';`
-          : "",
+          : '',
         ...imports,
       ],
-      setup: "let instance: " + className + ";",
-      teardown: "jest.clearAllMocks();",
+      setup: 'let instance: ' + className + ';',
+      teardown: 'jest.clearAllMocks();',
     };
   }
 
@@ -112,7 +112,7 @@ export class TestGenerator {
     for (const endpoint of endpoints) {
       const testMethod: TestMethod = {
         name: `should ${this.getTestAction(endpoint.method)} ${endpoint.path}`,
-        type: "integration",
+        type: 'integration',
         assertions: [],
         setup: `const response = await request(app).${endpoint.method.toLowerCase()}('${endpoint.path}');`,
         mocks: [],
@@ -125,9 +125,9 @@ export class TestGenerator {
         );
         if (successResponse) {
           testMethod.assertions.push(
-            "expect(response.status).toBe(" + successResponse.statusCode + ")"
+            'expect(response.status).toBe(' + successResponse.statusCode + ')'
           );
-          testMethod.assertions.push("expect(response.body).toBeDefined()");
+          testMethod.assertions.push('expect(response.body).toBeDefined()');
         }
       }
 
@@ -137,11 +137,11 @@ export class TestGenerator {
     return {
       name: `${apiName} integration tests`,
       subject: apiName,
-      type: "integration",
+      type: 'integration',
       methods: testMethods,
       imports: ["import request from 'supertest';", "import { app } from '../src/app';"],
-      setup: "",
-      teardown: "",
+      setup: '',
+      teardown: '',
     };
   }
 
@@ -152,21 +152,21 @@ export class TestGenerator {
     const testMethods: TestMethod[] = [
       {
         name: `should complete ${scenarioName} scenario`,
-        type: "e2e",
-        assertions: ["expect(finalState).toBeDefined()", "expect(finalState).toBe(true)"],
-        setup: steps.join("\n  "),
-        teardown: "await cleanupTestData();",
+        type: 'e2e',
+        assertions: ['expect(finalState).toBeDefined()', 'expect(finalState).toBe(true)'],
+        setup: steps.join('\n  '),
+        teardown: 'await cleanupTestData();',
       },
     ];
 
     return {
       name: `${scenarioName} E2E test`,
       subject: scenarioName,
-      type: "e2e",
+      type: 'e2e',
       methods: testMethods,
       imports: ["import { test, expect } from '@playwright/test';"],
-      setup: "",
-      teardown: "",
+      setup: '',
+      teardown: '',
     };
   }
 
@@ -174,11 +174,11 @@ export class TestGenerator {
    * Generate test file content
    */
   generateTestFile(testSuite: TestSuite): string {
-    let content = "";
+    let content = '';
 
     // Add imports
     if (testSuite.imports && testSuite.imports.length > 0) {
-      content += testSuite.imports.filter((i) => i).join("\n") + "\n\n";
+      content += testSuite.imports.filter((i) => i).join('\n') + '\n\n';
     }
 
     // Add describe block
@@ -190,7 +190,7 @@ export class TestGenerator {
     }
 
     // Add beforeAll/afterAll if needed
-    if (testSuite.type === "integration") {
+    if (testSuite.type === 'integration') {
       content += `  beforeAll(async () => {\n`;
       content += `    // Setup test database\n`;
       content += `  });\n\n`;
@@ -244,11 +244,11 @@ export class TestGenerator {
   ): string {
     const config = {
       collectCoverageFrom: [
-        "src/**/*.ts",
-        "!src/**/*.d.ts",
-        "!src/**/*.interface.ts",
-        "!src/types/**",
-        "!**/__tests__/**",
+        'src/**/*.ts',
+        '!src/**/*.d.ts',
+        '!src/**/*.interface.ts',
+        '!src/types/**',
+        '!**/__tests__/**',
       ],
       coverageThreshold: {
         global: {
@@ -258,10 +258,10 @@ export class TestGenerator {
           lines: thresholds.lines || 80,
         },
       },
-      coverageReporters: ["text", "lcov", "html", "json"],
+      coverageReporters: ['text', 'lcov', 'html', 'json'],
     };
 
-    if (this.options.framework === "jest") {
+    if (this.options.framework === 'jest') {
       return `export default ${JSON.stringify(config, null, 2)};`;
     } else {
       return JSON.stringify(config, null, 2);
@@ -272,9 +272,9 @@ export class TestGenerator {
    * Generate mock data
    */
   generateMockData(schema: Record<string, any>): string {
-    let mockData = "// Auto-generated mock data\n\n";
+    let mockData = '// Auto-generated mock data\n\n';
 
-    mockData += `const mock${this.formatTypeName(schema.name || "Data")} = {\n`;
+    mockData += `const mock${this.formatTypeName(schema.name || 'Data')} = {\n`;
 
     for (const [key, value] of Object.entries(schema.properties || {})) {
       const mockValue = this.generateMockValue(value);
@@ -282,7 +282,7 @@ export class TestGenerator {
     }
 
     mockData += `};\n\n`;
-    mockData += `export default mock${this.formatTypeName(schema.name || "Data")};\n`;
+    mockData += `export default mock${this.formatTypeName(schema.name || 'Data')};\n`;
 
     return mockData;
   }
@@ -291,7 +291,7 @@ export class TestGenerator {
    * Generate test helpers
    */
   generateTestHelpers(): string {
-    let helpers = "// Test helper functions\n\n";
+    let helpers = '// Test helper functions\n\n';
 
     // Add wait helper
     helpers += `export const wait = (ms: number): Promise<void> =>\n`;
@@ -320,31 +320,31 @@ export class TestGenerator {
    */
   private getTestAction(method: string): string {
     const actions: Record<string, string> = {
-      GET: "retrieve",
-      POST: "create",
-      PUT: "update",
-      DELETE: "delete",
-      PATCH: "partially update",
+      GET: 'retrieve',
+      POST: 'create',
+      PUT: 'update',
+      DELETE: 'delete',
+      PATCH: 'partially update',
     };
-    return actions[method] || "handle";
+    return actions[method] || 'handle';
   }
 
   /**
    * Generate mock value based on type
    */
   private generateMockValue(typeInfo: any): string {
-    if (typeof typeInfo === "string") {
+    if (typeof typeInfo === 'string') {
       return JSON.stringify(typeInfo);
     }
 
-    const type = typeInfo.type || "string";
+    const type = typeInfo.type || 'string';
     const mockValues: Record<string, string> = {
       string: "'test string'",
-      number: "123",
-      integer: "123",
-      boolean: "true",
-      object: "{}",
-      array: "[]",
+      number: '123',
+      integer: '123',
+      boolean: 'true',
+      object: '{}',
+      array: '[]',
       date: "'2023-01-01T00:00:00.000Z'",
     };
 
@@ -355,7 +355,7 @@ export class TestGenerator {
    * Format type name
    */
   private formatTypeName(name: string): string {
-    return name.charAt(0).toUpperCase() + name.slice(1).replace(/[^a-zA-Z0-9]/g, "");
+    return name.charAt(0).toUpperCase() + name.slice(1).replace(/[^a-zA-Z0-9]/g, '');
   }
 }
 

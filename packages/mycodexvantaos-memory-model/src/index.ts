@@ -4,24 +4,24 @@
  */
 
 export type MemoryStatus =
-  | "candidate"
-  | "active"
-  | "reinforced"
-  | "merged"
-  | "deprecated"
-  | "orphaned"
-  | "archived"
-  | "rejected";
+  | 'candidate'
+  | 'active'
+  | 'reinforced'
+  | 'merged'
+  | 'deprecated'
+  | 'orphaned'
+  | 'archived'
+  | 'rejected';
 
-export type ActiveMemoryStatus = "active" | "reinforced";
+export type ActiveMemoryStatus = 'active' | 'reinforced';
 
 export type PassiveMemoryStatus =
-  | "candidate"
-  | "merged"
-  | "deprecated"
-  | "orphaned"
-  | "archived"
-  | "rejected";
+  | 'candidate'
+  | 'merged'
+  | 'deprecated'
+  | 'orphaned'
+  | 'archived'
+  | 'rejected';
 
 export interface MemoryItem {
   memoryId: string;
@@ -30,14 +30,14 @@ export interface MemoryItem {
   relatedEntities: string[];
   temporalExpressions: string[];
   memoryType:
-    | "observation"
-    | "reflection"
-    | "decision"
-    | "event"
-    | "fact"
-    | "opinion"
-    | "plan"
-    | "system";
+    | 'observation'
+    | 'reflection'
+    | 'decision'
+    | 'event'
+    | 'fact'
+    | 'opinion'
+    | 'plan'
+    | 'system';
   status: MemoryStatus;
   conflictsWith: string[];
   createdAt: string;
@@ -50,7 +50,7 @@ export interface MemoryCandidate {
   content: string;
   source: string;
   tags: string[];
-  status: "candidate";
+  status: 'candidate';
   promotedTo?: string;
   rejectedReason?: string;
   createdAt: string;
@@ -60,7 +60,7 @@ export interface MemoryRelation {
   relationId: string;
   fromMemoryId: string;
   toMemoryId: string;
-  relationType: "supports" | "contradicts" | "derived-from" | "related-to" | "temporal-successor";
+  relationType: 'supports' | 'contradicts' | 'derived-from' | 'related-to' | 'temporal-successor';
   strength: number;
   createdAt: string;
 }
@@ -68,9 +68,9 @@ export interface MemoryRelation {
 export interface MemoryConflict {
   conflictId: string;
   memoryIds: string[];
-  conflictType: "factual" | "temporal" | "semantic";
-  severity: "low" | "medium" | "high";
-  status: "detected" | "reviewing" | "resolved";
+  conflictType: 'factual' | 'temporal' | 'semantic';
+  severity: 'low' | 'medium' | 'high';
+  status: 'detected' | 'reviewing' | 'resolved';
   resolution?: string;
   detectedAt: string;
   resolvedAt?: string;
@@ -86,7 +86,7 @@ export interface MemoryDreamRun {
 }
 
 export interface MemoryDreamAction {
-  actionType: "merge" | "resolve" | "mark_orphan" | "delete";
+  actionType: 'merge' | 'resolve' | 'mark_orphan' | 'delete';
   targetMemoryId: string;
   relatedMemoryId?: string;
   reason: string;

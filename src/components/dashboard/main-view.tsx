@@ -1,5 +1,5 @@
-import { EditorView } from "./editor-view";
-import { TerminalPanel } from "./terminal-panel";
+import { EditorView } from './editor-view';
+import { TerminalPanel } from './terminal-panel';
 
 export function MainView() {
   return (

@@ -15,7 +15,7 @@
  *   - list-usage-events
  */
 
-import type { IDatabasePort } from "../../ports/database";
+import type { IDatabasePort } from '../../ports/database';
 
 // ── Service Dependencies ───────────────────────────────────────────────
 
@@ -38,16 +38,16 @@ export interface UsageServiceDeps {
 
 // ── Types ──────────────────────────────────────────────────────────────
 
-export type Tier = "free" | "pro" | "enterprise";
+export type Tier = 'free' | 'pro' | 'enterprise';
 export type MeterDimension =
-  | "api_calls"
-  | "storage_bytes"
-  | "search_queries"
-  | "model_tokens_input"
-  | "model_tokens_output"
-  | "documents_ingested"
-  | "chat_messages"
-  | "audit_events";
+  | 'api_calls'
+  | 'storage_bytes'
+  | 'search_queries'
+  | 'model_tokens_input'
+  | 'model_tokens_output'
+  | 'documents_ingested'
+  | 'chat_messages'
+  | 'audit_events';
 
 export interface MeterUsageInput {
   workspaceId: string;
@@ -84,7 +84,7 @@ export interface UsageReport {
 
 export interface UsageAuditEvent {
   eventType: string;
-  category: "security";
+  category: 'security';
   severity: string;
   subjectId: string;
   workspaceId: string;
@@ -150,19 +150,19 @@ export class UsageService {
     // Update sliding window counter in cache
     const windowKey = `usage:${input.workspaceId}:${input.dimension}:${this.getCurrentWindow()}`;
     const current = await this.deps.cache.get(windowKey);
-    const newValue = (parseInt(current ?? "0", 10) + input.quantity).toString();
+    const newValue = (parseInt(current ?? '0', 10) + input.quantity).toString();
     await this.deps.cache.put(windowKey, newValue, { expirationTtl: 86400 });
   }
 
   async checkQuota(
     workspaceId: string,
     dimension: MeterDimension,
-    tier: Tier = "free"
+    tier: Tier = 'free'
   ): Promise<QuotaStatus> {
     const limit = TIER_LIMITS[tier][dimension];
     const windowKey = `usage:${workspaceId}:${dimension}:${this.getCurrentWindow()}`;
     const current = await this.deps.cache.get(windowKey);
-    const used = parseInt(current ?? "0", 10);
+    const used = parseInt(current ?? '0', 10);
     const remaining = Math.max(0, limit - used);
 
     return {
@@ -196,7 +196,7 @@ export class UsageService {
 
   private getCurrentWindow(): string {
     const now = new Date();
-    return `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}-${String(now.getUTCDate()).padStart(2, "0")}`;
+    return `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, '0')}-${String(now.getUTCDate()).padStart(2, '0')}`;
   }
 
   private getNextWindowReset(): string {

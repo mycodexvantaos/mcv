@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 
-export const dynamic = "force-static";
+export const dynamic = 'force-static';
 
 /**
  * @fileoverview Humaniser Rewrite/Humanise API Route
@@ -24,31 +24,31 @@ export async function POST(request: NextRequest) {
     const {
       text,
       detectionResult,
-      style = "neutral",
+      style = 'neutral',
       targetSentenceIndices,
       preserveTechnicalTerms = true,
-      formalityLevel = "semi-formal",
+      formalityLevel = 'semi-formal',
       useLLM = false,
     } = body;
 
-    if (!text || typeof text !== "string") {
+    if (!text || typeof text !== 'string') {
       return NextResponse.json(
-        { error: "Text input is required and must be a string" },
+        { error: 'Text input is required and must be a string' },
         { status: 400 }
       );
     }
 
     if (!detectionResult) {
       return NextResponse.json(
-        { error: "Detection result is required for humanisation" },
+        { error: 'Detection result is required for humanisation' },
         { status: 400 }
       );
     }
 
-    const { HumaniserEngine } = await import("@mycodexvantaos/ai-humaniser");
+    const { HumaniserEngine } = await import('@mycodexvantaos/ai-humaniser');
 
     const engine = new HumaniserEngine({
-      mode: useLLM ? "hybrid" : "native",
+      mode: useLLM ? 'hybrid' : 'native',
     });
 
     await engine.initialize();
@@ -65,13 +65,13 @@ export async function POST(request: NextRequest) {
     // If LLM enhancement is requested
     if (useLLM && process.env.GEMINI_API_KEY) {
       try {
-        const { humaniserRewriteFlow } = await import("@/ai/flows/humaniser-rewrite-flow");
+        const { humaniserRewriteFlow } = await import('@/ai/flows/humaniser-rewrite-flow');
         const llmResult = await humaniserRewriteFlow({
           text,
-          style: style as "neutral" | "conversational" | "professional" | "academic" | "creative",
+          style: style as 'neutral' | 'conversational' | 'professional' | 'academic' | 'creative',
           targetSentenceIndices,
           preserveTechnicalTerms,
-          formalityLevel: formalityLevel as "casual" | "semi-formal" | "formal",
+          formalityLevel: formalityLevel as 'casual' | 'semi-formal' | 'formal',
         });
 
         await engine.shutdown();
@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({
           ...result,
           llmEnhanced: false,
-          llmError: "LLM rewrite enhancement unavailable",
+          llmError: 'LLM rewrite enhancement unavailable',
         });
       }
     }
@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
       llmEnhanced: false,
     });
   } catch (error: any) {
-    console.error("[Humaniser Humanise API]", error);
-    return NextResponse.json({ error: error.message || "Humanisation failed" }, { status: 500 });
+    console.error('[Humaniser Humanise API]', error);
+    return NextResponse.json({ error: error.message || 'Humanisation failed' }, { status: 500 });
   }
 }

@@ -9,8 +9,8 @@ You have three versions of a Node.js project and want to merge them into one opt
 ### Code
 
 ```javascript
-import { ApplicationPipeline } from "../core/pipeline.js";
-import fs from "fs";
+import { ApplicationPipeline } from '../core/pipeline.js';
+import fs from 'fs';
 
 async function mergeProjectVersions() {
   const pipeline = new ApplicationPipeline({
@@ -19,25 +19,25 @@ async function mergeProjectVersions() {
 
   // Load ZIP files
   const files = [
-    new File([fs.readFileSync("project-v1.zip")], "project-v1.zip"),
-    new File([fs.readFileSync("project-v2.zip")], "project-v2.zip"),
-    new File([fs.readFileSync("project-v3.zip")], "project-v3.zip"),
+    new File([fs.readFileSync('project-v1.zip')], 'project-v1.zip'),
+    new File([fs.readFileSync('project-v2.zip')], 'project-v2.zip'),
+    new File([fs.readFileSync('project-v3.zip')], 'project-v3.zip'),
   ];
 
   // Step 1: Upload and parse
-  console.log("📦 Uploading projects...");
+  console.log('📦 Uploading projects...');
   const projects = await pipeline.uploadZips(files);
   console.log(`✓ Uploaded ${projects.length} projects`);
 
   // Step 2: Analyze each version
-  console.log("🔍 Analyzing projects...");
+  console.log('🔍 Analyzing projects...');
   const analyses = await pipeline.analyzeAll(projects);
   analyses.forEach((a, i) => {
-    console.log(`✓ v${i + 1}: ${a.tags.join(", ")}`);
+    console.log(`✓ v${i + 1}: ${a.tags.join(', ')}`);
   });
 
   // Step 3: Detect conflicts
-  console.log("⚠️  Detecting conflicts...");
+  console.log('⚠️  Detecting conflicts...');
   const conflicts = await pipeline.detectConflicts(projects);
   console.log(`✓ Found ${conflicts.length} conflicts`);
   conflicts.slice(0, 5).forEach((c) => {
@@ -45,16 +45,16 @@ async function mergeProjectVersions() {
   });
 
   // Step 4: Generate synthesis
-  console.log("🔄 Synthesizing merged version...");
+  console.log('🔄 Synthesizing merged version...');
   const report = await pipeline.synthesize(projects);
 
   // Step 5: Output results
-  console.log("\n=== SYNTHESIS REPORT ===");
+  console.log('\n=== SYNTHESIS REPORT ===');
   console.log(report.report);
 
   // Save report
-  fs.writeFileSync("synthesis-report.json", JSON.stringify(report, null, 2));
-  console.log("\n✓ Report saved to synthesis-report.json");
+  fs.writeFileSync('synthesis-report.json', JSON.stringify(report, null, 2));
+  console.log('\n✓ Report saved to synthesis-report.json');
 }
 
 mergeProjectVersions().catch(console.error);
@@ -90,14 +90,14 @@ Multiple versions have conflicting package.json dependencies.
 ### Code
 
 ```javascript
-import { ApplicationPipeline } from "../core/pipeline.js";
+import { ApplicationPipeline } from '../core/pipeline.js';
 
 async function resolveDependencyConflicts() {
   const pipeline = new ApplicationPipeline();
 
   // Custom merge strategy for dependencies
   const customStrategy = {
-    "package.json": (versions) => {
+    'package.json': (versions) => {
       const merged = { ...versions[0] };
 
       // Merge dependencies
@@ -128,7 +128,7 @@ async function resolveDependencyConflicts() {
   const projects = await pipeline.uploadZips(zipFiles);
   const report = await pipeline.synthesize(projects, customStrategy);
 
-  console.log("✓ Dependencies resolved");
+  console.log('✓ Dependencies resolved');
   return report;
 }
 ```
@@ -144,21 +144,21 @@ Use the pipeline in a React web application.
 ### Code
 
 ```jsx
-import React, { useState } from "react";
-import PipelineUI from "../core/PipelineUI.jsx";
+import React, { useState } from 'react';
+import PipelineUI from '../core/PipelineUI.jsx';
 
 export default function ZipSynthesisApp() {
   const [report, setReport] = useState(null);
 
   return (
-    <div style={{ padding: "2rem" }}>
+    <div style={{ padding: '2rem' }}>
       <h1>ZIP Synthesis Platform</h1>
       <p>Upload multiple ZIP files to analyze and synthesize them into one optimized version.</p>
 
       <PipelineUI onSynthesis={setReport} />
 
       {report && (
-        <div style={{ marginTop: "2rem", padding: "1rem", background: "#f5f5f5" }}>
+        <div style={{ marginTop: '2rem', padding: '1rem', background: '#f5f5f5' }}>
           <h2>Synthesis Report</h2>
           <pre>{JSON.stringify(report, null, 2)}</pre>
         </div>
@@ -185,7 +185,7 @@ name: Merge Project Versions
 on:
   push:
     paths:
-      - "versions/*.zip"
+      - 'versions/*.zip'
 
 jobs:
   merge:
@@ -196,7 +196,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: '18'
 
       - name: Install dependencies
         run: npm install
@@ -236,16 +236,16 @@ Expose the pipeline as a REST API.
 
 ```javascript
 // server.js
-import express from "express";
-import multer from "multer";
-import { ApplicationPipeline } from "./skills/application-pipeline/core/pipeline.js";
+import express from 'express';
+import multer from 'multer';
+import { ApplicationPipeline } from './skills/application-pipeline/core/pipeline.js';
 
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
 const pipeline = new ApplicationPipeline();
 
 // Upload and analyze
-app.post("/api/analyze", upload.array("files"), async (req, res) => {
+app.post('/api/analyze', upload.array('files'), async (req, res) => {
   try {
     const files = req.files.map((f) => new File([f.buffer], f.originalname));
 
@@ -263,7 +263,7 @@ app.post("/api/analyze", upload.array("files"), async (req, res) => {
 });
 
 // Synthesize
-app.post("/api/synthesize", async (req, res) => {
+app.post('/api/synthesize', async (req, res) => {
   try {
     const report = await pipeline.synthesize();
     res.json(report);
@@ -273,12 +273,12 @@ app.post("/api/synthesize", async (req, res) => {
 });
 
 // Get status
-app.get("/api/status", (req, res) => {
+app.get('/api/status', (req, res) => {
   res.json(pipeline.getStatus());
 });
 
 app.listen(3000, () => {
-  console.log("Pipeline API running on http://localhost:3000");
+  console.log('Pipeline API running on http://localhost:3000');
 });
 ```
 
@@ -366,28 +366,28 @@ Monitor pipeline progress with event listeners.
 ### Code
 
 ```javascript
-import { ApplicationPipeline } from "../core/pipeline.js";
+import { ApplicationPipeline } from '../core/pipeline.js';
 
 const pipeline = new ApplicationPipeline();
 
 // Listen to events
-pipeline.on("analyzing", ({ projectId, name }) => {
+pipeline.on('analyzing', ({ projectId, name }) => {
   console.log(`[ANALYZING] ${name}`);
 });
 
-pipeline.on("analyzed", ({ projectId, analysis }) => {
-  console.log(`[ANALYZED] Tags: ${analysis.tags.join(", ")}`);
+pipeline.on('analyzed', ({ projectId, analysis }) => {
+  console.log(`[ANALYZED] Tags: ${analysis.tags.join(', ')}`);
 });
 
-pipeline.on("synthesizing", ({ count }) => {
+pipeline.on('synthesizing', ({ count }) => {
   console.log(`[SYNTHESIZING] ${count} versions`);
 });
 
-pipeline.on("synthesized", ({ report }) => {
+pipeline.on('synthesized', ({ report }) => {
   console.log(`[SYNTHESIZED] Complete`);
 });
 
-pipeline.on("error", ({ error }) => {
+pipeline.on('error', ({ error }) => {
   console.error(`[ERROR] ${error}`);
 });
 
@@ -408,7 +408,7 @@ Process multiple groups of projects.
 ### Code
 
 ```javascript
-import { ApplicationPipeline } from "../core/pipeline.js";
+import { ApplicationPipeline } from '../core/pipeline.js';
 
 async function batchProcess(groups) {
   const results = [];
@@ -433,9 +433,9 @@ async function batchProcess(groups) {
 
 // Usage
 const groups = [
-  { name: "frontend", files: [v1_ui, v2_ui, v3_ui] },
-  { name: "backend", files: [v1_api, v2_api, v3_api] },
-  { name: "database", files: [v1_db, v2_db, v3_db] },
+  { name: 'frontend', files: [v1_ui, v2_ui, v3_ui] },
+  { name: 'backend', files: [v1_api, v2_api, v3_api] },
+  { name: 'database', files: [v1_db, v2_db, v3_db] },
 ];
 
 const results = await batchProcess(groups);
@@ -452,7 +452,7 @@ Validate merged project before deployment.
 ### Code
 
 ```javascript
-import { ApplicationPipeline } from "../core/pipeline.js";
+import { ApplicationPipeline } from '../core/pipeline.js';
 
 async function validateMerge(projects) {
   const pipeline = new ApplicationPipeline();
@@ -464,12 +464,12 @@ async function validateMerge(projects) {
   const validation = await pipeline.validate(report);
 
   if (!validation.isValid) {
-    console.error("Validation failed:");
+    console.error('Validation failed:');
     validation.errors.forEach((e) => console.error(`  - ${e}`));
     process.exit(1);
   }
 
-  console.log("✓ Validation passed");
+  console.log('✓ Validation passed');
   validation.warnings.forEach((w) => console.warn(`  ⚠️  ${w}`));
 
   return report;
@@ -487,7 +487,7 @@ Optimize pipeline for large projects.
 ### Code
 
 ```javascript
-import { ApplicationPipeline } from "../core/pipeline.js";
+import { ApplicationPipeline } from '../core/pipeline.js';
 
 async function optimizedMerge(files) {
   const pipeline = new ApplicationPipeline();

@@ -48,7 +48,7 @@ export interface GitHubIssue {
   number: number;
   title: string;
   body: string | null;
-  state: "open" | "closed";
+  state: 'open' | 'closed';
   user: GitHubUser;
   assignee: GitHubUser | null;
   labels: GitHubLabel[];
@@ -70,7 +70,7 @@ export interface GitHubPullRequest {
   number: number;
   title: string;
   body: string | null;
-  state: "open" | "closed";
+  state: 'open' | 'closed';
   user: GitHubUser;
   base: GitHubBranch;
   head: GitHubBranch;
@@ -99,7 +99,7 @@ export interface GitHubCommit {
 
 export interface GitHubFile {
   filename: string;
-  type: "file" | "dir" | "submodule" | "symlink";
+  type: 'file' | 'dir' | 'submodule' | 'symlink';
   size: number | null;
   sha: string;
   url: string;
@@ -112,14 +112,14 @@ export class GitHubConnector {
   constructor(config: GitHubConfig) {
     this.config = {
       token: config.token,
-      baseUrl: config.baseUrl || "https://api.github.com",
+      baseUrl: config.baseUrl || 'https://api.github.com',
       timeout: config.timeout || 30000,
     };
 
     this.headers = {
       Authorization: `token ${this.config.token}`,
-      Accept: "application/vnd.github.v3+json",
-      "User-Agent": "MyCodeXvantaOS-GitHub-Connector",
+      Accept: 'application/vnd.github.v3+json',
+      'User-Agent': 'MyCodeXvantaOS-GitHub-Connector',
     };
   }
 
@@ -144,9 +144,9 @@ export class GitHubConnector {
 
   private async post<T>(endpoint: string, data: any): Promise<T> {
     return this.request<T>(endpoint, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
     });
@@ -154,9 +154,9 @@ export class GitHubConnector {
 
   private async put<T>(endpoint: string, data: any): Promise<T> {
     return this.request<T>(endpoint, {
-      method: "PUT",
+      method: 'PUT',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
     });
@@ -164,9 +164,9 @@ export class GitHubConnector {
 
   private async patch<T>(endpoint: string, data: any): Promise<T> {
     return this.request<T>(endpoint, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
     });
@@ -174,7 +174,7 @@ export class GitHubConnector {
 
   private async delete<T>(endpoint: string): Promise<T> {
     return this.request<T>(endpoint, {
-      method: "DELETE",
+      method: 'DELETE',
     });
   }
 
@@ -182,7 +182,7 @@ export class GitHubConnector {
    * Get authenticated user
    */
   async getUser(): Promise<GitHubUser> {
-    return this.request<GitHubUser>("/user");
+    return this.request<GitHubUser>('/user');
   }
 
   /**
@@ -198,14 +198,14 @@ export class GitHubConnector {
   async getUserRepositories(
     username: string,
     options: {
-      type?: "all" | "owner" | "member";
-      sort?: "updated" | "created" | "pushed";
+      type?: 'all' | 'owner' | 'member';
+      sort?: 'updated' | 'created' | 'pushed';
       per_page?: number;
     } = {}
   ): Promise<GitHubRepository[]> {
     const params = new URLSearchParams({
-      type: options.type || "all",
-      sort: options.sort || "updated",
+      type: options.type || 'all',
+      sort: options.sort || 'updated',
       per_page: String(options.per_page || 30),
     });
     return this.request<GitHubRepository[]>(`/users/${username}/repos?${params}`);
@@ -216,13 +216,13 @@ export class GitHubConnector {
    */
   async getMyRepositories(
     options: {
-      type?: "all" | "owner" | "public" | "private";
-      visibility?: "all" | "public" | "private";
+      type?: 'all' | 'owner' | 'public' | 'private';
+      visibility?: 'all' | 'public' | 'private';
     } = {}
   ): Promise<GitHubRepository[]> {
     const params = new URLSearchParams();
-    if (options.type) params.set("type", options.type);
-    if (options.visibility) params.set("visibility", options.visibility);
+    if (options.type) params.set('type', options.type);
+    if (options.visibility) params.set('visibility', options.visibility);
     return this.request<GitHubRepository[]>(`/user/repos?${params}`);
   }
 
@@ -240,16 +240,16 @@ export class GitHubConnector {
     owner: string,
     repo: string,
     options: {
-      state?: "open" | "closed" | "all";
+      state?: 'open' | 'closed' | 'all';
       labels?: string;
-      sort?: "created" | "updated" | "comments";
+      sort?: 'created' | 'updated' | 'comments';
     } = {}
   ): Promise<GitHubIssue[]> {
     const params = new URLSearchParams({
-      state: options.state || "open",
-      sort: options.sort || "created",
+      state: options.state || 'open',
+      sort: options.sort || 'created',
     });
-    if (options.labels) params.set("labels", options.labels);
+    if (options.labels) params.set('labels', options.labels);
     return this.request<GitHubIssue[]>(`/repos/${owner}/${repo}/issues?${params}`);
   }
 
@@ -271,7 +271,7 @@ export class GitHubConnector {
     owner: string,
     repo: string,
     issueNumber: number,
-    data: { title?: string; body?: string; state?: "open" | "closed" }
+    data: { title?: string; body?: string; state?: 'open' | 'closed' }
   ): Promise<GitHubIssue> {
     return this.patch<GitHubIssue>(`/repos/${owner}/${repo}/issues/${issueNumber}`, data);
   }
@@ -282,11 +282,11 @@ export class GitHubConnector {
   async getPullRequests(
     owner: string,
     repo: string,
-    options: { state?: "open" | "closed" | "all"; sort?: "created" | "updated" | "popularity" } = {}
+    options: { state?: 'open' | 'closed' | 'all'; sort?: 'created' | 'updated' | 'popularity' } = {}
   ): Promise<GitHubPullRequest[]> {
     const params = new URLSearchParams({
-      state: options.state || "open",
-      sort: options.sort || "created",
+      state: options.state || 'open',
+      sort: options.sort || 'created',
     });
     return this.request<GitHubPullRequest[]>(`/repos/${owner}/${repo}/pulls?${params}`);
   }
@@ -325,8 +325,8 @@ export class GitHubConnector {
     const params = new URLSearchParams({
       per_page: String(options.per_page || 30),
     });
-    if (options.sha) params.set("sha", options.sha);
-    if (options.path) params.set("path", options.path);
+    if (options.sha) params.set('sha', options.sha);
+    if (options.path) params.set('path', options.path);
     return this.request<GitHubCommit[]>(`/repos/${owner}/${repo}/commits?${params}`);
   }
 
@@ -343,7 +343,7 @@ export class GitHubConnector {
   async getContents(
     owner: string,
     repo: string,
-    path: string = ""
+    path: string = ''
   ): Promise<GitHubFile | GitHubFile[]> {
     return this.request(`/repos/${owner}/${repo}/contents/${path}`);
   }
@@ -383,7 +383,7 @@ export class GitHubConnector {
     options: { protected?: boolean } = {}
   ): Promise<any[]> {
     const params = new URLSearchParams();
-    if (options.protected !== undefined) params.set("protected", String(options.protected));
+    if (options.protected !== undefined) params.set('protected', String(options.protected));
     return this.request(`/repos/${owner}/${repo}/branches?${params}`);
   }
 
@@ -403,7 +403,7 @@ export class GitHubConnector {
     private?: boolean;
     auto_init?: boolean;
   }): Promise<GitHubRepository> {
-    return this.post<GitHubRepository>("/user/repos", data);
+    return this.post<GitHubRepository>('/user/repos', data);
   }
 
   /**
@@ -427,7 +427,7 @@ export class GitHubConnector {
    * Check rate limit status
    */
   async getRateLimit(): Promise<any> {
-    return this.request("/rate_limit");
+    return this.request('/rate_limit');
   }
 }
 

@@ -8,4 +8,4 @@ export {
   healthCheck,
   type CloudflareBindings,
   type CloudflareServiceContainer,
-} from "./bootstrap.js";
+} from './bootstrap.js';

@@ -4,7 +4,7 @@
  */
 
 export interface DatabaseConfig {
-  provider: "sqlite" | "postgresql" | "mysql";
+  provider: 'sqlite' | 'postgresql' | 'mysql';
   connectionString?: string;
   poolSize?: number;
 }
@@ -22,7 +22,7 @@ export class Database {
 
   constructor() {
     this.config = {
-      provider: "sqlite",
+      provider: 'sqlite',
       poolSize: 10,
     };
     this.tables = new Map();
@@ -38,11 +38,11 @@ export class Database {
     const { sql, params } = operation;
 
     switch (operation.action) {
-      case "query":
+      case 'query':
         return (await this.query(sql, params)) as T;
-      case "execute":
+      case 'execute':
         return (await this.executeSql(sql, params)) as T;
-      case "transaction":
+      case 'transaction':
         return (await this.transaction(operation.fn)) as T;
       default:
         return (await this.query(sql, params)) as T;
@@ -68,29 +68,29 @@ export class Database {
   }
 
   async transaction<T>(fn: () => Promise<T>): Promise<T> {
-    console.log("Starting transaction");
+    console.log('Starting transaction');
     try {
       const result = await fn();
-      console.log("Transaction committed");
+      console.log('Transaction committed');
       return result;
     } catch (error) {
-      console.log("Transaction rolled back");
+      console.log('Transaction rolled back');
       throw error;
     }
   }
 
   async migrate(): Promise<void> {
-    console.log("Running database migrations");
+    console.log('Running database migrations');
     // Create default tables
-    this.tables.set("users", {
-      name: "users",
-      columns: ["id", "name", "email", "created_at"],
+    this.tables.set('users', {
+      name: 'users',
+      columns: ['id', 'name', 'email', 'created_at'],
     });
   }
 
   async cleanup(): Promise<void> {
     this.tables.clear();
-    console.log("Database cleaned up");
+    console.log('Database cleaned up');
   }
 }
 

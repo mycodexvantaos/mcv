@@ -1,17 +1,17 @@
-import { MessageQueue } from "../index";
+import { MessageQueue } from '../index';
 
-describe("message-queue", () => {
+describe('message-queue', () => {
   let instance: MessageQueue;
 
   beforeEach(() => {
     instance = new MessageQueue();
   });
 
-  test("should initialize", () => {
+  test('should initialize', () => {
     expect(instance).toBeDefined();
   });
 
-  test("should have basic functionality", () => {
-    expect(typeof instance).toBe("object");
+  test('should have basic functionality', () => {
+    expect(typeof instance).toBe('object');
   });
 });

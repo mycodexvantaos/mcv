@@ -1,5 +1,5 @@
-export type ImplementationEffort = "low" | "medium" | "high";
-export type DecisionOutcome = "success" | "partial" | "failure";
+export type ImplementationEffort = 'low' | 'medium' | 'high';
+export type DecisionOutcome = 'success' | 'partial' | 'failure';
 
 export interface PreviousDecision {
   scenarioId: string;

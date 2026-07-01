@@ -19,7 +19,7 @@ export interface TuningParameter {
   min: number;
   max: number;
   step: number;
-  impact: "high" | "medium" | "low";
+  impact: 'high' | 'medium' | 'low';
 }
 
 export class PerformanceTuner {
@@ -34,52 +34,52 @@ export class PerformanceTuner {
   private initializeDefaultParameters(): void {
     const defaultParams: TuningParameter[] = [
       {
-        name: "cache_ttl",
+        name: 'cache_ttl',
         value: 3600,
         min: 60,
         max: 86400,
         step: 60,
-        impact: "high",
+        impact: 'high',
       },
       {
-        name: "batch_size",
+        name: 'batch_size',
         value: 100,
         min: 10,
         max: 1000,
         step: 10,
-        impact: "high",
+        impact: 'high',
       },
       {
-        name: "connection_pool_size",
+        name: 'connection_pool_size',
         value: 20,
         min: 5,
         max: 100,
         step: 5,
-        impact: "medium",
+        impact: 'medium',
       },
       {
-        name: "request_timeout",
+        name: 'request_timeout',
         value: 5000,
         min: 1000,
         max: 30000,
         step: 1000,
-        impact: "medium",
+        impact: 'medium',
       },
       {
-        name: "max_retries",
+        name: 'max_retries',
         value: 3,
         min: 1,
         max: 10,
         step: 1,
-        impact: "low",
+        impact: 'low',
       },
       {
-        name: "circuit_breaker_threshold",
+        name: 'circuit_breaker_threshold',
         value: 0.5,
         min: 0.1,
         max: 0.9,
         step: 0.1,
-        impact: "high",
+        impact: 'high',
       },
     ];
 
@@ -115,43 +115,43 @@ export class PerformanceTuner {
 
     // Optimize cache TTL based on cache hit rate
     if (avgCacheHitRate < 0.5) {
-      const cacheTtl = this.parameters.get("cache_ttl")!;
+      const cacheTtl = this.parameters.get('cache_ttl')!;
       const newValue = Math.min(cacheTtl.value * 1.2, cacheTtl.max);
-      changes["cache_ttl"] = newValue;
+      changes['cache_ttl'] = newValue;
       cacheTtl.value = newValue;
     } else if (avgCacheHitRate > 0.9) {
-      const cacheTtl = this.parameters.get("cache_ttl")!;
+      const cacheTtl = this.parameters.get('cache_ttl')!;
       const newValue = Math.max(cacheTtl.value * 0.9, cacheTtl.min);
-      changes["cache_ttl"] = newValue;
+      changes['cache_ttl'] = newValue;
       cacheTtl.value = newValue;
     }
 
     // Optimize batch size based on response time
     if (avgResponseTime > 2000) {
-      const batchSize = this.parameters.get("batch_size")!;
+      const batchSize = this.parameters.get('batch_size')!;
       const newValue = Math.max(batchSize.value * 0.8, batchSize.min);
-      changes["batch_size"] = newValue;
+      changes['batch_size'] = newValue;
       batchSize.value = newValue;
     } else if (avgResponseTime < 500) {
-      const batchSize = this.parameters.get("batch_size")!;
+      const batchSize = this.parameters.get('batch_size')!;
       const newValue = Math.min(batchSize.value * 1.2, batchSize.max);
-      changes["batch_size"] = newValue;
+      changes['batch_size'] = newValue;
       batchSize.value = newValue;
     }
 
     // Optimize connection pool based on memory
     if (avgMemory > 0.8) {
-      const poolSize = this.parameters.get("connection_pool_size")!;
+      const poolSize = this.parameters.get('connection_pool_size')!;
       const newValue = Math.max(poolSize.value * 0.9, poolSize.min);
-      changes["connection_pool_size"] = newValue;
+      changes['connection_pool_size'] = newValue;
       poolSize.value = newValue;
     }
 
     // Optimize circuit breaker based on error rate
     if (avgErrorRate > 0.1) {
-      const threshold = this.parameters.get("circuit_breaker_threshold")!;
+      const threshold = this.parameters.get('circuit_breaker_threshold')!;
       const newValue = Math.max(threshold.value * 0.9, threshold.min);
-      changes["circuit_breaker_threshold"] = newValue;
+      changes['circuit_breaker_threshold'] = newValue;
       threshold.value = newValue;
     }
 

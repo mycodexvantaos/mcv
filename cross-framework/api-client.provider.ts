@@ -3,11 +3,11 @@
  * Transformed to use CodeSynthesisCapability for platform independence
  */
 
-import type { CodeSynthesisCapability } from "../packages/capabilities/src/code-synthesis";
+import type { CodeSynthesisCapability } from '../packages/capabilities/src/code-synthesis';
 import type {
   SynthesisOptions,
   SynthesisResult,
-} from "../packages/capabilities/src/code-synthesis";
+} from '../packages/capabilities/src/code-synthesis';
 
 export interface MessageResponse {
   content: Array<{
@@ -41,7 +41,7 @@ export class APIClient {
       this.provider = await this.providerFactory.getCodeSynthesisProvider();
       await this.provider.initialize();
     } catch (error) {
-      console.error("Failed to initialize APIClient:", error);
+      console.error('Failed to initialize APIClient:', error);
       throw error;
     }
   }
@@ -57,7 +57,7 @@ export class APIClient {
    * Validate API key format
    */
   validateApiKey(apiKey: string): boolean {
-    return apiKey.length > 0 && apiKey.startsWith("sk-");
+    return apiKey.length > 0 && apiKey.startsWith('sk-');
   }
 
   /**
@@ -66,7 +66,7 @@ export class APIClient {
    */
   async callClaudeAPI(prompt: string, maxTokens: number = 1000): Promise<string> {
     if (!this.provider) {
-      throw new Error("Provider not initialized. Call initialize() first.");
+      throw new Error('Provider not initialized. Call initialize() first.');
     }
 
     try {
@@ -81,12 +81,12 @@ export class APIClient {
       const result: SynthesisResult = await this.provider.generate(options);
 
       if (!result.success) {
-        throw new Error(result.error || "Synthesis failed");
+        throw new Error(result.error || 'Synthesis failed');
       }
 
       return result.content;
     } catch (error) {
-      console.error("Provider synthesis error:", error);
+      console.error('Provider synthesis error:', error);
       throw error;
     }
   }
@@ -134,20 +134,20 @@ Provide analysis in JSON format with these fields:
         const parsed = JSON.parse(jsonMatch[0]);
         return {
           tags: Array.isArray(parsed.tags) ? parsed.tags : [],
-          overview: parsed.overview || "No overview available",
-          architecture: parsed.architecture || "No architecture description",
-          value: parsed.value || "No value description",
+          overview: parsed.overview || 'No overview available',
+          architecture: parsed.architecture || 'No architecture description',
+          value: parsed.value || 'No value description',
         };
       }
     } catch (error) {
-      console.error("Error parsing analysis result:", error);
+      console.error('Error parsing analysis result:', error);
     }
 
     return {
-      tags: ["analyzed"],
+      tags: ['analyzed'],
       overview: response.slice(0, 200),
-      architecture: "Architecture analysis pending",
-      value: "Value analysis pending",
+      architecture: 'Architecture analysis pending',
+      value: 'Value analysis pending',
     };
   }
 

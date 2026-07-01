@@ -9,7 +9,7 @@ export interface Job<T = any> {
   id: string;
   name: string;
   data: T;
-  status: "pending" | "running" | "completed" | "failed";
+  status: 'pending' | 'running' | 'completed' | 'failed';
   priority: number;
   retries: number;
   maxRetries: number;
@@ -55,7 +55,7 @@ export class BackgroundJobRuntime {
       id: this.generateId(),
       name,
       data,
-      status: "pending",
+      status: 'pending',
       priority,
       retries: 0,
       maxRetries: this.maxRetries,
@@ -97,7 +97,7 @@ export class BackgroundJobRuntime {
   /**
    * Get jobs by status
    */
-  getJobsByStatus(status: Job["status"]): Job[] {
+  getJobsByStatus(status: Job['status']): Job[] {
     return Array.from(this.queue.values()).filter((job) => job.status === status);
   }
 
@@ -142,7 +142,7 @@ export class BackgroundJobRuntime {
    */
   private getNextJob(): Job | undefined {
     const pendingJobs = Array.from(this.queue.values())
-      .filter((job) => job.status === "pending")
+      .filter((job) => job.status === 'pending')
       .sort((a, b) => b.priority - a.priority);
 
     return pendingJobs[0];
@@ -154,26 +154,26 @@ export class BackgroundJobRuntime {
   private async executeJob(job: Job): Promise<void> {
     const handler = this.handlers.get(job.name);
     if (!handler) {
-      job.status = "failed";
+      job.status = 'failed';
       job.error = new Error(`No handler for job: ${job.name}`);
       return;
     }
 
     try {
-      job.status = "running";
+      job.status = 'running';
       job.startedAt = new Date();
 
       await handler(job.data);
 
-      job.status = "completed";
+      job.status = 'completed';
       job.completedAt = new Date();
     } catch (error) {
-      job.status = "failed";
+      job.status = 'failed';
       job.error = error as Error;
 
       if (job.retries < job.maxRetries) {
         job.retries++;
-        job.status = "pending";
+        job.status = 'pending';
       }
     } finally {
       this.running.delete(job.id);

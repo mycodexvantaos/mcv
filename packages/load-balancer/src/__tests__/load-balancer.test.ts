@@ -1,17 +1,17 @@
-import { LoadBalancer } from "../index";
+import { LoadBalancer } from '../index';
 
-describe("load-balancer", () => {
+describe('load-balancer', () => {
   let instance: LoadBalancer;
 
   beforeEach(() => {
     instance = new LoadBalancer();
   });
 
-  test("should initialize", () => {
+  test('should initialize', () => {
     expect(instance).toBeDefined();
   });
 
-  test("should have basic functionality", () => {
-    expect(typeof instance).toBe("object");
+  test('should have basic functionality', () => {
+    expect(typeof instance).toBe('object');
   });
 });

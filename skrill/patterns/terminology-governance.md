@@ -111,10 +111,10 @@ name: Terminology Lint
 on:
   pull_request:
     paths:
-      - "**/*.md"
-      - "**/*.ts"
-      - "**/*.py"
-      - "**/*.yaml"
+      - '**/*.md'
+      - '**/*.ts'
+      - '**/*.py'
+      - '**/*.yaml'
 
 jobs:
   terminology-check:
@@ -123,7 +123,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: '3.11'
       - name: Run terminology linter
         run: python scripts/terminology_linter.py
 ```

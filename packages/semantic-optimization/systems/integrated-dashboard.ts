@@ -34,7 +34,7 @@ export class IntegratedDashboard {
   private metricsHistory: DashboardMetrics[] = [];
   private alerts: Array<{
     timestamp: Date;
-    severity: "info" | "warning" | "critical";
+    severity: 'info' | 'warning' | 'critical';
     message: string;
   }> = [];
 
@@ -45,7 +45,7 @@ export class IntegratedDashboard {
     }
   }
 
-  addAlert(severity: "info" | "warning" | "critical", message: string): void {
+  addAlert(severity: 'info' | 'warning' | 'critical', message: string): void {
     this.alerts.push({ timestamp: new Date(), severity, message });
     if (this.alerts.length > 1000) {
       this.alerts.shift();
@@ -90,22 +90,22 @@ export class IntegratedDashboard {
     };
   }
 
-  getHealthStatus(): "healthy" | "degraded" | "critical" {
+  getHealthStatus(): 'healthy' | 'degraded' | 'critical' {
     const current = this.getCurrentMetrics();
-    if (!current) return "critical";
+    if (!current) return 'critical';
 
     if (current.performance.errorRate > 0.1 || current.quality.accuracy < 0.5) {
-      return "critical";
+      return 'critical';
     }
     if (current.performance.errorRate > 0.05 || current.quality.accuracy < 0.7) {
-      return "degraded";
+      return 'degraded';
     }
-    return "healthy";
+    return 'healthy';
   }
 
   getRecentAlerts(
     limit: number = 50
-  ): Array<{ timestamp: Date; severity: "info" | "warning" | "critical"; message: string }> {
+  ): Array<{ timestamp: Date; severity: 'info' | 'warning' | 'critical'; message: string }> {
     return this.alerts.slice(-limit);
   }
 
@@ -117,47 +117,47 @@ export class IntegratedDashboard {
 
     const lines: string[] = [];
 
-    lines.push("# Semantic Core Dashboard Report");
+    lines.push('# Semantic Core Dashboard Report');
     lines.push(`Generated: ${new Date().toISOString()}`);
     lines.push(`Health Status: ${health.toUpperCase()}`);
-    lines.push("");
+    lines.push('');
 
     if (current) {
-      lines.push("## Current Performance");
+      lines.push('## Current Performance');
       lines.push(`- Response Time: ${current.performance.responseTime.toFixed(2)}ms`);
       lines.push(`- Throughput: ${current.performance.throughput.toFixed(2)} req/s`);
       lines.push(`- Error Rate: ${(current.performance.errorRate * 100).toFixed(2)}%`);
       lines.push(`- Uptime: ${(current.performance.uptime / 3600).toFixed(2)}h`);
-      lines.push("");
+      lines.push('');
 
-      lines.push("## Quality Metrics");
+      lines.push('## Quality Metrics');
       lines.push(`- Accuracy: ${(current.quality.accuracy * 100).toFixed(2)}%`);
       lines.push(`- Precision: ${(current.quality.precision * 100).toFixed(2)}%`);
       lines.push(`- Recall: ${(current.quality.recall * 100).toFixed(2)}%`);
       lines.push(`- F1 Score: ${current.quality.f1Score.toFixed(4)}`);
-      lines.push("");
+      lines.push('');
 
-      lines.push("## Optimization Status");
+      lines.push('## Optimization Status');
       lines.push(`- Cache Hit Rate: ${(current.optimization.cacheHitRate * 100).toFixed(2)}%`);
       lines.push(`- Memory Usage: ${(current.optimization.memoryUsage * 100).toFixed(2)}%`);
       lines.push(`- CPU Usage: ${(current.optimization.cpuUsage * 100).toFixed(2)}%`);
       lines.push(`- Active Connections: ${current.optimization.activeConnections}`);
-      lines.push("");
+      lines.push('');
     }
 
-    lines.push("## Trend Analysis (Last Hour)");
+    lines.push('## Trend Analysis (Last Hour)');
     lines.push(`- Avg Response Time: ${trend.avgResponseTime.toFixed(2)}ms`);
     lines.push(`- Avg Throughput: ${trend.avgThroughput.toFixed(2)} req/s`);
     lines.push(`- Avg Error Rate: ${(trend.avgErrorRate * 100).toFixed(2)}%`);
     lines.push(`- Avg Accuracy: ${(trend.avgAccuracy * 100).toFixed(2)}%`);
-    lines.push("");
+    lines.push('');
 
-    lines.push("## Recent Alerts");
+    lines.push('## Recent Alerts');
     recentAlerts.forEach((alert) => {
       lines.push(`- [${alert.severity.toUpperCase()}] ${alert.message}`);
     });
 
-    return lines.join("\n");
+    return lines.join('\n');
   }
 
   exportJSON(): string {

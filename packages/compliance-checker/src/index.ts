@@ -7,7 +7,7 @@ export interface ComplianceRule {
   id: string;
   name: string;
   description: string;
-  severity: "critical" | "high" | "medium" | "low";
+  severity: 'critical' | 'high' | 'medium' | 'low';
   check: () => Promise<{ compliant: boolean; details: string }>;
 }
 

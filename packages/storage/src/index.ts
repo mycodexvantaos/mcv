@@ -4,7 +4,7 @@
  */
 
 export interface StorageConfig {
-  provider: "local" | "s3" | "azure" | "gcloud";
+  provider: 'local' | 's3' | 'azure' | 'gcloud';
   bucket?: string;
   region?: string;
   credentials?: any;
@@ -25,7 +25,7 @@ export class Storage {
 
   constructor() {
     this.config = {
-      provider: "local",
+      provider: 'local',
     };
     this.items = new Map();
   }
@@ -38,13 +38,13 @@ export class Storage {
     const { action, data } = operation;
 
     switch (action) {
-      case "upload":
+      case 'upload':
         return (await this.upload(data)) as T;
-      case "download":
+      case 'download':
         return (await this.download(data)) as T;
-      case "delete":
+      case 'delete':
         return (await this.delete(data)) as T;
-      case "list":
+      case 'list':
         return (await this.list(data)) as T;
       default:
         throw new Error(`Unknown storage action: ${action}`);
@@ -56,7 +56,7 @@ export class Storage {
       id: `urn:mycodexvantaos:storage:${Date.now()}`,
       name: data.name,
       size: data.size || 0,
-      type: data.type || "unknown",
+      type: data.type || 'unknown',
       url: `storage://${data.name}`,
       metadata: data.metadata,
     };
@@ -84,7 +84,7 @@ export class Storage {
 
   async cleanup(): Promise<void> {
     this.items.clear();
-    console.log("Storage cleaned up");
+    console.log('Storage cleaned up');
   }
 }
 

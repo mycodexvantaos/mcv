@@ -14,7 +14,7 @@ import type {
   IIdentityPort,
   TokenClaims,
   Role,
-} from "../ports/index";
+} from '../ports/index';
 import type {
   IdentitySubjectSpec,
   IdentitySubjectStatus,
@@ -23,7 +23,7 @@ import type {
   Resource,
   PolicyDecision,
   PolicyEvaluationContext,
-} from "../core/index";
+} from '../core/index';
 
 export interface IdentityServiceDeps {
   database: IDatabasePort;
@@ -49,12 +49,12 @@ export class IdentityService implements IIdentityPort {
   }): Promise<Resource<IdentitySubjectSpec, IdentitySubjectStatus>> {
     // 1. Check if email already exists
     const existing = await this.deps.database.queryFirst(
-      "SELECT id FROM identity_subjects WHERE email = ?",
+      'SELECT id FROM identity_subjects WHERE email = ?',
       [input.email]
     );
     if (existing) {
       throw new IdentityError(
-        "SUBJECT_ALREADY_EXISTS",
+        'SUBJECT_ALREADY_EXISTS',
         `Subject with email ${input.email} already exists`
       );
     }
@@ -84,28 +84,28 @@ export class IdentityService implements IIdentityPort {
 
     // 4. Emit audit event
     await this.deps.audit.emitEvent({
-      eventType: "identity.subject.registered",
-      category: "identity",
-      severity: "medium",
+      eventType: 'identity.subject.registered',
+      category: 'identity',
+      severity: 'medium',
       subjectId,
-      action: "register",
+      action: 'register',
       data: { email: input.email, displayName: input.displayName, mfaEnabled: input.mfaEnabled },
       correlationId: crypto.randomUUID(),
     });
 
     // 5. Return the created subject resource
     return {
-      apiVersion: "platform.mycodevantaos/v1",
-      kind: "identity-subject",
+      apiVersion: 'platform.mycodevantaos/v1',
+      kind: 'identity-subject',
       metadata: {
         id: subjectId,
         urn,
-        kind: "identity-subject",
-        workspaceId: "",
+        kind: 'identity-subject',
+        workspaceId: '',
         labels: {},
         annotations: {},
         createdBy: subjectId,
-        version: "1.0.0",
+        version: '1.0.0',
         resourceVersion: 1,
         createdAt: now,
         updatedAt: now,
@@ -118,17 +118,17 @@ export class IdentityService implements IIdentityPort {
         roles: {},
       },
       status: {
-        phase: "active",
+        phase: 'active',
         conditions: [
           {
-            type: "Ready",
-            status: "True",
-            reason: "Registered",
-            message: "Subject registered successfully",
+            type: 'Ready',
+            status: 'True',
+            reason: 'Registered',
+            message: 'Subject registered successfully',
             lastTransitionTime: now,
           },
         ],
-        authProvider: "native",
+        authProvider: 'native',
         lastAuthenticatedAt: null,
         mfaVerifiedAt: null,
         activeSessions: 0,
@@ -151,55 +151,55 @@ export class IdentityService implements IIdentityPort {
       mfa_enabled: boolean;
       phase: string;
     }>(
-      "SELECT id, email, password_hash, mfa_enabled, phase FROM identity_subjects WHERE email = ?",
+      'SELECT id, email, password_hash, mfa_enabled, phase FROM identity_subjects WHERE email = ?',
       [input.email]
     );
 
     if (!subject) {
       await this.deps.audit.emitEvent({
-        eventType: "identity.subject.authentication-failed",
-        category: "identity",
-        severity: "medium",
-        subjectId: "anonymous",
-        action: "authenticate",
-        data: { email: input.email, reason: "subject_not_found", ipAddress: input.ipAddress },
+        eventType: 'identity.subject.authentication-failed',
+        category: 'identity',
+        severity: 'medium',
+        subjectId: 'anonymous',
+        action: 'authenticate',
+        data: { email: input.email, reason: 'subject_not_found', ipAddress: input.ipAddress },
         correlationId: crypto.randomUUID(),
       });
-      throw new IdentityError("AUTHENTICATION_FAILED", "Invalid credentials");
+      throw new IdentityError('AUTHENTICATION_FAILED', 'Invalid credentials');
     }
 
     // 2. Check subject phase
-    if (subject.phase !== "active") {
-      throw new IdentityError("SUBJECT_INACTIVE", `Subject is ${subject.phase}`);
+    if (subject.phase !== 'active') {
+      throw new IdentityError('SUBJECT_INACTIVE', `Subject is ${subject.phase}`);
     }
 
     // 3. Verify password
     const passwordValid = await this.verifyPassword(input.password, subject.password_hash);
     if (!passwordValid) {
       await this.deps.audit.emitEvent({
-        eventType: "identity.subject.authentication-failed",
-        category: "identity",
-        severity: "medium",
+        eventType: 'identity.subject.authentication-failed',
+        category: 'identity',
+        severity: 'medium',
         subjectId: subject.id,
-        action: "authenticate",
-        data: { reason: "invalid_password", ipAddress: input.ipAddress },
+        action: 'authenticate',
+        data: { reason: 'invalid_password', ipAddress: input.ipAddress },
         correlationId: crypto.randomUUID(),
       });
-      throw new IdentityError("AUTHENTICATION_FAILED", "Invalid credentials");
+      throw new IdentityError('AUTHENTICATION_FAILED', 'Invalid credentials');
     }
 
     // 4. MFA check (if enabled)
     if (subject.mfa_enabled && !input.mfaCode) {
       await this.deps.audit.emitEvent({
-        eventType: "identity.subject.mfa-challenged",
-        category: "identity",
-        severity: "info",
+        eventType: 'identity.subject.mfa-challenged',
+        category: 'identity',
+        severity: 'info',
         subjectId: subject.id,
-        action: "mfa-challenge",
-        data: { challengeMethod: "totp" },
+        action: 'mfa-challenge',
+        data: { challengeMethod: 'totp' },
         correlationId: crypto.randomUUID(),
       });
-      throw new IdentityError("MFA_REQUIRED", "MFA code is required");
+      throw new IdentityError('MFA_REQUIRED', 'MFA code is required');
     }
 
     // 5. Issue token pair
@@ -207,13 +207,13 @@ export class IdentityService implements IIdentityPort {
 
     // 6. Emit success event
     await this.deps.audit.emitEvent({
-      eventType: "identity.subject.authenticated",
-      category: "identity",
-      severity: "info",
+      eventType: 'identity.subject.authenticated',
+      category: 'identity',
+      severity: 'info',
       subjectId: subject.id,
-      action: "authenticate",
+      action: 'authenticate',
       data: {
-        authMethod: input.mfaCode ? "mfa" : "password",
+        authMethod: input.mfaCode ? 'mfa' : 'password',
         ipAddress: input.ipAddress,
         userAgent: input.userAgent,
       },
@@ -247,12 +247,12 @@ export class IdentityService implements IIdentityPort {
     );
 
     await this.deps.audit.emitEvent({
-      eventType: "identity.session.created",
-      category: "identity",
-      severity: "info",
+      eventType: 'identity.session.created',
+      category: 'identity',
+      severity: 'info',
       subjectId,
-      action: "session-create",
-      data: { sessionType: "user", expiresIn: 3600 },
+      action: 'session-create',
+      data: { sessionType: 'user', expiresIn: 3600 },
       correlationId: crypto.randomUUID(),
     });
 
@@ -260,16 +260,16 @@ export class IdentityService implements IIdentityPort {
       accessToken,
       refreshToken,
       expiresIn: 3600,
-      tokenType: "Bearer",
+      tokenType: 'Bearer',
     };
   }
 
   async validateToken(accessToken: string): Promise<TokenClaims> {
     // Parse and validate the token
     // In production, verify RS256 signature and claims
-    const parts = accessToken.split("_");
-    if (parts.length < 4 || parts[0] !== "access") {
-      throw new IdentityError("INVALID_TOKEN", "Token format is invalid");
+    const parts = accessToken.split('_');
+    if (parts.length < 4 || parts[0] !== 'access') {
+      throw new IdentityError('INVALID_TOKEN', 'Token format is invalid');
     }
 
     const sessionId = parts[1];
@@ -283,7 +283,7 @@ export class IdentityService implements IIdentityPort {
     }>(`session:${sessionId}`);
 
     if (!cached || cached.subjectId !== subjectId) {
-      throw new IdentityError("TOKEN_EXPIRED", "Token has expired or been revoked");
+      throw new IdentityError('TOKEN_EXPIRED', 'Token has expired or been revoked');
     }
 
     return {
@@ -298,12 +298,12 @@ export class IdentityService implements IIdentityPort {
   async revokeSession(sessionId: string): Promise<void> {
     await this.deps.cache.delete(`session:${sessionId}`);
     await this.deps.audit.emitEvent({
-      eventType: "identity.session.revoked",
-      category: "identity",
-      severity: "medium",
-      subjectId: "system",
-      action: "session-revoke",
-      data: { reason: "user-request", sessionId },
+      eventType: 'identity.session.revoked',
+      category: 'identity',
+      severity: 'medium',
+      subjectId: 'system',
+      action: 'session-revoke',
+      data: { reason: 'user-request', sessionId },
       correlationId: crypto.randomUUID(),
     });
   }
@@ -319,43 +319,43 @@ export class IdentityService implements IIdentityPort {
     const role = await this.resolveRole(subjectId, workspaceId);
     // Simplified permission check — in production, evaluate against policy-model.yaml
     const permissionMap: Record<Role, string[]> = {
-      "platform-admin": ["*"],
-      "workspace-owner": ["workspace:*", "knowledge:*", "ai:*", "model:*"],
-      "workspace-member": [
-        "knowledge:document:*",
-        "knowledge:search:*",
-        "ai:chat-session:*",
-        "model:invoke",
+      'platform-admin': ['*'],
+      'workspace-owner': ['workspace:*', 'knowledge:*', 'ai:*', 'model:*'],
+      'workspace-member': [
+        'knowledge:document:*',
+        'knowledge:search:*',
+        'ai:chat-session:*',
+        'model:invoke',
       ],
-      "workspace-viewer": [
-        "knowledge:document:read",
-        "knowledge:collection:read",
-        "ai:chat-session:read",
-        "workspace:read",
+      'workspace-viewer': [
+        'knowledge:document:read',
+        'knowledge:collection:read',
+        'ai:chat-session:read',
+        'workspace:read',
       ],
-      "agent-service": ["knowledge-search:execute", "model:invoke", "audit:event:write"],
-      auditor: ["governance:audit:read", "governance:usage:read"],
+      'agent-service': ['knowledge-search:execute', 'model:invoke', 'audit:event:write'],
+      auditor: ['governance:audit:read', 'governance:usage:read'],
     };
 
     const permissions = permissionMap[role] ?? [];
     return permissions.some(
-      (p) => p === "*" || p === action || action.startsWith(p.replace("*", ""))
+      (p) => p === '*' || p === action || action.startsWith(p.replace('*', ''))
     );
   }
 
   async resolveRole(subjectId: string, workspaceId: string): Promise<Role> {
     const membership = await this.deps.database.queryFirst<{ role: string }>(
-      "SELECT role FROM workspace_memberships WHERE subject_id = ? AND workspace_id = ?",
+      'SELECT role FROM workspace_memberships WHERE subject_id = ? AND workspace_id = ?',
       [subjectId, workspaceId]
     );
 
     if (!membership) {
       // Check if platform admin
       const admin = await this.deps.database.queryFirst<{ role: string }>(
-        "SELECT role FROM platform_roles WHERE subject_id = ?",
+        'SELECT role FROM platform_roles WHERE subject_id = ?',
         [subjectId]
       );
-      return (admin?.role as Role) ?? "workspace-viewer";
+      return (admin?.role as Role) ?? 'workspace-viewer';
     }
 
     return membership.role as Role;
@@ -374,12 +374,12 @@ export class IdentityService implements IIdentityPort {
       display_name: string;
       mfa_enabled: boolean;
       phase: string;
-    }>("SELECT id, email, display_name, mfa_enabled, phase FROM identity_subjects WHERE id = ?", [
+    }>('SELECT id, email, display_name, mfa_enabled, phase FROM identity_subjects WHERE id = ?', [
       subjectId,
     ]);
 
     if (!subject) {
-      throw new IdentityError("SUBJECT_NOT_FOUND", `Subject ${subjectId} not found`);
+      throw new IdentityError('SUBJECT_NOT_FOUND', `Subject ${subjectId} not found`);
     }
 
     return {
@@ -398,10 +398,10 @@ export class IdentityService implements IIdentityPort {
     // For constitution: use a placeholder encoding
     const encoder = new TextEncoder();
     const data = encoder.encode(password);
-    const hash = await crypto.subtle.digest("SHA-256", data);
+    const hash = await crypto.subtle.digest('SHA-256', data);
     return `argon2id$${Array.from(new Uint8Array(hash))
-      .map((b) => b.toString(16).padStart(2, "0"))
-      .join("")}`;
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('')}`;
   }
 
   private async verifyPassword(password: string, hash: string): Promise<boolean> {
@@ -418,6 +418,6 @@ export class IdentityError extends Error {
     message: string
   ) {
     super(message);
-    this.name = "IdentityError";
+    this.name = 'IdentityError';
   }
 }

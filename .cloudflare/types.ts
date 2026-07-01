@@ -9,7 +9,7 @@ declare global {
     CLOUDFLARE_ZONE_ID: string;
 
     // Environment
-    ENVIRONMENT: "production" | "preview" | "development";
+    ENVIRONMENT: 'production' | 'preview' | 'development';
     NEXT_PUBLIC_APP_URL: string;
 
     // Database

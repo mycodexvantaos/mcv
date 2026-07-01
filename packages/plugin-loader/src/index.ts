@@ -23,7 +23,7 @@ export class PluginLoader {
 
   constructor(options: PluginLoaderOptions = {}) {
     this.options = {
-      pluginDir: options.pluginDir || "./plugins",
+      pluginDir: options.pluginDir || './plugins',
       autoLoad: options.autoLoad !== false,
     };
   }

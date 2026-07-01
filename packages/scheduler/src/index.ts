@@ -173,7 +173,7 @@ export class Scheduler {
    */
   private calculateNextRun(cron: string): Date {
     // Simplified implementation - in production use a cron parser library
-    const parts = cron.split(" ");
+    const parts = cron.split(' ');
     const minute = parseInt(parts[0]);
     const now = new Date();
     const next = new Date(now);

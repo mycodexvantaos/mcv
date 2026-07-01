@@ -18,7 +18,7 @@ APIs for code generation and development automation.
 
 ```typescript
 interface ApiGeneratorConfig {
-  language: "typescript" | "python" | "java" | "go";
+  language: 'typescript' | 'python' | 'java' | 'go';
   framework?: string;
   outputDir: string;
 }
@@ -40,9 +40,9 @@ class ApiGenerator {
 
 ```typescript
 const generator = new ApiGenerator({
-  language: "typescript",
-  framework: "express",
-  outputDir: "./generated/api",
+  language: 'typescript',
+  framework: 'express',
+  outputDir: './generated/api',
 });
 
 const apiCode = await generator.generate(config, apiSpec);
@@ -54,8 +54,8 @@ const apiCode = await generator.generate(config, apiSpec);
 
 ```typescript
 interface SchemaConfig {
-  database: "postgresql" | "mongodb" | "mysql";
-  outputFormat: "migration" | "model" | "schema";
+  database: 'postgresql' | 'mongodb' | 'mysql';
+  outputFormat: 'migration' | 'model' | 'schema';
 }
 
 class SchemaGenerator {
@@ -71,7 +71,7 @@ class SchemaGenerator {
 
 ```typescript
 interface WorkflowConfig {
-  orchestrator: "temporal" | "stepfunctions" | "n8n";
+  orchestrator: 'temporal' | 'stepfunctions' | 'n8n';
   timeout: number;
   retryPolicy: RetryPolicy;
 }
@@ -114,7 +114,7 @@ class ExecutionEngine {
 interface SessionConfig {
   ttl: number;
   maxConcurrentSessions: number;
-  storage: "memory" | "redis" | "database";
+  storage: 'memory' | 'redis' | 'database';
 }
 
 class SessionRuntime {
@@ -137,7 +137,7 @@ APIs for core system services.
 interface CacheConfig {
   ttl: number;
   maxSize: number;
-  evictionPolicy: "lru" | "lfu" | "fifo";
+  evictionPolicy: 'lru' | 'lfu' | 'fifo';
 }
 
 class CacheManager {
@@ -176,7 +176,7 @@ class SearchEngine {
 ```typescript
 interface AnalyticsConfig {
   retentionPeriod: number;
-  aggregationInterval: "hour" | "day" | "week";
+  aggregationInterval: 'hour' | 'day' | 'week';
 }
 
 class Analytics {
@@ -282,7 +282,7 @@ class AutoScaler {
 
 ```typescript
 interface LoadBalancerConfig {
-  algorithm: "round-robin" | "least-connections" | "ip-hash";
+  algorithm: 'round-robin' | 'least-connections' | 'ip-hash';
   healthCheckPath: string;
   backendServers: Server[];
 }
@@ -304,7 +304,7 @@ class LoadBalancer {
 interface SSLConfig {
   domain: string;
   email: string;
-  provider: "letsencrypt" | "custom";
+  provider: 'letsencrypt' | 'custom';
 }
 
 class SSLManager {
@@ -326,14 +326,14 @@ APIs for compliance and policy management.
 ```typescript
 interface AuditConfig {
   retentionPeriod: number;
-  storage: "database" | "file" | "cloud";
+  storage: 'database' | 'file' | 'cloud';
 }
 
 class AuditLogger {
   async logEvent(event: AuditEvent): Promise<void>;
   async queryLogs(filter: AuditFilter): Promise<AuditLog[]>;
   async generateReport(filter: AuditFilter): Promise<AuditReport>;
-  exportLogs(filter: AuditFilter, format: "json" | "csv"): Promise<ExportResult>;
+  exportLogs(filter: AuditFilter, format: 'json' | 'csv'): Promise<ExportResult>;
 }
 ```
 
@@ -344,7 +344,7 @@ class AuditLogger {
 ```typescript
 interface ComplianceConfig {
   standards: ComplianceStandard[];
-  severity: "low" | "medium" | "high" | "critical";
+  severity: 'low' | 'medium' | 'high' | 'critical';
 }
 
 class ComplianceChecker {
@@ -361,7 +361,7 @@ class ComplianceChecker {
 ```typescript
 interface PolicyConfig {
   policies: Policy[];
-  enforcementMode: "audit" | "enforce";
+  enforcementMode: 'audit' | 'enforce';
 }
 
 class PolicyEngine {
@@ -556,24 +556,24 @@ npm install @mycodexvantaos/sdk
 ```
 
 ```typescript
-import { MyCodeXvantaOS } from "@mycodexvantaos/sdk";
+import { MyCodeXvantaOS } from '@mycodexvantaos/sdk';
 
 const client = new MyCodeXvantaOS({
-  apiKey: "your-api-key",
-  environment: "production",
+  apiKey: 'your-api-key',
+  environment: 'production',
 });
 
 // Generate code
 const code = await client.api.generate({
-  type: "api",
-  language: "typescript",
+  type: 'api',
+  language: 'typescript',
   spec: apiSpec,
 });
 
 // Execute code
 const result = await client.execution.run({
   code: 'console.log("Hello!")',
-  language: "javascript",
+  language: 'javascript',
 });
 ```
 

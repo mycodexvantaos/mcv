@@ -30,7 +30,7 @@ export interface LoggerOptions {
   enableConsole?: boolean;
   enableFile?: boolean;
   filePath?: string;
-  format?: "json" | "text";
+  format?: 'json' | 'text';
 }
 
 export interface LogTransport {
@@ -40,19 +40,19 @@ export interface LogTransport {
 class ConsoleTransport implements LogTransport {
   write(entry: LogEntry): void {
     const levelColors = {
-      [LogLevel.DEBUG]: "\x1b[36m", // cyan
-      [LogLevel.INFO]: "\x1b[32m", // green
-      [LogLevel.WARN]: "\x1b[33m", // yellow
-      [LogLevel.ERROR]: "\x1b[31m", // red
-      [LogLevel.FATAL]: "\x1b[35m", // magenta
+      [LogLevel.DEBUG]: '\x1b[36m', // cyan
+      [LogLevel.INFO]: '\x1b[32m', // green
+      [LogLevel.WARN]: '\x1b[33m', // yellow
+      [LogLevel.ERROR]: '\x1b[31m', // red
+      [LogLevel.FATAL]: '\x1b[35m', // magenta
     };
 
-    const color = levelColors[entry.level] || "\x1b[0m";
-    const timestamp = entry.includeTimestamp ? entry.timestamp.toISOString() : "";
-    const error = entry.error ? `\nError: ${entry.error.message}\nStack: ${entry.error.stack}` : "";
-    const context = entry.context ? `\nContext: ${JSON.stringify(entry.context, null, 2)}` : "";
+    const color = levelColors[entry.level] || '\x1b[0m';
+    const timestamp = entry.includeTimestamp ? entry.timestamp.toISOString() : '';
+    const error = entry.error ? `\nError: ${entry.error.message}\nStack: ${entry.error.stack}` : '';
+    const context = entry.context ? `\nContext: ${JSON.stringify(entry.context, null, 2)}` : '';
 
-    const message = `${color}[${entry.levelName}]${"\x1b[0m"} ${timestamp ? `[${timestamp}]` : ""} ${entry.message}${error}${context}`;
+    const message = `${color}[${entry.levelName}]${'\x1b[0m'} ${timestamp ? `[${timestamp}]` : ''} ${entry.message}${error}${context}`;
 
     switch (entry.level) {
       case LogLevel.DEBUG:
@@ -93,11 +93,11 @@ class FileTransport implements LogTransport {
     const entries = this.writeQueue.splice(0, this.writeQueue.length);
 
     try {
-      const fs = require("fs").promises;
-      const logs = entries.map((e) => JSON.stringify(e)).join("\n") + "\n";
-      await fs.appendFile(this.filePath, logs, "utf8");
+      const fs = require('fs').promises;
+      const logs = entries.map((e) => JSON.stringify(e)).join('\n') + '\n';
+      await fs.appendFile(this.filePath, logs, 'utf8');
     } catch (error) {
-      console.error("Failed to write logs to file:", error);
+      console.error('Failed to write logs to file:', error);
     } finally {
       this.isWriting = false;
     }
@@ -110,14 +110,14 @@ export class NativeLogger {
   private includeTimestamp: boolean;
   private includeStackTrace: boolean;
   private transports: LogTransport[] = [];
-  private format: "json" | "text";
+  private format: 'json' | 'text';
 
   constructor(options: LoggerOptions = {}) {
-    this.name = options.name || "default";
+    this.name = options.name || 'default';
     this.level = options.level ?? LogLevel.INFO;
     this.includeTimestamp = options.includeTimestamp ?? true;
     this.includeStackTrace = options.includeStackTrace ?? false;
-    this.format = options.format || "text";
+    this.format = options.format || 'text';
 
     if (options.enableConsole ?? true) {
       this.addTransport(new ConsoleTransport());
@@ -173,7 +173,7 @@ export class NativeLogger {
       try {
         await transport.write(entry);
       } catch (err) {
-        console.error("Failed to write log to transport:", err);
+        console.error('Failed to write log to transport:', err);
       }
     }
   }

@@ -13,41 +13,41 @@
  * 4. No duplicate table definitions across migrations
  */
 
-import { readdirSync, readFileSync, existsSync } from "node:fs";
-import { resolve, join } from "node:path";
+import { readdirSync, readFileSync, existsSync } from 'node:fs';
+import { resolve, join } from 'node:path';
 
 // ─── Critical tables that must exist based on contracts ────────────────
 
 const CRITICAL_TABLES = [
-  "identity_subjects",
-  "identity_sessions",
-  "workspaces",
-  "workspace_memberships",
-  "knowledge_collections",
-  "knowledge_documents",
-  "knowledge_chunks",
-  "agent_sessions",
-  "agent_messages",
-  "model_endpoints",
-  "audit_events",
-  "usage_events",
-  "automation_jobs",
+  'identity_subjects',
+  'identity_sessions',
+  'workspaces',
+  'workspace_memberships',
+  'knowledge_collections',
+  'knowledge_documents',
+  'knowledge_chunks',
+  'agent_sessions',
+  'agent_messages',
+  'model_endpoints',
+  'audit_events',
+  'usage_events',
+  'automation_jobs',
   // From PR 37: service-catalog
-  "service_definitions",
+  'service_definitions',
   // From PR 38: resource-registry
-  "resource_kinds",
+  'resource_kinds',
   // From PR 40: policy model
-  "policy_definitions",
+  'policy_definitions',
   // From PR 41: memory model
-  "memory_items",
-  "memory_candidates",
-  "memory_relations",
+  'memory_items',
+  'memory_candidates',
+  'memory_relations',
   // From PR 42: memory dream
-  "memory_dream_runs",
-  "memory_dream_actions",
+  'memory_dream_runs',
+  'memory_dream_actions',
   // From PR 43: knowledge trace
-  "retrieval_receipts",
-  "answer_traces",
+  'retrieval_receipts',
+  'answer_traces',
 ];
 
 // ─── Helpers ───────────────────────────────────────────────────────────
@@ -55,12 +55,12 @@ const CRITICAL_TABLES = [
 function findMigrationsRoot(): string {
   let dir = process.cwd();
   for (let i = 0; i < 10; i++) {
-    if (existsSync(join(dir, "migrations", "d1"))) {
+    if (existsSync(join(dir, 'migrations', 'd1'))) {
       return dir;
     }
-    dir = resolve(dir, "..");
+    dir = resolve(dir, '..');
   }
-  throw new Error("Could not find migrations/d1/ directory");
+  throw new Error('Could not find migrations/d1/ directory');
 }
 
 function extractCreateTableNames(sql: string): string[] {
@@ -106,7 +106,7 @@ function verifyD1Migrations(): VerificationResult {
   const duplicateTables = new Set<string>();
 
   const root = findMigrationsRoot();
-  const d1Dir = join(root, "migrations", "d1");
+  const d1Dir = join(root, 'migrations', 'd1');
 
   if (!existsSync(d1Dir)) {
     errors.push(`D1 migrations directory not found: ${d1Dir}`);
@@ -124,11 +124,11 @@ function verifyD1Migrations(): VerificationResult {
   }
 
   const files = readdirSync(d1Dir)
-    .filter((f) => f.endsWith(".sql"))
+    .filter((f) => f.endsWith('.sql'))
     .sort();
 
   if (files.length === 0) {
-    errors.push("No SQL migration files found in migrations/d1/");
+    errors.push('No SQL migration files found in migrations/d1/');
     return {
       valid: false,
       errors,
@@ -159,7 +159,7 @@ function verifyD1Migrations(): VerificationResult {
   // Process each migration file
   for (const file of files) {
     const filePath = join(d1Dir, file);
-    const content = readFileSync(filePath, "utf-8");
+    const content = readFileSync(filePath, 'utf-8');
 
     // Check for syntax issues (basic checks)
     if (content.trim().length === 0) {
@@ -190,27 +190,27 @@ function verifyD1Migrations(): VerificationResult {
 
     // Basic SQL syntax checks
     const statements = content
-      .split(";")
+      .split(';')
       .map((s) => s.trim())
-      .filter((s) => s.length > 0 && !s.startsWith("--"));
+      .filter((s) => s.length > 0 && !s.startsWith('--'));
 
     for (const stmt of statements) {
       const upper = stmt.toUpperCase();
       if (
-        upper.startsWith("CREATE") &&
-        !upper.includes("TABLE") &&
-        !upper.includes("INDEX") &&
-        !upper.includes("TRIGGER") &&
-        !upper.includes("VIRTUAL")
+        upper.startsWith('CREATE') &&
+        !upper.includes('TABLE') &&
+        !upper.includes('INDEX') &&
+        !upper.includes('TRIGGER') &&
+        !upper.includes('VIRTUAL')
       ) {
         warnings.push(`Unexpected CREATE statement in ${file}: ${stmt.substring(0, 80)}...`);
       }
-      if (upper.startsWith("DROP") && !upper.includes("IF EXISTS")) {
+      if (upper.startsWith('DROP') && !upper.includes('IF EXISTS')) {
         warnings.push(
           `DROP without IF EXISTS in ${file} may cause errors: ${stmt.substring(0, 80)}...`
         );
       }
-      if (upper.startsWith("ALTER")) {
+      if (upper.startsWith('ALTER')) {
         warnings.push(
           `ALTER statement in ${file} may not be supported by D1: ${stmt.substring(0, 80)}...`
         );
@@ -221,7 +221,7 @@ function verifyD1Migrations(): VerificationResult {
   // Check critical tables
   const criticalTablesMissing = CRITICAL_TABLES.filter((t) => !allTables.has(t));
   if (criticalTablesMissing.length > 0) {
-    warnings.push(`Missing critical tables: ${criticalTablesMissing.join(", ")}`);
+    warnings.push(`Missing critical tables: ${criticalTablesMissing.join(', ')}`);
   }
 
   return {
@@ -241,38 +241,38 @@ function verifyD1Migrations(): VerificationResult {
 
 const result = verifyD1Migrations();
 
-console.log("═".repeat(60));
-console.log("D1 Migration Verification Report");
-console.log("═".repeat(60));
-console.log(`Valid: ${result.valid ? "✅ YES" : "❌ NO"}`);
+console.log('═'.repeat(60));
+console.log('D1 Migration Verification Report');
+console.log('═'.repeat(60));
+console.log(`Valid: ${result.valid ? '✅ YES' : '❌ NO'}`);
 console.log(`Migrations: ${result.stats.migrationCount}`);
 console.log(`Tables Created: ${result.stats.tablesCreated.length}`);
 console.log(`Indexes Created: ${result.stats.indexesCreated.length}`);
 console.log(`Critical Tables Missing: ${result.stats.criticalTablesMissing.length}`);
 
 if (result.stats.tablesCreated.length > 0) {
-  console.log("\n📋 Tables:");
+  console.log('\n📋 Tables:');
   for (const t of result.stats.tablesCreated) {
     const isCritical = CRITICAL_TABLES.includes(t);
-    console.log(`  ${isCritical ? "⭐" : "  "} ${t}`);
+    console.log(`  ${isCritical ? '⭐' : '  '} ${t}`);
   }
 }
 
 if (result.errors.length > 0) {
-  console.log("\n❌ Errors:");
+  console.log('\n❌ Errors:');
   for (const e of result.errors) {
     console.log(`  - ${e}`);
   }
 }
 
 if (result.warnings.length > 0) {
-  console.log("\n⚠️  Warnings:");
+  console.log('\n⚠️  Warnings:');
   for (const w of result.warnings) {
     console.log(`  - ${w}`);
   }
 }
 
-console.log("═".repeat(60));
+console.log('═'.repeat(60));
 
 // Exit with error code if invalid
 if (!result.valid) {

@@ -17,8 +17,8 @@ Ensure the `genkit` CLI is available.
 ## Hello World
 
 ```ts
-import { z, genkit } from "genkit";
-import { googleAI } from "@genkit-ai/google-genai";
+import { z, genkit } from 'genkit';
+import { googleAI } from '@genkit-ai/google-genai';
 
 // Initialize Genkit with the Google AI plugin
 const ai = genkit({
@@ -27,13 +27,13 @@ const ai = genkit({
 
 export const myFlow = ai.defineFlow(
   {
-    name: "myFlow",
-    inputSchema: z.string().default("AI"),
+    name: 'myFlow',
+    inputSchema: z.string().default('AI'),
     outputSchema: z.string(),
   },
   async (subject) => {
     const response = await ai.generate({
-      model: googleAI.model("gemini-2.5-flash"),
+      model: googleAI.model('gemini-2.5-flash'),
       prompt: `Tell me a joke about ${subject}`,
     });
     return response.text;

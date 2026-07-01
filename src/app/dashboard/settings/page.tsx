@@ -1,35 +1,35 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Settings, User, Shield, Bell, Globe, Key, Database, Save, Loader2 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
+import { useState } from 'react';
+import { Settings, User, Shield, Bell, Globe, Key, Database, Save, Loader2 } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Separator } from "@/components/ui/separator";
+} from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Separator } from '@/components/ui/separator';
 
 export default function SettingsPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [settings, setSettings] = useState({
-    systemName: "MyCodeXvantaOS",
-    environment: "production",
+    systemName: 'MyCodeXvantaOS',
+    environment: 'production',
     auditRetentionDays: 365,
     maxSessionDuration: 8,
     enforce2FA: true,
     emailNotifications: true,
     slackNotifications: false,
     autoRefreshInterval: 30,
-    defaultTimeRange: "24h",
+    defaultTimeRange: '24h',
   });
 
   const handleSave = () => {
@@ -48,7 +48,7 @@ export default function SettingsPage() {
         </div>
         <Button size="sm" className="gap-1.5" onClick={handleSave} disabled={isSaving}>
           {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-          {isSaving ? "Saving..." : "Save Changes"}
+          {isSaving ? 'Saving...' : 'Save Changes'}
         </Button>
       </div>
 

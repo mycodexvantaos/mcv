@@ -1,124 +1,124 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { CheckCircle2, Circle, Zap, Plus, Infinity, Target, Users, Lock } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Progress } from "@/components/ui/progress";
+import { useState } from 'react';
+import { CheckCircle2, Circle, Zap, Plus, Infinity, Target, Users, Lock } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Progress } from '@/components/ui/progress';
 
 interface Task {
   id: string;
   title: string;
-  type: "system" | "user" | "evolution" | "symbiotic";
-  status: "pending" | "in-progress" | "completed";
-  priority: "low" | "medium" | "high" | "critical";
+  type: 'system' | 'user' | 'evolution' | 'symbiotic';
+  status: 'pending' | 'in-progress' | 'completed';
+  priority: 'low' | 'medium' | 'high' | 'critical';
   stage: string;
 }
 
 export function TaskOverview() {
   const [tasks] = useState<Task[]>([
     {
-      id: "p9-1",
-      title: "達成 Era-1 P9 最終閉環收斂 100%",
-      type: "evolution",
-      status: "completed",
-      priority: "critical",
-      stage: "P9",
+      id: 'p9-1',
+      title: '達成 Era-1 P9 最終閉環收斂 100%',
+      type: 'evolution',
+      status: 'completed',
+      priority: 'critical',
+      stage: 'P9',
     },
     {
-      id: "p9-2",
-      title: "鎖定全棧 Layer A-G 語義一致性",
-      type: "system",
-      status: "completed",
-      priority: "critical",
-      stage: "P9",
+      id: 'p9-2',
+      title: '鎖定全棧 Layer A-G 語義一致性',
+      type: 'system',
+      status: 'completed',
+      priority: 'critical',
+      stage: 'P9',
     },
     {
-      id: "p8-1",
-      title: "達成 P8 共生智慧人機耦合對齊",
-      type: "evolution",
-      status: "completed",
-      priority: "critical",
-      stage: "P8",
+      id: 'p8-1',
+      title: '達成 P8 共生智慧人機耦合對齊',
+      type: 'evolution',
+      status: 'completed',
+      priority: 'critical',
+      stage: 'P8',
     },
     {
-      id: "p7-1",
-      title: "啟動 P7 遞歸元生自我重構協議",
-      type: "evolution",
-      status: "completed",
-      priority: "high",
-      stage: "P7",
+      id: 'p7-1',
+      title: '啟動 P7 遞歸元生自我重構協議',
+      type: 'evolution',
+      status: 'completed',
+      priority: 'high',
+      stage: 'P7',
     },
     {
-      id: "p6-1",
-      title: "執行 Layer F 治理自動化強制審計",
-      type: "system",
-      status: "completed",
-      priority: "high",
-      stage: "P6",
+      id: 'p6-1',
+      title: '執行 Layer F 治理自動化強制審計',
+      type: 'system',
+      status: 'completed',
+      priority: 'high',
+      stage: 'P6',
     },
     {
-      id: "p5-1",
-      title: "完成 Layer E 部署可移植性基準",
-      type: "system",
-      status: "completed",
-      priority: "high",
-      stage: "P5",
+      id: 'p5-1',
+      title: '完成 Layer E 部署可移植性基準',
+      type: 'system',
+      status: 'completed',
+      priority: 'high',
+      stage: 'P5',
     },
     {
-      id: "p4-1",
-      title: "實現 Layer D 連接器抽象與解耦",
-      type: "system",
-      status: "completed",
-      priority: "high",
-      stage: "P4",
+      id: 'p4-1',
+      title: '實現 Layer D 連接器抽象與解耦',
+      type: 'system',
+      status: 'completed',
+      priority: 'high',
+      stage: 'P4',
     },
     {
-      id: "p3-1",
-      title: "鎖定 Layer C 服務網格拓撲穩定性",
-      type: "system",
-      status: "completed",
-      priority: "high",
-      stage: "P3",
+      id: 'p3-1',
+      title: '鎖定 Layer C 服務網格拓撲穩定性',
+      type: 'system',
+      status: 'completed',
+      priority: 'high',
+      stage: 'P3',
     },
     {
-      id: "p2-1",
-      title: "優化 Layer B 運行時內核自愈效能",
-      type: "system",
-      status: "completed",
-      priority: "high",
-      stage: "P2",
+      id: 'p2-1',
+      title: '優化 Layer B 運行時內核自愈效能',
+      type: 'system',
+      status: 'completed',
+      priority: 'high',
+      stage: 'P2',
     },
     {
-      id: "p1-1",
-      title: "確立 Layer A 命名治理與語義基線",
-      type: "system",
-      status: "completed",
-      priority: "high",
-      stage: "P1",
+      id: 'p1-1',
+      title: '確立 Layer A 命名治理與語義基線',
+      type: 'system',
+      status: 'completed',
+      priority: 'high',
+      stage: 'P1',
     },
   ]);
 
-  const getPriorityColor = (priority: Task["priority"]) => {
+  const getPriorityColor = (priority: Task['priority']) => {
     switch (priority) {
-      case "critical":
-        return "text-destructive border-destructive/20 bg-destructive/5";
-      case "high":
-        return "text-orange-500 border-orange-500/20 bg-orange-500/5";
-      case "medium":
-        return "text-primary border-primary/20 bg-primary/5";
+      case 'critical':
+        return 'text-destructive border-destructive/20 bg-destructive/5';
+      case 'high':
+        return 'text-orange-500 border-orange-500/20 bg-orange-500/5';
+      case 'medium':
+        return 'text-primary border-primary/20 bg-primary/5';
       default:
-        return "text-muted-foreground border-border bg-muted/5";
+        return 'text-muted-foreground border-border bg-muted/5';
     }
   };
 
-  const getStatusIcon = (status: Task["status"]) => {
+  const getStatusIcon = (status: Task['status']) => {
     switch (status) {
-      case "completed":
+      case 'completed':
         return <CheckCircle2 className="h-4 w-4 text-accent" />;
-      case "in-progress":
+      case 'in-progress':
         return <Zap className="h-4 w-4 text-primary animate-pulse" />;
       default:
         return <Circle className="h-4 w-4 text-muted-foreground" />;
@@ -167,7 +167,7 @@ export function TaskOverview() {
                     <div className="mt-0.5">{getStatusIcon(task.status)}</div>
                     <div className="space-y-1">
                       <p
-                        className={`text-xs font-medium leading-none ${task.status === "completed" ? "text-muted-foreground line-through" : "text-foreground"}`}
+                        className={`text-xs font-medium leading-none ${task.status === 'completed' ? 'text-muted-foreground line-through' : 'text-foreground'}`}
                       >
                         {task.title}
                       </p>
@@ -179,7 +179,7 @@ export function TaskOverview() {
                           {task.stage}
                         </Badge>
                         <span className="text-[9px] text-muted-foreground uppercase flex items-center gap-1">
-                          {task.type === "symbiotic" ? (
+                          {task.type === 'symbiotic' ? (
                             <Users className="h-2.5 w-2.5 text-accent" />
                           ) : (
                             <Target className="h-2.5 w-2.5" />

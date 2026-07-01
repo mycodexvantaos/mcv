@@ -16,12 +16,12 @@
  *   - detect-knowledge-issue
  */
 
-import type { IDatabasePort } from "../../ports/database";
-import type { IObjectStoragePort } from "../../ports/object-storage";
-import type { IKnowledgeSearchPort } from "../../ports/search";
-import type { IJobQueuePort } from "../../ports/queue";
-import type { IAuthPort } from "../../ports/auth";
-import type { ResourceCondition } from "../../core/shared";
+import type { IDatabasePort } from '../../ports/database';
+import type { IObjectStoragePort } from '../../ports/object-storage';
+import type { IKnowledgeSearchPort } from '../../ports/search';
+import type { IJobQueuePort } from '../../ports/queue';
+import type { IAuthPort } from '../../ports/auth';
+import type { ResourceCondition } from '../../core/shared';
 
 // ── Service Dependencies ───────────────────────────────────────────────
 
@@ -38,15 +38,15 @@ export interface KnowledgeServiceDeps {
 
 // ── Document Types ─────────────────────────────────────────────────────
 
-export type DocumentFormat = "pdf" | "txt" | "md" | "html" | "json" | "csv" | "docx";
+export type DocumentFormat = 'pdf' | 'txt' | 'md' | 'html' | 'json' | 'csv' | 'docx';
 export type DocumentPhase =
-  | "uploaded"
-  | "ingesting"
-  | "ready"
-  | "failed"
-  | "stale"
-  | "archived"
-  | "deleted";
+  | 'uploaded'
+  | 'ingesting'
+  | 'ready'
+  | 'failed'
+  | 'stale'
+  | 'archived'
+  | 'deleted';
 
 export interface IngestDocumentInput {
   title: string;
@@ -78,8 +78,8 @@ export interface DocumentResource {
 
 // ── Collection Types ───────────────────────────────────────────────────
 
-export type CollectionPhase = "creating" | "empty" | "indexing" | "ready" | "degraded" | "deleted";
-export type ChunkStrategy = "fixed" | "semantic" | "sentence";
+export type CollectionPhase = 'creating' | 'empty' | 'indexing' | 'ready' | 'degraded' | 'deleted';
+export type ChunkStrategy = 'fixed' | 'semantic' | 'sentence';
 
 export interface CreateCollectionInput {
   name: string;
@@ -109,8 +109,8 @@ export interface CollectionResource {
 
 // ── Search Types ───────────────────────────────────────────────────────
 
-export type SearchType = "semantic" | "fulltext" | "hybrid";
-export type EvidenceLevel = "knowledge-assisted" | "knowledge-verified" | "knowledge-grounded";
+export type SearchType = 'semantic' | 'fulltext' | 'hybrid';
+export type EvidenceLevel = 'knowledge-assisted' | 'knowledge-verified' | 'knowledge-grounded';
 
 export interface SearchKnowledgeInput {
   query: string;
@@ -131,15 +131,15 @@ export interface SearchResultItem {
 // ── Issue & Repair Types ───────────────────────────────────────────────
 
 export type KnowledgeIssueType =
-  | "stale"
-  | "contradiction"
-  | "gap"
-  | "hallucination"
-  | "broken-reference";
+  | 'stale'
+  | 'contradiction'
+  | 'gap'
+  | 'hallucination'
+  | 'broken-reference';
 
 export interface KnowledgeAuditEvent {
   eventType: string;
-  category: "knowledge";
+  category: 'knowledge';
   severity: string;
   subjectId: string;
   workspaceId: string;
@@ -169,7 +169,7 @@ export class KnowledgeService {
     const now = new Date().toISOString();
 
     // Store raw document in object storage
-    await this.deps.storage.put("documents", `${workspaceId}/${documentId}`, input.content, {
+    await this.deps.storage.put('documents', `${workspaceId}/${documentId}`, input.content, {
       contentType: `application/${input.format}`,
       metadata: { documentId, collectionId: input.collectionId, workspaceId },
     });
@@ -186,7 +186,7 @@ export class KnowledgeService {
         input.format,
         input.collectionId,
         input.sourceUri ?? null,
-        input.language ?? "en",
+        input.language ?? 'en',
         input.content.byteLength,
         now,
         now,
@@ -196,18 +196,18 @@ export class KnowledgeService {
     // Enqueue async chunking job
     await this.deps.queue.enqueue({
       jobId: crypto.randomUUID(),
-      jobType: "document-chunk",
+      jobType: 'document-chunk',
       workspaceId,
       data: { documentId, collectionId: input.collectionId },
     });
 
     await this.deps.audit.emitEvent({
-      eventType: "knowledge.document.ingested",
-      category: "knowledge",
-      severity: "info",
+      eventType: 'knowledge.document.ingested',
+      category: 'knowledge',
+      severity: 'info',
       subjectId,
       workspaceId,
-      action: "ingest-document",
+      action: 'ingest-document',
       correlationId: crypto.randomUUID(),
       data: { documentId, format: input.format, sizeBytes: input.content.byteLength },
     });
@@ -220,10 +220,10 @@ export class KnowledgeService {
         format: input.format,
         collectionId: input.collectionId,
         sourceUri: input.sourceUri ?? null,
-        language: input.language ?? "en",
+        language: input.language ?? 'en',
       },
       status: {
-        phase: "uploaded",
+        phase: 'uploaded',
         chunkCount: 0,
         totalTokens: 0,
         fileSizeBytes: input.content.byteLength,
@@ -249,18 +249,18 @@ export class KnowledgeService {
       collectionIds: input.collectionIds,
       topK: input.topK ?? 10,
       minScore: input.minScore ?? 0.5,
-      searchType: input.searchType ?? "hybrid",
+      searchType: input.searchType ?? 'hybrid',
     });
 
     const totalDurationMs = Date.now() - startTime;
 
     await this.deps.audit.emitEvent({
-      eventType: "knowledge.search.executed",
-      category: "knowledge",
-      severity: "info",
+      eventType: 'knowledge.search.executed',
+      category: 'knowledge',
+      severity: 'info',
       subjectId,
       workspaceId,
-      action: "search-knowledge",
+      action: 'search-knowledge',
       correlationId: crypto.randomUUID(),
       data: {
         query: input.query,
@@ -294,7 +294,7 @@ export class KnowledgeService {
         input.description,
         input.embeddingModel,
         input.chunkStrategy,
-        input.language ?? "en",
+        input.language ?? 'en',
         now,
         now,
       ]
@@ -308,9 +308,9 @@ export class KnowledgeService {
         description: input.description,
         embeddingModel: input.embeddingModel,
         chunkStrategy: input.chunkStrategy,
-        language: input.language ?? "en",
+        language: input.language ?? 'en',
       },
-      status: { phase: "empty", documentCount: 0, totalChunks: 0, conditions: [] },
+      status: { phase: 'empty', documentCount: 0, totalChunks: 0, conditions: [] },
     };
   }
 }

@@ -16,7 +16,7 @@ export class MessageQueue {
   private queues: Map<string, Message[]> = new Map();
   private processors: Map<string, (message: Message) => Promise<void>> = new Map();
 
-  async enqueue(queue: string, message: Omit<Message, "id" | "attemptCount">): Promise<string> {
+  async enqueue(queue: string, message: Omit<Message, 'id' | 'attemptCount'>): Promise<string> {
     const fullMessage: Message = {
       ...message,
       id: `msg_${Date.now()}_${Math.random()}`,

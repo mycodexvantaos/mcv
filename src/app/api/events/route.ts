@@ -1,11 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 
 // MyCodeXvantaOS Admin Dashboard - Events API
 // Returns recent event data for dashboard display
 // Note: SSE (Server-Sent Events) is not compatible with static export (output: "export"),
 // so this route returns a static snapshot of recent events instead.
 
-export const dynamic = "force-static";
+export const dynamic = 'force-static';
 
 export async function GET() {
   // Return a static snapshot of recent events for the dashboard
@@ -13,46 +13,46 @@ export async function GET() {
 
   const events = [
     {
-      type: "connected",
+      type: 'connected',
       data: {
-        message: "MyCodeXvantaOS Admin Dashboard - Real-time feed connected",
+        message: 'MyCodeXvantaOS Admin Dashboard - Real-time feed connected',
         timestamp: now,
       },
     },
     {
-      type: "metrics",
+      type: 'metrics',
       data: {
         throughput: 52000,
         latency: 145,
-        errorRate: "0.12",
+        errorRate: '0.12',
         activeConnections: 198,
         timestamp: now,
       },
     },
     {
-      type: "connector_health",
+      type: 'connector_health',
       data: {
-        connectorId: "pg-primary",
-        status: "healthy",
+        connectorId: 'pg-primary',
+        status: 'healthy',
         latency: 23,
         timestamp: now,
       },
     },
     {
-      type: "connector_health",
+      type: 'connector_health',
       data: {
-        connectorId: "redis-cache",
-        status: "healthy",
+        connectorId: 'redis-cache',
+        status: 'healthy',
         latency: 8,
         timestamp: now,
       },
     },
     {
-      type: "alert",
+      type: 'alert',
       data: {
-        id: "alert-rt-001",
-        severity: "info",
-        title: "Compliance scan completed",
+        id: 'alert-rt-001',
+        severity: 'info',
+        title: 'Compliance scan completed',
         timestamp: now,
       },
     },

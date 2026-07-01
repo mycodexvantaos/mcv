@@ -133,11 +133,11 @@ export ANTHROPIC_API_KEY="your-api-key"
 ### Basic Usage (JavaScript/React)
 
 ```javascript
-import { ApplicationPipeline } from "./skills/application-pipeline/core/pipeline.js";
+import { ApplicationPipeline } from './skills/application-pipeline/core/pipeline.js';
 
 const pipeline = new ApplicationPipeline({
   apiKey: process.env.ANTHROPIC_API_KEY,
-  model: "claude-sonnet-4-20250514",
+  model: 'claude-sonnet-4-20250514',
 });
 
 // 1. Upload ZIP files
@@ -162,7 +162,7 @@ console.log(validation);
 
 ```javascript
 const customStrategy = {
-  "package.json": (versions) => {
+  'package.json': (versions) => {
     // Custom merge logic for package.json
     const merged = { ...versions[0] };
     versions.forEach((v) => {
@@ -171,7 +171,7 @@ const customStrategy = {
     });
     return merged;
   },
-  "*.yaml": (versions) => {
+  '*.yaml': (versions) => {
     // Deep merge YAML files
     return deepMergeYaml(versions);
   },
@@ -330,15 +330,15 @@ const result = await pipeline.validate(merged);
 
 ```javascript
 const config = {
-  sources: ["project-v1.zip", "project-v2.zip", "project-v3.zip"],
+  sources: ['project-v1.zip', 'project-v2.zip', 'project-v3.zip'],
   analysis: {
     depth: 3,
     sampleSize: 100,
     extractCode: true,
   },
   merging: {
-    strategy: "intelligent",
-    conflictResolution: "ai-guided",
+    strategy: 'intelligent',
+    conflictResolution: 'ai-guided',
     preserveHistory: true,
   },
   validation: {
@@ -347,7 +347,7 @@ const config = {
     runTests: false,
   },
   output: {
-    format: "zip",
+    format: 'zip',
     includeReport: true,
     includeConflictLog: true,
   },
@@ -360,19 +360,19 @@ const pipeline = new ApplicationPipeline(config);
 
 ```javascript
 const config = {
-  focus: "dependencies",
+  focus: 'dependencies',
   rules: {
-    "package.json": {
-      strategy: "union-with-latest",
-      conflictResolution: "highest-semver",
+    'package.json': {
+      strategy: 'union-with-latest',
+      conflictResolution: 'highest-semver',
     },
-    "requirements.txt": {
-      strategy: "union",
-      conflictResolution: "latest-compatible",
+    'requirements.txt': {
+      strategy: 'union',
+      conflictResolution: 'latest-compatible',
     },
-    "go.mod": {
-      strategy: "merge",
-      conflictResolution: "ai-guided",
+    'go.mod': {
+      strategy: 'merge',
+      conflictResolution: 'ai-guided',
     },
   },
 };
@@ -520,11 +520,11 @@ for (const project of projects) {
 ### 2. Custom Merge Hooks
 
 ```javascript
-pipeline.on("beforeMerge", (file, versions) => {
+pipeline.on('beforeMerge', (file, versions) => {
   console.log(`Merging ${file} from ${versions.length} versions`);
 });
 
-pipeline.on("afterMerge", (file, result) => {
+pipeline.on('afterMerge', (file, result) => {
   console.log(`Merged ${file} successfully`);
 });
 ```
@@ -574,7 +574,7 @@ const analyses = await pipeline.analyzeAll(versions);
 const report = await pipeline.synthesize(analyses);
 
 // Fail if critical conflicts
-if (report.conflicts.filter((c) => c.severity === "critical").length > 0) {
+if (report.conflicts.filter((c) => c.severity === 'critical').length > 0) {
   process.exit(1);
 }
 ```
@@ -619,8 +619,8 @@ for (let i = 1; i < versions.length; i++) {
 Focus on high-severity conflicts first.
 
 ```javascript
-const criticalConflicts = conflicts.filter((c) => c.severity === "critical");
-const minorConflicts = conflicts.filter((c) => c.severity === "minor");
+const criticalConflicts = conflicts.filter((c) => c.severity === 'critical');
+const minorConflicts = conflicts.filter((c) => c.severity === 'minor');
 ```
 
 ### 4. **Validation Before Deployment**
@@ -630,7 +630,7 @@ Always validate merged projects before deployment.
 ```javascript
 const validation = await pipeline.validate(merged);
 if (!validation.isValid) {
-  throw new Error("Validation failed: " + validation.errors.join(", "));
+  throw new Error('Validation failed: ' + validation.errors.join(', '));
 }
 ```
 
@@ -685,7 +685,7 @@ for (let i = 0; i < files.length; i += chunkSize) {
 
 ```javascript
 const removeConflictMarkers = (content) => {
-  return content.replace(/^<{7}.*?^={7}.*?^>{7}.*?$/gms, "");
+  return content.replace(/^<{7}.*?^={7}.*?^>{7}.*?$/gms, '');
 };
 ```
 
@@ -715,7 +715,7 @@ const getCachedAnalysis = (projectId) => {
 
 ```javascript
 const stream = pipeline.synthesizeStream(analyses);
-stream.on("data", (chunk) => console.log(chunk));
+stream.on('data', (chunk) => console.log(chunk));
 ```
 
 ---
@@ -728,8 +728,8 @@ Always validate ZIP files before processing.
 
 ```javascript
 const validateZip = (file) => {
-  if (file.size > 100 * 1024 * 1024) throw new Error("File too large");
-  if (!file.name.endsWith(".zip")) throw new Error("Invalid file type");
+  if (file.size > 100 * 1024 * 1024) throw new Error('File too large');
+  if (!file.name.endsWith('.zip')) throw new Error('Invalid file type');
 };
 ```
 
@@ -739,7 +739,7 @@ Never expose API keys in client-side code.
 
 ```javascript
 // ❌ Bad
-const apiKey = "sk-..."; // Exposed!
+const apiKey = 'sk-...'; // Exposed!
 
 // ✅ Good
 const apiKey = process.env.ANTHROPIC_API_KEY; // Server-side only
@@ -750,8 +750,8 @@ const apiKey = process.env.ANTHROPIC_API_KEY; // Server-side only
 Run merge operations in isolated environments.
 
 ```javascript
-const { Worker } = require("worker_threads");
-const worker = new Worker("./merge-worker.js");
+const { Worker } = require('worker_threads');
+const worker = new Worker('./merge-worker.js');
 ```
 
 ---

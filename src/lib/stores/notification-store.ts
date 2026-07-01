@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import type { Alert, Severity } from "@/types/dashboard";
+import { create } from 'zustand';
+import type { Alert, Severity } from '@/types/dashboard';
 
 interface Notification {
   id: string;
@@ -14,7 +14,7 @@ interface NotificationState {
   notifications: Notification[];
   unreadCount: number;
 
-  addNotification: (notification: Omit<Notification, "id" | "timestamp" | "read">) => void;
+  addNotification: (notification: Omit<Notification, 'id' | 'timestamp' | 'read'>) => void;
   markAsRead: (id: string) => void;
   markAllAsRead: () => void;
   dismissNotification: (id: string) => void;
@@ -24,10 +24,10 @@ interface NotificationState {
 export const useNotificationStore = create<NotificationState>((set, get) => ({
   notifications: [
     {
-      id: "n1",
-      title: "System Started",
-      message: "MyCodeXvantaOS Admin Console initialized successfully.",
-      severity: "low",
+      id: 'n1',
+      title: 'System Started',
+      message: 'MyCodeXvantaOS Admin Console initialized successfully.',
+      severity: 'low',
       timestamp: new Date().toISOString(),
       read: false,
     },

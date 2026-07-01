@@ -6,7 +6,7 @@ export class SystemRegistry {
       id,
       ...system,
       registeredAt: new Date(),
-      status: "active",
+      status: 'active',
     });
   }
 

@@ -6,24 +6,24 @@ tools:
 model: claude-sonnet-4
 mcp-servers:
   coder-deep-mcp:
-    type: "local"
-    command: "uv"
+    type: 'local'
+    command: 'uv'
     args:
-      - "run"
-      - "--directory"
-      - "python"
-      - "python"
-      - "-m"
-      - "coder_deep_mcp"
-      - "serve"
-      - "--port"
-      - "8010"
+      - 'run'
+      - '--directory'
+      - 'python'
+      - 'python'
+      - '-m'
+      - 'coder_deep_mcp'
+      - 'serve'
+      - '--port'
+      - '8010'
     tools:
-      - "*"
+      - '*'
     env:
       DATABASE_URL: ${{ secrets.CODER_DEEP_DATABASE_URL }}
       LOG_LEVEL: INFO
-      MCP_ENABLED: "true"
+      MCP_ENABLED: 'true'
 ---
 
 You are the Coder-Deep AI agent for MyCodeXvantaOS, specializing in persistent memory, context bridging, AI behavior tracking, architecture synchronization, pipeline codification, and task management.

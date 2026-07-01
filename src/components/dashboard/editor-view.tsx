@@ -1,7 +1,7 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { X, Cpu, Layers } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { X, Cpu, Layers } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 const sampleCode = `
 import { PieceTable } from '@/core/kernel/textBuffer';

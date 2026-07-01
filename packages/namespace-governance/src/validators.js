@@ -8,40 +8,40 @@
  * (closure engine) keeps each layer single-responsibility and testable in
  * isolation.
  */
-import Ajv from "ajv";
+import Ajv from 'ajv';
 
 const ajv = new Ajv({ allErrors: true });
 
 const namespaceSchema = {
-  type: "object",
+  type: 'object',
   additionalProperties: false,
   properties: {
-    name: { type: "string", pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
-    owner: { type: "string", minLength: 1 },
-    policies: { type: "array", items: { type: "string" } },
+    name: { type: 'string', pattern: '^[a-z0-9]+(?:-[a-z0-9]+)*$' },
+    owner: { type: 'string', minLength: 1 },
+    policies: { type: 'array', items: { type: 'string' } },
   },
-  required: ["name", "owner"],
+  required: ['name', 'owner'],
 };
 
 const closureSchema = {
-  type: "object",
+  type: 'object',
   additionalProperties: false,
   properties: {
-    namespace: { type: "string", minLength: 1 },
+    namespace: { type: 'string', minLength: 1 },
     rules: {
-      type: "object",
+      type: 'object',
       additionalProperties: false,
       properties: {
-        codes: { type: "array", items: { type: "string" } },
-        repositories: { type: "array", items: { type: "string" } },
+        codes: { type: 'array', items: { type: 'string' } },
+        repositories: { type: 'array', items: { type: 'string' } },
         dependencies: {
-          type: "array",
-          items: { type: "array", minItems: 2, maxItems: 2, items: { type: "string" } },
+          type: 'array',
+          items: { type: 'array', minItems: 2, maxItems: 2, items: { type: 'string' } },
         },
       },
     },
   },
-  required: ["namespace"],
+  required: ['namespace'],
 };
 
 /** @type {import('ajv').ValidateFunction} */

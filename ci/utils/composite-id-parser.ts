@@ -13,7 +13,7 @@
  *   → ["mycodexvantaos-ai-memory", "memories", "bge-small-384"]
  */
 export function splitCompositeId(compositeId: string): string[] {
-  return compositeId.split("--");
+  return compositeId.split('--');
 }
 
 export interface VectorCollectionParts {
@@ -44,7 +44,7 @@ export interface EmbeddingModelAliasParts {
 /** Section 9.3 — Parse an embedding model alias */
 export function parseEmbeddingModelAlias(alias: string): EmbeddingModelAliasParts {
   const parts = splitCompositeId(alias);
-  if (parts.length !== 3 || !parts[2].endsWith("d")) {
+  if (parts.length !== 3 || !parts[2].endsWith('d')) {
     throw new Error(
       `Invalid embedding-model-alias: "${alias}". ` +
         `Expected format: <provider>--<model-name>--<dimension>d (Section 9.3)`
@@ -64,7 +64,7 @@ export interface RetrievalPipelineParts {
 /** Section 9.4 — Parse a retrieval pipeline id */
 export function parseRetrievalPipelineId(id: string): RetrievalPipelineParts {
   const parts = splitCompositeId(id);
-  if (parts.length !== 3 || parts[0] !== "retrieval") {
+  if (parts.length !== 3 || parts[0] !== 'retrieval') {
     throw new Error(
       `Invalid retrieval-pipeline-id: "${id}". ` +
         `Expected format: retrieval--<strategy>--<store-type> (Section 9.4)`

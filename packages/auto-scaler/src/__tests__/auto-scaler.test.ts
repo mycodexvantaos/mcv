@@ -1,17 +1,17 @@
-import { AutoScaler } from "../index";
+import { AutoScaler } from '../index';
 
-describe("auto-scaler", () => {
+describe('auto-scaler', () => {
   let instance: AutoScaler;
 
   beforeEach(() => {
     instance = new AutoScaler();
   });
 
-  test("should initialize", () => {
+  test('should initialize', () => {
     expect(instance).toBeDefined();
   });
 
-  test("should have basic functionality", () => {
-    expect(typeof instance).toBe("object");
+  test('should have basic functionality', () => {
+    expect(typeof instance).toBe('object');
   });
 });

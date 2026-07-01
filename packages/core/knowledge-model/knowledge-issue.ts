@@ -7,16 +7,16 @@
  *   detect issue → classify severity → determine repair → execute → verify
  */
 
-import type { ResourceCondition } from "../shared";
+import type { ResourceCondition } from '../shared';
 
 export type KnowledgeIssueType =
-  | "stale"
-  | "contradiction"
-  | "gap"
-  | "hallucination"
-  | "broken-reference";
+  | 'stale'
+  | 'contradiction'
+  | 'gap'
+  | 'hallucination'
+  | 'broken-reference';
 
-export type KnowledgeIssueSeverity = "critical" | "high" | "medium" | "low";
+export type KnowledgeIssueSeverity = 'critical' | 'high' | 'medium' | 'low';
 
 export interface KnowledgeIssueSpec {
   /** What kind of issue was detected */
@@ -32,7 +32,7 @@ export interface KnowledgeIssueSpec {
   /** The collection this issue belongs to */
   collectionId: string;
   /** How the issue was detected (manual, automated-scan, user-report) */
-  detectionMethod: "manual" | "automated-scan" | "user-report";
+  detectionMethod: 'manual' | 'automated-scan' | 'user-report';
 }
 
 export interface KnowledgeIssueStatus {
@@ -43,4 +43,4 @@ export interface KnowledgeIssueStatus {
   resolvedAt: string | null;
 }
 
-export type KnowledgeIssuePhase = "detected" | "confirmed" | "repairing" | "resolved" | "wont-fix";
+export type KnowledgeIssuePhase = 'detected' | 'confirmed' | 'repairing' | 'resolved' | 'wont-fix';
