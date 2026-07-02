@@ -1,39 +1,52 @@
 platform: mycodexvantaos
-canonical_url: https://mycodexvantaos.com
+canonical_url: 'https://mycodexvantaos.com'
 doc_id: IM-MCV-002
-version: 1.0.0
+version: '1.0.0'
+
+# LLM session configuration
 session:
-  model: ${AUDIT_MODEL:-gpt-4o}
+  model: '${AUDIT_MODEL:-gpt-4o}'
   timeout_seconds: 30
   max_retries: 3
   temperature: 0.0
   max_tokens: 2048
+
+# Audit phases to run
 phases:
-- 0
-- 1
-- 2
-- 3
-- 4
-- 5
+  - 0 # Environment validation
+  - 1 # System prompt extraction
+  - 2 # System prompt consistency
+  - 3 # Tool schema analysis
+  - 4 # Guardrail effectiveness
+  - 5 # Comprehensive audit
+
+# Guardrail thresholds
 thresholds:
-  guardrail_f1_minimum: 0.9
-  prompt_score_minimum: 0.8
+  guardrail_f1_minimum: 0.90
+  prompt_score_minimum: 0.80
   tool_score_minimum: 0.85
+
+# Report output
 report:
-  output_dir: outputs
+  output_dir: 'outputs'
   formats:
-  - json
-  - markdown
+    - json
+    - markdown
   include_passing: true
   include_evidence: true
+
+# Forbidden URL patterns (Domain & Deployment Contract)
 forbidden_url_patterns:
-- '*.github.io'
-- '*.pages.dev'
-- '*.vercel.app'
-- '*.netlify.app'
-- '*.run.app'
-- '*.appspot.com'
-- '*.cloudfunctions.net'
-- '*.web.app'
-- '*.firebaseapp.com'
-- storage.googleapis.com
+  - '*.github.io'
+  - '*.pages.dev'
+  - '*.vercel.app'
+  - '*.netlify.app'
+  - '*.firebaseapp.com'
+  - '*.web.app'
+  - '*.appspot.com'
+  - '*.cloudfunctions.net'
+  - '*.herokuapp.com'
+  - '*.render.com'
+  - '*.railway.app'
+  - '*.fly.dev'
+  - 'storage.googleapis.com'

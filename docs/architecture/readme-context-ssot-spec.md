@@ -1,4 +1,4 @@
-# MyCodexVantaOS — README Context SSOT and Drift Control Specification
+## MyCodexVantaOS — README Context SSOT and Drift Control Specification
 
 > 文件定位：`docs/architecture/readme-context-ssot-spec.md`  
 > 建議母規格章節：`Appendix D — README Context SSOT and Drift Control Specification`  
@@ -40,7 +40,7 @@ CI / generator is the synchronization and governance layer.
 
 ---
 
-# D.1 Core Rule
+## D.1 Core Rule
 
 ## D.1.1 README Is Not the Source of Truth
 
@@ -112,7 +112,7 @@ Instead, local README files MUST reference authoritative global documents.
 
 ---
 
-# D.2 Three-Level README Model
+## D.2 Three-Level README Model
 
 MyCodexVantaOS defines a three-level README model:
 
@@ -210,14 +210,14 @@ L2 README files SHOULD NOT exceed 120 lines unless explicitly justified.
 
 ---
 
-# D.3 Local README Template
+## D.3 Local README Template
 
 ## D.3.1 Required Template
 
 Local README files SHOULD use the following structure:
 
 ```markdown
-# <directory-name>
+## <directory-name>
 
 ## Role
 
@@ -263,7 +263,24 @@ Before modifying this directory:
 
 <!-- BEGIN:MYCODEXVANTAOS-GENERATED-CONTEXT -->
 
-This section is generated from manifests. Do not edit manually.
+Generated from:
+
+- directory-context.yaml
+- mycodexvantaos-module.yaml
+- foundation/\*/module-map.yaml
+- navigation/module-index.yaml
+
+Primary foundation: data-foundation
+
+Allowed content:
+
+- vector store contracts
+- provider-neutral vector storage abstractions
+
+Forbidden content:
+
+- provider SDK implementation
+- deployment manifests
 
 <!-- END:MYCODEXVANTAOS-GENERATED-CONTEXT -->
 ```
@@ -287,7 +304,7 @@ If more detail is required, it SHOULD be moved to:
 
 ---
 
-# D.4 Directory Context SSOT
+## D.4 Directory Context SSOT
 
 ## D.4.1 Required Role
 
@@ -397,7 +414,7 @@ It MAY include:
 
 ---
 
-# D.5 Reference-Based README Rule
+## D.5 Reference-Based README Rule
 
 ## D.5.1 Reference Instead of Copy
 
@@ -431,7 +448,7 @@ It MUST NOT duplicate global policy text unless required for a generated summary
 
 ---
 
-# D.6 Generated README Context Blocks
+## D.6 Generated README Context Blocks
 
 ## D.6.1 Generated Block Format
 
@@ -468,40 +485,14 @@ Generated README context blocks SHOULD be derived from:
 
 ## D.6.4 Example Generated Block
 
-```markdown
-## Generated Context
-
-<!-- BEGIN:MYCODEXVANTAOS-GENERATED-CONTEXT -->
-
-Generated from:
-
-- directory-context.yaml
-- mycodexvantaos-module.yaml
-- foundation/\*/module-map.yaml
-- navigation/module-index.yaml
-
-Primary foundation: data-foundation
-
-Allowed content:
-
-- vector store contracts
-- provider-neutral vector storage abstractions
-
-Forbidden content:
-
-- provider SDK implementation
-- deployment manifests
-
-<!-- END:MYCODEXVANTAOS-GENERATED-CONTEXT -->
-```
-
+````markdown
 ## D.6.5 Drift Rule
 
 CI MUST be able to verify that generated README blocks match their authoritative sources.
 
 ---
 
-# D.7 README Generation Tooling
+## D.7 README Generation Tooling
 
 ## D.7.1 Recommended Generator
 
@@ -512,6 +503,7 @@ Recommended paths:
 ```text
 tools/context/generate-readme-context.ts
 ```
+````
 
 or:
 
@@ -581,7 +573,7 @@ Check mode MUST fail when generated blocks are outdated.
 
 ---
 
-# D.8 README Drift Validation
+## D.8 README Drift Validation
 
 ## D.8.1 Required Drift Checks
 
@@ -625,7 +617,7 @@ python3 scripts/generate-directory-readmes.py --check
 
 ---
 
-# D.9 Short README + Long Specification Model
+## D.9 Short README + Long Specification Model
 
 ## D.9.1 Content Placement Matrix
 
@@ -657,7 +649,7 @@ CI-enforced drift control.
 
 ---
 
-# D.10 Anti-Redundancy Rules
+## D.10 Anti-Redundancy Rules
 
 ## Rule 1 — Global Principles Written Once
 
@@ -728,7 +720,7 @@ Recommended size:
 
 ---
 
-# D.11 Recommended Directory Context Layouts
+## D.11 Recommended Directory Context Layouts
 
 ## D.11.1 Root Directory Layout
 
@@ -795,7 +787,7 @@ navigation/
 
 ---
 
-# D.12 Minimum Rollout Plan
+## D.12 Minimum Rollout Plan
 
 ## D.12.1 Phase 1 — High-Value README Coverage
 
@@ -859,7 +851,7 @@ validate navigation indexes
 
 ---
 
-# D.13 Final Operating Model
+## D.13 Final Operating Model
 
 The final documentation governance flow is:
 
@@ -897,7 +889,7 @@ CI prevents drift.
 
 ---
 
-# D.14 Compliance Criteria
+## D.14 Compliance Criteria
 
 This specification is implemented when:
 

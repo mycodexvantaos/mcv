@@ -8,7 +8,7 @@
  * - Connected: External cache services (Redis, etc.)
  */
 
-import type { StorageCapability, StorageItem } from "../packages/capabilities/src/storage";
+import type { StorageCapability, StorageItem } from '../packages/capabilities/src/storage';
 
 export interface CachedAnalysis {
   data: any; // AnalysisResult
@@ -16,7 +16,7 @@ export interface CachedAnalysis {
   expiresAt: number;
 }
 
-const CACHE_PREFIX = "zip_synthesis_";
+const CACHE_PREFIX = 'zip_synthesis_';
 const CACHE_EXPIRY_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 /**
@@ -39,7 +39,7 @@ export class CacheManager {
       await this.storage.initialize();
       this.initialized = true;
     } catch (error) {
-      console.error("Failed to initialize CacheManager:", error);
+      console.error('Failed to initialize CacheManager:', error);
       throw error;
     }
   }
@@ -48,7 +48,7 @@ export class CacheManager {
    * Generate cache key
    */
   getCacheKey(zipName: string, fileCount: number): string {
-    const hash = `${zipName}_${fileCount}`.replace(/[^a-zA-Z0-9]/g, "_");
+    const hash = `${zipName}_${fileCount}`.replace(/[^a-zA-Z0-9]/g, '_');
     return `${CACHE_PREFIX}${hash}`;
   }
 
@@ -68,10 +68,10 @@ export class CacheManager {
 
       await this.storage!.set(key, JSON.stringify(cached), {
         ttl: CACHE_EXPIRY_MS,
-        tags: ["analysis", "cache"],
+        tags: ['analysis', 'cache'],
       });
     } catch (error) {
-      console.error("Error saving analysis cache:", error);
+      console.error('Error saving analysis cache:', error);
     }
   }
 
@@ -97,7 +97,7 @@ export class CacheManager {
 
       return cached.data;
     } catch (error) {
-      console.error("Error reading analysis cache:", error);
+      console.error('Error reading analysis cache:', error);
       return null;
     }
   }
@@ -112,7 +112,7 @@ export class CacheManager {
       const key = this.getCacheKey(zipName, fileCount);
       await this.storage!.delete(key);
     } catch (error) {
-      console.error("Error clearing analysis cache:", error);
+      console.error('Error clearing analysis cache:', error);
     }
   }
 
@@ -130,7 +130,7 @@ export class CacheManager {
         await this.storage!.delete(key);
       }
     } catch (error) {
-      console.error("Error clearing all cache:", error);
+      console.error('Error clearing all cache:', error);
     }
   }
 
@@ -157,7 +157,7 @@ export class CacheManager {
         size: totalSize,
       };
     } catch (error) {
-      console.error("Error getting cache stats:", error);
+      console.error('Error getting cache stats:', error);
       return { count: 0, size: 0 };
     }
   }
@@ -188,7 +188,7 @@ export class CacheManager {
 
   private ensureInitialized(): void {
     if (!this.initialized || !this.storage) {
-      throw new Error("CacheManager not initialized. Call initialize() first.");
+      throw new Error('CacheManager not initialized. Call initialize() first.');
     }
   }
 }
@@ -210,7 +210,7 @@ let _cacheManagerInstance: CacheManager | null = null;
 
 async function getCacheManager(): Promise<CacheManager> {
   if (!_cacheManagerInstance) {
-    const { getProviderFactory } = await import("../packages/capabilities/src/provider-factory");
+    const { getProviderFactory } = await import('../packages/capabilities/src/provider-factory');
     const factory = getProviderFactory();
     _cacheManagerInstance = await createCacheManager(factory);
   }

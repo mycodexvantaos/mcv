@@ -14,10 +14,10 @@
  *   - classify-intent
  */
 
-import type { IDatabasePort } from "../../ports/database";
-import type { IChatModelPort } from "../../ports/model-provider";
-import type { IJobQueuePort } from "../../ports/queue";
-import type { IAuthPort } from "../../ports/auth";
+import type { IDatabasePort } from '../../ports/database';
+import type { IChatModelPort } from '../../ports/model-provider';
+import type { IJobQueuePort } from '../../ports/queue';
+import type { IAuthPort } from '../../ports/auth';
 
 // ── Service Dependencies ───────────────────────────────────────────────
 
@@ -45,8 +45,8 @@ export interface AgentServiceDeps {
 
 // ── Types ──────────────────────────────────────────────────────────────
 
-export type ChatSessionPhase = "created" | "active" | "idle" | "closed";
-export type EvidenceLevel = "knowledge-assisted" | "knowledge-verified" | "knowledge-grounded";
+export type ChatSessionPhase = 'created' | 'active' | 'idle' | 'closed';
+export type EvidenceLevel = 'knowledge-assisted' | 'knowledge-verified' | 'knowledge-grounded';
 
 export interface CreateSessionInput {
   subjectId: string;
@@ -77,7 +77,7 @@ export interface ChatSessionResource {
 export interface ChatMessage {
   id: string;
   sessionId: string;
-  role: "user" | "assistant" | "system";
+  role: 'user' | 'assistant' | 'system';
   content: string;
   evidenceLevel: EvidenceLevel | null;
   sourceCount: number;
@@ -99,7 +99,7 @@ export interface AgentSearchResult {
 
 export interface AgentAuditEvent {
   eventType: string;
-  category: "agent";
+  category: 'agent';
   severity: string;
   subjectId: string;
   workspaceId: string;
@@ -143,12 +143,12 @@ export class AgentService {
     );
 
     await this.deps.audit.emitEvent({
-      eventType: "agent.session.created",
-      category: "agent",
-      severity: "info",
+      eventType: 'agent.session.created',
+      category: 'agent',
+      severity: 'info',
       subjectId: input.subjectId,
       workspaceId,
-      action: "create-agent-session",
+      action: 'create-agent-session',
       correlationId: crypto.randomUUID(),
     });
 
@@ -162,7 +162,7 @@ export class AgentService {
         knowledgeCollectionIds: input.knowledgeCollectionIds ?? [],
         temperature: input.temperature ?? 0.7,
       },
-      status: { phase: "created", messageCount: 0, totalTokensUsed: 0, lastMessageAt: null },
+      status: { phase: 'created', messageCount: 0, totalTokensUsed: 0, lastMessageAt: null },
     };
   }
 
@@ -176,7 +176,7 @@ export class AgentService {
     if (!session) throw new Error(`Session not found: ${input.sessionId}`);
 
     // 2. Assemble prompt with knowledge retrieval if collections configured
-    let knowledgeContext = "";
+    let knowledgeContext = '';
     let sourceCount = 0;
     let evidenceLevel: EvidenceLevel | null = null;
 
@@ -186,23 +186,23 @@ export class AgentService {
         collectionIds: session.spec.knowledgeCollectionIds,
         topK: 5,
         minScore: 0.5,
-        searchType: "hybrid",
+        searchType: 'hybrid',
       });
       sourceCount = searchResult.results.length;
-      knowledgeContext = searchResult.results.map((r) => r.content).join("\n---\n");
-      evidenceLevel = sourceCount > 0 ? "knowledge-assisted" : null;
+      knowledgeContext = searchResult.results.map((r) => r.content).join('\n---\n');
+      evidenceLevel = sourceCount > 0 ? 'knowledge-assisted' : null;
     }
 
     // 3. Build messages
     const messages = [
       {
-        role: "system" as const,
-        content: session.spec.systemPrompt ?? "You are a helpful assistant.",
+        role: 'system' as const,
+        content: session.spec.systemPrompt ?? 'You are a helpful assistant.',
       },
       ...(knowledgeContext
-        ? [{ role: "system" as const, content: `Knowledge context:\n${knowledgeContext}` }]
+        ? [{ role: 'system' as const, content: `Knowledge context:\n${knowledgeContext}` }]
         : []),
-      { role: "user" as const, content: input.content },
+      { role: 'user' as const, content: input.content },
     ];
 
     // 4. Invoke model
@@ -213,7 +213,7 @@ export class AgentService {
     });
 
     // 5. Track usage
-    await this.deps.usage.meterUsage(workspaceId, "tokens", response.usage.totalTokens);
+    await this.deps.usage.meterUsage(workspaceId, 'tokens', response.usage.totalTokens);
 
     // 6. Create message record
     const messageId = crypto.randomUUID();
@@ -234,12 +234,12 @@ export class AgentService {
     );
 
     await this.deps.audit.emitEvent({
-      eventType: "agent.message.sent",
-      category: "agent",
-      severity: "info",
+      eventType: 'agent.message.sent',
+      category: 'agent',
+      severity: 'info',
       subjectId,
       workspaceId,
-      action: "answer-with-knowledge",
+      action: 'answer-with-knowledge',
       correlationId: crypto.randomUUID(),
       data: {
         sessionId: input.sessionId,
@@ -252,7 +252,7 @@ export class AgentService {
     return {
       id: messageId,
       sessionId: input.sessionId,
-      role: "assistant",
+      role: 'assistant',
       content: response.content,
       evidenceLevel,
       sourceCount,
@@ -263,7 +263,7 @@ export class AgentService {
 
   private async getSession(sessionId: string): Promise<ChatSessionResource | null> {
     const row = await this.deps.database.queryFirst<Record<string, unknown>>(
-      "SELECT * FROM chat_sessions WHERE id = ?",
+      'SELECT * FROM chat_sessions WHERE id = ?',
       [sessionId]
     );
     if (!row) return null;
@@ -274,7 +274,7 @@ export class AgentService {
         subjectId: row.subject_id as string,
         modelEndpointId: row.model_endpoint_id as string,
         systemPrompt: row.system_prompt as string | null,
-        knowledgeCollectionIds: JSON.parse((row.knowledge_collection_ids as string) || "[]"),
+        knowledgeCollectionIds: JSON.parse((row.knowledge_collection_ids as string) || '[]'),
         temperature: row.temperature as number,
       },
       status: {

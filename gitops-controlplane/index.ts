@@ -19,23 +19,23 @@
  */
 
 // Re-export types
-export type { EvidenceFile, VerificationReport } from "./evidence-verifier.provider";
-export type { MerkleNode, MerkleRootResult } from "./merkle-root.provider";
+export type { EvidenceFile, VerificationReport } from './evidence-verifier.provider';
+export type { MerkleNode, MerkleRootResult } from './merkle-root.provider';
 
 // Re-export classes
-export { EvidenceVerifier, createEvidenceVerifier } from "./evidence-verifier.provider";
+export { EvidenceVerifier, createEvidenceVerifier } from './evidence-verifier.provider';
 
-export { MerkleRootCalculator, createMerkleRootCalculator } from "./merkle-root.provider";
+export { MerkleRootCalculator, createMerkleRootCalculator } from './merkle-root.provider';
 
 // Provider factory for dependency injection
-export { getProviderFactory, ProviderFactory } from "../packages/capabilities/src/provider-factory";
+export { getProviderFactory, ProviderFactory } from '../packages/capabilities/src/provider-factory';
 
 // Runtime configuration
 export {
   getRuntimeConfig,
   RuntimeConfig,
   RuntimeMode,
-} from "../packages/capabilities/src/runtime-config";
+} from '../packages/capabilities/src/runtime-config';
 
 /**
  * Initialize all GitOps modules
@@ -44,12 +44,12 @@ export async function initializeGitOps(config?: {
   evidenceDir?: string;
   requiredFiles?: string[];
 }): Promise<{
-  evidenceVerifier: import("./evidence-verifier.provider").EvidenceVerifier;
-  merkleCalculator: import("./merkle-root.provider").MerkleRootCalculator;
+  evidenceVerifier: import('./evidence-verifier.provider').EvidenceVerifier;
+  merkleCalculator: import('./merkle-root.provider').MerkleRootCalculator;
 }> {
-  const { getProviderFactory } = await import("../packages/capabilities/src/provider-factory");
-  const { createEvidenceVerifier } = await import("./evidence-verifier.provider");
-  const { createMerkleRootCalculator } = await import("./merkle-root.provider");
+  const { getProviderFactory } = await import('../packages/capabilities/src/provider-factory');
+  const { createEvidenceVerifier } = await import('./evidence-verifier.provider');
+  const { createMerkleRootCalculator } = await import('./merkle-root.provider');
 
   const providerFactory = getProviderFactory();
 
@@ -68,10 +68,10 @@ export async function runVerificationPipeline(config: {
   evidenceDir: string;
   outputPath: string;
   requiredFiles?: string[];
-}): Promise<import("./evidence-verifier.provider").VerificationReport> {
-  const { getProviderFactory } = await import("../packages/capabilities/src/provider-factory");
-  const { createEvidenceVerifier } = await import("./evidence-verifier.provider");
-  const { createMerkleRootCalculator } = await import("./merkle-root.provider");
+}): Promise<import('./evidence-verifier.provider').VerificationReport> {
+  const { getProviderFactory } = await import('../packages/capabilities/src/provider-factory');
+  const { createEvidenceVerifier } = await import('./evidence-verifier.provider');
+  const { createMerkleRootCalculator } = await import('./merkle-root.provider');
 
   const providerFactory = getProviderFactory();
 
@@ -110,7 +110,7 @@ export async function healthCheckAll(): Promise<{
   merkleCalculator: boolean;
   overall: boolean;
 }> {
-  const { getProviderFactory } = await import("../packages/capabilities/src/provider-factory");
+  const { getProviderFactory } = await import('../packages/capabilities/src/provider-factory');
   const factory = getProviderFactory();
 
   const [storage, validation, logging] = await Promise.all([
@@ -136,7 +136,7 @@ export async function healthCheckAll(): Promise<{
  * Shutdown all modules
  */
 export async function shutdownAll(): Promise<void> {
-  const { getProviderFactory } = await import("../packages/capabilities/src/provider-factory");
+  const { getProviderFactory } = await import('../packages/capabilities/src/provider-factory');
   const factory = getProviderFactory();
 
   const providers = await Promise.all([

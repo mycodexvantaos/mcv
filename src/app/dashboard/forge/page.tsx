@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { forgeDynamicTool, type ToolForgeOutput } from "@/ai/client-stubs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
+import { useState } from 'react';
+import { forgeDynamicTool, type ToolForgeOutput } from '@/ai/client-stubs';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
 import {
   Zap,
   Loader2,
@@ -16,14 +16,14 @@ import {
   History,
   AlertCircle,
   Target,
-} from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+} from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 export default function ToolForgePage() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  const [env, setEnv] = useState("");
-  const [goal, setGoal] = useState("");
+  const [env, setEnv] = useState('');
+  const [goal, setGoal] = useState('');
   const [result, setResult] = useState<ToolForgeOutput | null>(null);
   const [correctionLog, setCorrectionLog] = useState<string[]>([]);
 
@@ -42,16 +42,16 @@ export default function ToolForgePage() {
           ...prev,
         ]);
         toast({
-          title: "Self-Correction Successful",
-          description: "The agent has healed the tool code.",
+          title: 'Self-Correction Successful',
+          description: 'The agent has healed the tool code.',
         });
       }
     } catch (e) {
       console.error(e);
       toast({
-        variant: "destructive",
-        title: "Forge Failure",
-        description: "Critical error in code generation.",
+        variant: 'destructive',
+        title: 'Forge Failure',
+        description: 'Critical error in code generation.',
       });
     } finally {
       setLoading(false);
@@ -60,9 +60,9 @@ export default function ToolForgePage() {
 
   const simulateExecutionError = () => {
     toast({
-      variant: "destructive",
-      title: "Execution Error",
-      description: "Syntax error detected in generated tool. Triggering Self-Correction loop...",
+      variant: 'destructive',
+      title: 'Execution Error',
+      description: 'Syntax error detected in generated tool. Triggering Self-Correction loop...',
     });
     handleForge("SyntaxError: 'NoneType' object has no attribute 'get_api_key' at line 12");
   };

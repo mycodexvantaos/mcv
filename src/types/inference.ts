@@ -1,5 +1,5 @@
-export type ModelStatus = "active" | "idle" | "draining" | "error";
-export type ModelProvider = "googleai" | "openai" | "anthropic" | "local";
+export type ModelStatus = 'active' | 'idle' | 'draining' | 'error';
+export type ModelProvider = 'googleai' | 'openai' | 'anthropic' | 'local';
 
 export interface ModelInstance {
   id: string;

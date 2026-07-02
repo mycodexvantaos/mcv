@@ -389,11 +389,11 @@ export class mycodexvantaos_platform_notificationService {
 
 ```typescript
 // services/mycodexvantaos-platform-notification/src/service.ts
-import { EventBus } from "@mycodexvantaos/events";
+import { EventBus } from '@mycodexvantaos/events';
 
 export interface Notification {
   id: string;
-  type: "info" | "warning" | "error" | "success";
+  type: 'info' | 'warning' | 'error' | 'success';
   title: string;
   message: string;
   timestamp: Date;
@@ -408,10 +408,7 @@ export class PlatformNotificationService {
     this.eventBus = eventBus;
   }
 
-  async notify(
-    userId: string,
-    notification: Omit<Notification, "id" | "timestamp" | "read">
-  ): Promise<Notification> {
+  async notify(userId: string, notification: Omit<Notification, 'id' | 'timestamp' | 'read'>): Promise<Notification> {
     const fullNotification: Notification = {
       ...notification,
       id: `notif-${Date.now()}`,
@@ -420,7 +417,7 @@ export class PlatformNotificationService {
     };
 
     this.notifications.set(fullNotification.id, fullNotification);
-    await this.eventBus.emit("notification.created", { userId, notification: fullNotification });
+    await this.eventBus.emit('notification.created', { userId, notification: fullNotification });
 
     return fullNotification;
   }
@@ -444,7 +441,7 @@ export class PlatformNotificationService {
 
 ```typescript
 // services/mycodexvantaos-security-secrets/src/service.ts
-import { createCipheriv, createDecipheriv, randomBytes, createHash } from "crypto";
+import { createCipheriv, createDecipheriv, randomBytes, createHash } from 'crypto';
 
 export interface Secret {
   key: string;
@@ -457,12 +454,10 @@ export interface Secret {
 export class SecuritySecretsService {
   private secrets: Map<string, Secret> = new Map();
   private encryptionKey: Buffer;
-  private algorithm = "aes-256-gcm";
+  private algorithm = 'aes-256-gcm';
 
   constructor(masterKey?: string) {
-    this.encryptionKey = masterKey
-      ? createHash("sha256").update(masterKey).digest()
-      : randomBytes(32);
+    this.encryptionKey = masterKey ? createHash('sha256').update(masterKey).digest() : randomBytes(32);
   }
 
   async store(key: string, value: string, encrypt: boolean = true): Promise<void> {
@@ -485,20 +480,20 @@ export class SecuritySecretsService {
   private encrypt(plaintext: string): string {
     const iv = randomBytes(16);
     const cipher = createCipheriv(this.algorithm, this.encryptionKey, iv);
-    let ciphertext = cipher.update(plaintext, "utf8", "hex");
-    ciphertext += cipher.final("hex");
+    let ciphertext = cipher.update(plaintext, 'utf8', 'hex');
+    ciphertext += cipher.final('hex');
     const authTag = cipher.getAuthTag();
-    return `${iv.toString("hex")}:${authTag.toString("hex")}:${ciphertext}`;
+    return `${iv.toString('hex')}:${authTag.toString('hex')}:${ciphertext}`;
   }
 
   private decrypt(ciphertext: string): string {
-    const [ivHex, authTagHex, data] = ciphertext.split(":");
-    const iv = Buffer.from(ivHex, "hex");
-    const authTag = Buffer.from(authTagHex, "hex");
+    const [ivHex, authTagHex, data] = ciphertext.split(':');
+    const iv = Buffer.from(ivHex, 'hex');
+    const authTag = Buffer.from(authTagHex, 'hex');
     const decipher = createDecipheriv(this.algorithm, this.encryptionKey, iv);
     decipher.setAuthTag(authTag);
-    let plaintext = decipher.update(data, "hex", "utf8");
-    plaintext += decipher.final("utf8");
+    let plaintext = decipher.update(data, 'hex', 'utf8');
+    plaintext += decipher.final('utf8');
     return plaintext;
   }
 }

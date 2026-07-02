@@ -1,4 +1,4 @@
-# MyCodexVantaOS — provider-abstraction
+## MyCodexVantaOS — provider-abstraction
 
 Machine Identity: `mycodexvantaos`
 Canonical URL: https://mycodexvantaos.com
@@ -15,7 +15,7 @@ This document describes the provider-abstraction specification for MyCodexVantaO
 
 <!-- Formal spec additions -->
 
-# Provider Abstraction
+## Provider Abstraction
 
 > Status: Normative
 > Document: docs/architecture/provider-abstraction.md

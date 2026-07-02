@@ -12,8 +12,8 @@ spec:
     and insight generation.
   category: ai
   runtime-modes:
-  - native
-  - connected
-  - hybrid
+    - native
+    - connected
+    - hybrid
   implementationPath: services/mycodexvantaos-service-memory-dream/
   packageName: '@mycodexvantaos/service-memory-dream'

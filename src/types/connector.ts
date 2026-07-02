@@ -1,5 +1,5 @@
-export type ConnectorType = "postgresql" | "redis" | "github" | "s3" | "custom";
-export type ConnectorHealthStatus = "connected" | "degraded" | "disconnected" | "configuring";
+export type ConnectorType = 'postgresql' | 'redis' | 'github' | 's3' | 'custom';
+export type ConnectorHealthStatus = 'connected' | 'degraded' | 'disconnected' | 'configuring';
 
 export interface ConnectorMetrics {
   latencyMs: number;

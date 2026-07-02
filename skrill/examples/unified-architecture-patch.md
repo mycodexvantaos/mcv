@@ -556,17 +556,17 @@ MyCodexVantaOS
 
 ```yaml
 report:
-  project: "mycodexvantaos-unified-architecture-patch"
-  version: "v1.0"
-  date: "2026-06-21"
+  project: 'mycodexvantaos-unified-architecture-patch'
+  version: 'v1.0'
+  date: '2026-06-21'
   input_level: 1
   highlights_count: 10
   skills_extracted: 20
   patterns_added: 4 # 建議新增
   ci_candidates: 6
   related_reports:
-    - "mycodexvantaos-v1-extraction.md"
+    - 'mycodexvantaos-v1-extraction.md'
   cumulative_skills: 20 # v1(15) + 此次新增(5)
   cumulative_patterns: 12 # v1(8) + 此次建議(4)
-  next_analysis: "待定（下一份壓縮檔）"
+  next_analysis: '待定（下一份壓縮檔）'
 ```

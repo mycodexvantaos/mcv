@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 import {
   PanelLeftClose,
   PanelLeftOpen,
@@ -17,18 +17,18 @@ import {
   Infinity,
   ShieldCheck,
   Brain,
-} from "lucide-react";
-import { TooltipProvider } from "@/components/ui/tooltip";
+} from 'lucide-react';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
-import { Header } from "@/components/dashboard/header";
-import { IconSidebar } from "@/components/dashboard/icon-sidebar";
-import { LeftPanel } from "@/components/dashboard/left-panel";
-import { MainView } from "@/components/dashboard/main-view";
-import { AiPanel } from "@/components/dashboard/ai-panel";
-import { useConnectivity } from "@/lib/connectivity-manager";
+import { Header } from '@/components/dashboard/header';
+import { IconSidebar } from '@/components/dashboard/icon-sidebar';
+import { LeftPanel } from '@/components/dashboard/left-panel';
+import { MainView } from '@/components/dashboard/main-view';
+import { AiPanel } from '@/components/dashboard/ai-panel';
+import { useConnectivity } from '@/lib/connectivity-manager';
 
 export default function DashboardPage() {
-  const [activeView, setActiveView] = useState("files");
+  const [activeView, setActiveView] = useState('files');
   const [isLeftPanelOpen, setIsLeftPanelOpen] = useState(true);
   const [isRightPanelOpen, setIsRightPanelOpen] = useState(true);
 
@@ -57,7 +57,7 @@ export default function DashboardPage() {
 
                 {isRightPanelOpen && (
                   <aside className="w-80 border-l border-border bg-card/20 animate-in slide-in-from-right duration-300">
-                    <AiPanel isSystemOffline={mode === "native"} />
+                    <AiPanel isSystemOffline={mode === 'native'} />
                   </aside>
                 )}
               </div>
@@ -73,7 +73,7 @@ export default function DashboardPage() {
                     ) : (
                       <PanelLeftOpen className="h-3 w-3" />
                     )}
-                    <span>{isLeftPanelOpen ? "隱藏側欄" : "顯示側欄"}</span>
+                    <span>{isLeftPanelOpen ? '隱藏側欄' : '顯示側欄'}</span>
                   </div>
                   <div className="h-3 w-px bg-border mx-1"></div>
                   <div className="flex items-center gap-1.5">
@@ -102,7 +102,7 @@ export default function DashboardPage() {
                     ) : (
                       <WifiOff className="h-3 w-3 text-destructive" />
                     )}
-                    <span>Network: {isOnline ? "Online" : "Offline"}</span>
+                    <span>Network: {isOnline ? 'Online' : 'Offline'}</span>
                   </div>
 
                   <div className="flex items-center gap-1.5">
@@ -119,7 +119,7 @@ export default function DashboardPage() {
                     className="flex items-center gap-1.5 hover:text-accent cursor-pointer transition-colors"
                     onClick={() => setIsRightPanelOpen(!isRightPanelOpen)}
                   >
-                    <span>{isRightPanelOpen ? "收起 AI 助手" : "喚醒 AI 助手"}</span>
+                    <span>{isRightPanelOpen ? '收起 AI 助手' : '喚醒 AI 助手'}</span>
                     {isRightPanelOpen ? (
                       <PanelRightClose className="h-3 w-3" />
                     ) : (

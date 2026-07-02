@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 import {
   Grid3x3,
   ChevronRight,
@@ -12,41 +12,41 @@ import {
   Loader2,
   Download,
   Brain,
-} from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+} from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Progress } from "@/components/ui/progress";
-import type { ScenarioWizardStep, RequirementPriority } from "@/types/scenario";
+} from '@/components/ui/select';
+import { Progress } from '@/components/ui/progress';
+import type { ScenarioWizardStep, RequirementPriority } from '@/types/scenario';
 
 const domains = [
-  "Healthcare",
-  "Finance",
-  "Manufacturing",
-  "IoT & Edge",
-  "Retail & E-Commerce",
-  "Education",
-  "Government",
-  "Telecommunications",
-  "Autonomous Vehicles",
-  "Energy & Utilities",
+  'Healthcare',
+  'Finance',
+  'Manufacturing',
+  'IoT & Edge',
+  'Retail & E-Commerce',
+  'Education',
+  'Government',
+  'Telecommunications',
+  'Autonomous Vehicles',
+  'Energy & Utilities',
 ];
 
 const steps: { id: ScenarioWizardStep; label: string }[] = [
-  { id: "domain", label: "Domain Selection" },
-  { id: "requirements", label: "Requirements" },
-  { id: "constraints", label: "Constraints" },
-  { id: "priority", label: "Priority Ranking" },
+  { id: 'domain', label: 'Domain Selection' },
+  { id: 'requirements', label: 'Requirements' },
+  { id: 'constraints', label: 'Constraints' },
+  { id: 'priority', label: 'Priority Ranking' },
 ];
 
 const stepIndex: Record<ScenarioWizardStep, number> = {
@@ -57,17 +57,17 @@ const stepIndex: Record<ScenarioWizardStep, number> = {
 };
 
 export default function ScenariosPage() {
-  const [currentStep, setCurrentStep] = useState<ScenarioWizardStep>("domain");
-  const [selectedDomain, setSelectedDomain] = useState<string>("");
-  const [scenarioName, setScenarioName] = useState("");
-  const [scenarioDesc, setScenarioDesc] = useState("");
+  const [currentStep, setCurrentStep] = useState<ScenarioWizardStep>('domain');
+  const [selectedDomain, setSelectedDomain] = useState<string>('');
+  const [scenarioName, setScenarioName] = useState('');
+  const [scenarioDesc, setScenarioDesc] = useState('');
   const [requirements, setRequirements] = useState([
-    { metric: "latency", value: "<100ms", priority: "must" as RequirementPriority, weight: 9 },
-    { metric: "throughput", value: ">10K rps", priority: "must" as RequirementPriority, weight: 8 },
+    { metric: 'latency', value: '<100ms', priority: 'must' as RequirementPriority, weight: 9 },
+    { metric: 'throughput', value: '>10K rps', priority: 'must' as RequirementPriority, weight: 8 },
   ]);
   const [constraints, setConstraints] = useState([
-    { type: "budget", value: "<$50K/month" },
-    { type: "compliance", value: "HIPAA" },
+    { type: 'budget', value: '<$50K/month' },
+    { type: 'compliance', value: 'HIPAA' },
   ]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
@@ -108,7 +108,7 @@ export default function ScenariosPage() {
             ) : (
               <Wand2 className="h-4 w-4" />
             )}
-            {isAnalyzing ? "Analyzing..." : "AI Analysis"}
+            {isAnalyzing ? 'Analyzing...' : 'AI Analysis'}
           </Button>
         </div>
       </div>
@@ -119,13 +119,13 @@ export default function ScenariosPage() {
           {steps.map((step, i) => (
             <div
               key={step.id}
-              className={`flex items-center gap-2 cursor-pointer ${i <= currentStepIndex ? "text-foreground" : "text-muted-foreground"}`}
+              className={`flex items-center gap-2 cursor-pointer ${i <= currentStepIndex ? 'text-foreground' : 'text-muted-foreground'}`}
               onClick={() => setCurrentStep(step.id)}
             >
               <div
-                className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium ${i < currentStepIndex ? "bg-accent text-accent-foreground" : i === currentStepIndex ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"}`}
+                className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium ${i < currentStepIndex ? 'bg-accent text-accent-foreground' : i === currentStepIndex ? 'bg-primary text-primary-foreground' : 'bg-secondary text-muted-foreground'}`}
               >
-                {i < currentStepIndex ? "✓" : i + 1}
+                {i < currentStepIndex ? '✓' : i + 1}
               </div>
               <span className="text-xs hidden md:inline">{step.label}</span>
             </div>
@@ -137,7 +137,7 @@ export default function ScenariosPage() {
       {/* Step Content */}
       <Card>
         <CardContent className="p-6">
-          {currentStep === "domain" && (
+          {currentStep === 'domain' && (
             <div className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="scenario-name">Scenario Name</Label>
@@ -164,7 +164,7 @@ export default function ScenariosPage() {
                   {domains.map((domain) => (
                     <Button
                       key={domain}
-                      variant={selectedDomain === domain ? "default" : "outline"}
+                      variant={selectedDomain === domain ? 'default' : 'outline'}
                       size="sm"
                       className="text-xs"
                       onClick={() => setSelectedDomain(domain)}
@@ -177,7 +177,7 @@ export default function ScenariosPage() {
             </div>
           )}
 
-          {currentStep === "requirements" && (
+          {currentStep === 'requirements' && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <Label>Requirements</Label>
@@ -189,9 +189,9 @@ export default function ScenariosPage() {
                     setRequirements([
                       ...requirements,
                       {
-                        metric: "",
-                        value: "",
-                        priority: "should" as RequirementPriority,
+                        metric: '',
+                        value: '',
+                        priority: 'should' as RequirementPriority,
                         weight: 5,
                       },
                     ])
@@ -273,7 +273,7 @@ export default function ScenariosPage() {
             </div>
           )}
 
-          {currentStep === "constraints" && (
+          {currentStep === 'constraints' && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <Label>Constraints</Label>
@@ -281,7 +281,7 @@ export default function ScenariosPage() {
                   variant="outline"
                   size="sm"
                   className="gap-1"
-                  onClick={() => setConstraints([...constraints, { type: "", value: "" }])}
+                  onClick={() => setConstraints([...constraints, { type: '', value: '' }])}
                 >
                   <Plus className="h-3.5 w-3.5" /> Add Constraint
                 </Button>
@@ -325,7 +325,7 @@ export default function ScenariosPage() {
             </div>
           )}
 
-          {currentStep === "priority" && (
+          {currentStep === 'priority' && (
             <div className="space-y-4">
               <p className="text-sm text-muted-foreground">
                 Drag to reorder requirements by priority. Higher positions indicate greater
@@ -338,16 +338,16 @@ export default function ScenariosPage() {
                     <GripVertical className="h-5 w-5 text-muted-foreground cursor-grab" />
                     <span className="text-xs font-mono text-muted-foreground w-6">#{i + 1}</span>
                     <div className="flex-1">
-                      <span className="text-sm font-medium">{req.metric || "Unnamed"}</span>
+                      <span className="text-sm font-medium">{req.metric || 'Unnamed'}</span>
                       <span className="text-sm text-muted-foreground ml-2">{req.value}</span>
                     </div>
                     <Badge
                       variant={
-                        req.priority === "must"
-                          ? "default"
-                          : req.priority === "should"
-                            ? "secondary"
-                            : "outline"
+                        req.priority === 'must'
+                          ? 'default'
+                          : req.priority === 'should'
+                            ? 'secondary'
+                            : 'outline'
                       }
                       className="text-[10px]"
                     >

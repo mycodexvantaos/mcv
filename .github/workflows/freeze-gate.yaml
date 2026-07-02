@@ -1,18 +1,19 @@
 name: Deployment Freeze Gate
+
 "on":
   workflow_run:
-    workflows:
-      - Deploy to Development
-      - Deploy to Staging
-      - Deploy to Production
+    workflows: ["Deploy to Development", "Deploy to Staging", "Deploy to Production"]
     types:
       - requested
-  workflow_dispatch: null
+  workflow_dispatch:
+
 permissions:
   actions: write
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
 jobs:
   check-freeze:
     runs-on: ubuntu-latest
@@ -20,11 +21,23 @@ jobs:
     steps:
       - name: Check for deployment freeze
         id: freeze_check
-        run: "# Check central configuration for freeze windows\nFREEZE_ACTIVE=\"false\"\
-          \nCURRENT_DATE=$(date -u +%Y-%m-%d)\n\n# Example Freeze Window (from .root.governance.yaml)\n\
-          # Update these dates for actual freeze windows\nFREEZE_START=\"2024-12-15\"\
-          \nFREEZE_END=\"2025-01-10\"\n\nif [[ \"$CURRENT_DATE\" > \"$FREEZE_START\"\
-          \ ]] && [[ \"$CURRENT_DATE\" < \"$FREEZE_END\" ]]; then\n  FREEZE_ACTIVE=\"\
-          true\"\nfi\n\nif [[ \"$FREEZE_ACTIVE\" == \"true\" ]]; then\n  echo \"::error::Deployment\
-          \ freeze is active! Deployments are currently blocked.\"\n  exit 1\nelse\n\
-          \  echo \"Deployment freeze is not active. Proceeding.\"\nfi\n"
+        run: |
+          # Check central configuration for freeze windows
+          FREEZE_ACTIVE="false"
+          CURRENT_DATE=$(date -u +%Y-%m-%d)
+
+          # Example Freeze Window (from .root.governance.yaml)
+          # Update these dates for actual freeze windows
+          FREEZE_START="2024-12-15"
+          FREEZE_END="2025-01-10"
+
+          if [[ "$CURRENT_DATE" > "$FREEZE_START" ]] && [[ "$CURRENT_DATE" < "$FREEZE_END" ]]; then
+            FREEZE_ACTIVE="true"
+          fi
+
+          if [[ "$FREEZE_ACTIVE" == "true" ]]; then
+            echo "::error::Deployment freeze is active! Deployments are currently blocked."
+            exit 1
+          else
+            echo "Deployment freeze is not active. Proceeding."
+          fi

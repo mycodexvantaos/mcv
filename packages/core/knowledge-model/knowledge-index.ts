@@ -3,12 +3,12 @@
  * Defines search, retrieval, and evidence structures for knowledge access.
  */
 
-import type { ChunkMetadata } from "./document-chunk";
+import type { ChunkMetadata } from './document-chunk';
 
 // ── Search Models ──────────────────────────────────────────────────────
 
-export type SearchType = "semantic" | "fulltext" | "hybrid";
-export type EvidenceLevel = "knowledge-assisted" | "knowledge-verified" | "knowledge-grounded";
+export type SearchType = 'semantic' | 'fulltext' | 'hybrid';
+export type EvidenceLevel = 'knowledge-assisted' | 'knowledge-verified' | 'knowledge-grounded';
 
 export interface SearchOptions {
   topK: number;
@@ -62,7 +62,7 @@ export interface RetrievalReceiptStatus {
   createdAt: string;
 }
 
-export type RetrievalPhase = "searching" | "completed" | "failed" | "expired";
+export type RetrievalPhase = 'searching' | 'completed' | 'failed' | 'expired';
 
 // ── Answer Trace ───────────────────────────────────────────────────────
 // Closed-loop chain from question → retrieval → model → answer.
@@ -84,7 +84,7 @@ export interface AnswerTraceStatus {
   integrityHash: string;
 }
 
-export type AnswerTracePhase = "generating" | "completed" | "failed" | "verified";
+export type AnswerTracePhase = 'generating' | 'completed' | 'failed' | 'verified';
 
 // ── Knowledge Index Metadata ───────────────────────────────────────────
 

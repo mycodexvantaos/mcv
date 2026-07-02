@@ -1,8 +1,8 @@
 {
-  "report-id": "arch-validation-20260630-090538",
+  "report-id": "arch-validation-20260628-194656",
   "platform": "mycodexvantaos",
   "canonical-url": "https://mycodexvantaos.com",
-  "generated-at": "2026-06-30T09:05:38.117833Z",
+  "generated-at": "2026-06-28T19:46:56.871825Z",
   "checks": [
     {
       "check": "identity-policy-exists",
@@ -53,7 +53,7 @@
       "check": "ci-rules-count",
       "result": "pass",
       "expected": 18,
-      "actual": 38
+      "actual": 18
     }
   ],
   "summary": {

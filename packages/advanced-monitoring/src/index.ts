@@ -11,7 +11,7 @@ export interface Monitor {
 
 export interface Alert {
   id: string;
-  severity: "info" | "warning" | "error" | "critical";
+  severity: 'info' | 'warning' | 'error' | 'critical';
   message: string;
   timestamp: number;
 }
@@ -33,7 +33,7 @@ export class AdvancedMonitoring {
         if (!result.healthy) {
           this.alerts.push({
             id: `alert_${now}_${monitor.name}`,
-            severity: "warning",
+            severity: 'warning',
             message: `Monitor ${monitor.name}: ${result.message}`,
             timestamp: now,
           });
@@ -41,7 +41,7 @@ export class AdvancedMonitoring {
       } catch (error) {
         this.alerts.push({
           id: `alert_${now}_${monitor.name}`,
-          severity: "error",
+          severity: 'error',
           message: `Monitor ${monitor.name} failed: ${error}`,
           timestamp: now,
         });

@@ -19,7 +19,7 @@ export interface ResourceMetadata {
 
 export interface ResourceCondition {
   type: string;
-  status: "True" | "False" | "Unknown";
+  status: 'True' | 'False' | 'Unknown';
   reason: string;
   message: string;
   lastTransitionTime: string;

@@ -4,16 +4,16 @@
  * RBAC + ABAC policy engine with allow/deny rules.
  */
 
-import type { Role, Tier } from "../service-catalog/service-definition";
+import type { Role, Tier } from '../service-catalog/service-definition';
 
 /** Policy effect */
-export type PolicyEffect = "allow" | "deny";
+export type PolicyEffect = 'allow' | 'deny';
 
 /** Policy subject — who is acting */
 export interface PolicySubject {
   role?: Role;
   subjectId?: string;
-  workspaceScope?: "same-workspace" | "any-workspace" | "platform";
+  workspaceScope?: 'same-workspace' | 'any-workspace' | 'platform';
   tier?: Tier;
 }
 
@@ -27,13 +27,13 @@ export interface PolicyAction {
 export interface PolicyResource {
   kind: string;
   id?: string;
-  scope: "workspace" | "platform" | "global";
+  scope: 'workspace' | 'platform' | 'global';
 }
 
 /** Policy condition — additional constraints */
 export interface PolicyCondition {
   field: string;
-  operator: "eq" | "neq" | "in" | "not_in" | "lt" | "gt" | "lte" | "gte" | "exists";
+  operator: 'eq' | 'neq' | 'in' | 'not_in' | 'lt' | 'gt' | 'lte' | 'gte' | 'exists';
   value: unknown;
 }
 
@@ -66,40 +66,40 @@ export interface PolicyEvaluationContext {
   role: Role;
   action: string;
   resourceKind: string;
-  resourceScope: "workspace" | "platform";
+  resourceScope: 'workspace' | 'platform';
   tier: Tier;
 }
 
 /** Standard permission actions per category */
 export const STANDARD_ACTIONS: Record<string, string[]> = {
   knowledge: [
-    "knowledge-store:read",
-    "knowledge-store:write",
-    "knowledge-search:execute",
-    "knowledge-ingestion:execute",
+    'knowledge-store:read',
+    'knowledge-store:write',
+    'knowledge-search:execute',
+    'knowledge-ingestion:execute',
   ],
-  agent: ["agent-chat:execute", "agent-router:execute", "agent-mode:switch"],
+  agent: ['agent-chat:execute', 'agent-router:execute', 'agent-mode:switch'],
   workspace: [
-    "workspace:create",
-    "workspace:read",
-    "workspace:update",
-    "workspace:delete",
-    "workspace:manage-members",
+    'workspace:create',
+    'workspace:read',
+    'workspace:update',
+    'workspace:delete',
+    'workspace:manage-members',
   ],
-  developer: ["developer-api:read", "developer-token:create", "developer-webhook:register"],
+  developer: ['developer-api:read', 'developer-token:create', 'developer-webhook:register'],
   security: [
-    "identity:read",
-    "identity:write",
-    "access-policy:read",
-    "access-policy:write",
-    "audit-log:read",
+    'identity:read',
+    'identity:write',
+    'access-policy:read',
+    'access-policy:write',
+    'audit-log:read',
   ],
   storage: [
-    "storage-object:read",
-    "storage-object:write",
-    "storage-cache:read",
-    "storage-cache:write",
+    'storage-object:read',
+    'storage-object:write',
+    'storage-cache:read',
+    'storage-cache:write',
   ],
-  model: ["model-byok:read", "model-byok:write", "model-byok:execute", "model-byok:admin"],
-  automation: ["automation-job:create", "automation-job:read", "automation-job:execute"],
+  model: ['model-byok:read', 'model-byok:write', 'model-byok:execute', 'model-byok:admin'],
+  automation: ['automation-job:create', 'automation-job:read', 'automation-job:execute'],
 };

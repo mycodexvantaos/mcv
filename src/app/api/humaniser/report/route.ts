@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 
-export const dynamic = "force-static";
+export const dynamic = 'force-static';
 
 /**
  * @fileoverview Humaniser Report API Route
@@ -16,20 +16,20 @@ export async function POST(request: NextRequest) {
 
     if (!detectionResult) {
       return NextResponse.json(
-        { error: "Detection result is required for report generation" },
+        { error: 'Detection result is required for report generation' },
         { status: 400 }
       );
     }
 
-    const { generateReport } = await import("@mycodexvantaos/ai-humaniser");
+    const { generateReport } = await import('@mycodexvantaos/ai-humaniser');
 
     const report = generateReport(detectionResult);
 
     return NextResponse.json(report);
   } catch (error: any) {
-    console.error("[Humaniser Report API]", error);
+    console.error('[Humaniser Report API]', error);
     return NextResponse.json(
-      { error: error.message || "Report generation failed" },
+      { error: error.message || 'Report generation failed' },
       { status: 500 }
     );
   }

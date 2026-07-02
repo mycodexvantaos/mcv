@@ -1,1 +1,1 @@
-export * from "./resource-kind";
+export * from './resource-kind';

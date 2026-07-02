@@ -21,6 +21,6 @@ provider-id: mycodexvantaos-embedding-openai
 capability: embedding
 platform: mycodexvantaos
 runtime-modes:
-- native
-- connected
-- hybrid
+  - native
+  - connected
+  - hybrid

@@ -5,7 +5,7 @@
 
 export interface RuleResult {
   rule: string;
-  result: "pass" | "fail" | "warning" | "skip";
+  result: 'pass' | 'fail' | 'warning' | 'skip';
   message: string;
   details?: Record<string, unknown>;
 }
@@ -14,9 +14,9 @@ export async function evaluate(context: Record<string, unknown>): Promise<RuleRe
   // Rule: ssot-drift-rule
   // Validates compliance with MyCodexVantaOS governance policies
   return {
-    rule: "ssot-drift-rule",
-    result: "pass",
-    message: "ssot-drift-rule validation passed",
+    rule: 'ssot-drift-rule',
+    result: 'pass',
+    message: 'ssot-drift-rule validation passed',
   };
 }
 

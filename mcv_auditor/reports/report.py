@@ -1,7 +1,13 @@
 """
-MyCodexVantaOS MCV Auditor — Report Generator
+MyCodexVantaOS MCV Auditor — Report Generator v1.0.0
 
-Generates JSON, YAML, and Markdown audit reports.
+Generates JSON, Markdown, and JSONL audit reports from AuditPhaseResult data.
+
+Updated in v1.0.0: Replaced legacy AnalyzerResult with AuditPhaseResult.
+The ReportGenerator now accepts a list of AuditPhaseResult objects produced
+by the 5-phase deterministic audit pipeline.
+
+Document ID: IM-MCV-002
 """
 
 from __future__ import annotations
@@ -9,67 +15,60 @@ from __future__ import annotations
 import json
 import datetime
 from dataclasses import asdict, dataclass, field
-from typing import Any, Optional
+from typing import Any
 
-from ..core.analyzers import AnalyzerResult, AnalyzerFinding
+from ..core.analyzers import AuditPhaseResult, Finding, utc_now, CANONICAL_URL, MACHINE_IDENTITY
 
-CANONICAL_URL = "https://mycodexvantaos.com"
-MACHINE_IDENTITY = "mycodexvantaos"
 DOC_ID = "IM-MCV-002"
 
 
 @dataclass
 class AuditReport:
-    """Complete audit report."""
+    """Complete audit report with phase-level results."""
     report_id: str
+    report_version: str = "1.0.0"
     platform: str = MACHINE_IDENTITY
     doc_id: str = DOC_ID
     canonical_url: str = CANONICAL_URL
-    generated_at: str = field(default_factory=lambda: datetime.datetime.utcnow().isoformat() + "Z")
-    analyzer_results: list[AnalyzerResult] = field(default_factory=list)
-    overall_score: float = 0.0
-    overall_passed: bool = True
+    generated_at: str = field(default_factory=utc_now)
+    phase_results: list[AuditPhaseResult] = field(default_factory=list)
+    overall_status: str = "PASS"
     summary: dict[str, Any] = field(default_factory=dict)
 
 
 class ReportGenerator:
     """
-    Generates audit reports in multiple formats.
+    Generates audit reports in multiple formats from AuditPhaseResult data.
     """
 
-    def generate(self, results: list[AnalyzerResult]) -> AuditReport:
-        """Generate a complete audit report from analyzer results."""
-        report_id = f"audit-{datetime.datetime.utcnow().strftime('%Y%m%d-%H%M%S')}"
+    def generate(self, results: list[AuditPhaseResult]) -> AuditReport:
+        """Generate a complete audit report from phase results."""
+        report_id = f"audit-{datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%d-%H%M%S')}"
 
         total_findings = sum(len(r.findings) for r in results)
-        critical_findings = sum(
-            sum(1 for f in r.findings if f.severity == "critical")
-            for r in results
+        error_findings = sum(
+            1 for r in results for f in r.findings if f.severity == "ERROR"
         )
-        high_findings = sum(
-            sum(1 for f in r.findings if f.severity == "high")
-            for r in results
+        warn_findings = sum(
+            1 for r in results for f in r.findings if f.severity == "WARN"
         )
 
-        overall_score = sum(r.score for r in results) / len(results) if results else 0.0
-        overall_passed = all(r.passed for r in results)
+        overall_status = "PASS" if error_findings == 0 else "FAIL"
 
         summary = {
-            "total_analyzers": len(results),
-            "passed_analyzers": sum(1 for r in results if r.passed),
-            "failed_analyzers": sum(1 for r in results if not r.passed),
+            "phase_count": len(results),
+            "passed_phases": sum(1 for r in results if r.status == "PASS"),
+            "failed_phases": sum(1 for r in results if r.status == "FAIL"),
             "total_findings": total_findings,
-            "critical_findings": critical_findings,
-            "high_findings": high_findings,
-            "overall_score": round(overall_score, 3),
-            "overall_passed": overall_passed,
+            "error_findings": error_findings,
+            "warning_findings": warn_findings,
+            "overall_status": overall_status,
         }
 
         return AuditReport(
             report_id=report_id,
-            analyzer_results=results,
-            overall_score=overall_score,
-            overall_passed=overall_passed,
+            phase_results=results,
+            overall_status=overall_status,
             summary=summary,
         )
 
@@ -92,11 +91,11 @@ class ReportGenerator:
             f"# MyCodexVantaOS Security Audit Report",
             f"",
             f"**Report ID:** {report.report_id}",
+            f"**Report Version:** {report.report_version}",
             f"**Platform:** {report.platform}",
             f"**Canonical URL:** {report.canonical_url}",
             f"**Generated:** {report.generated_at}",
-            f"**Overall Result:** {'✅ PASSED' if report.overall_passed else '❌ FAILED'}",
-            f"**Overall Score:** {report.overall_score:.3f}",
+            f"**Overall Result:** {'✅ PASSED' if report.overall_status == 'PASS' else '❌ FAILED'}",
             f"",
             f"## Summary",
             f"",
@@ -108,23 +107,22 @@ class ReportGenerator:
             lines.append(f"| {key.replace('_', ' ').title()} | {value} |")
 
         lines.append("")
-        lines.append("## Analyzer Results")
+        lines.append("## Phase Results")
         lines.append("")
 
-        for result in report.analyzer_results:
-            status = "✅ PASSED" if result.passed else "❌ FAILED"
-            lines.append(f"### Phase {result.phase}: {result.analyzer} — {status}")
-            lines.append(f"**Score:** {result.score:.3f}")
+        for result in report.phase_results:
+            status = "✅ PASS" if result.status == "PASS" else "❌ FAIL"
+            lines.append(f"### {result.phase} — {status}")
+            lines.append(f"**Metrics:** {result.metrics}")
             lines.append("")
 
             if result.findings:
                 lines.append("#### Findings")
                 lines.append("")
                 for finding in result.findings:
-                    lines.append(f"- **[{finding.severity.upper()}]** {finding.title}")
-                    lines.append(f"  - {finding.description}")
-                    if finding.recommendation:
-                        lines.append(f"  - *Recommendation:* {finding.recommendation}")
+                    lines.append(f"- **[{finding.severity}]** `{finding.code}` — {finding.message}")
+                    lines.append(f"  - Path: `{finding.path}`")
+                    lines.append(f"  - Evidence: `{finding.evidence_hash[:16]}…`")
                 lines.append("")
 
         return "\n".join(lines)

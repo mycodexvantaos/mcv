@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { GitBranch, Save, RefreshCw, Layers } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { GitBranch, Save, RefreshCw, Layers } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 export default function ArchitecturePage() {
   const { toast } = useToast();
@@ -22,8 +22,8 @@ database "Arch Store" {
 
   const handleSync = () => {
     toast({
-      title: "Sync Initiated",
-      description: "Pushing architecture as code to GitLab repository...",
+      title: 'Sync Initiated',
+      description: 'Pushing architecture as code to GitLab repository...',
     });
   };
 

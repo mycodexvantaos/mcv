@@ -1,4 +1,4 @@
-# MyCodexVantaOS Audit Subsystem
+## MyCodexVantaOS Audit Subsystem
 
 The audit subsystem provides an immutable, cryptographically-linked audit chain for all governance events in the MyCodexVantaOS platform.
 
@@ -32,3 +32,7 @@ Default retention is 365 days. Governance policy changes are retained for 7 year
 ## Compliance
 
 The audit subsystem supports SOC2 Type II and ISO 27001 compliance requirements.
+
+## Audit
+
+Audit policy and schema definitions for MyCodexVantaOS.

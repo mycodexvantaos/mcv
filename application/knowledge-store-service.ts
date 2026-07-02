@@ -12,7 +12,7 @@ import type {
   IQueuePort,
   IAuditPort,
   IIdentityPort,
-} from "../ports/index";
+} from '../ports/index';
 import type {
   DocumentSpec,
   DocumentStatus,
@@ -24,7 +24,7 @@ import type {
   IngestionResult,
   VerificationReport,
   EvidenceLevel,
-} from "../core/index";
+} from '../core/index';
 
 export interface KnowledgeStoreServiceDeps {
   database: IDatabasePort;
@@ -58,7 +58,7 @@ export class KnowledgeStoreService {
     const now = new Date().toISOString();
 
     // Store raw document in R2
-    await this.deps.storage.put("documents", `${workspaceId}/${documentId}`, input.content, {
+    await this.deps.storage.put('documents', `${workspaceId}/${documentId}`, input.content, {
       contentType: `application/${input.format}`,
       metadata: { documentId, collectionId: input.collectionId, workspaceId },
     });
@@ -75,7 +75,7 @@ export class KnowledgeStoreService {
         input.format,
         input.collectionId,
         input.sourceUri ?? null,
-        input.language ?? "en",
+        input.language ?? 'en',
         input.content.byteLength,
         now,
         now,
@@ -83,36 +83,36 @@ export class KnowledgeStoreService {
     );
 
     // Queue for ingestion
-    await this.deps.queue.send("ingestion", {
+    await this.deps.queue.send('ingestion', {
       body: { documentId, workspaceId, collectionId: input.collectionId },
-      contentType: "application/json",
+      contentType: 'application/json',
     });
 
     await this.deps.audit.emitEvent({
-      eventType: "knowledge.document.uploaded",
-      category: "knowledge",
-      severity: "info",
-      subjectId: "system",
+      eventType: 'knowledge.document.uploaded',
+      category: 'knowledge',
+      severity: 'info',
+      subjectId: 'system',
       workspaceId,
-      resourceKind: "document",
+      resourceKind: 'document',
       resourceId: documentId,
-      action: "upload-document",
+      action: 'upload-document',
       data: { title: input.title, format: input.format, sizeBytes: input.content.byteLength },
       correlationId: crypto.randomUUID(),
     });
 
     return {
-      apiVersion: "platform.mycodevantaos/v1",
-      kind: "document",
+      apiVersion: 'platform.mycodevantaos/v1',
+      kind: 'document',
       metadata: {
         id: documentId,
         urn,
-        kind: "document",
+        kind: 'document',
         workspaceId,
         labels: {},
         annotations: {},
-        createdBy: "system",
-        version: "1.0.0",
+        createdBy: 'system',
+        version: '1.0.0',
         resourceVersion: 1,
         createdAt: now,
         updatedAt: now,
@@ -122,23 +122,23 @@ export class KnowledgeStoreService {
         format: input.format as any,
         collectionId: input.collectionId,
         sourceUri: input.sourceUri ?? null,
-        language: input.language ?? "en",
+        language: input.language ?? 'en',
       },
       status: {
-        phase: "uploaded",
+        phase: 'uploaded',
         conditions: [
           {
-            type: "Ready",
-            status: "False",
-            reason: "PendingIngestion",
-            message: "Document awaiting ingestion",
+            type: 'Ready',
+            status: 'False',
+            reason: 'PendingIngestion',
+            message: 'Document awaiting ingestion',
             lastTransitionTime: now,
           },
         ],
         chunkCount: 0,
         totalTokens: 0,
         fileSizeBytes: input.content.byteLength,
-        verificationStatus: "pending",
+        verificationStatus: 'pending',
       },
     };
   }
@@ -148,14 +148,14 @@ export class KnowledgeStoreService {
     const startTime = Date.now();
 
     await this.deps.audit.emitEvent({
-      eventType: "knowledge.document.ingestion.started",
-      category: "knowledge",
-      severity: "info",
-      subjectId: "system",
-      resourceKind: "document",
+      eventType: 'knowledge.document.ingestion.started',
+      category: 'knowledge',
+      severity: 'info',
+      subjectId: 'system',
+      resourceKind: 'document',
       resourceId: documentId,
-      action: "ingest-document",
-      data: { pipelineStages: ["extract", "chunk", "embed", "index", "verify"] },
+      action: 'ingest-document',
+      data: { pipelineStages: ['extract', 'chunk', 'embed', 'index', 'verify'] },
       correlationId: crypto.randomUUID(),
     });
 
@@ -183,13 +183,13 @@ export class KnowledgeStoreService {
       );
 
       await this.deps.audit.emitEvent({
-        eventType: "knowledge.document.ingestion.completed",
-        category: "knowledge",
-        severity: "info",
-        subjectId: "system",
-        resourceKind: "document",
+        eventType: 'knowledge.document.ingestion.completed',
+        category: 'knowledge',
+        severity: 'info',
+        subjectId: 'system',
+        resourceKind: 'document',
         resourceId: documentId,
-        action: "ingest-document",
+        action: 'ingest-document',
         data: {
           chunkCount: chunksCreated,
           totalTokens: tokensGenerated,
@@ -200,7 +200,7 @@ export class KnowledgeStoreService {
 
       return {
         documentId,
-        phase: "verify",
+        phase: 'verify',
         chunksCreated,
         tokensGenerated,
         durationMs: Date.now() - startTime,
@@ -213,20 +213,20 @@ export class KnowledgeStoreService {
       );
 
       await this.deps.audit.emitEvent({
-        eventType: "knowledge.document.ingestion.failed",
-        category: "knowledge",
-        severity: "high",
-        subjectId: "system",
-        resourceKind: "document",
+        eventType: 'knowledge.document.ingestion.failed',
+        category: 'knowledge',
+        severity: 'high',
+        subjectId: 'system',
+        resourceKind: 'document',
         resourceId: documentId,
-        action: "ingest-document",
-        data: { failedStage: "unknown", error: String(error), retryable: true },
+        action: 'ingest-document',
+        data: { failedStage: 'unknown', error: String(error), retryable: true },
         correlationId: crypto.randomUUID(),
       });
 
       return {
         documentId,
-        phase: "embed",
+        phase: 'embed',
         chunksCreated: 0,
         tokensGenerated: 0,
         durationMs: Date.now() - startTime,
@@ -258,59 +258,59 @@ export class KnowledgeStoreService {
         urn,
         workspaceId,
         input.name,
-        input.description ?? "",
-        input.embeddingModel ?? "text-embedding-3-small",
-        input.chunkStrategy ?? "semantic",
-        input.language ?? "en",
+        input.description ?? '',
+        input.embeddingModel ?? 'text-embedding-3-small',
+        input.chunkStrategy ?? 'semantic',
+        input.language ?? 'en',
         now,
         now,
       ]
     );
 
     await this.deps.audit.emitEvent({
-      eventType: "knowledge.collection.created",
-      category: "knowledge",
-      severity: "info",
-      subjectId: "system",
+      eventType: 'knowledge.collection.created',
+      category: 'knowledge',
+      severity: 'info',
+      subjectId: 'system',
       workspaceId,
-      resourceKind: "knowledge-collection",
+      resourceKind: 'knowledge-collection',
       resourceId: collectionId,
-      action: "create-collection",
-      data: { name: input.name, embeddingModel: input.embeddingModel ?? "text-embedding-3-small" },
+      action: 'create-collection',
+      data: { name: input.name, embeddingModel: input.embeddingModel ?? 'text-embedding-3-small' },
       correlationId: crypto.randomUUID(),
     });
 
     return {
-      apiVersion: "platform.mycodevantaos/v1",
-      kind: "knowledge-collection",
+      apiVersion: 'platform.mycodevantaos/v1',
+      kind: 'knowledge-collection',
       metadata: {
         id: collectionId,
         urn,
-        kind: "knowledge-collection",
+        kind: 'knowledge-collection',
         workspaceId,
         labels: {},
         annotations: {},
-        createdBy: "system",
-        version: "1.0.0",
+        createdBy: 'system',
+        version: '1.0.0',
         resourceVersion: 1,
         createdAt: now,
         updatedAt: now,
       },
       spec: {
         name: input.name,
-        description: input.description ?? "",
-        embeddingModel: input.embeddingModel ?? "text-embedding-3-small",
-        chunkStrategy: (input.chunkStrategy as any) ?? "semantic",
-        language: input.language ?? "en",
+        description: input.description ?? '',
+        embeddingModel: input.embeddingModel ?? 'text-embedding-3-small',
+        chunkStrategy: (input.chunkStrategy as any) ?? 'semantic',
+        language: input.language ?? 'en',
       },
       status: {
-        phase: "empty",
+        phase: 'empty',
         conditions: [
           {
-            type: "Ready",
-            status: "True",
-            reason: "Created",
-            message: "Collection created, awaiting documents",
+            type: 'Ready',
+            status: 'True',
+            reason: 'Created',
+            message: 'Collection created, awaiting documents',
             lastTransitionTime: now,
           },
         ],

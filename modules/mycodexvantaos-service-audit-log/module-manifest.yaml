@@ -12,8 +12,8 @@ spec:
     and evidence chain management.
   category: governance
   runtime-modes:
-  - native
-  - connected
-  - hybrid
+    - native
+    - connected
+    - hybrid
   implementationPath: services/mycodexvantaos-service-audit-log/
   packageName: '@mycodexvantaos/service-audit-log'

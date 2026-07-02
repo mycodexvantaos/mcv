@@ -15,20 +15,20 @@
  *   npx tsx tools/generators/generate-service.ts billing automation
  */
 
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from 'fs';
+import * as path from 'path';
 
-const ROOT = path.resolve(__dirname, "../..");
+const ROOT = path.resolve(__dirname, '../..');
 
 const VALID_CATEGORIES = [
-  "knowledge",
-  "agent",
-  "workspace",
-  "developer",
-  "security",
-  "storage",
-  "model",
-  "automation",
+  'knowledge',
+  'agent',
+  'workspace',
+  'developer',
+  'security',
+  'storage',
+  'model',
+  'automation',
 ];
 
 // ── Parse Args ──────────────────────────────────────────────────────────
@@ -36,31 +36,31 @@ const VALID_CATEGORIES = [
 const args = process.argv.slice(2);
 
 if (args.length < 2) {
-  console.error("Usage: npx tsx tools/generators/generate-service.ts <service-name> <category>");
-  console.error(`Categories: ${VALID_CATEGORIES.join(", ")}`);
+  console.error('Usage: npx tsx tools/generators/generate-service.ts <service-name> <category>');
+  console.error(`Categories: ${VALID_CATEGORIES.join(', ')}`);
   process.exit(1);
 }
 
-const serviceName = args[0].toLowerCase().replace(/[^a-z0-9-]/g, "-");
+const serviceName = args[0].toLowerCase().replace(/[^a-z0-9-]/g, '-');
 const category = args[1].toLowerCase();
 
 if (!VALID_CATEGORIES.includes(category)) {
   console.error(`Invalid category: ${category}`);
-  console.error(`Valid categories: ${VALID_CATEGORIES.join(", ")}`);
+  console.error(`Valid categories: ${VALID_CATEGORIES.join(', ')}`);
   process.exit(1);
 }
 
 const pascalName = serviceName
-  .split("-")
+  .split('-')
   .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-  .join("");
+  .join('');
 const className = `${pascalName}Service`;
 
 console.log(`🚀 Generating service: ${serviceName} (${className}) in category: ${category}\n`);
 
 // ── 1. Service Definition YAML ─────────────────────────────────────────
 
-const serviceDefDir = path.join(ROOT, "contracts/service-definitions");
+const serviceDefDir = path.join(ROOT, 'contracts/service-definitions');
 const serviceDefPath = path.join(serviceDefDir, `${serviceName}.yaml`);
 
 if (fs.existsSync(serviceDefPath)) {
@@ -114,7 +114,7 @@ console.log(`✅ Created: contracts/service-definitions/${serviceName}.yaml`);
 
 // ── 2. Application Service Package ─────────────────────────────────────
 
-const appDir = path.join(ROOT, "packages/application", serviceName);
+const appDir = path.join(ROOT, 'packages/application', serviceName);
 
 if (fs.existsSync(appDir)) {
   console.error(`❌ Application package already exists: ${appDir}`);
@@ -148,15 +148,15 @@ export class ${className} {
   const indexContent = `export { ${className} } from './${serviceName}-service.js';
 `;
 
-  fs.writeFileSync(path.join(appDir, "index.ts"), indexContent);
+  fs.writeFileSync(path.join(appDir, 'index.ts'), indexContent);
   console.log(`✅ Created: packages/application/${serviceName}/index.ts`);
 }
 
 // ── 3. Summary ─────────────────────────────────────────────────────────
 
-console.log(`\n${"─".repeat(50)}`);
-console.log("Service scaffolded! Next steps:");
-console.log("");
+console.log(`\n${'─'.repeat(50)}`);
+console.log('Service scaffolded! Next steps:');
+console.log('');
 console.log(`1. Edit contracts/service-definitions/${serviceName}.yaml`);
 console.log(`2. Implement packages/application/${serviceName}/${serviceName}-service.ts`);
 console.log(`3. Add routes to apps/api-worker/index.ts`);

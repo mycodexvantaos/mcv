@@ -12,8 +12,8 @@ spec:
     and compliance reporting.
   category: governance
   runtime-modes:
-  - native
-  - connected
-  - hybrid
+    - native
+    - connected
+    - hybrid
   implementationPath: services/mycodexvantaos-service-policy-engine/
   packageName: '@mycodexvantaos/service-policy-engine'

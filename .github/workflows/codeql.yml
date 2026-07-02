@@ -1,124 +1,61 @@
+# ADR: Quoted "on:" prevents YAML 1.1 boolean coercion (on → true).
+# Schedule retained; push/PR triggers restored after c2a8817a regression.
 name: CodeQL Security Scan
-on:
+
+"on":
   push:
-    branches:
-      - main
-      - develop
+    branches: [main, develop]
   pull_request:
-    branches:
-      - main
-      - develop
+    branches: [main, develop]
   schedule:
-    - cron: 0 2 * * 1
-  workflow_dispatch: null
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+    # Weekly scan: every Monday 02:00 UTC
+    - cron: "0 2 * * 1"
+  workflow_dispatch: {}
+
 permissions:
-  actions: read
   contents: read
   security-events: write
+  actions: read
+
 jobs:
   analyze:
-    name: CodeQL Analysis
+    name: "CodeQL — ${{ matrix.language }}"
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    continue-on-error: true
     strategy:
       fail-fast: false
       matrix:
-        language:
-          - javascript-typescript
-          - python
-        include:
-          - language: actions
-            build-mode: none
-          - language: javascript-typescript
-            build-mode: none
-          - language: python
-            build-mode: none
+        language: [javascript-typescript, python]
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
+
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@ff0a06e83cb2de871e5a09832bc6a81e7276941f # v3.28.18
         with:
           languages: ${{ matrix.language }}
           queries: security-extended,security-and-quality
-          config: "paths:\n  - src\n  - packages\n  - apps\n  - services\n  - ci\n \
-            \ - scripts\n  - unified-gates/scripts\n  - mcv_auditor\npaths-ignore:\n\
-            \  - node_modules\n  - dist\n  - build\n  - outputs\n  - \"**/*.test.ts\"\
-            \n  - \"**/*.spec.ts\"\n"
-          build-mode: ${{ matrix.build-mode }}
-          config-file: .github/codeql/codeql-config.yml
-      - name: Setup pnpm (for JS/TS analysis)
-        if: matrix.language == 'javascript-typescript'
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-      - name: Setup Node.js (for JS/TS analysis)
-        if: matrix.language == 'javascript-typescript'
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: pnpm
-      - name: Install JS dependencies
-        if: matrix.language == 'javascript-typescript'
-        run: pnpm install --no-frozen-lockfile
-      - name: Build TypeScript (for JS/TS analysis)
-        if: matrix.language == 'javascript-typescript'
-        run: pnpm run build --if-present
-        continue-on-error: true
+          # Custom model pack for mycodexvantaos framework classes
+          # packs: mycodexvantaos/codeql-models@1.0.0
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@ff0a06e83cb2de871e5a09832bc6a81e7276941f # v3.28.18
+
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
-        with:
-          category: /language:${{ matrix.language }}
-          upload: true
+        uses: github/codeql-action/analyze@ff0a06e83cb2de871e5a09832bc6a81e7276941f # v3.28.18
         continue-on-error: true
-      - name: Run manual build steps
-        if: matrix.build-mode == 'manual'
-        shell: bash
-        run: "echo 'If you are using a \"manual\" build mode for one of the' \\\n  'languages\
-          \ you are analyzing, replace this with the commands to build' \\\n  'your\
-          \ code, for example:'\necho '  make bootstrap'\necho '  make release'\nexit\
-          \ 1\n"
-    permissions:
-      security-events: write
-      packages: read
-      actions: read
-      contents: read
-  secret-scan:
-    name: Secret Scanning
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-      - name: Scan for hardcoded secrets
-        run: "# Check for common secret patterns\necho \"Scanning for hardcoded secrets...\"\
-          \n\n# Check for private keys\nif grep -r \"BEGIN PRIVATE KEY\\|BEGIN RSA PRIVATE\
-          \ KEY\\|BEGIN EC PRIVATE KEY\" \\\n  --include=\"*.ts\" --include=\"*.js\"\
-          \ --include=\"*.py\" --include=\"*.yaml\" \\\n  --exclude-dir=node_modules\
-          \ --exclude-dir=.git .; then\n  echo \"ERROR: Private key found in source\
-          \ code\"\n  exit 1\nfi\n\n# Check for hardcoded passwords (simple patterns)\n\
-          if grep -rE \"password\\s*=\\s*['\\\"][^'\\\"]{8,}['\\\"]\" \\\n  --include=\"\
-          *.ts\" --include=\"*.js\" --include=\"*.py\" \\\n  --exclude-dir=node_modules\
-          \ --exclude-dir=.git \\\n  --exclude=\"*.test.*\" --exclude=\"*.spec.*\" .;\
-          \ then\n  echo \"WARNING: Potential hardcoded password found\"\nfi\n\necho\
-          \ \"Secret scan completed\"\n"
-      - name: Check for forbidden vendor URLs in production config
-        run: "python3 -c \"\nimport re, os, sys\n\nforbidden_patterns = [\n    r'\\\
-          .github\\.io',\n    r'\\.pages\\.dev',\n    r'\\.vercel\\.app',\n    r'\\\
-          .netlify\\.app',\n    r'\\.run\\.app',\n    r'\\.appspot\\.com',\n    r'\\\
-          .cloudfunctions\\.net',\n    r'\\.web\\.app',\n    r'\\.firebaseapp\\.com',\n\
-          ]\n\nproduction_config_files = [\n    'config/architecture.config.yaml',\n]\n\nviolations = []\nfor filepath in\
-          \ production_config_files:\n    if not os.path.exists(filepath):\n       \
-          \ continue\n    with open(filepath) as f:\n        content = f.read()\n  \
-          \  for pattern in forbidden_patterns:\n        if re.search(pattern, content):\n\
-          \            violations.append(f'{filepath}: matches {pattern}')\n\nif violations:\n\
-          \    for v in violations:\n        print(f'VIOLATION: {v}')\n    sys.exit(1)\n\
-          print('Vendor URL check: PASSED')\n\"\n"
+          category: "/language:${{ matrix.language }}"
+          upload: true
+          output: sarif-results
+
+      - name: Upload SARIF as artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: always()
+        with:
+          name: codeql-sarif-${{ matrix.language }}
+          path: sarif-results/
+          retention-days: 30

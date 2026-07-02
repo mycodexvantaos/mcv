@@ -1,4 +1,4 @@
-# MyCodexVantaOS — navigation-governance
+## MyCodexVantaOS — navigation-governance
 
 Machine Identity: `mycodexvantaos`
 Canonical URL: https://mycodexvantaos.com
@@ -15,7 +15,7 @@ This document describes the navigation-governance specification for MyCodexVanta
 
 <!-- Formal spec additions -->
 
-# Navigation Governance
+## Navigation Governance
 
 > Status: Normative
 > Document: docs/architecture/navigation-governance.md

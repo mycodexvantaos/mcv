@@ -11,7 +11,7 @@ html {
 }
 body {
   font-family:
-    -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei",
+    -apple-system, BlinkMacSystemFont, 'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei',
     sans-serif;
   -webkit-font-smoothing: antialiased;
 }
@@ -172,7 +172,7 @@ body {
 }
 
 .role-card::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -277,7 +277,7 @@ body {
   border-radius: 10px;
   padding: 14px 16px;
   font-size: 1.125rem;
-  font-family: "SF Mono", "Fira Code", monospace;
+  font-family: 'SF Mono', 'Fira Code', monospace;
   letter-spacing: 0.15em;
   color: #e2e8f0;
   outline: none;
@@ -392,7 +392,7 @@ body {
 }
 
 .key-display-card::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -403,7 +403,7 @@ body {
 }
 
 .key-display-card::after {
-  content: "";
+  content: '';
   position: absolute;
   top: -50%;
   left: -50%;
@@ -425,7 +425,7 @@ body {
 .key-display-value {
   font-size: 2.25rem;
   font-weight: 800;
-  font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+  font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
   letter-spacing: 0.2em;
   color: #818cf8;
   padding: 0.75rem 0;
@@ -535,13 +535,13 @@ body {
 }
 
 .key-instructions .key-warning::before {
-  content: "⚠️";
+  content: '⚠️';
   flex-shrink: 0;
 }
 
 /* Monitor key display in header */
 #monitor-key-display {
-  font-family: "SF Mono", "Fira Code", monospace;
+  font-family: 'SF Mono', 'Fira Code', monospace;
   font-size: 0.75rem;
   letter-spacing: 0.1em;
   color: #818cf8;
@@ -670,7 +670,7 @@ body {
   cursor: pointer;
 }
 
-.sign-checkbox-row input[type="checkbox"] {
+.sign-checkbox-row input[type='checkbox'] {
   width: 18px;
   height: 18px;
   accent-color: #6366f1;
@@ -1162,7 +1162,7 @@ body {
   overflow: hidden;
 }
 #m-screen-view.active-capture::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;

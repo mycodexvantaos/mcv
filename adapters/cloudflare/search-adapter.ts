@@ -11,8 +11,8 @@ import type {
   SearchResult,
   SearchIndexMetadata,
   FulltextSearchOptions,
-} from "../../ports/index";
-import type { CloudflareEnv } from "./index";
+} from '../../ports/index';
+import type { CloudflareEnv } from './index';
 
 export class CloudflareSearchAdapter implements ISearchPort {
   private vectorize: VectorizeIndex;
@@ -58,7 +58,7 @@ export class CloudflareSearchAdapter implements ISearchPort {
     return {
       dimension: info.dimension,
       vectorCount: info.vectorCount,
-      indexType: info.indexType ?? "vectorize",
+      indexType: info.indexType ?? 'vectorize',
       lastUpdated: new Date().toISOString(), // Vectorize doesn't expose this directly
     };
   }

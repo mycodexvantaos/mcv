@@ -11,7 +11,7 @@ pnpm add @mycodexvantaos/storage
 ## Usage
 
 ```typescript
-import { storage } from "@mycodexvantaos/storage";
+import { storage } from '@mycodexvantaos/storage';
 
 // Initialize
 await storage.initialize();

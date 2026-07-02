@@ -7,7 +7,7 @@
  * Rationale: governance without auditable evidence is unverifiable; a stable
  * content hash lets CI / registry drift guards detect post-hoc mutation.
  */
-import { createHash, randomUUID } from "node:crypto";
+import { createHash, randomUUID } from 'node:crypto';
 
 /**
  * @typedef {Object} AuditRecord
@@ -41,12 +41,12 @@ export function buildAuditRecord(input) {
     actor: input.actor,
     action: input.action,
     resource: input.resource,
-    result: input.passed ? "pass" : "fail",
+    result: input.passed ? 'pass' : 'fail',
     violations: input.violations,
     requestId,
     correlationId,
     timestamp,
   };
-  const hash = createHash("sha256").update(JSON.stringify(payload)).digest("hex");
+  const hash = createHash('sha256').update(JSON.stringify(payload)).digest('hex');
   return { ...payload, hash };
 }

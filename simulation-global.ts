@@ -1,23 +1,23 @@
-import { Kernel } from "@mycodexvantaos/core-kernel";
+import { Kernel } from '@mycodexvantaos/core-kernel';
 // Providers
-import { NativeLlmProvider } from "./providers/llm-native";
-import { ConnectedGeminiProvider } from "./providers/llm-gemini";
-import { NativeAuthProvider } from "./providers/auth-native";
-import { ConnectedAuthProvider } from "./providers/auth-connected";
-import { NativeVectorStoreProvider } from "./providers/vector-store-native";
-import { ConnectedPgVectorProvider } from "./providers/vector-store-pgvector";
-import { NativeObservabilityProvider } from "./providers/observability-native";
+import { NativeLlmProvider } from './providers/llm-native';
+import { ConnectedGeminiProvider } from './providers/llm-gemini';
+import { NativeAuthProvider } from './providers/auth-native';
+import { ConnectedAuthProvider } from './providers/auth-connected';
+import { NativeVectorStoreProvider } from './providers/vector-store-native';
+import { ConnectedPgVectorProvider } from './providers/vector-store-pgvector';
+import { NativeObservabilityProvider } from './providers/observability-native';
 
 // Domain Service
-import { AgentEnsemble } from "./services/mycodexvantaos-ai-ensemble/src/index";
+import { AgentEnsemble } from './services/mycodexvantaos-ai-ensemble/src/index';
 
 async function runGlobalSimulation() {
-  console.log("===========================================================");
+  console.log('===========================================================');
   console.log('🌐 MyCodexVantaOS Global "Architecture-as-Code" Simulation');
-  console.log("===========================================================\n");
+  console.log('===========================================================\n');
 
   // Force environment to Hybrid to test intelligent fallback across EVERYTHING
-  process.env.MYCODEXVANTAOS_CORE_RUNTIME_MODE = "hybrid";
+  process.env.MYCODEXVANTAOS_CORE_RUNTIME_MODE = 'hybrid';
   const kernel = new Kernel();
 
   // Bootstrapping All Native Fallbacks (The Survival Net)
@@ -32,23 +32,23 @@ async function runGlobalSimulation() {
   kernel.registry.register(new ConnectedPgVectorProvider());
 
   // Define preferences towards Production APIs
-  kernel.registry.setPreferredProvider("llm", "gemini");
-  kernel.registry.setPreferredProvider("auth", "oauth-keycloak");
-  kernel.registry.setPreferredProvider("vector-store", "pgvector");
-  kernel.registry.setPreferredProvider("observability", "native-console");
+  kernel.registry.setPreferredProvider('llm', 'gemini');
+  kernel.registry.setPreferredProvider('auth', 'oauth-keycloak');
+  kernel.registry.setPreferredProvider('vector-store', 'pgvector');
+  kernel.registry.setPreferredProvider('observability', 'native-console');
 
   kernel.start();
-  console.log("\n🚀 Executing AI Ensemble Process (Token: dev-admin, Task: Code Review)\n");
+  console.log('\n🚀 Executing AI Ensemble Process (Token: dev-admin, Task: Code Review)\n');
 
   const agent = new AgentEnsemble(kernel);
   try {
     const result = await agent.processQuery(
-      "dev-admin-token",
-      "Review the architecture and Continuous Integration"
+      'dev-admin-token',
+      'Review the architecture and Continuous Integration'
     );
-    console.log("\n✨ [FINAL RESULT] ->", result);
+    console.log('\n✨ [FINAL RESULT] ->', result);
   } catch (err) {
-    console.error("System crashed:", err);
+    console.error('System crashed:', err);
   }
 }
 

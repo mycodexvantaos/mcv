@@ -5,7 +5,7 @@
  * Based on naming-spec-v1.md Section 5.1, Section 5.2, Section 6.1–Section 6.4
  */
 
-import { validate, derivePackageShortId, derivePackageName } from "./regex-table.js";
+import { validate, derivePackageShortId, derivePackageName } from './regex-table.js';
 
 export interface ServiceIdParts {
   /** The full service-id (e.g. "mycodexvantaos-ai-embedding") */
@@ -33,7 +33,7 @@ export interface ServiceIdParts {
  * Throws if the service-id is not valid.
  */
 export function parseServiceId(serviceId: string): ServiceIdParts {
-  if (!validate("service-id", serviceId)) {
+  if (!validate('service-id', serviceId)) {
     throw new Error(
       `Invalid service-id: "${serviceId}". ` +
         `Must match ^mycodexvantaos-[a-z0-9]+(?:-[a-z0-9]+)+$ (Section 5.1)`
@@ -41,10 +41,10 @@ export function parseServiceId(serviceId: string): ServiceIdParts {
   }
 
   // Strip prefix to get "domain-capability[-extra]"
-  const withoutPrefix = serviceId.replace(/^mycodexvantaos-/, "");
-  const parts = withoutPrefix.split("-");
+  const withoutPrefix = serviceId.replace(/^mycodexvantaos-/, '');
+  const parts = withoutPrefix.split('-');
   const domain = parts[0];
-  const capability = parts.slice(1).join("-");
+  const capability = parts.slice(1).join('-');
 
   return {
     full: serviceId,

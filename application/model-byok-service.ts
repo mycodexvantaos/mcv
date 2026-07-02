@@ -12,13 +12,13 @@ import type {
   IAuditPort,
   IIdentityPort,
   IUsagePort,
-} from "../ports/index";
+} from '../ports/index';
 import type {
   ModelEndpointSpec,
   ModelEndpointStatus,
   ModelEndpointPhase,
   Resource,
-} from "../core/index";
+} from '../core/index';
 
 export interface ModelByokServiceDeps {
   database: IDatabasePort;
@@ -73,30 +73,30 @@ export class ModelByokService {
     );
 
     await this.deps.audit.emitEvent({
-      eventType: "model.endpoint.registered",
-      category: "model",
-      severity: "medium",
-      subjectId: "system",
+      eventType: 'model.endpoint.registered',
+      category: 'model',
+      severity: 'medium',
+      subjectId: 'system',
       workspaceId,
-      resourceKind: "model-endpoint",
+      resourceKind: 'model-endpoint',
       resourceId: endpointId,
-      action: "register-endpoint",
+      action: 'register-endpoint',
       data: { provider: input.provider, modelId: input.modelId },
       correlationId: crypto.randomUUID(),
     });
 
     return {
-      apiVersion: "platform.mycodevantaos/v1",
-      kind: "model-endpoint",
+      apiVersion: 'platform.mycodevantaos/v1',
+      kind: 'model-endpoint',
       metadata: {
         id: endpointId,
         urn,
-        kind: "model-endpoint",
+        kind: 'model-endpoint',
         workspaceId,
         labels: { provider: input.provider },
         annotations: {},
-        createdBy: "system",
-        version: "1.0.0",
+        createdBy: 'system',
+        version: '1.0.0',
         resourceVersion: 1,
         createdAt: now,
         updatedAt: now,
@@ -110,17 +110,17 @@ export class ModelByokService {
         failoverEndpointId: input.failoverEndpointId ?? null,
       },
       status: {
-        phase: "active",
+        phase: 'active',
         conditions: [
           {
-            type: "Ready",
-            status: "True",
-            reason: "Registered",
-            message: "Endpoint registered",
+            type: 'Ready',
+            status: 'True',
+            reason: 'Registered',
+            message: 'Endpoint registered',
             lastTransitionTime: now,
           },
         ],
-        health: "healthy",
+        health: 'healthy',
         totalInvocations: 0,
         totalTokensUsed: 0,
         lastInvokedAt: null,
@@ -140,21 +140,21 @@ export class ModelByokService {
       model_id: string;
       credential_ref: string;
       workspace_id: string;
-    }>("SELECT * FROM model_endpoints WHERE id = ?", [endpointId]);
+    }>('SELECT * FROM model_endpoints WHERE id = ?', [endpointId]);
 
     if (!endpoint) throw new Error(`Endpoint ${endpointId} not found`);
 
     const correlationId = crypto.randomUUID();
 
     await this.deps.audit.emitEvent({
-      eventType: "model.invocation.started",
-      category: "model",
-      severity: "info",
-      subjectId: "system",
+      eventType: 'model.invocation.started',
+      category: 'model',
+      severity: 'info',
+      subjectId: 'system',
       workspaceId: endpoint.workspace_id,
-      resourceKind: "model-endpoint",
+      resourceKind: 'model-endpoint',
       resourceId: endpointId,
-      action: "invoke-model",
+      action: 'invoke-model',
       data: { invocationId: correlationId },
       correlationId,
     });
@@ -162,19 +162,19 @@ export class ModelByokService {
     try {
       const response = await this.deps.model.invoke({
         model: endpoint.model_id,
-        messages: [{ role: "user", content: prompt }],
+        messages: [{ role: 'user', content: prompt }],
         ...(options as any),
       });
 
       await this.deps.audit.emitEvent({
-        eventType: "model.invocation.completed",
-        category: "model",
-        severity: "info",
-        subjectId: "system",
+        eventType: 'model.invocation.completed',
+        category: 'model',
+        severity: 'info',
+        subjectId: 'system',
         workspaceId: endpoint.workspace_id,
-        resourceKind: "model-endpoint",
+        resourceKind: 'model-endpoint',
         resourceId: endpointId,
-        action: "invoke-model",
+        action: 'invoke-model',
         data: {
           invocationId: correlationId,
           totalTokens: response.usage.totalTokens,
@@ -186,14 +186,14 @@ export class ModelByokService {
       return response;
     } catch (error) {
       await this.deps.audit.emitEvent({
-        eventType: "model.invocation.failed",
-        category: "model",
-        severity: "high",
-        subjectId: "system",
+        eventType: 'model.invocation.failed',
+        category: 'model',
+        severity: 'high',
+        subjectId: 'system',
         workspaceId: endpoint.workspace_id,
-        resourceKind: "model-endpoint",
+        resourceKind: 'model-endpoint',
         resourceId: endpointId,
-        action: "invoke-model",
+        action: 'invoke-model',
         data: { invocationId: correlationId, error: String(error), retryable: true },
         correlationId,
       });
@@ -206,9 +206,9 @@ export class ModelByokService {
     // For constitution: placeholder reference
     const encoder = new TextEncoder();
     const data = encoder.encode(apiKey);
-    const hash = await crypto.subtle.digest("SHA-256", data);
+    const hash = await crypto.subtle.digest('SHA-256', data);
     return `enc:aes-256-gcm:${Array.from(new Uint8Array(hash))
-      .map((b) => b.toString(16).padStart(2, "0"))
-      .join("")}`;
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('')}`;
   }
 }

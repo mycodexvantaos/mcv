@@ -3,9 +3,9 @@
  * Transformed for platform independence
  */
 
-import type { StorageCapability } from "../packages/capabilities/src/storage";
-import type { LoggingCapability } from "../packages/capabilities/src/logging";
-import * as crypto from "crypto";
+import type { StorageCapability } from '../packages/capabilities/src/storage';
+import type { LoggingCapability } from '../packages/capabilities/src/logging';
+import * as crypto from 'crypto';
 
 export interface MerkleNode {
   hash: string;
@@ -44,7 +44,7 @@ export class MerkleRootCalculator {
 
       this.initialized = true;
     } catch (error) {
-      console.error("Failed to initialize MerkleRootCalculator:", error);
+      console.error('Failed to initialize MerkleRootCalculator:', error);
       throw error;
     }
   }
@@ -53,7 +53,7 @@ export class MerkleRootCalculator {
    * Calculate SHA-256 hash
    */
   private hash(data: string): string {
-    return crypto.createHash("sha256").update(data).digest("hex");
+    return crypto.createHash('sha256').update(data).digest('hex');
   }
 
   /**
@@ -62,7 +62,7 @@ export class MerkleRootCalculator {
   calculateRoot(leaves: string[]): MerkleRootResult {
     if (leaves.length === 0) {
       return {
-        root: this.hash(""),
+        root: this.hash(''),
         leafCount: 0,
         treeHeight: 0,
         leaves: [],
@@ -106,7 +106,7 @@ export class MerkleRootCalculator {
   async buildFromDirectory(directory: string): Promise<MerkleRootResult> {
     this.ensureInitialized();
 
-    await this.log("info", `Building Merkle root from: ${directory}`);
+    await this.log('info', `Building Merkle root from: ${directory}`);
 
     const keys = await this.storage!.keys();
     const filesInDir = keys.filter((k) => k.startsWith(directory)).sort();
@@ -116,14 +116,14 @@ export class MerkleRootCalculator {
     for (const filePath of filesInDir) {
       const item = await this.storage!.get(filePath);
       if (item && item.value) {
-        const content = typeof item.value === "string" ? item.value : JSON.stringify(item.value);
+        const content = typeof item.value === 'string' ? item.value : JSON.stringify(item.value);
         leaves.push(content);
       }
     }
 
     const result = this.calculateRoot(leaves);
 
-    await this.log("info", `Merkle root calculated`, {
+    await this.log('info', `Merkle root calculated`, {
       root: result.root,
       leafCount: result.leafCount,
     });
@@ -138,10 +138,10 @@ export class MerkleRootCalculator {
     this.ensureInitialized();
 
     await this.storage!.set(outputPath, JSON.stringify(result, null, 2), {
-      tags: ["merkle", "root"],
+      tags: ['merkle', 'root'],
     });
 
-    await this.log("info", `Merkle root saved to: ${outputPath}`);
+    await this.log('info', `Merkle root saved to: ${outputPath}`);
   }
 
   /**
@@ -177,7 +177,7 @@ export class MerkleRootCalculator {
 
   private ensureInitialized(): void {
     if (!this.initialized || !this.storage) {
-      throw new Error("MerkleRootCalculator not initialized.");
+      throw new Error('MerkleRootCalculator not initialized.');
     }
   }
 

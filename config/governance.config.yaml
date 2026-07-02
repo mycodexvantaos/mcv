@@ -4,6 +4,13 @@ metadata:
   name: mycodexvantaos-governance-config
   version: 1.0.0
   date: '2026-06-29'
+spec:
+  identityPolicyPath: governance/identity-policy.yaml
+  namingPolicyPath: governance/naming-policy.schema.json
+  capabilitySetPath: governance/capability-set.yaml
+  providerRegistryPath: governance/provider-registry.yaml
+  runtimeModePolicyPath: governance/runtime-mode-policy.yaml
+  serviceCatalogPath: platform/service-catalog.yaml
 policies:
   identity: governance/identity-policy.yaml
   platform: governance/platform-governance-spec.yaml
@@ -22,14 +29,14 @@ audit:
     algorithm: SHA-256
     immutable: true
   events:
-  - governance-policy-change
-  - identity-policy-change
-  - provider-registration
-  - module-registration
-  - gate-evaluation
-  - release-promotion
-  - exception-grant
-  - exception-revoke
+    - governance-policy-change
+    - identity-policy-change
+    - provider-registration
+    - module-registration
+    - gate-evaluation
+    - release-promotion
+    - exception-grant
+    - exception-revoke
   evidence:
     required: true
     schema: governance/audit/audit-evidence.schema.json
@@ -48,6 +55,6 @@ quantum:
 reports:
   output-dir: governance/reports
   formats:
-  - json
-  - yaml
+    - json
+    - yaml
   retention-days: 90

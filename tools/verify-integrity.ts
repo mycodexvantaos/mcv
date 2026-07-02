@@ -5,7 +5,7 @@
 // Usage: npx ts-node tools/verify-integrity.ts [--since <timestamp>]
 // ═══════════════════════════════════════════════════════════════════════
 
-import * as crypto from "crypto";
+import * as crypto from 'crypto';
 
 // ── Types ──────────────────────────────────────────────────────────────
 interface AuditEvent {
@@ -20,7 +20,7 @@ interface AuditEvent {
   previous_hash: string;
   chain_index: number;
   pair_id?: string;
-  pair_role?: "request" | "completion" | "failure";
+  pair_role?: 'request' | 'completion' | 'failure';
   timeout_seconds?: number;
 }
 
@@ -39,7 +39,7 @@ interface IntegrityReport {
 // ── Hash Computation ───────────────────────────────────────────────────
 function computeHash(event: AuditEvent): string {
   const input = `${event.payload}:${event.previous_hash}`;
-  return crypto.createHash("sha256").update(input).digest("hex");
+  return crypto.createHash('sha256').update(input).digest('hex');
 }
 
 // ── Verification Logic ─────────────────────────────────────────────────
@@ -89,7 +89,7 @@ function verifyChain(events: AuditEvent[]): IntegrityReport {
 
     // Verify previous_hash linkage
     if (event.chain_index === 0) {
-      if (event.previous_hash !== "genesis") {
+      if (event.previous_hash !== 'genesis') {
         report.missing_previous++;
         report.details.push(
           `INVALID_GENESIS: chain_index=0 previous_hash should be "genesis", got "${event.previous_hash}"`
@@ -109,7 +109,7 @@ function verifyChain(events: AuditEvent[]): IntegrityReport {
     if (
       event.hash === expectedHash &&
       (event.chain_index === 0
-        ? event.previous_hash === "genesis"
+        ? event.previous_hash === 'genesis'
         : indexMap.get(event.chain_index - 1)?.hash === event.previous_hash)
     ) {
       report.verified++;
@@ -127,8 +127,8 @@ function verifyChain(events: AuditEvent[]): IntegrityReport {
 
   for (const [pairId, pairEvents] of pairs) {
     const roles = pairEvents.map((e) => e.pair_role);
-    const hasRequest = roles.includes("request");
-    const hasCompletion = roles.includes("completion") || roles.includes("failure");
+    const hasRequest = roles.includes('request');
+    const hasCompletion = roles.includes('completion') || roles.includes('failure');
 
     if (hasRequest && !hasCompletion) {
       report.unpaired_requests++;
@@ -148,10 +148,10 @@ function verifyChain(events: AuditEvent[]): IntegrityReport {
 // ── Report Formatting ──────────────────────────────────────────────────
 function formatReport(report: IntegrityReport): string {
   const lines: string[] = [];
-  lines.push("════════════════════════════════════════════════════════");
-  lines.push("  MyCodeXvantaOS — Audit Chain Integrity Report");
-  lines.push("════════════════════════════════════════════════════════");
-  lines.push("");
+  lines.push('════════════════════════════════════════════════════════');
+  lines.push('  MyCodeXvantaOS — Audit Chain Integrity Report');
+  lines.push('════════════════════════════════════════════════════════');
+  lines.push('');
   lines.push(`  Total Events:       ${report.total_events}`);
   lines.push(
     `  Verified:           ${report.verified} (${((report.verified / Math.max(report.total_events, 1)) * 100).toFixed(1)}%)`
@@ -161,12 +161,12 @@ function formatReport(report: IntegrityReport): string {
   lines.push(`  Chain Gaps:         ${report.gaps.length} missing indices`);
   lines.push(`  Unpaired Requests:  ${report.unpaired_requests}`);
   lines.push(`  Unpaired Completions: ${report.unpaired_completions}`);
-  lines.push("");
+  lines.push('');
 
   if (report.details.length > 0) {
-    lines.push("──────────────────────────────────────────────────────");
-    lines.push("  Details:");
-    lines.push("──────────────────────────────────────────────────────");
+    lines.push('──────────────────────────────────────────────────────');
+    lines.push('  Details:');
+    lines.push('──────────────────────────────────────────────────────');
     for (const detail of report.details.slice(0, 50)) {
       lines.push(`  ${detail}`);
     }
@@ -175,35 +175,35 @@ function formatReport(report: IntegrityReport): string {
     }
   }
 
-  lines.push("");
-  lines.push("──────────────────────────────────────────────────────");
+  lines.push('');
+  lines.push('──────────────────────────────────────────────────────');
 
   const isHealthy = report.hash_mismatch === 0 && report.missing_previous === 0;
   lines.push(
-    `  Status: ${isHealthy ? "✅ CHAIN INTEGRITY VERIFIED" : "❌ CHAIN INTEGRITY COMPROMISED"}`
+    `  Status: ${isHealthy ? '✅ CHAIN INTEGRITY VERIFIED' : '❌ CHAIN INTEGRITY COMPROMISED'}`
   );
-  lines.push("──────────────────────────────────────────────────────");
+  lines.push('──────────────────────────────────────────────────────');
 
-  return lines.join("\n");
+  return lines.join('\n');
 }
 
 // ── Main ───────────────────────────────────────────────────────────────
 function main() {
-  console.log("Note: This tool requires database access to fetch audit events.");
-  console.log("In production, this would query the audit_events table.\n");
+  console.log('Note: This tool requires database access to fetch audit events.');
+  console.log('In production, this would query the audit_events table.\n');
 
   // Demo with sample data
   const sampleEvents: AuditEvent[] = [
     {
-      event_id: "evt-001",
-      event_type: "identity.subject.registered",
-      source: "identity",
+      event_id: 'evt-001',
+      event_type: 'identity.subject.registered',
+      source: 'identity',
       timestamp: new Date().toISOString(),
-      subject_id: "sub-001",
-      workspace_id: "ws-001",
+      subject_id: 'sub-001',
+      workspace_id: 'ws-001',
       payload: '{"action":"register","subject_id":"sub-001"}',
-      hash: "",
-      previous_hash: "genesis",
+      hash: '',
+      previous_hash: 'genesis',
       chain_index: 0,
     },
   ];

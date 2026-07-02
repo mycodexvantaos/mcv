@@ -1,6 +1,6 @@
 name: Foundation Validation
 
-on:
+"on":
   push:
     branches: [main, develop]
     paths:

@@ -8,12 +8,12 @@
  * - Connected: Remote evidence store only
  */
 
-import type { StorageCapability } from "../packages/capabilities/src/storage";
+import type { StorageCapability } from '../packages/capabilities/src/storage';
 import type {
   ValidationCapability,
   ValidationResult,
-} from "../packages/capabilities/src/validation";
-import type { LoggingCapability } from "../packages/capabilities/src/logging";
+} from '../packages/capabilities/src/validation';
+import type { LoggingCapability } from '../packages/capabilities/src/logging';
 
 export interface EvidenceFile {
   name: string;
@@ -38,13 +38,13 @@ export interface VerificationReport {
 }
 
 const REQUIRED_EVIDENCE_FILES = [
-  "schema-report.json",
-  "vector-report.json",
-  "digests.json",
-  "merkle-root.json",
-  "repo-fingerprint.json",
-  "toolchain.json",
-  "gate-report.json",
+  'schema-report.json',
+  'vector-report.json',
+  'digests.json',
+  'merkle-root.json',
+  'repo-fingerprint.json',
+  'toolchain.json',
+  'gate-report.json',
 ];
 
 /**
@@ -80,7 +80,7 @@ export class EvidenceVerifier {
 
       this.initialized = true;
     } catch (error) {
-      console.error("Failed to initialize EvidenceVerifier:", error);
+      console.error('Failed to initialize EvidenceVerifier:', error);
       throw error;
     }
   }
@@ -95,11 +95,11 @@ export class EvidenceVerifier {
       const item = await this.storage!.get(path);
 
       if (!item || !item.value) {
-        return { valid: false, error: "File not found" };
+        return { valid: false, error: 'File not found' };
       }
 
       try {
-        const content = typeof item.value === "string" ? JSON.parse(item.value) : item.value;
+        const content = typeof item.value === 'string' ? JSON.parse(item.value) : item.value;
 
         return { valid: true, content };
       } catch (e: any) {
@@ -113,10 +113,10 @@ export class EvidenceVerifier {
   /**
    * Verify evidence files
    */
-  async verify(evidenceDir: string = "dist/evidence"): Promise<VerificationReport> {
+  async verify(evidenceDir: string = 'dist/evidence'): Promise<VerificationReport> {
     this.ensureInitialized();
 
-    await this.log("info", `Starting evidence verification in: ${evidenceDir}`);
+    await this.log('info', `Starting evidence verification in: ${evidenceDir}`);
 
     const report: VerificationReport = {
       generatedAt: new Date().toISOString(),
@@ -136,13 +136,13 @@ export class EvidenceVerifier {
       const keys = await this.storage!.keys();
       report.dirExists = keys.some((k) => k.startsWith(evidenceDir));
     } catch (error: any) {
-      await this.log("error", `Failed to check directory: ${error.message}`);
+      await this.log('error', `Failed to check directory: ${error.message}`);
       report.files.push({
         name: evidenceDir,
         path: evidenceDir,
         exists: false,
         validJson: false,
-        error: "Evidence directory does not exist",
+        error: 'Evidence directory does not exist',
       });
       return report;
     }
@@ -160,7 +160,7 @@ export class EvidenceVerifier {
 
       const verification = await this.verifyJsonFile(filePath);
 
-      fileResult.exists = verification.valid || verification.error !== "File not found";
+      fileResult.exists = verification.valid || verification.error !== 'File not found';
       fileResult.validJson = verification.valid;
       fileResult.error = verification.error;
       fileResult.content = verification.content;
@@ -182,7 +182,7 @@ export class EvidenceVerifier {
     // Calculate overall validity
     report.valid = report.missing === 0 && report.invalidJson === 0 && report.dirExists;
 
-    await this.log("info", `Evidence verification ${report.valid ? "PASSED" : "FAILED"}`, {
+    await this.log('info', `Evidence verification ${report.valid ? 'PASSED' : 'FAILED'}`, {
       found: report.found,
       missing: report.missing,
       invalid: report.invalidJson,
@@ -198,10 +198,10 @@ export class EvidenceVerifier {
     this.ensureInitialized();
 
     await this.storage!.set(outputPath, JSON.stringify(report, null, 2), {
-      tags: ["verification", "report"],
+      tags: ['verification', 'report'],
     });
 
-    await this.log("info", `Verification report saved to: ${outputPath}`);
+    await this.log('info', `Verification report saved to: ${outputPath}`);
   }
 
   /**
@@ -234,7 +234,7 @@ export class EvidenceVerifier {
 
   private ensureInitialized(): void {
     if (!this.initialized || !this.storage) {
-      throw new Error("EvidenceVerifier not initialized. Call initialize() first.");
+      throw new Error('EvidenceVerifier not initialized. Call initialize() first.');
     }
   }
 
@@ -242,7 +242,7 @@ export class EvidenceVerifier {
     if (this.logger) {
       await this.logger.log({ level: level as any, message, context });
     } else {
-      console.log(`[${level}] ${message}`, context || "");
+      console.log(`[${level}] ${message}`, context || '');
     }
   }
 }

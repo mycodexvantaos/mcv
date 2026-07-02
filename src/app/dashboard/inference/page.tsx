@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useEffect, useState, useMemo } from "react";
-import { Brain, Activity, Clock, Zap, AlertTriangle, ArrowUpRight, Filter } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { useEffect, useState, useMemo } from 'react';
+import { Brain, Activity, Clock, Zap, AlertTriangle, ArrowUpRight, Filter } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Area,
   AreaChart,
@@ -17,58 +17,58 @@ import {
   YAxis,
   Tooltip,
   CartesianGrid,
-} from "recharts";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import type { ModelInstance, ModelProvider, ModelStatus } from "@/types/inference";
+} from 'recharts';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import type { ModelInstance, ModelProvider, ModelStatus } from '@/types/inference';
 
 const mockModels: ModelInstance[] = [
   {
-    id: "m1",
-    name: "gemini-2.5-flash",
-    provider: "googleai",
-    status: "active",
-    endpoint: "generativelanguage.googleapis.com",
-    apiKeyRef: "***",
+    id: 'm1',
+    name: 'gemini-2.5-flash',
+    provider: 'googleai',
+    status: 'active',
+    endpoint: 'generativelanguage.googleapis.com',
+    apiKeyRef: '***',
     maxConcurrent: 100,
     currentLoad: 0.65,
   },
   {
-    id: "m2",
-    name: "gpt-4o",
-    provider: "openai",
-    status: "active",
-    endpoint: "api.openai.com",
-    apiKeyRef: "***",
+    id: 'm2',
+    name: 'gpt-4o',
+    provider: 'openai',
+    status: 'active',
+    endpoint: 'api.openai.com',
+    apiKeyRef: '***',
     maxConcurrent: 50,
     currentLoad: 0.42,
   },
   {
-    id: "m3",
-    name: "claude-sonnet-4",
-    provider: "anthropic",
-    status: "active",
-    endpoint: "api.anthropic.com",
-    apiKeyRef: "***",
+    id: 'm3',
+    name: 'claude-sonnet-4',
+    provider: 'anthropic',
+    status: 'active',
+    endpoint: 'api.anthropic.com',
+    apiKeyRef: '***',
     maxConcurrent: 30,
     currentLoad: 0.28,
   },
   {
-    id: "m4",
-    name: "llama-3.1-70b",
-    provider: "local",
-    status: "idle",
-    endpoint: "edge-us-west:8080",
-    apiKeyRef: "***",
+    id: 'm4',
+    name: 'llama-3.1-70b',
+    provider: 'local',
+    status: 'idle',
+    endpoint: 'edge-us-west:8080',
+    apiKeyRef: '***',
     maxConcurrent: 20,
     currentLoad: 0.0,
   },
   {
-    id: "m5",
-    name: "gemini-2.5-pro",
-    provider: "googleai",
-    status: "draining",
-    endpoint: "generativelanguage.googleapis.com",
-    apiKeyRef: "***",
+    id: 'm5',
+    name: 'gemini-2.5-pro',
+    provider: 'googleai',
+    status: 'draining',
+    endpoint: 'generativelanguage.googleapis.com',
+    apiKeyRef: '***',
     maxConcurrent: 50,
     currentLoad: 0.15,
   },
@@ -88,7 +88,7 @@ function generateMetricsData() {
   for (let i = 60; i >= 0; i--) {
     const t = new Date(now - i * 60000);
     data.push({
-      time: `${t.getHours().toString().padStart(2, "0")}:${t.getMinutes().toString().padStart(2, "0")}`,
+      time: `${t.getHours().toString().padStart(2, '0')}:${t.getMinutes().toString().padStart(2, '0')}`,
       requests: Math.round(400 + Math.random() * 300 + (i < 30 ? 200 : 0)),
       latencyP50: Math.round(50 + Math.random() * 30),
       latencyP99: Math.round(150 + Math.random() * 100),
@@ -101,28 +101,28 @@ function generateMetricsData() {
 }
 
 const providerColors: Record<ModelProvider, string> = {
-  googleai: "hsl(var(--chart-1))",
-  openai: "hsl(var(--chart-2))",
-  anthropic: "hsl(var(--chart-3))",
-  local: "hsl(var(--chart-4))",
+  googleai: 'hsl(var(--chart-1))',
+  openai: 'hsl(var(--chart-2))',
+  anthropic: 'hsl(var(--chart-3))',
+  local: 'hsl(var(--chart-4))',
 };
 
 const statusColors: Record<ModelStatus, string> = {
-  active: "text-status-healthy",
-  idle: "text-status-idle",
-  draining: "text-status-warning",
-  error: "text-status-critical",
+  active: 'text-status-healthy',
+  idle: 'text-status-idle',
+  draining: 'text-status-warning',
+  error: 'text-status-critical',
 };
 
-const statusBadge: Record<ModelStatus, "default" | "secondary" | "destructive" | "outline"> = {
-  active: "default",
-  idle: "secondary",
-  draining: "outline",
-  error: "destructive",
+const statusBadge: Record<ModelStatus, 'default' | 'secondary' | 'destructive' | 'outline'> = {
+  active: 'default',
+  idle: 'secondary',
+  draining: 'outline',
+  error: 'destructive',
 };
 
 export default function InferencePage() {
-  const [timeRange, setTimeRange] = useState<"1h" | "6h" | "24h">("1h");
+  const [timeRange, setTimeRange] = useState<'1h' | '6h' | '24h'>('1h');
   const metricsData = useMemo(() => generateMetricsData(), [timeRange]);
 
   const totalRequests = metricsData.reduce((sum, d) => sum + d.requests, 0);
@@ -142,10 +142,10 @@ export default function InferencePage() {
           </p>
         </div>
         <div className="flex gap-2">
-          {(["1h", "6h", "24h"] as const).map((range) => (
+          {(['1h', '6h', '24h'] as const).map((range) => (
             <Button
               key={range}
-              variant={timeRange === range ? "default" : "outline"}
+              variant={timeRange === range ? 'default' : 'outline'}
               size="sm"
               onClick={() => setTimeRange(range)}
             >
@@ -191,7 +191,7 @@ export default function InferencePage() {
               <p className="text-xs text-muted-foreground">Active Models</p>
             </div>
             <p className="text-2xl font-bold font-headline">
-              {mockModels.filter((m) => m.status === "active").length}/{mockModels.length}
+              {mockModels.filter((m) => m.status === 'active').length}/{mockModels.length}
             </p>
           </CardContent>
         </Card>
@@ -218,9 +218,9 @@ export default function InferencePage() {
                   <YAxis tick={{ fontSize: 10 }} width={40} />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: "hsl(var(--card))",
-                      border: "1px solid hsl(var(--border))",
-                      fontSize: "12px",
+                      backgroundColor: 'hsl(var(--card))',
+                      border: '1px solid hsl(var(--border))',
+                      fontSize: '12px',
                     }}
                   />
                   <Area
@@ -249,9 +249,9 @@ export default function InferencePage() {
                   <YAxis tick={{ fontSize: 10 }} width={40} />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: "hsl(var(--card))",
-                      border: "1px solid hsl(var(--border))",
-                      fontSize: "12px",
+                      backgroundColor: 'hsl(var(--card))',
+                      border: '1px solid hsl(var(--border))',
+                      fontSize: '12px',
                     }}
                   />
                   <Line
@@ -328,7 +328,7 @@ export default function InferencePage() {
                     <td className="py-2.5 px-3">
                       <Badge variant={statusBadge[model.status]} className="text-[10px] h-5">
                         <span
-                          className={`mr-1 inline-block h-1.5 w-1.5 rounded-full ${model.status === "active" ? "bg-status-healthy" : model.status === "idle" ? "bg-status-idle" : model.status === "draining" ? "bg-status-warning" : "bg-status-critical"}`}
+                          className={`mr-1 inline-block h-1.5 w-1.5 rounded-full ${model.status === 'active' ? 'bg-status-healthy' : model.status === 'idle' ? 'bg-status-idle' : model.status === 'draining' ? 'bg-status-warning' : 'bg-status-critical'}`}
                         />
                         {model.status}
                       </Badge>

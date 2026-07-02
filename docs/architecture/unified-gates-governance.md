@@ -1,4 +1,4 @@
-# MyCodexVantaOS — unified-gates-governance
+## MyCodexVantaOS — unified-gates-governance
 
 Machine Identity: `mycodexvantaos`
 Canonical URL: https://mycodexvantaos.com
@@ -15,7 +15,7 @@ This document describes the unified-gates-governance specification for MyCodexVa
 
 <!-- Formal spec additions -->
 
-# Unified Gates Governance
+## Unified Gates Governance
 
 > Status: Normative
 > Document: docs/architecture/unified-gates-governance.md

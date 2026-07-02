@@ -1,10 +1,8 @@
 apiVersion: mycodexvantaos.io/v1
 kind: GateCatalog
 metadata:
-  version: 1.0.0
-  date: '2026-06-29'
-  status: active
   name: unified-gate-catalog
+  version: 1.0.0
   ssot: true
   authority: unified-gate-governance
   governanceCode: mycodexvantaos-00000
@@ -17,254 +15,256 @@ metadata:
       gate MUST be registered here before it can be enforced in CI.
 
       '
+  date: '2026-06-29'
+  status: active
 spec:
   planes:
-  - id: meta-governance
-    layer: l00
-    path: ./ai-infra-gates/l00/
-    description: Namespace governance, repository naming, dependency graph, lifecycle,
-      and audit evidence gates.
-    gates:
-    - id: gate-01-namespace-governance-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-02-repository-naming-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-03-governance-code-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-04-directory-binding-mediator-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-05-dependency-graph-acyclic-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-06-lifecycle-state-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-07-owner-registry-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-08-audit-evidence-validation
-      blocking: true
-      lifecycle: active
-  - id: ai-compute
-    layer: l10
-    path: ./ai-infra-gates/l10/
-    description: AI chip capability, GPU driver, accelerator topology, cluster readiness,
-      distributed training, and cost metering gates.
-    gates:
-    - id: gate-11-ai-chip-capability-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-12-gpu-driver-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-13-accelerator-topology-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-14-smart-server-baseline-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-15-ai-compute-cluster-readiness
-      blocking: true
-      lifecycle: active
-    - id: gate-16-distributed-training-runtime-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-17-resource-quota-and-scheduler-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-18-compute-cost-metering-validation
-      blocking: false
-      lifecycle: active
-  - id: data-vector
-    layer: l20
-    path: ./ai-infra-gates/l20/
-    description: Dataset contract, lineage, license, PII scan, vector DB schema, embedding
-      dimension, data quality, and access policy gates.
-    gates:
-    - id: gate-21-dataset-contract-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-22-dataset-lineage-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-23-dataset-license-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-24-pii-and-sensitive-data-scan
-      blocking: true
-      lifecycle: active
-    - id: gate-25-vector-database-schema-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-26-embedding-dimension-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-27-data-quality-threshold-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-28-data-access-policy-validation
-      blocking: true
-      lifecycle: active
-  - id: ai-framework-model
-    layer: l30
-    path: ./ai-infra-gates/l30/
-    description: AI framework compatibility, model contract, training pipeline, inference
-      runtime, agent framework, tool calling, model registry, and algorithm safety
-      gates.
-    gates:
-    - id: gate-31-ai-framework-compatibility-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-32-model-contract-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-33-training-pipeline-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-34-inference-runtime-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-35-ai-agent-framework-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-36-tool-calling-contract-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-37-model-registry-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-38-algorithm-safety-policy-validation
-      blocking: true
-      lifecycle: active
-  - id: workload-execution
-    layer: l40
-    path: ./ai-infra-gates/l40/
-    description: AI workload contract, inference task, training task, RAG pipeline,
-      agent task policy, resource estimation, SLO, and runtime sandbox gates.
-    gates:
-    - id: gate-41-ai-workload-contract-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-42-inference-task-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-43-training-task-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-44-rag-pipeline-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-45-agent-task-policy-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-46-workload-resource-estimation
-      blocking: false
-      lifecycle: active
-    - id: gate-47-workload-slo-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-48-workload-runtime-sandbox-validation
-      blocking: true
-      lifecycle: active
-  - id: billing-metering
-    layer: l50
-    path: ./ai-infra-gates/l50/
-    description: Usage event contract, inference/training/embedding/agent-run metering,
-      cost attribution, billing policy, and invoice evidence gates.
-    gates:
-    - id: gate-51-usage-event-contract-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-52-inference-metering-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-53-training-metering-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-54-embedding-metering-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-55-agent-run-metering-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-56-cost-attribution-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-57-billing-policy-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-58-invoice-evidence-validation
-      blocking: true
-      lifecycle: active
-  - id: cloud-infrastructure
-    layer: l60
-    path: ./ai-infra-gates/l60/
-    description: Cloud infrastructure readiness, Kubernetes baseline, GitOps sync,
-      and managed service SLA gates.
-    gates:
-    - id: gate-61-cloud-infra-readiness-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-62-kubernetes-baseline-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-63-gitops-sync-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-64-managed-service-sla-validation
-      blocking: false
-      lifecycle: active
-  - id: supply-chain-production
-    layer: l90
-    path: ./ai-infra-gates/l90/
-    description: SBOM generation, provenance, signature, policy attestation, audit
-      evidence chain, release readiness, rollback readiness, compliance report, and
-      production closure gates.
-    gates:
-    - id: gate-91-sbom-generation-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-92-provenance-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-93-signature-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-94-policy-attestation-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-95-audit-evidence-chain-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-96-release-readiness-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-97-rollback-readiness-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-98-compliance-report-validation
-      blocking: true
-      lifecycle: active
-    - id: gate-99-production-closure-validation
-      blocking: true
-      lifecycle: active
+    - id: meta-governance
+      layer: l00
+      path: ./ai-infra-gates/l00/
+      description: Namespace governance, repository naming, dependency graph, lifecycle,
+        and audit evidence gates.
+      gates:
+        - id: gate-01-namespace-governance-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-02-repository-naming-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-03-governance-code-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-04-directory-binding-mediator-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-05-dependency-graph-acyclic-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-06-lifecycle-state-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-07-owner-registry-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-08-audit-evidence-validation
+          blocking: true
+          lifecycle: active
+    - id: ai-compute
+      layer: l10
+      path: ./ai-infra-gates/l10/
+      description: AI chip capability, GPU driver, accelerator topology, cluster readiness,
+        distributed training, and cost metering gates.
+      gates:
+        - id: gate-11-ai-chip-capability-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-12-gpu-driver-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-13-accelerator-topology-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-14-smart-server-baseline-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-15-ai-compute-cluster-readiness
+          blocking: true
+          lifecycle: active
+        - id: gate-16-distributed-training-runtime-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-17-resource-quota-and-scheduler-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-18-compute-cost-metering-validation
+          blocking: false
+          lifecycle: active
+    - id: data-vector
+      layer: l20
+      path: ./ai-infra-gates/l20/
+      description: Dataset contract, lineage, license, PII scan, vector DB schema, embedding
+        dimension, data quality, and access policy gates.
+      gates:
+        - id: gate-21-dataset-contract-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-22-dataset-lineage-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-23-dataset-license-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-24-pii-and-sensitive-data-scan
+          blocking: true
+          lifecycle: active
+        - id: gate-25-vector-database-schema-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-26-embedding-dimension-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-27-data-quality-threshold-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-28-data-access-policy-validation
+          blocking: true
+          lifecycle: active
+    - id: ai-framework-model
+      layer: l30
+      path: ./ai-infra-gates/l30/
+      description: AI framework compatibility, model contract, training pipeline, inference
+        runtime, agent framework, tool calling, model registry, and algorithm safety
+        gates.
+      gates:
+        - id: gate-31-ai-framework-compatibility-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-32-model-contract-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-33-training-pipeline-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-34-inference-runtime-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-35-ai-agent-framework-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-36-tool-calling-contract-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-37-model-registry-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-38-algorithm-safety-policy-validation
+          blocking: true
+          lifecycle: active
+    - id: workload-execution
+      layer: l40
+      path: ./ai-infra-gates/l40/
+      description: AI workload contract, inference task, training task, RAG pipeline,
+        agent task policy, resource estimation, SLO, and runtime sandbox gates.
+      gates:
+        - id: gate-41-ai-workload-contract-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-42-inference-task-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-43-training-task-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-44-rag-pipeline-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-45-agent-task-policy-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-46-workload-resource-estimation
+          blocking: false
+          lifecycle: active
+        - id: gate-47-workload-slo-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-48-workload-runtime-sandbox-validation
+          blocking: true
+          lifecycle: active
+    - id: billing-metering
+      layer: l50
+      path: ./ai-infra-gates/l50/
+      description: Usage event contract, inference/training/embedding/agent-run metering,
+        cost attribution, billing policy, and invoice evidence gates.
+      gates:
+        - id: gate-51-usage-event-contract-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-52-inference-metering-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-53-training-metering-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-54-embedding-metering-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-55-agent-run-metering-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-56-cost-attribution-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-57-billing-policy-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-58-invoice-evidence-validation
+          blocking: true
+          lifecycle: active
+    - id: cloud-infrastructure
+      layer: l60
+      path: ./ai-infra-gates/l60/
+      description: Cloud infrastructure readiness, Kubernetes baseline, GitOps sync,
+        and managed service SLA gates.
+      gates:
+        - id: gate-61-cloud-infra-readiness-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-62-kubernetes-baseline-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-63-gitops-sync-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-64-managed-service-sla-validation
+          blocking: false
+          lifecycle: active
+    - id: supply-chain-production
+      layer: l90
+      path: ./ai-infra-gates/l90/
+      description: SBOM generation, provenance, signature, policy attestation, audit
+        evidence chain, release readiness, rollback readiness, compliance report, and
+        production closure gates.
+      gates:
+        - id: gate-91-sbom-generation-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-92-provenance-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-93-signature-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-94-policy-attestation-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-95-audit-evidence-chain-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-96-release-readiness-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-97-rollback-readiness-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-98-compliance-report-validation
+          blocking: true
+          lifecycle: active
+        - id: gate-99-production-closure-validation
+          blocking: true
+          lifecycle: active
   evidencePolicy:
     hashAlgorithms:
-    - sha-256
-    - sha3-512
-    - blake3
+      - sha-256
+      - sha3-512
+      - blake3
     retentionDays:
       critical: 2555
       high: 1095
       medium: 365
       low: 180
   lifecycleStages:
-  - proposed
-  - active
-  - deprecated
-  - archived
-  - destroyed
+    - proposed
+    - active
+    - deprecated
+    - archived
+    - destroyed

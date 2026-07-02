@@ -1,55 +1,56 @@
 apiVersion: mycodexvantaos.io/v1
 kind: AIInfraGateIndex
 metadata:
-  version: 1.0.0
-  date: '2026-06-29'
   name: ai-infra-gates
+  version: 1.0.0
   ssot: true
   authority: unified-gate-governance
   governanceCode: mycodexvantaos-00000
+  date: '2026-06-29'
 spec:
+  version: 1.0.0
   totalGates: 61
   layers:
-  - id: l00
-    path: ./l00/
-    gateCount: 8
-    description: Meta-governance gates (01-08)
-  - id: l10
-    path: ./l10/
-    gateCount: 8
-    description: AI compute infrastructure gates (11-18)
-  - id: l20
-    path: ./l20/
-    gateCount: 8
-    description: Data and vector layer gates (21-28)
-  - id: l30
-    path: ./l30/
-    gateCount: 8
-    description: AI framework and model layer gates (31-38)
-  - id: l40
-    path: ./l40/
-    gateCount: 8
-    description: Workload execution layer gates (41-48)
-  - id: l50
-    path: ./l50/
-    gateCount: 8
-    description: Billing and metering layer gates (51-58)
-  - id: l60
-    path: ./l60/
-    gateCount: 4
-    description: Cloud infrastructure layer gates (61-64)
-  - id: l90
-    path: ./l90/
-    gateCount: 9
-    description: Supply chain and production closure gates (91-99)
+    - id: l00
+      path: ./l00/
+      gateCount: 8
+      description: Meta-governance gates (01-08)
+    - id: l10
+      path: ./l10/
+      gateCount: 8
+      description: AI compute infrastructure gates (11-18)
+    - id: l20
+      path: ./l20/
+      gateCount: 8
+      description: Data and vector layer gates (21-28)
+    - id: l30
+      path: ./l30/
+      gateCount: 8
+      description: AI framework and model layer gates (31-38)
+    - id: l40
+      path: ./l40/
+      gateCount: 8
+      description: Workload execution layer gates (41-48)
+    - id: l50
+      path: ./l50/
+      gateCount: 8
+      description: Billing and metering layer gates (51-58)
+    - id: l60
+      path: ./l60/
+      gateCount: 4
+      description: Cloud infrastructure layer gates (61-64)
+    - id: l90
+      path: ./l90/
+      gateCount: 9
+      description: Supply chain and production closure gates (91-99)
   executionOrder:
-  - l00
-  - l10
-  - l20
-  - l30
-  - l40
-  - l50
-  - l60
-  - l90
+    - l00
+    - l10
+    - l20
+    - l30
+    - l40
+    - l50
+    - l60
+    - l90
   schemaRef: ../schemas/ai-infra-gate.schema.json
   catalogRef: ./ai-infra-gates-catalog.yaml

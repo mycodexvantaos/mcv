@@ -2,7 +2,7 @@
  * MyCodeXvantaOS — Workspace Application Package
  */
 
-export { WorkspaceService } from "./workspace-service";
+export { WorkspaceService } from './workspace-service';
 export type {
   WorkspaceServiceDeps,
   WorkspacePhase,
@@ -13,4 +13,4 @@ export type {
   WorkspaceResource,
   MembershipResource,
   WorkspaceAuditEvent,
-} from "./workspace-service";
+} from './workspace-service';

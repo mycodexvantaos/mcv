@@ -1,4 +1,4 @@
-# MyCodexVantaOS — foundation-alignment
+## MyCodexVantaOS — foundation-alignment
 
 Machine Identity: `mycodexvantaos`
 Canonical URL: https://mycodexvantaos.com
@@ -15,7 +15,7 @@ This document describes the foundation-alignment specification for MyCodexVantaO
 
 <!-- Formal spec additions -->
 
-# Foundation Alignment
+## Foundation Alignment
 
 > Status: Normative
 > Document: docs/architecture/foundation-alignment.md

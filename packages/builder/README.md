@@ -11,7 +11,7 @@ pnpm add @mycodexvantaos/builder
 ## Usage
 
 ```typescript
-import { builder } from "@mycodexvantaos/builder";
+import { builder } from '@mycodexvantaos/builder';
 
 // Initialize
 await builder.initialize();

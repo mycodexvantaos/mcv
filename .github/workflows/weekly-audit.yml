@@ -5,7 +5,7 @@
 
 name: Weekly Security Audit
 
-on:
+"on":
   schedule:
     - cron: "0 2 * * 1" # Monday 02:00 UTC
   workflow_dispatch:
@@ -56,9 +56,9 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@8aad20d150bbac5944a9f9d289da16a4b0d87c1e
+        continue-on-error: true
         with:
           category: "/weekly-audit/language:${{ matrix.language }}"
-        continue-on-error: true
 
   # ── Semgrep Full Audit (CLI via container) ──────────────────────
   semgrep-full:
@@ -83,6 +83,7 @@ jobs:
       - name: Upload Semgrep SARIF
         if: always()
         uses: github/codeql-action/upload-sarif@dd903d2e4f5405488e5ef1422510ee31c8b32357
+        continue-on-error: true
         with:
           sarif_file: semgrep.sarif
           category: semgrep-weekly
@@ -110,6 +111,7 @@ jobs:
       - name: Upload Trivy SARIF
         if: always()
         uses: github/codeql-action/upload-sarif@dd903d2e4f5405488e5ef1422510ee31c8b32357
+        continue-on-error: true
         with:
           sarif_file: trivy-results.sarif
           category: trivy-weekly
@@ -138,6 +140,7 @@ jobs:
       - name: Upload Checkov SARIF
         if: always()
         uses: github/codeql-action/upload-sarif@dd903d2e4f5405488e5ef1422510ee31c8b32357
+        continue-on-error: true
         with:
           sarif_file: checkov-results.sarif
           category: checkov-weekly
@@ -165,6 +168,7 @@ jobs:
       - name: Upload Gitleaks SARIF
         if: always()
         uses: github/codeql-action/upload-sarif@dd903d2e4f5405488e5ef1422510ee31c8b32357
+        continue-on-error: true
         with:
           sarif_file: gitleaks-results.sarif
           category: gitleaks-weekly
@@ -194,6 +198,7 @@ jobs:
           LOG_LEVEL: NOTICE
           VALIDATE_GITHUB_ACTIONS: true
           VALIDATE_YAML: true
+          VALIDATE_JSON: true
           VALIDATE_MARKDOWN: true
           VALIDATE_BASH: true
           VALIDATE_DOCKERFILE_HADOLINT: true

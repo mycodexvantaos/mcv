@@ -3,4 +3,4 @@
  * configuration lives under config/ per the monorepo layout while Jest's
  * default resolution still finds it at the package root.
  */
-export { default } from "./config/jest.config.js";
+export { default } from './config/jest.config.js';

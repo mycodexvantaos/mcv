@@ -25,12 +25,12 @@
 // ══════════════════════════════════════════════════════════════════════════════
 
 function generatePairingKey() {
-  const chars = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; // 排除容易混淆的 0/O/1/I/L
-  let key = "";
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; // 排除容易混淆的 0/O/1/I/L
+  let key = '';
   for (let i = 0; i < 8; i++) {
     key += chars[Math.floor(Math.random() * chars.length)];
   }
-  return key.slice(0, 4) + "-" + key.slice(4);
+  return key.slice(0, 4) + '-' + key.slice(4);
 }
 
 async function handleKeysGenerate(request, env) {
@@ -42,7 +42,7 @@ async function handleKeysGenerate(request, env) {
 
     const keyRecord = {
       key,
-      status: "active",
+      status: 'active',
       createdAt: now,
       expiresAt,
       subjectConfirmed: false,
@@ -59,32 +59,32 @@ async function handleKeysGenerate(request, env) {
     // 更新活躍金鑰索引
     let activeKeys = [];
     try {
-      const existing = await env.SCREEN_MONITOR_KV.get("keys:active");
+      const existing = await env.SCREEN_MONITOR_KV.get('keys:active');
       if (existing) activeKeys = JSON.parse(existing);
     } catch (e) {}
     activeKeys.push(key);
-    await env.SCREEN_MONITOR_KV.put("keys:active", JSON.stringify(activeKeys));
+    await env.SCREEN_MONITOR_KV.put('keys:active', JSON.stringify(activeKeys));
 
     // 審計紀錄
     await appendAuditLog(env, {
-      action: "KEY_GENERATED",
+      action: 'KEY_GENERATED',
       key,
       timestamp: now,
-      details: "配對金鑰已生成",
+      details: '配對金鑰已生成',
     });
 
     return jsonResponse(
       {
         success: true,
         key,
-        status: "active",
+        status: 'active',
         expiresAt,
         createdAt: now,
       },
       201
     );
   } catch (err) {
-    return jsonResponse({ error: "金鑰生成失敗", details: err.message }, 500);
+    return jsonResponse({ error: '金鑰生成失敗', details: err.message }, 500);
   }
 }
 
@@ -94,7 +94,7 @@ async function handleKeysValidate(request, env) {
     const { key } = body;
 
     if (!key) {
-      return jsonResponse({ error: "缺少金鑰參數" }, 400);
+      return jsonResponse({ error: '缺少金鑰參數' }, 400);
     }
 
     const recordRaw = await env.SCREEN_MONITOR_KV.get(`key:${key}`);
@@ -102,8 +102,8 @@ async function handleKeysValidate(request, env) {
       return jsonResponse(
         {
           valid: false,
-          status: "not_found",
-          error: "金鑰不存在，請確認後重新輸入",
+          status: 'not_found',
+          error: '金鑰不存在，請確認後重新輸入',
         },
         404
       );
@@ -113,37 +113,37 @@ async function handleKeysValidate(request, env) {
 
     // 檢查過期
     if (record.expiresAt && Date.now() > record.expiresAt) {
-      record.status = "expired";
+      record.status = 'expired';
       await env.SCREEN_MONITOR_KV.put(`key:${key}`, JSON.stringify(record));
       return jsonResponse(
         {
           valid: false,
-          status: "expired",
-          error: "金鑰已過期，請重新生成",
+          status: 'expired',
+          error: '金鑰已過期，請重新生成',
         },
         410
       );
     }
 
     // 檢查是否已撤銷
-    if (record.status === "revoked") {
+    if (record.status === 'revoked') {
       return jsonResponse(
         {
           valid: false,
-          status: "revoked",
-          error: "金鑰已被撤銷",
+          status: 'revoked',
+          error: '金鑰已被撤銷',
         },
         403
       );
     }
 
     // 檢查是否已配對
-    if (record.status === "paired") {
+    if (record.status === 'paired') {
       return jsonResponse(
         {
           valid: false,
-          status: "already_paired",
-          error: "金鑰已被使用，無法重複配對",
+          status: 'already_paired',
+          error: '金鑰已被使用，無法重複配對',
         },
         409
       );
@@ -160,7 +160,7 @@ async function handleKeysValidate(request, env) {
       },
     });
   } catch (err) {
-    return jsonResponse({ error: "金鑰驗證失敗", details: err.message }, 500);
+    return jsonResponse({ error: '金鑰驗證失敗', details: err.message }, 500);
   }
 }
 
@@ -170,20 +170,20 @@ async function handleKeysPair(request, env) {
     const { key, observerInfo } = body;
 
     if (!key) {
-      return jsonResponse({ error: "缺少金鑰參數" }, 400);
+      return jsonResponse({ error: '缺少金鑰參數' }, 400);
     }
 
     const recordRaw = await env.SCREEN_MONITOR_KV.get(`key:${key}`);
     if (!recordRaw) {
-      return jsonResponse({ error: "金鑰不存在", status: "not_found" }, 404);
+      return jsonResponse({ error: '金鑰不存在', status: 'not_found' }, 404);
     }
 
     const record = JSON.parse(recordRaw);
 
-    if (record.status !== "active") {
+    if (record.status !== 'active') {
       return jsonResponse(
         {
-          error: "金鑰狀態無效，無法配對",
+          error: '金鑰狀態無效，無法配對',
           status: record.status,
         },
         409
@@ -191,14 +191,14 @@ async function handleKeysPair(request, env) {
     }
 
     if (record.expiresAt && Date.now() > record.expiresAt) {
-      return jsonResponse({ error: "金鑰已過期", status: "expired" }, 410);
+      return jsonResponse({ error: '金鑰已過期', status: 'expired' }, 410);
     }
 
     // 建立配對
     const sessionId = crypto.randomUUID();
     const now = Date.now();
 
-    record.status = "paired";
+    record.status = 'paired';
     record.pairedAt = now;
     record.pairedObserver = observerInfo || null;
     record.sessionId = sessionId;
@@ -211,7 +211,7 @@ async function handleKeysPair(request, env) {
       id: deviceId,
       pairedKey: key,
       sessionId,
-      status: "online",
+      status: 'online',
       pairedAt: now,
       lastSeen: now,
       observer: observerInfo || null,
@@ -224,18 +224,18 @@ async function handleKeysPair(request, env) {
         key,
         deviceId,
         createdAt: now,
-        status: "active",
+        status: 'active',
       })
     );
 
     // 審計紀錄
     await appendAuditLog(env, {
-      action: "KEY_PAIRED",
+      action: 'KEY_PAIRED',
       key,
       sessionId,
       deviceId,
       timestamp: now,
-      details: "觀察方已成功配對",
+      details: '觀察方已成功配對',
     });
 
     return jsonResponse({
@@ -245,7 +245,7 @@ async function handleKeysPair(request, env) {
       pairedAt: now,
     });
   } catch (err) {
-    return jsonResponse({ error: "配對失敗", details: err.message }, 500);
+    return jsonResponse({ error: '配對失敗', details: err.message }, 500);
   }
 }
 
@@ -255,12 +255,12 @@ async function handleKeysConfirmSubject(request, env) {
     const { key } = body;
 
     if (!key) {
-      return jsonResponse({ error: "缺少金鑰參數" }, 400);
+      return jsonResponse({ error: '缺少金鑰參數' }, 400);
     }
 
     const recordRaw = await env.SCREEN_MONITOR_KV.get(`key:${key}`);
     if (!recordRaw) {
-      return jsonResponse({ error: "金鑰不存在" }, 404);
+      return jsonResponse({ error: '金鑰不存在' }, 404);
     }
 
     const record = JSON.parse(recordRaw);
@@ -271,10 +271,10 @@ async function handleKeysConfirmSubject(request, env) {
 
     // 審計紀錄
     await appendAuditLog(env, {
-      action: "SUBJECT_CONFIRMED",
+      action: 'SUBJECT_CONFIRMED',
       key,
       timestamp: record.confirmedAt,
-      details: "被觀察方已確認金鑰並開始部署",
+      details: '被觀察方已確認金鑰並開始部署',
     });
 
     return jsonResponse({
@@ -283,29 +283,29 @@ async function handleKeysConfirmSubject(request, env) {
       confirmedAt: record.confirmedAt,
     });
   } catch (err) {
-    return jsonResponse({ error: "確認失敗", details: err.message }, 500);
+    return jsonResponse({ error: '確認失敗', details: err.message }, 500);
   }
 }
 
 async function handleKeysStatus(request, env) {
   try {
     const url = new URL(request.url);
-    const key = url.searchParams.get("key");
+    const key = url.searchParams.get('key');
 
     if (!key) {
-      return jsonResponse({ error: "缺少金鑰參數" }, 400);
+      return jsonResponse({ error: '缺少金鑰參數' }, 400);
     }
 
     const recordRaw = await env.SCREEN_MONITOR_KV.get(`key:${key}`);
     if (!recordRaw) {
-      return jsonResponse({ error: "金鑰不存在", status: "not_found" }, 404);
+      return jsonResponse({ error: '金鑰不存在', status: 'not_found' }, 404);
     }
 
     const record = JSON.parse(recordRaw);
 
     // 自動標記過期
-    if (record.status === "active" && record.expiresAt && Date.now() > record.expiresAt) {
-      record.status = "expired";
+    if (record.status === 'active' && record.expiresAt && Date.now() > record.expiresAt) {
+      record.status = 'expired';
       await env.SCREEN_MONITOR_KV.put(`key:${key}`, JSON.stringify(record));
     }
 
@@ -319,7 +319,7 @@ async function handleKeysStatus(request, env) {
       sessionId: record.sessionId,
     });
   } catch (err) {
-    return jsonResponse({ error: "查詢失敗", details: err.message }, 500);
+    return jsonResponse({ error: '查詢失敗', details: err.message }, 500);
   }
 }
 
@@ -329,31 +329,31 @@ async function handleKeysRevoke(request, env) {
     const { key } = body;
 
     if (!key) {
-      return jsonResponse({ error: "缺少金鑰參數" }, 400);
+      return jsonResponse({ error: '缺少金鑰參數' }, 400);
     }
 
     const recordRaw = await env.SCREEN_MONITOR_KV.get(`key:${key}`);
     if (!recordRaw) {
-      return jsonResponse({ error: "金鑰不存在" }, 404);
+      return jsonResponse({ error: '金鑰不存在' }, 404);
     }
 
     const record = JSON.parse(recordRaw);
-    record.status = "revoked";
+    record.status = 'revoked';
     record.revokedAt = Date.now();
 
     await env.SCREEN_MONITOR_KV.put(`key:${key}`, JSON.stringify(record));
 
     // 審計紀錄
     await appendAuditLog(env, {
-      action: "KEY_REVOKED",
+      action: 'KEY_REVOKED',
       key,
       timestamp: record.revokedAt,
-      details: "金鑰已被撤銷",
+      details: '金鑰已被撤銷',
     });
 
     return jsonResponse({ revoked: true, key });
   } catch (err) {
-    return jsonResponse({ error: "撤銷失敗", details: err.message }, 500);
+    return jsonResponse({ error: '撤銷失敗', details: err.message }, 500);
   }
 }
 
@@ -361,7 +361,7 @@ async function handleKeysList(request, env) {
   try {
     let activeKeys = [];
     try {
-      const existing = await env.SCREEN_MONITOR_KV.get("keys:active");
+      const existing = await env.SCREEN_MONITOR_KV.get('keys:active');
       if (existing) activeKeys = JSON.parse(existing);
     } catch (e) {}
 
@@ -382,7 +382,7 @@ async function handleKeysList(request, env) {
 
     return jsonResponse({ keys, total: keys.length });
   } catch (err) {
-    return jsonResponse({ error: "列表查詢失敗", details: err.message }, 500);
+    return jsonResponse({ error: '列表查詢失敗', details: err.message }, 500);
   }
 }
 
@@ -394,18 +394,18 @@ async function appendAuditLog(env, entry) {
   try {
     let logs = [];
     try {
-      const existing = await env.SCREEN_MONITOR_KV.get("audit:logs");
+      const existing = await env.SCREEN_MONITOR_KV.get('audit:logs');
       if (existing) logs = JSON.parse(existing);
     } catch (e) {}
 
     // SHA-256 審計雜湊
     const hashInput =
-      JSON.stringify(entry) + (logs.length > 0 ? logs[logs.length - 1].hash : "genesis");
+      JSON.stringify(entry) + (logs.length > 0 ? logs[logs.length - 1].hash : 'genesis');
     const encoder = new TextEncoder();
     const data = encoder.encode(hashInput);
-    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hash = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+    const hash = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
 
     entry.hash = hash;
     logs.push(entry);
@@ -413,9 +413,9 @@ async function appendAuditLog(env, entry) {
     // 只保留最近 200 筆
     if (logs.length > 200) logs = logs.slice(-200);
 
-    await env.SCREEN_MONITOR_KV.put("audit:logs", JSON.stringify(logs));
+    await env.SCREEN_MONITOR_KV.put('audit:logs', JSON.stringify(logs));
   } catch (e) {
-    console.error("審計紀錄寫入失敗:", e);
+    console.error('審計紀錄寫入失敗:', e);
   }
 }
 
@@ -426,25 +426,25 @@ async function appendAuditLog(env, entry) {
 function getMockDevices() {
   return [
     {
-      id: "DEV-A7X3K9",
-      name: "小明的手機",
-      status: "online",
+      id: 'DEV-A7X3K9',
+      name: '小明的手機',
+      status: 'online',
       lastSeen: Date.now(),
       risk: 0.12,
       categories: { gambling: 0, adult: 0, violence: 1, drugs: 0, contacts: 0 },
     },
     {
-      id: "DEV-B2M8P4",
-      name: "小華的平板",
-      status: "online",
+      id: 'DEV-B2M8P4',
+      name: '小華的平板',
+      status: 'online',
       lastSeen: Date.now() - 30000,
       risk: 0.34,
       categories: { gambling: 2, adult: 0, violence: 0, drugs: 1, contacts: 1 },
     },
     {
-      id: "DEV-C5N1R7",
-      name: "小美的筆電",
-      status: "offline",
+      id: 'DEV-C5N1R7',
+      name: '小美的筆電',
+      status: 'offline',
       lastSeen: Date.now() - 7200000,
       risk: 0.08,
       categories: { gambling: 0, adult: 0, violence: 0, drugs: 0, contacts: 0 },
@@ -455,47 +455,47 @@ function getMockDevices() {
 function getMockThreats() {
   return [
     {
-      id: "THR-001",
-      deviceId: "DEV-B2M8P4",
-      category: "gambling",
-      severity: "high",
-      description: "偵測到線上博弈網站存取",
+      id: 'THR-001',
+      deviceId: 'DEV-B2M8P4',
+      category: 'gambling',
+      severity: 'high',
+      description: '偵測到線上博弈網站存取',
       timestamp: Date.now() - 300000,
       resolved: false,
     },
     {
-      id: "THR-002",
-      deviceId: "DEV-B2M8P4",
-      category: "drugs",
-      severity: "medium",
-      description: "可疑藥物相關搜尋",
+      id: 'THR-002',
+      deviceId: 'DEV-B2M8P4',
+      category: 'drugs',
+      severity: 'medium',
+      description: '可疑藥物相關搜尋',
       timestamp: Date.now() - 900000,
       resolved: false,
     },
     {
-      id: "THR-003",
-      deviceId: "DEV-A7X3K9",
-      category: "violence",
-      severity: "low",
-      description: "暴力遊戲內容",
+      id: 'THR-003',
+      deviceId: 'DEV-A7X3K9',
+      category: 'violence',
+      severity: 'low',
+      description: '暴力遊戲內容',
       timestamp: Date.now() - 3600000,
       resolved: true,
     },
     {
-      id: "THR-004",
-      deviceId: "DEV-B2M8P4",
-      category: "contacts",
-      severity: "medium",
-      description: "未知成人聯絡人",
+      id: 'THR-004',
+      deviceId: 'DEV-B2M8P4',
+      category: 'contacts',
+      severity: 'medium',
+      description: '未知成人聯絡人',
       timestamp: Date.now() - 1800000,
       resolved: false,
     },
     {
-      id: "THR-005",
-      deviceId: "DEV-A7X3K9",
-      category: "adult",
-      severity: "critical",
-      description: "成人內容網站嘗試存取（已封鎖）",
+      id: 'THR-005',
+      deviceId: 'DEV-A7X3K9',
+      category: 'adult',
+      severity: 'critical',
+      description: '成人內容網站嘗試存取（已封鎖）',
       timestamp: Date.now() - 600000,
       resolved: false,
     },
@@ -505,52 +505,52 @@ function getMockThreats() {
 function getMockRules() {
   return [
     {
-      id: "RULE-001",
-      name: "博弈網站封鎖",
-      category: "gambling",
-      action: "block",
+      id: 'RULE-001',
+      name: '博弈網站封鎖',
+      category: 'gambling',
+      action: 'block',
       enabled: true,
-      severity: "critical",
+      severity: 'critical',
     },
     {
-      id: "RULE-002",
-      name: "成人內容過濾",
-      category: "adult",
-      action: "block",
+      id: 'RULE-002',
+      name: '成人內容過濾',
+      category: 'adult',
+      action: 'block',
       enabled: true,
-      severity: "critical",
+      severity: 'critical',
     },
     {
-      id: "RULE-003",
-      name: "暴力內容警示",
-      category: "violence",
-      action: "warn",
+      id: 'RULE-003',
+      name: '暴力內容警示',
+      category: 'violence',
+      action: 'warn',
       enabled: true,
-      severity: "high",
+      severity: 'high',
     },
     {
-      id: "RULE-004",
-      name: "藥物資訊監控",
-      category: "drugs",
-      action: "alert",
+      id: 'RULE-004',
+      name: '藥物資訊監控',
+      category: 'drugs',
+      action: 'alert',
       enabled: true,
-      severity: "high",
+      severity: 'high',
     },
     {
-      id: "RULE-005",
-      name: "陌生聯絡人提醒",
-      category: "contacts",
-      action: "alert",
+      id: 'RULE-005',
+      name: '陌生聯絡人提醒',
+      category: 'contacts',
+      action: 'alert',
       enabled: true,
-      severity: "medium",
+      severity: 'medium',
     },
     {
-      id: "RULE-006",
-      name: "深夜使用限制",
-      category: "general",
-      action: "restrict",
+      id: 'RULE-006',
+      name: '深夜使用限制',
+      category: 'general',
+      action: 'restrict',
       enabled: false,
-      severity: "low",
+      severity: 'low',
     },
   ];
 }
@@ -560,49 +560,49 @@ function getMockRules() {
 // ══════════════════════════════════════════════════════════════════════════════
 
 function jsonResponse(data, status = 200, request = null) {
-  let allowOrigin = "https://autoecoops.io";
+  let allowOrigin = 'https://autoecoops.io';
   if (request) {
-    const origin = request.headers.get("Origin") || "";
+    const origin = request.headers.get('Origin') || '';
     const allowed = [
-      "https://autoecoops.io",
-      "https://www.autoecoops.io",
-      "https://app.autoecoops.io",
-      "http://localhost:8787",
-      "http://localhost:3000",
+      'https://autoecoops.io',
+      'https://www.autoecoops.io',
+      'https://app.autoecoops.io',
+      'http://localhost:8787',
+      'http://localhost:3000',
     ];
     if (allowed.includes(origin)) allowOrigin = origin;
   }
   return new Response(JSON.stringify(data, null, 2), {
     status,
     headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": allowOrigin,
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
-      "Access-Control-Allow-Credentials": "true",
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': allowOrigin,
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Credentials': 'true',
     },
   });
 }
 
 function handleCORS(request) {
-  const origin = request.headers.get("Origin") || "";
+  const origin = request.headers.get('Origin') || '';
   const allowed = [
-    "https://autoecoops.io",
-    "https://www.autoecoops.io",
-    "https://app.autoecoops.io",
-    "http://localhost:8787",
-    "http://localhost:3000",
+    'https://autoecoops.io',
+    'https://www.autoecoops.io',
+    'https://app.autoecoops.io',
+    'http://localhost:8787',
+    'http://localhost:3000',
   ];
   const allowOrigin = allowed.includes(origin) ? origin : allowed[0];
 
   return new Response(null, {
     status: 204,
     headers: {
-      "Access-Control-Allow-Origin": allowOrigin,
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
-      "Access-Control-Allow-Credentials": "true",
-      "Access-Control-Max-Age": "86400",
+      'Access-Control-Allow-Origin': allowOrigin,
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Credentials': 'true',
+      'Access-Control-Max-Age': '86400',
     },
   });
 }
@@ -617,12 +617,12 @@ export default {
     const path = url.pathname;
 
     // CORS 預檢請求
-    if (request.method === "OPTIONS") {
+    if (request.method === 'OPTIONS') {
       return handleCORS(request);
     }
 
     // ═══ 金鑰配對 API ═══
-    if (path === "/api/keys/generate" && request.method === "POST") {
+    if (path === '/api/keys/generate' && request.method === 'POST') {
       if (env.SCREEN_MONITOR_KV) {
         return handleKeysGenerate(request, env);
       }
@@ -632,7 +632,7 @@ export default {
         {
           success: true,
           key,
-          status: "active",
+          status: 'active',
           expiresAt: Date.now() + 86400000,
           createdAt: Date.now(),
           _fallback: true,
@@ -641,19 +641,19 @@ export default {
       );
     }
 
-    if (path === "/api/keys/validate" && request.method === "POST") {
+    if (path === '/api/keys/validate' && request.method === 'POST') {
       if (env.SCREEN_MONITOR_KV) {
         return handleKeysValidate(request, env);
       }
       const body = await request.json().catch(() => ({}));
       const keyFormat = /^[A-Z0-9]{4}-[A-Z0-9]{4}$/;
       if (keyFormat.test(body.key)) {
-        return jsonResponse({ valid: true, status: "active", _fallback: true });
+        return jsonResponse({ valid: true, status: 'active', _fallback: true });
       }
-      return jsonResponse({ valid: false, status: "invalid", error: "金鑰格式不正確" }, 400);
+      return jsonResponse({ valid: false, status: 'invalid', error: '金鑰格式不正確' }, 400);
     }
 
-    if (path === "/api/keys/pair" && request.method === "POST") {
+    if (path === '/api/keys/pair' && request.method === 'POST') {
       if (env.SCREEN_MONITOR_KV) {
         return handleKeysPair(request, env);
       }
@@ -668,29 +668,29 @@ export default {
       });
     }
 
-    if (path === "/api/keys/confirm-subject" && request.method === "POST") {
+    if (path === '/api/keys/confirm-subject' && request.method === 'POST') {
       if (env.SCREEN_MONITOR_KV) {
         return handleKeysConfirmSubject(request, env);
       }
       return jsonResponse({ confirmed: true, _fallback: true });
     }
 
-    if (path === "/api/keys/status" && request.method === "GET") {
+    if (path === '/api/keys/status' && request.method === 'GET') {
       if (env.SCREEN_MONITOR_KV) {
         return handleKeysStatus(request, env);
       }
-      const key = url.searchParams.get("key");
-      return jsonResponse({ key, status: "active", _fallback: true });
+      const key = url.searchParams.get('key');
+      return jsonResponse({ key, status: 'active', _fallback: true });
     }
 
-    if (path === "/api/keys/revoke" && request.method === "POST") {
+    if (path === '/api/keys/revoke' && request.method === 'POST') {
       if (env.SCREEN_MONITOR_KV) {
         return handleKeysRevoke(request, env);
       }
       return jsonResponse({ revoked: true, _fallback: true });
     }
 
-    if (path === "/api/keys/list" && request.method === "GET") {
+    if (path === '/api/keys/list' && request.method === 'GET') {
       if (env.SCREEN_MONITOR_KV) {
         return handleKeysList(request, env);
       }
@@ -698,28 +698,28 @@ export default {
     }
 
     // ═══ 其他 API 端點 ═══
-    if (path === "/api/health") {
+    if (path === '/api/health') {
       return jsonResponse({
-        status: "healthy",
-        version: "3.0.0",
+        status: 'healthy',
+        version: '3.0.0',
         timestamp: Date.now(),
         kv: !!env.SCREEN_MONITOR_KV,
         uptime: process.uptime ? process.uptime() : null,
       });
     }
 
-    if (path === "/api/devices") {
+    if (path === '/api/devices') {
       return jsonResponse({ devices: getMockDevices() });
     }
 
-    if (path === "/api/threats") {
+    if (path === '/api/threats') {
       return jsonResponse({ threats: getMockThreats() });
     }
 
-    if (path === "/api/audit") {
+    if (path === '/api/audit') {
       if (env.SCREEN_MONITOR_KV) {
         try {
-          const logs = await env.SCREEN_MONITOR_KV.get("audit:logs");
+          const logs = await env.SCREEN_MONITOR_KV.get('audit:logs');
           return jsonResponse({ entries: logs ? JSON.parse(logs) : [] });
         } catch (e) {
           return jsonResponse({ entries: [] });
@@ -728,11 +728,11 @@ export default {
       return jsonResponse({ entries: [], _fallback: true });
     }
 
-    if (path === "/api/rules") {
+    if (path === '/api/rules') {
       return jsonResponse({ rules: getMockRules() });
     }
 
     // 404
-    return jsonResponse({ error: "端點不存在", path }, 404);
+    return jsonResponse({ error: '端點不存在', path }, 404);
   },
 };

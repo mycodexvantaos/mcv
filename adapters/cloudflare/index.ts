@@ -11,12 +11,12 @@
  * will be created for Docker/Postgres/Redis/etc. — the ports stay the same.
  */
 
-export { CloudflareStorageAdapter } from "./storage-adapter";
-export { CloudflareDatabaseAdapter } from "./database-adapter";
-export { CloudflareCacheAdapter } from "./cache-adapter";
-export { CloudflareSearchAdapter } from "./search-adapter";
-export { CloudflareModelAdapter } from "./model-adapter";
-export { CloudflareQueueAdapter } from "./queue-adapter";
+export { CloudflareStorageAdapter } from './storage-adapter';
+export { CloudflareDatabaseAdapter } from './database-adapter';
+export { CloudflareCacheAdapter } from './cache-adapter';
+export { CloudflareSearchAdapter } from './search-adapter';
+export { CloudflareModelAdapter } from './model-adapter';
+export { CloudflareQueueAdapter } from './queue-adapter';
 
 /**
  * Cloudflare Worker Environment bindings.

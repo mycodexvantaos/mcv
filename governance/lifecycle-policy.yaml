@@ -13,8 +13,8 @@ policy:
 
         '
       allowedTransitions:
-      - alpha
-      - archived
+        - alpha
+        - archived
       requiresApproval: false
     alpha:
       description: 'Internal testing stage. Functionality is complete but stability
@@ -22,8 +22,8 @@ policy:
 
         '
       allowedTransitions:
-      - beta
-      - archived
+        - beta
+        - archived
       requiresApproval: false
     beta:
       description: 'Public testing stage. Feature-complete with possible minor adjustments.
@@ -31,8 +31,8 @@ policy:
 
         '
       allowedTransitions:
-      - stable
-      - deprecated
+        - stable
+        - deprecated
       requiresApproval: true
       approvalBody: arch-committee
     stable:
@@ -41,7 +41,7 @@ policy:
 
         '
       allowedTransitions:
-      - deprecated
+        - deprecated
       requiresApproval: true
       approvalBody: arch-committee
       minimumDeprecationWindowDays: 90
@@ -51,7 +51,7 @@ policy:
 
         '
       allowedTransitions:
-      - archived
+        - archived
       requiresApproval: false
       replacementRequired: true
     archived:

@@ -11,7 +11,7 @@ pnpm add @mycodexvantaos/config-sync
 ## Usage
 
 ```typescript
-import { configSync } from "@mycodexvantaos/config-sync";
+import { configSync } from '@mycodexvantaos/config-sync';
 
 // Initialize
 await configSync.initialize();

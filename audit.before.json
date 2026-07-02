@@ -249,9 +249,7 @@
         },
         {
           "version": "0.15.18",
-          "paths": [
-            "services/mycodexvantaos-studio-platform > @cloudflare/next-on-pages@1.13.16 > esbuild@0.15.18"
-          ]
+          "paths": ["services/mycodexvantaos-studio-platform > @cloudflare/next-on-pages@1.13.16 > esbuild@0.15.18"]
         }
       ],
       "found_by": null,
@@ -284,9 +282,7 @@
       "findings": [
         {
           "version": "0.5.0",
-          "paths": [
-            "services/mycodexvantaos-studio-platform > @cloudflare/next-on-pages@1.13.16 > cookie@0.5.0"
-          ]
+          "paths": ["services/mycodexvantaos-studio-platform > @cloudflare/next-on-pages@1.13.16 > cookie@0.5.0"]
         }
       ],
       "found_by": null,
@@ -838,9 +834,7 @@
       "findings": [
         {
           "version": "5.0.5",
-          "paths": [
-            ". > @opennextjs/cloudflare@1.19.10 > glob@12.0.0 > minimatch@10.2.5 > brace-expansion@5.0.5"
-          ]
+          "paths": [". > @opennextjs/cloudflare@1.19.10 > glob@12.0.0 > minimatch@10.2.5 > brace-expansion@5.0.5"]
         }
       ],
       "found_by": null,

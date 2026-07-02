@@ -12,8 +12,8 @@ spec:
     lifecycle management.
   category: ai
   runtime-modes:
-  - native
-  - connected
-  - hybrid
+    - native
+    - connected
+    - hybrid
   implementationPath: services/mycodexvantaos-service-memory-store/
   packageName: '@mycodexvantaos/service-memory-store'

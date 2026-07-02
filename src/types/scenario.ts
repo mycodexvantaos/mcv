@@ -1,4 +1,4 @@
-export type RequirementPriority = "must" | "should" | "nice";
+export type RequirementPriority = 'must' | 'should' | 'nice';
 
 export interface ScenarioRequirement {
   metric: string;
@@ -25,7 +25,7 @@ export interface Solution {
   id: string;
   name: string;
   provider: string;
-  category: "inference" | "storage" | "compute" | "networking";
+  category: 'inference' | 'storage' | 'compute' | 'networking';
   capabilities: string[];
   limitations: string[];
 }
@@ -42,4 +42,4 @@ export interface ScenarioMatrix {
   generatedBy: string;
 }
 
-export type ScenarioWizardStep = "domain" | "requirements" | "constraints" | "priority";
+export type ScenarioWizardStep = 'domain' | 'requirements' | 'constraints' | 'priority';

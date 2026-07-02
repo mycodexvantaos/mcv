@@ -70,7 +70,7 @@ def validate_service_catalog(root: Path) -> None:
 
     try:
         with open(catalog_path) as f:
-            catalog = yaml.safe_load(f)
+            yaml.safe_load(f)
         print(f"✓ Service catalog: {catalog_path}")
     except Exception as e:
         violations.append(f"[ERROR] Service catalog parse error: {e}")

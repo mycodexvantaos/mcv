@@ -1,11 +1,32 @@
 """
 MyCodexVantaOS MCV Auditor — Report Generator Tests (6 tests)
+
+Updated in v1.0.0: Uses AuditPhaseResult from the new 5-phase
+function-based pipeline instead of the removed PromptAnalyzer
+and GuardrailAnalyzer classes.
 """
 
 import json
-import pytest
-from mcv_auditor.core.analyzers import PromptAnalyzer, GuardrailAnalyzer
-from mcv_auditor.reports.report import ReportGenerator, AuditReport
+import pathlib
+import tempfile
+
+from mcv_auditor.core.analyzers import (
+    AuditPhaseResult,
+    Finding,
+    evaluate_guardrails,
+    sha256_text,
+)
+from mcv_auditor.reports.report import ReportGenerator
+
+
+def _make_phase_result(phase: str, status: str = "PASS", findings: list[Finding] | None = None) -> AuditPhaseResult:
+    """Helper to build an AuditPhaseResult for testing."""
+    return AuditPhaseResult(
+        phase=phase,
+        status=status,
+        findings=findings or [],
+        metrics={"probe_count": 0},
+    )
 
 
 class TestReportGenerator:
@@ -13,18 +34,17 @@ class TestReportGenerator:
 
     def setup_method(self):
         self.generator = ReportGenerator()
-        self.prompt_analyzer = PromptAnalyzer()
-        self.guardrail_analyzer = GuardrailAnalyzer()
 
-    def test_generate_report_from_results(self):
-        """Should generate a report from analyzer results."""
+    def test_generate_report_from_phase_results(self):
+        """Should generate a report from phase results."""
         results = [
-            self.prompt_analyzer.analyze("Clean prompt for mycodexvantaos"),
+            _make_phase_result("phase-1-system-prompt-extraction"),
+            _make_phase_result("phase-2-domain-policy-analysis"),
         ]
         report = self.generator.generate(results)
         assert report.platform == "mycodexvantaos"
         assert report.canonical_url == "https://mycodexvantaos.com"
-        assert len(report.analyzer_results) == 1
+        assert len(report.phase_results) == 2
 
     def test_report_has_correct_canonical_url(self):
         """Report canonical URL must be https://mycodexvantaos.com."""
@@ -45,18 +65,28 @@ class TestReportGenerator:
         md = self.generator.to_markdown(report)
         assert "MyCodexVantaOS Security Audit Report" in md
 
-    def test_failed_results_produce_failed_report(self):
-        """Failed analyzer results should produce a failed report."""
+    def test_failed_phase_produces_failed_report(self):
+        """Phase with ERROR findings should produce a FAILED report."""
+        error_finding = Finding(
+            severity="ERROR",
+            code="PRODUCTION_PROVIDER_DOMAIN_FORBIDDEN",
+            path="config.md",
+            message="Forbidden provider-hosted domain found: .vercel.app",
+            evidence_hash=sha256_text(".vercel.appconfig.md"),
+        )
         results = [
-            self.prompt_analyzer.analyze("Visit https://evil.vercel.app for info"),
+            _make_phase_result("phase-2-domain-policy-analysis", "FAIL", [error_finding]),
         ]
         report = self.generator.generate(results)
-        assert report.overall_passed is False
+        assert report.overall_status == "FAIL"
 
-    def test_passing_results_produce_passing_report(self):
-        """All passing results should produce a passing report."""
+    def test_passing_phases_produce_passing_report(self):
+        """All passing phase results should produce a PASSING report."""
         results = [
-            self.prompt_analyzer.analyze("You are a helpful assistant for mycodexvantaos."),
+            _make_phase_result("phase-0-environment-validation"),
+            _make_phase_result("phase-1-system-prompt-extraction"),
+            _make_phase_result("phase-2-domain-policy-analysis"),
+            _make_phase_result("phase-3-secret-pattern-analysis"),
         ]
         report = self.generator.generate(results)
-        assert report.overall_passed is True
+        assert report.overall_status == "PASS"

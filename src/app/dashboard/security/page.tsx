@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 import {
   Shield,
   ShieldCheck,
@@ -12,63 +12,63 @@ import {
   RefreshCw,
   Key,
   Lock,
-} from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
+} from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 
 const complianceItems = [
-  { name: "GDPR", status: "compliant" as const, score: 98 },
-  { name: "HIPAA", status: "compliant" as const, score: 95 },
-  { name: "SOC2 Type II", status: "partial" as const, score: 82 },
-  { name: "ISO 27001", status: "partial" as const, score: 76 },
-  { name: "PCI DSS", status: "non-compliant" as const, score: 45 },
+  { name: 'GDPR', status: 'compliant' as const, score: 98 },
+  { name: 'HIPAA', status: 'compliant' as const, score: 95 },
+  { name: 'SOC2 Type II', status: 'partial' as const, score: 82 },
+  { name: 'ISO 27001', status: 'partial' as const, score: 76 },
+  { name: 'PCI DSS', status: 'non-compliant' as const, score: 45 },
 ];
 
 const secrets = [
   {
-    name: "PostgreSQL Connection String",
-    lastRotated: "15 days ago",
-    rotationSchedule: "30 days",
-    status: "healthy",
+    name: 'PostgreSQL Connection String',
+    lastRotated: '15 days ago',
+    rotationSchedule: '30 days',
+    status: 'healthy',
   },
   {
-    name: "Redis Auth Token",
-    lastRotated: "8 days ago",
-    rotationSchedule: "30 days",
-    status: "healthy",
+    name: 'Redis Auth Token',
+    lastRotated: '8 days ago',
+    rotationSchedule: '30 days',
+    status: 'healthy',
   },
   {
-    name: "GitHub PAT",
-    lastRotated: "45 days ago",
-    rotationSchedule: "30 days",
-    status: "overdue",
+    name: 'GitHub PAT',
+    lastRotated: '45 days ago',
+    rotationSchedule: '30 days',
+    status: 'overdue',
   },
   {
-    name: "Gemini API Key",
-    lastRotated: "22 days ago",
-    rotationSchedule: "90 days",
-    status: "healthy",
+    name: 'Gemini API Key',
+    lastRotated: '22 days ago',
+    rotationSchedule: '90 days',
+    status: 'healthy',
   },
   {
-    name: "Cloudflare API Token",
-    lastRotated: "5 days ago",
-    rotationSchedule: "90 days",
-    status: "healthy",
+    name: 'Cloudflare API Token',
+    lastRotated: '5 days ago',
+    rotationSchedule: '90 days',
+    status: 'healthy',
   },
 ];
 
 const complianceStatusColors = {
-  compliant: "text-status-healthy",
-  partial: "text-status-warning",
-  "non-compliant": "text-status-critical",
+  compliant: 'text-status-healthy',
+  partial: 'text-status-warning',
+  'non-compliant': 'text-status-critical',
 };
 
 const complianceStatusBg = {
-  compliant: "bg-status-healthy/10",
-  partial: "bg-status-warning/10",
-  "non-compliant": "bg-status-critical/10",
+  compliant: 'bg-status-healthy/10',
+  partial: 'bg-status-warning/10',
+  'non-compliant': 'bg-status-critical/10',
 };
 
 export default function SecurityPage() {
@@ -103,7 +103,7 @@ export default function SecurityPage() {
           ) : (
             <ShieldAlert className="h-4 w-4" />
           )}
-          {isScanning ? "Scanning..." : "Run Vulnerability Scan"}
+          {isScanning ? 'Scanning...' : 'Run Vulnerability Scan'}
         </Button>
       </div>
 
@@ -149,9 +149,9 @@ export default function SecurityPage() {
             {complianceItems.map((item) => (
               <div key={item.name} className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  {item.status === "compliant" ? (
+                  {item.status === 'compliant' ? (
                     <CheckCircle2 className="h-4 w-4 text-status-healthy" />
-                  ) : item.status === "partial" ? (
+                  ) : item.status === 'partial' ? (
                     <AlertTriangle className="h-4 w-4 text-status-warning" />
                   ) : (
                     <XCircle className="h-4 w-4 text-status-critical" />
@@ -196,7 +196,7 @@ export default function SecurityPage() {
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm font-medium">Secret Rotation Tracker</CardTitle>
             <Badge variant="outline" className="text-[10px]">
-              {secrets.filter((s) => s.status === "overdue").length} overdue
+              {secrets.filter((s) => s.status === 'overdue').length} overdue
             </Badge>
           </div>
         </CardHeader>
@@ -231,10 +231,10 @@ export default function SecurityPage() {
                     </td>
                     <td className="py-2.5 px-3">
                       <Badge
-                        variant={secret.status === "overdue" ? "destructive" : "outline"}
+                        variant={secret.status === 'overdue' ? 'destructive' : 'outline'}
                         className="text-[10px] h-5"
                       >
-                        {secret.status === "overdue" ? "⚠ Overdue" : "✓ Healthy"}
+                        {secret.status === 'overdue' ? '⚠ Overdue' : '✓ Healthy'}
                       </Badge>
                     </td>
                   </tr>

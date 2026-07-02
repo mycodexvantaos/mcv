@@ -1,7 +1,8 @@
+# 知識圖譜隔離宣告
 kind: ModuleManifest
 metadata:
   name: mycodexvantaos-quantum-darklab
 spec:
   domain: quantum
   capability: darklab
-  description: 暗實驗室：用於因果推理、自主演化、內在好奇心與價值對齊的隔離沙盒。此目錄不受主流水線嚴格約束。
+  description: "暗實驗室：用於因果推理、自主演化、內在好奇心與價值對齊的隔離沙盒。此目錄不受主流水線嚴格約束。"

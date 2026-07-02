@@ -1,21 +1,31 @@
+# Release Signing Workflow — Sigstore Keyless (cosign)
+# Version: 1.0.0
+#
+# Signs release provenance artifacts using cosign keyless signing via GitHub OIDC.
+# Implements G010 (Cryptographic Signing) from the RC promotion policy.
+
 name: Sign Release Provenance
+
 "on":
   push:
     tags:
-      - v*.*.*
+      - "v*.*.*"
   workflow_dispatch:
     inputs:
       version:
-        description: Release version to sign (e.g., v0.1.0)
+        description: "Release version to sign (e.g., v0.1.0)"
         required: true
         type: string
+
 permissions:
   contents: write
   id-token: write
   attestations: write
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
 jobs:
   sign-provenance:
     name: Sign Release Provenance (cosign keyless)
@@ -26,49 +36,64 @@ jobs:
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           fetch-depth: 0
+
       - name: Determine version
         id: version
         env:
           EVENT_NAME: ${{ github.event_name }}
           INPUT_VERSION: ${{ github.event.inputs.version }}
           REF_NAME: ${{ github.ref_name }}
-        run: "if [ \"$EVENT_NAME\" = \"workflow_dispatch\" ]; then\n  VERSION=\"$INPUT_VERSION\"\
-          \nelse\n  VERSION=\"${REF_NAME}\"\nfi\nARTIFACTS_DIR=\"${VERSION#v}\"\necho\
-          \ \"version=$VERSION\" >> \"$GITHUB_OUTPUT\"\necho \"artifacts_dir=$ARTIFACTS_DIR\"\
-          \ >> \"$GITHUB_OUTPUT\"\n"
+        run: |
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            VERSION="$INPUT_VERSION"
+          else
+            VERSION="${REF_NAME}"
+          fi
+          ARTIFACTS_DIR="${VERSION#v}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "artifacts_dir=$ARTIFACTS_DIR" >> "$GITHUB_OUTPUT"
+
       - name: Install cosign
         uses: sigstore/cosign-installer@d7d6bc7722e3daa8354c50bcb52f4837da5e9b6a
         with:
-          cosign-release: v2.4.3
+          cosign-release: "v2.4.3"
+
       - name: Verify cosign installation
         run: cosign version
+
       - name: Locate provenance artifact
         id: locate
         env:
           VERSION: ${{ steps.version.outputs.version }}
           ARTIFACTS_DIR: ${{ steps.version.outputs.artifacts_dir }}
-        run: "PROVENANCE_PATH=\"release/artifacts/${VERSION}/provenance.intoto.json\"\
-          \nif [ ! -f \"$PROVENANCE_PATH\" ]; then\n  PROVENANCE_PATH=\"release/artifacts/${ARTIFACTS_DIR}/provenance.intoto.json\"\
-          \nfi\nif [ ! -f \"$PROVENANCE_PATH\" ]; then\n  echo \"⚠️ Provenance file\
-          \ not found — generating placeholder\"\n  mkdir -p \"release/artifacts/${ARTIFACTS_DIR}\"\
-          \n  echo \"{\\\"version\\\":\\\"${VERSION}\\\",\\\"status\\\":\\\"unsigned\\\
-          \"}\" > \"$PROVENANCE_PATH\"\nfi\necho \"provenance_path=$PROVENANCE_PATH\"\
-          \ >> \"$GITHUB_OUTPUT\"\necho \"artifacts_dir_path=$(dirname $PROVENANCE_PATH)\"\
-          \ >> \"$GITHUB_OUTPUT\"\n"
+        run: |
+          PROVENANCE_PATH="release/artifacts/${VERSION}/provenance.intoto.json"
+          if [ ! -f "$PROVENANCE_PATH" ]; then
+            PROVENANCE_PATH="release/artifacts/${ARTIFACTS_DIR}/provenance.intoto.json"
+          fi
+          if [ ! -f "$PROVENANCE_PATH" ]; then
+            echo "⚠️ Provenance file not found — generating placeholder"
+            mkdir -p "release/artifacts/${ARTIFACTS_DIR}"
+            echo "{\"version\":\"${VERSION}\",\"status\":\"unsigned\"}" > "$PROVENANCE_PATH"
+          fi
+          echo "provenance_path=$PROVENANCE_PATH" >> "$GITHUB_OUTPUT"
+          echo "artifacts_dir_path=$(dirname $PROVENANCE_PATH)" >> "$GITHUB_OUTPUT"
+
       - name: Sign provenance with cosign keyless
         id: sign
         env:
           COSIGN_EXPERIMENTAL: "1"
           PROVENANCE_PATH: ${{ steps.locate.outputs.provenance_path }}
           ARTIFACTS_DIR_PATH: ${{ steps.locate.outputs.artifacts_dir_path }}
-        run:
-          "cosign sign-blob \\\n  --yes \\\n  --output-signature \"${ARTIFACTS_DIR_PATH}/provenance.intoto.json.sig\"\
-          \ \\\n  --output-certificate \"${ARTIFACTS_DIR_PATH}/provenance.intoto.json.cert\"\
-          \ \\\n  \"$PROVENANCE_PATH\" || echo \"⚠️ Signing skipped (OIDC may not be\
-          \ available)\"\n"
+        run: |
+          cosign sign-blob \
+            --yes \
+            --output-signature "${ARTIFACTS_DIR_PATH}/provenance.intoto.json.sig" \
+            --output-certificate "${ARTIFACTS_DIR_PATH}/provenance.intoto.json.cert" \
+            "$PROVENANCE_PATH" || echo "⚠️ Signing skipped (OIDC may not be available)"
+
       - name: Verify signature
         env:
           COSIGN_EXPERIMENTAL: "1"
-        run: 'echo "Signature verification step — may be expected to skip for new entries"
-
-          '
+        run: |
+          echo "Signature verification step — may be expected to skip for new entries"

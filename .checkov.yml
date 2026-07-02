@@ -1,0 +1,28 @@
+# .checkov.yml
+# MyCodexVantaOS Checkov configuration.
+#
+# Rationale: Constrains Checkov to the frameworks present in this monorepo
+# and skips paths that are not infrastructure-as-code source. The
+# CKV_GHA_7 skip preserves our explicit action SHA pinning policy —
+# that governance rule is enforced by the yaml-lint-guard workflow
+# and deep-ci-triage script instead.
+
+framework:
+  - github_actions
+  - dockerfile
+  - kubernetes
+  - terraform
+
+quiet: true
+compact: true
+soft-fail: false
+
+skip-check:
+  - CKV_GHA_7 # Preserve explicit action SHA pinning policy via custom governance rules.
+
+skip-path:
+  - node_modules
+  - .next
+  - dist
+  - build
+  - coverage

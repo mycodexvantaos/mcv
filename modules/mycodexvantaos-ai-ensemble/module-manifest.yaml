@@ -12,8 +12,8 @@ spec:
     and response aggregation.
   category: ai
   runtime-modes:
-  - native
-  - connected
-  - hybrid
+    - native
+    - connected
+    - hybrid
   implementationPath: services/mycodexvantaos-ai-ensemble/
   packageName: '@mycodexvantaos/ai-ensemble'

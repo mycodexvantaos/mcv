@@ -1,6 +1,6 @@
-import { RateLimiter } from "../index";
+import { RateLimiter } from '../index';
 
-describe("rate-limiter", () => {
+describe('rate-limiter', () => {
   let instance: RateLimiter;
 
   beforeEach(() => {
@@ -10,11 +10,11 @@ describe("rate-limiter", () => {
     });
   });
 
-  test("should initialize", () => {
+  test('should initialize', () => {
     expect(instance).toBeDefined();
   });
 
-  test("should have basic functionality", () => {
-    expect(typeof instance).toBe("object");
+  test('should have basic functionality', () => {
+    expect(typeof instance).toBe('object');
   });
 });

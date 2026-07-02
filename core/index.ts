@@ -35,7 +35,7 @@ export interface ResourceMetadata {
 
 export interface ResourceCondition {
   type: string;
-  status: "True" | "False" | "Unknown";
+  status: 'True' | 'False' | 'Unknown';
   reason: string;
   message: string;
   lastTransitionTime: string;
@@ -60,19 +60,19 @@ export interface IdentitySubjectStatus {
   activeSessions: number;
 }
 
-export type SubjectPhase = "unregistered" | "active" | "suspended" | "deactivated";
+export type SubjectPhase = 'unregistered' | 'active' | 'suspended' | 'deactivated';
 
 export type Role =
-  | "platform-admin"
-  | "workspace-owner"
-  | "workspace-member"
-  | "workspace-viewer"
-  | "agent-service"
-  | "auditor";
+  | 'platform-admin'
+  | 'workspace-owner'
+  | 'workspace-member'
+  | 'workspace-viewer'
+  | 'agent-service'
+  | 'auditor';
 
 export interface CredentialRef {
   id: string;
-  type: "password" | "oauth" | "mfa-totp" | "mfa-webauthn" | "api-key";
+  type: 'password' | 'oauth' | 'mfa-totp' | 'mfa-webauthn' | 'api-key';
   createdAt: string;
 }
 
@@ -80,7 +80,7 @@ export interface TokenPair {
   accessToken: string;
   refreshToken: string;
   expiresIn: number;
-  tokenType: "Bearer";
+  tokenType: 'Bearer';
 }
 
 export interface TokenClaims {
@@ -112,7 +112,7 @@ export interface WorkspaceStatus {
   suspended: boolean;
 }
 
-export type WorkspacePhase = "creating" | "active" | "suspended" | "deleting" | "deleted";
+export type WorkspacePhase = 'creating' | 'active' | 'suspended' | 'deleting' | 'deleted';
 
 export interface WorkspaceSettings {
   dataResidency: string;
@@ -161,7 +161,7 @@ export interface DocumentSpec {
   language: string;
 }
 
-export type DocumentFormat = "pdf" | "txt" | "md" | "html" | "json" | "csv" | "docx";
+export type DocumentFormat = 'pdf' | 'txt' | 'md' | 'html' | 'json' | 'csv' | 'docx';
 
 export interface DocumentStatus {
   phase: DocumentPhase;
@@ -169,17 +169,17 @@ export interface DocumentStatus {
   chunkCount: number;
   totalTokens: number;
   fileSizeBytes: number;
-  verificationStatus: "passed" | "failed" | "pending" | "skipped";
+  verificationStatus: 'passed' | 'failed' | 'pending' | 'skipped';
 }
 
 export type DocumentPhase =
-  | "uploaded"
-  | "ingesting"
-  | "ready"
-  | "failed"
-  | "stale"
-  | "archived"
-  | "deleted";
+  | 'uploaded'
+  | 'ingesting'
+  | 'ready'
+  | 'failed'
+  | 'stale'
+  | 'archived'
+  | 'deleted';
 
 export interface DocumentChunkSpec {
   documentId: string;
@@ -201,7 +201,7 @@ export interface KnowledgeCollectionSpec {
   name: string;
   description: string;
   embeddingModel: string;
-  chunkStrategy: "fixed" | "semantic" | "sentence";
+  chunkStrategy: 'fixed' | 'semantic' | 'sentence';
   language: string;
 }
 
@@ -215,7 +215,7 @@ export interface KnowledgeCollectionStatus {
   freshness: FreshnessMetrics;
 }
 
-export type CollectionPhase = "creating" | "empty" | "indexing" | "ready" | "degraded" | "deleted";
+export type CollectionPhase = 'creating' | 'empty' | 'indexing' | 'ready' | 'degraded' | 'deleted';
 
 export interface FreshnessMetrics {
   avgDocumentAgeDays: number;
@@ -224,16 +224,16 @@ export interface FreshnessMetrics {
 }
 
 export interface KnowledgeIssueSpec {
-  issueType: "stale" | "contradiction" | "gap" | "hallucination" | "broken-reference";
+  issueType: 'stale' | 'contradiction' | 'gap' | 'hallucination' | 'broken-reference';
   affectedResourceIds: string[];
-  severity: "critical" | "high" | "medium" | "low";
+  severity: 'critical' | 'high' | 'medium' | 'low';
   description: string;
   autoRepairEligible: boolean;
 }
 
 export interface KnowledgeRepairSpec {
   issueId: string;
-  repairType: "re-ingest" | "re-embed" | "re-chunk" | "delete" | "merge" | "supplement";
+  repairType: 're-ingest' | 're-embed' | 're-chunk' | 'delete' | 'merge' | 'supplement';
   automated: boolean;
   repairData: Record<string, unknown>;
 }
@@ -243,7 +243,7 @@ export interface KnowledgeRepairSpec {
 export interface SearchOptions {
   topK: number;
   minScore: number;
-  searchType: "semantic" | "fulltext" | "hybrid";
+  searchType: 'semantic' | 'fulltext' | 'hybrid';
   filters?: Record<string, unknown>;
   collectionIds?: string[];
 }
@@ -257,7 +257,7 @@ export interface SearchResultItem {
   evidenceLevel: EvidenceLevel;
 }
 
-export type EvidenceLevel = "knowledge-assisted" | "knowledge-verified" | "knowledge-grounded";
+export type EvidenceLevel = 'knowledge-assisted' | 'knowledge-verified' | 'knowledge-grounded';
 
 export interface SourceTrace {
   chunkId: string;
@@ -287,12 +287,12 @@ export interface ChatSessionStatus {
   lastMessageAt: string | null;
 }
 
-export type ChatSessionPhase = "created" | "active" | "idle" | "closed";
+export type ChatSessionPhase = 'created' | 'active' | 'idle' | 'closed';
 
 export interface ChatMessage {
   id: string;
   sessionId: string;
-  role: "user" | "assistant" | "system";
+  role: 'user' | 'assistant' | 'system';
   content: string;
   evidenceLevel: EvidenceLevel | null;
   sourceTraces: SourceTrace[];
@@ -310,7 +310,7 @@ export interface AnswerTraceSpec {
 export interface MemoryItemSpec {
   sessionId: string;
   content: string;
-  memoryType: "short-term" | "long-term" | "episodic" | "semantic";
+  memoryType: 'short-term' | 'long-term' | 'episodic' | 'semantic';
   importance: number;
 }
 
@@ -325,7 +325,7 @@ export interface ModelEndpointSpec {
   failoverEndpointId: string | null;
 }
 
-export type ModelProvider = "openai" | "anthropic" | "google" | "ollama" | "custom";
+export type ModelProvider = 'openai' | 'anthropic' | 'google' | 'ollama' | 'custom';
 
 export interface ModelParameters {
   temperature?: number;
@@ -337,14 +337,14 @@ export interface ModelParameters {
 export interface ModelEndpointStatus {
   phase: ModelEndpointPhase;
   conditions: ResourceCondition[];
-  health: "healthy" | "degraded" | "unhealthy" | "unknown";
+  health: 'healthy' | 'degraded' | 'unhealthy' | 'unknown';
   totalInvocations: number;
   totalTokensUsed: number;
   lastInvokedAt: string | null;
   lastHealthCheckAt: string | null;
 }
 
-export type ModelEndpointPhase = "registering" | "active" | "degraded" | "revoked";
+export type ModelEndpointPhase = 'registering' | 'active' | 'degraded' | 'revoked';
 
 // ─── Governance Models ────────────────────────────────────────────────
 
@@ -360,30 +360,30 @@ export interface AuditEventSpec {
   data: Record<string, unknown>;
 }
 
-export type EventCategory = "identity" | "workspace" | "knowledge" | "ai" | "model" | "governance";
-export type EventSeverity = "critical" | "high" | "medium" | "low" | "info";
+export type EventCategory = 'identity' | 'workspace' | 'knowledge' | 'ai' | 'model' | 'governance';
+export type EventSeverity = 'critical' | 'high' | 'medium' | 'low' | 'info';
 
 export interface AuditEventStatus {
   hash: string;
   previousHash: string;
   chainIndex: number;
-  closedLoopStatus: "open" | "completed" | "timeout" | "violated";
+  closedLoopStatus: 'open' | 'completed' | 'timeout' | 'violated';
   closedAt: string | null;
 }
 
 export interface UsageRecordSpec {
   serviceId: string;
-  metric: "api_calls" | "tokens" | "storage_bytes" | "compute_ms";
+  metric: 'api_calls' | 'tokens' | 'storage_bytes' | 'compute_ms';
   quantity: number;
   tier: Tier;
   billingPeriod: string;
 }
 
-export type Tier = "free" | "pro" | "enterprise";
+export type Tier = 'free' | 'pro' | 'enterprise';
 
 // ─── Pipeline Models ──────────────────────────────────────────────────
 
-export type IngestionPhase = "validate" | "extract" | "chunk" | "embed" | "index" | "verify";
+export type IngestionPhase = 'validate' | 'extract' | 'chunk' | 'embed' | 'index' | 'verify';
 
 export interface IngestionResult {
   documentId: string;
@@ -420,6 +420,6 @@ export interface PolicyEvaluationContext {
   role: Role;
   action: string;
   resourceKind: string;
-  resourceScope: "workspace" | "platform";
+  resourceScope: 'workspace' | 'platform';
   tier: Tier;
 }

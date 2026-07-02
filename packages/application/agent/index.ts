@@ -2,7 +2,7 @@
  * MyCodeXvantaOS — Agent Application Package
  */
 
-export { AgentService } from "./agent-service";
+export { AgentService } from './agent-service';
 export type {
   AgentServiceDeps,
   ChatSessionPhase,
@@ -13,4 +13,4 @@ export type {
   SendMessageInput,
   AgentSearchResult,
   AgentAuditEvent,
-} from "./agent-service";
+} from './agent-service';

@@ -2,13 +2,13 @@
  * Integration Tests for MyCodeXvantaOS Packages
  */
 
-import { Builder } from "@mycodexvantaos/builder";
-import { Runtime } from "@mycodexvantaos/runtime";
-import { Deployment } from "@mycodexvantaos/deployment";
+import { Builder } from '@mycodexvantaos/builder';
+import { Runtime } from '@mycodexvantaos/runtime';
+import { Deployment } from '@mycodexvantaos/deployment';
 
-describe("Package Integration", () => {
-  describe("Builder → Runtime Flow", () => {
-    it("should build and execute applications", async () => {
+describe('Package Integration', () => {
+  describe('Builder → Runtime Flow', () => {
+    it('should build and execute applications', async () => {
       const builder = new Builder();
       const runtime = new Runtime();
 
@@ -19,8 +19,8 @@ describe("Package Integration", () => {
       try {
         // Build an application
         const app = await builder.execute({
-          name: "test-app",
-          type: "simple",
+          name: 'test-app',
+          type: 'simple',
         });
 
         expect(app).toBeDefined();
@@ -38,8 +38,8 @@ describe("Package Integration", () => {
     });
   });
 
-  describe("Runtime → Deployment Flow", () => {
-    it("should deploy executed applications", async () => {
+  describe('Runtime → Deployment Flow', () => {
+    it('should deploy executed applications', async () => {
       const runtime = new Runtime();
       const deployment = new Deployment();
 
@@ -49,13 +49,13 @@ describe("Package Integration", () => {
       try {
         // Execute application
         const app = await runtime.execute({
-          name: "test-app",
+          name: 'test-app',
         });
 
         // Deploy application
         const deployed = await deployment.execute({
           application: app,
-          target: "local",
+          target: 'local',
         });
 
         expect(deployed).toBeDefined();

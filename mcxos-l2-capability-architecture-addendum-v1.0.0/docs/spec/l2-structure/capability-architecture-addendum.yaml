@@ -4,139 +4,156 @@ version: 1.0.0
 date: '2026-06-29'
 status: active
 authoritative: true
-title: MyCodexVantaOS Capability Architecture Addendum (L2)
-description: 'Layer 2 structural specification. Defines directory governance, module/service/provider/
+title: 'MyCodexVantaOS Capability Architecture Addendum (L2)'
+description: >
+  Layer 2 structural specification. Defines directory governance, module/service/provider/
   foundation structure, navigation module, namespace governance, and gate system.
   Extends L1 Constitution with structural implementation details.
 
-  '
+# Directory governance
 directory-governance:
   root-directories:
     required:
-    - docs
-    - foundation
-    - governance
-    - navigation
-    - contracts
-    - platform
-    - providers
-    - modules
-    - services
-    - packages
-    - apps
-    - infra
-    - policies
-    - supply-chain
-    - release
-    - artifacts
-    - config
-    - ci
-    - scripts
-    - outputs
-    - unified-gates
-    - mycodexvantaos-namespace-governance
+      - docs
+      - foundation
+      - governance
+      - navigation
+      - contracts
+      - platform
+      - providers
+      - modules
+      - services
+      - packages
+      - apps
+      - infra
+      - policies
+      - supply-chain
+      - release
+      - artifacts
+      - config
+      - ci
+      - scripts
+      - outputs
+      - unified-gates
+      - mycodexvantaos-namespace-governance
   naming-rule: kebab-case
   minimum-root-count: 245
+
+# Module structure
 module-structure:
   required-files:
-  - module-manifest.yaml
-  - README.md
-  - src/
-  - tests/
+    - module-manifest.yaml
+    - README.md
+    - src/
+    - tests/
   module-manifest-fields:
     required:
-    - apiVersion
-    - kind
-    - metadata.name
-    - metadata.version
-    - service-id
-    - platform
-    - runtime-modes
+      - apiVersion
+      - kind
+      - metadata.name
+      - metadata.version
+      - service-id
+      - platform
+      - runtime-modes
+
+# Service structure
 service-structure:
   required-files:
-  - README.md
-  - src/
-  - tests/
+    - README.md
+    - src/
+    - tests/
   service-count: 11
   services:
-  - mycodexvantaos-agent-runtime
-  - mycodexvantaos-ai-embedding
-  - mycodexvantaos-ai-inference
-  - mycodexvantaos-billing-metering
-  - mycodexvantaos-core-auth
-  - mycodexvantaos-governance-audit-chain
-  - mycodexvantaos-governance-policy-engine
-  - mycodexvantaos-knowledge-ingestion
-  - mycodexvantaos-knowledge-search
-  - mycodexvantaos-quantum-controller
-  - mycodexvantaos-runtime-mode-resolver
+    - mycodexvantaos-agent-runtime
+    - mycodexvantaos-ai-embedding
+    - mycodexvantaos-ai-inference
+    - mycodexvantaos-billing-metering
+    - mycodexvantaos-core-auth
+    - mycodexvantaos-governance-audit-chain
+    - mycodexvantaos-governance-policy-engine
+    - mycodexvantaos-knowledge-ingestion
+    - mycodexvantaos-knowledge-search
+    - mycodexvantaos-quantum-controller
+    - mycodexvantaos-runtime-mode-resolver
+
+# Provider structure
 provider-structure:
   required-files:
-  - provider-manifest.yaml
+    - provider-manifest.yaml
   provider-manifest-fields:
     required:
-    - apiVersion
-    - kind
-    - metadata.name
-    - provider-id
-    - capability
-    - runtime-modes
+      - apiVersion
+      - kind
+      - metadata.name
+      - provider-id
+      - capability
+      - runtime-modes
+
+# Navigation module
 navigation-module:
   location: navigation/
   required-files:
-  - README.md
-  - mycodexvantaos-module.yaml
-  - dependency-graph.yaml
-  - module-index.yaml
-  - navigation-policy.yaml
-  purpose: Central navigation hub for all platform components
+    - README.md
+    - mycodexvantaos-module.yaml
+    - dependency-graph.yaml
+    - module-index.yaml
+    - navigation-policy.yaml
+  purpose: 'Central navigation hub for all platform components'
+
+# Namespace governance
 namespace-governance:
   location: mycodexvantaos-namespace-governance/
-  purpose: Namespace lifecycle management and closure proofs
+  purpose: 'Namespace lifecycle management and closure proofs'
   required-subsystems:
-  - contracts
-  - governance
-  - navigation
-  - schemas
-  - scripts
+    - contracts
+    - governance
+    - navigation
+    - schemas
+    - scripts
+
+# Gate system
 gate-system:
   location: unified-gates/
   gate-count: 61
   levels:
-  - l00: Meta-governance and namespace (8 gates)
-  - l10: AI compute infrastructure (8 gates)
-  - l20: Data and vector layer (8 gates)
-  - l30: Algorithm and model layer (8 gates)
-  - l40: Agent and runtime layer (8 gates)
-  - l50: Business and billing layer (8 gates)
-  - l60: Cloud infrastructure (4 gates)
-  - l90: Supply chain and production closure (9 gates)
+    - l00: 'Meta-governance and namespace (8 gates)'
+    - l10: 'AI compute infrastructure (8 gates)'
+    - l20: 'Data and vector layer (8 gates)'
+    - l30: 'Algorithm and model layer (8 gates)'
+    - l40: 'Agent and runtime layer (8 gates)'
+    - l50: 'Business and billing layer (8 gates)'
+    - l60: 'Cloud infrastructure (4 gates)'
+    - l90: 'Supply chain and production closure (9 gates)'
   final-gate: gate-99-production-closure-validation
+
+# Persistent runtime
 persistent-runtime:
   enabled: true
   modes:
-  - native
-  - connected
-  - hybrid
+    - native
+    - connected
+    - hybrid
   provider-resolution: capability-first
   fallback-to-native: true
+
+# Agent capabilities
 agent-capabilities:
   memory:
-  - short-term
-  - long-term
-  - episodic
+    - short-term
+    - long-term
+    - episodic
   tool-calling:
-  - mcp
-  - openai-function-calling
-  - native-tool-registry
+    - mcp
+    - openai-function-calling
+    - native-tool-registry
   workflow:
-  - dag
-  - sequential
-  - parallel
-  - conditional
+    - dag
+    - sequential
+    - parallel
+    - conditional
   task-types:
-  - synchronous
-  - asynchronous
-  - batch
-  - streaming
-  - long-running
+    - synchronous
+    - asynchronous
+    - batch
+    - streaming
+    - long-running

@@ -8,21 +8,21 @@ metadata:
 policy:
   namespaceFormat: mycodexvantaos-<environment>
   allowedNamespaces:
-  - name: mycodexvantaos-dev
-    environment: dev
-    description: Development environment namespace.
-  - name: mycodexvantaos-staging
-    environment: staging
-    description: Pre-production staging namespace.
-  - name: mycodexvantaos-prod
-    environment: prod
-    description: Production environment namespace.
+    - name: mycodexvantaos-dev
+      environment: dev
+      description: Development environment namespace.
+    - name: mycodexvantaos-staging
+      environment: staging
+      description: Pre-production staging namespace.
+    - name: mycodexvantaos-prod
+      environment: prod
+      description: Production environment namespace.
   environmentIsolationRules:
     forbiddenInCanonicalNames:
-    - dev
-    - staging
-    - prod
-    note: 'The strings ''dev'', ''staging'', and ''prod'' are permitted ONLY in namespace
+      - dev
+      - staging
+      - prod
+    note: "The strings 'dev', 'staging', and 'prod' are permitted ONLY in namespace
       names (mycodexvantaos-dev, mycodexvantaos-staging, mycodexvantaos-prod) and
       in Helm values files (values-dev.yaml, values-staging.yaml, values-prod.yaml).
       Any other resource (Deployment, Service, ConfigMap, Secret, Ingress, package
@@ -30,7 +30,7 @@ policy:
       a string is a genuine business-domain term, register in governance/exceptions.yaml
       with arch-committee approval.
 
-      '
+      "
   canonicalResourceNameRules:
     note: 'Kubernetes Deployment / Service / ConfigMap / Secret / Ingress logical
       names MUST equal the service-id exactly (5.4). Environment differentiation is
@@ -41,7 +41,7 @@ policy:
     tool: kustomize
     baseDir: infra/kubernetes/base/
     overlayDir: infra/kubernetes/overlays/<environment>/
-    note: 'Each overlay kustomization.yaml patches ONLY namespace and environment-specific
-      labels/annotations. It MUST NOT rename any resource''s metadata.name.
+    note: "Each overlay kustomization.yaml patches ONLY namespace and environment-specific
+      labels/annotations. It MUST NOT rename any resource's metadata.name.
 
-      '
+      "

@@ -67,18 +67,18 @@ All external services MUST be accessed through Provider abstractions:
 
 ```typescript
 // CORRECT: Provider abstraction
-import { StorageProvider } from "@mycodexvantaos/core-config";
+import { StorageProvider } from '@mycodexvantaos/core-config';
 
 class MyService {
   constructor(private storage: StorageProvider) {}
 
   async save(data: unknown) {
-    await this.storage.put("key", data);
+    await this.storage.put('key', data);
   }
 }
 
 // WRONG: Direct SDK usage in business logic
-import { S3Client } from "@aws-sdk/client-s3"; // NEVER in business logic
+import { S3Client } from '@aws-sdk/client-s3'; // NEVER in business logic
 ```
 
 ## Contract-First Development

@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   Orbit,
   Globe,
@@ -16,13 +16,13 @@ import {
   Brain,
   Loader2,
   CheckCircle2,
-} from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+} from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 
 export function RealityMeshExplorer() {
   const [nodes, setNodes] = useState<any[]>([]);
@@ -37,33 +37,33 @@ export function RealityMeshExplorer() {
     setTimeout(() => {
       setNodes([
         {
-          id: "node-1",
-          name: "VS Code Marketplace",
-          status: "SYNCHRONIZED",
+          id: 'node-1',
+          name: 'VS Code Marketplace',
+          status: 'SYNCHRONIZED',
           alignment: 0.98,
-          type: "Ecosystem",
+          type: 'Ecosystem',
         },
         {
-          id: "node-2",
-          name: "GitHub Ecosystem",
-          status: "MAPPING",
+          id: 'node-2',
+          name: 'GitHub Ecosystem',
+          status: 'MAPPING',
           alignment: 0.85,
-          type: "Repository",
+          type: 'Repository',
         },
         {
-          id: "node-3",
-          name: "Google Cloud Nodes",
-          status: "ESTABLISHED",
+          id: 'node-3',
+          name: 'Google Cloud Nodes',
+          status: 'ESTABLISHED',
           alignment: 0.92,
-          type: "Infrastructure",
+          type: 'Infrastructure',
         },
-        { id: "node-4", name: "NPM Registry", status: "SYNCING", alignment: 0.78, type: "Package" },
+        { id: 'node-4', name: 'NPM Registry', status: 'SYNCING', alignment: 0.78, type: 'Package' },
         {
-          id: "node-5",
-          name: "Developer Intent Mesh",
-          status: "AWAKENING",
+          id: 'node-5',
+          name: 'Developer Intent Mesh',
+          status: 'AWAKENING',
           alignment: 0.45,
-          type: "Cognitive",
+          type: 'Cognitive',
         },
       ]);
       setIsScanning(false);
@@ -74,19 +74,19 @@ export function RealityMeshExplorer() {
     setIsSyncing(true);
     try {
       // 調用主權握手 API
-      const response = await fetch("/api/admin/metrics", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "trigger-sovereign-handshake" }),
+      const response = await fetch('/api/admin/metrics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'trigger-sovereign-handshake' }),
       });
 
       if (response.ok) {
         setTimeout(() => {
           setAlignment((prev) => Math.min(prev + 0.005, 0.15));
           toast({
-            title: "Reality Anchors Locked",
+            title: 'Reality Anchors Locked',
             description:
-              "All Layer P nodes have successfully synchronized with the Sovereign Core.",
+              'All Layer P nodes have successfully synchronized with the Sovereign Core.',
           });
           setIsSyncing(false);
           performScan();
@@ -95,9 +95,9 @@ export function RealityMeshExplorer() {
     } catch (e) {
       setIsSyncing(false);
       toast({
-        variant: "destructive",
-        title: "Synchronization Failed",
-        description: "Reality synthesis mesh could not establish stable anchors.",
+        variant: 'destructive',
+        title: 'Synchronization Failed',
+        description: 'Reality synthesis mesh could not establish stable anchors.',
       });
     }
   };
@@ -120,7 +120,7 @@ export function RealityMeshExplorer() {
           onClick={performScan}
           disabled={isScanning || isSyncing}
         >
-          <RefreshCcw className={`h-4 w-4 ${isScanning ? "animate-spin" : ""}`} />
+          <RefreshCcw className={`h-4 w-4 ${isScanning ? 'animate-spin' : ''}`} />
         </Button>
       </div>
 
@@ -181,11 +181,11 @@ export function RealityMeshExplorer() {
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center gap-3">
                         <div className="h-8 w-8 rounded-lg bg-primary/5 border border-primary/10 flex items-center justify-center text-primary group-hover:scale-110 group-hover:border-primary/40 transition-all duration-300">
-                          {node.type === "Ecosystem" && <InfinityIcon className="h-4 w-4" />}
-                          {node.type === "Repository" && <Link2 className="h-4 w-4" />}
-                          {node.type === "Infrastructure" && <Target className="h-4 w-4" />}
-                          {node.type === "Package" && <Zap className="h-4 w-4" />}
-                          {node.type === "Cognitive" && <Brain className="h-4 w-4" />}
+                          {node.type === 'Ecosystem' && <InfinityIcon className="h-4 w-4" />}
+                          {node.type === 'Repository' && <Link2 className="h-4 w-4" />}
+                          {node.type === 'Infrastructure' && <Target className="h-4 w-4" />}
+                          {node.type === 'Package' && <Zap className="h-4 w-4" />}
+                          {node.type === 'Cognitive' && <Brain className="h-4 w-4" />}
                         </div>
                         <div>
                           <p className="text-xs font-bold text-foreground/90">{node.name}</p>
@@ -198,16 +198,16 @@ export function RealityMeshExplorer() {
                         <Badge
                           variant="outline"
                           className={`text-[8px] h-4 font-black ${
-                            node.status === "SYNCHRONIZED"
-                              ? "text-accent border-accent/20 bg-accent/5"
-                              : node.status === "MAPPING"
-                                ? "text-primary border-primary/20 bg-primary/5"
-                                : "text-muted-foreground border-white/10"
+                            node.status === 'SYNCHRONIZED'
+                              ? 'text-accent border-accent/20 bg-accent/5'
+                              : node.status === 'MAPPING'
+                                ? 'text-primary border-primary/20 bg-primary/5'
+                                : 'text-muted-foreground border-white/10'
                           }`}
                         >
                           {node.status}
                         </Badge>
-                        {node.status === "SYNCHRONIZED" && (
+                        {node.status === 'SYNCHRONIZED' && (
                           <CheckCircle2 className="h-3 w-3 text-accent" />
                         )}
                       </div>
@@ -215,7 +215,7 @@ export function RealityMeshExplorer() {
                     <div className="flex items-center gap-3 mt-3">
                       <div className="flex-1 h-1 bg-white/5 rounded-full overflow-hidden">
                         <div
-                          className={`h-full transition-all duration-1000 ${node.alignment > 0.9 ? "bg-accent" : "bg-primary"}`}
+                          className={`h-full transition-all duration-1000 ${node.alignment > 0.9 ? 'bg-accent' : 'bg-primary'}`}
                           style={{ width: `${node.alignment * 100}%` }}
                         ></div>
                       </div>
@@ -238,7 +238,7 @@ export function RealityMeshExplorer() {
           disabled={isSyncing || isScanning}
         >
           {isSyncing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Zap className="h-4 w-4" />}
-          {isSyncing ? "SYNCHRONIZING MESH..." : "SYNCHRONIZE ALL REALITY ANCHORS"}
+          {isSyncing ? 'SYNCHRONIZING MESH...' : 'SYNCHRONIZE ALL REALITY ANCHORS'}
         </Button>
       </div>
     </div>

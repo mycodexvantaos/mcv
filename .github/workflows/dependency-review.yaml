@@ -1,24 +1,57 @@
 name: Dependency Review
+
 "on":
   pull_request:
-    branches:
-      - main
+    branches: ["main"]
+
 concurrency:
   group: dep-review-${{ github.ref }}
   cancel-in-progress: true
+
 permissions:
   contents: read
+
 jobs:
   dependency-review:
     name: Dependency Review
     runs-on: ubuntu-latest
+    # The dependency-review-action requires GitHub Dependency Graph and
+    # Advanced Security (GHAS) to be enabled on the repository. On repos
+    # where these features are not available, the action errors with
+    # "Dependency review is not supported on this repository." Instead of
+    # failing the PR, we gracefully skip when the feature is unavailable.
     continue-on-error: true
     timeout-minutes: 10
     steps:
-      - name: Checkout Repository
+      - name: "Checkout Repository"
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
-      - name: Dependency Review
+
+      - name: "Check Dependency Graph Availability"
+        id: dep-graph-check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Query the dependency graph endpoint; if it returns 200 the
+          # feature is enabled, 404/403 means it is unavailable.
+          status=$(gh api repos/${{ github.repository }}/dependency-graph/sbom \
+            --jq '.sbom // empty' 2>/dev/null \
+            && echo "200" || echo "unavailable")
+          if [ "$status" = "200" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Dependency Graph is not available on this repository."
+            echo "::warning::Enable it at https://github.com/${{ github.repository }}/settings/security_analysis"
+          fi
+
+      - name: "Dependency Review"
+        if: steps.dep-graph-check.outputs.available == 'true'
         uses: actions/dependency-review-action@4901385134134e04cec5fbe5ddfe3b2c5bd5d976
         with:
           config-file: .github/dependency-review-config.yml
-        continue-on-error: true
+
+      - name: "Skip Notice"
+        if: steps.dep-graph-check.outputs.available != 'true'
+        run: |
+          echo "::notice::Dependency Review was skipped because Dependency Graph / GitHub Advanced Security is not enabled on this repository."
+          echo "To enable: https://github.com/${{ github.repository }}/settings/security_analysis"

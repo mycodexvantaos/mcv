@@ -3,38 +3,39 @@ kind: ForbiddenProductionURLPolicy
 metadata:
   name: forbidden-production-url-policy
   version: 1.0.0
-  description: Defines URL patterns that are forbidden for production deployment.
-    Vendor-hosted URLs indicate non-production infrastructure and must not appear
-    in production configuration.
+  description: >-
+    Defines URL patterns that are forbidden for production deployment.
+    Vendor-hosted URLs indicate non-production infrastructure and must not
+    appear in production configuration.
 spec:
   patterns:
-  - pattern: github-pages
-    description: GitHub Pages hosted sites
-    glob: '*.github.io'
-  - pattern: cloudflare-pages
-    description: Cloudflare Pages hosted sites
-    glob: '*.pages.dev'
-  - pattern: vercel
-    description: Vercel hosted sites
-    glob: '*.vercel.app'
-  - pattern: netlify
-    description: Netlify hosted sites
-    glob: '*.netlify.app'
-  - pattern: google-cloud-run
-    description: Google Cloud Run hosted sites
-    glob: '*.run.app'
-  - pattern: google-app-engine
-    description: Google App Engine hosted sites
-    glob: '*.appspot.com'
-  - pattern: google-cloud-functions
-    description: Google Cloud Functions hosted sites
-    glob: '*.cloudfunctions.net'
-  - pattern: firebase-hosting
-    description: Firebase Hosting sites
-    glob: '*.web.app'
-  - pattern: firebase-legacy
-    description: Firebase legacy hosting sites
-    glob: '*.firebaseapp.com'
-  - pattern: google-cloud-storage
-    description: Google Cloud Storage direct access
-    glob: storage.googleapis.com
+    - pattern: github-pages
+      description: GitHub Pages hosted sites
+      glob: '*.github.io'
+    - pattern: cloudflare-pages
+      description: Cloudflare Pages hosted sites
+      glob: '*.pages.dev'
+    - pattern: vercel
+      description: Vercel hosted sites
+      glob: '*.vercel.app'
+    - pattern: netlify
+      description: Netlify hosted sites
+      glob: '*.netlify.app'
+    - pattern: google-cloud-run
+      description: Google Cloud Run hosted sites
+      glob: '*.run.app'
+    - pattern: google-app-engine
+      description: Google App Engine hosted sites
+      glob: '*.appspot.com'
+    - pattern: google-cloud-functions
+      description: Google Cloud Functions hosted sites
+      glob: '*.cloudfunctions.net'
+    - pattern: firebase-hosting
+      description: Firebase Hosting sites
+      glob: '*.web.app'
+    - pattern: firebase-legacy
+      description: Firebase legacy hosting sites
+      glob: '*.firebaseapp.com'
+    - pattern: google-cloud-storage
+      description: Google Cloud Storage direct access
+      glob: storage.googleapis.com

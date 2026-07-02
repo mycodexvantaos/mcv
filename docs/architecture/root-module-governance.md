@@ -1,4 +1,4 @@
-# MyCodexVantaOS — root-module-governance
+## MyCodexVantaOS — root-module-governance
 
 Machine Identity: `mycodexvantaos`
 Canonical URL: https://mycodexvantaos.com
@@ -15,7 +15,7 @@ This document describes the root-module-governance specification for MyCodexVant
 
 <!-- Formal spec additions -->
 
-# Root Module Governance
+## Root Module Governance
 
 > Status: Normative
 > Document: docs/architecture/root-module-governance.md

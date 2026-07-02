@@ -45,7 +45,7 @@ Mock Burden > 20:  極高複雜度（阻止合入 main）
 
 ```typescript
 // ci/service-complexity-analyzer.ts
-import { Project } from "ts-morph";
+import { Project } from 'ts-morph';
 
 interface ComplexityReport {
   service: string;
@@ -64,7 +64,7 @@ async function calculateMockBurden(serviceDir: string): Promise<ComplexityReport
     for (const importDecl of sourceFile.getImportDeclarations()) {
       const moduleSpecifier = importDecl.getModuleSpecifierValue();
       // 計算需要 mock 的外部依賴
-      if (!moduleSpecifier.startsWith(".") && !moduleSpecifier.startsWith("@types")) {
+      if (!moduleSpecifier.startsWith('.') && !moduleSpecifier.startsWith('@types')) {
         externalDeps.add(moduleSpecifier);
       }
     }
@@ -74,9 +74,9 @@ async function calculateMockBurden(serviceDir: string): Promise<ComplexityReport
   let recommendation: string | undefined;
 
   if (mockBurden > 20) {
-    recommendation = "CRITICAL: Refactor required. Extract adapter pattern.";
+    recommendation = 'CRITICAL: Refactor required. Extract adapter pattern.';
   } else if (mockBurden > 10) {
-    recommendation = "WARNING: Consider extracting dependencies.";
+    recommendation = 'WARNING: Consider extracting dependencies.';
   }
 
   return {
@@ -95,8 +95,8 @@ name: Service Complexity Gate
 on:
   pull_request:
     paths:
-      - "services/**"
-      - "modules/**"
+      - 'services/**'
+      - 'modules/**'
 
 jobs:
   complexity-gate:

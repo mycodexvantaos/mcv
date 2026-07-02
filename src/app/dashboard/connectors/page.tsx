@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 import {
   Database,
   GitFork,
@@ -12,12 +12,12 @@ import {
   Circle,
   Activity,
   Loader2,
-} from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+} from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Dialog,
   DialogContent,
@@ -25,17 +25,17 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import type { ConnectorType, ConnectorHealthStatus } from "@/types/connector";
+} from '@/components/ui/select';
+import type { ConnectorType, ConnectorHealthStatus } from '@/types/connector';
 
 interface ConnectorCardData {
   id: string;
@@ -52,52 +52,52 @@ interface ConnectorCardData {
 
 const mockConnectors: ConnectorCardData[] = [
   {
-    id: "c1",
-    name: "Primary PostgreSQL",
-    type: "postgresql",
-    status: "connected",
+    id: 'c1',
+    name: 'Primary PostgreSQL',
+    type: 'postgresql',
+    status: 'connected',
     latencyMs: 3.2,
     connectionsActive: 42,
     connectionsMax: 100,
     queriesPerSecond: 1250,
     errorRate: 0.001,
-    lastHealthCheck: "30s ago",
+    lastHealthCheck: '30s ago',
   },
   {
-    id: "c2",
-    name: "Redis Cache Cluster",
-    type: "redis",
-    status: "connected",
+    id: 'c2',
+    name: 'Redis Cache Cluster',
+    type: 'redis',
+    status: 'connected',
     latencyMs: 0.8,
     connectionsActive: 28,
     connectionsMax: 50,
     queriesPerSecond: 8500,
     errorRate: 0.0002,
-    lastHealthCheck: "15s ago",
+    lastHealthCheck: '15s ago',
   },
   {
-    id: "c3",
-    name: "GitHub Integration",
-    type: "github",
-    status: "connected",
+    id: 'c3',
+    name: 'GitHub Integration',
+    type: 'github',
+    status: 'connected',
     latencyMs: 45,
     connectionsActive: 5,
     connectionsMax: 10,
     queriesPerSecond: 12,
     errorRate: 0.005,
-    lastHealthCheck: "2m ago",
+    lastHealthCheck: '2m ago',
   },
   {
-    id: "c4",
-    name: "S3 Document Storage",
-    type: "s3",
-    status: "degraded",
+    id: 'c4',
+    name: 'S3 Document Storage',
+    type: 's3',
+    status: 'degraded',
     latencyMs: 120,
     connectionsActive: 15,
     connectionsMax: 20,
     queriesPerSecond: 45,
     errorRate: 0.02,
-    lastHealthCheck: "1m ago",
+    lastHealthCheck: '1m ago',
   },
 ];
 
@@ -110,17 +110,17 @@ const connectorIcons: Record<ConnectorType, typeof Database> = {
 };
 
 const statusColors: Record<ConnectorHealthStatus, string> = {
-  connected: "text-status-healthy",
-  degraded: "text-status-warning",
-  disconnected: "text-status-critical",
-  configuring: "text-status-idle",
+  connected: 'text-status-healthy',
+  degraded: 'text-status-warning',
+  disconnected: 'text-status-critical',
+  configuring: 'text-status-idle',
 };
 
 const statusDotColors: Record<ConnectorHealthStatus, string> = {
-  connected: "bg-status-healthy",
-  degraded: "bg-status-warning",
-  disconnected: "bg-status-critical",
-  configuring: "bg-status-idle",
+  connected: 'bg-status-healthy',
+  degraded: 'bg-status-warning',
+  disconnected: 'bg-status-critical',
+  configuring: 'bg-status-idle',
 };
 
 export default function ConnectorsPage() {
@@ -208,7 +208,7 @@ export default function ConnectorsPage() {
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground">Healthy</p>
             <p className="text-2xl font-bold font-headline text-status-healthy">
-              {mockConnectors.filter((c) => c.status === "connected").length}
+              {mockConnectors.filter((c) => c.status === 'connected').length}
             </p>
           </CardContent>
         </Card>
@@ -216,7 +216,7 @@ export default function ConnectorsPage() {
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground">Degraded</p>
             <p className="text-2xl font-bold font-headline text-status-warning">
-              {mockConnectors.filter((c) => c.status === "degraded").length}
+              {mockConnectors.filter((c) => c.status === 'degraded').length}
             </p>
           </CardContent>
         </Card>

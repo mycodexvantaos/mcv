@@ -7,8 +7,8 @@
  * grounded it, enabling downstream verification and audit.
  */
 
-import type { ResourceCondition } from "../shared";
-import type { EvidenceLevel, AnswerTracePhase } from "./knowledge-index";
+import type { ResourceCondition } from '../shared';
+import type { EvidenceLevel, AnswerTracePhase } from './knowledge-index';
 
 export interface AnswerTraceSpec {
   /** The chat session this trace belongs to */

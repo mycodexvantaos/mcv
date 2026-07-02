@@ -2,7 +2,7 @@
 # governanceCode: mycodexvantaos-00000
 name: Namespace Governance CI
 
-on:
+"on":
   push:
     branches: [main, develop]
   pull_request:

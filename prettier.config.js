@@ -1,32 +1,42 @@
-/** @type {import("prettier").Config} */
+/**
+ * Prettier configuration — canonical source of truth.
+ * Rationale: Replaces conflicting .prettierrc (JSON) to eliminate dual-config
+ * resolution ambiguity. singleQuote: true preserved to match existing src/
+ * codebase (Next.js app, packages/core). bracketSpacing and arrowParens
+ * added for explicit style governance. endOfLine: 'lf' enforces cross-platform
+ * consistency in CI. .prettierrc must be deleted after this file is merged.
+ *
+ * @type {import("prettier").Config}
+ */
 const config = {
   semi: true,
-  singleQuote: false,
-  trailingComma: "es5",
+  singleQuote: true, // Matches existing src/ — DO NOT change without full-repo reformat PR
+  trailingComma: 'es5',
   printWidth: 100,
   tabWidth: 2,
   useTabs: false,
   bracketSpacing: true,
-  arrowParens: "always",
-  endOfLine: "lf",
+  arrowParens: 'always',
+  endOfLine: 'lf',
   overrides: [
     {
-      files: ["*.yaml", "*.yml"],
+      files: ['*.yaml', '*.yml'],
       options: {
-        tabWidth: 2,
-        singleQuote: false,
+        singleQuote: false, // YAML convention: double quotes
+        printWidth: 120,
       },
     },
     {
-      files: ["*.json"],
+      files: ['*.json'],
       options: {
-        tabWidth: 2,
+        printWidth: 120,
       },
     },
     {
-      files: ["*.md"],
+      files: ['*.md'],
       options: {
-        proseWrap: "preserve",
+        proseWrap: 'preserve',
+        printWidth: 120,
       },
     },
   ],

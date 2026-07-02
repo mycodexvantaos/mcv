@@ -12,16 +12,16 @@
  *   - track-model-usage
  */
 
-import type { IDatabasePort } from "../../ports/database";
+import type { IDatabasePort } from '../../ports/database';
 import type {
   IChatModelPort,
   IEmbeddingModelPort,
   ModelResponse,
   EmbedResponse,
   ModelHealthStatus,
-} from "../../ports/model-provider";
-import type { IAuthPort } from "../../ports/auth";
-import type { ResourceCondition } from "../../core/shared";
+} from '../../ports/model-provider';
+import type { IAuthPort } from '../../ports/auth';
+import type { ResourceCondition } from '../../core/shared';
 
 // ── Service Dependencies ───────────────────────────────────────────────
 
@@ -41,14 +41,14 @@ export interface ModelServiceDeps {
 // ── Types ──────────────────────────────────────────────────────────────
 
 export type ModelProvider =
-  | "openai"
-  | "anthropic"
-  | "google"
-  | "ollama"
-  | "openrouter"
-  | "workers-ai"
-  | "custom";
-export type ModelEndpointPhase = "registering" | "active" | "degraded" | "revoked";
+  | 'openai'
+  | 'anthropic'
+  | 'google'
+  | 'ollama'
+  | 'openrouter'
+  | 'workers-ai'
+  | 'custom';
+export type ModelEndpointPhase = 'registering' | 'active' | 'degraded' | 'revoked';
 
 export interface RegisterEndpointInput {
   provider: ModelProvider;
@@ -72,7 +72,7 @@ export interface ModelEndpointResource {
   };
   status: {
     phase: ModelEndpointPhase;
-    health: "healthy" | "degraded" | "unhealthy" | "unknown";
+    health: 'healthy' | 'degraded' | 'unhealthy' | 'unknown';
     totalInvocations: number;
     totalTokensUsed: number;
     conditions: ResourceCondition[];
@@ -81,7 +81,7 @@ export interface ModelEndpointResource {
 
 export interface CallChatModelInput {
   endpointId: string;
-  messages: Array<{ role: "system" | "user" | "assistant"; content: string }>;
+  messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }>;
   temperature?: number;
   maxTokens?: number;
 }
@@ -94,7 +94,7 @@ export interface CallEmbeddingModelInput {
 
 export interface ModelAuditEvent {
   eventType: string;
-  category: "model";
+  category: 'model';
   severity: string;
   subjectId: string;
   workspaceId: string;
@@ -143,12 +143,12 @@ export class ModelService {
     );
 
     await this.deps.audit.emitEvent({
-      eventType: "model.endpoint.registered",
-      category: "model",
-      severity: "info",
+      eventType: 'model.endpoint.registered',
+      category: 'model',
+      severity: 'info',
       subjectId,
       workspaceId,
-      action: "register-model-provider",
+      action: 'register-model-provider',
       correlationId: crypto.randomUUID(),
     });
 
@@ -164,8 +164,8 @@ export class ModelService {
         failoverEndpointId: input.failoverEndpointId ?? null,
       },
       status: {
-        phase: "active",
-        health: "healthy",
+        phase: 'active',
+        health: 'healthy',
         totalInvocations: 0,
         totalTokensUsed: 0,
         conditions: [],
@@ -185,15 +185,15 @@ export class ModelService {
       maxTokens: input.maxTokens,
     });
 
-    await this.deps.usage.meterUsage(workspaceId, "tokens", response.usage.totalTokens);
+    await this.deps.usage.meterUsage(workspaceId, 'tokens', response.usage.totalTokens);
 
     await this.deps.audit.emitEvent({
-      eventType: "model.chat.invoked",
-      category: "model",
-      severity: "info",
+      eventType: 'model.chat.invoked',
+      category: 'model',
+      severity: 'info',
       subjectId,
       workspaceId,
-      action: "call-chat-model",
+      action: 'call-chat-model',
       correlationId: crypto.randomUUID(),
       data: { endpointId: input.endpointId, tokensUsed: response.usage.totalTokens },
     });
@@ -207,11 +207,11 @@ export class ModelService {
     input: CallEmbeddingModelInput
   ): Promise<EmbedResponse> {
     const response = await this.deps.embeddingModel.embed({
-      model: input.model ?? "default",
+      model: input.model ?? 'default',
       input: input.texts,
     });
 
-    await this.deps.usage.meterUsage(workspaceId, "tokens", response.usage.totalTokens);
+    await this.deps.usage.meterUsage(workspaceId, 'tokens', response.usage.totalTokens);
 
     return response;
   }

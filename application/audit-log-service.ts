@@ -5,8 +5,8 @@
  * Implements SHA-256 hash-linking, tamper detection, and closed-loop verification.
  */
 
-import type { IDatabasePort, IQueuePort } from "../ports/index";
-import type { AuditEventSpec, AuditEventStatus, EventCategory, EventSeverity } from "../core/index";
+import type { IDatabasePort, IQueuePort } from '../ports/index';
+import type { AuditEventSpec, AuditEventStatus, EventCategory, EventSeverity } from '../core/index';
 
 export interface AuditLogServiceDeps {
   database: IDatabasePort;
@@ -38,11 +38,11 @@ export class AuditLogService {
 
     // Get the last event in the chain for hash linking
     const lastEvent = await this.deps.database.queryFirst<{ hash: string; chain_index: number }>(
-      "SELECT hash, chain_index FROM audit_events ORDER BY chain_index DESC LIMIT 1"
+      'SELECT hash, chain_index FROM audit_events ORDER BY chain_index DESC LIMIT 1'
     );
 
     const previousHash =
-      lastEvent?.hash ?? "0000000000000000000000000000000000000000000000000000000000000000";
+      lastEvent?.hash ?? '0000000000000000000000000000000000000000000000000000000000000000';
     const chainIndex = (lastEvent?.chain_index ?? 0) + 1;
 
     // Compute SHA-256 hash chain
@@ -113,35 +113,35 @@ export class AuditLogService {
     const params: unknown[] = [];
 
     if (filter.eventType) {
-      conditions.push("event_type = ?");
+      conditions.push('event_type = ?');
       params.push(filter.eventType);
     }
     if (filter.category) {
-      conditions.push("category = ?");
+      conditions.push('category = ?');
       params.push(filter.category);
     }
     if (filter.severity) {
-      conditions.push("severity = ?");
+      conditions.push('severity = ?');
       params.push(filter.severity);
     }
     if (filter.subjectId) {
-      conditions.push("subject_id = ?");
+      conditions.push('subject_id = ?');
       params.push(filter.subjectId);
     }
     if (filter.workspaceId) {
-      conditions.push("workspace_id = ?");
+      conditions.push('workspace_id = ?');
       params.push(filter.workspaceId);
     }
     if (filter.fromTimestamp) {
-      conditions.push("timestamp >= ?");
+      conditions.push('timestamp >= ?');
       params.push(filter.fromTimestamp);
     }
     if (filter.toTimestamp) {
-      conditions.push("timestamp <= ?");
+      conditions.push('timestamp <= ?');
       params.push(filter.toTimestamp);
     }
 
-    const where = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+    const where = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
     const limit = filter.limit ?? 100;
     const offset = filter.offset ?? 0;
 
@@ -236,7 +236,7 @@ export class AuditLogService {
     previousHash: string,
     data: Record<string, unknown> | undefined
   ): Promise<string> {
-    const canonicalData = data ? this.canonicalJson(data) : "{}";
+    const canonicalData = data ? this.canonicalJson(data) : '{}';
     const input = `${eventId}|${eventType}|${timestamp}|${previousHash}|${await this.hashString(canonicalData)}`;
     return this.hashString(input);
   }
@@ -244,16 +244,16 @@ export class AuditLogService {
   private async hashString(input: string): Promise<string> {
     const encoder = new TextEncoder();
     const data = encoder.encode(input);
-    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
     return Array.from(new Uint8Array(hashBuffer))
-      .map((b) => b.toString(16).padStart(2, "0"))
-      .join("");
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('');
   }
 
   private canonicalJson(data: Record<string, unknown>): string {
     // Canonical JSON: sorted keys, no whitespace
     const sortKeys = (obj: unknown): unknown => {
-      if (obj === null || typeof obj !== "object") return obj;
+      if (obj === null || typeof obj !== 'object') return obj;
       if (Array.isArray(obj)) return obj.map(sortKeys);
       return Object.keys(obj as Record<string, unknown>)
         .sort()
@@ -269,12 +269,12 @@ export class AuditLogService {
     // Check if this event completes an open closed-loop pair
     // The closed-loop pairs are defined in audit-events.yaml
     const completionPairs: Record<string, string> = {
-      "identity.session.created": "identity.subject.authenticated",
-      "knowledge.document.ingestion.completed": "knowledge.document.uploaded",
-      "knowledge.document.ingestion.failed": "knowledge.document.uploaded",
-      "model.invocation.completed": "model.invocation.started",
-      "model.invocation.failed": "model.invocation.started",
-      "ai.chat.response.generated": "ai.chat.message.sent",
+      'identity.session.created': 'identity.subject.authenticated',
+      'knowledge.document.ingestion.completed': 'knowledge.document.uploaded',
+      'knowledge.document.ingestion.failed': 'knowledge.document.uploaded',
+      'model.invocation.completed': 'model.invocation.started',
+      'model.invocation.failed': 'model.invocation.started',
+      'ai.chat.response.generated': 'ai.chat.message.sent',
     };
 
     const requestEvent = completionPairs[eventType];

@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 import {
   Bot,
   User,
@@ -16,15 +16,15 @@ import {
   Wrench,
   Sparkles,
   Layout,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Badge } from "@/components/ui/badge";
-import { conversationalAiAssistant } from "@/ai/client-stubs";
-import { useToast } from "@/hooks/use-toast";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { cn } from "@/lib/utils";
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Badge } from '@/components/ui/badge';
+import { conversationalAiAssistant } from '@/ai/client-stubs';
+import { useToast } from '@/hooks/use-toast';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { cn } from '@/lib/utils';
 
 const ChatMessage = ({
   role,
@@ -32,7 +32,7 @@ const ChatMessage = ({
   internalLog,
   actions,
 }: {
-  role: "user" | "bot";
+  role: 'user' | 'bot';
   children: React.ReactNode;
   internalLog?: string;
   actions?: string[];
@@ -42,36 +42,36 @@ const ChatMessage = ({
   return (
     <div
       className={cn(
-        "flex flex-col gap-3 group animate-in fade-in slide-in-from-bottom-2 duration-300",
-        role === "user" ? "items-end" : "items-start"
+        'flex flex-col gap-3 group animate-in fade-in slide-in-from-bottom-2 duration-300',
+        role === 'user' ? 'items-end' : 'items-start'
       )}
     >
       <div
         className={cn(
-          "flex items-start gap-4",
-          role === "user" ? "justify-end flex-row-reverse" : ""
+          'flex items-start gap-4',
+          role === 'user' ? 'justify-end flex-row-reverse' : ''
         )}
       >
         <div
           className={cn(
-            "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border transition-all shadow-lg",
-            role === "bot"
-              ? "bg-primary/10 border-primary/20 text-primary group-hover:bg-primary/20"
-              : "bg-secondary border-border text-muted-foreground"
+            'flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border transition-all shadow-lg',
+            role === 'bot'
+              ? 'bg-primary/10 border-primary/20 text-primary group-hover:bg-primary/20'
+              : 'bg-secondary border-border text-muted-foreground'
           )}
         >
-          {role === "bot" ? <Bot className="h-5 w-5" /> : <User className="h-5 w-5" />}
+          {role === 'bot' ? <Bot className="h-5 w-5" /> : <User className="h-5 w-5" />}
         </div>
 
         <div
           className={cn(
-            "relative max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-2xl",
-            role === "bot"
-              ? "bg-card/40 border border-white/5 backdrop-blur-md"
-              : "bg-primary text-primary-foreground"
+            'relative max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-2xl',
+            role === 'bot'
+              ? 'bg-card/40 border border-white/5 backdrop-blur-md'
+              : 'bg-primary text-primary-foreground'
           )}
         >
-          {role === "bot" && (
+          {role === 'bot' && (
             <div className="absolute -top-2 -left-2">
               <Sparkles className="h-4 w-4 text-accent animate-pulse" />
             </div>
@@ -94,7 +94,7 @@ const ChatMessage = ({
         </div>
       </div>
 
-      {role === "bot" && internalLog && (
+      {role === 'bot' && internalLog && (
         <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-[85%] ml-14">
           <CollapsibleTrigger asChild>
             <Button
@@ -102,8 +102,8 @@ const ChatMessage = ({
               size="sm"
               className="h-7 text-[10px] uppercase font-black tracking-widest text-muted-foreground/60 hover:text-accent p-0 gap-2 transition-colors"
             >
-              <Activity className={cn("h-3 w-3", isOpen ? "text-accent" : "")} />
-              {isOpen ? "TERMINATE TRACE VIEW" : "INSPECT RESONANCE PATH"}
+              <Activity className={cn('h-3 w-3', isOpen ? 'text-accent' : '')} />
+              {isOpen ? 'TERMINATE TRACE VIEW' : 'INSPECT RESONANCE PATH'}
             </Button>
           </CollapsibleTrigger>
           <CollapsibleContent className="mt-2 overflow-hidden">
@@ -125,23 +125,23 @@ const ChatMessage = ({
 
 export function AiPanel({ isSystemOffline = false }: { isSystemOffline?: boolean }) {
   const [messages, setMessages] = useState<
-    { role: "user" | "bot"; content: string; internalLog?: string; actions?: string[] }[]
+    { role: 'user' | 'bot'; content: string; internalLog?: string; actions?: string[] }[]
   >([
     {
-      role: "bot",
+      role: 'bot',
       content:
-        "SYSTEM ESTABLISHED: Era-2 P9 Swarm Orchestrator Active.\n\n我已完成全棧 Layer A-N 的深度掃描，並鎖定了專案語義奇點。當前環境監測狀態為 1.00 Resonance Stability。您可以下達任何架構維護或合成指令。",
+        'SYSTEM ESTABLISHED: Era-2 P9 Swarm Orchestrator Active.\n\n我已完成全棧 Layer A-N 的深度掃描，並鎖定了專案語義奇點。當前環境監測狀態為 1.00 Resonance Stability。您可以下達任何架構維護或合成指令。',
     },
   ]);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
   const [isSending, setIsSending] = useState(false);
 
   const handleSend = async () => {
     if (!input.trim() || isSending) return;
 
     const userMsg = input;
-    setInput("");
-    setMessages((prev) => [...prev, { role: "user", content: userMsg }]);
+    setInput('');
+    setMessages((prev) => [...prev, { role: 'user', content: userMsg }]);
     setIsSending(true);
 
     try {
@@ -152,7 +152,7 @@ export function AiPanel({ isSystemOffline = false }: { isSystemOffline?: boolean
       setMessages((prev) => [
         ...prev,
         {
-          role: "bot",
+          role: 'bot',
           content: response.answer,
           internalLog: response.internalLog,
           actions: response.actionsTaken,
@@ -162,9 +162,9 @@ export function AiPanel({ isSystemOffline = false }: { isSystemOffline?: boolean
       setMessages((prev) => [
         ...prev,
         {
-          role: "bot",
+          role: 'bot',
           content: `P9 CRITICAL FAULT: ${error.message}`,
-          internalLog: "[SYSTEM_FAILURE] Swarm synchronization lost at Singularity Gate.",
+          internalLog: '[SYSTEM_FAILURE] Swarm synchronization lost at Singularity Gate.',
         },
       ]);
     } finally {
@@ -218,7 +218,7 @@ export function AiPanel({ isSystemOffline = false }: { isSystemOffline?: boolean
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
+              if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
                 handleSend();
               }
@@ -230,7 +230,7 @@ export function AiPanel({ isSystemOffline = false }: { isSystemOffline?: boolean
             onClick={handleSend}
             disabled={isSending || !input.trim()}
           >
-            {isSending ? <Loader2 className="h-4 w-4 animate-spin" /> : "EXECUTE"}
+            {isSending ? <Loader2 className="h-4 w-4 animate-spin" /> : 'EXECUTE'}
           </Button>
         </div>
         <div className="mt-3 flex items-center justify-center gap-2">

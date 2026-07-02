@@ -7,14 +7,14 @@
  * This enables full provenance tracking for any generated content.
  */
 
-import type { ResourceCondition } from "../shared";
+import type { ResourceCondition } from '../shared';
 
 export type DerivedArtifactType =
-  | "summary"
-  | "translation"
-  | "extraction"
-  | "synthesis"
-  | "embedding-index";
+  | 'summary'
+  | 'translation'
+  | 'extraction'
+  | 'synthesis'
+  | 'embedding-index';
 
 export interface DerivedArtifactSpec {
   /** The document(s) this artifact was derived from */
@@ -40,8 +40,8 @@ export interface DerivedArtifactStatus {
 }
 
 export type DerivedArtifactPhase =
-  | "generating"
-  | "completed"
-  | "failed"
-  | "verified"
-  | "deprecated";
+  | 'generating'
+  | 'completed'
+  | 'failed'
+  | 'verified'
+  | 'deprecated';

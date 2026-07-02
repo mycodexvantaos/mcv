@@ -12,8 +12,8 @@ spec:
     and response streaming.
   category: agent
   runtime-modes:
-  - native
-  - connected
-  - hybrid
+    - native
+    - connected
+    - hybrid
   implementationPath: services/mycodexvantaos-service-agent-chat/
   packageName: '@mycodexvantaos/service-agent-chat'

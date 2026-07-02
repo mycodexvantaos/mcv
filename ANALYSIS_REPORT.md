@@ -95,7 +95,7 @@ MyCodeXvantaOS 定義了 12 項標準化基礎能力：
 ### 2.2 運行模式（Runtime Modes）
 
 ```typescript
-type RuntimeMode = "native" | "connected" | "hybrid" | "auto";
+type RuntimeMode = 'native' | 'connected' | 'hybrid' | 'auto';
 ```
 
 - **Native Mode**: 完全本地執行，無外部依賴
@@ -318,7 +318,7 @@ private async evaluateCondition(condition: string, manifest: ServiceManifest):
 ```typescript
 // vector-store-native.ts - 僅為佔位實現
 export class NativeVectorStoreProvider implements VectorStoreProvider {
-  manifest = { capability: "vector-store", provider: "native-memory", mode: "native" };
+  manifest = { capability: 'vector-store', provider: 'native-memory', mode: 'native' };
 
   async storeEmbedding(id: string, text: string, vector: number[]): Promise<boolean> {
     // 僅存儲在內存中

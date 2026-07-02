@@ -2,10 +2,18 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://mycodexvantaos.com/schemas/audit-chain.schema.json",
   "title": "AuditChain",
-  "description": "MyCodexVantaOS audit chain schema — immutable linked event chain",
   "type": "object",
-  "required": ["chain-id", "platform", "created-at", "events", "head-hash"],
   "properties": {
+    "id": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
     "chain-id": {
       "type": "string",
       "description": "Unique chain identifier"
@@ -38,5 +46,16 @@
       "type": "boolean"
     }
   },
+  "required": [
+    "id",
+    "type",
+    "timestamp",
+    "chain-id",
+    "platform",
+    "created-at",
+    "events",
+    "head-hash"
+  ],
+  "description": "MyCodexVantaOS audit chain schema — immutable linked event chain",
   "additionalProperties": false
 }

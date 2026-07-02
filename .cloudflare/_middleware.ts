@@ -9,13 +9,13 @@ export const onRequest: PagesFunction = async (context) => {
 
   // Security headers
   const securityHeaders = {
-    "X-Frame-Options": "DENY",
-    "X-Content-Type-Options": "nosniff",
-    "Referrer-Policy": "strict-origin-when-cross-origin",
-    "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
-    "X-XSS-Protection": "1; mode=block",
-    "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-    "Content-Security-Policy": [
+    'X-Frame-Options': 'DENY',
+    'X-Content-Type-Options': 'nosniff',
+    'Referrer-Policy': 'strict-origin-when-cross-origin',
+    'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+    'X-XSS-Protection': '1; mode=block',
+    'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
+    'Content-Security-Policy': [
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
@@ -23,20 +23,20 @@ export const onRequest: PagesFunction = async (context) => {
       "img-src 'self' data: https: blob:",
       "connect-src 'self' https://api.cloudflare.com https://*.autoecoops.io",
       "frame-ancestors 'none'",
-    ].join("; "),
+    ].join('; '),
   };
 
   // Handle CORS for API routes
-  if (url.pathname.startsWith("/api/")) {
-    if (request.method === "OPTIONS") {
+  if (url.pathname.startsWith('/api/')) {
+    if (request.method === 'OPTIONS') {
       return new Response(null, {
         status: 204,
         headers: {
-          "Access-Control-Allow-Origin":
-            env.ENVIRONMENT === "production" ? "https://admin.autoecoops.io" : "*",
-          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type, Authorization",
-          "Access-Control-Max-Age": "86400",
+          'Access-Control-Allow-Origin':
+            env.ENVIRONMENT === 'production' ? 'https://admin.autoecoops.io' : '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+          'Access-Control-Max-Age': '86400',
           ...securityHeaders,
         },
       });
@@ -50,8 +50,8 @@ export const onRequest: PagesFunction = async (context) => {
     });
 
     newResponse.headers.set(
-      "Access-Control-Allow-Origin",
-      env.ENVIRONMENT === "production" ? "https://admin.autoecoops.io" : "*"
+      'Access-Control-Allow-Origin',
+      env.ENVIRONMENT === 'production' ? 'https://admin.autoecoops.io' : '*'
     );
 
     return newResponse;

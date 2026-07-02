@@ -26,7 +26,7 @@ export interface LLMResponse {
 }
 
 export interface ChatMessage {
-  role: "system" | "user" | "assistant";
+  role: 'system' | 'user' | 'assistant';
   content: string;
 }
 
@@ -37,7 +37,7 @@ export interface ChatRequest {
 }
 
 // Provider types
-export type LLMProviderType = "native" | "ollama" | "openai" | "anthropic" | "gemini";
+export type LLMProviderType = 'native' | 'ollama' | 'openai' | 'anthropic' | 'gemini';
 
 export interface LLMProviderInterface {
   name: string;
@@ -56,7 +56,7 @@ export interface LLMProviderInterface {
  */
 export class LLMProviderRegistry {
   private providers: Map<string, LLMProviderInterface> = new Map();
-  private preferredProvider: string = "native";
+  private preferredProvider: string = 'native';
 
   /**
    * Register a provider
@@ -98,12 +98,12 @@ export class LLMProviderRegistry {
     }
 
     // Fall back to native
-    const native = this.providers.get("native");
+    const native = this.providers.get('native');
     if (native) {
       return native;
     }
 
-    throw new Error("No LLM provider available. Native provider should always be registered.");
+    throw new Error('No LLM provider available. Native provider should always be registered.');
   }
 
   /**
@@ -144,7 +144,7 @@ export function getLLMRegistry(): LLMProviderRegistry {
  * Native LLM Provider (built-in, zero dependencies)
  */
 export class NativeLLMProvider implements LLMProviderInterface {
-  name = "native";
+  name = 'native';
   isNative = true;
 
   isAvailable(): boolean {
@@ -152,14 +152,14 @@ export class NativeLLMProvider implements LLMProviderInterface {
   }
 
   async healthCheck(): Promise<{ healthy: boolean; message: string }> {
-    return { healthy: true, message: "Native LLM Provider is operational" };
+    return { healthy: true, message: 'Native LLM Provider is operational' };
   }
 
   getMetadata() {
     return {
-      name: "llm-native",
-      provider: "native",
-      capabilities: ["text-generation", "text-completion"],
+      name: 'llm-native',
+      provider: 'native',
+      capabilities: ['text-generation', 'text-completion'],
       isNative: true,
       requiresApiKey: false,
     };
@@ -183,15 +183,15 @@ Available providers:
     return {
       text,
       tokens: Math.ceil(text.length / 4),
-      model: "native-template-v1",
-      provider: "llm-native",
+      model: 'native-template-v1',
+      provider: 'llm-native',
     };
   }
 
   async generateChatCompletion(request: ChatRequest): Promise<LLMResponse> {
-    const lastUserMessage = [...request.messages].reverse().find((m) => m.role === "user");
+    const lastUserMessage = [...request.messages].reverse().find((m) => m.role === 'user');
     return this.generateCompletion({
-      prompt: lastUserMessage?.content || "",
+      prompt: lastUserMessage?.content || '',
       maxTokens: request.maxTokens,
     });
   }
@@ -215,7 +215,7 @@ export async function initializeLLM(
 
   // Always register native provider first (guaranteed fallback)
   const nativeProvider = new NativeLLMProvider();
-  reg.register("native", nativeProvider);
+  reg.register('native', nativeProvider);
 
   // Set preferred provider if specified
   if (config.preferredProvider) {
@@ -236,7 +236,7 @@ export async function generateCompletion(
   const provider = options?.provider ? reg.get(options.provider) : reg.getActive();
 
   if (!provider) {
-    throw new Error("No LLM provider available");
+    throw new Error('No LLM provider available');
   }
 
   return provider.generateCompletion({
@@ -256,7 +256,7 @@ export async function generateChatCompletion(
   const provider = options?.provider ? reg.get(options.provider) : reg.getActive();
 
   if (!provider) {
-    throw new Error("No LLM provider available");
+    throw new Error('No LLM provider available');
   }
 
   return provider.generateChatCompletion({

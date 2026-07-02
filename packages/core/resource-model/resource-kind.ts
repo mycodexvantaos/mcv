@@ -4,7 +4,7 @@
  * Platform resource URI: res://{service}/{collection}/{id}
  */
 
-import type { ResourceMetadata, ResourceCondition } from "../shared";
+import type { ResourceMetadata, ResourceCondition } from '../shared';
 
 /** Universal resource envelope */
 export interface Resource<TSpec = Record<string, unknown>, TStatus = Record<string, unknown>> {
@@ -17,13 +17,13 @@ export interface Resource<TSpec = Record<string, unknown>, TStatus = Record<stri
 
 /** Standard resource phases */
 export type ResourcePhase =
-  | "creating"
-  | "active"
-  | "updating"
-  | "degraded"
-  | "suspended"
-  | "deleting"
-  | "deleted";
+  | 'creating'
+  | 'active'
+  | 'updating'
+  | 'degraded'
+  | 'suspended'
+  | 'deleting'
+  | 'deleted';
 
 /** Resource reference for cross-resource links */
 export interface ResourceReference {
@@ -34,27 +34,27 @@ export interface ResourceReference {
 
 /** Core platform resource kinds */
 export type PlatformResourceKind =
-  | "tenant"
-  | "subject"
-  | "workspace"
-  | "membership"
-  | "knowledge-collection"
-  | "document"
-  | "document-chunk"
-  | "knowledge-index"
-  | "retrieval-receipt"
-  | "answer-trace"
-  | "memory-item"
-  | "chat-session"
-  | "chat-message"
-  | "model-endpoint"
-  | "api-key"
-  | "audit-event"
-  | "usage-record"
-  | "knowledge-issue"
-  | "knowledge-repair"
-  | "knowledge-derived-artifact"
-  | "automation-job";
+  | 'tenant'
+  | 'subject'
+  | 'workspace'
+  | 'membership'
+  | 'knowledge-collection'
+  | 'document'
+  | 'document-chunk'
+  | 'knowledge-index'
+  | 'retrieval-receipt'
+  | 'answer-trace'
+  | 'memory-item'
+  | 'chat-session'
+  | 'chat-message'
+  | 'model-endpoint'
+  | 'api-key'
+  | 'audit-event'
+  | 'usage-record'
+  | 'knowledge-issue'
+  | 'knowledge-repair'
+  | 'knowledge-derived-artifact'
+  | 'automation-job';
 
 /** Resource URI format */
 export function resourceUri(service: string, collection: string, id: string): string {

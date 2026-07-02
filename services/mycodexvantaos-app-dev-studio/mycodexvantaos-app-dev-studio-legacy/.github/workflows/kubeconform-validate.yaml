@@ -19,9 +19,12 @@ jobs:
       with:
         version: v3.13.1
     - name: Render Helm templates
-      run: "mkdir -p ./.tmp/kubeconform\nfind deploy/helm -name \"Chart.yaml\" | while\
-        \ read chart; do\n  CHART_DIR=$(dirname \"$chart\")\n  helm template \"$CHART_DIR\"\
-        \ > ./.tmp/kubeconform/$(basename \"$CHART_DIR\").yaml\ndone\n"
+      run: |
+        mkdir -p ./.tmp/kubeconform
+        find deploy/helm -name "Chart.yaml" | while read -r chart; do
+          CHART_DIR="$(dirname "$chart")"
+          helm template "$CHART_DIR" > ./.tmp/kubeconform/"$(basename "$CHART_DIR")".yaml
+        done
     - name: Run Kubeconform validation
       uses: yannh/kubeconform-action@01630d3558117184283879a1a8449557342ac43c
       with:

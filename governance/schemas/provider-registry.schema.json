@@ -2,19 +2,30 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://mycodexvantaos.com/schemas/provider-registry.schema.json",
   "title": "ProviderRegistry",
-  "description": "Schema for MyCodexVantaOS provider registry",
   "type": "object",
-  "required": ["apiVersion", "kind", "metadata", "providers"],
   "properties": {
-    "apiVersion": { "type": "string", "const": "mycodexvantaos.org/v1" },
-    "kind": { "type": "string", "const": "ProviderRegistry" },
+    "apiVersion": {
+      "type": "string",
+      "const": "mycodexvantaos.io/v1"
+    },
+    "kind": {
+      "type": "string",
+      "const": "ProviderRegistry"
+    },
     "metadata": {
       "type": "object",
       "required": ["name", "version"],
       "properties": {
-        "name": { "type": "string" },
-        "version": { "type": "string" }
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
       }
+    },
+    "spec": {
+      "type": "object"
     },
     "providers": {
       "type": "array",
@@ -26,15 +37,24 @@
             "type": "string",
             "pattern": "^mycodexvantaos-[a-z0-9]+-[a-z0-9]+(?:-[a-z0-9]+)*$"
           },
-          "capability": { "type": "string" },
+          "capability": {
+            "type": "string"
+          },
           "runtime-modes": {
             "type": "array",
-            "items": { "type": "string", "enum": ["native", "connected", "hybrid"] },
+            "items": {
+              "type": "string",
+              "enum": ["native", "connected", "hybrid"]
+            },
             "minItems": 1
           },
-          "manifest": { "type": "string" }
+          "manifest": {
+            "type": "string"
+          }
         }
       }
     }
-  }
+  },
+  "required": ["apiVersion", "kind", "metadata", "spec", "providers"],
+  "description": "Schema for MyCodexVantaOS provider registry"
 }

@@ -1,9 +1,9 @@
-export type SystemStatus = "healthy" | "degraded" | "critical" | "idle";
-export type ConnectorStatus = "connected" | "degraded" | "disconnected" | "configuring";
-export type EdgeNodeStatus = "online" | "offline" | "deploying" | "draining" | "error";
-export type ModelStatus = "active" | "idle" | "draining" | "error";
-export type Role = "super_admin" | "admin" | "operator" | "viewer";
-export type Severity = "critical" | "high" | "medium" | "low";
+export type SystemStatus = 'healthy' | 'degraded' | 'critical' | 'idle';
+export type ConnectorStatus = 'connected' | 'degraded' | 'disconnected' | 'configuring';
+export type EdgeNodeStatus = 'online' | 'offline' | 'deploying' | 'draining' | 'error';
+export type ModelStatus = 'active' | 'idle' | 'draining' | 'error';
+export type Role = 'super_admin' | 'admin' | 'operator' | 'viewer';
+export type Severity = 'critical' | 'high' | 'medium' | 'low';
 
 export interface Alert {
   id: string;

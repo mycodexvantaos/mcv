@@ -1,12 +1,12 @@
 apiVersion: mycodexvantaos.io/v1
 kind: GateGovernancePolicy
 metadata:
-  version: 1.0.0
-  date: '2026-06-29'
-  status: active
   name: gate-governance-policy
+  version: 1.0.0
   governanceCode: mycodexvantaos-00000
   authority: platform-governance-root
+  date: '2026-06-29'
+  status: active
 spec:
   description: 'Master governance policy for the unified gate system. Defines default
     blocking behavior, evidence requirements, and escalation rules.
@@ -16,9 +16,9 @@ spec:
   defaultCriticality: critical
   evidenceRequired: true
   hashAlgorithms:
-  - sha-256
-  - sha3-512
-  - blake3
+    - sha-256
+    - sha3-512
+    - blake3
   waiverMaxDurationDays: 30
   criticalGateWaiverRequiresCouncilApproval: true
   destroyedGateIdReuseProhibited: true

@@ -7,13 +7,13 @@
 export interface ProviderManifest {
   capability: string;
   provider: string; // e.g., 'gemini', 'native', 'postgres'
-  mode: "native" | "connected" | "hybrid";
+  mode: 'native' | 'connected' | 'hybrid';
 }
 
 export interface BaseProvider {
   manifest: ProviderManifest;
   initialize(config?: any): Promise<void>;
-  healthCheck(): Promise<{ status: "healthy" | "degraded" | "down"; reason?: string }>;
+  healthCheck(): Promise<{ status: 'healthy' | 'degraded' | 'down'; reason?: string }>;
   shutdown(): Promise<void>;
 }
 
@@ -41,7 +41,7 @@ export interface VectorStoreProvider extends BaseProvider {
 }
 
 export interface ObservabilityProvider extends BaseProvider {
-  log(level: "info" | "warn" | "error", message: string, context?: any): void;
+  log(level: 'info' | 'warn' | 'error', message: string, context?: any): void;
   publishMetrics(executionId: string, metrics: any): Promise<void>;
 }
 
@@ -50,7 +50,7 @@ export class ProviderRegistry {
   private providers: Map<string, BaseProvider> = new Map();
   private defaultCapabilityMap: Map<string, string> = new Map();
 
-  constructor(private readonly globalMode: "native" | "hybrid" | "connected" | "auto") {}
+  constructor(private readonly globalMode: 'native' | 'hybrid' | 'connected' | 'auto') {}
 
   register(provider: BaseProvider) {
     const { capability, provider: providerName } = provider.manifest;
@@ -76,17 +76,17 @@ export class ProviderRegistry {
 
     const primaryProvider = this.providers.get(primaryKey);
 
-    if (this.globalMode === "native" && primaryProvider?.manifest.mode !== "native") {
-      return this.seekFallback<T>(capability, "native");
+    if (this.globalMode === 'native' && primaryProvider?.manifest.mode !== 'native') {
+      return this.seekFallback<T>(capability, 'native');
     }
 
     try {
       const health = await primaryProvider?.healthCheck();
-      if (health?.status === "down") throw new Error("Primary provider is down");
+      if (health?.status === 'down') throw new Error('Primary provider is down');
       return primaryProvider as T;
     } catch (error) {
       console.warn(`[Registry] Primary '${primaryKey}' failed. Initiating fallback to Native...`);
-      return this.seekFallback<T>(capability, "native");
+      return this.seekFallback<T>(capability, 'native');
     }
   }
 
@@ -117,15 +117,15 @@ export class EventBus {
 
 export class Kernel {
   public readonly events = new EventBus();
-  public readonly defaultMode = (process.env.MYCODEXVANTAOS_CORE_RUNTIME_MODE || "hybrid") as
-    | "native"
-    | "hybrid"
-    | "connected"
-    | "auto";
+  public readonly defaultMode = (process.env.MYCODEXVANTAOS_CORE_RUNTIME_MODE || 'hybrid') as
+    | 'native'
+    | 'hybrid'
+    | 'connected'
+    | 'auto';
   public readonly registry = new ProviderRegistry(this.defaultMode);
 
   start() {
-    this.events.publish("system:pre-start", { timestamp: Date.now() });
-    this.events.publish("system:started", { status: "running", timestamp: Date.now() });
+    this.events.publish('system:pre-start', { timestamp: Date.now() });
+    this.events.publish('system:started', { status: 'running', timestamp: Date.now() });
   }
 }

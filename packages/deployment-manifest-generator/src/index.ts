@@ -25,7 +25,7 @@ export interface ServiceDefinition {
 }
 
 export interface DeploymentManifestOptions {
-  platform: "docker" | "kubernetes" | "terraform" | "docker-compose";
+  platform: 'docker' | 'kubernetes' | 'terraform' | 'docker-compose';
   namespace?: string;
   includeIngress?: boolean;
   includeMonitoring?: boolean;
@@ -49,10 +49,10 @@ export class DeploymentManifestGenerator {
    */
   generateDockerfile(
     baseImage: string,
-    workDir: string = "/app",
-    installCommand: string = "npm ci",
-    buildCommand: string = "npm run build",
-    startCommand: string = "npm start"
+    workDir: string = '/app',
+    installCommand: string = 'npm ci',
+    buildCommand: string = 'npm run build',
+    startCommand: string = 'npm start'
   ): string {
     let dockerfile = `# Auto-generated Dockerfile\n\n`;
     dockerfile += `FROM ${baseImage}\n\n`;
@@ -226,7 +226,7 @@ export class DeploymentManifestGenerator {
 
     for (const [key, value] of Object.entries(data)) {
       yaml += `  ${key}: |\n`;
-      yaml += `    ${value.replace(/\n/g, "\n    ")}\n`;
+      yaml += `    ${value.replace(/\n/g, '\n    ')}\n`;
     }
 
     return yaml;
@@ -245,7 +245,7 @@ export class DeploymentManifestGenerator {
 
     for (const [key, value] of Object.entries(data)) {
       // In production, this should be base64 encoded
-      yaml += `  ${key}: ${Buffer.from(value).toString("base64")}\n`;
+      yaml += `  ${key}: ${Buffer.from(value).toString('base64')}\n`;
     }
 
     return yaml;
@@ -289,10 +289,10 @@ export class DeploymentManifestGenerator {
   /**
    * Generate CI/CD pipeline configuration
    */
-  generateCICDPipeline(platform: "github" | "gitlab" | "azure", stages: string[]): string {
-    if (platform === "github") {
+  generateCICDPipeline(platform: 'github' | 'gitlab' | 'azure', stages: string[]): string {
+    if (platform === 'github') {
       return this.generateGitHubActions(stages);
-    } else if (platform === "gitlab") {
+    } else if (platform === 'gitlab') {
       return this.generateGitLabCI(stages);
     } else {
       return this.generateAzurePipelines(stages);
@@ -339,7 +339,7 @@ export class DeploymentManifestGenerator {
    */
   private generateGitLabCI(stages: string[]): string {
     let gitlabCI = `stages:\n`;
-    gitlabCI += stages.map((s) => `  - ${s}`).join("\n");
+    gitlabCI += stages.map((s) => `  - ${s}`).join('\n');
     gitlabCI += `\n\n`;
 
     for (const stage of stages) {
@@ -406,7 +406,7 @@ build
   /**
    * Generate health check endpoint
    */
-  generateHealthCheck(path: string = "/health"): string {
+  generateHealthCheck(path: string = '/health'): string {
     return `/**
  * Health check endpoint for ${path}
  */

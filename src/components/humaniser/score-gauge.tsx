@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 /**
  * @fileoverview Score Gauge Component
@@ -13,7 +13,7 @@ interface ScoreGaugeProps {
   size?: number;
 }
 
-export function ScoreGauge({ score, label, color = "#6366f1", size = 120 }: ScoreGaugeProps) {
+export function ScoreGauge({ score, label, color = '#6366f1', size = 120 }: ScoreGaugeProps) {
   const radius = (size - 16) / 2;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - score * circumference;

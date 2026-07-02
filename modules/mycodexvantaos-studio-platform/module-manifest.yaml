@@ -12,8 +12,8 @@ spec:
     deployment experience.
   category: platform
   runtime-modes:
-  - native
-  - connected
-  - hybrid
+    - native
+    - connected
+    - hybrid
   implementationPath: services/mycodexvantaos-studio-platform/
   packageName: '@mycodexvantaos/studio-platform'

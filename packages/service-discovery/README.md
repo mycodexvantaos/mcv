@@ -11,7 +11,7 @@ pnpm add @mycodexvantaos/service-discovery
 ## Usage
 
 ```typescript
-import { serviceDiscovery } from "@mycodexvantaos/service-discovery";
+import { serviceDiscovery } from '@mycodexvantaos/service-discovery';
 
 // Initialize
 await serviceDiscovery.initialize();

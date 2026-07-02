@@ -12,8 +12,8 @@ spec:
     and deployment orchestration.
   category: platform
   runtime-modes:
-  - native
-  - connected
-  - hybrid
+    - native
+    - connected
+    - hybrid
   implementationPath: services/mycodexvantaos-app-dev-studio/
   packageName: '@mycodexvantaos/app-dev-studio'

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   PanelLeftClose,
@@ -10,12 +10,12 @@ import {
   Clock,
   Wifi,
   WifiOff,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { Badge } from "@/components/ui/badge";
-import { useDashboardStore } from "@/lib/stores/dashboard-store";
-import { useConnectorStore } from "@/lib/stores/connector-store";
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { Badge } from '@/components/ui/badge';
+import { useDashboardStore } from '@/lib/stores/dashboard-store';
+import { useConnectorStore } from '@/lib/stores/connector-store';
 
 interface StatusBarProps {
   isLeftPanelOpen: boolean;
@@ -33,18 +33,18 @@ export function StatusBar({
   const { lastSync, overview } = useDashboardStore();
   const { connectors } = useConnectorStore();
 
-  const healthyConnectors = connectors.filter((c) => c.status === "connected").length;
+  const healthyConnectors = connectors.filter((c) => c.status === 'connected').length;
   const totalConnectors = connectors.length || overview?.connectors.total || 0;
   const systemStatus = overview
     ? overview.connectors.degraded > 0 || overview.governance.recentViolations > 0
-      ? "degraded"
-      : "healthy"
-    : "idle";
+      ? 'degraded'
+      : 'healthy'
+    : 'idle';
 
   const formatLastSync = (iso: string | null) => {
-    if (!iso) return "Never";
+    if (!iso) return 'Never';
     const diff = Date.now() - new Date(iso).getTime();
-    if (diff < 60000) return "Just now";
+    if (diff < 60000) return 'Just now';
     if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
     return `${Math.floor(diff / 3600000)}h ago`;
   };
@@ -68,9 +68,9 @@ export function StatusBar({
         </Tooltip>
 
         <div className="flex items-center gap-1.5">
-          {systemStatus === "healthy" ? (
+          {systemStatus === 'healthy' ? (
             <Wifi className="h-3 w-3 text-status-healthy" />
-          ) : systemStatus === "degraded" ? (
+          ) : systemStatus === 'degraded' ? (
             <Activity className="h-3 w-3 text-status-warning" />
           ) : (
             <WifiOff className="h-3 w-3 text-status-idle" />

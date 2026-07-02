@@ -155,9 +155,9 @@ name: Namespace Closure Check
 on:
   pull_request:
     paths:
-      - "mycodexvantaos-namespace-governance/**"
-      - "modules/*/module-manifest.yaml"
-      - "providers/**"
+      - 'mycodexvantaos-namespace-governance/**'
+      - 'modules/*/module-manifest.yaml'
+      - 'providers/**'
 
 jobs:
   namespace-validation:
