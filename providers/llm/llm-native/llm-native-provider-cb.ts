@@ -1,5 +1,5 @@
 /**
- * 🧠 MyCodeXvantaOS - Native LLM Provider (CapabilityBase-based)
+ * 🧠 MyCodexVantaOS - Native LLM Provider (CapabilityBase-based)
  *
  * Zero external dependency implementation of a basic LLM provider.
  * Serves as fallback when no external LLM is available.

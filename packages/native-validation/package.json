@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/native-validation",
   "version": "1.0.0",
-  "description": "Native validation engine for MyCodeXvantaOS",
+  "description": "Native validation engine for MyCodexVantaOS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -15,7 +15,7 @@
     "schema",
     "validator"
   ],
-  "author": "MyCodeXvantaOS",
+  "author": "MyCodexVantaOS",
   "license": "MIT",
   "dependencies": {
     "@mycodexvantaos/runtime": "workspace:*"

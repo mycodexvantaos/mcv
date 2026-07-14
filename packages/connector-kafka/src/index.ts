@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Kafka Connector
+ * MyCodexVantaOS Kafka Connector
  * Provides integration with Apache Kafka for event streaming
  */
 

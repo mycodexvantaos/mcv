@@ -8,8 +8,8 @@ metadata:
   display_name: Knowledge Search Service
   description: 'Evidence-level knowledge retrieval with hybrid search (semantic +
     full-text), reciprocal rank fusion, and source tracing. Implements the retrieval
-    pipeline: parse → authorize → search → rank → trace → audit. Classifies results
-    into three evidence levels: assisted, verified, grounded. Level 2 service — depends
+    pipeline: parse -> authorize -> search -> rank -> trace -> audit. Classifies results
+    into three evidence levels: assisted, verified, grounded. Level 2 service - depends
     on identity.
 
     '

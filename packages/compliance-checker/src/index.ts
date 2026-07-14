@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Compliance Checker
+ * MyCodexVantaOS Compliance Checker
  * Provides compliance checking against security standards and regulations
  */
 

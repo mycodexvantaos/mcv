@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Config Sync
+ * MyCodexVantaOS Config Sync
  * GitOps-driven configuration synchronization
  */
 

@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Cloudflare R2 Adapter
+ * MyCodexVantaOS — Cloudflare R2 Adapter
  * Implements IObjectStoragePort using Cloudflare R2 (S3-compatible object storage).
  *
  * Category: storage

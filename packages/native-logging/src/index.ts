@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Native Logging Implementation
+ * MyCodexVantaOS Native Logging Implementation
  * Provides a comprehensive logging system with multiple levels and formats
  */
 

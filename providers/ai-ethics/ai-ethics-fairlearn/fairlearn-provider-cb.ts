@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - FairlearnProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - FairlearnProvider (CapabilityBase-based)
  *
  * @module providers/ai-ethics/ai-ethics-fairlearn
  * @version 1.0.0

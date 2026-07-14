@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Answer Trace Model
+ * MyCodexVantaOS — Answer Trace Model
  * Closed-loop trace from question → retrieval → model → answer.
  *
  * Every AI-generated answer must be traceable to its sources.

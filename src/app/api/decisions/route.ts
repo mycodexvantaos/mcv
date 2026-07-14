@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-static';
 
-// MyCodeXvantaOS Admin Dashboard - Decision Guide API
+// MyCodexVantaOS Admin Dashboard - Decision Guide API
 // AI-powered decision guide generation with ranked recommendations
 
 interface DecisionGuideInput {

@@ -1,5 +1,5 @@
 /**
- * 🔒 MyCodeXvantaOS - HuggingFace LLM Provider (CapabilityBase-based)
+ * 🔒 MyCodexVantaOS - HuggingFace LLM Provider (CapabilityBase-based)
  *
  * HuggingFace LLM integration with native fallback.
  *

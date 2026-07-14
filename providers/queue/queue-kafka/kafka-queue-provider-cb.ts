@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - KafkaQueueProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - KafkaQueueProvider (CapabilityBase-based)
  *
  * @module providers/queue/queue-kafka
  * @version 1.0.0

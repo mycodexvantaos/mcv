@@ -1,5 +1,5 @@
 /**
- * Cloudflare Pages API Adapter for MyCodeXvantaOS
+ * Cloudflare Pages API Adapter for MyCodexVantaOS
  * Adapts Next.js API routes to Cloudflare Workers runtime
  */
 

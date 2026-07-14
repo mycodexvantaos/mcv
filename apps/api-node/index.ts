@@ -249,7 +249,7 @@ const routes: Route[] = [
     pattern: /^\/$/,
     handler: async (_req, res, _params) => {
       sendJson(res, 200, {
-        name: 'MyCodeXvantaOS',
+        name: 'MyCodexVantaOS',
         version: process.env['npm_package_version'] ?? '0.1.0',
         api: 'v1',
         timestamp: new Date().toISOString(),

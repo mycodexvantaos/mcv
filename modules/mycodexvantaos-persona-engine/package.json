@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/persona-engine",
   "version": "1.0.0",
-  "description": "MyCodeXvantaOS Persona Engine - Disrupter persona system with semantic mask detection and root cause analysis",
+  "description": "MyCodexVantaOS Persona Engine - Disrupter persona system with semantic mask detection and root cause analysis",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -20,7 +20,7 @@
     "root-cause-analysis",
     "disrupter"
   ],
-  "author": "MyCodeXvantaOS Team",
+  "author": "MyCodexVantaOS Team",
   "license": "MIT",
   "dependencies": {
     "yaml": "^2.3.0",

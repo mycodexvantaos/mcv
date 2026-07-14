@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-static';
 
-// MyCodeXvantaOS Admin Dashboard - System Overview API
+// MyCodexVantaOS Admin Dashboard - System Overview API
 // Provides system overview data including KPIs, connector status, alerts, and activity
 
 const mockKpis = [

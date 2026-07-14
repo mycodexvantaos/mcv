@@ -1,18 +1,18 @@
 apiVersion: mycodexvantaos.org/v1
 kind: Provider
 metadata:
-  name: mycodexvantaos-vector-pinecone
+  name: mycodexvantaos-vector-store-weaviate
   capability: vector-store
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
     mycodexvantaos.org/specRef: '8.1'
 spec:
-  providerName: pinecone
+  providerName: weaviate
   isNative: false
   lifecycle:
     stage: beta
   envVarPrefix: MYCODEXVANTAOS_VECTOR_STORE
   configSchemaRef: ./config.schema.json
-  description: Pinecone vector store provider for managed vector indexing.
-provider-id: mycodexvantaos-vector-pinecone
+  description: Weaviate vector store provider for semantic search and retrieval.
+provider-id: mycodexvantaos-vector-store-weaviate
 capability: vector-store

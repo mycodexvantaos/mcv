@@ -42,7 +42,7 @@ jobs:
             echo "dockerfile_exists=true" >> "$GITHUB_OUTPUT"
           else
             echo "dockerfile_exists=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::Dockerfile not found — skipping Docker smoke test"
+            echo "::notice::Dockerfile not found - skipping Docker smoke test"
           fi
 
       - name: Set up Docker Buildx
@@ -67,7 +67,7 @@ jobs:
             chmod +x scripts/smoke/docker-smoke.sh
             ./scripts/smoke/docker-smoke.sh mycodexvantaos:smoke-test
           else
-            echo "No smoke test script found — verifying container starts"
+            echo "No smoke test script found - verifying container starts"
             docker run --rm -d --name smoke-test mycodexvantaos:smoke-test
             sleep 5
             docker logs smoke-test 2>&1 | head -20 || true

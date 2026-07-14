@@ -1,7 +1,7 @@
 /**
- * MyCodeXvantaOS Persona Engine - Type Definitions
+ * MyCodexVantaOS Persona Engine - Type Definitions
  *
- * Core type definitions for the persona system aligned with MyCodeXvantaOS specifications.
+ * Core type definitions for the persona system aligned with MyCodexVantaOS specifications.
  * URN Format: urn:mycodexvantaos:persona:{identifier}
  */
 
@@ -303,7 +303,7 @@ export interface PersonaMetadata {
 
 /**
  * Complete persona profile definition
- * Aligned with MyCodeXvantaOS specification
+ * Aligned with MyCodexVantaOS specification
  */
 export interface PersonaProfile {
   /** Unique resource identifier (urn:mycodexvantaos:persona:{id}) */

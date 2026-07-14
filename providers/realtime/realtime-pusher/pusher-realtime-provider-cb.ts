@@ -1,5 +1,5 @@
 /**
- * 📡 MyCodeXvantaOS - Pusher Realtime Provider (CapabilityBase-based)
+ * 📡 MyCodexVantaOS - Pusher Realtime Provider (CapabilityBase-based)
  *
  * @module providers/realtime/realtime-pusher
  * @version 1.0.0

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:mycodexvantaos:schema:governance-event:v1",
   "title": "GovernanceEvent",
-  "description": "CloudEvents v1.0 compliant governance event schema for MyCodeXvantaOS mandatory closed-loop event stream.",
+  "description": "CloudEvents v1.0 compliant governance event schema for MyCodexVantaOS mandatory closed-loop event stream.",
   "type": "object",
   "required": [
     "specversion",

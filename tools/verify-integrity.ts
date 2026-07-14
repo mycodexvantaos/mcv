@@ -1,6 +1,6 @@
 #!/usr/bin/env npx ts-node
 // ═══════════════════════════════════════════════════════════════════════
-// MyCodeXvantaOS — Audit Chain Integrity Verifier
+// MyCodexVantaOS — Audit Chain Integrity Verifier
 // Verifies the SHA-256 integrity chain of audit events
 // Usage: npx ts-node tools/verify-integrity.ts [--since <timestamp>]
 // ═══════════════════════════════════════════════════════════════════════
@@ -149,7 +149,7 @@ function verifyChain(events: AuditEvent[]): IntegrityReport {
 function formatReport(report: IntegrityReport): string {
   const lines: string[] = [];
   lines.push('════════════════════════════════════════════════════════');
-  lines.push('  MyCodeXvantaOS — Audit Chain Integrity Report');
+  lines.push('  MyCodexVantaOS — Audit Chain Integrity Report');
   lines.push('════════════════════════════════════════════════════════');
   lines.push('');
   lines.push(`  Total Events:       ${report.total_events}`);

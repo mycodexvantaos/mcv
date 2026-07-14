@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Analytics Engine
+ * MyCodexVantaOS Analytics Engine
  * Provides data analytics and metrics collection
  */
 

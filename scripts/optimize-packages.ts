@@ -151,7 +151,7 @@ for (const pkg of packages) {
   };
 
   // Add author
-  pkgJson.author = 'MyCodeXvantaOS Team';
+  pkgJson.author = 'MyCodexVantaOS Team';
 
   // Add keywords
   pkgJson.keywords = ['mycodexvantaos', layers[pkg] || 'platform', pkg];

@@ -1,5 +1,5 @@
 # === path: .github/workflows/release-consolidated.yaml ===
-# Unified Release Pipeline for MyCodeXvantaOS
+# Unified Release Pipeline for MyCodexVantaOS
 # Version: 2.1.0
 
 name: Release Pipeline

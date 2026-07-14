@@ -1,5 +1,5 @@
 /**
- * 🔢 MyCodeXvantaOS - OpenAI Embedding Provider (CapabilityBase-based)
+ * 🔢 MyCodexVantaOS - OpenAI Embedding Provider (CapabilityBase-based)
  *
  * OpenAI embedding API integration with native fallback.
  *

@@ -1,5 +1,5 @@
 /**
- * ☁️ MyCodeXvantaOS - Alibaba Cloud OSS Storage Provider (CapabilityBase-based)
+ * ☁️ MyCodexVantaOS - Alibaba Cloud OSS Storage Provider (CapabilityBase-based)
  *
  * @module providers/storage/storage-alibaba
  * @version 1.0.0

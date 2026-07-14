@@ -2,7 +2,7 @@
 /**
  * @fileOverview AI Research Data Summarization flow.
  *
- * Refactored to follow MyCodeXvantaOS Provider Architecture:
+ * Refactored to follow MyCodexVantaOS Provider Architecture:
  * - Uses Provider abstraction layer instead of direct Genkit dependency
  * - No hardcoded API key requirements
  * - Falls back to native provider when no external provider is configured

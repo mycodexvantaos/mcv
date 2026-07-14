@@ -4,7 +4,7 @@
     "sessionStart": [
       {
         "type": "prompt",
-        "prompt": "Read AGENTS.md and .github/copilot-instructions.md to understand project conventions. This is MyCodeXvantaOS — a Local-first, Provider-agnostic, Contract-driven platform. Always run npm run typecheck before committing."
+        "prompt": "Read AGENTS.md and .github/copilot-instructions.md to understand project conventions. This is MyCodexVantaOS — a Local-first, Provider-agnostic, Contract-driven platform. Always run npm run typecheck before committing."
       }
     ],
     "preToolUse": [
@@ -31,7 +31,7 @@
     "subagentStart": [
       {
         "type": "command",
-        "bash": "echo '{\"additionalContext\": \"You are working in the MyCodeXvantaOS monorepo. Follow conventions in AGENTS.md. Run npm run typecheck before completing.\"}'",
+        "bash": "echo '{\"additionalContext\": \"You are working in the MyCodexVantaOS monorepo. Follow conventions in AGENTS.md. Run npm run typecheck before completing.\"}'",
         "timeoutSec": 5
       }
     ],

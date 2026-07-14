@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Document Chunk Model
+ * MyCodexVantaOS — Document Chunk Model
  */
 
 export interface ChunkMetadata {

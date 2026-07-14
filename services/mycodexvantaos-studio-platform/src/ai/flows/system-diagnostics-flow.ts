@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Studio Platform — System Diagnostics AI Flow
+ * MyCodexVantaOS Studio Platform — System Diagnostics AI Flow
  * Phase 4: Genkit AI Flows
  *
  * Performs AI-driven system health diagnostics across all platform services,
@@ -56,7 +56,7 @@ export async function systemDiagnosticsFlow(
     .filter(Boolean)
     .join(', ');
 
-  const prompt = `You are the MyCodeXvantaOS System Diagnostics Engine.
+  const prompt = `You are the MyCodexVantaOS System Diagnostics Engine.
 Scope: ${scope}
 
 Identify the top 3 system health findings and provide:

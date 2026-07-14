@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Enhanced CI Validation
+ * MyCodexVantaOS Enhanced CI Validation
  * Comprehensive validation for architecture compliance
  */
 
@@ -35,7 +35,7 @@ class ArchitectureValidator {
       warnings: [],
     };
 
-    console.log('🔍 Starting MyCodeXvantaOS Architecture Validation...');
+    console.log('🔍 Starting MyCodexVantaOS Architecture Validation...');
 
     // 1. Validate governance manifest exists
     await this.validateGovernanceManifest(result);

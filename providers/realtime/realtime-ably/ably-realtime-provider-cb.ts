@@ -1,5 +1,5 @@
 /**
- * 📡 MyCodeXvantaOS - Ably Realtime Provider (CapabilityBase-based)
+ * 📡 MyCodexVantaOS - Ably Realtime Provider (CapabilityBase-based)
  *
  * @module providers/realtime/realtime-ably
  * @version 1.0.0

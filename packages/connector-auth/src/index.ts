@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Auth Connector
+ * MyCodexVantaOS Auth Connector
  * Provides authentication and authorization capabilities
  */
 

@@ -1,6 +1,6 @@
 # === path: .github/workflows/ci.yml ===
-# Core Validation Pipeline for MyCodeXvantaOS
-# IM-MCV-CI-OPT: lint → test → security scan on all branches; no deployment tasks
+# Core Validation Pipeline for MyCodexVantaOS
+# IM-MCV-CI-OPT: lint -> test -> security scan on all branches; no deployment tasks
 # Version: 1.0.0
 
 name: Core CI

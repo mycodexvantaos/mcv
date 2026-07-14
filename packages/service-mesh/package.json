@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/service-mesh",
   "version": "1.0.0",
-  "description": "服務網格 for MyCodeXvantaOS - Layer A擴展",
+  "description": "服務網格 for MyCodexVantaOS - Layer A擴展",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -16,7 +16,7 @@
     "Layer A擴展",
     "mycodexvantaos"
   ],
-  "author": "MyCodeXvantaOS",
+  "author": "MyCodexVantaOS",
   "license": "MIT",
   "dependencies": {
     "@mycodexvantaos/runtime": "workspace:*"

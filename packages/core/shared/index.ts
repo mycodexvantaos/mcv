@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Shared Utilities
+ * MyCodexVantaOS — Shared Utilities
  * Re-exports all shared modules.
  */
 

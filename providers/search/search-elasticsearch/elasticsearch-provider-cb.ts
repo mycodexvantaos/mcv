@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - ElasticsearchProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - ElasticsearchProvider (CapabilityBase-based)
  *
  * @module providers/search/search-elasticsearch
  * @version 1.0.0

@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - ZodValidationProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - ZodValidationProvider (CapabilityBase-based)
  *
  * @module providers/validation/validation-zod
  * @version 1.0.0

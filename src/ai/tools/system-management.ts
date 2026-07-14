@@ -1,5 +1,5 @@
 /**
- * @fileOverview MyCodeXvantaOS Agentic Tools.
+ * @fileOverview MyCodexVantaOS Agentic Tools.
  * 提供 Agent 對全專案文件的監測、讀取與維護權限。
  * 升級：Era-3 P2 Reality Mapping 工具鏈。
  */
@@ -15,7 +15,7 @@ import { designDocsContent } from '@/lib/design-docs';
 export const listProjectStructure = ai.defineTool(
   {
     name: 'listProjectStructure',
-    description: '返回 MyCodeXvantaOS 專案的完整目錄結構與 Layer A-P 分佈。',
+    description: '返回 MyCodexVantaOS 專案的完整目錄結構與 Layer A-P 分佈。',
     inputSchema: z.object({}),
     outputSchema: z.array(z.string()),
   },
@@ -52,7 +52,7 @@ export const readFileContent = ai.defineTool(
     if (input.filePath === 'package.json') return packageJsonContent;
     if (input.filePath.includes('ARCHITECTURE.md') || input.filePath.includes('design-docs'))
       return designDocsContent;
-    return `/**\n * @MyCodeXvantaOS Layer P (Reality Synthesis)\n * Content of ${input.filePath} (Era-3 P2 Protected Content)\n */\n// System resonance mapping active. Content is stable.`;
+    return `/**\n * @MyCodexVantaOS Layer P (Reality Synthesis)\n * Content of ${input.filePath} (Era-3 P2 Protected Content)\n */\n// System resonance mapping active. Content is stable.`;
   }
 );
 

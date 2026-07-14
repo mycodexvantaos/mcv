@@ -17,7 +17,7 @@ spec:
   serviceVersion: v1.0.0
   layer: Builder
   capability: platform
-  description: MyCodeXvantaOS mycodexvantaos-studio-platform service
+  description: MyCodexVantaOS mycodexvantaos-studio-platform service
   category: platform
   healthCheck:
     enabled: true

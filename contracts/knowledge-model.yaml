@@ -1,4 +1,4 @@
-apiVersion: platform.mycodevantaos/v1
+apiVersion: platform.mycodexvantaos/v1
 kind: KnowledgeModel
 metadata:
   name: mycodexvantaos-knowledge-model

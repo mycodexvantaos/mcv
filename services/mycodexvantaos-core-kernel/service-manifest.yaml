@@ -17,7 +17,7 @@ spec:
   serviceVersion: v1.0.0
   layer: Native Services
   capability: platform
-  description: MyCodeXvantaOS mycodexvantaos-core-kernel service
+  description: MyCodexVantaOS mycodexvantaos-core-kernel service
   category: platform
   healthCheck:
     enabled: true

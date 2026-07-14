@@ -1,5 +1,5 @@
 /**
- * Orchestrator Adapter for MyCodeXvantaOS Persona Engine
+ * Orchestrator Adapter for MyCodexVantaOS Persona Engine
  *
  * This module provides integration between the Persona Engine and the
  * AI Team Orchestrator, enabling persona-aware agent interactions.

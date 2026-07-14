@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Persona Engine - Persona Manager Tests
+ * MyCodexVantaOS Persona Engine - Persona Manager Tests
  *
  * Unit tests for the PersonaManager class.
  */

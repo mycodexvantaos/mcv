@@ -1,7 +1,7 @@
 import { OpenAIEmbeddingProvider } from './openai-embedding-provider-cb';
 import type { OpenAIEmbeddingConfig } from './openai-embedding-provider-cb';
 /**
- * 🔒 MyCodeXvantaOS - OpenAI Embedding Provider Exports
+ * 🔒 MyCodexVantaOS - OpenAI Embedding Provider Exports
  *
  * @module providers/embedding/embedding-openai
  * @version 1.0.0

@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Persona Engine - Root Cause Analyzer
+ * MyCodexVantaOS Persona Engine - Root Cause Analyzer
  *
  * Analyzes problems through multiple layers to identify root causes.
  * URN: urn:mycodexvantaos:core:root-cause-analyzer

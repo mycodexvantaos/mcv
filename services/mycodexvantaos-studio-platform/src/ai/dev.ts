@@ -2,7 +2,7 @@
  * services/mycodexvantaos-studio-platform/src/ai/dev.ts
  *
  * Development entry point for AI capabilities
- * Following MyCodeXvantaOS Provider Architecture
+ * Following MyCodexVantaOS Provider Architecture
  *
  * This module initializes the AI system with available providers.
  * No external API keys are required - native provider is always available.

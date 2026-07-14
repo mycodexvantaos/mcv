@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS State Manager
+ * MyCodexVantaOS State Manager
  * Provides distributed state management across services
  */
 

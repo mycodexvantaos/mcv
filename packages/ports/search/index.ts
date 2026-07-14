@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Search Port
+ * MyCodexVantaOS — Search Port
  * Abstracts vector search and full-text search operations.
  *
  * Cloudflare implementation: Vectorize + D1 FTS5

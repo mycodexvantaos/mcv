@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Workspace Application Package
+ * MyCodexVantaOS — Workspace Application Package
  */
 
 export { WorkspaceService } from './workspace-service';

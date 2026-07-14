@@ -35,5 +35,5 @@ jobs:
             python3 -c "import yaml; yaml.safe_load(open('contracts/events/audit-events.yaml'))"
             echo "Audit check passed"
           else
-            echo "No audit events contract found — skipping"
+            echo "No audit events contract found - skipping"
           fi

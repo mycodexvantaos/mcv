@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Elasticsearch Connector
+ * MyCodexVantaOS Elasticsearch Connector
  * Provides integration with Elasticsearch for search and analytics
  */
 

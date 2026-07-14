@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/connector-auth",
   "version": "1.0.0",
-  "description": "Auth connector for MyCodeXvantaOS",
+  "description": "Auth connector for MyCodexVantaOS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -15,7 +15,7 @@
     "connector",
     "authentication"
   ],
-  "author": "MyCodeXvantaOS",
+  "author": "MyCodexVantaOS",
   "license": "MIT",
   "dependencies": {
     "@mycodexvantaos/runtime": "workspace:*"

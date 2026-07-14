@@ -1,5 +1,5 @@
 /**
- * 🔒 MyCodeXvantaOS - Redis Cache Provider (CapabilityBase-based)
+ * 🔒 MyCodexVantaOS - Redis Cache Provider (CapabilityBase-based)
  *
  * Redis cache integration with native fallback.
  *

@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Execution Engine
+ * MyCodexVantaOS Execution Engine
  * Provides task execution and workflow orchestration capabilities
  *
  * @packageDocumentation

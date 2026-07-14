@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/service-service-catalog",
   "version": "0.1.0",
-  "description": "MyCodeXvantaOS Service Catalog Runtime Service",
+  "description": "MyCodexVantaOS Service Catalog Runtime Service",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",

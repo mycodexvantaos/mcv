@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - OpenTelemetryProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - OpenTelemetryProvider (CapabilityBase-based)
  *
  * @module providers/observability/observability-opentelemetry
  * @version 1.0.0

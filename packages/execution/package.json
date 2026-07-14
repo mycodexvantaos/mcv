@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/execution",
   "version": "1.0.0",
-  "description": "Task execution and workflow orchestration for MyCodeXvantaOS platform",
+  "description": "Task execution and workflow orchestration for MyCodexVantaOS platform",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -17,7 +17,7 @@
     "orchestration",
     "task-execution"
   ],
-  "author": "MyCodeXvantaOS Team",
+  "author": "MyCodexVantaOS Team",
   "license": "MIT",
   "dependencies": {
     "@mycodexvantaos/runtime": "workspace:*"

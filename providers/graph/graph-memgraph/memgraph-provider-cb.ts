@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - MemgraphProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - MemgraphProvider (CapabilityBase-based)
  *
  * @module providers/graph/graph-memgraph
  * @version 1.0.0

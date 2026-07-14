@@ -17,7 +17,7 @@ spec:
   serviceVersion: v1.0.0
   layer: Native Services
   capability: llm
-  description: MyCodeXvantaOS mycodexvantaos-ai-agent service
+  description: MyCodexVantaOS mycodexvantaos-ai-agent service
   category: platform
   healthCheck:
     enabled: true

@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/background-job-runtime",
   "version": "0.1.0",
-  "description": "Background job runtime layer for MyCodeXvantaOS",
+  "description": "Background job runtime layer for MyCodexVantaOS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -17,7 +17,7 @@
     "queue",
     "worker"
   ],
-  "author": "MyCodeXvantaOS Team",
+  "author": "MyCodexVantaOS Team",
   "license": "MIT",
   "dependencies": {
     "@mycodexvantaos/runtime": "workspace:*"

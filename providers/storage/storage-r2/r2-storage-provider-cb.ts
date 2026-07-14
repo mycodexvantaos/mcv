@@ -1,5 +1,5 @@
 /**
- * 🔒 MyCodeXvantaOS - Cloudflare R2 Storage Provider (CapabilityBase-based)
+ * 🔒 MyCodexVantaOS - Cloudflare R2 Storage Provider (CapabilityBase-based)
  *
  * Cloudflare R2 storage integration with S3 fallback.
  *

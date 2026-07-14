@@ -1,5 +1,5 @@
 /**
- * 🔒 MyCodeXvantaOS - AWS S3 Storage Provider (CapabilityBase-based)
+ * 🔒 MyCodexVantaOS - AWS S3 Storage Provider (CapabilityBase-based)
  *
  * AWS S3 storage integration with native fallback.
  *

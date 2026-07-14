@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Shared Time Utilities
+ * MyCodexVantaOS — Shared Time Utilities
  * Platform-neutral timestamp handling.
  */
 

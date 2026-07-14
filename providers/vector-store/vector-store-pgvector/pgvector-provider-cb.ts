@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - PgVectorProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - PgVectorProvider (CapabilityBase-based)
  *
  * @module providers/vector-store/vector-store-pgvector
  * @version 1.0.0

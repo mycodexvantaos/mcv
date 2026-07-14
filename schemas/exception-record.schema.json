@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://mycodexvantaos.org/schemas/exception-record.schema.json",
-  "title": "MyCodeXvantaOS Naming Exception Record",
+  "title": "MyCodexVantaOS Naming Exception Record",
   "description": "Schema for each exception entry in governance/exceptions.yaml. Based on naming-spec-v1.md 15.1.",
   "type": "object",
   "required": ["id", "rule", "scope", "reason", "approver", "expiresAt", "status"],

@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - NativeGovernanceProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - NativeGovernanceProvider (CapabilityBase-based)
  *
  * @module providers/event-stream/event-stream-native-governance
  * @version 1.0.0

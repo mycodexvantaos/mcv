@@ -1,5 +1,5 @@
 /**
- * 🔒 MyCodeXvantaOS - LevelDB Cache Provider (CapabilityBase-based)
+ * 🔒 MyCodexVantaOS - LevelDB Cache Provider (CapabilityBase-based)
  *
  * LevelDB cache integration with native fallback.
  *

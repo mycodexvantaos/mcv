@@ -1,4 +1,4 @@
-apiVersion: platform.mycodevantaos/v1
+apiVersion: platform.mycodexvantaos/v1
 kind: ResourceModel
 metadata:
   name: mycodexvantaos-resource-model
@@ -10,7 +10,7 @@ metadata:
     description: 'Defines the universal resource language for the platform. Every
       entity
 
-      in MyCodeXvantaOS is a resource with a standard schema (metadata/spec/status),
+      in MyCodexVantaOS is a resource with a standard schema (metadata/spec/status),
 
       a lifecycle state machine, and a canonical URN reference format. Resources
 
@@ -84,9 +84,9 @@ spec:
           format: iso8601
           description: Last update timestamp
     spec:
-      description: Desired state — defined by the resource kind
+      description: Desired state - defined by the resource kind
     status:
-      description: Observed state — managed by the platform controller
+      description: Observed state - managed by the platform controller
       required:
       - phase
       - conditions
@@ -454,7 +454,7 @@ spec:
     - name: credentialRef
       type: string
       required: true
-      description: Encrypted credential reference — never stored plaintext
+      description: Encrypted credential reference - never stored plaintext
     - name: parameters
       type: ModelParameters
       required: false

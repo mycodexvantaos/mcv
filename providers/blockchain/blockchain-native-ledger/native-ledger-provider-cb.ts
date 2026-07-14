@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - NativeLedgerProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - NativeLedgerProvider (CapabilityBase-based)
  *
  * @module providers/blockchain/blockchain-native-ledger
  * @version 1.0.0

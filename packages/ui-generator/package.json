@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/ui-generator",
   "version": "1.0.0",
-  "description": "UI/UX generation capabilities for MyCodeXvantaOS platform",
+  "description": "UI/UX generation capabilities for MyCodexVantaOS platform",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -17,7 +17,7 @@
     "ux",
     "generation"
   ],
-  "author": "MyCodeXvantaOS Team",
+  "author": "MyCodexVantaOS Team",
   "license": "MIT",
   "dependencies": {
     "@mycodexvantaos/builder": "workspace:*"

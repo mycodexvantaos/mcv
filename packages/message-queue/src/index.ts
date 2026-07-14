@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Message Queue
+ * MyCodexVantaOS Message Queue
  * Provides reliable message queuing and processing
  */
 

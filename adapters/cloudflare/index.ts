@@ -1,6 +1,6 @@
 /**
  * ╔══════════════════════════════════════════════════════════════════════╗
- * ║  MyCodeXvantaOS — Cloudflare Adapter Index                          ║
+ * ║  MyCodexVantaOS — Cloudflare Adapter Index                          ║
  * ║  Concrete implementations of port interfaces using Cloudflare       ║
  * ║  Workers runtime primitives (D1, KV, R2, Queues, Vectorize).       ║
  * ║  Version: 1.0.0-constitution                                       ║

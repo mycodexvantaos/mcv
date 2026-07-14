@@ -8,7 +8,7 @@ metadata:
   date: '2026-06-29'
   status: active
   authoritative: true
-  description: Global service catalog — Single Source of Truth for all platform services
+  description: Global service catalog - Single Source of Truth for all platform services
 spec:
   services:
     - serviceId: mycodexvantaos-core-auth

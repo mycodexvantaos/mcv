@@ -4,7 +4,7 @@
  * Firebase Deployment Provider
  * Optional connector for Firebase App Hosting and Firebase Hosting
  *
- * Following MyCodeXvantaOS Architecture:
+ * Following MyCodexVantaOS Architecture:
  * - Falls back to deploy-native when credentials are not configured
  * - External service is an expansion outlet, not the foundation
  * - Zero hard dependency - graceful degradation

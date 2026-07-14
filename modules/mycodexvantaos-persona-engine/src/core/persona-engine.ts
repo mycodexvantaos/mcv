@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Persona Engine - Main Engine
+ * MyCodexVantaOS Persona Engine - Main Engine
  *
  * Integrates all persona components for comprehensive analysis and solution generation.
  * URN: urn:mycodexvantaos:core:persona-engine

@@ -1,5 +1,5 @@
 /**
- * 🔒 MyCodeXvantaOS - OpenAI Audio Provider (CapabilityBase-based)
+ * 🔒 MyCodexVantaOS - OpenAI Audio Provider (CapabilityBase-based)
  *
  * OpenAI audio integration with native fallback.
  *

@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/application",
   "version": "1.0.0-constitution",
-  "description": "MyCodeXvantaOS application services — 8 service categories with use-case facades",
+  "description": "MyCodexVantaOS application services — 8 service categories with use-case facades",
   "type": "module",
   "main": "./index.ts",
   "types": "./index.ts",

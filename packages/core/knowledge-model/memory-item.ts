@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Memory Item Model
+ * MyCodexVantaOS — Memory Item Model
  * Episodic and semantic memory for persistent agent context.
  *
  * Memory items enable agents to maintain context across sessions

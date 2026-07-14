@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Studio Platform — AI Flows Index
+ * MyCodexVantaOS Studio Platform — AI Flows Index
  * Exports all Genkit AI flows for use in API routes and server actions.
  */
 

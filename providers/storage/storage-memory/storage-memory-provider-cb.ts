@@ -1,5 +1,5 @@
 /**
- * 🔒 MyCodeXvantaOS - Memory Storage Provider (CapabilityBase-based)
+ * 🔒 MyCodexVantaOS - Memory Storage Provider (CapabilityBase-based)
  *
  * In-memory storage implementation with zero external dependencies.
  *

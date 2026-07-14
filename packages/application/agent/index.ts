@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Agent Application Package
+ * MyCodexVantaOS — Agent Application Package
  */
 
 export { AgentService } from './agent-service';

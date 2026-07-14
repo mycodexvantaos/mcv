@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS 深度覆蓋率分析器
+ * MyCodexVantaOS 深度覆蓋率分析器
  * 分析代碼覆蓋率、架構覆蓋率、規範覆蓋率
  */
 

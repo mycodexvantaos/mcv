@@ -4,7 +4,7 @@
  * Native Deployment Provider
  * Zero external dependencies - always available as fallback
  *
- * Following MyCodeXvantaOS Architecture:
+ * Following MyCodexVantaOS Architecture:
  * - Native-first: Works without any external services
  * - Provider-agnostic: Standard interface for deployment operations
  */

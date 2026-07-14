@@ -1,7 +1,7 @@
 import { MemoryCacheProvider } from './memory-cache-provider-cb';
 import type { MemoryCacheConfig } from './memory-cache-provider-cb';
 /**
- * 🔒 MyCodeXvantaOS - Memory Cache Provider Exports
+ * 🔒 MyCodexVantaOS - Memory Cache Provider Exports
  *
  * @module providers/cache/cache-memory
  * @version 1.0.0

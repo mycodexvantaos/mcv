@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/compliance-checker",
   "version": "1.0.0",
-  "description": "合規檢查器 for MyCodeXvantaOS - Layer F擴展",
+  "description": "合規檢查器 for MyCodexVantaOS - Layer F擴展",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -16,7 +16,7 @@
     "Layer F擴展",
     "mycodexvantaos"
   ],
-  "author": "MyCodeXvantaOS",
+  "author": "MyCodexVantaOS",
   "license": "MIT",
   "dependencies": {
     "@mycodexvantaos/runtime": "workspace:*"

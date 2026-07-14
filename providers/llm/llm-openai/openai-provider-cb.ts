@@ -1,5 +1,5 @@
 /**
- * 🤖 MyCodeXvantaOS - OpenAI LLM Provider (CapabilityBase-based)
+ * 🤖 MyCodexVantaOS - OpenAI LLM Provider (CapabilityBase-based)
  *
  * Official OpenAI API integration with native fallback.
  *

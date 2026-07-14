@@ -85,7 +85,7 @@ export class AgentChatService {
     });
 
     return {
-      apiVersion: 'platform.mycodevantaos/v1',
+      apiVersion: 'platform.mycodexvantaos/v1',
       kind: 'chat-session',
       metadata: {
         id: sessionId,

@@ -1,4 +1,4 @@
-# Legacy CodeQL analysis workflow — retained for GHAS configuration compatibility.
+# Legacy CodeQL analysis workflow - retained for GHAS configuration compatibility.
 # The primary CodeQL scan is now handled by codeql.yml (CodeQL Advanced).
 # This file exists solely to satisfy the code-scanning rule set that expects
 # results from the .github/workflows/codeql-analysis.yml configuration.

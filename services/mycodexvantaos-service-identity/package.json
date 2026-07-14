@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/service-identity",
   "version": "0.1.0",
-  "description": "MyCodeXvantaOS Identity Service",
+  "description": "MyCodexVantaOS Identity Service",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",

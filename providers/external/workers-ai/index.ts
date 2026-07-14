@@ -1,7 +1,7 @@
 import { WorkersAIProvider } from './workers-ai-provider-cb';
 import type { WorkersAIConfig } from './workers-ai-provider-cb';
 /**
- * 🔒 MyCodeXvantaOS - Cloudflare Workers AI Provider Exports
+ * 🔒 MyCodexVantaOS - Cloudflare Workers AI Provider Exports
  *
  * @module providers/external/workers-ai
  * @version 1.0.0

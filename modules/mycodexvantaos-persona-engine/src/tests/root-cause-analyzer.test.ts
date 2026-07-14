@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Persona Engine - Root Cause Analyzer Tests
+ * MyCodexVantaOS Persona Engine - Root Cause Analyzer Tests
  *
  * Unit tests for the RootCauseAnalyzer class.
  */

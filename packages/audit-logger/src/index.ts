@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Audit Logger
+ * MyCodexVantaOS Audit Logger
  * Provides comprehensive audit logging for compliance and security
  */
 

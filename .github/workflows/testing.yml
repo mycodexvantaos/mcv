@@ -1,6 +1,6 @@
 # NOTE: This workflow is superseded by unified-ci.yaml.
 # It is kept for reference and runs only on manual dispatch.
-name: MyCodeXvantaOS Testing (Legacy)
+name: MyCodexVantaOS Testing (Legacy)
 
 "on":
   workflow_dispatch:

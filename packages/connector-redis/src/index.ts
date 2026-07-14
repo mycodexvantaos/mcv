@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Redis Connector
+ * MyCodexVantaOS Redis Connector
  * Provides integration with Redis for caching and data storage
  */
 

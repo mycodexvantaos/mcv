@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — OpenAI Adapter
+ * MyCodexVantaOS — OpenAI Adapter
  * Implements IChatModelPort and IEmbeddingModelPort using the OpenAI API.
  *
  * Category: model

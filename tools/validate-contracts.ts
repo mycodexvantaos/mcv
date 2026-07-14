@@ -1,6 +1,6 @@
 #!/usr/bin/env npx ts-node
 // ═══════════════════════════════════════════════════════════════════════
-// MyCodeXvantaOS — Contract Validation CLI
+// MyCodexVantaOS — Contract Validation CLI
 // Validates all service definitions, schemas, and cross-references
 // Usage: npx ts-node tools/validate-contracts.ts [--fix] [--verbose]
 // ═══════════════════════════════════════════════════════════════════════
@@ -177,7 +177,7 @@ function main() {
   const results: ValidationResult[] = [];
 
   console.log('════════════════════════════════════════════════════════');
-  console.log('  MyCodeXvantaOS — Contract Validation');
+  console.log('  MyCodexVantaOS — Contract Validation');
   console.log('════════════════════════════════════════════════════════\n');
 
   // Validate service definitions

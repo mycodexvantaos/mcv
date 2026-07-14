@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - TemporalSchedulerProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - TemporalSchedulerProvider (CapabilityBase-based)
  *
  * @module providers/scheduler/scheduler-temporal
  * @version 1.0.0

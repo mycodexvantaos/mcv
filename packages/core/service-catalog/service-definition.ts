@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Service Definition Types
+ * MyCodexVantaOS — Service Definition Types
  * Machine-readable service registration model.
  * Every platform capability must be a service.
  */

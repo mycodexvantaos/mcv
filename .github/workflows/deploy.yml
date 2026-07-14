@@ -1,5 +1,5 @@
 # === path: .github/workflows/deploy.yml ===
-# Controlled Deployment Pipeline for MyCodeXvantaOS
+# Controlled Deployment Pipeline for MyCodexVantaOS
 # IM-MCV-CI-OPT: deploy with manual approval on main, auto-deploy on release/*
 # Version: 1.0.0
 
@@ -113,7 +113,7 @@ jobs:
           sbom: true
 
   # ====================
-  # Stage 3: Deploy (main — requires manual approval; environment from input)
+  # Stage 3: Deploy (main - requires manual approval; environment from input)
   # ====================
   deploy-staging:
     name: Deploy to staging
@@ -141,7 +141,7 @@ jobs:
             echo "Kubernetes config is available."
           else
             echo "has_kube_config=false" >> "$GITHUB_OUTPUT"
-            echo "KUBE_CONFIG_${DEPLOY_ENV^^} is not configured — skipping K8s deployment."
+            echo "KUBE_CONFIG_${DEPLOY_ENV^^} is not configured - skipping K8s deployment."
           fi
 
       - name: Configure kubectl
@@ -190,7 +190,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
   # ====================
-  # Stage 4: Deploy to Staging (release/* — automatic)
+  # Stage 4: Deploy to Staging (release/* - automatic)
   # ====================
   deploy-release-staging:
     name: Deploy Release to staging
@@ -217,7 +217,7 @@ jobs:
             echo "has_kube_config=true" >> "$GITHUB_OUTPUT"
           else
             echo "has_kube_config=false" >> "$GITHUB_OUTPUT"
-            echo "KUBE_CONFIG_${DEPLOY_ENV^^} is not configured — skipping K8s deployment."
+            echo "KUBE_CONFIG_${DEPLOY_ENV^^} is not configured - skipping K8s deployment."
           fi
 
       - name: Configure kubectl

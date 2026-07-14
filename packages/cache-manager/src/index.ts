@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Cache Manager
+ * MyCodexVantaOS Cache Manager
  * Provides distributed caching with TTL and eviction policies
  */
 

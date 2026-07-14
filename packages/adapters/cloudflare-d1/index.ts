@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Cloudflare D1 Adapter
+ * MyCodexVantaOS — Cloudflare D1 Adapter
  * Implements IDatabasePort using Cloudflare D1 (SQLite-based serverless database).
  *
  * Category: storage

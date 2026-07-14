@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════
-// MyCodeXvantaOS — API Gateway
+// MyCodexVantaOS — API Gateway
 // Lightweight reverse proxy that routes requests to platform services
 // Routes: /api/v1/{identity,workspace,knowledge,chat,model,audit,usage}/*
 // ═══════════════════════════════════════════════════════════════════════
@@ -106,7 +106,7 @@ const PORT = parseInt(process.env.PORT || '8080', 10);
 const server = http.createServer(handler);
 
 server.listen(PORT, () => {
-  console.log(`MyCodeXvantaOS Gateway listening on :${PORT}`);
+  console.log(`MyCodexVantaOS Gateway listening on :${PORT}`);
   console.log(
     `Routes: ${Object.entries(SERVICE_ROUTES)
       .map(([k, v]) => `/api/v1/${k} -> ${v}`)

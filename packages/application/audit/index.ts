@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Audit Application Package
+ * MyCodexVantaOS — Audit Application Package
  */
 
 export { AuditService } from './audit-service';

@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Search Engine
+ * MyCodexVantaOS Search Engine
  * Provides full-text search capabilities across documents
  */
 

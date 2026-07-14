@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Usage Application Package
+ * MyCodexVantaOS — Usage Application Package
  */
 
 export { UsageService } from './usage-service';

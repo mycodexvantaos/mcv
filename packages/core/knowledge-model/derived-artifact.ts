@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Derived Artifact Model
+ * MyCodexVantaOS — Derived Artifact Model
  * Artifacts produced from knowledge: summaries, translations, extractions.
  *
  * Derived artifacts track the transformation chain:

@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Automation Application Service
+ * MyCodexVantaOS — Automation Application Service
  * Category: automation
  *
  * Async job processing: enqueue, lease, complete, fail.

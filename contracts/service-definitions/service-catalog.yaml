@@ -1,4 +1,4 @@
-apiVersion: platform.mycodevantaos/v1
+apiVersion: platform.mycodexvantaos/v1
 kind: ServiceCatalog
 metadata:
   name: mycodexvantaos-service-catalog
@@ -131,7 +131,7 @@ spec:
 
       credentials, sessions, and workspace-scoped role assignments.
 
-      Zero external dependencies — the root of the service DAG.
+      Zero external dependencies - the root of the service DAG.
 
       '
     resource_type: identity-subject
@@ -258,9 +258,9 @@ spec:
     display_name: Knowledge Store
     description: 'Document ingestion, chunking, embedding, and persistent storage.
 
-      Manages the complete knowledge ingestion pipeline: validate → extract →
+      Manages the complete knowledge ingestion pipeline: validate -> extract ->
 
-      chunk → embed → index → verify. Stores raw documents, processed chunks,
+      chunk -> embed -> index -> verify. Stores raw documents, processed chunks,
 
       and vector embeddings with source traceability.
 
@@ -342,9 +342,9 @@ spec:
     display_name: Knowledge Search
     description: 'Full-text, semantic, and hybrid search over knowledge collections.
 
-      Implements the retrieval pipeline: parse → authorize → search → rank →
+      Implements the retrieval pipeline: parse -> authorize -> search -> rank ->
 
-      trace → audit. Supports metadata filtering, source tracing, and
+      trace -> audit. Supports metadata filtering, source tracing, and
 
       evidence-level classification of results.
 
@@ -408,9 +408,9 @@ spec:
     display_name: Agent Chat
     description: 'AI-powered conversational agent with knowledge-grounded generation.
 
-      Implements the generation pipeline: assemble → invoke → attribute →
+      Implements the generation pipeline: assemble -> invoke -> attribute ->
 
-      safety-check → audit. Integrates knowledge retrieval for RAG-based
+      safety-check -> audit. Integrates knowledge retrieval for RAG-based
 
       responses with source attribution and evidence-level classification.
 

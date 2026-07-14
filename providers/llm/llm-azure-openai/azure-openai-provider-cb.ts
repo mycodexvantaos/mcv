@@ -1,5 +1,5 @@
 /**
- * 🔒 MyCodeXvantaOS - Azure OpenAI LLM Provider (CapabilityBase-based)
+ * 🔒 MyCodexVantaOS - Azure OpenAI LLM Provider (CapabilityBase-based)
  *
  * Azure OpenAI LLM integration with OpenAI fallback.
  *

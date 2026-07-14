@@ -1,9 +1,9 @@
 /**
- * MyCodeXvantaOS Studio Platform — Decision Guide AI Flow
+ * MyCodexVantaOS Studio Platform — Decision Guide AI Flow
  * Phase 4: Genkit AI Flows
  *
  * Generates structured technology selection decision guides using the
- * MyCodeXvantaOS Provider Architecture (native-first, multi-provider).
+ * MyCodexVantaOS Provider Architecture (native-first, multi-provider).
  */
 
 import { generateText } from '../genkit';
@@ -45,7 +45,7 @@ export async function decisionGuideFlow(input: DecisionGuideInput): Promise<Deci
     complianceTags = ['SOC2', 'SLSA-L3'],
   } = input;
 
-  const prompt = `You are the MyCodeXvantaOS Architecture Decision Engine.
+  const prompt = `You are the MyCodexVantaOS Architecture Decision Engine.
 
 Domain: ${domain}
 Context: ${context}
@@ -93,7 +93,7 @@ Format as structured JSON.`;
         `Adopt mycodexvantaos-native ${domain} stack with provider abstraction layer.`,
       rationale:
         rationale ||
-        `Aligns with MyCodeXvantaOS Provider Architecture: native-first, zero vendor lock-in, SLSA-L3 compliant.`,
+        `Aligns with MyCodexVantaOS Provider Architecture: native-first, zero vendor lock-in, SLSA-L3 compliant.`,
       alternatives: [
         {
           option: 'External Provider (OpenAI/Anthropic)',

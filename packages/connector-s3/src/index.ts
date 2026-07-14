@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS S3 Connector
+ * MyCodexVantaOS S3 Connector
  * Provides integration with S3-compatible storage services
  */
 

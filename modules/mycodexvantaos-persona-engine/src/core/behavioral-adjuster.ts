@@ -1,5 +1,5 @@
 /**
- * Behavioral Adjuster for MyCodeXvantaOS Persona Engine
+ * Behavioral Adjuster for MyCodexVantaOS Persona Engine
  *
  * Provides dynamic adjustment of behavioral parameters based on context,
  * user feedback, and interaction patterns to optimize persona effectiveness.

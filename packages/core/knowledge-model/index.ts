@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Knowledge Model Package
+ * MyCodexVantaOS — Knowledge Model Package
  * Knowledge as operational substrate.
  *
  * Design principles:

@@ -1,5 +1,5 @@
 /**
- * 🔒 MyCodeXvantaOS - Memory Cache Provider (CapabilityBase-based)
+ * 🔒 MyCodexVantaOS - Memory Cache Provider (CapabilityBase-based)
  *
  * In-memory cache implementation with zero external dependencies.
  *

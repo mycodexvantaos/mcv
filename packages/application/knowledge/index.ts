@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Knowledge Application Package
+ * MyCodexVantaOS — Knowledge Application Package
  */
 
 export { KnowledgeService } from './knowledge-service';

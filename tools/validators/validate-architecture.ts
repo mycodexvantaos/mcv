@@ -253,7 +253,7 @@ function checkRuntimesLayer(): void {
 
 // ── Main ───────────────────────────────────────────────────────────────
 
-console.log('🏗️  Validating MyCodeXvantaOS platform architecture...\n');
+console.log('🏗️  Validating MyCodexVantaOS platform architecture...\n');
 
 checkCorePackages();
 checkPortPackages();

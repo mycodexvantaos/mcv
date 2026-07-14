@@ -1,9 +1,9 @@
-# Dependabot configuration for MyCodeXvantaOS
+# Dependabot configuration for MyCodexVantaOS
 # https://docs.github.com/en/code-security/dependabot/configuration-options-for-the-dependabot.yml-file
 
 version: 2
 updates:
-  # ── GitHub Actions ──────────────────────────────────────
+  # -- GitHub Actions --------------------------------------
   - package-ecosystem: github-actions
     directory: /
     schedule:
@@ -25,7 +25,7 @@ updates:
           - minor
           - patch
 
-  # ── pnpm (TypeScript Control Plane) ─────────────────────
+  # -- pnpm (TypeScript Control Plane) ---------------------
   - package-ecosystem: npm
     directory: /
     schedule:
@@ -41,7 +41,7 @@ updates:
       prefix: chore(deps)
       prefix-development: chore(deps-dev)
     ignore:
-      # ESM-only — blocked by http-proxy-agent@5.x CJS (see Issue #99)
+      # ESM-only - blocked by http-proxy-agent@5.x CJS (see Issue #99)
       - dependency-name: "@tootallnate/once"
         update-types: ["version-update:semver-major"]
     groups:
@@ -56,7 +56,7 @@ updates:
           - minor
           - patch
 
-  # ── pip/uv (Python Intelligence Plane) ──────────────────
+  # -- pip/uv (Python Intelligence Plane) ------------------
   - package-ecosystem: pip
     directory: /python
     schedule:
@@ -81,7 +81,7 @@ updates:
           - minor
           - patch
 
-  # ── Docker ──────────────────────────────────────────────
+  # -- Docker ----------------------------------------------
   - package-ecosystem: docker
     directory: /
     schedule:

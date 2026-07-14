@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Model Provider Port
+ * MyCodexVantaOS — Model Provider Port
  * Abstracts LLM invocation and embedding generation.
  *
  * Implementations: OpenAI, OpenRouter, Workers AI, Anthropic, Google, Ollama

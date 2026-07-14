@@ -1,5 +1,5 @@
 /**
- * 🔒 MyCodeXvantaOS - Google Audio Provider (CapabilityBase-based)
+ * 🔒 MyCodexVantaOS - Google Audio Provider (CapabilityBase-based)
  *
  * Google audio integration with native fallback.
  *

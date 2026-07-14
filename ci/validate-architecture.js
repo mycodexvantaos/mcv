@@ -63,7 +63,7 @@ class ArchitectureValidationEngine {
     this.rootDir = rootDir;
   }
   run() {
-    console.log('🚀 Starting MyCodeXvantaOS Architecture Validation Engine...');
+    console.log('🚀 Starting MyCodexVantaOS Architecture Validation Engine...');
     this.validateServices();
     this.validatePackages();
     this.validateProviders();

@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/message-queue",
   "version": "1.0.0",
-  "description": "消息隊列 for MyCodeXvantaOS - Layer B擴展",
+  "description": "消息隊列 for MyCodexVantaOS - Layer B擴展",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -16,7 +16,7 @@
     "Layer B擴展",
     "mycodexvantaos"
   ],
-  "author": "MyCodeXvantaOS",
+  "author": "MyCodexVantaOS",
   "license": "MIT",
   "dependencies": {
     "@mycodexvantaos/runtime": "workspace:*"

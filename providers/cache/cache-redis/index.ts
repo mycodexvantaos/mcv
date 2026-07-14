@@ -1,7 +1,7 @@
 import { RedisCacheProvider } from './redis-cache-provider-cb';
 import type { RedisCacheConfig } from './redis-cache-provider-cb';
 /**
- * 🔒 MyCodeXvantaOS - Redis Cache Provider Exports
+ * 🔒 MyCodexVantaOS - Redis Cache Provider Exports
  *
  * @module providers/cache/cache-redis
  * @version 1.0.0

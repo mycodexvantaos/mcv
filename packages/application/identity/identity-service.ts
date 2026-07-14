@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Identity Application Service
+ * MyCodexVantaOS — Identity Application Service
  * Category: security
  *
  * Foundation authentication and authorization service.

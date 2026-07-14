@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://mycodexvantaos.org/schemas/capability-definition.schema.json",
-  "title": "MyCodeXvantaOS Capability Definition",
+  "title": "MyCodexVantaOS Capability Definition",
   "description": "Schema for entries in governance/capability-set.yaml. Based on naming-spec-v1.md 5.5.",
   "type": "object",
   "required": ["id", "description", "category"],

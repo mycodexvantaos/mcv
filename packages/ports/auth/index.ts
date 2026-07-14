@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Auth Port
+ * MyCodexVantaOS — Auth Port
  * Abstracts authentication, authorization, and identity verification.
  *
  * This port is the gatekeeper: every request must pass through auth

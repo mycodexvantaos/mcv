@@ -1,7 +1,7 @@
 import { LevelDBCacheProvider } from './leveldb-cache-provider-cb';
 import type { LevelDBCacheConfig } from './leveldb-cache-provider-cb';
 /**
- * 🔒 MyCodeXvantaOS - LevelDB Cache Provider Exports
+ * 🔒 MyCodexVantaOS - LevelDB Cache Provider Exports
  *
  * @module providers/cache/cache-levelDB
  * @version 1.0.0

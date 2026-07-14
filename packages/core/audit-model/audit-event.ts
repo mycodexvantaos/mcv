@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Audit Event Model
+ * MyCodexVantaOS — Audit Event Model
  * The "cannot lie" layer — tamper-evident SHA-256 integrity chain.
  * Every significant action produces an audit event.
  */

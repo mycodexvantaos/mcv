@@ -1,6 +1,6 @@
 /**
  * @module apps/api-worker
- * @description Cloudflare Worker API entry point for the MyCodeXvantaOS platform.
+ * @description Cloudflare Worker API entry point for the MyCodexVantaOS platform.
  *
  * This is the primary HTTP API surface for Cloudflare deployment.
  * It provides a thin routing layer over the platform services,
@@ -251,7 +251,7 @@ addRoute('GET', '/v1/policies', async () => {
 function handleRoot(req: Request): Response {
   const url = new URL(req.url);
   return json({
-    name: 'MyCodeXvantaOS API',
+    name: 'MyCodexVantaOS API',
     version: '0.2.0',
     status: 'running',
     runtime: 'cloudflare-worker',

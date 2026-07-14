@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Knowledge Application Service
+ * MyCodexVantaOS — Knowledge Application Service
  * Category: knowledge
  *
  * Document ingestion, chunking, embedding, indexing, search, and retrieval.

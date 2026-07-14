@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Persona Engine - Solution Generator Tests
+ * MyCodexVantaOS Persona Engine - Solution Generator Tests
  *
  * Unit tests for the SolutionGenerator class.
  */

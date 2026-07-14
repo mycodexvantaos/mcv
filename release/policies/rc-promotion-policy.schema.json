@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "RC Promotion Gate Policy",
-  "description": "Machine-readable promotion gate policy for MyCodeXvantaOS release candidates. Defines the criteria an RC must satisfy before promotion to stable.",
+  "description": "Machine-readable promotion gate policy for MyCodexVantaOS release candidates. Defines the criteria an RC must satisfy before promotion to stable.",
   "type": "object",
   "properties": {
     "policyVersion": {

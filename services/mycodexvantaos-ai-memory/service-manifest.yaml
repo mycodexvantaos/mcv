@@ -17,7 +17,7 @@ spec:
   serviceVersion: v1.0.0
   layer: Native Services
   capability: state-store
-  description: MyCodeXvantaOS mycodexvantaos-ai-memory service
+  description: MyCodexVantaOS mycodexvantaos-ai-memory service
   category: platform
   healthCheck:
     enabled: true

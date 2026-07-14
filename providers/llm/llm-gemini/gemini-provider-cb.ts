@@ -1,5 +1,5 @@
 /**
- * ✨ MyCodeXvantaOS - Gemini LLM Provider (CapabilityBase-based)
+ * ✨ MyCodexVantaOS - Gemini LLM Provider (CapabilityBase-based)
  *
  * Google Gemini API integration with native fallback.
  *

@@ -13,7 +13,7 @@ spec:
     - tier-3
 tiers:
   - tier: critical
-    description: Core platform services — zero downtime tolerance
+    description: Core platform services - zero downtime tolerance
     sla:
       availability: 99.99%
       rto-minutes: 5
@@ -56,7 +56,7 @@ tiers:
       - single-region
       - health-check-interval-seconds: 60
   - tier: experimental
-    description: Experimental services — no SLA guarantee
+    description: Experimental services - no SLA guarantee
     sla:
       availability: best-effort
       rto-minutes: null

@@ -5,7 +5,7 @@ metadata:
   capability: deployment
   description: Firebase App Hosting deployment provider - optional connector
   version: 1.0.0
-  author: MyCodeXvantaOS Team
+  author: MyCodexVantaOS Team
   tags:
     - deployment
     - firebase

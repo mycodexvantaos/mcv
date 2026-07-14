@@ -1,5 +1,5 @@
 /**
- * 🧠 MyCodeXvantaOS - Anthropic LLM Provider (CapabilityBase-based)
+ * 🧠 MyCodexVantaOS - Anthropic LLM Provider (CapabilityBase-based)
  *
  * Anthropic Claude API integration with native fallback.
  *

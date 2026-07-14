@@ -17,7 +17,7 @@ spec:
   serviceVersion: v1.0.0
   layer: Native Services
   capability: security
-  description: MyCodeXvantaOS mycodexvantaos-security-validation service
+  description: MyCodexVantaOS mycodexvantaos-security-validation service
   category: platform
   healthCheck:
     enabled: true

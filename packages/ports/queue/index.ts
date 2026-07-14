@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Queue Port
+ * MyCodexVantaOS — Queue Port
  * Abstracts message queue operations for async processing.
  *
  * Cloudflare implementation: Queues

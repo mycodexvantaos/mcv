@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Workers AI Adapter
+ * MyCodexVantaOS — Workers AI Adapter
  * Implements IChatModelPort and IEmbeddingModelPort using Cloudflare Workers AI.
  *
  * Category: model

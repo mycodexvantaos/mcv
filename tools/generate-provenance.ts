@@ -147,7 +147,7 @@ function main(): void {
   const version = getVersion();
   const artifactsDir = resolve(process.cwd(), `release/artifacts/${version}`);
 
-  console.log('\n🔗 MyCodeXvantaOS Provenance Generator (SLSA/in-toto)');
+  console.log('\n🔗 MyCodexVantaOS Provenance Generator (SLSA/in-toto)');
   console.log(`   Version: ${version}`);
   console.log('━'.repeat(50));
 

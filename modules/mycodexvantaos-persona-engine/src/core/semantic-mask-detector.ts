@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Persona Engine - Semantic Mask Detector
+ * MyCodexVantaOS Persona Engine - Semantic Mask Detector
  *
  * Detects semantic masks in text - language patterns that conceal, avoid, or distort reality.
  * URN: urn:mycodexvantaos:core:semantic-mask-detector

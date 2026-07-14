@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS GitHub Connector
+ * MyCodexVantaOS GitHub Connector
  * Provides integration with GitHub API
  */
 
@@ -119,7 +119,7 @@ export class GitHubConnector {
     this.headers = {
       Authorization: `token ${this.config.token}`,
       Accept: 'application/vnd.github.v3+json',
-      'User-Agent': 'MyCodeXvantaOS-GitHub-Connector',
+      'User-Agent': 'MyCodexVantaOS-GitHub-Connector',
     };
   }
 

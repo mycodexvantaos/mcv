@@ -1,5 +1,5 @@
 /**
- * 🔒 MyCodeXvantaOS - Provider Registry
+ * 🔒 MyCodexVantaOS - Provider Registry
  *
  * Centralized registry for managing all capability providers.
  * Provides discovery, registration, and lifecycle management.

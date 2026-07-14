@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Policy Definition Model
+ * MyCodexVantaOS — Policy Definition Model
  * "Who can do what, under what conditions, to what resources?"
  * RBAC + ABAC policy engine with allow/deny rules.
  */

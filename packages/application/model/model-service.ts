@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Model Application Service
+ * MyCodexVantaOS — Model Application Service
  * Category: model
  *
  * Multi-provider LLM gateway with bring-your-own-key configuration.

@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Shared ID Utilities
+ * MyCodexVantaOS — Shared ID Utilities
  * Platform-neutral ID generation and validation.
  * No cloud vendor dependencies.
  */

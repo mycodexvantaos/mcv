@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * @module apps/cli
- * @description Command-line interface for MyCodeXvantaOS platform management.
+ * @description Command-line interface for MyCodexVantaOS platform management.
  *
  * Usage:
  *   mcx <command> [subcommand] [options]
@@ -435,7 +435,7 @@ async function dispatch(
 }
 
 function printHelp(commands: CliCommand[], prefix?: string): void {
-  console.log(`\nMyCodeXvantaOS CLI (mcx) — Platform Management Tool\n`);
+  console.log(`\nMyCodexVantaOS CLI (mcx) — Platform Management Tool\n`);
   console.log(`Usage: mcx ${prefix ? prefix + ' ' : ''}<command> [options]\n`);
   console.log('Commands:');
   for (const cmd of commands) {

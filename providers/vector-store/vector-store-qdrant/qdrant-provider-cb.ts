@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - QdrantProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - QdrantProvider (CapabilityBase-based)
  *
  * @module providers/vector-store/vector-store-qdrant
  * @version 1.0.0

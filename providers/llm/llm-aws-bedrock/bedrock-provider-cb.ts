@@ -1,5 +1,5 @@
 /**
- * 🔒 MyCodeXvantaOS - AWS Bedrock LLM Provider (CapabilityBase-based)
+ * 🔒 MyCodexVantaOS - AWS Bedrock LLM Provider (CapabilityBase-based)
  *
  * AWS Bedrock LLM integration with native fallback.
  *

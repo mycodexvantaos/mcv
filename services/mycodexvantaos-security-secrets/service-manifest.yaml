@@ -17,7 +17,7 @@ spec:
   serviceVersion: v1.0.0
   layer: Native Services
   capability: secrets
-  description: MyCodeXvantaOS mycodexvantaos-security-secrets service
+  description: MyCodexVantaOS mycodexvantaos-security-secrets service
   category: platform
   healthCheck:
     enabled: true

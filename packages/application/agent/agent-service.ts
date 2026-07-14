@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Agent Application Service
+ * MyCodexVantaOS — Agent Application Service
  * Category: agent
  *
  * AI-powered conversational agent with knowledge-grounded generation.

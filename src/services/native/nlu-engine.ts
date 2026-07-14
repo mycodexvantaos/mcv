@@ -1,5 +1,5 @@
 /**
- * @fileOverview MyCodeXvantaOS Sovereign NLU Engine v1.3.0
+ * @fileOverview MyCodexVantaOS Sovereign NLU Engine v1.3.0
  *
  * 實作 Phase 4: 生產就緒規格 (全量可執行源碼)
  * - 4 層處理結構: Tokenizer, Entity Extractor, Intent Classifier (ML), Semantic Parser

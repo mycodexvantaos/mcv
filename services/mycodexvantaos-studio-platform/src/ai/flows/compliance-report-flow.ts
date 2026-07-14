@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Studio Platform — Compliance Report AI Flow
+ * MyCodexVantaOS Studio Platform — Compliance Report AI Flow
  * Phase 4: Genkit AI Flows
  *
  * Generates automated SOC2 / ISO27001 compliance reports with evidence
@@ -43,7 +43,7 @@ export async function complianceReportFlow(
 ): Promise<ComplianceReportOutput> {
   const { framework, periodStart, periodEnd, includeEvidence = true } = input;
 
-  const prompt = `You are the MyCodeXvantaOS Compliance Report Engine.
+  const prompt = `You are the MyCodexVantaOS Compliance Report Engine.
 
 Framework: ${framework}
 Period: ${periodStart} to ${periodEnd}
@@ -63,7 +63,7 @@ Generate an executive summary (3-4 sentences) covering:
     aiProvider = response.provider ?? 'native';
     executiveSummary = response.text.slice(0, 600);
   } catch {
-    executiveSummary = `MyCodeXvantaOS platform maintains strong compliance posture for ${framework} during ${periodStart}–${periodEnd}. SLSA Build Level 3 achieved with 100% artifact signing. SOC2 controls at 96.9% pass rate (62/64). Two controls require remediation: network policy baseline and MongoDB connection security.`;
+    executiveSummary = `MyCodexVantaOS platform maintains strong compliance posture for ${framework} during ${periodStart}–${periodEnd}. SLSA Build Level 3 achieved with 100% artifact signing. SOC2 controls at 96.9% pass rate (62/64). Two controls require remediation: network policy baseline and MongoDB connection security.`;
   }
 
   const soc2Controls: ComplianceControl[] = [

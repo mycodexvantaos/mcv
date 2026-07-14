@@ -65,7 +65,7 @@ function exec(command: string, options?: { cwd?: string }): string {
   }
 }
 
-console.log('\n🚀 MyCodeXvantaOS Release Candidate Verification\n');
+console.log('\n🚀 MyCodexVantaOS Release Candidate Verification\n');
 console.log('━'.repeat(60));
 
 // ── Category 1: Governance ──────────────────────────────────────────

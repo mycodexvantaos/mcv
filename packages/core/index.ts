@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Core Package
+ * MyCodexVantaOS — Core Package
  * Platform constitution: the divine models that define what IS.
  *
  * Five Constitutional Models:

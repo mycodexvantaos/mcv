@@ -30,7 +30,7 @@ jobs:
             chmod +x tools/validators/validate-contracts.sh
             ./tools/validators/validate-contracts.sh
           else
-            echo "Contract validator not found — validating YAML syntax"
+            echo "Contract validator not found - validating YAML syntax"
             find contracts -name "*.yaml" -o -name "*.yml" 2>/dev/null | while IFS= read -r f; do
               python3 -c "import yaml; yaml.safe_load(open('$f'))" && echo "✅ $f valid" || echo "❌ $f invalid"
             done

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-static';
 
-// MyCodeXvantaOS Admin Dashboard - Edge Nodes API
+// MyCodexVantaOS Admin Dashboard - Edge Nodes API
 // Edge node status and resource tracking
 
 interface EdgeNode {

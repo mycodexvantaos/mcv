@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Workspace Application Service
+ * MyCodexVantaOS — Workspace Application Service
  * Category: workspace
  *
  * Workspace-scoped resource isolation and lifecycle management.

@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - KeycloakAuthProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - KeycloakAuthProvider (CapabilityBase-based)
  *
  * @module providers/auth/auth-keycloak
  * @version 1.0.0

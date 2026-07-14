@@ -27,7 +27,7 @@ export async function extractFromUrl(url: string): Promise<ExtractedContent> {
   try {
     const response = await fetch(url, {
       headers: {
-        'User-Agent': 'MyCodeXvantaOS-Humaniser/1.0',
+        'User-Agent': 'MyCodexVantaOS-Humaniser/1.0',
         Accept: 'text/html,application/xhtml+xml',
       },
       signal: AbortSignal.timeout(10000), // 10s timeout

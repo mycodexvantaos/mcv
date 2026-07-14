@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - VaultSecretsProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - VaultSecretsProvider (CapabilityBase-based)
  *
  * @module providers/secrets/secrets-vault
  * @version 1.0.0

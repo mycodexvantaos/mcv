@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS SSL Manager
+ * MyCodexVantaOS SSL Manager
  * Provides SSL certificate management and renewal
  */
 

@@ -1,8 +1,8 @@
 # === path: .github/workflows/security-scan.yaml ===
-# Unified Security Scanning Pipeline for MyCodeXvantaOS
+# Unified Security Scanning Pipeline for MyCodexVantaOS
 # Version: 3.0.0
 #
-# CodeQL analysis removed from this workflow — it is now handled exclusively
+# CodeQL analysis removed from this workflow - it is now handled exclusively
 # by .github/workflows/codeql.yml (CodeQL Advanced) which covers actions,
 # javascript-typescript, and python with v4 actions.
 
@@ -44,7 +44,7 @@ permissions:
 
 jobs:
   # ====================
-  # CodeQL Analysis (compatibility — required by GHAS rule set)
+  # CodeQL Analysis (compatibility - required by GHAS rule set)
   # These produce results in categories expected by the code-scanning
   # configuration that existed on the main branch prior to this PR.
   # ====================

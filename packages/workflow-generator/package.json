@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/workflow-generator",
   "version": "0.1.0",
-  "description": "Workflow generation layer for MyCodeXvantaOS",
+  "description": "Workflow generation layer for MyCodexVantaOS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -17,7 +17,7 @@
     "pipeline",
     "automation"
   ],
-  "author": "MyCodeXvantaOS Team",
+  "author": "MyCodexVantaOS Team",
   "license": "MIT",
   "dependencies": {
     "@mycodexvantaos/builder": "workspace:*"

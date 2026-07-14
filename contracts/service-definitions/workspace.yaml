@@ -8,7 +8,7 @@ metadata:
   display_name: Workspace Service
   description: 'Multi-tenant workspace management with membership, quota enforcement,
     and workspace-scoped isolation. Every resource on the platform belongs to exactly
-    one workspace. Level 1 service — depends on identity.
+    one workspace. Level 1 service - depends on identity.
 
     '
 spec:

@@ -1,6 +1,6 @@
 /**
  * @module apps/web-console
- * @description Admin console Single Page Application for MyCodeXvantaOS.
+ * @description Admin console Single Page Application for MyCodexVantaOS.
  *
  * This is a static-site admin dashboard that talks to the api-worker.
  * It is built with vanilla HTML/CSS/JS (no framework) to keep the

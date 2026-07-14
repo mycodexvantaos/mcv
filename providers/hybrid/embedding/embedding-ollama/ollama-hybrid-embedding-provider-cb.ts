@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - OllamaHybridEmbeddingProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - OllamaHybridEmbeddingProvider (CapabilityBase-based)
  *
  * @module providers/hybrid/embedding/embedding-ollama
  * @version 1.0.0

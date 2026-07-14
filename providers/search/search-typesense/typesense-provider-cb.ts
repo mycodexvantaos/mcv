@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - TypesenseProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - TypesenseProvider (CapabilityBase-based)
  *
  * @module providers/search/search-typesense
  * @version 1.0.0

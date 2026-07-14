@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/ai-humaniser",
   "version": "1.0.0",
-  "description": "MyCodeXvantaOS AI Humaniser - AI content detection, confidence scoring, and humanisation rewriting engine",
+  "description": "MyCodexVantaOS AI Humaniser - AI content detection, confidence scoring, and humanisation rewriting engine",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -21,7 +21,7 @@
     "ai-generated-text",
     "confidence-scoring"
   ],
-  "author": "MyCodeXvantaOS Team",
+  "author": "MyCodexVantaOS Team",
   "license": "MIT",
   "dependencies": {
     "yaml": "^2.3.0",

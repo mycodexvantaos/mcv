@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - K8sNativeSecretsProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - K8sNativeSecretsProvider (CapabilityBase-based)
  *
  * @module providers/secrets/secrets-k8s-native
  * @version 1.0.0

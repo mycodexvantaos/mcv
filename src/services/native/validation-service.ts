@@ -1,5 +1,5 @@
 /**
- * @fileOverview MyCodeXvantaOS Layer G-Q: Sovereign Validation Service
+ * @fileOverview MyCodexVantaOS Layer G-Q: Sovereign Validation Service
  *
  * 交付物對齊: Phase 4: 生產就緒達標標準 (v1.0.0)
  * 指標: 延遲 < 150ms, 意圖準確度 92%+, 代碼有效性 95%+, 誠信鎖定 1.00

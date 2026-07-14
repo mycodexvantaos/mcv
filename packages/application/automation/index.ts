@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Automation Application Package
+ * MyCodexVantaOS — Automation Application Package
  */
 
 export { AutomationService } from './automation-service';

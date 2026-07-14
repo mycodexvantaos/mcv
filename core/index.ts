@@ -1,6 +1,6 @@
 /**
  * ╔══════════════════════════════════════════════════════════════════════╗
- * ║  MyCodeXvantaOS — Core Models (平台核心模型)                         ║
+ * ║  MyCodexVantaOS — Core Models (平台核心模型)                         ║
  * ║  Defines platform models that depend on NO cloud vendor.           ║
  * ║  These types are the "divine constitution" of the platform —       ║
  * ║  they define what IS, not HOW it runs.                             ║

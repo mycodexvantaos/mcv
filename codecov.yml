@@ -1,4 +1,4 @@
-# Codecov configuration for MyCodeXvantaOS
+# Codecov configuration for MyCodexVantaOS
 # https://docs.codecov.com/docs/codecov-yaml
 # Three-pillar integration: Coverage Analytics, Bundle Analysis, Test Analytics
 
@@ -22,7 +22,7 @@ comment:
   require_changes: false
 
 flags:
-  # Coverage Analytics — Python
+  # Coverage Analytics - Python
   coder-deep:
     paths:
       - python/packages/mycodexvantaos-coder-deep/
@@ -38,7 +38,7 @@ flags:
       - python/packages/
     carryforward: true
 
-  # Bundle Analysis — JavaScript/TypeScript
+  # Bundle Analysis - JavaScript/TypeScript
   nextjs:
     paths:
       - apps/
@@ -50,7 +50,7 @@ flags:
       - packages/
     carryforward: true
 
-  # Test Analytics — Python
+  # Test Analytics - Python
   test-results:
     carryforward: true
 

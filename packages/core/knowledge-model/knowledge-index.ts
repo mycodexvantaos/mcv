@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Knowledge Index Model
+ * MyCodexVantaOS — Knowledge Index Model
  * Defines search, retrieval, and evidence structures for knowledge access.
  */
 

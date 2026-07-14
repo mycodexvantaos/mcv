@@ -4,7 +4,7 @@ metadata:
   name: mycodexvantaos
   namespace: argocd
 spec:
-  description: MyCodeXvantaOS Platform Project
+  description: MyCodexVantaOS Platform Project
   sourceRepos:
   - https://github.com/mycodexvantaos/*
   - ghcr.io/mycodexvantaos/*
@@ -53,7 +53,7 @@ spec:
     kind: PodDisruptionBudget
   roles:
   - name: admin
-    description: Admin access to MyCodeXvantaOS project
+    description: Admin access to MyCodexVantaOS project
     policies:
     - p, proj:mycodexvantaos:admin, applications, *, mycodexvantaos/*, allow
     - p, proj:mycodexvantaos:admin, repositories, *, mycodexvantaos/*, allow
@@ -61,7 +61,7 @@ spec:
     groups:
     - mycodexvantaos:admins
   - name: developer
-    description: Developer access to MyCodeXvantaOS project
+    description: Developer access to MyCodexVantaOS project
     policies:
     - p, proj:mycodexvantaos:developer, applications, get, mycodexvantaos/*, allow
     - p, proj:mycodexvantaos:developer, applications, sync, mycodexvantaos/*, allow

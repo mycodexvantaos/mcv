@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Resource Kind Model
+ * MyCodexVantaOS — Resource Kind Model
  * Every entity in the platform is a resource with this structure.
  * Platform resource URI: res://{service}/{collection}/{id}
  */

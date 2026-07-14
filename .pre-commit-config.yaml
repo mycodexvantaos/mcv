@@ -3,14 +3,14 @@ repos:
     hooks:
       - id: forbid-section-sign
         name: Forbid Section Sign Symbol (U+00A7)
-        entry: Â§
+        entry: Â�sec.
         language: pygrep
         types:
           - markdown
         exclude: CONTRIBUTING\.md$
       - id: forbid-section-sign-code
         name: Forbid Section Sign Symbol in Code (U+00A7)
-        entry: Â§
+        entry: Â�sec.
         language: pygrep
         types:
           - python

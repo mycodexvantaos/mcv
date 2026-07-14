@@ -17,7 +17,7 @@ spec:
   serviceVersion: v1.0.0
   layer: Native Services
   capability: vector-store
-  description: MyCodeXvantaOS mycodexvantaos-data-vector-store service
+  description: MyCodexVantaOS mycodexvantaos-data-vector-store service
   category: platform
   healthCheck:
     enabled: true
