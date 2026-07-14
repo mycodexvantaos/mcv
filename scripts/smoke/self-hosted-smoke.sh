@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ── MyCodeXvantaOS Self-Hosted Smoke Test ──────────────────────
+# ── MyCodexVantaOS Self-Hosted Smoke Test ──────────────────────
 # Runs against a running api-node instance (Docker or local).
 #
 # Usage:
@@ -54,7 +54,7 @@ function assert_fail() {
 }
 
 echo ""
-echo "🔍 MyCodeXvantaOS Smoke Test — $API"
+echo "🔍 MyCodexVantaOS Smoke Test — $API"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 # ── Health & Meta ──────────────────────────────────────────────

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ── MyCodeXvantaOS v0.1.0-rc.1 Self-Hosted RC Smoke Test ────────────
+# ── MyCodexVantaOS v0.1.0-rc.1 Self-Hosted RC Smoke Test ────────────
 # Validates a running api-node instance at v0.1.0-rc.1.
 #
 # Usage:
@@ -54,7 +54,7 @@ function assert_status() {
 }
 
 echo ""
-echo -e "${CYAN}🔍 MyCodeXvantaOS v0.1.0-rc.1 RC Smoke Test${NC} — $API"
+echo -e "${CYAN}🔍 MyCodexVantaOS v0.1.0-rc.1 RC Smoke Test${NC} — $API"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 # ── 1. Health & Readiness ─────────────────────────────────────────────
