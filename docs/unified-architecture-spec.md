@@ -95,13 +95,15 @@ MyCodexVantaOS is a vertically integrated upstream AI infrastructure platform or
 
 ## 3. Manifest Boundary
 
-| File                         | Scope                | Runtime Service |
-| ---------------------------- | -------------------- | --------------- |
-| `mycodexvantaos-module.yaml` | root directory       | optional        |
-| `module-manifest.yaml`       | deployable service   | yes             |
-| `provider-manifest.yaml`     | provider instance    | provider only   |
-| `foundation.yaml`            | foundation spec unit | no              |
-| `service-catalog.yaml`       | global service index | indirect        |
+| File                         | Scope                | Required For             | Runtime Service |
+| ---------------------------- | -------------------- | ------------------------ | --------------- |
+| `mycodexvantaos-module.yaml` | root directory       | every root module        | optional        |
+| `module-manifest.yaml`       | service module       | deployable service only  | yes             |
+| `provider-manifest.yaml`     | provider instance    | provider implementation  | provider only   |
+| `foundation.yaml`            | foundation spec unit | foundation subdirectory  | no              |
+| `service-catalog.yaml`       | global service index | platform                 | indirect        |
+| `navigation/*.yaml`          | navigation index     | AI/human navigation      | no              |
+| `unified-gate-index.yaml`    | gate index           | unified gate system      | no              |
 
 Deprecated manifest names (MUST NOT be used):
 
@@ -185,7 +187,24 @@ Canonical capabilities:
 - quantum-runtime, quantum-simulator, quantum-processor, quantum-circuit, quantum-observability
 ```
 
-Provider instance naming: `<capability>-<provider>`
+Provider instance naming: `<capability>-<provider>` (capability-first, never vendor-first)
+
+Provider directory layout: `providers/<capability>/<capability>-<provider>/provider-manifest.yaml`
+
+Examples of correct capability-first naming:
+
+```text
+providers/vector-store/vector-store-qdrant/
+providers/vector-store/vector-store-chroma/
+providers/vector-store/vector-store-pinecone/
+providers/vector-store/vector-store-weaviate/
+providers/llm/llm-openai/
+providers/embedding/embedding-openai/
+```
+
+Vendor-first naming (e.g. `qdrant-vector-store`) and orphan capability
+directories that shadow a canonical capability (e.g. `providers/vector/`
+shadowing `vector-store`) are FORBIDDEN and MUST be rejected by CI.
 
 ---
 
@@ -220,6 +239,24 @@ See full normalization specification in the platform constitution.
 ## Appendix B — Consistency Remediation Amendment
 
 See full consistency remediation specification in the platform constitution.
+
+---
+
+## Appendix C — Consistency Remediation Log (v1.0.1)
+
+Remediation executed on 2026-07-01 per the Integrated Architecture Specification error analysis. All items verified by repository-wide scan.
+
+| #   | Issue                                                 | Severity | Action Taken                                                                              | Status   |
+| --- | ----------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------- | -------- |
+| 1   | Historical alias `MyCodeXvantaOS` in machine contexts | High     | Normalized to `MyCodexVantaOS` in all active-zone ts/js/json/yaml files                    | RESOLVED |
+| 2   | Forbidden identifier `codevantaos` in design docs     | High     | Replaced with canonical `mycodexvantaos`                                                   | RESOLVED |
+| 3   | Misspelled apiGroup `platform.mycodevantaos/v1`       | High     | Corrected to `platform.mycodexvantaos/v1` in contracts, application services, API routes   | RESOLVED |
+| 4   | Missing `module-manifest.yaml` (3 modules)            | High     | Added manifests for agent-toolkit, ai-team-orchestrator, persona-engine                    | RESOLVED |
+| 5   | Vendor-shadow capability dir `providers/vector/`      | Medium   | Migrated to `providers/vector-store/vector-store-{chroma,pinecone,weaviate}`               | RESOLVED |
+| 6   | Forbidden symbols in active-zone YAML (67 files)      | Medium   | Stripped section sign, arrows, em dash, box drawing from all active-zone YAML              | RESOLVED |
+| 7   | Non-prefixed service dirs without exception coverage  | Medium   | Added exception register entries for ci-repair-agent and kafka-stream-processor           | RESOLVED |
+
+Archived zones (`project-import/`, versioned spec snapshots `mcxos-*`) retain historical content by design and are excluded from active-zone enforcement.
 
 ---
 
