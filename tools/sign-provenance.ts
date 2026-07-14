@@ -86,7 +86,7 @@ function main(): void {
   const version = getVersion();
   const isGitHubActions = process.env.GITHUB_ACTIONS === 'true';
 
-  console.log('\n🔐 MyCodeXvantaOS Provenance Signer (cosign keyless)');
+  console.log('\n🔐 MyCodexVantaOS Provenance Signer (cosign keyless)');
   console.log(`   Version: ${version}`);
   console.log('━'.repeat(50));
 

@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Shared Metadata Types
+ * MyCodexVantaOS — Shared Metadata Types
  * Resource metadata, labels, annotations.
  */
 

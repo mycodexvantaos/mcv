@@ -2,7 +2,7 @@
   "name": "@mycodexvantaos/studio-platform",
   "version": "0.1.0",
   "private": true,
-  "description": "MyCodeXvantaOS Studio Platform - Following MyCodeXvantaOS Provider Architecture with Native-First Design",
+  "description": "MyCodexVantaOS Studio Platform - Following MyCodexVantaOS Provider Architecture with Native-First Design",
   "scripts": {
     "dev": "next dev -p 3000",
     "build": "NODE_ENV=production next build",

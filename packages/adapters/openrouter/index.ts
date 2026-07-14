@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — OpenRouter Adapter
+ * MyCodexVantaOS — OpenRouter Adapter
  * Implements IChatModelPort using the OpenRouter API (multi-model gateway).
  *
  * Category: model

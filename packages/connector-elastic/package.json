@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/connector-elastic",
   "version": "1.0.0",
-  "description": "Elasticsearch連接器 for MyCodeXvantaOS - Layer D擴展",
+  "description": "Elasticsearch連接器 for MyCodexVantaOS - Layer D擴展",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -16,7 +16,7 @@
     "Layer D擴展",
     "mycodexvantaos"
   ],
-  "author": "MyCodeXvantaOS",
+  "author": "MyCodexVantaOS",
   "license": "MIT",
   "dependencies": {
     "@mycodexvantaos/runtime": "workspace:*"

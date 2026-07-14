@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/ports",
   "version": "1.0.0-constitution",
-  "description": "MyCodeXvantaOS platform-neutral port interfaces — defines WHAT the platform needs",
+  "description": "MyCodexVantaOS platform-neutral port interfaces — defines WHAT the platform needs",
   "type": "module",
   "main": "./index.ts",
   "types": "./index.ts",

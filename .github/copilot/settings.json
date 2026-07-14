@@ -3,7 +3,7 @@
     "sessionStart": [
       {
         "type": "command",
-        "bash": "echo '{\"additionalContext\": \"Platform: MyCodeXvantaOS. Read AGENTS.md and .github/copilot-instructions.md for conventions. Architecture: Local-first, Provider-agnostic, Contract-first, Governance-enforced.\"}'",
+        "bash": "echo '{\"additionalContext\": \"Platform: MyCodexVantaOS. Read AGENTS.md and .github/copilot-instructions.md for conventions. Architecture: Local-first, Provider-agnostic, Contract-first, Governance-enforced.\"}'",
         "timeoutSec": 5
       }
     ],

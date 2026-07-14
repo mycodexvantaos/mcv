@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Event Bus
+ * MyCodexVantaOS Event Bus
  * Provides asynchronous event communication between services
  */
 

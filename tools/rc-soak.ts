@@ -686,7 +686,7 @@ function main(): void {
   const artifactsDir = resolve(process.cwd(), `release/artifacts/${version}`);
   const docsDir = resolve(process.cwd(), 'docs/releases');
 
-  console.log('\n🧪 MyCodeXvantaOS RC Soak Validation');
+  console.log('\n🧪 MyCodexVantaOS RC Soak Validation');
   console.log(`   Version: ${version}`);
   console.log(`   Output:  ${artifactsDir}`);
   console.log('━'.repeat(60));

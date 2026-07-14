@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-static';
 
-// MyCodeXvantaOS Admin Dashboard - Connectors API
+// MyCodexVantaOS Admin Dashboard - Connectors API
 // CRUD operations for connector management
 
 interface ConnectorInstance {
@@ -140,7 +140,7 @@ const connectors: ConnectorInstance[] = [
     type: 'custom',
     status: 'healthy',
     config: {
-      endpoint: 'https://hooks.internal.mycodevantaos.io/ingest',
+      endpoint: 'https://hooks.internal.mycodexvantaos.io/ingest',
       method: 'POST',
       retryPolicy: 'exponential',
     },

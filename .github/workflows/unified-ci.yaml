@@ -1,5 +1,5 @@
 # === path: .github/workflows/unified-ci.yaml ===
-# Unified CI Pipeline for MyCodeXvantaOS
+# Unified CI Pipeline for MyCodexVantaOS
 # Version: 3.1.0
 
 name: Unified CI Pipeline

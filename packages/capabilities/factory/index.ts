@@ -1,5 +1,5 @@
 /**
- * 🏢 MyCodeXvantaOS - Capabilities Layer - Provider Factory
+ * 🏢 MyCodexVantaOS - Capabilities Layer - Provider Factory
  *
  * 🎯 目的：
  * 提供統一的 Provider 創建和選擇機制，支援 Runtime Mode 自動切換

@@ -17,7 +17,7 @@ spec:
   serviceVersion: v1.0.0
   layer: Native Services
   capability: embedding
-  description: MyCodeXvantaOS mycodexvantaos-ai-embedding service
+  description: MyCodexVantaOS mycodexvantaos-ai-embedding service
   category: platform
   healthCheck:
     enabled: true

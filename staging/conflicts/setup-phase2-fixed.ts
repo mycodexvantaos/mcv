@@ -62,7 +62,7 @@ import { bootstrapAuthService } from './services/mycodexvantaos-core-auth/src/in
 import { bootstrapVectorStore } from './services/mycodexvantaos-data-vector-store/src/index';
 
 async function run() {
-  console.log('--- MyMyCodeXvantaOS Advanced Simulation ---');
+  console.log('--- MyMyCodexVantaOS Advanced Simulation ---');
   const kernel = new Kernel();
 
   bootstrapAuthService(kernel);
@@ -76,7 +76,7 @@ async function run() {
   console.log('\\n[Simulation] Executing Business Logic...');
   const isValid = authController.authenticate('codex-vanta-valid-token-123');
   if (isValid) {
-     await vectorController.storeEmbedding('doc-999', 'What is MyCodeXvantaOS Tools?', [0.1, 0.2, 0.3]);
+     await vectorController.storeEmbedding('doc-999', 'What is MyCodexVantaOS Tools?', [0.1, 0.2, 0.3]);
      const results = await vectorController.searchSimilar([0.1, 0.15, 0.3]);
      console.log('[Simulation] Search Results:', results);
   }

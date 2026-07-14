@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "urn:mycodexvantaos:schema:persona-profile",
   "title": "Persona Profile Schema",
-  "description": "Schema for MyCodeXvantaOS Persona Profile definitions",
+  "description": "Schema for MyCodexVantaOS Persona Profile definitions",
   "type": "object",
   "required": ["urn", "name", "version", "archetype", "behavioral_parameters"],
   "additionalProperties": false,

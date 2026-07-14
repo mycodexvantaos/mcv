@@ -1,8 +1,8 @@
 id: urn:mycodexvantaos:dictionary:v2
-name: MyCodeXvantaOS Multilingual Engineering Dictionary
+name: MyCodexVantaOS Multilingual Engineering Dictionary
 version: 1.0.0
 status: active
-description: '本字典定義了 MyCodeXvantaOS 生態中所有核心術語的精確含義及其多語系映射。 它是 CI 文件檢查、日誌輸出、文件自動生成、知識圖譜構建以及
+description: '本字典定義了 MyCodexVantaOS 生態中所有核心術語的精確含義及其多語系映射。 它是 CI 文件檢查、日誌輸出、文件自動生成、知識圖譜構建以及
   AI Agent 交互時的術語基準。所有貢獻者必須遵循此字典的定義。
 
   '
@@ -134,33 +134,33 @@ terms:
     traditional_chinese: 衝突解決
   domain: Version Control
 - id: term-mycodexvantaos
-  english: MyCodeXvantaOS
+  english: MyCodexVantaOS
   definition: 一個全棧應用操作系統，能在零外依賴下完成建立、生成、執行、驗證、發布與回滾。
   translations:
-    simplified_chinese: MyCodeXvantaOS
-    traditional_chinese: MyCodeXvantaOS
-  domain: MyCodeXvantaOS Platform
+    simplified_chinese: MyCodexVantaOS
+    traditional_chinese: MyCodexVantaOS
+  domain: MyCodexVantaOS Platform
 - id: term-minimum-closed-loop
   english: Minimum Closed Loop
   definition: 平台在零外依賴下，完成建立、生成、執行、預覽、發布、回滾的完整流程。這是平台成立的最高基準。
   translations:
     simplified_chinese: 最小闭环
     traditional_chinese: 最小閉環
-  domain: MyCodeXvantaOS Platform
+  domain: MyCodexVantaOS Platform
 - id: term-provider
   english: Provider
-  definition: MyCodeXvantaOS 中對外部能力的抽象介面，必須實作 initialize、healthCheck、shutdown 標準方法。
+  definition: MyCodexVantaOS 中對外部能力的抽象介面，必須實作 initialize、healthCheck、shutdown 標準方法。
   translations:
     simplified_chinese: 提供者
     traditional_chinese: 提供者
-  domain: MyCodeXvantaOS Platform
+  domain: MyCodexVantaOS Platform
 - id: term-runtime-mode
   english: Runtime Mode
-  definition: MyCodeXvantaOS 的執行模式，分為 native（純本機）、connected（全外部連接）和 hybrid（混合）三種。
+  definition: MyCodexVantaOS 的執行模式，分為 native（純本機）、connected（全外部連接）和 hybrid（混合）三種。
   translations:
     simplified_chinese: 运行时模式
     traditional_chinese: 執行階段模式
-  domain: MyCodeXvantaOS Platform
+  domain: MyCodexVantaOS Platform
 - id: term-continuous-integration
   english: Continuous Integration
   definition: 一種軟體開發實踐，團隊成員頻繁地將他們的工作整合到主幹上，每次整合都通過自動化構建來驗證，以盡早發現整合錯誤。
@@ -176,26 +176,26 @@ terms:
     traditional_chinese: 組態管理 / 設定管理
   domain: DevOps / CI/CD
 - id: term-mycodexvantaos
-  english: MyCodeXvantaOS
+  english: MyCodexVantaOS
   definition: 一個全棧應用操作系統，能在零外部依賴下完成生成、執行、驗證、發布與回滾。
   translations:
-    simplified_chinese: MyCodeXvantaOS
-    traditional_chinese: MyCodeXvantaOS
-  domain: MyCodeXvantaOS Platform
+    simplified_chinese: MyCodexVantaOS
+    traditional_chinese: MyCodexVantaOS
+  domain: MyCodexVantaOS Platform
 - id: term-minimum-closed-loop
   english: Minimum Closed Loop
   definition: 平台在零外部依賴下，完成建立、生成、執行、預覽、發布、回滾的完整流程。這是平台成立的最高基準。
   translations:
     simplified_chinese: 最小闭环
     traditional_chinese: 最小閉環
-  domain: MyCodeXvantaOS Platform
+  domain: MyCodexVantaOS Platform
 - id: term-runtime-mode
   english: Runtime Mode
-  definition: MyCodeXvantaOS 的執行模式，分為 native（純本地）、connected（全外部連接）和 hybrid（混合）三種。
+  definition: MyCodexVantaOS 的執行模式，分為 native（純本地）、connected（全外部連接）和 hybrid（混合）三種。
   translations:
     simplified_chinese: 运行时模式
     traditional_chinese: 執行階段模式
-  domain: MyCodeXvantaOS Platform
+  domain: MyCodexVantaOS Platform
 statistics:
   total_terms: 331
   total_domains: 33
@@ -203,6 +203,6 @@ statistics:
   - english
   - simplified_chinese
   - traditional_chinese
-  generated_by: MyCodeXvantaOS Semantic-Root Engineering Team
+  generated_by: MyCodexVantaOS Semantic-Root Engineering Team
   last_updated: '2026-04-24'
   compliance: urn:mycodexvantaos:governance:naming-policy:v2

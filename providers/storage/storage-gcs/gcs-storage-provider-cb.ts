@@ -1,5 +1,5 @@
 /**
- * 🔒 MyCodeXvantaOS - Google Cloud Storage Provider (CapabilityBase-based)
+ * 🔒 MyCodexVantaOS - Google Cloud Storage Provider (CapabilityBase-based)
  *
  * Google Cloud Storage integration with R2 fallback.
  *

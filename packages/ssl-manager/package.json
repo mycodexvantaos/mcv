@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/ssl-manager",
   "version": "1.0.0",
-  "description": "SSL管理器 for MyCodeXvantaOS - Layer E擴展",
+  "description": "SSL管理器 for MyCodexVantaOS - Layer E擴展",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -16,7 +16,7 @@
     "Layer E擴展",
     "mycodexvantaos"
   ],
-  "author": "MyCodeXvantaOS",
+  "author": "MyCodexVantaOS",
   "license": "MIT",
   "dependencies": {
     "@mycodexvantaos/runtime": "workspace:*"

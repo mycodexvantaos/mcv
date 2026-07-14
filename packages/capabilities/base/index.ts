@@ -1,5 +1,5 @@
 /**
- * 🏢 MyCodeXvantaOS - Capabilities Layer - Capability Base Interface
+ * 🏢 MyCodexVantaOS - Capabilities Layer - Capability Base Interface
  *
  * 🎯 目的：
  * 提供統一的 Provider 抽象接口，確保所有 Provider 實現一致的生命週期管理

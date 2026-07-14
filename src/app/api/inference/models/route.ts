@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-static';
 
-// MyCodeXvantaOS Admin Dashboard - Inference Models API
+// MyCodexVantaOS Admin Dashboard - Inference Models API
 // Lists all registered LM models and their status
 
 const models = [
@@ -115,7 +115,7 @@ const models = [
     avgLatency: 130,
     totalRequests: 89000,
     errorRate: 0.005,
-    endpoint: 'https://inference.internal.mycodevantaos.io/v1/chat/completions',
+    endpoint: 'https://inference.internal.mycodexvantaos.io/v1/chat/completions',
     lastUsed: new Date().toISOString(),
   },
   {
@@ -163,7 +163,7 @@ const models = [
     avgLatency: 0,
     totalRequests: 0,
     errorRate: 0,
-    endpoint: 'https://inference.internal.mycodevantaos.io/v1/chat/completions',
+    endpoint: 'https://inference.internal.mycodexvantaos.io/v1/chat/completions',
     lastUsed: null,
   },
 ];

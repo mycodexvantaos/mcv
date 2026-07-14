@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - JWTNativeAuthProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - JWTNativeAuthProvider (CapabilityBase-based)
  *
  * @module providers/auth/auth-jwt-native
  * @version 1.0.0

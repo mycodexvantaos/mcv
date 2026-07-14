@@ -1,5 +1,5 @@
 # === path: .github/workflows/unified-cd.yaml ===
-# Unified CD Pipeline for MyCodeXvantaOS
+# Unified CD Pipeline for MyCodexVantaOS
 # Consolidates: cd.yml, cd-dev.yaml
 # Version: 2.1.0
 
@@ -201,7 +201,7 @@ jobs:
             echo "Kubernetes config is available."
           else
             echo "has_kube_config=false" >> "$GITHUB_OUTPUT"
-            echo "KUBE_CONFIG_DEV is not configured — skipping K8s deployment."
+            echo "KUBE_CONFIG_DEV is not configured - skipping K8s deployment."
           fi
 
       - name: Configure kubectl

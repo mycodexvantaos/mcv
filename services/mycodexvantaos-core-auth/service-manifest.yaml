@@ -17,7 +17,7 @@ spec:
   serviceVersion: v1.0.0
   layer: Native Services
   capability: auth
-  description: MyCodeXvantaOS mycodexvantaos-core-auth service
+  description: MyCodexVantaOS mycodexvantaos-core-auth service
   category: platform
   healthCheck:
     enabled: true

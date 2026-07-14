@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Pagination Types
+ * MyCodexVantaOS — Pagination Types
  * Cursor-based and offset-based pagination.
  */
 

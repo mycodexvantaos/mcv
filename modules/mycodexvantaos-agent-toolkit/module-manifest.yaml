@@ -1,0 +1,32 @@
+apiVersion: mycodexvantaos.org/v1
+kind: Module
+metadata:
+  name: mycodexvantaos-agent-toolkit
+  labels:
+    mycodexvantaos.org/domain: agent
+    mycodexvantaos.org/managed-by: naming-spec-v1
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
+spec:
+  domain: agent
+  capabilities:
+    - validation
+    - observability
+  providers:
+    validation: validation-zod
+    observability: observability-opentelemetry
+  lifecycle:
+    stage: stable
+    since: v1.0.0
+  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-agent-toolkit
+  packageName: '@mycodexvantaos/agent-toolkit'
+  description: Agent toolkit utilities for MyCodexVantaOS. Provides shared helpers,
+    typed tool contracts, and runtime utilities for agent modules.
+service-id: mycodexvantaos-agent-toolkit
+platform: mycodexvantaos
+runtime-modes:
+  - native
+  - connected
+  - hybrid
+service-path: services/mycodexvantaos-agent-toolkit

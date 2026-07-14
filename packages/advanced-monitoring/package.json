@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/advanced-monitoring",
   "version": "1.0.0",
-  "description": "高級監控 for MyCodeXvantaOS - Layer C擴展",
+  "description": "高級監控 for MyCodexVantaOS - Layer C擴展",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -16,7 +16,7 @@
     "Layer C擴展",
     "mycodexvantaos"
   ],
-  "author": "MyCodeXvantaOS",
+  "author": "MyCodexVantaOS",
   "license": "MIT",
   "dependencies": {
     "@mycodexvantaos/runtime": "workspace:*"

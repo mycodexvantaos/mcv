@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ── MyCodeXvantaOS Docker Runtime Smoke Test ─────────────────────────────────
+# ── MyCodexVantaOS Docker Runtime Smoke Test ─────────────────────────────────
 # Builds the Docker image, starts a container, and curls the runtime endpoints.
 #
 # Usage:
@@ -51,7 +51,7 @@ function assert_ok() {
 }
 
 echo "=========================================="
-echo " MyCodeXvantaOS Docker Runtime Smoke Test"
+echo " MyCodexVantaOS Docker Runtime Smoke Test"
 echo "=========================================="
 echo ""
 
@@ -125,7 +125,7 @@ echo -e "${YELLOW}Step 8: Running root endpoint checks...${NC}"
 RESP=$(curl -s -w "\n%{http_code}" "http://localhost:${PORT}/" 2>/dev/null || echo -e "\n000")
 HTTP_CODE=$(echo "${RESP}" | tail -1)
 BODY=$(echo "${RESP}" | sed '$d')
-assert_ok "GET /" "${HTTP_CODE}" "${BODY}" '"MyCodeXvantaOS"'
+assert_ok "GET /" "${HTTP_CODE}" "${BODY}" '"MyCodexVantaOS"'
 
 # ── Summary ──────────────────────────────────────────────────────────────────
 echo ""

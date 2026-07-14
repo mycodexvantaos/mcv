@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Native Queue Implementation
+ * MyCodexVantaOS Native Queue Implementation
  * Provides a high-performance, in-memory queue system for task management
  */
 

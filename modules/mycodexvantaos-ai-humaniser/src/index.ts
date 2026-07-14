@@ -1,5 +1,5 @@
 /**
- * @fileoverview MyCodeXvantaOS AI Humaniser — Module Entry Point
+ * @fileoverview MyCodexVantaOS AI Humaniser — Module Entry Point
  *
  * Public API for the Humaniser module. Exports the engine,
  * types, and provider implementations.

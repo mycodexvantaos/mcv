@@ -1,5 +1,5 @@
 /**
- * 🔒 MyCodeXvantaOS - PostgreSQL Database Provider (CapabilityBase-based)
+ * 🔒 MyCodexVantaOS - PostgreSQL Database Provider (CapabilityBase-based)
  *
  * @module providers/database/db-postgres
  * @version 1.0.0

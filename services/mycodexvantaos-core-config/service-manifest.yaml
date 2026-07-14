@@ -17,7 +17,7 @@ spec:
   serviceVersion: v1.0.0
   layer: Native Services
   capability: state-store
-  description: MyCodeXvantaOS mycodexvantaos-core-config service
+  description: MyCodexVantaOS mycodexvantaos-core-config service
   category: platform
   healthCheck:
     enabled: true

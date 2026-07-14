@@ -1,6 +1,6 @@
 /**
  * @mycodexvantaos/ai-team-orchestrator
- * Core orchestrator for multi-agent AI teams in MyCodeXvantaOS
+ * Core orchestrator for multi-agent AI teams in MyCodexVantaOS
  *
  * @packageDocumentation
  */

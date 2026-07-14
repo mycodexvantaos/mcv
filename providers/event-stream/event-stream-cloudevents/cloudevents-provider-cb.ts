@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - CloudEventsProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - CloudEventsProvider (CapabilityBase-based)
  *
  * @module providers/event-stream/event-stream-cloudevents
  * @version 1.0.0

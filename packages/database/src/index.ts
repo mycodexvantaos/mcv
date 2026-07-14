@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Database
+ * MyCodexVantaOS Database
  * Relational database service with ACID compliance
  */
 

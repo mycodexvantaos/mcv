@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Model Application Package
+ * MyCodexVantaOS — Model Application Package
  */
 
 export { ModelService } from './model-service';

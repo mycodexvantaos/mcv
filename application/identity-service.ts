@@ -95,7 +95,7 @@ export class IdentityService implements IIdentityPort {
 
     // 5. Return the created subject resource
     return {
-      apiVersion: 'platform.mycodevantaos/v1',
+      apiVersion: 'platform.mycodexvantaos/v1',
       kind: 'identity-subject',
       metadata: {
         id: subjectId,

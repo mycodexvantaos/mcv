@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - RabbitMQQueueProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - RabbitMQQueueProvider (CapabilityBase-based)
  *
  * @module providers/queue/queue-rabbitmq
  * @version 1.0.0

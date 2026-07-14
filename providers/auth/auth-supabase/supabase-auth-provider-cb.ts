@@ -1,5 +1,5 @@
 /**
- * 🔐 MyCodeXvantaOS - Supabase Auth Provider (CapabilityBase-based)
+ * 🔐 MyCodexVantaOS - Supabase Auth Provider (CapabilityBase-based)
  *
  * @module providers/auth/auth-supabase
  * @version 1.0.0

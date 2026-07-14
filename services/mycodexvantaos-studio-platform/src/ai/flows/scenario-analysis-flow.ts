@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Studio Platform — Scenario Analysis AI Flow
+ * MyCodexVantaOS Studio Platform — Scenario Analysis AI Flow
  * Phase 4: Genkit AI Flows
  *
  * Analyzes scenario matrix results and generates root cause analysis,
@@ -52,7 +52,7 @@ export async function scenarioAnalysisFlow(
     affectedServices = [],
   } = input;
 
-  const prompt = `You are the MyCodeXvantaOS Scenario Analysis Engine.
+  const prompt = `You are the MyCodexVantaOS Scenario Analysis Engine.
 
 Scenario: ${scenarioName} (${category}, severity: ${severity})
 Observed Behavior: ${observedBehavior}

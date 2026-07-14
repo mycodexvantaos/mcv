@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/native-logging",
   "version": "1.0.0",
-  "description": "Native logging implementation for MyCodeXvantaOS",
+  "description": "Native logging implementation for MyCodexVantaOS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -15,7 +15,7 @@
     "logger",
     "native"
   ],
-  "author": "MyCodeXvantaOS",
+  "author": "MyCodexVantaOS",
   "license": "MIT",
   "dependencies": {
     "@mycodexvantaos/runtime": "workspace:*"

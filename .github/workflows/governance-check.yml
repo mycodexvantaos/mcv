@@ -1,4 +1,4 @@
-# ADR: Quoted "on:" — YAML 1.1 boolean coercion guard.
+# ADR: Quoted "on:" - YAML 1.1 boolean coercion guard.
 # Governance check validates policy-as-code compliance on every push/PR.
 name: Governance Check
 
@@ -98,7 +98,7 @@ jobs:
           if "gate-99-production-closure-validation" not in required_gates:
               print("::error::gate-99-production-closure-validation missing from requiredGates")
               sys.exit(1)
-          print(f"Production-readiness policy OK — {len(required_gates)} required gates")
+          print(f"Production-readiness policy OK - {len(required_gates)} required gates")
           PYEOF
 
       - name: Validate namespace governance

@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "urn:mycodexvantaos:schema:audit-event",
   "title": "AuditEvent",
-  "description": "Schema for a single audit event in the MyCodeXvantaOS integrity chain",
+  "description": "Schema for a single audit event in the MyCodexVantaOS integrity chain",
   "type": "object",
   "properties": {
     "id": {

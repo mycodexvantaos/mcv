@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/capabilities",
   "version": "1.0.0-phase-0.5",
-  "description": "MyCodeXvantaOS unified capability abstraction layer — provides runtime-aware provider lifecycle management",
+  "description": "MyCodexVantaOS unified capability abstraction layer — provides runtime-aware provider lifecycle management",
   "type": "module",
   "main": "./index.ts",
   "types": "./index.ts",

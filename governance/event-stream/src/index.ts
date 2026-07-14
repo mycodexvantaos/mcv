@@ -1,7 +1,7 @@
 /**
  * Governance Event Stream Module
  *
- * Mandatory closed-loop governance event stream for MyCodeXvantaOS.
+ * Mandatory closed-loop governance event stream for MyCodexVantaOS.
  * Every governance-relevant action MUST emit an event through this module,
  * ensuring immutable audit trails, AI ethics compliance, and blockchain anchoring.
  *

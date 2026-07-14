@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Service Mesh
+ * MyCodexVantaOS Service Mesh
  * Provides service discovery, load balancing, and traffic management
  */
 

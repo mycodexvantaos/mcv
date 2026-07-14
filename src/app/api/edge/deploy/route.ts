@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-static';
 
-// MyCodeXvantaOS Admin Dashboard - Edge Deployment API
+// MyCodexVantaOS Admin Dashboard - Edge Deployment API
 // Deployment pipeline and rollback controls
 
 interface DeploymentStep {

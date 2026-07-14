@@ -17,7 +17,7 @@ spec:
   serviceVersion: v1.0.0
   layer: Native Services
   capability: notification
-  description: MyCodeXvantaOS mycodexvantaos-platform-notification service
+  description: MyCodexVantaOS mycodexvantaos-platform-notification service
   category: platform
   healthCheck:
     enabled: true

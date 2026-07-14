@@ -1,5 +1,5 @@
 /**
- * 🏢 MyCodeXvantaOS - Runtime Layer
+ * 🏢 MyCodexVantaOS - Runtime Layer
  *
  * Layer 1: Runtime Mode Management（Phase 0.5 新增）
  *   Runtime Mode 配置、檢測與動態切換能力

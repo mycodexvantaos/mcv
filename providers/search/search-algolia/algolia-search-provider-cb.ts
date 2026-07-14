@@ -1,5 +1,5 @@
 /**
- * 🔍 MyCodeXvantaOS - Algolia Search Provider (CapabilityBase-based)
+ * 🔍 MyCodexVantaOS - Algolia Search Provider (CapabilityBase-based)
  *
  * @module providers/search/search-algolia
  * @version 1.0.0

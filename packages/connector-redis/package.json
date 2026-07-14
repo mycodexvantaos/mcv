@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/connector-redis",
   "version": "1.0.0",
-  "description": "Redis connector for MyCodeXvantaOS",
+  "description": "Redis connector for MyCodexVantaOS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -15,7 +15,7 @@
     "connector",
     "cache"
   ],
-  "author": "MyCodeXvantaOS",
+  "author": "MyCodexVantaOS",
   "license": "MIT",
   "dependencies": {
     "@mycodexvantaos/runtime": "workspace:*"

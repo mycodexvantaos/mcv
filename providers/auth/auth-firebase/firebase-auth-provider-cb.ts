@@ -1,5 +1,5 @@
 /**
- * 🔐 MyCodeXvantaOS - Firebase Auth Provider (CapabilityBase-based)
+ * 🔐 MyCodexVantaOS - Firebase Auth Provider (CapabilityBase-based)
  *
  * @module providers/auth/auth-firebase
  * @version 1.0.0

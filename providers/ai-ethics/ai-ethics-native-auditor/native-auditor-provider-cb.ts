@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - NativeAuditorProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - NativeAuditorProvider (CapabilityBase-based)
  *
  * @module providers/ai-ethics/ai-ethics-native-auditor
  * @version 1.0.0

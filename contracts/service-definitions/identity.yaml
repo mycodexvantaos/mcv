@@ -7,9 +7,9 @@ metadata:
   category: security
   display_name: Identity Service
   description: 'Platform-wide identity, authentication, and authorization service.
-    Manages subject lifecycle (registration → active → suspended → deactivated), credential
+    Manages subject lifecycle (registration -> active -> suspended -> deactivated), credential
     management, token issuance/validation, role resolution, and permission checking.
-    Zero hard dependencies — this is the Level 0 service in the dependency graph.
+    Zero hard dependencies - this is the Level 0 service in the dependency graph.
 
     '
 spec:

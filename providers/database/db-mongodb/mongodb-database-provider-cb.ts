@@ -1,5 +1,5 @@
 /**
- * 🔒 MyCodeXvantaOS - MongoDB Database Provider (CapabilityBase-based)
+ * 🔒 MyCodexVantaOS - MongoDB Database Provider (CapabilityBase-based)
  *
  * @module providers/database/db-mongodb
  * @version 1.0.0

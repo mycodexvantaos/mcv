@@ -1,4 +1,4 @@
-apiVersion: platform.mycodevantaos/v1
+apiVersion: platform.mycodexvantaos/v1
 kind: AuditEventsModel
 metadata:
   name: mycodexvantaos-audit-events-model
@@ -78,7 +78,7 @@ spec:
       correlationId:
         type: string
         format: uuidv4
-        description: Correlates request → completion → failure
+        description: Correlates request -> completion -> failure
       parentEventId:
         type: string
         format: uuidv4
@@ -926,6 +926,6 @@ spec:
       partitioning: monthly
       retention_enforcement:
         strategy: append-only
-        deletion: never — events are archived, not deleted
+        deletion: never - events are archived, not deleted
         archival_threshold: 365d
         cold_storage: cloudflare-r2-infrequent-access

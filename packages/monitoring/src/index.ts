@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Monitoring
+ * MyCodexVantaOS Monitoring
  * Monitoring and observability with metrics, logs, and traces
  */
 

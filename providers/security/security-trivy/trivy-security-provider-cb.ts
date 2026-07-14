@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - TrivySecurityProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - TrivySecurityProvider (CapabilityBase-based)
  *
  * @module providers/security/security-trivy
  * @version 1.0.0

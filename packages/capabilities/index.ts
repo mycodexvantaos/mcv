@@ -1,5 +1,5 @@
 /**
- * 🏢 MyCodeXvantaOS - Capabilities Layer
+ * 🏢 MyCodexVantaOS - Capabilities Layer
  *
  * 🎯 目的：
  * 提供統一的 Provider 抽象和管理系統，實現 Platform Independence

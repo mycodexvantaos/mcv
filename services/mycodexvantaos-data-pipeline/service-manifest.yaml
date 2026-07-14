@@ -17,7 +17,7 @@ spec:
   serviceVersion: v1.0.0
   layer: Native Services
   capability: queue
-  description: MyCodeXvantaOS mycodexvantaos-data-pipeline service
+  description: MyCodexVantaOS mycodexvantaos-data-pipeline service
   category: platform
   healthCheck:
     enabled: true

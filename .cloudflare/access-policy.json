@@ -1,6 +1,6 @@
 {
-  "name": "MyCodeXvantaOS Access Policy",
-  "description": "Zero Trust access policy for MyCodeXvantaOS dashboard",
+  "name": "MyCodexVantaOS Access Policy",
+  "description": "Zero Trust access policy for MyCodexVantaOS dashboard",
   "decision": "allow",
   "includes": [
     {

@@ -1,6 +1,6 @@
 #!/usr/bin/env npx ts-node
 // ═══════════════════════════════════════════════════════════════════════
-// MyCodeXvantaOS — Service Scaffold Generator
+// MyCodexVantaOS — Service Scaffold Generator
 // Generates boilerplate for a new service from the contract definition
 // Usage: npx ts-node tools/generate-service.ts <service-name>
 // ═══════════════════════════════════════════════════════════════════════
@@ -28,7 +28,7 @@ const ClassName = toPascalCase(SERVICE_NAME);
 
 // ── Generate Application Service ───────────────────────────────────────
 const appServiceContent = `// ═══════════════════════════════════════════════════════════════════════
-// MyCodeXvantaOS — ${ClassName} Application Service
+// MyCodexVantaOS — ${ClassName} Application Service
 // Auto-generated from contracts/service-definitions/${SERVICE_NAME}.yaml
 // ═══════════════════════════════════════════════════════════════════════
 

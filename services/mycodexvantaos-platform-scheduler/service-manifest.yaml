@@ -17,7 +17,7 @@ spec:
   serviceVersion: v1.0.0
   layer: Native Services
   capability: scheduler
-  description: MyCodeXvantaOS mycodexvantaos-platform-scheduler service
+  description: MyCodexVantaOS mycodexvantaos-platform-scheduler service
   category: platform
   healthCheck:
     enabled: true

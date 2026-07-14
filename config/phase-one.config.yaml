@@ -4,7 +4,7 @@ metadata:
   name: mycodexvantaos-phase-one-config
   version: 1.0.0
   date: '2026-06-29'
-  description: Phase 1 Architecture Baseline — Freeze Configuration
+  description: Phase 1 Architecture Baseline - Freeze Configuration
 spec:
   phase: 1
   status: in-progress

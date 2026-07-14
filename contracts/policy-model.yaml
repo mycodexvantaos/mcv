@@ -1,4 +1,4 @@
-apiVersion: platform.mycodevantaos/v1
+apiVersion: platform.mycodexvantaos/v1
 kind: PolicyModel
 metadata:
   name: mycodexvantaos-policy-model
@@ -10,7 +10,7 @@ metadata:
     description: 'Defines the platform''s permission framework, role hierarchy, policy
       rules,
 
-      and governance constraints. Policy is code — every access decision is
+      and governance constraints. Policy is code - every access decision is
 
       evaluated against this model at runtime. Workspace-scoped isolation is
 
@@ -503,7 +503,7 @@ spec:
   - id: default-deny
     priority: 9999
     enabled: true
-    description: Default deny — any action not explicitly allowed is denied
+    description: Default deny - any action not explicitly allowed is denied
     subject:
       role: '*'
     action:

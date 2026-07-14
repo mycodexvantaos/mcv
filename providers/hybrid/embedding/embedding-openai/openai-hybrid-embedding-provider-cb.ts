@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - OpenAIHybridEmbeddingProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - OpenAIHybridEmbeddingProvider (CapabilityBase-based)
  *
  * @module providers/hybrid/embedding/embedding-openai
  * @version 1.0.0

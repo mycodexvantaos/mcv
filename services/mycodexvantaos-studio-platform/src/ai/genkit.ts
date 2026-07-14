@@ -1,7 +1,7 @@
 /**
  * services/mycodexvantaos-studio-platform/src/ai/genkit.ts
  *
- * AI Configuration following MyCodeXvantaOS Provider Architecture
+ * AI Configuration following MyCodexVantaOS Provider Architecture
  *
  * This module provides LLM capabilities through the Provider abstraction layer.
  * It does NOT directly depend on any external AI service.

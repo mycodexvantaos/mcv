@@ -1,5 +1,5 @@
 /**
- * Core type definitions for MyCodeXvantaOS AI Team Orchestrator
+ * Core type definitions for MyCodexVantaOS AI Team Orchestrator
  * @module @mycodexvantaos/ai-team-orchestrator/types
  */
 
@@ -8,7 +8,7 @@
 // ============================================================================
 
 /**
- * Base URN type for all MyCodeXvantaOS entities
+ * Base URN type for all MyCodexVantaOS entities
  */
 export type URN = `urn:mycodexvantaos:${string}`;
 

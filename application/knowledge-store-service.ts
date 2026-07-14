@@ -102,7 +102,7 @@ export class KnowledgeStoreService {
     });
 
     return {
-      apiVersion: 'platform.mycodevantaos/v1',
+      apiVersion: 'platform.mycodexvantaos/v1',
       kind: 'document',
       metadata: {
         id: documentId,
@@ -281,7 +281,7 @@ export class KnowledgeStoreService {
     });
 
     return {
-      apiVersion: 'platform.mycodevantaos/v1',
+      apiVersion: 'platform.mycodexvantaos/v1',
       kind: 'knowledge-collection',
       metadata: {
         id: collectionId,

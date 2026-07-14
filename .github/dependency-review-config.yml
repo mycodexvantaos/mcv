@@ -1,7 +1,7 @@
 # Dependency Review Configuration
 # https://docs.github.com/en/code-security/supply-chain-security/configuration-options-for-dependency-review
 
-# Fail on high severity vulnerabilities (not low — reduces noise)
+# Fail on high severity vulnerabilities (not low - reduces noise)
 fail-on-severity: high
 
 # Deny copyleft licenses (cannot use both allow-licenses and deny-licenses)

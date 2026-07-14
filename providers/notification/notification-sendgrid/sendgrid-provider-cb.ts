@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - SendGridProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - SendGridProvider (CapabilityBase-based)
  *
  * @module providers/notification/notification-sendgrid
  * @version 1.0.0
@@ -37,7 +37,7 @@ export class SendGridProvider extends CapabilityBase<SendGridConfig> {
     const cfg = config.config;
     this.apiKey = cfg.apiKey;
     this.fromEmail = cfg.fromEmail;
-    this.fromName = cfg.fromName || 'MyCodeXvantaOS';
+    this.fromName = cfg.fromName || 'MyCodexVantaOS';
   }
 
   protected async doInitialize(): Promise<void> {

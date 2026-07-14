@@ -1,5 +1,5 @@
 /**
- * @fileOverview MyCodeXvantaOS Native Architecture Engine v25.4 - ERA-3 P3
+ * @fileOverview MyCodexVantaOS Native Architecture Engine v25.4 - ERA-3 P3
  *
  * 100% 達標校準：強化對「項目清單」與「成功指標」的偵測。
  */

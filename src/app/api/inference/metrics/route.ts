@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-static';
 
-// MyCodeXvantaOS Admin Dashboard - Inference Metrics API
+// MyCodexVantaOS Admin Dashboard - Inference Metrics API
 // Time-series metrics for LM inference monitoring
 
 function generateMetricPoints(

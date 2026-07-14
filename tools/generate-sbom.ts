@@ -83,7 +83,7 @@ function main(): void {
   const version = getVersion();
   const artifactsDir = resolve(process.cwd(), `release/artifacts/${version}`);
 
-  console.log('\n📦 MyCodeXvantaOS SBOM Generator (CycloneDX)');
+  console.log('\n📦 MyCodexVantaOS SBOM Generator (CycloneDX)');
   console.log(`   Version: ${version}`);
   console.log('━'.repeat(50));
 

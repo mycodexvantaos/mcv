@@ -17,7 +17,7 @@ spec:
   serviceVersion: v1.0.0
   layer: Native Services
   capability: graph
-  description: MyCodeXvantaOS mycodexvantaos-data-graph service
+  description: MyCodexVantaOS mycodexvantaos-data-graph service
   category: platform
   healthCheck:
     enabled: true

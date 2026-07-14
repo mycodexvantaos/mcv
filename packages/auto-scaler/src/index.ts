@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Auto Scaler
+ * MyCodexVantaOS Auto Scaler
  * Provides automatic scaling based on metrics and policies
  */
 

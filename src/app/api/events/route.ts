@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-// MyCodeXvantaOS Admin Dashboard - Events API
+// MyCodexVantaOS Admin Dashboard - Events API
 // Returns recent event data for dashboard display
 // Note: SSE (Server-Sent Events) is not compatible with static export (output: "export"),
 // so this route returns a static snapshot of recent events instead.
@@ -15,7 +15,7 @@ export async function GET() {
     {
       type: 'connected',
       data: {
-        message: 'MyCodeXvantaOS Admin Dashboard - Real-time feed connected',
+        message: 'MyCodexVantaOS Admin Dashboard - Real-time feed connected',
         timestamp: now,
       },
     },

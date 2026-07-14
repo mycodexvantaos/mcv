@@ -1,4 +1,4 @@
-# ADR: Quoted "on:" — YAML 1.1 boolean coercion guard.
+# ADR: Quoted "on:" - YAML 1.1 boolean coercion guard.
 # RC check validates SLSA provenance, semver tag format, and pre-release gates.
 name: Release Candidate Check
 

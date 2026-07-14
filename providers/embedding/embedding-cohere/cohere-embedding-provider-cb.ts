@@ -1,5 +1,5 @@
 /**
- * 🔒 MyCodeXvantaOS - Cohere Embedding Provider (CapabilityBase-based)
+ * 🔒 MyCodexVantaOS - Cohere Embedding Provider (CapabilityBase-based)
  *
  * Cohere embedding API integration with native fallback.
  *

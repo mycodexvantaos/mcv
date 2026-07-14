@@ -1,4 +1,4 @@
-# ADR: Quoted "on:" prevents YAML 1.1 boolean coercion (on → true).
+# ADR: Quoted "on:" prevents YAML 1.1 boolean coercion (on -> true).
 # Schedule retained; push/PR triggers restored after c2a8817a regression.
 name: CodeQL Security Scan
 
@@ -19,7 +19,7 @@ permissions:
 
 jobs:
   analyze:
-    name: "CodeQL — ${{ matrix.language }}"
+    name: "CodeQL - ${{ matrix.language }}"
     runs-on: ubuntu-latest
     timeout-minutes: 30
     strategy:

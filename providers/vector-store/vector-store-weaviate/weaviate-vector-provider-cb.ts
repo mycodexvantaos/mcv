@@ -1,7 +1,7 @@
 /**
- * 🔒 MyCodeXvantaOS - Pinecone Vector Store Provider (CapabilityBase-based)
+ * 🔍 MyCodexVantaOS - Weaviate Vector Store Provider (CapabilityBase-based)
  *
- * @module providers/vector/vector-pinecone
+ * @module providers/vector-store/vector-store-weaviate
  * @version 1.0.0
  */
 
@@ -12,11 +12,11 @@ import type {
   ProviderHealthCheckResult,
 } from '../../../packages/capabilities/types';
 
-export interface PineconeVectorConfig {
+export interface WeaviateVectorConfig {
+  scheme?: string;
+  host?: string;
+  port?: number;
   apiKey?: string;
-  environment?: string;
-  indexName?: string;
-  dimension?: number;
   timeout?: number;
   retries?: number;
   fallbackProviderId?: string;
@@ -24,8 +24,8 @@ export interface PineconeVectorConfig {
 
 export interface VectorSearchResult {
   id: string;
-  score: number;
-  metadata?: any;
+  similarity: number;
+  metadata?: Record<string, unknown>;
 }
 
 export interface SearchResult {
@@ -35,50 +35,45 @@ export interface SearchResult {
   operationTime: number;
 }
 
-export class PineconeVectorProvider extends CapabilityBase<PineconeVectorConfig> {
+export class WeaviateVectorProvider extends CapabilityBase<WeaviateVectorConfig> {
+  private scheme: string;
+  private host: string;
+  private port: number;
   private apiKey: string | undefined;
-  private environment: string;
-  private indexName: string;
-  private dimension: number;
   private timeout: number;
   private retries: number;
   private fallbackProviderId: string = 'native';
-  private isPineconeAvailable: boolean = false;
+  private isWeaviateAvailable: boolean = false;
 
-  constructor(
-    id: string,
-    name: string,
-    config: ProviderConfig<PineconeVectorConfig>,
-    fallbackConfig?: any
-  ) {
-    super(id, name, config, fallbackConfig);
+  constructor(config: ProviderConfig<WeaviateVectorConfig>) {
+    super(config);
     const cfg = config.config;
+    this.scheme = cfg.scheme || 'http';
+    this.host = cfg.host || 'localhost';
+    this.port = cfg.port || 8080;
     this.apiKey = cfg.apiKey;
-    this.environment = cfg.environment || 'production';
-    this.indexName = cfg.indexName || 'default';
-    this.dimension = cfg.dimension || 1536;
     this.timeout = cfg.timeout || 5000;
     this.retries = cfg.retries || 3;
   }
 
   protected async doInitialize(): Promise<void> {
     try {
-      this.isPineconeAvailable = Boolean(this.apiKey);
-      if (this.isPineconeAvailable) {
-        this.log('info', 'Pinecone vector provider initialized');
+      this.isWeaviateAvailable = Boolean(this.host);
+      if (this.isWeaviateAvailable) {
+        this.log('info', 'Weaviate vector provider initialized');
       } else {
-        this.log('warn', 'Pinecone not available - will use native fallback');
+        this.log('warn', 'Weaviate not available - will use native fallback');
       }
     } catch (error) {
-      this.log('warn', 'Pinecone initialization failed:', error);
-      this.isPineconeAvailable = false;
+      this.log('warn', 'Weaviate initialization failed:', error);
+      this.isWeaviateAvailable = false;
     }
   }
 
   protected async doHealthCheck(): Promise<ProviderHealthCheckResult> {
     return {
-      isHealthy: this.isPineconeAvailable,
-      status: this.isPineconeAvailable
+      isHealthy: this.isWeaviateAvailable,
+      status: this.isWeaviateAvailable
         ? ProviderHealthStatus.HEALTHY
         : ProviderHealthStatus.DEGRADED,
       checkTime: new Date().toISOString(),
@@ -87,21 +82,26 @@ export class PineconeVectorProvider extends CapabilityBase<PineconeVectorConfig>
   }
 
   protected async doShutdown(): Promise<void> {
-    this.log('info', 'Pinecone vector provider shutdown');
+    this.log('info', 'Weaviate vector provider shutdown');
   }
 
-  async upsert(ids: string[], vectors: number[][], metadatas?: any[]): Promise<SearchResult> {
+  async add(
+    className: string,
+    ids: string[],
+    embeddings: number[][],
+    metadatas?: Record<string, unknown>[]
+  ): Promise<SearchResult> {
     const startTime = Date.now();
-    if (!this.isPineconeAvailable) {
+    if (!this.isWeaviateAvailable) {
       return {
         success: false,
-        error: `Pinecone not available. Use fallback: \${this.fallbackProviderId}`,
+        error: `Weaviate not available. Use fallback: ${this.fallbackProviderId}`,
         operationTime: Date.now() - startTime,
       };
     }
     try {
-      const result = { success: true, operationTime: 0 } as SearchResult;
-      result.operationTime = Date.now() - startTime;
+      // Would call Weaviate REST API: POST /v1/objects
+      const result: SearchResult = { success: true, operationTime: Date.now() - startTime };
       this.recordSuccess(result.operationTime);
       return result;
     } catch (error) {
@@ -114,18 +114,22 @@ export class PineconeVectorProvider extends CapabilityBase<PineconeVectorConfig>
     }
   }
 
-  async query(vector: number[], topK: number = 10): Promise<SearchResult> {
+  async search(className: string, query: number[], nResults: number = 10): Promise<SearchResult> {
     const startTime = Date.now();
-    if (!this.isPineconeAvailable) {
+    if (!this.isWeaviateAvailable) {
       return {
         success: false,
-        error: `Pinecone not available. Use fallback: \${this.fallbackProviderId}`,
+        error: `Weaviate not available. Use fallback: ${this.fallbackProviderId}`,
         operationTime: Date.now() - startTime,
       };
     }
     try {
-      const result = { success: true, results: [], operationTime: 0 } as SearchResult;
-      result.operationTime = Date.now() - startTime;
+      // Would call Weaviate REST API: POST /v1/graphql with nearVector search
+      const result: SearchResult = {
+        success: true,
+        results: [],
+        operationTime: Date.now() - startTime,
+      };
       this.recordSuccess(result.operationTime);
       return result;
     } catch (error) {
@@ -138,18 +142,17 @@ export class PineconeVectorProvider extends CapabilityBase<PineconeVectorConfig>
     }
   }
 
-  async delete(ids: string[]): Promise<SearchResult> {
+  async delete(className: string, ids: string[]): Promise<SearchResult> {
     const startTime = Date.now();
-    if (!this.isPineconeAvailable) {
+    if (!this.isWeaviateAvailable) {
       return {
         success: false,
-        error: `Pinecone not available. Use fallback: \${this.fallbackProviderId}`,
+        error: `Weaviate not available. Use fallback: ${this.fallbackProviderId}`,
         operationTime: Date.now() - startTime,
       };
     }
     try {
-      const result = { success: true, operationTime: 0 } as SearchResult;
-      result.operationTime = Date.now() - startTime;
+      const result: SearchResult = { success: true, operationTime: Date.now() - startTime };
       this.recordSuccess(result.operationTime);
       return result;
     } catch (error) {
@@ -166,14 +169,10 @@ export class PineconeVectorProvider extends CapabilityBase<PineconeVectorConfig>
     return {
       id: this.id,
       name: this.name,
-      type: 'pinecone-vector',
-      available: this.isPineconeAvailable,
-      hasApiKey: !!this.apiKey,
+      type: 'weaviate-vector',
+      available: this.isWeaviateAvailable,
       fallbackProvider: this.fallbackProviderId,
-      status: this._status,
-      isInitialized: this._isInitialized,
-      metrics: this.metrics,
     };
   }
 }
-export { PineconeVectorProvider as default };
+export { WeaviateVectorProvider as default };

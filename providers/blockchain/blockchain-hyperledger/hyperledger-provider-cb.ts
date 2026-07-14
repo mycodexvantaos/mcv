@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - HyperledgerProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - HyperledgerProvider (CapabilityBase-based)
  *
  * @module providers/blockchain/blockchain-hyperledger
  * @version 1.0.0

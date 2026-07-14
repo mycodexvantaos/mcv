@@ -7,7 +7,7 @@
  * - hybrid: Native with LLM enhancement when available
  * - auto: Runtime mode detection based on environment
  *
- * Follows MyCodeXvantaOS Local-first principle:
+ * Follows MyCodexVantaOS Local-first principle:
  * The engine always works in native mode, and optionally enhances
  * with external providers when available.
  */

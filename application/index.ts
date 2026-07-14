@@ -1,6 +1,6 @@
 /**
  * ╔══════════════════════════════════════════════════════════════════════╗
- * ║  MyCodeXvantaOS — Application Layer Index                           ║
+ * ║  MyCodexVantaOS — Application Layer Index                           ║
  * ║  Service orchestration logic that depends on ports/ and core/.      ║
  * ║  Each service exports a use-case facade that the runtime layer      ║
  * ║  (Cloudflare Workers, Docker, etc.) can call.                      ║

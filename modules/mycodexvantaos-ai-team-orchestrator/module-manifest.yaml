@@ -1,0 +1,34 @@
+apiVersion: mycodexvantaos.org/v1
+kind: Module
+metadata:
+  name: mycodexvantaos-ai-team-orchestrator
+  labels:
+    mycodexvantaos.org/domain: ai
+    mycodexvantaos.org/managed-by: naming-spec-v1
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
+spec:
+  domain: ai
+  capabilities:
+    - llm
+    - scheduler
+    - observability
+  providers:
+    llm: llm-openai
+    scheduler: scheduler-native
+    observability: observability-opentelemetry
+  lifecycle:
+    stage: stable
+    since: v1.0.0
+  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-ai-team-orchestrator
+  packageName: '@mycodexvantaos/ai-team-orchestrator'
+  description: Core orchestrator for multi-agent AI teams in MyCodexVantaOS. Coordinates
+    role assignment, task routing, and collaborative execution across agent teams.
+service-id: mycodexvantaos-ai-team-orchestrator
+platform: mycodexvantaos
+runtime-modes:
+  - native
+  - connected
+  - hybrid
+service-path: services/mycodexvantaos-ai-team-orchestrator

@@ -21,7 +21,7 @@ jobs:
         id: check_creds
         run: |
           echo "has_creds=false" >> "$GITHUB_OUTPUT"
-          echo "Infrastructure credentials not configured — skipping drift detection."
+          echo "Infrastructure credentials not configured - skipping drift detection."
 
       - name: Checkout repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
@@ -38,7 +38,7 @@ jobs:
 
           # Basic validation of any infrastructure definitions in the repo
           if [ -d "deploy" ]; then
-            echo "Found deploy/ directory — validating structure"
+            echo "Found deploy/ directory - validating structure"
             find deploy -name "*.yaml" -o -name "*.yml" 2>/dev/null | head -5 || true
           fi
           echo "Drift detection skipped (infrastructure-not-configured)"

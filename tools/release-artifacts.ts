@@ -344,7 +344,7 @@ function main(): void {
   const version = getVersion();
   const artifactsDir = resolve(process.cwd(), `release/artifacts/${version}`);
 
-  console.log(`\n🚀 MyCodeXvantaOS Release Artifacts Generator`);
+  console.log(`\n🚀 MyCodexVantaOS Release Artifacts Generator`);
   console.log(`   Version: ${version}`);
   console.log(`   Output:  ${artifactsDir}`);
   console.log('━'.repeat(60));

@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Application Package
+ * MyCodexVantaOS — Application Package
  * Service orchestration logic that depends on ports/ and core/.
  *
  * Architecture Principle:

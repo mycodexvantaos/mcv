@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - AIFairness360Provider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - AIFairness360Provider (CapabilityBase-based)
  *
  * @module providers/ai-ethics/ai-ethics-ai-fairness-360
  * @version 1.0.0

@@ -7,9 +7,9 @@ metadata:
   category: knowledge
   display_name: Knowledge Store Service
   description: 'Document ingestion, chunking, embedding, and knowledge collection
-    management. Implements the full ingestion pipeline: validate → extract → chunk
-    → embed → index → verify. Stores documents in R2, metadata in D1, embeddings in
-    Vectorize. Level 2 service — depends on identity.
+    management. Implements the full ingestion pipeline: validate -> extract -> chunk
+    -> embed -> index -> verify. Stores documents in R2, metadata in D1, embeddings in
+    Vectorize. Level 2 service - depends on identity.
 
     '
 spec:

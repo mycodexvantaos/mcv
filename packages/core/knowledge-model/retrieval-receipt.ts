@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Retrieval Receipt Model
+ * MyCodexVantaOS — Retrieval Receipt Model
  * Immutable proof of knowledge retrieval for audit and replay.
  *
  * Design principle: every knowledge-augmented answer MUST produce a receipt

@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "urn:mycodexvantaos:schema:universal-resource",
   "title": "UniversalResource",
-  "description": "MyCodeXvantaOS universal resource envelope — every resource on the platform follows this shape",
+  "description": "MyCodexVantaOS universal resource envelope — every resource on the platform follows this shape",
   "type": "object",
   "properties": {
     "apiVersion": {

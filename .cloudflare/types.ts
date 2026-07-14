@@ -1,5 +1,5 @@
 /**
- * Cloudflare Pages Type Definitions for MyCodeXvantaOS
+ * Cloudflare Pages Type Definitions for MyCodexVantaOS
  */
 
 declare global {

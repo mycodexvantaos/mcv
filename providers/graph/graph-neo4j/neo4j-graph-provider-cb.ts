@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - Neo4jGraphProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - Neo4jGraphProvider (CapabilityBase-based)
  *
  * @module providers/graph/graph-neo4j
  * @version 1.0.0

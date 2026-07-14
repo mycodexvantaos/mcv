@@ -1,4 +1,4 @@
-apiVersion: platform.mycodevantaos/v1
+apiVersion: platform.mycodexvantaos/v1
 kind: ServiceCategoryMap
 metadata:
   name: mycodexvantaos-service-categories
@@ -9,18 +9,18 @@ metadata:
 
       Every capability is productized, categorized, searchable, and enableable.
 
-      This is the "AWS Console sidebar" for MyCodeXvantaOS.
+      This is the "AWS Console sidebar" for MyCodexVantaOS.
 
       '
     design_principle: 'AWS 的強大不是只有伺服器多，而是它有四層能力：
 
-      1. 服務目錄 — 使用者知道有哪些能力
+      1. 服務目錄 - 使用者知道有哪些能力
 
-      2. 控制平面 — 使用者可以啟用、設定、監控、刪除服務
+      2. 控制平面 - 使用者可以啟用、設定、監控、刪除服務
 
-      3. 資源模型 — 每個服務都有自己的資源、狀態、權限、配額
+      3. 資源模型 - 每個服務都有自己的資源、狀態、權限、配額
 
-      4. 計費與治理 — 每個服務都能被追蹤、限制、審計、收費
+      4. 計費與治理 - 每個服務都能被追蹤、限制、審計、收費
 
       '
 spec:
@@ -30,7 +30,7 @@ spec:
     display_name_zh: 知識服務
     description: 'Knowledge ingestion, storage, search, trace, and repair.
 
-      Documents become operational substrate — parseable, searchable,
+      Documents become operational substrate - parseable, searchable,
 
       citable, repairable, and promotable to memory.
 

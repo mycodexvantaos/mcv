@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS PostgreSQL Connector
+ * MyCodexVantaOS PostgreSQL Connector
  * Provides integration with PostgreSQL database
  */
 

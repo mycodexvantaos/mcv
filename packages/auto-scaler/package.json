@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/auto-scaler",
   "version": "1.0.0",
-  "description": "自動擴展器 for MyCodeXvantaOS - Layer E擴展",
+  "description": "自動擴展器 for MyCodexVantaOS - Layer E擴展",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -16,7 +16,7 @@
     "Layer E擴展",
     "mycodexvantaos"
   ],
-  "author": "MyCodeXvantaOS",
+  "author": "MyCodexVantaOS",
   "license": "MIT",
   "dependencies": {
     "@mycodexvantaos/runtime": "workspace:*"

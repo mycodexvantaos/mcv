@@ -197,7 +197,7 @@ function validateEvents(): void {
 
 // ── Main ───────────────────────────────────────────────────────────────
 
-console.log('🔍 Validating MyCodeXvantaOS contracts...\n');
+console.log('🔍 Validating MyCodexVantaOS contracts...\n');
 
 validateServiceDefinitions();
 validateServiceCategories();

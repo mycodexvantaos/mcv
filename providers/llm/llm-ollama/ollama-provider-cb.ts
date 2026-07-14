@@ -1,5 +1,5 @@
 /**
- * 🦙 MyCodeXvantaOS - Ollama LLM Provider (CapabilityBase-based)
+ * 🦙 MyCodexVantaOS - Ollama LLM Provider (CapabilityBase-based)
  *
  * Local LLM provider using Ollama for offline inference.
  * Fallback to llm-native when Ollama is unavailable.

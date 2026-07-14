@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - PrometheusProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - PrometheusProvider (CapabilityBase-based)
  *
  * @module providers/observability/observability-prometheus
  * @version 1.0.0

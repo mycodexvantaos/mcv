@@ -1,5 +1,5 @@
 /**
- * ☁️ MyCodeXvantaOS - Azure Blob Storage Provider (CapabilityBase-based)
+ * ☁️ MyCodexVantaOS - Azure Blob Storage Provider (CapabilityBase-based)
  *
  * @module providers/storage/storage-azure
  * @version 1.0.0

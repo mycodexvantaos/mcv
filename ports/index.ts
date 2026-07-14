@@ -1,6 +1,6 @@
 /**
  * ╔══════════════════════════════════════════════════════════════════════╗
- * ║  MyCodeXvantaOS — Port Interfaces (平台中立接口層)                    ║
+ * ║  MyCodexVantaOS — Port Interfaces (平台中立接口層)                    ║
  * ║  Platform-neutral abstractions that define HOW the core and         ║
  * ║  application layers interact with infrastructure. No cloud-vendor   ║
  * ║  types leak through these interfaces.                               ║

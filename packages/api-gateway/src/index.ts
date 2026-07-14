@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS API Gateway
+ * MyCodexVantaOS API Gateway
  * Provides unified API entry point with routing, rate limiting, and authentication
  */
 

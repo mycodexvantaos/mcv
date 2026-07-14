@@ -17,7 +17,7 @@ spec:
   serviceVersion: v1.0.0
   layer: Governance
   capability: validation
-  description: MyCodeXvantaOS mycodexvantaos-governance-policy service
+  description: MyCodexVantaOS mycodexvantaos-governance-policy service
   category: platform
   healthCheck:
     enabled: true

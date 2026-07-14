@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Knowledge Repair Model
+ * MyCodexVantaOS — Knowledge Repair Model
  * Remediation actions for knowledge issues.
  *
  * Repairs close the loop: every detected issue should eventually

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 
 /**
- * MyCodeXvantaOS 運行時模式定義
+ * MyCodexVantaOS 運行時模式定義
  * native: 全離線/內網模式，嚴禁請求外部 API
  * connected: 雲端連線模式，允許訪問外部服務
  * hybrid: 混合模式，優先使用本地資源，必要時嘗試連線

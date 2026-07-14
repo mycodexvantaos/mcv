@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/event-bus",
   "version": "1.0.0",
-  "description": "事件總線 for MyCodeXvantaOS - Layer B擴展",
+  "description": "事件總線 for MyCodexVantaOS - Layer B擴展",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -16,7 +16,7 @@
     "Layer B擴展",
     "mycodexvantaos"
   ],
-  "author": "MyCodeXvantaOS",
+  "author": "MyCodexVantaOS",
   "license": "MIT",
   "dependencies": {
     "@mycodexvantaos/runtime": "workspace:*"

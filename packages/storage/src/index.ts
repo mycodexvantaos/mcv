@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Storage
+ * MyCodexVantaOS Storage
  * Object storage service with cloud-agnostic interfaces
  */
 

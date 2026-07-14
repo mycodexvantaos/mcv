@@ -40,7 +40,7 @@ function check(name: string, fn: () => boolean): void {
   }
 }
 
-console.log('\n🔍 MyCodeXvantaOS Governance Check\n');
+console.log('\n🔍 MyCodexVantaOS Governance Check\n');
 console.log('━'.repeat(50));
 
 // ── Check 1: Contract validation ──────────────────────────────────────

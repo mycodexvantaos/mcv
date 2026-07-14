@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/jsonata",
   "version": "2.2.1",
-  "description": "JSON query and transformation language — integrated into MyCodeXvantaOS platform",
+  "description": "JSON query and transformation language — integrated into MyCodexVantaOS platform",
   "module": "src/jsonata.js",
   "main": "src/jsonata.js",
   "typings": "jsonata.d.ts",

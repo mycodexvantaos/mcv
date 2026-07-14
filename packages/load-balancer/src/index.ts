@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Load Balancer
+ * MyCodexVantaOS Load Balancer
  * Provides intelligent load balancing across service instances
  */
 

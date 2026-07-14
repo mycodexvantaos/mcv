@@ -1,0 +1,34 @@
+apiVersion: mycodexvantaos.org/v1
+kind: Module
+metadata:
+  name: mycodexvantaos-persona-engine
+  labels:
+    mycodexvantaos.org/domain: ai
+    mycodexvantaos.org/managed-by: naming-spec-v1
+  version: 1.0.0
+  date: '2026-06-29'
+  status: active
+spec:
+  domain: ai
+  capabilities:
+    - llm
+    - validation
+    - observability
+  providers:
+    llm: llm-openai
+    validation: validation-zod
+    observability: observability-opentelemetry
+  lifecycle:
+    stage: stable
+    since: v1.0.0
+  urn: urn:mycodexvantaos:manifest:service:mycodexvantaos-persona-engine
+  packageName: '@mycodexvantaos/persona-engine'
+  description: MyCodexVantaOS Persona Engine. Disrupter persona system with semantic
+    mask detection, root cause analysis, and behavioral adjustment.
+service-id: mycodexvantaos-persona-engine
+platform: mycodexvantaos
+runtime-modes:
+  - native
+  - connected
+  - hybrid
+service-path: services/mycodexvantaos-persona-engine

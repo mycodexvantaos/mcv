@@ -1,5 +1,5 @@
 /**
- * 🏢 MyCodeXvantaOS - Capabilities Layer Type Definitions
+ * 🏢 MyCodexVantaOS - Capabilities Layer Type Definitions
  *
  * Platform Independence 支持的核心類型系統
  * 提供統一的 Runtime Mode 和 Provider 配置接口

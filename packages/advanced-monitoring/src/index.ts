@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Advanced Monitoring
+ * MyCodexVantaOS Advanced Monitoring
  * Provides comprehensive monitoring, alerting, and health checks
  */
 

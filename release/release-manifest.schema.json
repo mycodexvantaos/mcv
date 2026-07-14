@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://mycodexvantaos.io/schemas/release-manifest.schema.json",
   "title": "ReleaseManifest",
-  "description": "Schema for MyCodeXvantaOS release manifest. Generated at build time and served via GET /v1/version and GET /v1/runtime.",
+  "description": "Schema for MyCodexVantaOS release manifest. Generated at build time and served via GET /v1/version and GET /v1/runtime.",
   "type": "object",
   "required": ["version", "commit", "branch", "buildTimestamp", "runtime", "manifestHash"],
   "additionalProperties": false,

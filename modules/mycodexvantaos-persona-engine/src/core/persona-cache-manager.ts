@@ -1,5 +1,5 @@
 /**
- * Persona Cache Manager for MyCodeXvantaOS Persona Engine
+ * Persona Cache Manager for MyCodexVantaOS Persona Engine
  *
  * Provides intelligent caching for persona profiles, processed responses,
  * and analysis results to improve performance and reduce redundant computation.

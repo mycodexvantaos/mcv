@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Studio Platform — API Data Hooks
+ * MyCodexVantaOS Studio Platform — API Data Hooks
  * Phase 3: Data Integration using TanStack Query
  *
  * All hooks follow the pattern:

@@ -1,5 +1,5 @@
 /**
- * Integration Tests for MyCodeXvantaOS Packages
+ * Integration Tests for MyCodexVantaOS Packages
  */
 
 import { Builder } from '@mycodexvantaos/builder';

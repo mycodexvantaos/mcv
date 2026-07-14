@@ -1,5 +1,5 @@
 /**
- * 🔒 MyCodeXvantaOS - Cloudflare Workers AI Provider (CapabilityBase-based)
+ * 🔒 MyCodexVantaOS - Cloudflare Workers AI Provider (CapabilityBase-based)
  *
  * Cloudflare Workers AI API integration with native fallback.
  *

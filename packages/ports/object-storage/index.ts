@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Object Storage Port
+ * MyCodexVantaOS — Object Storage Port
  * Abstracts blob/object storage operations.
  *
  * Cloudflare implementation: R2

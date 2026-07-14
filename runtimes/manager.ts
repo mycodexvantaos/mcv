@@ -1,5 +1,5 @@
 /**
- * 🏢 MyCodeXvantaOS - Runtime Configuration Manager
+ * 🏢 MyCodexVantaOS - Runtime Configuration Manager
  *
  * 單例模式，管理 Runtime Configuration、模式切換並記錄關鍵日誌。
  */

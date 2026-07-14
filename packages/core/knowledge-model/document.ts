@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Document Model
+ * MyCodexVantaOS — Document Model
  * Knowledge as operational substrate.
  */
 

@@ -1,7 +1,7 @@
 /**
- * MyCodeXvantaOS Deployment Package
+ * MyCodexVantaOS Deployment Package
  *
- * Unified deployment abstraction following MyCodeXvantaOS Architecture:
+ * Unified deployment abstraction following MyCodexVantaOS Architecture:
  * - Native-first: Always has a working native provider as fallback
  * - Provider-agnostic: Switch between deployment targets without code changes
  * - Zero hard dependencies: External providers are optional

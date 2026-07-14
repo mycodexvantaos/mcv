@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/api-generator",
   "version": "0.1.0",
-  "description": "API generation layer for MyCodeXvantaOS",
+  "description": "API generation layer for MyCodexVantaOS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -17,7 +17,7 @@
     "graphql",
     "openapi"
   ],
-  "author": "MyCodeXvantaOS Team",
+  "author": "MyCodexVantaOS Team",
   "license": "MIT",
   "dependencies": {
     "@mycodexvantaos/builder": "workspace:*"

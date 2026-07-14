@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Persona Engine - Solution Generator
+ * MyCodexVantaOS Persona Engine - Solution Generator
  *
  * Generates actionable solutions based on root cause analysis.
  * URN: urn:mycodexvantaos:core:solution-generator

@@ -1,5 +1,5 @@
 /**
- * 🏢 MyCodeXvantaOS - Runtime Mode Detector
+ * 🏢 MyCodexVantaOS - Runtime Mode Detector
  *
  * 負責檢測當前環境、網絡狀態與依賴完整性，推薦最適合的 Runtime Mode。
  */

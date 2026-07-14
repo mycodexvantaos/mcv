@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - GitHubRepoProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - GitHubRepoProvider (CapabilityBase-based)
  *
  * @module providers/repo/repo-github
  * @version 1.0.0

@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Native Validation Engine
+ * MyCodexVantaOS Native Validation Engine
  * Provides a comprehensive validation system with schema-based validation
  */
 

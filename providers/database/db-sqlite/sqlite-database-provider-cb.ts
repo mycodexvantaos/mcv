@@ -1,5 +1,5 @@
 /**
- * 🔒 MyCodeXvantaOS - SQLite Database Provider (CapabilityBase-based)
+ * 🔒 MyCodexVantaOS - SQLite Database Provider (CapabilityBase-based)
  *
  * SQLite database integration with native fallback.
  *

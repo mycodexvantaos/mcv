@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Result Type
+ * MyCodexVantaOS — Result Type
  * Rust-inspired Result type for error handling without exceptions.
  */
 

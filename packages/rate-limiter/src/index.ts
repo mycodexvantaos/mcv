@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Rate Limiter
+ * MyCodexVantaOS Rate Limiter
  * Provides rate limiting for API endpoints and services
  */
 

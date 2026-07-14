@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/connector-postgresql",
   "version": "1.0.0",
-  "description": "PostgreSQL connector for MyCodeXvantaOS",
+  "description": "PostgreSQL connector for MyCodexVantaOS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -15,7 +15,7 @@
     "connector",
     "database"
   ],
-  "author": "MyCodeXvantaOS",
+  "author": "MyCodexVantaOS",
   "license": "MIT",
   "dependencies": {
     "@mycodexvantaos/runtime": "workspace:*"

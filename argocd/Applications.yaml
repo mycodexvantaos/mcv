@@ -1,5 +1,5 @@
 # === path: argocd/Applications.yaml ===
-# ArgoCD Applications for MyCodeXvantaOS
+# ArgoCD Applications for MyCodexVantaOS
 # GitOps deployment configuration
 
 apiVersion: argoproj.io/v1alpha1

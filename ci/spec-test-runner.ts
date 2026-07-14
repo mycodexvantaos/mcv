@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS 規範測試執行器
+ * MyCodexVantaOS 規範測試執行器
  * 全面驗證平台治理規範合規性
  */
 
@@ -43,7 +43,7 @@ class SpecTestRunner {
    * 執行所有規範測試
    */
   async runAllTests(): Promise<SpecTestReport> {
-    console.log('🚀 開始執行 MyCodeXvantaOS 規範測試...\n');
+    console.log('🚀 開始執行 MyCodexVantaOS 規範測試...\n');
 
     // 載入治理規範
     await this.loadGovernanceSpec();

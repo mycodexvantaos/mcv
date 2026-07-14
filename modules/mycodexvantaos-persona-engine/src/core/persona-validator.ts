@@ -1,7 +1,7 @@
 /**
- * Persona Validator for MyCodeXvantaOS Persona Engine
+ * Persona Validator for MyCodexVantaOS Persona Engine
  *
- * Validates persona profile configurations against MyCodeXvantaOS specifications
+ * Validates persona profile configurations against MyCodexVantaOS specifications
  * and schema definitions to ensure data integrity and compliance.
  *
  * @module mycodexvantaos-persona-engine/core/persona-validator

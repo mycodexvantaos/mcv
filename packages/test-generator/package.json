@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/test-generator",
   "version": "0.1.0",
-  "description": "Test generation layer for MyCodeXvantaOS",
+  "description": "Test generation layer for MyCodexVantaOS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -18,7 +18,7 @@
     "integration",
     "e2e"
   ],
-  "author": "MyCodeXvantaOS Team",
+  "author": "MyCodexVantaOS Team",
   "license": "MIT",
   "dependencies": {
     "@mycodexvantaos/builder": "workspace:*"

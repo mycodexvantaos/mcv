@@ -3,7 +3,7 @@
  *
  * Implements local-first AI content detection using linguistic and statistical
  * feature analysis. Operates entirely without external API calls, following
- * the MyCodeXvantaOS Local-first principle.
+ * the MyCodexVantaOS Local-first principle.
  *
  * Detection signals:
  * - Perplexity proxy (pattern uniformity)

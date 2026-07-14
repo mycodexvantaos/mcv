@@ -7,9 +7,9 @@ metadata:
   category: agent
   display_name: Agent Chat Service
   description: 'AI-powered conversational interface with knowledge-grounded generation.
-    Implements the 5-stage generation pipeline: assemble → invoke → attribute → safety-check
-    → audit. Supports streaming responses, evidence attribution, and safety guardrails.
-    Level 3 service — depends on knowledge-search + model-byok.
+    Implements the 5-stage generation pipeline: assemble -> invoke -> attribute -> safety-check
+    -> audit. Supports streaming responses, evidence attribution, and safety guardrails.
+    Level 3 service - depends on knowledge-search + model-byok.
 
     '
 spec:
@@ -52,7 +52,7 @@ spec:
   - id: chat.send-message
     method: sendMessage
     description: 'Send a message in a chat session. Triggers the full generation pipeline:
-      assemble context → invoke model → attribute evidence → safety check → audit.
+      assemble context -> invoke model -> attribute evidence -> safety check -> audit.
       Supports streaming responses via SSE.
 
       '

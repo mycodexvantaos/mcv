@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/native-queue",
   "version": "1.0.0",
-  "description": "Native in-memory queue implementation for MyCodeXvantaOS",
+  "description": "Native in-memory queue implementation for MyCodexVantaOS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -16,7 +16,7 @@
     "async",
     "native"
   ],
-  "author": "MyCodeXvantaOS",
+  "author": "MyCodexVantaOS",
   "license": "MIT",
   "dependencies": {
     "@mycodexvantaos/runtime": "workspace:*"

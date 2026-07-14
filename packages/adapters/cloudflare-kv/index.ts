@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Cloudflare KV Adapter
+ * MyCodexVantaOS — Cloudflare KV Adapter
  * Implements ICachePort using Cloudflare KV (eventually-consistent key-value store).
  *
  * Category: storage

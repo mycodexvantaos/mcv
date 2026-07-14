@@ -844,7 +844,7 @@ function main(): void {
   const artifactsDir = resolve(process.cwd(), `release/artifacts/${version}`);
   const docsDir = resolve(process.cwd(), 'docs/releases');
 
-  console.log('\n🔍 MyCodeXvantaOS Promotion Gate Evaluation');
+  console.log('\n🔍 MyCodexVantaOS Promotion Gate Evaluation');
   console.log(`   Version: ${version}`);
   console.log(`   Output:  ${artifactsDir}`);
   console.log('━'.repeat(60));

@@ -2,7 +2,7 @@
   "name": "mycodexvantaos-gateway",
   "version": "0.1.0",
   "private": true,
-  "description": "MyCodeXvantaOS API Gateway — request router for all platform services",
+  "description": "MyCodexVantaOS API Gateway — request router for all platform services",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

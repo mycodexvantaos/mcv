@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS MongoDB Connector
+ * MyCodexVantaOS MongoDB Connector
  * Provides integration with MongoDB for document storage
  */
 

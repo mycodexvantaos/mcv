@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Persona Engine
+ * MyCodexVantaOS Persona Engine
  *
  * Main entry point for the persona engine module.
  * URN: urn:mycodexvantaos:module:persona-engine

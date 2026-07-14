@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Persona Engine - Persona Manager
+ * MyCodexVantaOS Persona Engine - Persona Manager
  *
  * Manages multiple persona profiles and provides factory methods.
  * URN: urn:mycodexvantaos:core:persona-manager

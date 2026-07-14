@@ -26,7 +26,7 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
     {
       id: 'n1',
       title: 'System Started',
-      message: 'MyCodeXvantaOS Admin Console initialized successfully.',
+      message: 'MyCodexVantaOS Admin Console initialized successfully.',
       severity: 'low',
       timestamp: new Date().toISOString(),
       read: false,

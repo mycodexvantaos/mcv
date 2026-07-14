@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - ArgoCDProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - ArgoCDProvider (CapabilityBase-based)
  *
  * @module providers/deploy/deploy-argocd
  * @version 1.0.0

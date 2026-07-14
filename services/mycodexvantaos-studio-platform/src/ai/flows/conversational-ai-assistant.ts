@@ -2,7 +2,7 @@
 /**
  * @fileOverview Conversational AI Assistant for developers.
  *
- * Refactored to follow MyCodeXvantaOS Provider Architecture:
+ * Refactored to follow MyCodexVantaOS Provider Architecture:
  * - Uses Provider abstraction layer instead of direct Genkit dependency
  * - No hardcoded API key requirements
  * - Falls back to native provider when no external provider is configured
@@ -36,7 +36,7 @@ function buildMessages(input: ConversationalAiAssistantInput): ChatMessage[] {
   const messages: ChatMessage[] = [
     {
       role: 'system',
-      content: `You are a highly intelligent and helpful AI programming assistant named MyCodeXvantaOS Studio. Your goal is to provide immediate, relevant, and accurate help to developers.
+      content: `You are a highly intelligent and helpful AI programming assistant named MyCodexVantaOS Studio. Your goal is to provide immediate, relevant, and accurate help to developers.
 
 You can answer general programming questions, explain programming concepts, and debug or improve code snippets.
 

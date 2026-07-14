@@ -77,7 +77,7 @@ kind: ServiceDefinition
 metadata:
   name: ${serviceName}
   category: ${category}
-  description: "${pascalName} service for the MyCodeXvantaOS platform"
+  description: "${pascalName} service for the MyCodexVantaOS platform"
   urnPrefix: "urn:mycodexvantaos:${category}:${serviceName}"
 
 spec:

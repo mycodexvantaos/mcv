@@ -1,6 +1,6 @@
 /**
  * @mycodexvantaos/agent-toolkit
- * Agent toolkit utilities for MyCodeXvantaOS
+ * Agent toolkit utilities for MyCodexVantaOS
  */
 
 export interface ToolDefinition {

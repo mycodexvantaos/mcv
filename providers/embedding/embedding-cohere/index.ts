@@ -1,7 +1,7 @@
 import { CohereEmbeddingProvider } from './cohere-embedding-provider-cb';
 import type { CohereEmbeddingConfig } from './cohere-embedding-provider-cb';
 /**
- * 🔒 MyCodeXvantaOS - Cohere Embedding Provider Exports
+ * 🔒 MyCodexVantaOS - Cohere Embedding Provider Exports
  *
  * @module providers/embedding/embedding-cohere
  * @version 1.0.0

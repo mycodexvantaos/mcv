@@ -3,14 +3,14 @@ import { NextResponse } from 'next/server';
 /**
  * GET /api/overview
  * Returns system overview KPIs, inference mini-chart, connector status,
- * activity feed, and alert summary for the MyCodeXvantaOS admin dashboard.
+ * activity feed, and alert summary for the MyCodexVantaOS admin dashboard.
  */
 export async function GET() {
   const now = new Date().toISOString();
 
   const overview = {
     timestamp: now,
-    platform: 'MyCodeXvantaOS Studio',
+    platform: 'MyCodexVantaOS Studio',
     version: '1.0.0',
     kpis: {
       totalRequests: { value: 142_830, delta: '+12.4%', trend: 'up' },

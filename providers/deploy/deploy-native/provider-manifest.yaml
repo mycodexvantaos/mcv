@@ -5,7 +5,7 @@ metadata:
   capability: deployment
   description: Native deployment provider for local and Docker deployments
   version: 1.0.0
-  author: MyCodeXvantaOS Team
+  author: MyCodexVantaOS Team
   tags:
     - deployment
     - native

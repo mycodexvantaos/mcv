@@ -1,5 +1,5 @@
 /**
- * 🔒 MyCodeXvantaOS - Replicate LLM Provider (CapabilityBase-based)
+ * 🔒 MyCodexVantaOS - Replicate LLM Provider (CapabilityBase-based)
  *
  * Replicate LLM integration with native fallback.
  *

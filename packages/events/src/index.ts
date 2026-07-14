@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Events
+ * MyCodexVantaOS Events
  * Event processing service with pub/sub and streaming
  */
 

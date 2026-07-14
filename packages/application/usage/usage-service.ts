@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Usage Application Service
+ * MyCodexVantaOS — Usage Application Service
  * Category: security
  *
  * Multi-dimensional usage tracking, metering & rate-limit enforcement.

@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - CohereHybridEmbeddingProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - CohereHybridEmbeddingProvider (CapabilityBase-based)
  *
  * @module providers/hybrid/embedding/embedding-cohere
  * @version 1.0.0

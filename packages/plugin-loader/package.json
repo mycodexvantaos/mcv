@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/plugin-loader",
   "version": "0.1.0",
-  "description": "Plugin loader layer for MyCodeXvantaOS",
+  "description": "Plugin loader layer for MyCodexVantaOS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -16,7 +16,7 @@
     "extension",
     "module"
   ],
-  "author": "MyCodeXvantaOS Team",
+  "author": "MyCodexVantaOS Team",
   "license": "MIT",
   "dependencies": {
     "@mycodexvantaos/runtime": "workspace:*"

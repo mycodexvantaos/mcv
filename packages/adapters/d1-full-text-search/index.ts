@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — D1 Full-Text Search Adapter
+ * MyCodexVantaOS — D1 Full-Text Search Adapter
  * Implements ISearchPort.fulltextSearch() using D1 FTS5 (BM25).
  *
  * Category: knowledge

@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Service Discovery
+ * MyCodexVantaOS Service Discovery
  * Service registration, discovery, and health monitoring
  */
 

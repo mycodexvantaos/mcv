@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - EventStreamKafkaProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - EventStreamKafkaProvider (CapabilityBase-based)
  *
  * @module providers/event-stream/event-stream-kafka
  * @version 1.0.0

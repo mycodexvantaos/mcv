@@ -15,7 +15,7 @@
     },
     "fromName": {
       "type": "string",
-      "default": "MyCodeXvantaOS"
+      "default": "MyCodexVantaOS"
     }
   }
 }

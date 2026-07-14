@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/deployment-manifest-generator",
   "version": "0.1.0",
-  "description": "Deployment manifest generation layer for MyCodeXvantaOS",
+  "description": "Deployment manifest generation layer for MyCodexVantaOS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -18,7 +18,7 @@
     "kubernetes",
     "terraform"
   ],
-  "author": "MyCodeXvantaOS Team",
+  "author": "MyCodexVantaOS Team",
   "license": "MIT",
   "dependencies": {
     "@mycodexvantaos/builder": "workspace:*"

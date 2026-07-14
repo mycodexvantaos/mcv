@@ -86,7 +86,7 @@ export class ModelByokService {
     });
 
     return {
-      apiVersion: 'platform.mycodevantaos/v1',
+      apiVersion: 'platform.mycodexvantaos/v1',
       kind: 'model-endpoint',
       metadata: {
         id: endpointId,

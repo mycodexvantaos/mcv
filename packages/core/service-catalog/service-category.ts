@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Service Category Model
+ * MyCodexVantaOS — Service Category Model
  * The "AWS Console sidebar" classification.
  */
 

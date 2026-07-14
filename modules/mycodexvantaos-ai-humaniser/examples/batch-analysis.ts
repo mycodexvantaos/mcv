@@ -30,7 +30,7 @@ async function main() {
   ];
 
   console.log('╔══════════════════════════════════════════════════════════════╗');
-  console.log('║          MyCodeXvantaOS AI Humaniser — Batch Report         ║');
+  console.log('║          MyCodexVantaOS AI Humaniser — Batch Report         ║');
   console.log('╚══════════════════════════════════════════════════════════════╝');
   console.log();
 

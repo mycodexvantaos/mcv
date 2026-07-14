@@ -1,5 +1,5 @@
 # === path: .github/workflows/weekly-audit.yml ===
-# Weekly Full Security Audit for MyCodeXvantaOS
+# Weekly Full Security Audit for MyCodexVantaOS
 # Version: 2.0.0
 # Uses CLI tools directly (no third-party composite actions) to avoid startup_failure
 
@@ -21,7 +21,7 @@ permissions:
   issues: write
 
 jobs:
-  # ── Full CodeQL Scan ────────────────────────────────────────────
+  # -- Full CodeQL Scan --------------------------------------------
   codeql-full:
     name: CodeQL Full Audit
     runs-on: ubuntu-latest
@@ -60,7 +60,7 @@ jobs:
         with:
           category: "/weekly-audit/language:${{ matrix.language }}"
 
-  # ── Semgrep Full Audit (CLI via container) ──────────────────────
+  # -- Semgrep Full Audit (CLI via container) ----------------------
   semgrep-full:
     name: Semgrep Full Audit
     runs-on: ubuntu-latest
@@ -88,7 +88,7 @@ jobs:
           sarif_file: semgrep.sarif
           category: semgrep-weekly
 
-  # ── Trivy Full Vulnerability Audit (CLI via apt) ───────────────
+  # -- Trivy Full Vulnerability Audit (CLI via apt) ---------------
   trivy-full:
     name: Trivy Full Audit
     runs-on: ubuntu-latest
@@ -116,7 +116,7 @@ jobs:
           sarif_file: trivy-results.sarif
           category: trivy-weekly
 
-  # ── Checkov Full Audit (CLI via pip) ────────────────────────────
+  # -- Checkov Full Audit (CLI via pip) ----------------------------
   checkov-full:
     name: Checkov Full Audit
     runs-on: ubuntu-latest
@@ -145,7 +145,7 @@ jobs:
           sarif_file: checkov-results.sarif
           category: checkov-weekly
 
-  # ── Secret Scan Full History (CLI via wget) ─────────────────────
+  # -- Secret Scan Full History (CLI via wget) ---------------------
   secret-scan-full:
     name: Secret Scan (Full History)
     runs-on: ubuntu-latest
@@ -173,7 +173,7 @@ jobs:
           sarif_file: gitleaks-results.sarif
           category: gitleaks-weekly
 
-  # ── Super-Linter (full codebase) ───────────────────────────────
+  # -- Super-Linter (full codebase) -------------------------------
   super-linter-full:
     name: Super-Linter (Full Codebase)
     runs-on: ubuntu-latest
@@ -217,7 +217,7 @@ jobs:
             todo\.md
             packages/jsonata/.*
 
-  # ── Audit Summary ──────────────────────────────────────────────
+  # -- Audit Summary ----------------------------------------------
   audit-summary:
     name: Weekly Audit Summary
     runs-on: ubuntu-latest
@@ -247,9 +247,9 @@ jobs:
           RUN_ID: ${{ github.run_id }}
           REPO: ${{ github.repository }}
         run: |
-          echo "╔══════════════════════════════════════════════════════╗"
-          echo "║        Weekly Security Audit — Summary Report       ║"
-          echo "╚══════════════════════════════════════════════════════╝"
+          echo "--------------------------------------------------------"
+          echo "-        Weekly Security Audit - Summary Report       -"
+          echo "--------------------------------------------------------"
           echo ""
           echo "Date:    $(date -u '+%Y-%m-%d %H:%M UTC')"
           echo "Branch:  ${REF_NAME}"

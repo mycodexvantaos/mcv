@@ -25,6 +25,42 @@ exceptions:
       path. Remove versioned directory reference in ci/deploy.yaml.
 
       '
+  - id: exception--20260701--cirepair
+    rule: service-id-prefix-required
+    scope: services/ci-repair-agent
+    reason: 'Docker packaging wrapper for the Python-plane ci-repair-agent app.
+      The directory name is referenced by existing CI workflows (ci-repair-agent.yml)
+      and ADR-0011. Renaming to mycodexvantaos-automation-ci-repair is tracked
+      for the next restructure milestone.
+
+      '
+    approver: arch-committee-lead
+    createdAt: '2026-07-01'
+    expiresAt: '2026-12-31'
+    status: active
+    mitigationPlan: 'Rename services/ci-repair-agent to canonical
+      mycodexvantaos-automation-ci-repair and update workflow references in a
+      coordinated migration PR.
+
+      '
+  - id: exception--20260701--kafkasp
+    rule: service-id-prefix-required
+    scope: services/kafka-stream-processor
+    reason: 'Docker packaging wrapper for the Python-plane kafka-stream-processor
+      app. The directory name is referenced by ADR-0012 and python plane docs.
+      Renaming to mycodexvantaos-data-stream-processor is tracked for the next
+      restructure milestone.
+
+      '
+    approver: arch-committee-lead
+    createdAt: '2026-07-01'
+    expiresAt: '2026-12-31'
+    status: active
+    mitigationPlan: 'Rename services/kafka-stream-processor to canonical
+      mycodexvantaos-data-stream-processor and update documentation references
+      in a coordinated migration PR.
+
+      '
   - id: exception--20260621--dvstud
     rule: no-environment-in-canonical
     scope: mycodexvantaos-app-dev-studio

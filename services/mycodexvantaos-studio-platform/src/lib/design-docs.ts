@@ -51,7 +51,7 @@ autoeccops/
 │   └── softwareos-research-toolkit/    # 研究分析工具包
 │
 └── services/                           # 微服務架構
-    ├── codevantaos/                    # 控制平面核心服務 (Core Infrastructure)
+    ├── mycodexvantaos/                    # 控制平面核心服務 (Core Infrastructure)
     │   ├── api-gateway/                # 核心 API Gateway
     │   ├── auth-service/               # 身份驗證與授權服務
     │   ├── policy-service/             # 策略與審計服務
@@ -100,10 +100,10 @@ autoeccops/
 
 (API 契約詳細定義請參考 \`pkgs/softwareos-contracts/\`)
 
-**核心 API Gateway (\`codevantaos-api-gateway\`)**
-- \`/auth/...\` -> \`codevantaos-auth-service\`
-- \`/policy/...\` -> \`codevantaos-policy-service\`
-- \`/memory/...\` -> \`codevantaos-memory-hub\`
+**核心 API Gateway (\`mycodexvantaos-api-gateway\`)**
+- \`/auth/...\` -> \`mycodexvantaos-auth-service\`
+- \`/policy/...\` -> \`mycodexvantaos-policy-service\`
+- \`/memory/...\` -> \`mycodexvantaos-memory-hub\`
 
 **業務平台 API**
 - \`/observability/api/...\` -> \`softwareos-platform-observability-api\`
@@ -114,7 +114,7 @@ autoeccops/
 
 (異步 API 契約詳細定義請參考 \`pkgs/softwareos-contracts/\`)
 
-**事件總線 (\`codevantaos-event-bus\`) Topics**
+**事件總線 (\`mycodexvantaos-event-bus\`) Topics**
 - \`events.collaboration.operations\`
 - \`events.collaboration.presence\`
 - \`events.ai.completion.status\`
@@ -125,7 +125,7 @@ autoeccops/
 
 ## 第五部分：數據模型架構
 
-(所有數據庫結構定義請參考 \`pkgs/codevantaos-db-schemas/\`)
+(所有數據庫結構定義請參考 \`pkgs/mycodexvantaos-db-schemas/\`)
 
 ---
 
@@ -860,8 +860,8 @@ const aiProviders = {
 
 | 詞彙 | 定義 | 範例 |
 | :--- | :--- | :--- |
-| **codevantaos** | 代表平台的核心基礎設施、共享服務與控制平面組件。這些組件通常是底層的、通用的，為上層業務平台提供支撐。 | \`codevantaos-auth\` (身份驗證服務), \`codevantaos-policy\` (策略與審計) |
-| **softwareos** | 代表基於 \`codevantaos\` 核心能力構建的業務領域平台與應用。這些組件通常是面向特定業務場景的，如 IaC、觀測、邊緣計算等。 | \`softwareos-iaops\` (IaC 平台), \`softwareos-platform-01\` (觀測平台) |
+| **mycodexvantaos** | 代表平台的核心基礎設施、共享服務與控制平面組件。這些組件通常是底層的、通用的，為上層業務平台提供支撐。 | \`mycodexvantaos-auth\` (身份驗證服務), \`mycodexvantaos-policy\` (策略與審計) |
+| **softwareos** | 代表基於 \`mycodexvantaos\` 核心能力構建的業務領域平台與應用。這些組件通常是面向特定業務場景的，如 IaC、觀測、邊緣計算等。 | \`softwareos-iaops\` (IaC 平台), \`softwareos-platform-01\` (觀測平台) |
 
 ### 1.2 領域 (Domain)
 
@@ -869,20 +869,20 @@ const aiProviders = {
 
 | 詞彙 | 定義 | 範例 |
 | :--- | :--- | :--- |
-| **auth** | 身份驗證與授權管理 | \`codevantaos-auth\` |
-| **policy** | 策略管理與審計 | \`codevantaos-policy\` |
-| **memory** | 記憶體與上下文管理 (如向量資料庫) | \`codevantaos-memory-hub\` |
-| **event** | 事件總線與事件處理 | \`codevantaos-event-bus\` |
-| **infra** | 基礎設施管理與 GitOps 控制器 | \`codevantaos-infra-manager\` |
+| **auth** | 身份驗證與授權管理 | \`mycodexvantaos-auth\` |
+| **policy** | 策略管理與審計 | \`mycodexvantaos-policy\` |
+| **memory** | 記憶體與上下文管理 (如向量資料庫) | \`mycodexvantaos-memory-hub\` |
+| **event** | 事件總線與事件處理 | \`mycodexvantaos-event-bus\` |
+| **infra** | 基礎設施管理與 GitOps 控制器 | \`mycodexvantaos-infra-manager\` |
 | **platform-01** | 觀測、自癒、修復編排平台 | \`softwareos-platform-01\` |
 | **iaops** | 基礎設施即代碼 (IaC) 與 GitOps 平台 | \`softwareos-iaops\` |
 | **machinenativeops** | 節點基線、硬體納管、邊緣代理平台 | \`softwareos-machinenativeops\` |
 | **toolkit** | 開發工具集與 SDK | \`softwareos-toolkit\` |
 | **contracts** | 跨服務 API 契約定義 | \`softwareos-contracts\` |
-| **signerd** | 簽名服務 | \`codevantaos-signerd\` |
-| **controller** | 控制器 | \`codevantaos-controller\` |
-| **rolloutd** | 部署滾動控制器 | \`codevantaos-rolloutd\` |
-| **db-schemas** | 資料庫結構定義 | \`codevantaos-db-schemas\` |
+| **signerd** | 簽名服務 | \`mycodexvantaos-signerd\` |
+| **controller** | 控制器 | \`mycodexvantaos-controller\` |
+| **rolloutd** | 部署滾動控制器 | \`mycodexvantaos-rolloutd\` |
+| **db-schemas** | 資料庫結構定義 | \`mycodexvantaos-db-schemas\` |
 
 ### 1.3 功能 (Function)
 
@@ -890,16 +890,16 @@ const aiProviders = {
 
 | 詞彙 | 定義 | 範例 |
 | :--- | :--- | :--- |
-| **service** | 微服務 | \`codevantaos-auth-service\` |
+| **service** | 微服務 | \`mycodexvantaos-auth-service\` |
 | **agent** | 代理程式 | \`softwareos-edge-agent\` |
 | **sdk** | 軟體開發套件 | \`softwareos-toolkit-sdk\` |
 | **cli** | 命令列工具 | \`softwareos-toolkit-cli\` |
 | **web** | 前端應用 | \`softwareos-platform-01-web\` |
 | **api** | API 服務 | \`softwareos-platform-01-api\` |
-| **worker** | 後台工作者 | \`codevantaos-event-worker\` |
-| **manager** | 管理器 | \`codevantaos-infra-manager\` |
-| **hub** | 核心樞紐 | \`codevantaos-memory-hub\` |
-| **bus** | 總線 | \`codevantaos-event-bus\` |
+| **worker** | 後台工作者 | \`mycodexvantaos-event-worker\` |
+| **manager** | 管理器 | \`mycodexvantaos-infra-manager\` |
+| **hub** | 核心樞紐 | \`mycodexvantaos-memory-hub\` |
+| **bus** | 總線 | \`mycodexvantaos-event-bus\` |
 
 ## 2. 倉庫命名邏輯 (Naming Convention)
 
@@ -908,9 +908,9 @@ const aiProviders = {
 \`[Namespace]-[Domain]-[Function]\`
 
 **範例：**
-*   \`codevantaos-auth-service\`：\`codevantaos\` 命名空間下的 \`auth\` 領域的 \`service\` 組件。
+*   \`mycodexvantaos-auth-service\`：\`mycodexvantaos\` 命名空間下的 \`auth\` 領域的 \`service\` 組件。
 *   \`softwareos-iaops-api\`：\`softwareos\` 命名空間下的 \`iaops\` 領域的 \`api\` 組件。
-*   \`codevantaos-memory-hub\`：\`codevantaos\` 命名空間下的 \`memory\` 領域的 \`hub\` 組件。
+*   \`mycodexvantaos-memory-hub\`：\`mycodexvantaos\` 命名空間下的 \`memory\` 領域的 \`hub\` 組件。
 
 **命名規則：**
 *   所有名稱均使用小寫字母。
@@ -930,21 +930,21 @@ C4Context
     System_Ext(repo, "Git Repo", "部署清單、Helm Charts、策略定義")
 
     Boundary(boundary_shared, "Shared Kernel (控制平面)") {
-        Container(auth, "codevantaos-auth", "身份驗證、RBAC、Token 發放")
-        Container(memory, "codevantaos-memory-hub", "文件切片、向量檢索、RAG 上下文")
-        Container(event, "codevantaos-event-bus", "事件路由、重放、去重")
-        Container(policy, "codevantaos-policy", "策略判決、審計軌跡")
-        Container(infra, "codevantaos-infra-manager", "漂移檢測、同步、回滾鉤子")
-        Container(db_schemas, "codevantaos-db-schemas", "統一資料庫結構定義")
-        Container(signerd, "codevantaos-signerd", "簽名服務")
-        Container(controller, "codevantaos-controller", "通用控制器")
-        Container(rolloutd, "codevantaos-rolloutd", "部署滾動控制器")
-        Container(metricsd, "codevantaos-metricsd", "指標收集服務")
-        Container(alertd, "codevantaos-alertd", "告警服務")
-        Container(api, "codevantaos-api", "核心服務統一 API Gateway")
-        Container(internal_mvs, "codevantaos-internal-mvs", "內部微服務")
-        Container(hyperautomation, "codevantaos-hyperautomation", "超自動化引擎")
-        Container(org_meta, "codevantaos-org-meta", "組織元數據管理")
+        Container(auth, "mycodexvantaos-auth", "身份驗證、RBAC、Token 發放")
+        Container(memory, "mycodexvantaos-memory-hub", "文件切片、向量檢索、RAG 上下文")
+        Container(event, "mycodexvantaos-event-bus", "事件路由、重放、去重")
+        Container(policy, "mycodexvantaos-policy", "策略判決、審計軌跡")
+        Container(infra, "mycodexvantaos-infra-manager", "漂移檢測、同步、回滾鉤子")
+        Container(db_schemas, "mycodexvantaos-db-schemas", "統一資料庫結構定義")
+        Container(signerd, "mycodexvantaos-signerd", "簽名服務")
+        Container(controller, "mycodexvantaos-controller", "通用控制器")
+        Container(rolloutd, "mycodexvantaos-rolloutd", "部署滾動控制器")
+        Container(metricsd, "mycodexvantaos-metricsd", "指標收集服務")
+        Container(alertd, "mycodexvantaos-alertd", "告警服務")
+        Container(api, "mycodexvantaos-api", "核心服務統一 API Gateway")
+        Container(internal_mvs, "mycodexvantaos-internal-mvs", "內部微服務")
+        Container(hyperautomation, "mycodexvantaos-hyperautomation", "超自動化引擎")
+        Container(org_meta, "mycodexvantaos-org-meta", "組織元數據管理")
     }
 
     Boundary(boundary_platforms, "Platforms (業務域)") {
@@ -1071,11 +1071,11 @@ C4Context
 
 ### 3.3 關鍵依賴關係
 
-1.  **核心服務統一 API Gateway (\`codevantaos-api\`)**：所有業務平台 (\`softwareos-*\`) 應透過 \`codevantaos-api\` 統一訪問底層核心服務 (\`codevantaos-*\`)，實現單一入口與解耦。
+1.  **核心服務統一 API Gateway (\`mycodexvantaos-api\`)**：所有業務平台 (\`softwareos-*\`) 應透過 \`mycodexvantaos-api\` 統一訪問底層核心服務 (\`mycodexvantaos-*\`)，實現單一入口與解耦。
 2.  **契約驅動開發 (\`softwareos-contracts\`)**：\`softwareos-contracts\` 定義了跨服務的 API 接口（如 gRPC/Protobuf），所有依賴這些接口的服務都應引用此倉庫，確保接口一致性。
 3.  **SDK 與工具 (\`softwareos-toolkit\`)**：\`softwareos-toolkit\` 提供了統一的 SDK，供業務平台或外部應用程式集成，其內部會依賴 \`softwareos-contracts\` 的定義。
-4.  **GitOps 流程**：\`codevantaos-infra-manager\` 與 \`softwareos-gitops\` 共同負責監控 Git 倉庫 (\`Git Repo\`) 的變更，驅動基礎設施與應用部署的自動化。
-5.  **事件驅動架構**：\`codevantaos-event-bus\` 作為核心事件中心，實現各服務間的非同步通信與解耦。
+4.  **GitOps 流程**：\`mycodexvantaos-infra-manager\` 與 \`softwareos-gitops\` 共同負責監控 Git 倉庫 (\`Git Repo\`) 的變更，驅動基礎設施與應用部署的自動化。
+5.  **事件驅動架構**：\`mycodexvantaos-event-bus\` 作為核心事件中心，實現各服務間的非同步通信與解耦。
 
 ## 4. 功能模組與邏輯架構劃分 (Functional & Logic Architecture)
 
@@ -1087,18 +1087,18 @@ AutoEcoOps 生態系統的邏輯架構劃分為三個主要層次，以實現職
 
 | 模組 | 核心職責 | 相關倉庫 |
 | :--- | :--- | :--- |
-| **身份驗證與授權** | 用戶身份管理、RBAC、Token 發放與驗證 | \`codevantaos-auth\` |
-| **策略與審計** | 策略定義、決策判斷、不可變審計日誌 | \`codevantaos-policy\` |
-| **記憶體與上下文** | 文件切片、向量嵌入、RAG 上下文管理 | \`codevantaos-memory-hub\` |
-| **事件總線** | 事件路由、重放、去重、異步通信 | \`codevantaos-event-bus\` |
-| **基礎設施管理** | GitOps、漂移檢測、同步、回滾鉤子 | \`codevantaos-infra-manager\` |
-| **核心 API Gateway** | 統一入口、流量管理、服務發現 | \`codevantaos-api\` |
-| **通用控制器** | 協調與管理其他服務 | \`codevantaos-controller\` |
-| **部署滾動控制器** | 應用部署與版本滾動 | \`codevantaos-rolloutd\` |
-| **簽名服務** | 代碼簽名、證明生成 | \`codevantaos-signerd\` |
-| **數據庫結構** | 統一資料庫模式管理 | \`codevantaos-db-schemas\` |
-| **超自動化引擎** | 跨領域自動化編排 | \`codevantaos-hyperautomation\` |
-| **組織元數據** | 組織級配置與元數據管理 | \`codevantaos-org-meta\` |
+| **身份驗證與授權** | 用戶身份管理、RBAC、Token 發放與驗證 | \`mycodexvantaos-auth\` |
+| **策略與審計** | 策略定義、決策判斷、不可變審計日誌 | \`mycodexvantaos-policy\` |
+| **記憶體與上下文** | 文件切片、向量嵌入、RAG 上下文管理 | \`mycodexvantaos-memory-hub\` |
+| **事件總線** | 事件路由、重放、去重、異步通信 | \`mycodexvantaos-event-bus\` |
+| **基礎設施管理** | GitOps、漂移檢測、同步、回滾鉤子 | \`mycodexvantaos-infra-manager\` |
+| **核心 API Gateway** | 統一入口、流量管理、服務發現 | \`mycodexvantaos-api\` |
+| **通用控制器** | 協調與管理其他服務 | \`mycodexvantaos-controller\` |
+| **部署滾動控制器** | 應用部署與版本滾動 | \`mycodexvantaos-rolloutd\` |
+| **簽名服務** | 代碼簽名、證明生成 | \`mycodexvantaos-signerd\` |
+| **數據庫結構** | 統一資料庫模式管理 | \`mycodexvantaos-db-schemas\` |
+| **超自動化引擎** | 跨領域自動化編排 | \`mycodexvantaos-hyperautomation\` |
+| **組織元數據** | 組織級配置與元數據管理 | \`mycodexvantaos-org-meta\` |
 
 ### 4.2 業務平台 (Business Platforms)
 
@@ -1131,9 +1131,9 @@ AutoEcoOps 生態系統的邏輯架構劃分為三個主要層次，以實現職
 
 ### 5.1 契約定義
 
-*   **Protobuf (Protocol Buffers)**：用於定義高性能、跨語言的 gRPC 服務接口。主要應用於 \`codevantaos\` 核心服務之間以及核心服務與業務平台之間的同步通信。
-*   **OpenAPI (Swagger)**：用於定義 RESTful API 接口，主要應用於對外暴露的 API Gateway (\`codevantaos-api\`) 以及部分業務平台對外的接口。
-*   **JSON Schema / AsyncAPI**：用於定義事件總線 (\`codevantaos-event-bus\`) 上的事件 Payload 結構，確保事件的一致性與可消費性。
+*   **Protobuf (Protocol Buffers)**：用於定義高性能、跨語言的 gRPC 服務接口。主要應用於 \`mycodexvantaos\` 核心服務之間以及核心服務與業務平台之間的同步通信。
+*   **OpenAPI (Swagger)**：用於定義 RESTful API 接口，主要應用於對外暴露的 API Gateway (\`mycodexvantaos-api\`) 以及部分業務平台對外的接口。
+*   **JSON Schema / AsyncAPI**：用於定義事件總線 (\`mycodexvantaos-event-bus\`) 上的事件 Payload 結構，確保事件的一致性與可消費性。
 
 所有契約定義文件統一存儲於 \`softwareos-contracts\` 倉庫，並作為單一事實來源 (Single Source of Truth)。
 

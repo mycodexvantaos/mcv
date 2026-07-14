@@ -1,5 +1,5 @@
 /**
- * 🔒 MyCodeXvantaOS - DALL-E Image Provider (CapabilityBase-based)
+ * 🔒 MyCodexVantaOS - DALL-E Image Provider (CapabilityBase-based)
  *
  * OpenAI DALL-E image generation with native fallback.
  *

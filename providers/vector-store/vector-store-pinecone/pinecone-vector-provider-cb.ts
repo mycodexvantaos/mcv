@@ -1,7 +1,7 @@
 /**
- * 🔒 MyCodeXvantaOS - ChromaDB Vector Store Provider (CapabilityBase-based)
+ * 🔒 MyCodexVantaOS - Pinecone Vector Store Provider (CapabilityBase-based)
  *
- * @module providers/vector/vector-chroma
+ * @module providers/vector-store/vector-store-pinecone
  * @version 1.0.0
  */
 
@@ -12,10 +12,11 @@ import type {
   ProviderHealthCheckResult,
 } from '../../../packages/capabilities/types';
 
-export interface ChromaVectorConfig {
-  host?: string;
-  port?: number;
-  path?: string;
+export interface PineconeVectorConfig {
+  apiKey?: string;
+  environment?: string;
+  indexName?: string;
+  dimension?: number;
   timeout?: number;
   retries?: number;
   fallbackProviderId?: string;
@@ -23,7 +24,7 @@ export interface ChromaVectorConfig {
 
 export interface VectorSearchResult {
   id: string;
-  similarity: number;
+  score: number;
   metadata?: any;
 }
 
@@ -34,68 +35,67 @@ export interface SearchResult {
   operationTime: number;
 }
 
-export class ChromaVectorProvider extends CapabilityBase<ChromaVectorConfig> {
-  private host: string;
-  private port: number;
-  private path: string;
+export class PineconeVectorProvider extends CapabilityBase<PineconeVectorConfig> {
+  private apiKey: string | undefined;
+  private environment: string;
+  private indexName: string;
+  private dimension: number;
   private timeout: number;
   private retries: number;
   private fallbackProviderId: string = 'native';
-  private isChromaAvailable: boolean = false;
+  private isPineconeAvailable: boolean = false;
 
   constructor(
     id: string,
     name: string,
-    config: ProviderConfig<ChromaVectorConfig>,
+    config: ProviderConfig<PineconeVectorConfig>,
     fallbackConfig?: any
   ) {
     super(id, name, config, fallbackConfig);
     const cfg = config.config;
-    this.host = cfg.host || 'localhost';
-    this.port = cfg.port || 8000;
-    this.path = cfg.path || './chromadb';
+    this.apiKey = cfg.apiKey;
+    this.environment = cfg.environment || 'production';
+    this.indexName = cfg.indexName || 'default';
+    this.dimension = cfg.dimension || 1536;
     this.timeout = cfg.timeout || 5000;
     this.retries = cfg.retries || 3;
   }
 
   protected async doInitialize(): Promise<void> {
     try {
-      this.isChromaAvailable = Boolean(this.host || this.path);
-      if (this.isChromaAvailable) {
-        this.log('info', 'ChromaDB vector provider initialized');
+      this.isPineconeAvailable = Boolean(this.apiKey);
+      if (this.isPineconeAvailable) {
+        this.log('info', 'Pinecone vector provider initialized');
       } else {
-        this.log('warn', 'ChromaDB not available - will use native fallback');
+        this.log('warn', 'Pinecone not available - will use native fallback');
       }
     } catch (error) {
-      this.log('warn', 'ChromaDB initialization failed:', error);
-      this.isChromaAvailable = false;
+      this.log('warn', 'Pinecone initialization failed:', error);
+      this.isPineconeAvailable = false;
     }
   }
 
   protected async doHealthCheck(): Promise<ProviderHealthCheckResult> {
     return {
-      isHealthy: this.isChromaAvailable,
-      status: this.isChromaAvailable ? ProviderHealthStatus.HEALTHY : ProviderHealthStatus.DEGRADED,
+      isHealthy: this.isPineconeAvailable,
+      status: this.isPineconeAvailable
+        ? ProviderHealthStatus.HEALTHY
+        : ProviderHealthStatus.DEGRADED,
       checkTime: new Date().toISOString(),
       metrics: {},
     };
   }
 
   protected async doShutdown(): Promise<void> {
-    this.log('info', 'ChromaDB vector provider shutdown');
+    this.log('info', 'Pinecone vector provider shutdown');
   }
 
-  async add(
-    collection: string,
-    ids: string[],
-    embeddings: number[][],
-    metadatas?: any[]
-  ): Promise<SearchResult> {
+  async upsert(ids: string[], vectors: number[][], metadatas?: any[]): Promise<SearchResult> {
     const startTime = Date.now();
-    if (!this.isChromaAvailable) {
+    if (!this.isPineconeAvailable) {
       return {
         success: false,
-        error: `ChromaDB not available. Use fallback: \${this.fallbackProviderId}`,
+        error: `Pinecone not available. Use fallback: \${this.fallbackProviderId}`,
         operationTime: Date.now() - startTime,
       };
     }
@@ -114,12 +114,12 @@ export class ChromaVectorProvider extends CapabilityBase<ChromaVectorConfig> {
     }
   }
 
-  async search(collection: string, query: number[], nResults: number = 10): Promise<SearchResult> {
+  async query(vector: number[], topK: number = 10): Promise<SearchResult> {
     const startTime = Date.now();
-    if (!this.isChromaAvailable) {
+    if (!this.isPineconeAvailable) {
       return {
         success: false,
-        error: `ChromaDB not available. Use fallback: \${this.fallbackProviderId}`,
+        error: `Pinecone not available. Use fallback: \${this.fallbackProviderId}`,
         operationTime: Date.now() - startTime,
       };
     }
@@ -138,12 +138,12 @@ export class ChromaVectorProvider extends CapabilityBase<ChromaVectorConfig> {
     }
   }
 
-  async delete(collection: string, ids: string[]): Promise<SearchResult> {
+  async delete(ids: string[]): Promise<SearchResult> {
     const startTime = Date.now();
-    if (!this.isChromaAvailable) {
+    if (!this.isPineconeAvailable) {
       return {
         success: false,
-        error: `ChromaDB not available. Use fallback: \${this.fallbackProviderId}`,
+        error: `Pinecone not available. Use fallback: \${this.fallbackProviderId}`,
         operationTime: Date.now() - startTime,
       };
     }
@@ -166,8 +166,9 @@ export class ChromaVectorProvider extends CapabilityBase<ChromaVectorConfig> {
     return {
       id: this.id,
       name: this.name,
-      type: 'chroma-vector',
-      available: this.isChromaAvailable,
+      type: 'pinecone-vector',
+      available: this.isPineconeAvailable,
+      hasApiKey: !!this.apiKey,
       fallbackProvider: this.fallbackProviderId,
       status: this._status,
       isInitialized: this._isInitialized,
@@ -175,4 +176,4 @@ export class ChromaVectorProvider extends CapabilityBase<ChromaVectorConfig> {
     };
   }
 }
-export { ChromaVectorProvider as default };
+export { PineconeVectorProvider as default };

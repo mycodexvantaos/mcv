@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - EthereumProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - EthereumProvider (CapabilityBase-based)
  *
  * @module providers/blockchain/blockchain-ethereum
  * @version 1.0.0

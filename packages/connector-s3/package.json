@@ -1,7 +1,7 @@
 {
   "name": "@mycodexvantaos/connector-s3",
   "version": "1.0.0",
-  "description": "S3 connector for MyCodeXvantaOS",
+  "description": "S3 connector for MyCodexVantaOS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -15,7 +15,7 @@
     "connector",
     "storage"
   ],
-  "author": "MyCodeXvantaOS",
+  "author": "MyCodexVantaOS",
   "license": "MIT",
   "dependencies": {
     "@mycodexvantaos/runtime": "workspace:*"

@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Audit Application Service
+ * MyCodexVantaOS — Audit Application Service
  * Category: security
  *
  * Immutable, hash-chained audit event storage and query engine.

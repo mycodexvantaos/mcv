@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Runtime
+ * MyCodexVantaOS Runtime
  * Application runtime execution environment
  */
 

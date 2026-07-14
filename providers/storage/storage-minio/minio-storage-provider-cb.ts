@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - MinIOStorageProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - MinIOStorageProvider (CapabilityBase-based)
  *
  * @module providers/storage/storage-minio
  * @version 1.0.0

@@ -1,5 +1,5 @@
 /**
- * 🔧 MyCodeXvantaOS - RedisStateStoreProvider (CapabilityBase-based)
+ * 🔧 MyCodexVantaOS - RedisStateStoreProvider (CapabilityBase-based)
  *
  * @module providers/state-store/state-store-redis
  * @version 1.0.0

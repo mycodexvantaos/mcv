@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "urn:mycodexvantaos:schema:agent-profile",
   "title": "AgentProfile",
-  "description": "Defines the identity, capabilities, and behavioral parameters of an AI agent in MyCodeXvantaOS",
+  "description": "Defines the identity, capabilities, and behavioral parameters of an AI agent in MyCodexVantaOS",
   "type": "object",
   "required": ["id", "name", "role", "goal", "backstory", "allowed_tools", "version"],
   "properties": {

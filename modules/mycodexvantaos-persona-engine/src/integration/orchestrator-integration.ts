@@ -2,7 +2,7 @@
  * AI Team Orchestrator Integration Example
  *
  * Demonstrates how to integrate the Persona Engine with the
- * MyCodeXvantaOS AI Team Orchestrator for seamless multi-agent collaboration.
+ * MyCodexVantaOS AI Team Orchestrator for seamless multi-agent collaboration.
  *
  * @module mycodexvantaos-persona-engine/integration/orchestrator-integration
  */

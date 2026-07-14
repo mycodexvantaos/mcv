@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Platform Error Hierarchy
+ * MyCodexVantaOS — Platform Error Hierarchy
  * Structured error types for cross-service error propagation.
  */
 

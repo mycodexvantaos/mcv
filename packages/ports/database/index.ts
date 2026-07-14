@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Database Port
+ * MyCodexVantaOS — Database Port
  * Abstracts relational database operations.
  *
  * Cloudflare implementation: D1 (SQLite)

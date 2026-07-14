@@ -2,7 +2,7 @@
  * packages/ai-llm/src/index.ts
  * @mycodexvantaos/ai-llm
  *
- * Unified LLM abstraction layer following MyCodeXvantaOS architecture principles.
+ * Unified LLM abstraction layer following MyCodexVantaOS architecture principles.
  *
  * Key principles:
  * - Native-first: Always has a working native provider as fallback

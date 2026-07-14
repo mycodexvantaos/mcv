@@ -514,27 +514,27 @@ providers:
       - connected
       - hybrid
     manifest: providers/vector-store/vector-store-vectorize/provider-manifest.yaml
-  - provider-id: mycodexvantaos-vector-chroma
+  - provider-id: mycodexvantaos-vector-store-chroma
     capability: vector-store
     runtime-modes:
       - native
       - connected
       - hybrid
-    manifest: providers/vector/vector-chroma/provider-manifest.yaml
-  - provider-id: mycodexvantaos-vector-pinecone
+    manifest: providers/vector-store/vector-store-chroma/provider-manifest.yaml
+  - provider-id: mycodexvantaos-vector-store-pinecone
     capability: vector-store
     runtime-modes:
       - native
       - connected
       - hybrid
-    manifest: providers/vector/vector-pinecone/provider-manifest.yaml
-  - provider-id: mycodexvantaos-vector-weaviate
+    manifest: providers/vector-store/vector-store-pinecone/provider-manifest.yaml
+  - provider-id: mycodexvantaos-vector-store-weaviate
     capability: vector-store
     runtime-modes:
       - native
       - connected
       - hybrid
-    manifest: providers/vector/vector-weaviate/provider-manifest.yaml
+    manifest: providers/vector-store/vector-store-weaviate/provider-manifest.yaml
 statistics:
   total-providers: 77
   by-capability:

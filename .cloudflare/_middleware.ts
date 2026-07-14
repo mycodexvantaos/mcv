@@ -1,5 +1,5 @@
 /**
- * Cloudflare Pages Middleware for MyCodeXvantaOS
+ * Cloudflare Pages Middleware for MyCodexVantaOS
  * Handles security headers, CORS, and request routing
  */
 

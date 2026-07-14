@@ -104,7 +104,7 @@ export interface GovernanceEvent {
   datacontenttype: string; // Always "application/json"
   dataschema: string; // Schema URI for validation
 
-  // MyCodeXvantaOS governance extensions
+  // MyCodexVantaOS governance extensions
   mycodexvantaosorgseverity: EventSeverity;
   mycodexvantaosorgclosedloopstate: ClosedLoopState;
   mycodexvantaosorgcorrelationid: string; // Correlates related events

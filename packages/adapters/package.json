@@ -2,7 +2,7 @@
   "name": "@mycodexvantaos/adapters",
   "version": "0.1.0",
   "private": true,
-  "description": "Adapter implementations for the MyCodeXvantaOS platform — concrete ports for Cloudflare, OpenAI, OpenRouter, etc.",
+  "description": "Adapter implementations for the MyCodexVantaOS platform — concrete ports for Cloudflare, OpenAI, OpenRouter, etc.",
   "type": "module",
   "main": "./index.ts",
   "types": "./index.ts",

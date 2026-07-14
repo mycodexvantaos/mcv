@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS UI Generator
+ * MyCodexVantaOS UI Generator
  * Provides UI/UX generation capabilities
  *
  * @packageDocumentation

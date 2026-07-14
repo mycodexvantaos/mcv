@@ -1,5 +1,5 @@
 /**
- * @fileoverview MyCodeXvantaOS AI Humaniser — Type Definitions
+ * @fileoverview MyCodexVantaOS AI Humaniser — Type Definitions
  *
  * Core types for AI content detection, confidence scoring,
  * sentence-level analysis, and humanisation rewriting.

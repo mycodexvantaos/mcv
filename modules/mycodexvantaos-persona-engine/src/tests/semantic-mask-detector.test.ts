@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Persona Engine - Semantic Mask Detector Tests
+ * MyCodexVantaOS Persona Engine - Semantic Mask Detector Tests
  *
  * Unit tests for the SemanticMaskDetector class.
  */

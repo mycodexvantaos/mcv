@@ -1,18 +1,18 @@
 apiVersion: mycodexvantaos.org/v1
 kind: Provider
 metadata:
-  name: mycodexvantaos-vector-chroma
+  name: mycodexvantaos-vector-store-pinecone
   capability: vector-store
   labels:
     mycodexvantaos.org/managed-by: naming-spec-v1
     mycodexvantaos.org/specRef: '8.1'
 spec:
-  providerName: chroma
+  providerName: pinecone
   isNative: false
   lifecycle:
     stage: beta
   envVarPrefix: MYCODEXVANTAOS_VECTOR_STORE
   configSchemaRef: ./config.schema.json
-  description: ChromaDB vector store provider for embedding storage and retrieval.
-provider-id: mycodexvantaos-vector-chroma
+  description: Pinecone vector store provider for managed vector indexing.
+provider-id: mycodexvantaos-vector-store-pinecone
 capability: vector-store

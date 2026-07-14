@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
 
       // Initial connection event
       send('connected', {
-        message: 'MyCodeXvantaOS SSE stream connected',
+        message: 'MyCodexVantaOS SSE stream connected',
         ts: new Date().toISOString(),
       });
 

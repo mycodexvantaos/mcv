@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS Policy Engine
+ * MyCodexVantaOS Policy Engine
  * Provides policy evaluation and enforcement across the platform
  */
 

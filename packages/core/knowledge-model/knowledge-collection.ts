@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Knowledge Collection Model
+ * MyCodexVantaOS — Knowledge Collection Model
  */
 
 import type { ResourceCondition } from '../shared';

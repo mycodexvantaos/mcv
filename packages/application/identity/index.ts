@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Identity Application Package
+ * MyCodexVantaOS — Identity Application Package
  */
 
 export { IdentityService } from './identity-service';

@@ -1,5 +1,5 @@
 /**
- * MyCodeXvantaOS — Knowledge Issue Model
+ * MyCodexVantaOS — Knowledge Issue Model
  * Detectable problems in the knowledge base: stale, contradictory,
  * incomplete, hallucinated, or broken-reference content.
  *

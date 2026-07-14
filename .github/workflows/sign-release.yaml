@@ -1,4 +1,4 @@
-# Release Signing Workflow — Sigstore Keyless (cosign)
+# Release Signing Workflow - Sigstore Keyless (cosign)
 # Version: 1.0.0
 #
 # Signs release provenance artifacts using cosign keyless signing via GitHub OIDC.
@@ -72,7 +72,7 @@ jobs:
             PROVENANCE_PATH="release/artifacts/${ARTIFACTS_DIR}/provenance.intoto.json"
           fi
           if [ ! -f "$PROVENANCE_PATH" ]; then
-            echo "⚠️ Provenance file not found — generating placeholder"
+            echo "⚠️ Provenance file not found - generating placeholder"
             mkdir -p "release/artifacts/${ARTIFACTS_DIR}"
             echo "{\"version\":\"${VERSION}\",\"status\":\"unsigned\"}" > "$PROVENANCE_PATH"
           fi
@@ -96,4 +96,4 @@ jobs:
         env:
           COSIGN_EXPERIMENTAL: "1"
         run: |
-          echo "Signature verification step — may be expected to skip for new entries"
+          echo "Signature verification step - may be expected to skip for new entries"

@@ -1,5 +1,5 @@
 /**
- * 🏢 MyCodeXvantaOS - Runtime Layer Types
+ * 🏢 MyCodexVantaOS - Runtime Layer Types
  *
  * 定義 Runtime Mode 相關類型、配置、檢測結果。
  */
