@@ -7,6 +7,7 @@ Outputs JSON report + human-readable summary.
 """
 
 import json
+import os
 import time
 import sys
 import urllib.request
@@ -14,18 +15,18 @@ import urllib.error
 from pathlib import Path
 
 # ── Config ─────────────────────────────────────────────────────────────────
-PAT   = "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"
 ORG   = "ai-software-engineering-guild"
 REPO  = "mycodexvantaos"
 BRANCH = "main"
 BASE  = f"https://api.github.com/repos/{ORG}/{REPO}/contents"
 HEADERS = {
-    "Authorization": f"Bearer {PAT}",
     "Accept": "application/vnd.github+json",
     "X-GitHub-Api-Version": "2022-11-28",
     "User-Agent": "deep-scan-script/1.0",
 }
-DELAY = 0.15   # seconds between API calls (rate-limit: 5000/hr authenticated)
+if github_token := os.environ.get("GITHUB_TOKEN"):
+    HEADERS["Authorization"] = f"token {github_token}"
+DELAY = 0.72  # seconds between API calls (rate-limit: 5000/hr authenticated)
 
 # ── Helpers ─────────────────────────────────────────────────────────────────
 def gh_get(path: str) -> list | dict | None:
