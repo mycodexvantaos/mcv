@@ -1,0 +1,6 @@
+{
+  "app_name": "MyCodeXvantaOS-OAuth",
+  "client_id": "REDACTED - store in GitHub Actions secret: OAUTH_CLIENT_ID",
+  "client_secret": "REDACTED - store in GitHub Actions secret: OAUTH_CLIENT_SECRET",
+  "_note": "OAuth credentials have been redacted. Configure via repository secrets or environment variables."
+}

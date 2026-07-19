@@ -1,0 +1,3112 @@
+{
+  "scanned_at": "2026-07-18T23:53:39Z",
+  "branch": "main",
+  "packages": [
+    {
+      "name": "adapters",
+      "pkg_name": "@mycodexvantaos/adapters",
+      "description": "Adapter implementations for the MyCodexVantaOS platform \u2014 concrete ports for Cloudflare, OpenAI, OpenRouter, etc.",
+      "deps_count": 3,
+      "has_src": true,
+      "src_files": [
+        ".gitkeep",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "advanced-integration",
+      "pkg_name": "@mycodexvantaos/advanced-integration",
+      "description": "Complete Advanced Integration Package - All Systems",
+      "deps_count": 6,
+      "has_src": false,
+      "src_files": [],
+      "has_dockerfile": false,
+      "has_index_ts": false,
+      "is_stub": true,
+      "notes": [
+        "no src/ dir"
+      ]
+    },
+    {
+      "name": "advanced-monitoring",
+      "pkg_name": "@mycodexvantaos/advanced-monitoring",
+      "description": "\u9ad8\u7d1a\u76e3\u63a7 for MyCodexVantaOS - Layer C\u64f4\u5c55",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "ai-agent",
+      "pkg_name": "@mycodexvantaos/ai-agent",
+      "description": "AI agent orchestration and execution",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "ai-embedding",
+      "pkg_name": "@mycodexvantaos/ai-embedding",
+      "description": "AI embedding generation and management",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "ai-humaniser",
+      "pkg_name": "@mycodexvantaos/ai-humaniser",
+      "description": null,
+      "deps_count": 0,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "ai-llm",
+      "pkg_name": "@mycodexvantaos/ai-llm",
+      "description": "Large Language Model integration and management",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "ai-memory",
+      "pkg_name": "@mycodexvantaos/ai-memory",
+      "description": "AI memory and context management",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "analytics",
+      "pkg_name": "@mycodexvantaos/analytics",
+      "description": "\u5206\u6790\u5f15\u64ce for MyCodexVantaOS - Layer C\u64f4\u5c55",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "api-gateway",
+      "pkg_name": "@mycodexvantaos/api-gateway",
+      "description": "API\u7db2\u95dc for MyCodexVantaOS - Layer A\u64f4\u5c55",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "api-generator",
+      "pkg_name": "@mycodexvantaos/api-generator",
+      "description": "API generation layer for MyCodexVantaOS",
+      "deps_count": 6,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "application",
+      "pkg_name": "@mycodexvantaos/application",
+      "description": "MyCodexVantaOS application services \u2014 8 service categories with use-case facades",
+      "deps_count": 0,
+      "has_src": true,
+      "src_files": [
+        ".gitkeep",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "audit-logger",
+      "pkg_name": "@mycodexvantaos/audit-logger",
+      "description": "\u5be9\u8a08\u65e5\u8a8c for MyCodexVantaOS - Layer F\u64f4\u5c55",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "auto-scaler",
+      "pkg_name": "@mycodexvantaos/auto-scaler",
+      "description": "\u81ea\u52d5\u64f4\u5c55\u5668 for MyCodexVantaOS - Layer E\u64f4\u5c55",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "background-job-runtime",
+      "pkg_name": "@mycodexvantaos/background-job-runtime",
+      "description": "Background job runtime layer for MyCodexVantaOS",
+      "deps_count": 6,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "builder",
+      "pkg_name": "@mycodexvantaos/builder",
+      "description": "Application generation and build layer",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "cache-manager",
+      "pkg_name": "@mycodexvantaos/cache-manager",
+      "description": "\u7de9\u5b58\u7ba1\u7406\u5668 for MyCodexVantaOS - Layer C\u64f4\u5c55",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "capabilities",
+      "pkg_name": "@mycodexvantaos/capabilities",
+      "description": "MyCodexVantaOS unified capability abstraction layer \u2014 provides runtime-aware provider lifecycle management",
+      "deps_count": 0,
+      "has_src": false,
+      "src_files": [],
+      "has_dockerfile": false,
+      "has_index_ts": false,
+      "is_stub": true,
+      "notes": [
+        "no src/ dir"
+      ]
+    },
+    {
+      "name": "compliance-checker",
+      "pkg_name": "@mycodexvantaos/compliance-checker",
+      "description": "\u5408\u898f\u6aa2\u67e5\u5668 for MyCodexVantaOS - Layer F\u64f4\u5c55",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "config-sync",
+      "pkg_name": "@mycodexvantaos/config-sync",
+      "description": "GitOps-driven configuration synchronization",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "connector-auth",
+      "pkg_name": "@mycodexvantaos/connector-auth",
+      "description": "Auth connector for MyCodexVantaOS",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "connector-elastic",
+      "pkg_name": "@mycodexvantaos/connector-elastic",
+      "description": "Elasticsearch\u9023\u63a5\u5668 for MyCodexVantaOS - Layer D\u64f4\u5c55",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "connector-github",
+      "pkg_name": "@mycodexvantaos/connector-github",
+      "description": "GitHub connector for MyCodexVantaOS",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "connector-kafka",
+      "pkg_name": "@mycodexvantaos/connector-kafka",
+      "description": "Kafka\u9023\u63a5\u5668 for MyCodexVantaOS - Layer D\u64f4\u5c55",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "connector-mongodb",
+      "pkg_name": "@mycodexvantaos/connector-mongodb",
+      "description": "MongoDB\u9023\u63a5\u5668 for MyCodexVantaOS - Layer D\u64f4\u5c55",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "connector-postgresql",
+      "pkg_name": "@mycodexvantaos/connector-postgresql",
+      "description": "PostgreSQL connector for MyCodexVantaOS",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "connector-redis",
+      "pkg_name": "@mycodexvantaos/connector-redis",
+      "description": "Redis connector for MyCodexVantaOS",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "connector-s3",
+      "pkg_name": "@mycodexvantaos/connector-s3",
+      "description": "S3 connector for MyCodexVantaOS",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "contracts",
+      "pkg_name": "@mycodexvantaos/contracts",
+      "description": "MyCodexVantaOS contracts package",
+      "deps_count": 4,
+      "has_src": true,
+      "src_files": [
+        ".gitkeep",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "core",
+      "pkg_name": "@mycodexvantaos/core",
+      "description": "MyCodexVantaOS core configuration and utilities",
+      "deps_count": 4,
+      "has_src": true,
+      "src_files": [
+        ".gitkeep",
+        "config",
+        "index.ts",
+        "lib"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "core-auth",
+      "pkg_name": "@mycodexvantaos/core-auth",
+      "description": "Core authentication and authorization",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "core-config",
+      "pkg_name": "@mycodexvantaos/core-config",
+      "description": "Core configuration management",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "core-gateway",
+      "pkg_name": "@mycodexvantaos/core-gateway",
+      "description": "API gateway and routing",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "core-kernel",
+      "pkg_name": "@mycodexvantaos/core-kernel",
+      "description": "Core kernel and system initialization",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "data-graph",
+      "pkg_name": "@mycodexvantaos/data-graph",
+      "description": "Graph database integration",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "data-pipeline",
+      "pkg_name": "@mycodexvantaos/data-pipeline",
+      "description": "Data pipeline and ETL processing",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "data-vector-store",
+      "pkg_name": "@mycodexvantaos/data-vector-store",
+      "description": "Vector database integration for AI",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "database",
+      "pkg_name": "@mycodexvantaos/database",
+      "description": "Relational database service with ACID compliance",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "deployment",
+      "pkg_name": "@mycodexvantaos/deployment",
+      "description": "Deployment management and integration",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "deployment-manifest-generator",
+      "pkg_name": "@mycodexvantaos/deployment-manifest-generator",
+      "description": "Deployment manifest generation layer for MyCodexVantaOS",
+      "deps_count": 6,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "docs-search",
+      "pkg_name": "@mycodexvantaos/docs-search",
+      "description": "Documentation search and indexing",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "event-bus",
+      "pkg_name": "@mycodexvantaos/event-bus",
+      "description": "\u4e8b\u4ef6\u7e3d\u7dda for MyCodexVantaOS - Layer B\u64f4\u5c55",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "events",
+      "pkg_name": "@mycodexvantaos/events",
+      "description": "Event processing with pub/sub and streaming",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "execution",
+      "pkg_name": "@mycodexvantaos/execution",
+      "description": "Task execution and workflow orchestration for MyCodexVantaOS platform",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "governance",
+      "pkg_name": "@mycodexvantaos/governance",
+      "description": "MyCodexVantaOS governance package",
+      "deps_count": 4,
+      "has_src": true,
+      "src_files": [
+        ".gitkeep",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "governance-policy",
+      "pkg_name": "@mycodexvantaos/governance-policy",
+      "description": "Governance policy management and validation",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "jsonata",
+      "pkg_name": "@mycodexvantaos/jsonata",
+      "description": "JSON query and transformation language \u2014 integrated into MyCodexVantaOS platform",
+      "deps_count": 3,
+      "has_src": true,
+      "src_files": [
+        "datetime.js",
+        "functions.js",
+        "parser.js",
+        "signature.js",
+        "utils.js"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": false,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "load-balancer",
+      "pkg_name": "@mycodexvantaos/load-balancer",
+      "description": "\u8ca0\u8f09\u5747\u8861\u5668 for MyCodexVantaOS - Layer E\u64f4\u5c55",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "master-integration",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_src": false,
+      "src_files": [],
+      "has_dockerfile": false,
+      "has_index_ts": false,
+      "is_stub": true,
+      "notes": [
+        "no package.json",
+        "no src/ dir"
+      ]
+    },
+    {
+      "name": "message-queue",
+      "pkg_name": "@mycodexvantaos/message-queue",
+      "description": "\u6d88\u606f\u968a\u5217 for MyCodexVantaOS - Layer B\u64f4\u5c55",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "meta-integration",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_src": false,
+      "src_files": [],
+      "has_dockerfile": false,
+      "has_index_ts": false,
+      "is_stub": true,
+      "notes": [
+        "no package.json",
+        "no src/ dir"
+      ]
+    },
+    {
+      "name": "monitoring",
+      "pkg_name": "@mycodexvantaos/monitoring",
+      "description": "Monitoring and observability with metrics, logs, traces",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-audit-model",
+      "pkg_name": "@mycodexvantaos/audit-model",
+      "description": "Audit model - audit events, actor, resource reference, trace context, integrity metadata",
+      "deps_count": 3,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-contracts-sdk",
+      "pkg_name": "@mycodexvantaos/contracts-sdk",
+      "description": "Contracts SDK - load, validate, and expose typed contract readers for YAML/JSON contracts",
+      "deps_count": 3,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "cli.ts",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-knowledge-model",
+      "pkg_name": "@mycodexvantaos/knowledge-model",
+      "description": "Knowledge model - document, chunk, collection, retrieval receipt, answer trace, issue, repair",
+      "deps_count": 3,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-memory-model",
+      "pkg_name": "@mycodexvantaos/memory-model",
+      "description": "Memory model - memory item, candidate, relation, conflict, dream run, dream action, dream report",
+      "deps_count": 2,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-policy-model",
+      "pkg_name": "@mycodexvantaos/policy-model",
+      "description": "Policy model - subject, action, resource, condition, effect, evaluation result types",
+      "deps_count": 3,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-resource-model",
+      "pkg_name": "@mycodexvantaos/resource-model",
+      "description": "Resource model - resource kinds, metadata, spec, status, lifecycle, references",
+      "deps_count": 3,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-runtime-model",
+      "pkg_name": "@mycodexvantaos/runtime-model",
+      "description": "Runtime model - runtime definition, provider definition, adapter capability, health, portability",
+      "deps_count": 2,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-catalog",
+      "pkg_name": "@mycodexvantaos/service-catalog",
+      "description": "Service catalog model - service definitions, categories, capabilities, permissions, runtime metadata",
+      "deps_count": 3,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "namespace-governance",
+      "pkg_name": "@mycodexvantaos/namespace-governance",
+      "description": "Namespace Governance Closure - machine-verifiable enforcement of the namespace governance closure specification (naming, governance codes, repository naming, plane dependency rule, audit closure)",
+      "deps_count": 7,
+      "has_src": true,
+      "src_files": [
+        "app.js",
+        "audit.js",
+        "closure-engine.js",
+        "index.js",
+        "logger.js",
+        "naming.js",
+        "result.js",
+        "routes.js",
+        "validators.js",
+        "vocabulary.js"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": false,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "native-logging",
+      "pkg_name": "@mycodexvantaos/native-logging",
+      "description": "Native logging implementation for MyCodexVantaOS",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "native-queue",
+      "pkg_name": "@mycodexvantaos/native-queue",
+      "description": "Native in-memory queue implementation for MyCodexVantaOS",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "native-validation",
+      "pkg_name": "@mycodexvantaos/native-validation",
+      "description": "Native validation engine for MyCodexVantaOS",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "platform-notification",
+      "pkg_name": "@mycodexvantaos/platform-notification",
+      "description": "Platform notification and alerting",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "platform-observability",
+      "pkg_name": "@mycodexvantaos/platform-observability-lib",
+      "description": "Platform observability and monitoring",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "platform-scheduler",
+      "pkg_name": "@mycodexvantaos/platform-scheduler",
+      "description": "Job scheduling and cron management",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "plugin-loader",
+      "pkg_name": "@mycodexvantaos/plugin-loader",
+      "description": "Plugin loader layer for MyCodexVantaOS",
+      "deps_count": 6,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "policy-engine",
+      "pkg_name": "@mycodexvantaos/policy-engine",
+      "description": "\u7b56\u7565\u5f15\u64ce for MyCodexVantaOS - Layer F\u64f4\u5c55",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "ports",
+      "pkg_name": "@mycodexvantaos/ports",
+      "description": "MyCodexVantaOS platform-neutral port interfaces \u2014 defines WHAT the platform needs",
+      "deps_count": 0,
+      "has_src": true,
+      "src_files": [
+        ".gitkeep",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "providers",
+      "pkg_name": "@mycodexvantaos/providers",
+      "description": null,
+      "deps_count": 2,
+      "has_src": true,
+      "src_files": [
+        "auth-connected.js",
+        "auth-connected.ts",
+        "auth-native.js",
+        "auth-native.ts",
+        "database-sqlite.ts",
+        "database.interface.ts",
+        "deploy-argocd.js",
+        "deploy-argocd.ts",
+        "deploy-factory.js",
+        "deploy-factory.ts",
+        "deploy-native.js",
+        "deploy-native.ts",
+        "deploy.interface.js",
+        "deploy.interface.ts",
+        "index.js",
+        "index.ts",
+        "llm-gemini.js",
+        "llm-gemini.ts",
+        "llm-native.js",
+        "llm-native.ts",
+        "observability-native.js",
+        "observability-native.ts",
+        "queue-native.ts",
+        "queue.interface.ts",
+        "state-store-native.ts",
+        "state-store.interface.ts",
+        "storage-native.ts",
+        "storage.interface.ts",
+        "vector-store-native.js",
+        "vector-store-native.ts",
+        "vector-store-pgvector.js",
+        "vector-store-pgvector.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "rate-limiter",
+      "pkg_name": "@mycodexvantaos/rate-limiter",
+      "description": "\u901f\u7387\u9650\u5236\u5668 for MyCodexVantaOS - Layer A\u64f4\u5c55",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "runtime",
+      "pkg_name": "@mycodexvantaos/runtime",
+      "description": "Application runtime execution environment",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        ".gitkeep",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "scheduler",
+      "pkg_name": "@mycodexvantaos/scheduler",
+      "description": "Scheduler layer for MyCodexVantaOS",
+      "deps_count": 6,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "schema-generator",
+      "pkg_name": "@mycodexvantaos/schema-generator",
+      "description": "Schema generation layer for MyCodexVantaOS",
+      "deps_count": 6,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "sdk",
+      "pkg_name": "@mycodexvantaos/sdk",
+      "description": "MyCodexVantaOS sdk package",
+      "deps_count": 4,
+      "has_src": true,
+      "src_files": [
+        ".gitkeep",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "search-engine",
+      "pkg_name": "@mycodexvantaos/search-engine",
+      "description": "\u641c\u7d22\u5f15\u64ce for MyCodexVantaOS - Layer C\u64f4\u5c55",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "security-secrets",
+      "pkg_name": "@mycodexvantaos/security-secrets",
+      "description": "Secrets management and encryption",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "security-validation",
+      "pkg_name": "@mycodexvantaos/security-validation",
+      "description": "Security validation and compliance",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "semantic-core-client",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_src": false,
+      "src_files": [],
+      "has_dockerfile": false,
+      "has_index_ts": false,
+      "is_stub": true,
+      "notes": [
+        "no package.json",
+        "no src/ dir"
+      ]
+    },
+    {
+      "name": "semantic-core-integration",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_src": false,
+      "src_files": [],
+      "has_dockerfile": false,
+      "has_index_ts": false,
+      "is_stub": true,
+      "notes": [
+        "no package.json",
+        "no src/ dir"
+      ]
+    },
+    {
+      "name": "semantic-optimization",
+      "pkg_name": "@mycodexvantaos/semantic-optimization",
+      "description": "Semantic Core Optimization Platform - Performance tuning, analytics, and continuous improvement",
+      "deps_count": 4,
+      "has_src": false,
+      "src_files": [],
+      "has_dockerfile": false,
+      "has_index_ts": false,
+      "is_stub": true,
+      "notes": [
+        "no src/ dir"
+      ]
+    },
+    {
+      "name": "service-discovery",
+      "pkg_name": "@mycodexvantaos/service-discovery",
+      "description": "Service registration, discovery, and health monitoring",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "service-mesh",
+      "pkg_name": "@mycodexvantaos/service-mesh",
+      "description": "\u670d\u52d9\u7db2\u683c for MyCodexVantaOS - Layer A\u64f4\u5c55",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "session-runtime",
+      "pkg_name": "@mycodexvantaos/session-runtime",
+      "description": "Session runtime layer for MyCodexVantaOS",
+      "deps_count": 6,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "ssl-manager",
+      "pkg_name": "@mycodexvantaos/ssl-manager",
+      "description": "SSL\u7ba1\u7406\u5668 for MyCodexVantaOS - Layer E\u64f4\u5c55",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "state-manager",
+      "pkg_name": "@mycodexvantaos/state-manager",
+      "description": "\u72c0\u614b\u7ba1\u7406\u5668 for MyCodexVantaOS - Layer B\u64f4\u5c55",
+      "deps_count": 8,
+      "has_src": true,
+      "src_files": [
+        "__tests__",
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": false,
+      "notes": []
+    },
+    {
+      "name": "storage",
+      "pkg_name": "@mycodexvantaos/storage",
+      "description": "Object storage service with cloud-agnostic interfaces",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "test-generator",
+      "pkg_name": "@mycodexvantaos/test-generator",
+      "description": "Test generation layer for MyCodexVantaOS",
+      "deps_count": 6,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "ui-generator",
+      "pkg_name": "@mycodexvantaos/ui-generator",
+      "description": "UI/UX generation capabilities for MyCodexVantaOS platform",
+      "deps_count": 5,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    },
+    {
+      "name": "ultimate-integration",
+      "pkg_name": "@mycodexvantaos/ultimate-integration",
+      "description": "Ultimate Integration Package - All 35 Systems",
+      "deps_count": 3,
+      "has_src": false,
+      "src_files": [],
+      "has_dockerfile": false,
+      "has_index_ts": false,
+      "is_stub": true,
+      "notes": [
+        "no src/ dir"
+      ]
+    },
+    {
+      "name": "unified-integration",
+      "pkg_name": "@mycodexvantaos/unified-integration",
+      "description": "Unified Integration Framework - All optimization, monitoring, and improvement systems",
+      "deps_count": 7,
+      "has_src": false,
+      "src_files": [],
+      "has_dockerfile": false,
+      "has_index_ts": false,
+      "is_stub": true,
+      "notes": [
+        "no src/ dir"
+      ]
+    },
+    {
+      "name": "workflow-generator",
+      "pkg_name": "@mycodexvantaos/workflow-generator",
+      "description": "Workflow generation layer for MyCodexVantaOS",
+      "deps_count": 6,
+      "has_src": true,
+      "src_files": [
+        "index.ts"
+      ],
+      "has_dockerfile": false,
+      "has_index_ts": true,
+      "is_stub": true,
+      "notes": []
+    }
+  ],
+  "services": [
+    {
+      "name": "ci-repair-agent",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": true,
+      "has_src": false,
+      "top_items": [
+        ".dockerignore",
+        ".env.example",
+        "Dockerfile",
+        "README.md",
+        "docker-compose.yml"
+      ],
+      "is_http_service": true,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "kafka-stream-processor",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": true,
+      "has_src": false,
+      "top_items": [
+        "Dockerfile",
+        "README.md",
+        "docker-compose.yml"
+      ],
+      "is_http_service": true,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-agent-runtime",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": false,
+      "has_src": true,
+      "top_items": [
+        "README.md",
+        "src",
+        "tests"
+      ],
+      "is_http_service": false,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-ai-agent",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        ".env.example",
+        "Dockerfile",
+        "config",
+        "service-manifest.yaml",
+        "src",
+        "tests"
+      ],
+      "is_http_service": true,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-ai-embedding",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        ".env.example",
+        "Dockerfile",
+        "README.md",
+        "config",
+        "service-manifest.yaml",
+        "src",
+        "tests"
+      ],
+      "is_http_service": true,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-ai-ensemble",
+      "pkg_name": "@mycodexvantaos/ai-ensemble",
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        "Dockerfile",
+        "config",
+        "package.json",
+        "service-manifest.yaml",
+        "src"
+      ],
+      "is_http_service": true,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-ai-inference",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": false,
+      "has_src": true,
+      "top_items": [
+        "README.md",
+        "src",
+        "tests"
+      ],
+      "is_http_service": false,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-ai-llm",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        ".env.example",
+        "Dockerfile",
+        "config",
+        "service-manifest.yaml",
+        "src",
+        "tests"
+      ],
+      "is_http_service": true,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-ai-memory",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        ".env.example",
+        "Dockerfile",
+        "config",
+        "service-manifest.yaml",
+        "src",
+        "tests"
+      ],
+      "is_http_service": true,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-ai-team-service",
+      "pkg_name": "@mycodexvantaos/ai-team-service",
+      "description": "Service layer for AI Team orchestration with REST/GraphQL/WebSocket support",
+      "deps_count": 21,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        "Dockerfile",
+        "config",
+        "package.json",
+        "service-manifest.yaml",
+        "src",
+        "tsconfig.json"
+      ],
+      "is_http_service": true,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-app-dev-studio",
+      "pkg_name": "@mycodexvantaos/app-dev-studio",
+      "description": null,
+      "deps_count": 8,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        ".env.example",
+        "Dockerfile",
+        "config",
+        "mycodexvantaos-app-dev-studio-legacy",
+        "package.json",
+        "service-manifest.yaml",
+        "service.manifest.yaml",
+        "src"
+      ],
+      "is_http_service": true,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-app-validation",
+      "pkg_name": "@mycodexvantaos/app-validation",
+      "description": null,
+      "deps_count": 8,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        "Dockerfile",
+        "config",
+        "package.json",
+        "service-manifest.yaml",
+        "src"
+      ],
+      "is_http_service": true,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-billing-metering",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": false,
+      "has_src": true,
+      "top_items": [
+        "README.md",
+        "src",
+        "tests"
+      ],
+      "is_http_service": false,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-core-auth",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        ".env.example",
+        "Dockerfile",
+        "README.md",
+        "config",
+        "service-manifest.yaml",
+        "src",
+        "tests"
+      ],
+      "is_http_service": true,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-core-config",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        ".env.example",
+        "Dockerfile",
+        "config",
+        "service-manifest.yaml",
+        "src",
+        "tests"
+      ],
+      "is_http_service": true,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-core-gateway",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        ".env.example",
+        "Dockerfile",
+        "config",
+        "service-manifest.yaml",
+        "src",
+        "tests"
+      ],
+      "is_http_service": true,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-core-kernel",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        ".env.example",
+        "Dockerfile",
+        "config",
+        "service-manifest.yaml",
+        "src",
+        "tests"
+      ],
+      "is_http_service": true,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-data-graph",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        ".env.example",
+        "Dockerfile",
+        "config",
+        "service-manifest.yaml",
+        "src",
+        "tests"
+      ],
+      "is_http_service": true,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-data-pipeline",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        ".env.example",
+        "Dockerfile",
+        "config",
+        "service-manifest.yaml",
+        "src",
+        "tests"
+      ],
+      "is_http_service": true,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-data-vector-store",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        ".env.example",
+        "Dockerfile",
+        "config",
+        "service-manifest.yaml",
+        "src",
+        "tests"
+      ],
+      "is_http_service": true,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-docs-search",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        ".env.example",
+        "Dockerfile",
+        "config",
+        "service-manifest.yaml",
+        "src",
+        "tests"
+      ],
+      "is_http_service": true,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-governance-audit-chain",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": false,
+      "has_src": true,
+      "top_items": [
+        "README.md",
+        "src",
+        "tests"
+      ],
+      "is_http_service": false,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-governance-policy",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        ".env.example",
+        "Dockerfile",
+        "config",
+        "service-manifest.yaml",
+        "src",
+        "tests"
+      ],
+      "is_http_service": true,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-governance-policy-engine",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": false,
+      "has_src": true,
+      "top_items": [
+        "README.md",
+        "src",
+        "tests"
+      ],
+      "is_http_service": false,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-knowledge-ingestion",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": false,
+      "has_src": true,
+      "top_items": [
+        "README.md",
+        "src",
+        "tests"
+      ],
+      "is_http_service": false,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-knowledge-search",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": false,
+      "has_src": true,
+      "top_items": [
+        "README.md",
+        "src",
+        "tests"
+      ],
+      "is_http_service": false,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-platform-notification",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        ".env.example",
+        "Dockerfile",
+        "config",
+        "service-manifest.yaml",
+        "src",
+        "tests"
+      ],
+      "is_http_service": true,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-platform-observability",
+      "pkg_name": "@mycodexvantaos/platform-observability",
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        ".env.example",
+        "Dockerfile",
+        "config",
+        "package.json",
+        "service-manifest.yaml",
+        "src",
+        "tests"
+      ],
+      "is_http_service": true,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-platform-scheduler",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        ".env.example",
+        "Dockerfile",
+        "config",
+        "service-manifest.yaml",
+        "src",
+        "tests"
+      ],
+      "is_http_service": true,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-platform-validation",
+      "pkg_name": "@mycodexvantaos/platform-validation",
+      "description": "IBCS Contract Engine and Multi-Layer Validator",
+      "deps_count": 4,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        "Dockerfile",
+        "__tests__",
+        "config",
+        "package.json",
+        "service-manifest.yaml",
+        "src",
+        "tsconfig.json"
+      ],
+      "is_http_service": true,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-policy-draft",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": false,
+      "has_src": false,
+      "top_items": [
+        ".gitignore",
+        "README.md",
+        "backend",
+        "cover_policydraft.png",
+        "index.html",
+        "mycodexvantaos-module.yaml",
+        "policydraft.html",
+        "scripts"
+      ],
+      "is_http_service": false,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-quantum-controller",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": false,
+      "has_src": true,
+      "top_items": [
+        "README.md",
+        "src",
+        "tests"
+      ],
+      "is_http_service": false,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-runtime-mode-resolver",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": false,
+      "has_src": true,
+      "top_items": [
+        "README.md",
+        "src",
+        "tests"
+      ],
+      "is_http_service": false,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-security-secrets",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        ".env.example",
+        "Dockerfile",
+        "config",
+        "service-manifest.yaml",
+        "src",
+        "tests"
+      ],
+      "is_http_service": true,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-security-validation",
+      "pkg_name": null,
+      "description": null,
+      "deps_count": 0,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        ".env.example",
+        "Dockerfile",
+        "config",
+        "service-manifest.yaml",
+        "src",
+        "tests"
+      ],
+      "is_http_service": true,
+      "notes": [
+        "no package.json"
+      ]
+    },
+    {
+      "name": "mycodexvantaos-service-agent-chat",
+      "pkg_name": "@mycodexvantaos/service-agent-chat",
+      "description": "Agent chat service - AI-powered conversational agent",
+      "deps_count": 3,
+      "has_dockerfile": false,
+      "has_src": true,
+      "top_items": [
+        "CHANGELOG.md",
+        "README.md",
+        "package.json",
+        "src",
+        "tsconfig.json"
+      ],
+      "is_http_service": false,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-audit-log",
+      "pkg_name": "@mycodexvantaos/service-audit-log",
+      "description": "Audit log service - immutable audit event recording and querying",
+      "deps_count": 4,
+      "has_dockerfile": false,
+      "has_src": true,
+      "top_items": [
+        "CHANGELOG.md",
+        "README.md",
+        "package.json",
+        "src",
+        "tsconfig.json"
+      ],
+      "is_http_service": false,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-identity",
+      "pkg_name": "@mycodexvantaos/service-identity",
+      "description": "MyCodexVantaOS Identity Service",
+      "deps_count": 2,
+      "has_dockerfile": false,
+      "has_src": false,
+      "top_items": [
+        "package.json"
+      ],
+      "is_http_service": false,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-knowledge-search",
+      "pkg_name": "@mycodexvantaos/service-knowledge-search",
+      "description": "Knowledge search service - vector search and full-text search",
+      "deps_count": 3,
+      "has_dockerfile": false,
+      "has_src": true,
+      "top_items": [
+        "CHANGELOG.md",
+        "README.md",
+        "package.json",
+        "src",
+        "tsconfig.json"
+      ],
+      "is_http_service": false,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-knowledge-store",
+      "pkg_name": "@mycodexvantaos/service-knowledge-store",
+      "description": "Knowledge store service - document ingestion and chunk management",
+      "deps_count": 3,
+      "has_dockerfile": false,
+      "has_src": true,
+      "top_items": [
+        "CHANGELOG.md",
+        "README.md",
+        "package.json",
+        "src",
+        "tsconfig.json"
+      ],
+      "is_http_service": false,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-knowledge-trace",
+      "pkg_name": "@mycodexvantaos/service-knowledge-trace",
+      "description": "Knowledge trace service - retrieval receipts and answer traces for RAG pipelines",
+      "deps_count": 4,
+      "has_dockerfile": false,
+      "has_src": true,
+      "top_items": [
+        "CHANGELOG.md",
+        "README.md",
+        "package.json",
+        "src",
+        "tsconfig.json"
+      ],
+      "is_http_service": false,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-memory-capture",
+      "pkg_name": "@mycodexvantaos/service-memory-capture",
+      "description": "Memory capture service - memory candidate creation from conversations",
+      "deps_count": 3,
+      "has_dockerfile": false,
+      "has_src": true,
+      "top_items": [
+        "CHANGELOG.md",
+        "README.md",
+        "package.json",
+        "src",
+        "tsconfig.json"
+      ],
+      "is_http_service": false,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-memory-dream",
+      "pkg_name": "@mycodexvantaos/service-memory-dream",
+      "description": "Memory Dream Service \u2014 Orchestrates Python dream-worker via child process",
+      "deps_count": 3,
+      "has_dockerfile": false,
+      "has_src": true,
+      "top_items": [
+        "package.json",
+        "src",
+        "tsconfig.json"
+      ],
+      "is_http_service": false,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-memory-store",
+      "pkg_name": "@mycodexvantaos/service-memory-store",
+      "description": "Memory store service - memory item CRUD and relation management",
+      "deps_count": 3,
+      "has_dockerfile": false,
+      "has_src": true,
+      "top_items": [
+        "CHANGELOG.md",
+        "README.md",
+        "package.json",
+        "src",
+        "tsconfig.json"
+      ],
+      "is_http_service": false,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-model-byok",
+      "pkg_name": "@mycodexvantaos/service-model-byok",
+      "description": "Model BYOK service - bring-your-own-key model endpoint management",
+      "deps_count": 3,
+      "has_dockerfile": false,
+      "has_src": true,
+      "top_items": [
+        "CHANGELOG.md",
+        "README.md",
+        "package.json",
+        "src",
+        "tsconfig.json"
+      ],
+      "is_http_service": false,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-policy-engine",
+      "pkg_name": "@mycodexvantaos/service-policy-engine",
+      "description": "Policy engine service - runtime policy evaluation and enforcement from contract-defined policies",
+      "deps_count": 4,
+      "has_dockerfile": false,
+      "has_src": true,
+      "top_items": [
+        "CHANGELOG.md",
+        "README.md",
+        "package.json",
+        "src",
+        "tsconfig.json"
+      ],
+      "is_http_service": false,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-resource-registry",
+      "pkg_name": "@mycodexvantaos/service-resource-registry",
+      "description": "Resource registry service - resource kind registration and lookup",
+      "deps_count": 4,
+      "has_dockerfile": false,
+      "has_src": true,
+      "top_items": [
+        "CHANGELOG.md",
+        "README.md",
+        "package.json",
+        "src",
+        "tsconfig.json"
+      ],
+      "is_http_service": false,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-service-catalog",
+      "pkg_name": "@mycodexvantaos/service-service-catalog",
+      "description": "MyCodexVantaOS Service Catalog Runtime Service",
+      "deps_count": 4,
+      "has_dockerfile": false,
+      "has_src": true,
+      "top_items": [
+        "package.json",
+        "src",
+        "tsconfig.json"
+      ],
+      "is_http_service": false,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-usage-meter",
+      "pkg_name": "@mycodexvantaos/service-usage-meter",
+      "description": "Usage meter service - usage recording and rate limiting",
+      "deps_count": 3,
+      "has_dockerfile": false,
+      "has_src": true,
+      "top_items": [
+        "CHANGELOG.md",
+        "README.md",
+        "package.json",
+        "src",
+        "tsconfig.json"
+      ],
+      "is_http_service": false,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-workspace",
+      "pkg_name": "@mycodexvantaos/service-workspace",
+      "description": "Workspace service - workspace CRUD, membership, settings",
+      "deps_count": 3,
+      "has_dockerfile": false,
+      "has_src": true,
+      "top_items": [
+        "CHANGELOG.md",
+        "README.md",
+        "package.json",
+        "src",
+        "tsconfig.json"
+      ],
+      "is_http_service": false,
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-studio-platform",
+      "pkg_name": "@mycodexvantaos/studio-platform",
+      "description": "MyCodexVantaOS Studio Platform - Following MyCodexVantaOS Provider Architecture with Native-First Design",
+      "deps_count": 46,
+      "has_dockerfile": true,
+      "has_src": true,
+      "top_items": [
+        ".agents",
+        ".config",
+        ".github",
+        ".gitignore",
+        ".modified",
+        "ARCHITECTURE.md",
+        "Dockerfile",
+        "README.md",
+        "apphosting.yaml",
+        "components.json",
+        "config",
+        "docs",
+        "metadata.json",
+        "next.config.ts",
+        "package.json",
+        "postcss.config.mjs",
+        "service-manifest.yaml",
+        "skills-lock.json",
+        "src",
+        "tailwind.config.ts",
+        "tsconfig.json",
+        "wrangler.toml"
+      ],
+      "is_http_service": true,
+      "notes": []
+    }
+  ],
+  "modules": [
+    {
+      "name": "mycodexvantaos-agent-runtime",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-agent-toolkit",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": true,
+      "top_items": [
+        "module-manifest.yaml",
+        "package.json",
+        "src",
+        "tsconfig.json"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-ai-agent",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "capabilities.yaml",
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-ai-embedding",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "capabilities.yaml",
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-ai-ensemble",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-ai-humaniser",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": true,
+      "top_items": [
+        "README.md",
+        "capabilities.yaml",
+        "config",
+        "examples",
+        "jest.config.js",
+        "module-manifest.yaml",
+        "package.json",
+        "src",
+        "tsconfig.json"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-ai-inference",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-ai-llm",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "capabilities.yaml",
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-ai-memory",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "capabilities.yaml",
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-ai-team-orchestrator",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": true,
+      "top_items": [
+        "config",
+        "jest.config.js",
+        "module-manifest.yaml",
+        "package.json",
+        "src",
+        "tests",
+        "tsconfig.json"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-ai-team-service",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-app-dev-studio",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-app-validation",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-billing-metering",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-core-auth",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "capabilities.yaml",
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-core-config",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "capabilities.yaml",
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-core-gateway",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "capabilities.yaml",
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-core-kernel",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "capabilities.yaml",
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-data-graph",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "capabilities.yaml",
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-data-pipeline",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "capabilities.yaml",
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-data-vector-store",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "capabilities.yaml",
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-docs-search",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "capabilities.yaml",
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-governance-audit-chain",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-governance-policy",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "capabilities.yaml",
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-governance-policy-engine",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-knowledge-ingestion",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-knowledge-search",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-persona-engine",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": true,
+      "top_items": [
+        "README.md",
+        "config",
+        "docs",
+        "jest.config.js",
+        "module-manifest.yaml",
+        "package.json",
+        "src",
+        "tsconfig.json"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-platform-notification",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "capabilities.yaml",
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-platform-observability",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "capabilities.yaml",
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-platform-scheduler",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "capabilities.yaml",
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-platform-validation",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-policy-draft",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-quantum-controller",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-runtime-mode-resolver",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-security-secrets",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "capabilities.yaml",
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-security-validation",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "capabilities.yaml",
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-agent-chat",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-audit-log",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-identity",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-knowledge-search",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-knowledge-store",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-knowledge-trace",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-memory-capture",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-memory-dream",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-memory-store",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-model-byok",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-policy-engine",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-resource-registry",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-service-catalog",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-usage-meter",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-service-workspace",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-stream-pipeline",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    },
+    {
+      "name": "mycodexvantaos-studio-platform",
+      "has_ts": false,
+      "has_yaml": true,
+      "has_package_json": false,
+      "top_items": [
+        "module-manifest.yaml"
+      ],
+      "notes": []
+    }
+  ],
+  "overlap_pairs": [
+    [
+      "ai-agent",
+      "mycodexvantaos-ai-agent"
+    ],
+    [
+      "ai-embedding",
+      "mycodexvantaos-ai-embedding"
+    ],
+    [
+      "ai-llm",
+      "mycodexvantaos-ai-llm"
+    ],
+    [
+      "ai-memory",
+      "mycodexvantaos-ai-memory"
+    ],
+    [
+      "core-auth",
+      "mycodexvantaos-core-auth"
+    ],
+    [
+      "core-config",
+      "mycodexvantaos-core-config"
+    ],
+    [
+      "core-gateway",
+      "mycodexvantaos-core-gateway"
+    ],
+    [
+      "core-kernel",
+      "mycodexvantaos-core-kernel"
+    ],
+    [
+      "data-graph",
+      "mycodexvantaos-data-graph"
+    ],
+    [
+      "data-pipeline",
+      "mycodexvantaos-data-pipeline"
+    ],
+    [
+      "data-vector-store",
+      "mycodexvantaos-data-vector-store"
+    ],
+    [
+      "docs-search",
+      "mycodexvantaos-docs-search"
+    ],
+    [
+      "governance-policy",
+      "mycodexvantaos-governance-policy"
+    ],
+    [
+      "platform-notification",
+      "mycodexvantaos-platform-notification"
+    ],
+    [
+      "platform-observability",
+      "mycodexvantaos-platform-observability"
+    ],
+    [
+      "platform-scheduler",
+      "mycodexvantaos-platform-scheduler"
+    ],
+    [
+      "security-secrets",
+      "mycodexvantaos-security-secrets"
+    ],
+    [
+      "security-validation",
+      "mycodexvantaos-security-validation"
+    ]
+  ],
+  "packages_no_service": [
+    "adapters",
+    "advanced-integration",
+    "advanced-monitoring",
+    "ai-humaniser",
+    "analytics",
+    "api-gateway",
+    "api-generator",
+    "application",
+    "audit-logger",
+    "auto-scaler",
+    "background-job-runtime",
+    "builder",
+    "cache-manager",
+    "capabilities",
+    "compliance-checker",
+    "config-sync",
+    "connector-auth",
+    "connector-elastic",
+    "connector-github",
+    "connector-kafka",
+    "connector-mongodb",
+    "connector-postgresql",
+    "connector-redis",
+    "connector-s3",
+    "contracts",
+    "core",
+    "database",
+    "deployment",
+    "deployment-manifest-generator",
+    "event-bus",
+    "events",
+    "execution",
+    "governance",
+    "jsonata",
+    "load-balancer",
+    "master-integration",
+    "message-queue",
+    "meta-integration",
+    "monitoring",
+    "mycodexvantaos-audit-model",
+    "mycodexvantaos-contracts-sdk",
+    "mycodexvantaos-knowledge-model",
+    "mycodexvantaos-memory-model",
+    "mycodexvantaos-policy-model",
+    "mycodexvantaos-resource-model",
+    "mycodexvantaos-runtime-model",
+    "mycodexvantaos-service-catalog",
+    "namespace-governance",
+    "native-logging",
+    "native-queue",
+    "native-validation",
+    "plugin-loader",
+    "policy-engine",
+    "ports",
+    "providers",
+    "rate-limiter",
+    "runtime",
+    "scheduler",
+    "schema-generator",
+    "sdk",
+    "search-engine",
+    "semantic-core-client",
+    "semantic-core-integration",
+    "semantic-optimization",
+    "service-discovery",
+    "service-mesh",
+    "session-runtime",
+    "ssl-manager",
+    "state-manager",
+    "storage",
+    "test-generator",
+    "ui-generator",
+    "ultimate-integration",
+    "unified-integration",
+    "workflow-generator"
+  ],
+  "services_no_package": [
+    "ci-repair-agent",
+    "kafka-stream-processor",
+    "mycodexvantaos-agent-runtime",
+    "mycodexvantaos-ai-ensemble",
+    "mycodexvantaos-ai-inference",
+    "mycodexvantaos-ai-team-service",
+    "mycodexvantaos-app-dev-studio",
+    "mycodexvantaos-app-validation",
+    "mycodexvantaos-billing-metering",
+    "mycodexvantaos-governance-audit-chain",
+    "mycodexvantaos-governance-policy-engine",
+    "mycodexvantaos-knowledge-ingestion",
+    "mycodexvantaos-knowledge-search",
+    "mycodexvantaos-platform-validation",
+    "mycodexvantaos-policy-draft",
+    "mycodexvantaos-quantum-controller",
+    "mycodexvantaos-runtime-mode-resolver",
+    "mycodexvantaos-service-agent-chat",
+    "mycodexvantaos-service-audit-log",
+    "mycodexvantaos-service-identity",
+    "mycodexvantaos-service-knowledge-search",
+    "mycodexvantaos-service-knowledge-store",
+    "mycodexvantaos-service-knowledge-trace",
+    "mycodexvantaos-service-memory-capture",
+    "mycodexvantaos-service-memory-dream",
+    "mycodexvantaos-service-memory-store",
+    "mycodexvantaos-service-model-byok",
+    "mycodexvantaos-service-policy-engine",
+    "mycodexvantaos-service-resource-registry",
+    "mycodexvantaos-service-service-catalog",
+    "mycodexvantaos-service-usage-meter",
+    "mycodexvantaos-service-workspace",
+    "mycodexvantaos-studio-platform"
+  ]
+}

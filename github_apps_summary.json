@@ -1,0 +1,17 @@
+{
+  "summary": "GitHub App and OAuth App setup complete",
+  "github_app": {
+    "name": "MyCodeXvantaOS-AI-Dev",
+    "app_id": 4110332,
+    "installation_id": 141760035,
+    "client_id": "REDACTED",
+    "client_secret": "REDACTED - see repository secrets",
+    "installation_token": "REDACTED - generated at runtime"
+  },
+  "oauth_app": {
+    "name": "MyCodeXvantaOS-OAuth",
+    "client_id": "REDACTED",
+    "client_secret": "REDACTED - see repository secrets"
+  },
+  "_note": "All secret values redacted. Configure via GitHub Actions secrets."
+}
