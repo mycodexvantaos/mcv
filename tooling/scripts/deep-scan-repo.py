@@ -25,8 +25,8 @@ HEADERS = {
     "User-Agent": "deep-scan-script/1.0",
 }
 if github_token := os.environ.get("GITHUB_TOKEN"):
-    HEADERS["Authorization"] = f"token {github_token}"
-DELAY = 0.72  # seconds between API calls (rate-limit: 5000/hr authenticated)
+    HEADERS["Authorization"] = f"******"
+DELAY = 0.72 if github_token else 60  # GitHub API rate limits per hour
 
 # ── Helpers ─────────────────────────────────────────────────────────────────
 def gh_get(path: str) -> list | dict | None:
