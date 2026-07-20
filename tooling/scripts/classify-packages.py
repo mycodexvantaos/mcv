@@ -38,8 +38,10 @@ class PackageInfo:
     has_k8s_manifest: bool
     has_server_code: bool
     has_business_logic: bool
-    is_held: bool       # True for @mycodexvantaos/runtime
-    dependents: int     # How many packages depend on this
+    has_client_sdk: bool    # True if code wraps external provider SDKs
+    has_infra_config: bool  # True if code is build/tooling config only
+    is_held: bool           # True for @mycodexvantaos/runtime
+    dependents: int         # How many packages depend on this
     classification: str = ""
     target: str = ""
     notes: str = ""
@@ -64,6 +66,25 @@ BUSINESS_LOGIC_PATTERNS = [
     "createDomain", "DomainEvent", "AggregateRoot",
     "async.*execute(", "async.*handle(",
     "export.*function", "export.*class", "export.*interface",
+]
+
+# Indicators of client SDK stubs (thin wrappers around external provider SDKs)
+CLIENT_SDK_PATTERNS = [
+    r"from ['\"]@google/", r"from ['\"]@aws-sdk/", r"from ['\"]@azure/",
+    r"from ['\"]openai", r"from ['\"]anthropic", r"from ['\"]groq",
+    r"from ['\"]@pinecone-database/", r"from ['\"]@langchain/",
+    r"from ['\"]@genkit-ai/", r"from ['\"]genkit",
+    r"from ['\"]@cloudflare/", r"from ['\"]@supabase/",
+    "ProviderAdapter", "implements.*Provider", "createClient(",
+    "new.*Client(", "new.*SDK(",
+]
+
+# Indicators of infrastructure/utility libraries (stay in packages/, not services/)
+INFRA_LIB_PATTERNS = [
+    "webpack", "rollup", "esbuild", "tsup",
+    "defineConfig", "buildConfig",
+    "eslintConfig", "prettierConfig",
+    "jest.config", "vitest.config",
 ]
 
 # Packages that must be moved last (highest dependency count)
@@ -101,20 +122,22 @@ def count_dependents(pkg_name: str, repo_root: Path) -> int:
     return count
 
 
-def analyze_ts_content(dir_path: Path) -> tuple[int, int, bool, bool]:
+def analyze_ts_content(dir_path: Path) -> tuple[int, int, bool, bool, bool, bool]:
     """
     Analyze TypeScript files in a directory.
-    Returns: (file_count, line_count, has_server_code, has_business_logic)
+    Returns: (file_count, line_count, has_server_code, has_business_logic, has_client_sdk, has_infra_config)
     """
+    import re
     file_count = 0
     line_count = 0
     has_server = False
     has_business = False
+    has_client_sdk = False
+    has_infra_config = False
 
-    for ts_file in dir_path.rglob("*.ts"):
+    ts_files_iter = list(dir_path.rglob("*.ts")) + list(dir_path.rglob("*.tsx"))
+    for ts_file in ts_files_iter:
         if any(skip in ts_file.parts for skip in SKIP_DIRS):
-            continue
-        if ts_file.suffix not in (".ts", ".tsx"):
             continue
 
         file_count += 1
@@ -133,12 +156,21 @@ def analyze_ts_content(dir_path: Path) -> tuple[int, int, bool, bool]:
                 break
 
         for pattern in BUSINESS_LOGIC_PATTERNS:
-            import re
             if re.search(pattern, content):
                 has_business = True
                 break
 
-    return file_count, line_count, has_server, has_business
+        for pattern in CLIENT_SDK_PATTERNS:
+            if re.search(pattern, content):
+                has_client_sdk = True
+                break
+
+        for pattern in INFRA_LIB_PATTERNS:
+            if pattern in content:
+                has_infra_config = True
+                break
+
+    return file_count, line_count, has_server, has_business, has_client_sdk, has_infra_config
 
 
 def has_k8s_manifests(dir_path: Path) -> bool:
@@ -183,15 +215,25 @@ def classify_package(pkg_info: PackageInfo) -> tuple[str, str, str]:
             return "deployment_stub", "infra/deployments/ (partial → services/)", \
                    "Has Dockerfile AND significant TS — split may be needed"
 
-    # Business logic (substantial TS code)
+    # Infrastructure/build-tool library (no domain logic, stays in packages/)
+    if pkg_info.has_infra_config and not pkg_info.has_business_logic:
+        return "infrastructure_lib", f"packages/{Path(pkg_info.path).name}/", \
+               "Build/tooling config — stays in packages/"
+
+    # Client SDK stub (wraps external provider SDK, belongs in providers/ not services/)
+    if pkg_info.has_client_sdk and not pkg_info.has_business_logic:
+        return "client_sdk_stub", f"providers/{Path(pkg_info.path).name}/", \
+               f"External SDK wrapper — belongs in providers/, not services/"
+
+    # Business logic (substantial TS code with domain patterns)
     if pkg_info.ts_files > 0 and pkg_info.has_business_logic:
         return "business_logic", f"services/{Path(pkg_info.path).name}/", \
                f"{pkg_info.ts_lines} lines of business logic"
 
-    # Has some TS but unclear
+    # Has some TS but no recognized pattern — needs manual review
     if pkg_info.ts_files > 0:
-        return "business_logic", f"services/{Path(pkg_info.path).name}/",\
-               f"Default: {pkg_info.ts_lines} lines TS, review recommended"
+        return "unmatched_stub", f"packages/{Path(pkg_info.path).name}/", \
+               f"Unclassified: {pkg_info.ts_lines} lines TS — manual review required"
 
     # Empty or unclear
     return "review_needed", "UNKNOWN", "Insufficient data for automatic classification"
@@ -223,7 +265,7 @@ def scan_directory(source_dir: Path, repo_root: Path) -> list[PackageInfo]:
                 pass
 
         # Analyze TypeScript content
-        ts_files, ts_lines, has_server, has_business = analyze_ts_content(subdir)
+        ts_files, ts_lines, has_server, has_business, has_client_sdk, has_infra_config = analyze_ts_content(subdir)
 
         # Count YAML files
         yaml_files = sum(
@@ -254,6 +296,8 @@ def scan_directory(source_dir: Path, repo_root: Path) -> list[PackageInfo]:
             has_k8s_manifest=has_k8s,
             has_server_code=has_server,
             has_business_logic=has_business,
+            has_client_sdk=has_client_sdk,
+            has_infra_config=has_infra_config,
             is_held=is_held,
             dependents=dependents,
         )

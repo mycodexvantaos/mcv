@@ -405,7 +405,8 @@ Examples:
     # Exit code for CI
     if args.check_only:
         path_refs = (len(results.get("typescript_imports", [])) +
-                     len(results.get("python_imports", [])))
+                     len(results.get("python_imports", [])) +
+                     len(results.get("ci_workflow_refs", [])))
         if path_refs > 0 or workspace.get("found"):
             sys.exit(1)
 

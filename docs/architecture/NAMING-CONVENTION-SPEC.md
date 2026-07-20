@@ -1,17 +1,20 @@
-# MyCodeXvantaOS Naming Convention Specification v1.0（正式版）
+# MyCodeXvantaOS Naming Convention Specification v1.1（挑戰審查後修訂版）
 
-**Document ID:** `mcx-naming-spec-v1.0`
-**Status:** Official / Enforced
-**Version:** 1.0.0
-**Date:** 2026-07-19
+**Document ID:** `mcx-naming-spec-v1.1`
+**Status:** Official / Partially Enforced（見第 10 節執行現況）
+**Version:** 1.1.0
+**Date:** 2026-07-20
+**Supersedes:** `argocd/base/naming-spec-v1.md`（原 v1.0 stub，已於本文件正式化並納入）
 **Authority:** Platform Governance (`governance/platform-governance-spec.yaml`)
-**產出依據:** 對真實 repo 的實證深度掃描 + PR #203 CI 失敗的本地重現複驗 + 自我挑戰審查
+**產出依據:** 對真實 repo 的實證深度掃描 + PR #203 CI 失敗的本地重現複驗 + 自我挑戰審查 + PR #204 review 挑戰回應
 
 ---
 
 ## 0. 版本定位
 
-本規範是 MyCodexVantaOS 平台的**首次正式版命名慣例**。它由三部分產出：(a) 對真實 repo 的實證深度掃描（`REALITY-CHECK-REPORT.md`、`repo-scan-report.json`）、(b) 對 PR #203 所有失敗 CI 檢查的 log-level 分析與**本地重現複驗**、(c) 自我挑戰審查以移除假設。
+本規範是 `argocd/base/naming-spec-v1.md`（2026-04-18 stub）的**正式化延伸版本**（v1.1）。它整合了三部分產出：(a) 對真實 repo 的實證深度掃描（`REALITY-CHECK-REPORT.md`、`repo-scan-report.json`）、(b) 對 PR #203 所有失敗 CI 檢查的 log-level 分析與**本地重現複驗**、(c) 自我挑戰審查及 PR #204 code review 挑戰回應，以移除假設與修正事實錯誤。
+
+> **與 argocd/base/naming-spec-v1.md 的關係：** 該文件為 6 行 stub（`status: stable`，`effective: 2026-04-18`），無具體規則，亦無執行機制。本文件為其實質內容，版本號升至 v1.1 以示區別並保留溯源。
 
 本規範在訂定時即已吸收 PR #203 的全部教訓，因此從第一版起就內建三項防護機制，避免重蹈覆轍：
 
@@ -67,7 +70,7 @@
 | Context | Observed Mix | Concrete Error |
 |---------|-------------|----------------|
 | Kubernetes 資源名 | `mycodexvantaos-core-auth` vs `mycodexvantaos_core_auth` | RFC 1123：DNS subdomain 只允 `-`，`kubectl apply` 拒絕底線 |
-| npm scoped 套件名 | `@mycodexvantaos/ports` vs `@mycodexvantaos/ports_database` | npm registry 拒絕 scoped 名含 `_` |
+| npm scoped 套件名 | `@mycodexvantaos/ports` vs `@mycodexvantaos/ports_database` | npm 技術上允許 scoped 名含 `_`，但本平台 **governance 規則**要求 kebab-case 以保持跨層一致性 |
 | Python 模組名 | `mcv_auditor/`（底線）vs `mycodexvantaos-ai-embedding`（連字目錄）| `import mycodexvantaos-ai-embedding` 為 SyntaxError |
 | 環境變數 | `DATABASE_URL` | POSIX sh 要求 `[A-Za-z_][A-Za-z0-9_]*`，連字會 fatal |
 | GitHub Actions trigger | `on:`（裸）| YAML 1.1：`on` 是 boolean `true` 同義詞，**直接造成 YAML Lint Guard CI 失敗** |
@@ -138,7 +141,7 @@ Repository empirical scan (2026-07-18, base main@15afba1a):
 | Python module names | lowercase, underscores only | PEP 8 §Packages |
 | Env vars | SCREAMING_SNAKE_CASE | POSIX.1-2017 §8.1 |
 | HTTP API paths | lowercase-kebab | Google API Design Guide |
-| HTTP API JSON fields | snake_case | Google JSON Style Guide §7 |
+| HTTP API JSON fields | lowerCamelCase | Google JSON Style Guide §3（平台選擇：統一採 camelCase；若舊合約已用 snake_case 須於遷移計畫中列出）|
 | YAML boolean keys | quote `"on":`, `"yes":`, `"no":` | YAML 1.1 §10.3.2 |
 | K8s structural keys | camelCase (apiVersion, kind, metadata, spec) | K8s API Conventions |
 | JSON Schema `$id` | absolute URI | JSON Schema draft-07 §9.2 |
@@ -160,12 +163,16 @@ Repository empirical scan (2026-07-18, base main@15afba1a):
              作者須在 PR 描述附上以下本地零失敗輸出（Node 22 + pnpm）：
                pnpm install --frozen-lockfile
                pnpm format:check   # 必須 0 [warn]
-               pnpm lint           # 必須 0 error（warning 可接受但須列出）
+               pnpm lint           # 必須 0 new error（main 基線的既有錯誤可保留，
+                                   # 但不得引入新錯誤；須提供對比數據）
              未附驗證輸出的 PR，reviewer 不得標記任何「Fix」為完成。
 [ENFORCED]   「Fix Status」分三態：
                Verified    — 附本地輸出或 CI run 連結，已重現零失敗
                Unverified  — 僅聲稱修復，未附證據；不得用以宣告可合併
                Pending     — 尚未處理
+[NOTE]       「0 new error」而非「0 total error」：main 基線目前存在既有 lint 技術
+             債（2,483 errors）。Rule 0 要求 PR 不引入新錯誤，而非要求清除所有
+             既有錯誤。清除技術債另立 chore PR。
 ```
 
 ### Rule 1 — 目錄名
@@ -264,10 +271,12 @@ Docker:      image names = mycodexvantaos/<service>:<tag> (lowercase, no upperca
 ### Rule 10 — Manifests 與 Schemas
 
 ```
-[ENFORCED]   apiVersion:   mycodexvantaos.org/v<N>    (domain = .org, NOT .io)
+[ENFORCED]   apiVersion:   mycodexvantaos.io/v<N>    (domain = .io，與現行 governance/*.yaml 一致)
+             ⚠️  本規範先前版本誤標為 .org；現行 governance/ schemas 均使用 .io/v1，
+             以 .io/v1 為準，直至 governance 正式遷移並更新全部驗證器。
 [ENFORCED]   kind:         PascalCase singular (Module, Service, CapabilitySet, ExceptionRegister)
 [ENFORCED]   metadata.name: kebab-case, prefixed mycodexvantaos-
-[CONVENTION] spec fields:  kebab-case (YAML), snake_case (JSON schemas)
+[CONVENTION] spec fields:  camelCase (YAML + JSON schemas，與 K8s API Conventions 一致)
 [ENFORCED]   supportsModes: ["connected","hybrid"] — NOT "native" for external API providers
 ```
 
@@ -288,6 +297,9 @@ Docker:      image names = mycodexvantaos/<service>:<tag> (lowercase, no upperca
 [ENFORCED]   tooling/ 治理腳本須被 workflow 或 pre-commit hook 實際引用，
              並附 pytest 覆蓋；未被引用的腳本視為 dead code，
              不得以「治理工具」名義入庫。
+[NOTE]       PR #204 包含 tooling/scripts/ 下四個腳本，目前尚未有 workflow 引用。
+             此為已知技術債，須於後續 PR 補齊 workflow 整合與 pytest 覆蓋，
+             否則應於合併前移除。本次 PR 保留腳本以供審閱，最終決定由 reviewer 確認。
 ```
 
 ---
@@ -377,34 +389,46 @@ Priority 3（流程）:
 | `packages/jsonata/` | 4-space indent, JSDoc | 第三方 vendored fork |
 | `mcv_auditor/` | 頂層底線目錄 | Python package；PEP 8 要求 snake_case |
 
-### B.2 Domain `.io` vs `.org`
+### B.2 Domain `.io` vs `.org`（挑戰審查修正）
+
+> **原規範聲稱 `.org` 正確，`.io` 錯誤——此判斷已反轉。**
+> 經查 `governance/` 目錄下所有實際 YAML 文件（lifecycle-policy.yaml、mycodexvantaos-module.yaml、schemas/*.schema.json 等），均使用 `mycodexvantaos.io/v1`。
+> 本規範 v1.0 錯誤宣告 `.org` 為規範值。v1.1 修正如下：
 
 | Value | Status | Notes |
 |-------|--------|-------|
-| `mycodexvantaos.org/v1` | ✅ 正確 | 所有 manifest，schema validator 強制 |
-| `mycodexvantaos.io/v1` | ❌ 錯誤 | 曾用於 module manifest；已修 |
-| `mycodexvantaos.io/v1/CapabilitySet` | ⚠️ 僅 CapabilitySet 允許 | `governance/capability-set.yaml` legacy；待遷移 |
+| `mycodexvantaos.io/v1` | ✅ **現行正確值** | 全部 governance/*.yaml + governance/schemas/*.schema.json 均用此值 |
+| `mycodexvantaos.org/v1` | ❌ **已廢棄** | 本規範 v1.0 誤標為規範值；實際 repo 無此用法 |
 
 ### B.3 變更歷史
 
 | Version | Date | Changes |
 |---------|------|---------|
-| 1.0.0 | 2026-07-19 | 首次正式版。整合實證 repo 掃描、PR #203 CI 失敗本地重現、自我挑戰審查。內建 Rule 0（PR 前置驗證）、Fix Status 三態制、Rule 11（secret/bootstrap 治理）。規則 1–10 經複驗正確。 |
+| 1.1.0 | 2026-07-20 | PR #204 review 挑戰回應：修正 npm underscore 事實錯誤；修正 Google JSON Style Guide 引用（camelCase 非 snake_case）；修正 apiVersion domain（.io 非 .org）；澄清 Rule 0「0 new error」語意；標明版本為 v1.1.0（supersedes argocd/base/naming-spec-v1.md stub）；標記文件 Status 為 Partially Enforced；修正工具腳本死碼自我矛盾聲明。 |
+| 1.0.0 | 2026-07-19 | 首次正式版。整合實證 repo 掃描、PR #203 CI 失敗本地重現、自我挑戰審查。內建 Rule 0（PR 前置驗證）、Fix Status 三態制、Rule 11（secret/bootstrap 治理）。規則 1–10 經複驗正確（惟 B.2 domain 判斷錯誤，已於 v1.1 修正）。 |
 
 ---
 
-## 10. 強制機制
+## 10. 強制機制（現況與缺口說明）
 
 ```
-本規範由以下 workflow 強制：
-  .github/workflows/governance-check.yml   — 治理政策驗證
+【已部署，實際執行中】
+  .github/workflows/governance-check.yml   — 治理政策驗證（部分規則）
   .github/workflows/yaml-lint-guard.yml    — YAML boolean-key 守護
   pnpm format:check（prettier）            — Rule 2/4/5 檔尾換行、格式
   pnpm lint（eslint）                      — Rule 3 識別字、domain guard
   gitleaks / security-scan（嚴格 exit）    — Rule 11 secret 治理
 
-Rule 0（PR 前置驗證）由 reviewer 於 PR 描述核驗；長期應以
-  .github/workflows/pr-validation.yml 自動核驗 PR 描述含驗證輸出。
+【已知缺口，待後續 PR 補齊】
+  governance-check.yml / ci/rules/naming-rule.ts 目前 unconditionally return pass，
+  尚未實際驗證本文件的命名規則。規範 Status 降至 "Partially Enforced"，
+  直至 naming-rule.ts 實作完整規則並通過測試。
+
+  Rule 0（PR 前置驗證）目前由 reviewer 於 PR 描述人工核驗；
+  長期應以 .github/workflows/pr-validation.yml 自動核驗 PR 描述含驗證輸出。
+
+  tooling/scripts/ 下四個腳本尚無 workflow 引用及 pytest 覆蓋（技術債，
+  須於後續 PR 補齊或移除）。
 ```
 
 ---

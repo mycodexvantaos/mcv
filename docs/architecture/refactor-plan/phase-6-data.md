@@ -60,9 +60,9 @@ gh api repos/ai-software-engineering-guild/mycodexvantaos/contents/vector-store?
 
 ### 6.2 Pre-flight scan
 ```bash
-python3 tooling/scripts/scan-before-move.py migrations/
-python3 tooling/scripts/scan-before-move.py knowledge-graph/
-python3 tooling/scripts/scan-before-move.py vector-store/
+python3 tooling/scripts/scan-before-move.py --source migrations/
+python3 tooling/scripts/scan-before-move.py --source knowledge-graph/
+python3 tooling/scripts/scan-before-move.py --source vector-store/
 ```
 
 ### 6.3 Execute consolidation

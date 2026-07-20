@@ -45,7 +45,7 @@ TARGET_DIRECTORIES = [
     "tooling", "tests", "docs", "runtime-mesh"
 ]
 
-REQUIRED_CONTRACT_FIELDS = ["version", "directory", "layer", "description"]
+REQUIRED_CONTRACT_FIELDS = ["apiVersion", "kind", "metadata", "spec"]
 
 
 # ─── YAML LOADING ─────────────────────────────────────────────────────────────
@@ -102,48 +102,64 @@ def validate_contract(contract_path: Path) -> list[ValidationError]:
         errors.append(ValidationError("file", "File is empty or unparseable", "ERROR"))
         return errors
 
-    # Check required fields
+    # Check required top-level fields (apiVersion/kind/metadata/spec schema)
     for field in REQUIRED_CONTRACT_FIELDS:
         if field not in data:
             errors.append(ValidationError(field, f"Required field '{field}' is missing", "ERROR"))
 
-    # Validate version
-    if "version" in data and str(data["version"]) != "1":
-        errors.append(ValidationError(
-            "version", f"Expected version '1', got '{data['version']}'", "ERROR"
-        ))
-
-    # Validate layer
-    if "layer" in data:
-        layer = data["layer"].lower() if isinstance(data["layer"], str) else ""
-        if layer not in VALID_LAYERS:
+    # Validate apiVersion
+    if "apiVersion" in data:
+        api_version = str(data["apiVersion"])
+        if not api_version.startswith("mycodexvantaos.io/"):
             errors.append(ValidationError(
-                "layer",
-                f"Invalid layer '{layer}'. Must be one of: {', '.join(sorted(VALID_LAYERS))}",
-                "ERROR"
+                "apiVersion", f"Expected 'mycodexvantaos.io/v<N>', got '{api_version}'", "ERROR"
             ))
 
-    # Validate blast_radius
-    if "blast_radius" in data:
-        br = data["blast_radius"].lower() if isinstance(data["blast_radius"], str) else ""
-        if br not in VALID_BLAST_RADIUS:
+    # Validate kind
+    if "kind" in data and data["kind"] != "DirectoryContract":
+        errors.append(ValidationError(
+            "kind", f"Expected kind 'DirectoryContract', got '{data['kind']}'", "ERROR"
+        ))
+
+    # Extract spec for further validation
+    spec = data.get("spec", {}) if isinstance(data.get("spec"), dict) else {}
+
+    # Validate layer (inside spec)
+    if spec:
+        layer = spec.get("layer", "")
+        if layer:
+            layer = layer.lower() if isinstance(layer, str) else ""
+            if layer not in VALID_LAYERS:
+                errors.append(ValidationError(
+                    "spec.layer",
+                    f"Invalid layer '{layer}'. Must be one of: {', '.join(sorted(VALID_LAYERS))}",
+                    "ERROR"
+                ))
+        else:
+            errors.append(ValidationError("spec.layer", "spec.layer is required", "ERROR"))
+
+        # Validate blast_radius (inside spec)
+        br = spec.get("blastRadius", spec.get("blast_radius", ""))
+        if br:
+            br = br.lower() if isinstance(br, str) else ""
+            if br not in VALID_BLAST_RADIUS:
+                errors.append(ValidationError(
+                    "spec.blastRadius",
+                    f"Invalid blastRadius '{br}'. Must be: {', '.join(sorted(VALID_BLAST_RADIUS))}",
+                    "WARNING"
+                ))
+
+        # Validate ownedBy is present (warning only)
+        if "ownedBy" not in spec and "owned_by" not in spec:
             errors.append(ValidationError(
-                "blast_radius",
-                f"Invalid blast_radius '{br}'. Must be: {', '.join(sorted(VALID_BLAST_RADIUS))}",
-                "WARNING"
+                "spec.ownedBy", "Ownership not declared (recommended)", "WARNING"
             ))
 
-    # Validate owned_by is present (warning only)
-    if "owned_by" not in data:
-        errors.append(ValidationError(
-            "owned_by", "Ownership not declared (recommended)", "WARNING"
-        ))
-
-    # Validate last_reviewed is present (warning only)
-    if "last_reviewed" not in data:
-        errors.append(ValidationError(
-            "last_reviewed", "Last review date not declared (recommended)", "WARNING"
-        ))
+        # Validate lastReviewed is present (warning only)
+        if "lastReviewed" not in spec and "last_reviewed" not in spec:
+            errors.append(ValidationError(
+                "spec.lastReviewed", "Last review date not declared (recommended)", "WARNING"
+            ))
 
     return errors
 
@@ -212,10 +228,16 @@ def check_deps(dir_name: str, repo_root: Path = None) -> dict:
                             import_path = line[start:end]
                             break
 
-                    if import_path and import_path.startswith("../"):
+                    if import_path and (import_path.startswith("../") or import_path.startswith("./")):
                         # Resolve relative path
                         resolved = (ts_file.parent / import_path).resolve()
-                        if not resolved.exists() and not (resolved.parent / (resolved.name + ".ts")).exists():
+                        # For TypeScript ESM imports, .js specifiers resolve to .ts sources
+                        # e.g. "../node/src/bootstrap.js" -> "../node/src/bootstrap.ts"
+                        ts_candidate = resolved.parent / (resolved.stem + ".ts")
+                        tsx_candidate = resolved.parent / (resolved.stem + ".tsx")
+                        if (not resolved.exists()
+                                and not ts_candidate.exists()
+                                and not tsx_candidate.exists()):
                             broken_deps.append({
                                 "file": str(ts_file.relative_to(repo_root)),
                                 "line": line_num,

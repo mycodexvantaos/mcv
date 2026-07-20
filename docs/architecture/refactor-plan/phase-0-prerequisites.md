@@ -264,13 +264,13 @@ touch tooling/.gitkeep runtime-mesh/.gitkeep
 ## 0.3 完成標準
 
 ```
-✅ contracts/schemas/governance/directory-contract.v1.json 已建立
 ✅ tooling/scripts/govctl.py 已建立並可執行
 ✅ tooling/scripts/scan-before-move.py 已建立
 ✅ project-import/ 掃描確認 0 個現役引用
-✅ docs/architecture/refactor-plan/data/package-classification.csv 已產生
-✅ git commit "chore: Phase 0 — refactor tooling and prerequisite scan"
-✅ CI 全綠
+⏳ contracts/schemas/governance/directory-contract.v1.json 尚未建立（待 PR 後續補齊）
+⏳ docs/architecture/refactor-plan/data/package-classification.csv 尚未產生（待執行 classify-packages.py）
+⏳ git commit "chore: Phase 0 — refactor tooling and prerequisite scan"
+⏳ CI 全綠（待前兩項補齊）
 ```
 
 ---

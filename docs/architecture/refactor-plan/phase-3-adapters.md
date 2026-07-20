@@ -93,7 +93,7 @@ The rename to `adapters/` must handle both.
 ### 3.2 Add package.json to category sub-providers
 For `providers/<category>/<category-impl>` dirs that need to be workspace-managed:
 ```bash
-python3 tooling/scripts/scan-before-move.py providers/llm/llm-openai
+python3 tooling/scripts/scan-before-move.py --source providers/llm/llm-openai
 ```
 
 ### 3.3 Execute the rename (only after reading REFACTORING_PLAN.md)
@@ -102,7 +102,7 @@ python3 tooling/scripts/scan-before-move.py providers/llm/llm-openai
 gh api repos/ai-software-engineering-guild/mycodexvantaos/contents/adapters?ref=main
 
 # Scan dependencies before moving
-python3 tooling/scripts/scan-before-move.py providers/
+python3 tooling/scripts/scan-before-move.py --source providers/
 
 # The actual rename would be a series of:
 # git mv providers/<category> adapters/<category>

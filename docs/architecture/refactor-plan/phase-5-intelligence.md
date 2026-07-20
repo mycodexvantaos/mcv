@@ -34,7 +34,7 @@ Check if any cross-language analysis exists.
 
 ### 5.2 Pre-flight scan
 ```bash
-python3 tooling/scripts/scan-before-move.py python/
+python3 tooling/scripts/scan-before-move.py --source python/
 ```
 Check for:
 - CI workflows referencing `python/`

@@ -25,7 +25,7 @@ HEADERS = {
     "User-Agent": "deep-scan-script/1.0",
 }
 if github_token := os.environ.get("GITHUB_TOKEN"):
-    HEADERS["Authorization"] = f"******"
+    HEADERS["Authorization"] = f"Bearer {github_token}"
 DELAY = 0.72 if github_token else 60  # GitHub API rate limits per hour
 
 # ── Helpers ─────────────────────────────────────────────────────────────────
@@ -309,7 +309,7 @@ def main():
 
     out_path = Path(__file__).parent.parent.parent / "docs/architecture/repo-scan-report.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(report, indent=2))
+    out_path.write_text(json.dumps(report, indent=2) + "\n")
     print(f"\n✅ JSON report saved to: {out_path}")
 
     # ── Summary ────────────────────────────────────────────────────────
