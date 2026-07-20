@@ -44,16 +44,16 @@ jobs:
           # Do NOT set any linter to false — super-linter v7 ignores false values
           VALIDATE_GITHUB_ACTIONS: true
           VALIDATE_YAML: true
-          VALIDATE_JSON: true
+          # JSON lint disabled: Super-Linter v7.4 uses ESLint to validate JSON,
+          # but this repo's package.json has "type": "module", which causes
+          # ERR_IMPORT_ATTRIBUTE_MISSING when ESLint tries to load a .json config.
+          # This is a known super-linter limitation (issue #6293, closed as not planned).
+          # JSON formatting is already validated by `pnpm format:check` (prettier),
+          # and JSON schema validity is validated by governance-check / provider
+          # validation workflows. So disabling VALIDATE_JSON here loses no coverage.
           VALIDATE_MARKDOWN: true
           VALIDATE_BASH: true
           VALIDATE_DOCKERFILE_HADOLINT: true
-
-          # ESLint config for JSON linting — use .json extension (not .yml) to avoid
-          # ERR_UNKNOWN_FILE_EXTENSION when package.json has "type": "module".
-          # This legacy config is scoped to super-linter's JSON validation only;
-          # it does NOT affect the repo's primary flat config (eslint.config.js).
-          JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.json
 
           # Shellcheck options — suppress false positives for GitHub Actions env vars.
           # Full exclusion set preserved from main (do NOT reduce without audit).
