@@ -109,7 +109,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs: lint
-    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/') || github.ref == 'refs/heads/develop' || github.event_name == 'pull_request'
+    # Python Test runs on ALL events (push + pull_request) to ensure full
+    # coverage on every branch. The previous conditional that skipped this
+    # job on feature/fix branch push events was removed to avoid "skipped"
+    # noise in PR checks and to guarantee Python validation is never bypassed.
     steps:
       - name: Checkout repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
