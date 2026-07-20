@@ -107,10 +107,11 @@ def validate_contract(contract_path: Path) -> list[ValidationError]:
         if field not in data:
             errors.append(ValidationError(field, f"Required field '{field}' is missing", "ERROR"))
 
-    # Validate apiVersion
+    # Validate apiVersion — must match exact pattern mycodexvantaos.io/v<N>
     if "apiVersion" in data:
         api_version = str(data["apiVersion"])
-        if not api_version.startswith("mycodexvantaos.io/"):
+        import re as _re
+        if not _re.fullmatch(r"mycodexvantaos\.io/v\d+", api_version):
             errors.append(ValidationError(
                 "apiVersion", f"Expected 'mycodexvantaos.io/v<N>', got '{api_version}'", "ERROR"
             ))
