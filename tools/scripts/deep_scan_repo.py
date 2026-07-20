@@ -65,18 +65,23 @@ class _ApiError(Exception):
 class RemoteScanner:
     """Scan a GitHub repository via REST API (optional, network-dependent)."""
 
+    # GitHub rate limits: authenticated = 5000 req/hr (~0.72 s/req),
+    # unauthenticated = 60 req/hr (60 s/req).
+    _AUTHED_DELAY_S = 0.72
+    _UNAUTHED_DELAY_S = 60.0
+
     def __init__(
         self,
         org: str,
         repo: str,
         branch: str = "main",
         token: str | None = None,
-        fail_on_error: bool = True,
+        ignore_errors: bool = False,
     ) -> None:
         self.org = org
         self.repo = repo
         self.branch = branch
-        self.fail_on_error = fail_on_error
+        self.ignore_errors = ignore_errors
         self._incomplete = False  # set when a non-fatal error is swallowed
         self._base = f"https://api.github.com/repos/{org}/{repo}/contents"
         self._headers: dict[str, str] = {
@@ -86,14 +91,14 @@ class RemoteScanner:
         }
         if token:
             self._headers["Authorization"] = "Bearer " + token
-        self._delay = 0.72 if token else 60  # respect GitHub rate limits
+        self._delay = self._AUTHED_DELAY_S if token else self._UNAUTHED_DELAY_S
 
     def _gh_get(self, rel_path: str) -> list | dict | None:
         """Perform a single GitHub API request.
 
         Returns parsed JSON on success, None on 404.
         Raises _ApiError for other HTTP failures.
-        Raises SystemExit (via _handle_api_error) when fail_on_error=True.
+        Raises SystemExit (via _handle_api_error) when ignore_errors=False.
         """
         url = (
             f"{self._base}/{rel_path}?ref={self.branch}"
@@ -108,22 +113,22 @@ class RemoteScanner:
             if exc.code == 404:
                 return None
             self._handle_api_error(_ApiError(exc.code, rel_path))
-            return None  # reached only when fail_on_error=False
+            return None  # reached only when ignore_errors=True
         except Exception as exc:
             print(f"  Network error for {rel_path}: {exc}", file=sys.stderr)
             self._handle_api_error(_ApiError(0, rel_path))
             return None
 
     def _handle_api_error(self, err: _ApiError) -> None:
-        """Propagate or record an API error depending on fail_on_error."""
-        if self.fail_on_error:
+        """Propagate or record an API error depending on ignore_errors."""
+        if not self.ignore_errors:
             print(
-                f"  FATAL: {err}. Use --no-fail-on-error to treat as empty "
+                f"  FATAL: {err}. Use --ignore-errors to treat as empty "
                 f"(results will be incomplete).",
                 file=sys.stderr,
             )
             sys.exit(2)
-        # Non-fatal: mark report as incomplete and continue
+        # Errors ignored: mark report as incomplete and continue
         print(
             f"  WARNING: {err} — directory treated as empty; "
             f"report may be incomplete.",
@@ -318,10 +323,10 @@ def main() -> None:
     parser.add_argument("--repo-name", default="mycodexvantaos")
     parser.add_argument("--branch", default="main")
     parser.add_argument(
-        "--no-fail-on-error",
-        dest="fail_on_error",
-        action="store_false",
-        default=True,
+        "--ignore-errors",
+        dest="ignore_errors",
+        action="store_true",
+        default=False,
         help=(
             "In remote mode: treat non-404 API errors as empty directories "
             "instead of exiting. The JSON report will include "
@@ -352,7 +357,7 @@ def main() -> None:
             repo=args.repo_name,
             branch=args.branch,
             token=token,
-            fail_on_error=args.fail_on_error,
+            ignore_errors=args.ignore_errors,
         )
         print(f"Mode: REMOTE (GitHub API, branch={args.branch})")
     else:

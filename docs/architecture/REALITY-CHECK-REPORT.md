@@ -1,7 +1,7 @@
 # Reality-Check Report — Deep Directory Scan
 **Scanned:** 2026-07-18  
 **Branch:** `main` (commit `15afba1a`)  
-**Method:** Authenticated GitHub REST API v3 (scan-deep-repo.py)  
+**Method:** Authenticated GitHub REST API v3 (tools/scripts/deep_scan_repo.py)  
 **Coverage:** packages/ (93 dirs), services/ (51 dirs), modules/ (54 dirs), providers/ (41 items)
 
 ---
