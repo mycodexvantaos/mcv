@@ -4,10 +4,10 @@ govctl.py — MyCodeXvantaOS Governance Control CLI
 Validates directory-contract.yaml files and checks architecture health.
 
 Usage:
-  python3 tooling/scripts/govctl.py validate <directory>
-  python3 tooling/scripts/govctl.py validate-all
-  python3 tooling/scripts/govctl.py check-deps <directory>
-  python3 tooling/scripts/govctl.py status
+  python3 tools/scripts/govctl.py validate <directory>
+  python3 tools/scripts/govctl.py validate-all
+  python3 tools/scripts/govctl.py check-deps <directory>
+  python3 tools/scripts/govctl.py status
 """
 
 import sys
@@ -334,10 +334,10 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python3 tooling/scripts/govctl.py validate contracts
-  python3 tooling/scripts/govctl.py validate-all
-  python3 tooling/scripts/govctl.py check-deps services
-  python3 tooling/scripts/govctl.py status
+  python3 tools/scripts/govctl.py validate contracts
+  python3 tools/scripts/govctl.py validate-all
+  python3 tools/scripts/govctl.py check-deps services
+  python3 tools/scripts/govctl.py status
         """
     )
 

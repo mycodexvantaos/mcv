@@ -2,7 +2,7 @@
 **Version:** 2.0 (post-scan correction)  
 **Last Updated:** 2026-07-18  
 **Based on:** Deep scan of `main` branch (commit `15afba1a`)  
-**Scan tool:** `tooling/scripts/deep-scan-repo.py` — see `docs/architecture/REALITY-CHECK-REPORT.md`
+**Scan tool:** `tools/scripts/deep_scan_repo.py` — see `docs/architecture/REALITY-CHECK-REPORT.md`
 
 ---
 
@@ -13,7 +13,7 @@ Version 1.0 of this plan was written **before** a thorough scan of the real repo
 **Summary of corrections:**
 - The three-layer pattern (modules/services/packages) **already exists** — it was not something to build
 - `contracts/`, `governance/`, `infra/`, `apps/`, `release/`, `tests/` all **already exist** with content
-- `packages/` has 93 dirs: **33 real libs** + **60 stubs** + **8 domain model packages**
+- `packages/` has 93 dirs: **33 real libs** + **60 stubs** (the 8 domain-model packages are a cross-cutting subset: 2 real + 6 stubs — not an additional third group)
 - `services/` has 51 dirs: **26 container microservices** + **25 TypeScript service libraries**
 - `modules/` has 54 dirs: **ALL YAML manifests**, zero TypeScript code
 - `providers/` has 41 items: **category-organized adapters** with only 5 Cloudflare providers having package.json
@@ -44,10 +44,10 @@ mycodexvantaos/                          68 top-level dirs, 49 CI workflows
 │           ├── src/
 │           └── CHANGELOG.md
 │
-├── packages/  (93 dirs, 3 sub-groups)   ← LAYER 3: Shared Libraries
+├── packages/  (93 dirs, 2 sub-groups)   ← LAYER 3: Shared Libraries
 │   ├── [33 real libs]  connector-*, core, event-bus, policy-engine, etc.
-│   ├── [60 stubs]      index.ts placeholder interfaces (18 match services/)
-│   └── [8 models]      mycodexvantaos-*-model domain packages
+│   └── [60 stubs]      index.ts placeholder interfaces (18 match services/)
+│       └── (includes 8 mycodexvantaos-*-model domain packages: 2 real, 6 stubs)
 │
 ├── providers/  (41 items)               ← LAYER 4: Secondary Adapters
 │   ├── <category>/<category-impl>/      ← organized by domain category
@@ -89,7 +89,7 @@ Given the reality, refactoring work falls into these categories:
 6. **Consolidate data layer** — migrations/ + knowledge-graph/ + vector-store/ → data/
 
 ### Category C: New tooling (low priority)
-7. **Create tooling/** — governance scripts, CI tooling, scan scripts (this directory doesn't exist)
+7. **Add governance scripts to tools/scripts/** — governance scripts, CI tooling, scan scripts (this directory doesn't exist)
 8. **Clarify services/ Type-B** — 25 src-only service libraries: document their role relative to modules/ manifests
 
 ---
@@ -98,7 +98,7 @@ Given the reality, refactoring work falls into these categories:
 
 | Phase | Goal | Status of Target |
 |-------|------|-----------------|
-| Phase 0 | Prerequisites & tooling setup | ✅ `tooling/` scripts being created |
+| Phase 0 | Prerequisites & tooling setup | ✅ `tools/scripts/` scripts added |
 | Phase 1 | contracts/ governance review | ✅ Already exists (15 items) — review only |
 | Phase 2 | governance/ policy review | ✅ Already exists (26 items) — review only |
 | Phase 3 | providers/ → adapters/ rename | ⚠️ REFACTORING_PLAN.md already in providers/ |
@@ -108,7 +108,7 @@ Given the reality, refactoring work falls into these categories:
 | Phase 7 | infra/ normalization | ✅ infra/ already exists |
 | Phase 8 | apps/ completion | ✅ apps/ already has 6 items |
 | Phase 9 | release/ process | ✅ release/ already has 13 items |
-| Phase 10 | tooling/ creation | 🔴 tooling/ does NOT exist |
+| Phase 10 | Governance scripts in tools/scripts/ | ✅ Scripts placed under tools/scripts/ |
 | Phase 11 | tests/ expansion | ✅ tests/ already has 10 items |
 | Phase 12 | docs/ standardization | ✅ docs/ already has 40+ items |
 
@@ -134,7 +134,7 @@ This is the **Spec → Container → SDK** triad. The architecture already enfor
 
 | Directory | Count | Type breakdown |
 |-----------|-------|----------------|
-| packages/ | 93 dirs | 33 real, 60 stubs, 8 models |
+| packages/ | 93 dirs | 33 real, 60 stubs (8 domain-model packages are a subset: 2 real + 6 stubs) |
 | services/ | 51 dirs | 26 Dockerfile, 25 src-only |
 | modules/ | 54 dirs | 54 YAML manifests, 4 also have package.json |
 | providers/ | 41 items | 5 cloudflare real packages + categories |
@@ -157,7 +157,7 @@ This is the **Spec → Container → SDK** triad. The architecture already enfor
 |------|-------------|
 | `docs/architecture/REALITY-CHECK-REPORT.md` | **This is the source of truth** — full scan findings |
 | `docs/architecture/repo-scan-report.json` | Raw JSON scan data for all dirs |
-| `tooling/scripts/deep-scan-repo.py` | Script that produced the scan |
-| `tooling/scripts/govctl.py` | Governance validator CLI |
-| `tooling/scripts/scan-before-move.py` | Pre-flight dependency scanner |
-| `tooling/scripts/classify-packages.py` | Package classifier (needs update based on scan) |
+| `tools/scripts/deep_scan_repo.py` | Script that produced the scan |
+| `tools/scripts/govctl.py` | Governance validator CLI |
+| `tools/scripts/scan_before_move.py` | Pre-flight dependency scanner |
+| `tools/scripts/classify_packages.py` | Package classifier (needs update based on scan) |

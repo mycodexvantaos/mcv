@@ -91,7 +91,7 @@
 }
 ```
 
-### Task 0.2 — 建立驗證工具 `tooling/scripts/govctl.py`
+### Task 0.2 — 建立驗證工具 `tools/scripts/govctl.py`
 
 ```python
 #!/usr/bin/env python3
@@ -165,7 +165,7 @@ if __name__ == "__main__":
         print(__doc__)
 ```
 
-### Task 0.3 — 建立依賴掃描腳本 `tooling/scripts/scan-before-move.py`
+### Task 0.3 — 建立依賴掃描腳本 `tools/scripts/scan_before_move.py`
 
 ```python
 #!/usr/bin/env python3
@@ -239,15 +239,15 @@ grep -r "project-import" . \
 
 ```bash
 # 預先建立各目標目錄（帶 .gitkeep），讓後續 Phase 有地方放檔案
-mkdir -p tooling/{scripts,tools,templates,ci,benchmark}
+mkdir -p tools/scripts
 mkdir -p runtime-mesh/{capability-router,failover-registry,ai-repair-queue}
-touch tooling/.gitkeep runtime-mesh/.gitkeep
+touch tools/scripts/.gitkeep
 ```
 
 ### Task 0.6 — 產生「三層架構分類表」
 
 ```bash
-# 執行 tooling/scripts/classify-packages.py 產生
+# 執行 tools/scripts/classify_packages.py 產生
 # docs/architecture/refactor-plan/data/package-classification.csv
 ```
 
@@ -264,8 +264,8 @@ touch tooling/.gitkeep runtime-mesh/.gitkeep
 ## 0.3 完成標準
 
 ```
-✅ tooling/scripts/govctl.py 已建立並可執行
-✅ tooling/scripts/scan-before-move.py 已建立
+✅ tools/scripts/govctl.py 已建立並可執行
+✅ tools/scripts/scan_before_move.py 已建立
 ✅ project-import/ 掃描確認 0 個現役引用
 ⏳ contracts/schemas/governance/directory-contract.v1.json 尚未建立（待 PR 後續補齊）
 ⏳ docs/architecture/refactor-plan/data/package-classification.csv 尚未產生（待執行 classify-packages.py）
@@ -278,7 +278,7 @@ touch tooling/.gitkeep runtime-mesh/.gitkeep
 ## 0.4 輸出物
 
 - `contracts/schemas/governance/directory-contract.v1.json`
-- `tooling/scripts/govctl.py`
-- `tooling/scripts/scan-before-move.py`
-- `tooling/scripts/classify-packages.py`
+- `tools/scripts/govctl.py`
+- `tools/scripts/scan_before_move.py`
+- `tools/scripts/classify_packages.py`
 - `docs/architecture/refactor-plan/data/package-classification.csv`

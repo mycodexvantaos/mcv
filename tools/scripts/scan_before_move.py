@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-scan-before-move.py — Pre-flight dependency scanner for directory moves.
+scan_before_move.py — Pre-flight dependency scanner for directory moves.
 
 Before moving any directory, run this script to identify:
 1. Which files import from the source directory
@@ -9,10 +9,10 @@ Before moving any directory, run this script to identify:
 4. Whether the move is safe (0 unknown consumers)
 
 Usage:
-  python3 tooling/scripts/scan-before-move.py --source providers/
-  python3 tooling/scripts/scan-before-move.py --source packages/auth --target services/auth
-  python3 tooling/scripts/scan-before-move.py --check-all
-  python3 tooling/scripts/scan-before-move.py --source services/ --check-only
+  python3 tools/scripts/scan_before_move.py --source providers/
+  python3 tools/scripts/scan_before_move.py --source packages/auth --target services/auth
+  python3 tools/scripts/scan_before_move.py --check-all
+  python3 tools/scripts/scan_before_move.py --source services/ --check-only
 """
 
 import sys
@@ -344,10 +344,10 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python3 tooling/scripts/scan-before-move.py --source providers/
-  python3 tooling/scripts/scan-before-move.py --source packages/auth --target services/auth
-  python3 tooling/scripts/scan-before-move.py --check-all
-  python3 tooling/scripts/scan-before-move.py --source services/ --check-only
+  python3 tools/scripts/scan_before_move.py --source providers/
+  python3 tools/scripts/scan_before_move.py --source packages/auth --target services/auth
+  python3 tools/scripts/scan_before_move.py --check-all
+  python3 tools/scripts/scan_before_move.py --source services/ --check-only
         """
     )
 

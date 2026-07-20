@@ -44,13 +44,19 @@ jobs:
           # Do NOT set any linter to false — super-linter v7 ignores false values
           VALIDATE_GITHUB_ACTIONS: true
           VALIDATE_YAML: true
-          # JSON lint disabled: Super-Linter v7.4 uses ESLint to validate JSON,
-          # but this repo's package.json has "type": "module", which causes
-          # ERR_IMPORT_ATTRIBUTE_MISSING when ESLint tries to load a .json config.
-          # This is a known super-linter limitation (issue #6293, closed as not planned).
+          # JSON lint: INTENTIONALLY NOT ENABLED.
+          # The PR description stated that VALIDATE_JSON and .github/linters/.eslintrc.json
+          # would be added. After evaluation, this was found to be infeasible:
+          # Super-Linter v7.4 uses ESLint to validate JSON, but this repo's package.json
+          # has "type": "module", which causes ERR_IMPORT_ATTRIBUTE_MISSING when ESLint
+          # tries to load a .json config. This is a known super-linter limitation
+          # (issue #6293, closed as not planned). A scoped .eslintrc.json cannot
+          # work around the ESM conflict without broader changes to the project config.
           # JSON formatting is already validated by `pnpm format:check` (prettier),
           # and JSON schema validity is validated by governance-check / provider
-          # validation workflows. So disabling VALIDATE_JSON here loses no coverage.
+          # validation workflows. So this omission loses no coverage.
+          # The .github/linters/.eslintrc.json mentioned in the PR description
+          # was therefore not created. See NAMING-CONVENTION-SPEC.md §7 for details.
           VALIDATE_MARKDOWN: true
           VALIDATE_BASH: true
           VALIDATE_DOCKERFILE_HADOLINT: true

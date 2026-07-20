@@ -8,6 +8,11 @@
 **Authority:** Platform Governance (`governance/platform-governance-spec.yaml`)
 **產出依據:** 對真實 repo 的實證深度掃描 + PR #203 CI 失敗的本地重現複驗 + 自我挑戰審查 + PR #204 review 挑戰回應
 
+> **版本說明（PR #204 審查回應）：** PR #204 標題宣告「v1.0 official」，但本文件實際版本為 v1.1.0。
+> 原因：PR 起草時以 v1.0 為標題，但在 code review 挑戰階段吸收了多項事實修正（npm underscore、
+> Google JSON Style Guide、apiVersion domain），版本號因此升至 v1.1.0。
+> 消費者應以本文件的 `**Version:** 1.1.0` 欄位為準，PR 標題中的「v1.0」僅為歷史標籤。
+
 ---
 
 ## 0. 版本定位
@@ -47,7 +52,7 @@
 
 本規範治理：
 
-- **目錄：** `packages/`、`services/`、`modules/`、`providers/`、`apps/`、`infra/`、`contracts/`、`schemas/`、`governance/`、`.github/workflows/`、`tooling/`、`tests/`
+- **目錄：** `packages/`、`services/`、`modules/`、`providers/`、`apps/`、`infra/`、`contracts/`、`schemas/`、`governance/`、`.github/workflows/`、`tools/scripts/`、`tests/`
 - **檔名：** TypeScript、JavaScript、YAML、JSON、Markdown、Python
 - **程式碼識別字：** 變數、函式、類別、介面、型別、列舉
 - **基礎設施：** Kubernetes 資源名、Docker Compose 服務名、Helm values 鍵、環境變數
@@ -297,9 +302,11 @@ Docker:      image names = mycodexvantaos/<service>:<tag> (lowercase, no upperca
 [ENFORCED]   tooling/ 治理腳本須被 workflow 或 pre-commit hook 實際引用，
              並附 pytest 覆蓋；未被引用的腳本視為 dead code，
              不得以「治理工具」名義入庫。
-[NOTE]       PR #204 包含 tooling/scripts/ 下四個腳本，目前尚未有 workflow 引用。
-             此為已知技術債，須於後續 PR 補齊 workflow 整合與 pytest 覆蓋，
-             否則應於合併前移除。本次 PR 保留腳本以供審閱，最終決定由 reviewer 確認。
+[ENFORCED]   Python 治理腳本應存放於 tools/scripts/（AGENTS.md 授權目錄），
+             不得在 repo root 新增 tooling/ 競爭目錄。
+             腳本命名須遵循 Rule 2：snake_case.py（非 kebab-case.py）。
+[NOTE]       PR #204 腳本已遷移至 tools/scripts/ 並重命名為 snake_case。
+             workflow 整合與 pytest 覆蓋為後續 PR 技術債。
 ```
 
 ---
@@ -397,8 +404,9 @@ Priority 3（流程）:
 
 | Value | Status | Notes |
 |-------|--------|-------|
-| `mycodexvantaos.io/v1` | ✅ **現行正確值** | 全部 governance/*.yaml + governance/schemas/*.schema.json 均用此值 |
-| `mycodexvantaos.org/v1` | ❌ **已廢棄** | 本規範 v1.0 誤標為規範值；實際 repo 無此用法 |
+| `mycodexvantaos.io/v1` | ✅ **現行正確值** | 絕大多數 governance/*.yaml + governance/schemas/*.schema.json 均用此值 |
+| `mycodexvantaos.org/v1` | ⚠️ **遺留例外** | `governance/audit/naming-audit-log.yaml` 仍使用 `.org`；為已知遺留異常，應於後續 PR 遷移至 `.io` |
+| `mycodexvantaos.org/v1` (其他) | ❌ **已廢棄** | 本規範 v1.0 誤標為規範值；除上述遺留例外外，實際 repo 無此用法 |
 
 ### B.3 變更歷史
 
@@ -427,7 +435,7 @@ Priority 3（流程）:
   Rule 0（PR 前置驗證）目前由 reviewer 於 PR 描述人工核驗；
   長期應以 .github/workflows/pr-validation.yml 自動核驗 PR 描述含驗證輸出。
 
-  tooling/scripts/ 下四個腳本尚無 workflow 引用及 pytest 覆蓋（技術債，
+  tools/scripts/ 下四個腳本尚無 workflow 引用及 pytest 覆蓋（技術債，
   須於後續 PR 補齊或移除）。
 ```
 

@@ -90,9 +90,6 @@ INFRA_LIB_PATTERNS = [
 # Packages that must be moved last (highest dependency count)
 HOLD_PACKAGES = {"runtime"}
 
-# Packages already moved in Phase 1
-ALREADY_MOVED_PACKAGES = {"core", "ports", "contracts-sdk", "mycodexvantaos-contracts-sdk"}
-
 
 def count_dependents(pkg_name: str, repo_root: Path) -> int:
     """Count how many package.json files list this package as a dependency."""
@@ -190,12 +187,10 @@ def has_k8s_manifests(dir_path: Path) -> bool:
 def classify_package(pkg_info: PackageInfo) -> tuple[str, str, str]:
     """
     Classify a package and return (classification, target, notes).
+    Migration state is derived from actual repository content, not a
+    static list — if a package still exists here it has not been moved.
     """
     base_name = Path(pkg_info.path).name
-
-    # Already moved in Phase 1
-    if base_name in ALREADY_MOVED_PACKAGES:
-        return "already_moved", "contracts/", "Moved in Phase 1"
 
     # Hold packages (move last)
     if base_name in HOLD_PACKAGES or pkg_info.is_held:
@@ -328,9 +323,11 @@ def print_summary(all_packages: list[PackageInfo]) -> None:
     print()
     print("  Classification breakdown:")
     print(f"    business_logic   → services/:           {counts['business_logic']}")
+    print(f"    client_sdk_stub  → providers/:          {counts['client_sdk_stub']}")
+    print(f"    infrastructure_lib → packages/ (stay): {counts['infrastructure_lib']}")
+    print(f"    unmatched_stub   → packages/ (review): {counts['unmatched_stub']}")
     print(f"    deployment_stub  → infra/deployments/:  {counts['deployment_stub']}")
     print(f"    yaml_manifest    → contracts/:          {counts['yaml_manifest']}")
-    print(f"    already_moved    → contracts/ (done):   {counts['already_moved']}")
     print(f"    hold             → services/ (last):    {counts['hold']}")
     print(f"    review_needed    → manual review:       {counts['review_needed']}")
     print()

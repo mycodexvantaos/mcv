@@ -82,7 +82,12 @@ Full list of 25:
 
 ---
 
-## 4. `packages/` — 93 dirs, THREE distinct sub-groups
+## 4. `packages/` — 93 dirs, two sub-groups (plus a cross-cutting domain-model subset)
+
+> **Note on counts:** The 93 directories split into 33 real packages + 60 stubs (33 + 60 = 93).
+> The 8 domain-model packages below are a **cross-cutting subset** already counted within those totals
+> (2 are real, 6 are stubs) — they are not a separate third group. Totaling 33 + 60 + 8 would
+> overcount to 101.
 
 ### Group 1: Shared Infrastructure Libraries (33 dirs, REAL TypeScript code)
 
@@ -144,7 +149,12 @@ These have real `src/` code beyond just `index.ts`, real dep counts (typically 8
 
 **Interpretation:** These 18 stub packages in `packages/` appear to be **TypeScript client SDKs or interfaces** intended to be consumed by applications that need to call the corresponding container service. The stub pattern (index.ts only, deps=5) suggests they are generated or planned port interfaces — not yet implemented.
 
-### Group 3: Domain Model Packages (8 dirs, `mycodexvantaos-` prefix)
+### Cross-cutting subset: Domain Model Packages (8 dirs, `mycodexvantaos-` prefix)
+
+> These 8 packages are **already included** in the Group 1 (real) and Group 2 (stub) totals above —
+> `mycodexvantaos-contracts-sdk` and `mycodexvantaos-policy-model` appear in Group 1 (real),
+> and the remaining 6 appear in Group 2 (stubs). They are highlighted here because they share
+> a naming convention and architectural role, not because they form a disjoint third group.
 
 ```
 packages/mycodexvantaos-audit-model       STUB  @mycodexvantaos/audit-model
@@ -310,7 +320,7 @@ packages:
 | `tests/` | ✅ | 10 items | integration/, governance/, architecture/ already exist |
 | `docs/` | ✅ | 40+ items | Already exists |
 | `python/` | ✅ | 8 items | apps, packages, pyproject.toml, tests, uv.lock |
-| `tooling/` | ❌ | — | Does NOT exist → valid target for Phase 10 |
+| `tooling/` | ❌ | — | Does NOT exist — scripts now placed under `tools/scripts/` (Phase 10 complete) |
 | `intelligence/` | ❌ | — | Does NOT exist → valid target for Phase 5 (python/ rename) |
 | `data/` | ❌ | — | Does NOT exist → valid target for Phase 6 consolidation |
 | `adapters/` | ⚠️ | 1 item only | Has `cloudflare` subdir; rest still in `providers/` |
