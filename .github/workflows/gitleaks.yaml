@@ -36,8 +36,12 @@ jobs:
           tar -xzf "gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
 
       - name: Run Gitleaks
+        # Use a non-zero exit code so the workflow FAILS when secrets are detected.
+        # The previous `--exit-code 0 || true` made this scan a no-op that could
+        # never block a leak (root cause of PR #203's live PAT going undetected).
+        # SARIF upload below runs unconditionally via `if: always()`.
         run: |
-          ./gitleaks detect --source . --report-format sarif --report-path gitleaks-report.sarif --exit-code 0 || true
+          ./gitleaks detect --source . --report-format sarif --report-path gitleaks-report.sarif --exit-code 1
 
       - name: Upload Gitleaks SARIF report
         uses: github/codeql-action/upload-sarif@v3
