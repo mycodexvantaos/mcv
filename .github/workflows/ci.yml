@@ -109,7 +109,15 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs: lint
-    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/') || github.ref == 'refs/heads/develop' || github.event_name == 'pull_request'
+    # Run on pull_request events and on push to protected branches (main,
+    # release/*, develop). Feature and fix branch pushes are excluded here
+    # because an open PR for that branch already triggers a pull_request run,
+    # which would cause the suite to execute twice for each PR commit.
+    if: >-
+      github.event_name == 'pull_request' ||
+      github.ref == 'refs/heads/main' ||
+      github.ref == 'refs/heads/develop' ||
+      startsWith(github.ref, 'refs/heads/release/')
     steps:
       - name: Checkout repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
