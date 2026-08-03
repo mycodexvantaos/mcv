@@ -484,44 +484,477 @@ export async function emitEvent(
 // ─────────────────────────────────────────────────────────────────────────────
 // Web Crypto API helpers — PBKDF2 password hashing + HMAC-SHA256 token signing.
 // Using the global Web Crypto API (crypto.subtle) ensures Cloudflare Workers
-// compatibility. These are implemented in Story 1B-S2; stubs throw here.
+// compatibility. No Node.js-specific crypto module is used for these operations.
 // ─────────────────────────────────────────────────────────────────────────────
+
+/** PBKDF2 iteration count (OWASP 2023 recommendation ≥ 600,000 for PBKDF2-SHA256). */
+const PBKDF2_ITERATIONS = 600_000;
+/** Salt length in bytes (NIST SP 800-132 recommends ≥ 16 bytes). */
+const SALT_BYTES = 16;
+/** PBKDF2 derived key length in bits. */
+const PBKDF2_KEY_BITS = 256;
+
+/** Hex encoding/decoding helpers (works in both Node and Workers). */
+function toHex(bytes: ArrayBuffer | Uint8Array): string {
+  const view = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
+  return Array.from(view)
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+function fromHex(hex: string): Uint8Array<ArrayBuffer> {
+  const buffer = new ArrayBuffer(hex.length / 2);
+  const bytes = new Uint8Array(buffer);
+  for (let i = 0; i < bytes.length; i++) {
+    bytes[i] = parseInt(hex.substring(i * 2, i * 2 + 2), 16);
+  }
+  return bytes;
+}
+
+/** Base64 URL encoding (no padding) — for token payloads/signatures. */
+function toBase64Url(bytes: ArrayBuffer | Uint8Array): string {
+  const view = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
+  let binary = '';
+  for (const b of view) {
+    binary += String.fromCharCode(b);
+  }
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+function fromBase64Url(str: string): Uint8Array<ArrayBuffer> {
+  const padded = str.replace(/-/g, '+').replace(/_/g, '/');
+  const binary = atob(padded);
+  const buffer = new ArrayBuffer(binary.length);
+  const bytes = new Uint8Array(buffer);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return bytes;
+}
+
+/**
+ * Hash a password using PBKDF2-SHA256 via the Web Crypto API.
+ * Returns { hash, salt, iterations } all hex-encoded.
+ */
+async function hashPassword(
+  password: string,
+): Promise<{ hash: string; salt: string; iterations: number }> {
+  const salt = crypto.getRandomValues(new Uint8Array(SALT_BYTES));
+  const keyMaterial = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(password),
+    { name: 'PBKDF2' },
+    false,
+    ['deriveBits'],
+  );
+  const derivedBits = await crypto.subtle.deriveBits(
+    {
+      name: 'PBKDF2',
+      salt,
+      iterations: PBKDF2_ITERATIONS,
+      hash: 'SHA-256',
+    },
+    keyMaterial,
+    PBKDF2_KEY_BITS,
+  );
+  return {
+    hash: toHex(derivedBits),
+    salt: toHex(salt),
+    iterations: PBKDF2_ITERATIONS,
+  };
+}
+
+/**
+ * Verify a password against a stored PBKDF2 hash + salt.
+ * Constant-time comparison via timing-safe equal on equal-length buffers.
+ */
+async function verifyPassword(
+  password: string,
+  storedHash: string,
+  storedSalt: string,
+  iterations: number,
+): Promise<boolean> {
+  const salt = fromHex(storedSalt);
+  const keyMaterial = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(password),
+    { name: 'PBKDF2' },
+    false,
+    ['deriveBits'],
+  );
+  const derivedBits = await crypto.subtle.deriveBits(
+    {
+      name: 'PBKDF2',
+      salt,
+      iterations,
+      hash: 'SHA-256',
+    },
+    keyMaterial,
+    PBKDF2_KEY_BITS,
+  );
+  const computed = toHex(derivedBits);
+  if (computed.length !== storedHash.length) {
+    return false;
+  }
+  // Constant-time comparison
+  let diff = 0;
+  for (let i = 0; i < computed.length; i++) {
+    diff |= computed.charCodeAt(i) ^ storedHash.charCodeAt(i);
+  }
+  return diff === 0;
+}
+
+/**
+ * Sign a token payload using HMAC-SHA256 via the Web Crypto API.
+ * Returns a compact JWT-like string: base64url(payload).base64url(signature).
+ */
+async function signToken(
+  payload: TokenClaims & { type: 'access' | 'refresh' },
+): Promise<string> {
+  const key = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(_getSigningKey()),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign'],
+  );
+  const payloadB64 = toBase64Url(
+    new TextEncoder().encode(JSON.stringify(payload)),
+  );
+  const signature = await crypto.subtle.sign(
+    'HMAC',
+    key,
+    new TextEncoder().encode(payloadB64),
+  );
+  return `${payloadB64}.${toBase64Url(signature)}`;
+}
+
+/**
+ * Verify a token's signature and return its decoded payload, or null if
+ * the signature is invalid. Expiry is checked by the caller (validateToken).
+ * Exported so Story 1B-S3's validateToken can reuse it.
+ */
+export async function verifyTokenSignature(
+  token: string,
+): Promise<(TokenClaims & { type: 'access' | 'refresh' }) | null> {
+  const parts = token.split('.');
+  if (parts.length !== 2) {
+    return null;
+  }
+  const [payloadB64, signatureB64] = parts;
+  const key = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(_getSigningKey()),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['verify'],
+  );
+  const valid = await crypto.subtle.verify(
+    'HMAC',
+    key,
+    fromBase64Url(signatureB64),
+    new TextEncoder().encode(payloadB64),
+  );
+  if (!valid) {
+    return null;
+  }
+  try {
+    const payload = JSON.parse(
+      new TextDecoder().decode(fromBase64Url(payloadB64)),
+    ) as TokenClaims & { type: 'access' | 'refresh' };
+    return payload;
+  } catch {
+    return null;
+  }
+}
 
 class NotImplementedError extends Error {
   constructor(capability: string) {
-    super(`Capability '${capability}' is not implemented yet (Story 1B-S2/S3)`);
+    super(`Capability '${capability}' is not implemented yet (Story 1B-S3)`);
     this.name = 'NotImplementedError';
   }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Capability: auth.register (1B-05) — implemented in Story 1B-S2
+// Internal: create a session + token pair for a subject.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Issue a new session with access + refresh tokens for a subject.
+ * Records the session, appends an audit entry, and emits session.created.
+ */
+async function issueSession(
+  subject: IdentitySubject,
+  workspaceId: string | null,
+): Promise<TokenPair> {
+  const now = Math.floor(Date.now() / 1000);
+  const sessionId = generateId('ses');
+  const refreshTokenId = generateId('rft');
+  const accessExpiresAt = now + DEFAULT_ACCESS_TOKEN_TTL_SECONDS;
+  const refreshExpiresAt = now + DEFAULT_REFRESH_TOKEN_TTL_SECONDS;
+
+  const baseClaims = {
+    subjectId: subject.id,
+    email: subject.email,
+    role: subject.role,
+    workspaceId,
+    sessionId,
+    issuedAt: now,
+  };
+
+  const accessToken = await signToken({
+    ...baseClaims,
+    expiresAt: accessExpiresAt,
+    type: 'access',
+  });
+  const refreshToken = await signToken({
+    ...baseClaims,
+    expiresAt: refreshExpiresAt,
+    type: 'refresh',
+  });
+
+  const session: Session = {
+    sessionId,
+    subjectId: subject.id,
+    createdAt: new Date(now * 1000).toISOString(),
+    expiresAt: new Date(refreshExpiresAt * 1000).toISOString(),
+    revokedAt: null,
+    refreshTokenId,
+    workspaceId,
+  };
+  sessions.set(sessionId, session);
+
+  _appendAuditEntry(
+    'auth.session-created',
+    subject.id,
+    subject.id,
+    { sessionId, workspaceId, accessExpiresAt },
+  );
+
+  await emitEvent(IDENTITY_EVENTS.SESSION_CREATED, {
+    subjectId: subject.id,
+    sessionId,
+    workspaceId,
+  });
+
+  return {
+    accessToken,
+    refreshToken,
+    expiresIn: DEFAULT_ACCESS_TOKEN_TTL_SECONDS,
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Capability: auth.register (1B-05)
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Register a new identity subject.
  * Contract: identity.yaml → capabilities[0] auth.register
+ *
+ * Flow:
+ *   1. Validate email format + password length (≥ 8) + display name.
+ *   2. Reject duplicate email.
+ *   3. Hash password with PBKDF2-SHA256 (Web Crypto API).
+ *   4. Create subject in 'creating' → 'active' lifecycle.
+ *   5. Issue session + token pair.
+ *   6. Audit-log + emit identity.subject.registered.
  */
 export async function registerSubject(
   req: RegisterRequest,
 ): Promise<RegisterResponse> {
-  void req;
-  throw new NotImplementedError('auth.register');
+  // Validate inputs
+  if (!req.email || !req.email.includes('@')) {
+    throw new Error('auth.register: invalid email');
+  }
+  if (!req.password || req.password.length < 8) {
+    throw new Error('auth.register: password must be at least 8 characters');
+  }
+  if (!req.displayName || req.displayName.length < 1) {
+    throw new Error('auth.register: displayName is required');
+  }
+  if (req.displayName.length > 128) {
+    throw new Error('auth.register: displayName must be ≤ 128 characters');
+  }
+
+  // Check for duplicate email (case-insensitive)
+  const emailLower = req.email.toLowerCase();
+  for (const subject of subjects.values()) {
+    if (subject.email.toLowerCase() === emailLower) {
+      throw new Error('auth.register: email already registered');
+    }
+  }
+
+  // Hash password
+  const { hash, salt, iterations } = await hashPassword(req.password);
+
+  // Create subject
+  const subjectId = generateId('sub');
+  const now = new Date().toISOString();
+  const role: IdentityRole = req.role ?? 'workspace-viewer';
+  const subject: IdentitySubject = {
+    id: subjectId,
+    urn: `urn:mycodexvantaos:core:resource:identity-subject:${subjectId}`,
+    email: req.email,
+    displayName: req.displayName,
+    role,
+    status: 'creating',
+    metadata: req.metadata ?? {},
+    createdAt: now,
+    updatedAt: now,
+    workspaceRoles: {},
+  };
+  subjects.set(subjectId, subject);
+
+  // Store credential
+  const credential: CredentialRecord = {
+    subjectId,
+    hash,
+    salt,
+    iterations,
+    algorithm: 'PBKDF2-SHA256',
+    createdAt: now,
+  };
+  credentials.set(subjectId, credential);
+
+  // Transition creating → active
+  subject.status = 'active';
+  subject.updatedAt = new Date().toISOString();
+
+  // Audit + emit
+  _appendAuditEntry('auth.register', subjectId, subjectId, {
+    email: req.email,
+    displayName: req.displayName,
+    role,
+  });
+  await emitEvent(IDENTITY_EVENTS.SUBJECT_REGISTERED, {
+    subjectId,
+    email: req.email,
+    displayName: req.displayName,
+    role,
+  });
+
+  // Issue session + token pair
+  const tokenPair = await issueSession(subject, null);
+
+  return { subject, tokenPair };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Capability: auth.authenticate (1B-06) — implemented in Story 1B-S2
+// Capability: auth.authenticate (1B-06)
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Authenticate a subject and issue a token pair.
  * Contract: identity.yaml → capabilities[1] auth.authenticate
+ *
+ * Flow:
+ *   1. Look up subject by email (case-insensitive).
+ *   2. Verify password against stored PBKDF2 hash.
+ *   3. Reject if subject not found, password wrong, or status not active.
+ *   4. Issue session + token pair.
+ *   5. Audit-log + emit identity.subject.authenticated or authentication-failed.
  */
 export async function authenticateSubject(
   req: AuthenticateRequest,
 ): Promise<AuthenticateResponse> {
-  void req;
-  throw new NotImplementedError('auth.authenticate');
+  if (!req.email || !req.password) {
+    throw new Error('auth.authenticate: email and password are required');
+  }
+
+  // Look up subject by email (case-insensitive)
+  const emailLower = req.email.toLowerCase();
+  let subject: IdentitySubject | undefined;
+  for (const s of subjects.values()) {
+    if (s.email.toLowerCase() === emailLower) {
+      subject = s;
+      break;
+    }
+  }
+
+  // Subject not found → emit auth-failed (do not leak existence)
+  if (!subject) {
+    _appendAuditEntry(
+      'auth.authenticate-failed',
+      'unknown',
+      null,
+      { email: req.email, reason: 'subject-not-found' },
+    );
+    await emitEvent(IDENTITY_EVENTS.SUBJECT_AUTHENTICATION_FAILED, {
+      email: req.email,
+      reason: 'subject-not-found',
+    });
+    throw new Error('auth.authenticate: invalid credentials');
+  }
+
+  // Verify password
+  const credential = credentials.get(subject.id);
+  if (!credential) {
+    _appendAuditEntry(
+      'auth.authenticate-failed',
+      subject.id,
+      subject.id,
+      { email: req.email, reason: 'missing-credential' },
+    );
+    await emitEvent(IDENTITY_EVENTS.SUBJECT_AUTHENTICATION_FAILED, {
+      subjectId: subject.id,
+      email: req.email,
+      reason: 'missing-credential',
+    });
+    throw new Error('auth.authenticate: invalid credentials');
+  }
+
+  const passwordValid = await verifyPassword(
+    req.password,
+    credential.hash,
+    credential.salt,
+    credential.iterations,
+  );
+
+  if (!passwordValid) {
+    _appendAuditEntry(
+      'auth.authenticate-failed',
+      subject.id,
+      subject.id,
+      { email: req.email, reason: 'wrong-password' },
+    );
+    await emitEvent(IDENTITY_EVENTS.SUBJECT_AUTHENTICATION_FAILED, {
+      subjectId: subject.id,
+      email: req.email,
+      reason: 'wrong-password',
+    });
+    throw new Error('auth.authenticate: invalid credentials');
+  }
+
+  // Check subject is in an active-like state
+  if (subject.status !== 'active' && subject.status !== 'updating') {
+    _appendAuditEntry(
+      'auth.authenticate-failed',
+      subject.id,
+      subject.id,
+      { email: req.email, reason: `status-${subject.status}` },
+    );
+    await emitEvent(IDENTITY_EVENTS.SUBJECT_AUTHENTICATION_FAILED, {
+      subjectId: subject.id,
+      email: req.email,
+      reason: `status-${subject.status}`,
+    });
+    throw new Error(`auth.authenticate: subject status is '${subject.status}'`);
+  }
+
+  // Success → issue session + token pair
+  const tokenPair = await issueSession(subject, null);
+
+  _appendAuditEntry('auth.authenticate', subject.id, subject.id, {
+    email: req.email,
+    sessionId: tokenPair.accessToken,
+  });
+  await emitEvent(IDENTITY_EVENTS.SUBJECT_AUTHENTICATED, {
+    subjectId: subject.id,
+    email: req.email,
+  });
+
+  return { tokenPair, subjectId: subject.id };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
