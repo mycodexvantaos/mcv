@@ -2,7 +2,7 @@
 
 echo "🔧 開始修復 TypeScript 錯誤..."
 
-cd /workspace/mycodexvantaos
+cd /workspace/mycodexvantaos || exit 1
 
 # 1. 修復 connector-auth/src/index.ts - MapIterator.find 問題
 if [ -f "packages/connector-auth/src/index.ts" ]; then

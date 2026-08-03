@@ -102,10 +102,12 @@ jobs:
 
       - name: Install and run Trivy
         run: |
-          sudo apt-get update && sudo apt-get install -y wget apt-transport-https gnupg lsb-release
-          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
-          echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/trivy.list
-          sudo apt-get update && sudo apt-get install -y trivy
+          # Install Trivy via direct binary download (avoids deprecated apt-key + apt repo issues).
+          TRIVY_VERSION="0.55.0"
+          wget -q "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz" -O /tmp/trivy.tar.gz
+          tar -xzf /tmp/trivy.tar.gz -C /tmp trivy
+          sudo mv /tmp/trivy /usr/local/bin/trivy
+          trivy --version
           trivy fs --format sarif --output trivy-results.sarif --severity CRITICAL,HIGH,MEDIUM,LOW,INFO --exit-code 0 --skip-dirs node_modules,dist,build,.next,vendor,project-import .
 
       - name: Upload Trivy SARIF
@@ -198,24 +200,22 @@ jobs:
           LOG_LEVEL: NOTICE
           VALIDATE_GITHUB_ACTIONS: true
           VALIDATE_YAML: true
-          VALIDATE_JSON: true
+          # JSON lint: INTENTIONALLY NOT ENABLED (same rationale as super-linter.yml).
+          # Super-Linter v7.4 uses ESLint for JSON, but this repo's package.json has
+          # "type": "module", causing ERR_IMPORT_ATTRIBUTE_MISSING. JSON formatting
+          # is validated by pnpm format:check (prettier) and governance workflows.
           VALIDATE_MARKDOWN: true
           VALIDATE_BASH: true
           VALIDATE_DOCKERFILE_HADOLINT: true
-          FILTER_REGEX_EXCLUDE: |
-            node_modules/.*
-            dist/.*
-            build/.*
-            coverage/.*
-            .next/.*
-            vendor/.*
-            pnpm-lock\.yaml
-            package-lock\.json
-            yarn\.lock
-            python/\.coverage.*
-            project-import/.*
-            todo\.md
-            packages/jsonata/.*
+
+          # Shellcheck options — align with PR-level super-linter.yml exclusions.
+          SHELLCHECK_OPTS: "--exclude=SC2086,SC2034,SC2317,SC2148,SC2016,SC2162,SC2129,SC2164"
+
+          # Exclude generated / vendored / data directories.
+          # IMPORTANT: Keep this as a SINGLE-LINE regex. Multi-line YAML `|`
+          # folding converts newlines to spaces, which alters regex semantics
+          # and silently drops exclusion patterns. Aligned with super-linter.yml.
+          FILTER_REGEX_EXCLUDE: "node_modules/.*|dist/.*|build/.*|coverage/.*|\\.next/.*|vendor/.*|pnpm-lock\\.yaml|package-lock\\.json|yarn\\.lock|python/\\.coverage.*|project-import/.*|todo\\.md|\\.ai/.*|packages/jsonata/.*|infra/helm/.*/templates/.*|argocd/.*"
 
   # -- Audit Summary ----------------------------------------------
   audit-summary:
