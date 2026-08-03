@@ -668,13 +668,6 @@ export async function verifyTokenSignature(
   }
 }
 
-class NotImplementedError extends Error {
-  constructor(capability: string) {
-    super(`Capability '${capability}' is not implemented yet (Story 1B-S3)`);
-    this.name = 'NotImplementedError';
-  }
-}
-
 // ─────────────────────────────────────────────────────────────────────────────
 // Internal: create a session + token pair for a subject.
 // ─────────────────────────────────────────────────────────────────────────────
@@ -958,88 +951,284 @@ export async function authenticateSubject(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Capability: auth.validate-token (1B-07) — implemented in Story 1B-S3
+// Capability: auth.validate-token (1B-07)
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Validate an access token and return its claims.
  * Contract: identity.yaml → capabilities[2] auth.validate-token
  * Port:     IIdentityPort.validateToken
+ *
+ * Flow:
+ *   1. Verify HMAC-SHA256 signature (via verifyTokenSignature).
+ *   2. Check token type is 'access'.
+ *   3. Check expiry (expiresAt > now).
+ *   4. Check session is not revoked.
+ *   5. Return TokenClaims.
  */
 export async function validateToken(
   accessToken: string,
 ): Promise<TokenClaims> {
-  void accessToken;
-  throw new NotImplementedError('auth.validate-token');
+  const payload = await verifyTokenSignature(accessToken);
+  if (!payload) {
+    throw new Error('auth.validate-token: invalid token signature');
+  }
+  if (payload.type !== 'access') {
+    throw new Error('auth.validate-token: not an access token');
+  }
+  const now = Math.floor(Date.now() / 1000);
+  if (payload.expiresAt <= now) {
+    throw new Error('auth.validate-token: token expired');
+  }
+  // Check session not revoked
+  const session = sessions.get(payload.sessionId);
+  if (session && session.revokedAt !== null) {
+    throw new Error('auth.validate-token: session revoked');
+  }
+  // Strip the internal 'type' field before returning
+  const { type: _type, ...claims } = payload;
+  void _type;
+  return claims;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Capability: auth.revoke-session (1B-08) — implemented in Story 1B-S3
+// Capability: auth.revoke-session (1B-08)
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Revoke a session by session ID.
  * Contract: identity.yaml → capabilities[3] auth.revoke-session
+ *
+ * Marks the session as revoked (sets revokedAt) rather than deleting it, so the
+ * audit trail is preserved. Subsequent validateToken calls for this session fail.
  */
 export async function revokeSession(
   sessionId: string,
 ): Promise<RevokeSessionResponse> {
-  void sessionId;
-  throw new NotImplementedError('auth.revoke-session');
+  const session = sessions.get(sessionId);
+  if (!session) {
+    _appendAuditEntry('auth.revoke-session-failed', 'system', null, {
+      sessionId,
+      reason: 'session-not-found',
+    });
+    return { revoked: false };
+  }
+  if (session.revokedAt !== null) {
+    // Already revoked — idempotent
+    return { revoked: true };
+  }
+  session.revokedAt = new Date().toISOString();
+  sessions.set(sessionId, session);
+
+  _appendAuditEntry('auth.revoke-session', session.subjectId, session.subjectId, {
+    sessionId,
+  });
+  await emitEvent(IDENTITY_EVENTS.SESSION_REVOKED, {
+    subjectId: session.subjectId,
+    sessionId,
+  });
+
+  return { revoked: true };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Capability: auth.check-permission (1B-09) — implemented in Story 1B-S3
+// Capability: auth.check-permission (1B-09)
 // ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Role hierarchy: higher index = more permissions.
+ * platform-admin > workspace-owner > workspace-member > workspace-viewer
+ * agent-service and auditor are specialized roles.
+ */
+const ROLE_PRECEDENCE: Record<IdentityRole, number> = {
+  'workspace-viewer': 1,
+  'workspace-member': 2,
+  'auditor': 2,
+  'workspace-owner': 3,
+  'agent-service': 2,
+  'platform-admin': 4,
+};
+
+/**
+ * RBAC permission matrix derived from contracts/resource-kinds/user.yaml
+ * permissions. Maps action → minimum role required.
+ * platform-admin implicitly satisfies all actions.
+ */
+const ACTION_MIN_ROLE: Record<string, IdentityRole> = {
+  read: 'workspace-viewer',
+  write: 'workspace-member',
+  delete: 'workspace-owner',
+  admin: 'platform-admin',
+};
 
 /**
  * Check whether a subject may perform an action on a resource (RBAC).
  * Contract: identity.yaml → capabilities[4] auth.check-permission
  * Port:     IIdentityPort.checkPermission
+ *
+ * Resolution:
+ *   1. Resolve the subject's effective role (platform role or workspace override).
+ *   2. Look up the minimum role required for the action.
+ *   3. Compare role precedence — allowed if subject role ≥ required role.
+ *   4. platform-admin is always allowed.
  */
 export async function checkPermission(
   req: CheckPermissionRequest,
 ): Promise<PolicyDecision> {
-  void req;
-  throw new NotImplementedError('auth.check-permission');
+  const subject = subjects.get(req.subjectId);
+  if (!subject) {
+    return {
+      allowed: false,
+      reason: 'subject not found',
+      subjectId: req.subjectId,
+      action: req.action,
+      resourceUrn: req.resourceUrn,
+      workspaceId: req.workspaceId ?? null,
+      resolvedRole: null,
+    };
+  }
+
+  // Resolve effective role
+  const effectiveRole = resolveEffectiveRole(subject, req.workspaceId ?? null);
+
+  // platform-admin bypasses all checks
+  if (effectiveRole === 'platform-admin') {
+    _appendAuditEntry(
+      'auth.check-permission',
+      req.subjectId,
+      req.subjectId,
+      { action: req.action, resourceUrn: req.resourceUrn, allowed: true, role: effectiveRole },
+    );
+    return {
+      allowed: true,
+      reason: 'platform-admin access',
+      subjectId: req.subjectId,
+      action: req.action,
+      resourceUrn: req.resourceUrn,
+      workspaceId: req.workspaceId ?? null,
+      resolvedRole: effectiveRole,
+    };
+  }
+
+  // Check subject is in an active-like state
+  if (subject.status !== 'active' && subject.status !== 'updating') {
+    return {
+      allowed: false,
+      reason: `subject status is '${subject.status}'`,
+      subjectId: req.subjectId,
+      action: req.action,
+      resourceUrn: req.resourceUrn,
+      workspaceId: req.workspaceId ?? null,
+      resolvedRole: effectiveRole,
+    };
+  }
+
+  // Look up minimum role for the action
+  const minRole = ACTION_MIN_ROLE[req.action];
+  if (!minRole) {
+    // Unknown action — default deny with explicit reason
+    return {
+      allowed: false,
+      reason: `unknown action '${req.action}'`,
+      subjectId: req.subjectId,
+      action: req.action,
+      resourceUrn: req.resourceUrn,
+      workspaceId: req.workspaceId ?? null,
+      resolvedRole: effectiveRole,
+    };
+  }
+
+  const allowed = ROLE_PRECEDENCE[effectiveRole] >= ROLE_PRECEDENCE[minRole];
+  const reason = allowed
+    ? `role '${effectiveRole}' satisfies minimum '${minRole}' for action '${req.action}'`
+    : `role '${effectiveRole}' below minimum '${minRole}' for action '${req.action}'`;
+
+  _appendAuditEntry('auth.check-permission', req.subjectId, req.subjectId, {
+    action: req.action,
+    resourceUrn: req.resourceUrn,
+    allowed,
+    role: effectiveRole,
+    minRole,
+  });
+
+  return {
+    allowed,
+    reason,
+    subjectId: req.subjectId,
+    action: req.action,
+    resourceUrn: req.resourceUrn,
+    workspaceId: req.workspaceId ?? null,
+    resolvedRole: effectiveRole,
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Capability: auth.resolve-role (1B-10) — implemented in Story 1B-S3
+// Capability: auth.resolve-role (1B-10)
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Resolve the effective role for a subject within a workspace.
  * Contract: identity.yaml → capabilities[5] auth.resolve-role
  * Port:     IIdentityPort.resolveRole
+ *
+ * Resolution order:
+ *   1. If subject has a workspace-scoped role override for this workspace, use it.
+ *   2. Otherwise use the subject's platform-level role.
  */
 export async function resolveRole(
   subjectId: string,
   workspaceId: string,
 ): Promise<IdentityRole> {
-  void subjectId;
-  void workspaceId;
-  throw new NotImplementedError('auth.resolve-role');
+  const subject = subjects.get(subjectId);
+  if (!subject) {
+    throw new Error(`auth.resolve-role: subject '${subjectId}' not found`);
+  }
+  return resolveEffectiveRole(subject, workspaceId);
+}
+
+/**
+ * Internal: resolve the effective role without throwing (used by checkPermission).
+ * Falls back to platform role if no workspace override exists.
+ */
+function resolveEffectiveRole(
+  subject: IdentitySubject,
+  workspaceId: string | null,
+): IdentityRole {
+  if (workspaceId && subject.workspaceRoles[workspaceId]) {
+    return subject.workspaceRoles[workspaceId];
+  }
+  return subject.role;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Capability: auth.get-subject (1B-11) — implemented in Story 1B-S3
+// Capability: auth.get-subject (1B-11)
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Get subject details by ID. Does NOT return credential material.
  * Contract: identity.yaml → capabilities[6] auth.get-subject
  * Port:     IIdentityPort.getSubject
+ *
+ * Returns a copy of the subject (minus credential data, which is never stored
+ * on the IdentitySubject type). Returns null if not found.
  */
 export async function getSubject(
   subjectId: string,
 ): Promise<IdentitySubject | null> {
-  void subjectId;
-  throw new NotImplementedError('auth.get-subject');
+  const subject = subjects.get(subjectId);
+  if (!subject) {
+    return null;
+  }
+  // Return a defensive copy
+  return {
+    ...subject,
+    metadata: { ...subject.metadata },
+    workspaceRoles: { ...subject.workspaceRoles },
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Subject lifecycle state machine (1B-12) — implemented in Story 1B-S3
+// Subject lifecycle state machine (1B-12)
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** Valid forward transitions per user.yaml lifecycle ordering. */
@@ -1054,17 +1243,85 @@ const VALID_TRANSITIONS: Record<SubjectStatus, SubjectStatus[]> = {
 };
 
 /**
+ * Check whether a transition between two lifecycle states is valid.
+ * Exported for testability.
+ */
+export function isValidTransition(
+  from: SubjectStatus,
+  to: SubjectStatus,
+): boolean {
+  return VALID_TRANSITIONS[from].includes(to);
+}
+
+/**
  * Transition a subject's lifecycle status. Throws on invalid transitions.
  * Contract: contracts/resource-kinds/user.yaml → lifecycle
+ *
+ * Lifecycle: creating → active → updating → degraded → suspended → deleting → deleted
  */
 export async function transitionSubjectStatus(
   subjectId: string,
   target: SubjectStatus,
 ): Promise<IdentitySubject> {
-  void subjectId;
-  void target;
-  void VALID_TRANSITIONS;
-  throw new NotImplementedError('subject-lifecycle-transition');
+  const subject = subjects.get(subjectId);
+  if (!subject) {
+    throw new Error(
+      `subject-lifecycle: subject '${subjectId}' not found`,
+    );
+  }
+  if (subject.status === target) {
+    // No-op if already in target state
+    return { ...subject, metadata: { ...subject.metadata }, workspaceRoles: { ...subject.workspaceRoles } };
+  }
+  if (!isValidTransition(subject.status, target)) {
+    throw new Error(
+      `subject-lifecycle: invalid transition '${subject.status}' → '${target}'`,
+    );
+  }
+  subject.status = target;
+  subject.updatedAt = new Date().toISOString();
+  subjects.set(subjectId, subject);
+
+  _appendAuditEntry('subject.lifecycle-transition', subjectId, subjectId, {
+    from: subject.status,
+    to: target,
+  });
+
+  return {
+    ...subject,
+    metadata: { ...subject.metadata },
+    workspaceRoles: { ...subject.workspaceRoles },
+  };
+}
+
+/**
+ * Assign a workspace-scoped role override for a subject.
+ * This is the mechanism by which a subject becomes a workspace-owner/member/etc.
+ * for a specific workspace, independent of their platform role.
+ */
+export async function assignWorkspaceRole(
+  subjectId: string,
+  workspaceId: string,
+  role: IdentityRole,
+): Promise<IdentitySubject> {
+  const subject = subjects.get(subjectId);
+  if (!subject) {
+    throw new Error(`assignWorkspaceRole: subject '${subjectId}' not found`);
+  }
+  subject.workspaceRoles[workspaceId] = role;
+  subject.updatedAt = new Date().toISOString();
+  subjects.set(subjectId, subject);
+
+  _appendAuditEntry('subject.workspace-role-assigned', subjectId, subjectId, {
+    workspaceId,
+    role,
+  });
+
+  return {
+    ...subject,
+    metadata: { ...subject.metadata },
+    workspaceRoles: { ...subject.workspaceRoles },
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
