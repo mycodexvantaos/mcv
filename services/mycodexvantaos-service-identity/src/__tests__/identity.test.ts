@@ -440,3 +440,131 @@ describe('Introspection helpers', () => {
     assert.equal(getSessionCount(), 2);
   });
 });
+
+// ─── auth.authenticate failure paths (coverage for S4) ───────────────────────
+
+describe('auth.authenticate failure paths', () => {
+  it('rejects authentication for a non-existent email', async () => {
+    await assert.rejects(
+      () => authenticateSubject({ email: 'nobody@example.com', password: 'TestPassword123!' }),
+      /invalid credentials/,
+    );
+  });
+
+  it('rejects authentication with a wrong password', async () => {
+    await registerTestSubject('wrongpw@example.com');
+    await assert.rejects(
+      () => authenticateSubject({ email: 'wrongpw@example.com', password: 'WrongPassword999!' }),
+      /invalid credentials/,
+    );
+  });
+
+  it('rejects authentication when subject is not in active status', async () => {
+    const { subject } = await registerTestSubject('suspended@example.com');
+    await transitionSubjectStatus(subject.id, 'suspended');
+    await assert.rejects(
+      () => authenticateSubject({ email: 'suspended@example.com', password: 'TestPassword123!' }),
+      /subject status is 'suspended'/,
+    );
+  });
+
+  it('emits authentication-failed event on wrong password', async () => {
+    const events: EmittedEvent[] = [];
+    configure({
+      eventBus: {
+        async publish(event: EmittedEvent): Promise<void> {
+          events.push(event);
+        },
+      },
+    });
+    await registerTestSubject('eventtest@example.com');
+    try {
+      await authenticateSubject({ email: 'eventtest@example.com', password: 'WrongPassword999!' });
+    } catch {
+      // expected
+    }
+    const failEvents = events.filter(
+      (e) => e.type === IDENTITY_EVENTS.SUBJECT_AUTHENTICATION_FAILED,
+    );
+    assert.ok(failEvents.length >= 1);
+  });
+});
+
+// ─── checkPermission inactive subject (coverage for S4) ─────────────────────
+
+describe('checkPermission subject status check', () => {
+  it('denies permission when subject is suspended', async () => {
+    const { subject } = await registerTestSubject('suspendedperm@example.com', 'workspace-owner');
+    await transitionSubjectStatus(subject.id, 'suspended');
+    const decision = await checkPermission({
+      subjectId: subject.id,
+      action: 'read',
+      resourceUrn: 'urn:mycodexvantaos:core:resource:doc:1',
+    });
+    assert.equal(decision.allowed, false);
+    assert.match(decision.reason, /subject status is 'suspended'/);
+  });
+});
+
+// ─── register validation edge cases (coverage for S4) ───────────────────────
+
+describe('auth.register validation', () => {
+  it('rejects an invalid email', async () => {
+    await assert.rejects(
+      () => registerTestSubject('not-an-email'),
+      /invalid email/,
+    );
+  });
+
+  it('rejects a short password', async () => {
+    await assert.rejects(
+      () => registerSubject({ email: 'short@example.com', password: 'short', displayName: 'Test' }),
+      /password must be at least 8 characters/,
+    );
+  });
+
+  it('rejects an empty display name', async () => {
+    await assert.rejects(
+      () => registerSubject({ email: 'empty@example.com', password: 'TestPassword123!', displayName: '' }),
+      /displayName is required/,
+    );
+  });
+
+  it('rejects a duplicate email (case-insensitive)', async () => {
+    await registerTestSubject('dup@example.com');
+    await assert.rejects(
+      () => registerTestSubject('DUP@example.com'),
+      /email already registered/,
+    );
+  });
+
+  it('rejects a display name over 128 characters', async () => {
+    await assert.rejects(
+      () => registerSubject({
+        email: 'longname@example.com',
+        password: 'TestPassword123!',
+        displayName: 'A'.repeat(129),
+      }),
+      /displayName must be ≤ 128 characters/,
+    );
+  });
+});
+
+// ─── configure / signing key (coverage for S4) ──────────────────────────────
+
+describe('configure + signing key', () => {
+  it('tokens signed with a custom key fail validation after reconfigure', async () => {
+    const { tokenPair } = await registerTestSubject('keytest@example.com');
+    // Token is valid with current key
+    const claims = await validateToken(tokenPair.accessToken);
+    assert.ok(claims);
+
+    // Reconfigure with a different key — old token should now fail
+    reset();
+    configure({ signingKey: 'a-completely-different-secret-key' });
+    await assert.rejects(
+      () => validateToken(tokenPair.accessToken),
+      /invalid token signature/,
+    );
+  });
+});

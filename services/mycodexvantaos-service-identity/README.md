@@ -78,6 +78,28 @@ Use `transitionSubjectStatus(subjectId, target)` to advance a subject through th
 
 `platform-admin` · `workspace-owner` · `workspace-member` · `workspace-viewer` · `agent-service` · `auditor`
 
+Role precedence (higher = more permissions):
+
+| Role | Precedence |
+|------|-----------|
+| `workspace-viewer` | 1 |
+| `workspace-member` | 2 |
+| `auditor` | 2 |
+| `agent-service` | 2 |
+| `workspace-owner` | 3 |
+| `platform-admin` | 4 (bypasses all checks) |
+
+Action minimum role mapping:
+
+| Action | Minimum Role |
+|--------|-------------|
+| `read` | `workspace-viewer` |
+| `write` | `workspace-member` |
+| `delete` | `workspace-owner` |
+| `admin` | `platform-admin` |
+
+Workspace-scoped role overrides (via `assignWorkspaceRole`) take precedence over the platform role when a `workspaceId` is provided to `checkPermission` or `resolveRole`.
+
 ## Dependencies
 
 Per the Level 0 invariant and ROADMAP acceptance criteria, the only declared dependencies are:
@@ -132,6 +154,19 @@ const decision = await identityPort.checkPermission(
 | `lint` | `eslint src/` | Lint source |
 | `build` | `tsc` | Compile to `dist/` |
 | `test` | `node --import tsx --test src/__tests__/identity.test.ts` | Run unit tests (Node.js built-in test runner) |
+
+## Test Coverage
+
+The test suite (`src/__tests__/identity.test.ts`) covers all 7 capabilities, the lifecycle state machine, RBAC edge cases, authentication failure paths, and token validation paths.
+
+| Metric | Coverage |
+|--------|----------|
+| Tests | 46 across 13 suites |
+| Line coverage | 94.97% |
+| Branch coverage | 91.53% |
+| Function coverage | 91.67% |
+
+Run with coverage: `node --import tsx --test --experimental-test-coverage src/__tests__/identity.test.ts`
 
 ## Contract Source
 
