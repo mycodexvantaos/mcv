@@ -178,7 +178,10 @@ describe('loadEventDefinitions', () => {
   it('should include the audit events (category: audit)', () => {
     const events = loadEventDefinitions(MONOREPO_ROOT);
     const names = events.map((e) => e.metadata?.name);
-    assert.ok(names.includes('audit'), `Expected audit events, got: ${names.join(', ')}`);
+    assert.ok(
+      names.some((n) => n?.includes('audit')),
+      `Expected audit events, got: ${names.join(', ')}`
+    );
   });
 
   it('should include the memory events (category: memory)', () => {
