@@ -258,7 +258,8 @@ export function verifyIntegrity(): { valid: boolean; chainBreaks: number; totalE
     }
 
     // Verify hash correctness
-    const { hash: _, ...eventWithoutHash } = event;
+    const { hash: _hash, ...eventWithoutHash } = event;
+    void _hash;
     const expectedHash = computeHash(eventWithoutHash);
     if (event.hash !== expectedHash) {
       chainBreaks++;
@@ -286,9 +287,18 @@ export function clearEvents(): void {
  */
 export function getAuditEventDefinitions(): string[] {
   const eventDefs = loadEventDefinitions();
-  const auditDef = eventDefs.find((e) => e.metadata.name === 'audit');
-  if (auditDef?.spec?.events && Array.isArray(auditDef.spec.events)) {
-    return auditDef.spec.events as string[];
+  // Match the audit event contract by name containing 'audit' (the contract
+  // metadata.name is 'mycodexvantaos-audit-events', not 'audit').
+  const auditDef = eventDefs.find((e) => e.metadata.name.includes('audit'));
+  if (auditDef) {
+    // The audit-events.yaml stores events at the top level; the normalizer may
+    // place them under spec.events or keep them at the top-level 'events' key.
+    const events =
+      (auditDef.spec?.events as string[] | undefined) ??
+      ((auditDef as unknown as Record<string, unknown>).events as string[] | undefined);
+    if (events && Array.isArray(events)) {
+      return events;
+    }
   }
   return [];
 }
