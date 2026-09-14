@@ -70,7 +70,7 @@ jobs:
 
       - name: Upload service catalog report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: service-catalog-report
           path: outputs/service-catalog-validation-report.json
