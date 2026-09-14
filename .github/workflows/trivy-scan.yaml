@@ -39,7 +39,7 @@ jobs:
           trivy fs --format sarif --output trivy-results.sarif --severity CRITICAL,HIGH --exit-code 0 .
 
       - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@dd903d2e4f5405488e5ef1422510ee31c8b32357
+        uses: github/codeql-action/upload-sarif@b96794f015dfd88f77b49b1c93e0fa7110f94c63
         continue-on-error: true
         if: always() && hashFiles('trivy-results.sarif') != ''
         with:
