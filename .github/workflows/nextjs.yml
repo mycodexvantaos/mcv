@@ -67,7 +67,7 @@ jobs:
       - name: Build with Next.js
         run: pnpm exec next build --webpack
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./out
 
