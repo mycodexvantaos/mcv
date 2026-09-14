@@ -78,7 +78,7 @@ jobs:
 
       - name: Upload provider capability report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: provider-capability-report
           path: outputs/provider-capability-validation-report.json
