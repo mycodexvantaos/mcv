@@ -32,7 +32,7 @@ jobs:
           syft dir:. -o cyclonedx-json > sbom-mycodexvantaos.json
 
       - name: Upload SBOM as release asset
-        uses: softprops/action-gh-release@718ea10b132b3b2eba29c1007bb80653f286566b
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64
         if: github.event_name == 'release'
         with:
           files: sbom-mycodexvantaos.json
