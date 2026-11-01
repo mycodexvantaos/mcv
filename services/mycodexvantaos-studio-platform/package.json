@@ -52,7 +52,7 @@
     "recharts": "^2.15.4",
     "tailwind-merge": "^3.6.0",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.25.76"
+    "zod": "^4.6.6"
   },
   "optionalDependencies": {
     "@genkit-ai/google-genai": "^1.37.0",
